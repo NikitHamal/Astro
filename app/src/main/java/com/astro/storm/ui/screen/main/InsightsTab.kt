@@ -767,33 +767,63 @@ enum class InsightFeature(
         isImplemented = true
     ),
 
-    // Coming soon features
+    // Newly implemented features
     MATCHMAKING(
         title = "Matchmaking",
-        description = "Compatibility analysis",
+        description = "Kundli Milan compatibility",
         icon = Icons.Outlined.Favorite,
         color = AppTheme.LifeAreaLove,
-        isImplemented = false
+        isImplemented = true
     ),
     MUHURTA(
         title = "Muhurta",
-        description = "Auspicious timing",
+        description = "Auspicious timing finder",
         icon = Icons.Outlined.AccessTime,
         color = AppTheme.WarningColor,
-        isImplemented = false
+        isImplemented = true
     ),
     REMEDIES(
         title = "Remedies",
-        description = "Astrological remedies",
+        description = "Personalized remedies",
         icon = Icons.Outlined.Spa,
         color = AppTheme.LifeAreaHealth,
-        isImplemented = false
+        isImplemented = true
     ),
     VARSHAPHALA(
         title = "Varshaphala",
-        description = "Annual horoscope",
+        description = "Solar return horoscope",
         icon = Icons.Outlined.Cake,
         color = AppTheme.LifeAreaCareer,
+        isImplemented = true
+    ),
+
+    // Coming soon features
+    PRASHNA(
+        title = "Prashna",
+        description = "Horary astrology",
+        icon = Icons.Outlined.HelpOutline,
+        color = AppTheme.AccentTeal,
+        isImplemented = false
+    ),
+    CHART_COMPARISON(
+        title = "Synastry",
+        description = "Chart comparison",
+        icon = Icons.Outlined.CompareArrows,
+        color = AppTheme.LifeAreaFinance,
+        isImplemented = false
+    ),
+    NAKSHATRA_ANALYSIS(
+        title = "Nakshatras",
+        description = "Deep nakshatra analysis",
+        icon = Icons.Outlined.Stars,
+        color = AppTheme.AccentGold,
+        isImplemented = false
+    ),
+    SHADBALA(
+        title = "Shadbala",
+        description = "Six-fold strength",
+        icon = Icons.Outlined.Speed,
+        color = AppTheme.SuccessColor,
         isImplemented = false
     );
 
