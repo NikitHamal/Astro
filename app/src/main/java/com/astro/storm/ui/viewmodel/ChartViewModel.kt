@@ -276,6 +276,13 @@ class ChartViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
+     * Get a chart by ID directly (for matchmaking and other features)
+     */
+    suspend fun getChartById(chartId: Long): VedicChart? {
+        return repository.getChartById(chartId)
+    }
+
+    /**
      * Reset UI state
      */
     fun resetState() {

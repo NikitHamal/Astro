@@ -46,6 +46,10 @@ fun MainScreen(
     onChartSelected: (Long) -> Unit,
     onAddNewChart: () -> Unit,
     onNavigateToChartAnalysis: (InsightFeature) -> Unit,
+    onNavigateToMatchmaking: () -> Unit = {},
+    onNavigateToMuhurta: () -> Unit = {},
+    onNavigateToRemedies: () -> Unit = {},
+    onNavigateToVarshaphala: () -> Unit = {},
     onExportChart: (ExportFormat) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -94,8 +98,17 @@ fun MainScreen(
                             chart = currentChart,
                             onNavigateToChartAnalysis = { /* Navigate to full analysis */ },
                             onFeatureClick = { feature ->
-                                if (feature.isImplemented && currentChart != null) {
-                                    onNavigateToChartAnalysis(feature)
+                                if (feature.isImplemented) {
+                                    when (feature) {
+                                        // Features that don't require a chart
+                                        InsightFeature.MATCHMAKING -> onNavigateToMatchmaking()
+                                        InsightFeature.MUHURTA -> onNavigateToMuhurta()
+                                        // Features that require a chart
+                                        InsightFeature.REMEDIES -> if (currentChart != null) onNavigateToRemedies()
+                                        InsightFeature.VARSHAPHALA -> if (currentChart != null) onNavigateToVarshaphala()
+                                        // Standard chart analysis features
+                                        else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
+                                    }
                                 }
                             }
                         )

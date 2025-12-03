@@ -12,6 +12,10 @@ import androidx.navigation.navArgument
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ui.screen.ChartAnalysisScreen
 import com.astro.storm.ui.screen.ChartInputScreen
+import com.astro.storm.ui.screen.MatchmakingScreen
+import com.astro.storm.ui.screen.MuhurtaScreen
+import com.astro.storm.ui.screen.RemediesScreen
+import com.astro.storm.ui.screen.VarshaphalaScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.screen.main.MainScreen
@@ -26,6 +30,16 @@ sealed class Screen(val route: String) {
     object ChartAnalysis : Screen("chart_analysis/{chartId}/{feature}") {
         fun createRoute(chartId: Long, feature: InsightFeature = InsightFeature.FULL_CHART) =
             "chart_analysis/$chartId/${feature.name}"
+    }
+
+    // New feature screens
+    object Matchmaking : Screen("matchmaking")
+    object Muhurta : Screen("muhurta")
+    object Remedies : Screen("remedies/{chartId}") {
+        fun createRoute(chartId: Long) = "remedies/$chartId"
+    }
+    object Varshaphala : Screen("varshaphala/{chartId}") {
+        fun createRoute(chartId: Long) = "varshaphala/$chartId"
     }
 
     // Legacy routes for backward compatibility
@@ -101,6 +115,22 @@ fun AstroStormNavigation(
                         navController.navigate(Screen.ChartAnalysis.createRoute(chartId, feature))
                     }
                 },
+                onNavigateToMatchmaking = {
+                    navController.navigate(Screen.Matchmaking.route)
+                },
+                onNavigateToMuhurta = {
+                    navController.navigate(Screen.Muhurta.route)
+                },
+                onNavigateToRemedies = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.Remedies.createRoute(chartId))
+                    }
+                },
+                onNavigateToVarshaphala = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.Varshaphala.createRoute(chartId))
+                    }
+                },
                 onExportChart = { format ->
                     currentChart?.let { chart ->
                         when (format) {
@@ -163,6 +193,81 @@ fun AstroStormNavigation(
                     }
                 )
             }
+        }
+
+        // Matchmaking screen
+        composable(Screen.Matchmaking.route) {
+            MatchmakingScreen(
+                savedCharts = savedCharts.map { savedChart ->
+                    com.astro.storm.data.local.ChartEntity(
+                        id = savedChart.id,
+                        name = savedChart.name,
+                        dateTime = savedChart.dateTime,
+                        latitude = 0.0,
+                        longitude = 0.0,
+                        timezone = "",
+                        location = savedChart.location,
+                        julianDay = 0.0,
+                        ayanamsa = 0.0,
+                        ayanamsaName = "",
+                        ascendant = 0.0,
+                        midheaven = 0.0,
+                        planetPositionsJson = "",
+                        houseCuspsJson = "",
+                        houseSystem = ""
+                    )
+                },
+                viewModel = viewModel,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Muhurta screen
+        composable(Screen.Muhurta.route) {
+            MuhurtaScreen(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Remedies screen
+        composable(
+            route = Screen.Remedies.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    selectedChartId = chartId
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            RemediesScreen(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Varshaphala screen
+        composable(
+            route = Screen.Varshaphala.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    selectedChartId = chartId
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            VarshaphalaScreen(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
         }
 
         // Legacy home route - redirect to main
