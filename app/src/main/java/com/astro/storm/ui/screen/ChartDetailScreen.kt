@@ -2914,6 +2914,7 @@ private fun TransitOverallAssessmentCard(assessment: TransitAnalyzer.OverallTran
     val qualityColor = when (assessment.quality) {
         TransitAnalyzer.TransitQuality.EXCELLENT -> SuccessColor
         TransitAnalyzer.TransitQuality.GOOD -> AccentGreen
+		TransitAnalyzer.TransitQuality.MODERATE -> AccentTeal
         TransitAnalyzer.TransitQuality.MIXED -> WarningColor
         TransitAnalyzer.TransitQuality.CHALLENGING -> AccentOrange
         TransitAnalyzer.TransitQuality.DIFFICULT -> ErrorColor
@@ -3132,6 +3133,7 @@ private fun GocharaAnalysisCard(gocharaResults: List<TransitAnalyzer.GocharaResu
                 val effectColor = when (result.effect) {
                     TransitAnalyzer.TransitEffect.EXCELLENT -> SuccessColor
                     TransitAnalyzer.TransitEffect.GOOD -> AccentGreen
+                    TransitAnalyzer.TransitEffect.MODERATE -> AccentTeal
                     TransitAnalyzer.TransitEffect.NEUTRAL -> TextSecondary
                     TransitAnalyzer.TransitEffect.CHALLENGING -> WarningColor
                     TransitAnalyzer.TransitEffect.DIFFICULT -> ErrorColor

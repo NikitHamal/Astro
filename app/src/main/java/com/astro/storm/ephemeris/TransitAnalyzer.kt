@@ -61,7 +61,8 @@ class TransitAnalyzer(private val context: Context) {
             Planet.JUPITER to mapOf(5 to 0.50, 7 to 1.0, 9 to 0.50),
             Planet.SATURN to mapOf(3 to 0.50, 7 to 1.0, 10 to 0.50),
             Planet.RAHU to mapOf(5 to 0.50, 7 to 1.0, 9 to 0.50),
-            Planet.KETU to mapOf(5 to 0.50, 7 to 1.0, 9 to 0.50)
+            Planet.KETU to mapOf(5 to 0.50, 7 to 1.0, 9 to 0.50),
+            Planet.ASCENDANT to emptyMap()
         )
 
         private val TRANSIT_ORBS = mapOf(
