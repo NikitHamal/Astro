@@ -102,6 +102,7 @@ object AspectCalculator {
                 Planet.JUPITER, Planet.SATURN -> socialOrb
                 Planet.RAHU, Planet.KETU -> transcendentalOrb
                 Planet.URANUS, Planet.NEPTUNE, Planet.PLUTO -> outerOrb
+				else -> 0.0
             }
         }
 

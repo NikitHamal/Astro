@@ -124,6 +124,7 @@ class ChartRenderer {
         Planet.URANUS -> URANUS_COLOR
         Planet.NEPTUNE -> NEPTUNE_COLOR
         Planet.PLUTO -> PLUTO_COLOR
+        Planet.ASCENDANT -> LAGNA_COLOR
     }
 
     private fun toSuperscript(degree: Int): String {
