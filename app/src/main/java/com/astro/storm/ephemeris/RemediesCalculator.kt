@@ -566,10 +566,10 @@ object RemediesCalculator {
         Nakshatra.UTTARA_BHADRAPADA to "Ahir Budhnya",
         Nakshatra.REVATI to "Pushan"
     )
-   
+
     fun calculateRemedies(chart: VedicChart): RemediesResult {
-        val ascendantSign = chart.ascendant ?: ZodiacSign.ARIES
-        
+        // Explicitly type as ZodiacSign to prevent Type Mismatch {Comparable & Serializable} inference error
+        val ascendantSign: ZodiacSign = chart.ascendant ?: ZodiacSign.ARIES
         val moonPosition = chart.planetPositions.find { it.planet == Planet.MOON }
         val moonSign = moonPosition?.sign ?: ZodiacSign.ARIES
 
@@ -1156,18 +1156,18 @@ object RemediesCalculator {
     }
 
     private fun checkPushkaraNavamsha(signDegree: Double, sign: ZodiacSign): Boolean {
-    val navamshaSize = 3.333333
-    val navamshaIndex = (signDegree / navamshaSize).toInt()
+        val navamshaSize = 3.333333
+        val navamshaIndex = (signDegree / navamshaSize).toInt()
 
-    val pushkaraNavamshas = when (sign) {
-        ZodiacSign.ARIES, ZodiacSign.LEO, ZodiacSign.SAGITTARIUS -> listOf(2, 5, 8)
-        ZodiacSign.TAURUS, ZodiacSign.VIRGO, ZodiacSign.CAPRICORN -> listOf(1, 4, 7)
-        ZodiacSign.GEMINI, ZodiacSign.LIBRA, ZodiacSign.AQUARIUS -> listOf(0, 3, 6)
-        ZodiacSign.CANCER, ZodiacSign.SCORPIO, ZodiacSign.PISCES -> listOf(2, 5, 8)
+        val pushkaraNavamshas = when (sign) {
+            ZodiacSign.ARIES, ZodiacSign.LEO, ZodiacSign.SAGITTARIUS -> listOf(2, 5, 8)
+            ZodiacSign.TAURUS, ZodiacSign.VIRGO, ZodiacSign.CAPRICORN -> listOf(1, 4, 7)
+            ZodiacSign.GEMINI, ZodiacSign.LIBRA, ZodiacSign.AQUARIUS -> listOf(0, 3, 6)
+            ZodiacSign.CANCER, ZodiacSign.SCORPIO, ZodiacSign.PISCES -> listOf(2, 5, 8)
+        }
+
+        return navamshaIndex in pushkaraNavamshas
     }
-
-    return navamshaIndex in pushkaraNavamshas
-}
 
     private fun checkMoonPaksha(chart: VedicChart): Int {
         val sunPos = chart.planetPositions.find { it.planet == Planet.SUN } ?: return 0
