@@ -216,7 +216,6 @@ fun RemediesScreen(
                     }
 
                     remediesResult?.let { result ->
-                        // Replaced PullToRefreshBox with standard Box as per fix requirements
                         Box(modifier = Modifier.fillMaxSize()) {
                             AnimatedContent(
                                 targetState = selectedTab,
