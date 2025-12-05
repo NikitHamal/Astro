@@ -1,5 +1,6 @@
 package com.astro.storm.ui.screen.chartdetail
 
+import android.content.Context
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.DivisionalChartData
@@ -127,7 +129,7 @@ private fun ChartDetailContent(
 
     var selectedPlanet by remember { mutableStateOf<PlanetPosition?>(null) }
     var selectedHouse by remember { mutableStateOf<Int?>(null) }
-    var selectedNakshatra by remember { mutableStateOf<Pair<com.astro.storm.data.model.Nakshatra, Int>?>(null) }
+    var selectedNakshatra by remember { mutableStateOf<Pair<Nakshatra, Int>?>(null) }
     var showShadbalaDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -265,6 +267,7 @@ private fun ChartDetailContent(
                 ChartTab.PLANETS -> PlanetsTabContent(
                     chart = chart,
                     onPlanetClick = { selectedPlanet = it },
+                    onNakshatraClick = { nakshatra, pada -> selectedNakshatra = nakshatra to pada },
                     onShadbalaClick = { showShadbalaDialog = true }
                 )
 
@@ -276,7 +279,7 @@ private fun ChartDetailContent(
 
                 ChartTab.DASHAS -> DashasTabContent(chart = chart)
 
-                ChartTab.PANCHANGA -> PanchangaTabContent(chart = chart)
+                ChartTab.PANCHANGA -> PanchangaTabContent(chart = chart, context = context)
             }
         }
     }

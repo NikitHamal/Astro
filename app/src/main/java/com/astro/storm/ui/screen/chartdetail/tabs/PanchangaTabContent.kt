@@ -1,5 +1,6 @@
 package com.astro.storm.ui.screen.chartdetail.tabs
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -34,23 +35,23 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.VedicChart
+import com.astro.storm.ephemeris.Karana
 import com.astro.storm.ephemeris.PanchangaCalculator
 import com.astro.storm.ephemeris.PanchangaData
+import com.astro.storm.ephemeris.Vara
+import com.astro.storm.ephemeris.Yoga
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 
 /**
@@ -58,8 +59,7 @@ import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
  * Tithi, Nakshatra, Yoga, Karana, and Vara.
  */
 @Composable
-fun PanchangaTabContent(chart: VedicChart) {
-    val context = LocalContext.current
+fun PanchangaTabContent(chart: VedicChart, context: Context) {
     val panchanga = remember(chart) {
         val calculator = PanchangaCalculator(context)
         try {
@@ -352,7 +352,7 @@ private fun TithiCard(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = getTithiDescription(panchanga.tithi.tithi.number),
+                text = getTithiDescription(panchanga.tithi.number),
                 fontSize = 13.sp,
                 color = ChartDetailColors.TextPrimary,
                 lineHeight = 20.sp
@@ -756,33 +756,33 @@ private fun getTithiDescription(tithiNumber: Int): String {
     }
 }
 
-private fun getNakshatraDescription(nakshatra: com.astro.storm.data.model.Nakshatra): String {
+private fun getNakshatraDescription(nakshatra: Nakshatra): String {
     return "${nakshatra.displayName} is ruled by ${nakshatra.ruler.displayName}. " +
             "Each nakshatra has unique characteristics that influence personality, " +
             "life events, and compatibility. The pada (quarter) further refines these influences."
 }
 
-private fun getYogaDescription(yoga: com.astro.storm.ephemeris.Yoga): String {
+private fun getYogaDescription(yoga: Yoga): String {
     val nature = if (yoga.nature == "Auspicious") "auspicious" else "challenging"
     return "${yoga.displayName} is considered $nature in Vedic astrology. " +
             "Yoga is calculated from the sum of Sun and Moon longitudes and " +
             "influences the overall quality of time for activities."
 }
 
-private fun getKaranaDescription(karana: com.astro.storm.ephemeris.Karana): String {
+private fun getKaranaDescription(karana: Karana): String {
     return "${karana.displayName} is a ${karana.nature.lowercase()} karana. " +
             "Karanas are half-tithis and provide more refined timing for muhurta. " +
             "There are 11 karanas that cycle through the lunar month."
 }
 
-private fun getVaraDescription(vara: com.astro.storm.ephemeris.Vara): String {
+private fun getVaraDescription(vara: Vara): String {
     return when (vara) {
-        com.astro.storm.ephemeris.Vara.SUNDAY -> "Sunday is ruled by the Sun. Favorable for government matters, authority figures, health initiatives, and spiritual practices."
-        com.astro.storm.ephemeris.Vara.MONDAY -> "Monday is ruled by the Moon. Good for travel, public dealings, emotional matters, and starting new ventures."
-        com.astro.storm.ephemeris.Vara.TUESDAY -> "Tuesday is ruled by Mars. Suitable for property matters, surgery, competitive activities, and physical endeavors."
-        com.astro.storm.ephemeris.Vara.WEDNESDAY -> "Wednesday is ruled by Mercury. Excellent for education, communication, business deals, and intellectual pursuits."
-        com.astro.storm.ephemeris.Vara.THURSDAY -> "Thursday is ruled by Jupiter. Most auspicious for religious ceremonies, marriages, education, and financial matters."
-        com.astro.storm.ephemeris.Vara.FRIDAY -> "Friday is ruled by Venus. Ideal for romantic matters, artistic activities, luxury purchases, and entertainment."
-        com.astro.storm.ephemeris.Vara.SATURDAY -> "Saturday is ruled by Saturn. Good for property, agriculture, labor-related work, and spiritual discipline."
+        Vara.SUNDAY -> "Sunday is ruled by the Sun. Favorable for government matters, authority figures, health initiatives, and spiritual practices."
+        Vara.MONDAY -> "Monday is ruled by the Moon. Good for travel, public dealings, emotional matters, and starting new ventures."
+        Vara.TUESDAY -> "Tuesday is ruled by Mars. Suitable for property matters, surgery, competitive activities, and physical endeavors."
+        Vara.WEDNESDAY -> "Wednesday is ruled by Mercury. Excellent for education, communication, business deals, and intellectual pursuits."
+        Vara.THURSDAY -> "Thursday is ruled by Jupiter. Most auspicious for religious ceremonies, marriages, education, and financial matters."
+        Vara.FRIDAY -> "Friday is ruled by Venus. Ideal for romantic matters, artistic activities, luxury purchases, and entertainment."
+        Vara.SATURDAY -> "Saturday is ruled by Saturn. Good for property, agriculture, labor-related work, and spiritual discipline."
     }
 }
