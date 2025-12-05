@@ -21,20 +21,14 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -79,8 +73,6 @@ fun RemediesScreen(
     val overviewListState = rememberLazyListState()
     val remediesListState = rememberLazyListState()
     val planetsListState = rememberLazyListState()
-
-    val pullToRefreshState = rememberPullToRefreshState()
 
     suspend fun calculateRemedies(chartData: VedicChart) {
         isLoading = true
@@ -224,15 +216,8 @@ fun RemediesScreen(
                     }
 
                     remediesResult?.let { result ->
-                        PullToRefreshBox(
-                            isRefreshing = isLoading,
-                            onRefresh = {
-                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                scope.launch { calculateRemedies(chart) }
-                            },
-                            state = pullToRefreshState,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
+                        // Replaced PullToRefreshBox with standard Box as per fix requirements
+                        Box(modifier = Modifier.fillMaxSize()) {
                             AnimatedContent(
                                 targetState = selectedTab,
                                 transitionSpec = {
@@ -772,7 +757,7 @@ private fun WeekDayChip(
     val planetColor = getPlanetColor(planet)
 
     Surface(
-        color = if (remedyCount > 0) planetColor.copy(alpha = 0.15f) else AppTheme.SurfaceVariant,
+        color = if (remedyCount > 0) planetColor.copy(alpha = 0.15f) else AppTheme.CardBackground.copy(alpha = 0.5f),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(
@@ -1517,13 +1502,12 @@ private fun PlanetAnalysisCard(analysis: RemediesCalculator.PlanetaryAnalysis) {
                                 color = AppTheme.TextMuted
                             )
                         }
-                        analysis.nakshatra?.let { nakshatra ->
-                            Text(
-                                nakshatra,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.AccentPrimary
-                            )
-                        }
+                        // Fixed: Accessing displayName from the Nakshatra Enum, not the object itself
+                        Text(
+                            analysis.nakshatra.displayName,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = AppTheme.AccentPrimary
+                        )
                     }
                 }
 
