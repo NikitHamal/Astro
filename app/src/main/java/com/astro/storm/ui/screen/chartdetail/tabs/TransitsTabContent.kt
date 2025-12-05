@@ -251,6 +251,8 @@ private fun TransitQualityCard(analysis: TransitAnalyzer.TransitAnalysis) {
                 Brush.horizontalGradient(listOf(Color(0xFF14B8A6), Color(0xFF2DD4BF)))
         TransitAnalyzer.TransitQuality.MODERATE -> ChartDetailColors.AccentBlue to
                 Brush.horizontalGradient(listOf(Color(0xFF3B82F6), Color(0xFF60A5FA)))
+        TransitAnalyzer.TransitQuality.MODERATE -> ChartDetailColors.AccentBlue to
+                Brush.horizontalGradient(listOf(Color(0xFF3B82F6), Color(0xFF60A5FA)))
         TransitAnalyzer.TransitQuality.MIXED -> ChartDetailColors.AccentGold to
                 Brush.horizontalGradient(listOf(Color(0xFFF59E0B), Color(0xFFFBBF24)))
         TransitAnalyzer.TransitQuality.CHALLENGING -> ChartDetailColors.WarningColor to
