@@ -1040,6 +1040,7 @@ class TransitAnalyzer(private val context: Context) {
             TransitEffect.NEUTRAL -> "${planet.displayName} transit in ${houseFromMoon}th house has mixed effects on $houseMatters."
             TransitEffect.CHALLENGING -> "${planet.displayName} transit in ${houseFromMoon}th house may create challenges in $houseMatters."
             TransitEffect.DIFFICULT -> "${planet.displayName} transit in ${houseFromMoon}th house requires caution regarding $houseMatters."
+			else -> ""
         }
 
         val modifiers = mutableListOf<String>()
