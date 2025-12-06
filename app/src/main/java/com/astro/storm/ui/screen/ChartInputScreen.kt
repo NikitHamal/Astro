@@ -74,7 +74,7 @@ fun ChartInputScreen(
     // -- Form State --
     // Using rememberSaveable to survive configuration changes (rotation)
     var name by rememberSaveable { mutableStateOf("") }
-    var selectedGender by rememberSaveable { mutableStateOf(Gender.PREFER_NOT_TO_SAY) }
+    var selectedGender by rememberSaveable { mutableStateOf(Gender.MALE) }
     var locationLabel by rememberSaveable { mutableStateOf("") }
     var latitude by rememberSaveable { mutableStateOf("") }
     var longitude by rememberSaveable { mutableStateOf("") }
@@ -185,10 +185,15 @@ fun ChartInputScreen(
             // Validate inputs before enabling button
             val isFormValid by remember {
                 derivedStateOf {
+                    // Local extension function for robust validation
+                    fun String.isValidCoordinate(range: ClosedRange<Double>): Boolean {
+                        return this.toDoubleOrNull()?.let { it in range } ?: false
+                    }
+
                     name.isNotBlank() &&
                     locationLabel.isNotBlank() &&
-                    latitude.toDoubleOrNull() in -90.0..90.0 &&
-                    longitude.toDoubleOrNull() in -180.0..180.0
+                    latitude.isValidCoordinate(-90.0..90.0) &&
+                    longitude.isValidCoordinate(-180.0..180.0)
                 }
             }
 
