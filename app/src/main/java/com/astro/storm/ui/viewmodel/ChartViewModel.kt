@@ -44,7 +44,8 @@ class ChartViewModel(application: Application) : AndroidViewModel(application) {
     private val _savedCharts = MutableStateFlow<List<SavedChart>>(emptyList())
     val savedCharts: StateFlow<List<SavedChart>> = _savedCharts.asStateFlow()
 
-    val selectedChartId = MutableStateFlow<Long?>(null)
+    private val _selectedChartId = MutableStateFlow<Long?>(null)
+    val selectedChartId: StateFlow<Long?> = _selectedChartId.asStateFlow()
 
     init {
         val database = ChartDatabase.getInstance(application)
@@ -59,7 +60,7 @@ class ChartViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             repository.getAllCharts().collect { charts ->
                 _savedCharts.value = charts
-                if (selectedChartId.value == null) {
+                if (_selectedChartId.value == null) {
                     val lastSelectedId = prefs.getLong("last_selected_chart_id", -1)
                     if (lastSelectedId != -1L && charts.any { it.id == lastSelectedId }) {
                         loadChart(lastSelectedId)
@@ -103,7 +104,7 @@ class ChartViewModel(application: Application) : AndroidViewModel(application) {
                 val chart = repository.getChartById(chartId)
                 if (chart != null) {
                     _uiState.value = ChartUiState.Success(chart)
-                    selectedChartId.value = chartId
+                    _selectedChartId.value = chartId
                     prefs.edit().putLong("last_selected_chart_id", chartId).apply()
                 } else {
                     _uiState.value = ChartUiState.Error("Chart not found")
@@ -135,9 +136,9 @@ class ChartViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(singleThreadContext) {
             try {
                 repository.deleteChart(chartId)
-                if (selectedChartId.value == chartId) {
+                if (_selectedChartId.value == chartId) {
                     prefs.edit().remove("last_selected_chart_id").apply()
-                    selectedChartId.value = null
+                    _selectedChartId.value = null
                     _uiState.value = ChartUiState.Initial
                 }
             } catch (e: Exception) {

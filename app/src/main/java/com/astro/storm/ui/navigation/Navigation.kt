@@ -66,24 +66,9 @@ fun AstroStormNavigation(
     val uiState by viewModel.uiState.collectAsState()
     val density = LocalDensity.current
     val context = LocalContext.current
+    val selectedChartId by viewModel.selectedChartId.collectAsState()
 
-    // Track selected chart ID
-    var selectedChartId by remember { mutableStateOf<Long?>(null) }
     var currentChart by remember { mutableStateOf<VedicChart?>(null) }
-
-    // Auto-select first chart if none selected and charts exist
-    LaunchedEffect(savedCharts, selectedChartId) {
-        if (selectedChartId == null && savedCharts.isNotEmpty()) {
-            selectedChartId = savedCharts.first().id
-        }
-    }
-
-    // Load chart when selection changes
-    LaunchedEffect(selectedChartId) {
-        selectedChartId?.let { chartId ->
-            viewModel.loadChart(chartId)
-        }
-    }
 
     // Update current chart from UI state
     LaunchedEffect(uiState) {
@@ -103,10 +88,7 @@ fun AstroStormNavigation(
                 savedCharts = savedCharts,
                 currentChart = currentChart,
                 selectedChartId = selectedChartId,
-                onChartSelected = { chartId ->
-                    selectedChartId = chartId
-                    viewModel.loadChart(chartId)
-                },
+                onChartSelected = viewModel::loadChart,
                 onAddNewChart = {
                     navController.navigate(Screen.ChartInput.route)
                 },
