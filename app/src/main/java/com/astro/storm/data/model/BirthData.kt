@@ -30,7 +30,7 @@ data class BirthData(
     val longitude: Double,
     val timezone: String,
     val location: String,
-    val gender: Gender = Gender.PREFER_NOT_TO_SAY
+    val gender: Gender = Gender.OTHER
 ) {
     init {
         require(latitude in -90.0..90.0) { "Latitude must be between -90 and 90 degrees" }
