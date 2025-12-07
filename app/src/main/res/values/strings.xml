@@ -1,4 +1,347 @@
 
 <resources>
+    <!-- App Name -->
     <string name="app_name">AstroStorm</string>
+
+    <!-- Navigation Tabs -->
+    <string name="tab_home">Home</string>
+    <string name="tab_insights">Insights</string>
+    <string name="tab_settings">Settings</string>
+
+    <!-- Home Tab -->
+    <string name="welcome_message">Welcome to AstroStorm</string>
+    <string name="no_chart">No birth chart selected</string>
+    <string name="create_new_chart">Create New Chart</string>
+
+    <!-- Insights Tab - Main Headers -->
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="weekly">Weekly</string>
+    <string name="overall_energy">Overall Energy</string>
+    <string name="life_areas">Life Areas</string>
+    <string name="lucky_elements">Lucky Elements</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="cautions">Cautions</string>
+    <string name="affirmation">Affirmation</string>
+
+    <!-- Insights Tab - Time Selectors -->
+    <string name="select_date">Select Date</string>
+    <string name="analysis_type">Analysis Type</string>
+
+    <!-- Insights Tab - Detail Sections -->
+    <string name="active_dasha">Active Dasha</string>
+    <string name="moon_sign">Moon Sign</string>
+    <string name="moon_nakshatra">Moon Nakshatra</string>
+    <string name="planetary_influences">Planetary Influences</string>
+    <string name="lucky_numbers">Lucky Numbers</string>
+    <string name="lucky_colors">Lucky Colors</string>
+    <string name="lucky_directions">Lucky Directions</string>
+    <string name="lucky_gemstones">Lucky Gemstones</string>
+    <string name="auspicious_times">Auspicious Times</string>
+
+    <!-- Life Areas -->
+    <string name="life_area_career">Career</string>
+    <string name="life_area_love">Love &amp; Relationships</string>
+    <string name="life_area_health">Health &amp; Vitality</string>
+    <string name="life_area_finance">Finance &amp; Wealth</string>
+    <string name="life_area_family">Family &amp; Home</string>
+    <string name="life_area_spirituality">Spiritual Growth</string>
+
+    <!-- Life Area Predictions (Career) -->
+    <string name="career_5">Excellent day for professional advancement. Your {dashaLord} period brings recognition and success in work matters.</string>
+    <string name="career_4">Good energy for career activities. Focus on important projects and networking.</string>
+    <string name="career_3">Steady progress in professional matters. Maintain consistency in your efforts.</string>
+    <string name="career_2">Some workplace challenges may arise. Stay patient and diplomatic.</string>
+    <string name="career_1">Career matters require extra attention. Avoid major decisions today.</string>
+
+    <!-- Life Area Predictions (Love) -->
+    <string name="love_5">Romantic energy is at its peak. Deep connections and meaningful conversations await.</string>
+    <string name="love_4">Favorable time for relationships. Express your feelings openly.</string>
+    <string name="love_3">Balanced energy in partnerships. Focus on understanding and compromise.</string>
+    <string name="love_2">Minor misunderstandings possible. Practice patience with loved ones.</string>
+    <string name="love_1">Relationships need nurturing. Avoid conflicts and be extra considerate.</string>
+
+    <!-- Life Area Predictions (Health) -->
+    <string name="health_5">Vitality is strong. Great day for physical activities and wellness routines.</string>
+    <string name="health_4">Good health energy. Maintain your wellness practices.</string>
+    <string name="health_3">Steady health. Focus on rest and balanced nutrition.</string>
+    <string name="health_2">Energy may fluctuate. Prioritize adequate rest.</string>
+    <string name="health_1">Health needs attention. Take it easy and avoid overexertion.</string>
+
+    <!-- Life Area Predictions (Finance) -->
+    <string name="finance_5">Excellent day for financial matters. Opportunities for gains are strong.</string>
+    <string name="finance_4">Positive financial energy. Good for planned investments.</string>
+    <string name="finance_3">Stable financial period. Stick to your budget.</string>
+    <string name="finance_2">Be cautious with expenditures. Avoid impulsive purchases.</string>
+    <string name="finance_1">Financial caution advised. Postpone major financial decisions.</string>
+
+    <!-- Life Area Predictions (Family) -->
+    <string name="family_5">Harmonious family energy. Celebrations and joyful gatherings are favored.</string>
+    <string name="family_4">Good time for family bonding. Support flows both ways.</string>
+    <string name="family_3">Steady domestic atmosphere. Focus on routine family matters.</string>
+    <string name="family_2">Minor family tensions possible. Practice understanding.</string>
+    <string name="family_1">Family dynamics need attention. Prioritize peace and harmony.</string>
+
+    <!-- Life Area Predictions (Spirituality) -->
+    <string name="spirituality_5">Profound spiritual insights available. Meditation and reflection are highly beneficial.</string>
+    <string name="spirituality_4">Good day for spiritual practices. Inner guidance is strong.</string>
+    <string name="spirituality_3">Steady spiritual energy. Maintain your regular practices.</string>
+    <string name="spirituality_2">Spiritual connection may feel distant. Keep faith.</string>
+    <string name="spirituality_1">Inner turbulence possible. Ground yourself through simple practices.</string>
+
+    <!-- Life Area Advice (Career) -->
+    <string name="career_advice_high">Take initiative on important projects.</string>
+    <string name="career_advice_medium">Stay focused on your regular responsibilities.</string>
+    <string name="career_advice_low">Plan ahead and prepare for opportunities.</string>
+
+    <!-- Life Area Advice (Love) -->
+    <string name="love_advice_high">Express your feelings authentically.</string>
+    <string name="love_advice_medium">Listen more than you speak.</string>
+    <string name="love_advice_low">Give space and practice patience.</string>
+
+    <!-- Life Area Advice (Health) -->
+    <string name="health_advice_high">Engage in physical activity you enjoy.</string>
+    <string name="health_advice_medium">Maintain balanced meals and hydration.</string>
+    <string name="health_advice_low">Rest is your best medicine today.</string>
+
+    <!-- Life Area Advice (Finance) -->
+    <string name="finance_advice_high">Review investment opportunities.</string>
+    <string name="finance_advice_medium">Stick to planned expenses.</string>
+    <string name="finance_advice_low">Save rather than spend today.</string>
+
+    <!-- Life Area Advice (Family) -->
+    <string name="family_advice_high">Plan a family activity together.</string>
+    <string name="family_advice_medium">Be present for family members.</string>
+    <string name="family_advice_low">Choose harmony over being right.</string>
+
+    <!-- Life Area Advice (Spirituality) -->
+    <string name="spirituality_advice_high">Dedicate extra time to meditation.</string>
+    <string name="spirituality_advice_medium">Find moments of stillness.</string>
+    <string name="spirituality_advice_low">Simple prayers bring comfort.</string>
+
+    <!-- Theme Descriptions -->
+    <string name="theme_dynamic_action">Your energy is high and aligned with fire elements. This is an excellent day for taking initiative, starting new projects, and asserting yourself confidently. Channel this vibrant energy into productive pursuits.</string>
+    <string name="theme_practical_progress">Grounded earth energy supports methodical progress today. Focus on practical tasks, financial planning, and building stable foundations. Your efforts will yield tangible results.</string>
+    <string name="theme_social_connections">Air element energy enhances communication and social interactions. Networking, negotiations, and intellectual pursuits are favored. Express your ideas and connect with like-minded people.</string>
+    <string name="theme_emotional_insight">Water element energy deepens your intuition and emotional awareness. Trust your feelings and pay attention to subtle cues. This is a powerful day for healing and self-reflection.</string>
+    <string name="theme_expansion_wisdom">Jupiter\'s benevolent influence brings opportunities for growth, learning, and good fortune. Be open to new possibilities and share your wisdom generously.</string>
+    <string name="theme_harmony_beauty">Venus graces you with appreciation for beauty, art, and relationships. Indulge in pleasurable activities and nurture your connections with loved ones.</string>
+    <string name="theme_discipline_growth">Saturn\'s influence calls for patience, hard work, and responsibility. Embrace challenges as opportunities for growth and stay committed to your long-term goals.</string>
+    <string name="theme_communication_learning">Mercury enhances your mental agility and communication skills. This is ideal for learning, teaching, writing, and all forms of information exchange.</string>
+    <string name="theme_energy_initiative">Mars provides courage and drive. Take bold action, compete with integrity, and channel aggressive energy into constructive activities.</string>
+    <string name="theme_self_expression">The Sun illuminates your path to self-expression and leadership. Shine your light confidently and pursue activities that bring you recognition.</string>
+    <string name="theme_intuition_nurturing">The Moon heightens your sensitivity and caring nature. Nurture yourself and others, and trust your instincts in important decisions.</string>
+    <string name="theme_transformation">Rahu\'s influence brings unconventional opportunities and desires for change. Embrace innovation but stay grounded in your values.</string>
+    <string name="theme_spiritual_liberation">Ketu\'s energy supports detachment and spiritual insight. Let go of what no longer serves you and focus on inner growth.</string>
+    <string name="theme_balance_equilibrium">A day of balance where all energies are in equilibrium. Maintain steadiness and make measured progress in all areas of life.</string>
+
+    <!-- Planets -->
+    <string name="planet_sun">Sun</string>
+    <string name="planet_moon">Moon</string>
+    <string name="planet_mars">Mars</string>
+    <string name="planet_mercury">Mercury</string>
+    <string name="planet_jupiter">Jupiter</string>
+    <string name="planet_venus">Venus</string>
+    <string name="planet_saturn">Saturn</string>
+    <string name="planet_rahu">Rahu</string>
+    <string name="planet_ketu">Ketu</string>
+
+    <!-- Planet Characteristics -->
+    <string name="planet_char_sun">Self-Expression</string>
+    <string name="planet_char_moon">Intuition &amp; Nurturing</string>
+    <string name="planet_char_mars">Energy &amp; Initiative</string>
+    <string name="planet_char_mercury">Communication &amp; Learning</string>
+    <string name="planet_char_jupiter">Wisdom &amp; Expansion</string>
+    <string name="planet_char_venus">Harmony &amp; Beauty</string>
+    <string name="planet_char_saturn">Discipline &amp; Growth</string>
+    <string name="planet_char_rahu">Transformation</string>
+    <string name="planet_char_ketu">Spiritual Liberation</string>
+
+    <!-- Dasha Affirmations -->
+    <string name="affirmation_sun">I shine my light confidently and inspire those around me.</string>
+    <string name="affirmation_moon">I trust my intuition and nurture myself with compassion.</string>
+    <string name="affirmation_mars">I channel my energy constructively and act with courage.</string>
+    <string name="affirmation_mercury">I communicate clearly and embrace continuous learning.</string>
+    <string name="affirmation_jupiter">I am open to abundance and share my wisdom generously.</string>
+    <string name="affirmation_venus">I attract beauty and harmony into my life.</string>
+    <string name="affirmation_saturn">I embrace discipline and trust in the timing of my journey.</string>
+    <string name="affirmation_rahu">I embrace change and transform challenges into opportunities.</string>
+    <string name="affirmation_ketu">I release what no longer serves me and embrace spiritual growth.</string>
+
+    <!-- Dasha Weekly Advice -->
+    <string name="weekly_advice_sun">let your light shine. Leadership roles and self-expression bring recognition.</string>
+    <string name="weekly_advice_moon">honor your emotions and intuition. Nurturing activities bring fulfillment.</string>
+    <string name="weekly_advice_mars">channel your energy into productive activities. Exercise and competition are favored.</string>
+    <string name="weekly_advice_mercury">prioritize communication, learning, and intellectual activities. Your mind is sharp.</string>
+    <string name="weekly_advice_jupiter">embrace opportunities for learning and expansion. Your wisdom and optimism attract positive outcomes.</string>
+    <string name="weekly_advice_venus">focus on cultivating beauty, harmony, and meaningful relationships. Artistic pursuits are favored.</string>
+    <string name="weekly_advice_saturn">embrace discipline and patience. Hard work now builds lasting foundations for the future.</string>
+    <string name="weekly_advice_rahu">embrace transformation while staying grounded. Unconventional approaches may succeed.</string>
+    <string name="weekly_advice_ketu">focus on spiritual growth and letting go. Detachment brings peace.</string>
+
+    <!-- Recommendations -->
+    <string name="recommend_career">Capitalize on favorable career energy today.</string>
+    <string name="recommend_love">Nurture your relationships with extra attention.</string>
+    <string name="recommend_health">Make the most of your vibrant health energy.</string>
+    <string name="recommend_finance">Take advantage of positive financial influences.</string>
+    <string name="recommend_family">Spend quality time with family members.</string>
+    <string name="recommend_spirituality">Deepen your spiritual practices.</string>
+
+    <!-- Element Recommendations -->
+    <string name="element_fire_name">Fire</string>
+    <string name="element_earth_name">Earth</string>
+    <string name="element_air_name">Air</string>
+    <string name="element_water_name">Water</string>
+
+    <string name="element_fire_recommend">Take bold action and express yourself confidently.</string>
+    <string name="element_earth_recommend">Focus on practical matters and material progress.</string>
+    <string name="element_air_recommend">Engage in social activities and intellectual pursuits.</string>
+    <string name="element_water_recommend">Trust your intuition and honor your emotions.</string>
+
+    <!-- Element Colors -->
+    <string name="element_fire_colors">Red, Orange, or Gold</string>
+    <string name="element_earth_colors">Green, Brown, or White</string>
+    <string name="element_air_colors">Blue, Light Blue, or Silver</string>
+    <string name="element_water_colors">White, Cream, or Sea Green</string>
+
+    <!-- Planet Directions -->
+    <string name="direction_sun">East</string>
+    <string name="direction_moon">North-West</string>
+    <string name="direction_mars">East</string>
+    <string name="direction_mercury">North</string>
+    <string name="direction_jupiter">North-East</string>
+    <string name="direction_venus">South-East</string>
+    <string name="direction_saturn">West</string>
+    <string name="direction_rahu">South-West</string>
+    <string name="direction_ketu">North-West</string>
+
+    <!-- Planet Gemstones -->
+    <string name="gemstone_sun">Ruby</string>
+    <string name="gemstone_moon">Pearl</string>
+    <string name="gemstone_mars">Red Coral</string>
+    <string name="gemstone_mercury">Emerald</string>
+    <string name="gemstone_jupiter">Yellow Sapphire</string>
+    <string name="gemstone_venus">Diamond or White Sapphire</string>
+    <string name="gemstone_saturn">Blue Sapphire</string>
+    <string name="gemstone_rahu">Hessonite</string>
+    <string name="gemstone_ketu">Cat\'s Eye</string>
+
+    <!-- Hora Times -->
+    <string name="hora_1">6:00 AM - 7:00 AM (Sun Hora)</string>
+    <string name="hora_2">7:00 AM - 8:00 AM (Moon Hora)</string>
+    <string name="hora_3">8:00 AM - 9:00 AM (Mars Hora)</string>
+    <string name="hora_4">9:00 AM - 10:00 AM (Mercury Hora)</string>
+    <string name="hora_5">10:00 AM - 11:00 AM (Jupiter Hora)</string>
+    <string name="hora_6">11:00 AM - 12:00 PM (Venus Hora)</string>
+    <string name="hora_7">5:00 PM - 6:00 PM (Saturn Hora)</string>
+
+    <!-- Cautions -->
+    <string name="caution_saturn">Avoid rushing into decisions. Patience is key.</string>
+    <string name="caution_mars">Control impulsive reactions and avoid conflicts.</string>
+    <string name="caution_rahu">Be wary of deception and unrealistic expectations.</string>
+    <string name="caution_ketu">Don\'t neglect practical responsibilities for escapism.</string>
+
+    <!-- Dasha Recommendations -->
+    <string name="dasha_recommend_sun">Engage in activities that build confidence and leadership skills.</string>
+    <string name="dasha_recommend_moon">Prioritize emotional well-being and nurturing relationships.</string>
+    <string name="dasha_recommend_mars">Channel your energy into physical activities and competitive pursuits.</string>
+    <string name="dasha_recommend_mercury">Focus on learning, communication, and intellectual growth.</string>
+    <string name="dasha_recommend_jupiter">Expand your horizons through education, travel, or spiritual practices.</string>
+    <string name="dasha_recommend_venus">Cultivate beauty, art, and harmonious relationships.</string>
+    <string name="dasha_recommend_saturn">Embrace discipline, hard work, and long-term planning.</string>
+    <string name="dasha_recommend_rahu">Explore unconventional paths while staying grounded.</string>
+    <string name="dasha_recommend_ketu">Practice detachment and focus on spiritual development.</string>
+
+    <!-- Weekly Predictions (Career) -->
+    <string name="weekly_career_excellent">An exceptional week for career advancement. Your {dashaLord} period supports professional recognition. Key meetings and projects will progress smoothly.</string>
+    <string name="weekly_career_steady">Steady professional progress this week. Focus on completing pending tasks and building relationships with colleagues.</string>
+    <string name="weekly_career_challenging">Career matters may require extra effort this week. Stay patient and avoid major changes.</string>
+
+    <!-- Weekly Predictions (Love) -->
+    <string name="weekly_love_excellent">Romantic energy flows abundantly this week. Single or committed, relationships deepen. Express your feelings openly.</string>
+    <string name="weekly_love_steady">Balanced relationship energy. Good for maintaining harmony and working through minor issues together.</string>
+    <string name="weekly_love_challenging">Relationships need nurturing this week. Practice patience and understanding with your partner.</string>
+
+    <!-- Weekly Predictions (Health) -->
+    <string name="weekly_health_excellent">Excellent vitality this week! Great time to start new fitness routines or health practices. Energy levels are high.</string>
+    <string name="weekly_health_steady">Stable health week. Maintain your regular wellness routines and stay consistent with rest.</string>
+    <string name="weekly_health_challenging">Health vigilance needed this week. Prioritize rest, nutrition, and stress management.</string>
+
+    <!-- Weekly Predictions (Finance) -->
+    <string name="weekly_finance_excellent">Prosperous week for finances. Opportunities for gains through investments or new income sources. Review financial plans.</string>
+    <string name="weekly_finance_steady">Stable financial week. Good for routine money management and planned purchases.</string>
+    <string name="weekly_finance_challenging">Financial caution advised this week. Avoid impulsive spending and postpone major investments.</string>
+
+    <!-- Weekly Predictions (Family) -->
+    <string name="weekly_family_excellent">Harmonious family week ahead. Celebrations, gatherings, and quality time strengthen bonds. Support flows both ways.</string>
+    <string name="weekly_family_steady">Good week for family matters. Focus on communication and shared activities.</string>
+    <string name="weekly_family_challenging">Family dynamics may be challenging this week. Choose understanding over confrontation.</string>
+
+    <!-- Weekly Predictions (Spirituality) -->
+    <string name="weekly_spirituality_excellent">Profound spiritual week. Meditation, reflection, and inner guidance are heightened. Seek meaningful experiences.</string>
+    <string name="weekly_spirituality_steady">Steady spiritual energy. Maintain your practices and stay connected to your inner self.</string>
+    <string name="weekly_spirituality_challenging">Spiritual connection may feel elusive. Simple practices and patience will help restore balance.</string>
+
+    <!-- Energy Descriptions -->
+    <string name="energy_very_low">Very Low - Challenging energies</string>
+    <string name="energy_low">Low - Need for patience</string>
+    <string name="energy_moderate_low">Moderate Low - Caution advised</string>
+    <string name="energy_moderate">Moderate - Balanced state</string>
+    <string name="energy_moderate_high">Moderate High - Good progress</string>
+    <string name="energy_high">High - Favorable for action</string>
+    <string name="energy_very_high">Very High - Excellent energy</string>
+
+    <!-- Settings -->
+    <string name="setting_profile">Profile</string>
+    <string name="setting_edit_profile">Edit Profile</string>
+    <string name="setting_export_pdf">Export as PDF</string>
+    <string name="setting_export_image">Export as Image</string>
+    <string name="setting_copy_clipboard">Copy to Clipboard</string>
+    <string name="setting_export_json">Export as JSON</string>
+    <string name="setting_theme">Theme</string>
+    <string name="setting_language">Language</string>
+    <string name="setting_language_english">English</string>
+    <string name="setting_language_nepali">नेपाली</string>
+    <string name="setting_house_system">House System</string>
+    <string name="setting_ayanamsa">Ayanamsa</string>
+    <string name="setting_about">About</string>
+    <string name="setting_version">Version</string>
+    <string name="setting_theme_light">Light</string>
+    <string name="setting_theme_dark">Dark</string>
+    <string name="setting_theme_system">System</string>
+
+    <!-- Chart Input -->
+    <string name="chart_input_name">Name</string>
+    <string name="chart_input_date">Date of Birth</string>
+    <string name="chart_input_time">Time of Birth</string>
+    <string name="chart_input_location">Location</string>
+    <string name="chart_input_timezone">Timezone</string>
+    <string name="chart_input_create">Create Chart</string>
+    <string name="chart_input_cancel">Cancel</string>
+    <string name="chart_input_search_location">Search Location</string>
+
+    <!-- Chart Screens -->
+    <string name="chart_birth_chart">Birth Chart</string>
+    <string name="chart_planets">Planets</string>
+    <string name="chart_yogas">Yogas</string>
+    <string name="chart_dashas">Dashas</string>
+    <string name="chart_transits">Transits</string>
+    <string name="chart_panchanga">Panchanga</string>
+    <string name="chart_ashtakavarga">Ashtakavarga</string>
+    <string name="chart_matchmaking">Matchmaking</string>
+    <string name="chart_muhurta">Muhurta</string>
+    <string name="chart_remedies">Remedies</string>
+    <string name="chart_varshaphala">Varshaphala</string>
+    <string name="chart_prashna">Prashna</string>
+
+    <!-- Additional Strings -->
+    <string name="no_data">No data available</string>
+    <string name="loading">Loading...</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="confirm">Confirm</string>
+    <string name="back">Back</string>
 </resources>

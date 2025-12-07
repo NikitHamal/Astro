@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Locales configuration for AstroStorm app
+
+    This file declares all supported languages in the app.
+    Android 13+ uses this to enable per-app language selection.
+
+    Supported languages:
+    - English (en) - Default language
+    - Nepali (ne) - Localized for Nepali-speaking users
+-->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="ne" />
+</locale-config>

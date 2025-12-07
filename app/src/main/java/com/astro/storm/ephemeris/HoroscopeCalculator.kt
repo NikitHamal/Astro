@@ -3,6 +3,7 @@ package com.astro.storm.ephemeris
 import android.content.Context
 import android.util.Log
 import com.astro.storm.data.model.*
+import com.astro.storm.data.preferences.LocalizationManager
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -11,6 +12,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.roundToInt
 
 class HoroscopeCalculator(private val context: Context) : AutoCloseable {
+
+    private val localizationManager: LocalizationManager by lazy {
+        LocalizationManager.getInstance(context)
+    }
 
     private val ephemerisEngine: SwissEphemerisEngine by lazy {
         SwissEphemerisEngine.create(context)
@@ -141,6 +146,109 @@ class HoroscopeCalculator(private val context: Context) : AutoCloseable {
     private fun ensureNotClosed() {
         if (isClosed.get()) {
             throw IllegalStateException("HoroscopeCalculator has been closed")
+        }
+    }
+
+    /**
+     * Get localized theme description by theme name
+     * Falls back to hardcoded English if localization key not found
+     */
+    private fun getLocalizedThemeDescription(themeName: String): String {
+        val resourceKey = THEME_TO_RESOURCE_KEY[themeName] ?: return THEME_DESCRIPTIONS[themeName] ?: ""
+        val resId = context.resources.getIdentifier(resourceKey, "string", context.packageName)
+        return if (resId != 0) {
+            context.getString(resId)
+        } else {
+            THEME_DESCRIPTIONS[themeName] ?: ""
+        }
+    }
+
+    /**
+     * Get localized life area prediction by area and rating
+     * Falls back to hardcoded English if resource not found
+     */
+    private fun getLocalizedLifeAreaPrediction(area: LifeArea, rating: Int): String {
+        val resourceKey = when (area) {
+            HoroscopeCalculator.LifeArea.CAREER -> "career_$rating"
+            HoroscopeCalculator.LifeArea.LOVE -> "love_$rating"
+            HoroscopeCalculator.LifeArea.HEALTH -> "health_$rating"
+            HoroscopeCalculator.LifeArea.FINANCE -> "finance_$rating"
+            HoroscopeCalculator.LifeArea.FAMILY -> "family_$rating"
+            HoroscopeCalculator.LifeArea.SPIRITUALITY -> "spirituality_$rating"
+        }
+        val resId = context.resources.getIdentifier(resourceKey, "string", context.packageName)
+        return if (resId != 0) {
+            context.getString(resId)
+        } else {
+            LIFE_AREA_PREDICTIONS[area]?.get(rating) ?: ""
+        }
+    }
+
+    /**
+     * Get localized life area advice by area and intensity
+     * Falls back to hardcoded English if resource not found
+     */
+    private fun getLocalizedLifeAreaAdvice(area: LifeArea, intensity: String): String {
+        val resourceKey = when (area) {
+            HoroscopeCalculator.LifeArea.CAREER -> "career_advice_$intensity"
+            HoroscopeCalculator.LifeArea.LOVE -> "love_advice_$intensity"
+            HoroscopeCalculator.LifeArea.HEALTH -> "health_advice_$intensity"
+            HoroscopeCalculator.LifeArea.FINANCE -> "finance_advice_$intensity"
+            HoroscopeCalculator.LifeArea.FAMILY -> "family_advice_$intensity"
+            HoroscopeCalculator.LifeArea.SPIRITUALITY -> "spirituality_advice_$intensity"
+        }
+        val resId = context.resources.getIdentifier(resourceKey, "string", context.packageName)
+        return if (resId != 0) {
+            context.getString(resId)
+        } else {
+            LIFE_AREA_ADVICES[area]?.get(intensity) ?: ""
+        }
+    }
+
+    /**
+     * Get localized affirmation for a planet during its dasha
+     * Falls back to hardcoded English if resource not found
+     */
+    private fun getLocalizedAffirmation(planet: Planet?): String {
+        if (planet == null) return DASHA_AFFIRMATIONS[Planet.JUPITER] ?: ""
+
+        val resourceKey = when (planet) {
+            Planet.SUN -> "affirmation_sun"
+            Planet.MOON -> "affirmation_moon"
+            Planet.MARS -> "affirmation_mars"
+            Planet.MERCURY -> "affirmation_mercury"
+            Planet.JUPITER -> "affirmation_jupiter"
+            Planet.VENUS -> "affirmation_venus"
+            Planet.SATURN -> "affirmation_saturn"
+            Planet.RAHU -> "affirmation_rahu"
+            Planet.KETU -> "affirmation_ketu"
+            else -> return DASHA_AFFIRMATIONS[planet] ?: ""
+        }
+
+        val resId = context.resources.getIdentifier(resourceKey, "string", context.packageName)
+        return if (resId != 0) {
+            context.getString(resId)
+        } else {
+            DASHA_AFFIRMATIONS[planet] ?: ""
+        }
+    }
+
+    /**
+     * Get localized lucky element (color, gemstone, direction) for a planet
+     */
+    private fun getLocalizedLuckyColor(element: String): String {
+        val resourceKey = when (element) {
+            "Fire" -> "element_fire_colors"
+            "Earth" -> "element_earth_colors"
+            "Air" -> "element_air_colors"
+            "Water" -> "element_water_colors"
+            else -> return ELEMENT_COLORS[element] ?: ""
+        }
+        val resId = context.resources.getIdentifier(resourceKey, "string", context.packageName)
+        return if (resId != 0) {
+            context.getString(resId)
+        } else {
+            ELEMENT_COLORS[element] ?: ""
         }
     }
 
@@ -1093,6 +1201,54 @@ class HoroscopeCalculator(private val context: Context) : AutoCloseable {
             Planet.MOON to "Intuition & Nurturing",
             Planet.RAHU to "Transformation",
             Planet.KETU to "Spiritual Liberation"
+        )
+
+        /**
+         * Localization helper - Maps hardcoded theme names to resource string keys
+         * This allows the app to retrieve localized theme descriptions and names
+         */
+        private val THEME_TO_RESOURCE_KEY = mapOf(
+            "Dynamic Action" to "theme_dynamic_action",
+            "Practical Progress" to "theme_practical_progress",
+            "Social Connections" to "theme_social_connections",
+            "Emotional Insight" to "theme_emotional_insight",
+            "Expansion & Wisdom" to "theme_expansion_wisdom",
+            "Harmony & Beauty" to "theme_harmony_beauty",
+            "Discipline & Growth" to "theme_discipline_growth",
+            "Communication & Learning" to "theme_communication_learning",
+            "Energy & Initiative" to "theme_energy_initiative",
+            "Self-Expression" to "theme_self_expression",
+            "Intuition & Nurturing" to "theme_intuition_nurturing",
+            "Transformation" to "theme_transformation",
+            "Spiritual Liberation" to "theme_spiritual_liberation",
+            "Balance & Equilibrium" to "theme_balance_equilibrium"
+        )
+
+        /**
+         * Localization helper - Maps planet enums to resource string keys for planet names and characteristics
+         */
+        private val PLANET_TO_NAME_KEY = mapOf(
+            Planet.SUN to "planet_sun",
+            Planet.MOON to "planet_moon",
+            Planet.MARS to "planet_mars",
+            Planet.MERCURY to "planet_mercury",
+            Planet.JUPITER to "planet_jupiter",
+            Planet.VENUS to "planet_venus",
+            Planet.SATURN to "planet_saturn",
+            Planet.RAHU to "planet_rahu",
+            Planet.KETU to "planet_ketu"
+        )
+
+        /**
+         * Localization helper - Maps life areas to resource string keys
+         */
+        private val LIFE_AREA_TO_RESOURCE_KEY = mapOf(
+            LifeArea.CAREER to "life_area_career",
+            LifeArea.LOVE to "life_area_love",
+            LifeArea.HEALTH to "life_area_health",
+            LifeArea.FINANCE to "life_area_finance",
+            LifeArea.FAMILY to "life_area_family",
+            LifeArea.SPIRITUALITY to "life_area_spirituality"
         )
 
         private val THEME_DESCRIPTIONS = mapOf(

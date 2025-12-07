@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.model.HouseSystem
 import com.astro.storm.data.model.VedicChart
+import com.astro.storm.data.preferences.Language
+import com.astro.storm.data.preferences.LocalizationManager
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.theme.AppTheme
 
@@ -145,6 +147,10 @@ fun SettingsTab(
 
         item {
             AyanamsaSetting()
+        }
+
+        item {
+            LanguageSetting()
         }
 
         // About Section
@@ -631,6 +637,108 @@ private fun AyanamsaSetting() {
                             text = ayanamsa,
                             style = MaterialTheme.typography.bodyMedium,
                             color = if (ayanamsa == selectedAyanamsa) AppTheme.TextPrimary else AppTheme.TextSecondary
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LanguageSetting() {
+    val context = LocalContext.current
+    val localizationManager = LocalizationManager.getInstance(context)
+    val currentLanguage = localizationManager.getLanguage()
+
+    var expanded by remember { mutableStateOf(false) }
+    var selectedLanguage by remember { mutableStateOf(currentLanguage) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(AppTheme.ChipBackground),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Language,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Language",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = selectedLanguage.displayName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.AccentPrimary
+                    )
+                }
+
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted
+                )
+            }
+
+            if (expanded) {
+                HorizontalDivider(color = AppTheme.DividerColor)
+
+                Language.entries.forEach { language ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                selectedLanguage = language
+                                localizationManager.setLanguage(language)
+                                expanded = false
+                            }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = language == selectedLanguage,
+                            onClick = {
+                                selectedLanguage = language
+                                localizationManager.setLanguage(language)
+                                expanded = false
+                            },
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = AppTheme.AccentPrimary,
+                                unselectedColor = AppTheme.TextMuted
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = language.displayName,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = if (language == selectedLanguage) AppTheme.TextPrimary else AppTheme.TextSecondary
                         )
                     }
                 }

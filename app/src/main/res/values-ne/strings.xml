@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">एस्ट्रोस्टर्म</string>
+
+    <!-- Navigation Tabs -->
+    <string name="tab_home">होम</string>
+    <string name="tab_insights">अन्तर्दृष्टि</string>
+    <string name="tab_settings">सेटिङ्गहरु</string>
+
+    <!-- Home Tab -->
+    <string name="welcome_message">एस्ट्रोस्टर्ममा स्वागत छ</string>
+    <string name="no_chart">कुनै जन्म चार्ट छनोट गरिएको छैन</string>
+    <string name="create_new_chart">नयाँ चार्ट बनाउन</string>
+
+    <!-- Insights Tab - Main Headers -->
+    <string name="today">आज</string>
+    <string name="tomorrow">भोली</string>
+    <string name="weekly">साप्ताहिक</string>
+    <string name="overall_energy">कुल ऊर्जा</string>
+    <string name="life_areas">जीवन क्षेत्रहरु</string>
+    <string name="lucky_elements">भाग्यशाली तत्वहरु</string>
+    <string name="recommendations">सिफारिसहरु</string>
+    <string name="cautions">सावधानीहरु</string>
+    <string name="affirmation">पुष्टि करण</string>
+
+    <!-- Insights Tab - Time Selectors -->
+    <string name="select_date">मिति छनोट गर्नुहोस्</string>
+    <string name="analysis_type">विश्लेषण प्रकार</string>
+
+    <!-- Insights Tab - Detail Sections -->
+    <string name="active_dasha">सक्रिय दशा</string>
+    <string name="moon_sign">चन्द्र राशि</string>
+    <string name="moon_nakshatra">चन्द्र नक्षत्र</string>
+    <string name="planetary_influences">ग्रहीय प्रभाव</string>
+    <string name="lucky_numbers">भाग्यशाली संख्याहरु</string>
+    <string name="lucky_colors">भाग्यशाली रङ्गहरु</string>
+    <string name="lucky_directions">भाग्यशाली दिशाहरु</string>
+    <string name="lucky_gemstones">भाग्यशाली रत्नहरु</string>
+    <string name="auspicious_times">शुभ समय</string>
+
+    <!-- Life Areas -->
+    <string name="life_area_career">क्यारियर</string>
+    <string name="life_area_love">प्रेम र सम्बन्ध</string>
+    <string name="life_area_health">स्वास्थ्य र जीवन शक्ति</string>
+    <string name="life_area_finance">वित्त र धन</string>
+    <string name="life_area_family">परिवार र घर</string>
+    <string name="life_area_spirituality">आध्यात्मिक वृद्धि</string>
+
+    <!-- Life Area Predictions (Career) -->
+    <string name="career_5">पेशागत उन्नतिको लागि उत्कृष्ट दिन। तपाइँको {dashaLord} अवधि काम मामिलामा मान्यता र सफलता ल्याउछ।</string>
+    <string name="career_4">क्यारियर गतिविधिको लागि राम्रो ऊर्जा। महत्वपूर्ण परियोजना र नेटवर्किङमा ध्यान दिनुहोस्।</string>
+    <string name="career_3">पेशागत मामिलामा स्थिर प्रगति। आपनो प्रयासमा निरन्तरता राख्नुहोस्।</string>
+    <string name="career_2">कार्यस्थलमा केही चुनौती आइ सक्छ। धैर्य र कूटनीतिक रहनुहोस्।</string>
+    <string name="career_1">क्यारियर मामिलामा अतिरिक्त ध्यान चाहिन्छ। आज ठुलो निर्णय गर्न बेवास्ता गर्नुहोस्।</string>
+
+    <!-- Life Area Predictions (Love) -->
+    <string name="love_5">रोमान्टिक ऊर्जा चरममा छ। गहिरो सम्बन्ध र अर्थपूर्ण कुराकानी प्रतीक्षा गरिरहेको छ।</string>
+    <string name="love_4">सम्बन्धको लागि अनुकूल समय। आपनो भावना खुलेआम व्यक्त गर्नुहोस्।</string>
+    <string name="love_3">साझेदारीमा सन्तुलित ऊर्जा। समझ र समझौतामा ध्यान दिनुहोस्।</string>
+    <string name="love_2">सानो गलतफहमी सम्भव छ। प्रिय जनहरु सँग धैर्य अभ्यास गर्नुहोस्।</string>
+    <string name="love_1">सम्बन्धलाई पोषण चाहिन्छ। द्वन्द्व बेवास्ता गर्नुहोस् र अतिरिक्त विचारशील हुनुहोस्।</string>
+
+    <!-- Life Area Predictions (Health) -->
+    <string name="health_5">जीवन शक्ति मजबूत छ। शारीरिक गतिविधि र सुस्थता दिनचर्याको लागि उत्कृष्ट दिन।</string>
+    <string name="health_4">राम्रो स्वास्थ्य ऊर्जा। आपनो स्वास्थ्य अभ्यास जारी राख्नुहोस्।</string>
+    <string name="health_3">स्थिर स्वास्थ्य। विश्राम र सन्तुलित पोषणमा ध्यान दिनुहोस्।</string>
+    <string name="health_2">ऊर्जा परिवर्तनशील हुन सक्छ। पर्याप्त विश्रामलाई प्राथमिकता दिनुहोस्।</string>
+    <string name="health_1">स्वास्थ्यलाई ध्यान चाहिन्छ। हल्का रहनुहोस् र अत्यधिक परिश्रम बेवास्ता गर्नुहोस्।</string>
+
+    <!-- Life Area Predictions (Finance) -->
+    <string name="finance_5">आर्थिक मामिलाको लागि उत्कृष्ट दिन। लाभको अवसर मजबूत छ।</string>
+    <string name="finance_4">सकारात्मक आर्थिक ऊर्जा। योजनागत लगानीको लागि राम्रो।</string>
+    <string name="finance_3">स्थिर आर्थिक अवधि। आपनो बजेटमा चिपक्नुहोस्।</string>
+    <string name="finance_2">खर्चमा सावधान हुनुहोस्। आवेगपूर्ण खरीद बेवास्ता गर्नुहोस्।</string>
+    <string name="finance_1">आर्थिक सावधानी सल्लाह दिइयो। ठुलो आर्थिक निर्णय स्थगन गर्नुहोस्।</string>
+
+    <!-- Life Area Predictions (Family) -->
+    <string name="family_5">सामंजस्यपूर्ण पारिवारिक ऊर्जा। समारोह र आनन्दद जमायत अनुकूल छ।</string>
+    <string name="family_4">पारिवारिक बन्धनको लागि राम्रो समय। समर्थन दुवै तरफबाट बहिन्छ।</string>
+    <string name="family_3">स्थिर घरेलु वातावरण। दिनचर्या पारिवारिक मामिलामा ध्यान दिनुहोस्।</string>
+    <string name="family_2">सानो पारिवारिक तनाव सम्भव छ। समझ अभ्यास गर्नुहोस्।</string>
+    <string name="family_1">पारिवारिक गतिविधिलाई ध्यान चाहिन्छ। शान्ति र सामंजस्यलाई प्राथमिकता दिनुहोस्।</string>
+
+    <!-- Life Area Predictions (Spirituality) -->
+    <string name="spirituality_5">गहिरो आध्यात्मिक अन्तर्दृष्टि उपलब्ध छ। ध्यान र चिन्तन अत्यन्त लाभदायक छ।</string>
+    <string name="spirituality_4">आध्यात्मिक अभ्यासको लागि राम्रो दिन। आन्तरिक निर्देशन मजबूत छ।</string>
+    <string name="spirituality_3">स्थिर आध्यात्मिक ऊर्जा। आपनो नियमित अभ्यास जारी राख्नुहोस्।</string>
+    <string name="spirituality_2">आध्यात्मिक जडान दूरको जस्तो लाग्न सक्छ। विश्वास राख्नुहोस्।</string>
+    <string name="spirituality_1">आन्तरिक अशान्ति सम्भव छ। साधारण अभ्यास मार्फत आपनलाई आधार गर्नुहोस्।</string>
+
+    <!-- Life Area Advice (Career) -->
+    <string name="career_advice_high">महत्वपूर्ण परियोजनामा पहल गर्नुहोस्।</string>
+    <string name="career_advice_medium">आपनो नियमित जिम्मेवारीमा केन्द्रित रहनुहोस्।</string>
+    <string name="career_advice_low">अगाडि योजना गर्नुहोस् र अवसरको लागि तयार हुनुहोस्।</string>
+
+    <!-- Life Area Advice (Love) -->
+    <string name="love_advice_high">आपनो भावना प्रामाणिकतासँग व्यक्त गर्नुहोस्।</string>
+    <string name="love_advice_medium">बोलेको भन्दा बढी सुन्नुहोस्।</string>
+    <string name="love_advice_low">स्थान दिनुहोस् र धैर्य अभ्यास गर्नुहोस्।</string>
+
+    <!-- Life Area Advice (Health) -->
+    <string name="health_advice_high">आपनले रमाइलो गरिने शारीरिक गतिविधिमा संलग्न हुनुहोस्।</string>
+    <string name="health_advice_medium">सन्तुलित खाना र हाइड्रेशन कायम राख्नुहोस्।</string>
+    <string name="health_advice_low">विश्राम आज तपाइँको सबै भन्दा राम्रो औषधि हो।</string>
+
+    <!-- Life Area Advice (Finance) -->
+    <string name="finance_advice_high">लगानीको अवसर समीक्षा गर्नुहोस्।</string>
+    <string name="finance_advice_medium">योजनागत खर्चमा चिप्नुहोस्।</string>
+    <string name="finance_advice_low">आज खर्च गरेको भन्दा बचत गर्नुहोस्।</string>
+
+    <!-- Life Area Advice (Family) -->
+    <string name="family_advice_high">परिवारसँग गतिविधि योजना गर्नुहोस्।</string>
+    <string name="family_advice_medium">परिवार सदस्यहरुको लागि उपस्थित हुनुहोस्।</string>
+    <string name="family_advice_low">सही हुने भन्दा सामंजस्य छनोट गर्नुहोस्।</string>
+
+    <!-- Life Area Advice (Spirituality) -->
+    <string name="spirituality_advice_high">ध्यानमा अतिरिक्त समय समर्पण गर्नुहोस्।</string>
+    <string name="spirituality_advice_medium">शान्ति को क्षण खोज्नुहोस्।</string>
+    <string name="spirituality_advice_low">सरल प्रार्थना आरामदायक ल्याउछ।</string>
+
+    <!-- Theme Descriptions -->
+    <string name="theme_dynamic_action">तपाइँको ऊर्जा उच्च छ र अग्नि तत्वसँग संरेखित छ। यो पहल लिने, नयाँ परियोजना सुरु गर्ने र आपनलाई आत्मविश्वासको साथ जोड गर्ने को लागि उत्कृष्ट दिन हो। यो जीवन्त ऊर्जा उत्पादनशील प्रयासमा लगाउनुहोस्।</string>
+    <string name="theme_practical_progress">भुमि तत्वको ऊर्जा आज पद्धतिगत प्रगतिलाई समर्थन गर्छ। व्यावहारिक कार्य, आर्थिक योजना र स्थिर आधार निर्माणमा ध्यान दिनुहोस्। तपाइँको प्रयास मूर्त परिणाम दिनेछ।</string>
+    <string name="theme_social_connections">वायु तत्वको ऊर्जा संचार र सामाजिक अन्तरक्रिया बढाउछ। नेटवर्किङ, वार्ता र बौद्धिक प्रयास अनुकूल छ। आपनो विचार व्यक्त गर्नुहोस् र समान विचार भएका मानिसहरु सँग जुर्नुहोस्।</string>
+    <string name="theme_emotional_insight">जल तत्वको ऊर्जा तपाइँको अन्तर्दृष्टि र आवेगात्मक जागरूकता गहिरो गर्छ। आपनो भावनामा विश्वास गर्नुहोस् र सूक्ष्म संकेतहरु ध्यान दिनुहोस्। यो उपचार र आत्म-प्रतिबिम्बको लागि शक्तिशाली दिन हो।</string>
+    <string name="theme_expansion_wisdom">बृहस्पतिको दयालु प्रभाव वृद्धि, शिक्षा र भाग्यको अवसर ल्याउछ। नयाँ सम्भावनाका लागि खुला हुनुहोस् र आपनो ज्ञान उदारतासँग साझा गर्नुहोस्।</string>
+    <string name="theme_harmony_beauty">शुक्र तपाइँलाई सुन्दरता, कला र सम्बन्धको लागि प्रशंसा दिएको छ। आनन्द गतिविधिमा लिप्त हुनुहोस् र प्रिय जनहरु सँग आपनो सम्बन्ध पोषण गर्नुहोस्।</string>
+    <string name="theme_discipline_growth">शनिको प्रभाव धैर्य, कठोर परिश्रम र जिम्मेवारीको आह्वान गर्छ। चुनौतीलाई वृद्धिको अवसरको रूपमा ग्रहण गर्नुहोस् र आपनो दीर्घकालिन लक्ष्यको लागि प्रतिबद्ध रहनुहोस्।</string>
+    <string name="theme_communication_learning">बुधले आपनो मानसिक चपलता र संचार कौशल बढाउछ। यह शिक्षण, शिक्षण, लेखन र सँबै सूचना आदान-प्रदानको लागि आदर्श छ।</string>
+    <string name="theme_energy_initiative">मङ्गल साहस र ड्राइभ प्रदान गर्छ। साहसिक कार्य गर्नुहोस्, सততासँग प्रतिस्पर्धा गर्नुहोस्, र आक्रामक ऊर्जालाई रचनात्मक गतिविधिमा लगाउनुहोस्।</string>
+    <string name="theme_self_expression">सूर्य आपनो आत्म-अभिव्यक्ति र नेतृत्वको मार्ग प्रकाशित गर्छ। आपनो प्रकाश आत्मविश्वासको साथ चमकाउनुहोस् र ऐसा गतिविधि अनुसरण गर्नुहोस् जो तपाइँलाई स्वीकृति ल्याउछ।</string>
+    <string name="theme_intuition_nurturing">चन्द्रमा तपाइँको संवेदनशीलता र देखभाल गर्ने प्रकृति बढाउछ। आपनलाई र अरुलाई पोषण गर्नुहोस्, र महत्वपूर्ण निर्णयमा आपनो प्रवृत्तिमा विश्वास गर्नुहोस्।</string>
+    <string name="theme_transformation">राहुको प्रभाव अप्रचलित अवसर र परिवर्तनको इच्छा ल्याउछ। नवोन्मेषण आलिङ्गन गर्नुहोस् तर आपनो मूल्यमा जोडिरहनुहोस्।</string>
+    <string name="theme_spiritual_liberation">केतुको ऊर्जा अलगाव र आध्यात्मिक अन्तर्दृष्टि समर्थन गर्छ। जो अब तपाइँलाई सेवा गरेन तपलाई छाड्नुहोस् र आन्तरिक वृद्धिमा ध्यान दिनुहोस्।</string>
+    <string name="theme_balance_equilibrium">सन्तुलनको दिन जहाँ सबै ऊर्जा सन्तुलनमा छ। स्थिरता कायम राख्नुहोस् र जीवनको सबै क्षेत्रमा मापित प्रगति गर्नुहोस्।</string>
+
+    <!-- Planets -->
+    <string name="planet_sun">सूर्य</string>
+    <string name="planet_moon">चन्द्रमा</string>
+    <string name="planet_mars">मङ्गल</string>
+    <string name="planet_mercury">बुध</string>
+    <string name="planet_jupiter">बृहस्पति</string>
+    <string name="planet_venus">शुक्र</string>
+    <string name="planet_saturn">शनि</string>
+    <string name="planet_rahu">राहु</string>
+    <string name="planet_ketu">केतु</string>
+
+    <!-- Planet Characteristics -->
+    <string name="planet_char_sun">आत्म-अभिव्यक्ति</string>
+    <string name="planet_char_moon">अन्तर्दृष्टि र पोषण</string>
+    <string name="planet_char_mars">ऊर्जा र पहल</string>
+    <string name="planet_char_mercury">संचार र शिक्षा</string>
+    <string name="planet_char_jupiter">ज्ञान र विस्तार</string>
+    <string name="planet_char_venus">सामंजस्य र सुन्दरता</string>
+    <string name="planet_char_saturn">अनुशासन र वृद्धि</string>
+    <string name="planet_char_rahu">रूपान्तरण</string>
+    <string name="planet_char_ketu">आध्यात्मिक मुक्ति</string>
+
+    <!-- Dasha Affirmations -->
+    <string name="affirmation_sun">मै आपनो प्रकाश आत्मविश्वासको साथ चमकाउछु र अरुलाई प्रेरित गर्छु।</string>
+    <string name="affirmation_moon">मै आपनो अन्तर्दृष्टिमा विश्वास गर्छु र आपनलाई करुणासँग पोषण गर्छु।</string>
+    <string name="affirmation_mars">मै आपनो ऊर्जा रचनात्मकतासँग लगाउछु र साहसको साथ कार्य गर्छु।</string>
+    <string name="affirmation_mercury">मै स्पष्टतासँग संचार गर्छु र निरन्तर शिक्षा आलिङ्गन गर्छु।</string>
+    <string name="affirmation_jupiter">मै प्रचुरतामा खुला छु र आपनो ज्ञान उदारतासँग साझा गर्छु।</string>
+    <string name="affirmation_venus">मै आपनो जीवनमा सुन्दरता र सामंजस्य आकर्षण गर्छु।</string>
+    <string name="affirmation_saturn">मै अनुशासन आलिङ्गन गर्छु र आपनो यात्राको समय मा विश्वास गर्छु।</string>
+    <string name="affirmation_rahu">मै परिवर्तन आलिङ्गन गर्छु र चुनौतीहरु अवसरमा रूपान्तरित गर्छु।</string>
+    <string name="affirmation_ketu">मै छाड गर्छु जो अब मलाई सेवा गरेन र आध्यात्मिक वृद्धि आलिङ्गन गर्छु।</string>
+
+    <!-- Dasha Weekly Advice -->
+    <string name="weekly_advice_sun">आपनो प्रकाश चमकाउनुहोस्। नेतृत्व भूमिका र आत्म-अभिव्यक्ति स्वीकृति ल्याउछ।</string>
+    <string name="weekly_advice_moon">आपनो भावना र अन्तर्दृष्टि सम्मान गर्नुहोस्। पोषण गतिविधि पूर्ति ल्याउछ।</string>
+    <string name="weekly_advice_mars">आपनो ऊर्जा उत्पादनशील गतिविधिमा लगाउनुहोस्। व्यायाम र प्रतिस्पर्धा अनुकूल छ।</string>
+    <string name="weekly_advice_mercury">संचार, शिक्षा र बौद्धिक गतिविधिलाई प्राथमिकता दिनुहोस्। आपनो दिमाग तीक्ष्ण छ।</string>
+    <string name="weekly_advice_jupiter">शिक्षा र विस्तारको अवसर आलिङ्गन गर्नुहोस्। आपनो ज्ञान र आशावादिता सकारात्मक परिणाम आकर्षण गर्छ।</string>
+    <string name="weekly_advice_venus">सुन्दरता, सामंजस्य र अर्थपूर्ण सम्बन्ध को विकास मा केन्द्रित गर्नुहोस्। कला पूर्ति अनुकूल छ।</string>
+    <string name="weekly_advice_saturn">अनुशासन र धैर्य आलिङ्गन गर्नुहोस्। कठोर परिश्रम अब भविष्यको लागि स्थिर आधार निर्माण गर्छ।</string>
+    <string name="weekly_advice_rahu">जोडिए रहनु को समय परिवर्तन आलिङ्गन गर्नुहोस्। अप्रचलित दृष्टिकोण सफल हुन सक्छ।</string>
+    <string name="weekly_advice_ketu">आध्यात्मिक वृद्धि र छाड गर्न मा केन्द्रित गर्नुहोस्। अलगाव शान्ति ल्याउछ।</string>
+
+    <!-- Recommendations -->
+    <string name="recommend_career">आज क्यारियर ऊर्जामा पूँजी गर्नुहोस्।</string>
+    <string name="recommend_love">अतिरिक्त ध्यान सँग आपनो सम्बन्ध पोषण गर्नुहोस्।</string>
+    <string name="recommend_health">आपनो जीवन्त स्वास्थ्य ऊर्जा अधिकतम गर्नुहोस्।</string>
+    <string name="recommend_finance">सकारात्मक आर्थिक प्रभाव लाभ गर्नुहोस्।</string>
+    <string name="recommend_family">परिवार सदस्यहरु सँग गुणवत्ता समय बिताउनुहोस्।</string>
+    <string name="recommend_spirituality">आपनो आध्यात्मिक अभ्यास गहिरो गर्नुहोस्।</string>
+
+    <!-- Element Recommendations -->
+    <string name="element_fire_name">अग्नि</string>
+    <string name="element_earth_name">भुमि</string>
+    <string name="element_air_name">वायु</string>
+    <string name="element_water_name">जल</string>
+
+    <string name="element_fire_recommend">साहसिक कार्य गर्नुहोस् र आपनलाई आत्मविश्वासको साथ व्यक्त गर्नुहोस्।</string>
+    <string name="element_earth_recommend">व्यावहारिक मामिला र भौतिक प्रगतिमा केन्द्रित गर्नुहोस्।</string>
+    <string name="element_air_recommend">सामाजिक गतिविधि र बौद्धिक प्रयासमा संलग्न हुनुहोस्।</string>
+    <string name="element_water_recommend">आपनो अन्तर्दृष्टिमा विश्वास गर्नुहोस् र आपनो भावना सम्मान गर्नुहोस्।</string>
+
+    <!-- Element Colors -->
+    <string name="element_fire_colors">लाल, नारङ्गी, वा सुनको</string>
+    <string name="element_earth_colors">हरियो, भुरो, वा सेतो</string>
+    <string name="element_air_colors">नीलो, हल्को नीलो, वा चाँदी</string>
+    <string name="element_water_colors">सेतो, क्रीम, वा समुद्र हरियो</string>
+
+    <!-- Planet Directions -->
+    <string name="direction_sun">पूर्व</string>
+    <string name="direction_moon">उत्तर-पश्चिम</string>
+    <string name="direction_mars">पूर्व</string>
+    <string name="direction_mercury">उत्तर</string>
+    <string name="direction_jupiter">उत्तर-पूर्व</string>
+    <string name="direction_venus">दक्षिण-पूर्व</string>
+    <string name="direction_saturn">पश्चिम</string>
+    <string name="direction_rahu">दक्षिण-पश्चिम</string>
+    <string name="direction_ketu">उत्तर-पश्चिम</string>
+
+    <!-- Planet Gemstones -->
+    <string name="gemstone_sun">माणिक</string>
+    <string name="gemstone_moon">मोती</string>
+    <string name="gemstone_mars">लाल प्रवाल</string>
+    <string name="gemstone_mercury">पन्ना</string>
+    <string name="gemstone_jupiter">पीत नीलम</string>
+    <string name="gemstone_venus">हीरा वा सेतो नीलम</string>
+    <string name="gemstone_saturn">नीलो नीलम</string>
+    <string name="gemstone_rahu">गोमेद</string>
+    <string name="gemstone_ketu">बिडालको आँखो</string>
+
+    <!-- Hora Times -->
+    <string name="hora_1">६:०० - ७:०० AM (सूर्य होरा)</string>
+    <string name="hora_2">७:०० - ८:०० AM (चन्द्र होरा)</string>
+    <string name="hora_3">८:०० - ९:०० AM (मङ्गल होरा)</string>
+    <string name="hora_4">९:०० - १०:०० AM (बुध होरा)</string>
+    <string name="hora_5">१०:०० - ११:०० AM (बृहस्पति होरा)</string>
+    <string name="hora_6">११:०० - १२:०० PM (शुक्र होरा)</string>
+    <string name="hora_7">५:०० - ६:०० PM (शनि होरा)</string>
+
+    <!-- Cautions -->
+    <string name="caution_saturn">निर्णयमा घिसिन बेवास्ता गर्नुहोस्। धैर्य मुख्य छ।</string>
+    <string name="caution_mars">आवेगपूर्ण प्रतिक्रिया नियन्त्रण गर्नुहोस् र द्वन्द्व बेवास्ता गर्नुहोस्।</string>
+    <string name="caution_rahu">धोखा र अवास्तविक अपेक्षा को लागि सावधान हुनुहोस्।</string>
+    <string name="caution_ketu">पलायनवादको लागि व्यावहारिक जिम्मेवारी उपेक्षा गर्नुहोस्।</string>
+
+    <!-- Dasha Recommendations -->
+    <string name="dasha_recommend_sun">आत्मविश्वास र नेतृत्व कौशल बनाउने गतिविधिमा संलग्न हुनुहोस्।</string>
+    <string name="dasha_recommend_moon">आवेगात्मक कल्याण र पोषण सम्बन्ध प्राथमिकता गर्नुहोस्।</string>
+    <string name="dasha_recommend_mars">आपनो ऊर्जा शारीरिक गतिविधि र प्रतिस्पर्धात्मक प्रयासमा लगाउनुहोस्।</string>
+    <string name="dasha_recommend_mercury">शिक्षा, संचार र बौद्धिक वृद्धिमा केन्द्रित गर्नुहोस्।</string>
+    <string name="dasha_recommend_jupiter">शिक्षा, यात्रा, वा आध्यात्मिक अभ्यास मार्फत आपनो क्षितिज विस्तार गर्नुहोस्।</string>
+    <string name="dasha_recommend_venus">सुन्दरता, कला र सामंजस्यपूर्ण सम्बन्ध विकास गर्नुहोस्।</string>
+    <string name="dasha_recommend_saturn">अनुशासन, कठोर परिश्रम र दीर्घकालिन योजना आलिङ्गन गर्नुहोस्।</string>
+    <string name="dasha_recommend_rahu">जोडिए रहनु को समय अप्रचलित पथ अन्वेषण गर्नुहोस्।</string>
+    <string name="dasha_recommend_ketu">अलगाव अभ्यास गर्नुहोस् र आध्यात्मिक विकास मा केन्द्रित गर्नुहोस्।</string>
+
+    <!-- Weekly Predictions (Career) -->
+    <string name="weekly_career_excellent">क्यारियर उन्नतिको लागि असाधारण सप्ताह। आपनो {dashaLord} अवधि पेशागत स्वीकृति समर्थन गर्छ। मुख्य बैठक र परियोजना सुचिन्त प्रगति गर्नेछ।</string>
+    <string name="weekly_career_steady">यस सप्ताह स्थिर पेशागत प्रगति। लम्बिएको कार्य पूरा गर्न र सहकर्मीहरु सँग सम्बन्ध निर्माण गर्न ध्यान दिनुहोस्।</string>
+    <string name="weekly_career_challenging">क्यारियर मामिला यस सप्ताह अतिरिक्त प्रयास आवश्यक हुन सक्छ। धैर्य राख्नुहोस् र ठुलो परिवर्तन बेवास्ता गर्नुहोस्।</string>
+
+    <!-- Weekly Predictions (Love) -->
+    <string name="weekly_love_excellent">रोमान्टिक ऊर्जा यस सप्ताह प्रचुर बहन्छ। एकल वा प्रतिबद्ध, सम्बन्ध गहिरो हुन्छ। आपनो भावना खुलेआम व्यक्त गर्नुहोस्।</string>
+    <string name="weekly_love_steady">सन्तुलित सम्बन्ध ऊर्जा। सामंजस्य कायम गर्न र साथै सानो मुद्दा काम गर्न को लागि राम्रो।</string>
+    <string name="weekly_love_challenging">यस सप्ताह सम्बन्ध पोषण चाहिन्छ। आपनो साथीदार सँग धैर्य र समझ अभ्यास गर्नुहोस्।</string>
+
+    <!-- Weekly Predictions (Health) -->
+    <string name="weekly_health_excellent">यस सप्ताह उत्कृष्ट जीवन शक्ति! नयाँ फिटनेस दिनचर्या वा स्वास्थ्य अभ्यास सुरु गर्ने लागि उत्तम समय। ऊर्जा स्तर उच्च छ।</string>
+    <string name="weekly_health_steady">स्थिर स्वास्थ्य सप्ताह। आपनो नियमित स्वास्थ्य दिनचर्या कायम राख्नुहोस् र विश्रामको सँग निरन्तर रहनुहोस्।</string>
+    <string name="weekly_health_challenging">यस सप्ताह स्वास्थ्य सावधानता चाहिन्छ। विश्राम, पोषण र तनाव प्रबन्धन प्राथमिकता गर्नुहोस्।</string>
+
+    <!-- Weekly Predictions (Finance) -->
+    <string name="weekly_finance_excellent">आर्थिकताको लागि समृद्ध सप्ताह। लगानी वा नयाँ आय स्रोत मार्फत लाभको अवसर। आर्थिक योजना समीक्षा गर्नुहोस्।</string>
+    <string name="weekly_finance_steady">स्थिर आर्थिक सप्ताह। दिनचर्या पैसा प्रबन्धन र योजनागत खरीदको लागि राम्रो।</string>
+    <string name="weekly_finance_challenging">यस सप्ताह आर्थिक सावधानी सल्लाह दिइयो। आवेगपूर्ण खर्च बेवास्ता गर्नुहोस् र ठुलो लगानी स्थगन गर्नुहोस्।</string>
+
+    <!-- Weekly Predictions (Family) -->
+    <string name="weekly_family_excellent">आगामी पारिवारिक सप्ताह सामंजस्यपूर्ण छ। समारोह, जमायत र गुणवत्ता समय बन्धन मजबूत गर्छ। समर्थन दुवै तरफबाट बहन्छ।</string>
+    <string name="weekly_family_steady">पारिवारिक मामिलाको लागि राम्रो सप्ताह। संचार र साझा गतिविधिमा केन्द्रित गर्नुहोस्।</string>
+    <string name="weekly_family_challenging">यस सप्ताह पारिवारिक गतिविधि चुनौतीपूर्ण हुन सक्छ। समझ सही हुने भन्दा छनोट गर्नुहोस्।</string>
+
+    <!-- Weekly Predictions (Spirituality) -->
+    <string name="weekly_spirituality_excellent">गहिरो आध्यात्मिक सप्ताह। ध्यान, प्रतिबिम्ब र आन्तरिक निर्देशन बढाइयो। अर्थपूर्ण अनुभव खोज्नुहोस्।</string>
+    <string name="weekly_spirituality_steady">स्थिर आध्यात्मिक ऊर्जा। आपनो अभ्यास कायम राख्नुहोस् र आपनो आन्तरिक आप सँग जुर्नुहोस्।</string>
+    <string name="weekly_spirituality_challenging">आध्यात्मिक जडान दूरको जस्तो लाग्न सक्छ। सरल अभ्यास र धैर्य सन्तुलन पुनर्स्थापन गर्न मदद गर्नेछ।</string>
+
+    <!-- Energy Descriptions -->
+    <string name="energy_very_low">अत्यन्त कम - चुनौतीपूर्ण ऊर्जा</string>
+    <string name="energy_low">कम - धैर्य को आवश्यकता</string>
+    <string name="energy_moderate_low">मध्यम कम - सावधानी सल्लाह दिइयो</string>
+    <string name="energy_moderate">मध्यम - सन्तुलित राज्य</string>
+    <string name="energy_moderate_high">मध्यम उच्च - राम्रो प्रगति</string>
+    <string name="energy_high">उच्च - कार्यको लागि अनुकूल</string>
+    <string name="energy_very_high">अत्यन्त उच्च - उत्कृष्ट ऊर्जा</string>
+
+    <!-- Settings -->
+    <string name="setting_profile">प्रोफाइल</string>
+    <string name="setting_edit_profile">प्रोफाइल सम्पादन गर्नुहोस्</string>
+    <string name="setting_export_pdf">PDF को रूप मा निर्यात गर्नुहोस्</string>
+    <string name="setting_export_image">छवि को रूप मा निर्यात गर्नुहोस्</string>
+    <string name="setting_copy_clipboard">क्लिपबोर्ड मा प्रतिलिपि गर्नुहोस्</string>
+    <string name="setting_export_json">JSON को रूप मा निर्यात गर्नुहोस्</string>
+    <string name="setting_theme">विषय</string>
+    <string name="setting_language">भाषा</string>
+    <string name="setting_language_english">English</string>
+    <string name="setting_language_nepali">नेपाली</string>
+    <string name="setting_house_system">घर प्रणाली</string>
+    <string name="setting_ayanamsa">अयनांश</string>
+    <string name="setting_about">बारे मा</string>
+    <string name="setting_version">संस्करण</string>
+    <string name="setting_theme_light">प्रकाश</string>
+    <string name="setting_theme_dark">अँधेरो</string>
+    <string name="setting_theme_system">प्रणाली</string>
+
+    <!-- Chart Input -->
+    <string name="chart_input_name">नाम</string>
+    <string name="chart_input_date">जन्म मिति</string>
+    <string name="chart_input_time">जन्म समय</string>
+    <string name="chart_input_location">स्थान</string>
+    <string name="chart_input_timezone">समय क्षेत्र</string>
+    <string name="chart_input_create">चार्ट बनाउन</string>
+    <string name="chart_input_cancel">रद्द गर्नुहोस्</string>
+    <string name="chart_input_search_location">स्थान खोज्नुहोस्</string>
+
+    <!-- Chart Screens -->
+    <string name="chart_birth_chart">जन्म चार्ट</string>
+    <string name="chart_planets">ग्रह</string>
+    <string name="chart_yogas">योग</string>
+    <string name="chart_dashas">दशा</string>
+    <string name="chart_transits">संक्रमण</string>
+    <string name="chart_panchanga">पञ्चाङ्ग</string>
+    <string name="chart_ashtakavarga">अष्टकवर्ग</string>
+    <string name="chart_matchmaking">मिलान</string>
+    <string name="chart_muhurta">मुहूर्त</string>
+    <string name="chart_remedies">उपचार</string>
+    <string name="chart_varshaphala">वर्षफल</string>
+    <string name="chart_prashna">प्रश्न</string>
+
+    <!-- Additional Strings -->
+    <string name="no_data">कुनै डेटा उपलब्ध छैन</string>
+    <string name="loading">लोड हुँदै...</string>
+    <string name="error">त्रुटि</string>
+    <string name="success">सफलता</string>
+    <string name="cancel">रद्द गर्नुहोस्</string>
+    <string name="save">बचत गर्नुहोस्</string>
+    <string name="delete">मेटाउन</string>
+    <string name="confirm">पुष्टि गर्नुहोस्</string>
+    <string name="back">पछाडि</string>
+</resources>
