@@ -83,7 +83,6 @@ fun BirthChartScreen(
         return
     }
 
-    val context = LocalContext.current
     val hapticFeedback = LocalHapticFeedback.current
     val chartRenderer = remember { ChartRenderer() }
 
@@ -162,30 +161,7 @@ fun BirthChartScreen(
                 chart = chart,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
-
-            ChartTabContent(
-                chart = chart,
-                chartRenderer = chartRenderer,
-                context = context,
-                onChartClick = { title, divisionalData ->
-                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                    fullScreenChartTitle = title
-                    fullScreenDivisionalData = divisionalData
-                    showFullScreenChart = true
-                },
-                onPlanetClick = { 
-                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                    selectedPlanetPosition = it 
-                },
-                onHouseClick = { 
-                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                    selectedHouse = it 
-                }
-            )
-        }
-    }
-}
-
+          
 @Composable
 private fun BirthInfoSummaryCard(
     chart: VedicChart,
