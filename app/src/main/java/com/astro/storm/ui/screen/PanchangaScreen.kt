@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.PanchangaCalculator
@@ -65,7 +66,7 @@ fun PanchangaScreen(
                 longitude = chart.birthData.longitude,
                 timezone = chart.birthData.timezone
             )
-            "${panchanga.tithi.tithi.displayName} | ${panchanga.nakshatra.nakshatra.displayName}"
+            "${stringResource(id = panchanga.tithi.tithi.stringRes)} | ${stringResource(id = panchanga.nakshatra.nakshatra.stringRes)}"
         }
     }
 

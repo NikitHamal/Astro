@@ -1,5 +1,8 @@
 package com.astro.storm.ephemeris
 
+import android.content.Context
+import androidx.annotation.StringRes
+import com.astro.storm.R
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
@@ -13,25 +16,25 @@ object AspectCalculator {
     private const val TOTAL_SIGNS = 12
 
     enum class AspectType(
-        val displayName: String,
+        @StringRes val stringRes: Int,
         val houseDistance: Int,
         val degreeAngle: Double,
         val nature: AspectNature,
         val symbol: String,
         val classicalStrength: Double
     ) {
-        CONJUNCTION("Conjunction", 1, 0.0, AspectNature.VARIABLE, "☌", 1.0),
+        CONJUNCTION(R.string.aspect_type_conjunction, 1, 0.0, AspectNature.VARIABLE, "☌", 1.0),
 
-        SEVENTH_HOUSE("7th Aspect", 7, 180.0, AspectNature.SIGNIFICANT, "☍", 1.0),
+        SEVENTH_HOUSE(R.string.aspect_type_seventh_house, 7, 180.0, AspectNature.SIGNIFICANT, "☍", 1.0),
 
-        MARS_4TH("Mars 4th Aspect", 4, 90.0, AspectNature.CHALLENGING, "♂₄", 0.75),
-        MARS_8TH("Mars 8th Aspect", 8, 210.0, AspectNature.CHALLENGING, "♂₈", 1.0),
+        MARS_4TH(R.string.aspect_type_mars_4th, 4, 90.0, AspectNature.CHALLENGING, "♂₄", 0.75),
+        MARS_8TH(R.string.aspect_type_mars_8th, 8, 210.0, AspectNature.CHALLENGING, "♂₈", 1.0),
 
-        JUPITER_5TH("Jupiter 5th Aspect", 5, 120.0, AspectNature.HARMONIOUS, "♃₅", 0.5),
-        JUPITER_9TH("Jupiter 9th Aspect", 9, 240.0, AspectNature.HARMONIOUS, "♃₉", 1.0),
+        JUPITER_5TH(R.string.aspect_type_jupiter_5th, 5, 120.0, AspectNature.HARMONIOUS, "♃₅", 0.5),
+        JUPITER_9TH(R.string.aspect_type_jupiter_9th, 9, 240.0, AspectNature.HARMONIOUS, "♃₉", 1.0),
 
-        SATURN_3RD("Saturn 3rd Aspect", 3, 60.0, AspectNature.CHALLENGING, "♄₃", 0.75),
-        SATURN_10TH("Saturn 10th Aspect", 10, 270.0, AspectNature.CHALLENGING, "♄₁₀", 1.0);
+        SATURN_3RD(R.string.aspect_type_saturn_3rd, 3, 60.0, AspectNature.CHALLENGING, "♄₃", 0.75),
+        SATURN_10TH(R.string.aspect_type_saturn_10th, 10, 270.0, AspectNature.CHALLENGING, "♄₁₀", 1.0);
 
         companion object {
             fun getSpecialAspects(planet: Planet): List<AspectType> {
@@ -45,11 +48,11 @@ object AspectCalculator {
         }
     }
 
-    enum class AspectNature(val displayName: String, val isPositive: Boolean?) {
-        HARMONIOUS("Harmonious", true),
-        CHALLENGING("Challenging", false),
-        VARIABLE("Variable", null),
-        SIGNIFICANT("Significant", null)
+    enum class AspectNature(@StringRes val stringRes: Int, val isPositive: Boolean?) {
+        HARMONIOUS(R.string.aspect_nature_harmonious, true),
+        CHALLENGING(R.string.aspect_nature_challenging, false),
+        VARIABLE(R.string.aspect_nature_variable, null),
+        SIGNIFICANT(R.string.aspect_nature_significant, null)
     }
 
     enum class AspectMode {
@@ -332,10 +335,10 @@ object AspectCalculator {
         return ((angle % TOTAL_DEGREES) + TOTAL_DEGREES) % TOTAL_DEGREES
     }
 
-    fun getAspectDescription(aspectData: AspectData): String {
-        val aspecting = aspectData.aspectingPlanet.displayName
-        val aspected = aspectData.aspectedPlanet.displayName
-        val aspectName = aspectData.aspectType.displayName
+    fun getAspectDescription(aspectData: AspectData, context: Context): String {
+        val aspecting = context.getString(aspectData.aspectingPlanet.stringRes)
+        val aspected = context.getString(aspectData.aspectedPlanet.stringRes)
+        val aspectName = context.getString(aspectData.aspectType.stringRes)
         val strength = aspectData.strengthDescription
 
         return buildString {

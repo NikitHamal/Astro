@@ -1,5 +1,8 @@
 package com.astro.storm.data.model
 
+import androidx.annotation.StringRes
+import com.astro.storm.R
+
 /**
  * Represents planets used in Vedic astrology
  *
@@ -10,19 +13,19 @@ package com.astro.storm.data.model
  * Modern additions (optional):
  * - Outer planets: Uranus, Neptune, Pluto
  */
-enum class Planet(val swissEphId: Int, val displayName: String, val symbol: String) {
-    SUN(0, "Sun", "Su"),
-    MOON(1, "Moon", "Mo"),
-    MERCURY(2, "Mercury", "Me"),
-    VENUS(3, "Venus", "Ve"),
-    MARS(4, "Mars", "Ma"),
-    JUPITER(5, "Jupiter", "Ju"),
-    SATURN(6, "Saturn", "Sa"),
-    RAHU(10, "Rahu", "Ra"),  // Mean node (North Node)
-    KETU(-1, "Ketu", "Ke"),  // 180° from Rahu (South Node)
-    URANUS(7, "Uranus", "Ur"),
-    NEPTUNE(8, "Neptune", "Ne"),
-    PLUTO(9, "Pluto", "Pl");
+enum class Planet(val swissEphId: Int, @StringRes val stringRes: Int, @StringRes val symbolRes: Int) {
+    SUN(0, R.string.planet_sun, R.string.planet_sun_symbol),
+    MOON(1, R.string.planet_moon, R.string.planet_moon_symbol),
+    MERCURY(2, R.string.planet_mercury, R.string.planet_mercury_symbol),
+    VENUS(3, R.string.planet_venus, R.string.planet_venus_symbol),
+    MARS(4, R.string.planet_mars, R.string.planet_mars_symbol),
+    JUPITER(5, R.string.planet_jupiter, R.string.planet_jupiter_symbol),
+    SATURN(6, R.string.planet_saturn, R.string.planet_saturn_symbol),
+    RAHU(10, R.string.planet_rahu, R.string.planet_rahu_symbol),  // Mean node (North Node)
+    KETU(-1, R.string.planet_ketu, R.string.planet_ketu_symbol),  // 180° from Rahu (South Node)
+    URANUS(7, R.string.planet_uranus, R.string.planet_uranus_symbol),
+    NEPTUNE(8, R.string.planet_neptune, R.string.planet_neptune_symbol),
+    PLUTO(9, R.string.planet_pluto, R.string.planet_pluto_symbol);
 
     companion object {
         /**

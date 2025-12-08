@@ -1,5 +1,8 @@
 package com.astro.storm.ephemeris
 
+import android.content.Context
+import androidx.annotation.StringRes
+import com.astro.storm.R
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
@@ -15,48 +18,48 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 enum class StrengthRating(
-    val displayName: String,
-    val description: String,
+    @StringRes val stringRes: Int,
+    @StringRes val descriptionRes: Int,
     val minPercentage: Double
 ) {
     EXTREMELY_WEAK(
-        "Extremely Weak",
-        "Planet is severely debilitated and may cause significant challenges",
+        R.string.shadbala_strength_extremely_weak,
+        R.string.shadbala_strength_extremely_weak_desc,
         0.0
     ),
     WEAK(
-        "Weak",
-        "Planet struggles to deliver its significations effectively",
+        R.string.shadbala_strength_weak,
+        R.string.shadbala_strength_weak_desc,
         50.0
     ),
     BELOW_AVERAGE(
-        "Below Average",
-        "Planet has limited capacity to provide positive results",
+        R.string.shadbala_strength_below_average,
+        R.string.shadbala_strength_below_average_desc,
         70.0
     ),
     AVERAGE(
-        "Average",
-        "Planet functions at a baseline level with mixed results",
+        R.string.shadbala_strength_average,
+        R.string.shadbala_strength_average_desc,
         85.0
     ),
     ABOVE_AVERAGE(
-        "Above Average",
-        "Planet is reasonably strong and delivers good results",
+        R.string.shadbala_strength_above_average,
+        R.string.shadbala_strength_above_average_desc,
         100.0
     ),
     STRONG(
-        "Strong",
-        "Planet is well-positioned and gives excellent results",
+        R.string.shadbala_strength_strong,
+        R.string.shadbala_strength_strong_desc,
         115.0
     ),
     VERY_STRONG(
-        "Very Strong",
-        "Planet is highly potent and provides outstanding outcomes",
+        R.string.shadbala_strength_very_strong,
+        R.string.shadbala_strength_very_strong_desc,
         130.0
     ),
     EXTREMELY_STRONG(
-        "Extremely Strong",
-        "Planet is exceptionally powerful and dominates the chart",
+        R.string.shadbala_strength_extremely_strong,
+        R.string.shadbala_strength_extremely_strong_desc,
         150.0
     );
 
@@ -105,14 +108,14 @@ data class PlanetaryShadbala(
 ) {
     val isStrong: Boolean = totalRupas >= requiredRupas
 
-    fun getInterpretation(): String = buildString {
-        appendLine("${planet.displayName} Shadbala Analysis")
+    fun getInterpretation(context: Context): String = buildString {
+        appendLine("${context.getString(planet.stringRes)} Shadbala Analysis")
         appendLine("═══════════════════════════════════════")
         appendLine()
         appendLine("Total Strength: ${FORMAT_TWO_DECIMAL.format(totalRupas)} Rupas")
         appendLine("Required Strength: ${FORMAT_TWO_DECIMAL.format(requiredRupas)} Rupas")
         appendLine("Percentage: ${FORMAT_ONE_DECIMAL.format(percentageOfRequired)}%")
-        appendLine("Rating: ${strengthRating.displayName}")
+        appendLine("Rating: ${context.getString(strengthRating.stringRes)}")
         appendLine()
         appendLine("BREAKDOWN (in Virupas):")
         appendLine("───────────────────────────────────────")
@@ -163,7 +166,7 @@ data class ShadbalaAnalysis(
     fun getStrongPlanets(): List<PlanetaryShadbala> =
         planetaryStrengths.values.filter { it.isStrong }
 
-    fun getSummaryInterpretation(): String {
+    fun getSummaryInterpretation(context: Context): String {
         val strong = planetaryStrengths.values.count { it.isStrong }
         val weak = planetaryStrengths.values.size - strong
 
@@ -175,14 +178,14 @@ data class ShadbalaAnalysis(
             appendLine("Strong Planets: $strong")
             appendLine("Weak Planets: $weak")
             appendLine()
-            appendLine("Strongest Planet: ${strongestPlanet.displayName}")
-            appendLine("Weakest Planet: ${weakestPlanet.displayName}")
+            appendLine("Strongest Planet: ${context.getString(strongestPlanet.stringRes)}")
+            appendLine("Weakest Planet: ${context.getString(weakestPlanet.stringRes)}")
             appendLine()
             appendLine("INDIVIDUAL STRENGTHS (in Rupas):")
             appendLine("───────────────────────────────────────")
             getPlanetsByStrength().forEach { shadbala ->
                 val status = if (shadbala.isStrong) "✓" else "✗"
-                val name = shadbala.planet.displayName.padEnd(10)
+                val name = context.getString(shadbala.planet.stringRes).padEnd(10)
                 val total = String.format("%.2f", shadbala.totalRupas)
                 val required = String.format("%.2f", shadbala.requiredRupas)
                 appendLine("$status $name: $total / $required")

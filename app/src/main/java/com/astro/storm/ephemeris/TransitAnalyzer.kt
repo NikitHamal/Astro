@@ -1,6 +1,7 @@
 package com.astro.storm.ephemeris
 
 import android.content.Context
+import com.astro.storm.R
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
@@ -182,61 +183,61 @@ class TransitAnalyzer(private val context: Context) {
         val overallAssessment: OverallTransitAssessment,
         val significantPeriods: List<SignificantPeriod>
     ) {
-        fun toPlainText(): String = buildString {
+        fun toPlainText(context: Context): String = buildString {
             appendLine("═══════════════════════════════════════════════════════════")
-            appendLine("              TRANSIT ANALYSIS REPORT")
+            appendLine("              ${context.getString(R.string.transit_analysis_report)}")
             appendLine("═══════════════════════════════════════════════════════════")
             appendLine()
-            appendLine("Transit Date/Time: $transitDateTime")
+            appendLine("${context.getString(R.string.transit_date_time)}: $transitDateTime")
             appendLine()
 
-            appendLine("CURRENT PLANETARY POSITIONS")
+            appendLine(context.getString(R.string.current_planetary_positions))
             appendLine("─────────────────────────────────────────────────────────")
             transitPositions.forEach { pos ->
                 val retro = if (pos.isRetrograde) " (R)" else ""
-                appendLine("${pos.planet.displayName.padEnd(10)}: ${pos.sign.displayName.padEnd(12)} ${formatDegree(pos.longitude)}$retro")
+                appendLine("${context.getString(pos.planet.stringRes).padEnd(10)}: ${context.getString(pos.sign.stringRes).padEnd(12)} ${formatDegree(pos.longitude)}$retro")
             }
             appendLine()
 
-            appendLine("GOCHARA ANALYSIS (Transit from Moon)")
+            appendLine(context.getString(R.string.gochara_analysis_transit_from_moon))
             appendLine("─────────────────────────────────────────────────────────")
             gocharaResults.forEach { result ->
                 val vedhaStr = if (result.isVedhaAffected) " [VEDHA]" else ""
-                appendLine("${result.planet.displayName.padEnd(10)}: House ${result.houseFromMoon.toString().padStart(2)} - ${result.effect.displayName}$vedhaStr")
+                appendLine("${context.getString(result.planet.stringRes).padEnd(10)}: ${context.getString(R.string.house)} ${result.houseFromMoon.toString().padStart(2)} - ${result.effect.displayName}$vedhaStr")
                 if (result.isVedhaAffected && result.vedhaSource != null) {
-                    appendLine("             └─ Vedha from ${result.vedhaSource.displayName}")
+                    appendLine("             └─ ${context.getString(R.string.vedha_from)} ${context.getString(result.vedhaSource.stringRes)}")
                 }
             }
             appendLine()
 
-            appendLine("TRANSIT ASPECTS TO NATAL PLANETS")
+            appendLine(context.getString(R.string.transit_aspects_to_natal_planets))
             appendLine("─────────────────────────────────────────────────────────")
             if (transitAspects.isEmpty()) {
-                appendLine("No significant aspects currently active.")
+                appendLine(context.getString(R.string.no_significant_aspects_currently_active))
             } else {
                 transitAspects.sortedByDescending { it.strength }.take(10).forEach { aspect ->
-                    val applying = if (aspect.isApplying) "Applying" else "Separating"
-                    appendLine("Transit ${aspect.transitingPlanet.displayName} ${aspect.aspectType} Natal ${aspect.natalPlanet.displayName}")
-                    appendLine("  Orb: ${String.format("%.2f", aspect.orb)}° ($applying) | Strength: ${String.format("%.0f", aspect.strength * 100)}%")
+                    val applying = if (aspect.isApplying) context.getString(R.string.applying) else context.getString(R.string.separating)
+                    appendLine("${context.getString(R.string.transit)} ${context.getString(aspect.transitingPlanet.stringRes)} ${aspect.aspectType} ${context.getString(R.string.natal)} ${context.getString(aspect.natalPlanet.stringRes)}")
+                    appendLine("  ${context.getString(R.string.orb)}: ${String.format("%.2f", aspect.orb)}° ($applying) | ${context.getString(R.string.strength)}: ${String.format("%.0f", aspect.strength * 100)}%")
                 }
             }
             appendLine()
 
-            appendLine("ASHTAKAVARGA TRANSIT SCORES")
+            appendLine(context.getString(R.string.ashtakavarga_transit_scores))
             appendLine("─────────────────────────────────────────────────────────")
             ashtakavargaScores.forEach { (planet, score) ->
-                appendLine("${planet.displayName.padEnd(10)}: BAV=${score.binduScore}, SAV=${score.savScore} - ${score.interpretation}")
+                appendLine("${context.getString(planet.stringRes).padEnd(10)}: BAV=${score.binduScore}, SAV=${score.savScore} - ${score.interpretation}")
             }
             appendLine()
 
-            appendLine("OVERALL ASSESSMENT")
+            appendLine(context.getString(R.string.overall_assessment))
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine("Period Quality: ${overallAssessment.quality.displayName}")
-            appendLine("Score: ${String.format("%.1f", overallAssessment.score)}/100")
+            appendLine("${context.getString(R.string.period_quality)}: ${overallAssessment.quality.displayName}")
+            appendLine("${context.getString(R.string.score)}: ${String.format("%.1f", overallAssessment.score)}/100")
             appendLine()
-            appendLine("Summary: ${overallAssessment.summary}")
+            appendLine("${context.getString(R.string.summary)}: ${overallAssessment.summary}")
             appendLine()
-            appendLine("Key Areas of Focus:")
+            appendLine(context.getString(R.string.key_areas_of_focus))
             overallAssessment.focusAreas.forEachIndexed { index, area ->
                 appendLine("${index + 1}. $area")
             }
@@ -735,11 +736,11 @@ class TransitAnalyzer(private val context: Context) {
         val vedhaNote = if (isVedhaAffected) " Effects may be diminished due to Vedha." else ""
 
         return when (effect) {
-            TransitEffect.EXCELLENT -> "${planet.displayName} transit in ${houseFromMoon}th house brings excellent results for $houseMatters.$vedhaNote"
-            TransitEffect.GOOD -> "${planet.displayName} transit in ${houseFromMoon}th house supports $houseMatters.$vedhaNote"
-            TransitEffect.NEUTRAL -> "${planet.displayName} transit in ${houseFromMoon}th house has neutral effects on $houseMatters.$vedhaNote"
-            TransitEffect.CHALLENGING -> "${planet.displayName} transit in ${houseFromMoon}th house may challenge $houseMatters.$vedhaNote"
-            TransitEffect.DIFFICULT -> "${planet.displayName} transit in ${houseFromMoon}th house requires caution in $houseMatters.$vedhaNote"
+            TransitEffect.EXCELLENT -> "${context.getString(planet.stringRes)} transit in ${houseFromMoon}th house brings excellent results for $houseMatters.$vedhaNote"
+            TransitEffect.GOOD -> "${context.getString(planet.stringRes)} transit in ${houseFromMoon}th house supports $houseMatters.$vedhaNote"
+            TransitEffect.NEUTRAL -> "${context.getString(planet.stringRes)} transit in ${houseFromMoon}th house has neutral effects on $houseMatters.$vedhaNote"
+            TransitEffect.CHALLENGING -> "${context.getString(planet.stringRes)} transit in ${houseFromMoon}th house may challenge $houseMatters.$vedhaNote"
+            TransitEffect.DIFFICULT -> "${context.getString(planet.stringRes)} transit in ${houseFromMoon}th house requires caution in $houseMatters.$vedhaNote"
         }
     }
 
@@ -757,10 +758,10 @@ class TransitAnalyzer(private val context: Context) {
         val harmonicAspect = aspectType in listOf("Trine", "Sextile")
 
         return when {
-            beneficTransit && harmonicAspect -> "Favorable: Transit ${transitingPlanet.displayName} $aspectType natal ${natalPlanet.displayName} ($applyingStr) - beneficial influence"
-            beneficTransit -> "Transit ${transitingPlanet.displayName} $aspectType natal ${natalPlanet.displayName} ($applyingStr) - mixed but generally supportive"
-            harmonicAspect -> "Transit ${transitingPlanet.displayName} $aspectType natal ${natalPlanet.displayName} ($applyingStr) - harmonious connection"
-            else -> "Transit ${transitingPlanet.displayName} $aspectType natal ${natalPlanet.displayName} ($applyingStr) - requires attention"
+            beneficTransit && harmonicAspect -> "Favorable: Transit ${context.getString(transitingPlanet.stringRes)} $aspectType natal ${context.getString(natalPlanet.stringRes)} ($applyingStr) - beneficial influence"
+            beneficTransit -> "Transit ${context.getString(transitingPlanet.stringRes)} $aspectType natal ${context.getString(natalPlanet.stringRes)} ($applyingStr) - mixed but generally supportive"
+            harmonicAspect -> "Transit ${context.getString(transitingPlanet.stringRes)} $aspectType natal ${context.getString(natalPlanet.stringRes)} ($applyingStr) - harmonious connection"
+            else -> "Transit ${context.getString(transitingPlanet.stringRes)} $aspectType natal ${context.getString(natalPlanet.stringRes)} ($applyingStr) - requires attention"
         }
     }
 
@@ -773,9 +774,9 @@ class TransitAnalyzer(private val context: Context) {
         transitAspects: List<TransitAspect>
     ): String {
         val favorablePlanets = gocharaResults.filter { it.effect in listOf(TransitEffect.EXCELLENT, TransitEffect.GOOD) }
-            .map { it.planet.displayName }
+            .map { context.getString(it.planet.stringRes) }
         val challengingPlanets = gocharaResults.filter { it.effect in listOf(TransitEffect.CHALLENGING, TransitEffect.DIFFICULT) }
-            .map { it.planet.displayName }
+            .map { context.getString(it.planet.stringRes) }
 
         return when (quality) {
             TransitQuality.EXCELLENT -> "This is an excellent transit period. ${favorablePlanets.joinToString(", ")} are well-placed from Moon, supporting growth and positive developments."
@@ -818,7 +819,7 @@ class TransitAnalyzer(private val context: Context) {
 
         // Check strong aspects
         transitAspects.filter { it.strength > 0.8 }.take(3).forEach { aspect ->
-            areas.add("Strong ${aspect.aspectType} from transit ${aspect.transitingPlanet.displayName} to natal ${aspect.natalPlanet.displayName}")
+            areas.add("Strong ${aspect.aspectType} from transit ${context.getString(aspect.transitingPlanet.stringRes)} to natal ${context.getString(aspect.natalPlanet.stringRes)}")
         }
 
         return areas.take(5)
@@ -847,7 +848,7 @@ class TransitAnalyzer(private val context: Context) {
             }
             Planet.RAHU -> "Rahu transit in ${houseFromMoon}th from Moon - worldly desires amplified"
             Planet.KETU -> "Ketu transit in ${houseFromMoon}th from Moon - spiritual detachment"
-            else -> "${planet.displayName} transit in ${houseFromMoon}th from Moon"
+            else -> "${context.getString(planet.stringRes)} transit in ${houseFromMoon}th from Moon"
         }
     }
 

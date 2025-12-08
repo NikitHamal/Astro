@@ -47,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -158,12 +159,12 @@ private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.Ashtaka
                 )
                 SummaryItem(
                     label = "Strongest",
-                    value = ashtakavarga.sarvashtakavarga.strongestSign.abbreviation,
+                    value = stringResource(id = ashtakavarga.sarvashtakavarga.strongestSign.abbreviationRes),
                     color = ChartDetailColors.SuccessColor
                 )
                 SummaryItem(
                     label = "Weakest",
-                    value = ashtakavarga.sarvashtakavarga.weakestSign.abbreviation,
+                    value = stringResource(id = ashtakavarga.sarvashtakavarga.weakestSign.abbreviationRes),
                     color = ChartDetailColors.ErrorColor
                 )
             }
@@ -357,7 +358,7 @@ private fun SAVSignBox(
             .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
         Text(
-            text = sign.abbreviation,
+            text = stringResource(id = sign.abbreviationRes),
             fontSize = 11.sp,
             fontWeight = FontWeight.Medium,
             color = ChartDetailColors.TextSecondary
@@ -518,7 +519,7 @@ private fun BAVTable(ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis) 
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = sign.abbreviation,
+                        text = stringResource(id = sign.abbreviationRes),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.AccentTeal
@@ -551,7 +552,7 @@ private fun BAVTable(ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis) 
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = planet.symbol,
+                        text = stringResource(id = planet.symbolRes),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.getPlanetColor(planet)

@@ -15,12 +15,14 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.annotation.StringRes
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -70,7 +72,7 @@ fun ChartAnalysisScreen(
 
     // Dialog states - managed at the top level for all tabs
     var showFullScreenChart by remember { mutableStateOf(false) }
-    var fullScreenChartTitle by remember { mutableStateOf("Lagna") }
+    var fullScreenChartTitle by remember { mutableStateOf(stringResource(id = R.string.lagna)) }
     var fullScreenDivisionalData by remember { mutableStateOf<DivisionalChartData?>(null) }
     var showShadbalaDialog by remember { mutableStateOf(false) }
     var selectedPlanetPosition by remember { mutableStateOf<PlanetPosition?>(null) }
@@ -198,7 +200,7 @@ private fun ChartAnalysisTopBar(
         title = {
             Column {
                 Text(
-                    text = "Chart Analysis",
+                    text = stringResource(id = R.string.chart_analysis),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -214,7 +216,7 @@ private fun ChartAnalysisTopBar(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back",
+                    contentDescription = stringResource(id = R.string.back),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -223,7 +225,7 @@ private fun ChartAnalysisTopBar(
             IconButton(onClick = onExport) {
                 Icon(
                     imageVector = Icons.Outlined.Share,
-                    contentDescription = "Export",
+                    contentDescription = stringResource(id = R.string.export),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -257,7 +259,7 @@ private fun AnalysisTabBar(
                 onClick = { onTabSelected(tab) },
                 label = {
                     Text(
-                        text = tab.title,
+                        text = stringResource(id = tab.titleRes),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                     )
@@ -292,16 +294,16 @@ private fun AnalysisTabBar(
  * Analysis tabs available in the chart analysis screen
  */
 enum class AnalysisTab(
-    val title: String,
+    @StringRes val titleRes: Int,
     val icon: ImageVector
 ) {
-    CHART("Chart", Icons.Outlined.GridView),
-    PLANETS("Planets", Icons.Outlined.Public),
-    YOGAS("Yogas", Icons.Outlined.AutoAwesome),
-    DASHAS("Dashas", Icons.Outlined.Timeline),
-    TRANSITS("Transits", Icons.Outlined.Sync),
-    ASHTAKAVARGA("Ashtakavarga", Icons.Outlined.BarChart),
-    PANCHANGA("Panchanga", Icons.Outlined.CalendarMonth)
+    CHART(R.string.chart, Icons.Outlined.GridView),
+    PLANETS(R.string.planets, Icons.Outlined.Public),
+    YOGAS(R.string.yogas, Icons.Outlined.AutoAwesome),
+    DASHAS(R.string.dashas, Icons.Outlined.Timeline),
+    TRANSITS(R.string.transits, Icons.Outlined.Sync),
+    ASHTAKAVARGA(R.string.ashtakavarga, Icons.Outlined.BarChart),
+    PANCHANGA(R.string.panchanga, Icons.Outlined.CalendarMonth)
 }
 
 private fun mapFeatureToTab(feature: InsightFeature): AnalysisTab {

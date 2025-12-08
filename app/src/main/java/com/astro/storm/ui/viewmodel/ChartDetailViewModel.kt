@@ -143,7 +143,7 @@ class ChartDetailViewModel(application: Application) : AndroidViewModel(applicat
      */
     fun copyToClipboard(chart: VedicChart) {
         try {
-            val plaintext = ExportUtils.getChartPlaintext(chart)
+            val plaintext = ExportUtils.getChartPlaintext(getApplication(), chart)
             ExportUtils.copyToClipboard(getApplication(), plaintext, "Vedic Chart Data")
             _exportState.value = ExportState.Success("Copied to clipboard")
         } catch (e: Exception) {

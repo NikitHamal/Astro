@@ -53,6 +53,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -196,19 +197,19 @@ private fun PanchangaSummaryCard(panchanga: PanchangaData) {
                 PanchangaElement(
                     label = "Tithi",
                     sanskrit = "तिथि",
-                    value = panchanga.tithi.tithi.displayName,
+                    value = stringResource(id = panchanga.tithi.tithi.stringRes),
                     color = ChartDetailColors.AccentTeal
                 )
                 PanchangaElement(
                     label = "Nakshatra",
                     sanskrit = "नक्षत्र",
-                    value = panchanga.nakshatra.nakshatra.displayName,
+                    value = stringResource(id = panchanga.nakshatra.nakshatra.stringRes),
                     color = ChartDetailColors.AccentPurple
                 )
                 PanchangaElement(
                     label = "Yoga",
                     sanskrit = "योग",
-                    value = panchanga.yoga.yoga.displayName,
+                    value = stringResource(id = panchanga.yoga.yoga.stringRes),
                     color = ChartDetailColors.AccentGold
                 )
             }
@@ -222,13 +223,13 @@ private fun PanchangaSummaryCard(panchanga: PanchangaData) {
                 PanchangaElement(
                     label = "Karana",
                     sanskrit = "करण",
-                    value = panchanga.karana.karana.displayName,
+                    value = stringResource(id = panchanga.karana.karana.stringRes),
                     color = ChartDetailColors.AccentBlue
                 )
                 PanchangaElement(
                     label = "Vara",
                     sanskrit = "वार",
-                    value = panchanga.vara.displayName,
+                    value = stringResource(id = panchanga.vara.stringRes),
                     color = ChartDetailColors.AccentOrange
                 )
             }
@@ -251,7 +252,7 @@ private fun PanchangaSummaryCard(panchanga: PanchangaData) {
                 )
                 MoonPhaseIndicator(
                     phase = panchanga.moonPhase,
-                    paksha = panchanga.paksha.displayName
+                    paksha = stringResource(id = panchanga.paksha.stringRes)
                 )
                 SunTimeIndicator(
                     label = "Sunset",
@@ -406,7 +407,7 @@ private fun TithiCard(
     ExpandableDetailCard(
         title = "Tithi",
         subtitle = "Lunar Day • तिथि",
-        value = panchanga.tithi.tithi.displayName,
+        value = stringResource(id = panchanga.tithi.tithi.stringRes),
         isExpanded = isExpanded,
         onToggleExpand = onToggleExpand,
         icon = Icons.Outlined.Brightness4,
@@ -414,11 +415,11 @@ private fun TithiCard(
         qualityIndicator = tithiData.quality
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            DetailRow("Sanskrit", panchanga.tithi.tithi.sanskrit, ChartDetailColors.TextSecondary)
+            DetailRow("Sanskrit", stringResource(id = panchanga.tithi.tithi.sanskrit), ChartDetailColors.TextSecondary)
             DetailRow("Number", "${panchanga.tithi.number} of 30", ChartDetailColors.TextPrimary)
-            DetailRow("Paksha", panchanga.paksha.displayName, ChartDetailColors.TextSecondary)
+            DetailRow("Paksha", stringResource(id = panchanga.paksha.stringRes), ChartDetailColors.TextSecondary)
             DetailRow("Deity", tithiData.deity, ChartDetailColors.AccentPurple)
-            DetailRow("Lord", panchanga.tithi.lord.displayName, ChartDetailColors.AccentTeal)
+            DetailRow("Lord", stringResource(id = panchanga.tithi.lord.stringRes), ChartDetailColors.AccentTeal)
             DetailRow("Nature", tithiData.nature, getQualityColor(tithiData.quality))
             ProgressRow("Progress", panchanga.tithi.progress, ChartDetailColors.AccentGold)
 
@@ -448,7 +449,7 @@ private fun NakshatraCard(
     ExpandableDetailCard(
         title = "Nakshatra",
         subtitle = "Lunar Mansion • नक्षत्र",
-        value = panchanga.nakshatra.nakshatra.displayName,
+        value = stringResource(id = panchanga.nakshatra.nakshatra.stringRes),
         isExpanded = isExpanded,
         onToggleExpand = onToggleExpand,
         icon = Icons.Outlined.Star,
@@ -459,7 +460,7 @@ private fun NakshatraCard(
             DetailRow("Sanskrit", nakshatraData.sanskrit, ChartDetailColors.TextSecondary)
             DetailRow("Number", "${panchanga.nakshatra.number} of 27", ChartDetailColors.TextPrimary)
             DetailRow("Pada", "${panchanga.nakshatra.pada} of 4", ChartDetailColors.AccentTeal)
-            DetailRow("Ruler", panchanga.nakshatra.lord.displayName, ChartDetailColors.AccentGold)
+            DetailRow("Ruler", stringResource(id = panchanga.nakshatra.lord.stringRes), ChartDetailColors.AccentGold)
             DetailRow("Deity", nakshatraData.deity, ChartDetailColors.AccentPurple)
             DetailRow("Symbol", nakshatraData.symbol, ChartDetailColors.TextSecondary)
             DetailRow("Gana", nakshatraData.gana, getGanaColor(nakshatraData.gana))
@@ -486,7 +487,7 @@ private fun YogaCard(
     ExpandableDetailCard(
         title = "Yoga",
         subtitle = "Luni-Solar Combination • योग",
-        value = panchanga.yoga.yoga.displayName,
+        value = stringResource(id = panchanga.yoga.yoga.stringRes),
         isExpanded = isExpanded,
         onToggleExpand = onToggleExpand,
         icon = Icons.Outlined.AutoAwesome,
@@ -497,7 +498,7 @@ private fun YogaCard(
             DetailRow("Sanskrit", yogaData.sanskrit, ChartDetailColors.TextSecondary)
             DetailRow("Number", "${panchanga.yoga.number} of 27", ChartDetailColors.TextPrimary)
             DetailRow("Meaning", yogaData.meaning, ChartDetailColors.TextSecondary)
-            DetailRow("Nature", panchanga.yoga.yoga.nature.displayName, getQualityColor(yogaData.quality))
+            DetailRow("Nature", stringResource(id = panchanga.yoga.yoga.nature.stringRes), getQualityColor(yogaData.quality))
             ProgressRow("Progress", panchanga.yoga.progress, ChartDetailColors.AccentTeal)
 
             DescriptionSection(
@@ -519,7 +520,7 @@ private fun KaranaCard(
     ExpandableDetailCard(
         title = "Karana",
         subtitle = "Half Lunar Day • करण",
-        value = panchanga.karana.karana.displayName,
+        value = stringResource(id = panchanga.karana.karana.stringRes),
         isExpanded = isExpanded,
         onToggleExpand = onToggleExpand,
         icon = Icons.Outlined.Schedule,
@@ -552,7 +553,7 @@ private fun VaraCard(
     ExpandableDetailCard(
         title = "Vara",
         subtitle = "Weekday • वार",
-        value = panchanga.vara.displayName,
+        value = stringResource(id = panchanga.vara.stringRes),
         isExpanded = isExpanded,
         onToggleExpand = onToggleExpand,
         icon = Icons.Outlined.CalendarMonth,
@@ -561,7 +562,7 @@ private fun VaraCard(
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             DetailRow("Sanskrit", varaData.sanskrit, ChartDetailColors.TextSecondary)
-            DetailRow("Ruling Planet", panchanga.vara.lord.displayName, ChartDetailColors.getPlanetColor(panchanga.vara.lord))
+            DetailRow("Ruling Planet", stringResource(id = panchanga.vara.lord.stringRes), ChartDetailColors.getPlanetColor(panchanga.vara.lord))
             DetailRow("Element", varaData.element, ChartDetailColors.TextSecondary)
             DetailRow("Direction", varaData.direction, ChartDetailColors.TextSecondary)
 

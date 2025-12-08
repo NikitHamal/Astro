@@ -1,5 +1,7 @@
 package com.astro.storm.ephemeris
 
+import android.content.Context
+import com.astro.storm.R
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
@@ -195,39 +197,39 @@ object AshtakavargaCalculator {
         /**
          * Get plain text summary
          */
-        fun toPlainText(): String = buildString {
+        fun toPlainText(context: Context): String = buildString {
             appendLine("═══════════════════════════════════════════════════════════")
-            appendLine("                ASHTAKAVARGA ANALYSIS")
+            appendLine("                ${context.getString(R.string.ashtakavarga_analysis)}")
             appendLine("═══════════════════════════════════════════════════════════")
             appendLine()
-            appendLine("SARVASHTAKAVARGA (Combined Strength)")
+            appendLine(context.getString(R.string.sarvashtakavarga_combined_strength))
             appendLine("─────────────────────────────────────────────────────────")
             ZodiacSign.entries.forEach { sign ->
                 val bindus = sarvashtakavarga.getBindusForSign(sign)
                 val bar = "█".repeat((bindus * 2).coerceAtMost(40))
                 val strength = when {
-                    bindus >= 30 -> "Strong"
-                    bindus >= 25 -> "Good"
-                    bindus >= 20 -> "Average"
-                    else -> "Weak"
+                    bindus >= 30 -> context.getString(R.string.strong)
+                    bindus >= 25 -> context.getString(R.string.good)
+                    bindus >= 20 -> context.getString(R.string.average)
+                    else -> context.getString(R.string.weak)
                 }
-                appendLine("${sign.displayName.padEnd(12)}: ${bindus.toString().padStart(2)} bindus $bar [$strength]")
+                appendLine("${context.getString(sign.stringRes).padEnd(12)}: ${bindus.toString().padStart(2)} bindus $bar [$strength]")
             }
             appendLine()
-            appendLine("Total SAV Bindus: ${sarvashtakavarga.totalBindus}")
-            appendLine("Average per Sign: ${String.format("%.1f", sarvashtakavarga.totalBindus / 12.0)}")
+            appendLine("${context.getString(R.string.total_sav_bindus)}: ${sarvashtakavarga.totalBindus}")
+            appendLine("${context.getString(R.string.average_per_sign)}: ${String.format("%.1f", sarvashtakavarga.totalBindus / 12.0)}")
             appendLine()
-            appendLine("BHINNASHTAKAVARGA (Individual Planet Strengths)")
+            appendLine(context.getString(R.string.bhinnashtakavarga_individual_planet_strengths))
             appendLine("─────────────────────────────────────────────────────────")
             bhinnashtakavarga.forEach { (planet, bav) ->
                 appendLine()
-                appendLine("${planet.displayName.uppercase()} Ashtakavarga:")
+                appendLine("${context.getString(planet.stringRes).uppercase()} ${context.getString(R.string.ashtakavarga)}:")
                 ZodiacSign.entries.forEach { sign ->
                     val bindus = bav.getBindusForSign(sign)
                     val bar = "▓".repeat(bindus)
                     appendLine("  ${sign.abbreviation}: ${bindus.toString().padStart(1)} $bar")
                 }
-                appendLine("  Total: ${bav.totalBindus} bindus")
+                appendLine("  ${context.getString(R.string.total_bindus)}: ${bav.totalBindus} bindus")
             }
         }
     }
@@ -368,14 +370,14 @@ object AshtakavargaCalculator {
                 val targetSign = ZodiacSign.entries.find { it.number == targetSignNumber }!!
 
                 binduMatrix[targetSign] = (binduMatrix[targetSign] ?: 0) + 1
-                contributorMatrix[targetSign]!!.add(contributor.displayName)
-                prastaraMatrix[targetSign]!![contributor.displayName] = true
+                contributorMatrix[targetSign]!!.add(contributor.name)
+                prastaraMatrix[targetSign]!![contributor.name] = true
             }
 
             // Mark non-contributing positions
             ZodiacSign.entries.forEach { sign ->
-                if (prastaraMatrix[sign]!![contributor.displayName] != true) {
-                    prastaraMatrix[sign]!![contributor.displayName] = false
+                if (prastaraMatrix[sign]!![contributor.name] != true) {
+                    prastaraMatrix[sign]!![contributor.name] = false
                 }
             }
         }
@@ -412,8 +414,8 @@ object AshtakavargaCalculator {
         // Calculate bindu counts by contributor
         val bindusByContributor = mutableMapOf<String, Int>()
         ASHTAKAVARGA_PLANETS.forEach { contributor ->
-            bindusByContributor[contributor.displayName] = prastaraMatrix.values
-                .count { it[contributor.displayName] == true }
+            bindusByContributor[contributor.name] = prastaraMatrix.values
+                .count { it[contributor.name] == true }
         }
         bindusByContributor["Ascendant"] = prastaraMatrix.values
             .count { it["Ascendant"] == true }
@@ -487,7 +489,7 @@ object AshtakavargaCalculator {
         val degreeEnd = kakshaNumber * 3.75
 
         val kakshaLord = if (kakshaNumber <= 7) {
-            KAKSHA_LORDS[kakshaNumber - 1].displayName
+            KAKSHA_LORDS[kakshaNumber - 1].name
         } else {
             KAKSHA_ASCENDANT
         }
@@ -519,7 +521,8 @@ object AshtakavargaCalculator {
     fun getTransitPrediction(
         transitingPlanet: Planet,
         transitSign: ZodiacSign,
-        chart: VedicChart
+        chart: VedicChart,
+        context: Context
     ): TransitPrediction {
         if (transitingPlanet !in ASHTAKAVARGA_PLANETS) {
             return TransitPrediction(
@@ -528,7 +531,7 @@ object AshtakavargaCalculator {
                 bavBindus = 0,
                 savBindus = 0,
                 quality = TransitQuality.UNKNOWN,
-                prediction = "Ashtakavarga not applicable for ${transitingPlanet.displayName}"
+                prediction = context.getString(R.string.ashtakavarga_not_applicable, context.getString(transitingPlanet.stringRes))
             )
         }
 
@@ -548,7 +551,7 @@ object AshtakavargaCalculator {
             else -> TransitQuality.DIFFICULT
         }
 
-        val prediction = generateTransitPrediction(transitingPlanet, transitSign, bavBindus, savBindus, quality)
+        val prediction = generateTransitPrediction(transitingPlanet, transitSign, bavBindus, savBindus, quality, context)
 
         return TransitPrediction(
             planet = transitingPlanet,
@@ -614,50 +617,45 @@ object AshtakavargaCalculator {
         sign: ZodiacSign,
         bavBindus: Int,
         savBindus: Int,
-        quality: TransitQuality
+        quality: TransitQuality,
+        context: Context
     ): String {
         val planetEffects = when (planet) {
-            Planet.SUN -> "authority, father, health, government, career"
-            Planet.MOON -> "mind, emotions, mother, public image"
-            Planet.MARS -> "energy, siblings, property, courage"
-            Planet.MERCURY -> "communication, intellect, business, education"
-            Planet.JUPITER -> "wisdom, children, fortune, spirituality"
-            Planet.VENUS -> "relationships, luxury, arts, vehicles"
-            Planet.SATURN -> "career, longevity, discipline, challenges"
-            else -> "general matters"
+            Planet.SUN -> context.getString(R.string.sun_effects)
+            Planet.MOON -> context.getString(R.string.moon_effects)
+            Planet.MARS -> context.getString(R.string.mars_effects)
+            Planet.MERCURY -> context.getString(R.string.mercury_effects)
+            Planet.JUPITER -> context.getString(R.string.jupiter_effects)
+            Planet.VENUS -> context.getString(R.string.venus_effects)
+            Planet.SATURN -> context.getString(R.string.saturn_effects)
+            else -> context.getString(R.string.general_matters)
         }
 
         val signHouse = sign.number
         val houseMatters = when (signHouse) {
-            1 -> "self, personality, health"
-            2 -> "wealth, family, speech"
-            3 -> "courage, siblings, communication"
-            4 -> "home, mother, comfort"
-            5 -> "children, intelligence, romance"
-            6 -> "enemies, health issues, service"
-            7 -> "partnership, marriage, business"
-            8 -> "transformation, inheritance, occult"
-            9 -> "luck, father, higher learning"
-            10 -> "career, status, authority"
-            11 -> "gains, friends, aspirations"
-            12 -> "losses, spirituality, foreign"
-            else -> "general areas"
+            1 -> context.getString(R.string.house_1_matters)
+            2 -> context.getString(R.string.house_2_matters)
+            3 -> context.getString(R.string.house_3_matters)
+            4 -> context.getString(R.string.house_4_matters)
+            5 -> context.getString(R.string.house_5_matters)
+            6 -> context.getString(R.string.house_6_matters)
+            7 -> context.getString(R.string.house_7_matters)
+            8 -> context.getString(R.string.house_8_matters)
+            9 -> context.getString(R.string.house_9_matters)
+            10 -> context.getString(R.string.house_10_matters)
+            11 -> context.getString(R.string.house_11_matters)
+            12 -> context.getString(R.string.house_12_matters)
+            else -> context.getString(R.string.general_areas)
         }
 
         return when (quality) {
-            TransitQuality.EXCELLENT -> "Transit through ${sign.displayName} with $bavBindus BAV bindus and $savBindus SAV bindus indicates excellent results. " +
-                    "Matters related to $planetEffects will flourish. Areas of $houseMatters receive strong positive influence."
-            TransitQuality.GOOD -> "Transit through ${sign.displayName} brings favorable results with $bavBindus BAV and $savBindus SAV bindus. " +
-                    "Good progress expected in $planetEffects. $houseMatters areas are positively influenced."
-            TransitQuality.AVERAGE -> "Transit through ${sign.displayName} ($bavBindus BAV, $savBindus SAV) brings mixed results. " +
-                    "Some progress in $planetEffects with occasional challenges. Balance needed in $houseMatters."
-            TransitQuality.BELOW_AVERAGE -> "Transit through ${sign.displayName} ($bavBindus BAV, $savBindus SAV) suggests caution needed. " +
-                    "$planetEffects matters may face delays. Extra effort required in $houseMatters areas."
-            TransitQuality.CHALLENGING -> "Challenging transit through ${sign.displayName} with only $bavBindus BAV and $savBindus SAV bindus. " +
-                    "Difficulties possible in $planetEffects. Patience needed for $houseMatters matters."
-            TransitQuality.DIFFICULT -> "Difficult transit period through ${sign.displayName} ($bavBindus BAV, $savBindus SAV). " +
-                    "Significant challenges in $planetEffects areas. Careful handling of $houseMatters required."
-            TransitQuality.UNKNOWN -> "Transit analysis not available for this planet."
+            TransitQuality.EXCELLENT -> context.getString(R.string.transit_excellent, context.getString(sign.stringRes), bavBindus, savBindus, planetEffects, houseMatters)
+            TransitQuality.GOOD -> context.getString(R.string.transit_good, context.getString(sign.stringRes), bavBindus, savBindus, planetEffects, houseMatters)
+            TransitQuality.AVERAGE -> context.getString(R.string.transit_average, context.getString(sign.stringRes), bavBindus, savBindus, planetEffects, houseMatters)
+            TransitQuality.BELOW_AVERAGE -> context.getString(R.string.transit_below_average, context.getString(sign.stringRes), bavBindus, savBindus, planetEffects, houseMatters)
+            TransitQuality.CHALLENGING -> context.getString(R.string.transit_challenging, context.getString(sign.stringRes), bavBindus, savBindus, planetEffects, houseMatters)
+            TransitQuality.DIFFICULT -> context.getString(R.string.transit_difficult, context.getString(sign.stringRes), bavBindus, savBindus, planetEffects, houseMatters)
+            TransitQuality.UNKNOWN -> context.getString(R.string.transit_unknown)
         }
     }
 

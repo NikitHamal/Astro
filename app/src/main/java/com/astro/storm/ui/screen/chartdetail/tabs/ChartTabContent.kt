@@ -1,27 +1,15 @@
 package com.astro.storm.ui.screen.chartdetail.tabs
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -31,25 +19,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Fullscreen
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,10 +31,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.R
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
@@ -70,9 +46,10 @@ import com.astro.storm.ephemeris.DivisionalChartData
 import com.astro.storm.ephemeris.DivisionalChartType
 import com.astro.storm.ui.chart.ChartRenderer
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
-import com.astro.storm.ui.screen.chartdetail.ChartDetailUtils
+import com.astro.storm.util.formatter.ChartFormatter
+import com.astro.storm.util.formatter.PlanetFormatter
 import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.util.*
 
 @Composable
 fun ChartTabContent(
@@ -201,24 +178,43 @@ private fun getChartDataForType(
     }
 }
 
+@Composable
 private fun getChartInfo(type: String): Triple<String, String, String> {
-    return when (type) {
-        "D1" -> Triple("Lagna Chart (Rashi)", "Physical Body, General Life", "D1")
-        "D2" -> Triple("Hora Chart", "Wealth, Prosperity", "D2")
-        "D3" -> Triple("Drekkana Chart", "Siblings, Courage, Vitality", "D3")
-        "D4" -> Triple("Chaturthamsa Chart", "Fortune, Property", "D4")
-        "D7" -> Triple("Saptamsa Chart", "Children, Progeny", "D7")
-        "D9" -> Triple("Navamsa Chart", "Marriage, Dharma, Fortune", "D9")
-        "D10" -> Triple("Dasamsa Chart", "Career, Profession", "D10")
-        "D12" -> Triple("Dwadasamsa Chart", "Parents, Ancestry", "D12")
-        "D16" -> Triple("Shodasamsa Chart", "Vehicles, Pleasures", "D16")
-        "D20" -> Triple("Vimsamsa Chart", "Spiritual Life", "D20")
-        "D24" -> Triple("Siddhamsa Chart", "Education, Learning", "D24")
-        "D27" -> Triple("Bhamsa Chart", "Strength, Weakness", "D27")
-        "D30" -> Triple("Trimsamsa Chart", "Evils, Misfortunes", "D30")
-        "D60" -> Triple("Shashtiamsa Chart", "Past Life Karma", "D60")
-        else -> Triple("Chart", "", type)
+    val nameRes = when (type) {
+        "D1" -> R.string.d_chart_d1_name
+        "D2" -> R.string.d_chart_d2_name
+        "D3" -> R.string.d_chart_d3_name
+        "D4" -> R.string.d_chart_d4_name
+        "D7" -> R.string.d_chart_d7_name
+        "D9" -> R.string.d_chart_d9_name
+        "D10" -> R.string.d_chart_d10_name
+        "D12" -> R.string.d_chart_d12_name
+        "D16" -> R.string.d_chart_d16_name
+        "D20" -> R.string.d_chart_d20_name
+        "D24" -> R.string.d_chart_d24_name
+        "D27" -> R.string.d_chart_d27_name
+        "D30" -> R.string.d_chart_d30_name
+        "D60" -> R.string.d_chart_d60_name
+        else -> R.string.d_chart_unknown_name
     }
+    val purposeRes = when (type) {
+        "D1" -> R.string.d_chart_d1_purpose
+        "D2" -> R.string.d_chart_d2_purpose
+        "D3" -> R.string.d_chart_d3_purpose
+        "D4" -> R.string.d_chart_d4_purpose
+        "D7" -> R.string.d_chart_d7_purpose
+        "D9" -> R.string.d_chart_d9_purpose
+        "D10" -> R.string.d_chart_d10_purpose
+        "D12" -> R.string.d_chart_d12_purpose
+        "D16" -> R.string.d_chart_d16_purpose
+        "D20" -> R.string.d_chart_d20_purpose
+        "D24" -> R.string.d_chart_d24_purpose
+        "D27" -> R.string.d_chart_d27_purpose
+        "D30" -> R.string.d_chart_d30_purpose
+        "D60" -> R.string.d_chart_d60_purpose
+        else -> R.string.d_chart_unknown_purpose
+    }
+    return Triple(stringResource(id = nameRes), stringResource(id = purposeRes), type)
 }
 
 @Composable
@@ -227,28 +223,28 @@ private fun ChartTypeSelector(
     onTypeSelected: (String) -> Unit
 ) {
     val chartTypes = listOf(
-        "D1" to "Lagna",
-        "D2" to "Hora",
-        "D3" to "Drekkana",
-        "D4" to "D4",
-        "D7" to "Saptamsa",
-        "D9" to "Navamsa",
-        "D10" to "Dasamsa",
-        "D12" to "D12",
-        "D16" to "D16",
-        "D20" to "D20",
-        "D24" to "D24",
-        "D27" to "Bhamsa",
-        "D30" to "D30",
-        "D60" to "D60"
+        "D1" to R.string.d_chart_d1_short,
+        "D2" to R.string.d_chart_d2_short,
+        "D3" to R.string.d_chart_d3_short,
+        "D4" to R.string.d_chart_d4_short,
+        "D7" to R.string.d_chart_d7_short,
+        "D9" to R.string.d_chart_d9_short,
+        "D10" to R.string.d_chart_d10_short,
+        "D12" to R.string.d_chart_d12_short,
+        "D16" to R.string.d_chart_d16_short,
+        "D20" to R.string.d_chart_d20_short,
+        "D24" to R.string.d_chart_d24_short,
+        "D27" to R.string.d_chart_d27_short,
+        "D30" to R.string.d_chart_d30_short,
+        "D60" to R.string.d_chart_d60_short
     )
 
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        items(chartTypes) { (type, name) ->
+        items(chartTypes) { (type, nameRes) ->
             FilterChip(
                 selected = selectedType == type,
                 onClick = { onTypeSelected(type) },
-                label = { Text(text = name, fontSize = 12.sp) },
+                label = { Text(text = stringResource(id = nameRes), fontSize = 12.sp) },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = ChartDetailColors.AccentGold.copy(alpha = 0.2f),
                     selectedLabelColor = ChartDetailColors.AccentGold,
@@ -306,7 +302,7 @@ private fun MainChartCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Default.Fullscreen,
-                        contentDescription = "View fullscreen",
+                        contentDescription = stringResource(id = R.string.view_fullscreen),
                         tint = ChartDetailColors.TextMuted,
                         modifier = Modifier.size(20.dp)
                     )
@@ -361,7 +357,7 @@ private fun MainChartCard(
             ChartLegend()
 
             Text(
-                text = "Tap chart to view fullscreen",
+                text = stringResource(id = R.string.tap_chart_to_view_fullscreen),
                 fontSize = 11.sp,
                 color = ChartDetailColors.TextMuted,
                 textAlign = TextAlign.Center,
@@ -388,18 +384,18 @@ private fun ChartLegend() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                TextLegendItem(symbol = "*", label = "Retro", color = ChartDetailColors.AccentGold)
-                TextLegendItem(symbol = "^", label = "Combust", color = ChartDetailColors.AccentGold)
-                TextLegendItem(symbol = "\u00A4", label = "Vargottama", color = ChartDetailColors.AccentGold)
+                TextLegendItem(symbol = "*", label = stringResource(id = R.string.legend_retrograde), color = ChartDetailColors.AccentGold)
+                TextLegendItem(symbol = "^", label = stringResource(id = R.string.legend_combust), color = ChartDetailColors.AccentGold)
+                TextLegendItem(symbol = "\u00A4", label = stringResource(id = R.string.legend_vargottama), color = ChartDetailColors.AccentGold)
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                ArrowLegendItem(isExalted = true, label = "Exalted")
-                ArrowLegendItem(isExalted = false, label = "Debilitated")
-                ShapeLegendItem(isOwnSign = true, label = "Own Sign")
-                ShapeLegendItem(isOwnSign = false, label = "Mool Tri.")
+                ArrowLegendItem(isExalted = true, label = stringResource(id = R.string.legend_exalted))
+                ArrowLegendItem(isExalted = false, label = stringResource(id = R.string.legend_debilitated))
+                ShapeLegendItem(isOwnSign = true, label = stringResource(id = R.string.legend_own_sign))
+                ShapeLegendItem(isOwnSign = false, label = stringResource(id = R.string.legend_moola_trikona))
             }
         }
     }
@@ -477,7 +473,7 @@ private fun BirthDetailsCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Birth Details",
+                        text = stringResource(id = R.string.birth_details_title),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -485,7 +481,7 @@ private fun BirthDetailsCard(
                 }
                 Icon(
                     Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (isExpanded) stringResource(R.string.collapse) else stringResource(R.string.expand),
                     tint = ChartDetailColors.TextMuted,
                     modifier = Modifier.rotate(rotation)
                 )
@@ -507,12 +503,12 @@ private fun BirthDetailsCard(
                         ) {
                             BirthDataItem(
                                 icon = Icons.Outlined.CalendarMonth,
-                                label = "Date",
+                                label = stringResource(id = R.string.birth_details_date),
                                 value = formattedDate
                             )
                             BirthDataItem(
                                 icon = Icons.Outlined.LocationOn,
-                                label = "Location",
+                                label = stringResource(id = R.string.birth_details_location),
                                 value = formattedLocation
                             )
                         }
@@ -522,12 +518,12 @@ private fun BirthDetailsCard(
                         ) {
                             BirthDataItem(
                                 icon = Icons.Outlined.Schedule,
-                                label = "Time",
+                                label = stringResource(id = R.string.birth_details_time),
                                 value = formattedTime
                             )
                             BirthDataItem(
                                 icon = Icons.Outlined.Star,
-                                label = "Ayanamsa",
+                                label = stringResource(id = R.string.birth_details_ayanamsa),
                                 value = chart.ayanamsaName
                             )
                         }
@@ -691,14 +687,14 @@ private fun ChartDetailsCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Planetary Positions",
+                    text = stringResource(id = R.string.planetary_positions_title),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "Tap for details",
+                    text = stringResource(id = R.string.tap_for_details),
                     fontSize = 11.sp,
                     color = ChartDetailColors.TextMuted
                 )
@@ -726,6 +722,7 @@ private fun ChartDetailsCard(
 private fun AscendantRow(chart: VedicChart) {
     val ascSign = ZodiacSign.fromLongitude(chart.ascendant)
     val ascDegree = chart.ascendant % 30.0
+    val context = LocalContext.current
 
     Surface(
         modifier = Modifier
@@ -742,14 +739,14 @@ private fun AscendantRow(chart: VedicChart) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Ascendant (Lagna)",
+                text = stringResource(id = R.string.ascendant_lagna),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
                 color = ChartDetailColors.AccentGold
             )
             Row {
                 Text(
-                    text = ascSign.displayName,
+                    text = PlanetFormatter.formatSignName(ascSign, context),
                     fontSize = 13.sp,
                     color = ChartDetailColors.AccentTeal
                 )
@@ -770,6 +767,7 @@ private fun ClickablePlanetPositionRow(
     onClick: () -> Unit
 ) {
     val color = ChartDetailColors.getPlanetColor(position.planet)
+    val context = LocalContext.current
 
     Surface(
         modifier = Modifier
@@ -797,7 +795,7 @@ private fun ClickablePlanetPositionRow(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = position.planet.displayName,
+                    text = stringResource(id = position.planet.stringRes),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
                     color = color,
@@ -821,7 +819,7 @@ private fun ClickablePlanetPositionRow(
             }
 
             Text(
-                text = position.sign.displayName,
+                text = PlanetFormatter.formatSignName(position.sign, context),
                 fontSize = 13.sp,
                 color = ChartDetailColors.AccentTeal,
                 modifier = Modifier.width(80.dp),
@@ -888,7 +886,7 @@ private fun HouseCuspsCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "House Cusps",
+                        text = stringResource(id = R.string.house_cusps_title),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -896,14 +894,14 @@ private fun HouseCuspsCard(
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = if (isExpanded) "Tap house for details" else "Tap to expand",
+                        text = if (isExpanded) stringResource(id = R.string.tap_house_for_details) else stringResource(id = R.string.tap_to_expand),
                         fontSize = 11.sp,
                         color = ChartDetailColors.TextMuted
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         Icons.Default.ExpandMore,
-                        contentDescription = if (isExpanded) "Collapse" else "Expand",
+                        contentDescription = if (isExpanded) stringResource(id = R.string.collapse) else stringResource(id = R.string.expand),
                         tint = ChartDetailColors.TextMuted,
                         modifier = Modifier.rotate(rotation)
                     )
@@ -973,7 +971,7 @@ private fun HouseCuspItem(
             )
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = sign.abbreviation,
+                    text = stringResource(id = sign.abbreviationRes),
                     fontSize = 12.sp,
                     color = ChartDetailColors.AccentTeal
                 )
@@ -997,6 +995,7 @@ private fun AstronomicalDataCard(
         targetValue = if (isExpanded) 180f else 0f,
         label = "rotation"
     )
+    val context = LocalContext.current
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -1020,7 +1019,7 @@ private fun AstronomicalDataCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Astronomical Data",
+                        text = stringResource(id = R.string.astronomical_data_title),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -1028,14 +1027,14 @@ private fun AstronomicalDataCard(
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = if (isExpanded) "" else "Tap to expand",
+                        text = if (isExpanded) "" else stringResource(id = R.string.tap_to_expand),
                         fontSize = 11.sp,
                         color = ChartDetailColors.TextMuted
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         Icons.Default.ExpandMore,
-                        contentDescription = if (isExpanded) "Collapse" else "Expand",
+                        contentDescription = if (isExpanded) stringResource(id = R.string.collapse) else stringResource(id = R.string.expand),
                         tint = ChartDetailColors.TextMuted,
                         modifier = Modifier.rotate(rotation)
                     )
@@ -1048,11 +1047,11 @@ private fun AstronomicalDataCard(
                 exit = shrinkVertically() + fadeOut()
             ) {
                 Column(modifier = Modifier.padding(top = 12.dp)) {
-                    InfoRow("Julian Day", String.format("%.6f", chart.julianDay))
-                    InfoRow("Ayanamsa", "${chart.ayanamsaName} (${ChartDetailUtils.formatDegree(chart.ayanamsa)})")
-                    InfoRow("Ascendant", ChartDetailUtils.formatDegree(chart.ascendant))
-                    InfoRow("Midheaven", ChartDetailUtils.formatDegree(chart.midheaven))
-                    InfoRow("House System", chart.houseSystem.displayName)
+                    InfoRow(stringResource(id = R.string.info_julian_day), String.format("%.6f", chart.julianDay))
+                    InfoRow(stringResource(id = R.string.info_ayanamsa), "${chart.ayanamsaName} (${ChartFormatter.formatDegree(chart.ayanamsa)})")
+                    InfoRow(stringResource(id = R.string.info_ascendant), ChartFormatter.formatDegree(chart.ascendant))
+                    InfoRow(stringResource(id = R.string.info_midheaven), ChartFormatter.formatDegree(chart.midheaven))
+                    InfoRow(stringResource(id = R.string.info_house_system), stringResource(id = chart.houseSystem.stringRes))
                 }
             }
         }

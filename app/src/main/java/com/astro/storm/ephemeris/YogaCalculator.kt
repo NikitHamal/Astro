@@ -33,26 +33,26 @@ object YogaCalculator {
     /**
      * Yoga category enumeration
      */
-    enum class YogaCategory(val displayName: String, val description: String) {
-        RAJA_YOGA("Raja Yoga", "Power, authority, and leadership combinations"),
-        DHANA_YOGA("Dhana Yoga", "Wealth and prosperity combinations"),
-        MAHAPURUSHA_YOGA("Pancha Mahapurusha Yoga", "Five great person combinations"),
-        NABHASA_YOGA("Nabhasa Yoga", "Pattern-based planetary combinations"),
-        CHANDRA_YOGA("Chandra Yoga", "Moon-based combinations"),
-        SOLAR_YOGA("Solar Yoga", "Sun-based combinations"),
-        NEGATIVE_YOGA("Negative Yoga", "Challenging combinations"),
-        SPECIAL_YOGA("Special Yoga", "Other significant combinations")
+    enum class YogaCategory(@StringRes val stringRes: Int, @StringRes val descriptionRes: Int) {
+        RAJA_YOGA(R.string.yoga_category_raja, R.string.yoga_category_raja_desc),
+        DHANA_YOGA(R.string.yoga_category_dhana, R.string.yoga_category_dhana_desc),
+        MAHAPURUSHA_YOGA(R.string.yoga_category_mahapurusha, R.string.yoga_category_mahapurusha_desc),
+        NABHASA_YOGA(R.string.yoga_category_nabhasa, R.string.yoga_category_nabhasa_desc),
+        CHANDRA_YOGA(R.string.yoga_category_chandra, R.string.yoga_category_chandra_desc),
+        SOLAR_YOGA(R.string.yoga_category_solar, R.string.yoga_category_solar_desc),
+        NEGATIVE_YOGA(R.string.yoga_category_negative, R.string.yoga_category_negative_desc),
+        SPECIAL_YOGA(R.string.yoga_category_special, R.string.yoga_category_special_desc)
     }
 
     /**
      * Yoga strength level
      */
-    enum class YogaStrength(val displayName: String, val value: Int) {
-        EXTREMELY_STRONG("Extremely Strong", 5),
-        STRONG("Strong", 4),
-        MODERATE("Moderate", 3),
-        WEAK("Weak", 2),
-        VERY_WEAK("Very Weak", 1)
+    enum class YogaStrength(@StringRes val stringRes: Int, val value: Int) {
+        EXTREMELY_STRONG(R.string.yoga_strength_extremely_strong, 5),
+        STRONG(R.string.yoga_strength_strong, 4),
+        MODERATE(R.string.yoga_strength_moderate, 3),
+        WEAK(R.string.yoga_strength_weak, 2),
+        VERY_WEAK(R.string.yoga_strength_very_weak, 1)
     }
 
     /**
@@ -91,14 +91,14 @@ object YogaCalculator {
         val overallYogaStrength: Double,
         val timestamp: Long = System.currentTimeMillis()
     ) {
-        fun toPlainText(): String = buildString {
+        fun toPlainText(context: Context): String = buildString {
             appendLine("═══════════════════════════════════════════════════════════")
             appendLine("                    YOGA ANALYSIS REPORT")
             appendLine("═══════════════════════════════════════════════════════════")
             appendLine()
             appendLine("Total Yogas Found: ${allYogas.size}")
             appendLine("Overall Yoga Strength: ${String.format("%.1f", overallYogaStrength)}%")
-            appendLine("Dominant Category: ${dominantYogaCategory.displayName}")
+            appendLine("Dominant Category: ${context.getString(dominantYogaCategory.stringRes)}")
             appendLine()
 
             if (mahapurushaYogas.isNotEmpty()) {
@@ -106,8 +106,8 @@ object YogaCalculator {
                 appendLine("─────────────────────────────────────────────────────────")
                 mahapurushaYogas.forEach { yoga ->
                     appendLine("★ ${yoga.name} (${yoga.sanskritName})")
-                    appendLine("  Planets: ${yoga.planets.joinToString { it.displayName }}")
-                    appendLine("  Strength: ${yoga.strength.displayName} (${String.format("%.0f", yoga.strengthPercentage)}%)")
+                    appendLine("  Planets: ${yoga.planets.joinToString { context.getString(it.stringRes) }}")
+                    appendLine("  Strength: ${context.getString(yoga.strength.stringRes)} (${String.format("%.0f", yoga.strengthPercentage)}%)")
                     appendLine("  Effects: ${yoga.effects}")
                     appendLine()
                 }
@@ -118,9 +118,9 @@ object YogaCalculator {
                 appendLine("─────────────────────────────────────────────────────────")
                 rajaYogas.forEach { yoga ->
                     appendLine("★ ${yoga.name} (${yoga.sanskritName})")
-                    appendLine("  Planets: ${yoga.planets.joinToString { it.displayName }}")
+                    appendLine("  Planets: ${yoga.planets.joinToString { context.getString(it.stringRes) }}")
                     appendLine("  Houses: ${yoga.houses.joinToString()}")
-                    appendLine("  Strength: ${yoga.strength.displayName} (${String.format("%.0f", yoga.strengthPercentage)}%)")
+                    appendLine("  Strength: ${context.getString(yoga.strength.stringRes)} (${String.format("%.0f", yoga.strengthPercentage)}%)")
                     appendLine("  Effects: ${yoga.effects}")
                     appendLine("  Activation: ${yoga.activationPeriod}")
                     appendLine()
@@ -132,8 +132,8 @@ object YogaCalculator {
                 appendLine("─────────────────────────────────────────────────────────")
                 dhanaYogas.forEach { yoga ->
                     appendLine("★ ${yoga.name} (${yoga.sanskritName})")
-                    appendLine("  Planets: ${yoga.planets.joinToString { it.displayName }}")
-                    appendLine("  Strength: ${yoga.strength.displayName}")
+                    appendLine("  Planets: ${yoga.planets.joinToString { context.getString(it.stringRes) }}")
+                    appendLine("  Strength: ${context.getString(yoga.strength.stringRes)}")
                     appendLine("  Effects: ${yoga.effects}")
                     appendLine()
                 }

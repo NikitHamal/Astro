@@ -57,6 +57,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
@@ -154,7 +155,7 @@ private fun ProfileSwitcherDragHandle() {
 @Composable
 private fun ProfileSwitcherHeader() {
     Text(
-        text = "Switch Profile",
+        text = stringResource(id = R.string.switch_profile),
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.SemiBold,
         color = AppTheme.TextPrimary,
@@ -190,14 +191,14 @@ private fun ProfileSwitcherEmptyState() {
             }
 
             Text(
-                text = "No saved charts",
+                text = stringResource(id = R.string.no_saved_charts),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextMuted
             )
 
             Text(
-                text = "Add your first chart to get started",
+                text = stringResource(id = R.string.add_your_first_chart_to_get_started),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSubtle
             )
@@ -406,7 +407,7 @@ private fun AddNewChartButton(onClick: () -> Unit) {
                 role = Role.Button
             )
             .semantics {
-                contentDescription = "Add new birth chart"
+                contentDescription = stringResource(id = R.string.add_new_chart)
             }
             .padding(horizontal = 24.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -434,7 +435,7 @@ private fun AddNewChartButton(onClick: () -> Unit) {
         Spacer(modifier = Modifier.width(16.dp))
 
         Text(
-            text = "Add new chart",
+            text = stringResource(id = R.string.add_new_chart),
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Medium,
             color = AppTheme.AccentPrimary
@@ -468,8 +469,8 @@ fun ProfileHeaderRow(
             )
             .semantics {
                 contentDescription = currentChart?.let {
-                    "Current profile: ${it.name}. Tap to switch profiles"
-                } ?: "No profile selected. Tap to select a profile"
+                    stringResource(id = R.string.current_profile_button_description, it.name)
+                } ?: stringResource(id = R.string.no_profile_selected_button_description)
             }
             .padding(horizontal = 12.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -512,7 +513,7 @@ fun ProfileHeaderRow(
             Spacer(modifier = Modifier.width(10.dp))
 
             Text(
-                text = "Select Profile",
+                text = stringResource(id = R.string.select_profile),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextMuted

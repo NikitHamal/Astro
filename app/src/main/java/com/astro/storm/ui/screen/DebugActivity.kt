@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,7 +33,7 @@ class DebugActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val stackTrace = intent.getStringExtra(EXTRA_STACK_TRACE) ?: "No stack trace available."
+        val stackTrace = intent.getStringExtra(EXTRA_STACK_TRACE) ?: getString(R.string.no_stack_trace_available)
         val activity = this
 
         setContent {
@@ -67,7 +68,7 @@ fun DebugScreen(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
             TopAppBar(
-                title = { Text("Unhandled Exception", color = AppTheme.TextPrimary) },
+                title = { Text(stringResource(id = R.string.unhandled_exception), color = AppTheme.TextPrimary) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = AppTheme.CardBackground)
             )
         }
@@ -80,7 +81,7 @@ fun DebugScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "An unexpected error occurred.",
+                text = stringResource(id = R.string.an_unexpected_error_occurred),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
@@ -113,14 +114,14 @@ fun DebugScreen(
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = AppTheme.AccentPrimary)
                 ) {
-                    Text("Copy Log")
+                    Text(stringResource(id = R.string.copy_log))
                 }
                 Button(
                     onClick = onRestart,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = AppTheme.AccentSecondary)
                 ) {
-                    Text("Restart App")
+                    Text(stringResource(id = R.string.restart_app))
                 }
             }
         }

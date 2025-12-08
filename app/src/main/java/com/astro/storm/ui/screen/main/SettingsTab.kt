@@ -11,20 +11,26 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.annotation.StringRes
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.R
 import com.astro.storm.data.model.HouseSystem
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.util.Language
+import com.astro.storm.util.LocaleManager
+import android.app.Activity
 
 /**
  * Settings Tab - App Settings & Profile Management
@@ -57,7 +63,7 @@ fun SettingsTab(
     ) {
         // Profile Section
         item {
-            SettingsSectionHeader(title = "Profile")
+            SettingsSectionHeader(title = stringResource(id = R.string.profile))
         }
 
         item {
@@ -75,15 +81,15 @@ fun SettingsTab(
             if (currentChart != null) {
                 SettingsItem(
                     icon = Icons.Outlined.Edit,
-                    title = "Edit Profile",
-                    subtitle = "Modify birth details",
+                    title = stringResource(id = R.string.edit_profile),
+                    subtitle = stringResource(id = R.string.modify_birth_details),
                     onClick = onEditProfile
                 )
             } else {
                 SettingsItem(
                     icon = Icons.Outlined.People,
-                    title = "Manage Profiles",
-                    subtitle = "No profile selected",
+                    title = stringResource(id = R.string.manage_profiles),
+                    subtitle = stringResource(id = R.string.no_profile_selected),
                     onClick = onManageProfiles
                 )
             }
@@ -93,14 +99,14 @@ fun SettingsTab(
         if (currentChart != null) {
             item {
                 Spacer(modifier = Modifier.height(8.dp))
-                SettingsSectionHeader(title = "Export")
+                SettingsSectionHeader(title = stringResource(id = R.string.export))
             }
 
             item {
                 SettingsItem(
                     icon = Icons.Outlined.PictureAsPdf,
-                    title = "Export as PDF",
-                    subtitle = "Complete chart report",
+                    title = stringResource(id = R.string.export_as_pdf),
+                    subtitle = stringResource(id = R.string.complete_chart_report),
                     onClick = { onExportChart(ExportFormat.PDF) }
                 )
             }
@@ -108,8 +114,8 @@ fun SettingsTab(
             item {
                 SettingsItem(
                     icon = Icons.Outlined.Image,
-                    title = "Export as Image",
-                    subtitle = "High-quality chart image",
+                    title = stringResource(id = R.string.export_as_image),
+                    subtitle = stringResource(id = R.string.high_quality_chart_image),
                     onClick = { onExportChart(ExportFormat.IMAGE) }
                 )
             }
@@ -117,8 +123,8 @@ fun SettingsTab(
             item {
                 SettingsItem(
                     icon = Icons.Outlined.ContentCopy,
-                    title = "Copy to Clipboard",
-                    subtitle = "Plain text format",
+                    title = stringResource(id = R.string.copy_to_clipboard),
+                    subtitle = stringResource(id = R.string.plain_text_format),
                     onClick = { onExportChart(ExportFormat.CLIPBOARD) }
                 )
             }
@@ -126,8 +132,8 @@ fun SettingsTab(
             item {
                 SettingsItem(
                     icon = Icons.Outlined.Code,
-                    title = "Export as JSON",
-                    subtitle = "Machine-readable format",
+                    title = stringResource(id = R.string.export_as_json),
+                    subtitle = stringResource(id = R.string.machine_readable_format),
                     onClick = { onExportChart(ExportFormat.JSON) }
                 )
             }
@@ -136,7 +142,7 @@ fun SettingsTab(
         // Preferences Section
         item {
             Spacer(modifier = Modifier.height(8.dp))
-            SettingsSectionHeader(title = "Preferences")
+            SettingsSectionHeader(title = stringResource(id = R.string.preferences))
         }
 
         item {
@@ -147,17 +153,21 @@ fun SettingsTab(
             AyanamsaSetting()
         }
 
+        item {
+            LanguageSetting()
+        }
+
         // About Section
         item {
             Spacer(modifier = Modifier.height(8.dp))
-            SettingsSectionHeader(title = "About")
+            SettingsSectionHeader(title = stringResource(id = R.string.about))
         }
 
         item {
             SettingsItem(
                 icon = Icons.Outlined.Info,
-                title = "About AstroStorm",
-                subtitle = "Version 1.0.0",
+                title = stringResource(id = R.string.about_astrostorm),
+                subtitle = stringResource(id = R.string.version_1_0_0),
                 onClick = { /* Show about dialog */ }
             )
         }
@@ -165,8 +175,8 @@ fun SettingsTab(
         item {
             SettingsItem(
                 icon = Icons.Outlined.Science,
-                title = "Calculation Engine",
-                subtitle = "Swiss Ephemeris (JPL Mode)",
+                title = stringResource(id = R.string.calculation_engine),
+                subtitle = stringResource(id = R.string.swiss_ephemeris_jpl_mode),
                 onClick = { /* Show calculation info */ }
             )
         }
@@ -194,9 +204,9 @@ fun SettingsTab(
             containerColor = AppTheme.CardBackground,
             titleContentColor = AppTheme.TextPrimary,
             textContentColor = AppTheme.TextSecondary,
-            title = { Text("Delete Profile") },
+            title = { Text(stringResource(id = R.string.delete_profile)) },
             text = {
-                Text("Are you sure you want to delete ${chartToDelete?.name}? This action cannot be undone.")
+                Text(stringResource(id = R.string.are_you_sure_you_want_to_delete, chartToDelete?.name ?: ""))
             },
             confirmButton = {
                 TextButton(
@@ -206,12 +216,12 @@ fun SettingsTab(
                         chartToDelete = null
                     }
                 ) {
-                    Text("Delete", color = AppTheme.ErrorColor)
+                    Text(stringResource(id = R.string.delete), color = AppTheme.ErrorColor)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel", color = AppTheme.AccentPrimary)
+                    Text(stringResource(id = R.string.cancel), color = AppTheme.AccentPrimary)
                 }
             }
         )
@@ -303,17 +313,17 @@ private fun CurrentProfileCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 ChartDetailItem(
-                    label = "Ascendant",
+                    label = stringResource(id = R.string.ascendant),
                     value = chart.planetPositions.find { it.planet.displayName == "Sun" }?.sign?.displayName
                         ?: com.astro.storm.data.model.ZodiacSign.fromLongitude(chart.ascendant).displayName
                 )
                 ChartDetailItem(
-                    label = "Moon Sign",
+                    label = stringResource(id = R.string.moon_sign),
                     value = chart.planetPositions.find { it.planet == com.astro.storm.data.model.Planet.MOON }?.sign?.displayName
                         ?: "-"
                 )
                 ChartDetailItem(
-                    label = "Nakshatra",
+                    label = stringResource(id = R.string.nakshatra),
                     value = chart.planetPositions.find { it.planet == com.astro.storm.data.model.Planet.MOON }?.nakshatra?.displayName?.take(8)
                         ?: "-"
                 )
@@ -368,14 +378,14 @@ private fun EmptyProfileCard(onManageProfiles: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = "No profile selected",
+                text = stringResource(id = R.string.no_profile_selected),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Tap to select or create a profile",
+                text = stringResource(id = R.string.tap_to_select_or_create_a_profile),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -485,7 +495,7 @@ private fun HouseSystemSetting() {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "House System",
+                        text = stringResource(id = R.string.house_system),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -582,7 +592,7 @@ private fun AyanamsaSetting() {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Ayanamsa",
+                        text = stringResource(id = R.string.ayanamsa),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -655,7 +665,7 @@ private fun AboutCard() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "AstroStorm",
+                text = stringResource(id = R.string.astrostorm),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.AccentPrimary
@@ -664,7 +674,7 @@ private fun AboutCard() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Ultra-Precision Vedic Astrology",
+                text = stringResource(id = R.string.ultra_precision_vedic_astrology),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary
             )
@@ -672,7 +682,7 @@ private fun AboutCard() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Powered by Swiss Ephemeris with JPL planetary data for astronomical-grade accuracy in all calculations.",
+                text = stringResource(id = R.string.powered_by_swiss_ephemeris),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
@@ -684,8 +694,8 @@ private fun AboutCard() {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                FeatureBadge(text = "Lahiri Ayanamsa")
-                FeatureBadge(text = "Placidus Houses")
+                FeatureBadge(text = stringResource(id = R.string.lahiri_ayanamsa))
+                FeatureBadge(text = stringResource(id = R.string.placidus_houses))
             }
         }
     }
@@ -718,7 +728,7 @@ private fun ExportOptionsDialog(
         titleContentColor = AppTheme.TextPrimary,
         title = {
             Text(
-                text = "Export Chart",
+                text = stringResource(id = R.string.export_chart),
                 fontWeight = FontWeight.SemiBold
             )
         },
@@ -741,13 +751,13 @@ private fun ExportOptionsDialog(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
                             Text(
-                                text = format.title,
+                                text = stringResource(id = format.titleRes),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
-                                text = format.description,
+                                text = stringResource(id = format.descriptionRes),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
@@ -758,20 +768,121 @@ private fun ExportOptionsDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel", color = AppTheme.AccentPrimary)
+                Text(stringResource(id = R.string.cancel), color = AppTheme.AccentPrimary)
             }
         }
     )
 }
 
 enum class ExportFormat(
-    val title: String,
-    val description: String,
+    @StringRes val titleRes: Int,
+    @StringRes val descriptionRes: Int,
     val icon: ImageVector
 ) {
-    PDF("PDF Report", "Complete chart analysis", Icons.Outlined.PictureAsPdf),
-    IMAGE("Chart Image", "High-quality PNG", Icons.Outlined.Image),
-    JSON("JSON Data", "Machine-readable format", Icons.Outlined.Code),
-    CSV("CSV Data", "Spreadsheet format", Icons.Outlined.TableChart),
-    CLIPBOARD("Copy Text", "Plain text to clipboard", Icons.Outlined.ContentCopy)
+    PDF(R.string.pdf_report, R.string.complete_chart_analysis, Icons.Outlined.PictureAsPdf),
+    IMAGE(R.string.chart_image, R.string.high_quality_png, Icons.Outlined.Image),
+    JSON(R.string.json_data, R.string.machine_readable_format, Icons.Outlined.Code),
+    CSV(R.string.csv_data, R.string.spreadsheet_format, Icons.Outlined.TableChart),
+    CLIPBOARD(R.string.copy_text, R.string.plain_text_to_clipboard, Icons.Outlined.ContentCopy)
+}
+
+@Composable
+private fun LanguageSetting() {
+    val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+    var selectedLanguage by remember { mutableStateOf(LocaleManager.getLanguage(context)) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(AppTheme.ChipBackground),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Language,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(id = R.string.language),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = selectedLanguage.name.lowercase().replaceFirstChar { it.uppercase() },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.AccentPrimary
+                    )
+                }
+
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted
+                )
+            }
+
+            if (expanded) {
+                HorizontalDivider(color = AppTheme.DividerColor)
+
+                Language.entries.forEach { language ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                selectedLanguage = language
+                                expanded = false
+                                LocaleManager.setLocale(context, language)
+                                (context as? Activity)?.recreate()
+                            }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = language == selectedLanguage,
+                            onClick = {
+                                selectedLanguage = language
+                                expanded = false
+                                LocaleManager.setLocale(context, language)
+                                (context as? Activity)?.recreate()
+                            },
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = AppTheme.AccentPrimary,
+                                unselectedColor = AppTheme.TextMuted
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = language.name.lowercase().replaceFirstChar { it.uppercase() },
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = if (language == selectedLanguage) AppTheme.TextPrimary else AppTheme.TextSecondary
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

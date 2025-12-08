@@ -1,6 +1,8 @@
 package com.astro.storm.ephemeris
 
 import android.content.Context
+import androidx.annotation.StringRes
+import com.astro.storm.R
 import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.Planet
 import swisseph.DblObj
@@ -430,118 +432,118 @@ class PanchangaCalculator(context: Context) : Closeable {
 
 class PanchangaCalculationException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
 
-enum class Tithi(val number: Int, val displayName: String, val sanskrit: String, val group: TithiGroup) {
-    PRATIPADA(1, "Pratipada", "प्रतिपदा", TithiGroup.NANDA),
-    DWITIYA(2, "Dwitiya", "द्वितीया", TithiGroup.BHADRA),
-    TRITIYA(3, "Tritiya", "तृतीया", TithiGroup.JAYA),
-    CHATURTHI(4, "Chaturthi", "चतुर्थी", TithiGroup.RIKTA),
-    PANCHAMI(5, "Panchami", "पञ्चमी", TithiGroup.PURNA),
-    SHASHTHI(6, "Shashthi", "षष्ठी", TithiGroup.NANDA),
-    SAPTAMI(7, "Saptami", "सप्तमी", TithiGroup.BHADRA),
-    ASHTAMI(8, "Ashtami", "अष्टमी", TithiGroup.JAYA),
-    NAVAMI(9, "Navami", "नवमी", TithiGroup.RIKTA),
-    DASHAMI(10, "Dashami", "दशमी", TithiGroup.PURNA),
-    EKADASHI(11, "Ekadashi", "एकादशी", TithiGroup.NANDA),
-    DWADASHI(12, "Dwadashi", "द्वादशी", TithiGroup.BHADRA),
-    TRAYODASHI(13, "Trayodashi", "त्रयोदशी", TithiGroup.JAYA),
-    CHATURDASHI(14, "Chaturdashi", "चतुर्दशी", TithiGroup.RIKTA),
-    PURNIMA(15, "Purnima", "पूर्णिमा", TithiGroup.PURNA),
-    PRATIPADA_K(16, "Pratipada", "प्रतिपदा", TithiGroup.NANDA),
-    DWITIYA_K(17, "Dwitiya", "द्वितीया", TithiGroup.BHADRA),
-    TRITIYA_K(18, "Tritiya", "तृतीया", TithiGroup.JAYA),
-    CHATURTHI_K(19, "Chaturthi", "चतुर्थी", TithiGroup.RIKTA),
-    PANCHAMI_K(20, "Panchami", "पञ्चमी", TithiGroup.PURNA),
-    SHASHTHI_K(21, "Shashthi", "षष्ठी", TithiGroup.NANDA),
-    SAPTAMI_K(22, "Saptami", "सप्तमी", TithiGroup.BHADRA),
-    ASHTAMI_K(23, "Ashtami", "अष्टमी", TithiGroup.JAYA),
-    NAVAMI_K(24, "Navami", "नवमी", TithiGroup.RIKTA),
-    DASHAMI_K(25, "Dashami", "दशमी", TithiGroup.PURNA),
-    EKADASHI_K(26, "Ekadashi", "एकादशी", TithiGroup.NANDA),
-    DWADASHI_K(27, "Dwadashi", "द्वादशी", TithiGroup.BHADRA),
-    TRAYODASHI_K(28, "Trayodashi", "त्रयोदशी", TithiGroup.JAYA),
-    CHATURDASHI_K(29, "Chaturdashi", "चतुर्दशी", TithiGroup.RIKTA),
-    AMAVASYA(30, "Amavasya", "अमावस्या", TithiGroup.PURNA)
+enum class Tithi(val number: Int, @StringRes val stringRes: Int, @StringRes val sanskrit: Int, val group: TithiGroup) {
+    PRATIPADA(1, R.string.tithi_pratipada, R.string.tithi_pratipada_sanskrit, TithiGroup.NANDA),
+    DWITIYA(2, R.string.tithi_dwitiya, R.string.tithi_dwitiya_sanskrit, TithiGroup.BHADRA),
+    TRITIYA(3, R.string.tithi_tritiya, R.string.tithi_tritiya_sanskrit, TithiGroup.JAYA),
+    CHATURTHI(4, R.string.tithi_chaturthi, R.string.tithi_chaturthi_sanskrit, TithiGroup.RIKTA),
+    PANCHAMI(5, R.string.tithi_panchami, R.string.tithi_panchami_sanskrit, TithiGroup.PURNA),
+    SHASHTHI(6, R.string.tithi_shashthi, R.string.tithi_shashthi_sanskrit, TithiGroup.NANDA),
+    SAPTAMI(7, R.string.tithi_saptami, R.string.tithi_saptami_sanskrit, TithiGroup.BHADRA),
+    ASHTAMI(8, R.string.tithi_ashtami, R.string.tithi_ashtami_sanskrit, TithiGroup.JAYA),
+    NAVAMI(9, R.string.tithi_navami, R.string.tithi_navami_sanskrit, TithiGroup.RIKTA),
+    DASHAMI(10, R.string.tithi_dashami, R.string.tithi_dashami_sanskrit, TithiGroup.PURNA),
+    EKADASHI(11, R.string.tithi_ekadashi, R.string.tithi_ekadashi_sanskrit, TithiGroup.NANDA),
+    DWADASHI(12, R.string.tithi_dwadashi, R.string.tithi_dwadashi_sanskrit, TithiGroup.BHADRA),
+    TRAYODASHI(13, R.string.tithi_trayodashi, R.string.tithi_trayodashi_sanskrit, TithiGroup.JAYA),
+    CHATURDASHI(14, R.string.tithi_chaturdashi, R.string.tithi_chaturdashi_sanskrit, TithiGroup.RIKTA),
+    PURNIMA(15, R.string.tithi_purnima, R.string.tithi_purnima_sanskrit, TithiGroup.PURNA),
+    PRATIPADA_K(16, R.string.tithi_pratipada, R.string.tithi_pratipada_sanskrit, TithiGroup.NANDA),
+    DWITIYA_K(17, R.string.tithi_dwitiya, R.string.tithi_dwitiya_sanskrit, TithiGroup.BHADRA),
+    TRITIYA_K(18, R.string.tithi_tritiya, R.string.tithi_tritiya_sanskrit, TithiGroup.JAYA),
+    CHATURTHI_K(19, R.string.tithi_chaturthi, R.string.tithi_chaturthi_sanskrit, TithiGroup.RIKTA),
+    PANCHAMI_K(20, R.string.tithi_panchami, R.string.tithi_panchami_sanskrit, TithiGroup.PURNA),
+    SHASHTHI_K(21, R.string.tithi_shashthi, R.string.tithi_shashthi_sanskrit, TithiGroup.NANDA),
+    SAPTAMI_K(22, R.string.tithi_saptami, R.string.tithi_saptami_sanskrit, TithiGroup.BHADRA),
+    ASHTAMI_K(23, R.string.tithi_ashtami, R.string.tithi_ashtami_sanskrit, TithiGroup.JAYA),
+    NAVAMI_K(24, R.string.tithi_navami, R.string.tithi_navami_sanskrit, TithiGroup.RIKTA),
+    DASHAMI_K(25, R.string.tithi_dashami, R.string.tithi_dashami_sanskrit, TithiGroup.PURNA),
+    EKADASHI_K(26, R.string.tithi_ekadashi, R.string.tithi_ekadashi_sanskrit, TithiGroup.NANDA),
+    DWADASHI_K(27, R.string.tithi_dwadashi, R.string.tithi_dwadashi_sanskrit, TithiGroup.BHADRA),
+    TRAYODASHI_K(28, R.string.tithi_trayodashi, R.string.tithi_trayodashi_sanskrit, TithiGroup.JAYA),
+    CHATURDASHI_K(29, R.string.tithi_chaturdashi, R.string.tithi_chaturdashi_sanskrit, TithiGroup.RIKTA),
+    AMAVASYA(30, R.string.tithi_amavasya, R.string.tithi_amavasya_sanskrit, TithiGroup.PURNA)
 }
 
-enum class TithiGroup(val displayName: String, val nature: String) {
-    NANDA("Nanda", "Joyful"),
-    BHADRA("Bhadra", "Auspicious"),
-    JAYA("Jaya", "Victorious"),
-    RIKTA("Rikta", "Empty"),
-    PURNA("Purna", "Complete")
+enum class TithiGroup(@StringRes val stringRes: Int, @StringRes val nature: Int) {
+    NANDA(R.string.tithi_group_nanda, R.string.tithi_group_nanda_nature),
+    BHADRA(R.string.tithi_group_bhadra, R.string.tithi_group_bhadra_nature),
+    JAYA(R.string.tithi_group_jaya, R.string.tithi_group_jaya_nature),
+    RIKTA(R.string.tithi_group_rikta, R.string.tithi_group_rikta_nature),
+    PURNA(R.string.tithi_group_purna, R.string.tithi_group_purna_nature)
 }
 
-enum class Yoga(val number: Int, val displayName: String, val sanskrit: String, val nature: YogaNature) {
-    VISHKUMBHA(1, "Vishkumbha", "विष्कुम्भ", YogaNature.INAUSPICIOUS),
-    PRITI(2, "Priti", "प्रीति", YogaNature.AUSPICIOUS),
-    AYUSHMAN(3, "Ayushman", "आयुष्मान्", YogaNature.AUSPICIOUS),
-    SAUBHAGYA(4, "Saubhagya", "सौभाग्य", YogaNature.AUSPICIOUS),
-    SHOBHANA(5, "Shobhana", "शोभन", YogaNature.AUSPICIOUS),
-    ATIGANDA(6, "Atiganda", "अतिगण्ड", YogaNature.INAUSPICIOUS),
-    SUKARMA(7, "Sukarma", "सुकर्म", YogaNature.AUSPICIOUS),
-    DHRITI(8, "Dhriti", "धृति", YogaNature.AUSPICIOUS),
-    SHULA(9, "Shula", "शूल", YogaNature.INAUSPICIOUS),
-    GANDA(10, "Ganda", "गण्ड", YogaNature.INAUSPICIOUS),
-    VRIDDHI(11, "Vriddhi", "वृद्धि", YogaNature.AUSPICIOUS),
-    DHRUVA(12, "Dhruva", "ध्रुव", YogaNature.AUSPICIOUS),
-    VYAGHATA(13, "Vyaghata", "व्याघात", YogaNature.INAUSPICIOUS),
-    HARSHANA(14, "Harshana", "हर्षण", YogaNature.AUSPICIOUS),
-    VAJRA(15, "Vajra", "वज्र", YogaNature.MIXED),
-    SIDDHI(16, "Siddhi", "सिद्धि", YogaNature.AUSPICIOUS),
-    VYATIPATA(17, "Vyatipata", "व्यतीपात", YogaNature.INAUSPICIOUS),
-    VARIYAN(18, "Variyan", "वरीयान्", YogaNature.AUSPICIOUS),
-    PARIGHA(19, "Parigha", "परिघ", YogaNature.INAUSPICIOUS),
-    SHIVA(20, "Shiva", "शिव", YogaNature.AUSPICIOUS),
-    SIDDHA(21, "Siddha", "सिद्ध", YogaNature.AUSPICIOUS),
-    SADHYA(22, "Sadhya", "साध्य", YogaNature.AUSPICIOUS),
-    SHUBHA(23, "Shubha", "शुभ", YogaNature.AUSPICIOUS),
-    SHUKLA(24, "Shukla", "शुक्ल", YogaNature.AUSPICIOUS),
-    BRAHMA(25, "Brahma", "ब्रह्म", YogaNature.AUSPICIOUS),
-    INDRA(26, "Indra", "इन्द्र", YogaNature.AUSPICIOUS),
-    VAIDHRITI(27, "Vaidhriti", "वैधृति", YogaNature.INAUSPICIOUS)
+enum class Yoga(val number: Int, @StringRes val stringRes: Int, @StringRes val sanskrit: Int, val nature: YogaNature) {
+    VISHKUMBHA(1, R.string.yoga_vishkumbha, R.string.yoga_vishkumbha_sanskrit, YogaNature.INAUSPICIOUS),
+    PRITI(2, R.string.yoga_priti, R.string.yoga_priti_sanskrit, YogaNature.AUSPICIOUS),
+    AYUSHMAN(3, R.string.yoga_ayushman, R.string.yoga_ayushman_sanskrit, YogaNature.AUSPICIOUS),
+    SAUBHAGYA(4, R.string.yoga_saubhagya, R.string.yoga_saubhagya_sanskrit, YogaNature.AUSPICIOUS),
+    SHOBHANA(5, R.string.yoga_shobhana, R.string.yoga_shobhana_sanskrit, YogaNature.AUSPICIOUS),
+    ATIGANDA(6, R.string.yoga_atiganda, R.string.yoga_atiganda_sanskrit, YogaNature.INAUSPICIOUS),
+    SUKARMA(7, R.string.yoga_sukarma, R.string.yoga_sukarma_sanskrit, YogaNature.AUSPICIOUS),
+    DHRITI(8, R.string.yoga_dhriti, R.string.yoga_dhriti_sanskrit, YogaNature.AUSPICIOUS),
+    SHULA(9, R.string.yoga_shula, R.string.yoga_shula_sanskrit, YogaNature.INAUSPICIOUS),
+    GANDA(10, R.string.yoga_ganda, R.string.yoga_ganda_sanskrit, YogaNature.INAUSPICIOUS),
+    VRIDDHI(11, R.string.yoga_vriddhi, R.string.yoga_vriddhi_sanskrit, YogaNature.AUSPICIOUS),
+    DHRUVA(12, R.string.yoga_dhruva, R.string.yoga_dhruva_sanskrit, YogaNature.AUSPICIOUS),
+    VYAGHATA(13, R.string.yoga_vyaghata, R.string.yoga_vyaghata_sanskrit, YogaNature.INAUSPICIOUS),
+    HARSHANA(14, R.string.yoga_harshana, R.string.yoga_harshana_sanskrit, YogaNature.AUSPICIOUS),
+    VAJRA(15, R.string.yoga_vajra, R.string.yoga_vajra_sanskrit, YogaNature.MIXED),
+    SIDDHI(16, R.string.yoga_siddhi, R.string.yoga_siddhi_sanskrit, YogaNature.AUSPICIOUS),
+    VYATIPATA(17, R.string.yoga_vyatipata, R.string.yoga_vyatipata_sanskrit, YogaNature.INAUSPICIOUS),
+    VARIYAN(18, R.string.yoga_variyan, R.string.yoga_variyan_sanskrit, YogaNature.AUSPICIOUS),
+    PARIGHA(19, R.string.yoga_parigha, R.string.yoga_parigha_sanskrit, YogaNature.INAUSPICIOUS),
+    SHIVA(20, R.string.yoga_shiva, R.string.yoga_shiva_sanskrit, YogaNature.AUSPICIOUS),
+    SIDDHA(21, R.string.yoga_siddha, R.string.yoga_siddha_sanskrit, YogaNature.AUSPICIOUS),
+    SADHYA(22, R.string.yoga_sadhya, R.string.yoga_sadhya_sanskrit, YogaNature.AUSPICIOUS),
+    SHUBHA(23, R.string.yoga_shubha, R.string.yoga_shubha_sanskrit, YogaNature.AUSPICIOUS),
+    SHUKLA(24, R.string.yoga_shukla, R.string.yoga_shukla_sanskrit, YogaNature.AUSPICIOUS),
+    BRAHMA(25, R.string.yoga_brahma, R.string.yoga_brahma_sanskrit, YogaNature.AUSPICIOUS),
+    INDRA(26, R.string.yoga_indra, R.string.yoga_indra_sanskrit, YogaNature.AUSPICIOUS),
+    VAIDHRITI(27, R.string.yoga_vaidhriti, R.string.yoga_vaidhriti_sanskrit, YogaNature.INAUSPICIOUS)
 }
 
-enum class YogaNature(val displayName: String) {
-    AUSPICIOUS("Auspicious"),
-    INAUSPICIOUS("Inauspicious"),
-    MIXED("Mixed")
+enum class YogaNature(@StringRes val stringRes: Int) {
+    AUSPICIOUS(R.string.yoga_nature_auspicious),
+    INAUSPICIOUS(R.string.yoga_nature_inauspicious),
+    MIXED(R.string.yoga_nature_mixed)
 }
 
-enum class Karana(val displayName: String, val sanskrit: String, val type: KaranaType) {
-    KIMSTUGHNA("Kimstughna", "किंस्तुघ्न", KaranaType.FIXED),
-    BAVA("Bava", "बव", KaranaType.MOVABLE),
-    BALAVA("Balava", "बालव", KaranaType.MOVABLE),
-    KAULAVA("Kaulava", "कौलव", KaranaType.MOVABLE),
-    TAITILA("Taitila", "तैतिल", KaranaType.MOVABLE),
-    GARA("Gara", "गर", KaranaType.MOVABLE),
-    VANIJA("Vanija", "वणिज", KaranaType.MOVABLE),
-    VISHTI("Vishti", "विष्टि", KaranaType.MOVABLE),
-    SHAKUNI("Shakuni", "शकुनि", KaranaType.FIXED),
-    CHATUSHPADA("Chatushpada", "चतुष्पाद", KaranaType.FIXED),
-    NAGA("Naga", "नाग", KaranaType.FIXED);
+enum class Karana(@StringRes val stringRes: Int, @StringRes val sanskrit: Int, val type: KaranaType) {
+    KIMSTUGHNA(R.string.karana_kimstughna, R.string.karana_kimstughna_sanskrit, KaranaType.FIXED),
+    BAVA(R.string.karana_bava, R.string.karana_bava_sanskrit, KaranaType.MOVABLE),
+    BALAVA(R.string.karana_balava, R.string.karana_balava_sanskrit, KaranaType.MOVABLE),
+    KAULAVA(R.string.karana_kaulava, R.string.karana_kaulava_sanskrit, KaranaType.MOVABLE),
+    TAITILA(R.string.karana_taitila, R.string.karana_taitila_sanskrit, KaranaType.MOVABLE),
+    GARA(R.string.karana_gara, R.string.karana_gara_sanskrit, KaranaType.MOVABLE),
+    VANIJA(R.string.karana_vanija, R.string.karana_vanija_sanskrit, KaranaType.MOVABLE),
+    VISHTI(R.string.karana_vishti, R.string.karana_vishti_sanskrit, KaranaType.MOVABLE),
+    SHAKUNI(R.string.karana_shakuni, R.string.karana_shakuni_sanskrit, KaranaType.FIXED),
+    CHATUSHPADA(R.string.karana_chatushpada, R.string.karana_chatushpada_sanskrit, KaranaType.FIXED),
+    NAGA(R.string.karana_naga, R.string.karana_naga_sanskrit, KaranaType.FIXED);
 
-    val nature: String
-        get() = type.displayName
+    val nature: Int
+        get() = type.stringRes
 }
 
-enum class KaranaType(val displayName: String) {
-    FIXED("Fixed"),
-    MOVABLE("Movable")
+enum class KaranaType(@StringRes val stringRes: Int) {
+    FIXED(R.string.karana_type_fixed),
+    MOVABLE(R.string.karana_type_movable)
 }
 
-enum class Vara(val number: Int, val displayName: String, val sanskrit: String, val lord: Planet) {
-    SUNDAY(0, "Sunday", "रविवार", Planet.SUN),
-    MONDAY(1, "Monday", "सोमवार", Planet.MOON),
-    TUESDAY(2, "Tuesday", "मंगलवार", Planet.MARS),
-    WEDNESDAY(3, "Wednesday", "बुधवार", Planet.MERCURY),
-    THURSDAY(4, "Thursday", "गुरुवार", Planet.JUPITER),
-    FRIDAY(5, "Friday", "शुक्रवार", Planet.VENUS),
-    SATURDAY(6, "Saturday", "शनिवार", Planet.SATURN)
+enum class Vara(val number: Int, @StringRes val stringRes: Int, @StringRes val sanskrit: Int, val lord: Planet) {
+    SUNDAY(0, R.string.vara_sunday, R.string.vara_sunday_sanskrit, Planet.SUN),
+    MONDAY(1, R.string.vara_monday, R.string.vara_monday_sanskrit, Planet.MOON),
+    TUESDAY(2, R.string.vara_tuesday, R.string.vara_tuesday_sanskrit, Planet.MARS),
+    WEDNESDAY(3, R.string.vara_wednesday, R.string.vara_wednesday_sanskrit, Planet.MERCURY),
+    THURSDAY(4, R.string.vara_thursday, R.string.vara_thursday_sanskrit, Planet.JUPITER),
+    FRIDAY(5, R.string.vara_friday, R.string.vara_friday_sanskrit, Planet.VENUS),
+    SATURDAY(6, R.string.vara_saturday, R.string.vara_saturday_sanskrit, Planet.SATURN)
 }
 
-enum class Paksha(val displayName: String, val sanskrit: String) {
-    SHUKLA("Shukla Paksha", "शुक्ल पक्ष"),
-    KRISHNA("Krishna Paksha", "कृष्ण पक्ष")
+enum class Paksha(@StringRes val stringRes: Int, @StringRes val sanskrit: Int) {
+    SHUKLA(R.string.paksha_shukla, R.string.paksha_shukla_sanskrit),
+    KRISHNA(R.string.paksha_krishna, R.string.paksha_krishna_sanskrit)
 }
 
 data class TithiData(
@@ -610,53 +612,53 @@ data class PanchangaData(
     val tithiInPaksha: Int
         get() = if (tithi.number <= 15) tithi.number else tithi.number - 15
 
-    fun toFormattedString(): String {
+    fun toFormattedString(context: Context): String {
         return buildString {
             appendLine("════════════════════════════════════════════════════")
-            appendLine("                    पञ्चाङ्ग (PANCHANGA)")
+            appendLine("                    ${context.getString(R.string.panchanga_title)}")
             appendLine("════════════════════════════════════════════════════")
             appendLine()
-            appendLine("तिथि (TITHI)")
-            appendLine("  ${tithi.tithi.displayName} (${tithi.tithi.sanskrit})")
-            appendLine("  ${paksha.displayName} - ${tithiInPaksha}/15")
-            appendLine("  Group: ${tithi.group.displayName} (${tithi.group.nature})")
-            appendLine("  Progress: ${formatProgress(tithi.progress)}")
-            appendLine("  Lord: ${tithi.lord.displayName}")
+            appendLine(context.getString(R.string.tithi_title))
+            appendLine("  ${context.getString(tithi.tithi.stringRes)} (${context.getString(tithi.tithi.sanskrit)})")
+            appendLine("  ${context.getString(paksha.stringRes)} - ${tithiInPaksha}/15")
+            appendLine("  ${context.getString(R.string.group_title)}: ${context.getString(tithi.group.stringRes)} (${context.getString(tithi.group.nature)})")
+            appendLine("  ${context.getString(R.string.progress_title)}: ${formatProgress(tithi.progress)}")
+            appendLine("  ${context.getString(R.string.lord_title)}: ${context.getString(tithi.lord.stringRes)}")
             appendLine()
-            appendLine("नक्षत्र (NAKSHATRA)")
-            appendLine("  ${nakshatra.nakshatra.displayName} - Pada ${nakshatra.pada}")
-            appendLine("  Number: ${nakshatra.number}/27")
-            appendLine("  Progress: ${formatProgress(nakshatra.progress)}")
-            appendLine("  Lord: ${nakshatra.lord.displayName}")
+            appendLine(context.getString(R.string.nakshatra_title))
+            appendLine("  ${context.getString(nakshatra.nakshatra.stringRes)} - Pada ${nakshatra.pada}")
+            appendLine("  ${context.getString(R.string.number_title)}: ${nakshatra.number}/27")
+            appendLine("  ${context.getString(R.string.progress_title)}: ${formatProgress(nakshatra.progress)}")
+            appendLine("  ${context.getString(R.string.lord_title)}: ${context.getString(nakshatra.lord.stringRes)}")
             appendLine()
-            appendLine("योग (YOGA)")
-            appendLine("  ${yoga.yoga.displayName} (${yoga.yoga.sanskrit})")
-            appendLine("  Nature: ${yoga.yoga.nature.displayName}")
-            appendLine("  Number: ${yoga.number}/27")
-            appendLine("  Progress: ${formatProgress(yoga.progress)}")
+            appendLine(context.getString(R.string.yoga_title))
+            appendLine("  ${context.getString(yoga.yoga.stringRes)} (${context.getString(yoga.yoga.sanskrit)})")
+            appendLine("  ${context.getString(R.string.nature_title)}: ${context.getString(yoga.yoga.nature.stringRes)}")
+            appendLine("  ${context.getString(R.string.number_title)}: ${yoga.number}/27")
+            appendLine("  ${context.getString(R.string.progress_title)}: ${formatProgress(yoga.progress)}")
             appendLine()
-            appendLine("करण (KARANA)")
-            appendLine("  ${karana.karana.displayName} (${karana.karana.sanskrit})")
-            appendLine("  Type: ${karana.karana.nature}")
-            appendLine("  Number: ${karana.number}/60")
-            appendLine("  Progress: ${formatProgress(karana.progress)}")
+            appendLine(context.getString(R.string.karana_title))
+            appendLine("  ${context.getString(karana.karana.stringRes)} (${context.getString(karana.karana.sanskrit)})")
+            appendLine("  ${context.getString(R.string.type_title)}: ${context.getString(karana.karana.nature)}")
+            appendLine("  ${context.getString(R.string.number_title)}: ${karana.number}/60")
+            appendLine("  ${context.getString(R.string.progress_title)}: ${formatProgress(karana.progress)}")
             if (karana.isVishti) {
-                appendLine("  ⚠ Vishti (Bhadra) Karana - Inauspicious")
+                appendLine("  ${context.getString(R.string.vishti_warning)}")
             }
             appendLine()
-            appendLine("वार (VARA): ${vara.displayName} (${vara.sanskrit})")
-            appendLine("  Lord: ${vara.lord.displayName}")
+            appendLine("${context.getString(R.string.vara_title)}: ${context.getString(vara.stringRes)} (${context.getString(vara.sanskrit)})")
+            appendLine("  ${context.getString(R.string.lord_title)}: ${context.getString(vara.lord.stringRes)}")
             appendLine()
             appendLine("────────────────────────────────────────────────────")
-            appendLine("सूर्योदय (SUNRISE): $sunrise")
-            appendLine("सूर्यास्त (SUNSET): $sunset")
-            appendLine("चन्द्र प्रकाश (MOON ILLUMINATION): ${formatProgress(moonPhase)}")
+            appendLine("${context.getString(R.string.sunrise_title)}: $sunrise")
+            appendLine("${context.getString(R.string.sunset_title)}: $sunset")
+            appendLine("${context.getString(R.string.moon_illumination_title)}: ${formatProgress(moonPhase)}")
             appendLine()
             appendLine("────────────────────────────────────────────────────")
-            appendLine("SIDEREAL POSITIONS")
-            appendLine("  Sun: ${formatDegrees(sunLongitude)}")
-            appendLine("  Moon: ${formatDegrees(moonLongitude)}")
-            appendLine("  Ayanamsa (Lahiri): ${formatDegrees(ayanamsa)}")
+            appendLine(context.getString(R.string.sidereal_positions_title))
+            appendLine("  ${context.getString(R.string.sun_title)}: ${formatDegrees(sunLongitude)}")
+            appendLine("  ${context.getString(R.string.moon_title)}: ${formatDegrees(moonLongitude)}")
+            appendLine("  ${context.getString(R.string.ayanamsa_lahiri_title)}: ${formatDegrees(ayanamsa)}")
             appendLine()
         }
     }

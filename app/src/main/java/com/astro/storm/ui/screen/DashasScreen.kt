@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -183,7 +184,7 @@ private fun DashasTopBar(
             title = {
                 Column(modifier = Modifier.fillMaxWidth(0.85f)) {
                     Text(
-                        text = "Vimshottari Dasha",
+                        text = stringResource(id = R.string.vimshottari_dasha),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
@@ -201,7 +202,7 @@ private fun DashasTopBar(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Navigate back",
+                        contentDescription = stringResource(id = R.string.navigate_back),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -211,7 +212,7 @@ private fun DashasTopBar(
                     IconButton(onClick = onJumpToToday) {
                         Icon(
                             imageVector = Icons.Outlined.CalendarToday,
-                            contentDescription = "Jump to current period",
+                            contentDescription = stringResource(id = R.string.jump_to_current_period),
                             tint = AppTheme.AccentPrimary
                         )
                     }
@@ -243,7 +244,7 @@ private fun TopBarSubtitle(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = "Calculating...",
+                    text = stringResource(id = R.string.calculating),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
                     fontSize = 12.sp
@@ -251,7 +252,7 @@ private fun TopBarSubtitle(
             }
             periodInfo.hasError -> {
                 Text(
-                    text = "Error • $chartName",
+                    text = stringResource(id = R.string.error_chart_name, chartName),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error,
                     fontSize = 12.sp,
@@ -320,14 +321,14 @@ private fun DashaLoadingContent() {
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = "Calculating Dasha Timeline",
+                text = stringResource(id = R.string.calculating_dasha_timeline),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Computing planetary periods based on\nMoon's Nakshatra position...",
+                text = stringResource(id = R.string.computing_planetary_periods),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
@@ -367,7 +368,7 @@ private fun DashaErrorContent(
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = "Calculation Failed",
+                text = stringResource(id = R.string.calculation_failed),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -389,7 +390,7 @@ private fun DashaErrorContent(
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = "Try Again",
+                    text = stringResource(id = R.string.try_again),
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                 )
@@ -425,14 +426,14 @@ private fun DashaEmptyContent(onBack: () -> Unit) {
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = "No Chart Selected",
+                text = stringResource(id = R.string.no_chart_selected),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Please select or create a birth profile\nto view the Dasha timeline.",
+                text = stringResource(id = R.string.please_select_or_create_a_birth_profile),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
@@ -444,7 +445,7 @@ private fun DashaEmptyContent(onBack: () -> Unit) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = "Go Back",
+                    text = stringResource(id = R.string.go_back),
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                 )

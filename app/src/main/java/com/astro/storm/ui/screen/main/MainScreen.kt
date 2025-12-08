@@ -9,12 +9,14 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.annotation.StringRes
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.astro.storm.data.model.VedicChart
@@ -180,7 +182,7 @@ private fun MainTopBar(
     TopAppBar(
         title = {
             Text(
-                text = currentTab.title,
+                text = stringResource(id = currentTab.titleRes),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -220,13 +222,13 @@ private fun MainBottomNavigation(
                 icon = {
                     Icon(
                         imageVector = if (isSelected) tab.selectedIcon else tab.unselectedIcon,
-                        contentDescription = tab.title,
+                        contentDescription = stringResource(id = tab.titleRes),
                         modifier = Modifier.size(24.dp)
                     )
                 },
                 label = {
                     Text(
-                        text = tab.title,
+                        text = stringResource(id = tab.titleRes),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                     )
@@ -247,22 +249,22 @@ private fun MainBottomNavigation(
  * Main navigation tabs
  */
 enum class MainTab(
-    val title: String,
+    @StringRes val titleRes: Int,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector
 ) {
     HOME(
-        title = "Home",
+        titleRes = R.string.home,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home
     ),
     INSIGHTS(
-        title = "Insights",
+        titleRes = R.string.insights,
         selectedIcon = Icons.Filled.Insights,
         unselectedIcon = Icons.Outlined.Insights
     ),
     SETTINGS(
-        title = "Settings",
+        titleRes = R.string.settings,
         selectedIcon = Icons.Filled.Settings,
         unselectedIcon = Icons.Outlined.Settings
     )

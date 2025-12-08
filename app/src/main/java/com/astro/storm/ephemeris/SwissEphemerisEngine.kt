@@ -379,14 +379,7 @@ class SwissEphemerisEngine private constructor(
         val normalizedLongitude = AstrologicalUtils.normalizeLongitude(rawLongitude)
 
         val sign = ZodiacSign.fromLongitude(normalizedLongitude)
-        val degreeInSign = normalizedLongitude % DEGREES_PER_SIGN
-
-        val wholeDegrees = degreeInSign.toInt()
-        val fractionalDegrees = degreeInSign - wholeDegrees
-        val totalMinutes = fractionalDegrees * MINUTES_PER_DEGREE
-        val wholeMinutes = totalMinutes.toInt()
-        val fractionalMinutes = totalMinutes - wholeMinutes
-        val seconds = fractionalMinutes * SECONDS_PER_MINUTE
+        val degreesInSign = normalizedLongitude % DEGREES_PER_SIGN
 
         val isRetrograde = speed < 0.0
 
@@ -401,9 +394,7 @@ class SwissEphemerisEngine private constructor(
             distance = distance,
             speed = speed,
             sign = sign,
-            degree = wholeDegrees.toDouble(),
-            minutes = wholeMinutes.toDouble(),
-            seconds = seconds,
+            degreesInSign = degreesInSign,
             isRetrograde = isRetrograde,
             nakshatra = nakshatra,
             nakshatraPada = pada,

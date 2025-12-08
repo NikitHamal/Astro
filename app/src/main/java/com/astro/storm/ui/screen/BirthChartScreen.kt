@@ -48,6 +48,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -76,8 +77,8 @@ fun BirthChartScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = "Birth Chart",
-            message = "No chart data available. Please select or create a profile first.",
+            title = stringResource(id = R.string.birth_chart),
+            message = stringResource(id = R.string.no_chart_data_available),
             onBack = onBack
         )
         return
@@ -87,7 +88,7 @@ fun BirthChartScreen(
     val chartRenderer = remember { ChartRenderer() }
 
     var showFullScreenChart by remember { mutableStateOf(false) }
-    var fullScreenChartTitle by remember { mutableStateOf("Lagna") }
+    var fullScreenChartTitle by remember { mutableStateOf(stringResource(id = R.string.lagna)) }
     var fullScreenDivisionalData by remember { mutableStateOf<DivisionalChartData?>(null) }
     var selectedPlanetPosition by remember { mutableStateOf<PlanetPosition?>(null) }
     var selectedNakshatra by remember { mutableStateOf<Pair<Nakshatra, Int>?>(null) }
@@ -184,7 +185,7 @@ private fun BirthChartTopBar(
         title = {
             Column {
                 Text(
-                    text = "Birth Chart",
+                    text = stringResource(id = R.string.birth_chart),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -202,7 +203,7 @@ private fun BirthChartTopBar(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Navigate back",
+                    contentDescription = stringResource(id = R.string.navigate_back),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -211,7 +212,7 @@ private fun BirthChartTopBar(
             IconButton(onClick = onCopyToClipboard) {
                 Icon(
                     imageVector = Icons.Outlined.ContentCopy,
-                    contentDescription = "Copy chart data to clipboard",
+                    contentDescription = stringResource(id = R.string.copy_chart_data_to_clipboard),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -252,7 +253,7 @@ fun EmptyChartScreen(
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Navigate back",
+                            contentDescription = stringResource(id = R.string.navigate_back),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -293,7 +294,7 @@ fun EmptyChartScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "No Chart Available",
+                    text = stringResource(id = R.string.no_chart_available),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,

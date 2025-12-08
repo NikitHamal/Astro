@@ -316,10 +316,10 @@ class ChartExporter(private val context: Context) {
             }.trim().ifEmpty { "-" }
 
             val data = listOf(
-                position.planet.displayName,
-                position.sign.displayName,
+                context.getString(position.planet.stringRes),
+                context.getString(position.sign.stringRes),
                 "$deg° $min' $sec\"",
-                position.nakshatra.displayName,
+                context.getString(position.nakshatra.stringRes),
                 position.nakshatraPada.toString(),
                 position.house.toString(),
                 status
@@ -353,9 +353,9 @@ class ChartExporter(private val context: Context) {
             "Julian Day: ${String.format("%.6f", chart.julianDay)}",
             "Ayanamsa: ${chart.ayanamsaName}",
             "Ayanamsa Value: ${formatDegree(chart.ayanamsa)}",
-            "Ascendant: ${formatDegree(chart.ascendant)} (${ZodiacSign.fromLongitude(chart.ascendant).displayName})",
-            "Midheaven: ${formatDegree(chart.midheaven)} (${ZodiacSign.fromLongitude(chart.midheaven).displayName})",
-            "House System: ${chart.houseSystem.displayName}"
+            "Ascendant: ${formatDegree(chart.ascendant)} (${context.getString(ZodiacSign.fromLongitude(chart.ascendant).stringRes)})",
+            "Midheaven: ${formatDegree(chart.midheaven)} (${context.getString(ZodiacSign.fromLongitude(chart.midheaven).stringRes)})",
+            "House System: ${context.getString(chart.houseSystem.stringRes)}"
         )
 
         astroData.forEach { line ->
@@ -380,7 +380,7 @@ class ChartExporter(private val context: Context) {
         chart.houseCusps.forEachIndexed { index, cusp ->
             val houseNum = index + 1
             val sign = ZodiacSign.fromLongitude(cusp)
-            val text = "House $houseNum: ${formatDegree(cusp)} (${sign.abbreviation})"
+            val text = "House $houseNum: ${formatDegree(cusp)} (${context.getString(sign.abbreviationRes)})"
 
             if (houseNum <= 6) {
                 canvas.drawText(text, col1X, yPos + 12f, paint)
@@ -448,13 +448,13 @@ class ChartExporter(private val context: Context) {
                 paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
 
                 topYogas.forEach { yoga ->
-                    val planets = yoga.planets.joinToString(", ") { it.displayName }
+                    val planets = yoga.planets.joinToString(", ") { context.getString(it.stringRes) }
                     canvas.drawText("• ${yoga.name} ($planets)", PDF_MARGIN.toFloat() + 10f, yPos + 10f, paint)
                     yPos += 14f
 
                     paint.color = Color.rgb(100, 100, 100)
                     val effectText = if (yoga.effects.length > 80) yoga.effects.substring(0, 77) + "..." else yoga.effects
-                    canvas.drawText("  ${yoga.strength.displayName}: $effectText", PDF_MARGIN.toFloat() + 15f, yPos + 10f, paint)
+                    canvas.drawText("  ${context.getString(yoga.strength.stringRes)}: $effectText", PDF_MARGIN.toFloat() + 15f, yPos + 10f, paint)
                     paint.color = Color.rgb(50, 50, 50)
                     yPos += 16f
 
@@ -509,7 +509,7 @@ class ChartExporter(private val context: Context) {
 
             significantAspects.forEach { aspect ->
                 val applying = if (aspect.isApplying) "Applying" else "Separating"
-                val text = "${aspect.aspectingPlanet.displayName} ${aspect.aspectType.displayName} ${aspect.aspectedPlanet.displayName} " +
+                val text = "${context.getString(aspect.aspectingPlanet.stringRes)} ${context.getString(aspect.aspectType.stringRes)} ${context.getString(aspect.aspectedPlanet.stringRes)} " +
                         "(Orb: ${String.format("%.1f", aspect.exactOrb)}°, $applying)"
                 canvas.drawText(text, PDF_MARGIN.toFloat(), yPos + 10f, paint)
                 yPos += 14f
@@ -555,9 +555,9 @@ class ChartExporter(private val context: Context) {
 
         canvas.drawText("Overall Chart Strength: ${String.format("%.1f", shadbala.overallStrengthScore)}%", PDF_MARGIN.toFloat(), yPos + 12f, paint)
         yPos += 20f
-        canvas.drawText("Strongest Planet: ${shadbala.strongestPlanet.displayName}", PDF_MARGIN.toFloat(), yPos + 12f, paint)
+        canvas.drawText("Strongest Planet: ${context.getString(shadbala.strongestPlanet.stringRes)}", PDF_MARGIN.toFloat(), yPos + 12f, paint)
         yPos += 20f
-        canvas.drawText("Weakest Planet: ${shadbala.weakestPlanet.displayName}", PDF_MARGIN.toFloat(), yPos + 12f, paint)
+        canvas.drawText("Weakest Planet: ${context.getString(shadbala.weakestPlanet.stringRes)}", PDF_MARGIN.toFloat(), yPos + 12f, paint)
         yPos += 35f
 
         // Detailed Table
@@ -588,11 +588,11 @@ class ChartExporter(private val context: Context) {
             xPos = PDF_MARGIN.toFloat()
 
             val data = listOf(
-                planetShadbala.planet.displayName,
+                context.getString(planetShadbala.planet.stringRes),
                 String.format("%.2f", planetShadbala.totalRupas),
                 String.format("%.2f", planetShadbala.requiredRupas),
                 String.format("%.0f%%", planetShadbala.percentageOfRequired),
-                planetShadbala.strengthRating.displayName
+                context.getString(planetShadbala.strengthRating.stringRes)
             )
 
             // Color code based on strength
@@ -620,7 +620,7 @@ class ChartExporter(private val context: Context) {
         if (strongest != null) {
             paint.textSize = 12f
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-            canvas.drawText("${strongest.planet.displayName} Strength Breakdown:", PDF_MARGIN.toFloat(), yPos + 12f, paint)
+            canvas.drawText("${context.getString(strongest.planet.stringRes)} Strength Breakdown:", PDF_MARGIN.toFloat(), yPos + 12f, paint)
             yPos += 25f
 
             paint.textSize = 9f
@@ -855,14 +855,14 @@ class ChartExporter(private val context: Context) {
                     put("longitude", pos.longitude)
                     put("latitude", pos.latitude)
                     put("sign", pos.sign.name)
-                    put("signDisplayName", pos.sign.displayName)
+                    put("signDisplayName", context.getString(pos.sign.stringRes))
                     put("degreeInSign", pos.longitude % 30.0)
                     put("degree", pos.degree)
                     put("minutes", pos.minutes)
                     put("seconds", pos.seconds)
                     put("house", pos.house)
                     put("nakshatra", pos.nakshatra.name)
-                    put("nakshatraDisplayName", pos.nakshatra.displayName)
+                    put("nakshatraDisplayName", context.getString(pos.nakshatra.stringRes))
                     put("nakshatraPada", pos.nakshatraPada)
                     put("isRetrograde", pos.isRetrograde)
                     put("speed", pos.speed)
@@ -1026,8 +1026,8 @@ class ChartExporter(private val context: Context) {
 
             chart.planetPositions.forEach { pos ->
                 csvBuilder.appendLine(
-                    "${pos.planet.displayName},${pos.longitude},${pos.sign.displayName}," +
-                            "${pos.longitude % 30.0},${pos.house},${pos.nakshatra.displayName}," +
+                    "${context.getString(pos.planet.stringRes)},${pos.longitude},${context.getString(pos.sign.stringRes)}," +
+                            "${pos.longitude % 30.0},${pos.house},${context.getString(pos.nakshatra.stringRes)}," +
                             "${pos.nakshatraPada},${pos.isRetrograde},${pos.speed}"
                 )
             }
@@ -1037,7 +1037,7 @@ class ChartExporter(private val context: Context) {
             csvBuilder.appendLine("House,Cusp,Sign")
 
             chart.houseCusps.forEachIndexed { index, cusp ->
-                csvBuilder.appendLine("${index + 1},$cusp,${ZodiacSign.fromLongitude(cusp).displayName}")
+                csvBuilder.appendLine("${index + 1},$cusp,${context.getString(ZodiacSign.fromLongitude(cusp).stringRes)}")
             }
 
             csvBuilder.appendLine()
@@ -1047,7 +1047,7 @@ class ChartExporter(private val context: Context) {
             val shadbala = ShadbalaCalculator.calculateShadbala(chart)
             shadbala.planetaryStrengths.forEach { (planet, strength) ->
                 csvBuilder.appendLine(
-                    "${planet.displayName},${strength.totalRupas},${strength.requiredRupas}," +
+                    "${context.getString(planet.stringRes)},${strength.totalRupas},${strength.requiredRupas}," +
                             "${strength.percentageOfRequired},${strength.sthanaBala.total},${strength.digBala}," +
                             "${strength.kalaBala.total},${strength.chestaBala},${strength.naisargikaBala},${strength.drikBala}"
                 )
@@ -1069,11 +1069,11 @@ class ChartExporter(private val context: Context) {
             csvBuilder.appendLine()
             csvBuilder.appendLine("BHINNASHTAKAVARGA")
             csvBuilder.append("Planet")
-            ZodiacSign.entries.forEach { csvBuilder.append(",${it.abbreviation}") }
+            ZodiacSign.entries.forEach { csvBuilder.append("," + context.getString(it.abbreviationRes)) }
             csvBuilder.appendLine(",Total")
 
             ashtakavarga.bhinnashtakavarga.forEach { (planet, bav) ->
-                csvBuilder.append(planet.symbol)
+                csvBuilder.append(context.getString(planet.symbolRes))
                 ZodiacSign.entries.forEach { sign ->
                     csvBuilder.append(",${bav.getBindusForSign(sign)}")
                 }
@@ -1086,10 +1086,10 @@ class ChartExporter(private val context: Context) {
 
             val yogaAnalysis = YogaCalculator.calculateYogas(chart)
             yogaAnalysis.allYogas.forEach { yoga ->
-                val planets = yoga.planets.joinToString(";") { it.displayName }
+                val planets = yoga.planets.joinToString(";") { context.getString(it.stringRes) }
                 csvBuilder.appendLine(
-                    "\"${yoga.name}\",${yoga.category.displayName},\"$planets\"," +
-                            "${yoga.strength.displayName},${yoga.strengthPercentage},${yoga.isAuspicious}"
+                    "\"${yoga.name}\",${context.getString(yoga.category.stringRes)},\"$planets\"," +
+                            "${context.getString(yoga.strength.stringRes)},${yoga.strengthPercentage},${yoga.isAuspicious}"
                 )
             }
 
@@ -1290,29 +1290,29 @@ class ChartExporter(private val context: Context) {
                 val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
                 val sunPos = chart.planetPositions.find { it.planet == Planet.SUN }
 
-                appendLine("Ascendant (Lagna): ${ascSign.displayName}")
-                moonPos?.let { appendLine("Moon Sign (Rashi): ${it.sign.displayName}") }
-                sunPos?.let { appendLine("Sun Sign         : ${it.sign.displayName}") }
-                moonPos?.let { appendLine("Birth Nakshatra  : ${it.nakshatra.displayName} (Pada ${it.nakshatraPada})") }
+                appendLine("Ascendant (Lagna): ${context.getString(ascSign.stringRes)}")
+                moonPos?.let { appendLine("Moon Sign (Rashi): ${context.getString(it.sign.stringRes)}") }
+                sunPos?.let { appendLine("Sun Sign         : ${context.getString(it.sign.stringRes)}") }
+                moonPos?.let { appendLine("Birth Nakshatra  : ${context.getString(it.nakshatra.stringRes)} (Pada ${it.nakshatraPada})") }
                 appendLine()
 
                 // Planetary Positions
-                append(chart.toPlainText())
+                append(com.astro.storm.util.formatter.ChartFormatter.toPlainText(chart, context))
                 appendLine()
 
                 // Yogas
                 val yogaAnalysis = YogaCalculator.calculateYogas(chart)
-                append(yogaAnalysis.toPlainText())
+                append(yogaAnalysis.toPlainText(context))
                 appendLine()
 
                 // Shadbala Summary
                 val shadbala = ShadbalaCalculator.calculateShadbala(chart)
-                append(shadbala.getSummaryInterpretation())
+                append(shadbala.getSummaryInterpretation(context))
                 appendLine()
 
                 // Ashtakavarga Summary
                 val ashtakavarga = AshtakavargaCalculator.calculateAshtakavarga(chart)
-                append(ashtakavarga.toPlainText())
+                append(ashtakavarga.toPlainText(context))
                 appendLine()
 
                 // Footer
