@@ -616,22 +616,14 @@ object DivisionalChartCalculator {
     ): PlanetPosition {
         val divisionalLongitude = calculateLongitude(position.longitude)
         val divisionalSign = ZodiacSign.fromLongitude(divisionalLongitude)
-        val degreeInSign = getDegreeInSign(divisionalLongitude)
+        val degreesInSign = getDegreeInSign(divisionalLongitude)
         val (nakshatra, pada) = Nakshatra.fromLongitude(divisionalLongitude)
         val divisionalHouse = calculateHouseFromSign(divisionalSign.number, ascendantSignNumber)
-
-        val wholeDegree = floor(degreeInSign).toInt()
-        val fractionalPart = degreeInSign - wholeDegree
-        val totalMinutes = fractionalPart * 60.0
-        val wholeMinutes = floor(totalMinutes).toInt()
-        val seconds = (totalMinutes - wholeMinutes) * 60.0
 
         return position.copy(
             longitude = divisionalLongitude,
             sign = divisionalSign,
-            degree = wholeDegree.toDouble(),
-            minutes = wholeMinutes.toDouble(),
-            seconds = seconds,
+            degreesInSign = degreesInSign,
             nakshatra = nakshatra,
             nakshatraPada = pada,
             house = divisionalHouse

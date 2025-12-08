@@ -1,5 +1,6 @@
 package com.astro.storm.ephemeris
 
+import android.content.Context
 import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
@@ -287,13 +288,13 @@ object DashaCalculator {
         }
     }
 
-    enum class DashaLevel(val displayName: String, val levelNumber: Int) {
-        MAHADASHA("Mahadasha", 1),
-        ANTARDASHA("Antardasha/Bhukti", 2),
-        PRATYANTARDASHA("Pratyantardasha", 3),
-        SOOKSHMADASHA("Sookshmadasha", 4),
-        PRANADASHA("Pranadasha", 5),
-        DEHADASHA("Dehadasha", 6)
+    enum class DashaLevel(@StringRes val stringRes: Int, val levelNumber: Int) {
+        MAHADASHA(R.string.mahadasha_label, 1),
+        ANTARDASHA(R.string.antardasha_label, 2),
+        PRATYANTARDASHA(R.string.pratyantardasha_label, 3),
+        SOOKSHMADASHA(R.string.sookshmadasha_label, 4),
+        PRANADASHA(R.string.pranadasha_label, 5),
+        DEHADASHA(R.string.dehadasha_label, 6)
     }
 
     data class DashaTimeline(
@@ -312,16 +313,16 @@ object DashaCalculator {
         val currentDehadasha: Dehadasha?,
         val upcomingSandhis: List<DashaSandhi>
     ) {
-        fun getCurrentPeriodDescription(): String {
+        fun getCurrentPeriodDescription(context: Context): String {
             return buildString {
                 currentMahadasha?.let { md ->
-                    append("${md.planet.displayName} Mahadasha")
+                    append("${context.getString(md.planet.stringRes)} Mahadasha")
                     currentAntardasha?.let { ad ->
-                        append(" → ${ad.planet.displayName} Bhukti")
+                        append(" → ${context.getString(ad.planet.stringRes)} Bhukti")
                         currentPratyantardasha?.let { pd ->
-                            append(" → ${pd.planet.displayName} Pratyantar")
+                            append(" → ${context.getString(pd.planet.stringRes)} Pratyantar")
                             currentSookshmadasha?.let { sd ->
-                                append(" → ${sd.planet.displayName} Sookshma")
+                                append(" → ${context.getString(sd.planet.stringRes)} Sookshma")
                             }
                         }
                     }
@@ -329,20 +330,20 @@ object DashaCalculator {
             }
         }
 
-        fun getFullPeriodDescription(): String {
+        fun getFullPeriodDescription(context: Context): String {
             return buildString {
                 currentMahadasha?.let { md ->
-                    append("${md.planet.displayName} Mahadasha")
+                    append("${context.getString(md.planet.stringRes)} Mahadasha")
                     currentAntardasha?.let { ad ->
-                        append(" → ${ad.planet.displayName} Bhukti")
+                        append(" → ${context.getString(ad.planet.stringRes)} Bhukti")
                         currentPratyantardasha?.let { pd ->
-                            append(" → ${pd.planet.displayName} Pratyantar")
+                            append(" → ${context.getString(pd.planet.stringRes)} Pratyantar")
                             currentSookshmadasha?.let { sd ->
-                                append(" → ${sd.planet.displayName} Sookshma")
+                                append(" → ${context.getString(sd.planet.stringRes)} Sookshma")
                                 currentPranadasha?.let { prd ->
-                                    append(" → ${prd.planet.displayName} Prana")
+                                    append(" → ${context.getString(prd.planet.stringRes)} Prana")
                                     currentDehadasha?.let { dd ->
-                                        append(" → ${dd.planet.displayName} Deha")
+                                        append(" → ${context.getString(dd.planet.stringRes)} Deha")
                                     }
                                 }
                             }
@@ -352,34 +353,34 @@ object DashaCalculator {
             }
         }
 
-        fun getShortDescription(): String {
+        fun getShortDescription(context: Context): String {
             return buildString {
                 currentMahadasha?.let { md ->
-                    append(md.planet.symbol)
+                    append(context.getString(md.planet.symbolRes))
                     currentAntardasha?.let { ad ->
-                        append("-${ad.planet.symbol}")
+                        append("-${context.getString(ad.planet.symbolRes)}")
                         currentPratyantardasha?.let { pd ->
-                            append("-${pd.planet.symbol}")
+                            append("-${context.getString(pd.planet.symbolRes)}")
                         }
                     }
                 } ?: append("--")
             }
         }
 
-        fun getFullShortDescription(): String {
+        fun getFullShortDescription(context: Context): String {
             return buildString {
                 currentMahadasha?.let { md ->
-                    append(md.planet.symbol)
+                    append(context.getString(md.planet.symbolRes))
                     currentAntardasha?.let { ad ->
-                        append("-${ad.planet.symbol}")
+                        append("-${context.getString(ad.planet.symbolRes)}")
                         currentPratyantardasha?.let { pd ->
-                            append("-${pd.planet.symbol}")
+                            append("-${context.getString(pd.planet.symbolRes)}")
                             currentSookshmadasha?.let { sd ->
-                                append("-${sd.planet.symbol}")
+                                append("-${context.getString(sd.planet.symbolRes)}")
                                 currentPranadasha?.let { prd ->
-                                    append("-${prd.planet.symbol}")
+                                    append("-${context.getString(prd.planet.symbolRes)}")
                                     currentDehadasha?.let { dd ->
-                                        append("-${dd.planet.symbol}")
+                                        append("-${context.getString(dd.planet.symbolRes)}")
                                     }
                                 }
                             }
@@ -453,8 +454,8 @@ object DashaCalculator {
             )
         }
 
-        fun getCombinedPeriodString(): String {
-            return getAllLords().joinToString("-") { it.displayName }
+        fun getCombinedPeriodString(context: Context): String {
+            return getAllLords().joinToString("-") { context.getString(it.stringRes) }
         }
     }
 
@@ -980,9 +981,9 @@ object DashaCalculator {
         return timeline.getDashaAtDate(date)
     }
 
-    fun formatDashaPeriod(mahadasha: Mahadasha): String {
+    fun formatDashaPeriod(mahadasha: Mahadasha, context: Context): String {
         return buildString {
-            appendLine("${mahadasha.planet.displayName} Mahadasha")
+            appendLine("${context.getString(mahadasha.planet.stringRes)} Mahadasha")
             appendLine("Duration: ${String.format("%.2f", mahadasha.durationYears)} years")
             appendLine("Period: ${mahadasha.startDate} to ${mahadasha.endDate}")
             if (mahadasha.isActive) {
@@ -993,34 +994,34 @@ object DashaCalculator {
         }
     }
 
-    fun formatCurrentPeriod(timeline: DashaTimeline): String {
+    fun formatCurrentPeriod(timeline: DashaTimeline, context: Context): String {
         return buildString {
             timeline.currentMahadasha?.let { md ->
-                appendLine("Mahadasha: ${md.planet.displayName}")
+                appendLine("Mahadasha: ${context.getString(md.planet.stringRes)}")
                 appendLine("  Progress: ${String.format("%.1f", md.getProgressPercent())}%")
                 appendLine("  Remaining: ${String.format("%.1f", md.getRemainingYears())} years")
 
                 timeline.currentAntardasha?.let { ad ->
-                    appendLine("\nAntardasha: ${ad.planet.displayName}")
+                    appendLine("\nAntardasha: ${context.getString(ad.planet.stringRes)}")
                     appendLine("  Progress: ${String.format("%.1f", ad.getProgressPercent())}%")
                     appendLine("  Remaining: ${ad.getRemainingDays()} days")
 
                     timeline.currentPratyantardasha?.let { pd ->
-                        appendLine("\nPratyantardasha: ${pd.planet.displayName}")
+                        appendLine("\nPratyantardasha: ${context.getString(pd.planet.stringRes)}")
                         appendLine("  Period: ${pd.startDate} to ${pd.endDate}")
 
                         timeline.currentSookshmadasha?.let { sd ->
-                            appendLine("\nSookshmadasha: ${sd.planet.displayName}")
+                            appendLine("\nSookshmadasha: ${context.getString(sd.planet.stringRes)}")
                             appendLine("  Period: ${sd.startDate} to ${sd.endDate}")
                             appendLine("  Duration: ${sd.durationDays} days")
 
                             timeline.currentPranadasha?.let { prd ->
-                                appendLine("\nPranadasha: ${prd.planet.displayName}")
+                                appendLine("\nPranadasha: ${context.getString(prd.planet.stringRes)}")
                                 appendLine("  Period: ${prd.startDate} to ${prd.endDate}")
                                 appendLine("  Duration: ${prd.getDurationString()}")
 
                                 timeline.currentDehadasha?.let { dd ->
-                                    appendLine("\nDehadasha: ${dd.planet.displayName}")
+                                    appendLine("\nDehadasha: ${context.getString(dd.planet.stringRes)}")
                                     appendLine("  Period: ${dd.startDate} to ${dd.endDate}")
                                     appendLine("  Duration: ${dd.getDurationString()}")
                                 }

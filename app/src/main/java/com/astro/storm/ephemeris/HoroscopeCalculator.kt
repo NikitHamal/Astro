@@ -77,13 +77,13 @@ class HoroscopeCalculator(private val context: Context) : AutoCloseable {
         val advice: String
     )
 
-    enum class LifeArea(val displayName: String, val houses: List<Int>) {
-        CAREER("Career", listOf(10, 6, 2)),
-        LOVE("Love & Relationships", listOf(7, 5, 11)),
-        HEALTH("Health & Vitality", listOf(1, 6, 8)),
-        FINANCE("Finance & Wealth", listOf(2, 11, 5)),
-        FAMILY("Family & Home", listOf(4, 2, 12)),
-        SPIRITUALITY("Spiritual Growth", listOf(9, 12, 5))
+    enum class LifeArea(@StringRes val stringRes: Int, val houses: List<Int>) {
+        CAREER(R.string.life_area_career, listOf(10, 6, 2)),
+        LOVE(R.string.life_area_love, listOf(7, 5, 11)),
+        HEALTH(R.string.life_area_health, listOf(1, 6, 8)),
+        FINANCE(R.string.life_area_finance, listOf(2, 11, 5)),
+        FAMILY(R.string.life_area_family, listOf(4, 2, 12)),
+        SPIRITUALITY(R.string.life_area_spirituality, listOf(9, 12, 5))
     }
 
     data class LuckyElements(
@@ -337,13 +337,13 @@ class HoroscopeCalculator(private val context: Context) : AutoCloseable {
         }
     }
 
-    private fun formatActiveDasha(timeline: DashaCalculator.DashaTimeline): String {
+    private fun formatActiveDasha(timeline: DashaCalculator.DashaTimeline, context: Context): String {
         val md = timeline.currentMahadasha ?: return "Calculating..."
         val ad = timeline.currentAntardasha
         return if (ad != null) {
-            "${md.planet.displayName}-${ad.planet.displayName}"
+            "${context.getString(md.planet.stringRes)}-${context.getString(ad.planet.stringRes)}"
         } else {
-            md.planet.displayName
+            context.getString(md.planet.stringRes)
         }
     }
 
@@ -425,7 +425,8 @@ class HoroscopeCalculator(private val context: Context) : AutoCloseable {
         natalPosition: PlanetPosition?,
         vedhaInfo: VedhaInfo,
         ashtakavargaScore: Int?,
-        transitSign: ZodiacSign
+        transitSign: ZodiacSign,
+        context: Context
     ): Triple<String, Int, Boolean> {
         val favorableHouses = GOCHARA_FAVORABLE_HOUSES[planet] ?: emptyList()
         var isFavorable = houseFromMoon in favorableHouses
@@ -435,7 +436,7 @@ class HoroscopeCalculator(private val context: Context) : AutoCloseable {
         influenceBuilder.append(baseInfluence)
 
         if (vedhaInfo.hasVedha && isFavorable) {
-            influenceBuilder.append(" However, ${vedhaInfo.obstructingPlanet?.displayName} creates Vedha obstruction, reducing benefits.")
+            influenceBuilder.append(" However, ${vedhaInfo.obstructingPlanet?.let { context.getString(it.stringRes) }} creates Vedha obstruction, reducing benefits.")
             baseStrength = (baseStrength * 0.5).toInt().coerceAtLeast(2)
             if (baseStrength <= 3) isFavorable = false
         }
@@ -774,10 +775,11 @@ class HoroscopeCalculator(private val context: Context) : AutoCloseable {
     private fun buildWeeklyOverview(
         dashaLord: Planet,
         avgEnergy: Double,
-        dailyHighlights: List<DailyHighlight>
+        dailyHighlights: List<DailyHighlight>,
+        context: Context
     ): String {
         val builder = StringBuilder()
-        builder.append("This week under your ${dashaLord.displayName} Mahadasha brings ")
+        builder.append("This week under your ${context.getString(dashaLord.stringRes)} Mahadasha brings ")
 
         when {
             avgEnergy >= 7 -> builder.append("excellent opportunities for growth and success. ")
@@ -802,13 +804,14 @@ class HoroscopeCalculator(private val context: Context) : AutoCloseable {
 
     private fun generateWeeklyAdvice(
         dashaTimeline: DashaCalculator.DashaTimeline,
-        keyDates: List<KeyDate>
+        keyDates: List<KeyDate>,
+        context: Context
     ): String {
         val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
         val baseAdvice = DASHA_WEEKLY_ADVICE[currentDashaLord] ?: "maintain balance and trust in divine timing."
 
         val builder = StringBuilder()
-        builder.append("During this ${currentDashaLord.displayName} period, ")
+        builder.append("During this ${context.getString(currentDashaLord.stringRes)} period, ")
         builder.append(baseAdvice)
 
         keyDates.firstOrNull { it.isPositive }?.let {

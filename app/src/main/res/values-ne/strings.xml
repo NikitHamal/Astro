@@ -241,6 +241,238 @@
     <string name="key_areas_of_focus">ध्यान दिनुपर्ने मुख्य क्षेत्रहरू</string>
     <string name="language">भाषा</string>
 
+    <!-- Matchmaking Enums -->
+    <string name="varna_brahmin">ब्राह्मण</string>
+    <string name="varna_kshatriya">क्षत्रिय</string>
+    <string name="varna_vaishya">वैश्य</string>
+    <string name="varna_shudra">शूद्र</string>
+
+    <string name="vashya_chatushpada">चतुष्पाद</string>
+    <string name="vashya_manava">मानव</string>
+    <string name="vashya_jalachara">जलचर</string>
+    <string name="vashya_vanachara">वनचर</string>
+    <string name="vashya_keeta">कीट</string>
+
+    <string name="gana_deva">देव</string>
+    <string name="gana_manushya">मनुष्य</string>
+    <string name="gana_rakshasa">राक्षस</string>
+    <string name="gana_deva_desc">दिव्य - सात्विक, कोमल, आध्यात्मिक</string>
+    <string name="gana_manushya_desc">मानव - राजसिक, सन्तुलित, सांसारिक</string>
+    <string name="gana_rakshasa_desc">राक्षस - तामसिक, आक्रामक, प्रभावशाली</string>
+
+    <string name="yoni_animal_horse">अश्व</string>
+    <string name="yoni_animal_elephant">गज</string>
+    <string name="yoni_animal_sheep">भेडा</string>
+    <string name="yoni_animal_serpent">सर्प</string>
+    <string name="yoni_animal_dog">कुकुर</string>
+    <string name="yoni_animal_cat">बिरालो</string>
+    <string name="yoni_animal_rat">मुसा</string>
+    <string name="yoni_animal_cow">गाई</string>
+    <string name="yoni_animal_buffalo">भैंसी</string>
+    <string name="yoni_animal_tiger">बाघ</string>
+    <string name="yoni_animal_deer">मृग</string>
+    <string name="yoni_animal_monkey">बाँदर</string>
+    <string name="yoni_animal_mongoose">न्याउरीमुसा</string>
+    <string name="yoni_animal_lion">सिंह</string>
+
+    <string name="yoni_gender_male">पुरुष</string>
+    <string name="yoni_gender_female">स्त्री</string>
+
+    <string name="nadi_adi">आदि (वात)</string>
+    <string name="nadi_madhya">मध्य (पित्त)</string>
+    <string name="nadi_antya">अन्त्य (कफ)</string>
+    <string name="nadi_adi_desc">प्रारम्भ - वायु तत्व, गति र स्नायु प्रणाली नियन्त्रण गर्दछ</string>
+    <string name="nadi_madhya_desc">मध्य - अग्नि तत्व, पाचन र चयापचय नियन्त्रण गर्दछ</string>
+    <string name="nadi_antya_desc">अन्त्य - जल तत्व, संरचना र स्नेहन नियन्त्रण गर्दछ</string>
+
+    <string name="rajju_pada">पाद रज्जु</string>
+    <string name="rajju_kati">कटि रज्जु</string>
+    <string name="rajju_nabhi">नाभि रज्जु</string>
+    <string name="rajju_kantha">कण्ठ रज्जु</string>
+    <string name="rajju_siro">शिरो रज्जु</string>
+    <string name="rajju_body_feet">खुट्टा</string>
+    <string name="rajju_body_waist">कम्मर</string>
+    <string name="rajju_body_navel">नाभि</string>
+    <string name="rajju_body_neck">घाँटी</string>
+    <string name="rajju_body_head">टाउको</string>
+
+    <string name="manglik_dosha_none">माङ्गलिक दोष छैन</string>
+    <string name="manglik_dosha_partial">आंशिक माङ्गलिक</string>
+    <string name="manglik_dosha_full">पूर्ण माङ्गलिक</string>
+    <string name="manglik_dosha_double">दोहोरो माङ्गलिक (गम्भीर)</string>
+
+    <string name="compatibility_rating_excellent">उत्कृष्ट मेल</string>
+    <string name="compatibility_rating_good">राम्रो मेल</string>
+    <string name="compatibility_rating_average">औसत मेल</string>
+    <string name="compatibility_rating_below_average">औसतभन्दा कम</string>
+    <string name="compatibility_rating_poor">कमजोर मेल</string>
+    <string name="compatibility_rating_excellent_desc">विवाहको लागि अत्यधिक सिफारिश गरिएको। सामञ्जस्यपूर्ण ग्रह स्थितिहरूको साथ सबै कारकहरूमा बलियो अनुकूलता।</string>
+    <string name="compatibility_rating_good_desc">सिफारिश गरिएको। सजिलै व्यवस्थापन गर्न सकिने सामान्य भिन्नताहरूको साथ राम्रो समग्र अनुकूलता।</string>
+    <string name="compatibility_rating_average_desc">केही उपायहरूको साथ स्वीकार्य। आपसी समझ र प्रयास आवश्यक पर्ने मध्यम अनुकूलता।</string>
+    <string name="compatibility_rating_below_average_desc">सावधानी अपनाउन सल्लाह दिइन्छ। उपाय र परामर्श मार्फत सम्बोधन गर्न आवश्यक धेरै अनुकूलता मुद्दाहरू।</string>
+    <string name="compatibility_rating_poor_desc">सिफारिश नगरिएको। निरन्तर कठिनाइहरू निम्त्याउन सक्ने महत्त्वपूर्ण अनुकूलता चुनौतीहरू।</string>
+
+    <!-- Muhurta Calculator Enums & Strings -->
+    <string name="activity_marriage">विवाह</string>
+    <string name="activity_marriage_desc">विवाह समारोह र मगनी</string>
+    <string name="activity_travel">यात्रा</string>
+    <string name="activity_travel_desc">लामो र छोटो दूरीको यात्रा</string>
+    <string name="activity_business">व्यापार</string>
+    <string name="activity_business_desc">नयाँ उद्यम, सम्झौता, किनबेच</string>
+    <string name="activity_property">सम्पत्ति</string>
+    <string name="activity_property_desc">सम्पत्ति किनबेच, गृह प्रवेश</string>
+    <string name="activity_education">शिक्षा</string>
+    <string name="activity_education_desc">अध्ययन सुरु, परीक्षा, विद्यारम्भ</string>
+    <string name="activity_medical">चिकित्सा</string>
+    <string name="activity_medical_desc">शल्यक्रिया, उपचार, स्वास्थ्य प्रक्रिया</string>
+    <string name="activity_vehicle">वाहन</string>
+    <string name="activity_vehicle_desc">वाहन खरिद वा पहिलो पटक चलाउने</string>
+    <string name="activity_spiritual">आध्यात्मिक</string>
+    <string name="activity_spiritual_desc">धार्मिक समारोह, पूजा, दीक्षा, उपनयन</string>
+    <string name="activity_griha_pravesha">गृह प्रवेश</string>
+    <string name="activity_griha_pravesha_desc">नयाँ घरमा सर्ने समारोह</string>
+    <string name="activity_naming_ceremony">नामाकरण</string>
+    <string name="activity_naming_ceremony_desc">बच्चाको नाम राख्ने समारोह</string>
+    <string name="activity_general">सामान्य</string>
+    <string name="activity_general_desc">सामान्य शुभ गतिविधिहरू</string>
+
+    <string name="vara_sunday">आइतबार</string>
+    <string name="vara_monday">सोमबार</string>
+    <string name="vara_tuesday">मङ्गलबार</string>
+    <string name="vara_wednesday">बुधबार</string>
+    <string name="vara_thursday">बिहिबार</string>
+    <string name="vara_friday">शुक्रबार</string>
+    <string name="vara_saturday">शनिबार</string>
+
+    <string name="choghadiya_udveg">उद्वेग</string>
+    <string name="choghadiya_char">चर</string>
+    <string name="choghadiya_labh">लाभ</string>
+    <string name="choghadiya_amrit">अमृत</string>
+    <string name="choghadiya_kaal">काल</string>
+    <string name="choghadiya_shubh">शुभ</string>
+    <string name="choghadiya_rog">रोग</string>
+
+    <string name="choghadiya_nature_excellent">उत्तम</string>
+    <string name="choghadiya_nature_very_good">धेरै राम्रो</string>
+    <string name="choghadiya_nature_good">राम्रो</string>
+    <string name="choghadiya_nature_neutral">सामान्य</string>
+    <string name="choghadiya_nature_inauspicious">अशुभ</string>
+
+    <string name="nakshatra_nature_dhruva">ध्रुव/स्थिर</string>
+    <string name="nakshatra_nature_chara">चर/चल</string>
+    <string name="nakshatra_nature_tikshna">तीक्ष्ण/दारुण</string>
+    <string name="nakshatra_nature_ugra">उग्र/क्रूर</string>
+    <string name="nakshatra_nature_mridu">मृदु/मैत्र</string>
+    <string name="nakshatra_nature_kshipra">क्षिप्र/लघु</string>
+    <string name="nakshatra_nature_mishra">मिश्र/साधारण</string>
+
+    <string name="hora_nature_benefic">शुभ</string>
+    <string name="hora_nature_malefic">अशुभ</string>
+    <string name="hora_nature_neutral">सामान्य</string>
+
+    <string name="tithi_nature_nanda">नन्दा - आनन्द</string>
+    <string name="tithi_nature_bhadra">भद्रा - शुभ</string>
+    <string name="tithi_nature_jaya">जया - विजय</string>
+    <string name="tithi_nature_rikta">रिक्ता - खाली</string>
+    <string name="tithi_nature_purna">पूर्णा - पूर्ण</string>
+
+    <string name="nakshatra_gana_deva">देव</string>
+    <string name="nakshatra_gana_manushya">मनुष्य</string>
+    <string name="nakshatra_gana_rakshasa">राक्षस</string>
+
+    <string name="nakshatra_element_vayu">वायु</string>
+    <string name="nakshatra_element_agni">अग्नि</string>
+    <string name="nakshatra_element_prithvi">पृथ्वी</string>
+    <string name="nakshatra_element_jala">जल</string>
+    <string name="nakshatra_element_akasha">आकाश</string>
+
+    <string name="karana_type_sthira">स्थिर</string>
+    <string name="karana_type_chara">चर</string>
+
+    <string-array name="movable_karanas_array">
+        <item>बव</item>
+        <item>बालव</item>
+        <item>कौलव</item>
+        <item>तैतिल</item>
+        <item>गरिज</item>
+        <item>वणिज</item>
+        <item>विष्टि</item>
+    </string-array>
+
+    <string-array name="yoga_names_array">
+        <item>विष्कुम्भ</item>
+        <item>प्रीति</item>
+        <item>आयुष्मान</item>
+        <item>सौभाग्य</item>
+        <item>शोभन</item>
+        <item>अतिगण्ड</item>
+        <item>सुकर्मा</item>
+        <item>धृति</item>
+        <item>शूल</item>
+        <item>गण्ड</item>
+        <item>वृद्धि</item>
+        <item>ध्रुव</item>
+        <item>व्याघात</item>
+        <item>हर्षण</item>
+        <item>वज्र</item>
+        <item>सिद्धि</item>
+        <item>व्यतिपात</item>
+        <item>वरीयान्</item>
+        <item>परिघ</item>
+        <item>शिव</item>
+        <item>सिद्ध</item>
+        <item>साध्य</item>
+        <item>शुभ</item>
+        <item>शुक्ल</item>
+        <item>ब्रह्म</item>
+        <item>इन्द्र</item>
+        <item>वैधृति</item>
+    </string-array>
+
+    <string-array name="tithi_names_array">
+        <item>प्रतिपदा</item>
+        <item>द्वितीया</item>
+        <item>तृतीया</item>
+        <item>चतुर्थी</item>
+        <item>पञ्चमी</item>
+        <item>षष्ठी</item>
+        <item>सप्तमी</item>
+        <item>अष्टमी</item>
+        <item>नवमी</item>
+        <item>दशमी</item>
+        <item>एकादशी</item>
+        <item>द्वादशी</item>
+        <item>त्रयोदशी</item>
+        <item>चतुर्दशी</item>
+        <item>पूर्णिमा</item>
+    </string-array>
+
+    <string name="tithi_purnima">पूर्णिमा</string>
+    <string name="tithi_amavasya">अमावस्या</string>
+    <string name="paksha_shukla_short">शुक्ल</string>
+    <string name="paksha_krishna_short">कृष्ण</string>
+
+    <!-- Matchmaking specific -->
+    <string name="rajju_arudha_ascending">आरोहण (Ascending)</string>
+    <string name="rajju_arudha_descending">अवरोहण (Descending)</string>
+
+    <string name="tara_janma">जन्म</string>
+    <string name="tara_sampat">सम्पत</string>
+    <string name="tara_vipat">विपत</string>
+    <string name="tara_kshema">क्षेम</string>
+    <string name="tara_pratyari">प्रत्यरि</string>
+    <string name="tara_sadhana">साधना</string>
+    <string name="tara_vadha">वध</string>
+    <string name="tara_mitra">मित्र</string>
+    <string name="tara_parama_mitra">परम मित्र</string>
+    <string name="tara_unknown">अज्ञात</string>
+
+    <string name="rajju_warning_siro">सबैभन्दा गम्भीर - जीवनसाथीको आयुलाई असर गर्छ</string>
+    <string name="rajju_warning_kantha">दुबैलाई स्वास्थ्य समस्या हुन सक्छ</string>
+    <string name="rajju_warning_nabhi">बच्चाहरूलाई असर गर्न सक्छ</string>
+    <string name="rajju_warning_kati">आर्थिक कठिनाइ हुन सक्छ</string>
+    <string name="rajju_warning_pada">घुम्ने प्रवृत्ति हुन सक्छ</string>
+
     <string name="nakshatra_ashwini">अश्विनी</string>
     <string name="nakshatra_bharani">भरणी</string>
     <string name="nakshatra_krittika">कृत्तिका</string>
@@ -545,4 +777,12 @@
     <string name="shadbala_strength_very_strong">धेरै बलियो</string>
     <string name="shadbala_strength_very_strong_desc">ग्रह अत्यधिक शक्तिशाली छ र उत्कृष्ट परिणाम प्रदान गर्दछ</string>
     <string name="shadbala_strength_extremely_strong_desc">ग्रह असाधारण रूपमा शक्तिशाली छ र चार्टमा हावी छ</string>
+
+    <!-- Life Areas -->
+    <string name="life_area_career">करियर</string>
+    <string name="life_area_love">प्रेम र सम्बन्ध</string>
+    <string name="life_area_health">स्वास्थ्य र जीवन शक्ति</string>
+    <string name="life_area_finance">वित्त र धन</string>
+    <string name="life_area_family">परिवार र घर</string>
+    <string name="life_area_spirituality">आध्यात्मिक वृद्धि</string>
 </resources>

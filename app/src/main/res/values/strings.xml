@@ -241,6 +241,238 @@
     <string name="key_areas_of_focus">Key Areas of Focus</string>
     <string name="language">Language</string>
 
+    <!-- Matchmaking Enums -->
+    <string name="varna_brahmin">Brahmin</string>
+    <string name="varna_kshatriya">Kshatriya</string>
+    <string name="varna_vaishya">Vaishya</string>
+    <string name="varna_shudra">Shudra</string>
+
+    <string name="vashya_chatushpada">Quadruped</string>
+    <string name="vashya_manava">Human</string>
+    <string name="vashya_jalachara">Aquatic</string>
+    <string name="vashya_vanachara">Wild</string>
+    <string name="vashya_keeta">Insect</string>
+
+    <string name="gana_deva">Deva</string>
+    <string name="gana_manushya">Manushya</string>
+    <string name="gana_rakshasa">Rakshasa</string>
+    <string name="gana_deva_desc">Divine - Sattvik, gentle, spiritual</string>
+    <string name="gana_manushya_desc">Human - Rajasik, balanced, worldly</string>
+    <string name="gana_rakshasa_desc">Demon - Tamasik, aggressive, dominant</string>
+
+    <string name="yoni_animal_horse">Horse</string>
+    <string name="yoni_animal_elephant">Elephant</string>
+    <string name="yoni_animal_sheep">Sheep</string>
+    <string name="yoni_animal_serpent">Serpent</string>
+    <string name="yoni_animal_dog">Dog</string>
+    <string name="yoni_animal_cat">Cat</string>
+    <string name="yoni_animal_rat">Rat</string>
+    <string name="yoni_animal_cow">Cow</string>
+    <string name="yoni_animal_buffalo">Buffalo</string>
+    <string name="yoni_animal_tiger">Tiger</string>
+    <string name="yoni_animal_deer">Deer</string>
+    <string name="yoni_animal_monkey">Monkey</string>
+    <string name="yoni_animal_mongoose">Mongoose</string>
+    <string name="yoni_animal_lion">Lion</string>
+
+    <string name="yoni_gender_male">Male</string>
+    <string name="yoni_gender_female">Female</string>
+
+    <string name="nadi_adi">Adi (Vata)</string>
+    <string name="nadi_madhya">Madhya (Pitta)</string>
+    <string name="nadi_antya">Antya (Kapha)</string>
+    <string name="nadi_adi_desc">Beginning - Wind element, controls movement and nervous system</string>
+    <string name="nadi_madhya_desc">Middle - Fire element, controls digestion and metabolism</string>
+    <string name="nadi_antya_desc">End - Water element, controls structure and lubrication</string>
+
+    <string name="rajju_pada">Pada Rajju</string>
+    <string name="rajju_kati">Kati Rajju</string>
+    <string name="rajju_nabhi">Nabhi Rajju</string>
+    <string name="rajju_kantha">Kantha Rajju</string>
+    <string name="rajju_siro">Siro Rajju</string>
+    <string name="rajju_body_feet">Feet</string>
+    <string name="rajju_body_waist">Waist</string>
+    <string name="rajju_body_navel">Navel</string>
+    <string name="rajju_body_neck">Neck</string>
+    <string name="rajju_body_head">Head</string>
+
+    <string name="manglik_dosha_none">No Manglik Dosha</string>
+    <string name="manglik_dosha_partial">Partial Manglik</string>
+    <string name="manglik_dosha_full">Full Manglik</string>
+    <string name="manglik_dosha_double">Double Manglik (Severe)</string>
+
+    <string name="compatibility_rating_excellent">Excellent Match</string>
+    <string name="compatibility_rating_good">Good Match</string>
+    <string name="compatibility_rating_average">Average Match</string>
+    <string name="compatibility_rating_below_average">Below Average</string>
+    <string name="compatibility_rating_poor">Poor Match</string>
+    <string name="compatibility_rating_excellent_desc">Highly recommended for marriage. Strong compatibility across all factors with harmonious planetary alignments.</string>
+    <string name="compatibility_rating_good_desc">Recommended. Good overall compatibility with minor differences that can be easily managed.</string>
+    <string name="compatibility_rating_average_desc">Acceptable with some remedies. Moderate compatibility requiring mutual understanding and effort.</string>
+    <string name="compatibility_rating_below_average_desc">Caution advised. Several compatibility issues that need addressing through remedies and counseling.</string>
+    <string name="compatibility_rating_poor_desc">Not recommended. Significant compatibility challenges that may cause ongoing difficulties.</string>
+
+    <!-- Muhurta Calculator Enums & Strings -->
+    <string name="activity_marriage">Marriage</string>
+    <string name="activity_marriage_desc">Wedding ceremonies and engagements</string>
+    <string name="activity_travel">Travel</string>
+    <string name="activity_travel_desc">Journey and trips</string>
+    <string name="activity_business">Business</string>
+    <string name="activity_business_desc">New ventures, contracts, deals</string>
+    <string name="activity_property">Property</string>
+    <string name="activity_property_desc">Buying/selling property, house entry</string>
+    <string name="activity_education">Education</string>
+    <string name="activity_education_desc">Starting studies, examinations, Vidyarambha</string>
+    <string name="activity_medical">Medical</string>
+    <string name="activity_medical_desc">Surgery, treatments, health procedures</string>
+    <string name="activity_vehicle">Vehicle</string>
+    <string name="activity_vehicle_desc">Purchasing or first drive of vehicle</string>
+    <string name="activity_spiritual">Spiritual</string>
+    <string name="activity_spiritual_desc">Religious ceremonies, puja, initiation, Upanayana</string>
+    <string name="activity_griha_pravesha">Griha Pravesha</string>
+    <string name="activity_griha_pravesha_desc">House warming ceremony</string>
+    <string name="activity_naming_ceremony">Naming Ceremony</string>
+    <string name="activity_naming_ceremony_desc">Namakarana - naming a child</string>
+    <string name="activity_general">General</string>
+    <string name="activity_general_desc">General auspicious activities</string>
+
+    <string name="vara_sunday">Ravivara</string>
+    <string name="vara_monday">Somavara</string>
+    <string name="vara_tuesday">Mangalavara</string>
+    <string name="vara_wednesday">Budhavara</string>
+    <string name="vara_thursday">Guruvara</string>
+    <string name="vara_friday">Shukravara</string>
+    <string name="vara_saturday">Shanivara</string>
+
+    <string name="choghadiya_udveg">Udveg</string>
+    <string name="choghadiya_char">Char</string>
+    <string name="choghadiya_labh">Labh</string>
+    <string name="choghadiya_amrit">Amrit</string>
+    <string name="choghadiya_kaal">Kaal</string>
+    <string name="choghadiya_shubh">Shubh</string>
+    <string name="choghadiya_rog">Rog</string>
+
+    <string name="choghadiya_nature_excellent">Excellent</string>
+    <string name="choghadiya_nature_very_good">Very Good</string>
+    <string name="choghadiya_nature_good">Good</string>
+    <string name="choghadiya_nature_neutral">Neutral</string>
+    <string name="choghadiya_nature_inauspicious">Inauspicious</string>
+
+    <string name="nakshatra_nature_dhruva">Fixed/Dhruva</string>
+    <string name="nakshatra_nature_chara">Movable/Chara</string>
+    <string name="nakshatra_nature_tikshna">Sharp/Tikshna</string>
+    <string name="nakshatra_nature_ugra">Fierce/Ugra</string>
+    <string name="nakshatra_nature_mridu">Soft/Mridu</string>
+    <string name="nakshatra_nature_kshipra">Swift/Kshipra</string>
+    <string name="nakshatra_nature_mishra">Mixed/Mishra</string>
+
+    <string name="hora_nature_benefic">Benefic</string>
+    <string name="hora_nature_malefic">Malefic</string>
+    <string name="hora_nature_neutral">Neutral</string>
+
+    <string name="tithi_nature_nanda">Nanda - Joy</string>
+    <string name="tithi_nature_bhadra">Bhadra - Auspicious</string>
+    <string name="tithi_nature_jaya">Jaya - Victory</string>
+    <string name="tithi_nature_rikta">Rikta - Empty</string>
+    <string name="tithi_nature_purna">Purna - Full</string>
+
+    <string name="nakshatra_gana_deva">Divine</string>
+    <string name="nakshatra_gana_manushya">Human</string>
+    <string name="nakshatra_gana_rakshasa">Demonic</string>
+
+    <string name="nakshatra_element_vayu">Air</string>
+    <string name="nakshatra_element_agni">Fire</string>
+    <string name="nakshatra_element_prithvi">Earth</string>
+    <string name="nakshatra_element_jala">Water</string>
+    <string name="nakshatra_element_akasha">Ether</string>
+
+    <string name="karana_type_sthira">Fixed</string>
+    <string name="karana_type_chara">Movable</string>
+
+    <string-array name="movable_karanas_array">
+        <item>Bava</item>
+        <item>Balava</item>
+        <item>Kaulava</item>
+        <item>Taitila</item>
+        <item>Garija</item>
+        <item>Vanija</item>
+        <item>Vishti</item>
+    </string-array>
+
+    <string-array name="yoga_names_array">
+        <item>Vishkumbha</item>
+        <item>Priti</item>
+        <item>Ayushman</item>
+        <item>Saubhagya</item>
+        <item>Shobhana</item>
+        <item>Atiganda</item>
+        <item>Sukarma</item>
+        <item>Dhriti</item>
+        <item>Shoola</item>
+        <item>Ganda</item>
+        <item>Vriddhi</item>
+        <item>Dhruva</item>
+        <item>Vyaghata</item>
+        <item>Harshana</item>
+        <item>Vajra</item>
+        <item>Siddhi</item>
+        <item>Vyatipata</item>
+        <item>Variyan</item>
+        <item>Parigha</item>
+        <item>Shiva</item>
+        <item>Siddha</item>
+        <item>Sadhya</item>
+        <item>Shubha</item>
+        <item>Shukla</item>
+        <item>Brahma</item>
+        <item>Indra</item>
+        <item>Vaidhriti</item>
+    </string-array>
+
+    <string-array name="tithi_names_array">
+        <item>Pratipada</item>
+        <item>Dwitiya</item>
+        <item>Tritiya</item>
+        <item>Chaturthi</item>
+        <item>Panchami</item>
+        <item>Shashthi</item>
+        <item>Saptami</item>
+        <item>Ashtami</item>
+        <item>Navami</item>
+        <item>Dashami</item>
+        <item>Ekadashi</item>
+        <item>Dwadashi</item>
+        <item>Trayodashi</item>
+        <item>Chaturdashi</item>
+        <item>Purnima</item>
+    </string-array>
+
+    <string name="tithi_purnima">Purnima</string>
+    <string name="tithi_amavasya">Amavasya</string>
+    <string name="paksha_shukla_short">Shukla</string>
+    <string name="paksha_krishna_short">Krishna</string>
+
+    <!-- Matchmaking specific -->
+    <string name="rajju_arudha_ascending">Aarohana (Ascending)</string>
+    <string name="rajju_arudha_descending">Avarohana (Descending)</string>
+
+    <string name="tara_janma">Janma (Birth)</string>
+    <string name="tara_sampat">Sampat (Wealth)</string>
+    <string name="tara_vipat">Vipat (Danger)</string>
+    <string name="tara_kshema">Kshema (Wellbeing)</string>
+    <string name="tara_pratyari">Pratyari (Obstacle)</string>
+    <string name="tara_sadhana">Sadhana (Achievement)</string>
+    <string name="tara_vadha">Vadha (Death)</string>
+    <string name="tara_mitra">Mitra (Friend)</string>
+    <string name="tara_parama_mitra">Parama Mitra (Best Friend)</string>
+    <string name="tara_unknown">Unknown</string>
+
+    <string name="rajju_warning_siro">Most serious - affects longevity of spouse</string>
+    <string name="rajju_warning_kantha">May cause health issues to both</string>
+    <string name="rajju_warning_nabhi">May affect children</string>
+    <string name="rajju_warning_kati">May cause financial difficulties</string>
+    <string name="rajju_warning_pada">May cause wandering tendencies</string>
+
     <string name="nakshatra_ashwini">Ashwini</string>
     <string name="nakshatra_bharani">Bharani</string>
     <string name="nakshatra_krittika">Krittika</string>
@@ -546,4 +778,12 @@
     <string name="shadbala_strength_very_strong">Very Strong</string>
     <string name="shadbala_strength_very_strong_desc">Planet is highly potent and provides outstanding outcomes</string>
     <string name="shadbala_strength_extremely_strong_desc">Planet is exceptionally powerful and dominates the chart</string>
+
+    <!-- Life Areas -->
+    <string name="life_area_career">Career</string>
+    <string name="life_area_love">Love &amp; Relationships</string>
+    <string name="life_area_health">Health &amp; Vitality</string>
+    <string name="life_area_finance">Finance &amp; Wealth</string>
+    <string name="life_area_family">Family &amp; Home</string>
+    <string name="life_area_spirituality">Spiritual Growth</string>
 </resources>

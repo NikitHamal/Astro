@@ -49,9 +49,7 @@ class ChartRepository(private val chartDao: ChartDao) {
                     put("distance", position.distance)
                     put("speed", position.speed)
                     put("sign", position.sign.name)
-                    put("degree", position.degree)
-                    put("minutes", position.minutes)
-                    put("seconds", position.seconds)
+                    put("degreesInSign", position.degreesInSign)
                     put("isRetrograde", position.isRetrograde)
                     put("nakshatra", position.nakshatra.name)
                     put("nakshatraPada", position.nakshatraPada)
@@ -95,9 +93,7 @@ class ChartRepository(private val chartDao: ChartDao) {
                         distance = obj.getDouble("distance"),
                         speed = obj.getDouble("speed"),
                         sign = ZodiacSign.valueOf(obj.getString("sign")),
-                        degree = obj.getDouble("degree"),
-                        minutes = obj.getDouble("minutes"),
-                        seconds = obj.getDouble("seconds"),
+                        degreesInSign = obj.getDouble("degreesInSign"),
                         isRetrograde = obj.getBoolean("isRetrograde"),
                         nakshatra = Nakshatra.valueOf(obj.getString("nakshatra")),
                         nakshatraPada = obj.getInt("nakshatraPada"),
