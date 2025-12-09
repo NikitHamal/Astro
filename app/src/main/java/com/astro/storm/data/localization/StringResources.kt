@@ -186,6 +186,13 @@ enum class StringKey(val en: String, val ne: String) {
     PRASHNA_NAKSHATRA_LORD("Nakshatra Lord", "नक्षत्र स्वामी"),
     PRASHNA_TITHI("Tithi", "तिथि"),
     PRASHNA_PHASE("Phase", "पक्ष"),
+    PRASHNA_INST_1("Prashna Kundali is cast for the moment the question arises in your mind or when you ask it.", "प्रश्न कुण्डली तपाईंको मनमा प्रश्न उठेको क्षणमा वा तपाईंले सोधेको बेला बनाइन्छ।"),
+    PRASHNA_INST_2("The Moon is the primary significator representing your mind and the matter at hand.", "चन्द्रमा प्राथमिक कारक हो जसले तपाईंको मन र हातमा रहेको विषयलाई प्रतिनिधित्व गर्दछ।"),
+    PRASHNA_INST_3("Frame your question with sincerity and focused intent for accurate guidance.", "सटीक मार्गदर्शनको लागि आफ्नो प्रश्न ईमानदारिता र केन्द्रित उद्देश्यसहित बनाउनुहोस्।"),
+    PRASHNA_INST_4("The analysis considers Lagna, Moon, relevant houses, and special Prashna yogas.", "विश्लेषणले लग्न, चन्द्रमा, सम्बन्धित भावहरू, र विशेष प्रश्न योगहरूलाई विचार गर्छ।"),
+    PRASHNA_INST_5("Timing predictions are based on planetary movements and house lord positions.", "समय भविष्यवाणीहरू ग्रह गतिविधि र भाव स्वामी स्थितिमा आधारित छन्।"),
+    PRASHNA_ANALYZE_ERROR("Failed to analyze question", "प्रश्न विश्लेषण गर्न असफल"),
+    PRASHNA_CONFIDENCE("%d%% confidence", "%d%% विश्वास"),
 
     FEATURE_SYNASTRY("Synastry", "सिनास्ट्री"),
     FEATURE_SYNASTRY_DESC("Chart comparison", "कुण्डली तुलना"),
@@ -209,6 +216,7 @@ enum class StringKey(val en: String, val ne: String) {
     ERROR_UNABLE_TO_LOAD("Unable to Load Insights", "अन्तर्दृष्टि लोड गर्न असमर्थ"),
     ERROR_HOROSCOPE_UNAVAILABLE("%s's horoscope unavailable", "%s को राशिफल उपलब्ध छैन"),
     ERROR_EPHEMERIS_DATA("Unable to calculate planetary positions for this period. This may be due to ephemeris data limitations.", "यस अवधिको लागि ग्रह स्थितिहरू गणना गर्न असमर्थ। यो ईफेमेरिस डाटा सीमितताको कारण हुन सक्छ।"),
+    ERROR_SOMETHING_WRONG("Something went wrong", "केही गलत भयो"),
 
     // ============================================
     // BUTTONS & ACTIONS
@@ -753,6 +761,19 @@ enum class StringKey(val en: String, val ne: String) {
     MUHURTA_RESULTS_COUNT("%d found", "%d फेला परेको"),
     MUHURTA_DETAIL_DAY("Day", "दिन"),
     MUHURTA_DETAIL_CHOGHADIYA("Choghadiya", "चोघड़िया"),
+    MUHURTA_TODAY("Today", "आज"),
+    MUHURTA_PREV_DAY_A11Y("Previous day", "अघिल्लो दिन"),
+    MUHURTA_NEXT_DAY_A11Y("Next day", "अर्को दिन"),
+    MUHURTA_VARA("Vara", "वार"),
+    MUHURTA_TITHI("Tithi", "तिथि"),
+    MUHURTA_YOGA("Yoga", "योग"),
+    MUHURTA_KARANA("Karana", "करण"),
+    MUHURTA_SUNRISE_SUNSET("Sunrise / Sunset", "सूर्योदय / सूर्यास्त"),
+    MUHURTA_SELECT_ACTIVITY("Select Activity", "गतिविधि चयन गर्नुहोस्"),
+    MUHURTA_SUITABLE_ACTIVITIES("Suitable Activities", "उपयुक्त गतिविधिहरू"),
+    MUHURTA_AVOID_ACTIVITIES("Activities to Avoid", "बच्नुपर्ने गतिविधिहरू"),
+    MUHURTA_RECOMMENDATIONS("Recommendations", "सिफारिसहरू"),
+    MUHURTA_DATE_RANGE_LABEL("Date Range", "मिति दायरा"),
 
     // ============================================
     // REMEDIES
@@ -767,6 +788,7 @@ enum class StringKey(val en: String, val ne: String) {
     REMEDIES_PLANETS("Planets", "ग्रहहरू"),
     REMEDIES_ANALYSIS("Remedies Analysis", "उपाय विश्लेषण"),
     REMEDIES_CHART_STRENGTH("Chart Strength", "कुण्डली बल"),
+    REMEDIES_PLANETS_WELL_PLACED("%d of %d planets well-placed", "%d मध्ये %d ग्रह राम्ररी स्थित"),
     REMEDIES_PLANETS_ATTENTION("Planets Requiring Attention", "ध्यान आवश्यक ग्रहहरू"),
     REMEDIES_ESSENTIAL("Essential Remedies", "आवश्यक उपायहरू"),
     REMEDIES_WEEKLY_SCHEDULE("Weekly Remedy Schedule", "साप्ताहिक उपाय तालिका"),
@@ -782,6 +804,8 @@ enum class StringKey(val en: String, val ne: String) {
     REMEDIES_SEARCH("Search remedies...", "उपायहरू खोज्नुहोस्..."),
     REMEDIES_FILTER_ALL("All", "सबै"),
     REMEDIES_NO_RESULTS("No remedies found", "कुनै उपाय फेला परेन"),
+    REMEDIES_NO_RESULTS_SEARCH("No remedies found for \"%s\"", "\"%s\" को लागि कुनै उपाय फेला परेन"),
+    REMEDIES_NO_CATEGORY("No remedies in this category", "यस वर्गमा कुनै उपाय छैन"),
     REMEDIES_NO_CHART("No chart selected", "कुनै कुण्डली छानिएको छैन"),
     REMEDIES_SELECT_CHART("Select a chart to view remedies", "उपायहरू हेर्न कुण्डली छान्नुहोस्"),
     REMEDIES_ANALYZING("Analyzing your chart...", "तपाईंको कुण्डली विश्लेषण गर्दै..."),
@@ -841,6 +865,7 @@ enum class StringKey(val en: String, val ne: String) {
     DAY_THURSDAY("Thursday", "बिहिबार"),
     DAY_FRIDAY("Friday", "शुक्रबार"),
     DAY_SATURDAY("Saturday", "शनिबार"),
+    DAY_ANY("any day", "कुनै पनि दिन"),
 
     // ============================================
     // MISCELLANEOUS
@@ -1900,7 +1925,504 @@ enum class StringKey(val en: String, val ne: String) {
     PREDICTION_DUSTHANA("Dusthana Placement", "दुःस्थान स्थिति"),
     PREDICTION_DUSTHANA_DESC("%s in house %d may face obstacles but can also give transformative experiences.", "भाव %d मा %s ले बाधाहरू सामना गर्न सक्छ तर रूपान्तरणकारी अनुभवहरू पनि दिन सक्छ।"),
     PREDICTION_KENDRA("Kendra Placement", "केन्द्र स्थिति"),
-    PREDICTION_KENDRA_DESC("%s in house %d (Kendra) gains strength and visibility.", "भाव %d (केन्द्र) मा %s ले बल र दृश्यता प्राप्त गर्दछ।");
+    PREDICTION_KENDRA_DESC("%s in house %d (Kendra) gains strength and visibility.", "भाव %d (केन्द्र) मा %s ले बल र दृश्यता प्राप्त गर्दछ।"),
+
+    // ============================================
+    // VARSHAPHALA - TAJIKA ASPECT TYPES
+    // ============================================
+    TAJIKA_ITHASALA("Ithasala", "इतशाल"),
+    TAJIKA_ITHASALA_DESC("Applying aspect - promises fulfillment of matters", "निकटवर्ती पक्ष - कार्यहरू पूर्ण हुने वाचा"),
+    TAJIKA_EASARAPHA("Easarapha", "इसराफ"),
+    TAJIKA_EASARAPHA_DESC("Separating aspect - event has passed or is fading", "विलग पक्ष - घटना बितिसकेको वा क्षीण हुँदैछ"),
+    TAJIKA_NAKTA("Nakta", "नक्त"),
+    TAJIKA_NAKTA_DESC("Transmission of light with reception - indirect completion", "ग्रहणसहित प्रकाश प्रसारण - अप्रत्यक्ष पूर्णता"),
+    TAJIKA_YAMAYA("Yamaya", "यमाया"),
+    TAJIKA_YAMAYA_DESC("Translation of light - third planet connects significators", "प्रकाश अनुवाद - तेस्रो ग्रहले कारकहरू जोड्दछ"),
+    TAJIKA_MANAU("Manau", "मनौ"),
+    TAJIKA_MANAU_DESC("Reverse application - slower planet applies to faster", "उल्टो प्रयोग - ढिलो ग्रहले छिटोमा प्रयोग गर्छ"),
+    TAJIKA_KAMBOOLA("Kamboola", "कम्बूल"),
+    TAJIKA_KAMBOOLA_DESC("Powerful Ithasala with angular placement", "केन्द्र स्थानसहित शक्तिशाली इतशाल"),
+    TAJIKA_GAIRI_KAMBOOLA("Gairi-Kamboola", "गैरी-कम्बूल"),
+    TAJIKA_GAIRI_KAMBOOLA_DESC("Weaker form of Kamboola", "कम्बूलको कमजोर रूप"),
+    TAJIKA_KHALASARA("Khalasara", "खलासर"),
+    TAJIKA_KHALASARA_DESC("Mutual separation - dissolution of matters", "पारस्परिक विलगता - कार्यहरूको विघटन"),
+    TAJIKA_RADDA("Radda", "रद्द"),
+    TAJIKA_RADDA_DESC("Refranation - retrograde breaks the aspect", "भंग - वक्री गतिले पक्ष तोड्छ"),
+    TAJIKA_DUHPHALI_KUTTHA("Duhphali-Kuttha", "दुःफली-कुट्ठ"),
+    TAJIKA_DUHPHALI_KUTTHA_DESC("Malefic intervention prevents completion", "पापग्रह हस्तक्षेपले पूर्णता रोक्छ"),
+    TAJIKA_TAMBIRA("Tambira", "तम्बीर"),
+    TAJIKA_TAMBIRA_DESC("Indirect aspect through intermediary", "मध्यस्थ मार्फत अप्रत्यक्ष पक्ष"),
+    TAJIKA_KUTTHA("Kuttha", "कुट्ठ"),
+    TAJIKA_KUTTHA_DESC("Impediment to aspect completion", "पक्ष पूर्णतामा बाधा"),
+    TAJIKA_DURAPHA("Durapha", "दुराफ"),
+    TAJIKA_DURAPHA_DESC("Hard aspect causing difficulties", "कठिनाइहरू निम्त्याउने कडा पक्ष"),
+    TAJIKA_MUTHASHILA("Muthashila", "मुथशिल"),
+    TAJIKA_MUTHASHILA_DESC("Mutual application between planets", "ग्रहहरू बीच पारस्परिक प्रयोग"),
+    TAJIKA_IKKABALA("Ikkabala", "इक्कबल"),
+    TAJIKA_IKKABALA_DESC("Unity of strength between planets", "ग्रहहरू बीच बलको एकता"),
+
+    // ============================================
+    // VARSHAPHALA - ASPECT STRENGTH
+    // ============================================
+    ASPECT_VERY_STRONG("Very Strong", "अति बलियो"),
+    ASPECT_STRONG("Strong", "बलियो"),
+    ASPECT_MODERATE("Moderate", "मध्यम"),
+    ASPECT_WEAK("Weak", "कमजोर"),
+    ASPECT_VERY_WEAK("Very Weak", "अति कमजोर"),
+
+    // ============================================
+    // VARSHAPHALA - SAHAM TYPES
+    // ============================================
+    SAHAM_PUNYA("Fortune", "पुण्य"),
+    SAHAM_PUNYA_SANSKRIT("Punya Saham", "पुण्य सहम"),
+    SAHAM_PUNYA_DESC("Overall luck and prosperity", "समग्र भाग्य र समृद्धि"),
+    SAHAM_VIDYA("Education", "विद्या"),
+    SAHAM_VIDYA_SANSKRIT("Vidya Saham", "विद्या सहम"),
+    SAHAM_VIDYA_DESC("Learning and knowledge", "सिकाइ र ज्ञान"),
+    SAHAM_YASHAS("Fame", "यश"),
+    SAHAM_YASHAS_SANSKRIT("Yashas Saham", "यश सहम"),
+    SAHAM_YASHAS_DESC("Reputation and recognition", "प्रतिष्ठा र मान्यता"),
+    SAHAM_MITRA("Friends", "मित्र"),
+    SAHAM_MITRA_SANSKRIT("Mitra Saham", "मित्र सहम"),
+    SAHAM_MITRA_DESC("Friendship and alliances", "मित्रता र गठबन्धन"),
+    SAHAM_MAHATMYA("Greatness", "महात्म्य"),
+    SAHAM_MAHATMYA_SANSKRIT("Mahatmya Saham", "महात्म्य सहम"),
+    SAHAM_MAHATMYA_DESC("Spiritual achievement", "आध्यात्मिक उपलब्धि"),
+    SAHAM_ASHA("Hope", "आशा"),
+    SAHAM_ASHA_SANSKRIT("Asha Saham", "आशा सहम"),
+    SAHAM_ASHA_DESC("Aspirations and wishes", "आकांक्षा र इच्छाहरू"),
+    SAHAM_SAMARTHA("Capability", "समर्थ"),
+    SAHAM_SAMARTHA_SANSKRIT("Samartha Saham", "समर्थ सहम"),
+    SAHAM_SAMARTHA_DESC("Ability and competence", "क्षमता र योग्यता"),
+    SAHAM_BHRATRI("Siblings", "भ्रातृ"),
+    SAHAM_BHRATRI_SANSKRIT("Bhratri Saham", "भ्रातृ सहम"),
+    SAHAM_BHRATRI_DESC("Brothers and sisters", "दाजुभाइ र दिदीबहिनी"),
+    SAHAM_PITRI("Father", "पितृ"),
+    SAHAM_PITRI_SANSKRIT("Pitri Saham", "पितृ सहम"),
+    SAHAM_PITRI_DESC("Father's welfare", "बुबाको कल्याण"),
+    SAHAM_MATRI("Mother", "मातृ"),
+    SAHAM_MATRI_SANSKRIT("Matri Saham", "मातृ सहम"),
+    SAHAM_MATRI_DESC("Mother's welfare", "आमाको कल्याण"),
+    SAHAM_PUTRA("Children", "पुत्र"),
+    SAHAM_PUTRA_SANSKRIT("Putra Saham", "पुत्र सहम"),
+    SAHAM_PUTRA_DESC("Offspring and progeny", "सन्तान"),
+    SAHAM_VIVAHA("Marriage", "विवाह"),
+    SAHAM_VIVAHA_SANSKRIT("Vivaha Saham", "विवाह सहम"),
+    SAHAM_VIVAHA_DESC("Matrimony and partnership", "विवाह र साझेदारी"),
+    SAHAM_KARMA("Career", "कर्म"),
+    SAHAM_KARMA_SANSKRIT("Karma Saham", "कर्म सहम"),
+    SAHAM_KARMA_DESC("Profession and livelihood", "पेशा र जीविका"),
+    SAHAM_ROGA("Disease", "रोग"),
+    SAHAM_ROGA_SANSKRIT("Roga Saham", "रोग सहम"),
+    SAHAM_ROGA_DESC("Health challenges", "स्वास्थ्य चुनौतीहरू"),
+    SAHAM_MRITYU("Longevity", "मृत्यु"),
+    SAHAM_MRITYU_SANSKRIT("Mrityu Saham", "मृत्यु सहम"),
+    SAHAM_MRITYU_DESC("Life span indicators", "जीवन अवधि संकेतकहरू"),
+    SAHAM_PARADESA("Foreign", "परदेश"),
+    SAHAM_PARADESA_SANSKRIT("Paradesa Saham", "परदेश सहम"),
+    SAHAM_PARADESA_DESC("Travel and foreign lands", "यात्रा र विदेश"),
+    SAHAM_DHANA("Wealth", "धन"),
+    SAHAM_DHANA_SANSKRIT("Dhana Saham", "धन सहम"),
+    SAHAM_DHANA_DESC("Financial prosperity", "आर्थिक समृद्धि"),
+    SAHAM_RAJA("Power", "राज"),
+    SAHAM_RAJA_SANSKRIT("Raja Saham", "राज सहम"),
+    SAHAM_RAJA_DESC("Authority and position", "अधिकार र पद"),
+    SAHAM_BANDHANA("Bondage", "बन्धन"),
+    SAHAM_BANDHANA_SANSKRIT("Bandhana Saham", "बन्धन सहम"),
+    SAHAM_BANDHANA_DESC("Restrictions and obstacles", "प्रतिबन्ध र बाधाहरू"),
+    SAHAM_KARYASIDDHI_TYPE("Success", "कार्यसिद्धि"),
+    SAHAM_KARYASIDDHI_TYPE_SANSKRIT("Karyasiddhi Saham", "कार्यसिद्धि सहम"),
+    SAHAM_KARYASIDDHI_TYPE_DESC("Accomplishment of goals", "लक्ष्य प्राप्ति"),
+
+    // ============================================
+    // VARSHAPHALA - KEY DATE TYPES
+    // ============================================
+    KEY_DATE_FAVORABLE("Favorable", "अनुकूल"),
+    KEY_DATE_CHALLENGING("Challenging", "चुनौतीपूर्ण"),
+    KEY_DATE_IMPORTANT("Important", "महत्त्वपूर्ण"),
+    KEY_DATE_TRANSIT("Transit", "गोचर"),
+
+    // ============================================
+    // VARSHAPHALA - UI STRINGS
+    // ============================================
+    VARSHAPHALA_NO_CHART("No Chart Selected", "कुनै कुण्डली छानिएको छैन"),
+    VARSHAPHALA_NO_CHART_DESC("Select a birth chart to view Varshaphala", "वर्षफल हेर्न जन्म कुण्डली छान्नुहोस्"),
+    VARSHAPHALA_SUN_RETURNS("Sun returns to natal position", "सूर्य जन्मकालीन स्थानमा फर्कन्छ"),
+    VARSHAPHALA_RETURN_DATE("Return Date", "प्रतिफल मिति"),
+    VARSHAPHALA_AGE_FORMAT("Age %d", "उमेर %d"),
+    VARSHAPHALA_IN_HOUSE("House %d", "भाव %d"),
+    VARSHAPHALA_FIVEFOLD_STRENGTH("Five-fold Planetary Strength", "पञ्चवर्गीय ग्रह बल"),
+    VARSHAPHALA_THREE_FLAG("Three-flag Diagram", "त्रिपताकी चक्र"),
+    VARSHAPHALA_IMPORTANT_DATES("%d important dates", "%d महत्त्वपूर्ण मितिहरू"),
+    VARSHAPHALA_CHART_LEGEND_ASC("Asc", "लग्न"),
+    VARSHAPHALA_CHART_LEGEND_MUNTHA("Muntha", "मुन्थ"),
+    VARSHAPHALA_CHART_LEGEND_BENEFIC("Benefic", "शुभ"),
+    VARSHAPHALA_CHART_LEGEND_MALEFIC("Malefic", "पाप"),
+    VARSHAPHALA_CHALLENGING("Challenging", "चुनौतीपूर्ण"),
+    VARSHAPHALA_TOTAL("Total", "कुल"),
+    VARSHAPHALA_ACTIVE("Active", "सक्रिय"),
+    VARSHAPHALA_CURRENT("CURRENT", "वर्तमान"),
+    VARSHAPHALA_DAYS_FORMAT("%d days", "%d दिन"),
+    VARSHAPHALA_HOUSE_SIGN("House %d - %s", "भाव %d - %s"),
+    VARSHAPHALA_LORD_IN_HOUSE("Lord: %s in H%d", "स्वामी: %s भाव%d मा"),
+    VARSHAPHALA_RULES_HOUSES("Rules Houses: %s", "भावहरू शासन: %s"),
+    VARSHAPHALA_PLANETS("Planets: ", "ग्रहहरू: "),
+    VARSHAPHALA_NO_PLANETS("No planets", "कुनै ग्रह छैन"),
+    VARSHAPHALA_HOUSES_PREFIX("Houses: ", "भावहरू: "),
+    VARSHAPHALA_SPECIFIC_INDICATIONS("Specific Indications:", "विशिष्ट संकेतहरू:"),
+    VARSHAPHALA_LORD_PREFIX("Lord: %s", "स्वामी: %s"),
+
+    // ============================================
+    // VARSHAPHALA - MUNTHA THEMES
+    // ============================================
+    MUNTHA_PERSONAL_GROWTH("Personal Growth", "व्यक्तिगत विकास"),
+    MUNTHA_NEW_BEGINNINGS("New Beginnings", "नयाँ शुरुवातहरू"),
+    MUNTHA_HEALTH_FOCUS("Health Focus", "स्वास्थ्य फोकस"),
+    MUNTHA_FINANCIAL_GAINS("Financial Gains", "आर्थिक लाभ"),
+    MUNTHA_FAMILY_MATTERS("Family Matters", "पारिवारिक मामिलाहरू"),
+    MUNTHA_SPEECH("Speech", "वाणी"),
+    MUNTHA_COMMUNICATION("Communication", "सञ्चार"),
+    MUNTHA_SHORT_TRAVELS("Short Travels", "छोटो यात्राहरू"),
+    MUNTHA_SIBLINGS("Siblings", "भाइबहिनी"),
+    MUNTHA_HOME_AFFAIRS("Home Affairs", "घरेलु मामिलाहरू"),
+    MUNTHA_PROPERTY("Property", "सम्पत्ति"),
+    MUNTHA_INNER_PEACE("Inner Peace", "आन्तरिक शान्ति"),
+    MUNTHA_CREATIVITY("Creativity", "सिर्जनशीलता"),
+    MUNTHA_ROMANCE("Romance", "रोमान्स"),
+    MUNTHA_CHILDREN("Children", "सन्तान"),
+    MUNTHA_SERVICE("Service", "सेवा"),
+    MUNTHA_HEALTH_ISSUES("Health Issues", "स्वास्थ्य समस्याहरू"),
+    MUNTHA_COMPETITION("Competition", "प्रतिस्पर्धा"),
+    MUNTHA_PARTNERSHIPS("Partnerships", "साझेदारीहरू"),
+    MUNTHA_MARRIAGE("Marriage", "विवाह"),
+    MUNTHA_BUSINESS("Business", "व्यापार"),
+    MUNTHA_TRANSFORMATION("Transformation", "रूपान्तरण"),
+    MUNTHA_RESEARCH("Research", "अनुसन्धान"),
+    MUNTHA_INHERITANCE("Inheritance", "विरासत"),
+    MUNTHA_FORTUNE("Fortune", "भाग्य"),
+    MUNTHA_LONG_TRAVEL("Long Travel", "लामो यात्रा"),
+    MUNTHA_HIGHER_LEARNING("Higher Learning", "उच्च शिक्षा"),
+    MUNTHA_CAREER_ADVANCEMENT("Career Advancement", "क्यारियर प्रगति"),
+    MUNTHA_RECOGNITION("Recognition", "मान्यता"),
+    MUNTHA_AUTHORITY("Authority", "अधिकार"),
+    MUNTHA_GAINS("Gains", "लाभ"),
+    MUNTHA_FRIENDS("Friends", "मित्रहरू"),
+    MUNTHA_FULFILLED_WISHES("Fulfilled Wishes", "पूरा भएका इच्छाहरू"),
+    MUNTHA_SPIRITUALITY("Spirituality", "आध्यात्मिकता"),
+    MUNTHA_FOREIGN_LANDS("Foreign Lands", "विदेश"),
+    MUNTHA_EXPENSES("Expenses", "खर्चहरू"),
+    MUNTHA_GENERAL_GROWTH("General Growth", "सामान्य विकास"),
+
+    // ============================================
+    // VARSHAPHALA - HOUSE SIGNIFICATIONS
+    // ============================================
+    VARSHA_HOUSE_1_SIG("personal development and health", "व्यक्तिगत विकास र स्वास्थ्य"),
+    VARSHA_HOUSE_2_SIG("finances and family", "वित्त र परिवार"),
+    VARSHA_HOUSE_3_SIG("communication and siblings", "सञ्चार र भाइबहिनी"),
+    VARSHA_HOUSE_4_SIG("home and property", "घर र सम्पत्ति"),
+    VARSHA_HOUSE_5_SIG("creativity and children", "सिर्जनशीलता र सन्तान"),
+    VARSHA_HOUSE_6_SIG("health and service", "स्वास्थ्य र सेवा"),
+    VARSHA_HOUSE_7_SIG("partnerships and marriage", "साझेदारी र विवाह"),
+    VARSHA_HOUSE_8_SIG("transformation and inheritance", "रूपान्तरण र विरासत"),
+    VARSHA_HOUSE_9_SIG("fortune and higher learning", "भाग्य र उच्च शिक्षा"),
+    VARSHA_HOUSE_10_SIG("career and status", "क्यारियर र स्थिति"),
+    VARSHA_HOUSE_11_SIG("gains and friendships", "लाभ र मित्रता"),
+    VARSHA_HOUSE_12_SIG("spirituality and foreign matters", "आध्यात्मिकता र विदेशी मामिलाहरू"),
+    VARSHA_HOUSE_VARIOUS("various life areas", "विभिन्न जीवन क्षेत्रहरू"),
+
+    // ============================================
+    // VARSHAPHALA - PLANET PERIOD PREDICTIONS
+    // ============================================
+    VARSHA_SUN_NATURE("vitality, authority, and self-expression", "जीवनशक्ति, अधिकार र आत्म-अभिव्यक्ति"),
+    VARSHA_MOON_NATURE("emotions, nurturing, and public connections", "भावनाहरू, पालनपोषण र सार्वजनिक सम्बन्धहरू"),
+    VARSHA_MARS_NATURE("energy, initiative, and competitive drive", "ऊर्जा, पहल र प्रतिस्पर्धात्मक उत्प्रेरणा"),
+    VARSHA_MERCURY_NATURE("communication, learning, and business", "सञ्चार, सिकाइ र व्यापार"),
+    VARSHA_JUPITER_NATURE("wisdom, expansion, and good fortune", "बुद्धि, विस्तार र सुभाग्य"),
+    VARSHA_VENUS_NATURE("relationships, creativity, and pleasures", "सम्बन्धहरू, सिर्जनशीलता र आनन्द"),
+    VARSHA_SATURN_NATURE("discipline, responsibility, and long-term goals", "अनुशासन, जिम्मेवारी र दीर्घकालीन लक्ष्यहरू"),
+    VARSHA_RAHU_NATURE("ambition, innovation, and unconventional paths", "महत्त्वाकांक्षा, नवीनता र अपरम्परागत मार्गहरू"),
+    VARSHA_KETU_NATURE("spirituality, detachment, and past karma", "आध्यात्मिकता, वैराग्य र पूर्व कर्म"),
+    VARSHA_GENERAL_NATURE("general influences", "सामान्य प्रभावहरू"),
+
+    // ============================================
+    // VARSHAPHALA - STRENGTH DESCRIPTIONS
+    // ============================================
+    VARSHA_STRENGTH_EXALTED("Exalted", "उच्च"),
+    VARSHA_STRENGTH_STRONG("Strong", "बलियो"),
+    VARSHA_STRENGTH_MODERATE("Moderate", "मध्यम"),
+    VARSHA_STRENGTH_ANGULAR("Angular", "केन्द्रीय"),
+    VARSHA_STRENGTH_RETROGRADE("Retrograde", "वक्री"),
+    VARSHA_STRENGTH_DEBILITATED("Debilitated", "नीच"),
+    VARSHA_STRENGTH_UNKNOWN("Unknown", "अज्ञात"),
+
+    // ============================================
+    // VARSHAPHALA - PREDICTION PHRASES
+    // ============================================
+    VARSHA_PERIOD_EXCEPTIONAL("This period promises exceptional results", "यो अवधिले असाधारण परिणामहरूको वाचा गर्छ"),
+    VARSHA_PERIOD_WELL_SUPPORTED("This period is well-supported for success", "यो अवधि सफलताको लागि राम्ररी समर्थित छ"),
+    VARSHA_PERIOD_EXTRA_EFFORT("This period requires extra effort and patience", "यो अवधिमा थप प्रयास र धैर्य चाहिन्छ"),
+    VARSHA_PERIOD_MIXED("This period brings mixed but manageable influences", "यो अवधिले मिश्रित तर व्यवस्थापनयोग्य प्रभावहरू ल्याउँछ"),
+    VARSHA_DURING_PERIOD("During this %s period, focus shifts to %s, particularly affecting %s. %s.", "यो %s अवधिमा, %s मा फोकस सर्छ, विशेष गरी %s लाई असर गर्दछ। %s।"),
+
+    // ============================================
+    // VARSHAPHALA - YEAR LORD DESCRIPTIONS
+    // ============================================
+    VARSHA_YEARLORD_SUN("Year Lord Sun brings focus on leadership, authority, and self-expression.", "वर्ष स्वामी सूर्यले नेतृत्व, अधिकार र आत्म-अभिव्यक्तिमा फोकस ल्याउँछ।"),
+    VARSHA_YEARLORD_MOON("Year Lord Moon emphasizes emotional wellbeing and public connections.", "वर्ष स्वामी चन्द्रमाले भावनात्मक कल्याण र सार्वजनिक सम्बन्धहरूमा जोड दिन्छ।"),
+    VARSHA_YEARLORD_MARS("Year Lord Mars energizes initiatives and competitive endeavors.", "वर्ष स्वामी मंगलले पहलहरू र प्रतिस्पर्धात्मक प्रयासहरूलाई ऊर्जित गर्छ।"),
+    VARSHA_YEARLORD_MERCURY("Year Lord Mercury enhances communication and business activities.", "वर्ष स्वामी बुधले सञ्चार र व्यापारिक गतिविधिहरू बढाउँछ।"),
+    VARSHA_YEARLORD_JUPITER("Year Lord Jupiter bestows wisdom, expansion, and good fortune.", "वर्ष स्वामी बृहस्पतिले बुद्धि, विस्तार र सुभाग्य प्रदान गर्छ।"),
+    VARSHA_YEARLORD_VENUS("Year Lord Venus brings harmony to relationships and creativity.", "वर्ष स्वामी शुक्रले सम्बन्धहरू र सिर्जनशीलतामा सामञ्जस्य ल्याउँछ।"),
+    VARSHA_YEARLORD_SATURN("Year Lord Saturn teaches discipline and responsibility.", "वर्ष स्वामी शनिले अनुशासन र जिम्मेवारी सिकाउँछ।"),
+    VARSHA_YEARLORD_GENERIC("The Year Lord influences various aspects with balanced energy.", "वर्ष स्वामीले सन्तुलित ऊर्जासहित विभिन्न पक्षहरूलाई प्रभाव पार्छ।"),
+
+    // ============================================
+    // VARSHAPHALA - TRI-PATAKI CHAKRA
+    // ============================================
+    TRIPATAKI_DHARMA("Dharma (1, 5, 9)", "धर्म (१, ५, ९)"),
+    TRIPATAKI_ARTHA("Artha (2, 6, 10)", "अर्थ (२, ६, १०)"),
+    TRIPATAKI_KAMA("Kama (3, 7, 11)", "काम (३, ७, ११)"),
+    TRIPATAKI_DHARMA_DOMINANT("Spiritual growth and righteous pursuits dominate", "आध्यात्मिक वृद्धि र धार्मिक खोजीहरू प्रभावी"),
+    TRIPATAKI_ARTHA_DOMINANT("Material prosperity and career emphasis", "भौतिक समृद्धि र क्यारियर जोड"),
+    TRIPATAKI_KAMA_DOMINANT("Relationships and desires take center stage", "सम्बन्धहरू र इच्छाहरू केन्द्रमा"),
+    TRIPATAKI_BALANCED("Balanced influences across all areas", "सबै क्षेत्रहरूमा सन्तुलित प्रभाव"),
+    TRIPATAKI_NO_PLANETS("No planets in %s sector - quieter year for these matters.", "%s क्षेत्रमा कुनै ग्रह छैन - यी मामिलाहरूको लागि शान्त वर्ष।"),
+    TRIPATAKI_BENEFIC_INFLUENCE("Benefic %s bring favorable influences.", "शुभ %s ले अनुकूल प्रभावहरू ल्याउँछ।"),
+    TRIPATAKI_MALEFIC_INFLUENCE("Malefic %s bring challenges requiring effort.", "पाप %s ले प्रयास चाहिने चुनौतीहरू ल्याउँछ।"),
+    TRIPATAKI_MIXED_INFLUENCE("Mixed influences suggest variable results.", "मिश्रित प्रभावहरूले परिवर्तनशील परिणामहरू सुझाव दिन्छ।"),
+    TRIPATAKI_DHARMA_AREA("righteousness, fortune, and higher learning", "धार्मिकता, भाग्य र उच्च शिक्षा"),
+    TRIPATAKI_ARTHA_AREA("wealth, career, and practical achievements", "धन, क्यारियर र व्यावहारिक उपलब्धिहरू"),
+    TRIPATAKI_KAMA_AREA("relationships, desires, and social connections", "सम्बन्धहरू, इच्छाहरू र सामाजिक सम्बन्धहरू"),
+    TRIPATAKI_PLANETS_IN_TRIKONA("%d planet(s) in %s trikona emphasizes %s.", "%s त्रिकोणमा %d ग्रह(हरू)ले %s मा जोड दिन्छ।"),
+    TRIPATAKI_BALANCED_DISTRIBUTION("Balanced distribution of planetary energies across all life sectors.", "सबै जीवन क्षेत्रहरूमा ग्रह ऊर्जाहरूको सन्तुलित वितरण।"),
+
+    // ============================================
+    // VARSHAPHALA - OVERALL PREDICTION TONES
+    // ============================================
+    VARSHA_TONE_EXCELLENT("excellent", "उत्कृष्ट"),
+    VARSHA_TONE_FAVORABLE("favorable", "अनुकूल"),
+    VARSHA_TONE_POSITIVE("positive", "सकारात्मक"),
+    VARSHA_TONE_CHALLENGING("challenging but growth-oriented", "चुनौतीपूर्ण तर विकासोन्मुख"),
+    VARSHA_TONE_BALANCED("balanced", "सन्तुलित"),
+
+    // ============================================
+    // VARSHAPHALA - PANCHA VARGIYA BALA CATEGORIES
+    // ============================================
+    PANCHA_EXCELLENT("Excellent", "उत्कृष्ट"),
+    PANCHA_GOOD("Good", "राम्रो"),
+    PANCHA_AVERAGE("Average", "औसत"),
+    PANCHA_BELOW_AVERAGE("Below Average", "औसतमुनि"),
+    PANCHA_WEAK("Weak", "कमजोर"),
+
+    // ============================================
+    // VARSHAPHALA - DASHA KEYWORDS
+    // ============================================
+    DASHA_KW_LEADERSHIP("Leadership", "नेतृत्व"),
+    DASHA_KW_VITALITY("Vitality", "जीवनशक्ति"),
+    DASHA_KW_FATHER("Father", "बुबा"),
+    DASHA_KW_EMOTIONS("Emotions", "भावनाहरू"),
+    DASHA_KW_MOTHER("Mother", "आमा"),
+    DASHA_KW_PUBLIC("Public", "सार्वजनिक"),
+    DASHA_KW_ACTION("Action", "कार्य"),
+    DASHA_KW_ENERGY("Energy", "ऊर्जा"),
+    DASHA_KW_COURAGE("Courage", "साहस"),
+    DASHA_KW_COMMUNICATION("Communication", "सञ्चार"),
+    DASHA_KW_LEARNING("Learning", "सिकाइ"),
+    DASHA_KW_WISDOM("Wisdom", "बुद्धि"),
+    DASHA_KW_GROWTH("Growth", "वृद्धि"),
+    DASHA_KW_LOVE("Love", "प्रेम"),
+    DASHA_KW_ART("Art", "कला"),
+    DASHA_KW_COMFORT("Comfort", "सुविधा"),
+    DASHA_KW_DISCIPLINE("Discipline", "अनुशासन"),
+    DASHA_KW_KARMA("Karma", "कर्म"),
+    DASHA_KW_DELAYS("Delays", "ढिलाइ"),
+    DASHA_KW_AMBITION("Ambition", "महत्त्वाकांक्षा"),
+    DASHA_KW_INNOVATION("Innovation", "नवीनता"),
+    DASHA_KW_FOREIGN("Foreign", "विदेशी"),
+    DASHA_KW_DETACHMENT("Detachment", "वैराग्य"),
+    DASHA_KW_PAST("Past", "भूतकाल"),
+    DASHA_KW_GENERAL("General", "सामान्य"),
+    DASHA_KW_SELF("Self", "आत्म"),
+    DASHA_KW_BODY("Body", "शरीर"),
+    DASHA_KW_WEALTH("Wealth", "धन"),
+    DASHA_KW_SPEECH("Speech", "वाणी"),
+    DASHA_KW_HOME("Home", "घर"),
+    DASHA_KW_PEACE("Peace", "शान्ति"),
+    DASHA_KW_CHILDREN("Children", "सन्तान"),
+    DASHA_KW_HEALTH("Health", "स्वास्थ्य"),
+    DASHA_KW_SERVICE("Service", "सेवा"),
+    DASHA_KW_MARRIAGE("Marriage", "विवाह"),
+    DASHA_KW_BUSINESS("Business", "व्यापार"),
+    DASHA_KW_TRANSFORMATION("Transformation", "रूपान्तरण"),
+    DASHA_KW_RESEARCH("Research", "अनुसन्धान"),
+    DASHA_KW_LUCK("Luck", "भाग्य"),
+    DASHA_KW_TRAVEL("Travel", "यात्रा"),
+    DASHA_KW_CAREER("Career", "क्यारियर"),
+    DASHA_KW_STATUS("Status", "स्थिति"),
+    DASHA_KW_GAINS("Gains", "लाभ"),
+    DASHA_KW_FRIENDS("Friends", "मित्रहरू"),
+    DASHA_KW_LOSSES("Losses", "हानि"),
+
+    // ============================================
+    // VARSHAPHALA - HOUSE PREDICTION PHRASES
+    // ============================================
+    VARSHA_LORD_EXCELLENT("is excellently placed for positive outcomes.", "सकारात्मक परिणामहरूको लागि उत्कृष्ट रूपमा स्थित छ।"),
+    VARSHA_LORD_WELL_POSITIONED("is well-positioned for success.", "सफलताको लागि राम्ररी स्थित छ।"),
+    VARSHA_LORD_MODERATE_SUPPORT("provides moderate support.", "मध्यम समर्थन प्रदान गर्दछ।"),
+    VARSHA_LORD_CHALLENGES("faces challenges requiring attention.", "ध्यान चाहिने चुनौतीहरूको सामना गर्दछ।"),
+    VARSHA_LORD_VARIABLE("influences results variably.", "परिणामहरूलाई परिवर्तनशील रूपमा प्रभाव पार्छ।"),
+    VARSHA_BENEFICS_ENHANCE(" %s enhance positive outcomes.", " %s ले सकारात्मक परिणामहरू बढाउँछ।"),
+    VARSHA_MALEFICS_CHALLENGE(" %s may bring challenges.", " %s ले चुनौतीहरू ल्याउन सक्छ।"),
+    VARSHA_MIXED_PLANETS(" Mixed influences from %s.", " %s बाट मिश्रित प्रभावहरू।"),
+    VARSHA_DEPENDS_LORD(" Results depend primarily on the lord's position.", " परिणामहरू मुख्यतया स्वामीको स्थितिमा निर्भर छन्।"),
+    VARSHA_MUNTHA_EMPHASIS(" Muntha emphasizes these matters this year.", " मुन्थले यस वर्ष यी मामिलाहरूमा जोड दिन्छ।"),
+    VARSHA_YEARLORD_RULES(" Year Lord rules this house - significant developments expected.", " वर्ष स्वामीले यो भाव शासन गर्छ - महत्त्वपूर्ण विकासहरू अपेक्षित।"),
+    VARSHA_HOUSE_GOVERNS("House %d in %s governs %s.", "भाव %d %s मा %s शासन गर्दछ।"),
+    VARSHA_LORD_IN_HOUSE("The lord %s in house %d ", "स्वामी %s भाव %d मा "),
+
+    // ============================================
+    // VARSHAPHALA - SPECIFIC EVENTS
+    // ============================================
+    VARSHA_EVENT_VITALITY("Increased vitality and personal confidence", "बढेको जीवनशक्ति र व्यक्तिगत आत्मविश्वास"),
+    VARSHA_EVENT_NEW_VENTURES("Favorable for starting new ventures", "नयाँ उद्यमहरू सुरु गर्न अनुकूल"),
+    VARSHA_EVENT_SPIRITUAL("Spiritual growth and wisdom", "आध्यात्मिक वृद्धि र बुद्धि"),
+    VARSHA_EVENT_ACCIDENTS("Increased energy - watch for accidents", "बढेको ऊर्जा - दुर्घटनाबाट सावधान"),
+    VARSHA_EVENT_FINANCIAL("Financial gains and wealth accumulation", "आर्थिक लाभ र धन संचय"),
+    VARSHA_EVENT_FAMILY("Improvement in family relationships", "पारिवारिक सम्बन्धमा सुधार"),
+    VARSHA_EVENT_LUXURY("Acquisition of luxury items", "विलासी वस्तुहरूको प्राप्ति"),
+    VARSHA_EVENT_CREATIVE("Creative success and recognition", "सिर्जनात्मक सफलता र मान्यता"),
+    VARSHA_EVENT_CHILDREN_MATTERS("Favorable for children's matters", "सन्तान सम्बन्धी मामिलाहरूको लागि अनुकूल"),
+    VARSHA_EVENT_ACADEMIC("Academic success or childbirth possible", "शैक्षिक सफलता वा सन्तान जन्म सम्भव"),
+    VARSHA_EVENT_ROMANTIC("Romantic happiness", "रोमान्टिक खुशी"),
+    VARSHA_EVENT_PARTNERSHIPS("Strengthening of partnerships", "साझेदारीहरूको सुदृढीकरण"),
+    VARSHA_EVENT_MARRIAGE_BUSINESS("Favorable for marriage or business", "विवाह वा व्यापारको लागि अनुकूल"),
+    VARSHA_EVENT_ROMANTIC_FULFILL("Romantic fulfillment", "रोमान्टिक पूर्णता"),
+    VARSHA_EVENT_CAREER_ADVANCE("Career advancement or promotion", "क्यारियर प्रगति वा पदोन्नति"),
+    VARSHA_EVENT_RECOGNITION("Recognition from authorities", "अधिकारीहरूबाट मान्यता"),
+    VARSHA_EVENT_GOVT_FAVOR("Government favor or leadership role", "सरकारी कृपा वा नेतृत्व भूमिका"),
+    VARSHA_EVENT_DESIRES("Fulfillment of desires and wishes", "इच्छाहरू र कामनाहरूको पूर्ति"),
+    VARSHA_EVENT_MULTIPLE_GAINS("Gains from multiple sources", "विभिन्न स्रोतहरूबाट लाभ"),
+
+    // ============================================
+    // VARSHAPHALA - DIGNITY DESCRIPTIONS
+    // ============================================
+    DIGNITY_EXALTED("exalted in %s", "%s मा उच्च"),
+    DIGNITY_OWN_SIGN("in its own sign of %s", "आफ्नै राशि %s मा"),
+    DIGNITY_DEBILITATED("debilitated in %s", "%s मा नीच"),
+    DIGNITY_FRIENDLY("in the friendly sign of %s", "%s मित्र राशिमा"),
+    DIGNITY_NEUTRAL("in the neutral sign of %s", "%s तटस्थ राशिमा"),
+    DIGNITY_ENEMY("in the enemy sign of %s", "%s शत्रु राशिमा"),
+    DIGNITY_KENDRA("in an angular house (Kendra)", "केन्द्र भावमा"),
+    DIGNITY_TRIKONA("in a trine house (Trikona)", "त्रिकोण भावमा"),
+    DIGNITY_GAINS("in a house of gains", "लाभ भावमा"),
+    DIGNITY_UPACHAYA("in an upachaya house", "उपचय भावमा"),
+    DIGNITY_DUSTHANA("in a challenging house (Dusthana)", "दुःस्थान भावमा"),
+    DIGNITY_RETROGRADE("and is retrograde", "र वक्री छ"),
+    DIGNITY_YEARLORD_DESC("The Year Lord %s is %s. This suggests its influence will be potent and its results will manifest clearly throughout the year.", "वर्ष स्वामी %s %s छ। यसले संकेत गर्छ कि यसको प्रभाव शक्तिशाली हुनेछ र यसको परिणामहरू वर्षभर स्पष्ट रूपमा प्रकट हुनेछन्।"),
+
+    // ============================================
+    // VARSHAPHALA - OVERALL PREDICTION TEMPLATE
+    // ============================================
+    VARSHA_OVERALL_TEMPLATE("This Varshaphala year presents an overall %s outlook. %s %s The Tajika aspects show %d favorable and %d challenging configurations. By understanding these influences, the year's potential can be maximized.", "यो वर्षफल वर्षले समग्र %s दृष्टिकोण प्रस्तुत गर्दछ। %s %s ताजिक पक्षहरूले %d अनुकूल र %d चुनौतीपूर्ण विन्यासहरू देखाउँछन्। यी प्रभावहरूलाई बुझेर, वर्षको सम्भावनालाई अधिकतम बनाउन सकिन्छ।"),
+    VARSHA_MUNTHA_DIRECTS("Muntha in House %d (%s) directs attention to %s.", "भाव %d (%s) मा मुन्थले %s मा ध्यान केन्द्रित गर्दछ।"),
+
+    // ============================================
+    // VARSHAPHALA - KEY DATES
+    // ============================================
+    KEY_DATE_SOLAR_RETURN("Solar Return", "सौर प्रतिफल"),
+    KEY_DATE_SOLAR_RETURN_DESC("Beginning of the annual horoscope year", "वार्षिक राशिफल वर्षको शुरुवात"),
+    KEY_DATE_DASHA_BEGINS("%s Dasha Begins", "%s दशा शुरु"),
+    KEY_DATE_DASHA_DESC("Start of %s period (%d days)", "%s अवधिको शुरुवात (%d दिन)"),
+
+    // ============================================
+    // VARSHAPHALA - HOUSE STRENGTH
+    // ============================================
+    HOUSE_STRENGTH_EXCELLENT("Excellent", "उत्कृष्ट"),
+    HOUSE_STRENGTH_STRONG("Strong", "बलियो"),
+    HOUSE_STRENGTH_MODERATE("Moderate", "मध्यम"),
+    HOUSE_STRENGTH_WEAK("Weak", "कमजोर"),
+    HOUSE_STRENGTH_CHALLENGED("Challenged", "चुनौतीपूर्ण"),
+
+    // ============================================
+    // VARSHAPHALA - ASPECT EFFECT DESCRIPTIONS
+    // ============================================
+    ASPECT_ITHASALA_EFFECT("%s applying to %s promises fulfillment", "%s %s मा निकटवर्ती हुँदा पूर्तिको वाचा"),
+    ASPECT_EASARAPHA_EFFECT("Separating aspect suggests matters are concluding", "विलग पक्षले मामिलाहरू समाप्त हुँदैछन् भनी सुझाव दिन्छ"),
+    ASPECT_KAMBOOLA_EFFECT("Powerful angular conjunction promises prominent success", "शक्तिशाली केन्द्रीय युतिले प्रमुख सफलताको वाचा गर्छ"),
+    ASPECT_RADDA_EFFECT("Retrograde motion causes delays or reversals", "वक्री गतिले ढिलाइ वा उल्टो परिणाम ल्याउँछ"),
+    ASPECT_DURAPHA_EFFECT("Hard aspect creates challenges that strengthen through difficulty", "कडा पक्षले कठिनाइद्वारा बलियो बनाउने चुनौतीहरू सिर्जना गर्छ"),
+    ASPECT_GENERIC_EFFECT("%s influences matters with %s energy", "%s ले %s ऊर्जासहित मामिलाहरूलाई प्रभाव पार्छ"),
+    ASPECT_SUPPORTIVE("supportive", "समर्थनात्मक"),
+    ASPECT_PREDICTION_TEMPLATE("The %s between %s and %s is %s for matters of %s.", "%s र %s बीचको %s %s को मामिलाहरूको लागि %s छ।"),
+    ASPECT_FAVORABLE_FOR("favorable", "अनुकूल"),
+    ASPECT_REQUIRING_ATTENTION("requiring attention", "ध्यान चाहिने"),
+
+    // ============================================
+    // VARSHAPHALA - SAHAM INTERPRETATION
+    // ============================================
+    SAHAM_INTERPRETATION_TEMPLATE("The %s Saham in %s (House %d) relates to %s this year. Its lord %s in House %d is %s.", "%s सहम %s मा (भाव %d) यस वर्ष %s सँग सम्बन्धित छ। यसको स्वामी %s भाव %d मा %s छ।"),
+    SAHAM_LORD_WELL_PLACED("well-placed, promising positive outcomes", "राम्ररी स्थित, सकारात्मक परिणामहरूको वाचा"),
+    SAHAM_LORD_REASONABLE("providing reasonable support", "उचित समर्थन प्रदान गर्दै"),
+    SAHAM_LORD_ATTENTION("requiring attention and effort", "ध्यान र प्रयास चाहिने"),
+    SAHAM_LORD_VARIABLE("influencing matters variably", "मामिलाहरूलाई परिवर्तनशील रूपमा प्रभाव पार्दै"),
+    SAHAM_INDICATES("indicates specific life areas", "विशिष्ट जीवन क्षेत्रहरू संकेत गर्दछ"),
+
+    // ============================================
+    // VARSHAPHALA - REPORT SECTIONS
+    // ============================================
+    VARSHA_REPORT_TITLE("VARSHAPHALA (ANNUAL HOROSCOPE) REPORT", "वर्षफल (वार्षिक राशिफल) रिपोर्ट"),
+    VARSHA_REPORT_NAME("Name: %s", "नाम: %s"),
+    VARSHA_REPORT_YEAR("Year: %d (Age: %d)", "वर्ष: %d (उमेर: %d)"),
+    VARSHA_REPORT_SOLAR_RETURN("Solar Return: %s", "सौर प्रतिफल: %s"),
+    VARSHA_REPORT_YEAR_RATING("Year Rating: %s/5.0", "वर्ष मूल्याङ्कन: %s/५.०"),
+    VARSHA_REPORT_SECTION_YEARLORD("YEAR LORD", "वर्ष स्वामी"),
+    VARSHA_REPORT_YEARLORD_LINE("Year Lord: %s (%s)", "वर्ष स्वामी: %s (%s)"),
+    VARSHA_REPORT_POSITION("Position: House %d", "स्थिति: भाव %d"),
+    VARSHA_REPORT_SECTION_MUNTHA("MUNTHA", "मुन्थ"),
+    VARSHA_REPORT_MUNTHA_POSITION("Muntha Position: %s° %s", "मुन्थ स्थिति: %s° %s"),
+    VARSHA_REPORT_MUNTHA_HOUSE("Muntha House: %d", "मुन्थ भाव: %d"),
+    VARSHA_REPORT_MUNTHA_LORD("Muntha Lord: %s in House %d", "मुन्थ स्वामी: %s भाव %d मा"),
+    VARSHA_REPORT_SECTION_THEMES("MAJOR THEMES", "मुख्य विषयहरू"),
+    VARSHA_REPORT_SECTION_MUDDA("MUDDA DASHA PERIODS", "मुद्द दशा अवधिहरू"),
+    VARSHA_REPORT_DASHA_LINE("%s: %s to %s (%d days)%s", "%s: %s देखि %s (%d दिन)%s"),
+    VARSHA_REPORT_CURRENT_MARKER(" [CURRENT]", " [वर्तमान]"),
+    VARSHA_REPORT_FAVORABLE_MONTHS("FAVORABLE MONTHS: %s", "अनुकूल महिनाहरू: %s"),
+    VARSHA_REPORT_CHALLENGING_MONTHS("CHALLENGING MONTHS: %s", "चुनौतीपूर्ण महिनाहरू: %s"),
+    VARSHA_REPORT_SECTION_PREDICTION("OVERALL PREDICTION", "समग्र भविष्यवाणी"),
+    VARSHA_REPORT_FOOTER("Generated by AstroStorm - Ultra-Precision Vedic Astrology", "AstroStorm द्वारा उत्पन्न - अति-सटीक वैदिक ज्योतिष"),
+
+    // ============================================
+    // VARSHAPHALA - MONTH NAMES (SHORT)
+    // ============================================
+    MONTH_JAN("Jan", "जनवरी"),
+    MONTH_FEB("Feb", "फेब्रुअरी"),
+    MONTH_MAR("Mar", "मार्च"),
+    MONTH_APR("Apr", "अप्रिल"),
+    MONTH_MAY("May", "मे"),
+    MONTH_JUN("Jun", "जुन"),
+    MONTH_JUL("Jul", "जुलाई"),
+    MONTH_AUG("Aug", "अगस्ट"),
+    MONTH_SEP("Sep", "सेप्टेम्बर"),
+    MONTH_OCT("Oct", "अक्टोबर"),
+    MONTH_NOV("Nov", "नोभेम्बर"),
+    MONTH_DEC("Dec", "डिसेम्बर"),
+
+    // ============================================
+    // VARSHAPHALA - ORDINAL SUFFIXES
+    // ============================================
+    ORDINAL_ST("st", "औं"),
+    ORDINAL_ND("nd", "औं"),
+    ORDINAL_RD("rd", "औं"),
+    ORDINAL_TH("th", "औं"),
+
+    // ============================================
+    // VARSHAPHALA - MUNTHA INTERPRETATION TEMPLATE
+    // ============================================
+    MUNTHA_INTERPRETATION_TEMPLATE("Muntha in %s in the %d%s house focuses the year's energy on %s. The Muntha lord %s in house %d provides %s support for these matters.", "%d%s भावमा %s मा मुन्थले वर्षको ऊर्जालाई %s मा केन्द्रित गर्दछ। मुन्थ स्वामी %s भाव %d मा यी मामिलाहरूको लागि %s समर्थन प्रदान गर्दछ।"),
+    MUNTHA_SUPPORT_EXCELLENT("excellent", "उत्कृष्ट"),
+    MUNTHA_SUPPORT_FAVORABLE("favorable", "अनुकूल"),
+    MUNTHA_SUPPORT_CHALLENGING("challenging but growth-oriented", "चुनौतीपूर्ण तर विकासोन्मुख"),
+    MUNTHA_SUPPORT_VARIABLE("variable", "परिवर्तनशील");
 
     companion object {
         /**
