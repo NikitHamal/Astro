@@ -2,19 +2,20 @@ package com.astro.storm.data.model
 
 import java.time.LocalDateTime
 
+import com.astro.storm.data.localization.StringKey
+
 /**
  * Gender options for astrological chart analysis.
  * Used for gender-specific interpretations in certain astrological traditions.
  */
-enum class Gender(val displayName: String) {
-    MALE("Male"),
-    FEMALE("Female"),
-    OTHER("Other");
+enum class Gender(val displayNameKey: StringKey) {
+    MALE(StringKey.GENDER_MALE),
+    FEMALE(StringKey.GENDER_FEMALE),
+    OTHER(StringKey.GENDER_OTHER);
 
     companion object {
         fun fromString(value: String?): Gender {
             return entries.find { it.name.equals(value, ignoreCase = true) }
-                ?: entries.find { it.displayName.equals(value, ignoreCase = true) }
                 ?: OTHER
         }
     }

@@ -48,6 +48,7 @@ import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.RemediesCalculator
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.util.localizedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -63,7 +64,7 @@ fun RemediesScreen(
 
     var remediesResult by remember { mutableStateOf<RemediesCalculator.RemediesResult?>(null) }
     var isLoading by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var errorKey by remember { mutableStateOf<Pair<StringKey, String?>?>(null) }
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var selectedCategory by remember { mutableStateOf<RemediesCalculator.RemedyCategory?>(null) }
     var expandedRemedyId by remember { mutableStateOf<String?>(null) }
@@ -82,13 +83,13 @@ fun RemediesScreen(
 
     suspend fun calculateRemedies(chartData: VedicChart) {
         isLoading = true
-        errorMessage = null
+        errorKey = null
         try {
             withContext(Dispatchers.Default) {
                 remediesResult = RemediesCalculator.calculateRemedies(chartData)
             }
         } catch (e: Exception) {
-            errorMessage = "Failed to calculate remedies: ${e.message}"
+            errorKey = StringKey.REMEDY_CALCULATION_FAILED to e.message
         } finally {
             isLoading = false
         }
@@ -176,9 +177,10 @@ fun RemediesScreen(
                     modifier = Modifier.padding(paddingValues)
                 )
             }
-            errorMessage != null -> {
+            errorKey != null -> {
+                val (key, param) = errorKey!!
                 ErrorState(
-                    message = errorMessage!!,
+                    message = if (param != null) stringResource(key, param) else stringResource(key),
                     onRetry = { scope.launch { calculateRemedies(chart) } },
                     modifier = Modifier.padding(paddingValues)
                 )
@@ -283,7 +285,7 @@ private fun SearchTextField(
         onValueChange = onQueryChange,
         placeholder = {
             Text(
-                "Search remedies...",
+                stringResource(StringKey.REMEDIES_SEARCH),
                 color = AppTheme.TextMuted
             )
         },
@@ -300,7 +302,7 @@ private fun SearchTextField(
                 IconButton(onClick = onClear) {
                     Icon(
                         Icons.Filled.Close,
-                        contentDescription = "Clear search",
+                        contentDescription = stringResource(StringKey.ACTION_CLEAR_SEARCH),
                         tint = AppTheme.TextMuted
                     )
                 }
@@ -376,7 +378,7 @@ private fun SummaryCard(result: RemediesCalculator.RemediesResult) {
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        "Remedies Analysis",
+                        stringResource(StringKey.REMEDIES_ANALYSIS),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -393,11 +395,11 @@ private fun SummaryCard(result: RemediesCalculator.RemediesResult) {
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     StatItem(
                         value = "${result.totalRemediesCount}",
-                        label = "Total"
+                        label = stringResource(StringKey.REMEDIES_TOTAL)
                     )
                     StatItem(
                         value = "${result.essentialRemediesCount}",
-                        label = "Essential",
+                        label = stringResource(StringKey.REMEDIES_ESSENTIAL_COUNT),
                         color = AppTheme.WarningColor
                     )
                 }
@@ -449,16 +451,18 @@ private fun OverallChartHealthIndicator(result: RemediesCalculator.RemediesResul
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    "Chart Strength",
+                    stringResource(StringKey.REMEDIES_CHART_STRENGTH),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
-                Text(
-                    "$strongPlanets of $totalPlanets planets well-placed",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted
-                )
+                if (result.planetaryAnalyses.all { it.strength in listOf(RemediesCalculator.PlanetaryStrength.STRONG, RemediesCalculator.PlanetaryStrength.VERY_STRONG) }) {
+                    Text(
+                        stringResource(StringKey.REMEDY_ALL_STRONG),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextMuted
+                    )
+                }
             }
 
             Box(
@@ -531,7 +535,7 @@ private fun WeakPlanetsCard(weakPlanets: List<Planet>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    "Planets Requiring Attention",
+                    stringResource(StringKey.REMEDIES_PLANETS_ATTENTION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -554,12 +558,13 @@ private fun WeakPlanetsCard(weakPlanets: List<Planet>) {
 @Composable
 private fun PlanetChip(planet: Planet) {
     val planetColor = getPlanetColor(planet)
+    val localizedName = planet.localizedName()
 
     Surface(
         color = planetColor.copy(alpha = 0.15f),
         shape = RoundedCornerShape(20.dp),
         modifier = Modifier.semantics {
-            contentDescription = "${planet.displayName} requires attention"
+            contentDescription = "$localizedName ${stringResource(StringKey.MATCH_NEEDS_ATTENTION)}"
         }
     ) {
         Row(
@@ -582,7 +587,7 @@ private fun PlanetChip(planet: Planet) {
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                planet.displayName,
+                localizedName,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = planetColor
@@ -618,7 +623,7 @@ private fun EssentialRemediesPreview(result: RemediesCalculator.RemediesResult) 
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    "Essential Remedies",
+                    stringResource(StringKey.REMEDIES_ESSENTIAL),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -659,7 +664,7 @@ private fun EssentialRemedyRow(remedy: RemediesCalculator.Remedy) {
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                remedy.category.displayName,
+                remedy.category.localizedName(),
                 style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted
             )
@@ -687,19 +692,19 @@ private fun EssentialRemedyRow(remedy: RemediesCalculator.Remedy) {
 private fun WeeklyRemedyScheduleCard(result: RemediesCalculator.RemediesResult) {
     val weekDays = remember {
         listOf(
-            "Sunday" to Planet.SUN,
-            "Monday" to Planet.MOON,
-            "Tuesday" to Planet.MARS,
-            "Wednesday" to Planet.MERCURY,
-            "Thursday" to Planet.JUPITER,
-            "Friday" to Planet.VENUS,
-            "Saturday" to Planet.SATURN
+            StringKey.DAY_SUNDAY to Planet.SUN,
+            StringKey.DAY_MONDAY to Planet.MOON,
+            StringKey.DAY_TUESDAY to Planet.MARS,
+            StringKey.DAY_WEDNESDAY to Planet.MERCURY,
+            StringKey.DAY_THURSDAY to Planet.JUPITER,
+            StringKey.DAY_FRIDAY to Planet.VENUS,
+            StringKey.DAY_SATURDAY to Planet.SATURN
         )
     }
 
     val remediesByDay = remember(result) {
-        weekDays.associate { (day, planet) ->
-            day to result.remedies.filter { it.planet == planet }
+        weekDays.associate { (dayKey, planet) ->
+            dayKey to result.remedies.filter { it.planet == planet }
         }
     }
 
@@ -720,7 +725,7 @@ private fun WeeklyRemedyScheduleCard(result: RemediesCalculator.RemediesResult) 
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    "Weekly Remedy Schedule",
+                    stringResource(StringKey.REMEDIES_WEEKLY_SCHEDULE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -730,7 +735,7 @@ private fun WeeklyRemedyScheduleCard(result: RemediesCalculator.RemediesResult) 
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                "Perform planet-specific remedies on their designated days for maximum effect",
+                stringResource(StringKey.REMEDIES_WEEKLY_SCHEDULE_DESC),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -740,10 +745,11 @@ private fun WeeklyRemedyScheduleCard(result: RemediesCalculator.RemediesResult) 
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(weekDays, key = { it.first }) { (day, planet) ->
-                    val remedyCount = remediesByDay[day]?.size ?: 0
+                items(weekDays, key = { it.first.name }) { (dayKey, planet) ->
+                    val remedyCount = remediesByDay[dayKey]?.size ?: 0
+                    val dayName = stringResource(dayKey)
                     WeekDayChip(
-                        day = day.take(3),
+                        day = dayName.take(3),
                         planet = planet,
                         remedyCount = remedyCount
                     )
@@ -810,7 +816,7 @@ private fun LifeAreaFocusCard(lifeAreaFocus: Map<String, List<RemediesCalculator
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                "Life Area Focus",
+                stringResource(StringKey.REMEDIES_LIFE_AREA_FOCUS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -887,7 +893,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    "General Recommendations",
+                    stringResource(StringKey.REMEDIES_GENERAL_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -992,8 +998,8 @@ private fun NoResultsState(searchQuery: String) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                if (searchQuery.isNotBlank()) "No remedies found for \"$searchQuery\""
-                else "No remedies in this category",
+                if (searchQuery.isNotBlank()) stringResource(StringKey.REMEDIES_NO_RESULTS) + " \"$searchQuery\""
+                else stringResource(StringKey.REMEDIES_NO_RESULTS),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -1036,7 +1042,7 @@ private fun CategoryFilter(
                 onClick = { onCategoryChange(category) },
                 label = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(category.displayName)
+                        Text(category.localizedName())
                         if (count > 0) {
                             Spacer(modifier = Modifier.width(4.dp))
                             Surface(
@@ -1140,14 +1146,14 @@ private fun RemedyCard(
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                remedy.category.displayName,
+                                remedy.category.localizedName(),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
                             remedy.planet?.let { planet ->
                                 Text(" • ", color = AppTheme.TextMuted)
                                 Text(
-                                    planet.displayName,
+                                    planet.localizedName(),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = getPlanetColor(planet)
                                 )
@@ -1174,7 +1180,7 @@ private fun RemedyCard(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            remedy.priority.displayName,
+                            remedy.priority.localizedName(),
                             style = MaterialTheme.typography.labelSmall,
                             color = getPriorityColor(remedy.priority)
                         )
@@ -1205,7 +1211,7 @@ private fun RemedyCard(
 
                     DetailSection(
                         icon = Icons.Outlined.MenuBook,
-                        title = "Method",
+                        title = stringResource(StringKey.REMEDIES_METHOD),
                         content = remedy.method
                     )
 
@@ -1215,7 +1221,7 @@ private fun RemedyCard(
                         Box(modifier = Modifier.weight(1f)) {
                             DetailSection(
                                 icon = Icons.Outlined.Schedule,
-                                title = "Timing",
+                                title = stringResource(StringKey.REMEDIES_TIMING),
                                 content = remedy.timing
                             )
                         }
@@ -1223,7 +1229,7 @@ private fun RemedyCard(
                         Box(modifier = Modifier.weight(1f)) {
                             DetailSection(
                                 icon = Icons.Outlined.DateRange,
-                                title = "Duration",
+                                title = stringResource(StringKey.REMEDIES_DURATION),
                                 content = remedy.duration
                             )
                         }
@@ -1260,7 +1266,7 @@ private fun RemedyCard(
             ) {
                 Icon(
                     Icons.Filled.ExpandMore,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (isExpanded) stringResource(StringKey.MISC_COLLAPSE) else stringResource(StringKey.MISC_EXPAND),
                     tint = AppTheme.TextSubtle,
                     modifier = Modifier
                         .size(20.dp)
@@ -1287,7 +1293,7 @@ private fun MantraSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Mantra",
+                    stringResource(StringKey.REMEDIES_MANTRA_SECTION),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.AccentGold
@@ -1298,7 +1304,7 @@ private fun MantraSection(
                 ) {
                     Icon(
                         Icons.Outlined.ContentCopy,
-                        contentDescription = "Copy mantra",
+                        contentDescription = stringResource(StringKey.REMEDIES_COPY_MANTRA),
                         tint = AppTheme.AccentGold,
                         modifier = Modifier.size(16.dp)
                     )
@@ -1319,7 +1325,7 @@ private fun MantraSection(
 private fun BenefitsList(benefits: List<String>) {
     Column {
         Text(
-            "Benefits",
+            stringResource(StringKey.REMEDIES_BENEFITS),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary
@@ -1357,7 +1363,7 @@ private fun CautionsList(cautions: List<String>) {
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
-                "Cautions",
+                stringResource(StringKey.REMEDIES_CAUTIONS),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.WarningColor
@@ -1489,27 +1495,26 @@ private fun PlanetAnalysisCard(analysis: RemediesCalculator.PlanetaryAnalysis) {
 
                     Column {
                         Text(
-                            analysis.planet.displayName,
+                            analysis.planet.localizedName(),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                analysis.sign.displayName,
+                                analysis.sign.localizedName(),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
                             Text(" • ", color = AppTheme.TextMuted)
                             Text(
-                                "House ${analysis.housePosition}",
+                                "${stringResource(StringKey.VARSHAPHALA_HOUSE)} ${analysis.housePosition}",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
                         }
-                        // Fixed: Accessing displayName from the Nakshatra Enum, not the object itself
                         Text(
-                            analysis.nakshatra.displayName,
+                            analysis.nakshatra.localizedName(),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.AccentPrimary
                         )
@@ -1524,13 +1529,13 @@ private fun PlanetAnalysisCard(analysis: RemediesCalculator.PlanetaryAnalysis) {
             }
 
             val statusIndicators = buildList {
-                if (analysis.isExalted) add("Exalted" to AppTheme.SuccessColor)
-                if (analysis.isDebilitated) add("Debilitated" to AppTheme.ErrorColor)
-                if (analysis.isRetrograde) add("Retrograde" to AppTheme.WarningColor)
-                if (analysis.isCombust) add("Combust" to AppTheme.ErrorColor)
-                if (analysis.isOwnSign) add("Own Sign" to AppTheme.SuccessColor)
-                if (analysis.isFriendlySign) add("Friendly" to Color(0xFF8BC34A))
-                if (analysis.isEnemySign) add("Enemy Sign" to AppTheme.ErrorColor)
+                if (analysis.isExalted) add(stringResource(StringKey.PLANETARY_STATUS_EXALTED) to AppTheme.SuccessColor)
+                if (analysis.isDebilitated) add(stringResource(StringKey.PLANETARY_STATUS_DEBILITATED) to AppTheme.ErrorColor)
+                if (analysis.isRetrograde) add(stringResource(StringKey.PLANETARY_STATUS_RETROGRADE) to AppTheme.WarningColor)
+                if (analysis.isCombust) add(stringResource(StringKey.PLANETARY_STATUS_COMBUST) to AppTheme.ErrorColor)
+                if (analysis.isOwnSign) add(stringResource(StringKey.PLANETARY_STATUS_OWN_SIGN) to AppTheme.SuccessColor)
+                if (analysis.isFriendlySign) add(stringResource(StringKey.PLANETARY_STATUS_FRIENDLY) to Color(0xFF8BC34A))
+                if (analysis.isEnemySign) add(stringResource(StringKey.PLANETARY_STATUS_ENEMY_SIGN) to AppTheme.ErrorColor)
             }
 
             if (statusIndicators.isNotEmpty()) {
@@ -1601,7 +1606,7 @@ private fun StrengthIndicator(
             }
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                strength.displayName,
+                strength.localizedName(),
                 style = MaterialTheme.typography.labelSmall,
                 color = strengthColor
             )
@@ -1658,7 +1663,7 @@ private fun PositiveRow(text: String) {
 @Composable
 private fun RemedyRecommendationBanner(planet: Planet) {
     val planetColor = getPlanetColor(planet)
-    val weekday = getWeekdayForPlanet(planet)
+    val weekday = stringResource(getWeekdayForPlanetKey(planet))
 
     Surface(
         color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
@@ -1678,13 +1683,13 @@ private fun RemedyRecommendationBanner(planet: Planet) {
             Spacer(modifier = Modifier.width(8.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    "Remedies recommended",
+                    stringResource(StringKey.REMEDIES_RECOMMENDED, 1), // Placeholder for count if needed
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.AccentPrimary
                 )
                 Text(
-                    "Best performed on $weekday",
+                    stringResource(StringKey.REMEDIES_BEST_DAY, weekday),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1724,12 +1729,12 @@ private fun EmptyState(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                "No chart selected",
+                stringResource(StringKey.REMEDIES_NO_CHART),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppTheme.TextMuted
             )
             Text(
-                "Select a chart to view remedies",
+                stringResource(StringKey.REMEDIES_SELECT_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSubtle
             )
@@ -1750,13 +1755,13 @@ private fun LoadingState(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                "Analyzing your chart...",
+                stringResource(StringKey.REMEDIES_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                "Preparing personalized remedies",
+                stringResource(StringKey.REMEDIES_PREPARING),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSubtle
             )
@@ -1783,7 +1788,7 @@ private fun ErrorState(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                "Something went wrong",
+                stringResource(StringKey.MUHURTA_ERROR),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppTheme.TextPrimary
             )
@@ -1916,17 +1921,17 @@ private fun getLifeAreaColor(area: String): Color {
     }
 }
 
-private fun getWeekdayForPlanet(planet: Planet): String {
+private fun getWeekdayForPlanetKey(planet: Planet): StringKey {
     return when (planet) {
-        Planet.SUN -> "Sunday"
-        Planet.MOON -> "Monday"
-        Planet.MARS -> "Tuesday"
-        Planet.MERCURY -> "Wednesday"
-        Planet.JUPITER -> "Thursday"
-        Planet.VENUS -> "Friday"
-        Planet.SATURN -> "Saturday"
-        Planet.RAHU -> "Saturday"
-        Planet.KETU -> "Tuesday"
-        else -> "any day"
+        Planet.SUN -> StringKey.DAY_SUNDAY
+        Planet.MOON -> StringKey.DAY_MONDAY
+        Planet.MARS -> StringKey.DAY_TUESDAY
+        Planet.MERCURY -> StringKey.DAY_WEDNESDAY
+        Planet.JUPITER -> StringKey.DAY_THURSDAY
+        Planet.VENUS -> StringKey.DAY_FRIDAY
+        Planet.SATURN -> StringKey.DAY_SATURDAY
+        Planet.RAHU -> StringKey.DAY_SATURDAY
+        Planet.KETU -> StringKey.DAY_TUESDAY
+        else -> StringKey.MUHURTA_DETAIL_DAY // "Day" as a fallback
     }
 }

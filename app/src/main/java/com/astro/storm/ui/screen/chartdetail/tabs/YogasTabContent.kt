@@ -66,6 +66,7 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.YogaCalculator
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.components.StatusBadge
+import com.astro.storm.ui.util.localizedName
 
 /**
  * Yogas tab content displaying all detected yogas with filtering and analysis.
@@ -269,7 +270,7 @@ private fun TopYogasSection(topYogas: List<YogaCalculator.Yoga>, language: Langu
                     )
                 }
                 Text(
-                    text = getLocalizedStrength(yoga.strength, language),
+                    text = yoga.strength.localizedName(),
                     fontSize = 11.sp,
                     color = ChartDetailColors.TextMuted
                 )
@@ -316,7 +317,7 @@ private fun YogaCategoryFilter(
                 FilterChip(
                     selected = selectedCategory == category,
                     onClick = { onCategorySelected(category) },
-                    label = { Text("${getCategoryDisplayName(category, language)} (${formatNumber(count, language)})", fontSize = 12.sp) },
+                    label = { Text("${category.localizedName()} (${formatNumber(count, language)})", fontSize = 12.sp) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = getCategoryColor(category).copy(alpha = 0.2f),
                         selectedLabelColor = getCategoryColor(category),
@@ -394,7 +395,7 @@ private fun YogaCard(
                             color = ChartDetailColors.TextPrimary
                         )
                         Text(
-                            text = getCategoryDisplayName(yoga.category, language),
+                            text = yoga.category.localizedName(),
                             fontSize = 11.sp,
                             color = ChartDetailColors.TextMuted
                         )
@@ -583,7 +584,7 @@ private fun EmptyYogasMessage(category: YogaCalculator.YogaCategory?) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = if (category != null) {
-                    stringResource(StringKey.YOGA_NO_CATEGORY_FOUND, getCategoryDisplayName(category, language))
+                    stringResource(StringKey.YOGA_NO_CATEGORY_FOUND, category.localizedName())
                 } else {
                     stringResource(StringKey.YOGA_NONE_DETECTED)
                 },
@@ -598,41 +599,6 @@ private fun EmptyYogasMessage(category: YogaCalculator.YogaCategory?) {
 // ============================================
 // LOCALIZATION HELPER FUNCTIONS
 // ============================================
-
-private fun getCategoryDisplayName(category: YogaCalculator.YogaCategory, language: Language): String = when (category) {
-    YogaCalculator.YogaCategory.RAJA_YOGA -> when (language) {
-        Language.ENGLISH -> "Raja Yoga"
-        Language.NEPALI -> "राज योग"
-    }
-    YogaCalculator.YogaCategory.DHANA_YOGA -> when (language) {
-        Language.ENGLISH -> "Dhana Yoga"
-        Language.NEPALI -> "धन योग"
-    }
-    YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> when (language) {
-        Language.ENGLISH -> "Mahapurusha Yoga"
-        Language.NEPALI -> "महापुरुष योग"
-    }
-    YogaCalculator.YogaCategory.NABHASA_YOGA -> when (language) {
-        Language.ENGLISH -> "Nabhasa Yoga"
-        Language.NEPALI -> "नाभस योग"
-    }
-    YogaCalculator.YogaCategory.CHANDRA_YOGA -> when (language) {
-        Language.ENGLISH -> "Chandra Yoga"
-        Language.NEPALI -> "चन्द्र योग"
-    }
-    YogaCalculator.YogaCategory.SOLAR_YOGA -> when (language) {
-        Language.ENGLISH -> "Solar Yoga"
-        Language.NEPALI -> "सूर्य योग"
-    }
-    YogaCalculator.YogaCategory.NEGATIVE_YOGA -> when (language) {
-        Language.ENGLISH -> "Negative Yoga"
-        Language.NEPALI -> "नकारात्मक योग"
-    }
-    YogaCalculator.YogaCategory.SPECIAL_YOGA -> when (language) {
-        Language.ENGLISH -> "Special Yoga"
-        Language.NEPALI -> "विशेष योग"
-    }
-}
 
 private fun getCategoryColor(category: YogaCalculator.YogaCategory): Color = when (category) {
     YogaCalculator.YogaCategory.RAJA_YOGA -> ChartDetailColors.AccentGold
@@ -671,28 +637,5 @@ private fun formatPercentage(value: Double, language: Language): String {
             }.joinToString("")
             "$nepaliNumber%"
         }
-    }
-}
-
-private fun getLocalizedStrength(strength: YogaCalculator.YogaStrength, language: Language): String = when (strength) {
-    YogaCalculator.YogaStrength.EXTREMELY_STRONG -> when (language) {
-        Language.ENGLISH -> "Extremely Strong"
-        Language.NEPALI -> "अत्यन्त बलियो"
-    }
-    YogaCalculator.YogaStrength.STRONG -> when (language) {
-        Language.ENGLISH -> "Strong"
-        Language.NEPALI -> "बलियो"
-    }
-    YogaCalculator.YogaStrength.MODERATE -> when (language) {
-        Language.ENGLISH -> "Moderate"
-        Language.NEPALI -> "मध्यम"
-    }
-    YogaCalculator.YogaStrength.WEAK -> when (language) {
-        Language.ENGLISH -> "Weak"
-        Language.NEPALI -> "कमजोर"
-    }
-    YogaCalculator.YogaStrength.VERY_WEAK -> when (language) {
-        Language.ENGLISH -> "Very Weak"
-        Language.NEPALI -> "धेरै कमजोर"
     }
 }

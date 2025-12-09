@@ -157,7 +157,7 @@ private fun TransitOverviewCard(analysis: TransitAnalyzer.TransitAnalysis) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Transit Overview",
+                    text = stringResource(StringKey.TAB_OVERVIEW),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = ChartDetailColors.TextPrimary
@@ -170,17 +170,17 @@ private fun TransitOverviewCard(analysis: TransitAnalyzer.TransitAnalysis) {
             ) {
                 OverviewBadge(
                     count = favorableCount,
-                    label = "Favorable",
+                    label = stringResource(StringKey.MATCH_FAVORABLE),
                     color = ChartDetailColors.SuccessColor
                 )
                 OverviewBadge(
                     count = challengingCount,
-                    label = "Challenging",
+                    label = stringResource(StringKey.STRENGTH_CHALLENGING),
                     color = ChartDetailColors.WarningColor
                 )
                 OverviewBadge(
                     count = analysis.transitAspects.size,
-                    label = "Aspects",
+                    label = stringResource(StringKey.TAB_ASPECTS),
                     color = ChartDetailColors.AccentBlue
                 )
             }

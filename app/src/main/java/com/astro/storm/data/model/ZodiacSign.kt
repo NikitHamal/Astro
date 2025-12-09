@@ -3,26 +3,28 @@ package com.astro.storm.data.model
 /**
  * Vedic zodiac signs (Rashis)
  */
+import com.astro.storm.data.localization.StringKey
+
 enum class ZodiacSign(
     val number: Int,
-    val displayName: String,
+    val displayNameKey: StringKey,
     val abbreviation: String,
     val element: String,
     val ruler: Planet,
     val quality: Quality
 ) {
-    ARIES(1, "Aries", "Ar", "Fire", Planet.MARS, Quality.CARDINAL),
-    TAURUS(2, "Taurus", "Ta", "Earth", Planet.VENUS, Quality.FIXED),
-    GEMINI(3, "Gemini", "Ge", "Air", Planet.MERCURY, Quality.MUTABLE),
-    CANCER(4, "Cancer", "Ca", "Water", Planet.MOON, Quality.CARDINAL),
-    LEO(5, "Leo", "Le", "Fire", Planet.SUN, Quality.FIXED),
-    VIRGO(6, "Virgo", "Vi", "Earth", Planet.MERCURY, Quality.MUTABLE),
-    LIBRA(7, "Libra", "Li", "Air", Planet.VENUS, Quality.CARDINAL),
-    SCORPIO(8, "Scorpio", "Sc", "Water", Planet.MARS, Quality.FIXED),
-    SAGITTARIUS(9, "Sagittarius", "Sg", "Fire", Planet.JUPITER, Quality.MUTABLE),
-    CAPRICORN(10, "Capricorn", "Cp", "Earth", Planet.SATURN, Quality.CARDINAL),
-    AQUARIUS(11, "Aquarius", "Aq", "Air", Planet.SATURN, Quality.FIXED),
-    PISCES(12, "Pisces", "Pi", "Water", Planet.JUPITER, Quality.MUTABLE);
+    ARIES(1, StringKey.SIGN_ARIES, "Ar", "Fire", Planet.MARS, Quality.CARDINAL),
+    TAURUS(2, StringKey.SIGN_TAURUS, "Ta", "Earth", Planet.VENUS, Quality.FIXED),
+    GEMINI(3, StringKey.SIGN_GEMINI, "Ge", "Air", Planet.MERCURY, Quality.MUTABLE),
+    CANCER(4, StringKey.SIGN_CANCER, "Ca", "Water", Planet.MOON, Quality.CARDINAL),
+    LEO(5, StringKey.SIGN_LEO, "Le", "Fire", Planet.SUN, Quality.FIXED),
+    VIRGO(6, StringKey.SIGN_VIRGO, "Vi", "Earth", Planet.MERCURY, Quality.MUTABLE),
+    LIBRA(7, StringKey.SIGN_LIBRA, "Li", "Air", Planet.VENUS, Quality.CARDINAL),
+    SCORPIO(8, StringKey.SIGN_SCORPIO, "Sc", "Water", Planet.MARS, Quality.FIXED),
+    SAGITTARIUS(9, StringKey.SIGN_SAGITTARIUS, "Sg", "Fire", Planet.JUPITER, Quality.MUTABLE),
+    CAPRICORN(10, StringKey.SIGN_CAPRICORN, "Cp", "Earth", Planet.SATURN, Quality.CARDINAL),
+    AQUARIUS(11, StringKey.SIGN_AQUARIUS, "Aq", "Air", Planet.SATURN, Quality.FIXED),
+    PISCES(12, StringKey.SIGN_PISCES, "Pi", "Water", Planet.JUPITER, Quality.MUTABLE);
 
     val startDegree: Double get() = (number - 1) * ZODIAC_SIGN_SPAN
     val endDegree: Double get() = number * ZODIAC_SIGN_SPAN

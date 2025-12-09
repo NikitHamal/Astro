@@ -62,6 +62,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.getLocalizedName
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
@@ -93,9 +98,7 @@ fun ChartTabContent(
         getChartDataForType(selectedChartType, divisionalCharts)
     }
 
-    val chartInfo = remember(selectedChartType) {
-        getChartInfo(selectedChartType)
-    }
+    val chartInfo = getChartInfo(selectedChartType)
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -201,24 +204,26 @@ private fun getChartDataForType(
     }
 }
 
+@Composable
 private fun getChartInfo(type: String): Triple<String, String, String> {
-    return when (type) {
-        "D1" -> Triple("Lagna Chart (Rashi)", "Physical Body, General Life", "D1")
-        "D2" -> Triple("Hora Chart", "Wealth, Prosperity", "D2")
-        "D3" -> Triple("Drekkana Chart", "Siblings, Courage, Vitality", "D3")
-        "D4" -> Triple("Chaturthamsa Chart", "Fortune, Property", "D4")
-        "D7" -> Triple("Saptamsa Chart", "Children, Progeny", "D7")
-        "D9" -> Triple("Navamsa Chart", "Marriage, Dharma, Fortune", "D9")
-        "D10" -> Triple("Dasamsa Chart", "Career, Profession", "D10")
-        "D12" -> Triple("Dwadasamsa Chart", "Parents, Ancestry", "D12")
-        "D16" -> Triple("Shodasamsa Chart", "Vehicles, Pleasures", "D16")
-        "D20" -> Triple("Vimsamsa Chart", "Spiritual Life", "D20")
-        "D24" -> Triple("Siddhamsa Chart", "Education, Learning", "D24")
-        "D27" -> Triple("Bhamsa Chart", "Strength, Weakness", "D27")
-        "D30" -> Triple("Trimsamsa Chart", "Evils, Misfortunes", "D30")
-        "D60" -> Triple("Shashtiamsa Chart", "Past Life Karma", "D60")
-        else -> Triple("Chart", "", type)
+    val (nameKey, descKey) = when (type) {
+        "D1" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D1_DESC)
+        "D2" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D2_DESC) // Placeholder, add specific name if exists
+        "D3" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D3_DESC)
+        "D4" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D4_DESC)
+        "D7" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D7_DESC)
+        "D9" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D9_DESC)
+        "D10" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D10_DESC)
+        "D12" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D12_DESC)
+        "D16" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D16_DESC)
+        "D20" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D20_DESC)
+        "D24" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D24_DESC)
+        "D27" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D27_DESC)
+        "D30" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D30_DESC)
+        "D60" -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.VARGA_D60_DESC)
+        else -> Pair(StringKey.FEATURE_BIRTH_CHART, StringKey.MISC_UNAVAILABLE)
     }
+    return Triple(stringResource(nameKey), stringResource(descKey), type)
 }
 
 @Composable
@@ -306,7 +311,7 @@ private fun MainChartCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Default.Fullscreen,
-                        contentDescription = "View fullscreen",
+                        contentDescription = stringResource(StringKey.ACTION_VIEW_FULLSCREEN),
                         tint = ChartDetailColors.TextMuted,
                         modifier = Modifier.size(20.dp)
                     )
@@ -340,7 +345,7 @@ private fun MainChartCard(
                             drawScope = this,
                             chart = chart,
                             size = size.minDimension,
-                            chartTitle = "Lagna"
+                            chartTitle = stringResource(StringKey.CHART_ASCENDANT)
                         )
                     } else {
                         currentChartData?.let {
@@ -361,7 +366,7 @@ private fun MainChartCard(
             ChartLegend()
 
             Text(
-                text = "Tap chart to view fullscreen",
+                text = stringResource(StringKey.ACTION_VIEW_FULLSCREEN),
                 fontSize = 11.sp,
                 color = ChartDetailColors.TextMuted,
                 textAlign = TextAlign.Center,

@@ -1,4 +1,3 @@
-
 package com.astro.storm.data.localization
 
 import androidx.compose.runtime.Composable
@@ -652,7 +651,7 @@ enum class StringKey(val en: String, val ne: String) {
     MATCH_ABSENT("Absent", "अनुपस्थित"),
     MATCH_NADI_WARNING("Same Nadi can indicate health and progeny concerns", "एउटै नाडीले स्वास्थ्य र सन्तान सम्बन्धी चिन्ता संकेत गर्न सक्छ"),
     MATCH_BHAKOOT_DOSHA("Bhakoot Dosha", "भकूट दोष"),
-    MATCH_FINANCIAL_HARMONY("Financial Harmony", "आर्थिक सामञ्स्य"),
+    MATCH_FINANCIAL_HARMONY("Financial Harmony", "आर्थिक सामञ्जस्य"),
     MATCH_BRIDE_RASHI("Bride Rashi", "वधू राशि"),
     MATCH_GROOM_RASHI("Groom Rashi", "वर राशि"),
     MATCH_NAKSHATRA_COMPATIBILITY("Nakshatra Compatibility", "नक्षत्र अनुकूलता"),
@@ -1061,9 +1060,6 @@ enum class StringKey(val en: String, val ne: String) {
     DASHA_INTERPRETATION_ANTAR_KETU("Ketu's sub-period encourages introspection, spiritual seeking, and detachment.", "केतुको उप-अवधिले आत्मनिरीक्षण, आध्यात्मिक खोजी र वैराग्यलाई प्रोत्साहित गर्दछ।"),
     DASHA_INTERPRETATION_ANTAR_GENERIC("This sub-period modifies the main period's themes. Its specific effects depend on its role in your chart.", "यो उप-अवधिले मुख्य अवधिका विषयहरूलाई परिमार्जन गर्दछ। यसको विशिष्ट प्रभाव तपाईंको कुण्डलीमा यसको भूमिकामा निर्भर गर्दछ।"),
 
-    // ============================================
-    // PANCHANGA DETAILS
-    // ============================================
     PANCHANGA_SANSKRIT("Sanskrit", "संस्कृत"),
     PANCHANGA_NUMBER("Number", "संख्या"),
     PANCHANGA_PAKSHA_LABEL("Paksha", "पक्ष"),
@@ -1085,7 +1081,6 @@ enum class StringKey(val en: String, val ne: String) {
     PANCHANGA_GANA("Gana", "गण"),
     PANCHANGA_GUNA("Guna", "गुण"),
     PANCHANGA_ANIMAL("Animal", "पशु"),
-    PANCHANGA_YOGA_SUBTITLE("Luni-Solar Combination • योग", "चन्द्र-सूर्य संयोजन • योग"),
     PANCHANGA_EFFECTS("Effects", "प्रभावहरू"),
     PANCHANGA_MEANING("Meaning", "अर्थ"),
     PANCHANGA_OF_60("%d of 60", "%d मध्ये ६०"),
@@ -1361,7 +1356,7 @@ enum class StringKey(val en: String, val ne: String) {
     HOUSE_8_SIGNIFICATION("inheritance and unexpected gains", "विरासत र अप्रत्याशित लाभ"),
     HOUSE_9_SIGNIFICATION("fortune and higher pursuits", "भाग्य र उच्च खोजीहरू"),
     HOUSE_10_SIGNIFICATION("career and public recognition", "क्यारियर र सार्वजनिक मान्यता"),
-    HOUSE_11_SIGNIFICATION("gains and social networks", "लाभ र सामाजिक सञ्जालेहरू"),
+    HOUSE_11_SIGNIFICATION("gains and social networks", "लाभ र सामाजिक सञ्जालहरू"),
     HOUSE_12_SIGNIFICATION("foreign connections and spiritual pursuits", "विदेशी सम्बन्ध र आध्यात्मिक खोजीहरू"),
 
     // ============================================

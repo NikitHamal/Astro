@@ -21,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.MainActivity
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AstroStormTheme
 import com.astro.storm.ui.theme.AppTheme
 
@@ -113,14 +115,14 @@ fun DebugScreen(
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = AppTheme.AccentPrimary)
                 ) {
-                    Text("Copy Log")
+                    Text(stringResource(StringKey.ACTION_COPY))
                 }
                 Button(
                     onClick = onRestart,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = AppTheme.AccentSecondary)
                 ) {
-                    Text("Restart App")
+                    Text(stringResource(StringKey.BTN_RETRY))
                 }
             }
         }

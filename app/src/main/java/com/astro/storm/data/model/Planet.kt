@@ -10,19 +10,21 @@ package com.astro.storm.data.model
  * Modern additions (optional):
  * - Outer planets: Uranus, Neptune, Pluto
  */
-enum class Planet(val swissEphId: Int, val displayName: String, val symbol: String) {
-    SUN(0, "Sun", "Su"),
-    MOON(1, "Moon", "Mo"),
-    MERCURY(2, "Mercury", "Me"),
-    VENUS(3, "Venus", "Ve"),
-    MARS(4, "Mars", "Ma"),
-    JUPITER(5, "Jupiter", "Ju"),
-    SATURN(6, "Saturn", "Sa"),
-    RAHU(10, "Rahu", "Ra"),  // Mean node (North Node)
-    KETU(-1, "Ketu", "Ke"),  // 180° from Rahu (South Node)
-    URANUS(7, "Uranus", "Ur"),
-    NEPTUNE(8, "Neptune", "Ne"),
-    PLUTO(9, "Pluto", "Pl");
+import com.astro.storm.data.localization.StringKey
+
+enum class Planet(val swissEphId: Int, val displayNameKey: StringKey, val symbol: String) {
+    SUN(0, StringKey.PLANET_SUN, "Su"),
+    MOON(1, StringKey.PLANET_MOON, "Mo"),
+    MERCURY(2, StringKey.PLANET_MERCURY, "Me"),
+    VENUS(3, StringKey.PLANET_VENUS, "Ve"),
+    MARS(4, StringKey.PLANET_MARS, "Ma"),
+    JUPITER(5, StringKey.PLANET_JUPITER, "Ju"),
+    SATURN(6, StringKey.PLANET_SATURN, "Sa"),
+    RAHU(10, StringKey.PLANET_RAHU, "Ra"),  // Mean node (North Node)
+    KETU(-1, StringKey.PLANET_KETU, "Ke"),  // 180° from Rahu (South Node)
+    URANUS(7, StringKey.PLANET_URANUS, "Ur"),
+    NEPTUNE(8, StringKey.PLANET_NEPTUNE, "Ne"),
+    PLUTO(9, StringKey.PLANET_PLUTO, "Pl");
 
     companion object {
         /**

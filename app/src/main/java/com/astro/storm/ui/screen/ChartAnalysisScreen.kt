@@ -38,6 +38,8 @@ import com.astro.storm.ui.components.HouseDetailDialog
 import com.astro.storm.ui.components.NakshatraDetailDialog
 import com.astro.storm.ui.components.PlanetDetailDialog
 import com.astro.storm.ui.components.ShadbalaDialog
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.screen.chartdetail.tabs.*
 import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.theme.AppTheme
@@ -67,10 +69,11 @@ fun ChartAnalysisScreen(
     var selectedTab by remember { mutableStateOf(mapFeatureToTab(initialFeature)) }
     val context = LocalContext.current
     val chartRenderer = remember { ChartRenderer() }
+    val ascendantLabel = stringResource(StringKey.CHART_ASCENDANT)
 
     // Dialog states - managed at the top level for all tabs
     var showFullScreenChart by remember { mutableStateOf(false) }
-    var fullScreenChartTitle by remember { mutableStateOf("Lagna") }
+    var fullScreenChartTitle by remember { mutableStateOf(ascendantLabel) }
     var fullScreenDivisionalData by remember { mutableStateOf<DivisionalChartData?>(null) }
     var showShadbalaDialog by remember { mutableStateOf(false) }
     var selectedPlanetPosition by remember { mutableStateOf<PlanetPosition?>(null) }
@@ -198,7 +201,7 @@ private fun ChartAnalysisTopBar(
         title = {
             Column {
                 Text(
-                    text = "Chart Analysis",
+                    text = stringResource(StringKey.HOME_CHART_ANALYSIS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -214,7 +217,7 @@ private fun ChartAnalysisTopBar(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back",
+                    contentDescription = stringResource(StringKey.BTN_BACK),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -223,7 +226,7 @@ private fun ChartAnalysisTopBar(
             IconButton(onClick = onExport) {
                 Icon(
                     imageVector = Icons.Outlined.Share,
-                    contentDescription = "Export",
+                    contentDescription = stringResource(StringKey.SETTINGS_EXPORT),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -257,7 +260,7 @@ private fun AnalysisTabBar(
                 onClick = { onTabSelected(tab) },
                 label = {
                     Text(
-                        text = tab.title,
+                        text = stringResource(tab.titleKey),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                     )
@@ -292,16 +295,16 @@ private fun AnalysisTabBar(
  * Analysis tabs available in the chart analysis screen
  */
 enum class AnalysisTab(
-    val title: String,
+    val titleKey: StringKey,
     val icon: ImageVector
 ) {
-    CHART("Chart", Icons.Outlined.GridView),
-    PLANETS("Planets", Icons.Outlined.Public),
-    YOGAS("Yogas", Icons.Outlined.AutoAwesome),
-    DASHAS("Dashas", Icons.Outlined.Timeline),
-    TRANSITS("Transits", Icons.Outlined.Sync),
-    ASHTAKAVARGA("Ashtakavarga", Icons.Outlined.BarChart),
-    PANCHANGA("Panchanga", Icons.Outlined.CalendarMonth)
+    CHART(StringKey.FEATURE_BIRTH_CHART, Icons.Outlined.GridView),
+    PLANETS(StringKey.FEATURE_PLANETS, Icons.Outlined.Public),
+    YOGAS(StringKey.FEATURE_YOGAS, Icons.Outlined.AutoAwesome),
+    DASHAS(StringKey.FEATURE_DASHAS, Icons.Outlined.Timeline),
+    TRANSITS(StringKey.FEATURE_TRANSITS, Icons.Outlined.Sync),
+    ASHTAKAVARGA(StringKey.FEATURE_ASHTAKAVARGA, Icons.Outlined.BarChart),
+    PANCHANGA(StringKey.FEATURE_PANCHANGA, Icons.Outlined.CalendarMonth)
 }
 
 private fun mapFeatureToTab(feature: InsightFeature): AnalysisTab {

@@ -20,6 +20,7 @@ import com.astro.storm.ephemeris.MatchmakingCalculator
 /**
  * Get localized display name for Planet
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun Planet.getLocalizedName(language: Language): String {
     return when (this) {
         Planet.SUN -> StringResources.get(StringKey.PLANET_SUN, language)
@@ -40,6 +41,7 @@ fun Planet.getLocalizedName(language: Language): String {
 /**
  * Get localized display name for ZodiacSign
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun ZodiacSign.getLocalizedName(language: Language): String {
     return when (this) {
         ZodiacSign.ARIES -> StringResources.get(StringKey.SIGN_ARIES, language)
@@ -60,6 +62,7 @@ fun ZodiacSign.getLocalizedName(language: Language): String {
 /**
  * Get localized display name for Nakshatra
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun Nakshatra.getLocalizedName(language: Language): String {
     return when (this) {
         Nakshatra.ASHWINI -> StringResources.get(StringKey.NAKSHATRA_ASHWINI, language)
@@ -95,6 +98,7 @@ fun Nakshatra.getLocalizedName(language: Language): String {
 /**
  * Get localized display name for Gender
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun Gender.getLocalizedName(language: Language): String {
     return when (this) {
         Gender.MALE -> StringResources.get(StringKey.GENDER_MALE, language)
@@ -106,6 +110,7 @@ fun Gender.getLocalizedName(language: Language): String {
 /**
  * Get localized display name for HouseSystem
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun HouseSystem.getLocalizedName(language: Language): String {
     return when (this) {
         HouseSystem.PLACIDUS -> StringResources.get(StringKey.HOUSE_PLACIDUS, language)
@@ -125,6 +130,7 @@ fun HouseSystem.getLocalizedName(language: Language): String {
 /**
  * Get localized display name for ThemeMode
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun ThemeMode.getLocalizedName(language: Language): String {
     return when (this) {
         ThemeMode.LIGHT -> StringResources.get(StringKey.THEME_LIGHT, language)
@@ -136,6 +142,7 @@ fun ThemeMode.getLocalizedName(language: Language): String {
 /**
  * Get localized description for ThemeMode
  */
+@Deprecated("Use the @Composable localizedDescription() extension instead", ReplaceWith("localizedDescription()"))
 fun ThemeMode.getLocalizedDescription(language: Language): String {
     return when (this) {
         ThemeMode.LIGHT -> StringResources.get(StringKey.THEME_LIGHT_DESC, language)
@@ -147,6 +154,7 @@ fun ThemeMode.getLocalizedDescription(language: Language): String {
 /**
  * Get localized day name
  */
+@Deprecated("Use a more direct, composable approach", ReplaceWith(""))
 fun getDayName(dayOfWeek: Int, language: Language): String {
     return when (dayOfWeek) {
         1 -> StringResources.get(StringKey.DAY_MONDAY, language)
@@ -163,6 +171,7 @@ fun getDayName(dayOfWeek: Int, language: Language): String {
 /**
  * Get energy description based on level
  */
+@Deprecated("Use a more direct, composable approach", ReplaceWith(""))
 fun getEnergyDescription(energy: Int, language: Language): String {
     return when {
         energy >= 9 -> StringResources.get(StringKey.ENERGY_EXCEPTIONAL, language)
@@ -180,6 +189,7 @@ fun getEnergyDescription(energy: Int, language: Language): String {
 /**
  * Get Ayanamsa localized name
  */
+@Deprecated("Use a more direct, composable approach", ReplaceWith(""))
 fun getAyanamsaLocalizedName(ayanamsa: String, language: Language): String {
     return when (ayanamsa.lowercase()) {
         "lahiri" -> StringResources.get(StringKey.AYANAMSA_LAHIRI, language)
@@ -193,6 +203,7 @@ fun getAyanamsaLocalizedName(ayanamsa: String, language: Language): String {
 /**
  * Format duration with localization
  */
+@Deprecated("Use a more direct, composable approach", ReplaceWith(""))
 fun formatLocalizedDuration(days: Long, language: Language): String {
     if (days <= 0) return "0d"
 
@@ -220,6 +231,7 @@ fun formatLocalizedDuration(days: Long, language: Language): String {
 /**
  * Get localized display name for YogaCategory
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun YogaCalculator.YogaCategory.getLocalizedName(language: Language): String {
     return when (this) {
         YogaCalculator.YogaCategory.RAJA_YOGA -> StringResources.get(StringKey.YOGA_CAT_RAJA, language)
@@ -236,6 +248,7 @@ fun YogaCalculator.YogaCategory.getLocalizedName(language: Language): String {
 /**
  * Get localized description for YogaCategory
  */
+@Deprecated("Use the @Composable localizedDescription() extension instead", ReplaceWith("localizedDescription()"))
 fun YogaCalculator.YogaCategory.getLocalizedDescription(language: Language): String {
     return when (this) {
         YogaCalculator.YogaCategory.RAJA_YOGA -> StringResources.get(StringKey.YOGA_CAT_RAJA_DESC, language)
@@ -252,6 +265,7 @@ fun YogaCalculator.YogaCategory.getLocalizedDescription(language: Language): Str
 /**
  * Get localized display name for YogaStrength
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun YogaCalculator.YogaStrength.getLocalizedName(language: Language): String {
     return when (this) {
         YogaCalculator.YogaStrength.EXTREMELY_STRONG -> StringResources.get(StringKey.YOGA_STRENGTH_EXTREMELY_STRONG, language)
@@ -269,6 +283,7 @@ fun YogaCalculator.YogaStrength.getLocalizedName(language: Language): String {
 /**
  * Get localized display name for PlanetaryStrength
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun RemediesCalculator.PlanetaryStrength.getLocalizedName(language: Language): String {
     return when (this) {
         RemediesCalculator.PlanetaryStrength.VERY_STRONG -> StringResources.get(StringKey.PLANETARY_STRENGTH_VERY_STRONG, language)
@@ -283,6 +298,7 @@ fun RemediesCalculator.PlanetaryStrength.getLocalizedName(language: Language): S
 /**
  * Get localized display name for RemedyCategory
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun RemediesCalculator.RemedyCategory.getLocalizedName(language: Language): String {
     return when (this) {
         RemediesCalculator.RemedyCategory.GEMSTONE -> StringResources.get(StringKey.REMEDY_CAT_GEMSTONE, language)
@@ -301,6 +317,7 @@ fun RemediesCalculator.RemedyCategory.getLocalizedName(language: Language): Stri
 /**
  * Get localized display name for RemedyPriority
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun RemediesCalculator.RemedyPriority.getLocalizedName(language: Language): String {
     return when (this) {
         RemediesCalculator.RemedyPriority.ESSENTIAL -> StringResources.get(StringKey.REMEDY_PRIORITY_ESSENTIAL, language)
@@ -317,6 +334,7 @@ fun RemediesCalculator.RemedyPriority.getLocalizedName(language: Language): Stri
 /**
  * Get localized display name for Varna
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun MatchmakingCalculator.Varna.getLocalizedName(language: Language): String {
     return when (this) {
         MatchmakingCalculator.Varna.BRAHMIN -> StringResources.get(StringKey.VARNA_BRAHMIN, language)
@@ -329,6 +347,7 @@ fun MatchmakingCalculator.Varna.getLocalizedName(language: Language): String {
 /**
  * Get localized display name for Vashya
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun MatchmakingCalculator.Vashya.getLocalizedName(language: Language): String {
     return when (this) {
         MatchmakingCalculator.Vashya.CHATUSHPADA -> StringResources.get(StringKey.VASHYA_CHATUSHPADA, language)
@@ -342,6 +361,7 @@ fun MatchmakingCalculator.Vashya.getLocalizedName(language: Language): String {
 /**
  * Get localized display name for Gana
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun MatchmakingCalculator.Gana.getLocalizedName(language: Language): String {
     return when (this) {
         MatchmakingCalculator.Gana.DEVA -> StringResources.get(StringKey.GANA_DEVA, language)
@@ -353,6 +373,7 @@ fun MatchmakingCalculator.Gana.getLocalizedName(language: Language): String {
 /**
  * Get localized description for Gana
  */
+@Deprecated("Use the @Composable localizedDescription() extension instead", ReplaceWith("localizedDescription()"))
 fun MatchmakingCalculator.Gana.getLocalizedDescription(language: Language): String {
     return when (this) {
         MatchmakingCalculator.Gana.DEVA -> StringResources.get(StringKey.GANA_DEVA_DESC, language)
@@ -364,6 +385,7 @@ fun MatchmakingCalculator.Gana.getLocalizedDescription(language: Language): Stri
 /**
  * Get localized display name for Yoni animal
  */
+@Deprecated("Use the @Composable localizedAnimalName() extension instead", ReplaceWith("localizedAnimalName()"))
 fun MatchmakingCalculator.Yoni.getLocalizedAnimalName(language: Language): String {
     return when (this.animal) {
         "Horse" -> StringResources.get(StringKey.YONI_HORSE, language)
@@ -387,6 +409,7 @@ fun MatchmakingCalculator.Yoni.getLocalizedAnimalName(language: Language): Strin
 /**
  * Get localized display name for Nadi
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun MatchmakingCalculator.Nadi.getLocalizedName(language: Language): String {
     return when (this) {
         MatchmakingCalculator.Nadi.ADI -> StringResources.get(StringKey.NADI_ADI, language)
@@ -398,6 +421,7 @@ fun MatchmakingCalculator.Nadi.getLocalizedName(language: Language): String {
 /**
  * Get localized description for Nadi
  */
+@Deprecated("Use the @Composable localizedDescription() extension instead", ReplaceWith("localizedDescription()"))
 fun MatchmakingCalculator.Nadi.getLocalizedDescription(language: Language): String {
     return when (this) {
         MatchmakingCalculator.Nadi.ADI -> StringResources.get(StringKey.NADI_ADI_DESC, language)
@@ -409,6 +433,7 @@ fun MatchmakingCalculator.Nadi.getLocalizedDescription(language: Language): Stri
 /**
  * Get localized display name for Rajju
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun MatchmakingCalculator.Rajju.getLocalizedName(language: Language): String {
     return when (this) {
         MatchmakingCalculator.Rajju.PADA -> StringResources.get(StringKey.RAJJU_PADA, language)
@@ -422,6 +447,7 @@ fun MatchmakingCalculator.Rajju.getLocalizedName(language: Language): String {
 /**
  * Get localized body part for Rajju
  */
+@Deprecated("Use the @Composable localizedBodyPart() extension instead", ReplaceWith("localizedBodyPart()"))
 fun MatchmakingCalculator.Rajju.getLocalizedBodyPart(language: Language): String {
     return when (this) {
         MatchmakingCalculator.Rajju.PADA -> StringResources.get(StringKey.RAJJU_PADA_BODY, language)
@@ -435,6 +461,7 @@ fun MatchmakingCalculator.Rajju.getLocalizedBodyPart(language: Language): String
 /**
  * Get localized display name for ManglikDosha
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun MatchmakingCalculator.ManglikDosha.getLocalizedName(language: Language): String {
     return when (this) {
         MatchmakingCalculator.ManglikDosha.NONE -> StringResources.get(StringKey.MANGLIK_NONE, language)
@@ -447,6 +474,7 @@ fun MatchmakingCalculator.ManglikDosha.getLocalizedName(language: Language): Str
 /**
  * Get localized display name for CompatibilityRating
  */
+@Deprecated("Use the @Composable localizedName() extension instead", ReplaceWith("localizedName()"))
 fun MatchmakingCalculator.CompatibilityRating.getLocalizedName(language: Language): String {
     return when (this) {
         MatchmakingCalculator.CompatibilityRating.EXCELLENT -> StringResources.get(StringKey.COMPAT_EXCELLENT, language)
@@ -460,6 +488,7 @@ fun MatchmakingCalculator.CompatibilityRating.getLocalizedName(language: Languag
 /**
  * Get localized description for CompatibilityRating
  */
+@Deprecated("Use the @Composable localizedDescription() extension instead", ReplaceWith("localizedDescription()"))
 fun MatchmakingCalculator.CompatibilityRating.getLocalizedDescription(language: Language): String {
     return when (this) {
         MatchmakingCalculator.CompatibilityRating.EXCELLENT -> StringResources.get(StringKey.COMPAT_EXCELLENT_DESC, language)
@@ -473,6 +502,7 @@ fun MatchmakingCalculator.CompatibilityRating.getLocalizedDescription(language: 
 /**
  * Get localized house signification
  */
+@Deprecated("Use a more direct, composable approach", ReplaceWith(""))
 fun getHouseSignification(house: Int, language: Language): String {
     return when (house) {
         1 -> StringResources.get(StringKey.HOUSE_1_SIGNIFICATION, language)
@@ -494,6 +524,7 @@ fun getHouseSignification(house: Int, language: Language): String {
 /**
  * Get localized Choghadiya name
  */
+@Deprecated("Use a more direct, composable approach", ReplaceWith(""))
 fun getChoghadiyaName(choghadiya: String, language: Language): String {
     return when (choghadiya.lowercase()) {
         "amrit" -> StringResources.get(StringKey.CHOGHADIYA_AMRIT, language)

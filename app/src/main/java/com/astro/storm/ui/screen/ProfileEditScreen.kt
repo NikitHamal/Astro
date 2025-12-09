@@ -242,6 +242,12 @@ fun ProfileEditScreen(
                     value = locationLabel,
                     onValueChange = { locationLabel = it },
                     label = stringResource(StringKey.INPUT_LOCATION),
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = stringResource(StringKey.LOCATION_SEARCH)
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     keyboardActions = KeyboardActions(
                         onNext = { focusManager.moveFocus(FocusDirection.Down) }
@@ -277,12 +283,14 @@ fun ProfileEditScreen(
                                 showDatePicker = true
                             }
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        contentDescription = stringResource(StringKey.INPUT_SELECT_DATE)
                     )
                     DateTimeChip(
                         text = selectedTime.format(DateTimeFormatter.ofPattern("HH:mm")),
                         onClick = { showTimePicker = true },
-                        modifier = Modifier.weight(0.7f)
+                        modifier = Modifier.weight(0.7f),
+                        contentDescription = stringResource(StringKey.INPUT_SELECT_TIME)
                     )
                 }
 
@@ -464,16 +472,12 @@ fun ProfileEditScreen(
 
     // Time Picker Dialog
     if (showTimePicker) {
-        val timePickerState = rememberTimePickerState(
+        TimePickerDialog(
             initialHour = selectedTime.hour,
             initialMinute = selectedTime.minute,
-            is24Hour = true
-        )
-
-        TimePickerDialog(
             onDismiss = { showTimePicker = false },
-            onConfirm = {
-                selectedTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
+            onConfirm = { hour, minute ->
+                selectedTime = LocalTime.of(hour, minute)
                 showTimePicker = false
             }
         )
@@ -621,7 +625,7 @@ private fun GenderChip(
         ) {
             Text(
                 text = text,
-                color = if (isSelected) AppTheme.ScreenBackground else AppTheme.TextPrimary,
+                color = if (isSelected) AppTheme.ButtonText else AppTheme.TextPrimary,
                 fontSize = 12.sp,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
             )
@@ -633,11 +637,18 @@ private fun GenderChip(
 private fun DateTimeChip(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null
 ) {
     Surface(
         onClick = onClick,
-        modifier = modifier.height(52.dp),
+        modifier = modifier
+            .height(52.dp)
+            .then(
+                if (contentDescription != null) {
+                    Modifier.semantics { this.contentDescription = contentDescription }
+                } else Modifier
+            ),
         shape = RoundedCornerShape(26.dp),
         color = AppTheme.ChipBackground,
         border = BorderStroke(1.dp, AppTheme.BorderColor)
@@ -659,10 +670,16 @@ private fun DateTimeChip(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TimePickerDialog(
+    initialHour: Int,
+    initialMinute: Int,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: (hour: Int, minute: Int) -> Unit
 ) {
-    val timePickerState = rememberTimePickerState(is24Hour = true)
+    val timePickerState = rememberTimePickerState(
+        initialHour = initialHour,
+        initialMinute = initialMinute,
+        is24Hour = true
+    )
 
     androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -688,17 +705,17 @@ private fun TimePickerDialog(
                     colors = TimePickerDefaults.colors(
                         containerColor = AppTheme.CardBackground,
                         clockDialColor = AppTheme.ChipBackground,
-                        clockDialSelectedContentColor = AppTheme.ScreenBackground,
+                        clockDialSelectedContentColor = AppTheme.ButtonText,
                         clockDialUnselectedContentColor = AppTheme.TextPrimary,
                         selectorColor = AppTheme.AccentGold,
                         periodSelectorBorderColor = AppTheme.BorderColor,
                         periodSelectorSelectedContainerColor = AppTheme.AccentGold,
                         periodSelectorUnselectedContainerColor = AppTheme.CardBackground,
-                        periodSelectorSelectedContentColor = AppTheme.ScreenBackground,
+                        periodSelectorSelectedContentColor = AppTheme.ButtonText,
                         periodSelectorUnselectedContentColor = AppTheme.TextMuted,
                         timeSelectorSelectedContainerColor = AppTheme.AccentGold,
                         timeSelectorUnselectedContainerColor = AppTheme.ChipBackground,
-                        timeSelectorSelectedContentColor = AppTheme.ScreenBackground,
+                        timeSelectorSelectedContentColor = AppTheme.ButtonText,
                         timeSelectorUnselectedContentColor = AppTheme.TextPrimary
                     )
                 )
@@ -713,7 +730,9 @@ private fun TimePickerDialog(
                         Text(stringResource(StringKey.BTN_CANCEL), color = AppTheme.TextMuted)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    TextButton(onClick = onConfirm) {
+                    TextButton(
+                        onClick = { onConfirm(timePickerState.hour, timePickerState.minute) }
+                    ) {
                         Text(stringResource(StringKey.BTN_OK), color = AppTheme.AccentGold)
                     }
                 }

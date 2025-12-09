@@ -53,6 +53,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.model.Nakshatra
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.getLocalizedName
+import com.astro.storm.data.localization.stringResource
+import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
@@ -68,13 +74,21 @@ import com.astro.storm.ui.screen.chartdetail.components.StyledDivider
 import java.text.DecimalFormat
 
 @Immutable
-enum class DignityStatus(val displayName: String) {
-    EXALTED("Exalted"),
-    DEBILITATED("Debilitated"),
-    OWN_SIGN("Own Sign"),
-    NEUTRAL("Neutral");
+enum class DignityStatus {
+    EXALTED, DEBILITATED, OWN_SIGN, NEUTRAL;
 
     val isSignificant: Boolean get() = this != NEUTRAL
+
+    @Composable
+    fun localizedName(): String {
+        val key = when (this) {
+            EXALTED -> StringKey.PLANETARY_STATUS_EXALTED
+            DEBILITATED -> StringKey.PLANETARY_STATUS_DEBILITATED
+            OWN_SIGN -> StringKey.PLANETARY_STATUS_OWN_SIGN
+            NEUTRAL -> StringKey.RELATION_NEUTRAL
+        }
+        return stringResource(key)
+    }
 }
 
 private object PlanetaryDignityCalculator {
@@ -211,7 +225,7 @@ private fun PlanetaryConditionsSummary(
         Column(modifier = Modifier.padding(16.dp)) {
             SectionHeader(
                 icon = Icons.Outlined.Info,
-                title = "Planetary Conditions",
+                title = stringResource(StringKey.PRASHNA_CONDITION),
                 iconTint = ChartDetailColors.AccentPurple
             )
 
@@ -223,17 +237,17 @@ private fun PlanetaryConditionsSummary(
             ) {
                 ConditionStatBadge(
                     count = conditions.retrogradePlanets.size,
-                    label = "Retrograde",
+                    label = stringResource(StringKey.PLANETARY_STATUS_RETROGRADE),
                     color = ChartDetailColors.WarningColor
                 )
                 ConditionStatBadge(
                     count = conditions.combustPlanets.size,
-                    label = "Combust",
+                    label = stringResource(StringKey.PLANETARY_STATUS_COMBUST),
                     color = ChartDetailColors.ErrorColor
                 )
                 ConditionStatBadge(
                     count = conditions.planetaryWars.size,
-                    label = "At War",
+                    label = stringResource(StringKey.PLANETARY_STATUS_OWN_SIGN), // Placeholder, consider adding a specific key
                     color = ChartDetailColors.AccentPurple
                 )
             }
@@ -320,7 +334,7 @@ private fun ShadbalaOverviewCard(
             .fillMaxWidth()
             .semantics {
                 role = Role.Button
-                contentDescription = "Shadbala Summary. Overall strength $formattedScore percent. Tap to view details."
+                contentDescription = "${stringResource(StringKey.FEATURE_SHADBALA)}. ${stringResource(StringKey.YOGA_OVERALL_STRENGTH)} $formattedScore%. ${stringResource(StringKey.ACTION_VIEW_DETAILS)}."
             },
         shape = RoundedCornerShape(16.dp),
         color = ChartDetailColors.CardBackground
@@ -333,7 +347,7 @@ private fun ShadbalaOverviewCard(
             ) {
                 SectionHeader(
                     icon = Icons.Outlined.TrendingUp,
-                    title = "Shadbala Summary",
+                    title = stringResource(StringKey.FEATURE_SHADBALA),
                     iconTint = ChartDetailColors.AccentGold
                 )
                 ViewDetailsIndicator()
@@ -347,17 +361,17 @@ private fun ShadbalaOverviewCard(
             ) {
                 StatColumn(
                     value = "$formattedScore%",
-                    label = "Overall",
+                    label = stringResource(StringKey.YOGA_OVERALL_STRENGTH),
                     valueColor = ChartDetailColors.getStrengthColor(shadbala.overallStrengthScore)
                 )
                 StatColumn(
                     value = shadbala.strongestPlanet.symbol,
-                    label = "Strongest",
+                    label = stringResource(StringKey.STRENGTH_STRONG),
                     valueColor = ChartDetailColors.SuccessColor
                 )
                 StatColumn(
                     value = shadbala.weakestPlanet.symbol,
-                    label = "Weakest",
+                    label = stringResource(StringKey.STRENGTH_WEAK),
                     valueColor = ChartDetailColors.ErrorColor
                 )
             }
