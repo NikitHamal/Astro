@@ -11,7 +11,6 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -52,7 +51,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
@@ -92,7 +90,6 @@ import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AppTheme
 import java.time.LocalDate
-import kotlin.math.absoluteValue
 
 @Immutable
 data class BSDatePickerColors(
@@ -992,6 +989,7 @@ private fun EmptyDayCell(cellHeight: Dp) {
     )
 }
 
+@Suppress("DEPRECATION")
 @Composable
 private fun DayCell(
     day: Int,
@@ -1053,7 +1051,7 @@ private fun DayCell(
             )
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(bounded = true),
+                indication = rememberRipple(bounded = true),
                 onClick = onClick
             )
             .semantics {
@@ -1074,6 +1072,7 @@ private fun DayCell(
     }
 }
 
+@Suppress("DEPRECATION")
 @Composable
 fun BSDateSelector(
     selectedDate: BSDate,
