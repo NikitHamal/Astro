@@ -7,6 +7,9 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.data.model.BirthData
 import com.astro.storm.data.model.HouseSystem
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringResources
 import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlin.math.abs
@@ -248,6 +251,92 @@ class TransitAnalyzer(private val context: Context) {
             val min = ((degInSign - deg) * 60).toInt()
             return "${deg}° ${min}'"
         }
+
+        /**
+         * Generate localized plain text report
+         */
+        fun toLocalizedPlainText(language: Language = Language.ENGLISH): String = buildString {
+            val reportTitle = StringResources.get(StringKey.TRANSIT_REPORT_TITLE, language)
+            val positionsHeader = StringResources.get(StringKey.TRANSIT_REPORT_POSITIONS_HEADER, language)
+            val gocharaHeader = StringResources.get(StringKey.TRANSIT_REPORT_GOCHARA_HEADER, language)
+            val aspectsHeader = StringResources.get(StringKey.TRANSIT_REPORT_ASPECTS_HEADER, language)
+            val noAspects = StringResources.get(StringKey.TRANSIT_REPORT_NO_ASPECTS, language)
+            val ashtakHeader = StringResources.get(StringKey.TRANSIT_REPORT_ASHTAK_HEADER, language)
+            val overallHeader = StringResources.get(StringKey.TRANSIT_REPORT_OVERALL_HEADER, language)
+            val focusAreasLabel = StringResources.get(StringKey.TRANSIT_REPORT_FOCUS_AREAS, language)
+            val vedhaTag = StringResources.get(StringKey.TRANSIT_REPORT_VEDHA_TAG, language)
+            val applyingText = StringResources.get(StringKey.TRANSIT_ASPECT_BECOMING_EXACT, language)
+            val separatingText = StringResources.get(StringKey.TRANSIT_ASPECT_SEPARATING, language)
+
+            appendLine("═══════════════════════════════════════════════════════════")
+            appendLine("              $reportTitle")
+            appendLine("═══════════════════════════════════════════════════════════")
+            appendLine()
+            appendLine(String.format(StringResources.get(StringKey.TRANSIT_REPORT_DATE_TIME, language), transitDateTime.toString()))
+            appendLine()
+
+            appendLine(positionsHeader)
+            appendLine("─────────────────────────────────────────────────────────")
+            transitPositions.forEach { pos ->
+                val retro = if (pos.isRetrograde) " (${StringResources.get(StringKey.RETRO_STATUS_RETROGRADE, language).first()})" else ""
+                appendLine("${pos.planet.getLocalizedName(language).padEnd(10)}: ${pos.sign.getLocalizedName(language).padEnd(12)} ${formatDegree(pos.longitude)}$retro")
+            }
+            appendLine()
+
+            appendLine(gocharaHeader)
+            appendLine("─────────────────────────────────────────────────────────")
+            gocharaResults.forEach { result ->
+                val vedhaStr = if (result.isVedhaAffected) " $vedhaTag" else ""
+                val houseStr = String.format(StringResources.get(StringKey.TRANSIT_REPORT_HOUSE, language), result.houseFromMoon.toString())
+                appendLine("${result.planet.getLocalizedName(language).padEnd(10)}: $houseStr - ${result.effect.getLocalizedName(language)}$vedhaStr")
+                if (result.isVedhaAffected && result.vedhaSource != null) {
+                    appendLine("             └─ ${String.format(StringResources.get(StringKey.TRANSIT_REPORT_VEDHA_FROM, language), result.vedhaSource.getLocalizedName(language))}")
+                }
+            }
+            appendLine()
+
+            appendLine(aspectsHeader)
+            appendLine("─────────────────────────────────────────────────────────")
+            if (transitAspects.isEmpty()) {
+                appendLine(noAspects)
+            } else {
+                transitAspects.sortedByDescending { it.strength }.take(10).forEach { aspect ->
+                    val applying = if (aspect.isApplying) applyingText else separatingText
+                    val aspectName = getLocalizedAspectType(aspect.aspectType, language)
+                    appendLine("${StringResources.get(StringKey.TAB_TRANSITS, language)} ${aspect.transitingPlanet.getLocalizedName(language)} $aspectName ${aspect.natalPlanet.getLocalizedName(language)}")
+                    appendLine("  ${String.format(StringResources.get(StringKey.TRANSIT_REPORT_ORB, language), String.format("%.2f", aspect.orb))} ($applying) | ${String.format(StringResources.get(StringKey.TRANSIT_REPORT_STRENGTH, language), String.format("%.0f", aspect.strength * 100))}")
+                }
+            }
+            appendLine()
+
+            appendLine(ashtakHeader)
+            appendLine("─────────────────────────────────────────────────────────")
+            ashtakavargaScores.forEach { (planet, score) ->
+                appendLine("${planet.getLocalizedName(language).padEnd(10)}: ${String.format(StringResources.get(StringKey.TRANSIT_REPORT_BAV_SAV, language), score.binduScore.toString(), score.savScore.toString())} - ${score.getLocalizedInterpretation(language)}")
+            }
+            appendLine()
+
+            appendLine(overallHeader)
+            appendLine("─────────────────────────────────────────────────────────")
+            appendLine(String.format(StringResources.get(StringKey.TRANSIT_REPORT_PERIOD_QUALITY, language), overallAssessment.quality.getLocalizedName(language)))
+            appendLine(String.format(StringResources.get(StringKey.TRANSIT_REPORT_SCORE, language), String.format("%.1f", overallAssessment.score)))
+            appendLine()
+            appendLine(String.format(StringResources.get(StringKey.TRANSIT_REPORT_SUMMARY, language), overallAssessment.summary))
+            appendLine()
+            appendLine(focusAreasLabel)
+            overallAssessment.focusAreas.forEachIndexed { index, area ->
+                appendLine("${index + 1}. $area")
+            }
+        }
+
+        private fun getLocalizedAspectType(aspectType: String, language: Language): String = when (aspectType) {
+            "Conjunction" -> StringResources.get(StringKey.TRANSIT_ASPECT_CONJUNCTION, language)
+            "Sextile" -> StringResources.get(StringKey.TRANSIT_ASPECT_SEXTILE, language)
+            "Square" -> StringResources.get(StringKey.TRANSIT_ASPECT_SQUARE, language)
+            "Trine" -> StringResources.get(StringKey.TRANSIT_ASPECT_TRINE, language)
+            "Opposition" -> StringResources.get(StringKey.TRANSIT_ASPECT_OPPOSITION, language)
+            else -> aspectType
+        }
     }
 
     /**
@@ -285,7 +374,15 @@ class TransitAnalyzer(private val context: Context) {
         GOOD("Good", 4),
         NEUTRAL("Neutral", 3),
         CHALLENGING("Challenging", 2),
-        DIFFICULT("Difficult", 1)
+        DIFFICULT("Difficult", 1);
+
+        fun getLocalizedName(language: Language): String = when (this) {
+            EXCELLENT -> StringResources.get(StringKey.TRANSIT_EFFECT_EXCELLENT, language)
+            GOOD -> StringResources.get(StringKey.TRANSIT_EFFECT_GOOD, language)
+            NEUTRAL -> StringResources.get(StringKey.TRANSIT_EFFECT_NEUTRAL, language)
+            CHALLENGING -> StringResources.get(StringKey.TRANSIT_EFFECT_CHALLENGING, language)
+            DIFFICULT -> StringResources.get(StringKey.TRANSIT_EFFECT_DIFFICULT, language)
+        }
     }
 
     /**
@@ -306,7 +403,15 @@ class TransitAnalyzer(private val context: Context) {
         GOOD("Good Period"),
         MIXED("Mixed Period"),
         CHALLENGING("Challenging Period"),
-        DIFFICULT("Difficult Period")
+        DIFFICULT("Difficult Period");
+
+        fun getLocalizedName(language: Language): String = when (this) {
+            EXCELLENT -> StringResources.get(StringKey.TRANSIT_PERIOD_EXCELLENT, language)
+            GOOD -> StringResources.get(StringKey.TRANSIT_PERIOD_GOOD, language)
+            MIXED -> StringResources.get(StringKey.TRANSIT_PERIOD_MIXED, language)
+            CHALLENGING -> StringResources.get(StringKey.TRANSIT_PERIOD_CHALLENGING, language)
+            DIFFICULT -> StringResources.get(StringKey.TRANSIT_PERIOD_DIFFICULT, language)
+        }
     }
 
     /**
@@ -744,6 +849,49 @@ class TransitAnalyzer(private val context: Context) {
     }
 
     /**
+     * Generate localized Gochara interpretation
+     */
+    fun generateLocalizedGocharaInterpretation(
+        planet: Planet,
+        houseFromMoon: Int,
+        effect: TransitEffect,
+        isVedhaAffected: Boolean,
+        language: Language
+    ): String {
+        val houseMatters = getLocalizedHouseMatters(houseFromMoon, language)
+        val vedhaNote = if (isVedhaAffected) " ${StringResources.get(StringKey.TRANSIT_GOCHARA_VEDHA_NOTE, language)}" else ""
+        val planetName = planet.getLocalizedName(language)
+        val houseStr = houseFromMoon.toString()
+
+        return when (effect) {
+            TransitEffect.EXCELLENT -> String.format(StringResources.get(StringKey.TRANSIT_GOCHARA_EXCELLENT, language), planetName, houseStr, houseMatters) + vedhaNote
+            TransitEffect.GOOD -> String.format(StringResources.get(StringKey.TRANSIT_GOCHARA_GOOD, language), planetName, houseStr, houseMatters) + vedhaNote
+            TransitEffect.NEUTRAL -> String.format(StringResources.get(StringKey.TRANSIT_GOCHARA_NEUTRAL, language), planetName, houseStr, houseMatters) + vedhaNote
+            TransitEffect.CHALLENGING -> String.format(StringResources.get(StringKey.TRANSIT_GOCHARA_CHALLENGING, language), planetName, houseStr, houseMatters) + vedhaNote
+            TransitEffect.DIFFICULT -> String.format(StringResources.get(StringKey.TRANSIT_GOCHARA_DIFFICULT, language), planetName, houseStr, houseMatters) + vedhaNote
+        }
+    }
+
+    /**
+     * Get localized house matters/significations
+     */
+    private fun getLocalizedHouseMatters(house: Int, language: Language): String = when (house) {
+        1 -> StringResources.get(StringKey.TRANSIT_HOUSE_1_MATTERS, language)
+        2 -> StringResources.get(StringKey.TRANSIT_HOUSE_2_MATTERS, language)
+        3 -> StringResources.get(StringKey.TRANSIT_HOUSE_3_MATTERS, language)
+        4 -> StringResources.get(StringKey.TRANSIT_HOUSE_4_MATTERS, language)
+        5 -> StringResources.get(StringKey.TRANSIT_HOUSE_5_MATTERS, language)
+        6 -> StringResources.get(StringKey.TRANSIT_HOUSE_6_MATTERS, language)
+        7 -> StringResources.get(StringKey.TRANSIT_HOUSE_7_MATTERS, language)
+        8 -> StringResources.get(StringKey.TRANSIT_HOUSE_8_MATTERS, language)
+        9 -> StringResources.get(StringKey.TRANSIT_HOUSE_9_MATTERS, language)
+        10 -> StringResources.get(StringKey.TRANSIT_HOUSE_10_MATTERS, language)
+        11 -> StringResources.get(StringKey.TRANSIT_HOUSE_11_MATTERS, language)
+        12 -> StringResources.get(StringKey.TRANSIT_HOUSE_12_MATTERS, language)
+        else -> StringResources.get(StringKey.TRANSIT_HOUSE_GENERAL, language)
+    }
+
+    /**
      * Generate aspect interpretation
      */
     private fun generateAspectInterpretation(
@@ -848,6 +996,170 @@ class TransitAnalyzer(private val context: Context) {
             Planet.RAHU -> "Rahu transit in ${houseFromMoon}th from Moon - worldly desires amplified"
             Planet.KETU -> "Ketu transit in ${houseFromMoon}th from Moon - spiritual detachment"
             else -> "${planet.displayName} transit in ${houseFromMoon}th from Moon"
+        }
+    }
+
+    /**
+     * Generate localized aspect interpretation
+     */
+    fun generateLocalizedAspectInterpretation(
+        transitingPlanet: Planet,
+        natalPlanet: Planet,
+        aspectType: String,
+        isApplying: Boolean,
+        language: Language
+    ): String {
+        val applyingStr = if (isApplying) {
+            StringResources.get(StringKey.TRANSIT_ASPECT_BECOMING_EXACT, language)
+        } else {
+            StringResources.get(StringKey.TRANSIT_ASPECT_SEPARATING, language)
+        }
+        val beneficTransit = transitingPlanet in listOf(Planet.JUPITER, Planet.VENUS)
+        val harmonicAspect = aspectType in listOf("Trine", "Sextile")
+        val localizedAspect = getLocalizedAspectType(aspectType, language)
+        val transitPlanetName = transitingPlanet.getLocalizedName(language)
+        val natalPlanetName = natalPlanet.getLocalizedName(language)
+
+        return when {
+            beneficTransit && harmonicAspect -> String.format(
+                StringResources.get(StringKey.TRANSIT_ASPECT_FAVORABLE, language),
+                transitPlanetName, localizedAspect, natalPlanetName, applyingStr
+            )
+            beneficTransit -> String.format(
+                StringResources.get(StringKey.TRANSIT_ASPECT_MIXED_SUPPORT, language),
+                transitPlanetName, localizedAspect, natalPlanetName, applyingStr
+            )
+            harmonicAspect -> String.format(
+                StringResources.get(StringKey.TRANSIT_ASPECT_HARMONIOUS, language),
+                transitPlanetName, localizedAspect, natalPlanetName, applyingStr
+            )
+            else -> String.format(
+                StringResources.get(StringKey.TRANSIT_ASPECT_ATTENTION, language),
+                transitPlanetName, localizedAspect, natalPlanetName, applyingStr
+            )
+        }
+    }
+
+    /**
+     * Generate localized overall summary
+     */
+    fun generateLocalizedOverallSummary(
+        quality: TransitQuality,
+        gocharaResults: List<GocharaResult>,
+        transitAspects: List<TransitAspect>,
+        language: Language
+    ): String {
+        val favorablePlanets = gocharaResults.filter { it.effect in listOf(TransitEffect.EXCELLENT, TransitEffect.GOOD) }
+            .map { it.planet.getLocalizedName(language) }
+        val challengingPlanets = gocharaResults.filter { it.effect in listOf(TransitEffect.CHALLENGING, TransitEffect.DIFFICULT) }
+            .map { it.planet.getLocalizedName(language) }
+
+        val favorableList = favorablePlanets.joinToString(", ")
+        val challengingList = challengingPlanets.joinToString(", ")
+
+        return when (quality) {
+            TransitQuality.EXCELLENT -> String.format(
+                StringResources.get(StringKey.TRANSIT_SUMMARY_EXCELLENT, language), favorableList
+            )
+            TransitQuality.GOOD -> String.format(
+                StringResources.get(StringKey.TRANSIT_SUMMARY_GOOD, language), favorableList
+            )
+            TransitQuality.MIXED -> String.format(
+                StringResources.get(StringKey.TRANSIT_SUMMARY_MIXED, language), favorableList, challengingList
+            )
+            TransitQuality.CHALLENGING -> String.format(
+                StringResources.get(StringKey.TRANSIT_SUMMARY_CHALLENGING, language), challengingList
+            )
+            TransitQuality.DIFFICULT -> String.format(
+                StringResources.get(StringKey.TRANSIT_SUMMARY_DIFFICULT, language), challengingList
+            )
+        }
+    }
+
+    /**
+     * Generate localized focus areas based on transit analysis
+     */
+    fun generateLocalizedFocusAreas(
+        gocharaResults: List<GocharaResult>,
+        transitAspects: List<TransitAspect>,
+        language: Language
+    ): List<String> {
+        val areas = mutableListOf<String>()
+
+        // Check Saturn transit
+        gocharaResults.find { it.planet == Planet.SATURN }?.let { saturnResult ->
+            when (saturnResult.houseFromMoon) {
+                1, 12 -> areas.add(StringResources.get(StringKey.TRANSIT_FOCUS_SADE_SATI, language))
+                8 -> areas.add(StringResources.get(StringKey.TRANSIT_FOCUS_ASHTAMA_SHANI, language))
+                4 -> areas.add(StringResources.get(StringKey.TRANSIT_FOCUS_SATURN_4TH, language))
+                10 -> areas.add(StringResources.get(StringKey.TRANSIT_FOCUS_SATURN_10TH, language))
+                else -> { /* No specific focus area for other houses */ }
+            }
+        }
+
+        // Check Jupiter transit
+        gocharaResults.find { it.planet == Planet.JUPITER }?.let { jupiterResult ->
+            when (jupiterResult.houseFromMoon) {
+                1, 5, 9 -> areas.add(StringResources.get(StringKey.TRANSIT_FOCUS_JUPITER_TRIKONA, language))
+                2 -> areas.add(StringResources.get(StringKey.TRANSIT_FOCUS_JUPITER_2ND, language))
+                11 -> areas.add(StringResources.get(StringKey.TRANSIT_FOCUS_JUPITER_11TH, language))
+                else -> { /* No specific focus area for other houses */ }
+            }
+        }
+
+        // Check strong aspects
+        transitAspects.filter { it.strength > 0.8 }.take(3).forEach { aspect ->
+            val aspectLabel = getLocalizedAspectType(aspect.aspectType, language)
+            val transitPlanet = aspect.transitingPlanet.getLocalizedName(language)
+            val natalPlanet = aspect.natalPlanet.getLocalizedName(language)
+            areas.add(String.format(
+                StringResources.get(StringKey.TRANSIT_FOCUS_STRONG_ASPECT, language),
+                aspectLabel, transitPlanet, natalPlanet
+            ))
+        }
+
+        return areas.take(5)
+    }
+
+    /**
+     * Generate localized period description
+     */
+    fun generateLocalizedPeriodDescription(planet: Planet, houseFromMoon: Int, language: Language): String {
+        return when (planet) {
+            Planet.SATURN -> when (houseFromMoon) {
+                12 -> StringResources.get(StringKey.TRANSIT_SADE_SATI_BEGIN, language)
+                1 -> StringResources.get(StringKey.TRANSIT_SADE_SATI_PEAK, language)
+                2 -> StringResources.get(StringKey.TRANSIT_SADE_SATI_END, language)
+                8 -> StringResources.get(StringKey.TRANSIT_ASHTAMA_SHANI, language)
+                4 -> StringResources.get(StringKey.TRANSIT_KANTAK_SHANI, language)
+                7 -> StringResources.get(StringKey.TRANSIT_SATURN_7TH, language)
+                10 -> StringResources.get(StringKey.TRANSIT_SATURN_10TH, language)
+                else -> String.format(
+                    StringResources.get(StringKey.TRANSIT_SATURN_GENERIC, language),
+                    houseFromMoon.toString()
+                )
+            }
+            Planet.JUPITER -> when (houseFromMoon) {
+                1 -> StringResources.get(StringKey.TRANSIT_JUPITER_OVER_MOON, language)
+                5 -> StringResources.get(StringKey.TRANSIT_JUPITER_5TH, language)
+                9 -> StringResources.get(StringKey.TRANSIT_JUPITER_9TH, language)
+                else -> String.format(
+                    StringResources.get(StringKey.TRANSIT_JUPITER_GENERIC, language),
+                    houseFromMoon.toString()
+                )
+            }
+            Planet.RAHU -> String.format(
+                StringResources.get(StringKey.TRANSIT_RAHU_GENERIC, language),
+                houseFromMoon.toString()
+            )
+            Planet.KETU -> String.format(
+                StringResources.get(StringKey.TRANSIT_KETU_GENERIC, language),
+                houseFromMoon.toString()
+            )
+            else -> String.format(
+                StringResources.get(StringKey.TRANSIT_PLANET_GENERIC, language),
+                planet.getLocalizedName(language), houseFromMoon.toString()
+            )
         }
     }
 

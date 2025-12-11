@@ -1,6 +1,9 @@
 package com.astro.storm.ephemeris
 
 import android.content.Context
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
@@ -69,7 +72,15 @@ object RetrogradeCombustionCalculator {
         RETROGRADE("Retrograde", "R", 1.25),
         STATIONARY_RETROGRADE("Stationary Retrograde", "SR", 1.75),
         STATIONARY_DIRECT("Stationary Direct", "SD", 1.75),
-        ALWAYS_RETROGRADE("Perpetual Retrograde", "℞", 1.0)
+        ALWAYS_RETROGRADE("Perpetual Retrograde", "℞", 1.0);
+
+        fun getLocalizedName(language: Language): String = when (this) {
+            DIRECT -> StringResources.get(StringKey.RETRO_STATUS_DIRECT, language)
+            RETROGRADE -> StringResources.get(StringKey.RETRO_STATUS_RETROGRADE, language)
+            STATIONARY_RETROGRADE -> StringResources.get(StringKey.RETRO_STATUS_STATIONARY_RETRO, language)
+            STATIONARY_DIRECT -> StringResources.get(StringKey.RETRO_STATUS_STATIONARY_DIRECT, language)
+            ALWAYS_RETROGRADE -> StringResources.get(StringKey.RETRO_STATUS_ALWAYS_RETRO, language)
+        }
     }
 
     enum class CombustionStatus(val displayName: String, val symbol: String, val strengthFactor: Double) {
@@ -78,7 +89,16 @@ object RetrogradeCombustionCalculator {
         COMBUST("Combust", "☉", 0.25),
         DEEP_COMBUST("Deep Combustion", "●☉", 0.1),
         CAZIMI("Cazimi", "♡", 1.5),
-        SEPARATING("Separating", "☉→", 0.55)
+        SEPARATING("Separating", "☉→", 0.55);
+
+        fun getLocalizedName(language: Language): String = when (this) {
+            NOT_COMBUST -> StringResources.get(StringKey.COMBUST_STATUS_NOT, language)
+            APPROACHING -> StringResources.get(StringKey.COMBUST_STATUS_APPROACHING, language)
+            COMBUST -> StringResources.get(StringKey.COMBUST_STATUS_COMBUST, language)
+            DEEP_COMBUST -> StringResources.get(StringKey.COMBUST_STATUS_DEEP, language)
+            CAZIMI -> StringResources.get(StringKey.COMBUST_STATUS_CAZIMI, language)
+            SEPARATING -> StringResources.get(StringKey.COMBUST_STATUS_SEPARATING, language)
+        }
     }
 
     enum class SpeedStatus(val displayName: String, val strengthFactor: Double) {
@@ -88,14 +108,31 @@ object RetrogradeCombustionCalculator {
         MANDA("Slow", 0.85),
         ATHI_MANDA("Very Slow", 0.7),
         STHIRA("Stationary", 1.5),
-        VAKRA("Retrograde Motion", 1.0)
+        VAKRA("Retrograde Motion", 1.0);
+
+        fun getLocalizedName(language: Language): String = when (this) {
+            ATHI_SHEEGHRA -> StringResources.get(StringKey.SPEED_STATUS_VERY_FAST, language)
+            SHEEGHRA -> StringResources.get(StringKey.SPEED_STATUS_FAST, language)
+            SAMA -> StringResources.get(StringKey.SPEED_STATUS_NORMAL, language)
+            MANDA -> StringResources.get(StringKey.SPEED_STATUS_SLOW, language)
+            ATHI_MANDA -> StringResources.get(StringKey.SPEED_STATUS_VERY_SLOW, language)
+            STHIRA -> StringResources.get(StringKey.SPEED_STATUS_STATIONARY, language)
+            VAKRA -> StringResources.get(StringKey.SPEED_STATUS_RETROGRADE, language)
+        }
     }
 
     enum class WarAdvantage(val displayName: String) {
         NORTHERN_LATITUDE("Northern Latitude"),
         BRIGHTNESS("Greater Brightness"),
         COMBINED("Both Factors"),
-        INDETERMINATE("Evenly Matched")
+        INDETERMINATE("Evenly Matched");
+
+        fun getLocalizedName(language: Language): String = when (this) {
+            NORTHERN_LATITUDE -> StringResources.get(StringKey.WAR_ADVANTAGE_NORTH_LAT, language)
+            BRIGHTNESS -> StringResources.get(StringKey.WAR_ADVANTAGE_BRIGHTNESS, language)
+            COMBINED -> StringResources.get(StringKey.WAR_ADVANTAGE_COMBINED, language)
+            INDETERMINATE -> StringResources.get(StringKey.WAR_ADVANTAGE_INDETERMINATE, language)
+        }
     }
 
     data class PlanetCondition(
@@ -605,6 +642,136 @@ object RetrogradeCombustionCalculator {
             SpeedStatus.ATHI_MANDA -> "${planet.displayName} moves very slowly (Athi Manda). Significant delays in its significations. Patience and persistence essential."
             SpeedStatus.STHIRA -> "${planet.displayName} stands virtually stationary (Sthira). Tremendous concentration of energy at this degree. Events crystallize with lasting significance."
             SpeedStatus.VAKRA -> "${planet.displayName} moves in retrograde (Vakra). Energy directed inward. Review and revision of its significations."
+        }
+    }
+
+    // ==================== LOCALIZED INTERPRETATION FUNCTIONS ====================
+
+    /**
+     * Get localized retrograde interpretation
+     */
+    fun getLocalizedRetrogradeInterpretation(planet: Planet, status: RetrogradeStatus, language: Language): String {
+        val planetName = planet.getLocalizedName(language)
+
+        if (status == RetrogradeStatus.DIRECT) {
+            return String.format(StringResources.get(StringKey.RETRO_DIRECT_INTERP, language), planetName)
+        }
+
+        if (status == RetrogradeStatus.ALWAYS_RETROGRADE) {
+            return String.format(StringResources.get(StringKey.RETRO_ALWAYS_INTERP, language), planetName)
+        }
+
+        val interpretation = when (planet) {
+            Planet.MERCURY -> StringResources.get(StringKey.RETRO_MERCURY, language)
+            Planet.VENUS -> StringResources.get(StringKey.RETRO_VENUS, language)
+            Planet.MARS -> StringResources.get(StringKey.RETRO_MARS, language)
+            Planet.JUPITER -> StringResources.get(StringKey.RETRO_JUPITER, language)
+            Planet.SATURN -> StringResources.get(StringKey.RETRO_SATURN, language)
+            else -> StringResources.get(StringKey.RETRO_GENERIC, language)
+        }
+
+        val stationaryAddition = when (status) {
+            RetrogradeStatus.STATIONARY_RETROGRADE -> " " + StringResources.get(StringKey.RETRO_STATION_RETRO, language)
+            RetrogradeStatus.STATIONARY_DIRECT -> " " + StringResources.get(StringKey.RETRO_STATION_DIRECT, language)
+            else -> ""
+        }
+
+        return interpretation + stationaryAddition
+    }
+
+    /**
+     * Get localized combustion interpretation
+     */
+    fun getLocalizedCombustionInterpretation(planet: Planet, status: CombustionStatus, language: Language): String {
+        val planetName = planet.getLocalizedName(language)
+
+        return when (status) {
+            CombustionStatus.CAZIMI -> {
+                String.format(StringResources.get(StringKey.COMBUST_CAZIMI_INTERP, language), planetName)
+            }
+            CombustionStatus.DEEP_COMBUST -> {
+                val meaning = getLocalizedBaseCombustionMeaning(planet, language)
+                "$meaning " + StringResources.get(StringKey.COMBUST_DEEP_INTERP_PREFIX, language)
+            }
+            CombustionStatus.COMBUST -> {
+                val meaning = getLocalizedBaseCombustionMeaning(planet, language)
+                "$meaning " + StringResources.get(StringKey.COMBUST_INTERP_PREFIX, language)
+            }
+            CombustionStatus.APPROACHING -> {
+                String.format(StringResources.get(StringKey.COMBUST_APPROACHING_INTERP, language), planetName)
+            }
+            CombustionStatus.SEPARATING -> {
+                String.format(StringResources.get(StringKey.COMBUST_SEPARATING_INTERP, language), planetName)
+            }
+            CombustionStatus.NOT_COMBUST -> {
+                String.format(StringResources.get(StringKey.COMBUST_NOT_INTERP, language), planetName)
+            }
+        }
+    }
+
+    /**
+     * Get localized base combustion meaning for a planet
+     */
+    private fun getLocalizedBaseCombustionMeaning(planet: Planet, language: Language): String {
+        return when (planet) {
+            Planet.MOON -> StringResources.get(StringKey.COMBUST_MOON, language)
+            Planet.MARS -> StringResources.get(StringKey.COMBUST_MARS, language)
+            Planet.MERCURY -> StringResources.get(StringKey.COMBUST_MERCURY, language)
+            Planet.JUPITER -> StringResources.get(StringKey.COMBUST_JUPITER, language)
+            Planet.VENUS -> StringResources.get(StringKey.COMBUST_VENUS, language)
+            Planet.SATURN -> StringResources.get(StringKey.COMBUST_SATURN, language)
+            else -> StringResources.get(StringKey.COMBUST_GENERIC, language)
+        }
+    }
+
+    /**
+     * Get localized planetary war interpretation
+     */
+    fun getLocalizedPlanetaryWarInterpretation(war: PlanetaryWarResult, language: Language): String {
+        val winner = war.winner.getLocalizedName(language)
+        val loser = war.loser.getLocalizedName(language)
+
+        val intensityDesc = when {
+            war.intensity >= 0.8 -> StringResources.get(StringKey.WAR_EXTREMELY_INTENSE, language)
+            war.intensity >= 0.5 -> StringResources.get(StringKey.WAR_SIGNIFICANT, language)
+            else -> StringResources.get(StringKey.WAR_MODERATE, language)
+        }
+
+        val advantageDesc = when (war.winnerAdvantage) {
+            WarAdvantage.NORTHERN_LATITUDE -> StringResources.get(StringKey.WAR_VICTORY_NORTH, language)
+            WarAdvantage.BRIGHTNESS -> StringResources.get(StringKey.WAR_VICTORY_BRIGHT, language)
+            WarAdvantage.COMBINED -> StringResources.get(StringKey.WAR_VICTORY_BOTH, language)
+            WarAdvantage.INDETERMINATE -> StringResources.get(StringKey.WAR_VICTORY_CLOSE, language)
+        }
+
+        return buildString {
+            append(String.format(StringResources.get(StringKey.WAR_TITLE, language), winner, loser))
+            append("\n")
+            append(String.format(StringResources.get(StringKey.WAR_SEPARATION, language),
+                String.format("%.3f", war.angularSeparation), intensityDesc))
+            append("\n")
+            append(String.format(StringResources.get(StringKey.WAR_WINNER_SENTENCE, language), winner, advantageDesc))
+            append("\n\n")
+            append(String.format(StringResources.get(StringKey.WAR_LOSER_EFFECTS, language), loser))
+            append(" ")
+            append(String.format(StringResources.get(StringKey.WAR_WINNER_EFFECTS, language), winner))
+        }
+    }
+
+    /**
+     * Get localized speed interpretation
+     */
+    fun getLocalizedSpeedInterpretation(planet: Planet, status: SpeedStatus, language: Language): String {
+        val planetName = planet.getLocalizedName(language)
+
+        return when (status) {
+            SpeedStatus.ATHI_SHEEGHRA -> String.format(StringResources.get(StringKey.SPEED_VERY_FAST_INTERP, language), planetName)
+            SpeedStatus.SHEEGHRA -> String.format(StringResources.get(StringKey.SPEED_FAST_INTERP, language), planetName)
+            SpeedStatus.SAMA -> String.format(StringResources.get(StringKey.SPEED_NORMAL_INTERP, language), planetName)
+            SpeedStatus.MANDA -> String.format(StringResources.get(StringKey.SPEED_SLOW_INTERP, language), planetName)
+            SpeedStatus.ATHI_MANDA -> String.format(StringResources.get(StringKey.SPEED_VERY_SLOW_INTERP, language), planetName)
+            SpeedStatus.STHIRA -> String.format(StringResources.get(StringKey.SPEED_STATIONARY_INTERP, language), planetName)
+            SpeedStatus.VAKRA -> String.format(StringResources.get(StringKey.SPEED_RETROGRADE_INTERP, language), planetName)
         }
     }
 }

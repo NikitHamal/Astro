@@ -3209,7 +3209,277 @@ enum class StringKey(val en: String, val ne: String) {
     PLANET_DAY_VENUS("Friday", "शुक्रबार"),
     PLANET_DAY_SATURN("Saturday", "शनिबार"),
     PLANET_DAY_RAHU("Saturday", "शनिबार"),
-    PLANET_DAY_KETU("Tuesday", "मंगलबार");
+    PLANET_DAY_KETU("Tuesday", "मंगलबार"),
+
+    // ============================================
+    // TRANSIT ANALYZER - ASPECT TYPES
+    // ============================================
+    TRANSIT_ASPECT_CONJUNCTION("Conjunction", "युति"),
+    TRANSIT_ASPECT_SEXTILE("Sextile", "षष्ठक"),
+    TRANSIT_ASPECT_SQUARE("Square", "चतुर्थांश"),
+    TRANSIT_ASPECT_TRINE("Trine", "त्रिकोण"),
+    TRANSIT_ASPECT_OPPOSITION("Opposition", "विरोध"),
+
+    // ============================================
+    // TRANSIT ANALYZER - TRANSIT EFFECTS
+    // ============================================
+    TRANSIT_EFFECT_EXCELLENT("Excellent", "उत्कृष्ट"),
+    TRANSIT_EFFECT_GOOD("Good", "राम्रो"),
+    TRANSIT_EFFECT_NEUTRAL("Neutral", "तटस्थ"),
+    TRANSIT_EFFECT_CHALLENGING("Challenging", "चुनौतीपूर्ण"),
+    TRANSIT_EFFECT_DIFFICULT("Difficult", "कठिन"),
+
+    // ============================================
+    // TRANSIT ANALYZER - TRANSIT QUALITY PERIODS
+    // ============================================
+    TRANSIT_PERIOD_EXCELLENT("Excellent Period", "उत्कृष्ट अवधि"),
+    TRANSIT_PERIOD_GOOD("Good Period", "राम्रो अवधि"),
+    TRANSIT_PERIOD_MIXED("Mixed Period", "मिश्रित अवधि"),
+    TRANSIT_PERIOD_CHALLENGING("Challenging Period", "चुनौतीपूर्ण अवधि"),
+    TRANSIT_PERIOD_DIFFICULT("Difficult Period", "कठिन अवधि"),
+
+    // ============================================
+    // TRANSIT ANALYZER - HOUSE SIGNIFICATIONS (From Moon)
+    // ============================================
+    TRANSIT_HOUSE_1_MATTERS("self, health, personality", "आफू, स्वास्थ्य, व्यक्तित्व"),
+    TRANSIT_HOUSE_2_MATTERS("wealth, family, speech", "धन, परिवार, वाणी"),
+    TRANSIT_HOUSE_3_MATTERS("courage, siblings, short journeys", "साहस, भाइबहिनी, छोटो यात्रा"),
+    TRANSIT_HOUSE_4_MATTERS("home, mother, mental peace", "घर, आमा, मानसिक शान्ति"),
+    TRANSIT_HOUSE_5_MATTERS("children, creativity, romance", "सन्तान, सिर्जनशीलता, प्रेम"),
+    TRANSIT_HOUSE_6_MATTERS("enemies, health issues, debts", "शत्रु, स्वास्थ्य समस्या, ऋण"),
+    TRANSIT_HOUSE_7_MATTERS("marriage, partnerships, business", "विवाह, साझेदारी, व्यापार"),
+    TRANSIT_HOUSE_8_MATTERS("obstacles, longevity, occult", "बाधा, दीर्घायु, गुप्त विद्या"),
+    TRANSIT_HOUSE_9_MATTERS("fortune, father, religion", "भाग्य, पिता, धर्म"),
+    TRANSIT_HOUSE_10_MATTERS("career, status, government", "क्यारियर, हैसियत, सरकार"),
+    TRANSIT_HOUSE_11_MATTERS("gains, friends, elder siblings", "लाभ, साथीहरू, जेठो भाइबहिनी"),
+    TRANSIT_HOUSE_12_MATTERS("expenses, spirituality, foreign", "खर्च, आध्यात्मिकता, विदेश"),
+    TRANSIT_HOUSE_GENERAL("general matters", "सामान्य मामिलाहरू"),
+
+    // ============================================
+    // TRANSIT ANALYZER - GOCHARA INTERPRETATION TEMPLATES
+    // ============================================
+    TRANSIT_GOCHARA_EXCELLENT("%s transit in %s house brings excellent results for %s.", "%s को %s भावमा गोचरले %s को लागि उत्कृष्ट परिणामहरू ल्याउँछ।"),
+    TRANSIT_GOCHARA_GOOD("%s transit in %s house supports %s.", "%s को %s भावमा गोचरले %s लाई समर्थन गर्छ।"),
+    TRANSIT_GOCHARA_NEUTRAL("%s transit in %s house has neutral effects on %s.", "%s को %s भावमा गोचरले %s मा तटस्थ प्रभाव पार्छ।"),
+    TRANSIT_GOCHARA_CHALLENGING("%s transit in %s house may challenge %s.", "%s को %s भावमा गोचरले %s मा चुनौती दिन सक्छ।"),
+    TRANSIT_GOCHARA_DIFFICULT("%s transit in %s house requires caution in %s.", "%s को %s भावमा गोचरले %s मा सावधानी आवश्यक पार्छ।"),
+    TRANSIT_GOCHARA_VEDHA_NOTE("Effects may be diminished due to Vedha.", "वेधको कारणले प्रभावहरू कम हुन सक्छन्।"),
+
+    // ============================================
+    // TRANSIT ANALYZER - ASPECT INTERPRETATIONS
+    // ============================================
+    TRANSIT_ASPECT_FAVORABLE("Favorable: Transit %s %s natal %s (%s) - beneficial influence", "अनुकूल: गोचर %s %s जन्मकालीन %s (%s) - लाभदायक प्रभाव"),
+    TRANSIT_ASPECT_MIXED_SUPPORT("Transit %s %s natal %s (%s) - mixed but generally supportive", "गोचर %s %s जन्मकालीन %s (%s) - मिश्रित तर सामान्यतया सहयोगी"),
+    TRANSIT_ASPECT_HARMONIOUS("Transit %s %s natal %s (%s) - harmonious connection", "गोचर %s %s जन्मकालीन %s (%s) - सामञ्जस्यपूर्ण सम्बन्ध"),
+    TRANSIT_ASPECT_ATTENTION("Transit %s %s natal %s (%s) - requires attention", "गोचर %s %s जन्मकालीन %s (%s) - ध्यान आवश्यक"),
+    TRANSIT_ASPECT_BECOMING_EXACT("becoming exact", "सटीक हुँदै"),
+    TRANSIT_ASPECT_SEPARATING("separating", "अलग हुँदै"),
+
+    // ============================================
+    // TRANSIT ANALYZER - OVERALL SUMMARY TEMPLATES
+    // ============================================
+    TRANSIT_SUMMARY_EXCELLENT("This is an excellent transit period. %s are well-placed from Moon, supporting growth and positive developments.", "यो उत्कृष्ट गोचर अवधि हो। %s चन्द्रमाबाट राम्ररी स्थित छन्, वृद्धि र सकारात्मक विकासहरूलाई समर्थन गर्दै।"),
+    TRANSIT_SUMMARY_GOOD("Overall favorable transit period. %s provide support. Good time for important initiatives.", "समग्रमा अनुकूल गोचर अवधि। %s ले समर्थन प्रदान गर्छन्। महत्त्वपूर्ण पहलहरूको लागि राम्रो समय।"),
+    TRANSIT_SUMMARY_MIXED("Mixed transit influences present. Balance %s positives against %s challenges.", "मिश्रित गोचर प्रभावहरू उपस्थित छन्। %s सकारात्मकताहरू र %s चुनौतीहरू बीच सन्तुलन गर्नुहोस्।"),
+    TRANSIT_SUMMARY_CHALLENGING("Challenging period requiring patience. %s may create obstacles. Focus on steady progress.", "धैर्य आवश्यक पर्ने चुनौतीपूर्ण अवधि। %s ले बाधाहरू सिर्जना गर्न सक्छन्। स्थिर प्रगतिमा ध्यान दिनुहोस्।"),
+    TRANSIT_SUMMARY_DIFFICULT("Difficult transit period. %s create significant challenges. Exercise caution and avoid major decisions.", "कठिन गोचर अवधि। %s ले महत्त्वपूर्ण चुनौतीहरू सिर्जना गर्छन्। सावधानी अपनाउनुहोस् र प्रमुख निर्णयहरूबाट बच्नुहोस्।"),
+
+    // ============================================
+    // TRANSIT ANALYZER - SATURN TRANSIT PERIODS
+    // ============================================
+    TRANSIT_SADE_SATI_BEGIN("Sade Sati beginning phase (Saturn in 12th from Moon)", "साढेसाती आरम्भिक चरण (शनि चन्द्रमाबाट १२ औं भावमा)"),
+    TRANSIT_SADE_SATI_PEAK("Sade Sati peak phase (Saturn over natal Moon)", "साढेसाती चरम चरण (शनि जन्मकालीन चन्द्रमामाथि)"),
+    TRANSIT_SADE_SATI_END("Sade Sati ending phase (Saturn in 2nd from Moon)", "साढेसाती अन्तिम चरण (शनि चन्द्रमाबाट २ रो भावमा)"),
+    TRANSIT_ASHTAMA_SHANI("Ashtama Shani (Saturn in 8th from Moon)", "अष्टम शनि (शनि चन्द्रमाबाट ८ औं भावमा)"),
+    TRANSIT_KANTAK_SHANI("Kantak Shani (Saturn in 4th from Moon)", "कंटक शनि (शनि चन्द्रमाबाट ४ थो भावमा)"),
+    TRANSIT_SATURN_7TH("Saturn in 7th from Moon - relationship focus", "शनि चन्द्रमाबाट ७ औं मा - सम्बन्धमा केन्द्रित"),
+    TRANSIT_SATURN_10TH("Saturn in 10th from Moon - career challenges and growth", "शनि चन्द्रमाबाट १० औं मा - क्यारियर चुनौती र वृद्धि"),
+    TRANSIT_SATURN_GENERIC("Saturn transit in %s from Moon", "चन्द्रमाबाट %s मा शनि गोचर"),
+
+    // ============================================
+    // TRANSIT ANALYZER - JUPITER TRANSIT PERIODS
+    // ============================================
+    TRANSIT_JUPITER_OVER_MOON("Jupiter over natal Moon - expansion and growth", "बृहस्पति जन्मकालीन चन्द्रमामाथि - विस्तार र वृद्धि"),
+    TRANSIT_JUPITER_5TH("Jupiter in 5th from Moon - creativity and children", "बृहस्पति चन्द्रमाबाट ५ औं मा - सिर्जनशीलता र सन्तान"),
+    TRANSIT_JUPITER_9TH("Jupiter in 9th from Moon - fortune and dharma", "बृहस्पति चन्द्रमाबाट ९ औं मा - भाग्य र धर्म"),
+    TRANSIT_JUPITER_GENERIC("Jupiter transit in %s from Moon", "चन्द्रमाबाट %s मा बृहस्पति गोचर"),
+
+    // ============================================
+    // TRANSIT ANALYZER - RAHU/KETU TRANSIT PERIODS
+    // ============================================
+    TRANSIT_RAHU_GENERIC("Rahu transit in %s from Moon - worldly desires amplified", "चन्द्रमाबाट %s मा राहु गोचर - भौतिक इच्छाहरू बढ्छन्"),
+    TRANSIT_KETU_GENERIC("Ketu transit in %s from Moon - spiritual detachment", "चन्द्रमाबाट %s मा केतु गोचर - आध्यात्मिक वैराग्य"),
+    TRANSIT_PLANET_GENERIC("%s transit in %s from Moon", "चन्द्रमाबाट %s मा %s गोचर"),
+
+    // ============================================
+    // TRANSIT ANALYZER - FOCUS AREAS
+    // ============================================
+    TRANSIT_FOCUS_SADE_SATI("Sade Sati period - focus on patience, health, and spiritual growth", "साढेसाती अवधि - धैर्य, स्वास्थ्य, र आध्यात्मिक वृद्धिमा केन्द्रित"),
+    TRANSIT_FOCUS_ASHTAMA_SHANI("Ashtama Shani - be cautious about health, unexpected challenges", "अष्टम शनि - स्वास्थ्य र अप्रत्याशित चुनौतीहरूमा सावधान रहनुहोस्"),
+    TRANSIT_FOCUS_SATURN_4TH("Saturn transiting 4th - attention to home, mother, mental peace", "शनि ४ थो भावमा - घर, आमा, मानसिक शान्तिमा ध्यान"),
+    TRANSIT_FOCUS_SATURN_10TH("Saturn transiting 10th - career responsibilities, hard work pays off", "शनि १० औं भावमा - क्यारियर जिम्मेवारी, कडा परिश्रमको फल"),
+    TRANSIT_FOCUS_JUPITER_TRIKONA("Jupiter in trine houses - excellent for expansion, learning, spirituality", "बृहस्पति त्रिकोण भावहरूमा - विस्तार, सिकाइ, आध्यात्मिकताको लागि उत्कृष्ट"),
+    TRANSIT_FOCUS_JUPITER_2ND("Jupiter transiting 2nd - favorable for wealth accumulation", "बृहस्पति २ रो भावमा - धन संचयको लागि अनुकूल"),
+    TRANSIT_FOCUS_JUPITER_11TH("Jupiter transiting 11th - gains through networking, fulfillment of desires", "बृहस्पति ११ औं भावमा - सञ्जालबाट लाभ, इच्छाहरूको पूर्ति"),
+    TRANSIT_FOCUS_STRONG_ASPECT("Strong %s from transit %s to natal %s", "गोचर %s बाट जन्मकालीन %s मा बलियो %s"),
+
+    // ============================================
+    // TRANSIT ANALYZER - REPORT LABELS
+    // ============================================
+    TRANSIT_REPORT_TITLE("TRANSIT ANALYSIS REPORT", "गोचर विश्लेषण प्रतिवेदन"),
+    TRANSIT_REPORT_DATE_TIME("Transit Date/Time: %s", "गोचर मिति/समय: %s"),
+    TRANSIT_REPORT_POSITIONS_HEADER("CURRENT PLANETARY POSITIONS", "हालको ग्रह स्थितिहरू"),
+    TRANSIT_REPORT_GOCHARA_HEADER("GOCHARA ANALYSIS (Transit from Moon)", "गोचर विश्लेषण (चन्द्रमाबाट)"),
+    TRANSIT_REPORT_ASPECTS_HEADER("TRANSIT ASPECTS TO NATAL PLANETS", "जन्मकालीन ग्रहमा गोचर दृष्टि"),
+    TRANSIT_REPORT_NO_ASPECTS("No significant aspects currently active.", "हाल कुनै महत्त्वपूर्ण दृष्टि सक्रिय छैन।"),
+    TRANSIT_REPORT_ASHTAK_HEADER("ASHTAKAVARGA TRANSIT SCORES", "अष्टकवर्ग गोचर अंकहरू"),
+    TRANSIT_REPORT_OVERALL_HEADER("OVERALL ASSESSMENT", "समग्र मूल्याङ्कन"),
+    TRANSIT_REPORT_PERIOD_QUALITY("Period Quality: %s", "अवधि गुणस्तर: %s"),
+    TRANSIT_REPORT_SCORE("Score: %s/100", "अंक: %s/१००"),
+    TRANSIT_REPORT_SUMMARY("Summary: %s", "सारांश: %s"),
+    TRANSIT_REPORT_FOCUS_AREAS("Key Areas of Focus:", "मुख्य केन्द्रित क्षेत्रहरू:"),
+    TRANSIT_REPORT_VEDHA_TAG("[VEDHA]", "[वेध]"),
+    TRANSIT_REPORT_VEDHA_FROM("Vedha from %s", "%s बाट वेध"),
+    TRANSIT_REPORT_HOUSE("House %s", "भाव %s"),
+    TRANSIT_REPORT_ORB("Orb: %s°", "कोणान्तर: %s°"),
+    TRANSIT_REPORT_STRENGTH("Strength: %s%%", "बल: %s%%"),
+    TRANSIT_REPORT_BAV_SAV("BAV=%s, SAV=%s", "BAV=%s, SAV=%s"),
+
+    // ============================================
+    // RETROGRADE/COMBUSTION - STATUS NAMES
+    // ============================================
+    RETRO_STATUS_DIRECT("Direct", "मार्गी"),
+    RETRO_STATUS_RETROGRADE("Retrograde", "वक्री"),
+    RETRO_STATUS_STATIONARY_RETRO("Stationary Retrograde", "स्थिर वक्री"),
+    RETRO_STATUS_STATIONARY_DIRECT("Stationary Direct", "स्थिर मार्गी"),
+    RETRO_STATUS_ALWAYS_RETRO("Perpetual Retrograde", "सदा वक्री"),
+
+    // ============================================
+    // RETROGRADE/COMBUSTION - COMBUSTION STATUS
+    // ============================================
+    COMBUST_STATUS_NOT("Not Combust", "अस्त नभएको"),
+    COMBUST_STATUS_APPROACHING("Approaching Combustion", "अस्त हुने तर्फ"),
+    COMBUST_STATUS_COMBUST("Combust", "अस्त"),
+    COMBUST_STATUS_DEEP("Deep Combustion", "गहिरो अस्त"),
+    COMBUST_STATUS_CAZIMI("Cazimi", "सूर्यको हृदयमा"),
+    COMBUST_STATUS_SEPARATING("Separating", "अलग हुँदै"),
+
+    // ============================================
+    // RETROGRADE/COMBUSTION - SPEED STATUS
+    // ============================================
+    SPEED_STATUS_VERY_FAST("Very Fast", "अति छिटो"),
+    SPEED_STATUS_FAST("Fast", "छिटो"),
+    SPEED_STATUS_NORMAL("Normal", "सामान्य"),
+    SPEED_STATUS_SLOW("Slow", "ढिलो"),
+    SPEED_STATUS_VERY_SLOW("Very Slow", "अति ढिलो"),
+    SPEED_STATUS_STATIONARY("Stationary", "स्थिर"),
+    SPEED_STATUS_RETROGRADE("Retrograde Motion", "वक्री गति"),
+
+    // ============================================
+    // RETROGRADE/COMBUSTION - WAR ADVANTAGE
+    // ============================================
+    WAR_ADVANTAGE_NORTH_LAT("Northern Latitude", "उत्तरी अक्षांश"),
+    WAR_ADVANTAGE_BRIGHTNESS("Greater Brightness", "अधिक चमक"),
+    WAR_ADVANTAGE_COMBINED("Both Factors", "दुवै कारण"),
+    WAR_ADVANTAGE_INDETERMINATE("Evenly Matched", "समान रूपमा मिल्दो"),
+
+    // ============================================
+    // RETROGRADE/COMBUSTION - INTERPRETATIONS
+    // ============================================
+    RETRO_DIRECT_INTERP("%s moves direct, expressing its significations naturally and externally.", "%s मार्गी चाल हुन्छ, आफ्नो संकेतहरू स्वाभाविक र बाह्य रूपमा व्यक्त गर्दछ।"),
+    RETRO_ALWAYS_INTERP("%s maintains perpetual retrograde motion as a shadow planet (Chhaya Graha).", "%s छाया ग्रहको रूपमा सदा वक्री गतिमा रहन्छ।"),
+
+    // Mercury Retrograde
+    RETRO_MERCURY("Mercury retrograde turns communication, intellect, and commerce inward. Review contracts, revisit past connections, refine rather than initiate. Travel requires extra planning.",
+        "बुध वक्रीले सञ्चार, बुद्धि, र व्यापारलाई भित्री बनाउँछ। सम्झौताहरू समीक्षा गर्नुहोस्, विगतका सम्बन्धहरू पुनर्विचार गर्नुहोस्, सुरु गर्नुभन्दा परिष्कृत गर्नुहोस्। यात्रामा थप योजना आवश्यक छ।"),
+    // Venus Retrograde
+    RETRO_VENUS("Venus retrograde invokes reassessment of relationships, values, and pleasures. Past loves may resurface. Avoid major relationship commitments or luxury purchases.",
+        "शुक्र वक्रीले सम्बन्ध, मूल्य, र आनन्दको पुनर्मूल्याङ्कन गराउँछ। विगतका प्रेमीहरू फर्कन सक्छन्। प्रमुख सम्बन्ध प्रतिबद्धता वा विलासिता खरिदबाट बच्नुहोस्।"),
+    // Mars Retrograde
+    RETRO_MARS("Mars retrograde internalizes energy and drive. Past conflicts demand resolution. Direct action faces obstacles. Strategic patience over force.",
+        "मंगल वक्रीले ऊर्जा र चाहनालाई भित्री बनाउँछ। विगतका द्वन्द्वहरूले समाधान माग्छन्। प्रत्यक्ष कार्यमा बाधाहरू आउँछन्। बलभन्दा रणनीतिक धैर्य राम्रो।"),
+    // Jupiter Retrograde
+    RETRO_JUPITER("Jupiter retrograde deepens internal wisdom and spiritual seeking. External expansion pauses while inner growth accelerates. Review beliefs and philosophies.",
+        "बृहस्पति वक्रीले आन्तरिक ज्ञान र आध्यात्मिक खोजीलाई गहिरो बनाउँछ। बाह्य विस्तार रोकिन्छ जबकि भित्री वृद्धि तीव्र हुन्छ। विश्वास र दर्शनहरूको समीक्षा गर्नुहोस्।"),
+    // Saturn Retrograde
+    RETRO_SATURN("Saturn retrograde intensifies karmic review. Past responsibilities resurface demanding attention. Structure and discipline must come from within.",
+        "शनि वक्रीले कार्मिक समीक्षा तीव्र बनाउँछ। विगतका जिम्मेवारीहरू ध्यान माग्दै फर्किन्छन्। संरचना र अनुशासन भित्रबाट आउनुपर्छ।"),
+    // Generic Retrograde
+    RETRO_GENERIC("Planetary energy is internalized and intensified during retrograde.", "वक्री अवधिमा ग्रहीय ऊर्जा भित्री र तीव्र हुन्छ।"),
+    // Stationary Retrograde
+    RETRO_STATION_RETRO("Currently stationary before retrograde - energy concentrates powerfully at this zodiacal degree.",
+        "हाल वक्री हुनुअघि स्थिर - यस राशिको अंशमा ऊर्जा शक्तिशाली रूपमा केन्द्रित हुन्छ।"),
+    // Stationary Direct
+    RETRO_STATION_DIRECT("Currently stationary before direct motion - a pivotal turning point where decisions crystallize.",
+        "हाल मार्गी गति अघि स्थिर - एक निर्णायक मोड जहाँ निर्णयहरू स्पष्ट हुन्छन्।"),
+
+    // ============================================
+    // COMBUSTION INTERPRETATIONS
+    // ============================================
+    COMBUST_CAZIMI_INTERP("%s sits in the heart of the Sun (Cazimi). This exceptional position grants royal favor and heightened power. The planet's significations are blessed and strengthened rather than diminished.",
+        "%s सूर्यको हृदयमा (काजिमी) बस्छ। यो असाधारण स्थितिले राजकीय कृपा र बढेको शक्ति प्रदान गर्छ। ग्रहको संकेतहरू कमजोर हुनुको सट्टा आशीर्वादित र बलियो हुन्छन्।"),
+    COMBUST_DEEP_INTERP_PREFIX("Deep combustion severely impairs the planet's ability to deliver its significations. Effects require conscious attention and remedial measures.",
+        "गहिरो अस्तले ग्रहको संकेतहरू दिने क्षमतालाई गम्भीर रूपमा कमजोर बनाउँछ। प्रभावहरूमा सचेत ध्यान र उपचारात्मक उपायहरू आवश्यक छ।"),
+    COMBUST_INTERP_PREFIX("The Sun's brilliance overpowers this planet, weakening its natural expression.",
+        "सूर्यको चमकले यस ग्रहलाई दबाउँछ, यसको प्राकृतिक अभिव्यक्तिलाई कमजोर बनाउँछ।"),
+    COMBUST_APPROACHING_INTERP("%s approaches combustion. Its significations begin dimming. Prepare for a period of internalization in matters ruled by this planet.",
+        "%s अस्त हुने तर्फ बढ्दैछ। यसका संकेतहरू मधुरो हुन थाल्छन्। यस ग्रहले शासन गर्ने मामिलाहरूमा आन्तरिकीकरणको अवधिको लागि तयार हुनुहोस्।"),
+    COMBUST_SEPARATING_INTERP("%s separates from the Sun's rays. Strength gradually returns. Matters ruled by this planet emerge from a period of obscuration.",
+        "%s सूर्यको किरणबाट अलग हुँदैछ। बल बिस्तारै फर्किन्छ। यस ग्रहले शासन गर्ने मामिलाहरू अस्पष्टताको अवधिबाट बाहिर आउँछन्।"),
+    COMBUST_NOT_INTERP("%s stands clear of the Sun's burning rays, free to express its full potential.",
+        "%s सूर्यको जलाउने किरणबाट स्पष्ट रहन्छ, आफ्नो पूर्ण क्षमता व्यक्त गर्न स्वतन्त्र।"),
+
+    // Per-planet combustion meanings
+    COMBUST_MOON("Moon combust disturbs emotional equilibrium and mental peace. Relationship with mother may face challenges. Mind seeks clarity through introspection.",
+        "चन्द्रमा अस्तले भावनात्मक सन्तुलन र मानसिक शान्तिमा बाधा पुर्‍याउँछ। आमासँगको सम्बन्धमा चुनौतीहरू आउन सक्छन्। मनले आत्मनिरीक्षणबाट स्पष्टता खोज्छ।"),
+    COMBUST_MARS("Mars combust suppresses courage, vitality, and initiative. Anger may smolder beneath the surface. Physical energy requires careful channeling.",
+        "मंगल अस्तले साहस, जीवनशक्ति, र पहललाई दबाउँछ। रिस सतहमुनि धुमिरहेको हुन सक्छ। शारीरिक ऊर्जालाई सावधानीपूर्वक निर्देशन आवश्यक छ।"),
+    COMBUST_MERCURY("Mercury combust challenges clear thinking, communication, and commercial success. Words require extra care. Analysis turns inward.",
+        "बुध अस्तले स्पष्ट सोच, सञ्चार, र व्यापारिक सफलतामा चुनौती दिन्छ। शब्दहरूमा थप सावधानी आवश्यक छ। विश्लेषण भित्री हुन्छ।"),
+    COMBUST_JUPITER("Jupiter combust diminishes wisdom, fortune, and spiritual guidance. Teachers and guides may seem distant. Faith develops through personal trial.",
+        "बृहस्पति अस्तले ज्ञान, भाग्य, र आध्यात्मिक मार्गदर्शन घटाउँछ। शिक्षक र गुरुहरू टाढा देखिन सक्छन्। व्यक्तिगत परीक्षाबाट विश्वास विकसित हुन्छ।"),
+    COMBUST_VENUS("Venus combust tests relationships, creativity, and material comforts. Self-worth undergoes internal reassessment. Beauty must be found within.",
+        "शुक्र अस्तले सम्बन्ध, सिर्जनशीलता, र भौतिक आरामको परीक्षण गर्छ। आत्म-मूल्यको आन्तरिक पुनर्मूल्याङ्कन हुन्छ। सौन्दर्य भित्र भेट्टाउनुपर्छ।"),
+    COMBUST_SATURN("Saturn combust challenges discipline, structure, and karmic navigation. Lessons intensify while tools seem weakened. Patience becomes paramount.",
+        "शनि अस्तले अनुशासन, संरचना, र कार्मिक नेविगेशनमा चुनौती दिन्छ। उपकरणहरू कमजोर देखिँदा पाठहरू तीव्र हुन्छन्। धैर्य सर्वोपरि हुन्छ।"),
+    COMBUST_GENERIC("This planet's significations face temporary obscuration by solar intensity.",
+        "यस ग्रहका संकेतहरूले सौर्य तीव्रताद्वारा अस्थायी अस्पष्टताको सामना गर्छन्।"),
+
+    // ============================================
+    // PLANETARY WAR (GRAHA YUDDHA) INTERPRETATIONS
+    // ============================================
+    WAR_TITLE("Graha Yuddha (Planetary War): %s versus %s.", "ग्रह युद्ध: %s विरुद्ध %s।"),
+    WAR_SEPARATION("Separation: %s° - %s combat.", "दूरी: %s° - %s युद्ध।"),
+    WAR_EXTREMELY_INTENSE("extremely close and intense", "अत्यन्त नजिक र तीव्र"),
+    WAR_SIGNIFICANT("significant", "महत्त्वपूर्ण"),
+    WAR_MODERATE("notable but moderate", "उल्लेखनीय तर मध्यम"),
+    WAR_VICTORY_NORTH("by virtue of higher northern celestial latitude", "उच्च उत्तरी खगोलीय अक्षांशको कारण"),
+    WAR_VICTORY_BRIGHT("through greater natural luminosity", "अधिक प्राकृतिक चमकको माध्यमबाट"),
+    WAR_VICTORY_BOTH("with advantages in both celestial position and brightness", "खगोलीय स्थिति र चमक दुवैमा फाइदाको साथ"),
+    WAR_VICTORY_CLOSE("though the contest remains finely balanced", "यद्यपि प्रतिस्पर्धा राम्रोसँग सन्तुलित रहन्छ"),
+    WAR_WINNER_SENTENCE("%s prevails %s.", "%s %s विजयी हुन्छ।"),
+    WAR_LOSER_EFFECTS("%s's significations face obstruction and may manifest with difficulty, delay, or distortion.",
+        "%s का संकेतहरूले बाधाको सामना गर्छन् र कठिनाइ, ढिलाइ, वा विकृतिको साथ प्रकट हुन सक्छन्।"),
+    WAR_WINNER_EFFECTS("%s gains dominance but absorbs martial qualities during this period, potentially expressing its significations more aggressively or forcefully.",
+        "%s प्रभुत्व प्राप्त गर्छ तर यस अवधिमा युद्धसम्बन्धी गुणहरू अवशोषित गर्छ, सम्भावित रूपमा आफ्नो संकेतहरू अधिक आक्रामक वा बलपूर्वक व्यक्त गर्दछ।"),
+
+    // ============================================
+    // SPEED INTERPRETATIONS
+    // ============================================
+    SPEED_VERY_FAST_INTERP("%s moves very fast (Athi Sheeghra). Its significations manifest rapidly and may pass quickly. Events unfold with urgency.",
+        "%s अति छिटो (अति शीघ्र) चल्छ। यसका संकेतहरू छिटो प्रकट हुन्छन् र छिटो बित्न सक्छन्। घटनाहरू तत्कालताको साथ उभिन्छन्।"),
+    SPEED_FAST_INTERP("%s moves swiftly (Sheeghra). Its results come readily and with momentum.",
+        "%s द्रुत गतिले (शीघ्र) चल्छ। यसका परिणामहरू सजिलै र गतिको साथ आउँछन्।"),
+    SPEED_NORMAL_INTERP("%s moves at normal speed (Sama Gati). Its significations unfold in natural, expected timeframes.",
+        "%s सामान्य गतिमा (सम गति) चल्छ। यसका संकेतहरू प्राकृतिक, अपेक्षित समय सीमामा उभिन्छन्।"),
+    SPEED_SLOW_INTERP("%s moves slowly (Manda). Its results require patience. Matters take longer to manifest but may prove more enduring.",
+        "%s बिस्तारै (मन्द) चल्छ। यसका परिणामहरूमा धैर्य चाहिन्छ। मामिलाहरू प्रकट हुन लामो समय लाग्छ तर अधिक स्थायी हुन सक्छन्।"),
+    SPEED_VERY_SLOW_INTERP("%s moves very slowly (Athi Manda). Significant delays in its significations. Patience and persistence essential.",
+        "%s अति ढिलो (अति मन्द) चल्छ। यसका संकेतहरूमा महत्त्वपूर्ण ढिलाइ। धैर्य र दृढता आवश्यक।"),
+    SPEED_STATIONARY_INTERP("%s stands virtually stationary (Sthira). Tremendous concentration of energy at this degree. Events crystallize with lasting significance.",
+        "%s लगभग स्थिर (स्थिर) छ। यस अंशमा ऊर्जाको अत्यधिक एकाग्रता। घटनाहरू स्थायी महत्त्वको साथ स्फटिक हुन्छन्।"),
+    SPEED_RETROGRADE_INTERP("%s moves in retrograde (Vakra). Energy directed inward. Review and revision of its significations.",
+        "%s वक्री गतिमा चल्छ। ऊर्जा भित्र तर्फ निर्देशित। यसका संकेतहरूको समीक्षा र परिमार्जन।");
 
     companion object {
         /**
