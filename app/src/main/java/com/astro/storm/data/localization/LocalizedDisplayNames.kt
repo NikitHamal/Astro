@@ -8,7 +8,7 @@ import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.data.preferences.ThemeMode
 import com.astro.storm.ephemeris.YogaCalculator
 import com.astro.storm.ephemeris.RemediesCalculator
-import com.astro.storm.ephemeris.MatchmakingCalculator
+import com.astro.storm.data.model.Yoni
 import com.astro.storm.ephemeris.Tithi
 import com.astro.storm.ephemeris.TithiGroup
 import com.astro.storm.ephemeris.Yoga
@@ -467,58 +467,17 @@ fun RemediesCalculator.RemedyPriority.getLocalizedName(language: Language): Stri
 // MATCHMAKING CALCULATOR EXTENSIONS
 // ============================================
 
-/**
- * Get localized display name for Varna
- */
-fun MatchmakingCalculator.Varna.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Varna.BRAHMIN -> StringResources.get(StringKey.VARNA_BRAHMIN, language)
-        MatchmakingCalculator.Varna.KSHATRIYA -> StringResources.get(StringKey.VARNA_KSHATRIYA, language)
-        MatchmakingCalculator.Varna.VAISHYA -> StringResources.get(StringKey.VARNA_VAISHYA, language)
-        MatchmakingCalculator.Varna.SHUDRA -> StringResources.get(StringKey.VARNA_SHUDRA, language)
-    }
-}
-
-/**
- * Get localized display name for Vashya
- */
-fun MatchmakingCalculator.Vashya.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Vashya.CHATUSHPADA -> StringResources.get(StringKey.VASHYA_CHATUSHPADA, language)
-        MatchmakingCalculator.Vashya.MANAVA -> StringResources.get(StringKey.VASHYA_MANAVA, language)
-        MatchmakingCalculator.Vashya.JALACHARA -> StringResources.get(StringKey.VASHYA_JALACHARA, language)
-        MatchmakingCalculator.Vashya.VANACHARA -> StringResources.get(StringKey.VASHYA_VANACHARA, language)
-        MatchmakingCalculator.Vashya.KEETA -> StringResources.get(StringKey.VASHYA_KEETA, language)
-    }
-}
-
-/**
- * Get localized display name for Gana
- */
-fun MatchmakingCalculator.Gana.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Gana.DEVA -> StringResources.get(StringKey.GANA_DEVA, language)
-        MatchmakingCalculator.Gana.MANUSHYA -> StringResources.get(StringKey.GANA_MANUSHYA, language)
-        MatchmakingCalculator.Gana.RAKSHASA -> StringResources.get(StringKey.GANA_RAKSHASA, language)
-    }
-}
-
-/**
- * Get localized description for Gana
- */
-fun MatchmakingCalculator.Gana.getLocalizedDescription(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Gana.DEVA -> StringResources.get(StringKey.GANA_DEVA_DESC, language)
-        MatchmakingCalculator.Gana.MANUSHYA -> StringResources.get(StringKey.GANA_MANUSHYA_DESC, language)
-        MatchmakingCalculator.Gana.RAKSHASA -> StringResources.get(StringKey.GANA_RAKSHASA_DESC, language)
-    }
-}
+// NOTE: Varna, Vashya, Gana, Yoni, Nadi, Rajju, ManglikDosha, and CompatibilityRating
+// already have getLocalizedName() and getLocalizedDescription() methods defined
+// as member functions in MatchmakingModels.kt. Do not duplicate them here to avoid
+// overload resolution ambiguity errors.
 
 /**
  * Get localized display name for Yoni animal
+ * This is a utility function since Yoni doesn't have a member function for localized animal names.
  */
-fun MatchmakingCalculator.Yoni.getLocalizedAnimalName(language: Language): String {
-    return when (this.animal) {
+fun getYoniLocalizedAnimalName(yoni: Yoni, language: Language): String {
+    return when (yoni.animal) {
         "Horse" -> StringResources.get(StringKey.YONI_HORSE, language)
         "Elephant" -> StringResources.get(StringKey.YONI_ELEPHANT, language)
         "Sheep" -> StringResources.get(StringKey.YONI_SHEEP, language)
@@ -533,93 +492,7 @@ fun MatchmakingCalculator.Yoni.getLocalizedAnimalName(language: Language): Strin
         "Monkey" -> StringResources.get(StringKey.YONI_MONKEY, language)
         "Mongoose" -> StringResources.get(StringKey.YONI_MONGOOSE, language)
         "Lion" -> StringResources.get(StringKey.YONI_LION, language)
-        else -> this.animal
-    }
-}
-
-/**
- * Get localized display name for Nadi
- */
-fun MatchmakingCalculator.Nadi.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Nadi.ADI -> StringResources.get(StringKey.NADI_ADI, language)
-        MatchmakingCalculator.Nadi.MADHYA -> StringResources.get(StringKey.NADI_MADHYA, language)
-        MatchmakingCalculator.Nadi.ANTYA -> StringResources.get(StringKey.NADI_ANTYA, language)
-    }
-}
-
-/**
- * Get localized description for Nadi
- */
-fun MatchmakingCalculator.Nadi.getLocalizedDescription(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Nadi.ADI -> StringResources.get(StringKey.NADI_ADI_DESC, language)
-        MatchmakingCalculator.Nadi.MADHYA -> StringResources.get(StringKey.NADI_MADHYA_DESC, language)
-        MatchmakingCalculator.Nadi.ANTYA -> StringResources.get(StringKey.NADI_ANTYA_DESC, language)
-    }
-}
-
-/**
- * Get localized display name for Rajju
- */
-fun MatchmakingCalculator.Rajju.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Rajju.PADA -> StringResources.get(StringKey.RAJJU_PADA, language)
-        MatchmakingCalculator.Rajju.KATI -> StringResources.get(StringKey.RAJJU_KATI, language)
-        MatchmakingCalculator.Rajju.NABHI -> StringResources.get(StringKey.RAJJU_NABHI, language)
-        MatchmakingCalculator.Rajju.KANTHA -> StringResources.get(StringKey.RAJJU_KANTHA, language)
-        MatchmakingCalculator.Rajju.SIRO -> StringResources.get(StringKey.RAJJU_SIRO, language)
-    }
-}
-
-/**
- * Get localized body part for Rajju
- */
-fun MatchmakingCalculator.Rajju.getLocalizedBodyPart(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Rajju.PADA -> StringResources.get(StringKey.RAJJU_PADA_BODY, language)
-        MatchmakingCalculator.Rajju.KATI -> StringResources.get(StringKey.RAJJU_KATI_BODY, language)
-        MatchmakingCalculator.Rajju.NABHI -> StringResources.get(StringKey.RAJJU_NABHI_BODY, language)
-        MatchmakingCalculator.Rajju.KANTHA -> StringResources.get(StringKey.RAJJU_KANTHA_BODY, language)
-        MatchmakingCalculator.Rajju.SIRO -> StringResources.get(StringKey.RAJJU_SIRO_BODY, language)
-    }
-}
-
-/**
- * Get localized display name for ManglikDosha
- */
-fun MatchmakingCalculator.ManglikDosha.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.ManglikDosha.NONE -> StringResources.get(StringKey.MANGLIK_NONE, language)
-        MatchmakingCalculator.ManglikDosha.PARTIAL -> StringResources.get(StringKey.MANGLIK_PARTIAL, language)
-        MatchmakingCalculator.ManglikDosha.FULL -> StringResources.get(StringKey.MANGLIK_FULL, language)
-        MatchmakingCalculator.ManglikDosha.DOUBLE -> StringResources.get(StringKey.MANGLIK_DOUBLE, language)
-    }
-}
-
-/**
- * Get localized display name for CompatibilityRating
- */
-fun MatchmakingCalculator.CompatibilityRating.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.CompatibilityRating.EXCELLENT -> StringResources.get(StringKey.COMPAT_EXCELLENT, language)
-        MatchmakingCalculator.CompatibilityRating.GOOD -> StringResources.get(StringKey.COMPAT_GOOD, language)
-        MatchmakingCalculator.CompatibilityRating.AVERAGE -> StringResources.get(StringKey.COMPAT_AVERAGE, language)
-        MatchmakingCalculator.CompatibilityRating.BELOW_AVERAGE -> StringResources.get(StringKey.COMPAT_BELOW_AVERAGE, language)
-        MatchmakingCalculator.CompatibilityRating.POOR -> StringResources.get(StringKey.COMPAT_POOR, language)
-    }
-}
-
-/**
- * Get localized description for CompatibilityRating
- */
-fun MatchmakingCalculator.CompatibilityRating.getLocalizedDescription(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.CompatibilityRating.EXCELLENT -> StringResources.get(StringKey.COMPAT_EXCELLENT_DESC, language)
-        MatchmakingCalculator.CompatibilityRating.GOOD -> StringResources.get(StringKey.COMPAT_GOOD_DESC, language)
-        MatchmakingCalculator.CompatibilityRating.AVERAGE -> StringResources.get(StringKey.COMPAT_AVERAGE_DESC, language)
-        MatchmakingCalculator.CompatibilityRating.BELOW_AVERAGE -> StringResources.get(StringKey.COMPAT_BELOW_AVERAGE_DESC, language)
-        MatchmakingCalculator.CompatibilityRating.POOR -> StringResources.get(StringKey.COMPAT_POOR_DESC, language)
+        else -> yoni.animal
     }
 }
 
