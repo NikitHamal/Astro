@@ -2087,8 +2087,7 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     // Chart Type Labels
     CHART_LAGNA("Lagna", "लग्न"),
     CHART_RASHI("Rashi Chart (D1)", "राशि कुण्डली (D1)"),
-    CHART_NAVAMSA("Navamsa Chart (D9)", "नवांश कुण्डली (D9)"),
-
+    CHART_NAVAMSA("Navamsa Chart (D9)", "नवांश कुण्डली (D9)");
 
     companion object {
         /**
