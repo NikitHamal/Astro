@@ -2,6 +2,8 @@ package com.astro.storm.ephemeris
 
 import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyDosha
+import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
@@ -57,6 +59,7 @@ object AshtakavargaCalculator {
         Planet.VENUS, Planet.MERCURY, Planet.MOON
     )
     private const val KAKSHA_ASCENDANT = "Ascendant"
+    private const val KAKSHA_SIZE_DEGREES = 3.75 // 30° / 8 kakshas = 3.75° per kaksha
 
     /**
      * Bindu allocation rules from BPHS
@@ -204,18 +207,18 @@ object AshtakavargaCalculator {
                 sign = sign,
                 binduScore = 0,
                 savScore = sarvashtakavarga.getBindusForSign(sign),
-                interpretation = StringResources.get(StringKey.LABEL_UNKNOWN, language)
+                interpretation = StringResources.get(StringKeyDosha.LABEL_UNKNOWN, language)
             )
 
             val binduScore = bav.getBindusForSign(sign)
             val savScore = sarvashtakavarga.getBindusForSign(sign)
 
             val interpretation = when {
-                binduScore >= 5 && savScore >= 30 -> StringResources.get(StringKey.TRANSIT_INTERP_EXCELLENT, language)
-                binduScore >= 4 && savScore >= 28 -> StringResources.get(StringKey.TRANSIT_INTERP_GOOD, language)
-                binduScore >= 3 && savScore >= 25 -> StringResources.get(StringKey.TRANSIT_INTERP_AVERAGE, language)
-                binduScore >= 2 && savScore >= 22 -> StringResources.get(StringKey.TRANSIT_INTERP_BELOW_AVG, language)
-                else -> StringResources.get(StringKey.TRANSIT_INTERP_DIFFICULT, language)
+                binduScore >= 5 && savScore >= 30 -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_EXCELLENT, language)
+                binduScore >= 4 && savScore >= 28 -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_GOOD, language)
+                binduScore >= 3 && savScore >= 25 -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_AVERAGE, language)
+                binduScore >= 2 && savScore >= 22 -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_BELOW_AVG, language)
+                else -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_DIFFICULT, language)
             }
 
             return TransitScore(
@@ -398,19 +401,20 @@ object AshtakavargaCalculator {
 
             // For each house position that gives a bindu
             bindusFromThisPlanet.forEach { houseFromContributor ->
-                // Calculate which sign this house falls in
-                val targetSignNumber = ((contributorSignNumber - 1 + houseFromContributor - 1) % 12) + 1
-                val targetSign = ZodiacSign.entries.find { it.number == targetSignNumber }!!
+                // Calculate which sign this house falls in (0-indexed for array access, then find by 1-based number)
+                val targetSignIndex = ((contributorSignNumber - 1 + houseFromContributor - 1) % 12)
+                val targetSign = ZodiacSign.entries.getOrNull(targetSignIndex) ?: return@forEach
 
                 binduMatrix[targetSign] = (binduMatrix[targetSign] ?: 0) + 1
-                contributorMatrix[targetSign]!!.add(contributor.displayName)
-                prastaraMatrix[targetSign]!![contributor.displayName] = true
+                contributorMatrix[targetSign]?.add(contributor.displayName)
+                prastaraMatrix[targetSign]?.set(contributor.displayName, true)
             }
 
             // Mark non-contributing positions
             ZodiacSign.entries.forEach { sign ->
-                if (prastaraMatrix[sign]!![contributor.displayName] != true) {
-                    prastaraMatrix[sign]!![contributor.displayName] = false
+                val prastaraSignMap = prastaraMatrix[sign]
+                if (prastaraSignMap?.get(contributor.displayName) != true) {
+                    prastaraSignMap?.set(contributor.displayName, false)
                 }
             }
         }
@@ -420,18 +424,19 @@ object AshtakavargaCalculator {
         val ascendantSignNumber = ascendantSign.number
 
         ascendantBindus.forEach { houseFromAscendant ->
-            val targetSignNumber = ((ascendantSignNumber - 1 + houseFromAscendant - 1) % 12) + 1
-            val targetSign = ZodiacSign.entries.find { it.number == targetSignNumber }!!
+            val targetSignIndex = ((ascendantSignNumber - 1 + houseFromAscendant - 1) % 12)
+            val targetSign = ZodiacSign.entries.getOrNull(targetSignIndex) ?: return@forEach
 
             binduMatrix[targetSign] = (binduMatrix[targetSign] ?: 0) + 1
-            contributorMatrix[targetSign]!!.add("Ascendant")
-            prastaraMatrix[targetSign]!!["Ascendant"] = true
+            contributorMatrix[targetSign]?.add("Ascendant")
+            prastaraMatrix[targetSign]?.set("Ascendant", true)
         }
 
         // Mark non-contributing Ascendant positions
         ZodiacSign.entries.forEach { sign ->
-            if (prastaraMatrix[sign]!!["Ascendant"] != true) {
-                prastaraMatrix[sign]!!["Ascendant"] = false
+            val prastaraSignMap = prastaraMatrix[sign]
+            if (prastaraSignMap?.get("Ascendant") != true) {
+                prastaraSignMap?.set("Ascendant", false)
             }
         }
 
@@ -494,32 +499,23 @@ object AshtakavargaCalculator {
 
     /**
      * Calculate Kaksha position for a given longitude
+     * @param longitude The longitude to calculate kaksha position for
+     * @param chart The VedicChart (used only if preCalculatedAnalysis is null)
+     * @param preCalculatedAnalysis Optional pre-calculated analysis to avoid redundant computation
      */
     fun calculateKakshaPosition(
         longitude: Double,
-        chart: VedicChart
+        chart: VedicChart,
+        preCalculatedAnalysis: AshtakavargaAnalysis? = null
     ): KakshaPosition {
-        val normalizedLong = com.astro.storm.util.AstrologicalUtils.normalizeLongitude(longitude)
+        val normalizedLong = VedicAstrologyUtils.normalizeLongitude(longitude)
         val sign = ZodiacSign.fromLongitude(normalizedLong)
         val degreeInSign = normalizedLong % 30.0
 
-        // Each Kaksha is 3.75° (30° / 8)
-        val kakshaSize = 3.75
-        if (kakshaSize <= 0) {
-            // Handle division by zero or invalid kakshaSize
-            // You might want to log an error or return a default/error state
-            return KakshaPosition(
-                sign = sign,
-                kakshaNumber = 0,
-                kakshaLord = "Error",
-                degreeStart = 0.0,
-                degreeEnd = 0.0,
-                isBeneficial = false
-            )
-        }
-        val kakshaNumber = ((degreeInSign / kakshaSize).toInt() + 1).coerceIn(1, 8)
-        val degreeStart = (kakshaNumber - 1) * 3.75
-        val degreeEnd = kakshaNumber * 3.75
+        // Each Kaksha is exactly 3.75° (30° / 8) - this is a fixed constant in Vedic astrology
+        val kakshaNumber = ((degreeInSign / KAKSHA_SIZE_DEGREES).toInt() + 1).coerceIn(1, 8)
+        val degreeStart = (kakshaNumber - 1) * KAKSHA_SIZE_DEGREES
+        val degreeEnd = kakshaNumber * KAKSHA_SIZE_DEGREES
 
         val kakshaLord = if (kakshaNumber <= 7) {
             KAKSHA_LORDS[kakshaNumber - 1].displayName
@@ -527,8 +523,8 @@ object AshtakavargaCalculator {
             KAKSHA_ASCENDANT
         }
 
-        // Check if the Kaksha lord is benefic for this sign
-        val analysis = calculateAshtakavarga(chart)
+        // Use pre-calculated analysis if available, otherwise calculate (lazy evaluation)
+        val analysis = preCalculatedAnalysis ?: calculateAshtakavarga(chart)
         val isBeneficial = if (kakshaNumber <= 7) {
             val lordPlanet = KAKSHA_LORDS[kakshaNumber - 1]
             val bavForLord = analysis.bhinnashtakavarga[lordPlanet]
@@ -568,7 +564,14 @@ object AshtakavargaCalculator {
         }
 
         val analysis = calculateAshtakavarga(chart)
-        val bav = analysis.bhinnashtakavarga[transitingPlanet]!!
+        val bav = analysis.bhinnashtakavarga[transitingPlanet] ?: return TransitPrediction(
+            planet = transitingPlanet,
+            sign = transitSign,
+            bavBindus = 0,
+            savBindus = 0,
+            quality = TransitQuality.UNKNOWN,
+            prediction = "Bhinnashtakavarga not found for ${transitingPlanet.displayName}"
+        )
         val sav = analysis.sarvashtakavarga
 
         val bavBindus = bav.getBindusForSign(transitSign)

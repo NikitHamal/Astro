@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+package com.astro.storm.ui.screen.matchmaking
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -41,15 +41,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.local.ChartEntity
+import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.data.model.*
 import com.astro.storm.ephemeris.MatchmakingCalculator
+import com.astro.storm.ephemeris.VedicAstrologyUtils
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +63,7 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MatchmakingScreen(
-    savedCharts: List<ChartEntity>,
+    savedCharts: List<SavedChart>,
     viewModel: ChartViewModel,
     onBack: () -> Unit
 ) {
@@ -75,7 +77,7 @@ fun MatchmakingScreen(
     var brideChart by remember { mutableStateOf<VedicChart?>(null) }
     var groomChart by remember { mutableStateOf<VedicChart?>(null) }
 
-    var matchingResult by remember { mutableStateOf<MatchmakingCalculator.MatchmakingResult?>(null) }
+    var matchingResult by remember { mutableStateOf<MatchmakingResult?>(null) }
     var isCalculating by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
@@ -85,11 +87,11 @@ fun MatchmakingScreen(
 
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf(
-        stringResource(StringKey.MATCH_OVERVIEW),
-        stringResource(StringKey.MATCH_GUNAS),
-        stringResource(StringKey.MATCH_DOSHAS),
-        stringResource(StringKey.MATCH_NAKSHATRAS),
-        stringResource(StringKey.MATCH_REMEDIES)
+        stringResource(StringKeyMatch.MATCH_OVERVIEW),
+        stringResource(StringKeyMatch.MATCH_GUNAS),
+        stringResource(StringKeyMatch.MATCH_DOSHAS),
+        stringResource(StringKeyMatch.MATCH_NAKSHATRAS),
+        stringResource(StringKeyMatch.MATCH_REMEDIES)
     )
 
     val animatedProgress by animateFloatAsState(
@@ -112,7 +114,7 @@ fun MatchmakingScreen(
 
     // Pre-fetch localized strings and language for use in LaunchedEffect and scope.launch (stringResource is @Composable)
     val errorCalculationFailedText = stringResource(StringKey.ERROR_CALCULATION_FAILED)
-    val copiedToClipboardText = stringResource(StringKey.MATCH_COPIED_TO_CLIPBOARD)
+    val copiedToClipboardText = stringResource(StringKeyMatch.MATCH_COPIED_TO_CLIPBOARD)
     val language = currentLanguage()
 
     LaunchedEffect(brideChart, groomChart) {
@@ -139,14 +141,14 @@ fun MatchmakingScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKey.MATCH_TITLE),
+                            stringResource(StringKeyMatch.MATCH_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
                         )
                         AnimatedVisibility(visible = matchingResult != null) {
                             Text(
-                                stringResource(StringKey.MATCH_ASHTAKOOTA),
+                                stringResource(StringKeyMatch.MATCH_ASHTAKOOTA),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
@@ -174,14 +176,14 @@ fun MatchmakingScreen(
                             }) {
                                 Icon(
                                     Icons.Outlined.Share,
-                                    contentDescription = stringResource(StringKey.MATCH_SHARE_REPORT),
+                                    contentDescription = stringResource(StringKeyMatch.MATCH_SHARE_REPORT),
                                     tint = AppTheme.TextSecondary
                                 )
                             }
                             IconButton(onClick = {
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                 matchingResult?.let { result ->
-                                    val report = generateTextReport(result, brideChart, groomChart, language)
+                                    val report = MatchmakingReportUtils.generateFullReport(result, brideChart, groomChart, language)
                                     clipboardManager.setText(AnnotatedString(report))
                                     scope.launch {
                                         snackbarHostState.showSnackbar(copiedToClipboardText)
@@ -190,7 +192,7 @@ fun MatchmakingScreen(
                             }) {
                                 Icon(
                                     Icons.Outlined.ContentCopy,
-                                    contentDescription = stringResource(StringKey.MATCH_COPY_REPORT),
+                                    contentDescription = stringResource(StringKeyMatch.MATCH_COPY_REPORT),
                                     tint = AppTheme.TextSecondary
                                 )
                             }
@@ -347,7 +349,7 @@ fun MatchmakingScreen(
 
     if (showBrideSelector) {
         EnhancedProfileSelectorBottomSheet(
-            title = stringResource(StringKey.MATCH_SELECT_BRIDE),
+            title = stringResource(StringKeyMatch.MATCH_SELECT_BRIDE),
             icon = Icons.Filled.Female,
             accentColor = AppTheme.LifeAreaLove,
             charts = savedCharts,
@@ -364,7 +366,7 @@ fun MatchmakingScreen(
 
     if (showGroomSelector) {
         EnhancedProfileSelectorBottomSheet(
-            title = stringResource(StringKey.MATCH_SELECT_GROOM),
+            title = stringResource(StringKeyMatch.MATCH_SELECT_GROOM),
             icon = Icons.Filled.Male,
             accentColor = AppTheme.AccentTeal,
             charts = savedCharts,
@@ -398,7 +400,7 @@ fun MatchmakingScreen(
 
 @Composable
 private fun EnhancedProfileSelectionSection(
-    savedCharts: List<ChartEntity>,
+    savedCharts: List<SavedChart>,
     selectedBrideId: Long?,
     selectedGroomId: Long?,
     brideChart: VedicChart?,
@@ -425,7 +427,7 @@ private fun EnhancedProfileSelectionSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    stringResource(StringKey.MATCH_SELECT_PROFILES),
+                    stringResource(StringKeyMatch.MATCH_SELECT_PROFILES),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -440,7 +442,7 @@ private fun EnhancedProfileSelectionSection(
                             ) {
                                 Icon(
                                     Icons.Filled.SwapHoriz,
-                                    contentDescription = stringResource(StringKey.MATCH_SWAP_PROFILES),
+                                    contentDescription = stringResource(StringKeyMatch.MATCH_SWAP_PROFILES),
                                     tint = AppTheme.AccentPrimary,
                                     modifier = Modifier.size(20.dp)
                                 )
@@ -452,7 +454,7 @@ private fun EnhancedProfileSelectionSection(
                         ) {
                             Icon(
                                 Icons.Filled.Close,
-                                contentDescription = stringResource(StringKey.MATCH_CLEAR_SELECTION),
+                                contentDescription = stringResource(StringKeyMatch.MATCH_CLEAR_SELECTION),
                                 tint = AppTheme.TextMuted,
                                 modifier = Modifier.size(18.dp)
                             )
@@ -469,7 +471,7 @@ private fun EnhancedProfileSelectionSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 EnhancedProfileCard(
-                    label = stringResource(StringKey.MATCH_BRIDE),
+                    label = stringResource(StringKeyMatch.MATCH_BRIDE),
                     chart = brideChart,
                     icon = Icons.Filled.Female,
                     color = AppTheme.LifeAreaLove,
@@ -483,7 +485,7 @@ private fun EnhancedProfileSelectionSection(
                 )
 
                 EnhancedProfileCard(
-                    label = stringResource(StringKey.MATCH_GROOM),
+                    label = stringResource(StringKeyMatch.MATCH_GROOM),
                     chart = groomChart,
                     icon = Icons.Filled.Male,
                     color = AppTheme.AccentTeal,
@@ -511,7 +513,7 @@ private fun EnhancedProfileSelectionSection(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            stringResource(StringKey.MATCH_CREATE_CHARTS_FIRST),
+                            stringResource(StringKeyMatch.MATCH_CREATE_CHARTS_FIRST),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.InfoColor
                         )
@@ -593,7 +595,7 @@ private fun EnhancedProfileCard(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                chart?.birthData?.name ?: stringResource(StringKey.MATCH_TAP_TO_SELECT),
+                chart?.birthData?.name ?: stringResource(StringKeyMatch.MATCH_TAP_TO_SELECT),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = if (chart != null) FontWeight.SemiBold else FontWeight.Normal,
                 color = if (chart != null) AppTheme.TextPrimary else AppTheme.TextSubtle,
@@ -615,141 +617,8 @@ private fun EnhancedProfileCard(
 }
 
 @Composable
-private fun ConnectionIndicator(
-    isConnected: Boolean,
-    modifier: Modifier = Modifier
-) {
-    val infiniteTransition = rememberInfiniteTransition(label = "pulse")
-    val scale by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = if (isConnected) 1.2f else 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1000, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "pulse_scale"
-    )
-
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
-        if (isConnected) {
-            Icon(
-                Icons.Filled.Favorite,
-                contentDescription = stringResource(StringKey.MATCH_CONNECTED),
-                tint = AppTheme.LifeAreaLove,
-                modifier = Modifier
-                    .size(28.dp)
-                    .scale(scale)
-            )
-        } else {
-            Icon(
-                Icons.Outlined.FavoriteBorder,
-                contentDescription = stringResource(StringKey.MATCH_NOT_CONNECTED),
-                tint = AppTheme.TextSubtle,
-                modifier = Modifier.size(24.dp)
-            )
-        }
-    }
-}
-
-@Composable
-private fun CalculatingState() {
-    val infiniteTransition = rememberInfiniteTransition(label = "calculating")
-    val rotation by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(2000, easing = LinearEasing)
-        ),
-        label = "rotation"
-    )
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Box(contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(64.dp),
-                    color = AppTheme.AccentPrimary.copy(alpha = 0.3f),
-                    strokeWidth = 4.dp
-                )
-                Icon(
-                    Icons.Filled.AutoAwesome,
-                    contentDescription = null,
-                    tint = AppTheme.AccentPrimary,
-                    modifier = Modifier
-                        .size(28.dp)
-                        .rotate(rotation)
-                )
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                stringResource(StringKey.MATCH_ANALYZING_COMPATIBILITY),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                color = AppTheme.TextPrimary
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                stringResource(StringKey.MATCH_CALCULATING_DOSHAS),
-                style = MaterialTheme.typography.bodySmall,
-                color = AppTheme.TextMuted
-            )
-        }
-    }
-}
-
-@Composable
-private fun ErrorCard(
-    error: String,
-    onRetry: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.ErrorColor.copy(alpha = 0.08f)
-        ),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                Icons.Filled.ErrorOutline,
-                contentDescription = null,
-                tint = AppTheme.ErrorColor,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    stringResource(StringKey.MATCH_CALCULATION_ERROR),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = AppTheme.ErrorColor
-                )
-                Text(
-                    error,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.ErrorColor.copy(alpha = 0.8f)
-                )
-            }
-            TextButton(onClick = onRetry) {
-                Text(stringResource(StringKey.BTN_RETRY), color = AppTheme.ErrorColor)
-            }
-        }
-    }
-}
-
-@Composable
 private fun EnhancedCompatibilityScoreCard(
-    result: MatchmakingCalculator.MatchmakingResult,
+    result: MatchmakingResult,
     animatedProgress: Float
 ) {
     Card(
@@ -803,7 +672,7 @@ private fun EnhancedCompatibilityScoreCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKey.MATCH_OUT_OF, result.maxPoints.toInt()),
+                            text = stringResource(StringKeyMatch.MATCH_OUT_OF, result.maxPoints.toInt()),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -846,7 +715,7 @@ private fun EnhancedCompatibilityScoreCard(
                         )) {
                             append(String.format("%.1f%%", result.percentage))
                         }
-                        append(" ${stringResource(StringKey.MATCH_COMPATIBILITY)}")
+                        append(" ${stringResource(StringKeyMatch.MATCH_COMPATIBILITY)}")
                     },
                     style = MaterialTheme.typography.bodyLarge,
                     color = AppTheme.TextSecondary
@@ -868,7 +737,7 @@ private fun EnhancedCompatibilityScoreCard(
 }
 
 @Composable
-private fun QuickInsightsRow(result: MatchmakingCalculator.MatchmakingResult) {
+private fun QuickInsightsRow(result: MatchmakingResult) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 16.dp),
@@ -879,8 +748,8 @@ private fun QuickInsightsRow(result: MatchmakingCalculator.MatchmakingResult) {
 
         item {
             QuickInsightChip(
-                label = stringResource(StringKey.MATCH_MANGLIK),
-                value = getManglikQuickStatus(result),
+                label = stringResource(StringKeyMatch.MATCH_MANGLIK),
+                value = result.getManglikQuickStatus(),
                 color = getManglikStatusColor(result.manglikCompatibility)
             )
         }
@@ -888,8 +757,8 @@ private fun QuickInsightsRow(result: MatchmakingCalculator.MatchmakingResult) {
         if (hasNadiDosha) {
             item {
                 QuickInsightChip(
-                    label = stringResource(StringKey.MATCH_NADI),
-                    value = stringResource(StringKey.MATCH_DOSHA_PRESENT),
+                    label = stringResource(StringKeyMatch.MATCH_NADI),
+                    value = stringResource(StringKeyMatch.MATCH_DOSHA_PRESENT),
                     color = AppTheme.ErrorColor
                 )
             }
@@ -898,8 +767,8 @@ private fun QuickInsightsRow(result: MatchmakingCalculator.MatchmakingResult) {
         if (hasBhakootDosha) {
             item {
                 QuickInsightChip(
-                    label = stringResource(StringKey.MATCH_BHAKOOT),
-                    value = stringResource(StringKey.MATCH_NEEDS_ATTENTION),
+                    label = stringResource(StringKeyMatch.MATCH_BHAKOOT),
+                    value = stringResource(StringKeyMatch.MATCH_NEEDS_ATTENTION),
                     color = AppTheme.WarningColor
                 )
             }
@@ -907,39 +776,9 @@ private fun QuickInsightsRow(result: MatchmakingCalculator.MatchmakingResult) {
 
         item {
             QuickInsightChip(
-                label = stringResource(StringKey.MATCH_GUNAS),
+                label = stringResource(StringKeyMatch.MATCH_GUNAS),
                 value = "${result.totalPoints.toInt()}/${result.maxPoints.toInt()}",
                 color = if (result.totalPoints >= 18) AppTheme.SuccessColor else AppTheme.WarningColor
-            )
-        }
-    }
-}
-
-@Composable
-private fun QuickInsightChip(
-    label: String,
-    value: String,
-    color: Color
-) {
-    Surface(
-        color = color.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(10.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                label,
-                style = MaterialTheme.typography.labelSmall,
-                color = color.copy(alpha = 0.8f)
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                value,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.SemiBold,
-                color = color
             )
         }
     }
@@ -987,7 +826,7 @@ private fun TabSelector(
 
 @Composable
 private fun OverviewSection(
-    result: MatchmakingCalculator.MatchmakingResult,
+    result: MatchmakingResult,
     brideChart: VedicChart?,
     groomChart: VedicChart?
 ) {
@@ -1009,7 +848,7 @@ private fun OverviewSection(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        stringResource(StringKey.MATCH_GUNA_DISTRIBUTION),
+                        stringResource(StringKeyMatch.MATCH_GUNA_DISTRIBUTION),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1040,7 +879,7 @@ private fun OverviewSection(
 }
 
 @Composable
-private fun EnhancedGunaScoreBar(guna: MatchmakingCalculator.GunaAnalysis) {
+private fun EnhancedGunaScoreBar(guna: GunaAnalysis) {
     val animatedProgress by animateFloatAsState(
         targetValue = (guna.obtainedPoints / guna.maxPoints).toFloat(),
         animationSpec = tween(800, easing = FastOutSlowInEasing),
@@ -1127,7 +966,7 @@ private fun ProfileComparisonCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKey.MATCH_PROFILE_COMPARISON),
+                    stringResource(StringKeyMatch.MATCH_PROFILE_COMPARISON),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1142,19 +981,19 @@ private fun ProfileComparisonCard(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        brideChart.birthData.name ?: stringResource(StringKey.MATCH_BRIDE),
+                        brideChart.birthData.name ?: stringResource(StringKeyMatch.MATCH_BRIDE),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.LifeAreaLove
                     )
                 }
-                Text(stringResource(StringKey.MATCH_VS), color = AppTheme.TextMuted)
+                Text(stringResource(StringKeyMatch.MATCH_VS), color = AppTheme.TextMuted)
                 Column(
                     modifier = Modifier.weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        groomChart.birthData.name ?: stringResource(StringKey.MATCH_GROOM),
+                        groomChart.birthData.name ?: stringResource(StringKeyMatch.MATCH_GROOM),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.AccentTeal
@@ -1166,47 +1005,10 @@ private fun ProfileComparisonCard(
             HorizontalDivider(color = AppTheme.DividerColor)
             Spacer(modifier = Modifier.height(12.dp))
 
-            ComparisonRow(stringResource(StringKey.MATCH_MOON_SIGN), getRashiName(brideChart), getRashiName(groomChart))
-            ComparisonRow(stringResource(StringKey.MATCH_NAKSHATRA), getNakshatraName(brideChart), getNakshatraName(groomChart))
-            ComparisonRow(stringResource(StringKey.MATCH_PADA), getPada(brideChart), getPada(groomChart))
+            ComparisonRow(stringResource(StringKeyMatch.MATCH_MOON_SIGN), getRashiName(brideChart), getRashiName(groomChart))
+            ComparisonRow(stringResource(StringKeyMatch.MATCH_NAKSHATRA), getNakshatraName(brideChart), getNakshatraName(groomChart))
+            ComparisonRow(stringResource(StringKeyMatch.MATCH_PADA), getPada(brideChart), getPada(groomChart))
         }
-    }
-}
-
-@Composable
-private fun ComparisonRow(label: String, brideValue: String, groomValue: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            brideValue,
-            style = MaterialTheme.typography.bodySmall,
-            color = AppTheme.LifeAreaLove,
-            modifier = Modifier.weight(1f),
-            textAlign = TextAlign.Center
-        )
-        Surface(
-            color = AppTheme.ChipBackground,
-            shape = RoundedCornerShape(4.dp)
-        ) {
-            Text(
-                label,
-                style = MaterialTheme.typography.labelSmall,
-                color = AppTheme.TextMuted,
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
-            )
-        }
-        Text(
-            groomValue,
-            style = MaterialTheme.typography.bodySmall,
-            color = AppTheme.AccentTeal,
-            modifier = Modifier.weight(1f),
-            textAlign = TextAlign.Center
-        )
     }
 }
 
@@ -1227,7 +1029,7 @@ private fun SpecialConsiderationsCard(considerations: List<String>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKey.MATCH_KEY_CONSIDERATIONS),
+                    stringResource(StringKeyMatch.MATCH_KEY_CONSIDERATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1262,7 +1064,7 @@ private fun SpecialConsiderationsCard(considerations: List<String>) {
 }
 
 @Composable
-private fun GunaSummaryHeader(result: MatchmakingCalculator.MatchmakingResult) {
+private fun GunaSummaryHeader(result: MatchmakingResult) {
     val positiveCount = result.gunaAnalyses.count { it.isPositive }
     val totalCount = result.gunaAnalyses.size
 
@@ -1286,7 +1088,7 @@ private fun GunaSummaryHeader(result: MatchmakingCalculator.MatchmakingResult) {
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.SuccessColor
                 )
-                Text(stringResource(StringKey.MATCH_FAVORABLE), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
+                Text(stringResource(StringKeyMatch.MATCH_FAVORABLE), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
             }
             Box(
                 modifier = Modifier
@@ -1301,7 +1103,7 @@ private fun GunaSummaryHeader(result: MatchmakingCalculator.MatchmakingResult) {
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.WarningColor
                 )
-                Text(stringResource(StringKey.MATCH_NEEDS_ATTENTION), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
+                Text(stringResource(StringKeyMatch.MATCH_NEEDS_ATTENTION), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
             }
             Box(
                 modifier = Modifier
@@ -1316,7 +1118,7 @@ private fun GunaSummaryHeader(result: MatchmakingCalculator.MatchmakingResult) {
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.AccentPrimary
                 )
-                Text(stringResource(StringKey.MATCH_TOTAL_SCORE), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
+                Text(stringResource(StringKeyMatch.MATCH_TOTAL_SCORE), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
             }
         }
     }
@@ -1324,7 +1126,7 @@ private fun GunaSummaryHeader(result: MatchmakingCalculator.MatchmakingResult) {
 
 @Composable
 private fun AnimatedGunaCard(
-    guna: MatchmakingCalculator.GunaAnalysis,
+    guna: GunaAnalysis,
     index: Int
 ) {
     var visible by remember { mutableStateOf(false) }
@@ -1420,7 +1222,7 @@ private fun AnimatedGunaCard(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                stringResource(StringKey.MATCH_BRIDE),
+                                stringResource(StringKeyMatch.MATCH_BRIDE),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1435,7 +1237,7 @@ private fun AnimatedGunaCard(
                     Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                stringResource(StringKey.MATCH_GROOM),
+                                stringResource(StringKeyMatch.MATCH_GROOM),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1478,7 +1280,7 @@ private fun AnimatedGunaCard(
 }
 
 @Composable
-private fun DoshaSection(result: MatchmakingCalculator.MatchmakingResult) {
+private fun DoshaSection(result: MatchmakingResult) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Card(
             modifier = Modifier
@@ -1498,13 +1300,13 @@ private fun DoshaSection(result: MatchmakingCalculator.MatchmakingResult) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            stringResource(StringKey.MATCH_MANGLIK_DOSHA_ANALYSIS),
+                            stringResource(StringKeyMatch.MATCH_MANGLIK_DOSHA_ANALYSIS),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKey.MATCH_MARS_PLACEMENT),
+                            stringResource(StringKeyMatch.MATCH_MARS_PLACEMENT),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1547,8 +1349,8 @@ private fun DoshaSection(result: MatchmakingCalculator.MatchmakingResult) {
             }
         }
 
-        EnhancedManglikPersonCard(result.brideManglik, stringResource(StringKey.MATCH_BRIDE), AppTheme.LifeAreaLove)
-        EnhancedManglikPersonCard(result.groomManglik, stringResource(StringKey.MATCH_GROOM), AppTheme.AccentTeal)
+        EnhancedManglikPersonCard(result.brideManglik, stringResource(StringKeyMatch.MATCH_BRIDE), AppTheme.LifeAreaLove)
+        EnhancedManglikPersonCard(result.groomManglik, stringResource(StringKeyMatch.MATCH_GROOM), AppTheme.AccentTeal)
 
         NadiDoshaCard(result)
         BhakootDoshaCard(result)
@@ -1557,7 +1359,7 @@ private fun DoshaSection(result: MatchmakingCalculator.MatchmakingResult) {
 
 @Composable
 private fun EnhancedManglikPersonCard(
-    analysis: MatchmakingCalculator.ManglikAnalysis,
+    analysis: ManglikAnalysis,
     label: String,
     accentColor: Color
 ) {
@@ -1583,7 +1385,7 @@ private fun EnhancedManglikPersonCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            if (label == stringResource(StringKey.MATCH_BRIDE)) Icons.Filled.Female else Icons.Filled.Male,
+                            if (label == stringResource(StringKeyMatch.MATCH_BRIDE)) Icons.Filled.Female else Icons.Filled.Male,
                             contentDescription = null,
                             tint = accentColor,
                             modifier = Modifier.size(22.dp)
@@ -1599,7 +1401,7 @@ private fun EnhancedManglikPersonCard(
                         )
                         if (analysis.marsHouse > 0) {
                             Text(
-                                stringResource(StringKey.MATCH_MARS_IN_HOUSE, analysis.marsHouse),
+                                stringResource(StringKeyMatch.MATCH_MARS_IN_HOUSE, analysis.marsHouse),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1630,7 +1432,7 @@ private fun EnhancedManglikPersonCard(
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(
-                            stringResource(StringKey.MATCH_CONTRIBUTING_FACTORS),
+                            stringResource(StringKeyMatch.MATCH_CONTRIBUTING_FACTORS),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.WarningColor
@@ -1656,7 +1458,7 @@ private fun EnhancedManglikPersonCard(
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(
-                            stringResource(StringKey.MATCH_CANCELLATION_FACTORS),
+                            stringResource(StringKeyMatch.MATCH_CANCELLATION_FACTORS),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor
@@ -1677,7 +1479,7 @@ private fun EnhancedManglikPersonCard(
 }
 
 @Composable
-private fun NadiDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
+private fun NadiDoshaCard(result: MatchmakingResult) {
     val nadiGuna = result.gunaAnalyses.find { it.name == "Nadi" }
     val hasNadiDosha = nadiGuna?.obtainedPoints == 0.0
 
@@ -1707,13 +1509,13 @@ private fun NadiDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            stringResource(StringKey.MATCH_NADI_DOSHA),
+                            stringResource(StringKeyMatch.MATCH_NADI_DOSHA),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKey.MATCH_HEALTH_PROGENY),
+                            stringResource(StringKeyMatch.MATCH_HEALTH_PROGENY),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1725,7 +1527,7 @@ private fun NadiDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        if (hasNadiDosha) stringResource(StringKey.MATCH_PRESENT) else stringResource(StringKey.MATCH_ABSENT),
+                        if (hasNadiDosha) stringResource(StringKeyMatch.MATCH_PRESENT) else stringResource(StringKeyMatch.MATCH_ABSENT),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = if (hasNadiDosha) AppTheme.ErrorColor else AppTheme.SuccessColor,
@@ -1741,7 +1543,7 @@ private fun NadiDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(stringResource(StringKey.MATCH_BRIDE), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
+                        Text(stringResource(StringKeyMatch.MATCH_BRIDE), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
                         Text(
                             guna.brideValue,
                             style = MaterialTheme.typography.bodyMedium,
@@ -1750,7 +1552,7 @@ private fun NadiDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
                         )
                     }
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(stringResource(StringKey.MATCH_GROOM), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
+                        Text(stringResource(StringKeyMatch.MATCH_GROOM), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
                         Text(
                             guna.groomValue,
                             style = MaterialTheme.typography.bodyMedium,
@@ -1768,7 +1570,7 @@ private fun NadiDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            stringResource(StringKey.MATCH_NADI_WARNING),
+                            stringResource(StringKeyMatch.MATCH_NADI_WARNING),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.InfoColor,
                             modifier = Modifier.padding(12.dp)
@@ -1781,7 +1583,7 @@ private fun NadiDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
 }
 
 @Composable
-private fun BhakootDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
+private fun BhakootDoshaCard(result: MatchmakingResult) {
     val bhakootGuna = result.gunaAnalyses.find { it.name == "Bhakoot" }
     val hasBhakootDosha = bhakootGuna?.obtainedPoints == 0.0
 
@@ -1811,13 +1613,13 @@ private fun BhakootDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            stringResource(StringKey.MATCH_BHAKOOT_DOSHA),
+                            stringResource(StringKeyMatch.MATCH_BHAKOOT_DOSHA),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKey.MATCH_FINANCIAL_HARMONY),
+                            stringResource(StringKeyMatch.MATCH_FINANCIAL_HARMONY),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1829,7 +1631,7 @@ private fun BhakootDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        if (hasBhakootDosha) stringResource(StringKey.MATCH_PRESENT) else stringResource(StringKey.MATCH_ABSENT),
+                        if (hasBhakootDosha) stringResource(StringKeyMatch.MATCH_PRESENT) else stringResource(StringKeyMatch.MATCH_ABSENT),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = if (hasBhakootDosha) AppTheme.WarningColor else AppTheme.SuccessColor,
@@ -1845,7 +1647,7 @@ private fun BhakootDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(stringResource(StringKey.MATCH_BRIDE_RASHI), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
+                        Text(stringResource(StringKeyMatch.MATCH_BRIDE_RASHI), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
                         Text(
                             guna.brideValue,
                             style = MaterialTheme.typography.bodyMedium,
@@ -1854,7 +1656,7 @@ private fun BhakootDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
                         )
                     }
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(stringResource(StringKey.MATCH_GROOM_RASHI), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
+                        Text(stringResource(StringKeyMatch.MATCH_GROOM_RASHI), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
                         Text(
                             guna.groomValue,
                             style = MaterialTheme.typography.bodyMedium,
@@ -1870,7 +1672,7 @@ private fun BhakootDoshaCard(result: MatchmakingCalculator.MatchmakingResult) {
 
 @Composable
 private fun NakshatraSection(
-    result: MatchmakingCalculator.MatchmakingResult,
+    result: MatchmakingResult,
     brideChart: VedicChart?,
     groomChart: VedicChart?
 ) {
@@ -1893,13 +1695,13 @@ private fun NakshatraSection(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            stringResource(StringKey.MATCH_NAKSHATRA_COMPATIBILITY),
+                            stringResource(StringKeyMatch.MATCH_NAKSHATRA_COMPATIBILITY),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKey.MATCH_BIRTH_STAR),
+                            stringResource(StringKeyMatch.MATCH_BIRTH_STAR),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1910,31 +1712,31 @@ private fun NakshatraSection(
                     Spacer(modifier = Modifier.height(20.dp))
 
                     NakshatraComparisonRow(
-                        label = stringResource(StringKey.MATCH_BIRTH_NAKSHATRA),
+                        label = stringResource(StringKeyMatch.MATCH_BIRTH_NAKSHATRA),
                         brideValue = getNakshatraName(brideChart),
                         groomValue = getNakshatraName(groomChart)
                     )
 
                     NakshatraComparisonRow(
-                        label = stringResource(StringKey.MATCH_NAKSHATRA_LORD),
+                        label = stringResource(StringKeyMatch.MATCH_NAKSHATRA_LORD),
                         brideValue = getNakshatraLord(brideChart),
                         groomValue = getNakshatraLord(groomChart)
                     )
 
                     NakshatraComparisonRow(
-                        label = stringResource(StringKey.MATCH_PADA),
+                        label = stringResource(StringKeyMatch.MATCH_PADA),
                         brideValue = getPada(brideChart),
                         groomValue = getPada(groomChart)
                     )
 
                     NakshatraComparisonRow(
-                        label = stringResource(StringKey.MATCH_GANA),
+                        label = stringResource(StringKeyMatch.MATCH_GANA),
                         brideValue = getGana(brideChart),
                         groomValue = getGana(groomChart)
                     )
 
                     NakshatraComparisonRow(
-                        label = stringResource(StringKey.MATCH_YONI),
+                        label = stringResource(StringKeyMatch.MATCH_YONI),
                         brideValue = getYoni(brideChart),
                         groomValue = getYoni(groomChart)
                     )
@@ -1949,56 +1751,7 @@ private fun NakshatraSection(
 }
 
 @Composable
-private fun NakshatraComparisonRow(
-    label: String,
-    brideValue: String,
-    groomValue: String
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(
-                brideValue,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                color = AppTheme.LifeAreaLove
-            )
-        }
-        Surface(
-            color = AppTheme.ChipBackground,
-            shape = RoundedCornerShape(6.dp)
-        ) {
-            Text(
-                label,
-                style = MaterialTheme.typography.labelSmall,
-                color = AppTheme.TextMuted,
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-            )
-        }
-        Column(
-            modifier = Modifier.weight(1f),
-            horizontalAlignment = Alignment.End
-        ) {
-            Text(
-                groomValue,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                color = AppTheme.AccentTeal
-            )
-        }
-    }
-}
-
-@Composable
-private fun RajjuAnalysisCard(result: MatchmakingCalculator.MatchmakingResult) {
+private fun RajjuAnalysisCard(result: MatchmakingResult) {
     val hasRajjuDosha = result.specialConsiderations.any { 
         it.contains("Rajju", ignoreCase = true) 
     }
@@ -2029,13 +1782,13 @@ private fun RajjuAnalysisCard(result: MatchmakingCalculator.MatchmakingResult) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            stringResource(StringKey.MATCH_RAJJU_MATCHING),
+                            stringResource(StringKeyMatch.MATCH_RAJJU_MATCHING),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKey.MATCH_LONGEVITY),
+                            stringResource(StringKeyMatch.MATCH_LONGEVITY),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -2047,7 +1800,7 @@ private fun RajjuAnalysisCard(result: MatchmakingCalculator.MatchmakingResult) {
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        if (hasRajjuDosha) stringResource(StringKey.MATCH_CONFLICT) else stringResource(StringKey.MATCH_COMPATIBLE),
+                        if (hasRajjuDosha) stringResource(StringKeyMatch.MATCH_CONFLICT) else stringResource(StringKeyMatch.MATCH_COMPATIBLE),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = if (hasRajjuDosha) AppTheme.ErrorColor else AppTheme.SuccessColor,
@@ -2058,7 +1811,7 @@ private fun RajjuAnalysisCard(result: MatchmakingCalculator.MatchmakingResult) {
 
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                stringResource(StringKey.MATCH_RAJJU_DESCRIPTION),
+                stringResource(StringKeyMatch.MATCH_RAJJU_DESCRIPTION),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
@@ -2068,7 +1821,7 @@ private fun RajjuAnalysisCard(result: MatchmakingCalculator.MatchmakingResult) {
 }
 
 @Composable
-private fun VedhaAnalysisCard(result: MatchmakingCalculator.MatchmakingResult) {
+private fun VedhaAnalysisCard(result: MatchmakingResult) {
     val hasVedha = result.specialConsiderations.any { 
         it.contains("Vedha", ignoreCase = true) 
     }
@@ -2099,13 +1852,13 @@ private fun VedhaAnalysisCard(result: MatchmakingCalculator.MatchmakingResult) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            stringResource(StringKey.MATCH_VEDHA_ANALYSIS),
+                            stringResource(StringKeyMatch.MATCH_VEDHA_ANALYSIS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKey.MATCH_OBSTRUCTION_CHECK),
+                            stringResource(StringKeyMatch.MATCH_OBSTRUCTION_CHECK),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -2117,7 +1870,7 @@ private fun VedhaAnalysisCard(result: MatchmakingCalculator.MatchmakingResult) {
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        if (hasVedha) stringResource(StringKey.MATCH_PRESENT) else stringResource(StringKey.MATCH_NONE),
+                        if (hasVedha) stringResource(StringKeyMatch.MATCH_PRESENT) else stringResource(StringKeyMatch.MATCH_NONE),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = if (hasVedha) AppTheme.WarningColor else AppTheme.SuccessColor,
@@ -2128,7 +1881,7 @@ private fun VedhaAnalysisCard(result: MatchmakingCalculator.MatchmakingResult) {
 
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                stringResource(StringKey.MATCH_VEDHA_DESCRIPTION),
+                stringResource(StringKeyMatch.MATCH_VEDHA_DESCRIPTION),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
@@ -2139,7 +1892,7 @@ private fun VedhaAnalysisCard(result: MatchmakingCalculator.MatchmakingResult) {
 
 @Composable
 private fun StreeDeerghCard(
-    result: MatchmakingCalculator.MatchmakingResult,
+    result: MatchmakingResult,
     brideChart: VedicChart?,
     groomChart: VedicChart?
 ) {
@@ -2161,13 +1914,13 @@ private fun StreeDeerghCard(
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        stringResource(StringKey.MATCH_STREE_DEERGHA),
+                        stringResource(StringKeyMatch.MATCH_STREE_DEERGHA),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        stringResource(StringKey.MATCH_PROSPERITY_FACTORS),
+                        stringResource(StringKeyMatch.MATCH_PROSPERITY_FACTORS),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )
@@ -2189,12 +1942,12 @@ private fun StreeDeerghCard(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        stringResource(StringKey.MATCH_STREE_DEERGHA_LABEL),
+                        stringResource(StringKeyMatch.MATCH_STREE_DEERGHA_LABEL),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        stringResource(StringKey.MATCH_FAVORABLE),
+                        stringResource(StringKeyMatch.MATCH_FAVORABLE),
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.SuccessColor
@@ -2217,12 +1970,12 @@ private fun StreeDeerghCard(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        stringResource(StringKey.MATCH_MAHENDRA),
+                        stringResource(StringKeyMatch.MATCH_MAHENDRA),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        stringResource(StringKey.MATCH_BENEFICIAL),
+                        stringResource(StringKeyMatch.MATCH_BENEFICIAL),
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.SuccessColor
@@ -2234,7 +1987,7 @@ private fun StreeDeerghCard(
 }
 
 @Composable
-private fun EnhancedRemediesSection(result: MatchmakingCalculator.MatchmakingResult) {
+private fun EnhancedRemediesSection(result: MatchmakingResult) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Card(
             modifier = Modifier
@@ -2254,13 +2007,13 @@ private fun EnhancedRemediesSection(result: MatchmakingCalculator.MatchmakingRes
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            stringResource(StringKey.MATCH_SUGGESTED_REMEDIES),
+                            stringResource(StringKeyMatch.MATCH_SUGGESTED_REMEDIES),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKey.MATCH_VEDIC_RECOMMENDATIONS),
+                            stringResource(StringKeyMatch.MATCH_VEDIC_RECOMMENDATIONS),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -2297,51 +2050,13 @@ private fun EnhancedRemediesSection(result: MatchmakingCalculator.MatchmakingRes
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    stringResource(StringKey.MATCH_REMEDIES_DISCLAIMER),
+                    stringResource(StringKeyMatch.MATCH_REMEDIES_DISCLAIMER),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.InfoColor,
                     lineHeight = 18.sp
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun RemedyItem(number: Int, remedy: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.Top
-    ) {
-        Box(
-            modifier = Modifier
-                .size(28.dp)
-                .clip(CircleShape)
-                .background(
-                    Brush.linearGradient(
-                        colors = listOf(
-                            AppTheme.AccentPrimary.copy(alpha = 0.2f),
-                            AppTheme.AccentSecondary.copy(alpha = 0.2f)
-                        )
-                    )
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                "$number",
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.Bold,
-                color = AppTheme.AccentPrimary
-            )
-        }
-        Spacer(modifier = Modifier.width(14.dp))
-        Text(
-            remedy,
-            style = MaterialTheme.typography.bodyMedium,
-            color = AppTheme.TextSecondary,
-            lineHeight = 22.sp,
-            modifier = Modifier.weight(1f)
-        )
     }
 }
 
@@ -2376,11 +2091,11 @@ private fun EmptyMatchingState(
             Text(
                 text = stringResource(
                     when {
-                        !hasCharts -> StringKey.MATCH_NO_CHARTS
-                        !hasBride && !hasGroom -> StringKey.MATCH_SELECT_BOTH
-                        !hasBride -> StringKey.MATCH_SELECT_BRIDE_PROFILE
-                        !hasGroom -> StringKey.MATCH_SELECT_GROOM_PROFILE
-                        else -> StringKey.MATCH_PREPARING_ANALYSIS
+                        !hasCharts -> StringKeyMatch.MATCH_NO_CHARTS
+                        !hasBride && !hasGroom -> StringKeyMatch.MATCH_SELECT_BOTH
+                        !hasBride -> StringKeyMatch.MATCH_SELECT_BRIDE_PROFILE
+                        !hasGroom -> StringKeyMatch.MATCH_SELECT_GROOM_PROFILE
+                        else -> StringKeyMatch.MATCH_PREPARING_ANALYSIS
                     }
                 ),
                 style = MaterialTheme.typography.titleMedium,
@@ -2392,11 +2107,11 @@ private fun EmptyMatchingState(
             Text(
                 text = stringResource(
                     when {
-                        !hasCharts -> StringKey.MATCH_CREATE_CHARTS
-                        !hasBride && !hasGroom -> StringKey.MATCH_SELECT_TAP_CARDS
-                        !hasBride -> StringKey.MATCH_TAP_BRIDE_CARD
-                        !hasGroom -> StringKey.MATCH_TAP_GROOM_CARD
-                        else -> StringKey.MATCH_CALCULATING
+                        !hasCharts -> StringKeyMatch.MATCH_CREATE_CHARTS
+                        !hasBride && !hasGroom -> StringKeyMatch.MATCH_SELECT_TAP_CARDS
+                        !hasBride -> StringKeyMatch.MATCH_TAP_BRIDE_CARD
+                        !hasGroom -> StringKeyMatch.MATCH_TAP_GROOM_CARD
+                        else -> StringKeyMatch.MATCH_CALCULATING
                     }
                 ),
                 style = MaterialTheme.typography.bodyMedium,
@@ -2414,7 +2129,7 @@ private fun EnhancedProfileSelectorBottomSheet(
     title: String,
     icon: ImageVector,
     accentColor: Color,
-    charts: List<ChartEntity>,
+    charts: List<SavedChart>,
     selectedId: Long?,
     excludeId: Long?,
     onSelect: (Long) -> Unit,
@@ -2477,7 +2192,7 @@ private fun EnhancedProfileSelectorBottomSheet(
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        stringResource(StringKey.MATCH_CHARTS_AVAILABLE, availableCharts.size),
+                        stringResource(StringKeyMatch.MATCH_CHARTS_AVAILABLE, availableCharts.size),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )
@@ -2500,7 +2215,7 @@ private fun EnhancedProfileSelectorBottomSheet(
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKey.MATCH_NO_CHARTS_AVAILABLE),
+                            stringResource(StringKeyMatch.MATCH_NO_CHARTS_AVAILABLE),
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextMuted
                         )
@@ -2566,7 +2281,7 @@ private fun EnhancedProfileSelectorBottomSheet(
                                 if (isSelected) {
                                     Icon(
                                         Icons.Filled.CheckCircle,
-                                        contentDescription = stringResource(StringKey.MATCH_SELECTED),
+                                        contentDescription = stringResource(StringKeyMatch.MATCH_SELECTED),
                                         tint = accentColor,
                                         modifier = Modifier.size(24.dp)
                                     )
@@ -2583,7 +2298,7 @@ private fun EnhancedProfileSelectorBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ShareOptionsSheet(
-    result: MatchmakingCalculator.MatchmakingResult?,
+    result: MatchmakingResult?,
     brideChart: VedicChart?,
     groomChart: VedicChart?,
     onDismiss: () -> Unit,
@@ -2620,7 +2335,7 @@ private fun ShareOptionsSheet(
                 .padding(bottom = 32.dp)
         ) {
             Text(
-                stringResource(StringKey.MATCH_SHARE_REPORT),
+                stringResource(StringKeyMatch.MATCH_SHARE_REPORT),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
@@ -2629,33 +2344,33 @@ private fun ShareOptionsSheet(
 
             ShareOptionItem(
                 icon = Icons.Outlined.ContentCopy,
-                title = stringResource(StringKey.MATCH_COPY_FULL_REPORT),
-                subtitle = stringResource(StringKey.MATCH_COPY_FULL_DESC),
+                title = stringResource(StringKeyMatch.MATCH_COPY_FULL_REPORT),
+                subtitle = stringResource(StringKeyMatch.MATCH_COPY_FULL_DESC),
                 onClick = {
                     result?.let {
-                        onCopyToClipboard(generateTextReport(it, brideChart, groomChart, language))
+                        onCopyToClipboard(MatchmakingReportUtils.generateFullReport(it, brideChart, groomChart, language))
                     }
                 }
             )
 
             ShareOptionItem(
                 icon = Icons.Outlined.Summarize,
-                title = stringResource(StringKey.MATCH_COPY_SUMMARY),
-                subtitle = stringResource(StringKey.MATCH_COPY_SUMMARY_DESC),
+                title = stringResource(StringKeyMatch.MATCH_COPY_SUMMARY),
+                subtitle = stringResource(StringKeyMatch.MATCH_COPY_SUMMARY_DESC),
                 onClick = {
                     result?.let {
-                        onCopyToClipboard(generateSummaryReport(it, brideChart, groomChart, language))
+                        onCopyToClipboard(MatchmakingReportUtils.generateSummaryReport(it, brideChart, groomChart, language))
                     }
                 }
             )
 
             ShareOptionItem(
                 icon = Icons.Outlined.Numbers,
-                title = stringResource(StringKey.MATCH_COPY_SCORES),
-                subtitle = stringResource(StringKey.MATCH_COPY_SCORES_DESC),
+                title = stringResource(StringKeyMatch.MATCH_COPY_SCORES),
+                subtitle = stringResource(StringKeyMatch.MATCH_COPY_SCORES_DESC),
                 onClick = {
                     result?.let {
-                        onCopyToClipboard(generateScoresReport(it, language))
+                        onCopyToClipboard(MatchmakingReportUtils.generateScoresReport(it, language))
                     }
                 }
             )
@@ -2719,315 +2434,50 @@ private fun ShareOptionItem(
     }
 }
 
-private fun generateTextReport(
-    result: MatchmakingCalculator.MatchmakingResult,
-    brideChart: VedicChart?,
-    groomChart: VedicChart?,
-    language: Language
-): String {
-    val naText = StringResources.get(StringKey.REPORT_NA, language)
-    val brideLabel = StringResources.get(StringKey.REPORT_BRIDE_LABEL, language)
-    val groomLabel = StringResources.get(StringKey.REPORT_GROOM_LABEL, language)
-    val moonSignLabel = StringResources.get(StringKey.REPORT_MOON_SIGN_LABEL, language)
-    val nakshatraLabel = StringResources.get(StringKey.REPORT_NAKSHATRA_LABEL, language)
-    val cancellationText = StringResources.get(StringKey.REPORT_CANCELLATION, language)
-
-    return buildString {
-        appendLine("═══════════════════════════════════════")
-        appendLine("       ${StringResources.get(StringKey.REPORT_MATCHMAKING_TITLE, language)}")
-        appendLine("         ${StringResources.get(StringKey.REPORT_ASTROSTORM_ANALYSIS, language)}")
-        appendLine("═══════════════════════════════════════")
-        appendLine()
-
-        appendLine(StringResources.get(StringKey.REPORT_PROFILES, language))
-        appendLine("─────────────────────────────────────")
-        brideChart?.let {
-            appendLine("$brideLabel ${it.birthData.name ?: naText}")
-            appendLine("  $moonSignLabel ${getRashiNameForReport(it)}")
-            appendLine("  $nakshatraLabel ${getNakshatraNameForReport(it)} (${getPadaForReport(it)})")
-        }
-        groomChart?.let {
-            appendLine("$groomLabel ${it.birthData.name ?: naText}")
-            appendLine("  $moonSignLabel ${getRashiNameForReport(it)}")
-            appendLine("  $nakshatraLabel ${getNakshatraNameForReport(it)} (${getPadaForReport(it)})")
-        }
-        appendLine()
-
-        appendLine(StringResources.get(StringKey.REPORT_COMPATIBILITY_SCORE, language))
-        appendLine("─────────────────────────────────────")
-        appendLine("${StringResources.get(StringKey.REPORT_TOTAL_POINTS, language)} ${String.format("%.1f", result.totalPoints)} / ${result.maxPoints.toInt()}")
-        appendLine("${StringResources.get(StringKey.REPORT_PERCENTAGE, language)} ${String.format("%.1f", result.percentage)}%")
-        appendLine("${StringResources.get(StringKey.REPORT_RATING_LABEL, language)} ${result.rating.displayName}")
-        appendLine()
-
-        appendLine(StringResources.get(StringKey.REPORT_ASHTAKOOTA_8_GUNA, language))
-        appendLine("─────────────────────────────────────")
-        result.gunaAnalyses.forEach { guna ->
-            val status = if (guna.isPositive) "✓" else "✗"
-            appendLine("$status ${guna.name} (${guna.description})")
-            appendLine("  ${StringResources.get(StringKey.REPORT_SCORE_LABEL, language)} ${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()}")
-            appendLine("  ${StringResources.get(StringKey.MATCH_BRIDE, language)}: ${guna.brideValue} | ${StringResources.get(StringKey.MATCH_GROOM, language)}: ${guna.groomValue}")
-            appendLine("  ${guna.analysis}")
-            appendLine()
-        }
-
-        appendLine(StringResources.get(StringKey.REPORT_MANGLIK_DOSHA_ANALYSIS, language))
-        appendLine("─────────────────────────────────────")
-        appendLine("${StringResources.get(StringKey.REPORT_COMPATIBILITY_LABEL, language)} ${result.manglikCompatibility}")
-        appendLine()
-        appendLine("${StringResources.get(StringKey.MATCH_BRIDE, language)}: ${result.brideManglik.effectiveDosha.displayName}")
-        if (result.brideManglik.marsHouse > 0) {
-            appendLine("  ${String.format(StringResources.get(StringKey.REPORT_MARS_IN_HOUSE, language), result.brideManglik.marsHouse)}")
-        }
-        result.brideManglik.factors.forEach { appendLine("  • $it") }
-        result.brideManglik.cancellations.forEach { appendLine("  ✓ $it $cancellationText") }
-        appendLine()
-        appendLine("${StringResources.get(StringKey.MATCH_GROOM, language)}: ${result.groomManglik.effectiveDosha.displayName}")
-        if (result.groomManglik.marsHouse > 0) {
-            appendLine("  ${String.format(StringResources.get(StringKey.REPORT_MARS_IN_HOUSE, language), result.groomManglik.marsHouse)}")
-        }
-        result.groomManglik.factors.forEach { appendLine("  • $it") }
-        result.groomManglik.cancellations.forEach { appendLine("  ✓ $it $cancellationText") }
-        appendLine()
-
-        if (result.specialConsiderations.isNotEmpty()) {
-            appendLine(StringResources.get(StringKey.REPORT_SPECIAL_CONSIDERATIONS, language))
-            appendLine("─────────────────────────────────────")
-            result.specialConsiderations.forEach { appendLine("• $it") }
-            appendLine()
-        }
-
-        appendLine(StringResources.get(StringKey.REPORT_SUGGESTED_REMEDIES, language))
-        appendLine("─────────────────────────────────────")
-        result.remedies.forEachIndexed { index, remedy ->
-            appendLine("${index + 1}. $remedy")
-        }
-        appendLine()
-
-        appendLine("═══════════════════════════════════════")
-        appendLine(StringResources.get(StringKey.REPORT_GENERATED_BY, language))
-        appendLine(StringResources.get(StringKey.REPORT_ASTROSTORM_VEDIC, language))
-        appendLine("═══════════════════════════════════════")
-    }
-}
-
-private fun generateSummaryReport(
-    result: MatchmakingCalculator.MatchmakingResult,
-    brideChart: VedicChart?,
-    groomChart: VedicChart?,
-    language: Language
-): String {
-    val naText = StringResources.get(StringKey.REPORT_NA, language)
-    val brideLabel = StringResources.get(StringKey.MATCH_BRIDE, language)
-    val groomLabel = StringResources.get(StringKey.MATCH_GROOM, language)
-
-    return buildString {
-        appendLine("🔮 ${StringResources.get(StringKey.REPORT_KUNDLI_MILAN_SUMMARY, language)}")
-        appendLine()
-        brideChart?.let { appendLine("👰 $brideLabel: ${it.birthData.name ?: naText}") }
-        groomChart?.let { appendLine("🤵 $groomLabel: ${it.birthData.name ?: naText}") }
-        appendLine()
-        appendLine("⭐ ${StringResources.get(StringKey.REPORT_SCORE_LABEL, language)} ${String.format("%.1f", result.totalPoints)}/${result.maxPoints.toInt()} (${String.format("%.1f", result.percentage)}%)")
-        appendLine("📊 ${StringResources.get(StringKey.REPORT_RATING_LABEL, language)} ${result.rating.displayName}")
-        appendLine()
-        appendLine("${result.rating.description}")
-        appendLine()
-        appendLine("🔴 ${StringResources.get(StringKey.REPORT_MANGLIK_LABEL, language)} ${result.manglikCompatibility}")
-        appendLine()
-        appendLine("— ${StringResources.get(StringKey.REPORT_GENERATED_BY, language)}")
-    }
-}
-
-private fun generateScoresReport(
-    result: MatchmakingCalculator.MatchmakingResult,
-    language: Language
-): String {
-    return buildString {
-        appendLine(StringResources.get(StringKey.REPORT_ASHTAKOOTA_GUNA_SCORES, language))
-        appendLine("━━━━━━━━━━━━━━━━━━━━━━")
-        result.gunaAnalyses.forEach { guna ->
-            val emoji = if (guna.isPositive) "✅" else "⚠️"
-            appendLine("$emoji ${guna.name}: ${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()}")
-        }
-        appendLine("━━━━━━━━━━━━━━━━━━━━━━")
-        appendLine("${StringResources.get(StringKey.REPORT_TOTAL, language)}: ${String.format("%.1f", result.totalPoints)}/${result.maxPoints.toInt()}")
-        appendLine()
-        appendLine("— AstroStorm")
-    }
-}
-
-private fun getRatingColor(rating: MatchmakingCalculator.CompatibilityRating): Color {
-    return when (rating) {
-        MatchmakingCalculator.CompatibilityRating.EXCELLENT -> Color(0xFF2E7D32)
-        MatchmakingCalculator.CompatibilityRating.GOOD -> Color(0xFF558B2F)
-        MatchmakingCalculator.CompatibilityRating.AVERAGE -> Color(0xFFF9A825)
-        MatchmakingCalculator.CompatibilityRating.BELOW_AVERAGE -> Color(0xFFEF6C00)
-        MatchmakingCalculator.CompatibilityRating.POOR -> Color(0xFFC62828)
-    }
-}
-
-private fun getRatingIcon(rating: MatchmakingCalculator.CompatibilityRating): ImageVector {
-    return when (rating) {
-        MatchmakingCalculator.CompatibilityRating.EXCELLENT -> Icons.Filled.Stars
-        MatchmakingCalculator.CompatibilityRating.GOOD -> Icons.Filled.ThumbUp
-        MatchmakingCalculator.CompatibilityRating.AVERAGE -> Icons.Outlined.Balance
-        MatchmakingCalculator.CompatibilityRating.BELOW_AVERAGE -> Icons.Outlined.TrendingDown
-        MatchmakingCalculator.CompatibilityRating.POOR -> Icons.Filled.Cancel
-    }
-}
-
-private fun getManglikStatusColor(status: String): Color {
-    return when {
-        status.contains("No concerns", ignoreCase = true) -> AppTheme.SuccessColor
-        status.contains("cancel", ignoreCase = true) -> AppTheme.SuccessColor
-        status.contains("Both", ignoreCase = true) -> AppTheme.SuccessColor
-        status.contains("Manageable", ignoreCase = true) -> AppTheme.WarningColor
-        status.contains("Partial", ignoreCase = true) -> AppTheme.WarningColor
-        else -> AppTheme.ErrorColor
-    }
-}
-
-private fun getManglikSeverityColor(dosha: MatchmakingCalculator.ManglikDosha): Color {
-    return when (dosha) {
-        MatchmakingCalculator.ManglikDosha.NONE -> AppTheme.SuccessColor
-        MatchmakingCalculator.ManglikDosha.PARTIAL -> AppTheme.WarningColor
-        MatchmakingCalculator.ManglikDosha.FULL -> AppTheme.ErrorColor
-        MatchmakingCalculator.ManglikDosha.DOUBLE -> Color(0xFF8B0000)
-    }
-}
-
-private fun getManglikQuickStatus(result: MatchmakingCalculator.MatchmakingResult): String {
-    val brideStatus = result.brideManglik.effectiveDosha
-    val groomStatus = result.groomManglik.effectiveDosha
-    
-    return when {
-        brideStatus == MatchmakingCalculator.ManglikDosha.NONE && 
-            groomStatus == MatchmakingCalculator.ManglikDosha.NONE -> "No Dosha"
-        brideStatus != MatchmakingCalculator.ManglikDosha.NONE && 
-            groomStatus != MatchmakingCalculator.ManglikDosha.NONE -> "Both Manglik"
-        brideStatus != MatchmakingCalculator.ManglikDosha.NONE -> "Bride Only"
-        groomStatus != MatchmakingCalculator.ManglikDosha.NONE -> "Groom Only"
-        else -> "Check Details"
-    }
-}
+// Report generation functions moved to MatchmakingReportUtils.kt
 
 private fun getMoonPosition(chart: VedicChart) = chart.planetPositions.find {
-    it.planet == com.astro.storm.data.model.Planet.MOON
-}
-
-// Non-composable versions for text report generation
-private fun getNakshatraNameForReport(chart: VedicChart): String {
-    return getMoonPosition(chart)?.nakshatra?.displayName ?: "N/A"
-}
-
-private fun getRashiNameForReport(chart: VedicChart): String {
-    val moonPosition = getMoonPosition(chart) ?: return "N/A"
-    return moonPosition.sign.displayName
-}
-
-private fun getPadaForReport(chart: VedicChart): String {
-    val moonPosition = getMoonPosition(chart) ?: return "N/A"
-    return "Pada ${moonPosition.nakshatraPada}"
+    it.planet == Planet.MOON
 }
 
 @Composable
 private fun getNakshatraName(chart: VedicChart): String {
-    return getMoonPosition(chart)?.nakshatra?.displayName ?: stringResource(StringKey.MISC_UNKNOWN)
+    return getMoonPosition(chart)?.nakshatra?.displayName ?: stringResource(StringKeyMatch.MISC_UNKNOWN)
 }
 
 @Composable
 private fun getRashiName(chart: VedicChart): String {
-    val unknownText = stringResource(StringKey.MISC_UNKNOWN)
+    val unknownText = stringResource(StringKeyMatch.MISC_UNKNOWN)
     val moonPosition = getMoonPosition(chart) ?: return unknownText
     return moonPosition.sign.displayName
 }
 
 @Composable
 private fun getPada(chart: VedicChart): String {
-    val unknownText = stringResource(StringKey.MISC_UNKNOWN)
+    val unknownText = stringResource(StringKeyMatch.MISC_UNKNOWN)
     val moonPosition = getMoonPosition(chart) ?: return unknownText
     return "Pada ${moonPosition.nakshatraPada}"
 }
 
 @Composable
 private fun getNakshatraLord(chart: VedicChart): String {
-    val unknownText = stringResource(StringKey.MISC_UNKNOWN)
+    val unknownText = stringResource(StringKeyMatch.MISC_UNKNOWN)
     val moonPosition = getMoonPosition(chart) ?: return unknownText
     return moonPosition.nakshatra.ruler.displayName
 }
 
 @Composable
 private fun getGana(chart: VedicChart): String {
-    val unknownText = stringResource(StringKey.MISC_UNKNOWN)
+    val unknownText = stringResource(StringKeyMatch.MISC_UNKNOWN)
     val moonPosition = getMoonPosition(chart) ?: return unknownText
-    return nakshatraGanaMap[moonPosition.nakshatra] ?: unknownText
+    // Use centralized VedicAstrologyUtils for consistent Gana lookup
+    return VedicAstrologyUtils.getGanaDisplayName(moonPosition.nakshatra)
 }
 
 @Composable
 private fun getYoni(chart: VedicChart): String {
-    val unknownText = stringResource(StringKey.MISC_UNKNOWN)
+    val unknownText = stringResource(StringKeyMatch.MISC_UNKNOWN)
     val moonPosition = getMoonPosition(chart) ?: return unknownText
-    return nakshatraYoniMap[moonPosition.nakshatra] ?: unknownText
+    // Use centralized VedicAstrologyUtils for consistent Yoni lookup
+    return VedicAstrologyUtils.getYoniDisplayName(moonPosition.nakshatra)
 }
-
-// Gana mapping for each nakshatra
-private val nakshatraGanaMap = mapOf(
-    com.astro.storm.data.model.Nakshatra.ASHWINI to "Deva",
-    com.astro.storm.data.model.Nakshatra.BHARANI to "Manushya",
-    com.astro.storm.data.model.Nakshatra.KRITTIKA to "Rakshasa",
-    com.astro.storm.data.model.Nakshatra.ROHINI to "Manushya",
-    com.astro.storm.data.model.Nakshatra.MRIGASHIRA to "Deva",
-    com.astro.storm.data.model.Nakshatra.ARDRA to "Manushya",
-    com.astro.storm.data.model.Nakshatra.PUNARVASU to "Deva",
-    com.astro.storm.data.model.Nakshatra.PUSHYA to "Deva",
-    com.astro.storm.data.model.Nakshatra.ASHLESHA to "Rakshasa",
-    com.astro.storm.data.model.Nakshatra.MAGHA to "Rakshasa",
-    com.astro.storm.data.model.Nakshatra.PURVA_PHALGUNI to "Manushya",
-    com.astro.storm.data.model.Nakshatra.UTTARA_PHALGUNI to "Manushya",
-    com.astro.storm.data.model.Nakshatra.HASTA to "Deva",
-    com.astro.storm.data.model.Nakshatra.CHITRA to "Rakshasa",
-    com.astro.storm.data.model.Nakshatra.SWATI to "Deva",
-    com.astro.storm.data.model.Nakshatra.VISHAKHA to "Rakshasa",
-    com.astro.storm.data.model.Nakshatra.ANURADHA to "Deva",
-    com.astro.storm.data.model.Nakshatra.JYESHTHA to "Rakshasa",
-    com.astro.storm.data.model.Nakshatra.MULA to "Rakshasa",
-    com.astro.storm.data.model.Nakshatra.PURVA_ASHADHA to "Manushya",
-    com.astro.storm.data.model.Nakshatra.UTTARA_ASHADHA to "Manushya",
-    com.astro.storm.data.model.Nakshatra.SHRAVANA to "Deva",
-    com.astro.storm.data.model.Nakshatra.DHANISHTHA to "Rakshasa",
-    com.astro.storm.data.model.Nakshatra.SHATABHISHA to "Rakshasa",
-    com.astro.storm.data.model.Nakshatra.PURVA_BHADRAPADA to "Manushya",
-    com.astro.storm.data.model.Nakshatra.UTTARA_BHADRAPADA to "Manushya",
-    com.astro.storm.data.model.Nakshatra.REVATI to "Deva"
-)
-
-// Yoni mapping for each nakshatra
-private val nakshatraYoniMap = mapOf(
-    com.astro.storm.data.model.Nakshatra.ASHWINI to "Horse (Male)",
-    com.astro.storm.data.model.Nakshatra.BHARANI to "Elephant (Male)",
-    com.astro.storm.data.model.Nakshatra.KRITTIKA to "Sheep (Female)",
-    com.astro.storm.data.model.Nakshatra.ROHINI to "Serpent (Male)",
-    com.astro.storm.data.model.Nakshatra.MRIGASHIRA to "Serpent (Female)",
-    com.astro.storm.data.model.Nakshatra.ARDRA to "Dog (Female)",
-    com.astro.storm.data.model.Nakshatra.PUNARVASU to "Cat (Female)",
-    com.astro.storm.data.model.Nakshatra.PUSHYA to "Sheep (Male)",
-    com.astro.storm.data.model.Nakshatra.ASHLESHA to "Cat (Male)",
-    com.astro.storm.data.model.Nakshatra.MAGHA to "Rat (Male)",
-    com.astro.storm.data.model.Nakshatra.PURVA_PHALGUNI to "Rat (Female)",
-    com.astro.storm.data.model.Nakshatra.UTTARA_PHALGUNI to "Cow (Male)",
-    com.astro.storm.data.model.Nakshatra.HASTA to "Buffalo (Female)",
-    com.astro.storm.data.model.Nakshatra.CHITRA to "Tiger (Female)",
-    com.astro.storm.data.model.Nakshatra.SWATI to "Buffalo (Male)",
-    com.astro.storm.data.model.Nakshatra.VISHAKHA to "Tiger (Male)",
-    com.astro.storm.data.model.Nakshatra.ANURADHA to "Deer (Female)",
-    com.astro.storm.data.model.Nakshatra.JYESHTHA to "Deer (Male)",
-    com.astro.storm.data.model.Nakshatra.MULA to "Dog (Male)",
-    com.astro.storm.data.model.Nakshatra.PURVA_ASHADHA to "Monkey (Male)",
-    com.astro.storm.data.model.Nakshatra.UTTARA_ASHADHA to "Mongoose (Male)",
-    com.astro.storm.data.model.Nakshatra.SHRAVANA to "Monkey (Female)",
-    com.astro.storm.data.model.Nakshatra.DHANISHTHA to "Lion (Female)",
-    com.astro.storm.data.model.Nakshatra.SHATABHISHA to "Horse (Female)",
-    com.astro.storm.data.model.Nakshatra.PURVA_BHADRAPADA to "Lion (Male)",
-    com.astro.storm.data.model.Nakshatra.UTTARA_BHADRAPADA to "Cow (Female)",
-    com.astro.storm.data.model.Nakshatra.REVATI to "Elephant (Female)"
-)
