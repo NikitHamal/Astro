@@ -1323,6 +1323,9 @@ object DivisionalChartAnalyzer {
                 if (moonD12?.house in AstrologicalConstants.DUSTHANA_HOUSES) add("Mother: Emotional wellbeing attention")
             }
         )
+        _HOUSES) add("Mother: Emotional wellbeing attention")
+    }
+    )
     }
 
     private fun generateParentalRecommendations(
