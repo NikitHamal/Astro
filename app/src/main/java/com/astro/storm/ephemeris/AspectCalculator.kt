@@ -13,9 +13,7 @@ import kotlin.math.floor
 
 object AspectCalculator {
 
-    private const val DEGREES_PER_SIGN = 30.0
-    private const val TOTAL_DEGREES = 360.0
-    private const val TOTAL_SIGNS = 12
+    private const val TOTAL_DEGREES = AstrologicalConstants.DEGREES_PER_CIRCLE
 
     enum class AspectType(
         val displayName: String,
@@ -268,11 +266,11 @@ object AspectCalculator {
     }
 
     private fun getSignNumber(longitude: Double): Int {
-        return (floor(normalizeAngle(longitude) / DEGREES_PER_SIGN).toInt() % TOTAL_SIGNS) + 1
+        return (floor(normalizeAngle(longitude) / AstrologicalConstants.DEGREES_PER_SIGN).toInt() % AstrologicalConstants.TOTAL_SIGNS) + 1
     }
 
     private fun calculateSignDistance(fromSign: Int, toSign: Int): Int {
-        val distance = ((toSign - fromSign + TOTAL_SIGNS) % TOTAL_SIGNS)
+        val distance = ((toSign - fromSign + AstrologicalConstants.TOTAL_SIGNS) % AstrologicalConstants.TOTAL_SIGNS)
         return if (distance == 0) 1 else distance + 1
     }
 

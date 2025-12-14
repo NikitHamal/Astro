@@ -193,9 +193,7 @@ data class ShadbalaAnalysis(
 
 object ShadbalaCalculator {
 
-    private const val VIRUPAS_PER_RUPA = 60.0
-    private const val DEGREES_PER_CIRCLE = 360.0
-    private const val DEGREES_PER_SIGN = 30.0
+    private const val VIRUPAS_PER_RUPA = AstrologicalConstants.VIRUPAS_PER_RUPA
 
     private val SHADBALA_PLANETS = setOf(
         Planet.SUN, Planet.MOON, Planet.MARS,
@@ -203,6 +201,17 @@ object ShadbalaCalculator {
     )
 
     private object ExaltationData {
+        /**
+         * Absolute exaltation degrees in the zodiac (0-360)
+         * Calculated as: sign_start + degree_in_sign
+         * Sun: Aries (0) + 10 = 10
+         * Moon: Taurus (30) + 3 = 33
+         * Mars: Capricorn (270) + 28 = 298
+         * Mercury: Virgo (150) + 15 = 165
+         * Jupiter: Cancer (90) + 5 = 95
+         * Venus: Pisces (330) + 27 = 357
+         * Saturn: Libra (180) + 20 = 200
+         */
         val degrees = mapOf(
             Planet.SUN to 10.0,
             Planet.MOON to 33.0,
@@ -214,7 +223,7 @@ object ShadbalaCalculator {
         )
 
         val debilitationDegrees = degrees.mapValues { (_, deg) ->
-            (deg + 180.0) % DEGREES_PER_CIRCLE
+            (deg + 180.0) % AstrologicalConstants.DEGREES_PER_CIRCLE
         }
     }
 
@@ -428,7 +437,7 @@ object ShadbalaCalculator {
         val debilDeg = ExaltationData.debilitationDegrees[position.planet] ?: return 0.0
 
         var distance = normalizeDegree(position.longitude - debilDeg)
-        if (distance > 180.0) distance = DEGREES_PER_CIRCLE - distance
+        if (distance > 180.0) distance = AstrologicalConstants.DEGREES_PER_CIRCLE - distance
 
         return (distance / 180.0) * 60.0
     }
@@ -437,7 +446,7 @@ object ShadbalaCalculator {
         val planet = position.planet
         var totalBala = 0.0
 
-        totalBala += getVargaStrength(planet, position.sign, position.longitude % DEGREES_PER_SIGN) *
+        totalBala += getVargaStrength(planet, position.sign, position.longitude % AstrologicalConstants.DEGREES_PER_SIGN) *
                 SaptavargaWeights.D1_RASHI
 
         context.divisionalChartMap[DivisionalChartType.D2_HORA]?.let { chart ->
@@ -521,7 +530,7 @@ object ShadbalaCalculator {
     }
 
     private fun calculateDrekkanaBala(position: PlanetPosition): Double {
-        val degreeInSign = position.longitude % DEGREES_PER_SIGN
+        val degreeInSign = position.longitude % AstrologicalConstants.DEGREES_PER_SIGN
         val decanate = when {
             degreeInSign < 10.0 -> 1
             degreeInSign < 20.0 -> 2
@@ -572,7 +581,7 @@ object ShadbalaCalculator {
         val phaseStrength = if (elongation < 180.0) {
             elongation / 180.0 * 60.0
         } else {
-            (DEGREES_PER_CIRCLE - elongation) / 180.0 * 60.0
+            (AstrologicalConstants.DEGREES_PER_CIRCLE - elongation) / 180.0 * 60.0
         }
 
         val isBenefic = position.planet in setOf(
@@ -736,19 +745,17 @@ object ShadbalaCalculator {
     }
 
     private fun normalizeDegree(degree: Double): Double {
-        var result = degree % DEGREES_PER_CIRCLE
-        if (result < 0) result += DEGREES_PER_CIRCLE
+        var result = degree % AstrologicalConstants.DEGREES_PER_CIRCLE
+        if (result < 0) result += AstrologicalConstants.DEGREES_PER_CIRCLE
         return result
     }
 
     private fun angularDistance(deg1: Double, deg2: Double): Double {
         val diff = abs(deg1 - deg2)
-        return if (diff > 180.0) DEGREES_PER_CIRCLE - diff else diff
+        return if (diff > 180.0) AstrologicalConstants.DEGREES_PER_CIRCLE - diff else diff
     }
 
-    private val WAR_CAPABLE_PLANETS = setOf(
-        Planet.MARS, Planet.MERCURY, Planet.JUPITER, Planet.VENUS, Planet.SATURN
-    )
+    private val WAR_CAPABLE_PLANETS = AstrologicalConstants.WAR_CAPABLE_PLANETS
 
     private fun generateStableChartId(chart: VedicChart): String {
         val birthData = chart.birthData

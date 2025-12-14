@@ -14,11 +14,10 @@ import kotlin.math.abs
 
 object RetrogradeCombustionCalculator {
 
-    private const val DEGREES_PER_SIGN = 30.0
-    private const val TOTAL_SIGNS = 12
-    private const val GRAHA_YUDDHA_ORB = 1.0
-    private const val CAZIMI_ORB = 17.0 / 60.0
-
+    /**
+     * Combustion degrees with separate values for direct and retrograde motion
+     * Retrograde planets have slightly reduced combustion orbs per classical texts
+     */
     private val COMBUSTION_DEGREES = mapOf(
         Planet.MOON to CombustionDegrees(12.0, 12.0),
         Planet.MARS to CombustionDegrees(17.0, 17.0),
@@ -26,34 +25,6 @@ object RetrogradeCombustionCalculator {
         Planet.JUPITER to CombustionDegrees(11.0, 11.0),
         Planet.VENUS to CombustionDegrees(10.0, 8.0),
         Planet.SATURN to CombustionDegrees(15.0, 15.0)
-    )
-
-    private val STATIONARY_THRESHOLDS = mapOf(
-        Planet.MERCURY to 0.08,
-        Planet.VENUS to 0.06,
-        Planet.MARS to 0.04,
-        Planet.JUPITER to 0.015,
-        Planet.SATURN to 0.008
-    )
-
-    private val AVERAGE_DAILY_MOTION = mapOf(
-        Planet.SUN to 0.9856,
-        Planet.MOON to 13.1764,
-        Planet.MERCURY to 1.383,
-        Planet.VENUS to 1.2,
-        Planet.MARS to 0.524,
-        Planet.JUPITER to 0.083,
-        Planet.SATURN to 0.034,
-        Planet.RAHU to -0.053,
-        Planet.KETU to -0.053
-    )
-
-    private val PLANETARY_BRIGHTNESS_RANK = mapOf(
-        Planet.VENUS to 6,
-        Planet.JUPITER to 5,
-        Planet.MARS to 4,
-        Planet.MERCURY to 3,
-        Planet.SATURN to 2
     )
 
     data class CombustionDegrees(
@@ -303,7 +274,7 @@ object RetrogradeCombustionCalculator {
             else -> {}
         }
 
-        val threshold = STATIONARY_THRESHOLDS[position.planet] ?: 0.05
+        val threshold = AstrologicalConstants.STATIONARY_THRESHOLDS[position.planet] ?: 0.05
         val absSpeed = abs(position.speed)
 
         return when {
@@ -321,8 +292,8 @@ object RetrogradeCombustionCalculator {
             else -> {}
         }
 
-        val avgMotion = AVERAGE_DAILY_MOTION[position.planet] ?: return SpeedStatus.SAMA
-        val threshold = STATIONARY_THRESHOLDS[position.planet] ?: 0.05
+        val avgMotion = AstrologicalConstants.AVERAGE_DAILY_MOTION[position.planet] ?: return SpeedStatus.SAMA
+        val threshold = AstrologicalConstants.STATIONARY_THRESHOLDS[position.planet] ?: 0.05
         val absSpeed = abs(position.speed)
 
         if (absSpeed <= threshold) {
@@ -345,7 +316,7 @@ object RetrogradeCombustionCalculator {
     }
 
     private fun calculateRelativeSpeed(position: PlanetPosition): Double {
-        val avgMotion = AVERAGE_DAILY_MOTION[position.planet] ?: return 1.0
+        val avgMotion = AstrologicalConstants.AVERAGE_DAILY_MOTION[position.planet] ?: return 1.0
         return if (avgMotion != 0.0) position.speed / avgMotion else 1.0
     }
 
@@ -363,14 +334,14 @@ object RetrogradeCombustionCalculator {
         val combustionDegrees = COMBUSTION_DEGREES[planet] ?: return CombustionStatus.NOT_COMBUST
         val effectiveOrb = combustionDegrees.getEffective(isRetrograde)
 
-        if (distance <= CAZIMI_ORB) {
+        if (distance <= AstrologicalConstants.CAZIMI_DEGREE) {
             return CombustionStatus.CAZIMI
         }
 
         val halfOrb = effectiveOrb / 2.0
         val outerOrb = effectiveOrb * 1.4
 
-        val isApproaching = (planetSpeed - sunSpeed) > 0 && distance > CAZIMI_ORB
+        val isApproaching = (planetSpeed - sunSpeed) > 0 && distance > AstrologicalConstants.CAZIMI_DEGREE
 
         return when {
             distance <= halfOrb -> CombustionStatus.DEEP_COMBUST
@@ -385,7 +356,7 @@ object RetrogradeCombustionCalculator {
         val wars = mutableListOf<PlanetaryWarResult>()
 
         val warCapable = positions.filter {
-            it.planet in listOf(Planet.MARS, Planet.MERCURY, Planet.JUPITER, Planet.VENUS, Planet.SATURN)
+            it.planet in AstrologicalConstants.WAR_CAPABLE_PLANETS
         }
 
         for (i in warCapable.indices) {
@@ -395,7 +366,7 @@ object RetrogradeCombustionCalculator {
 
                 val separation = calculateAngularDistance(p1.longitude, p2.longitude)
 
-                if (separation <= GRAHA_YUDDHA_ORB) {
+                if (separation <= AstrologicalConstants.GRAHA_YUDDHA_ORB) {
                     val warResult = resolveWarOutcome(p1, p2, separation)
                     wars.add(warResult)
                 }
@@ -416,8 +387,8 @@ object RetrogradeCombustionCalculator {
         val hasValidLatitudes = pos1.latitude != null && pos2.latitude != null
         val latitudeDifference = abs(lat1 - lat2)
 
-        val brightness1 = PLANETARY_BRIGHTNESS_RANK[pos1.planet] ?: 0
-        val brightness2 = PLANETARY_BRIGHTNESS_RANK[pos2.planet] ?: 0
+        val brightness1 = AstrologicalConstants.PLANETARY_BRIGHTNESS_RANK[pos1.planet] ?: 0
+        val brightness2 = AstrologicalConstants.PLANETARY_BRIGHTNESS_RANK[pos2.planet] ?: 0
 
         val winner: Planet
         val advantage: WarAdvantage
@@ -445,7 +416,7 @@ object RetrogradeCombustionCalculator {
         }
 
         val loser = if (winner == pos1.planet) pos2.planet else pos1.planet
-        val intensity = (1.0 - separation / GRAHA_YUDDHA_ORB).coerceIn(0.0, 1.0)
+        val intensity = (1.0 - separation / AstrologicalConstants.GRAHA_YUDDHA_ORB).coerceIn(0.0, 1.0)
 
         return PlanetaryWarResult(
             planet1 = pos1.planet,
@@ -492,17 +463,16 @@ object RetrogradeCombustionCalculator {
     }
 
     private fun getSignNumber(longitude: Double): Int {
-        return ((normalizeAngle(longitude) / DEGREES_PER_SIGN).toInt() % TOTAL_SIGNS) + 1
+        return ((normalizeAngle(longitude) / AstrologicalConstants.DEGREES_PER_SIGN).toInt() % AstrologicalConstants.TOTAL_SIGNS) + 1
     }
 
     private fun getNakshatraNumber(longitude: Double): Int {
-        return ((normalizeAngle(longitude) / (360.0 / 27.0)).toInt() % 27) + 1
+        return ((normalizeAngle(longitude) / AstrologicalConstants.DEGREES_PER_NAKSHATRA).toInt() % AstrologicalConstants.TOTAL_NAKSHATRAS) + 1
     }
 
     private fun getNakshatraPada(longitude: Double): Int {
-        val nakshatraSpan = 360.0 / 27.0
-        val positionInNakshatra = normalizeAngle(longitude) % nakshatraSpan
-        return ((positionInNakshatra / (nakshatraSpan / 4.0)).toInt() % 4) + 1
+        val positionInNakshatra = normalizeAngle(longitude) % AstrologicalConstants.DEGREES_PER_NAKSHATRA
+        return ((positionInNakshatra / AstrologicalConstants.DEGREES_PER_PADA).toInt() % AstrologicalConstants.PADAS_PER_NAKSHATRA) + 1
     }
 
     fun getRetrogradeInterpretation(planet: Planet, status: RetrogradeStatus): String {

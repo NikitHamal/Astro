@@ -84,13 +84,12 @@ class SwissEphemerisEngine private constructor(
         private const val MIN_LONGITUDE = -180.0
         private const val MAX_LONGITUDE = 180.0
 
-        private const val DEGREES_PER_CIRCLE = 360.0
-        private const val DEGREES_PER_SIGN = 30.0
+        private const val DEGREES_PER_CIRCLE = AstrologicalConstants.DEGREES_PER_CIRCLE
         private const val MINUTES_PER_DEGREE = 60.0
         private const val SECONDS_PER_MINUTE = 60.0
         private const val HOURS_PER_DAY = 24.0
 
-        private const val KETU_OFFSET = 180.0
+        private const val KETU_OFFSET = 180.0  // Ketu is always 180° opposite to Rahu
 
         private const val EPHEMERIS_SUBDIR = "ephe"
 

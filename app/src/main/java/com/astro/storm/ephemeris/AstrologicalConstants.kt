@@ -87,6 +87,18 @@ object AstrologicalConstants {
     /** Orb for standard aspects (degrees) */
     const val STANDARD_ASPECT_ORB = 12.0
 
+    /** Orb for opposition aspects (degrees) */
+    const val OPPOSITION_ORB = 9.0
+
+    /** Orb for trine aspects (degrees) */
+    const val TRINE_ORB = 8.0
+
+    /** Orb for square aspects (degrees) */
+    const val SQUARE_ORB = 7.0
+
+    /** Orb for sextile aspects (degrees) */
+    const val SEXTILE_ORB = 6.0
+
     /**
      * Special aspects for Mars, Jupiter, and Saturn as per BPHS
      * - Mars: Casts 3/4 aspect on 4th and 8th houses
@@ -498,4 +510,114 @@ object AstrologicalConstants {
     fun isCazimi(distanceFromSun: Double): Boolean {
         return distanceFromSun <= CAZIMI_DEGREE
     }
+
+    // ============================================
+    // GOCHARA (TRANSIT) CONSTANTS
+    // ============================================
+
+    /**
+     * Favorable Gochara houses for each planet (from natal Moon)
+     * Reference: Classical Gochara texts
+     */
+    val GOCHARA_FAVORABLE_HOUSES = mapOf(
+        Planet.SUN to listOf(3, 6, 10, 11),
+        Planet.MOON to listOf(1, 3, 6, 7, 10, 11),
+        Planet.MARS to listOf(3, 6, 11),
+        Planet.MERCURY to listOf(2, 4, 6, 8, 10, 11),
+        Planet.JUPITER to listOf(2, 5, 7, 9, 11),
+        Planet.VENUS to listOf(1, 2, 3, 4, 5, 8, 9, 11, 12),
+        Planet.SATURN to listOf(3, 6, 11),
+        Planet.RAHU to listOf(3, 6, 10, 11),
+        Planet.KETU to listOf(3, 6, 9, 11)
+    )
+
+    /**
+     * Vedha pairs for Gochara
+     * Maps favorable houses to their obstructing houses
+     * Reference: Classical Gochara texts
+     */
+    val GOCHARA_VEDHA_PAIRS = mapOf(
+        Planet.SUN to mapOf(3 to 9, 6 to 12, 10 to 4, 11 to 5),
+        Planet.MOON to mapOf(1 to 5, 3 to 9, 6 to 12, 7 to 2, 10 to 4, 11 to 8),
+        Planet.MARS to mapOf(3 to 12, 6 to 9, 11 to 5),
+        Planet.MERCURY to mapOf(2 to 5, 4 to 3, 6 to 9, 8 to 1, 10 to 8, 11 to 12),
+        Planet.JUPITER to mapOf(2 to 12, 5 to 4, 7 to 3, 9 to 10, 11 to 8),
+        Planet.VENUS to mapOf(1 to 8, 2 to 7, 3 to 1, 4 to 10, 5 to 9, 8 to 5, 9 to 11, 11 to 6, 12 to 3),
+        Planet.SATURN to mapOf(3 to 12, 6 to 9, 11 to 5),
+        Planet.RAHU to mapOf(3 to 12, 6 to 9, 10 to 4, 11 to 5),
+        Planet.KETU to mapOf(3 to 12, 6 to 9, 9 to 10, 11 to 5)
+    )
+
+    // ============================================
+    // AVERAGE DAILY PLANETARY MOTION
+    // ============================================
+
+    /**
+     * Average daily motion of planets in degrees
+     * Used for speed calculations and predictions
+     */
+    val AVERAGE_DAILY_MOTION = mapOf(
+        Planet.SUN to 0.9856,
+        Planet.MOON to 13.1764,
+        Planet.MERCURY to 1.383,
+        Planet.VENUS to 1.2,
+        Planet.MARS to 0.524,
+        Planet.JUPITER to 0.083,
+        Planet.SATURN to 0.034,
+        Planet.RAHU to -0.053,
+        Planet.KETU to -0.053
+    )
+
+    /**
+     * Moon daily motion (degrees) - commonly used in predictions
+     */
+    const val MOON_DAILY_MOTION = 13.2
+
+    // ============================================
+    // GRAHA YUDDHA (PLANETARY WAR) CONSTANTS
+    // ============================================
+
+    /**
+     * Orb for planetary war (Graha Yuddha)
+     * Two planets within this distance are considered in war
+     */
+    const val GRAHA_YUDDHA_ORB = 1.0
+
+    /**
+     * Planets capable of engaging in Graha Yuddha
+     * Note: Sun and Moon cannot engage in planetary war
+     * Rahu/Ketu are shadow planets and excluded
+     */
+    val WAR_CAPABLE_PLANETS = setOf(
+        Planet.MARS, Planet.MERCURY, Planet.JUPITER, Planet.VENUS, Planet.SATURN
+    )
+
+    /**
+     * Planetary brightness ranking for determining war winner
+     * Higher rank = brighter planet
+     * Reference: Surya Siddhanta
+     */
+    val PLANETARY_BRIGHTNESS_RANK = mapOf(
+        Planet.VENUS to 6,
+        Planet.JUPITER to 5,
+        Planet.MARS to 4,
+        Planet.MERCURY to 3,
+        Planet.SATURN to 2
+    )
+
+    // ============================================
+    // STATIONARY THRESHOLDS
+    // ============================================
+
+    /**
+     * Speed thresholds below which a planet is considered stationary
+     * Values in degrees per day
+     */
+    val STATIONARY_THRESHOLDS = mapOf(
+        Planet.MERCURY to 0.08,
+        Planet.VENUS to 0.06,
+        Planet.MARS to 0.04,
+        Planet.JUPITER to 0.015,
+        Planet.SATURN to 0.008
+    )
 }

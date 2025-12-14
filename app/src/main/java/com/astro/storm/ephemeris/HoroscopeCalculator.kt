@@ -864,67 +864,20 @@ class HoroscopeCalculator(private val context: Context) : AutoCloseable {
 
         private val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
-        private val NATURAL_BENEFICS = setOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY, Planet.MOON)
-        private val NATURAL_MALEFICS = setOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU)
+        private val NATURAL_BENEFICS = AstrologicalConstants.NATURAL_BENEFICS
+        private val NATURAL_MALEFICS = AstrologicalConstants.NATURAL_MALEFICS
 
         private val FIRE_PLANETS = setOf(Planet.SUN, Planet.MARS, Planet.JUPITER)
         private val EARTH_PLANETS = setOf(Planet.VENUS, Planet.MERCURY, Planet.SATURN)
         private val AIR_PLANETS = setOf(Planet.MERCURY, Planet.VENUS, Planet.SATURN)
         private val WATER_PLANETS = setOf(Planet.MOON, Planet.MARS, Planet.JUPITER)
 
-        private val PLANET_OWN_SIGNS = mapOf(
-            Planet.SUN to setOf(ZodiacSign.LEO),
-            Planet.MOON to setOf(ZodiacSign.CANCER),
-            Planet.MARS to setOf(ZodiacSign.ARIES, ZodiacSign.SCORPIO),
-            Planet.MERCURY to setOf(ZodiacSign.GEMINI, ZodiacSign.VIRGO),
-            Planet.JUPITER to setOf(ZodiacSign.SAGITTARIUS, ZodiacSign.PISCES),
-            Planet.VENUS to setOf(ZodiacSign.TAURUS, ZodiacSign.LIBRA),
-            Planet.SATURN to setOf(ZodiacSign.CAPRICORN, ZodiacSign.AQUARIUS)
-        )
-
-        private val PLANET_EXALTATION = mapOf(
-            Planet.SUN to ZodiacSign.ARIES,
-            Planet.MOON to ZodiacSign.TAURUS,
-            Planet.MARS to ZodiacSign.CAPRICORN,
-            Planet.MERCURY to ZodiacSign.VIRGO,
-            Planet.JUPITER to ZodiacSign.CANCER,
-            Planet.VENUS to ZodiacSign.PISCES,
-            Planet.SATURN to ZodiacSign.LIBRA
-        )
-
-        private val PLANET_DEBILITATION = mapOf(
-            Planet.SUN to ZodiacSign.LIBRA,
-            Planet.MOON to ZodiacSign.SCORPIO,
-            Planet.MARS to ZodiacSign.CANCER,
-            Planet.MERCURY to ZodiacSign.PISCES,
-            Planet.JUPITER to ZodiacSign.CAPRICORN,
-            Planet.VENUS to ZodiacSign.VIRGO,
-            Planet.SATURN to ZodiacSign.ARIES
-        )
-
-        private val GOCHARA_FAVORABLE_HOUSES = mapOf(
-            Planet.SUN to listOf(3, 6, 10, 11),
-            Planet.MOON to listOf(1, 3, 6, 7, 10, 11),
-            Planet.MARS to listOf(3, 6, 11),
-            Planet.MERCURY to listOf(2, 4, 6, 8, 10, 11),
-            Planet.JUPITER to listOf(2, 5, 7, 9, 11),
-            Planet.VENUS to listOf(1, 2, 3, 4, 5, 8, 9, 11, 12),
-            Planet.SATURN to listOf(3, 6, 11),
-            Planet.RAHU to listOf(3, 6, 10, 11),
-            Planet.KETU to listOf(3, 6, 9, 11)
-        )
-
-        private val GOCHARA_VEDHA_PAIRS = mapOf(
-            Planet.SUN to mapOf(3 to 9, 6 to 12, 10 to 4, 11 to 5),
-            Planet.MOON to mapOf(1 to 5, 3 to 9, 6 to 12, 7 to 2, 10 to 4, 11 to 8),
-            Planet.MARS to mapOf(3 to 12, 6 to 9, 11 to 5),
-            Planet.MERCURY to mapOf(2 to 5, 4 to 3, 6 to 9, 8 to 1, 10 to 8, 11 to 12),
-            Planet.JUPITER to mapOf(2 to 12, 5 to 4, 7 to 3, 9 to 10, 11 to 8),
-            Planet.VENUS to mapOf(1 to 8, 2 to 7, 3 to 1, 4 to 10, 5 to 9, 8 to 5, 9 to 11, 11 to 6, 12 to 3),
-            Planet.SATURN to mapOf(3 to 12, 6 to 9, 11 to 5),
-            Planet.RAHU to mapOf(3 to 12, 6 to 9, 10 to 4, 11 to 5),
-            Planet.KETU to mapOf(3 to 12, 6 to 9, 9 to 10, 11 to 5)
-        )
+        // Use centralized constants for planetary dignities
+        private val PLANET_OWN_SIGNS = AstrologicalConstants.OWN_SIGNS
+        private val PLANET_EXALTATION = AstrologicalConstants.EXALTATION_SIGNS
+        private val PLANET_DEBILITATION = AstrologicalConstants.DEBILITATION_SIGNS
+        private val GOCHARA_FAVORABLE_HOUSES = AstrologicalConstants.GOCHARA_FAVORABLE_HOUSES
+        private val GOCHARA_VEDHA_PAIRS = AstrologicalConstants.GOCHARA_VEDHA_PAIRS
 
         private val FAVORABLE_GOCHARA_EFFECTS_DETAILED = mapOf(
             Planet.SUN to mapOf(

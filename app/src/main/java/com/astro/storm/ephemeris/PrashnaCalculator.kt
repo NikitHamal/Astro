@@ -48,23 +48,20 @@ class PrashnaCalculator(context: Context) {
         private const val SEFLG_SIDEREAL = SweConst.SEFLG_SIDEREAL
         private const val SEFLG_SPEED = SweConst.SEFLG_SPEED
 
-        // Orb values for aspects (in degrees)
-        private const val CONJUNCTION_ORB = 10.0
-        private const val TRINE_ORB = 8.0
-        private const val SEXTILE_ORB = 6.0
-        private const val SQUARE_ORB = 8.0
-        private const val OPPOSITION_ORB = 10.0
+        // Use centralized orb values
+        private const val CONJUNCTION_ORB = AstrologicalConstants.CONJUNCTION_ORB
+        private const val TRINE_ORB = AstrologicalConstants.TRINE_ORB
+        private const val SEXTILE_ORB = AstrologicalConstants.SEXTILE_ORB
+        private const val SQUARE_ORB = AstrologicalConstants.SQUARE_ORB
+        private const val OPPOSITION_ORB = AstrologicalConstants.OPPOSITION_ORB
 
-        // Prashna-specific constants
-        private const val DEGREES_PER_SIGN = 30.0
-        private const val DEGREES_PER_NAKSHATRA = 360.0 / 27.0
+        // Use centralized constants
+        private const val DEGREES_PER_NAKSHATRA = AstrologicalConstants.DEGREES_PER_NAKSHATRA
+        private const val MOON_DAILY_MOTION = AstrologicalConstants.MOON_DAILY_MOTION
 
-        // Moon movement per day (approximately 13.2 degrees)
-        private const val MOON_DAILY_MOTION = 13.2
-
-        // Natural benefics and malefics
-        private val NATURAL_BENEFICS = setOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY, Planet.MOON)
-        private val NATURAL_MALEFICS = setOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU, Planet.SUN)
+        // Use centralized benefic/malefic classifications
+        private val NATURAL_BENEFICS = AstrologicalConstants.NATURAL_BENEFICS
+        private val NATURAL_MALEFICS = AstrologicalConstants.NATURAL_MALEFICS
 
         // Prashna-specific house significations
         private val PRASHNA_HOUSE_SIGNIFICATIONS = mapOf(

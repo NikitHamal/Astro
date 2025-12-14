@@ -149,46 +149,25 @@ class VarshaphalaCalculator(context: Context) {
             )
         )
 
-        private val EXALTATION_DEGREES = mapOf(
-            Planet.SUN to 10.0,
-            Planet.MOON to 33.0,
-            Planet.MARS to 298.0,
-            Planet.MERCURY to 165.0,
-            Planet.JUPITER to 95.0,
-            Planet.VENUS to 357.0,
-            Planet.SATURN to 200.0
+        /**
+         * Absolute exaltation degrees in the zodiac (0-360)
+         * These are used for Varshaphala-specific strength calculations
+         * Note: Moon at 33° means 3° Taurus, Mars at 298° means 28° Capricorn
+         */
+        private val EXALTATION_DEGREES_ABSOLUTE = mapOf(
+            Planet.SUN to 10.0,      // 10° Aries
+            Planet.MOON to 33.0,     // 3° Taurus
+            Planet.MARS to 298.0,    // 28° Capricorn
+            Planet.MERCURY to 165.0, // 15° Virgo
+            Planet.JUPITER to 95.0,  // 5° Cancer
+            Planet.VENUS to 357.0,   // 27° Pisces
+            Planet.SATURN to 200.0   // 20° Libra
         )
 
-        private val DEBILITATION_SIGNS = mapOf(
-            Planet.SUN to ZodiacSign.LIBRA,
-            Planet.MOON to ZodiacSign.SCORPIO,
-            Planet.MARS to ZodiacSign.CANCER,
-            Planet.MERCURY to ZodiacSign.PISCES,
-            Planet.JUPITER to ZodiacSign.CAPRICORN,
-            Planet.VENUS to ZodiacSign.VIRGO,
-            Planet.SATURN to ZodiacSign.ARIES
-        )
-
-        private val OWN_SIGNS = mapOf(
-            Planet.SUN to listOf(ZodiacSign.LEO),
-            Planet.MOON to listOf(ZodiacSign.CANCER),
-            Planet.MARS to listOf(ZodiacSign.ARIES, ZodiacSign.SCORPIO),
-            Planet.MERCURY to listOf(ZodiacSign.GEMINI, ZodiacSign.VIRGO),
-            Planet.JUPITER to listOf(ZodiacSign.SAGITTARIUS, ZodiacSign.PISCES),
-            Planet.VENUS to listOf(ZodiacSign.TAURUS, ZodiacSign.LIBRA),
-            Planet.SATURN to listOf(ZodiacSign.CAPRICORN, ZodiacSign.AQUARIUS)
-        )
-
-        private val FRIENDSHIPS = mapOf(
-            Planet.SUN to listOf(Planet.MOON, Planet.MARS, Planet.JUPITER),
-            Planet.MOON to listOf(Planet.SUN, Planet.MERCURY),
-            Planet.MARS to listOf(Planet.SUN, Planet.MOON, Planet.JUPITER),
-            Planet.MERCURY to listOf(Planet.SUN, Planet.VENUS),
-            Planet.JUPITER to listOf(Planet.SUN, Planet.MOON, Planet.MARS),
-            Planet.VENUS to listOf(Planet.MERCURY, Planet.SATURN),
-            Planet.SATURN to listOf(Planet.MERCURY, Planet.VENUS)
-        )
-
+        // Use centralized planetary dignity constants
+        private val DEBILITATION_SIGNS = AstrologicalConstants.DEBILITATION_SIGNS
+        private val OWN_SIGNS = AstrologicalConstants.OWN_SIGNS
+        private val FRIENDSHIPS = AstrologicalConstants.NATURAL_FRIENDS
         private val NEUTRALS = mapOf(
             Planet.SUN to listOf(Planet.MERCURY),
             Planet.MOON to listOf(Planet.MARS, Planet.JUPITER, Planet.VENUS, Planet.SATURN),
