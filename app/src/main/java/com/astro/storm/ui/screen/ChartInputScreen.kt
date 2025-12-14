@@ -34,6 +34,7 @@ import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.LocalDateSystem
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.BirthData
@@ -217,7 +218,7 @@ fun ChartInputScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             // Extract localized string outside the lambda (stringResource is @Composable)
-            val unknownText = stringResource(StringKey.MISC_UNKNOWN)
+            val unknownText = stringResource(StringKeyMatch.MISC_UNKNOWN)
 
             GenerateButton(
                 isCalculating = isCalculating,
@@ -326,8 +327,8 @@ fun ChartInputScreen(
 }
 
 private fun validateInput(latitude: String, longitude: String): String? {
-    val lat = latitude.toDoubleOrNull()
-    val lon = longitude.toDoubleOrNull()
+    val lat = latitude.trim().toDoubleOrNull()
+    val lon = longitude.trim().toDoubleOrNull()
 
     return when {
         lat == null || lon == null -> "Please enter valid latitude and longitude"
@@ -338,8 +339,8 @@ private fun validateInput(latitude: String, longitude: String): String? {
 }
 
 private fun validateInputLocalized(latitude: String, longitude: String): StringKey? {
-    val lat = latitude.toDoubleOrNull()
-    val lon = longitude.toDoubleOrNull()
+    val lat = latitude.trim().toDoubleOrNull()
+    val lon = longitude.trim().toDoubleOrNull()
 
     return when {
         lat == null || lon == null -> StringKey.ERROR_INVALID_COORDS

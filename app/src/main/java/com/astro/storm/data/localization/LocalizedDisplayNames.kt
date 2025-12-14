@@ -8,7 +8,7 @@ import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.data.preferences.ThemeMode
 import com.astro.storm.ephemeris.YogaCalculator
 import com.astro.storm.ephemeris.RemediesCalculator
-import com.astro.storm.ephemeris.MatchmakingCalculator
+import com.astro.storm.data.model.Yoni
 import com.astro.storm.ephemeris.Tithi
 import com.astro.storm.ephemeris.TithiGroup
 import com.astro.storm.ephemeris.Yoga
@@ -272,14 +272,14 @@ fun ThemeMode.getLocalizedDescription(language: Language): String {
  */
 fun getDayName(dayOfWeek: Int, language: Language): String {
     return when (dayOfWeek) {
-        1 -> StringResources.get(StringKey.DAY_MONDAY, language)
-        2 -> StringResources.get(StringKey.DAY_TUESDAY, language)
-        3 -> StringResources.get(StringKey.DAY_WEDNESDAY, language)
-        4 -> StringResources.get(StringKey.DAY_THURSDAY, language)
-        5 -> StringResources.get(StringKey.DAY_FRIDAY, language)
-        6 -> StringResources.get(StringKey.DAY_SATURDAY, language)
-        7 -> StringResources.get(StringKey.DAY_SUNDAY, language)
-        else -> StringResources.get(StringKey.MISC_UNKNOWN, language)
+        1 -> StringResources.get(StringKeyMatch.DAY_MONDAY, language)
+        2 -> StringResources.get(StringKeyMatch.DAY_TUESDAY, language)
+        3 -> StringResources.get(StringKeyMatch.DAY_WEDNESDAY, language)
+        4 -> StringResources.get(StringKeyMatch.DAY_THURSDAY, language)
+        5 -> StringResources.get(StringKeyMatch.DAY_FRIDAY, language)
+        6 -> StringResources.get(StringKeyMatch.DAY_SATURDAY, language)
+        7 -> StringResources.get(StringKeyMatch.DAY_SUNDAY, language)
+        else -> StringResources.get(StringKeyMatch.MISC_UNKNOWN, language)
     }
 }
 
@@ -320,18 +320,18 @@ fun formatLocalizedDuration(days: Long, language: Language): String {
     if (days <= 0) return "0d"
 
     return when {
-        days < 7 -> StringResources.get(StringKey.TIME_DAYS, language, days)
+        days < 7 -> StringResources.get(StringKeyMatch.TIME_DAYS, language, days)
         days < 30 -> {
             val weeks = days / 7
-            StringResources.get(StringKey.TIME_WEEKS, language, weeks)
+            StringResources.get(StringKeyMatch.TIME_WEEKS, language, weeks)
         }
         days < 365 -> {
             val months = days / 30
-            StringResources.get(StringKey.TIME_MONTHS, language, months)
+            StringResources.get(StringKeyMatch.TIME_MONTHS, language, months)
         }
         else -> {
             val years = days / 365
-            StringResources.get(StringKey.TIME_YEARS, language, years)
+            StringResources.get(StringKeyMatch.TIME_YEARS, language, years)
         }
     }
 }
@@ -345,14 +345,14 @@ fun formatLocalizedDuration(days: Long, language: Language): String {
  */
 fun YogaCalculator.YogaCategory.getLocalizedName(language: Language): String {
     return when (this) {
-        YogaCalculator.YogaCategory.RAJA_YOGA -> StringResources.get(StringKey.YOGA_CAT_RAJA, language)
-        YogaCalculator.YogaCategory.DHANA_YOGA -> StringResources.get(StringKey.YOGA_CAT_DHANA, language)
-        YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> StringResources.get(StringKey.YOGA_CAT_PANCHA_MAHAPURUSHA, language)
-        YogaCalculator.YogaCategory.NABHASA_YOGA -> StringResources.get(StringKey.YOGA_CAT_NABHASA, language)
-        YogaCalculator.YogaCategory.CHANDRA_YOGA -> StringResources.get(StringKey.YOGA_CAT_CHANDRA, language)
-        YogaCalculator.YogaCategory.SOLAR_YOGA -> StringResources.get(StringKey.YOGA_CAT_SOLAR, language)
-        YogaCalculator.YogaCategory.NEGATIVE_YOGA -> StringResources.get(StringKey.YOGA_CAT_NEGATIVE, language)
-        YogaCalculator.YogaCategory.SPECIAL_YOGA -> StringResources.get(StringKey.YOGA_CAT_SPECIAL, language)
+        YogaCalculator.YogaCategory.RAJA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_RAJA, language)
+        YogaCalculator.YogaCategory.DHANA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_DHANA, language)
+        YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_PANCHA_MAHAPURUSHA, language)
+        YogaCalculator.YogaCategory.NABHASA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_NABHASA, language)
+        YogaCalculator.YogaCategory.CHANDRA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_CHANDRA, language)
+        YogaCalculator.YogaCategory.SOLAR_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_SOLAR, language)
+        YogaCalculator.YogaCategory.NEGATIVE_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_NEGATIVE, language)
+        YogaCalculator.YogaCategory.SPECIAL_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_SPECIAL, language)
     }
 }
 
@@ -361,14 +361,14 @@ fun YogaCalculator.YogaCategory.getLocalizedName(language: Language): String {
  */
 fun YogaCalculator.YogaCategory.getLocalizedDescription(language: Language): String {
     return when (this) {
-        YogaCalculator.YogaCategory.RAJA_YOGA -> StringResources.get(StringKey.YOGA_CAT_RAJA_DESC, language)
-        YogaCalculator.YogaCategory.DHANA_YOGA -> StringResources.get(StringKey.YOGA_CAT_DHANA_DESC, language)
-        YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> StringResources.get(StringKey.YOGA_CAT_PANCHA_MAHAPURUSHA_DESC, language)
-        YogaCalculator.YogaCategory.NABHASA_YOGA -> StringResources.get(StringKey.YOGA_CAT_NABHASA_DESC, language)
-        YogaCalculator.YogaCategory.CHANDRA_YOGA -> StringResources.get(StringKey.YOGA_CAT_CHANDRA_DESC, language)
-        YogaCalculator.YogaCategory.SOLAR_YOGA -> StringResources.get(StringKey.YOGA_CAT_SOLAR_DESC, language)
-        YogaCalculator.YogaCategory.NEGATIVE_YOGA -> StringResources.get(StringKey.YOGA_CAT_NEGATIVE_DESC, language)
-        YogaCalculator.YogaCategory.SPECIAL_YOGA -> StringResources.get(StringKey.YOGA_CAT_SPECIAL_DESC, language)
+        YogaCalculator.YogaCategory.RAJA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_RAJA_DESC, language)
+        YogaCalculator.YogaCategory.DHANA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_DHANA_DESC, language)
+        YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_PANCHA_MAHAPURUSHA_DESC, language)
+        YogaCalculator.YogaCategory.NABHASA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_NABHASA_DESC, language)
+        YogaCalculator.YogaCategory.CHANDRA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_CHANDRA_DESC, language)
+        YogaCalculator.YogaCategory.SOLAR_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_SOLAR_DESC, language)
+        YogaCalculator.YogaCategory.NEGATIVE_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_NEGATIVE_DESC, language)
+        YogaCalculator.YogaCategory.SPECIAL_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_SPECIAL_DESC, language)
     }
 }
 
@@ -377,11 +377,11 @@ fun YogaCalculator.YogaCategory.getLocalizedDescription(language: Language): Str
  */
 fun YogaCalculator.YogaStrength.getLocalizedName(language: Language): String {
     return when (this) {
-        YogaCalculator.YogaStrength.EXTREMELY_STRONG -> StringResources.get(StringKey.YOGA_STRENGTH_EXTREMELY_STRONG, language)
-        YogaCalculator.YogaStrength.STRONG -> StringResources.get(StringKey.YOGA_STRENGTH_STRONG, language)
-        YogaCalculator.YogaStrength.MODERATE -> StringResources.get(StringKey.YOGA_STRENGTH_MODERATE, language)
-        YogaCalculator.YogaStrength.WEAK -> StringResources.get(StringKey.YOGA_STRENGTH_WEAK, language)
-        YogaCalculator.YogaStrength.VERY_WEAK -> StringResources.get(StringKey.YOGA_STRENGTH_VERY_WEAK, language)
+        YogaCalculator.YogaStrength.EXTREMELY_STRONG -> StringResources.get(StringKeyMatch.YOGA_STRENGTH_EXTREMELY_STRONG, language)
+        YogaCalculator.YogaStrength.STRONG -> StringResources.get(StringKeyMatch.YOGA_STRENGTH_STRONG, language)
+        YogaCalculator.YogaStrength.MODERATE -> StringResources.get(StringKeyMatch.YOGA_STRENGTH_MODERATE, language)
+        YogaCalculator.YogaStrength.WEAK -> StringResources.get(StringKeyMatch.YOGA_STRENGTH_WEAK, language)
+        YogaCalculator.YogaStrength.VERY_WEAK -> StringResources.get(StringKeyMatch.YOGA_STRENGTH_VERY_WEAK, language)
     }
 }
 
@@ -394,12 +394,12 @@ fun YogaCalculator.YogaStrength.getLocalizedName(language: Language): String {
  */
 fun RemediesCalculator.PlanetaryStrength.getLocalizedName(language: Language): String {
     return when (this) {
-        RemediesCalculator.PlanetaryStrength.VERY_STRONG -> StringResources.get(StringKey.PLANETARY_STRENGTH_VERY_STRONG, language)
-        RemediesCalculator.PlanetaryStrength.STRONG -> StringResources.get(StringKey.PLANETARY_STRENGTH_STRONG, language)
-        RemediesCalculator.PlanetaryStrength.MODERATE -> StringResources.get(StringKey.PLANETARY_STRENGTH_MODERATE, language)
-        RemediesCalculator.PlanetaryStrength.WEAK -> StringResources.get(StringKey.PLANETARY_STRENGTH_WEAK, language)
-        RemediesCalculator.PlanetaryStrength.VERY_WEAK -> StringResources.get(StringKey.PLANETARY_STRENGTH_VERY_WEAK, language)
-        RemediesCalculator.PlanetaryStrength.AFFLICTED -> StringResources.get(StringKey.PLANETARY_STRENGTH_AFFLICTED, language)
+        RemediesCalculator.PlanetaryStrength.VERY_STRONG -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_VERY_STRONG, language)
+        RemediesCalculator.PlanetaryStrength.STRONG -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_STRONG, language)
+        RemediesCalculator.PlanetaryStrength.MODERATE -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_MODERATE, language)
+        RemediesCalculator.PlanetaryStrength.WEAK -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_WEAK, language)
+        RemediesCalculator.PlanetaryStrength.VERY_WEAK -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_VERY_WEAK, language)
+        RemediesCalculator.PlanetaryStrength.AFFLICTED -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_AFFLICTED, language)
     }
 }
 
@@ -408,14 +408,14 @@ fun RemediesCalculator.PlanetaryStrength.getLocalizedName(language: Language): S
  */
 fun StrengthRating.getLocalizedName(language: Language): String {
     return when (this) {
-        StrengthRating.EXTREMELY_WEAK -> StringResources.get(StringKey.SHADBALA_EXTREMELY_WEAK, language)
-        StrengthRating.WEAK -> StringResources.get(StringKey.SHADBALA_WEAK, language)
-        StrengthRating.BELOW_AVERAGE -> StringResources.get(StringKey.SHADBALA_BELOW_AVERAGE, language)
-        StrengthRating.AVERAGE -> StringResources.get(StringKey.SHADBALA_AVERAGE, language)
-        StrengthRating.ABOVE_AVERAGE -> StringResources.get(StringKey.SHADBALA_ABOVE_AVERAGE, language)
-        StrengthRating.STRONG -> StringResources.get(StringKey.SHADBALA_STRONG, language)
-        StrengthRating.VERY_STRONG -> StringResources.get(StringKey.SHADBALA_VERY_STRONG, language)
-        StrengthRating.EXTREMELY_STRONG -> StringResources.get(StringKey.SHADBALA_EXTREMELY_STRONG, language)
+        StrengthRating.EXTREMELY_WEAK -> StringResources.get(StringKeyMatch.SHADBALA_EXTREMELY_WEAK, language)
+        StrengthRating.WEAK -> StringResources.get(StringKeyMatch.SHADBALA_WEAK, language)
+        StrengthRating.BELOW_AVERAGE -> StringResources.get(StringKeyMatch.SHADBALA_BELOW_AVERAGE, language)
+        StrengthRating.AVERAGE -> StringResources.get(StringKeyMatch.SHADBALA_AVERAGE, language)
+        StrengthRating.ABOVE_AVERAGE -> StringResources.get(StringKeyMatch.SHADBALA_ABOVE_AVERAGE, language)
+        StrengthRating.STRONG -> StringResources.get(StringKeyMatch.SHADBALA_STRONG, language)
+        StrengthRating.VERY_STRONG -> StringResources.get(StringKeyMatch.SHADBALA_VERY_STRONG, language)
+        StrengthRating.EXTREMELY_STRONG -> StringResources.get(StringKeyMatch.SHADBALA_EXTREMELY_STRONG, language)
     }
 }
 
@@ -424,12 +424,12 @@ fun StrengthRating.getLocalizedName(language: Language): String {
  */
 fun RetrogradeCombustionCalculator.CombustionStatus.getLocalizedName(language: Language): String {
     return when (this) {
-        RetrogradeCombustionCalculator.CombustionStatus.NOT_COMBUST -> StringResources.get(StringKey.COMBUSTION_NOT_COMBUST, language)
-        RetrogradeCombustionCalculator.CombustionStatus.APPROACHING -> StringResources.get(StringKey.COMBUSTION_APPROACHING, language)
-        RetrogradeCombustionCalculator.CombustionStatus.COMBUST -> StringResources.get(StringKey.COMBUSTION_COMBUST, language)
-        RetrogradeCombustionCalculator.CombustionStatus.DEEP_COMBUST -> StringResources.get(StringKey.COMBUSTION_DEEP_COMBUST, language)
-        RetrogradeCombustionCalculator.CombustionStatus.CAZIMI -> StringResources.get(StringKey.COMBUSTION_CAZIMI, language)
-        RetrogradeCombustionCalculator.CombustionStatus.SEPARATING -> StringResources.get(StringKey.COMBUSTION_SEPARATING, language)
+        RetrogradeCombustionCalculator.CombustionStatus.NOT_COMBUST -> StringResources.get(StringKeyAnalysis.COMBUSTION_NOT_COMBUST, language)
+        RetrogradeCombustionCalculator.CombustionStatus.APPROACHING -> StringResources.get(StringKeyAnalysis.COMBUSTION_APPROACHING, language)
+        RetrogradeCombustionCalculator.CombustionStatus.COMBUST -> StringResources.get(StringKeyAnalysis.COMBUSTION_COMBUST, language)
+        RetrogradeCombustionCalculator.CombustionStatus.DEEP_COMBUST -> StringResources.get(StringKeyAnalysis.COMBUSTION_DEEP_COMBUST, language)
+        RetrogradeCombustionCalculator.CombustionStatus.CAZIMI -> StringResources.get(StringKeyAnalysis.COMBUSTION_CAZIMI, language)
+        RetrogradeCombustionCalculator.CombustionStatus.SEPARATING -> StringResources.get(StringKeyAnalysis.COMBUSTION_SEPARATING, language)
     }
 }
 
@@ -438,16 +438,16 @@ fun RetrogradeCombustionCalculator.CombustionStatus.getLocalizedName(language: L
  */
 fun RemediesCalculator.RemedyCategory.getLocalizedName(language: Language): String {
     return when (this) {
-        RemediesCalculator.RemedyCategory.GEMSTONE -> StringResources.get(StringKey.REMEDY_CAT_GEMSTONE, language)
-        RemediesCalculator.RemedyCategory.MANTRA -> StringResources.get(StringKey.REMEDY_CAT_MANTRA, language)
-        RemediesCalculator.RemedyCategory.YANTRA -> StringResources.get(StringKey.REMEDY_CAT_YANTRA, language)
-        RemediesCalculator.RemedyCategory.CHARITY -> StringResources.get(StringKey.REMEDY_CAT_CHARITY, language)
-        RemediesCalculator.RemedyCategory.FASTING -> StringResources.get(StringKey.REMEDY_CAT_FASTING, language)
-        RemediesCalculator.RemedyCategory.COLOR -> StringResources.get(StringKey.REMEDY_CAT_COLOR, language)
-        RemediesCalculator.RemedyCategory.METAL -> StringResources.get(StringKey.REMEDY_CAT_METAL, language)
-        RemediesCalculator.RemedyCategory.RUDRAKSHA -> StringResources.get(StringKey.REMEDY_CAT_RUDRAKSHA, language)
-        RemediesCalculator.RemedyCategory.DEITY -> StringResources.get(StringKey.REMEDY_CAT_DEITY, language)
-        RemediesCalculator.RemedyCategory.LIFESTYLE -> StringResources.get(StringKey.REMEDY_CAT_LIFESTYLE, language)
+        RemediesCalculator.RemedyCategory.GEMSTONE -> StringResources.get(StringKeyMatch.REMEDY_CAT_GEMSTONE, language)
+        RemediesCalculator.RemedyCategory.MANTRA -> StringResources.get(StringKeyMatch.REMEDY_CAT_MANTRA, language)
+        RemediesCalculator.RemedyCategory.YANTRA -> StringResources.get(StringKeyMatch.REMEDY_CAT_YANTRA, language)
+        RemediesCalculator.RemedyCategory.CHARITY -> StringResources.get(StringKeyMatch.REMEDY_CAT_CHARITY, language)
+        RemediesCalculator.RemedyCategory.FASTING -> StringResources.get(StringKeyMatch.REMEDY_CAT_FASTING, language)
+        RemediesCalculator.RemedyCategory.COLOR -> StringResources.get(StringKeyMatch.REMEDY_CAT_COLOR, language)
+        RemediesCalculator.RemedyCategory.METAL -> StringResources.get(StringKeyMatch.REMEDY_CAT_METAL, language)
+        RemediesCalculator.RemedyCategory.RUDRAKSHA -> StringResources.get(StringKeyMatch.REMEDY_CAT_RUDRAKSHA, language)
+        RemediesCalculator.RemedyCategory.DEITY -> StringResources.get(StringKeyMatch.REMEDY_CAT_DEITY, language)
+        RemediesCalculator.RemedyCategory.LIFESTYLE -> StringResources.get(StringKeyMatch.REMEDY_CAT_LIFESTYLE, language)
     }
 }
 
@@ -456,10 +456,10 @@ fun RemediesCalculator.RemedyCategory.getLocalizedName(language: Language): Stri
  */
 fun RemediesCalculator.RemedyPriority.getLocalizedName(language: Language): String {
     return when (this) {
-        RemediesCalculator.RemedyPriority.ESSENTIAL -> StringResources.get(StringKey.REMEDY_PRIORITY_ESSENTIAL, language)
-        RemediesCalculator.RemedyPriority.HIGHLY_RECOMMENDED -> StringResources.get(StringKey.REMEDY_PRIORITY_HIGHLY_RECOMMENDED, language)
-        RemediesCalculator.RemedyPriority.RECOMMENDED -> StringResources.get(StringKey.REMEDY_PRIORITY_RECOMMENDED, language)
-        RemediesCalculator.RemedyPriority.OPTIONAL -> StringResources.get(StringKey.REMEDY_PRIORITY_OPTIONAL, language)
+        RemediesCalculator.RemedyPriority.ESSENTIAL -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_ESSENTIAL, language)
+        RemediesCalculator.RemedyPriority.HIGHLY_RECOMMENDED -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_HIGHLY_RECOMMENDED, language)
+        RemediesCalculator.RemedyPriority.RECOMMENDED -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_RECOMMENDED, language)
+        RemediesCalculator.RemedyPriority.OPTIONAL -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_OPTIONAL, language)
     }
 }
 
@@ -467,159 +467,32 @@ fun RemediesCalculator.RemedyPriority.getLocalizedName(language: Language): Stri
 // MATCHMAKING CALCULATOR EXTENSIONS
 // ============================================
 
-/**
- * Get localized display name for Varna
- */
-fun MatchmakingCalculator.Varna.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Varna.BRAHMIN -> StringResources.get(StringKey.VARNA_BRAHMIN, language)
-        MatchmakingCalculator.Varna.KSHATRIYA -> StringResources.get(StringKey.VARNA_KSHATRIYA, language)
-        MatchmakingCalculator.Varna.VAISHYA -> StringResources.get(StringKey.VARNA_VAISHYA, language)
-        MatchmakingCalculator.Varna.SHUDRA -> StringResources.get(StringKey.VARNA_SHUDRA, language)
-    }
-}
-
-/**
- * Get localized display name for Vashya
- */
-fun MatchmakingCalculator.Vashya.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Vashya.CHATUSHPADA -> StringResources.get(StringKey.VASHYA_CHATUSHPADA, language)
-        MatchmakingCalculator.Vashya.MANAVA -> StringResources.get(StringKey.VASHYA_MANAVA, language)
-        MatchmakingCalculator.Vashya.JALACHARA -> StringResources.get(StringKey.VASHYA_JALACHARA, language)
-        MatchmakingCalculator.Vashya.VANACHARA -> StringResources.get(StringKey.VASHYA_VANACHARA, language)
-        MatchmakingCalculator.Vashya.KEETA -> StringResources.get(StringKey.VASHYA_KEETA, language)
-    }
-}
-
-/**
- * Get localized display name for Gana
- */
-fun MatchmakingCalculator.Gana.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Gana.DEVA -> StringResources.get(StringKey.GANA_DEVA, language)
-        MatchmakingCalculator.Gana.MANUSHYA -> StringResources.get(StringKey.GANA_MANUSHYA, language)
-        MatchmakingCalculator.Gana.RAKSHASA -> StringResources.get(StringKey.GANA_RAKSHASA, language)
-    }
-}
-
-/**
- * Get localized description for Gana
- */
-fun MatchmakingCalculator.Gana.getLocalizedDescription(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Gana.DEVA -> StringResources.get(StringKey.GANA_DEVA_DESC, language)
-        MatchmakingCalculator.Gana.MANUSHYA -> StringResources.get(StringKey.GANA_MANUSHYA_DESC, language)
-        MatchmakingCalculator.Gana.RAKSHASA -> StringResources.get(StringKey.GANA_RAKSHASA_DESC, language)
-    }
-}
+// NOTE: Varna, Vashya, Gana, Yoni, Nadi, Rajju, ManglikDosha, and CompatibilityRating
+// already have getLocalizedName() and getLocalizedDescription() methods defined
+// as member functions in MatchmakingModels.kt. Do not duplicate them here to avoid
+// overload resolution ambiguity errors.
 
 /**
  * Get localized display name for Yoni animal
+ * This is a utility function since Yoni doesn't have a member function for localized animal names.
  */
-fun MatchmakingCalculator.Yoni.getLocalizedAnimalName(language: Language): String {
-    return when (this.animal) {
-        "Horse" -> StringResources.get(StringKey.YONI_HORSE, language)
-        "Elephant" -> StringResources.get(StringKey.YONI_ELEPHANT, language)
-        "Sheep" -> StringResources.get(StringKey.YONI_SHEEP, language)
-        "Serpent" -> StringResources.get(StringKey.YONI_SERPENT, language)
-        "Dog" -> StringResources.get(StringKey.YONI_DOG, language)
-        "Cat" -> StringResources.get(StringKey.YONI_CAT, language)
-        "Rat" -> StringResources.get(StringKey.YONI_RAT, language)
-        "Cow" -> StringResources.get(StringKey.YONI_COW, language)
-        "Buffalo" -> StringResources.get(StringKey.YONI_BUFFALO, language)
-        "Tiger" -> StringResources.get(StringKey.YONI_TIGER, language)
-        "Deer" -> StringResources.get(StringKey.YONI_DEER, language)
-        "Monkey" -> StringResources.get(StringKey.YONI_MONKEY, language)
-        "Mongoose" -> StringResources.get(StringKey.YONI_MONGOOSE, language)
-        "Lion" -> StringResources.get(StringKey.YONI_LION, language)
-        else -> this.animal
-    }
-}
-
-/**
- * Get localized display name for Nadi
- */
-fun MatchmakingCalculator.Nadi.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Nadi.ADI -> StringResources.get(StringKey.NADI_ADI, language)
-        MatchmakingCalculator.Nadi.MADHYA -> StringResources.get(StringKey.NADI_MADHYA, language)
-        MatchmakingCalculator.Nadi.ANTYA -> StringResources.get(StringKey.NADI_ANTYA, language)
-    }
-}
-
-/**
- * Get localized description for Nadi
- */
-fun MatchmakingCalculator.Nadi.getLocalizedDescription(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Nadi.ADI -> StringResources.get(StringKey.NADI_ADI_DESC, language)
-        MatchmakingCalculator.Nadi.MADHYA -> StringResources.get(StringKey.NADI_MADHYA_DESC, language)
-        MatchmakingCalculator.Nadi.ANTYA -> StringResources.get(StringKey.NADI_ANTYA_DESC, language)
-    }
-}
-
-/**
- * Get localized display name for Rajju
- */
-fun MatchmakingCalculator.Rajju.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Rajju.PADA -> StringResources.get(StringKey.RAJJU_PADA, language)
-        MatchmakingCalculator.Rajju.KATI -> StringResources.get(StringKey.RAJJU_KATI, language)
-        MatchmakingCalculator.Rajju.NABHI -> StringResources.get(StringKey.RAJJU_NABHI, language)
-        MatchmakingCalculator.Rajju.KANTHA -> StringResources.get(StringKey.RAJJU_KANTHA, language)
-        MatchmakingCalculator.Rajju.SIRO -> StringResources.get(StringKey.RAJJU_SIRO, language)
-    }
-}
-
-/**
- * Get localized body part for Rajju
- */
-fun MatchmakingCalculator.Rajju.getLocalizedBodyPart(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.Rajju.PADA -> StringResources.get(StringKey.RAJJU_PADA_BODY, language)
-        MatchmakingCalculator.Rajju.KATI -> StringResources.get(StringKey.RAJJU_KATI_BODY, language)
-        MatchmakingCalculator.Rajju.NABHI -> StringResources.get(StringKey.RAJJU_NABHI_BODY, language)
-        MatchmakingCalculator.Rajju.KANTHA -> StringResources.get(StringKey.RAJJU_KANTHA_BODY, language)
-        MatchmakingCalculator.Rajju.SIRO -> StringResources.get(StringKey.RAJJU_SIRO_BODY, language)
-    }
-}
-
-/**
- * Get localized display name for ManglikDosha
- */
-fun MatchmakingCalculator.ManglikDosha.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.ManglikDosha.NONE -> StringResources.get(StringKey.MANGLIK_NONE, language)
-        MatchmakingCalculator.ManglikDosha.PARTIAL -> StringResources.get(StringKey.MANGLIK_PARTIAL, language)
-        MatchmakingCalculator.ManglikDosha.FULL -> StringResources.get(StringKey.MANGLIK_FULL, language)
-        MatchmakingCalculator.ManglikDosha.DOUBLE -> StringResources.get(StringKey.MANGLIK_DOUBLE, language)
-    }
-}
-
-/**
- * Get localized display name for CompatibilityRating
- */
-fun MatchmakingCalculator.CompatibilityRating.getLocalizedName(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.CompatibilityRating.EXCELLENT -> StringResources.get(StringKey.COMPAT_EXCELLENT, language)
-        MatchmakingCalculator.CompatibilityRating.GOOD -> StringResources.get(StringKey.COMPAT_GOOD, language)
-        MatchmakingCalculator.CompatibilityRating.AVERAGE -> StringResources.get(StringKey.COMPAT_AVERAGE, language)
-        MatchmakingCalculator.CompatibilityRating.BELOW_AVERAGE -> StringResources.get(StringKey.COMPAT_BELOW_AVERAGE, language)
-        MatchmakingCalculator.CompatibilityRating.POOR -> StringResources.get(StringKey.COMPAT_POOR, language)
-    }
-}
-
-/**
- * Get localized description for CompatibilityRating
- */
-fun MatchmakingCalculator.CompatibilityRating.getLocalizedDescription(language: Language): String {
-    return when (this) {
-        MatchmakingCalculator.CompatibilityRating.EXCELLENT -> StringResources.get(StringKey.COMPAT_EXCELLENT_DESC, language)
-        MatchmakingCalculator.CompatibilityRating.GOOD -> StringResources.get(StringKey.COMPAT_GOOD_DESC, language)
-        MatchmakingCalculator.CompatibilityRating.AVERAGE -> StringResources.get(StringKey.COMPAT_AVERAGE_DESC, language)
-        MatchmakingCalculator.CompatibilityRating.BELOW_AVERAGE -> StringResources.get(StringKey.COMPAT_BELOW_AVERAGE_DESC, language)
-        MatchmakingCalculator.CompatibilityRating.POOR -> StringResources.get(StringKey.COMPAT_POOR_DESC, language)
+fun getYoniLocalizedAnimalName(yoni: Yoni, language: Language): String {
+    return when (yoni.animal) {
+        "Horse" -> StringResources.get(StringKeyMatch.YONI_HORSE, language)
+        "Elephant" -> StringResources.get(StringKeyMatch.YONI_ELEPHANT, language)
+        "Sheep" -> StringResources.get(StringKeyMatch.YONI_SHEEP, language)
+        "Serpent" -> StringResources.get(StringKeyMatch.YONI_SERPENT, language)
+        "Dog" -> StringResources.get(StringKeyMatch.YONI_DOG, language)
+        "Cat" -> StringResources.get(StringKeyMatch.YONI_CAT, language)
+        "Rat" -> StringResources.get(StringKeyMatch.YONI_RAT, language)
+        "Cow" -> StringResources.get(StringKeyMatch.YONI_COW, language)
+        "Buffalo" -> StringResources.get(StringKeyMatch.YONI_BUFFALO, language)
+        "Tiger" -> StringResources.get(StringKeyMatch.YONI_TIGER, language)
+        "Deer" -> StringResources.get(StringKeyMatch.YONI_DEER, language)
+        "Monkey" -> StringResources.get(StringKeyMatch.YONI_MONKEY, language)
+        "Mongoose" -> StringResources.get(StringKeyMatch.YONI_MONGOOSE, language)
+        "Lion" -> StringResources.get(StringKeyMatch.YONI_LION, language)
+        else -> yoni.animal
     }
 }
 
@@ -649,13 +522,13 @@ fun getHouseSignification(house: Int, language: Language): String {
  */
 fun getChoghadiyaName(choghadiya: String, language: Language): String {
     return when (choghadiya.lowercase()) {
-        "amrit" -> StringResources.get(StringKey.CHOGHADIYA_AMRIT, language)
-        "shubh" -> StringResources.get(StringKey.CHOGHADIYA_SHUBH, language)
-        "labh" -> StringResources.get(StringKey.CHOGHADIYA_LABH, language)
-        "char" -> StringResources.get(StringKey.CHOGHADIYA_CHAR, language)
-        "rog" -> StringResources.get(StringKey.CHOGHADIYA_ROG, language)
-        "kaal" -> StringResources.get(StringKey.CHOGHADIYA_KAAL, language)
-        "udveg" -> StringResources.get(StringKey.CHOGHADIYA_UDVEG, language)
+        "amrit" -> StringResources.get(StringKeyMatch.CHOGHADIYA_AMRIT, language)
+        "shubh" -> StringResources.get(StringKeyMatch.CHOGHADIYA_SHUBH, language)
+        "labh" -> StringResources.get(StringKeyMatch.CHOGHADIYA_LABH, language)
+        "char" -> StringResources.get(StringKeyMatch.CHOGHADIYA_CHAR, language)
+        "rog" -> StringResources.get(StringKeyMatch.CHOGHADIYA_ROG, language)
+        "kaal" -> StringResources.get(StringKeyMatch.CHOGHADIYA_KAAL, language)
+        "udveg" -> StringResources.get(StringKeyMatch.CHOGHADIYA_UDVEG, language)
         else -> choghadiya
     }
 }

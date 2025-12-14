@@ -6,7 +6,7 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.DivisionalChartData
 import com.astro.storm.ephemeris.DivisionalChartType
-import com.astro.storm.util.PlanetaryRelationships
+import com.astro.storm.ephemeris.VedicAstrologyUtils.PlanetaryRelationship
 import java.text.DecimalFormat
 import java.time.LocalDateTime
 import kotlin.math.PI
@@ -327,8 +327,10 @@ object ShadbalaCalculator {
         }
 
         val lunarElongation: Double by lazy {
-            val moonLong = moonPosition?.longitude ?: 0.0
-            val sunLong = sunPosition?.longitude ?: 0.0
+            val moonLong = moonPosition?.longitude
+                ?: throw IllegalStateException("Moon position required for Shadbala calculation")
+            val sunLong = sunPosition?.longitude
+                ?: throw IllegalStateException("Sun position required for Shadbala calculation")
             normalizeDegree(moonLong - sunLong)
         }
 
@@ -482,10 +484,10 @@ object ShadbalaCalculator {
         if (MoolatrikonaData.isInMoolatrikona(planet, sign, degreeInSign)) return 22.5
         if (isOwnSign(planet, sign)) return 30.0
 
-        return when (PlanetaryRelationships.getRelationship(planet, sign.ruler)) {
-            PlanetaryRelationships.Relationship.FRIEND -> 15.0
-            PlanetaryRelationships.Relationship.NEUTRAL -> 10.0
-            PlanetaryRelationships.Relationship.ENEMY -> 7.5
+        return when (VedicAstrologyUtils.getNaturalRelationship(planet, sign.ruler)) {
+            PlanetaryRelationship.FRIEND, PlanetaryRelationship.BEST_FRIEND -> 15.0
+            PlanetaryRelationship.NEUTRAL -> 10.0
+            PlanetaryRelationship.ENEMY, PlanetaryRelationship.BITTER_ENEMY -> 7.5
         }
     }
 
@@ -493,10 +495,10 @@ object ShadbalaCalculator {
         if (isExalted(planet, sign)) return 20.0
         if (isOwnSign(planet, sign)) return 30.0
 
-        return when (PlanetaryRelationships.getRelationship(planet, sign.ruler)) {
-            PlanetaryRelationships.Relationship.FRIEND -> 15.0
-            PlanetaryRelationships.Relationship.NEUTRAL -> 10.0
-            PlanetaryRelationships.Relationship.ENEMY -> 7.5
+        return when (VedicAstrologyUtils.getNaturalRelationship(planet, sign.ruler)) {
+            PlanetaryRelationship.FRIEND, PlanetaryRelationship.BEST_FRIEND -> 15.0
+            PlanetaryRelationship.NEUTRAL -> 10.0
+            PlanetaryRelationship.ENEMY, PlanetaryRelationship.BITTER_ENEMY -> 7.5
         }
     }
 
