@@ -787,6 +787,7 @@ object DivisionalChartAnalyzer {
             ZodiacSign.TAURUS, ZodiacSign.VIRGO, ZodiacSign.CAPRICORN -> "South direction"
             ZodiacSign.GEMINI, ZodiacSign.LIBRA, ZodiacSign.AQUARIUS -> "West direction"
             ZodiacSign.CANCER, ZodiacSign.SCORPIO, ZodiacSign.PISCES -> "North direction"
+            else -> "Unknown direction"
         }
     }
 

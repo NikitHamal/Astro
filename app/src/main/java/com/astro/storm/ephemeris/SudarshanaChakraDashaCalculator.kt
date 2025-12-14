@@ -275,6 +275,8 @@ object SudarshanaChakraDashaCalculator {
                 effects.add("Sign lord is exalted - strong positive results")
             } else if (AstrologicalConstants.isDebilitated(lord, pos.sign)) {
                 effects.add("Sign lord is debilitated - extra efforts needed")
+            } else {
+                effects.add("Sign lord is in a neutral position")
             }
         }
 

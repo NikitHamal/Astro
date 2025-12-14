@@ -2294,10 +2294,10 @@ class PrashnaCalculator(context: Context) {
         val remainingDegrees = 30 - degreesInSign
 
         // Each degree can represent a day, week, or month based on sign quality
-        return when (lagnaAnalysis.lagnaSign.quality) {
-            com.astro.storm.data.model.Quality.CARDINAL -> Pair(remainingDegrees, TimingUnit.DAYS)
-            com.astro.storm.data.model.Quality.FIXED -> Pair(remainingDegrees, TimingUnit.MONTHS)
-            com.astro.storm.data.model.Quality.MUTABLE -> Pair(remainingDegrees, TimingUnit.WEEKS)
+        return when (lagnaAnalysis.lagnaSign.modality) {
+            com.astro.storm.data.model.Modality.CARDINAL -> Pair(remainingDegrees, TimingUnit.DAYS)
+            com.astro.storm.data.model.Modality.FIXED -> Pair(remainingDegrees, TimingUnit.MONTHS)
+            com.astro.storm.data.model.Modality.MUTABLE -> Pair(remainingDegrees, TimingUnit.WEEKS)
         }
     }
 
