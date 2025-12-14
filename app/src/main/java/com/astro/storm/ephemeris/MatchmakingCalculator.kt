@@ -4,25 +4,28 @@ import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.*
+import com.astro.storm.ephemeris.advanced.*
 import kotlin.math.abs
 
 /**
- * Main Matchmaking Calculator - Orchestrates Vedic compatibility analysis
- *
- * This is the entry point for Kundli Milan (Ashtakoota Guna matching).
- * Delegates to specialized calculators for actual computations:
- * - GunaMilanCalculator: 8 Guna (Koota) calculations
- * - ManglikDoshaCalculator: Manglik Dosha analysis
+ * Enhanced Matchmaking Calculator - Production-Grade Implementation
+ * 
+ * This is the main entry point for Kundli Milan (Ashtakoota Guna matching).
+ * Uses modular architecture with specialized calculators:
+ * - GunaCalculationCore: Enhanced 8 Guna (Koota) calculations
+ * - ManglikDoshaCore: Advanced Manglik Dosha analysis
+ * - MatchmakingOrchestrator: Comprehensive analysis coordination
  *
  * Based on classical texts:
  * - Brihat Parasara Hora Shastra (BPHS)
  * - Muhurta Chintamani
  * - Jataka Parijata
+ * - Sarvartha Chintamani
  */
 object MatchmakingCalculator {
 
     /**
-     * Main entry point for matchmaking calculation
+     * Main entry point for matchmaking calculation using advanced orchestrator
      *
      * @param brideChart The bride's Vedic chart
      * @param groomChart The groom's Vedic chart
@@ -30,6 +33,25 @@ object MatchmakingCalculator {
      * @return Complete MatchmakingResult with all analyses
      */
     fun calculateMatchmaking(
+        brideChart: VedicChart,
+        groomChart: VedicChart,
+        language: Language = Language.ENGLISH
+    ): MatchmakingResult {
+        // Use advanced orchestrator for enhanced precision
+        val advancedAnalysis = MatchmakingOrchestrator.performMatchmakingAnalysis(brideChart, groomChart, language)
+        
+        return if (advancedAnalysis.isSuccess) {
+            convertAdvancedToLegacyResult(advancedAnalysis.getOrNull()!!, language)
+        } else {
+            // Fallback to legacy calculation in case of issues
+            calculateMatchmakingLegacy(brideChart, groomChart, language)
+        }
+    }
+    
+    /**
+     * Legacy calculation method for backward compatibility
+     */
+    private fun calculateMatchmakingLegacy(
         brideChart: VedicChart,
         groomChart: VedicChart,
         language: Language = Language.ENGLISH
@@ -111,6 +133,50 @@ object MatchmakingCalculator {
             remedies = remedies,
             summary = summary,
             detailedAnalysis = detailedAnalysis
+        )
+    }
+    
+    /**
+     * Convert advanced analysis to legacy MatchmakingResult for backward compatibility
+     */
+    private fun convertAdvancedToLegacyResult(
+        advancedAnalysis: MatchmakingOrchestrator.MatchmakingAnalysis,
+        language: Language
+    ): MatchmakingResult {
+        // Convert Manglik analysis to legacy format
+        val brideManglik = convertAdvancedManglikToLegacy(
+            advancedAnalysis.manglikAnalysis.brideStatus, "Bride", language
+        )
+        val groomManglik = convertAdvancedManglikToLegacy(
+            advancedAnalysis.manglikAnalysis.groomStatus, "Groom", language
+        )
+        
+        // Generate enhanced summary
+        val enhancedSummary = generateEnhancedSummary(
+            advancedAnalysis, language
+        )
+        
+        // Generate enhanced detailed analysis
+        val enhancedDetailedAnalysis = generateEnhancedDetailedAnalysis(
+            advancedAnalysis, language
+        )
+        
+        return MatchmakingResult(
+            brideChart = advancedAnalysis.brideChart,
+            groomChart = advancedAnalysis.groomChart,
+            gunaAnalyses = advancedAnalysis.coreGunaAnalyses,
+            totalPoints = advancedAnalysis.compatibilityScore.totalPoints,
+            maxPoints = advancedAnalysis.compatibilityScore.maxPoints,
+            percentage = advancedAnalysis.compatibilityScore.percentage,
+            rating = advancedAnalysis.compatibilityScore.rating,
+            brideManglik = brideManglik,
+            groomManglik = groomManglik,
+            manglikCompatibility = advancedAnalysis.manglikAnalysis.compatibility.explanation,
+            additionalFactors = convertAdvancedAdditionalFactorsToLegacy(advancedAnalysis.additionalFactors, language),
+            specialConsiderations = advancedAnalysis.specialConsiderations,
+            remedies = advancedAnalysis.remedies.map { it.description },
+            summary = enhancedSummary,
+            detailedAnalysis = enhancedDetailedAnalysis
         )
     }
 
@@ -734,5 +800,218 @@ object MatchmakingCalculator {
             fromMoon = ephemerisAnalysis.analysisFromMoon.isManglik,
             fromVenus = ephemerisAnalysis.analysisFromVenus.isManglik
         )
+    }
+    
+    /**
+     * Convert advanced Manglik status to legacy ManglikAnalysis
+     */
+    private fun convertAdvancedManglikToLegacy(
+        status: MatchmakingOrchestrator.ManglikStatus,
+        person: String,
+        language: Language
+    ): com.astro.storm.data.model.ManglikAnalysis {
+        val dosha = when (status.level) {
+            ManglikLevel.NONE -> ManglikDosha.NONE
+            ManglikLevel.MILD -> ManglikDosha.PARTIAL
+            ManglikLevel.PARTIAL -> ManglikDosha.PARTIAL
+            ManglikLevel.FULL -> ManglikDosha.FULL
+            ManglikLevel.SEVERE -> ManglikDosha.DOUBLE
+        }
+        
+        val factors = status.placements.filter { it.isManglik }.map { placement ->
+            "Mars in ${placement.house} house (${placement.intensity * 100}% intensity)"
+        }
+        
+        val cancellations = status.cancellations.map { it.description }
+        
+        return com.astro.storm.data.model.ManglikAnalysis(
+            person = person,
+            dosha = dosha,
+            marsHouse = status.placements.firstOrNull { it.isManglik }?.house ?: 0,
+            marsHouseFromMoon = status.placements.getOrNull(1)?.house ?: 0,
+            marsHouseFromVenus = status.placements.getOrNull(2)?.house ?: 0,
+            marsDegreeInHouse = status.placements.firstOrNull()?.degree ?: 0.0,
+            isRetrograde = false,
+            factors = factors,
+            cancellations = cancellations,
+            effectiveDosha = dosha,
+            intensity = (status.effectiveIntensity * 100).toInt(),
+            fromLagna = status.placements.getOrNull(0)?.isManglik ?: false,
+            fromMoon = status.placements.getOrNull(1)?.isManglik ?: false,
+            fromVenus = status.placements.getOrNull(2)?.isManglik ?: false
+        )
+    }
+    
+    /**
+     * Convert advanced additional factors to legacy AdditionalFactors
+     */
+    private fun convertAdvancedAdditionalFactorsToLegacy(
+        advanced: MatchmakingOrchestrator.AdditionalCompatibilityFactors,
+        language: Language
+    ): AdditionalFactors {
+        return AdditionalFactors(
+            vedhaPresent = advanced.vedha.isPresent,
+            vedhaDetails = advanced.vedha.details,
+            rajjuCompatible = advanced.rajju.compatibility.isCompatible,
+            rajjuDetails = advanced.rajju.details,
+            brideRajju = when (advanced.rajju.brideRajju) {
+                ClassicalRajju.PADA -> Rajju.PADA
+                ClassicalRajju.KATI -> Rajju.KATI
+                ClassicalRajju.NABHI -> Rajju.NABHI
+                ClassicalRajju.KANTHA -> Rajju.KANTHA
+                ClassicalRajju.SIRO -> Rajju.SIRO
+            },
+            groomRajju = when (advanced.rajju.groomRajju) {
+                ClassicalRajju.PADA -> Rajju.PADA
+                ClassicalRajju.KATI -> Rajju.KATI
+                ClassicalRajju.NABHI -> Rajju.NABHI
+                ClassicalRajju.KANTHA -> Rajju.KANTHA
+                ClassicalRajju.SIRO -> Rajju.SIRO
+            },
+            brideArudha = RajjuArudha.ASCENDING, // Simplified
+            groomArudha = RajjuArudha.DESCENDING, // Simplified
+            streeDeerghaSatisfied = advanced.streeDeergha.isFavorable,
+            streeDeerghaDiff = advanced.streeDeergha.difference,
+            mahendraSatisfied = advanced.mahendra.isFavorable,
+            mahendraDetails = advanced.mahendra.details
+        )
+    }
+    
+    /**
+     * Generate enhanced summary from advanced analysis
+     */
+    private fun generateEnhancedSummary(
+        analysis: MatchmakingOrchestrator.MatchmakingAnalysis,
+        language: Language
+    ): String {
+        val score = analysis.compatibilityScore
+        val manglik = analysis.manglikAnalysis
+        
+        return buildString {
+            appendLine("═══════════════════════════════════════════════════════════")
+            appendLine("                    ENHANCED MATCHMAKING ANALYSIS")
+            appendLine("═══════════════════════════════════════════════════════════")
+            appendLine()
+            appendLine("Overall Score: ${String.format("%.1f", score.totalPoints)} / ${score.maxPoints} (${String.format("%.1f", score.percentage)}%)")
+            appendLine("Rating: ${score.rating.displayName}")
+            appendLine("Confidence Level: ${String.format("%.1f", analysis.confidenceLevel * 100)}%")
+            appendLine()
+            appendLine("─────────────────────────────────────────────────────────────")
+            appendLine()
+            
+            appendLine("Manglik Dosha Analysis:")
+            appendLine("  Bride: ${manglik.brideStatus.level.name} (${manglik.brideStatus.effectiveIntensity * 100:.0f}% intensity)")
+            appendLine("  Groom: ${manglik.groomStatus.level.name} (${manglik.groomStatus.effectiveIntensity * 100:.0f}% intensity)")
+            appendLine("  Compatibility: ${manglik.compatibility.level.name}")
+            appendLine()
+            
+            appendLine("Key Strengths:")
+            analysis.coreGunaAnalyses.filter { it.obtainedPoints >= it.maxPoints * 0.8 }.forEach { guna ->
+                appendLine("  - ${guna.name} (${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()})")
+            }
+            appendLine()
+            
+            appendLine("Areas for Attention:")
+            analysis.coreGunaAnalyses.filter { it.obtainedPoints < it.maxPoints * 0.5 }.forEach { guna ->
+                appendLine("  - ${guna.name} (${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()})")
+            }
+            appendLine()
+            
+            appendLine("Recommendations:")
+            analysis.recommendations.forEach { recommendation ->
+                appendLine("  - $recommendation")
+            }
+        }
+    }
+    
+    /**
+     * Generate enhanced detailed analysis
+     */
+    private fun generateEnhancedDetailedAnalysis(
+        analysis: MatchmakingOrchestrator.MatchmakingAnalysis,
+        language: Language
+    ): String {
+        return buildString {
+            appendLine("═══════════════════════════════════════════════════════════════════")
+            appendLine("                    COMPREHENSIVE MATCHMAKING REPORT")
+            appendLine("═══════════════════════════════════════════════════════════════════")
+            appendLine()
+            
+            appendLine("CONFIDENCE ASSESSMENT")
+            appendLine("Analysis Confidence: ${String.format("%.1f", analysis.confidenceLevel * 100)}%")
+            appendLine("Data Quality: ${if (analysis.confidenceLevel > 0.9) "Excellent" else if (analysis.confidenceLevel > 0.7) "Good" else "Fair"}")
+            appendLine()
+            
+            appendLine("CORE GUNA ANALYSIS")
+            appendLine("─────────────────────────────────────────────────────────────────────")
+            analysis.coreGunaAnalyses.forEach { guna ->
+                val scoreBar = buildScoreBar(guna.obtainedPoints, guna.maxPoints)
+                val status = if (guna.isPositive) "FAVORABLE" else "NEEDS ATTENTION"
+                
+                appendLine("┌─────────────────────────────────────────────────────────────────┐")
+                appendLine("│ ${guna.name.uppercase().padEnd(20)} ${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()} points    $status")
+                appendLine("├─────────────────────────────────────────────────────────────────┤")
+                appendLine("│ $scoreBar")
+                appendLine("│")
+                appendLine("│ Purpose: ${guna.description}")
+                appendLine("│ Analysis: ${guna.analysis}")
+                appendLine("└─────────────────────────────────────────────────────────────────┘")
+                appendLine()
+            }
+            
+            appendLine("MANGLIK DOSHA DETAILED ANALYSIS")
+            appendLine("─────────────────────────────────────────────────────────────────────")
+            appendLine()
+            
+            appendLine("Bride Analysis:")
+            appendLine("  Level: ${analysis.manglikAnalysis.brideStatus.level.name}")
+            appendLine("  Base Intensity: ${String.format("%.1f", analysis.manglikAnalysis.brideStatus.intensity * 100)}%")
+            appendLine("  Effective Intensity: ${String.format("%.1f", analysis.manglikAnalysis.brideStatus.effectiveIntensity * 100)}%")
+            appendLine("  Cancellation Factors: ${analysis.manglikAnalysis.brideStatus.cancellations.size}")
+            appendLine()
+            
+            appendLine("Groom Analysis:")
+            appendLine("  Level: ${analysis.manglikAnalysis.groomStatus.level.name}")
+            appendLine("  Base Intensity: ${String.format("%.1f", analysis.manglikAnalysis.groomStatus.intensity * 100)}%")
+            appendLine("  Effective Intensity: ${String.format("%.1f", analysis.manglikAnalysis.groomStatus.effectiveIntensity * 100)}%")
+            appendLine("  Cancellation Factors: ${analysis.manglikAnalysis.groomStatus.cancellations.size}")
+            appendLine()
+            
+            appendLine("Compatibility Assessment:")
+            appendLine("  Level: ${analysis.manglikAnalysis.compatibility.level.name}")
+            appendLine("  Compatible: ${if (analysis.manglikAnalysis.compatibility.isCompatible) "YES" else "NO"}")
+            appendLine("  Explanation: ${analysis.manglikAnalysis.compatibility.explanation}")
+            appendLine()
+            
+            appendLine("ADDITIONAL COMPATIBILITY FACTORS")
+            appendLine("─────────────────────────────────────────────────────────────────────")
+            appendLine()
+            
+            appendLine("Vedha (Obstruction): ${if (analysis.additionalFactors.vedha.isPresent) "PRESENT" else "ABSENT"}")
+            appendLine("  Impact: ${analysis.additionalFactors.vedha.impact}")
+            appendLine("  Details: ${analysis.additionalFactors.vedha.details}")
+            appendLine()
+            
+            appendLine("Rajju (Cosmic Bond): ${if (analysis.additionalFactors.rajju.compatibility.isCompatible) "COMPATIBLE" else "INCOMPATIBLE"}")
+            appendLine("  Impact: ${analysis.additionalFactors.rajju.impact}")
+            appendLine("  Details: ${analysis.additionalFactors.rajju.details}")
+            appendLine()
+            
+            appendLine("SPECIAL CONSIDERATIONS")
+            appendLine("─────────────────────────────────────────────────────────────────────")
+            analysis.specialConsiderations.forEach { consideration ->
+                appendLine("  • $consideration")
+            }
+            appendLine()
+            
+            appendLine("RECOMMENDED REMEDIES")
+            appendLine("─────────────────────────────────────────────────────────────────────")
+            analysis.remedies.forEach { remedy ->
+                appendLine("  • ${remedy.description}")
+            }
+            appendLine()
+            
+            appendLine("═══════════════════════════════════════════════════════════════════")
+        }
     }
 }

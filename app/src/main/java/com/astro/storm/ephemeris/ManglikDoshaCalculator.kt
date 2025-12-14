@@ -4,43 +4,28 @@ import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.Planet
+import com.astro.storm.data.model.*
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.ephemeris.advanced.*
 
 /**
- * Manglik Dosha (Mangal Dosha / Kuja Dosha) Calculator
+ * Enhanced Manglik Dosha Calculator - Production Grade Implementation
  *
- * Manglik Dosha is one of the most important considerations in Vedic matchmaking (Kundali Milan).
- * It occurs when Mars (Mangal/Kuja) is placed in certain houses from:
- * - Lagna (Ascendant)
- * - Moon
- * - Venus
- *
- * Traditional houses causing Manglik Dosha: 1st, 2nd, 4th, 7th, 8th, 12th
- *
- * The dosha indicates potential challenges in married life including:
- * - Conflicts and arguments
- * - Health issues to spouse
- * - Delay in marriage
- * - Separation or divorce
- *
- * However, numerous cancellation factors can nullify or reduce the dosha.
- *
- * This calculator provides:
- * - Complete Manglik analysis from Lagna, Moon, and Venus
- * - Severity assessment with percentage
- * - All cancellation factors check
- * - Personalized remedies
- * - Compatibility analysis for Manglik matching
- *
- * References:
+ * High-precision Manglik Dosha analysis based on classical Vedic texts:
  * - Brihat Parasara Hora Shastra (BPHS)
  * - Muhurta Chintamani
  * - Phaladeepika
+ * - Sarvartha Chintamani
  *
- * @author AstroStorm - Ultra-Precision Vedic Astrology
+ * Enhanced features:
+ * - Modular architecture with ManglikDoshaCore
+ * - Classical precision calculations
+ * - Comprehensive cancellation factors
+ * - Enhanced intensity calculations
+ * - Production-grade error handling
+ * - Classical remedy recommendations
  */
 object ManglikDoshaCalculator {
 

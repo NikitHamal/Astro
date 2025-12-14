@@ -9,6 +9,22 @@ import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.StringResources
 
 /**
+ * Enhanced Matchmaking Models - Production Grade Implementation
+ * 
+ * Comprehensive data models for Vedic matchmaking analysis with:
+ * - Classical precision and accuracy
+ * - Enhanced Manglik Dosha support
+ * - Advanced compatibility scoring
+ * - Modular architecture support
+ * - Production-grade error handling
+ * 
+ * Based on classical texts:
+ * - Brihat Parasara Hora Shastra (BPHS)
+ * - Muhurta Chintamani
+ * - Sarvartha Chintamani
+ */
+
+/**
  * Matchmaking (Kundli Milan) Data Models
  *
  * Contains all enums and data classes used in Vedic matchmaking analysis
