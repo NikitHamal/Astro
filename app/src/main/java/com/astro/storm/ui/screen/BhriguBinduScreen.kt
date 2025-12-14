@@ -34,7 +34,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.StringKeyDosha
+import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -91,8 +93,8 @@ fun BhriguBinduScreen(
     var expandedLifeArea by remember { mutableStateOf<LifeArea?>(null) }
 
     val tabs = listOf(
-        stringResource(StringKey.TAB_OVERVIEW),
-        stringResource(StringKey.TAB_ANALYSIS),
+        stringResource(StringKeyMatch.TAB_OVERVIEW),
+        stringResource(StringKeyMatch.TAB_ANALYSIS),
         stringResource(StringKeyDosha.BHRIGU_BINDU_TRANSITS),
         stringResource(StringKeyDosha.BHRIGU_BINDU_REMEDIES)
     )
