@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -130,7 +131,7 @@ fun YoginiDashaScreen(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
             YoginiDashaTopBar(
-                chartName = chart?.birthData?.name ?: stringResource(StringKey.MISC_UNKNOWN),
+                chartName = chart?.birthData?.name ?: stringResource(StringKeyMatch.MISC_UNKNOWN),
                 currentPeriodInfo = currentPeriodInfo,
                 onBack = onBack
             )
@@ -866,7 +867,7 @@ private fun ApplicabilityCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "${stringResource(StringKey.MUHURTA_SCORE)}: ${String.format("%.0f", applicability.applicabilityScore * 100)}%",
+                text = "${stringResource(StringKeyMatch.MUHURTA_SCORE)}: ${String.format("%.0f", applicability.applicabilityScore * 100)}%",
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextMuted
@@ -916,7 +917,7 @@ private fun YoginiSequenceCard(
 }
 
 @Composable
-private fun YoginiSequenceItem(
+private fun RowScope.YoginiSequenceItem(
     yogini: YoginiDashaCalculator.Yogini,
     language: Language
 ) {
