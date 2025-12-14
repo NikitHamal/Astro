@@ -363,6 +363,11 @@ object DivisionalChartAnalyzer {
                 recommendations.add("Strengthen Jupiter and Venus through gemstones or mantras")
                 recommendations.add("Avoid speculation; focus on steady income sources")
             }
+            else -> {
+                recommendations.add("Worship Goddess Lakshmi for wealth blessings")
+                recommendations.add("Strengthen Jupiter and Venus through gemstones or mantras")
+                recommendations.add("Avoid speculation; focus on steady income sources")
+            }
         }
 
         indicators.filter { it.strength > 70 }.forEach { indicator ->

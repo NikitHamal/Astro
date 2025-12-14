@@ -256,7 +256,7 @@ object SudarshanaChakraDashaCalculator {
         val lordPosition = chart.planetPositions.find { it.planet == lord }
         val effects = mutableListOf<String>()
 
-        effects.add("${sign.displayName} activated - ${sign.element.name.lowercase()} element emphasized")
+        effects.add("${sign.displayName} activated - ${sign.element.lowercase()} element emphasized")
 
         when (sign.modality) {
             com.astro.storm.data.model.Modality.CARDINAL ->
