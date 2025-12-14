@@ -4,18 +4,21 @@ This document outlines serious, practical, and impactful next steps for the Astr
 
 ---
 
-## 1. Hora Lord Analysis (Hora Chart Calculator)
+## 1. Hora Lord Analysis (Hora Chart Calculator) ✅ IMPLEMENTED
 
 ### Description
 Implement comprehensive Hora (D-2) chart analysis for wealth and financial predictions. The Hora chart divides each sign into two parts ruled by Sun and Moon, providing deep insights into native's relationship with wealth.
 
 ### Implementation Details
-- Calculate Hora Lagna and planetary placements in Hora chart
-- Sun Hora indicates self-earned wealth, government favor, gold
-- Moon Hora indicates inherited wealth, liquid assets, silver, pearls
-- Analyze Hora chart for wealth accumulation periods
-- Correlate with Dasha periods for timing wealth gains/losses
-- Add wealth potential score based on benefic/malefic positions in Hora
+- ✅ Calculate Hora Lagna and planetary placements in Hora chart
+- ✅ Sun Hora indicates self-earned wealth, government favor, gold
+- ✅ Moon Hora indicates inherited wealth, liquid assets, silver, pearls
+- ✅ Analyze Hora chart for wealth accumulation periods
+- ✅ Correlate with Dasha periods for timing wealth gains/losses
+- ✅ Add wealth potential score based on benefic/malefic positions in Hora
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/DivisionalChartAnalyzer.kt`
 
 ### Vedic References
 - Brihat Parashara Hora Shastra (Chapter 7)
@@ -23,18 +26,21 @@ Implement comprehensive Hora (D-2) chart analysis for wealth and financial predi
 
 ---
 
-## 2. Drekkana (D-3) Chart for Siblings & Courage
+## 2. Drekkana (D-3) Chart for Siblings & Courage ✅ IMPLEMENTED
 
 ### Description
 Implement D-3 divisional chart analysis specifically for understanding sibling relationships, personal courage, and short journeys.
 
 ### Implementation Details
-- Calculate Drekkana positions for all planets
-- Analyze 3rd house matters: siblings (count, gender, relationship quality)
-- Assess Mars in Drekkana for courage and initiative
-- Include predictions about younger siblings' welfare
-- Communication abilities and artistic talents assessment
-- Short journey and neighborhood analysis
+- ✅ Calculate Drekkana positions for all planets
+- ✅ Analyze 3rd house matters: siblings (count, gender, relationship quality)
+- ✅ Assess Mars in Drekkana for courage and initiative
+- ✅ Include predictions about younger siblings' welfare
+- ✅ Communication abilities and artistic talents assessment
+- ✅ Short journey and neighborhood analysis
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/DivisionalChartAnalyzer.kt`
 
 ### Vedic References
 - BPHS Chapter 7 on Drekkana calculation
@@ -42,19 +48,22 @@ Implement D-3 divisional chart analysis specifically for understanding sibling r
 
 ---
 
-## 3. Navamsa (D-9) Marriage Timing Calculator
+## 3. Navamsa (D-9) Marriage Timing Calculator ✅ IMPLEMENTED
 
 ### Description
 Enhance the existing Navamsa analysis with a dedicated marriage timing prediction system based on Navamsa activation periods.
 
 ### Implementation Details
-- Vimshottari Dasha of Navamsa Lagna lord timing
-- Transit of Jupiter/Saturn over 7th house/lord in Navamsa
-- Upapada Lagna (A2) analysis for spouse characteristics
-- Darakaraka (spouse significator) in Navamsa analysis
-- Marriage muhurta compatibility with birth chart
-- Multiple marriage indicators analysis (if applicable)
-- Spouse direction indicator based on 7th house and Darakaraka
+- ✅ Vimshottari Dasha of Navamsa Lagna lord timing
+- ✅ Transit of Jupiter/Saturn over 7th house/lord in Navamsa
+- ✅ Upapada Lagna (A2) analysis for spouse characteristics
+- ✅ Darakaraka (spouse significator) in Navamsa analysis
+- ✅ Marriage muhurta compatibility with birth chart
+- ✅ Multiple marriage indicators analysis (if applicable)
+- ✅ Spouse direction indicator based on 7th house and Darakaraka
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/DivisionalChartAnalyzer.kt`
 
 ### Vedic References
 - Jaimini Sutras on Upapada and Darakaraka
@@ -62,19 +71,19 @@ Enhance the existing Navamsa analysis with a dedicated marriage timing predictio
 
 ---
 
-## 4. Dashamsa (D-10) Career Guidance System
+## 4. Dashamsa (D-10) Career Guidance System ✅ IMPLEMENTED
 
 ### Description
 Implement comprehensive career analysis using the D-10 chart with industry-specific recommendations based on planetary positions.
 
 ### Implementation Details
-- Calculate complete Dashamsa chart
-- Career type predictions based on 10th lord in Dashamsa
-- Government service indicators (Sun strong in D-10)
-- Business vs. service aptitude analysis
-- Multiple profession indicators
-- Career peak timing through D-10 Dasha periods
-- Industry mapping:
+- ✅ Calculate complete Dashamsa chart
+- ✅ Career type predictions based on 10th lord in Dashamsa
+- ✅ Government service indicators (Sun strong in D-10)
+- ✅ Business vs. service aptitude analysis
+- ✅ Multiple profession indicators
+- ✅ Career peak timing through D-10 Dasha periods
+- ✅ Industry mapping:
   - Sun: Government, administration, medicine
   - Moon: Hospitality, nursing, public relations
   - Mars: Military, police, surgery, engineering
@@ -83,25 +92,31 @@ Implement comprehensive career analysis using the D-10 chart with industry-speci
   - Venus: Arts, entertainment, luxury goods
   - Saturn: Mining, labor, construction, oil
 
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/DivisionalChartAnalyzer.kt`
+
 ### Vedic References
 - Phaladeepika on professional analysis
 - BPHS Chapter 7 on Dashamsa
 
 ---
 
-## 5. Dwadashamsa (D-12) Parental Analysis
+## 5. Dwadashamsa (D-12) Parental Analysis ✅ IMPLEMENTED
 
 ### Description
 Implement D-12 chart analysis for detailed predictions about parents' health, longevity, and relationship with the native.
 
 ### Implementation Details
-- Calculate Dwadashamsa positions
-- Father's analysis: Sun, 9th house, 9th lord in D-12
-- Mother's analysis: Moon, 4th house, 4th lord in D-12
-- Parents' longevity indicators
-- Inheritance predictions
-- Ancestral property matters
-- Family lineage analysis
+- ✅ Calculate Dwadashamsa positions
+- ✅ Father's analysis: Sun, 9th house, 9th lord in D-12
+- ✅ Mother's analysis: Moon, 4th house, 4th lord in D-12
+- ✅ Parents' longevity indicators
+- ✅ Inheritance predictions
+- ✅ Ancestral property matters
+- ✅ Family lineage analysis
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/DivisionalChartAnalyzer.kt`
 
 ### Vedic References
 - BPHS Chapter 7 on Dwadashamsa
@@ -228,18 +243,22 @@ Implement Jaimini Chara Dasha - a sign-based dasha system providing an alternati
 
 ---
 
-## 11. Mrityu Bhaga (Sensitive Degrees) Analysis
+## 11. Mrityu Bhaga (Sensitive Degrees) Analysis ✅ IMPLEMENTED
 
 ### Description
 Implement analysis of sensitive degrees in each sign where planetary placement can indicate health vulnerabilities or critical life events.
 
 ### Implementation Details
-- Traditional Mrityu Bhaga degrees for each planet
-- Gandanta point analysis (water-fire sign junctions)
-- Pushkara Navamsa and Pushkara Bhaga (auspicious degrees)
-- Critical degree alerts in chart display
-- Health vulnerability periods based on transit over Mrityu Bhaga
-- Remedial measures for planets in sensitive degrees
+- ✅ Traditional Mrityu Bhaga degrees for each planet in all signs (per Phaladeepika)
+- ✅ Gandanta point analysis (water-fire sign junctions: Brahma, Vishnu, Shiva types)
+- ✅ Pushkara Navamsa and Pushkara Bhaga (auspicious degrees)
+- ✅ Critical degree alerts with severity levels
+- ✅ Health vulnerability periods based on transit over Mrityu Bhaga
+- ✅ Remedial measures for planets in sensitive degrees
+- ✅ Transit vulnerability calculator for timing analysis
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/MrityuBhagaCalculator.kt`
 
 ### Vedic References
 - Phaladeepika on Mrityu Bhaga
@@ -312,18 +331,23 @@ Enhance the existing Prashna (Horary) module with advanced techniques for more a
 
 ---
 
-## 15. Ashtottari Dasha System
+## 15. Ashtottari Dasha System ✅ IMPLEMENTED
 
 ### Description
 Implement Ashtottari Dasha (108-year cycle) - particularly applicable when Rahu is in Kendra/Trikona from Lagna lord.
 
 ### Implementation Details
-- Applicability check based on Rahu's position
-- 8-planet system (excluding Ketu)
-- Different nakshatra-planet assignments
-- Total 108-year cycle calculations
-- Compare with Vimsottari for validation
-- Event timing using both systems
+- ✅ Applicability check based on Rahu's position from Lagna lord
+- ✅ 8-planet system (excluding Ketu): Sun(6), Moon(15), Mars(8), Mercury(17), Saturn(10), Jupiter(19), Rahu(12), Venus(21)
+- ✅ Different nakshatra-planet assignments per Ashtottari rules
+- ✅ Total 108-year cycle calculations
+- ✅ Compare with Vimsottari for validation
+- ✅ Complete Mahadasha, Antardasha, Pratyantardasha calculations
+- ✅ Planet relationship analysis (Friend, Enemy, Neutral)
+- ✅ Comprehensive interpretations and remedies
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/AshtottariDashaCalculator.kt`
 
 ### Vedic References
 - BPHS Chapter 46 on conditional Dashas
@@ -331,18 +355,23 @@ Implement Ashtottari Dasha (108-year cycle) - particularly applicable when Rahu 
 
 ---
 
-## 16. Sudarshana Chakra Dasha
+## 16. Sudarshana Chakra Dasha ✅ IMPLEMENTED
 
 ### Description
 Implement triple-reference dasha system analyzing charts from Lagna, Moon, and Sun simultaneously.
 
 ### Implementation Details
-- Concurrent analysis from three reference points
-- House-by-house yearly progression
-- Combined effect synthesis
-- Annual prediction with three-fold analysis
-- Strength assessment from all three charts
-- Visual representation of three-fold analysis
+- ✅ Concurrent analysis from three reference points (Lagna, Chandra, Surya)
+- ✅ House-by-house yearly progression (12-year cycle)
+- ✅ Combined effect synthesis with strength scores
+- ✅ Annual prediction with three-fold analysis
+- ✅ Strength assessment from all three charts
+- ✅ Yearly progression tracking (previous, current, next year)
+- ✅ Common and conflicting themes identification
+- ✅ Recommendations based on synthesis
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/SudarshanaChakraDashaCalculator.kt`
 
 ### Vedic References
 - Sudarshana Chakra traditional texts
@@ -350,18 +379,24 @@ Implement triple-reference dasha system analyzing charts from Lagna, Moon, and S
 
 ---
 
-## 17. Upachaya House Transit Tracker
+## 17. Upachaya House Transit Tracker ✅ IMPLEMENTED
 
 ### Description
 Implement focused tracking of transits through Upachaya houses (3, 6, 10, 11) where natural malefics give good results.
 
 ### Implementation Details
-- Real-time transit alerts for Upachaya positions
-- Saturn, Mars, Rahu beneficial transit notifications
-- Career growth timing through 10th house transits
-- Wealth accumulation through 11th house transits
-- Enemy/competition handling through 6th house transits
-- Courage and initiative through 3rd house transits
+- ✅ Real-time transit alerts for Upachaya positions
+- ✅ Saturn, Mars, Rahu beneficial transit notifications
+- ✅ Career growth timing through 10th house transits
+- ✅ Wealth accumulation through 11th house transits
+- ✅ Enemy/competition handling through 6th house transits
+- ✅ Courage and initiative through 3rd house transits
+- ✅ Transit quality assessment (Excellent, Good, Favorable, Neutral)
+- ✅ House-wise analysis with strength levels
+- ✅ Upcoming transit predictions
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/UpachayaTransitTracker.kt`
 
 ### Vedic References
 - Phaladeepika on Upachaya house results
@@ -407,23 +442,29 @@ Implement Shri Pati (equal house division from mid-heaven) as an alternative hou
 
 ---
 
-## 20. Lal Kitab Remedies Module
+## 20. Lal Kitab Remedies Module ✅ IMPLEMENTED
 
 ### Description
 Implement Lal Kitab-based remedial measures as a supplementary remedy system popular for its practical and accessible solutions.
 
 ### Implementation Details
-- Debts (Rin) concept: Pitru, Matru, Stri, Kanya, etc.
-- House-wise remedies based on planetary afflictions
-- Practical remedies (feeding animals, charity items)
-- Color therapy recommendations
-- Direction-based remedies
-- Day-specific rituals
-- Annual remedy calendar
+- ✅ Debts (Rin) concept: Pitru, Matru, Stri, Kanya (with indicators and effects)
+- ✅ House-wise remedies based on planetary afflictions
+- ✅ Practical remedies (feeding animals, charity items)
+- ✅ Color therapy recommendations per planet
+- ✅ Direction-based remedies per planet
+- ✅ Day-specific rituals (weekly calendar)
+- ✅ Annual remedy calendar with planet-day associations
+- ✅ Lal Kitab house lords mapping (different from classical)
+- ✅ Affliction type detection (Pitru Dosh, Grahan Dosh, Shani Peeda, etc.)
+- ✅ Severity assessment (Minimal, Mild, Moderate, Severe)
 
 ### Note
-- Clearly label as Lal Kitab system (distinct from classical Vedic)
-- Include both classical and Lal Kitab options
+- ✅ Clearly labeled as Lal Kitab system (distinct from classical Vedic)
+- ✅ System note included in analysis output
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/LalKitabRemediesCalculator.kt`
 
 ### References
 - Lal Kitab original texts
@@ -433,17 +474,26 @@ Implement Lal Kitab-based remedial measures as a supplementary remedy system pop
 
 ## Implementation Priority Matrix
 
-| Priority | Feature | Complexity | Impact |
-|----------|---------|------------|--------|
-| High | D-10 Career Guidance | Medium | High |
-| High | Navamsa Marriage Timing | Medium | High |
-| High | Shodashvarga Strength | High | High |
-| Medium | Chara Dasha | High | High |
-| Medium | Bhrigu Bindu | Low | Medium |
-| Medium | Prashna Enhancements | Medium | Medium |
-| Medium | Lal Kitab Remedies | Medium | High |
-| Low | Nadi Amsha | High | Medium |
-| Low | Kalachakra Dasha | High | Medium |
+| Priority | Feature | Complexity | Impact | Status |
+|----------|---------|------------|--------|--------|
+| High | D-10 Career Guidance | Medium | High | ✅ DONE |
+| High | Navamsa Marriage Timing | Medium | High | ✅ DONE |
+| High | Shodashvarga Strength | High | High | ✅ DONE |
+| High | Hora/Drekkana/D-12 | Medium | High | ✅ DONE |
+| High | Mrityu Bhaga Analysis | Medium | High | ✅ DONE |
+| High | Ashtottari Dasha | Medium | High | ✅ DONE |
+| High | Sudarshana Chakra | Medium | High | ✅ DONE |
+| High | Upachaya Transit | Low | High | ✅ DONE |
+| Medium | Chara Dasha | High | High | ✅ DONE |
+| Medium | Bhrigu Bindu | Low | Medium | ✅ DONE |
+| Medium | Yogini Dasha | Medium | Medium | ✅ DONE |
+| Medium | Argala Analysis | Medium | Medium | ✅ DONE |
+| Medium | Lal Kitab Remedies | Medium | High | ✅ DONE |
+| Medium | Prashna Enhancements | Medium | Medium | Pending |
+| Low | Nadi Amsha | High | Medium | Pending |
+| Low | Kalachakra Dasha | High | Medium | Pending |
+| Low | Sarvatobhadra Chakra | High | Medium | Pending |
+| Low | Shri Pati Paddhati | Medium | Low | Pending |
 
 ---
 
