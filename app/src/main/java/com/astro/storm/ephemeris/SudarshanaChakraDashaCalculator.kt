@@ -2,6 +2,7 @@ package com.astro.storm.ephemeris
 
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
+import com.astro.storm.data.model.Quality
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import java.time.LocalDateTime
@@ -259,11 +260,11 @@ object SudarshanaChakraDashaCalculator {
         effects.add("${sign.displayName} activated - ${sign.element.lowercase()} element emphasized")
 
         when (sign.quality) {
-            com.astro.storm.data.model.Quality.CARDINAL ->
+            Quality.CARDINAL ->
                 effects.add("Movable sign - new initiatives and changes favored")
-            com.astro.storm.data.model.Quality.FIXED ->
+            Quality.FIXED ->
                 effects.add("Fixed sign - stability and consolidation emphasized")
-            com.astro.storm.data.model.Quality.MUTABLE ->
+            Quality.MUTABLE ->
                 effects.add("Dual sign - adaptability and flexibility needed")
         }
 

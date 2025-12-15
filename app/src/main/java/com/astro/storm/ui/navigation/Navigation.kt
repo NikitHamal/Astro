@@ -466,7 +466,13 @@ fun AstroStormNavigation(
 
             DashasScreen(
                 chart = currentChart,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onNavigateToYoginiDasha = {
+                    chartId?.let { navController.navigate(Screen.YoginiDasha.createRoute(it)) }
+                },
+                onNavigateToCharaDasha = {
+                    chartId?.let { navController.navigate(Screen.CharaDasha.createRoute(it)) }
+                }
             )
         }
 
