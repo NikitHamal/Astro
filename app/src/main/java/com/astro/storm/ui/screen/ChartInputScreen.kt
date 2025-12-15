@@ -1,5 +1,7 @@
 package com.astro.storm.ui.screen
 
+import androidx.compose.ui.res.stringResource
+import com.astro.storm.R
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -326,18 +328,6 @@ fun ChartInputScreen(
     }
 }
 
-private fun validateInput(latitude: String, longitude: String): String? {
-    val lat = latitude.trim().toDoubleOrNull()
-    val lon = longitude.trim().toDoubleOrNull()
-
-    return when {
-        lat == null || lon == null -> "Please enter valid latitude and longitude"
-        lat < -90 || lat > 90 -> "Latitude must be between -90 and 90"
-        lon < -180 || lon > 180 -> "Longitude must be between -180 and 180"
-        else -> null
-    }
-}
-
 private fun validateInputLocalized(latitude: String, longitude: String): StringKey? {
     val lat = latitude.trim().toDoubleOrNull()
     val lon = longitude.trim().toDoubleOrNull()
@@ -463,7 +453,6 @@ private fun DateTimeSection(
             // Date System Toggle (AD / BS)
             DateSystemToggle(
                 useBSPicker = useBSPicker,
-                language = language,
                 onToggle = onToggleDateSystem
             )
         }
@@ -504,17 +493,10 @@ private fun DateTimeSection(
 @Composable
 private fun DateSystemToggle(
     useBSPicker: Boolean,
-    language: Language,
     onToggle: () -> Unit
 ) {
-    val adLabel = when (language) {
-        Language.ENGLISH -> "AD"
-        Language.NEPALI -> "ई.सं."
-    }
-    val bsLabel = when (language) {
-        Language.ENGLISH -> "BS"
-        Language.NEPALI -> "वि.सं."
-    }
+    val adLabel = stringResource(id = R.string.date_system_ad)
+    val bsLabel = stringResource(id = R.string.date_system_bs)
 
     Surface(
         onClick = onToggle,

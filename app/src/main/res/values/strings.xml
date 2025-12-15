@@ -1,4 +1,149 @@
-
 <resources>
     <string name="app_name">AstroStorm</string>
+
+    <!-- ChartInputScreen -->
+    <string name="error_invalid_coords">Please enter valid latitude and longitude</string>
+    <string name="error_latitude_range">Latitude must be between -90 and 90</string>
+    <string name="error_longitude_range">Longitude must be between -180 and 180</string>
+    <string name="date_system_ad">AD</string>
+    <string name="date_system_bs">BS</string>
+
+    <!-- Planets -->
+    <string name="planet_sun">Sun</string>
+    <string name="planet_moon">Moon</string>
+    <string name="planet_mercury">Mercury</string>
+    <string name="planet_venus">Venus</string>
+    <string name="planet_mars">Mars</string>
+    <string name="planet_jupiter">Jupiter</string>
+    <string name="planet_saturn">Saturn</string>
+    <string name="planet_rahu">Rahu</string>
+    <string name="planet_ketu">Ketu</string>
+    <string name="planet_uranus">Uranus</string>
+    <string name="planet_neptune">Neptune</string>
+    <string name="planet_pluto">Pluto</string>
+
+    <!-- Nakshatras -->
+    <string name="nakshatra_ashwini">Ashwini</string>
+    <string name="nakshatra_bharani">Bharani</string>
+    <string name="nakshatra_krittika">Krittika</string>
+    <string name="nakshatra_rohini">Rohini</string>
+    <string name="nakshatra_mrigashira">Mrigashira</string>
+    <string name="nakshatra_ardra">Ardra</string>
+    <string name="nakshatra_punarvasu">Punarvasu</string>
+    <string name="nakshatra_pushya">Pushya</string>
+    <string name="nakshatra_ashlesha">Ashlesha</string>
+    <string name="nakshatra_magha">Magha</string>
+    <string name="nakshatra_purva_phalguni">Purva Phalguni</string>
+    <string name="nakshatra_uttara_phalguni">Uttara Phalguni</string>
+    <string name="nakshatra_hasta">Hasta</string>
+    <string name="nakshatra_chitra">Chitra</string>
+    <string name="nakshatra_swati">Swati</string>
+    <string name="nakshatra_vishakha">Vishakha</string>
+    <string name="nakshatra_anuradha">Anuradha</string>
+    <string name="nakshatra_jyeshtha">Jyeshtha</string>
+    <string name="nakshatra_mula">Mula</string>
+    <string name="nakshatra_purva_ashadha">Purva Ashadha</string>
+    <string name="nakshatra_uttara_ashadha">Uttara Ashadha</string>
+    <string name="nakshatra_shravana">Shravana</string>
+    <string name="nakshatra_dhanishtha">Dhanishtha</string>
+    <string name="nakshatra_shatabhisha">Shatabhisha</string>
+    <string name="nakshatra_purva_bhadrapada">Purva Bhadrapada</string>
+    <string name="nakshatra_uttara_bhadrapada">Uttara Bhadrapada</string>
+    <string name="nakshatra_revati">Revati</string>
+
+    <!-- Yoga Calculator -->
+    <string name="yoga_cat_raja">Raja Yoga</string>
+    <string name="yoga_cat_raja_desc">Power, authority, and leadership combinations</string>
+    <string name="yoga_cat_dhana">Dhana Yoga</string>
+    <string name="yoga_cat_dhana_desc">Wealth and prosperity combinations</string>
+    <string name="yoga_cat_pancha_mahapurusha">Pancha Mahapurusha Yoga</string>
+    <string name="yoga_cat_pancha_mahapurusha_desc">Five great person combinations</string>
+    <string name="yoga_cat_nabhasa">Nabhasa Yoga</string>
+    <string name="yoga_cat_nabhasa_desc">Pattern-based planetary combinations</string>
+    <string name="yoga_cat_chandra">Chandra Yoga</string>
+    <string name="yoga_cat_chandra_desc">Moon-based combinations</string>
+    <string name="yoga_cat_solar">Solar Yoga</string>
+    <string name="yoga_cat_solar_desc">Sun-based combinations</string>
+    <string name="yoga_cat_negative">Negative Yoga</string>
+    <string name="yoga_cat_negative_desc">Challenging combinations</string>
+    <string name="yoga_cat_special">Special Yoga</string>
+    <string name="yoga_cat_special_desc">Other significant combinations</string>
+
+    <string name="yoga_strength_extremely_strong">Extremely Strong</string>
+    <string name="yoga_strength_strong">Strong</string>
+    <string name="yoga_strength_moderate">Moderate</string>
+    <string name="yoga_strength_weak">Weak</string>
+    <string name="yoga_strength_very_weak">Very Weak</string>
+
+    <string name="report_yoga_analysis">Yoga Analysis Report</string>
+    <string name="report_total_yogas">Total Yogas Found</string>
+    <string name="report_overall_strength">Overall Yoga Strength</string>
+    <string name="report_dominant_category">Dominant Category</string>
+    <string name="report_planets">Planets</string>
+    <string name="report_houses">Houses</string>
+    <string name="report_strength">Strength</string>
+    <string name="report_effects">Effects</string>
+    <string name="report_activation">Activation Period</string>
+    <string name="report_pattern">Pattern</string>
+    <string name="report_cancellation_factors">Cancellation Factors</string>
+    <string name="report_auspicious">Auspicious</string>
+    <string name="report_inauspicious">Inauspicious</string>
+
+    <string name="yoga_kendra_trikona">Kendra-Trikona Raja Yoga</string>
+    <string name="yoga_parivartana">Parivartana Raja Yoga</string>
+    <string name="yoga_viparaita">Viparita Raja Yoga</string>
+    <string name="yoga_neecha_bhanga">Neecha Bhanga Raja Yoga</string>
+    <string name="yoga_maha_raja">Maha Raja Yoga</string>
+    <string name="yoga_lakshmi">Lakshmi Yoga</string>
+    <string name="yoga_kubera">Kubera Yoga</string>
+    <string name="yoga_chandra_mangala">Chandra-Mangala Yoga</string>
+    <string name="yoga_labha">Labha Yoga</string>
+    <string name="yoga_ruchaka">Ruchaka Yoga</string>
+    <string name="yoga_bhadra">Bhadra Yoga</string>
+    <string name="yoga_hamsa">Hamsa Yoga</string>
+    <string name="yoga_malavya">Malavya Yoga</string>
+    <string name="yoga_sasa">Sasa Yoga</string>
+    <string name="yoga_yava">Yava Yoga</string>
+    <string name="yoga_shringataka">Shringataka Yoga</string>
+    <string name="yoga_gada">Gada Yoga</string>
+    <string name="yoga_shakata">Shakata Yoga</string>
+    <string name="yoga_rajju">Rajju Yoga</string>
+    <string name="yoga_musala">Musala Yoga</string>
+    <string name="yoga_nala">Nala Yoga</string>
+    <string name="yoga_kedara">Kedara Yoga</string>
+    <string name="yoga_shoola">Shoola Yoga</string>
+    <string name="yoga_yuga">Yuga Yoga</string>
+    <string name="yoga_gola">Gola Yoga</string>
+    <string name="yoga_veena">Veena Yoga</string>
+    <string name="yoga_sunafa">Sunafa Yoga</string>
+    <string name="yoga_anafa">Anafa Yoga</string>
+    <string name="yoga_durudhara">Durudhara Yoga</string>
+    <string name="yoga_gaja_kesari">Gaja-Kesari Yoga</string>
+    <string name="yoga_adhi">Adhi Yoga</string>
+    <string name="yoga_vesi">Vesi Yoga</string>
+    <string name="yoga_vosi">Vosi Yoga</string>
+    <string name="yoga_ubhayachari">Ubhayachari Yoga</string>
+    <string name="yoga_kemadruma">Kemadruma Yoga</string>
+    <string name="yoga_daridra">Daridra Yoga</string>
+    <string name="yoga_guru_chandal">Guru-Chandal Yoga</string>
+    <string name="yoga_dasa_mula">Dasa-Mula Yoga</string>
+    <string name="yoga_vargottama_strength">Vargottama Strength</string>
+    <string name="yoga_budha_aditya">Budha-Aditya Yoga</string>
+    <string name="yoga_amala">Amala Yoga</string>
+    <string name="yoga_saraswati">Saraswati Yoga</string>
+    <string name="yoga_parvata">Parvata Yoga</string>
+    <string name="yoga_kahala">Kahala Yoga</string>
+    <string name="yoga_surya_grahan">Surya Grahan Yoga</string>
+    <string name="yoga_surya_ketu_grahan">Surya-Ketu Grahan Yoga</string>
+    <string name="yoga_chandra_grahan">Chandra Grahan Yoga</string>
+    <string name="yoga_chandra_ketu">Chandra-Ketu Yoga</string>
+    <string name="yoga_angarak">Angarak Yoga</string>
+    <string name="yoga_shrapit">Shrapit Yoga</string>
+    <string name="yoga_kala_sarpa">Kala Sarpa Yoga</string>
+    <string name="yoga_papakartari">Papakartari Yoga</string>
+    <string name="yoga_shubhakartari">Shubhakartari Yoga</string>
+    <string name="yoga_sanyasa">Sanyasa Yoga</string>
+    <string name="yoga_chamara">Chamara Yoga</string>
+    <string name="yoga_dharma_karmadhipati">Dharma-Karmadhipati Yoga</string>
+
 </resources>

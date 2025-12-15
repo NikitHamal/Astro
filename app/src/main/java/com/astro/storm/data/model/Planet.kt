@@ -14,19 +14,19 @@ import com.astro.storm.data.localization.StringResources
  * Modern additions (optional):
  * - Outer planets: Uranus, Neptune, Pluto
  */
-enum class Planet(val swissEphId: Int, val displayName: String, val symbol: String) {
-    SUN(0, "Sun", "Su"),
-    MOON(1, "Moon", "Mo"),
-    MERCURY(2, "Mercury", "Me"),
-    VENUS(3, "Venus", "Ve"),
-    MARS(4, "Mars", "Ma"),
-    JUPITER(5, "Jupiter", "Ju"),
-    SATURN(6, "Saturn", "Sa"),
-    RAHU(10, "Rahu", "Ra"),  // Mean node (North Node)
-    KETU(-1, "Ketu", "Ke"),  // 180° from Rahu (South Node)
-    URANUS(7, "Uranus", "Ur"),
-    NEPTUNE(8, "Neptune", "Ne"),
-    PLUTO(9, "Pluto", "Pl");
+enum class Planet(val swissEphId: Int, val symbol: String) {
+    SUN(0, "Su"),
+    MOON(1, "Mo"),
+    MERCURY(2, "Me"),
+    VENUS(3, "Ve"),
+    MARS(4, "Ma"),
+    JUPITER(5, "Ju"),
+    SATURN(6, "Sa"),
+    RAHU(10, "Ra"),  // Mean node (North Node)
+    KETU(-1, "Ke"),  // 180° from Rahu (South Node)
+    URANUS(7, "Ur"),
+    NEPTUNE(8, "Ne"),
+    PLUTO(9, "Pl");
 
     /**
      * Get localized planet name based on current language

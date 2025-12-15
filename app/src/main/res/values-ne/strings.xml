@@ -1,0 +1,149 @@
+<resources>
+    <string name="app_name">एस्ट्रोस्टोर्म</string>
+
+    <!-- ChartInputScreen -->
+    <string name="error_invalid_coords">कृपया मान्य अक्षांश र देशान्तर प्रविष्ट गर्नुहोस्</string>
+    <string name="error_latitude_range">अक्षांश -90 र 90 को बीचमा हुनुपर्छ</string>
+    <string name="error_longitude_range">देशान्तर -180 र 180 को बीचमा हुनुपर्छ</string>
+    <string name="date_system_ad">ई.सं.</string>
+    <string name="date_system_bs">वि.सं.</string>
+
+    <!-- Planets -->
+    <string name="planet_sun">सूर्य</string>
+    <string name="planet_moon">चन्द्रमा</string>
+    <string name="planet_mercury">बुध</string>
+    <string name="planet_venus">शुक्र</string>
+    <string name="planet_mars">मंगल</string>
+    <string name="planet_jupiter">बृहस्पति</string>
+    <string name="planet_saturn">शनि</string>
+    <string name="planet_rahu">राहु</string>
+    <string name="planet_ketu">केतु</string>
+    <string name="planet_uranus">अरुण</string>
+    <string name="planet_neptune">वरुण</string>
+    <string name="planet_pluto">यम</string>
+
+    <!-- Nakshatras -->
+    <string name="nakshatra_ashwini">अश्विनी</string>
+    <string name="nakshatra_bharani">भरणी</string>
+    <string name="nakshatra_krittika">कृत्तिका</string>
+    <string name="nakshatra_rohini">रोहिणी</string>
+    <string name="nakshatra_mrigashira">मृगशिरा</string>
+    <string name="nakshatra_ardra">आर्द्रा</string>
+    <string name="nakshatra_punarvasu">पुनर्वसु</string>
+    <string name="nakshatra_pushya">पुष्य</string>
+    <string name="nakshatra_ashlesha">अश्लेषा</string>
+    <string name="nakshatra_magha">मघा</string>
+    <string name="nakshatra_purva_phalguni">पूर्व फाल्गुनी</string>
+    <string name="nakshatra_uttara_phalguni">उत्तर फाल्गुनी</string>
+    <string name="nakshatra_hasta">हस्त</string>
+    <string name="nakshatra_chitra">चित्रा</string>
+    <string name="nakshatra_swati">स्वाती</string>
+    <string name="nakshatra_vishakha">विशाखा</string>
+    <string name="nakshatra_anuradha">अनुराधा</string>
+    <string name="nakshatra_jyeshtha">ज्येष्ठा</string>
+    <string name="nakshatra_mula">मूल</string>
+    <string name="nakshatra_purva_ashadha">पूर्व आषाढा</string>
+    <string name="nakshatra_uttara_ashadha">उत्तर आषाढा</string>
+    <string name="nakshatra_shravana">श्रवण</string>
+    <string name="nakshatra_dhanishtha">धनिष्ठा</string>
+    <string name="nakshatra_shatabhisha">शतभिषा</string>
+    <string name="nakshatra_purva_bhadrapada">पूर्व भाद्रपदा</string>
+    <string name="nakshatra_uttara_bhadrapada">उत्तर भाद्रपदा</string>
+    <string name="nakshatra_revati">रेवती</string>
+
+    <!-- Yoga Calculator -->
+    <string name="yoga_cat_raja">राजयोग</string>
+    <string name="yoga_cat_raja_desc">शक्ति, अधिकार र नेतृत्वको संयोजन</string>
+    <string name="yoga_cat_dhana">धनयोग</string>
+    <string name="yoga_cat_dhana_desc">धन र समृद्धिको संयोजन</string>
+    <string name="yoga_cat_pancha_mahapurusha">पञ्च महापुरुष योग</string>
+    <string name="yoga_cat_pancha_mahapurusha_desc">पाँच महान व्यक्तिहरूको संयोजन</string>
+    <string name="yoga_cat_nabhasa">नाभस योग</string>
+    <string name="yoga_cat_nabhasa_desc">ढाँचा-आधारित ग्रहहरूको संयोजन</string>
+    <string name="yoga_cat_chandra">चन्द्र योग</string>
+    <string name="yoga_cat_chandra_desc">चन्द्रमा-आधारित संयोजन</string>
+    <string name="yoga_cat_solar">सूर्य योग</string>
+    <string name="yoga_cat_solar_desc">सूर्य-आधारित संयोजन</string>
+    <string name="yoga_cat_negative">नकारात्मक योग</string>
+    <string name="yoga_cat_negative_desc">चुनौतीपूर्ण संयोजन</string>
+    <string name="yoga_cat_special">विशेष योग</string>
+    <string name="yoga_cat_special_desc">अन्य महत्त्वपूर्ण संयोजन</string>
+
+    <string name="yoga_strength_extremely_strong">अत्यन्त बलियो</string>
+    <string name="yoga_strength_strong">बलियो</string>
+    <string name="yoga_strength_moderate">मध्यम</string>
+    <string name="yoga_strength_weak">कमजोर</string>
+    <string name="yoga_strength_very_weak">धेरै कमजोर</string>
+
+    <string name="report_yoga_analysis">योग विश्लेषण रिपोर्ट</string>
+    <string name="report_total_yogas">फेला परेका कुल योगहरू</string>
+    <string name="report_overall_strength">समग्र योग शक्ति</string>
+    <string name="report_dominant_category">प्रमुख श्रेणी</string>
+    <string name="report_planets">ग्रहहरू</string>
+    <string name="report_houses">भाव</string>
+    <string name="report_strength">शक्ति</string>
+    <string name="report_effects">प्रभावहरू</string>
+    <string name="report_activation">सक्रियता अवधि</string>
+    <string name="report_pattern">ढाँचा</string>
+    <string name="report_cancellation_factors">रद्द गर्ने कारकहरू</string>
+    <string name="report_auspicious">शुभ</string>
+    <string name="report_inauspicious">अशुभ</string>
+
+    <string name="yoga_kendra_trikona">केन्द्र-त्रिकोण राजयोग</string>
+    <string name="yoga_parivartana">परिवर्तन राजयोग</string>
+    <string name="yoga_viparaita">विपरीत राजयोग</string>
+    <string name="yoga_neecha_bhanga">नीचभंग राजयोग</string>
+    <string name="yoga_maha_raja">महाराजयोग</string>
+    <string name="yoga_lakshmi">लक्ष्मी योग</string>
+    <string name="yoga_kubera">कुबेर योग</string>
+    <string name="yoga_chandra_mangala">चन्द्र-मंगल योग</string>
+    <string name="yoga_labha">लाभ योग</string>
+    <string name="yoga_ruchaka">रुचक योग</string>
+    <string name="yoga_bhadra">भद्र योग</string>
+    <string name="yoga_hamsa">हंस योग</string>
+    <string name="yoga_malavya">मालव्य योग</string>
+    <string name="yoga_sasa">सस योग</string>
+    <string name="yoga_yava">यव योग</string>
+    <string name="yoga_shringataka">शृंगाटक योग</string>
+    <string name="yoga_gada">गदा योग</string>
+    <string name="yoga_shakata">शकट योग</string>
+    <string name="yoga_rajju">रज्जु योग</string>
+    <string name="yoga_musala">मुसल योग</string>
+    <string name="yoga_nala">नल योग</string>
+    <string name="yoga_kedara">केदार योग</string>
+    <string name="yoga_shoola">शूल योग</string>
+    <string name="yoga_yuga">युग योग</string>
+    <string name="yoga_gola">गोल योग</string>
+    <string name="yoga_veena">वीणा योग</string>
+    <string name="yoga_sunafa">सुनफा योग</string>
+    <string name="yoga_anafa">अनफा योग</string>
+    <string name="yoga_durudhara">दुरुधरा योग</string>
+    <string name="yoga_gaja_kesari">गजकेसरी योग</string>
+    <string name="yoga_adhi">अधि योग</string>
+    <string name="yoga_vesi">वेसि योग</string>
+    <string name="yoga_vosi">वोसि योग</string>
+    <string name="yoga_ubhayachari">उभयचरि योग</string>
+    <string name="yoga_kemadruma">केमद्रुम योग</string>
+    <string name="yoga_daridra">दरिद्र योग</string>
+    <string name="yoga_guru_chandal">गुरु-चाण्डाल योग</string>
+    <string name="yoga_dasa_mula">दस-मूल योग</string>
+    <string name="yoga_vargottama_strength">वर्गोत्तम शक्ति</string>
+    <string name="yoga_budha_aditya">बुध-आदित्य योग</string>
+    <string name="yoga_amala">अमल योग</string>
+    <string name="yoga_saraswati">सरस्वती योग</string>
+    <string name="yoga_parvata">पर्वत योग</string>
+    <string name="yoga_kahala">काहल योग</string>
+    <string name="yoga_surya_grahan">सूर्य ग्रहण योग</string>
+    <string name="yoga_surya_ketu_grahan">सूर्य-केतु ग्रहण योग</string>
+    <string name="yoga_chandra_grahan">चन्द्र ग्रहण योग</string>
+    <string name="yoga_chandra_ketu">चन्द्र-केतु योग</string>
+    <string name="yoga_angarak">अंगारक योग</string>
+    <string name="yoga_shrapit">श्रापित योग</string>
+    <string name="yoga_kala_sarpa">कालसर्प योग</string>
+    <string name="yoga_papakartari">पापकर्तरि योग</string>
+    <string name="yoga_shubhakartari">शुभकर्तरि योग</string>
+    <string name="yoga_sanyasa">सन्यास योग</string>
+    <string name="yoga_chamara">चामर योग</string>
+    <string name="yoga_dharma_karmadhipati">धर्म-कर्माधिपति योग</string>
+
+</resources>

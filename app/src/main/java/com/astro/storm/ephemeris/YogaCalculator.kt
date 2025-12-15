@@ -12,6 +12,11 @@ import com.astro.storm.data.localization.StringResources
 import kotlin.math.abs
 import kotlin.math.min
 
+sealed class LocalizableString {
+    data class Plain(val text: String) : LocalizableString()
+    data class Resource(val key: StringKeyMatch, val args: List<Any> = emptyList()) : LocalizableString()
+}
+
 /**
  * Comprehensive Yoga Calculator for Vedic Astrology
  *
@@ -37,15 +42,15 @@ object YogaCalculator {
     /**
      * Yoga category enumeration
      */
-    enum class YogaCategory(val displayName: String, val description: String) {
-        RAJA_YOGA("Raja Yoga", "Power, authority, and leadership combinations"),
-        DHANA_YOGA("Dhana Yoga", "Wealth and prosperity combinations"),
-        MAHAPURUSHA_YOGA("Pancha Mahapurusha Yoga", "Five great person combinations"),
-        NABHASA_YOGA("Nabhasa Yoga", "Pattern-based planetary combinations"),
-        CHANDRA_YOGA("Chandra Yoga", "Moon-based combinations"),
-        SOLAR_YOGA("Solar Yoga", "Sun-based combinations"),
-        NEGATIVE_YOGA("Negative Yoga", "Challenging combinations"),
-        SPECIAL_YOGA("Special Yoga", "Other significant combinations");
+    enum class YogaCategory {
+        RAJA_YOGA,
+        DHANA_YOGA,
+        MAHAPURUSHA_YOGA,
+        NABHASA_YOGA,
+        CHANDRA_YOGA,
+        SOLAR_YOGA,
+        NEGATIVE_YOGA,
+        SPECIAL_YOGA;
 
         /**
          * Get localized display name
@@ -85,12 +90,12 @@ object YogaCalculator {
     /**
      * Yoga strength level
      */
-    enum class YogaStrength(val displayName: String, val value: Int) {
-        EXTREMELY_STRONG("Extremely Strong", 5),
-        STRONG("Strong", 4),
-        MODERATE("Moderate", 3),
-        WEAK("Weak", 2),
-        VERY_WEAK("Very Weak", 1);
+    enum class YogaStrength(val value: Int) {
+        EXTREMELY_STRONG(5),
+        STRONG(4),
+        MODERATE(3),
+        WEAK(2),
+        VERY_WEAK(1);
 
         /**
          * Get localized display name
@@ -116,13 +121,13 @@ object YogaCalculator {
         val category: YogaCategory,
         val planets: List<Planet>,
         val houses: List<Int>,
-        val description: String,
-        val effects: String,
+        val description: LocalizableString,
+        val effects: LocalizableString,
         val strength: YogaStrength,
         val strengthPercentage: Double,
         val isAuspicious: Boolean,
-        val activationPeriod: String,
-        val cancellationFactors: List<String>
+        val activationPeriod: LocalizableString,
+        val cancellationFactors: List<LocalizableString>
     )
 
     /**
@@ -157,6 +162,24 @@ object YogaCalculator {
             val cancellationLabel = StringResources.get(StringKeyMatch.REPORT_CANCELLATION_FACTORS, language)
             val auspiciousText = StringResources.get(StringKeyMatch.REPORT_AUSPICIOUS, language)
             val inauspiciousText = StringResources.get(StringKeyMatch.REPORT_INAUSPICIOUS, language)
+
+            fun formatLocalizableString(localizable: LocalizableString, language: Language): String {
+                return when (localizable) {
+                    is LocalizableString.Plain -> localizable.text
+                    is LocalizableString.Resource -> {
+                        val formatString = StringResources.get(localizable.key, language)
+                        val formattedArgs = localizable.args.map { arg ->
+                            when (arg) {
+                                is Planet -> arg.getLocalizedName(language)
+                                is Nakshatra -> arg.getLocalizedName(language)
+                                is PlanetPosition -> arg.planet.getLocalizedName(language)
+                                else -> arg.toString()
+                            }
+                        }.toTypedArray()
+                        String.format(formatString, *formattedArgs)
+                    }
+                }
+            }
 
             appendLine("═══════════════════════════════════════════════════════════")
             appendLine("                    $reportTitle")
@@ -194,7 +217,7 @@ object YogaCalculator {
                     appendLine("  $housesLabel: ${yoga.houses.joinToString()}")
                     appendLine("  $strengthLabel: ${yoga.strength.getLocalizedName(language)} (${String.format("%.0f", yoga.strengthPercentage)}%)")
                     appendLine("  $effectsLabel: $localizedEffects")
-                    appendLine("  $activationLabel: ${yoga.activationPeriod}")
+                    appendLine("  $activationLabel: ${formatLocalizableString(yoga.activationPeriod, language)}")
                     appendLine()
                 }
             }
@@ -248,7 +271,7 @@ object YogaCalculator {
                     val localizedSanskrit = getLocalizedYogaSanskritName(yoga.name, language)
                     val localizedEffects = getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
                     appendLine("★ $localizedName ($localizedSanskrit)")
-                    appendLine("  $patternLabel: ${yoga.description}")
+                    appendLine("  $patternLabel: ${formatLocalizableString(yoga.description, language)}")
                     appendLine("  $effectsLabel: $localizedEffects")
                     appendLine()
                 }
@@ -264,7 +287,7 @@ object YogaCalculator {
                     appendLine("⚠ $localizedName ($localizedSanskrit)")
                     appendLine("  $effectsLabel: $localizedEffects")
                     if (yoga.cancellationFactors.isNotEmpty()) {
-                        appendLine("  $cancellationLabel: ${yoga.cancellationFactors.joinToString("; ")}")
+                        appendLine("  $cancellationLabel: ${yoga.cancellationFactors.joinToString("; ") { formatLocalizableString(it, language) }}")
                     }
                     appendLine()
                 }
@@ -478,7 +501,7 @@ object YogaCalculator {
                     val strength = calculateYogaStrength(chart, listOf(pos1, pos2))
                     yogas.add(
                         Yoga(
-                            name = "${lord1.displayName}-${lord2.displayName} Dhana Yoga",
+                            name = "Dhana Yoga",
                             sanskritName = "Dhana Yoga",
                             category = YogaCategory.DHANA_YOGA,
                             planets = listOf(lord1, lord2),
@@ -488,7 +511,7 @@ object YogaCalculator {
                             strength = strengthFromPercentage(strength),
                             strengthPercentage = strength,
                             isAuspicious = true,
-                            activationPeriod = "${lord1.displayName} or ${lord2.displayName} Dasha",
+                            activationPeriod = "Dasha",
                             cancellationFactors = listOf("Combustion", "Debilitation without cancellation")
                         )
                     )
@@ -591,7 +614,7 @@ object YogaCalculator {
                         strength = strengthFromPercentage(strength),
                         strengthPercentage = strength,
                         isAuspicious = true,
-                        activationPeriod = "${lord11.displayName} Dasha",
+                        activationPeriod = "Dasha",
                         cancellationFactors = emptyList()
                     )
                 )
@@ -891,7 +914,7 @@ object YogaCalculator {
                     category = YogaCategory.CHANDRA_YOGA,
                     planets = planets,
                     houses = planetsIn2ndFromMoon.map { it.house },
-                    description = "${planets.joinToString { it.displayName }} in 2nd from Moon",
+                    description = "Planets in 2nd from Moon",
                     effects = "Self-made wealth, intelligent, good status, praised by kings",
                     strength = strengthFromPercentage(strength),
                     strengthPercentage = strength,
@@ -917,7 +940,7 @@ object YogaCalculator {
                     category = YogaCategory.CHANDRA_YOGA,
                     planets = planets,
                     houses = planetsIn12thFromMoon.map { it.house },
-                    description = "${planets.joinToString { it.displayName }} in 12th from Moon",
+                    description = "Planets in 12th from Moon",
                     effects = "Good reputation, health, happiness, self-respect",
                     strength = strengthFromPercentage(strength),
                     strengthPercentage = strength,
@@ -1038,7 +1061,7 @@ object YogaCalculator {
                     category = YogaCategory.SOLAR_YOGA,
                     planets = planets,
                     houses = planetsIn2ndFromSun.map { it.house },
-                    description = "${planets.joinToString { it.displayName }} in 2nd from Sun",
+                    description = "Planets in 2nd from Sun",
                     effects = effects,
                     strength = strengthFromPercentage(strength),
                     strengthPercentage = strength,
@@ -1065,7 +1088,7 @@ object YogaCalculator {
                     category = YogaCategory.SOLAR_YOGA,
                     planets = planets,
                     houses = planetsIn12thFromSun.map { it.house },
-                    description = "${planets.joinToString { it.displayName }} in 12th from Sun",
+                    description = "Planets in 12th from Sun",
                     effects = effects,
                     strength = strengthFromPercentage(strength),
                     strengthPercentage = strength,
@@ -1182,12 +1205,12 @@ object YogaCalculator {
                         category = YogaCategory.NEGATIVE_YOGA,
                         planets = listOf(lord11),
                         houses = listOf(lord11Pos.house),
-                        description = "11th lord (${lord11.displayName}) in ${lord11Pos.house}th house (Dusthana)",
+                        description = "11th lord in Dusthana",
                         effects = "Obstacles to gains, financial struggles, unfulfilled desires",
                         strength = YogaStrength.MODERATE,
                         strengthPercentage = 60.0,
                         isAuspicious = false,
-                        activationPeriod = "${lord11.displayName} Dasha",
+                        activationPeriod = "Dasha",
                         cancellationFactors = listOf("If aspected by Jupiter or lord is strong")
                     )
                 )
@@ -1504,7 +1527,7 @@ object YogaCalculator {
             mainPlanets.forEach { planet ->
                 if (areConjunct(planet, rahuPos, customOrb = 3.0) ||
                     areConjunct(planet, ketuPos, customOrb = 3.0)) {
-                    cancellations.add("${planet.planet.displayName} closely conjunct node - partial cancellation")
+                    cancellations.add("Planet closely conjunct node - partial cancellation")
                 }
             }
 
@@ -1584,7 +1607,7 @@ object YogaCalculator {
                         category = YogaCategory.NEGATIVE_YOGA,
                         planets = listOf(Planet.MOON),
                         houses = listOf(moonPos.house),
-                        description = "Birth in Dasa-Mula Nakshatra (${birthNakshatra.displayName})",
+                        description = "Birth in Dasa-Mula Nakshatra",
                         effects = "Requires mitigation; obstacles in early life, need for protective measures",
                         strength = YogaStrength.MODERATE,
                         strengthPercentage = 60.0,
@@ -1605,17 +1628,17 @@ object YogaCalculator {
                 val strength = calculateYogaStrength(chart, listOf(pos)) * 1.1
                 yogas.add(
                     Yoga(
-                        name = "${pos.planet.displayName} Vargottama Strength",
+                        name = "Vargottama Strength",
                         sanskritName = "Vargottama Bala",
                         category = YogaCategory.SPECIAL_YOGA,
                         planets = listOf(pos.planet),
                         houses = listOf(pos.house),
-                        description = "${pos.planet.displayName} in own/exalted sign",
+                        description = "Planet in own/exalted sign",
                         effects = "Exceptional strength, power, and effectiveness in the planet's significations",
                         strength = strengthFromPercentage(strength),
                         strengthPercentage = strength,
                         isAuspicious = true,
-                        activationPeriod = "${pos.planet.displayName} Dasha",
+                        activationPeriod = "Dasha",
                         cancellationFactors = emptyList()
                     )
                 )
@@ -1673,17 +1696,17 @@ object YogaCalculator {
                 val strength = calculateYogaStrength(chart, listOf(beneficPos))
                 yogas.add(
                     Yoga(
-                        name = "${beneficPos.planet.displayName} Amala Yoga",
+                        name = "Amala Yoga",
                         sanskritName = "Amala Yoga",
                         category = YogaCategory.SPECIAL_YOGA,
                         planets = listOf(beneficPos.planet),
                         houses = listOf(10),
-                        description = "${beneficPos.planet.displayName} (benefic) in 10th house",
+                        description = "Benefic in 10th house",
                         effects = "Pure character, lasting fame, prosperous, ethical conduct, respected by rulers",
                         strength = strengthFromPercentage(strength),
                         strengthPercentage = strength,
                         isAuspicious = true,
-                        activationPeriod = "${beneficPos.planet.displayName} Dasha",
+                        activationPeriod = "Dasha",
                         cancellationFactors = emptyList()
                     )
                 )
@@ -1774,7 +1797,7 @@ object YogaCalculator {
                             strength = strengthFromPercentage(strength),
                             strengthPercentage = strength,
                             isAuspicious = true,
-                            activationPeriod = "${lord4.displayName} and ${lord9.displayName} Dashas",
+                            activationPeriod = "Dashas",
                             cancellationFactors = emptyList()
                         )
                     )
@@ -1871,7 +1894,7 @@ object YogaCalculator {
                             strength = strengthFromPercentage(strength),
                             strengthPercentage = strength,
                             isAuspicious = true,
-                            activationPeriod = "${lord1.displayName} and Jupiter Dashas",
+                            activationPeriod = "Dashas",
                             cancellationFactors = emptyList()
                         )
                     )
@@ -1899,7 +1922,7 @@ object YogaCalculator {
                         strength = strengthFromPercentage(strength),
                         strengthPercentage = strength,
                         isAuspicious = true,
-                        activationPeriod = "${houseLords[9]!!.displayName}-${lord10.displayName} periods",
+                        activationPeriod = "Periods",
                         cancellationFactors = emptyList()
                     )
                 )
@@ -2179,16 +2202,16 @@ object YogaCalculator {
             if (combustionFactor < 0.9) {
                 netFactor *= combustionFactor
                 if (combustionFactor < 0.5) {
-                    cancellationFactors.add("${pos.planet.displayName} is deeply combust")
+                    cancellationFactors.add("Planet is deeply combust")
                 } else if (combustionFactor < 0.8) {
-                    cancellationFactors.add("${pos.planet.displayName} is combust")
+                    cancellationFactors.add("Planet is combust")
                 }
             }
 
             // 2. Check Papakartari
             if (isPapakartari(pos, chart)) {
                 netFactor *= 0.7 // 30% reduction
-                cancellationFactors.add("${pos.planet.displayName} hemmed between malefics")
+                cancellationFactors.add("Planet hemmed between malefics")
             }
 
             // 3. Check malefic aspects
@@ -2196,7 +2219,7 @@ object YogaCalculator {
             if (afflictionFactor < 0.9) {
                 netFactor *= afflictionFactor
                 if (afflictionFactor < 0.7) {
-                    cancellationFactors.add("${pos.planet.displayName} severely afflicted by malefics")
+                    cancellationFactors.add("Planet severely afflicted by malefics")
                 }
             }
 
@@ -2204,14 +2227,14 @@ object YogaCalculator {
             if (isDebilitated(pos)) {
                 if (!hasNeechaBhanga(pos, chart)) {
                     netFactor *= 0.5 // 50% reduction for uncancelled debilitation
-                    cancellationFactors.add("${pos.planet.displayName} debilitated without cancellation")
+                    cancellationFactors.add("Planet debilitated without cancellation")
                 }
             }
 
             // 5. Check enemy sign (Shatru Kshetra)
             if (isInEnemySign(pos)) {
                 netFactor *= 0.85 // 15% reduction
-                cancellationFactors.add("${pos.planet.displayName} in enemy sign")
+                cancellationFactors.add("Planet in enemy sign")
             }
 
             // 6. Benefic aspect boost (positive factor)
@@ -2536,7 +2559,7 @@ object YogaCalculator {
         if (combustionFactor < 1.0) {
             strength *= combustionFactor
             if (combustionFactor < 0.6) {
-                cancellations.add("${pos.planet.displayName} is combust - yoga significantly weakened")
+                cancellations.add("Planet is combust - yoga significantly weakened")
             }
         }
 
