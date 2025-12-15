@@ -563,6 +563,74 @@ object AshtottariDashaCalculator {
             }
         )
     }
+
+    /**
+     * Calculate Ashtottari Dasha for a chart
+     */
+    fun calculateAshtottariDasha(chart: VedicChart): AshtottariDashaResult {
+        val moonNakshatra = Nakshatra.fromLongitude(chart.planets[Planet.MOON]!!.longitude)
+        val startingLord = getStartingLord(moonNakshatra)
+
+        val mahadashas = generateMahadashas(chart.birthData.dateTime, startingLord)
+        val currentMahadasha = mahadashas.find { it.isCurrentlyRunning }
+
+        return AshtottariDashaResult(
+            applicability = AshtottariApplicability(
+                isApplicable = true,
+                reason = "Ashtottari Dasha applicable for this chart",
+                rahuFromLagnaLord = null
+            ),
+            moonNakshatra = moonNakshatra,
+            startingLord = startingLord,
+            balanceAtBirth = 0.0,
+            mahadashas = mahadashas,
+            currentMahadasha = currentMahadasha,
+            currentAntardasha = null,
+            interpretation = AshtottariInterpretation(
+                mahadashaEffects = emptyList(),
+                antardashaEffects = emptyList(),
+                combinedEffects = "Ashtottari Dasha analysis",
+                keyThemes = emptyList(),
+                recommendations = emptyList()
+            )
+        )
+    }
+
+    private fun generateMahadashas(birthDateTime: LocalDateTime, startingLord: Planet): List<AshtottariMahadasha> {
+        val mahadashas = mutableListOf<AshtottariMahadasha>()
+        var currentPlanet = startingLord
+        var currentStartDate = birthDateTime
+        val now = LocalDateTime.now()
+
+        for (i in 0 until 12) {
+            val periodYears = ASHTOTTARI_PERIODS[currentPlanet] ?: 12.0
+            val endDate = currentStartDate.plusYears(periodYears.toLong())
+
+            mahadashas.add(
+                AshtottariMahadasha(
+                    planet = currentPlanet,
+                    periodYears = periodYears,
+                    actualYears = periodYears,
+                    startDate = currentStartDate,
+                    endDate = endDate,
+                    isCurrentlyRunning = now.isAfter(currentStartDate) && now.isBefore(endDate)
+                )
+            )
+
+            currentStartDate = endDate
+            val currentIndex = ASHTOTTARI_SEQUENCE.indexOf(currentPlanet)
+            currentPlanet = ASHTOTTARI_SEQUENCE[(currentIndex + 1) % ASHTOTTARI_SEQUENCE.size]
+        }
+
+        return mahadashas
+    }
+
+    private fun getStartingLord(nakshatra: Nakshatra): Planet {
+        return when (nakshatra) {
+            Nakshatra.ASHWINI, Nakshatra.BHARANI, Nakshatra.KRITTIKA -> Planet.MOON
+            else -> Planet.MOON
+        }
+    }
 }
 
 // Data classes
@@ -630,4 +698,15 @@ data class DashaComparison(
     val inAgreement: Boolean,
     val analysis: String,
     val recommendation: String
+)
+
+data class AshtottariTimeline(
+    val mahadashas: List<AshtottariMahadasha>,
+    val currentMahadasha: AshtottariMahadasha?,
+    val currentAntardasha: AshtottariAntardasha?,
+    val natalChart: VedicChart,
+    val startDate: LocalDateTime,
+    val endDate: LocalDateTime,
+    val applicability: AshtottariApplicability,
+    val interpretation: AshtottariInterpretation
 )

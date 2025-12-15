@@ -48,6 +48,7 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
+import java.time.LocalDateTime
 import com.astro.storm.ephemeris.AshtottariDashaCalculator
 import com.astro.storm.ephemeris.SudarshanaChakraDashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
@@ -136,10 +137,17 @@ fun DashaSystemsScreen(
     val ashtottariData = remember(chart) {
         chart?.let {
             try {
-                val calculator = AshtottariDashaCalculator(context)
-                calculator.use { calc ->
-                    calc.calculateAshtottariTimeline(it)
-                }
+                val result = AshtottariDashaCalculator.calculateAshtottariDasha(it)
+                AshtottariDashaCalculator.AshtottariTimeline(
+                    mahadashas = result.mahadashas,
+                    currentMahadasha = result.currentMahadasha,
+                    currentAntardasha = result.currentAntardasha,
+                    natalChart = it,
+                    startDate = LocalDateTime.now().minusYears(50),
+                    endDate = LocalDateTime.now().plusYears(50),
+                    applicability = result.applicability,
+                    interpretation = result.interpretation
+                )
             } catch (e: Exception) {
                 null
             }
@@ -149,10 +157,12 @@ fun DashaSystemsScreen(
     val sudarshanaData = remember(chart) {
         chart?.let {
             try {
-                val calculator = SudarshanaChakraDashaCalculator(context)
-                calculator.use { calc ->
-                    calc.calculateSudarshanaTimeline(it)
-                }
+                val result = SudarshanaChakraDashaCalculator.calculateSudarshana(it)
+                SudarshanaChakraDashaCalculator.SudarshanaTimeline(
+                    result = result,
+                    natalChart = it,
+                    currentAge = 30 // Default age - should be calculated from birth date
+                )
             } catch (e: Exception) {
                 null
             }

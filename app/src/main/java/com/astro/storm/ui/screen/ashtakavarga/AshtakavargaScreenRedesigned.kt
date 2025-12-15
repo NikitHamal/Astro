@@ -268,7 +268,7 @@ private fun AshtakavargaTopBar(
 
 @Composable
 private fun AshtakavargaOverviewContent(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult,
+    ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis,
     chart: VedicChart
 ) {
     val language = LocalLanguage.current
@@ -304,7 +304,7 @@ private fun AshtakavargaOverviewContent(
 
 @Composable
 private fun AshtakavargaSummaryCard(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult
+    ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis
 ) {
     val totalBindus = ashtakavarga.sarvashtakavarga.values.sum()
     val averageBindus = totalBindus / 12.0
@@ -470,7 +470,7 @@ private fun AshtakavargaStatItem(
 
 @Composable
 private fun HouseStrengthDistribution(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult
+    ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -597,16 +597,18 @@ private fun LegendItem(color: Color, label: String) {
 
 @Composable
 private fun AshtakavargaInsightsCard(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult,
+    ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis,
     chart: VedicChart
 ) {
     val strongHouses = ashtakavarga.sarvashtakavarga.entries
         .sortedByDescending { it.value }
         .take(3)
+        .map { it.key to it.value }
 
     val weakHouses = ashtakavarga.sarvashtakavarga.entries
         .sortedBy { it.value }
         .take(3)
+        .map { it.key to it.value }
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -635,7 +637,7 @@ private fun AshtakavargaInsightsCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                strongHouses.forEach { (sign, bindus) ->
+                for ((sign, bindus) in strongHouses) {
                     val house = ZodiacSign.entries.indexOf(sign) + 1
                     InsightHouseChip(
                         house = house,
@@ -662,7 +664,7 @@ private fun AshtakavargaInsightsCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                weakHouses.forEach { (sign, bindus) ->
+                for ((sign, bindus) in weakHouses) {
                     val house = ZodiacSign.entries.indexOf(sign) + 1
                     InsightHouseChip(
                         house = house,
@@ -719,7 +721,7 @@ private fun InsightHouseChip(
 
 @Composable
 private fun PlanetQuickView(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult
+    ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis
 ) {
     val language = LocalLanguage.current
 
@@ -783,7 +785,7 @@ private fun PlanetQuickView(
 
 @Composable
 private fun SarvashtakavargaContent(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult
+    ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -900,7 +902,7 @@ private fun SarvashtakavargaHouseCard(
 
 @Composable
 private fun AshtakavargaByPlanetContent(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult,
+    ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis,
     expandedPlanets: Set<String>,
     onTogglePlanet: (String) -> Unit
 ) {
@@ -921,7 +923,7 @@ private fun AshtakavargaByPlanetContent(
             key = { "planet_${it.symbol}" }
         ) { planet ->
             val isExpanded = planet.symbol in expandedPlanets
-            val planetAshtakavarga = ashtakavarga.planetAshtakavarga[planet] ?: emptyMap()
+            val planetAshtakavarga = ashtakavarga.bhinnashtakavarga[planet]?.binduMatrix ?: emptyMap()
 
             PlanetAshtakavargaCard(
                 planet = planet,
@@ -1092,7 +1094,7 @@ private fun PlanetAshtakavargaCard(
 
 @Composable
 private fun AshtakavargaByHouseContent(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult
+    ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),

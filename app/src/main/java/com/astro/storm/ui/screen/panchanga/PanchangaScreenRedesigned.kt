@@ -75,6 +75,7 @@ import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.PanchangaCalculator
+import com.astro.storm.ephemeris.PanchangaData
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
@@ -112,14 +113,21 @@ fun PanchangaScreenRedesigned(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     // Calculate Panchanga for today
-    val todayPanchanga = remember {
-        try {
-            val calculator = PanchangaCalculator(context)
-            calculator.use { calc ->
-                calc.calculatePanchanga(LocalDateTime.now())
+    val todayPanchanga = remember(chart) {
+        chart?.let {
+            try {
+                val calculator = PanchangaCalculator(context)
+                calculator.use { calc ->
+                    calc.calculatePanchanga(
+                        dateTime = LocalDateTime.now(),
+                        latitude = it.birthData.latitude,
+                        longitude = it.birthData.longitude,
+                        timezone = it.birthData.timezone
+                    )
+                }
+            } catch (e: Exception) {
+                null
             }
-        } catch (e: Exception) {
-            null
         }
     }
 
@@ -129,7 +137,12 @@ fun PanchangaScreenRedesigned(
             try {
                 val calculator = PanchangaCalculator(context)
                 calculator.use { calc ->
-                    calc.calculatePanchanga(it.birthData.dateTime)
+                    calc.calculatePanchanga(
+                        dateTime = it.birthData.dateTime,
+                        latitude = it.birthData.latitude,
+                        longitude = it.birthData.longitude,
+                        timezone = it.birthData.timezone
+                    )
                 }
             } catch (e: Exception) {
                 null
@@ -263,7 +276,7 @@ private fun PanchangaTopBar(
 
 @Composable
 private fun TodayPanchangaContent(
-    panchanga: PanchangaCalculator.PanchangaData?
+    panchanga: PanchangaData?
 ) {
     if (panchanga == null) {
         EmptyPanchangaContent()
@@ -301,7 +314,7 @@ private fun TodayPanchangaContent(
 
 @Composable
 private fun TodaySummaryCard(
-    panchanga: PanchangaCalculator.PanchangaData
+    panchanga: PanchangaData
 ) {
     val today = LocalDate.now()
     val dayOfWeek = today.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
@@ -459,7 +472,7 @@ private fun PanchangaQuickItem(
 
 @Composable
 private fun FiveLimbsCard(
-    panchanga: PanchangaCalculator.PanchangaData
+    panchanga: PanchangaData
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -608,7 +621,7 @@ private fun PanchangaLimbRow(
 
 @Composable
 private fun AuspiciousTimingCard(
-    panchanga: PanchangaCalculator.PanchangaData
+    panchanga: PanchangaData
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -713,7 +726,7 @@ private fun TimingRow(
 
 @Composable
 private fun SunMoonCard(
-    panchanga: PanchangaCalculator.PanchangaData
+    panchanga: PanchangaData
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -819,7 +832,7 @@ private fun SunMoonTimeRow(label: String, time: String) {
 
 @Composable
 private fun BirthPanchangaContent(
-    panchanga: PanchangaCalculator.PanchangaData?,
+    panchanga: PanchangaData?,
     chart: VedicChart?
 ) {
     if (panchanga == null || chart == null) {
@@ -853,7 +866,7 @@ private fun BirthPanchangaContent(
 
 @Composable
 private fun BirthSummaryCard(
-    panchanga: PanchangaCalculator.PanchangaData,
+    panchanga: PanchangaData,
     chart: VedicChart
 ) {
     Surface(
@@ -975,7 +988,7 @@ private fun BirthSummaryCard(
 
 @Composable
 private fun BirthDayInterpretationCard(
-    panchanga: PanchangaCalculator.PanchangaData
+    panchanga: PanchangaData
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -1013,8 +1026,8 @@ private fun BirthDayInterpretationCard(
 
 @Composable
 private fun PanchangaElementsContent(
-    todayPanchanga: PanchangaCalculator.PanchangaData?,
-    birthPanchanga: PanchangaCalculator.PanchangaData?
+    todayPanchanga: PanchangaData?,
+    birthPanchanga: PanchangaData?
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -1371,7 +1384,7 @@ private fun PanchangaInfoDialog(onDismiss: () -> Unit) {
     )
 }
 
-private fun getBirthDayInterpretation(panchanga: PanchangaCalculator.PanchangaData): String {
+private fun getBirthDayInterpretation(panchanga: PanchangaData): String {
     return buildString {
         append("Born on ${panchanga.vara}, under the ${panchanga.nakshatra.displayName} nakshatra ")
         append("during ${panchanga.tithi.displayName} tithi. ")

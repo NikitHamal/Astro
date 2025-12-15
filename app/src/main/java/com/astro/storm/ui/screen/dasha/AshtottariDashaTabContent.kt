@@ -115,7 +115,7 @@ fun AshtottariDashaTabContent(
         // Mahadasha List
         items(
             items = timeline.mahadashas,
-            key = { "ashtottari_md_${it.planet.symbol}_${it.startDate}" }
+            key = { md: AshtottariDashaCalculator.AshtottariMahadasha -> "ashtottari_md_${md.planet.symbol}_${md.startDate}" }
         ) { mahadasha ->
             val mdKey = "${mahadasha.planet.symbol}_${mahadasha.startDate}"
             val isCurrent = mahadasha == timeline.currentMahadasha
@@ -274,22 +274,32 @@ private fun AshtottariCurrentPeriodCard(
             // Current periods
             if (currentMD != null) {
                 Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                    val now = LocalDateTime.now()
+                    val mdTotalDuration = java.time.Duration.between(currentMD.startDate, currentMD.endDate).toMillis().toDouble()
+                    val mdElapsedDuration = java.time.Duration.between(currentMD.startDate, now).toMillis().toDouble()
+                    val mdProgressPercent = if (mdTotalDuration > 0) (mdElapsedDuration / mdTotalDuration * 100).coerceIn(0.0, 100.0) else 0.0
+
                     AshtottariPeriodRow(
                         label = "Mahadasha",
                         planet = currentMD.planet,
                         startDate = currentMD.startDate,
                         endDate = currentMD.endDate,
-                        progress = currentMD.getProgressPercent().toFloat() / 100f,
+                        progress = mdProgressPercent.toFloat() / 100f,
                         isMain = true
                     )
 
                     currentAD?.let { ad ->
+                        val now = LocalDateTime.now()
+                        val totalDuration = java.time.Duration.between(ad.startDate, ad.endDate).toMillis().toDouble()
+                        val elapsedDuration = java.time.Duration.between(ad.startDate, now).toMillis().toDouble()
+                        val progressPercent = if (totalDuration > 0) (elapsedDuration / totalDuration * 100).coerceIn(0.0, 100.0) else 0.0
+
                         AshtottariPeriodRow(
                             label = "Antardasha",
-                            planet = ad.planet,
+                            planet = ad.antardashaLord,
                             startDate = ad.startDate,
                             endDate = ad.endDate,
-                            progress = ad.getProgressPercent().toFloat() / 100f,
+                            progress = progressPercent.toFloat() / 100f,
                             isMain = false
                         )
                     }
@@ -638,7 +648,7 @@ private fun AshtottariTimelineCard(
 
             timeline.mahadashas.forEachIndexed { index, dasha ->
                 val isPast = dasha.endDate.isBefore(today)
-                val isCurrent = dasha.isActiveOn(today)
+                val isCurrent = !today.isBefore(dasha.startDate) && today.isBefore(dasha.endDate)
                 val planetColor = ChartDetailColors.getPlanetColor(dasha.planet)
                 val isLast = index == timeline.mahadashas.lastIndex
 

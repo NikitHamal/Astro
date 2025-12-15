@@ -26,6 +26,13 @@ object SudarshanaChakraDashaCalculator {
     /**
      * Calculate Sudarshana Chakra Dasha for a given age/year
      */
+    fun calculateSudarshana(chart: VedicChart, targetAge: Int = 0): SudarshanaChakraResult {
+        return calculateSudarshanaChakra(chart, targetAge)
+    }
+
+    /**
+     * Calculate Sudarshana Chakra Dasha for a given age/year
+     */
     fun calculateSudarshanaChakra(chart: VedicChart, targetAge: Int = 0): SudarshanaChakraResult {
         val birthDateTime = chart.birthData.dateTime
         val currentAge = if (targetAge == 0) {
@@ -666,4 +673,10 @@ data class InternalChakraData(
     val moonSign: ZodiacSign,
     val sunHouse: Int,
     val sunSign: ZodiacSign
+)
+
+data class SudarshanaTimeline(
+    val result: SudarshanaChakraResult,
+    val natalChart: VedicChart,
+    val currentAge: Int
 )
