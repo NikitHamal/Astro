@@ -114,10 +114,11 @@ fun PanchangaScreenRedesigned(
     // Calculate Panchanga for today
     val todayPanchanga = remember {
         try {
-            val calculator = PanchangaCalculator(context)
-            calculator.use { calc ->
-                calc.calculatePanchanga(LocalDateTime.now())
-            }
+            PanchangaCalculator.calculatePanchanga(
+                LocalDateTime.now(),
+                // Assuming default location for today's panchanga
+                28.6139, 77.2090, "Asia/Kolkata"
+            )
         } catch (e: Exception) {
             null
         }
@@ -127,10 +128,12 @@ fun PanchangaScreenRedesigned(
     val birthPanchanga = remember(chart) {
         chart?.let {
             try {
-                val calculator = PanchangaCalculator(context)
-                calculator.use { calc ->
-                    calc.calculatePanchanga(it.birthData.dateTime)
-                }
+                PanchangaCalculator.calculatePanchanga(
+                    it.birthData.dateTime,
+                    it.birthData.latitude,
+                    it.birthData.longitude,
+                    it.birthData.timezone
+                )
             } catch (e: Exception) {
                 null
             }

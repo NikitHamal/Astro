@@ -112,7 +112,7 @@ fun YogasScreenRedesigned(
     val yogaAnalysis = remember(chart) {
         chart?.let {
             try {
-                YogaCalculator.analyzeYogas(it)
+                YogaCalculator.calculateYogas(it)
             } catch (e: Exception) {
                 null
             }
@@ -366,7 +366,7 @@ private fun YogasSummaryCard(
                             text = "${analysis.overallYogaStrength.toInt()}%",
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            color = getStrengthColor(analysis.overallYogaStrength)
+                            color = getStrengthColor(analysis.overallYogaStrength.toFloat())
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
@@ -376,7 +376,7 @@ private fun YogasSummaryCard(
                             .fillMaxWidth()
                             .height(8.dp)
                             .clip(RoundedCornerShape(4.dp)),
-                        color = getStrengthColor(analysis.overallYogaStrength),
+                        color = getStrengthColor(analysis.overallYogaStrength.toFloat()),
                         trackColor = AppTheme.DividerColor
                     )
                 }
@@ -575,7 +575,7 @@ private fun YogaCard(
 
     val language = LocalLanguage.current
     val categoryColor = getCategoryColor(yoga.category)
-    val strengthColor = getStrengthColor(yoga.strengthPercentage)
+    val strengthColor = getStrengthColor(yoga.strengthPercentage.toFloat())
 
     Surface(
         modifier = Modifier
@@ -955,12 +955,12 @@ private fun getCategoryIcon(category: YogaCalculator.YogaCategory): ImageVector 
     }
 }
 
-private fun getStrengthColor(strength: Double): Color {
+private fun getStrengthColor(strength: Float): Color {
     return when {
-        strength >= 80 -> AppTheme.SuccessColor
-        strength >= 60 -> AppTheme.AccentTeal
-        strength >= 40 -> AppTheme.AccentGold
-        strength >= 20 -> AppTheme.WarningColor
+        strength >= 80f -> AppTheme.SuccessColor
+        strength >= 60f -> AppTheme.AccentTeal
+        strength >= 40f -> AppTheme.AccentGold
+        strength >= 20f -> AppTheme.WarningColor
         else -> AppTheme.ErrorColor
     }
 }

@@ -79,6 +79,7 @@ import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.AshtakavargaCalculator
+import com.astro.storm.ephemeris.AshtakavargaCalculator.AshtakavargaAnalysis
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
@@ -118,7 +119,7 @@ fun AshtakavargaScreenRedesigned(
     val ashtakavarga = remember(chart) {
         chart?.let {
             try {
-                AshtakavargaCalculator.calculate(it)
+                AshtakavargaCalculator.calculateAshtakavarga(it)
             } catch (e: Exception) {
                 null
             }
@@ -268,7 +269,7 @@ private fun AshtakavargaTopBar(
 
 @Composable
 private fun AshtakavargaOverviewContent(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult,
+    ashtakavarga: AshtakavargaAnalysis,
     chart: VedicChart
 ) {
     val language = LocalLanguage.current
@@ -304,9 +305,9 @@ private fun AshtakavargaOverviewContent(
 
 @Composable
 private fun AshtakavargaSummaryCard(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult
+    ashtakavarga: AshtakavargaAnalysis
 ) {
-    val totalBindus = ashtakavarga.sarvashtakavarga.values.sum()
+    val totalBindus = ashtakavarga.sarvashtakavarga.totalBindus
     val averageBindus = totalBindus / 12.0
     val strengthPercent = (totalBindus / 337.0f * 100).coerceIn(0.0f, 100.0f)
 
@@ -470,7 +471,7 @@ private fun AshtakavargaStatItem(
 
 @Composable
 private fun HouseStrengthDistribution(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult
+    ashtakavarga: AshtakavargaAnalysis
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -506,7 +507,7 @@ private fun HouseStrengthDistribution(
             ) {
                 ZodiacSign.entries.forEachIndexed { index, sign ->
                     val house = index + 1
-                    val bindus = ashtakavarga.sarvashtakavarga[sign] ?: 0
+                    val bindus = ashtakavarga.sarvashtakavarga.binduMatrix[sign] ?: 0
                     val maxBindus = 56 // Maximum possible per house
                     val heightPercent = (bindus.toFloat() / maxBindus).coerceIn(0f, 1f)
 
@@ -597,14 +598,14 @@ private fun LegendItem(color: Color, label: String) {
 
 @Composable
 private fun AshtakavargaInsightsCard(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult,
+    ashtakavarga: AshtakavargaAnalysis,
     chart: VedicChart
 ) {
-    val strongHouses = ashtakavarga.sarvashtakavarga.entries
+    val strongHouses = ashtakavarga.sarvashtakavarga.binduMatrix.entries
         .sortedByDescending { it.value }
         .take(3)
 
-    val weakHouses = ashtakavarga.sarvashtakavarga.entries
+    val weakHouses = ashtakavarga.sarvashtakavarga.binduMatrix.entries
         .sortedBy { it.value }
         .take(3)
 
@@ -719,7 +720,7 @@ private fun InsightHouseChip(
 
 @Composable
 private fun PlanetQuickView(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult
+    ashtakavarga: AshtakavargaAnalysis
 ) {
     val language = LocalLanguage.current
 
@@ -747,8 +748,8 @@ private fun PlanetQuickView(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 planets.forEach { planet ->
-                    val planetAshtakavarga = ashtakavarga.planetAshtakavarga[planet]
-                    val totalBindus = planetAshtakavarga?.values?.sum() ?: 0
+                    val planetAshtakavarga = ashtakavarga.bhinnashtakavarga[planet]
+                    val totalBindus = planetAshtakavarga?.totalBindus ?: 0
                     val planetColor = ChartDetailColors.getPlanetColor(planet)
 
                     Column(
@@ -783,7 +784,7 @@ private fun PlanetQuickView(
 
 @Composable
 private fun SarvashtakavargaContent(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult
+    ashtakavarga: AshtakavargaAnalysis
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -808,7 +809,7 @@ private fun SarvashtakavargaContent(
             ) {
                 rowSigns.forEach { sign ->
                     val house = ZodiacSign.entries.indexOf(sign) + 1
-                    val bindus = ashtakavarga.sarvashtakavarga[sign] ?: 0
+                    val bindus = ashtakavarga.sarvashtakavarga.binduMatrix[sign] ?: 0
                     SarvashtakavargaHouseCard(
                         house = house,
                         sign = sign,
@@ -900,7 +901,7 @@ private fun SarvashtakavargaHouseCard(
 
 @Composable
 private fun AshtakavargaByPlanetContent(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult,
+    ashtakavarga: AshtakavargaAnalysis,
     expandedPlanets: Set<String>,
     onTogglePlanet: (String) -> Unit
 ) {
@@ -921,7 +922,7 @@ private fun AshtakavargaByPlanetContent(
             key = { "planet_${it.symbol}" }
         ) { planet ->
             val isExpanded = planet.symbol in expandedPlanets
-            val planetAshtakavarga = ashtakavarga.planetAshtakavarga[planet] ?: emptyMap()
+            val planetAshtakavarga = ashtakavarga.bhinnashtakavarga[planet]?.binduMatrix ?: emptyMap()
 
             PlanetAshtakavargaCard(
                 planet = planet,
@@ -1092,7 +1093,7 @@ private fun PlanetAshtakavargaCard(
 
 @Composable
 private fun AshtakavargaByHouseContent(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaResult
+    ashtakavarga: AshtakavargaAnalysis
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -1102,14 +1103,14 @@ private fun AshtakavargaByHouseContent(
         items(12) { index ->
             val house = index + 1
             val sign = ZodiacSign.entries[index]
-            val totalBindus = ashtakavarga.sarvashtakavarga[sign] ?: 0
+            val totalBindus = ashtakavarga.sarvashtakavarga.binduMatrix[sign] ?: 0
 
             // Get individual planet contributions
             val planetContributions = listOf(
                 Planet.SUN, Planet.MOON, Planet.MARS, Planet.MERCURY,
                 Planet.JUPITER, Planet.VENUS, Planet.SATURN
             ).associateWith { planet ->
-                ashtakavarga.planetAshtakavarga[planet]?.get(sign) ?: 0
+                ashtakavarga.bhinnashtakavarga[planet]?.binduMatrix?.get(sign) ?: 0
             }
 
             HouseDetailCard(

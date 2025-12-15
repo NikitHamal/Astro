@@ -123,10 +123,7 @@ fun TransitsScreenRedesigned(
     val transitAnalysis = remember(chart) {
         chart?.let {
             try {
-                val engine = SwissEphemerisEngine(context)
-                engine.use { ephemeris ->
-                    TransitAnalyzer.analyzeTransits(it, LocalDateTime.now(), ephemeris)
-                }
+                TransitAnalyzer.analyzeTransits(it, LocalDateTime.now(), context)
             } catch (e: Exception) {
                 null
             }
@@ -303,14 +300,14 @@ private fun CurrentTransitsContent(
 
         // Planet transit cards
         items(
-            items = analysis.currentTransitPositions,
+            items = analysis.transitPositions,
             key = { "transit_${it.planet.symbol}" }
         ) { transitPosition ->
             val isExpanded = transitPosition.planet.symbol in expandedPlanets
 
             TransitPlanetCard(
                 transitPosition = transitPosition,
-                natalPosition = analysis.chart.planets[transitPosition.planet],
+                natalPosition = analysis.natalChart.planetPositions.find { it.planet == transitPosition.planet },
                 isExpanded = isExpanded,
                 onToggleExpand = { onTogglePlanet(transitPosition.planet.symbol) }
             )
@@ -325,7 +322,7 @@ private fun CurrentTransitsContent(
 private fun TransitSummaryCard(
     analysis: TransitAnalyzer.TransitAnalysis
 ) {
-    val majorTransits = analysis.significantTransits.filter { it.importance >= 0.7 }
+    val majorTransits = analysis.significantPeriods.filter { it.intensity >= 4 }
 
     Surface(
         modifier = Modifier
@@ -390,7 +387,7 @@ private fun TransitSummaryCard(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 TransitStatItem(
-                    value = "${analysis.currentTransitPositions.size}",
+                    value = "${analysis.transitPositions.size}",
                     label = "Planets",
                     color = AppTheme.AccentPrimary,
                     modifier = Modifier.weight(1f)
@@ -402,15 +399,15 @@ private fun TransitSummaryCard(
                     modifier = Modifier.weight(1f)
                 )
                 TransitStatItem(
-                    value = "${(analysis.overallTransitStrength * 100).toInt()}%",
+                    value = "${analysis.overallAssessment.score.toInt()}%",
                     label = "Strength",
-                    color = getStrengthColor(analysis.overallTransitStrength * 100),
+                    color = getStrengthColor(analysis.overallAssessment.score),
                     modifier = Modifier.weight(1f)
                 )
             }
 
             // Key transit info
-            if (analysis.currentHighlight.isNotEmpty()) {
+            if (analysis.overallAssessment.summary.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
@@ -435,7 +432,7 @@ private fun TransitSummaryCard(
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = analysis.currentHighlight,
+                            text = analysis.overallAssessment.summary,
                             fontSize = 13.sp,
                             color = AppTheme.TextPrimary,
                             lineHeight = 19.sp
@@ -482,7 +479,7 @@ private fun TransitStatItem(
 
 @Composable
 private fun TransitPlanetCard(
-    transitPosition: TransitAnalyzer.TransitPosition,
+    transitPosition: com.astro.storm.data.model.PlanetPosition,
     natalPosition: com.astro.storm.data.model.PlanetPosition?,
     isExpanded: Boolean,
     onToggleExpand: () -> Unit
@@ -593,7 +590,7 @@ private fun TransitPlanetCard(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "${transitPosition.houseTransit}H",
+                            text = "${transitPosition.house}H",
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             color = planetColor
@@ -692,31 +689,6 @@ private fun TransitPlanetCard(
                         }
                     }
 
-                    // Transit effect
-                    if (transitPosition.interpretation.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Surface(
-                            modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(10.dp),
-                            color = planetColor.copy(alpha = 0.08f)
-                        ) {
-                            Column(modifier = Modifier.padding(12.dp)) {
-                                Text(
-                                    text = "Transit Effect",
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = planetColor
-                                )
-                                Spacer(modifier = Modifier.height(6.dp))
-                                Text(
-                                    text = transitPosition.interpretation,
-                                    fontSize = 13.sp,
-                                    color = AppTheme.TextPrimary,
-                                    lineHeight = 19.sp
-                                )
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -731,7 +703,7 @@ private fun TransitsByHouseContent(
 
     // Group transits by house
     val transitsByHouse = remember(analysis) {
-        analysis.currentTransitPositions.groupBy { it.houseTransit }
+        analysis.transitPositions.groupBy { it.house }
     }
 
     LazyColumn(
@@ -757,7 +729,7 @@ private fun TransitsByHouseContent(
 @Composable
 private fun HouseTransitCard(
     house: Int,
-    transits: List<TransitAnalyzer.TransitPosition>,
+    transits: List<com.astro.storm.data.model.PlanetPosition>,
     houseSignification: String
 ) {
     val language = LocalLanguage.current
@@ -856,9 +828,9 @@ private fun UpcomingTransitsContent(
         }
 
         // Filter to upcoming and significant
-        val upcomingTransits = analysis.significantTransits
-            .filter { it.date.isAfter(LocalDate.now()) }
-            .sortedBy { it.date }
+        val upcomingTransits = analysis.significantPeriods
+            .filter { it.startDate.toLocalDate().isAfter(LocalDate.now()) }
+            .sortedBy { it.startDate }
             .take(15)
 
         if (upcomingTransits.isEmpty()) {
@@ -880,7 +852,7 @@ private fun UpcomingTransitsContent(
         } else {
             items(
                 items = upcomingTransits,
-                key = { "upcoming_${it.planet.symbol}_${it.date}" }
+                key = { "upcoming_${it.planets.first().symbol}_${it.startDate}" }
             ) { transit ->
                 UpcomingTransitCard(transit = transit)
             }
@@ -892,11 +864,11 @@ private fun UpcomingTransitsContent(
 
 @Composable
 private fun UpcomingTransitCard(
-    transit: TransitAnalyzer.SignificantTransit
+    transit: TransitAnalyzer.SignificantPeriod
 ) {
     val language = LocalLanguage.current
-    val planetColor = ChartDetailColors.getPlanetColor(transit.planet)
-    val daysUntil = java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), transit.date).toInt()
+    val planetColor = ChartDetailColors.getPlanetColor(transit.planets.first())
+    val daysUntil = java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), transit.startDate.toLocalDate()).toInt()
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -915,7 +887,7 @@ private fun UpcomingTransitCard(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = transit.planet.symbol,
+                    text = transit.planets.first().symbol,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -926,14 +898,14 @@ private fun UpcomingTransitCard(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = transit.eventDescription,
+                    text = transit.description,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "${transit.planet.getLocalizedName(language)} ${transit.transitType}",
+                    text = transit.planets.joinToString { it.getLocalizedName(language) },
                     fontSize = 12.sp,
                     color = planetColor
                 )
@@ -941,7 +913,7 @@ private fun UpcomingTransitCard(
 
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = transit.date.format(DateTimeFormatter.ofPattern("MMM dd")),
+                    text = transit.startDate.format(DateTimeFormatter.ofPattern("MMM dd")),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1010,7 +982,7 @@ private fun TransitAspectCard(
     aspect: TransitAnalyzer.TransitAspect
 ) {
     val language = LocalLanguage.current
-    val transitColor = ChartDetailColors.getPlanetColor(aspect.transitPlanet)
+    val transitColor = ChartDetailColors.getPlanetColor(aspect.transitingPlanet)
     val natalColor = ChartDetailColors.getPlanetColor(aspect.natalPlanet)
     val isHarmonious = aspect.aspectType in listOf("Trine", "Sextile", "Conjunction")
 
@@ -1032,7 +1004,7 @@ private fun TransitAspectCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = aspect.transitPlanet.symbol,
+                        text = aspect.transitingPlanet.symbol,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
@@ -1092,7 +1064,7 @@ private fun TransitAspectCard(
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = "${aspect.transitPlanet.getLocalizedName(language)} transit ${aspect.aspectType.lowercase()} natal ${aspect.natalPlanet.getLocalizedName(language)}",
+                text = "${aspect.transitingPlanet.getLocalizedName(language)} transit ${aspect.aspectType.lowercase()} natal ${aspect.natalPlanet.getLocalizedName(language)}",
                 fontSize = 13.sp,
                 color = AppTheme.TextPrimary
             )

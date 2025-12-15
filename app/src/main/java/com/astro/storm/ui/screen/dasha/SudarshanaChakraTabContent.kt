@@ -80,7 +80,7 @@ import java.time.format.DateTimeFormatter
  */
 @Composable
 fun SudarshanaChakraTabContent(
-    timeline: SudarshanaChakraDashaCalculator.SudarshanaTimeline
+    timeline: SudarshanaChakraDashaCalculator.SudarshanaChakraResult
 ) {
     var showInfoExpanded by rememberSaveable { mutableStateOf(false) }
     var expandedYears by rememberSaveable { mutableStateOf(setOf<Int>()) }
@@ -123,34 +123,7 @@ fun SudarshanaChakraTabContent(
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
-                Text(
-                    text = "${timeline.yearlyAnalysis.size} years",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted
-                )
             }
-        }
-
-        // Yearly Analysis Cards
-        items(
-            items = timeline.yearlyAnalysis.take(24),
-            key = { "sudarshana_year_${it.year}" }
-        ) { yearData ->
-            val isExpanded = yearData.year in expandedYears
-            val isCurrent = yearData.year == LocalDate.now().year
-
-            SudarshanaYearCard(
-                yearData = yearData,
-                isCurrent = isCurrent,
-                isExpanded = isExpanded,
-                onToggleExpand = { expanded ->
-                    expandedYears = if (expanded) {
-                        expandedYears + yearData.year
-                    } else {
-                        expandedYears - yearData.year
-                    }
-                }
-            )
         }
 
         // Bottom spacer
@@ -160,10 +133,10 @@ fun SudarshanaChakraTabContent(
 
 @Composable
 private fun SudarshanaCurrentYearCard(
-    timeline: SudarshanaChakraDashaCalculator.SudarshanaTimeline
+    timeline: SudarshanaChakraDashaCalculator.SudarshanaChakraResult
 ) {
     val currentYear = LocalDate.now().year
-    val currentYearData = timeline.yearlyAnalysis.find { it.year == currentYear }
+    val currentYearData = timeline.synthesis
 
     Surface(
         modifier = Modifier
@@ -231,19 +204,19 @@ private fun SudarshanaCurrentYearCard(
                 ) {
                     ReferencePointCard(
                         title = "Lagna",
-                        sign = currentYearData.lagnaSign,
+                        sign = timeline.lagnaChakra.activeSign,
                         color = AppTheme.AccentPrimary,
                         modifier = Modifier.weight(1f)
                     )
                     ReferencePointCard(
                         title = "Moon",
-                        sign = currentYearData.moonSign,
+                        sign = timeline.chandraChakra.activeSign,
                         color = AppTheme.LifeAreaLove,
                         modifier = Modifier.weight(1f)
                     )
                     ReferencePointCard(
                         title = "Sun",
-                        sign = currentYearData.sunSign,
+                        sign = timeline.suryaChakra.activeSign,
                         color = AppTheme.AccentGold,
                         modifier = Modifier.weight(1f)
                     )
@@ -271,25 +244,25 @@ private fun SudarshanaCurrentYearCard(
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             LinearProgressIndicator(
-                                progress = { (currentYearData.combinedStrength / 100f).coerceIn(0f, 1f) },
+                                progress = { (currentYearData.combinedStrengthScore / 100f).coerceIn(0f, 1f) },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(8.dp)
                                     .clip(RoundedCornerShape(4.dp)),
-                                color = getStrengthColor(currentYearData.combinedStrength.toFloat()),
+                                color = getStrengthColor(currentYearData.combinedStrengthScore.toFloat()),
                                 trackColor = AppTheme.DividerColor
                             )
                         }
                         Spacer(modifier = Modifier.width(14.dp))
                         Column(horizontalAlignment = Alignment.End) {
                             Text(
-                                text = "${currentYearData.combinedStrength.toInt()}%",
+                                text = "${currentYearData.combinedStrengthScore.toInt()}%",
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = getStrengthColor(currentYearData.combinedStrength.toFloat())
+                                color = getStrengthColor(currentYearData.combinedStrengthScore.toFloat())
                             )
                             Text(
-                                text = getStrengthLabel(currentYearData.combinedStrength.toFloat()),
+                                text = getStrengthLabel(currentYearData.combinedStrengthScore.toFloat()),
                                 fontSize = 11.sp,
                                 color = AppTheme.TextMuted
                             )
@@ -303,7 +276,7 @@ private fun SudarshanaCurrentYearCard(
                 )
 
                 // Combined interpretation
-                if (currentYearData.combinedEffects.isNotEmpty()) {
+                if (currentYearData.commonThemes.isNotEmpty()) {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(14.dp),
@@ -326,7 +299,7 @@ private fun SudarshanaCurrentYearCard(
                                 )
                             }
                             Spacer(modifier = Modifier.height(12.dp))
-                            currentYearData.combinedEffects.take(4).forEach { effect ->
+                            currentYearData.commonThemes.take(4).forEach { effect ->
                                 Row(
                                     modifier = Modifier.padding(vertical = 4.dp),
                                     verticalAlignment = Alignment.Top
@@ -407,7 +380,7 @@ private fun ReferencePointCard(
 
 @Composable
 private fun SudarshanaTripleReferenceCard(
-    timeline: SudarshanaChakraDashaCalculator.SudarshanaTimeline
+    timeline: SudarshanaChakraDashaCalculator.SudarshanaChakraResult
 ) {
     val language = LocalLanguage.current
 
@@ -457,19 +430,19 @@ private fun SudarshanaTripleReferenceCard(
             ) {
                 BirthReferenceItem(
                     label = "Lagna",
-                    sign = timeline.lagnaSign,
+                    sign = timeline.lagnaReference,
                     color = AppTheme.AccentPrimary,
                     modifier = Modifier.weight(1f)
                 )
                 BirthReferenceItem(
                     label = "Moon",
-                    sign = timeline.moonSign,
+                    sign = timeline.moonReference,
                     color = AppTheme.LifeAreaLove,
                     modifier = Modifier.weight(1f)
                 )
                 BirthReferenceItem(
                     label = "Sun",
-                    sign = timeline.sunSign,
+                    sign = timeline.sunReference,
                     color = AppTheme.AccentGold,
                     modifier = Modifier.weight(1f)
                 )
@@ -685,184 +658,6 @@ private fun PerspectiveInfoRow(
     }
 }
 
-@Composable
-private fun SudarshanaYearCard(
-    yearData: SudarshanaChakraDashaCalculator.YearlyAnalysis,
-    isCurrent: Boolean,
-    isExpanded: Boolean,
-    onToggleExpand: (Boolean) -> Unit
-) {
-    val rotation by animateFloatAsState(
-        targetValue = if (isExpanded) 180f else 0f,
-        animationSpec = tween(250),
-        label = "yearRotation"
-    )
-
-    val strengthColor = getStrengthColor(yearData.combinedStrength)
-
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(color = strengthColor.copy(alpha = 0.3f))
-            ) { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(16.dp),
-        color = if (isCurrent) strengthColor.copy(alpha = 0.08f) else AppTheme.CardBackground
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .animateContentSize(animationSpec = tween(250))
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    // Year badge
-                    Surface(
-                        shape = RoundedCornerShape(10.dp),
-                        color = if (isCurrent) strengthColor else AppTheme.CardBackgroundElevated
-                    ) {
-                        Text(
-                            text = yearData.year.toString(),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = if (isCurrent) Color.White else AppTheme.TextPrimary,
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(12.dp))
-
-                    Column {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = "Age ${yearData.age}",
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = AppTheme.TextPrimary
-                            )
-                            if (isCurrent) {
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Surface(
-                                    shape = RoundedCornerShape(4.dp),
-                                    color = strengthColor.copy(alpha = 0.2f)
-                                ) {
-                                    Text(
-                                        text = "CURRENT",
-                                        fontSize = 9.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = strengthColor,
-                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-                                    )
-                                }
-                            }
-                        }
-                        Text(
-                            text = "${yearData.lagnaSign.displayName} / ${yearData.moonSign.displayName} / ${yearData.sunSign.displayName}",
-                            fontSize = 11.sp,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                }
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "${yearData.combinedStrength.toInt()}%",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = strengthColor
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Icon(
-                        Icons.Default.ExpandMore,
-                        contentDescription = if (isExpanded) "Collapse" else "Expand",
-                        tint = AppTheme.TextMuted,
-                        modifier = Modifier
-                            .size(22.dp)
-                            .rotate(rotation)
-                    )
-                }
-            }
-
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = expandVertically(tween(250)) + fadeIn(tween(250)),
-                exit = shrinkVertically(tween(200)) + fadeOut(tween(150))
-            ) {
-                Column(modifier = Modifier.padding(top = 14.dp)) {
-                    HorizontalDivider(color = AppTheme.DividerColor, modifier = Modifier.padding(bottom = 14.dp))
-
-                    // Sign details
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        YearSignDetail(
-                            label = "Lagna",
-                            sign = yearData.lagnaSign,
-                            color = AppTheme.AccentPrimary,
-                            modifier = Modifier.weight(1f)
-                        )
-                        YearSignDetail(
-                            label = "Moon",
-                            sign = yearData.moonSign,
-                            color = AppTheme.LifeAreaLove,
-                            modifier = Modifier.weight(1f)
-                        )
-                        YearSignDetail(
-                            label = "Sun",
-                            sign = yearData.sunSign,
-                            color = AppTheme.AccentGold,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-
-                    // Effects
-                    if (yearData.combinedEffects.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(14.dp))
-                        Text(
-                            text = "Year Themes",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextSecondary,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                        yearData.combinedEffects.take(3).forEach { effect ->
-                            Row(
-                                modifier = Modifier.padding(vertical = 3.dp),
-                                verticalAlignment = Alignment.Top
-                            ) {
-                                Text(
-                                    text = "•",
-                                    fontSize = 12.sp,
-                                    color = strengthColor,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = effect,
-                                    fontSize = 12.sp,
-                                    color = AppTheme.TextPrimary,
-                                    lineHeight = 17.sp
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 
 @Composable
 private fun YearSignDetail(

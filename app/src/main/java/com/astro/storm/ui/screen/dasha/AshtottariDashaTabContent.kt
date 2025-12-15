@@ -79,15 +79,11 @@ import java.time.temporal.ChronoUnit
  */
 @Composable
 fun AshtottariDashaTabContent(
-    timeline: AshtottariDashaCalculator.AshtottariTimeline
+    timeline: AshtottariDashaCalculator.AshtottariDashaResult
 ) {
     val language = LocalLanguage.current
     var expandedMahadashaKeys by rememberSaveable { mutableStateOf(setOf<String>()) }
     var showInfoExpanded by rememberSaveable { mutableStateOf(false) }
-
-    val currentMahadashaIndex = remember(timeline) {
-        timeline.mahadashas.indexOfFirst { it == timeline.currentMahadasha }
-    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -143,7 +139,7 @@ fun AshtottariDashaTabContent(
 
 @Composable
 private fun AshtottariCurrentPeriodCard(
-    timeline: AshtottariDashaCalculator.AshtottariTimeline
+    timeline: AshtottariDashaCalculator.AshtottariDashaResult
 ) {
     val language = LocalLanguage.current
     val currentMD = timeline.currentMahadasha
@@ -199,7 +195,7 @@ private fun AshtottariCurrentPeriodCard(
                     )
                     if (currentMD != null && currentAD != null) {
                         Text(
-                            text = "${currentMD.planet.getLocalizedName(language)} - ${currentAD.planet.getLocalizedName(language)}",
+                            text = "${currentMD.planet.getLocalizedName(language)} - ${currentAD.antardashaLord.getLocalizedName(language)}",
                             fontSize = 12.sp,
                             color = AppTheme.TextMuted,
                             fontWeight = FontWeight.Medium
@@ -227,7 +223,7 @@ private fun AshtottariCurrentPeriodCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = timeline.birthNakshatraLord.symbol,
+                            text = timeline.startingLord.symbol,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             color = nakshatraColor
@@ -245,7 +241,7 @@ private fun AshtottariCurrentPeriodCard(
                             letterSpacing = 0.5.sp
                         )
                         Text(
-                            text = "${timeline.birthNakshatra.getLocalizedName(language)} (Pada ${timeline.birthNakshatraPada})",
+                            text = timeline.moonNakshatra.getLocalizedName(language),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -260,7 +256,7 @@ private fun AshtottariCurrentPeriodCard(
                             fontWeight = FontWeight.Medium
                         )
                         Text(
-                            text = timeline.birthNakshatraLord.getLocalizedName(language),
+                            text = timeline.startingLord.getLocalizedName(language),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = nakshatraColor
@@ -277,19 +273,19 @@ private fun AshtottariCurrentPeriodCard(
                     AshtottariPeriodRow(
                         label = "Mahadasha",
                         planet = currentMD.planet,
-                        startDate = currentMD.startDate,
-                        endDate = currentMD.endDate,
-                        progress = currentMD.getProgressPercent().toFloat() / 100f,
+                        startDate = currentMD.startDate.toLocalDate(),
+                        endDate = currentMD.endDate.toLocalDate(),
+                        progress = currentMD.getProgressPercent() / 100f,
                         isMain = true
                     )
 
                     currentAD?.let { ad ->
                         AshtottariPeriodRow(
                             label = "Antardasha",
-                            planet = ad.planet,
-                            startDate = ad.startDate,
-                            endDate = ad.endDate,
-                            progress = ad.getProgressPercent().toFloat() / 100f,
+                            planet = ad.antardashaLord,
+                            startDate = ad.startDate.toLocalDate(),
+                            endDate = ad.endDate.toLocalDate(),
+                            progress = ad.getProgressPercent() / 100f,
                             isMain = false
                         )
                     }
@@ -324,7 +320,7 @@ private fun AshtottariCurrentPeriodCard(
                         }
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = getAshtottariInterpretation(currentMD.planet, currentAD?.planet),
+                            text = getAshtottariInterpretation(currentMD.planet, currentAD?.antardashaLord),
                             fontSize = 13.sp,
                             color = AppTheme.TextPrimary,
                             lineHeight = 20.sp
@@ -592,7 +588,7 @@ private fun PeriodDurationRow(planet: Planet, years: Int) {
 
 @Composable
 private fun AshtottariTimelineCard(
-    timeline: AshtottariDashaCalculator.AshtottariTimeline
+    timeline: AshtottariDashaCalculator.AshtottariDashaResult
 ) {
     val language = LocalLanguage.current
     val today = LocalDate.now()
@@ -637,8 +633,8 @@ private fun AshtottariTimelineCard(
             }
 
             timeline.mahadashas.forEachIndexed { index, dasha ->
-                val isPast = dasha.endDate.isBefore(today)
-                val isCurrent = dasha.isActiveOn(today)
+                val isPast = dasha.endDate.toLocalDate().isBefore(today)
+                val isCurrent = dasha.isCurrentlyRunning
                 val planetColor = ChartDetailColors.getPlanetColor(dasha.planet)
                 val isLast = index == timeline.mahadashas.lastIndex
 
@@ -717,7 +713,7 @@ private fun AshtottariTimelineCard(
                             color = if (isCurrent) planetColor.copy(alpha = 0.15f) else Color.Transparent
                         ) {
                             Text(
-                                text = "${dasha.durationYears.toInt()}y",
+                                text = "${dasha.periodYears.toInt()}y",
                                 fontSize = 11.sp,
                                 fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Normal,
                                 color = if (isCurrent) planetColor else AppTheme.TextMuted,
@@ -733,8 +729,8 @@ private fun AshtottariTimelineCard(
 
 @Composable
 private fun AshtottariMahadashaCard(
-    mahadasha: AshtottariDashaCalculator.AshtottariMahadasha,
-    currentAntardasha: AshtottariDashaCalculator.AshtottariAntardasha?,
+    mahadasha: com.astro.storm.ephemeris.AshtottariMahadasha,
+    currentAntardasha: com.astro.storm.ephemeris.AshtottariAntardasha?,
     isCurrent: Boolean,
     isExpanded: Boolean,
     onToggleExpand: (Boolean) -> Unit
@@ -815,7 +811,7 @@ private fun AshtottariMahadashaCard(
                             }
                         }
                         Text(
-                            text = "${mahadasha.durationYears.toInt()}y - ${formatDate(mahadasha.startDate)} to ${formatDate(mahadasha.endDate)}",
+                            text = "${mahadasha.periodYears.toInt()}y - ${formatDate(mahadasha.startDate.toLocalDate())} to ${formatDate(mahadasha.endDate.toLocalDate())}",
                             fontSize = 11.sp,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
@@ -857,8 +853,11 @@ private fun AshtottariMahadashaCard(
                             shape = RoundedCornerShape(5.dp),
                             color = AppTheme.CardBackgroundElevated
                         ) {
+                            val antardashas = remember(mahadasha) {
+                                AshtottariDashaCalculator.calculateAntardashas(mahadasha)
+                            }
                             Text(
-                                text = "${mahadasha.antardashas.size} sub-periods",
+                                text = "${antardashas.size} sub-periods",
                                 fontSize = 10.sp,
                                 color = AppTheme.TextMuted,
                                 fontWeight = FontWeight.Medium,
@@ -867,8 +866,11 @@ private fun AshtottariMahadashaCard(
                         }
                     }
 
-                    mahadasha.antardashas.forEachIndexed { index, ad ->
-                        val isCurrentAD = ad == currentAntardasha
+                    val antardashas = remember(mahadasha) {
+                        AshtottariDashaCalculator.calculateAntardashas(mahadasha)
+                    }
+                    antardashas.forEachIndexed { index, ad ->
+                        val isCurrentAD = ad.isCurrentlyRunning
                         AshtottariAntardashaRow(
                             antardasha = ad,
                             mahadashaPlanet = mahadasha.planet,
@@ -884,14 +886,14 @@ private fun AshtottariMahadashaCard(
 
 @Composable
 private fun AshtottariAntardashaRow(
-    antardasha: AshtottariDashaCalculator.AshtottariAntardasha,
+    antardasha: com.astro.storm.ephemeris.AshtottariAntardasha,
     mahadashaPlanet: Planet,
     isCurrent: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val planetColor = ChartDetailColors.getPlanetColor(antardasha.planet)
+    val planetColor = ChartDetailColors.getPlanetColor(antardasha.antardashaLord)
     val today = LocalDate.now()
-    val isPast = antardasha.endDate.isBefore(today)
+    val isPast = antardasha.endDate.toLocalDate().isBefore(today)
     val language = LocalLanguage.current
 
     Row(
@@ -922,7 +924,7 @@ private fun AshtottariAntardashaRow(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = antardasha.planet.symbol,
+                    text = antardasha.antardashaLord.symbol,
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -932,7 +934,7 @@ private fun AshtottariAntardashaRow(
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "${mahadashaPlanet.symbol}-${antardasha.planet.getLocalizedName(language)}",
+                        text = "${mahadashaPlanet.symbol}-${antardasha.antardashaLord.getLocalizedName(language)}",
                         fontSize = 13.sp,
                         fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
                         color = when {
@@ -956,7 +958,7 @@ private fun AshtottariAntardashaRow(
 
         Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = "${formatShortDate(antardasha.startDate)} - ${formatShortDate(antardasha.endDate)}",
+                text = "${formatShortDate(antardasha.startDate.toLocalDate())} - ${formatShortDate(antardasha.endDate.toLocalDate())}",
                 fontSize = 11.sp,
                 color = AppTheme.TextMuted
             )
@@ -990,4 +992,22 @@ private fun getAshtottariInterpretation(mahadashaPlanet: Planet, antardashaPlane
     } else {
         baseInterpretation
     }
+}
+
+private fun com.astro.storm.ephemeris.AshtottariMahadasha.getProgressPercent(): Float {
+    val now = LocalDate.now()
+    if (now.isBefore(startDate.toLocalDate()) || now.isAfter(endDate.toLocalDate())) return 0f
+    val totalDays = ChronoUnit.DAYS.between(startDate.toLocalDate(), endDate.toLocalDate())
+    if (totalDays <= 0) return 0f
+    val elapsedDays = ChronoUnit.DAYS.between(startDate.toLocalDate(), now)
+    return (elapsedDays.toFloat() / totalDays.toFloat() * 100).coerceIn(0f, 100f)
+}
+
+private fun com.astro.storm.ephemeris.AshtottariAntardasha.getProgressPercent(): Float {
+    val now = LocalDate.now()
+    if (now.isBefore(startDate.toLocalDate()) || now.isAfter(endDate.toLocalDate())) return 0f
+    val totalDays = ChronoUnit.DAYS.between(startDate.toLocalDate(), endDate.toLocalDate())
+    if (totalDays <= 0) return 0f
+    val elapsedDays = ChronoUnit.DAYS.between(startDate.toLocalDate(), now)
+    return (elapsedDays.toFloat() / totalDays.toFloat() * 100).coerceIn(0f, 100f)
 }

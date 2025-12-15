@@ -136,10 +136,7 @@ fun DashaSystemsScreen(
     val ashtottariData = remember(chart) {
         chart?.let {
             try {
-                val calculator = AshtottariDashaCalculator(context)
-                calculator.use { calc ->
-                    calc.calculateAshtottariTimeline(it)
-                }
+                AshtottariDashaCalculator.calculateAshtottariDasha(it)
             } catch (e: Exception) {
                 null
             }
@@ -149,10 +146,7 @@ fun DashaSystemsScreen(
     val sudarshanaData = remember(chart) {
         chart?.let {
             try {
-                val calculator = SudarshanaChakraDashaCalculator(context)
-                calculator.use { calc ->
-                    calc.calculateSudarshanaTimeline(it)
-                }
+                SudarshanaChakraDashaCalculator.calculateSudarshanaChakraDasha(it)
             } catch (e: Exception) {
                 null
             }
@@ -351,7 +345,7 @@ private fun VimsottariDashaContent(
 
 @Composable
 private fun AshtottariDashaContent(
-    data: AshtottariDashaCalculator.AshtottariTimeline?
+    data: AshtottariDashaCalculator.AshtottariDashaResult?
 ) {
     if (data == null) {
         EmptyContent(message = "Ashtottari Dasha calculation not available for this chart.")
@@ -363,7 +357,7 @@ private fun AshtottariDashaContent(
 
 @Composable
 private fun SudarshanaChakraContent(
-    data: SudarshanaChakraDashaCalculator.SudarshanaTimeline?
+    data: SudarshanaChakraDashaCalculator.SudarshanaChakraResult?
 ) {
     if (data == null) {
         EmptyContent(message = "Sudarshana Chakra calculation not available for this chart.")
