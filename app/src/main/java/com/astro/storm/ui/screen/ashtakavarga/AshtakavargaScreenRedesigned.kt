@@ -308,7 +308,7 @@ private fun AshtakavargaSummaryCard(
 ) {
     val totalBindus = ashtakavarga.sarvashtakavarga.values.sum()
     val averageBindus = totalBindus / 12.0
-    val strengthPercent = (totalBindus / 337.0 * 100).coerceIn(0.0, 100.0)
+    val strengthPercent = (totalBindus / 337.0f * 100).coerceIn(0.0f, 100.0f)
 
     Surface(
         modifier = Modifier
@@ -1333,11 +1333,11 @@ private fun getBinduColor(bindus: Int): Color {
     }
 }
 
-private fun getBinduStrengthColor(percent: Double): Color {
+private fun getBinduStrengthColor(percent: Float): Color {
     return when {
-        percent >= 75 -> AppTheme.SuccessColor
-        percent >= 55 -> AppTheme.AccentTeal
-        percent >= 40 -> AppTheme.WarningColor
+        percent >= 75f -> AppTheme.SuccessColor
+        percent >= 55f -> AppTheme.AccentTeal
+        percent >= 40f -> AppTheme.WarningColor
         else -> AppTheme.ErrorColor
     }
 }
@@ -1351,11 +1351,11 @@ private fun getBinduLabel(bindus: Int): String {
     }
 }
 
-private fun getStrengthLabel(percent: Double): String {
+private fun getStrengthLabel(percent: Float): String {
     return when {
-        percent >= 75 -> "Excellent"
-        percent >= 55 -> "Good"
-        percent >= 40 -> "Average"
+        percent >= 75f -> "Excellent"
+        percent >= 55f -> "Good"
+        percent >= 40f -> "Average"
         else -> "Below Average"
     }
 }

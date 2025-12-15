@@ -276,7 +276,7 @@ private fun SudarshanaCurrentYearCard(
                                     .fillMaxWidth()
                                     .height(8.dp)
                                     .clip(RoundedCornerShape(4.dp)),
-                                color = getStrengthColor(currentYearData.combinedStrength),
+                                color = getStrengthColor(currentYearData.combinedStrength.toFloat()),
                                 trackColor = AppTheme.DividerColor
                             )
                         }
@@ -286,10 +286,10 @@ private fun SudarshanaCurrentYearCard(
                                 text = "${currentYearData.combinedStrength.toInt()}%",
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = getStrengthColor(currentYearData.combinedStrength)
+                                color = getStrengthColor(currentYearData.combinedStrength.toFloat())
                             )
                             Text(
-                                text = getStrengthLabel(currentYearData.combinedStrength),
+                                text = getStrengthLabel(currentYearData.combinedStrength.toFloat()),
                                 fontSize = 11.sp,
                                 color = AppTheme.TextMuted
                             )
@@ -905,20 +905,20 @@ private fun YearSignDetail(
     }
 }
 
-private fun getStrengthColor(strength: Double): Color {
+private fun getStrengthColor(strength: Float): Color {
     return when {
-        strength >= 70 -> AppTheme.SuccessColor
-        strength >= 50 -> AppTheme.AccentTeal
-        strength >= 30 -> AppTheme.WarningColor
+        strength >= 70f -> AppTheme.SuccessColor
+        strength >= 50f -> AppTheme.AccentTeal
+        strength >= 30f -> AppTheme.WarningColor
         else -> AppTheme.ErrorColor
     }
 }
 
-private fun getStrengthLabel(strength: Double): String {
+private fun getStrengthLabel(strength: Float): String {
     return when {
-        strength >= 70 -> "Excellent"
-        strength >= 50 -> "Good"
-        strength >= 30 -> "Moderate"
+        strength >= 70f -> "Excellent"
+        strength >= 50f -> "Good"
+        strength >= 30f -> "Moderate"
         else -> "Challenging"
     }
 }
