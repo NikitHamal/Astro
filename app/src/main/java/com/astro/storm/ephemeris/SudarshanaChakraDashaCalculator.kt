@@ -2,6 +2,7 @@ package com.astro.storm.ephemeris
 
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
+import com.astro.storm.data.model.Quality
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import java.time.LocalDateTime
@@ -256,14 +257,14 @@ object SudarshanaChakraDashaCalculator {
         val lordPosition = chart.planetPositions.find { it.planet == lord }
         val effects = mutableListOf<String>()
 
-        effects.add("${sign.displayName} activated - ${sign.element.name.lowercase()} element emphasized")
+        effects.add("${sign.displayName} activated - ${sign.element.lowercase()} element emphasized")
 
-        when (sign.modality) {
-            com.astro.storm.data.model.Modality.CARDINAL ->
+        when (sign.quality) {
+            Quality.CARDINAL ->
                 effects.add("Movable sign - new initiatives and changes favored")
-            com.astro.storm.data.model.Modality.FIXED ->
+            Quality.FIXED ->
                 effects.add("Fixed sign - stability and consolidation emphasized")
-            com.astro.storm.data.model.Modality.MUTABLE ->
+            Quality.MUTABLE ->
                 effects.add("Dual sign - adaptability and flexibility needed")
         }
 
@@ -275,6 +276,8 @@ object SudarshanaChakraDashaCalculator {
                 effects.add("Sign lord is exalted - strong positive results")
             } else if (AstrologicalConstants.isDebilitated(lord, pos.sign)) {
                 effects.add("Sign lord is debilitated - extra efforts needed")
+            } else {
+                effects.add("Sign lord is in normal dignity")
             }
         }
 

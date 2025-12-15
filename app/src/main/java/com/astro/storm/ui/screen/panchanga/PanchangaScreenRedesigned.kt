@@ -1,0 +1,1389 @@
+package com.astro.storm.ui.screen.panchanga
+
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.Today
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.getLocalizedName
+import com.astro.storm.data.localization.stringResource
+import com.astro.storm.data.model.VedicChart
+import com.astro.storm.ephemeris.PanchangaCalculator
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.theme.AppTheme
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+/**
+ * Redesigned Panchanga Screen
+ *
+ * A modern, clean UI for displaying Panchanga (Hindu Calendar) with:
+ * - Summary card with all five limbs
+ * - Tab navigation (Today, Birth Day, Elements)
+ * - Visual representations of each element
+ * - Auspicious/inauspicious timing
+ * - Detailed element breakdowns
+ * - Smooth animations throughout
+ */
+
+enum class PanchangaViewType(val title: String) {
+    TODAY("Today"),
+    BIRTH("Birth Day"),
+    ELEMENTS("Elements")
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PanchangaScreenRedesigned(
+    chart: VedicChart?,
+    onBack: () -> Unit
+) {
+    val context = LocalContext.current
+    val language = LocalLanguage.current
+    var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
+    var showInfoDialog by remember { mutableStateOf(false) }
+
+    // Calculate Panchanga for today
+    val todayPanchanga = remember {
+        try {
+            val calculator = PanchangaCalculator(context)
+            calculator.use { calc ->
+                calc.calculatePanchanga(LocalDateTime.now())
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    // Calculate Panchanga for birth
+    val birthPanchanga = remember(chart) {
+        chart?.let {
+            try {
+                val calculator = PanchangaCalculator(context)
+                calculator.use { calc ->
+                    calc.calculatePanchanga(it.birthData.dateTime)
+                }
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
+    val tabs = remember {
+        PanchangaViewType.entries.map { type ->
+            TabItem(
+                title = type.title,
+                accentColor = when (type) {
+                    PanchangaViewType.TODAY -> AppTheme.AccentPrimary
+                    PanchangaViewType.BIRTH -> AppTheme.AccentGold
+                    PanchangaViewType.ELEMENTS -> AppTheme.AccentTeal
+                }
+            )
+        }
+    }
+
+    if (showInfoDialog) {
+        PanchangaInfoDialog(onDismiss = { showInfoDialog = false })
+    }
+
+    Scaffold(
+        containerColor = AppTheme.ScreenBackground,
+        topBar = {
+            PanchangaTopBar(
+                chartName = chart?.birthData?.name ?: "",
+                onBack = onBack,
+                onInfoClick = { showInfoDialog = true }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(AppTheme.ScreenBackground)
+        ) {
+            // Tab row
+            ModernPillTabRow(
+                tabs = tabs,
+                selectedIndex = selectedTabIndex,
+                onTabSelected = { selectedTabIndex = it },
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+            )
+
+            // Content
+            AnimatedContent(
+                targetState = selectedTabIndex,
+                transitionSpec = {
+                    fadeIn(tween(300)) togetherWith fadeOut(tween(200))
+                },
+                label = "PanchangaTabContent"
+            ) { tabIndex ->
+                when (PanchangaViewType.entries[tabIndex]) {
+                    PanchangaViewType.TODAY -> {
+                        TodayPanchangaContent(panchanga = todayPanchanga)
+                    }
+                    PanchangaViewType.BIRTH -> {
+                        BirthPanchangaContent(
+                            panchanga = birthPanchanga,
+                            chart = chart
+                        )
+                    }
+                    PanchangaViewType.ELEMENTS -> {
+                        PanchangaElementsContent(
+                            todayPanchanga = todayPanchanga,
+                            birthPanchanga = birthPanchanga
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PanchangaTopBar(
+    chartName: String,
+    onBack: () -> Unit,
+    onInfoClick: () -> Unit
+) {
+    Surface(
+        color = AppTheme.ScreenBackground,
+        shadowElevation = 2.dp
+    ) {
+        TopAppBar(
+            title = {
+                Column {
+                    Text(
+                        text = stringResource(StringKey.FEATURE_PANCHANGA),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = AppTheme.TextPrimary
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = "Five Limbs of Hindu Calendar",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextMuted
+                    )
+                }
+            },
+            navigationIcon = {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(StringKey.BTN_BACK),
+                        tint = AppTheme.TextPrimary
+                    )
+                }
+            },
+            actions = {
+                IconButton(onClick = onInfoClick) {
+                    Icon(
+                        imageVector = Icons.Outlined.Info,
+                        contentDescription = "Panchanga info",
+                        tint = AppTheme.TextPrimary
+                    )
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = AppTheme.ScreenBackground
+            )
+        )
+    }
+}
+
+@Composable
+private fun TodayPanchangaContent(
+    panchanga: PanchangaCalculator.PanchangaData?
+) {
+    if (panchanga == null) {
+        EmptyPanchangaContent()
+        return
+    }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Summary card
+        item(key = "today_summary") {
+            TodaySummaryCard(panchanga = panchanga)
+        }
+
+        // Five elements
+        item(key = "five_elements") {
+            FiveLimbsCard(panchanga = panchanga)
+        }
+
+        // Auspicious timing
+        item(key = "auspicious_timing") {
+            AuspiciousTimingCard(panchanga = panchanga)
+        }
+
+        // Sun/Moon info
+        item(key = "sun_moon") {
+            SunMoonCard(panchanga = panchanga)
+        }
+
+        item { Spacer(modifier = Modifier.height(32.dp)) }
+    }
+}
+
+@Composable
+private fun TodaySummaryCard(
+    panchanga: PanchangaCalculator.PanchangaData
+) {
+    val today = LocalDate.now()
+    val dayOfWeek = today.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(20.dp),
+                ambientColor = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+                spotColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
+            ),
+        shape = RoundedCornerShape(20.dp),
+        color = AppTheme.CardBackground
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            // Header
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = today.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = "$dayOfWeek - ${panchanga.vara}",
+                        fontSize = 14.sp,
+                        color = AppTheme.AccentPrimary,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+
+                // Day quality indicator
+                Box(
+                    modifier = Modifier
+                        .size(56.dp)
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    AppTheme.AccentPrimary.copy(alpha = 0.2f),
+                                    AppTheme.AccentPrimary.copy(alpha = 0.1f)
+                                )
+                            ),
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Outlined.Today,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Quick summary row
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                PanchangaQuickItem(
+                    label = "Tithi",
+                    value = panchanga.tithi.displayName,
+                    icon = Icons.Outlined.DarkMode,
+                    color = AppTheme.LifeAreaLove,
+                    modifier = Modifier.weight(1f)
+                )
+                PanchangaQuickItem(
+                    label = "Nakshatra",
+                    value = panchanga.nakshatra.displayName,
+                    icon = Icons.Outlined.Star,
+                    color = AppTheme.AccentGold,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                PanchangaQuickItem(
+                    label = "Yoga",
+                    value = panchanga.yoga,
+                    icon = Icons.Outlined.LightMode,
+                    color = AppTheme.AccentTeal,
+                    modifier = Modifier.weight(1f)
+                )
+                PanchangaQuickItem(
+                    label = "Karana",
+                    value = panchanga.karana,
+                    icon = Icons.Outlined.Schedule,
+                    color = AppTheme.LifeAreaSpiritual,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PanchangaQuickItem(
+    label: String,
+    value: String,
+    icon: ImageVector,
+    color: Color,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        color = color.copy(alpha = 0.1f)
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = color,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Column {
+                Text(
+                    text = label.uppercase(),
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = AppTheme.TextMuted,
+                    letterSpacing = 0.5.sp
+                )
+                Text(
+                    text = value,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = color,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun FiveLimbsCard(
+    panchanga: PanchangaCalculator.PanchangaData
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(18.dp),
+        color = AppTheme.CardBackground
+    ) {
+        Column(modifier = Modifier.padding(18.dp)) {
+            Text(
+                text = "Five Limbs (Pancha Anga)",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary,
+                modifier = Modifier.padding(bottom = 14.dp)
+            )
+
+            // Tithi
+            PanchangaLimbRow(
+                number = 1,
+                name = "Tithi",
+                sanskrit = "तिथि",
+                value = panchanga.tithi.displayName,
+                description = "Lunar day (${panchanga.tithi.paksha})",
+                color = AppTheme.LifeAreaLove
+            )
+
+            HorizontalDivider(color = AppTheme.DividerColor, modifier = Modifier.padding(vertical = 12.dp))
+
+            // Vara
+            PanchangaLimbRow(
+                number = 2,
+                name = "Vara",
+                sanskrit = "वार",
+                value = panchanga.vara,
+                description = "Weekday, ruled by specific planet",
+                color = AppTheme.AccentPrimary
+            )
+
+            HorizontalDivider(color = AppTheme.DividerColor, modifier = Modifier.padding(vertical = 12.dp))
+
+            // Nakshatra
+            PanchangaLimbRow(
+                number = 3,
+                name = "Nakshatra",
+                sanskrit = "नक्षत्र",
+                value = panchanga.nakshatra.displayName,
+                description = "Lunar mansion (Pada ${panchanga.nakshatraPada})",
+                color = AppTheme.AccentGold
+            )
+
+            HorizontalDivider(color = AppTheme.DividerColor, modifier = Modifier.padding(vertical = 12.dp))
+
+            // Yoga
+            PanchangaLimbRow(
+                number = 4,
+                name = "Yoga",
+                sanskrit = "योग",
+                value = panchanga.yoga,
+                description = "Auspicious combination",
+                color = AppTheme.AccentTeal
+            )
+
+            HorizontalDivider(color = AppTheme.DividerColor, modifier = Modifier.padding(vertical = 12.dp))
+
+            // Karana
+            PanchangaLimbRow(
+                number = 5,
+                name = "Karana",
+                sanskrit = "करण",
+                value = panchanga.karana,
+                description = "Half of a tithi",
+                color = AppTheme.LifeAreaSpiritual
+            )
+        }
+    }
+}
+
+@Composable
+private fun PanchangaLimbRow(
+    number: Int,
+    name: String,
+    sanskrit: String,
+    value: String,
+    description: String,
+    color: Color
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Number badge
+        Box(
+            modifier = Modifier
+                .size(28.dp)
+                .background(color.copy(alpha = 0.15f), CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = number.toString(),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = color
+            )
+        }
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Column(modifier = Modifier.weight(1f)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = name,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.TextPrimary
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = sanskrit,
+                    fontSize = 12.sp,
+                    color = AppTheme.TextMuted,
+                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                )
+            }
+            Text(
+                text = description,
+                fontSize = 11.sp,
+                color = AppTheme.TextMuted
+            )
+        }
+
+        Surface(
+            shape = RoundedCornerShape(8.dp),
+            color = color.copy(alpha = 0.1f)
+        ) {
+            Text(
+                text = value,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = color,
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+private fun AuspiciousTimingCard(
+    panchanga: PanchangaCalculator.PanchangaData
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(18.dp),
+        color = AppTheme.CardBackground
+    ) {
+        Column(modifier = Modifier.padding(18.dp)) {
+            Text(
+                text = "Timing & Auspiciousness",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary,
+                modifier = Modifier.padding(bottom = 14.dp)
+            )
+
+            // Rahu Kaal
+            TimingRow(
+                label = "Rahu Kaal",
+                value = panchanga.rahuKaal ?: "Not available",
+                isInauspicious = true
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Yamagandam
+            TimingRow(
+                label = "Yamagandam",
+                value = panchanga.yamagandam ?: "Not available",
+                isInauspicious = true
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Gulika Kaal
+            TimingRow(
+                label = "Gulika Kaal",
+                value = panchanga.gulikaKaal ?: "Not available",
+                isInauspicious = true
+            )
+
+            HorizontalDivider(color = AppTheme.DividerColor, modifier = Modifier.padding(vertical = 14.dp))
+
+            // Abhijit Muhurta
+            TimingRow(
+                label = "Abhijit Muhurta",
+                value = panchanga.abhijitMuhurta ?: "Not available",
+                isInauspicious = false
+            )
+        }
+    }
+}
+
+@Composable
+private fun TimingRow(
+    label: String,
+    value: String,
+    isInauspicious: Boolean
+) {
+    val color = if (isInauspicious) AppTheme.WarningColor else AppTheme.SuccessColor
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(8.dp)
+                    .background(color, CircleShape)
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Column {
+                Text(
+                    text = label,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = AppTheme.TextPrimary
+                )
+                Text(
+                    text = if (isInauspicious) "Avoid important activities" else "Auspicious timing",
+                    fontSize = 10.sp,
+                    color = AppTheme.TextMuted
+                )
+            }
+        }
+
+        Surface(
+            shape = RoundedCornerShape(8.dp),
+            color = color.copy(alpha = 0.1f)
+        ) {
+            Text(
+                text = value,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = color,
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun SunMoonCard(
+    panchanga: PanchangaCalculator.PanchangaData
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(18.dp),
+        color = AppTheme.CardBackground
+    ) {
+        Column(modifier = Modifier.padding(18.dp)) {
+            Text(
+                text = "Sun & Moon",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary,
+                modifier = Modifier.padding(bottom = 14.dp)
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Sun times
+                Surface(
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(12.dp),
+                    color = AppTheme.PlanetSun.copy(alpha = 0.1f)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(14.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            Icons.Outlined.LightMode,
+                            contentDescription = null,
+                            tint = AppTheme.PlanetSun,
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Sun",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = AppTheme.PlanetSun
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        SunMoonTimeRow(label = "Rise", time = panchanga.sunRise ?: "N/A")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        SunMoonTimeRow(label = "Set", time = panchanga.sunSet ?: "N/A")
+                    }
+                }
+
+                // Moon times
+                Surface(
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(12.dp),
+                    color = AppTheme.LifeAreaLove.copy(alpha = 0.1f)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(14.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            Icons.Outlined.DarkMode,
+                            contentDescription = null,
+                            tint = AppTheme.LifeAreaLove,
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Moon",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = AppTheme.LifeAreaLove
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        SunMoonTimeRow(label = "Rise", time = panchanga.moonRise ?: "N/A")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        SunMoonTimeRow(label = "Set", time = panchanga.moonSet ?: "N/A")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SunMoonTimeRow(label: String, time: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = label,
+            fontSize = 11.sp,
+            color = AppTheme.TextMuted
+        )
+        Text(
+            text = time,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Medium,
+            color = AppTheme.TextPrimary
+        )
+    }
+}
+
+@Composable
+private fun BirthPanchangaContent(
+    panchanga: PanchangaCalculator.PanchangaData?,
+    chart: VedicChart?
+) {
+    if (panchanga == null || chart == null) {
+        EmptyBirthPanchangaContent()
+        return
+    }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Birth summary
+        item(key = "birth_summary") {
+            BirthSummaryCard(panchanga = panchanga, chart = chart)
+        }
+
+        // Five elements
+        item(key = "birth_elements") {
+            FiveLimbsCard(panchanga = panchanga)
+        }
+
+        // Birth day interpretation
+        item(key = "birth_interpretation") {
+            BirthDayInterpretationCard(panchanga = panchanga)
+        }
+
+        item { Spacer(modifier = Modifier.height(32.dp)) }
+    }
+}
+
+@Composable
+private fun BirthSummaryCard(
+    panchanga: PanchangaCalculator.PanchangaData,
+    chart: VedicChart
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(20.dp),
+                ambientColor = AppTheme.AccentGold.copy(alpha = 0.1f),
+                spotColor = AppTheme.AccentGold.copy(alpha = 0.1f)
+            ),
+        shape = RoundedCornerShape(20.dp),
+        color = AppTheme.CardBackground
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = "Birth Panchanga",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = chart.birthData.name,
+                        fontSize = 14.sp,
+                        color = AppTheme.AccentGold,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .size(56.dp)
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    AppTheme.AccentGold.copy(alpha = 0.2f),
+                                    AppTheme.AccentGold.copy(alpha = 0.1f)
+                                )
+                            ),
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Outlined.CalendarMonth,
+                        contentDescription = null,
+                        tint = AppTheme.AccentGold,
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Birth date info
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                color = AppTheme.CardBackgroundElevated
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column {
+                            Text(
+                                text = "DATE",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = AppTheme.TextMuted,
+                                letterSpacing = 0.5.sp
+                            )
+                            Text(
+                                text = chart.birthData.dateTime.format(
+                                    DateTimeFormatter.ofPattern("MMM dd, yyyy")
+                                ),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = AppTheme.TextPrimary
+                            )
+                        }
+                        Column(horizontalAlignment = Alignment.End) {
+                            Text(
+                                text = "TIME",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = AppTheme.TextMuted,
+                                letterSpacing = 0.5.sp
+                            )
+                            Text(
+                                text = chart.birthData.dateTime.format(
+                                    DateTimeFormatter.ofPattern("hh:mm a")
+                                ),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = AppTheme.TextPrimary
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "${panchanga.vara} - ${panchanga.tithi.displayName}",
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.AccentGold
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun BirthDayInterpretationCard(
+    panchanga: PanchangaCalculator.PanchangaData
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(18.dp),
+        color = AppTheme.CardBackground
+    ) {
+        Column(modifier = Modifier.padding(18.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    Icons.Outlined.Star,
+                    contentDescription = null,
+                    tint = AppTheme.AccentGold,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Birth Day Significance",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.TextPrimary
+                )
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            Text(
+                text = getBirthDayInterpretation(panchanga),
+                fontSize = 13.sp,
+                color = AppTheme.TextSecondary,
+                lineHeight = 20.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun PanchangaElementsContent(
+    todayPanchanga: PanchangaCalculator.PanchangaData?,
+    birthPanchanga: PanchangaCalculator.PanchangaData?
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item(key = "elements_intro") {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(14.dp),
+                color = AppTheme.CardBackground
+            ) {
+                Text(
+                    text = "Panchanga comprises five essential elements (Pancha Anga) that determine the quality and auspiciousness of any moment in the Hindu calendar system.",
+                    fontSize = 13.sp,
+                    color = AppTheme.TextMuted,
+                    lineHeight = 19.sp,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+
+        // Tithi explanation
+        item(key = "tithi_element") {
+            ElementDetailCard(
+                name = "Tithi",
+                sanskrit = "तिथि",
+                description = "The lunar day, calculated based on the angular distance between the Sun and Moon. Each tithi represents 12 degrees of lunar motion. There are 30 tithis in a lunar month, divided into Shukla (waxing) and Krishna (waning) Paksha.",
+                significance = "Determines the nature of activities suitable for the day. Some tithis like Purnima (full moon) and Amavasya (new moon) have special significance.",
+                color = AppTheme.LifeAreaLove,
+                currentValue = todayPanchanga?.tithi?.displayName,
+                birthValue = birthPanchanga?.tithi?.displayName
+            )
+        }
+
+        // Vara explanation
+        item(key = "vara_element") {
+            ElementDetailCard(
+                name = "Vara",
+                sanskrit = "वार",
+                description = "The weekday, each ruled by a specific planet. The planetary ruler influences the nature and appropriate activities for that day.",
+                significance = "Each vara has specific activities that are considered favorable. For example, Sunday is good for authority matters, Monday for emotional work.",
+                color = AppTheme.AccentPrimary,
+                currentValue = todayPanchanga?.vara,
+                birthValue = birthPanchanga?.vara
+            )
+        }
+
+        // Nakshatra explanation
+        item(key = "nakshatra_element") {
+            ElementDetailCard(
+                name = "Nakshatra",
+                sanskrit = "नक्षत्र",
+                description = "The lunar mansion where the Moon resides. There are 27 nakshatras, each spanning 13°20' of the zodiac. Each nakshatra has a ruling deity and planet.",
+                significance = "Birth nakshatra determines personality traits and compatibility. Moon's nakshatra is crucial for muhurta selection.",
+                color = AppTheme.AccentGold,
+                currentValue = todayPanchanga?.nakshatra?.displayName,
+                birthValue = birthPanchanga?.nakshatra?.displayName
+            )
+        }
+
+        // Yoga explanation
+        item(key = "yoga_element") {
+            ElementDetailCard(
+                name = "Yoga",
+                sanskrit = "योग",
+                description = "Calculated from the combined longitudes of Sun and Moon. There are 27 yogas, each with specific qualities ranging from highly auspicious to inauspicious.",
+                significance = "Yogas indicate the general nature of results from activities undertaken. Siddha, Amrita, and Shubha yogas are highly favorable.",
+                color = AppTheme.AccentTeal,
+                currentValue = todayPanchanga?.yoga,
+                birthValue = birthPanchanga?.yoga
+            )
+        }
+
+        // Karana explanation
+        item(key = "karana_element") {
+            ElementDetailCard(
+                name = "Karana",
+                sanskrit = "करण",
+                description = "Half of a tithi, there are 11 karanas total. Seven are movable and four are fixed. Each karana has its own nature and suitable activities.",
+                significance = "Karanas fine-tune the effects of tithis. Movable karanas recur throughout the month while fixed ones appear only once.",
+                color = AppTheme.LifeAreaSpiritual,
+                currentValue = todayPanchanga?.karana,
+                birthValue = birthPanchanga?.karana
+            )
+        }
+
+        item { Spacer(modifier = Modifier.height(32.dp)) }
+    }
+}
+
+@Composable
+private fun ElementDetailCard(
+    name: String,
+    sanskrit: String,
+    description: String,
+    significance: String,
+    color: Color,
+    currentValue: String?,
+    birthValue: String?
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        color = AppTheme.CardBackground
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            // Header
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = 12.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(color.copy(alpha = 0.15f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = name.first().toString(),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = color
+                    )
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text(
+                        text = name,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = sanskrit,
+                        fontSize = 12.sp,
+                        color = AppTheme.TextMuted,
+                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                    )
+                }
+            }
+
+            // Description
+            Text(
+                text = description,
+                fontSize = 13.sp,
+                color = AppTheme.TextSecondary,
+                lineHeight = 19.sp
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Significance
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(10.dp),
+                color = color.copy(alpha = 0.08f)
+            ) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Text(
+                        text = "Significance",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = color,
+                        letterSpacing = 0.5.sp
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = significance,
+                        fontSize = 12.sp,
+                        color = AppTheme.TextPrimary,
+                        lineHeight = 17.sp
+                    )
+                }
+            }
+
+            // Current values
+            if (currentValue != null || birthValue != null) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    currentValue?.let {
+                        Surface(
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(8.dp),
+                            color = AppTheme.CardBackgroundElevated
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(10.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = "TODAY",
+                                    fontSize = 9.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    color = AppTheme.TextMuted,
+                                    letterSpacing = 0.5.sp
+                                )
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(
+                                    text = it,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = AppTheme.AccentPrimary,
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                    }
+                    birthValue?.let {
+                        Surface(
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(8.dp),
+                            color = AppTheme.CardBackgroundElevated
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(10.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = "BIRTH",
+                                    fontSize = 9.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    color = AppTheme.TextMuted,
+                                    letterSpacing = 0.5.sp
+                                )
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(
+                                    text = it,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = AppTheme.AccentGold,
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EmptyPanchangaContent() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(32.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.CalendarMonth,
+                contentDescription = null,
+                tint = AppTheme.TextMuted,
+                modifier = Modifier.size(64.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Panchanga Unavailable",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Unable to calculate Panchanga for today",
+                style = MaterialTheme.typography.bodyMedium,
+                color = AppTheme.TextMuted,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmptyBirthPanchangaContent() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(32.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.CalendarMonth,
+                contentDescription = null,
+                tint = AppTheme.TextMuted,
+                modifier = Modifier.size(64.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "No Birth Chart",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Please select a birth chart to view birth Panchanga",
+                style = MaterialTheme.typography.bodyMedium,
+                color = AppTheme.TextMuted,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+private fun PanchangaInfoDialog(onDismiss: () -> Unit) {
+    androidx.compose.material3.AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "About Panchanga",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
+            )
+        },
+        text = {
+            Column {
+                Text(
+                    text = "Panchanga (Sanskrit: पञ्चाङ्ग) means 'five limbs' and refers to the traditional Hindu almanac that tracks five elements of time: Tithi, Vara, Nakshatra, Yoga, and Karana.",
+                    fontSize = 13.sp,
+                    color = AppTheme.TextSecondary,
+                    lineHeight = 19.sp
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "These five elements together determine the auspiciousness of any moment and are crucial for selecting muhurtas (auspicious timings) for important activities.",
+                    fontSize = 13.sp,
+                    color = AppTheme.TextSecondary,
+                    lineHeight = 19.sp
+                )
+            }
+        },
+        confirmButton = {
+            androidx.compose.material3.TextButton(onClick = onDismiss) {
+                Text("Got it", color = AppTheme.AccentPrimary)
+            }
+        },
+        containerColor = AppTheme.CardBackground,
+        shape = RoundedCornerShape(16.dp)
+    )
+}
+
+private fun getBirthDayInterpretation(panchanga: PanchangaCalculator.PanchangaData): String {
+    return buildString {
+        append("Born on ${panchanga.vara}, under the ${panchanga.nakshatra.displayName} nakshatra ")
+        append("during ${panchanga.tithi.displayName} tithi. ")
+        append("\n\nThe ${panchanga.yoga} yoga was active, indicating ")
+        when (panchanga.yoga.lowercase()) {
+            "vishkumbh", "atiganda", "shool", "vyaghata", "vajra", "paridh" ->
+                append("challenges to overcome but also strength building opportunities. ")
+            "siddha", "shubha", "amrita", "sukarma" ->
+                append("highly auspicious conditions at birth, suggesting favorable karma. ")
+            else ->
+                append("moderate influences that support balanced development. ")
+        }
+        append("The ${panchanga.karana} karana further refines these birth energies.")
+    }
+}
