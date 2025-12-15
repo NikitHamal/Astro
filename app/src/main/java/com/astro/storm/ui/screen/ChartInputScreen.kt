@@ -96,8 +96,7 @@ fun ChartInputScreen(
     // Allow users to select which date picker to use (independent of global setting)
     var useBSPicker by remember { mutableStateOf(dateSystem == DateSystem.BS) }
     var showErrorDialog by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf("") }
-    var errorKey by remember { mutableStateOf<StringKey?>(null) }
+    var errorMessage by remember { mutableStateOf<LocalizableString?>(null) }
     var chartCalculationInitiated by remember { mutableStateOf(false) }
 
     val selectedDate = remember(selectedDateMillis) {
@@ -132,7 +131,7 @@ fun ChartInputScreen(
                 }
             }
             is ChartUiState.Error -> {
-                errorMessage = state.message
+                errorMessage = LocalizableString.Plain(state.message)
                 showErrorDialog = true
                 chartCalculationInitiated = false
             }
@@ -225,9 +224,9 @@ fun ChartInputScreen(
             GenerateButton(
                 isCalculating = isCalculating,
                 onClick = {
-                    val validationKey = validateInputLocalized(latitude, longitude)
-                    if (validationKey != null) {
-                        errorKey = validationKey
+                    val validationError = validateInputLocalized(latitude, longitude)
+                    if (validationError != null) {
+                        errorMessage = validationError
                         showErrorDialog = true
                         return@GenerateButton
                     }
@@ -299,7 +298,7 @@ fun ChartInputScreen(
         AlertDialog(
             onDismissRequest = {
                 showErrorDialog = false
-                errorKey = null
+                errorMessage = null
             },
             title = {
                 Text(
@@ -310,14 +309,14 @@ fun ChartInputScreen(
             },
             text = {
                 Text(
-                    errorKey?.let { stringResource(it) } ?: errorMessage,
+                    errorMessage?.asString() ?: "",
                     color = ChartInputTheme.TextSecondary
                 )
             },
             confirmButton = {
                 TextButton(onClick = {
                     showErrorDialog = false
-                    errorKey = null
+                    errorMessage = null
                 }) {
                     Text(stringResource(StringKey.BTN_OK), color = ChartInputTheme.AccentColor)
                 }
@@ -328,14 +327,14 @@ fun ChartInputScreen(
     }
 }
 
-private fun validateInputLocalized(latitude: String, longitude: String): StringKey? {
+private fun validateInputLocalized(latitude: String, longitude: String): LocalizableString? {
     val lat = latitude.trim().toDoubleOrNull()
     val lon = longitude.trim().toDoubleOrNull()
 
     return when {
-        lat == null || lon == null -> StringKey.ERROR_INVALID_COORDS
-        lat < -90 || lat > 90 -> StringKey.ERROR_LATITUDE_RANGE
-        lon < -180 || lon > 180 -> StringKey.ERROR_LONGITUDE_RANGE
+        lat == null || lon == null -> LocalizableString.Resource(R.string.error_invalid_coords)
+        lat < -90 || lat > 90 -> LocalizableString.Resource(R.string.error_latitude_range)
+        lon < -180 || lon > 180 -> LocalizableString.Resource(R.string.error_longitude_range)
         else -> null
     }
 }

@@ -627,7 +627,7 @@ private fun YogaCard(
                     Column(modifier = Modifier.weight(1f)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = yoga.name,
+                                text = yoga.name.asString(),
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary,
@@ -833,7 +833,7 @@ private fun YogaCard(
                             }
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = yoga.effects,
+                                text = yoga.effects.asString(),
                                 fontSize = 13.sp,
                                 color = AppTheme.TextPrimary,
                                 lineHeight = 19.sp
@@ -842,7 +842,7 @@ private fun YogaCard(
                     }
 
                     // Activation period
-                    if (yoga.activationPeriod.isNotEmpty()) {
+                    if (yoga.activationPeriod.asString().isNotEmpty()) {
                         Spacer(modifier = Modifier.height(10.dp))
                         Row(
                             verticalAlignment = Alignment.Top
@@ -853,7 +853,7 @@ private fun YogaCard(
                                 color = AppTheme.TextMuted
                             )
                             Text(
-                                text = yoga.activationPeriod,
+                                text = yoga.activationPeriod.asString(),
                                 fontSize = 12.sp,
                                 color = AppTheme.TextPrimary
                             )
@@ -882,7 +882,7 @@ private fun YogaCard(
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = factor,
+                                    text = factor.asString(),
                                     fontSize = 11.sp,
                                     color = AppTheme.TextMuted
                                 )

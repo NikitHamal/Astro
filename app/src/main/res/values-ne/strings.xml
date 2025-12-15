@@ -51,6 +51,35 @@
     <string name="nakshatra_uttara_bhadrapada">उत्तर भाद्रपदा</string>
     <string name="nakshatra_revati">रेवती</string>
 
+    <!-- Deities -->
+    <string name="deity_ashwini">अश्विनी कुमार</string>
+    <string name="deity_bharani">यम</string>
+    <string name="deity_krittika">अग्नि</string>
+    <string name="deity_rohini">ब्रह्मा</string>
+    <string name="deity_mrigashira">सोम</string>
+    <string name="deity_ardra">रुद्र</string>
+    <string name="deity_punarvasu">अदिति</string>
+    <string name="deity_pushya">बृहस्पति</string>
+    <string name="deity_ashlesha">नाग</string>
+    <string name="deity_magha">पितृ</string>
+    <string name="deity_purva_phalguni">भग</string>
+    <string name="deity_uttara_phalguni">अर्यमन</string>
+    <string name="deity_hasta">सविता</string>
+    <string name="deity_chitra">त्वष्टा</string>
+    <string name="deity_swati">वायु</string>
+    <string name="deity_vishakha">इन्द्राग्नी</string>
+    <string name="deity_anuradha">मित्र</string>
+    <string name="deity_jyeshtha">इन्द्र</string>
+    <string name="deity_mula">निरृति</string>
+    <string name="deity_purva_ashadha">आपः</string>
+    <string name="deity_uttara_ashadha">विश्वेदेव</string>
+    <string name="deity_shravana">विष्णु</string>
+    <string name="deity_dhanishtha">वसु</string>
+    <string name="deity_shatabhisha">वरुण</string>
+    <string name="deity_purva_bhadrapada">अज एकपाद</string>
+    <string name="deity_uttara_bhadrapada">अहिर्बुध्न्य</string>
+    <string name="deity_revati">पूषा</string>
+
     <!-- Yoga Calculator -->
     <string name="yoga_cat_raja">राजयोग</string>
     <string name="yoga_cat_raja_desc">शक्ति, अधिकार र नेतृत्वको संयोजन</string>

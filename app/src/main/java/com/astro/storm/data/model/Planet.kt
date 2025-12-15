@@ -1,8 +1,7 @@
 package com.astro.storm.data.model
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringResources
+import com.astro.storm.R
+import com.astro.storm.data.localization.LocalizableString
 
 /**
  * Represents planets used in Vedic astrology
@@ -28,26 +27,23 @@ enum class Planet(val swissEphId: Int, val symbol: String) {
     NEPTUNE(8, "Ne"),
     PLUTO(9, "Pl");
 
-    /**
-     * Get localized planet name based on current language
-     */
-    fun getLocalizedName(language: Language): String {
-        val key = when (this) {
-            SUN -> StringKey.PLANET_SUN
-            MOON -> StringKey.PLANET_MOON
-            MERCURY -> StringKey.PLANET_MERCURY
-            VENUS -> StringKey.PLANET_VENUS
-            MARS -> StringKey.PLANET_MARS
-            JUPITER -> StringKey.PLANET_JUPITER
-            SATURN -> StringKey.PLANET_SATURN
-            RAHU -> StringKey.PLANET_RAHU
-            KETU -> StringKey.PLANET_KETU
-            URANUS -> StringKey.PLANET_URANUS
-            NEPTUNE -> StringKey.PLANET_NEPTUNE
-            PLUTO -> StringKey.PLANET_PLUTO
-        }
-        return StringResources.get(key, language)
-    }
+    val displayName: LocalizableString
+        get() = LocalizableString.Resource(
+            when (this) {
+                SUN -> R.string.planet_sun
+                MOON -> R.string.planet_moon
+                MERCURY -> R.string.planet_mercury
+                VENUS -> R.string.planet_venus
+                MARS -> R.string.planet_mars
+                JUPITER -> R.string.planet_jupiter
+                SATURN -> R.string.planet_saturn
+                RAHU -> R.string.planet_rahu
+                KETU -> R.string.planet_ketu
+                URANUS -> R.string.planet_uranus
+                NEPTUNE -> R.string.planet_neptune
+                PLUTO -> R.string.planet_pluto
+            }
+        )
 
     companion object {
         /**

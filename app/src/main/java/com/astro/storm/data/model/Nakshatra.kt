@@ -1,8 +1,7 @@
 package com.astro.storm.data.model
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringResources
+import com.astro.storm.R
+import com.astro.storm.data.localization.LocalizableString
 
 /**
  * 27 Nakshatras in Vedic astrology
@@ -73,41 +72,71 @@ enum class Nakshatra(
     val startDegree: Double get() = (number - 1) * NAKSHATRA_SPAN
     val endDegree: Double get() = number * NAKSHATRA_SPAN
 
-    /**
-     * Get localized nakshatra name based on current language
-     */
-    fun getLocalizedName(language: Language): String {
-        val key = when (this) {
-            ASHWINI -> StringKey.NAKSHATRA_ASHWINI
-            BHARANI -> StringKey.NAKSHATRA_BHARANI
-            KRITTIKA -> StringKey.NAKSHATRA_KRITTIKA
-            ROHINI -> StringKey.NAKSHATRA_ROHINI
-            MRIGASHIRA -> StringKey.NAKSHATRA_MRIGASHIRA
-            ARDRA -> StringKey.NAKSHATRA_ARDRA
-            PUNARVASU -> StringKey.NAKSHATRA_PUNARVASU
-            PUSHYA -> StringKey.NAKSHATRA_PUSHYA
-            ASHLESHA -> StringKey.NAKSHATRA_ASHLESHA
-            MAGHA -> StringKey.NAKSHATRA_MAGHA
-            PURVA_PHALGUNI -> StringKey.NAKSHATRA_PURVA_PHALGUNI
-            UTTARA_PHALGUNI -> StringKey.NAKSHATRA_UTTARA_PHALGUNI
-            HASTA -> StringKey.NAKSHATRA_HASTA
-            CHITRA -> StringKey.NAKSHATRA_CHITRA
-            SWATI -> StringKey.NAKSHATRA_SWATI
-            VISHAKHA -> StringKey.NAKSHATRA_VISHAKHA
-            ANURADHA -> StringKey.NAKSHATRA_ANURADHA
-            JYESHTHA -> StringKey.NAKSHATRA_JYESHTHA
-            MULA -> StringKey.NAKSHATRA_MULA
-            PURVA_ASHADHA -> StringKey.NAKSHATRA_PURVA_ASHADHA
-            UTTARA_ASHADHA -> StringKey.NAKSHATRA_UTTARA_ASHADHA
-            SHRAVANA -> StringKey.NAKSHATRA_SHRAVANA
-            DHANISHTHA -> StringKey.NAKSHATRA_DHANISHTHA
-            SHATABHISHA -> StringKey.NAKSHATRA_SHATABHISHA
-            PURVA_BHADRAPADA -> StringKey.NAKSHATRA_PURVA_BHADRAPADA
-            UTTARA_BHADRAPADA -> StringKey.NAKSHATRA_UTTARA_BHADRAPADA
-            REVATI -> StringKey.NAKSHATRA_REVATI
-        }
-        return StringResources.get(key, language)
-    }
+    val deity: LocalizableString
+        get() = LocalizableString.Resource(
+            when (this) {
+                ASHWINI -> R.string.deity_ashwini
+                BHARANI -> R.string.deity_bharani
+                KRITTIKA -> R.string.deity_krittika
+                ROHINI -> R.string.deity_rohini
+                MRIGASHIRA -> R.string.deity_mrigashira
+                ARDRA -> R.string.deity_ardra
+                PUNARVASU -> R.string.deity_punarvasu
+                PUSHYA -> R.string.deity_pushya
+                ASHLESHA -> R.string.deity_ashlesha
+                MAGHA -> R.string.deity_magha
+                PURVA_PHALGUNI -> R.string.deity_purva_phalguni
+                UTTARA_PHALGUNI -> R.string.deity_uttara_phalguni
+                HASTA -> R.string.deity_hasta
+                CHITRA -> R.string.deity_chitra
+                SWATI -> R.string.deity_swati
+                VISHAKHA -> R.string.deity_vishakha
+                ANURADHA -> R.string.deity_anuradha
+                JYESHTHA -> R.string.deity_jyeshtha
+                MULA -> R.string.deity_mula
+                PURVA_ASHADHA -> R.string.deity_purva_ashadha
+                UTTARA_ASHADHA -> R.string.deity_uttara_ashadha
+                SHRAVANA -> R.string.deity_shravana
+                DHANISHTHA -> R.string.deity_dhanishtha
+                SHATABHISHA -> R.string.deity_shatabhisha
+                PURVA_BHADRAPADA -> R.string.deity_purva_bhadrapada
+                UTTARA_BHADRAPADA -> R.string.deity_uttara_bhadrapada
+                REVATI -> R.string.deity_revati
+            }
+        )
+
+    val displayName: LocalizableString
+        get() = LocalizableString.Resource(
+            when (this) {
+                ASHWINI -> R.string.nakshatra_ashwini
+                BHARANI -> R.string.nakshatra_bharani
+                KRITTIKA -> R.string.nakshatra_krittika
+                ROHINI -> R.string.nakshatra_rohini
+                MRIGASHIRA -> R.string.nakshatra_mrigashira
+                ARDRA -> R.string.nakshatra_ardra
+                PUNARVASU -> R.string.nakshatra_punarvasu
+                PUSHYA -> R.string.nakshatra_pushya
+                ASHLESHA -> R.string.nakshatra_ashlesha
+                MAGHA -> R.string.nakshatra_magha
+                PURVA_PHALGUNI -> R.string.nakshatra_purva_phalguni
+                UTTARA_PHALGUNI -> R.string.nakshatra_uttara_phalguni
+                HASTA -> R.string.nakshatra_hasta
+                CHITRA -> R.string.nakshatra_chitra
+                SWATI -> R.string.nakshatra_swati
+                VISHAKHA -> R.string.nakshatra_vishakha
+                ANURADHA -> R.string.nakshatra_anuradha
+                JYESHTHA -> R.string.nakshatra_jyeshtha
+                MULA -> R.string.nakshatra_mula
+                PURVA_ASHADHA -> R.string.nakshatra_purva_ashadha
+                UTTARA_ASHADHA -> R.string.nakshatra_uttara_ashadha
+                SHRAVANA -> R.string.nakshatra_shravana
+                DHANISHTHA -> R.string.nakshatra_dhanishtha
+                SHATABHISHA -> R.string.nakshatra_shatabhisha
+                PURVA_BHADRAPADA -> R.string.nakshatra_purva_bhadrapada
+                UTTARA_BHADRAPADA -> R.string.nakshatra_uttara_bhadrapada
+                REVATI -> R.string.nakshatra_revati
+            }
+        )
 
     companion object {
         private const val NAKSHATRA_SPAN = 360.0 / 27.0 // ~13.333 degrees
