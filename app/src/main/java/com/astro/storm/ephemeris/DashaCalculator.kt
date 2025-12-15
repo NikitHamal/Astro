@@ -1,12 +1,11 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringResources
+import com.astro.storm.R
 import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.util.LocalizableString
 import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
@@ -234,34 +233,17 @@ object DashaCalculator {
             return dehadashas.find { it.isActiveOn(date) }
         }
 
-        fun getDurationString(): String {
+        fun getDurationString(): LocalizableString {
             val hours = durationMinutes / 60
             val mins = durationMinutes % 60
             return when {
                 hours >= 24 -> {
                     val days = hours / 24
                     val remainingHours = hours % 24
-                    "${days}d ${remainingHours}h ${mins}m"
+                    LocalizableString.ResWithArgs(R.string.duration_days_hours_minutes, listOf(days, remainingHours, mins))
                 }
-                hours > 0 -> "${hours}h ${mins}m"
-                else -> "${mins}m"
-            }
-        }
-
-        fun getLocalizedDurationString(language: Language): String {
-            val hours = durationMinutes / 60
-            val mins = durationMinutes % 60
-            val daysShort = StringResources.get(StringKey.DAYS_SHORT, language)
-            val hoursShort = StringResources.get(StringKey.HOURS_SHORT, language)
-            val minutesShort = StringResources.get(StringKey.MINUTES_SHORT, language)
-            return when {
-                hours >= 24 -> {
-                    val days = hours / 24
-                    val remainingHours = hours % 24
-                    "${days}$daysShort ${remainingHours}$hoursShort ${mins}$minutesShort"
-                }
-                hours > 0 -> "${hours}$hoursShort ${mins}$minutesShort"
-                else -> "${mins}$minutesShort"
+                hours > 0 -> LocalizableString.ResWithArgs(R.string.duration_hours_minutes, listOf(hours, mins))
+                else -> LocalizableString.ResWithArgs(R.string.duration_minutes_only, listOf(mins))
             }
         }
     }
@@ -287,18 +269,11 @@ object DashaCalculator {
         val isActive: Boolean
             get() = isActiveOn(LocalDate.now())
 
-        fun getDurationString(): String {
+        fun getDurationString(): LocalizableString {
             val hours = durationMinutes / 60
             val mins = durationMinutes % 60
-            return if (hours > 0) "${hours}h ${mins}m" else "${mins}m"
-        }
-
-        fun getLocalizedDurationString(language: Language): String {
-            val hours = durationMinutes / 60
-            val mins = durationMinutes % 60
-            val hoursShort = StringResources.get(StringKey.HOURS_SHORT, language)
-            val minutesShort = StringResources.get(StringKey.MINUTES_SHORT, language)
-            return if (hours > 0) "${hours}$hoursShort ${mins}$minutesShort" else "${mins}$minutesShort"
+            return if (hours > 0) LocalizableString.ResWithArgs(R.string.duration_hours_minutes, listOf(hours, mins))
+            else LocalizableString.ResWithArgs(R.string.duration_minutes_only, listOf(mins))
         }
     }
 
@@ -315,22 +290,13 @@ object DashaCalculator {
         }
     }
 
-    enum class DashaLevel(val displayName: String, val levelNumber: Int) {
-        MAHADASHA("Mahadasha", 1),
-        ANTARDASHA("Antardasha/Bhukti", 2),
-        PRATYANTARDASHA("Pratyantardasha", 3),
-        SOOKSHMADASHA("Sookshmadasha", 4),
-        PRANADASHA("Pranadasha", 5),
-        DEHADASHA("Dehadasha", 6);
-
-        fun getLocalizedName(language: Language): String = when (this) {
-            MAHADASHA -> StringResources.get(StringKey.DASHA_MAHADASHA, language)
-            ANTARDASHA -> StringResources.get(StringKey.DASHA_ANTARDASHA, language)
-            PRATYANTARDASHA -> StringResources.get(StringKey.DASHA_PRATYANTARDASHA, language)
-            SOOKSHMADASHA -> StringResources.get(StringKey.DASHA_SOOKSHMADASHA, language)
-            PRANADASHA -> StringResources.get(StringKey.DASHA_PRANADASHA, language)
-            DEHADASHA -> StringResources.get(StringKey.DASHA_DEHADASHA, language)
-        }
+    enum class DashaLevel(val displayName: LocalizableString, val levelNumber: Int) {
+        MAHADASHA(LocalizableString.Res(R.string.dasha_level_mahadasha), 1),
+        ANTARDASHA(LocalizableString.Res(R.string.dasha_level_antardasha), 2),
+        PRATYANTARDASHA(LocalizableString.Res(R.string.dasha_level_pratyantardasha), 3),
+        SOOKSHMADASHA(LocalizableString.Res(R.string.dasha_level_sookshmadasha), 4),
+        PRANADASHA(LocalizableString.Res(R.string.dasha_level_pranadasha), 5),
+        DEHADASHA(LocalizableString.Res(R.string.dasha_level_dehadasha), 6);
     }
 
     data class DashaTimeline(
@@ -349,84 +315,40 @@ object DashaCalculator {
         val currentDehadasha: Dehadasha?,
         val upcomingSandhis: List<DashaSandhi>
     ) {
-        fun getCurrentPeriodDescription(): String {
-            return buildString {
-                currentMahadasha?.let { md ->
-                    append("${md.planet.displayName} Mahadasha")
-                    currentAntardasha?.let { ad ->
-                        append(" → ${ad.planet.displayName} Bhukti")
-                        currentPratyantardasha?.let { pd ->
-                            append(" → ${pd.planet.displayName} Pratyantar")
-                            currentSookshmadasha?.let { sd ->
-                                append(" → ${sd.planet.displayName} Sookshma")
-                            }
-                        }
-                    }
-                } ?: append("No active Dasha period")
-            }
+        fun getCurrentPeriodDescription(): LocalizableString {
+            val md = currentMahadasha ?: return LocalizableString.Res(R.string.no_active_dasha_period)
+            val ad = currentAntardasha
+            val pd = currentPratyantardasha
+            val sd = currentSookshmadasha
+
+            val parts = mutableListOf(
+                LocalizableString.Chain(listOf(md.planet.displayName, LocalizableString.Raw(" "), DashaLevel.MAHADASHA.displayName))
+            )
+            if (ad != null) parts.add(LocalizableString.Chain(listOf(LocalizableString.Raw(" → "), ad.planet.displayName, LocalizableString.Raw(" "), LocalizableString.Res(R.string.dasha_timeline_bhukti))))
+            if (pd != null) parts.add(LocalizableString.Chain(listOf(LocalizableString.Raw(" → "), pd.planet.displayName, LocalizableString.Raw(" "), LocalizableString.Res(R.string.dasha_timeline_pratyantar))))
+            if (sd != null) parts.add(LocalizableString.Chain(listOf(LocalizableString.Raw(" → "), sd.planet.displayName, LocalizableString.Raw(" "), LocalizableString.Res(R.string.dasha_timeline_sookshma))))
+
+            return LocalizableString.Chain(parts)
         }
 
-        fun getLocalizedCurrentPeriodDescription(language: Language): String {
-            return buildString {
-                currentMahadasha?.let { md ->
-                    append("${md.planet.getLocalizedName(language)} ${DashaLevel.MAHADASHA.getLocalizedName(language)}")
-                    currentAntardasha?.let { ad ->
-                        append(" → ${ad.planet.getLocalizedName(language)} ${StringResources.get(StringKey.DASHA_BHUKTI, language)}")
-                        currentPratyantardasha?.let { pd ->
-                            append(" → ${pd.planet.getLocalizedName(language)} ${StringResources.get(StringKey.DASHA_PRATYANTAR, language)}")
-                            currentSookshmadasha?.let { sd ->
-                                append(" → ${sd.planet.getLocalizedName(language)} ${StringResources.get(StringKey.DASHA_SOOKSHMA, language)}")
-                            }
-                        }
-                    }
-                } ?: append(StringResources.get(StringKey.DASHA_NO_ACTIVE_PERIOD, language))
-            }
-        }
+        fun getFullPeriodDescription(): LocalizableString {
+            val md = currentMahadasha ?: return LocalizableString.Res(R.string.no_active_dasha_period)
+            val ad = currentAntardasha
+            val pd = currentPratyantardasha
+            val sd = currentSookshmadasha
+            val prd = currentPranadasha
+            val dd = currentDehadasha
 
-        fun getFullPeriodDescription(): String {
-            return buildString {
-                currentMahadasha?.let { md ->
-                    append("${md.planet.displayName} Mahadasha")
-                    currentAntardasha?.let { ad ->
-                        append(" → ${ad.planet.displayName} Bhukti")
-                        currentPratyantardasha?.let { pd ->
-                            append(" → ${pd.planet.displayName} Pratyantar")
-                            currentSookshmadasha?.let { sd ->
-                                append(" → ${sd.planet.displayName} Sookshma")
-                                currentPranadasha?.let { prd ->
-                                    append(" → ${prd.planet.displayName} Prana")
-                                    currentDehadasha?.let { dd ->
-                                        append(" → ${dd.planet.displayName} Deha")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } ?: append("No active Dasha period")
-            }
-        }
+            val parts = mutableListOf(
+                LocalizableString.Chain(listOf(md.planet.displayName, LocalizableString.Raw(" "), DashaLevel.MAHADASHA.displayName))
+            )
+            if (ad != null) parts.add(LocalizableString.Chain(listOf(LocalizableString.Raw(" → "), ad.planet.displayName, LocalizableString.Raw(" "), LocalizableString.Res(R.string.dasha_timeline_bhukti))))
+            if (pd != null) parts.add(LocalizableString.Chain(listOf(LocalizableString.Raw(" → "), pd.planet.displayName, LocalizableString.Raw(" "), LocalizableString.Res(R.string.dasha_timeline_pratyantar))))
+            if (sd != null) parts.add(LocalizableString.Chain(listOf(LocalizableString.Raw(" → "), sd.planet.displayName, LocalizableString.Raw(" "), LocalizableString.Res(R.string.dasha_timeline_sookshma))))
+            if (prd != null) parts.add(LocalizableString.Chain(listOf(LocalizableString.Raw(" → "), prd.planet.displayName, LocalizableString.Raw(" "), LocalizableString.Res(R.string.dasha_timeline_prana))))
+            if (dd != null) parts.add(LocalizableString.Chain(listOf(LocalizableString.Raw(" → "), dd.planet.displayName, LocalizableString.Raw(" "), LocalizableString.Res(R.string.dasha_timeline_deha))))
 
-        fun getLocalizedFullPeriodDescription(language: Language): String {
-            return buildString {
-                currentMahadasha?.let { md ->
-                    append("${md.planet.getLocalizedName(language)} ${DashaLevel.MAHADASHA.getLocalizedName(language)}")
-                    currentAntardasha?.let { ad ->
-                        append(" → ${ad.planet.getLocalizedName(language)} ${StringResources.get(StringKey.DASHA_BHUKTI, language)}")
-                        currentPratyantardasha?.let { pd ->
-                            append(" → ${pd.planet.getLocalizedName(language)} ${StringResources.get(StringKey.DASHA_PRATYANTAR, language)}")
-                            currentSookshmadasha?.let { sd ->
-                                append(" → ${sd.planet.getLocalizedName(language)} ${StringResources.get(StringKey.DASHA_SOOKSHMA, language)}")
-                                currentPranadasha?.let { prd ->
-                                    append(" → ${prd.planet.getLocalizedName(language)} ${StringResources.get(StringKey.DASHA_PRANA, language)}")
-                                    currentDehadasha?.let { dd ->
-                                        append(" → ${dd.planet.getLocalizedName(language)} ${StringResources.get(StringKey.DASHA_DEHA, language)}")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } ?: append(StringResources.get(StringKey.DASHA_NO_ACTIVE_PERIOD, language))
-            }
+            return LocalizableString.Chain(parts)
         }
 
         fun getShortDescription(): String {
@@ -530,8 +452,15 @@ object DashaCalculator {
             )
         }
 
-        fun getCombinedPeriodString(): String {
-            return getAllLords().joinToString("-") { it.displayName }
+        fun getCombinedPeriodString(): LocalizableString {
+            val lords = getAllLords().map { it.displayName }
+            if (lords.isEmpty()) return LocalizableString.Raw("")
+
+            val separator = LocalizableString.Raw("-")
+            val combined = lords.reduce { acc, localizableString ->
+                LocalizableString.Chain(listOf(acc, separator, localizableString))
+            }
+            return combined
         }
     }
 
@@ -718,7 +647,7 @@ object DashaCalculator {
             val antarDays = yearsToRoundedDays(proportionalDurationBd)
             val antarEnd = currentStart.plusDays(antarDays)
 
-            val pratyantardashas = if (isCurrentMahadasha && 
+            val pratyantardashas = if (isCurrentMahadasha &&
                 !targetDate.isBefore(currentStart) && !targetDate.isAfter(antarEnd)) {
                 calculatePratyantardashasInternal(
                     mahadashaPlanet = mahadashaPlanet,
@@ -1017,7 +946,7 @@ object DashaCalculator {
                 )
             }
 
-            if (currentMd.isActiveOn(fromDate) || 
+            if (currentMd.isActiveOn(fromDate) ||
                 (currentMd.startDate.isAfter(fromDate) && currentMd.startDate.isBefore(endDate))) {
                 for (j in 0 until currentMd.antardashas.size - 1) {
                     val currentAd = currentMd.antardashas[j]
@@ -1061,126 +990,63 @@ object DashaCalculator {
         return timeline.getDashaAtDate(date)
     }
 
-    fun formatDashaPeriod(mahadasha: Mahadasha): String {
-        return buildString {
-            appendLine("${mahadasha.planet.displayName} Mahadasha")
-            appendLine("Duration: ${String.format("%.2f", mahadasha.durationYears)} years")
-            appendLine("Period: ${mahadasha.startDate} to ${mahadasha.endDate}")
-            if (mahadasha.isActive) {
-                appendLine("Status: CURRENTLY ACTIVE")
-                appendLine("Progress: ${String.format("%.1f", mahadasha.getProgressPercent())}%")
-                appendLine("Remaining: ${String.format("%.2f", mahadasha.getRemainingYears())} years")
-            }
+    fun formatDashaPeriod(mahadasha: Mahadasha): LocalizableString {
+        val lines = mutableListOf<LocalizableString>()
+        lines.add(LocalizableString.Chain(listOf(mahadasha.planet.displayName, LocalizableString.Raw(" "), DashaLevel.MAHADASHA.displayName)))
+        lines.add(LocalizableString.ResWithArgs(R.string.period_format_duration, listOf(LocalizableString.ResWithArgs(R.string.years_label, listOf(mahadasha.durationYears)))))
+        lines.add(LocalizableString.ResWithArgs(R.string.period_format_period, listOf(mahadasha.startDate, mahadasha.endDate)))
+        if (mahadasha.isActive) {
+            lines.add(LocalizableString.Res(R.string.period_format_status))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_progress, listOf(mahadasha.getProgressPercent())))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_remaining, listOf(LocalizableString.ResWithArgs(R.string.years_label, listOf(mahadasha.getRemainingYears())))))
         }
+        return LocalizableString.Chain(lines.map { LocalizableString.Chain(listOf(it, LocalizableString.Raw("\n"))) })
     }
 
-    fun formatLocalizedDashaPeriod(mahadasha: Mahadasha, language: Language): String {
-        val mahadashaLabel = DashaLevel.MAHADASHA.getLocalizedName(language)
-        val durationLabel = StringResources.get(StringKey.DASHA_DURATION, language)
-        val periodLabel = StringResources.get(StringKey.DASHA_PERIOD, language)
-        val yearsLabel = StringResources.get(StringKey.YEARS, language)
-        val toLabel = StringResources.get(StringKey.TO, language)
-        val statusLabel = StringResources.get(StringKey.DASHA_STATUS, language)
-        val activeLabel = StringResources.get(StringKey.DASHA_CURRENTLY_ACTIVE, language)
-        val progressLabel = StringResources.get(StringKey.DASHA_PROGRESS, language)
-        val remainingLabel = StringResources.get(StringKey.DASHA_REMAINING, language)
+    fun formatCurrentPeriod(timeline: DashaTimeline): LocalizableString {
+        val md = timeline.currentMahadasha ?: return LocalizableString.Res(R.string.period_format_no_active_period)
 
-        return buildString {
-            appendLine("${mahadasha.planet.getLocalizedName(language)} $mahadashaLabel")
-            appendLine("$durationLabel: ${String.format("%.2f", mahadasha.durationYears)} $yearsLabel")
-            appendLine("$periodLabel: ${mahadasha.startDate} $toLabel ${mahadasha.endDate}")
-            if (mahadasha.isActive) {
-                appendLine("$statusLabel: $activeLabel")
-                appendLine("$progressLabel: ${String.format("%.1f", mahadasha.getProgressPercent())}%")
-                appendLine("$remainingLabel: ${String.format("%.2f", mahadasha.getRemainingYears())} $yearsLabel")
-            }
+        val lines = mutableListOf<LocalizableString>()
+
+        lines.add(LocalizableString.ResWithArgs(R.string.period_format_mahadasha, listOf(md.planet.displayName)))
+        lines.add(LocalizableString.ResWithArgs(R.string.period_format_progress, listOf(md.getProgressPercent())))
+        lines.add(LocalizableString.ResWithArgs(R.string.period_format_remaining, listOf(LocalizableString.ResWithArgs(R.string.years_label, listOf(md.getRemainingYears())))))
+
+        timeline.currentAntardasha?.let { ad ->
+            lines.add(LocalizableString.Raw("\n"))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_antardasha, listOf(ad.planet.displayName)))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_progress, listOf(ad.getProgressPercent())))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_remaining, listOf(LocalizableString.ResWithArgs(R.string.days_label, listOf(ad.getRemainingDays())))))
         }
-    }
 
-    fun formatCurrentPeriod(timeline: DashaTimeline): String {
-        return buildString {
-            timeline.currentMahadasha?.let { md ->
-                appendLine("Mahadasha: ${md.planet.displayName}")
-                appendLine("  Progress: ${String.format("%.1f", md.getProgressPercent())}%")
-                appendLine("  Remaining: ${String.format("%.1f", md.getRemainingYears())} years")
-
-                timeline.currentAntardasha?.let { ad ->
-                    appendLine("\nAntardasha: ${ad.planet.displayName}")
-                    appendLine("  Progress: ${String.format("%.1f", ad.getProgressPercent())}%")
-                    appendLine("  Remaining: ${ad.getRemainingDays()} days")
-
-                    timeline.currentPratyantardasha?.let { pd ->
-                        appendLine("\nPratyantardasha: ${pd.planet.displayName}")
-                        appendLine("  Period: ${pd.startDate} to ${pd.endDate}")
-
-                        timeline.currentSookshmadasha?.let { sd ->
-                            appendLine("\nSookshmadasha: ${sd.planet.displayName}")
-                            appendLine("  Period: ${sd.startDate} to ${sd.endDate}")
-                            appendLine("  Duration: ${sd.durationDays} days")
-
-                            timeline.currentPranadasha?.let { prd ->
-                                appendLine("\nPranadasha: ${prd.planet.displayName}")
-                                appendLine("  Period: ${prd.startDate} to ${prd.endDate}")
-                                appendLine("  Duration: ${prd.getDurationString()}")
-
-                                timeline.currentDehadasha?.let { dd ->
-                                    appendLine("\nDehadasha: ${dd.planet.displayName}")
-                                    appendLine("  Period: ${dd.startDate} to ${dd.endDate}")
-                                    appendLine("  Duration: ${dd.getDurationString()}")
-                                }
-                            }
-                        }
-                    }
-                }
-            } ?: appendLine("No active Dasha period found")
+        timeline.currentPratyantardasha?.let { pd ->
+            lines.add(LocalizableString.Raw("\n"))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_pratyantardasha, listOf(pd.planet.displayName)))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_period, listOf(pd.startDate, pd.endDate)))
         }
-    }
 
-    fun formatLocalizedCurrentPeriod(timeline: DashaTimeline, language: Language): String {
-        val progressLabel = StringResources.get(StringKey.DASHA_PROGRESS, language)
-        val remainingLabel = StringResources.get(StringKey.DASHA_REMAINING, language)
-        val periodLabel = StringResources.get(StringKey.DASHA_PERIOD, language)
-        val durationLabel = StringResources.get(StringKey.DASHA_DURATION, language)
-        val yearsLabel = StringResources.get(StringKey.YEARS, language)
-        val daysLabel = StringResources.get(StringKey.DAYS, language)
-        val toLabel = StringResources.get(StringKey.TO, language)
-
-        return buildString {
-            timeline.currentMahadasha?.let { md ->
-                appendLine("${DashaLevel.MAHADASHA.getLocalizedName(language)}: ${md.planet.getLocalizedName(language)}")
-                appendLine("  $progressLabel: ${String.format("%.1f", md.getProgressPercent())}%")
-                appendLine("  $remainingLabel: ${String.format("%.1f", md.getRemainingYears())} $yearsLabel")
-
-                timeline.currentAntardasha?.let { ad ->
-                    appendLine("\n${DashaLevel.ANTARDASHA.getLocalizedName(language)}: ${ad.planet.getLocalizedName(language)}")
-                    appendLine("  $progressLabel: ${String.format("%.1f", ad.getProgressPercent())}%")
-                    appendLine("  $remainingLabel: ${ad.getRemainingDays()} $daysLabel")
-
-                    timeline.currentPratyantardasha?.let { pd ->
-                        appendLine("\n${DashaLevel.PRATYANTARDASHA.getLocalizedName(language)}: ${pd.planet.getLocalizedName(language)}")
-                        appendLine("  $periodLabel: ${pd.startDate} $toLabel ${pd.endDate}")
-
-                        timeline.currentSookshmadasha?.let { sd ->
-                            appendLine("\n${DashaLevel.SOOKSHMADASHA.getLocalizedName(language)}: ${sd.planet.getLocalizedName(language)}")
-                            appendLine("  $periodLabel: ${sd.startDate} $toLabel ${sd.endDate}")
-                            appendLine("  $durationLabel: ${sd.durationDays} $daysLabel")
-
-                            timeline.currentPranadasha?.let { prd ->
-                                appendLine("\n${DashaLevel.PRANADASHA.getLocalizedName(language)}: ${prd.planet.getLocalizedName(language)}")
-                                appendLine("  $periodLabel: ${prd.startDate} $toLabel ${prd.endDate}")
-                                appendLine("  $durationLabel: ${prd.getLocalizedDurationString(language)}")
-
-                                timeline.currentDehadasha?.let { dd ->
-                                    appendLine("\n${DashaLevel.DEHADASHA.getLocalizedName(language)}: ${dd.planet.getLocalizedName(language)}")
-                                    appendLine("  $periodLabel: ${dd.startDate} $toLabel ${dd.endDate}")
-                                    appendLine("  $durationLabel: ${dd.getLocalizedDurationString(language)}")
-                                }
-                            }
-                        }
-                    }
-                }
-            } ?: appendLine(StringResources.get(StringKey.DASHA_NO_ACTIVE_PERIOD, language))
+        timeline.currentSookshmadasha?.let { sd ->
+            lines.add(LocalizableString.Raw("\n"))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_sookshmadasha, listOf(sd.planet.displayName)))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_period, listOf(sd.startDate, sd.endDate)))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_duration, listOf(LocalizableString.ResWithArgs(R.string.days_label, listOf(sd.durationDays)))))
         }
+
+        timeline.currentPranadasha?.let { prd ->
+            lines.add(LocalizableString.Raw("\n"))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_pranadasha, listOf(prd.planet.displayName)))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_period, listOf(prd.startDate, prd.endDate)))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_duration, listOf(prd.getDurationString())))
+        }
+
+        timeline.currentDehadasha?.let { dd ->
+            lines.add(LocalizableString.Raw("\n"))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_dehadasha, listOf(dd.planet.displayName)))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_period, listOf(dd.startDate, dd.endDate)))
+            lines.add(LocalizableString.ResWithArgs(R.string.period_format_duration, listOf(dd.getDurationString())))
+        }
+
+        return LocalizableString.Chain(lines.map { LocalizableString.Chain(listOf(it, LocalizableString.Raw("\n"))) })
     }
 }
 
@@ -1201,54 +1067,26 @@ object ConditionalDashaCalculator {
     }
 
     enum class Yogini(
-        val displayName: String,
-        val deity: String,
+        val displayName: LocalizableString,
+        val deity: LocalizableString,
         val planet: Planet,
         val years: Int,
         val nature: YoginiNature
     ) {
-        MANGALA("Mangala", "Chandra (Moon)", Planet.MOON, 1, YoginiNature.BENEFIC),
-        PINGALA("Pingala", "Surya (Sun)", Planet.SUN, 2, YoginiNature.MIXED),
-        DHANYA("Dhanya", "Guru (Jupiter)", Planet.JUPITER, 3, YoginiNature.BENEFIC),
-        BHRAMARI("Bhramari", "Mangal (Mars)", Planet.MARS, 4, YoginiNature.MALEFIC),
-        BHADRIKA("Bhadrika", "Budha (Mercury)", Planet.MERCURY, 5, YoginiNature.BENEFIC),
-        ULKA("Ulka", "Shani (Saturn)", Planet.SATURN, 6, YoginiNature.MALEFIC),
-        SIDDHA("Siddha", "Shukra (Venus)", Planet.VENUS, 7, YoginiNature.BENEFIC),
-        SANKATA("Sankata", "Rahu", Planet.RAHU, 8, YoginiNature.MALEFIC);
-
-        fun getLocalizedName(language: Language): String = when (this) {
-            MANGALA -> StringResources.get(StringKey.YOGINI_MANGALA, language)
-            PINGALA -> StringResources.get(StringKey.YOGINI_PINGALA, language)
-            DHANYA -> StringResources.get(StringKey.YOGINI_DHANYA, language)
-            BHRAMARI -> StringResources.get(StringKey.YOGINI_BHRAMARI, language)
-            BHADRIKA -> StringResources.get(StringKey.YOGINI_BHADRIKA, language)
-            ULKA -> StringResources.get(StringKey.YOGINI_ULKA, language)
-            SIDDHA -> StringResources.get(StringKey.YOGINI_SIDDHA, language)
-            SANKATA -> StringResources.get(StringKey.YOGINI_SANKATA, language)
-        }
-
-        fun getLocalizedDeity(language: Language): String = when (this) {
-            MANGALA -> StringResources.get(StringKey.YOGINI_DEITY_CHANDRA, language)
-            PINGALA -> StringResources.get(StringKey.YOGINI_DEITY_SURYA, language)
-            DHANYA -> StringResources.get(StringKey.YOGINI_DEITY_GURU, language)
-            BHRAMARI -> StringResources.get(StringKey.YOGINI_DEITY_MANGAL, language)
-            BHADRIKA -> StringResources.get(StringKey.YOGINI_DEITY_BUDHA, language)
-            ULKA -> StringResources.get(StringKey.YOGINI_DEITY_SHANI, language)
-            SIDDHA -> StringResources.get(StringKey.YOGINI_DEITY_SHUKRA, language)
-            SANKATA -> StringResources.get(StringKey.YOGINI_DEITY_RAHU, language)
-        }
+        MANGALA(LocalizableString.Res(R.string.yogini_mangala), LocalizableString.Res(R.string.yogini_deity_chandra), Planet.MOON, 1, YoginiNature.BENEFIC),
+        PINGALA(LocalizableString.Res(R.string.yogini_pingala), LocalizableString.Res(R.string.yogini_deity_surya), Planet.SUN, 2, YoginiNature.MIXED),
+        DHANYA(LocalizableString.Res(R.string.yogini_dhanya), LocalizableString.Res(R.string.yogini_deity_guru), Planet.JUPITER, 3, YoginiNature.BENEFIC),
+        BHRAMARI(LocalizableString.Res(R.string.yogini_bhramari), LocalizableString.Res(R.string.yogini_deity_mangal), Planet.MARS, 4, YoginiNature.MALEFIC),
+        BHADRIKA(LocalizableString.Res(R.string.yogini_bhadrika), LocalizableString.Res(R.string.yogini_deity_budha), Planet.MERCURY, 5, YoginiNature.BENEFIC),
+        ULKA(LocalizableString.Res(R.string.yogini_ulka), LocalizableString.Res(R.string.yogini_deity_shani), Planet.SATURN, 6, YoginiNature.MALEFIC),
+        SIDDHA(LocalizableString.Res(R.string.yogini_siddha), LocalizableString.Res(R.string.yogini_deity_shukra), Planet.VENUS, 7, YoginiNature.BENEFIC),
+        SANKATA(LocalizableString.Res(R.string.yogini_sankata), LocalizableString.Res(R.string.yogini_deity_rahu), Planet.RAHU, 8, YoginiNature.MALEFIC);
     }
 
-    enum class YoginiNature(val displayName: String) {
-        BENEFIC("Benefic"),
-        MALEFIC("Malefic"),
-        MIXED("Mixed");
-
-        fun getLocalizedName(language: Language): String = when (this) {
-            BENEFIC -> StringResources.get(StringKey.NATURE_BENEFIC, language)
-            MALEFIC -> StringResources.get(StringKey.NATURE_MALEFIC, language)
-            MIXED -> StringResources.get(StringKey.NATURE_MIXED, language)
-        }
+    enum class YoginiNature(val displayName: LocalizableString) {
+        BENEFIC(LocalizableString.Res(R.string.yogini_nature_benefic)),
+        MALEFIC(LocalizableString.Res(R.string.yogini_nature_malefic)),
+        MIXED(LocalizableString.Res(R.string.yogini_nature_mixed));
     }
 
     private const val YOGINI_CYCLE_YEARS = 36

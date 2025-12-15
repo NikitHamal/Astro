@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="years_label">%1$.2f वर्ष</string>
+    <string name="days_label">%1$d दिन</string>
+    <string name="to_label">देखि</string>
+    <string name="no_active_dasha_period">कुनै सक्रिय दशा अवधि छैन</string>
+
+    <!-- Dasha Levels -->
+    <string name="dasha_level_mahadasha">महादशा</string>
+    <string name="dasha_level_antardasha">अन्तरदशा/भुक्ति</string>
+    <string name="dasha_level_pratyantardasha">प्रत्यन्तरदशा</string>
+    <string name="dasha_level_sookshmadasha">सूक्ष्मदशा</string>
+    <string name="dasha_level_pranadasha">प्राणदशा</string>
+    <string name="dasha_level_dehadasha">देहदशा</string>
+
+    <!-- Dasha Timeline Descriptions -->
+    <string name="dasha_timeline_bhukti">भुक्ति</string>
+    <string name="dasha_timeline_pratyantar">प्रत्यन्तर</string>
+    <string name="dasha_timeline_sookshma">सूक्ष्म</string>
+    <string name="dasha_timeline_prana">प्राण</string>
+    <string name="dasha_timeline_deha">देह</string>
+
+    <!-- Duration Formatting -->
+    <string name="duration_days_hours_minutes">%1$d दिन %2$d घण्टा %3$d मिनेट</string>
+    <string name="duration_hours_minutes">%1$d घण्टा %2$d मिनेट</string>
+    <string name="duration_minutes_only">%1$d मिनेट</string>
+
+    <!-- Period Formatting -->
+    <string name="period_format_duration">अवधि: %1$s</string>
+    <string name="period_format_period">अवधि: %1$s देखि %2$s</string>
+    <string name="period_format_status">स्थिति: हाल सक्रिय</string>
+    <string name="period_format_progress">प्रगति: %1$.1f%%</string>
+    <string name="period_format_remaining">बाँकी: %1$s</string>
+    <string name="period_format_mahadasha">महादशा: %1$s</string>
+    <string name="period_format_antardasha">अन्तरदशा: %1$s</string>
+    <string name="period_format_pratyantardasha">प्रत्यन्तरदशा: %1$s</string>
+    <string name="period_format_sookshmadasha">सूक्ष्मदशा: %1$s</string>
+    <string name="period_format_pranadasha">प्राणदशा: %1$s</string>
+    <string name="period_format_dehadasha">देहदशा: %1$s</string>
+    <string name="period_format_no_active_period">कुनै सक्रिय दशा अवधि फेला परेन</string>
+
+    <!-- Yogini Dasha -->
+    <string name="yogini_mangala">मंगला</string>
+    <string name="yogini_pingala">पिंगला</string>
+    <string name="yogini_dhanya">धान्या</string>
+    <string name="yogini_bhramari">भ्रामरी</string>
+    <string name="yogini_bhadrika">भद्रिका</string>
+    <string name="yogini_ulka">उल्का</string>
+    <string name="yogini_siddha">सिद्धा</string>
+    <string name="yogini_sankata">संकटा</string>
+
+    <string name="yogini_deity_chandra">चन्द्र (चन्द्रमा)</string>
+    <string name="yogini_deity_surya">सूर्य (सूर्य)</string>
+    <string name="yogini_deity_guru">गुरु (बृहस्पति)</string>
+    <string name="yogini_deity_mangal">मंगल (मंगल)</string>
+    <string name="yogini_deity_budha">बुध (बुध)</string>
+    <string name="yogini_deity_shani">शनि (शनि)</string>
+    <string name="yogini_deity_shukra">शुक्र (शुक्र)</string>
+    <string name="yogini_deity_rahu">राहु</string>
+
+    <string name="yogini_nature_benefic">शुभ</string>
+    <string name="yogini_nature_malefic">अशुभ</string>
+    <string name="yogini_nature_mixed">मिश्रित</string>
+
+</resources>

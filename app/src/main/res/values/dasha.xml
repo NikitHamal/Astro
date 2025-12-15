@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="years_label">%1$.2f years</string>
+    <string name="days_label">%1$d days</string>
+    <string name="to_label">to</string>
+    <string name="no_active_dasha_period">No active Dasha period</string>
+
+    <!-- Dasha Levels -->
+    <string name="dasha_level_mahadasha">Mahadasha</string>
+    <string name="dasha_level_antardasha">Antardasha/Bhukti</string>
+    <string name="dasha_level_pratyantardasha">Pratyantardasha</string>
+    <string name="dasha_level_sookshmadasha">Sookshmadasha</string>
+    <string name="dasha_level_pranadasha">Pranadasha</string>
+    <string name="dasha_level_dehadasha">Dehadasha</string>
+
+    <!-- Dasha Timeline Descriptions -->
+    <string name="dasha_timeline_bhukti">Bhukti</string>
+    <string name="dasha_timeline_pratyantar">Pratyantar</string>
+    <string name="dasha_timeline_sookshma">Sookshma</string>
+    <string name="dasha_timeline_prana">Prana</string>
+    <string name="dasha_timeline_deha">Deha</string>
+
+    <!-- Duration Formatting -->
+    <string name="duration_days_hours_minutes">%1$dd %2$dh %3$dm</string>
+    <string name="duration_hours_minutes">%1$dh %2$dm</string>
+    <string name="duration_minutes_only">%1$dm</string>
+
+    <!-- Period Formatting -->
+    <string name="period_format_duration">Duration: %1$s</string>
+    <string name="period_format_period">Period: %1$s to %2$s</string>
+    <string name="period_format_status">Status: CURRENTLY ACTIVE</string>
+    <string name="period_format_progress">Progress: %1$.1f%%</string>
+    <string name="period_format_remaining">Remaining: %1$s</string>
+    <string name="period_format_mahadasha">Mahadasha: %1$s</string>
+    <string name="period_format_antardasha">Antardasha: %1$s</string>
+    <string name="period_format_pratyantardasha">Pratyantardasha: %1$s</string>
+    <string name="period_format_sookshmadasha">Sookshmadasha: %1$s</string>
+    <string name="period_format_pranadasha">Pranadasha: %1$s</string>
+    <string name="period_format_dehadasha">Dehadasha: %1$s</string>
+    <string name="period_format_no_active_period">No active Dasha period found</string>
+
+    <!-- Yogini Dasha -->
+    <string name="yogini_mangala">Mangala</string>
+    <string name="yogini_pingala">Pingala</string>
+    <string name="yogini_dhanya">Dhanya</string>
+    <string name="yogini_bhramari">Bhramari</string>
+    <string name="yogini_bhadrika">Bhadrika</string>
+    <string name="yogini_ulka">Ulka</string>
+    <string name="yogini_siddha">Siddha</string>
+    <string name="yogini_sankata">Sankata</string>
+
+    <string name="yogini_deity_chandra">Chandra (Moon)</string>
+    <string name="yogini_deity_surya">Surya (Sun)</string>
+    <string name="yogini_deity_guru">Guru (Jupiter)</string>
+    <string name="yogini_deity_mangal">Mangal (Mars)</string>
+    <string name="yogini_deity_budha">Budha (Mercury)</string>
+    <string name="yogini_deity_shani">Shani (Saturn)</string>
+    <string name="yogini_deity_shukra">Shukra (Venus)</string>
+    <string name="yogini_deity_rahu">Rahu</string>
+
+    <string name="yogini_nature_benefic">Benefic</string>
+    <string name="yogini_nature_malefic">Malefic</string>
+    <string name="yogini_nature_mixed">Mixed</string>
+
+</resources>

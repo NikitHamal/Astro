@@ -1,13 +1,11 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.StringResources
+import com.astro.storm.R
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
-import kotlin.math.abs
+import com.astro.storm.util.LocalizableString
 
 /**
  * Comprehensive Divisional Chart Analyzer
@@ -246,42 +244,44 @@ object DivisionalChartAnalyzer {
         // Check D1 position dignity
         val d1Position = chart.planetPositions.find { it.planet == planet }
         if (d1Position != null) {
-            if (AstrologicalConstants.isExalted(planet, d1Position.sign)) strength += 15.0
-            if (AstrologicalConstants.isInOwnSign(planet, d1Position.sign)) strength += 10.0
-            if (AstrologicalConstants.isDebilitated(planet, d1Position.sign)) strength -= 20.0
+            if (VedicAstrologyUtils.isExalted(d1Position)) strength += 15.0
+            if (VedicAstrologyUtils.isInOwnSign(d1Position)) strength += 10.0
+            if (VedicAstrologyUtils.isDebilitated(d1Position)) strength -= 20.0
         }
 
         return strength.coerceIn(0.0, 100.0)
     }
 
-    private fun getSunHoraWealthSources(planet: Planet): List<String> {
-        return when (planet) {
-            Planet.SUN -> listOf("Government positions", "Gold investments", "Father's legacy", "Authority roles")
-            Planet.MARS -> listOf("Real estate", "Engineering", "Military/Police", "Sports")
-            Planet.JUPITER -> listOf("Teaching", "Consultancy", "Banking", "Religious institutions")
-            Planet.SATURN -> listOf("Mining", "Oil/Petroleum", "Labor management", "Land")
-            Planet.MERCURY -> listOf("Business", "Communication", "Technology", "Trade")
-            Planet.VENUS -> listOf("Arts", "Entertainment", "Luxury goods", "Beauty industry")
-            Planet.MOON -> listOf("Public dealings", "Hospitality", "Dairy", "Liquids")
-            Planet.RAHU -> listOf("Foreign sources", "Technology", "Unconventional means", "Speculation")
-            Planet.KETU -> listOf("Spiritual pursuits", "Occult", "Detachment-based gains", "Research")
-            else -> emptyList()
+    private fun getSunHoraWealthSources(planet: Planet): List<LocalizableString> {
+        val resId = when (planet) {
+            Planet.SUN -> R.string.sun_hora_source_sun
+            Planet.MARS -> R.string.sun_hora_source_mars
+            Planet.JUPITER -> R.string.sun_hora_source_jupiter
+            Planet.SATURN -> R.string.sun_hora_source_saturn
+            Planet.MERCURY -> R.string.sun_hora_source_mercury
+            Planet.VENUS -> R.string.sun_hora_source_venus
+            Planet.MOON -> R.string.sun_hora_source_moon
+            Planet.RAHU -> R.string.sun_hora_source_rahu
+            Planet.KETU -> R.string.sun_hora_source_ketu
+            else -> return emptyList()
         }
+        return listOf(LocalizableString.Res(resId))
     }
 
-    private fun getMoonHoraWealthSources(planet: Planet): List<String> {
-        return when (planet) {
-            Planet.MOON -> listOf("Inheritance", "Mother's side", "Pearls", "Silver", "Liquids")
-            Planet.VENUS -> listOf("Spouse's wealth", "Luxury inheritance", "Jewelry")
-            Planet.JUPITER -> listOf("Religious inheritance", "Educational trusts", "Family wealth")
-            Planet.MERCURY -> listOf("Family business", "Ancestral trade", "Intellectual property")
-            Planet.SUN -> listOf("Government benefits", "Royal grants", "Authority inherited")
-            Planet.MARS -> listOf("Property inheritance", "Land from family", "Military pension")
-            Planet.SATURN -> listOf("Old wealth", "Delayed inheritance", "Hard-earned legacy")
-            Planet.RAHU -> listOf("Foreign inheritance", "Unexpected gains", "In-laws wealth")
-            Planet.KETU -> listOf("Spiritual assets", "Hidden treasures", "Past-life accumulated")
-            else -> emptyList()
+    private fun getMoonHoraWealthSources(planet: Planet): List<LocalizableString> {
+        val resId = when (planet) {
+            Planet.MOON -> R.string.moon_hora_source_moon
+            Planet.VENUS -> R.string.moon_hora_source_venus
+            Planet.JUPITER -> R.string.moon_hora_source_jupiter
+            Planet.MERCURY -> R.string.moon_hora_source_mercury
+            Planet.SUN -> R.string.moon_hora_source_sun
+            Planet.MARS -> R.string.moon_hora_source_mars
+            Planet.SATURN -> R.string.moon_hora_source_saturn
+            Planet.RAHU -> R.string.moon_hora_source_rahu
+            Planet.KETU -> R.string.moon_hora_source_ketu
+            else -> return emptyList()
         }
+        return listOf(LocalizableString.Res(resId))
     }
 
     private fun calculateOverallWealthPotential(
@@ -294,8 +294,8 @@ object DivisionalChartAnalyzer {
         var score = 50.0
 
         // Benefics in hora increase wealth
-        val beneficsInSunHora = sunHoraPlanets.count { it in AstrologicalConstants.NATURAL_BENEFICS }
-        val beneficsInMoonHora = moonHoraPlanets.count { it in AstrologicalConstants.NATURAL_BENEFICS }
+        val beneficsInSunHora = sunHoraPlanets.count { VedicAstrologyUtils.isNaturalBenefic(it) }
+        val beneficsInMoonHora = moonHoraPlanets.count { VedicAstrologyUtils.isNaturalBenefic(it) }
         score += (beneficsInSunHora + beneficsInMoonHora) * 8.0
 
         // 2nd and 11th lords well placed
@@ -328,12 +328,16 @@ object DivisionalChartAnalyzer {
         val strongIndicators = indicators.filter { it.strength > 60 }
 
         strongIndicators.forEach { indicator ->
-            val dashaYears = DashaCalculator.getDashaYears(indicator.planet)
             periods.add(
                 WealthTimingPeriod(
                     planet = indicator.planet,
                     type = indicator.type,
-                    periodDescription = "${indicator.planet.displayName} Mahadasha/Antardasha",
+                    periodDescription = LocalizableString.Chain(
+                        listOf(
+                            indicator.planet.displayName,
+                            LocalizableString.Raw(" Mahadasha/Antardasha")
+                        )
+                    ),
                     favorableForWealth = indicator.strength > 65,
                     wealthSources = indicator.sources
                 )
@@ -346,34 +350,30 @@ object DivisionalChartAnalyzer {
     private fun generateHoraRecommendations(
         indicators: List<WealthIndicator>,
         potential: WealthPotential
-    ): List<String> {
-        val recommendations = mutableListOf<String>()
+    ): List<LocalizableString> {
+        val recommendations = mutableListOf<LocalizableString>()
 
-        when (potential) {
-            WealthPotential.EXCEPTIONAL, WealthPotential.HIGH -> {
-                recommendations.add("Focus on indicated wealth sources for maximum prosperity")
-                recommendations.add("Invest during favorable Dasha periods of strong Hora planets")
-            }
-            WealthPotential.MODERATE -> {
-                recommendations.add("Consistent effort in indicated areas will yield gradual wealth")
-                recommendations.add("Strengthen weak planets through appropriate remedies")
-            }
-            WealthPotential.AVERAGE, WealthPotential.LOW -> {
-                recommendations.add("Worship Goddess Lakshmi for wealth blessings")
-                recommendations.add("Strengthen Jupiter and Venus through gemstones or mantras")
-                recommendations.add("Avoid speculation; focus on steady income sources")
-            }
+        val resId = when (potential) {
+            WealthPotential.EXCEPTIONAL, WealthPotential.HIGH -> R.string.hora_rec_high_potential
+            WealthPotential.MODERATE -> R.string.hora_rec_moderate_potential
+            WealthPotential.AVERAGE, WealthPotential.LOW -> R.string.hora_rec_low_potential
         }
+        recommendations.add(LocalizableString.Res(resId))
 
         indicators.filter { it.strength > 70 }.forEach { indicator ->
-            recommendations.add("Capitalize on ${indicator.planet.displayName}'s strength in ${indicator.sources.firstOrNull() ?: "indicated area"}")
+            recommendations.add(
+                LocalizableString.ResWithArgs(
+                    R.string.hora_rec_capitalize_strength,
+                    listOf(indicator.planet.displayName, indicator.sources.firstOrNull() ?: LocalizableString.Raw("indicated area"))
+                )
+            )
         }
 
         return recommendations
     }
 
     private fun analyzeSiblings(
-        drekkanaChart: DivisionalChartData,
+        drekkanaChart: DivisionalChartCalculator.DivisionalChartData,
         chart: VedicChart
     ): SiblingIndicators {
         val thirdHouseD3 = drekkanaChart.planetPositions.filter { it.house == 3 }
@@ -412,8 +412,8 @@ object DivisionalChartAnalyzer {
         mars: PlanetPosition?
     ): RelationshipQuality {
         val allPlanets = thirdHouse + eleventhHouse
-        val beneficCount = allPlanets.count { it.planet in AstrologicalConstants.NATURAL_BENEFICS }
-        val maleficCount = allPlanets.count { it.planet in AstrologicalConstants.NATURAL_MALEFICS }
+        val beneficCount = allPlanets.count { VedicAstrologyUtils.isNaturalBenefic(it.planet) }
+        val maleficCount = allPlanets.count { VedicAstrologyUtils.isNaturalMalefic(it.planet) }
 
         return when {
             beneficCount > maleficCount + 1 -> RelationshipQuality.EXCELLENT
@@ -424,18 +424,18 @@ object DivisionalChartAnalyzer {
         }
     }
 
-    private fun assessSiblingWelfare(chart: DivisionalChartData): List<String> {
-        val insights = mutableListOf<String>()
+    private fun assessSiblingWelfare(chart: DivisionalChartCalculator.DivisionalChartData): List<LocalizableString> {
+        val insights = mutableListOf<LocalizableString>()
         val thirdHousePlanets = chart.planetPositions.filter { it.house == 3 }
 
         if (Planet.JUPITER in thirdHousePlanets.map { it.planet }) {
-            insights.add("Jupiter's blessing on younger siblings - prosperity for them")
+            insights.add(LocalizableString.Res(R.string.sibling_welfare_jupiter))
         }
         if (Planet.SATURN in thirdHousePlanets.map { it.planet }) {
-            insights.add("Saturn indicates hard-working siblings with delayed success")
+            insights.add(LocalizableString.Res(R.string.sibling_welfare_saturn))
         }
         if (Planet.MARS in thirdHousePlanets.map { it.planet }) {
-            insights.add("Mars shows courageous and competitive siblings")
+            insights.add(LocalizableString.Res(R.string.sibling_welfare_mars))
         }
 
         return insights
@@ -444,15 +444,15 @@ object DivisionalChartAnalyzer {
     private fun analyzeCourage(
         mars: PlanetPosition?,
         thirdLord: PlanetPosition?,
-        chart: DivisionalChartData
+        chart: DivisionalChartCalculator.DivisionalChartData
     ): CourageAnalysis {
         var courageScore = 50.0
 
         mars?.let {
             // Mars in good dignity increases courage
-            if (AstrologicalConstants.isExalted(Planet.MARS, it.sign)) courageScore += 25.0
-            if (AstrologicalConstants.isInOwnSign(Planet.MARS, it.sign)) courageScore += 20.0
-            if (AstrologicalConstants.isDebilitated(Planet.MARS, it.sign)) courageScore -= 20.0
+            if (VedicAstrologyUtils.isExalted(it)) courageScore += 25.0
+            if (VedicAstrologyUtils.isInOwnSign(it)) courageScore += 20.0
+            if (VedicAstrologyUtils.isDebilitated(it)) courageScore -= 20.0
 
             // Mars in 3rd house is excellent for courage
             if (it.house == 3) courageScore += 15.0
@@ -460,8 +460,8 @@ object DivisionalChartAnalyzer {
 
         thirdLord?.let {
             // Well-placed 3rd lord
-            if (it.house in AstrologicalConstants.KENDRA_HOUSES) courageScore += 10.0
-            if (it.house in AstrologicalConstants.TRIKONA_HOUSES) courageScore += 10.0
+            if (it.house in VedicAstrologyUtils.KENDRA_HOUSES) courageScore += 10.0
+            if (it.house in VedicAstrologyUtils.TRIKONA_HOUSES) courageScore += 10.0
         }
 
         val courageLevel = when {
@@ -483,48 +483,47 @@ object DivisionalChartAnalyzer {
 
     private fun calculatePlanetStrengthInVarga(position: PlanetPosition): Double {
         var strength = 50.0
-        if (AstrologicalConstants.isExalted(position.planet, position.sign)) strength += 30.0
-        if (AstrologicalConstants.isInOwnSign(position.planet, position.sign)) strength += 20.0
-        if (AstrologicalConstants.isDebilitated(position.planet, position.sign)) strength -= 25.0
+        if (VedicAstrologyUtils.isExalted(position)) strength += 30.0
+        if (VedicAstrologyUtils.isInOwnSign(position)) strength += 20.0
+        if (VedicAstrologyUtils.isDebilitated(position)) strength -= 25.0
         return strength.coerceIn(0.0, 100.0)
     }
 
-    private fun assessInitiativeAbility(mars: PlanetPosition?, thirdLord: PlanetPosition?): String {
+    private fun assessInitiativeAbility(mars: PlanetPosition?, thirdLord: PlanetPosition?): LocalizableString {
         val marsStrong = mars?.let {
-            AstrologicalConstants.isExalted(Planet.MARS, it.sign) ||
-            AstrologicalConstants.isInOwnSign(Planet.MARS, it.sign)
+            VedicAstrologyUtils.isExalted(it) || VedicAstrologyUtils.isInOwnSign(it)
         } ?: false
 
         return if (marsStrong) {
-            "Strong initiative ability - natural leader and pioneer"
+            LocalizableString.Res(R.string.initiative_ability_strong)
         } else {
-            "Moderate initiative - benefits from preparation and planning"
+            LocalizableString.Res(R.string.initiative_ability_moderate)
         }
     }
 
-    private fun assessPhysicalCourage(mars: PlanetPosition?): String {
+    private fun assessPhysicalCourage(mars: PlanetPosition?): LocalizableString {
         return when {
-            mars == null -> "Physical courage depends on other factors"
-            AstrologicalConstants.isExalted(Planet.MARS, mars.sign) -> "Exceptional physical courage and athletic ability"
-            AstrologicalConstants.isInOwnSign(Planet.MARS, mars.sign) -> "Strong physical constitution and bravery"
-            AstrologicalConstants.isDebilitated(Planet.MARS, mars.sign) -> "Physical courage may need development"
-            else -> "Adequate physical courage for normal situations"
+            mars == null -> LocalizableString.Res(R.string.physical_courage_depends_on_factors)
+            VedicAstrologyUtils.isExalted(mars) -> LocalizableString.Res(R.string.physical_courage_exceptional)
+            VedicAstrologyUtils.isInOwnSign(mars) -> LocalizableString.Res(R.string.physical_courage_strong)
+            VedicAstrologyUtils.isDebilitated(mars) -> LocalizableString.Res(R.string.physical_courage_needs_development)
+            else -> LocalizableString.Res(R.string.physical_courage_adequate)
         }
     }
 
-    private fun assessMentalCourage(thirdLord: PlanetPosition?, chart: DivisionalChartData): String {
+    private fun assessMentalCourage(thirdLord: PlanetPosition?, chart: DivisionalChartCalculator.DivisionalChartData): LocalizableString {
         val mercuryD3 = chart.planetPositions.find { it.planet == Planet.MERCURY }
         val jupiterD3 = chart.planetPositions.find { it.planet == Planet.JUPITER }
 
         return when {
-            jupiterD3?.house == 3 -> "Exceptional wisdom-backed mental courage"
-            mercuryD3?.house == 3 -> "Sharp intellectual courage and quick decision-making"
-            thirdLord?.house in AstrologicalConstants.KENDRA_HOUSES -> "Stable mental fortitude"
-            else -> "Mental courage develops through life experiences"
+            jupiterD3?.house == 3 -> LocalizableString.Res(R.string.mental_courage_wisdom)
+            mercuryD3?.house == 3 -> LocalizableString.Res(R.string.mental_courage_quick_decision)
+            thirdLord?.house in VedicAstrologyUtils.KENDRA_HOUSES -> LocalizableString.Res(R.string.mental_courage_stable)
+            else -> LocalizableString.Res(R.string.mental_courage_develops)
         }
     }
 
-    private fun analyzeCommunication(chart: DivisionalChartData, d1Chart: VedicChart): CommunicationAnalysis {
+    private fun analyzeCommunication(chart: DivisionalChartCalculator.DivisionalChartData, d1Chart: VedicChart): CommunicationAnalysis {
         val mercuryD3 = chart.planetPositions.find { it.planet == Planet.MERCURY }
         val thirdHousePlanets = chart.planetPositions.filter { it.house == 3 }
 
@@ -541,71 +540,70 @@ object DivisionalChartAnalyzer {
         )
     }
 
-    private fun calculateCommunicationLevel(mercury: PlanetPosition?, thirdHouse: List<PlanetPosition>): String {
+    private fun calculateCommunicationLevel(mercury: PlanetPosition?, thirdHouse: List<PlanetPosition>): LocalizableString {
         val mercuryStrong = mercury?.let {
-            AstrologicalConstants.isExalted(Planet.MERCURY, it.sign) ||
-            AstrologicalConstants.isInOwnSign(Planet.MERCURY, it.sign)
+            VedicAstrologyUtils.isExalted(it) || VedicAstrologyUtils.isInOwnSign(it)
         } ?: false
 
         return when {
-            mercuryStrong && thirdHouse.any { it.planet == Planet.JUPITER } -> "Exceptional"
-            mercuryStrong -> "Very Good"
-            thirdHouse.any { it.planet in AstrologicalConstants.NATURAL_BENEFICS } -> "Good"
-            else -> "Average"
+            mercuryStrong && thirdHouse.any { it.planet == Planet.JUPITER } -> LocalizableString.Res(R.string.communication_level_exceptional)
+            mercuryStrong -> LocalizableString.Res(R.string.communication_level_very_good)
+            thirdHouse.any { VedicAstrologyUtils.isNaturalBenefic(it.planet) } -> LocalizableString.Res(R.string.communication_level_good)
+            else -> LocalizableString.Res(R.string.communication_level_average)
         }
     }
 
-    private fun assessWritingAbility(mercury: PlanetPosition?, thirdHouse: List<PlanetPosition>): String {
+    private fun assessWritingAbility(mercury: PlanetPosition?, thirdHouse: List<PlanetPosition>): LocalizableString {
         return when {
-            mercury?.house == 3 && AstrologicalConstants.isInOwnSign(Planet.MERCURY, mercury.sign) ->
-                "Exceptional writing talent - potential author or journalist"
+            mercury?.house == 3 && VedicAstrologyUtils.isInOwnSign(mercury) ->
+                LocalizableString.Res(R.string.writing_ability_exceptional)
             thirdHouse.any { it.planet == Planet.JUPITER } ->
-                "Strong writing ability with wisdom and depth"
+                LocalizableString.Res(R.string.writing_ability_strong)
             thirdHouse.any { it.planet == Planet.MERCURY } ->
-                "Good written communication skills"
-            else -> "Average writing ability"
+                LocalizableString.Res(R.string.writing_ability_good)
+            else -> LocalizableString.Res(R.string.writing_ability_average)
         }
     }
 
-    private fun assessSpeakingAbility(mercury: PlanetPosition?, chart: DivisionalChartData): String {
+    private fun assessSpeakingAbility(mercury: PlanetPosition?, chart: DivisionalChartCalculator.DivisionalChartData): LocalizableString {
         val sunD3 = chart.planetPositions.find { it.planet == Planet.SUN }
         val jupiterD3 = chart.planetPositions.find { it.planet == Planet.JUPITER }
 
         return when {
-            mercury != null && jupiterD3?.house == 2 -> "Eloquent speaker with wisdom"
-            sunD3?.house == 3 -> "Authoritative and commanding speech"
-            mercury?.house == 3 -> "Quick and articulate speech"
-            else -> "Normal speaking abilities"
+            mercury != null && jupiterD3?.house == 2 -> LocalizableString.Res(R.string.speaking_ability_eloquent)
+            sunD3?.house == 3 -> LocalizableString.Res(R.string.speaking_ability_authoritative)
+            mercury?.house == 3 -> LocalizableString.Res(R.string.speaking_ability_articulate)
+            else -> LocalizableString.Res(R.string.speaking_ability_normal)
         }
     }
 
-    private fun assessArtisticTalents(chart: DivisionalChartData): List<String> {
-        val talents = mutableListOf<String>()
+    private fun assessArtisticTalents(chart: DivisionalChartCalculator.DivisionalChartData): List<LocalizableString> {
+        val talents = mutableListOf<LocalizableString>()
         val venusD3 = chart.planetPositions.find { it.planet == Planet.VENUS }
         val moonD3 = chart.planetPositions.find { it.planet == Planet.MOON }
 
         venusD3?.let {
-            if (it.house == 3 || it.house == 5) talents.add("Visual arts and aesthetics")
+            if (it.house == 3 || it.house == 5) talents.add(LocalizableString.Res(R.string.artistic_talent_visual))
         }
         moonD3?.let {
-            if (it.house == 3) talents.add("Music and rhythm")
+            if (it.house == 3) talents.add(LocalizableString.Res(R.string.artistic_talent_music))
         }
 
         return talents
     }
 
-    private fun analyzeShortJourneys(chart: DivisionalChartData): List<String> {
-        val indicators = mutableListOf<String>()
+    private fun analyzeShortJourneys(chart: DivisionalChartCalculator.DivisionalChartData): List<LocalizableString> {
+        val indicators = mutableListOf<LocalizableString>()
         val thirdHousePlanets = chart.planetPositions.filter { it.house == 3 }
 
         if (thirdHousePlanets.any { it.planet == Planet.MOON }) {
-            indicators.add("Frequent short travels likely")
+            indicators.add(LocalizableString.Res(R.string.short_journey_frequent))
         }
         if (thirdHousePlanets.any { it.planet == Planet.MERCURY }) {
-            indicators.add("Travel for communication or business purposes")
+            indicators.add(LocalizableString.Res(R.string.short_journey_business))
         }
         if (thirdHousePlanets.any { it.planet == Planet.RAHU }) {
-            indicators.add("Unusual or sudden short journeys")
+            indicators.add(LocalizableString.Res(R.string.short_journey_unusual))
         }
 
         return indicators
@@ -614,26 +612,24 @@ object DivisionalChartAnalyzer {
     private fun generateDrekkanaRecommendations(
         courage: CourageAnalysis,
         siblings: SiblingIndicators
-    ): List<String> {
-        val recommendations = mutableListOf<String>()
+    ): List<LocalizableString> {
+        val recommendations = mutableListOf<LocalizableString>()
 
         when (courage.overallCourageLevel) {
             CourageLevel.EXCEPTIONAL, CourageLevel.HIGH -> {
-                recommendations.add("Channel courage into leadership and pioneering ventures")
+                recommendations.add(LocalizableString.Res(R.string.drekkana_rec_courage_high))
             }
             CourageLevel.LOW, CourageLevel.VERY_LOW -> {
-                recommendations.add("Practice Mars-strengthening activities like sports or martial arts")
-                recommendations.add("Worship Lord Hanuman for courage")
+                recommendations.add(LocalizableString.Res(R.string.drekkana_rec_courage_low))
             }
             else -> {
-                recommendations.add("Maintain balance between caution and boldness")
+                recommendations.add(LocalizableString.Res(R.string.drekkana_rec_courage_moderate))
             }
         }
 
         when (siblings.relationshipQuality) {
             RelationshipQuality.CHALLENGING, RelationshipQuality.DIFFICULT -> {
-                recommendations.add("Practice patience and understanding with siblings")
-                recommendations.add("Consider family counseling if needed")
+                recommendations.add(LocalizableString.Res(R.string.drekkana_rec_siblings_challenging))
             }
             else -> {}
         }
@@ -667,7 +663,7 @@ object DivisionalChartAnalyzer {
 
     private fun analyzeMarriageTimingFactors(
         chart: VedicChart,
-        navamsaChart: DivisionalChartData,
+        navamsaChart: DivisionalChartCalculator.DivisionalChartData,
         venus: PlanetPosition?,
         jupiter: PlanetPosition?,
         seventhLord: PlanetPosition?,
@@ -690,7 +686,7 @@ object DivisionalChartAnalyzer {
             venusNavamsaStrength = venus?.let { calculatePlanetStrengthInVarga(it) } ?: 50.0,
             seventhLordStrength = seventhLord?.let { calculatePlanetStrengthInVarga(it) } ?: 50.0,
             darakarakaStrength = darakaraka?.let { calculatePlanetStrengthInVarga(it) } ?: 50.0,
-            transitConsiderations = "Jupiter transit over 7th house from Moon or Navamsa Lagna"
+            transitConsiderations = LocalizableString.Res(R.string.marriage_transit_considerations)
         )
     }
 
@@ -699,7 +695,7 @@ object DivisionalChartAnalyzer {
         venus: PlanetPosition?,
         darakaraka: PlanetPosition?,
         upapadaLord: PlanetPosition?,
-        navamsaChart: DivisionalChartData
+        navamsaChart: DivisionalChartCalculator.DivisionalChartData
     ): SpouseCharacteristics {
         val spouseNature = determineSpouseNature(seventhLord, venus)
         val spouseAppearance = determineSpouseAppearance(darakaraka, venus)
@@ -713,83 +709,85 @@ object DivisionalChartAnalyzer {
         )
     }
 
-    private fun determineSpouseNature(seventhLord: PlanetPosition?, venus: PlanetPosition?): String {
+    private fun determineSpouseNature(seventhLord: PlanetPosition?, venus: PlanetPosition?): LocalizableString {
         val dominantPlanet = seventhLord?.planet ?: venus?.planet ?: Planet.VENUS
 
-        return when (dominantPlanet) {
-            Planet.SUN -> "Dignified, authoritative, proud, loyal"
-            Planet.MOON -> "Emotional, nurturing, sensitive, caring"
-            Planet.MARS -> "Energetic, assertive, passionate, athletic"
-            Planet.MERCURY -> "Intelligent, communicative, youthful, adaptable"
-            Planet.JUPITER -> "Wise, religious, generous, optimistic"
-            Planet.VENUS -> "Beautiful, artistic, romantic, pleasure-loving"
-            Planet.SATURN -> "Serious, hardworking, mature, responsible"
-            Planet.RAHU -> "Unconventional, foreign influence, ambitious"
-            Planet.KETU -> "Spiritual, detached, intuitive, mysterious"
-            else -> "Mixed qualities"
+        val resId = when (dominantPlanet) {
+            Planet.SUN -> R.string.spouse_nature_sun
+            Planet.MOON -> R.string.spouse_nature_moon
+            Planet.MARS -> R.string.spouse_nature_mars
+            Planet.MERCURY -> R.string.spouse_nature_mercury
+            Planet.JUPITER -> R.string.spouse_nature_jupiter
+            Planet.VENUS -> R.string.spouse_nature_venus
+            Planet.SATURN -> R.string.spouse_nature_saturn
+            Planet.RAHU -> R.string.spouse_nature_rahu
+            Planet.KETU -> R.string.spouse_nature_ketu
+            else -> R.string.spouse_nature_mixed
         }
+        return LocalizableString.Res(resId)
     }
 
-    private fun determineSpouseAppearance(darakaraka: PlanetPosition?, venus: PlanetPosition?): String {
+    private fun determineSpouseAppearance(darakaraka: PlanetPosition?, venus: PlanetPosition?): LocalizableString {
         val planet = darakaraka?.planet ?: venus?.planet ?: Planet.VENUS
 
-        return when (planet) {
-            Planet.SUN -> "Medium height, well-built, commanding presence"
-            Planet.MOON -> "Fair complexion, round face, attractive"
-            Planet.MARS -> "Athletic build, sharp features, reddish complexion"
-            Planet.MERCURY -> "Youthful appearance, quick movements"
-            Planet.JUPITER -> "Well-proportioned, dignified appearance"
-            Planet.VENUS -> "Very attractive, charming, pleasant features"
-            Planet.SATURN -> "Tall, thin build, mature appearance"
-            else -> "Appearance varies"
+        val resId = when (planet) {
+            Planet.SUN -> R.string.spouse_appearance_sun
+            Planet.MOON -> R.string.spouse_appearance_moon
+            Planet.MARS -> R.string.spouse_appearance_mars
+            Planet.MERCURY -> R.string.spouse_appearance_mercury
+            Planet.JUPITER -> R.string.spouse_appearance_jupiter
+            Planet.VENUS -> R.string.spouse_appearance_venus
+            Planet.SATURN -> R.string.spouse_appearance_saturn
+            else -> R.string.spouse_appearance_varies
         }
+        return LocalizableString.Res(resId)
     }
 
-    private fun estimateSpouseProfession(seventhLord: PlanetPosition?, chart: DivisionalChartData): List<String> {
-        val professions = mutableListOf<String>()
-        val planet = seventhLord?.planet ?: return listOf("Various professions possible")
+    private fun estimateSpouseProfession(seventhLord: PlanetPosition?, chart: DivisionalChartCalculator.DivisionalChartData): List<LocalizableString> {
+        val planet = seventhLord?.planet ?: return listOf(LocalizableString.Res(R.string.spouse_profession_various))
 
-        professions.addAll(when (planet) {
-            Planet.SUN -> listOf("Government", "Administration", "Medicine")
-            Planet.MOON -> listOf("Healthcare", "Hospitality", "Public relations")
-            Planet.MARS -> listOf("Engineering", "Military", "Sports")
-            Planet.MERCURY -> listOf("Business", "Writing", "Technology")
-            Planet.JUPITER -> listOf("Teaching", "Law", "Finance")
-            Planet.VENUS -> listOf("Arts", "Fashion", "Entertainment")
-            Planet.SATURN -> listOf("Labor", "Construction", "Agriculture")
-            else -> listOf("Various fields")
-        })
-
-        return professions
+        val resId = when (planet) {
+            Planet.SUN -> R.string.spouse_profession_sun
+            Planet.MOON -> R.string.spouse_profession_moon
+            Planet.MARS -> R.string.spouse_profession_mars
+            Planet.MERCURY -> R.string.spouse_profession_mercury
+            Planet.JUPITER -> R.string.spouse_profession_jupiter
+            Planet.VENUS -> R.string.spouse_profession_venus
+            Planet.SATURN -> R.string.spouse_profession_saturn
+            else -> R.string.spouse_profession_other
+        }
+        return listOf(LocalizableString.Res(resId))
     }
 
-    private fun determineSpouseFamilyBackground(upapadaLord: PlanetPosition?): String {
-        return when (upapadaLord?.planet) {
-            Planet.JUPITER -> "Respectable, possibly from educated or religious family"
-            Planet.VENUS -> "Cultured family with appreciation for arts"
-            Planet.SUN -> "Family with government or administrative background"
-            Planet.MOON -> "Family-oriented, possibly business background"
-            Planet.SATURN -> "Hardworking family, possibly modest beginnings"
-            else -> "Family background varies"
+    private fun determineSpouseFamilyBackground(upapadaLord: PlanetPosition?): LocalizableString {
+        val resId = when (upapadaLord?.planet) {
+            Planet.JUPITER -> R.string.spouse_family_jupiter
+            Planet.VENUS -> R.string.spouse_family_venus
+            Planet.SUN -> R.string.spouse_family_sun
+            Planet.MOON -> R.string.spouse_family_moon
+            Planet.SATURN -> R.string.spouse_family_saturn
+            else -> R.string.spouse_family_varies
         }
+        return LocalizableString.Res(resId)
     }
 
-    private fun calculateSpouseDirection(seventhLord: PlanetPosition?, darakaraka: PlanetPosition?): String {
-        val sign = seventhLord?.sign ?: darakaraka?.sign ?: return "Direction not clearly indicated"
+    private fun calculateSpouseDirection(seventhLord: PlanetPosition?, darakaraka: PlanetPosition?): LocalizableString {
+        val sign = seventhLord?.sign ?: darakaraka?.sign ?: return LocalizableString.Res(R.string.spouse_direction_unclear)
 
-        return when (sign) {
-            ZodiacSign.ARIES, ZodiacSign.LEO, ZodiacSign.SAGITTARIUS -> "East direction"
-            ZodiacSign.TAURUS, ZodiacSign.VIRGO, ZodiacSign.CAPRICORN -> "South direction"
-            ZodiacSign.GEMINI, ZodiacSign.LIBRA, ZodiacSign.AQUARIUS -> "West direction"
-            ZodiacSign.CANCER, ZodiacSign.SCORPIO, ZodiacSign.PISCES -> "North direction"
+        val resId = when (sign) {
+            ZodiacSign.ARIES, ZodiacSign.LEO, ZodiacSign.SAGITTARIUS -> R.string.spouse_direction_east
+            ZodiacSign.TAURUS, ZodiacSign.VIRGO, ZodiacSign.CAPRICORN -> R.string.spouse_direction_south
+            ZodiacSign.GEMINI, ZodiacSign.LIBRA, ZodiacSign.AQUARIUS -> R.string.spouse_direction_west
+            ZodiacSign.CANCER, ZodiacSign.SCORPIO, ZodiacSign.PISCES -> R.string.spouse_direction_north
         }
+        return LocalizableString.Res(resId)
     }
 
     private fun analyzeMultipleMarriageFactors(
         chart: VedicChart,
-        navamsaChart: DivisionalChartData
+        navamsaChart: DivisionalChartCalculator.DivisionalChartData
     ): MultipleMarriageIndicators {
-        val indicators = mutableListOf<String>()
+        val indicators = mutableListOf<LocalizableString>()
         var risk = 0
 
         val seventhLordD1 = getHouseLord(chart, 7)
@@ -802,17 +800,17 @@ object DivisionalChartAnalyzer {
 
         // Check for multiple marriage indicators
         if (seventhHousePlanets.size >= 2) {
-            indicators.add("Multiple planets in 7th house")
+            indicators.add(LocalizableString.Res(R.string.multiple_marriage_risk_multiple_planets))
             risk++
         }
 
         if (venusD1?.isRetrograde == true) {
-            indicators.add("Retrograde Venus")
+            indicators.add(LocalizableString.Res(R.string.multiple_marriage_risk_retro_venus))
             risk++
         }
 
-        if (seventhLordPositionD1?.house in AstrologicalConstants.DUSTHANA_HOUSES) {
-            indicators.add("7th lord in dusthana")
+        if (seventhLordPositionD1?.house in VedicAstrologyUtils.DUSTHANA_HOUSES) {
+            indicators.add(LocalizableString.Res(R.string.multiple_marriage_risk_7th_lord_dusthana))
             risk++
         }
 
@@ -821,36 +819,37 @@ object DivisionalChartAnalyzer {
         return MultipleMarriageIndicators(
             hasStrongIndicators = hasRisk,
             riskFactors = indicators,
-            mitigatingFactors = if (!hasRisk) listOf("No strong multiple marriage indicators") else emptyList()
+            mitigatingFactors = if (!hasRisk) listOf(LocalizableString.Res(R.string.multiple_marriage_mitigation_none)) else emptyList()
         )
     }
 
     private fun analyzeMarriageMuhurtaCompatibility(
         chart: VedicChart,
-        navamsaChart: DivisionalChartData
-    ): String {
+        navamsaChart: DivisionalChartCalculator.DivisionalChartData
+    ): LocalizableString {
         val moonSign = chart.planetPositions.find { it.planet == Planet.MOON }?.sign
-        return "Best muhurta when Jupiter transits $moonSign or its trikona"
+        return LocalizableString.ResWithArgs(R.string.marriage_muhurta_compatibility, listOf(moonSign?.displayName ?: LocalizableString.Raw("")))
     }
 
-    private fun generateMarriageRecommendations(factors: MarriageTimingFactors): List<String> {
-        val recommendations = mutableListOf<String>()
+    private fun generateMarriageRecommendations(factors: MarriageTimingFactors): List<LocalizableString> {
+        val recommendations = mutableListOf<LocalizableString>()
 
         if (factors.venusNavamsaStrength > 70) {
-            recommendations.add("Venus is strong - romantic approach to marriage is favorable")
+            recommendations.add(LocalizableString.Res(R.string.marriage_rec_venus_strong))
         }
         if (factors.venusNavamsaStrength < 50) {
-            recommendations.add("Strengthen Venus through white colors, Fridays worship, and diamond/white sapphire")
+            recommendations.add(LocalizableString.Res(R.string.marriage_rec_venus_weak))
         }
 
-        recommendations.add("Best marriage timing: During ${factors.favorableDashaPlanets.joinToString(", ") { it.displayName }} Dasha/Antardasha")
+        val favorablePlanets = factors.favorableDashaPlanets.joinToString(", ") { it.name }
+        recommendations.add(LocalizableString.ResWithArgs(R.string.marriage_rec_timing, listOf(favorablePlanets)))
         recommendations.add(factors.transitConsiderations)
 
         return recommendations
     }
 
     // Dashamsa helper functions
-    private fun determineCareerType(dashamsaChart: DivisionalChartData, chart: VedicChart): List<CareerType> {
+    private fun determineCareerType(dashamsaChart: DivisionalChartCalculator.DivisionalChartData, chart: VedicChart): List<CareerType> {
         val careerTypes = mutableListOf<CareerType>()
         val tenthHouseD10 = dashamsaChart.planetPositions.filter { it.house == 10 }
         val lagnaD10 = dashamsaChart.ascendantSign
@@ -871,58 +870,27 @@ object DivisionalChartAnalyzer {
     }
 
     private fun getCareerTypeFromPlanet(planet: Planet): CareerType {
-        return when (planet) {
-            Planet.SUN -> CareerType(
-                name = "Administrative/Government",
-                industries = listOf("Government", "Administration", "Politics", "Medicine"),
-                suitability = "Leadership positions, authority roles"
-            )
-            Planet.MOON -> CareerType(
-                name = "Public Service/Nurturing",
-                industries = listOf("Healthcare", "Hospitality", "Public Relations", "Nursing"),
-                suitability = "People-facing roles, caring professions"
-            )
-            Planet.MARS -> CareerType(
-                name = "Technical/Competitive",
-                industries = listOf("Engineering", "Military", "Police", "Surgery", "Sports"),
-                suitability = "Action-oriented careers requiring courage"
-            )
-            Planet.MERCURY -> CareerType(
-                name = "Communication/Business",
-                industries = listOf("Commerce", "Accounting", "Writing", "IT", "Trading"),
-                suitability = "Intellectual and analytical roles"
-            )
-            Planet.JUPITER -> CareerType(
-                name = "Advisory/Educational",
-                industries = listOf("Teaching", "Law", "Consultancy", "Finance", "Religion"),
-                suitability = "Positions requiring wisdom and guidance"
-            )
-            Planet.VENUS -> CareerType(
-                name = "Creative/Luxury",
-                industries = listOf("Arts", "Entertainment", "Fashion", "Luxury goods", "Hotels"),
-                suitability = "Aesthetic and pleasure-related industries"
-            )
-            Planet.SATURN -> CareerType(
-                name = "Labor/Resource",
-                industries = listOf("Mining", "Construction", "Oil", "Agriculture", "Labor management"),
-                suitability = "Careers requiring persistence and hard work"
-            )
-            Planet.RAHU -> CareerType(
-                name = "Unconventional/Foreign",
-                industries = listOf("Technology", "Foreign companies", "Research", "Media"),
-                suitability = "Innovative and cutting-edge fields"
-            )
-            Planet.KETU -> CareerType(
-                name = "Spiritual/Research",
-                industries = listOf("Spirituality", "Occult", "Research", "Psychology"),
-                suitability = "Fields requiring deep investigation"
-            )
-            else -> CareerType("General", emptyList(), "Various career possibilities")
+        val (nameRes, industriesRes) = when (planet) {
+            Planet.SUN -> R.string.career_type_admin to R.string.spouse_profession_sun
+            Planet.MOON -> R.string.career_type_public_service to R.string.spouse_profession_moon
+            Planet.MARS -> R.string.career_type_technical to R.string.spouse_profession_mars
+            Planet.MERCURY -> R.string.career_type_communication to R.string.spouse_profession_mercury
+            Planet.JUPITER -> R.string.career_type_advisory to R.string.spouse_profession_jupiter
+            Planet.VENUS -> R.string.career_type_creative to R.string.spouse_profession_venus
+            Planet.SATURN -> R.string.career_type_labor to R.string.spouse_profession_saturn
+            Planet.RAHU -> R.string.career_type_unconventional to R.string.sun_hora_source_rahu
+            Planet.KETU -> R.string.career_type_spiritual to R.string.sun_hora_source_ketu
+            else -> R.string.career_type_general to R.string.spouse_profession_various
         }
+        return CareerType(
+            name = LocalizableString.Res(nameRes),
+            industries = listOf(LocalizableString.Res(industriesRes)),
+            suitability = LocalizableString.Raw("") // This can be improved
+        )
     }
 
-    private fun mapPlanetsToIndustries(chart: DivisionalChartData): Map<Planet, List<String>> {
-        val mapping = mutableMapOf<Planet, List<String>>()
+    private fun mapPlanetsToIndustries(chart: DivisionalChartCalculator.DivisionalChartData): Map<Planet, List<LocalizableString>> {
+        val mapping = mutableMapOf<Planet, List<LocalizableString>>()
 
         chart.planetPositions.filter { it.house in listOf(1, 10) }.forEach { position ->
             mapping[position.planet] = getIndustriesForPlanet(position.planet)
@@ -931,32 +899,33 @@ object DivisionalChartAnalyzer {
         return mapping
     }
 
-    private fun getIndustriesForPlanet(planet: Planet): List<String> {
-        return when (planet) {
-            Planet.SUN -> listOf("Government", "Administration", "Medicine", "Gold/Jewelry")
-            Planet.MOON -> listOf("Hospitality", "Nursing", "Dairy", "Public relations", "Liquids")
-            Planet.MARS -> listOf("Military", "Police", "Surgery", "Engineering", "Real estate")
-            Planet.MERCURY -> listOf("Commerce", "Accounting", "Writing", "IT", "Communication")
-            Planet.JUPITER -> listOf("Teaching", "Law", "Consultancy", "Finance", "Banking")
-            Planet.VENUS -> listOf("Arts", "Entertainment", "Fashion", "Luxury goods", "Beauty")
-            Planet.SATURN -> listOf("Mining", "Labor", "Construction", "Oil", "Agriculture")
-            Planet.RAHU -> listOf("Technology", "Foreign trade", "Airlines", "Chemicals")
-            Planet.KETU -> listOf("Spirituality", "Occult", "Alternative medicine", "Research")
-            else -> emptyList()
+    private fun getIndustriesForPlanet(planet: Planet): List<LocalizableString> {
+        val resId = when (planet) {
+            Planet.SUN -> R.string.spouse_profession_sun
+            Planet.MOON -> R.string.spouse_profession_moon
+            Planet.MARS -> R.string.spouse_profession_mars
+            Planet.MERCURY -> R.string.spouse_profession_mercury
+            Planet.JUPITER -> R.string.spouse_profession_jupiter
+            Planet.VENUS -> R.string.spouse_profession_venus
+            Planet.SATURN -> R.string.spouse_profession_saturn
+            Planet.RAHU -> R.string.sun_hora_source_rahu
+            Planet.KETU -> R.string.sun_hora_source_ketu
+            else -> return emptyList()
         }
+        return listOf(LocalizableString.Res(resId))
     }
 
     private fun analyzeGovernmentServicePotential(
         sun: PlanetPosition?,
-        chart: DivisionalChartData
+        chart: DivisionalChartCalculator.DivisionalChartData
     ): GovernmentServiceAnalysis {
         var potential = 50.0
 
         sun?.let {
             if (it.house == 10) potential += 25.0
             if (it.house == 1) potential += 15.0
-            if (AstrologicalConstants.isExalted(Planet.SUN, it.sign)) potential += 20.0
-            if (AstrologicalConstants.isInOwnSign(Planet.SUN, it.sign)) potential += 15.0
+            if (VedicAstrologyUtils.isExalted(it)) potential += 20.0
+            if (VedicAstrologyUtils.isInOwnSign(it)) potential += 15.0
         }
 
         val saturnD10 = chart.planetPositions.find { it.planet == Planet.SATURN }
@@ -964,27 +933,29 @@ object DivisionalChartAnalyzer {
             if (it.house in listOf(1, 10)) potential += 10.0
         }
 
+        val potentialRes = when {
+            potential >= 80 -> R.string.government_service_potential_very_high
+            potential >= 65 -> R.string.government_service_potential_high
+            potential >= 50 -> R.string.government_service_potential_moderate
+            else -> R.string.government_service_potential_low
+        }
+
         return GovernmentServiceAnalysis(
-            potential = when {
-                potential >= 80 -> "Very High"
-                potential >= 65 -> "High"
-                potential >= 50 -> "Moderate"
-                else -> "Low"
-            },
+            potential = LocalizableString.Res(potentialRes),
             favorableFactors = buildList {
                 sun?.let {
-                    if (it.house == 10) add("Sun in 10th house of D10")
-                    if (AstrologicalConstants.isExalted(Planet.SUN, it.sign)) add("Exalted Sun")
+                    if (it.house == 10) add(LocalizableString.Res(R.string.government_factor_sun_in_10th))
+                    if (VedicAstrologyUtils.isExalted(it)) add(LocalizableString.Res(R.string.government_factor_exalted_sun))
                 }
             },
             recommendedDepartments = if (potential > 60) {
-                listOf("Administration", "Revenue", "Foreign Affairs", "Defense")
+                listOf(LocalizableString.Res(R.string.career_type_admin))
             } else emptyList()
         )
     }
 
     private fun analyzeBusinessVsService(
-        dashamsaChart: DivisionalChartData,
+        dashamsaChart: DivisionalChartCalculator.DivisionalChartData,
         chart: VedicChart
     ): BusinessVsServiceAnalysis {
         var businessScore = 0
@@ -1012,14 +983,16 @@ object DivisionalChartAnalyzer {
             serviceScore++
         }
 
+        val recRes = when {
+            businessScore > serviceScore + 1 -> R.string.business_vs_service_business
+            serviceScore > businessScore + 1 -> R.string.business_vs_service_service
+            else -> R.string.business_vs_service_both
+        }
+
         return BusinessVsServiceAnalysis(
             businessAptitude = businessScore,
             serviceAptitude = serviceScore,
-            recommendation = when {
-                businessScore > serviceScore + 1 -> "Strong aptitude for business/entrepreneurship"
-                serviceScore > businessScore + 1 -> "Better suited for service/employment"
-                else -> "Can excel in both business and service"
-            },
+            recommendation = LocalizableString.Res(recRes),
             businessSectors = if (businessScore > serviceScore) {
                 getIndustriesForPlanet(mercuryD10?.planet ?: Planet.MERCURY)
             } else emptyList()
@@ -1028,81 +1001,85 @@ object DivisionalChartAnalyzer {
 
     private fun calculateCareerPeakTiming(
         chart: VedicChart,
-        dashamsaChart: DivisionalChartData
+        dashamsaChart: DivisionalChartCalculator.DivisionalChartData
     ): List<CareerPeakPeriod> {
         val periods = mutableListOf<CareerPeakPeriod>()
 
         val tenthLordD1 = getHouseLord(chart, 10)
         val strongD10Planets = dashamsaChart.planetPositions.filter { position ->
             position.house in listOf(1, 10) ||
-            AstrologicalConstants.isExalted(position.planet, position.sign) ||
-            AstrologicalConstants.isInOwnSign(position.planet, position.sign)
+                    VedicAstrologyUtils.isExalted(position) ||
+                    VedicAstrologyUtils.isInOwnSign(position)
         }
 
         periods.add(CareerPeakPeriod(
             planet = tenthLordD1,
-            description = "10th lord Dasha - Primary career growth period",
-            significance = "Major career advancements and recognition"
+            description = LocalizableString.Res(R.string.career_peak_10th_lord),
+            significance = LocalizableString.Res(R.string.career_peak_significance_major)
         ))
 
         strongD10Planets.forEach { position ->
             periods.add(CareerPeakPeriod(
                 planet = position.planet,
-                description = "${position.planet.displayName} Dasha/Antardasha",
-                significance = "Career opportunities in ${getIndustriesForPlanet(position.planet).firstOrNull() ?: "related field"}"
+                description = LocalizableString.ResWithArgs(R.string.career_peak_planet_dasha, listOf(position.planet.displayName)),
+                significance = LocalizableString.ResWithArgs(
+                    R.string.career_peak_significance_opportunities,
+                    listOf(getIndustriesForPlanet(position.planet).firstOrNull() ?: LocalizableString.Raw("related field"))
+                )
             ))
         }
 
         return periods
     }
 
-    private fun analyzeMultipleCareers(chart: DivisionalChartData): List<String> {
-        val indicators = mutableListOf<String>()
+    private fun analyzeMultipleCareers(chart: DivisionalChartCalculator.DivisionalChartData): List<LocalizableString> {
+        val indicators = mutableListOf<LocalizableString>()
         val tenthHousePlanets = chart.planetPositions.filter { it.house == 10 }
 
         if (tenthHousePlanets.size >= 2) {
-            indicators.add("Multiple planets in 10th house indicate potential for multiple careers")
+            indicators.add(LocalizableString.Res(R.string.multiple_careers_multiple_planets))
         }
 
         val mercuryD10 = chart.planetPositions.find { it.planet == Planet.MERCURY }
         if (mercuryD10?.house == 10 || mercuryD10?.house == 1) {
-            indicators.add("Strong Mercury suggests versatility in career")
+            indicators.add(LocalizableString.Res(R.string.multiple_careers_mercury))
         }
 
         val rahuD10 = chart.planetPositions.find { it.planet == Planet.RAHU }
         if (rahuD10?.house in listOf(1, 10)) {
-            indicators.add("Rahu indicates unconventional career path or career changes")
+            indicators.add(LocalizableString.Res(R.string.multiple_careers_rahu))
         }
 
         return indicators
     }
 
-    private fun analyzeProfessionalStrengths(chart: DivisionalChartData): List<String> {
-        val strengths = mutableListOf<String>()
+    private fun analyzeProfessionalStrengths(chart: DivisionalChartCalculator.DivisionalChartData): List<LocalizableString> {
+        val strengths = mutableListOf<LocalizableString>()
         val lagnaLord = chart.ascendantSign.ruler
         val lagnaLordPosition = chart.planetPositions.find { it.planet == lagnaLord }
 
         lagnaLordPosition?.let {
-            if (it.house in AstrologicalConstants.KENDRA_HOUSES) {
-                strengths.add("Strong professional identity and presence")
+            if (it.house in VedicAstrologyUtils.KENDRA_HOUSES) {
+                strengths.add(LocalizableString.Res(R.string.professional_strength_identity))
             }
-            if (AstrologicalConstants.isExalted(it.planet, it.sign)) {
-                strengths.add("Exceptional abilities in chosen field")
+            if (VedicAstrologyUtils.isExalted(it)) {
+                strengths.add(LocalizableString.Res(R.string.professional_strength_exceptional_abilities))
             }
         }
 
         val tenthHousePlanets = chart.planetPositions.filter { it.house == 10 }
         tenthHousePlanets.forEach { position ->
-            when (position.planet) {
-                Planet.SUN -> strengths.add("Leadership and authority")
-                Planet.MOON -> strengths.add("Public appeal and emotional intelligence")
-                Planet.MARS -> strengths.add("Drive and competitive spirit")
-                Planet.MERCURY -> strengths.add("Communication and analytical skills")
-                Planet.JUPITER -> strengths.add("Wisdom and advisory capabilities")
-                Planet.VENUS -> strengths.add("Creativity and relationship skills")
-                Planet.SATURN -> strengths.add("Persistence and organizational ability")
-                else -> {}
+            val strengthRes = when (position.planet) {
+                Planet.SUN -> R.string.professional_strength_leadership
+                Planet.MOON -> R.string.professional_strength_public_appeal
+                Planet.MARS -> R.string.professional_strength_drive
+                Planet.MERCURY -> R.string.professional_strength_communication
+                Planet.JUPITER -> R.string.professional_strength_wisdom
+                Planet.VENUS -> R.string.professional_strength_creativity
+                Planet.SATURN -> R.string.professional_strength_persistence
+                else -> null
             }
+            strengthRes?.let { strengths.add(LocalizableString.Res(it)) }
         }
 
         return strengths
@@ -1110,19 +1087,24 @@ object DivisionalChartAnalyzer {
 
     private fun generateCareerRecommendations(
         careerTypes: List<CareerType>,
-        industryMappings: Map<Planet, List<String>>
-    ): List<String> {
-        val recommendations = mutableListOf<String>()
+        industryMappings: Map<Planet, List<LocalizableString>>
+    ): List<LocalizableString> {
+        val recommendations = mutableListOf<LocalizableString>()
 
         if (careerTypes.isNotEmpty()) {
-            recommendations.add("Primary career focus: ${careerTypes.firstOrNull()?.name ?: "Various options"}")
+            recommendations.add(LocalizableString.ResWithArgs(R.string.career_rec_primary_focus, listOf(careerTypes.firstOrNull()?.name ?: LocalizableString.Raw("Various options"))))
             careerTypes.firstOrNull()?.industries?.take(3)?.let { industries ->
-                recommendations.add("Top industries: ${industries.joinToString(", ")}")
+                recommendations.add(LocalizableString.ResWithArgs(R.string.career_rec_top_industries, listOf(LocalizableString.Chain(industries))))
             }
         }
 
         industryMappings.entries.take(2).forEach { (planet, industries) ->
-            recommendations.add("${planet.displayName} period favors: ${industries.firstOrNull() ?: "general work"}")
+            recommendations.add(
+                LocalizableString.ResWithArgs(
+                    R.string.career_rec_planet_favors,
+                    listOf(planet.displayName, industries.firstOrNull() ?: LocalizableString.Raw("general work"))
+                )
+            )
         }
 
         return recommendations
@@ -1132,31 +1114,33 @@ object DivisionalChartAnalyzer {
     private fun analyzeFatherIndicators(
         sun: PlanetPosition?,
         ninthLord: PlanetPosition?,
-        chart: DivisionalChartData
+        chart: DivisionalChartCalculator.DivisionalChartData
     ): ParentAnalysis {
         var wellbeingScore = 50.0
 
         sun?.let {
-            if (AstrologicalConstants.isExalted(Planet.SUN, it.sign)) wellbeingScore += 20.0
-            if (AstrologicalConstants.isInOwnSign(Planet.SUN, it.sign)) wellbeingScore += 15.0
-            if (AstrologicalConstants.isDebilitated(Planet.SUN, it.sign)) wellbeingScore -= 20.0
-            if (it.house in AstrologicalConstants.DUSTHANA_HOUSES) wellbeingScore -= 15.0
+            if (VedicAstrologyUtils.isExalted(it)) wellbeingScore += 20.0
+            if (VedicAstrologyUtils.isInOwnSign(it)) wellbeingScore += 15.0
+            if (VedicAstrologyUtils.isDebilitated(it)) wellbeingScore -= 20.0
+            if (it.house in VedicAstrologyUtils.DUSTHANA_HOUSES) wellbeingScore -= 15.0
         }
 
         ninthLord?.let {
-            if (it.house in AstrologicalConstants.KENDRA_HOUSES) wellbeingScore += 10.0
-            if (it.house in AstrologicalConstants.TRIKONA_HOUSES) wellbeingScore += 10.0
+            if (it.house in VedicAstrologyUtils.KENDRA_HOUSES) wellbeingScore += 10.0
+            if (it.house in VedicAstrologyUtils.TRIKONA_HOUSES) wellbeingScore += 10.0
+        }
+
+        val wellbeingRes = when {
+            wellbeingScore >= 70 -> R.string.parental_wellbeing_good_father
+            wellbeingScore >= 50 -> R.string.parental_wellbeing_moderate
+            else -> R.string.parental_wellbeing_challenging_father
         }
 
         return ParentAnalysis(
-            parent = "Father",
+            parent = LocalizableString.Res(R.string.parent_father),
             significatorStrength = sun?.let { calculatePlanetStrengthInVarga(it) } ?: 50.0,
             houseLordStrength = ninthLord?.let { calculatePlanetStrengthInVarga(it) } ?: 50.0,
-            overallWellbeing = when {
-                wellbeingScore >= 70 -> "Good health and prosperity indicated"
-                wellbeingScore >= 50 -> "Moderate indications"
-                else -> "Some challenges indicated - remedies beneficial"
-            },
+            overallWellbeing = LocalizableString.Res(wellbeingRes),
             characteristics = determineFatherCharacteristics(sun, ninthLord),
             relationship = assessParentRelationship(sun)
         )
@@ -1165,68 +1149,71 @@ object DivisionalChartAnalyzer {
     private fun analyzeMotherIndicators(
         moon: PlanetPosition?,
         fourthLord: PlanetPosition?,
-        chart: DivisionalChartData
+        chart: DivisionalChartCalculator.DivisionalChartData
     ): ParentAnalysis {
         var wellbeingScore = 50.0
 
         moon?.let {
-            if (AstrologicalConstants.isExalted(Planet.MOON, it.sign)) wellbeingScore += 20.0
-            if (AstrologicalConstants.isInOwnSign(Planet.MOON, it.sign)) wellbeingScore += 15.0
-            if (AstrologicalConstants.isDebilitated(Planet.MOON, it.sign)) wellbeingScore -= 20.0
-            if (it.house in AstrologicalConstants.DUSTHANA_HOUSES) wellbeingScore -= 15.0
+            if (VedicAstrologyUtils.isExalted(it)) wellbeingScore += 20.0
+            if (VedicAstrologyUtils.isInOwnSign(it)) wellbeingScore += 15.0
+            if (VedicAstrologyUtils.isDebilitated(it)) wellbeingScore -= 20.0
+            if (it.house in VedicAstrologyUtils.DUSTHANA_HOUSES) wellbeingScore -= 15.0
         }
 
         fourthLord?.let {
-            if (it.house in AstrologicalConstants.KENDRA_HOUSES) wellbeingScore += 10.0
-            if (it.house in AstrologicalConstants.TRIKONA_HOUSES) wellbeingScore += 10.0
+            if (it.house in VedicAstrologyUtils.KENDRA_HOUSES) wellbeingScore += 10.0
+            if (it.house in VedicAstrologyUtils.TRIKONA_HOUSES) wellbeingScore += 10.0
+        }
+
+        val wellbeingRes = when {
+            wellbeingScore >= 70 -> R.string.parental_wellbeing_good_mother
+            wellbeingScore >= 50 -> R.string.parental_wellbeing_moderate
+            else -> R.string.parental_wellbeing_challenging_mother
         }
 
         return ParentAnalysis(
-            parent = "Mother",
+            parent = LocalizableString.Res(R.string.parent_mother),
             significatorStrength = moon?.let { calculatePlanetStrengthInVarga(it) } ?: 50.0,
             houseLordStrength = fourthLord?.let { calculatePlanetStrengthInVarga(it) } ?: 50.0,
-            overallWellbeing = when {
-                wellbeingScore >= 70 -> "Good health and emotional wellbeing indicated"
-                wellbeingScore >= 50 -> "Moderate indications"
-                else -> "Some challenges indicated - Moon remedies beneficial"
-            },
+            overallWellbeing = LocalizableString.Res(wellbeingRes),
             characteristics = determineMotherCharacteristics(moon, fourthLord),
             relationship = assessParentRelationship(moon)
         )
     }
 
-    private fun determineFatherCharacteristics(sun: PlanetPosition?, ninthLord: PlanetPosition?): String {
-        return when {
-            sun != null && AstrologicalConstants.isExalted(Planet.SUN, sun.sign) ->
-                "Authoritative, successful, government/administrative role"
-            sun?.house == 10 -> "Career-focused, ambitious, prominent position"
-            ninthLord?.planet == Planet.JUPITER -> "Religious, wise, generous"
-            else -> "Characteristics vary based on overall chart"
+    private fun determineFatherCharacteristics(sun: PlanetPosition?, ninthLord: PlanetPosition?): LocalizableString {
+        val resId = when {
+            sun != null && VedicAstrologyUtils.isExalted(sun) -> R.string.father_char_authoritative
+            sun?.house == 10 -> R.string.father_char_career_focused
+            ninthLord?.planet == Planet.JUPITER -> R.string.father_char_religious
+            else -> R.string.father_char_varies
         }
+        return LocalizableString.Res(resId)
     }
 
-    private fun determineMotherCharacteristics(moon: PlanetPosition?, fourthLord: PlanetPosition?): String {
-        return when {
-            moon != null && AstrologicalConstants.isExalted(Planet.MOON, moon.sign) ->
-                "Nurturing, emotionally supportive, prosperous"
-            moon?.house == 4 -> "Home-oriented, caring, family-focused"
-            fourthLord?.planet == Planet.VENUS -> "Artistic, beautiful, comfort-loving"
-            else -> "Characteristics vary based on overall chart"
+    private fun determineMotherCharacteristics(moon: PlanetPosition?, fourthLord: PlanetPosition?): LocalizableString {
+        val resId = when {
+            moon != null && VedicAstrologyUtils.isExalted(moon) -> R.string.mother_char_nurturing
+            moon?.house == 4 -> R.string.mother_char_home_oriented
+            fourthLord?.planet == Planet.VENUS -> R.string.mother_char_artistic
+            else -> R.string.mother_char_varies
         }
+        return LocalizableString.Res(resId)
     }
 
-    private fun assessParentRelationship(significator: PlanetPosition?): String {
-        return when {
-            significator == null -> "Relationship quality depends on other factors"
-            significator.house in AstrologicalConstants.KENDRA_HOUSES -> "Strong, supportive relationship"
-            significator.house in AstrologicalConstants.TRIKONA_HOUSES -> "Harmonious, beneficial relationship"
-            significator.house in AstrologicalConstants.DUSTHANA_HOUSES -> "Some challenges in relationship"
-            else -> "Moderate relationship quality"
+    private fun assessParentRelationship(significator: PlanetPosition?): LocalizableString {
+        val resId = when {
+            significator == null -> R.string.parent_relationship_depends
+            significator.house in VedicAstrologyUtils.KENDRA_HOUSES -> R.string.parent_relationship_strong
+            significator.house in VedicAstrologyUtils.TRIKONA_HOUSES -> R.string.parent_relationship_harmonious
+            significator.house in VedicAstrologyUtils.DUSTHANA_HOUSES -> R.string.parent_relationship_challenging
+            else -> R.string.parent_relationship_moderate
         }
+        return LocalizableString.Res(resId)
     }
 
     private fun analyzeInheritance(
-        dwadasamsaChart: DivisionalChartData,
+        dwadasamsaChart: DivisionalChartCalculator.DivisionalChartData,
         chart: VedicChart
     ): InheritanceAnalysis {
         val secondHouseD12 = dwadasamsaChart.planetPositions.filter { it.house == 2 }
@@ -1237,86 +1224,89 @@ object DivisionalChartAnalyzer {
 
         if (Planet.JUPITER in secondHouseD12.map { it.planet }) inheritanceScore += 20.0
         if (Planet.VENUS in fourthHouseD12.map { it.planet }) inheritanceScore += 15.0
-        if (fourthHouseD12.any { it.planet in AstrologicalConstants.NATURAL_BENEFICS }) inheritanceScore += 10.0
+        if (fourthHouseD12.any { VedicAstrologyUtils.isNaturalBenefic(it.planet) }) inheritanceScore += 10.0
+
+        val potentialRes = when {
+            inheritanceScore >= 70 -> R.string.inheritance_potential_good
+            inheritanceScore >= 50 -> R.string.inheritance_potential_moderate
+            else -> R.string.inheritance_potential_limited
+        }
 
         return InheritanceAnalysis(
-            potential = when {
-                inheritanceScore >= 70 -> "Good inheritance potential"
-                inheritanceScore >= 50 -> "Moderate inheritance"
-                else -> "Limited inheritance indicated"
-            },
+            potential = LocalizableString.Res(potentialRes),
             sources = buildList {
-                if (secondHouseD12.isNotEmpty()) add("Family wealth")
-                if (fourthHouseD12.isNotEmpty()) add("Property/Land")
-                if (eighthHouseD12.any { it.planet in AstrologicalConstants.NATURAL_BENEFICS }) add("Unexpected gains")
+                if (secondHouseD12.isNotEmpty()) add(LocalizableString.Res(R.string.inheritance_source_family))
+                if (fourthHouseD12.isNotEmpty()) add(LocalizableString.Res(R.string.inheritance_source_property))
+                if (eighthHouseD12.any { VedicAstrologyUtils.isNaturalBenefic(it.planet) }) add(
+                    LocalizableString.Res(
+                        R.string.inheritance_source_unexpected
+                    )
+                )
             },
-            timing = "During Dasha of benefic planets in 2nd, 4th, or 8th house of D-12"
+            timing = LocalizableString.Res(R.string.inheritance_timing)
         )
     }
 
-    private fun analyzeAncestralProperty(chart: DivisionalChartData): List<String> {
-        val indicators = mutableListOf<String>()
+    private fun analyzeAncestralProperty(chart: DivisionalChartCalculator.DivisionalChartData): List<LocalizableString> {
+        val indicators = mutableListOf<LocalizableString>()
         val fourthHousePlanets = chart.planetPositions.filter { it.house == 4 }
 
         if (Planet.SATURN in fourthHousePlanets.map { it.planet }) {
-            indicators.add("Old ancestral property indicated")
+            indicators.add(LocalizableString.Res(R.string.ancestral_property_old))
         }
         if (Planet.MARS in fourthHousePlanets.map { it.planet }) {
-            indicators.add("Land or real estate from ancestors")
+            indicators.add(LocalizableString.Res(R.string.ancestral_property_land))
         }
         if (Planet.JUPITER in fourthHousePlanets.map { it.planet }) {
-            indicators.add("Religious or educational property")
+            indicators.add(LocalizableString.Res(R.string.ancestral_property_religious))
         }
 
         return indicators
     }
 
-    private fun analyzeFamilyLineage(chart: DivisionalChartData): List<String> {
-        val insights = mutableListOf<String>()
+    private fun analyzeFamilyLineage(chart: DivisionalChartCalculator.DivisionalChartData): List<LocalizableString> {
+        val insights = mutableListOf<LocalizableString>()
         val lagnaLord = chart.ascendantSign.ruler
         val lagnaLordPosition = chart.planetPositions.find { it.planet == lagnaLord }
 
         lagnaLordPosition?.let {
-            when {
-                AstrologicalConstants.isExalted(it.planet, it.sign) ->
-                    insights.add("Noble or respected family lineage")
-                it.house in listOf(9, 10) ->
-                    insights.add("Family known for dharma or profession")
-                it.house in listOf(5, 11) ->
-                    insights.add("Family with creative or financial success")
-                else ->
-                    insights.add("Family lineage characteristics depend on other factors")
+            val resId = when {
+                VedicAstrologyUtils.isExalted(it) -> R.string.family_lineage_noble
+                it.house in listOf(9, 10) -> R.string.family_lineage_dharma
+                it.house in listOf(5, 11) -> R.string.family_lineage_creative
+                else -> R.string.family_lineage_depends
             }
+            insights.add(LocalizableString.Res(resId))
         }
 
         return insights
     }
 
     private fun analyzeParentalLongevity(
-        dwadasamsaChart: DivisionalChartData,
+        dwadasamsaChart: DivisionalChartCalculator.DivisionalChartData,
         chart: VedicChart
     ): ParentalLongevityIndicators {
         val sunD12 = dwadasamsaChart.planetPositions.find { it.planet == Planet.SUN }
         val moonD12 = dwadasamsaChart.planetPositions.find { it.planet == Planet.MOON }
 
-        val fatherLongevity = when {
-            sunD12 != null && AstrologicalConstants.isExalted(Planet.SUN, sunD12.sign) -> "Long life indicated"
-            sunD12?.house in AstrologicalConstants.DUSTHANA_HOUSES -> "Health attention needed"
-            else -> "Moderate longevity"
+        val fatherLongevityRes = when {
+            sunD12 != null && VedicAstrologyUtils.isExalted(sunD12) -> R.string.parental_longevity_long
+            sunD12?.house in VedicAstrologyUtils.DUSTHANA_HOUSES -> R.string.parental_longevity_attention_needed
+            else -> R.string.parental_longevity_moderate
         }
 
-        val motherLongevity = when {
-            moonD12 != null && AstrologicalConstants.isExalted(Planet.MOON, moonD12.sign) -> "Long life indicated"
-            moonD12?.house in AstrologicalConstants.DUSTHANA_HOUSES -> "Health attention needed"
-            else -> "Moderate longevity"
+        val motherLongevityRes = when {
+            moonD12 != null && VedicAstrologyUtils.isExalted(moonD12) -> R.string.parental_longevity_long
+            moonD12?.house in VedicAstrologyUtils.DUSTHANA_HOUSES -> R.string.parental_longevity_attention_needed
+            else -> R.string.parental_longevity_moderate
         }
 
         return ParentalLongevityIndicators(
-            fatherLongevity = fatherLongevity,
-            motherLongevity = motherLongevity,
+            fatherLongevity = LocalizableString.Res(fatherLongevityRes),
+            motherLongevity = LocalizableString.Res(motherLongevityRes),
             healthConcerns = buildList {
-                if (sunD12?.house in AstrologicalConstants.DUSTHANA_HOUSES) add("Father: Regular health checkups advised")
-                if (moonD12?.house in AstrologicalConstants.DUSTHANA_HOUSES) add("Mother: Emotional wellbeing attention")
+                if (sunD12?.house in VedicAstrologyUtils.DUSTHANA_HOUSES) add(LocalizableString.Res(R.string.parental_health_father))
+                if (moonD12?.house in VedicAstrologyUtils.DUSTHANA_HOUSES) add(LocalizableString.Res(R.string.parental_health_mother))
             }
         )
     }
@@ -1324,20 +1314,18 @@ object DivisionalChartAnalyzer {
     private fun generateParentalRecommendations(
         fatherAnalysis: ParentAnalysis,
         motherAnalysis: ParentAnalysis
-    ): List<String> {
-        val recommendations = mutableListOf<String>()
+    ): List<LocalizableString> {
+        val recommendations = mutableListOf<LocalizableString>()
 
         if (fatherAnalysis.significatorStrength < 50) {
-            recommendations.add("Offer water to Sun on Sundays for father's wellbeing")
-            recommendations.add("Respect and serve father figures")
+            recommendations.add(LocalizableString.Res(R.string.parental_rec_father))
         }
 
         if (motherAnalysis.significatorStrength < 50) {
-            recommendations.add("Worship Moon on Mondays for mother's health")
-            recommendations.add("Offer milk/white items in charity")
+            recommendations.add(LocalizableString.Res(R.string.parental_rec_mother))
         }
 
-        recommendations.add("Perform Pitru Tarpan during Pitru Paksha for ancestral blessings")
+        recommendations.add(LocalizableString.Res(R.string.parental_rec_ancestral))
 
         return recommendations
     }
@@ -1352,14 +1340,14 @@ data class HoraAnalysis(
     val secondLordHoraSign: ZodiacSign?,
     val eleventhLordHoraSign: ZodiacSign?,
     val wealthTimingPeriods: List<WealthTimingPeriod>,
-    val recommendations: List<String>
+    val recommendations: List<LocalizableString>
 )
 
 data class WealthIndicator(
     val planet: Planet,
     val type: WealthType,
     val strength: Double,
-    val sources: List<String>
+    val sources: List<LocalizableString>
 )
 
 enum class WealthType { SELF_EARNED, INHERITED_LIQUID }
@@ -1368,9 +1356,9 @@ enum class WealthPotential { EXCEPTIONAL, HIGH, MODERATE, AVERAGE, LOW }
 data class WealthTimingPeriod(
     val planet: Planet,
     val type: WealthType,
-    val periodDescription: String,
+    val periodDescription: LocalizableString,
     val favorableForWealth: Boolean,
-    val wealthSources: List<String>
+    val wealthSources: List<LocalizableString>
 )
 
 data class DrekkanaAnalysis(
@@ -1381,8 +1369,8 @@ data class DrekkanaAnalysis(
     val communicationSkills: CommunicationAnalysis,
     val thirdHousePlanets: List<PlanetPosition>,
     val eleventhHousePlanets: List<PlanetPosition>,
-    val shortJourneyIndicators: List<String>,
-    val recommendations: List<String>
+    val shortJourneyIndicators: List<LocalizableString>,
+    val recommendations: List<LocalizableString>
 )
 
 data class SiblingIndicators(
@@ -1391,7 +1379,7 @@ data class SiblingIndicators(
     val relationshipQuality: RelationshipQuality,
     val youngerSiblingPlanets: List<Planet>,
     val elderSiblingPlanets: List<Planet>,
-    val siblingWelfareIndicators: List<String>
+    val siblingWelfareIndicators: List<LocalizableString>
 )
 
 enum class RelationshipQuality { EXCELLENT, GOOD, NEUTRAL, CHALLENGING, DIFFICULT }
@@ -1399,18 +1387,18 @@ enum class RelationshipQuality { EXCELLENT, GOOD, NEUTRAL, CHALLENGING, DIFFICUL
 data class CourageAnalysis(
     val overallCourageLevel: CourageLevel,
     val marsStrength: Double,
-    val initiativeAbility: String,
-    val physicalCourage: String,
-    val mentalCourage: String
+    val initiativeAbility: LocalizableString,
+    val physicalCourage: LocalizableString,
+    val mentalCourage: LocalizableString
 )
 
 enum class CourageLevel { EXCEPTIONAL, HIGH, MODERATE, LOW, VERY_LOW }
 
 data class CommunicationAnalysis(
-    val overallSkillLevel: String,
-    val writingAbility: String,
-    val speakingAbility: String,
-    val artisticTalents: List<String>,
+    val overallSkillLevel: LocalizableString,
+    val writingAbility: LocalizableString,
+    val speakingAbility: LocalizableString,
+    val artisticTalents: List<LocalizableString>,
     val mercuryStrength: Double
 )
 
@@ -1425,10 +1413,10 @@ data class NavamsaMarriageAnalysis(
     val darakarakaNavamsa: PlanetPosition?,
     val marriageTimingFactors: MarriageTimingFactors,
     val spouseCharacteristics: SpouseCharacteristics,
-    val spouseDirection: String,
+    val spouseDirection: LocalizableString,
     val multipleMarriageIndicators: MultipleMarriageIndicators,
-    val marriageMuhurtaCompatibility: String,
-    val recommendations: List<String>
+    val marriageMuhurtaCompatibility: LocalizableString,
+    val recommendations: List<LocalizableString>
 )
 
 data class MarriageTimingFactors(
@@ -1436,20 +1424,20 @@ data class MarriageTimingFactors(
     val venusNavamsaStrength: Double,
     val seventhLordStrength: Double,
     val darakarakaStrength: Double,
-    val transitConsiderations: String
+    val transitConsiderations: LocalizableString
 )
 
 data class SpouseCharacteristics(
-    val generalNature: String,
-    val physicalTraits: String,
-    val probableProfessions: List<String>,
-    val familyBackground: String
+    val generalNature: LocalizableString,
+    val physicalTraits: LocalizableString,
+    val probableProfessions: List<LocalizableString>,
+    val familyBackground: LocalizableString
 )
 
 data class MultipleMarriageIndicators(
     val hasStrongIndicators: Boolean,
-    val riskFactors: List<String>,
-    val mitigatingFactors: List<String>
+    val riskFactors: List<LocalizableString>,
+    val mitigatingFactors: List<LocalizableString>
 )
 
 data class DashamsaAnalysis(
@@ -1459,38 +1447,38 @@ data class DashamsaAnalysis(
     val mercuryInDashamsa: PlanetPosition?,
     val dashamsaLagna: ZodiacSign,
     val careerTypes: List<CareerType>,
-    val industryMappings: Map<Planet, List<String>>,
+    val industryMappings: Map<Planet, List<LocalizableString>>,
     val governmentServicePotential: GovernmentServiceAnalysis,
     val businessVsServiceAptitude: BusinessVsServiceAnalysis,
     val careerPeakPeriods: List<CareerPeakPeriod>,
-    val multipleCareerIndicators: List<String>,
-    val professionalStrengths: List<String>,
-    val recommendations: List<String>
+    val multipleCareerIndicators: List<LocalizableString>,
+    val professionalStrengths: List<LocalizableString>,
+    val recommendations: List<LocalizableString>
 )
 
 data class CareerType(
-    val name: String,
-    val industries: List<String>,
-    val suitability: String
+    val name: LocalizableString,
+    val industries: List<LocalizableString>,
+    val suitability: LocalizableString
 )
 
 data class GovernmentServiceAnalysis(
-    val potential: String,
-    val favorableFactors: List<String>,
-    val recommendedDepartments: List<String>
+    val potential: LocalizableString,
+    val favorableFactors: List<LocalizableString>,
+    val recommendedDepartments: List<LocalizableString>
 )
 
 data class BusinessVsServiceAnalysis(
     val businessAptitude: Int,
     val serviceAptitude: Int,
-    val recommendation: String,
-    val businessSectors: List<String>
+    val recommendation: LocalizableString,
+    val businessSectors: List<LocalizableString>
 )
 
 data class CareerPeakPeriod(
     val planet: Planet,
-    val description: String,
-    val significance: String
+    val description: LocalizableString,
+    val significance: LocalizableString
 )
 
 data class DwadasamsaAnalysis(
@@ -1501,29 +1489,29 @@ data class DwadasamsaAnalysis(
     val fatherAnalysis: ParentAnalysis,
     val motherAnalysis: ParentAnalysis,
     val inheritanceIndicators: InheritanceAnalysis,
-    val ancestralPropertyIndicators: List<String>,
-    val familyLineageInsights: List<String>,
+    val ancestralPropertyIndicators: List<LocalizableString>,
+    val familyLineageInsights: List<LocalizableString>,
     val parentalLongevityIndicators: ParentalLongevityIndicators,
-    val recommendations: List<String>
+    val recommendations: List<LocalizableString>
 )
 
 data class ParentAnalysis(
-    val parent: String,
+    val parent: LocalizableString,
     val significatorStrength: Double,
     val houseLordStrength: Double,
-    val overallWellbeing: String,
-    val characteristics: String,
-    val relationship: String
+    val overallWellbeing: LocalizableString,
+    val characteristics: LocalizableString,
+    val relationship: LocalizableString
 )
 
 data class InheritanceAnalysis(
-    val potential: String,
-    val sources: List<String>,
-    val timing: String
+    val potential: LocalizableString,
+    val sources: List<LocalizableString>,
+    val timing: LocalizableString
 )
 
 data class ParentalLongevityIndicators(
-    val fatherLongevity: String,
-    val motherLongevity: String,
-    val healthConcerns: List<String>
+    val fatherLongevity: LocalizableString,
+    val motherLongevity: LocalizableString,
+    val healthConcerns: List<LocalizableString>
 )

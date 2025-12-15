@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="parent_father">पिता</string>
+    <string name="parent_mother">आमा</string>
+
+    <!-- Wealth Sources (Sun Hora) -->
+    <string name="sun_hora_source_sun">सरकारी पद, सुनमा लगानी, पिताको विरासत, अधिकारका पदहरू</string>
+    <string name="sun_hora_source_mars">घरजग्गा, इन्जिनियरिङ, सेना/पुलिस, खेलकुद</string>
+    <string name="sun_hora_source_jupiter">शिक्षण, परामर्श, बैंकिङ, धार्मिक संस्थाहरू</string>
+    <string name="sun_hora_source_saturn">खानी, तेल/पेट्रोलियम, श्रम व्यवस्थापन, भूमि</string>
+    <string name="sun_hora_source_mercury">व्यापार, सञ्चार, प्रविधि, व्यापार</string>
+    <string name="sun_hora_source_venus">कला, मनोरञ्जन, विलासिताका सामान, सौन्दर्य उद्योग</string>
+    <string name="sun_hora_source_moon">सार्वजनिक कारोबार, आतिथ्य, डेरी, तरल पदार्थ</string>
+    <string name="sun_hora_source_rahu">विदेशी स्रोत, प्रविधि, अपरंपरागत माध्यम, सट्टा</string>
+    <string name="sun_hora_source_ketu">आध्यात्मिक कार्य, गुप्त, वैराग्यमा आधारित लाभ, अनुसन्धान</string>
+
+    <!-- Wealth Sources (Moon Hora) -->
+    <string name="moon_hora_source_moon">उत्तराधिकार, आमाको पक्ष, मोती, चाँदी, तरल पदार्थ</string>
+    <string name="moon_hora_source_venus">पति/पत्नीको धन, विलासिताको उत्तराधिकार, गहना</string>
+    <string name="moon_hora_source_jupiter">धार्मिक उत्तराधिकार, शैक्षिक ट्रस्ट, पारिवारिक धन</string>
+    <string name="moon_hora_source_mercury">पारिवारिक व्यापार, पैतृक व्यापार, बौद्धिक सम्पत्ति</string>
+    <string name="moon_hora_source_sun">सरकारी लाभ, शाही अनुदान, अधिकार विरासतमा</string>
+    <string name="moon_hora_source_mars">सम्पत्ति उत्तराधिकार, परिवारबाट भूमि, सैन्य पेन्सन</string>
+    <string name="moon_hora_source_saturn">पुरानो धन, ढिलो उत्तराधिकार, कडा परिश्रमको विरासत</string>
+    <string name="moon_hora_source_rahu">विदेशी उत्तराधिकार, अप्रत्याशित लाभ, ससुरालीको धन</string>
+    <string name="moon_hora_source_ketu">आध्यात्मिक सम्पत्ति, लुकेका खजाना, पूर्वजन्मको संचित</string>
+
+    <!-- Hora Recommendations -->
+    <string name="hora_rec_high_potential">अधिकतम समृद्धिको लागि संकेत गरिएका धन स्रोतहरूमा ध्यान केन्द्रित गर्नुहोस्। बलियो होरा ग्रहहरूको अनुकूल दशा अवधिमा लगानी गर्नुहोस्।</string>
+    <string name="hora_rec_moderate_potential">संकेत गरिएका क्षेत्रहरूमा निरन्तर प्रयासले क्रमशः धन प्राप्त हुनेछ। कमजोर ग्रहहरूलाई उपयुक्त उपचारद्वारा बलियो बनाउनुहोस्।</string>
+    <string name="hora_rec_low_potential">धनको आशीर्वादको लागि देवी लक्ष्मीको पूजा गर्नुहोस्। बृहस्पति र शुक्रलाई रत्न वा मन्त्रद्वारा बलियो बनाउनुहोस्। सट्टाबाट बच्नुहोस्; स्थिर आय स्रोतहरूमा ध्यान केन्द्रित गर्नुहोस्।</string>
+    <string name="hora_rec_capitalize_strength">%1$s को शक्ति %2$s मा उपयोग गर्नुहोस्।</string>
+
+    <!-- Sibling Welfare -->
+    <string name="sibling_welfare_jupiter">साना भाइबहिनीहरूमा बृहस्पतिको आशीर्वाद - उनीहरूको लागि समृद्धि</string>
+    <string name="sibling_welfare_saturn">शनिले ढिलो सफलताका साथ कडा परिश्रम गर्ने भाइबहिनीहरूलाई संकेत गर्दछ</string>
+    <string name="sibling_welfare_mars">मंगलले साहसी र प्रतिस्पर्धी भाइबहिनीहरू देखाउँछ</string>
+
+    <!-- Courage Analysis -->
+    <string name="initiative_ability_strong">बलियो पहल क्षमता - प्राकृतिक नेता र अग्रगामी</string>
+    <string name="initiative_ability_moderate">मध्यम पहल - तयारी र योजनाबाट लाभ</string>
+    <string name="physical_courage_exceptional">असाधारण शारीरिक साहस र एथलेटिक क्षमता</string>
+    <string name="physical_courage_strong">बलियो शारीरिक संरचना र बहादुरी</string>
+    <string name="physical_courage_needs_development">शारीरिक साहसको विकास आवश्यक हुन सक्छ</string>
+    <string name="physical_courage_adequate">सामान्य अवस्थाहरूको लागि पर्याप्त शारीरिक साहस</string>
+    <string name="physical_courage_depends_on_factors">शारीरिक साहस अन्य कारकहरूमा निर्भर गर्दछ</string>
+    <string name="mental_courage_wisdom">असाधारण ज्ञान-समर्थित मानसिक साहस</string>
+    <string name="mental_courage_quick_decision">तीक्ष्ण बौद्धिक साहस र छिटो निर्णय लिने</string>
+    <string name="mental_courage_stable">स्थिर मानसिक दृढता</string>
+    <string name="mental_courage_develops">मानसिक साहस जीवनका अनुभवहरूबाट विकसित हुन्छ</string>
+
+    <!-- Communication Analysis -->
+    <string name="communication_level_exceptional">असाधारण</string>
+    <string name="communication_level_very_good">धेरै राम्रो</string>
+    <string name="communication_level_good">राम्रो</string>
+    <string name="communication_level_average">औसत</string>
+    <string name="writing_ability_exceptional">असाधारण लेखन प्रतिभा - सम्भावित लेखक वा पत्रकार</string>
+    <string name="writing_ability_strong">ज्ञान र गहिराइको साथ बलियो लेखन क्षमता</string>
+    <string name="writing_ability_good">राम्रो लिखित सञ्चार कौशल</string>
+    <string name="writing_ability_average">औसत लेखन क्षमता</string>
+    <string name="speaking_ability_eloquent">ज्ञानको साथ वाक्पटु वक्ता</string>
+    <string name="speaking_ability_authoritative">आधिकारिक र आदेश दिने भाषण</string>
+    <string name="speaking_ability_articulate">छिटो र स्पष्ट भाषण</string>
+    <string name="speaking_ability_normal">सामान्य बोल्ने क्षमता</string>
+    <string name="artistic_talent_visual">दृश्य कला र सौन्दर्यशास्त्र</string>
+    <string name="artistic_talent_music">संगीत र लय</string>
+
+    <!-- Short Journeys -->
+    <string name="short_journey_frequent">बारम्बार छोटो यात्राको सम्भावना</string>
+    <string name="short_journey_business">सञ्चार वा व्यापारिक उद्देश्यका लागि यात्रा</string>
+    <string name="short_journey_unusual">असामान्य वा अचानक छोटो यात्रा</string>
+
+    <!-- Drekkana Recommendations -->
+    <string name="drekkana_rec_courage_high">साहसलाई नेतृत्व र अग्रगामी उद्यमहरूमा च्यानल गर्नुहोस्</string>
+    <string name="drekkana_rec_courage_low">खेलकुद वा मार्सल आर्ट जस्ता मंगल-बलियो बनाउने गतिविधिहरू अभ्यास गर्नुहोस्। साहसको लागि भगवान हनुमानको पूजा गर्नुहोस्।</string>
+    <string name="drekkana_rec_courage_moderate">सावधानी र साहसबीच सन्तुलन कायम राख्नुहोस्</string>
+    <string name="drekkana_rec_siblings_challenging">भाइबहिनीहरूसँग धैर्य र समझदारी अभ्यास गर्नुहोस्। आवश्यक भएमा पारिवारिक परामर्श लिनुहोस्।</string>
+
+    <!-- Navamsa -->
+    <string name="marriage_transit_considerations">बृहस्पतिको गोचर चन्द्रमा वा नवांश लग्नबाट ७ औं घरमा हुँदा</string>
+    <string name="spouse_nature_sun">गरिमापूर्ण, आधिकारिक, गर्व, वफादार</string>
+    <string name="spouse_nature_moon">भावनात्मक, पोषण गर्ने, संवेदनशील, हेरचाह गर्ने</string>
+    <string name="spouse_nature_mars">ऊर्जावान, दृढ, भावुक, एथलेटिक</string>
+    <string name="spouse_nature_mercury">बुद्धिमान, सञ्चारमाध्यम, युवा, अनुकूलनीय</string>
+    <string name="spouse_nature_jupiter">ज्ञानी, धार्मिक, उदार, आशावादी</string>
+    <string name="spouse_nature_venus">सुन्दर, कलात्मक, रोमान्टिक, सुख-प्रेमी</string>
+    <string name="spouse_nature_saturn">गम्भीर, मेहनती, परिपक्व, जिम्मेवार</string>
+    <string name="spouse_nature_rahu">अपरंपरागत, विदेशी प्रभाव, महत्वाकांक्षी</string>
+    <string name="spouse_nature_ketu">आध्यात्मिक, वैरागी, सहज, रहस्यमय</string>
+    <string name="spouse_nature_mixed">मिश्रित गुणहरू</string>
+    <string name="spouse_appearance_sun">मध्यम उचाइ, सुगठित, आदेश दिने उपस्थिति</string>
+    <string name="spouse_appearance_moon">गोरो रंग, गोलो अनुहार, आकर्षक</string>
+    <string name="spouse_appearance_mars">एथलेटिक शरीर, तीक्ष्ण विशेषताहरू, रातो रंग</string>
+    <string name="spouse_appearance_mercury">युवा उपस्थिति, छिटो चाल</string>
+    <string name="spouse_appearance_jupiter">सुगठित, गरिमापूर्ण उपस्थिति</string>
+    <string name="spouse_appearance_venus">धेरै आकर्षक, मनमोहक, सुखद विशेषताहरू</string>
+    <string name="spouse_appearance_saturn">लामो, पातलो शरीर, परिपक्व उपस्थिति</string>
+    <string name="spouse_appearance_varies">उपस्थिति फरक हुन्छ</string>
+    <string name="spouse_profession_various">विभिन्न पेशाहरू सम्भव</string>
+    <string name="spouse_profession_sun">सरकार, प्रशासन, चिकित्सा</string>
+    <string name="spouse_profession_moon">स्वास्थ्य सेवा, आतिथ्य, जनसम्पर्क</string>
+    <string name="spouse_profession_mars">इन्जिनियरिङ, सेना, खेलकुद</string>
+    <string name="spouse_profession_mercury">व्यापार, लेखन, प्रविधि</string>
+    <string name="spouse_profession_jupiter">शिक्षण, कानून, वित्त</string>
+    <string name="spouse_profession_venus">कला, फेसन, मनोरञ्जन</string>
+    <string name="spouse_profession_saturn">श्रम, निर्माण, कृषि</string>
+    <string name="spouse_profession_other">विभिन्न क्षेत्रहरू</string>
+    <string name="spouse_family_jupiter">सम्मानित, सम्भवतः शिक्षित वा धार्मिक परिवारबाट</string>
+    <string name="spouse_family_venus">कलाको कदर गर्ने संस्कारी परिवार</string>
+    <string name="spouse_family_sun">सरकारी वा प्रशासनिक पृष्ठभूमि भएको परिवार</string>
+    <string name="spouse_family_moon">परिवार-उन्मुख, सम्भवतः व्यापारिक पृष्ठभूमि</string>
+    <string name="spouse_family_saturn">मेहनती परिवार, सम्भवतः सामान्य सुरुवात</string>
+    <string name="spouse_family_varies">पारिवारिक पृष्ठभूमि फरक हुन्छ</string>
+    <string name="spouse_direction_east">पूर्व दिशा</string>
+    <string name="spouse_direction_south">दक्षिण दिशा</string>
+    <string name="spouse_direction_west">पश्चिम दिशा</string>
+    <string name="spouse_direction_north">उत्तर दिशा</string>
+    <string name="spouse_direction_unclear">दिशा स्पष्ट रूपमा संकेत गरिएको छैन</string>
+    <string name="multiple_marriage_risk_multiple_planets">७ औं घरमा धेरै ग्रहहरू</string>
+    <string name="multiple_marriage_risk_retro_venus">वक्री शुक्र</string>
+    <string name="multiple_marriage_risk_7th_lord_dusthana">७ औं स्वामी दुस्थानमा</string>
+    <string name="multiple_marriage_mitigation_none">कुनै बलियो धेरै विवाहको संकेत छैन</string>
+    <string name="marriage_muhurta_compatibility">उत्तम मुहूर्त जब बृहस्पति %1$s वा यसको त्रिकोणमा गोचर गर्दछ</string>
+    <string name="marriage_rec_venus_strong">शुक्र बलियो छ - विवाहको लागि रोमान्टिक दृष्टिकोण अनुकूल छ</string>
+    <string name="marriage_rec_venus_weak">सेतो रंग, शुक्रबारको पूजा, र हीरा/सेतो नीलमार्फत शुक्रलाई बलियो बनाउनुहोस्</string>
+    <string name="marriage_rec_timing">उत्तम विवाह समय: %1$s दशा/अन्तरदशाको समयमा</string>
+
+    <!-- Dashamsa -->
+    <string name="career_type_admin">प्रशासनिक/सरकारी</string>
+    <string name="career_type_public_service">सार्वजनिक सेवा/पोषण</string>
+    <string name="career_type_technical">प्राविधिक/प्रतिस्पर्धी</string>
+    <string name="career_type_communication">सञ्चार/व्यापार</string>
+    <string name="career_type_advisory">सल्लाहकार/शैक्षिक</string>
+    <string name="career_type_creative">रचनात्मक/विलासिता</string>
+    <string name="career_type_labor">श्रम/संसाधन</string>
+    <string name="career_type_unconventional">अपरंपरागत/विदेशी</string>
+    <string name="career_type_spiritual">आध्यात्मिक/अनुसन्धान</string>
+    <string name="career_type_general">सामान्य</string>
+    <string name="government_service_potential_very_high">धेरै उच्च</string>
+    <string name="government_service_potential_high">उच्च</string>
+    <string name="government_service_potential_moderate">मध्यम</string>
+    <string name="government_service_potential_low">कम</string>
+    <string name="government_factor_sun_in_10th">D10 को १० औं घरमा सूर्य</string>
+    <string name="government_factor_exalted_sun">उच्च सूर्य</string>
+    <string name="business_vs_service_business">व्यापार/उद्यमशीलताको लागि बलियो योग्यता</string>
+    <string name="business_vs_service_service">सेवा/रोजगारीको लागि राम्रो उपयुक्त</string>
+    <string name="business_vs_service_both">व्यापार र सेवा दुवैमा उत्कृष्ट हुन सक्छ</string>
+    <string name="career_peak_10th_lord">१० औं स्वामीको दशा - प्राथमिक करियर वृद्धि अवधि</string>
+    <string name="career_peak_planet_dasha">%1$s दशा/अन्तरदशा</string>
+    <string name="career_peak_significance_major">प्रमुख करियर उन्नति र मान्यता</string>
+    <string name="career_peak_significance_opportunities">%1$s मा करियर अवसरहरू</string>
+    <string name="multiple_careers_multiple_planets">१० औं घरमा धेरै ग्रहहरूले धेरै करियरको सम्भावनालाई संकेत गर्दछ</string>
+    <string name="multiple_careers_mercury">बलियो बुधले करियरमा बहुमुखी प्रतिभालाई सुझाव दिन्छ</string>
+    <string name="multiple_careers_rahu">राहुले अपरंपरागत करियर मार्ग वा करियर परिवर्तनलाई संकेत गर्दछ</string>
+    <string name="professional_strength_identity">बलियो व्यावसायिक पहिचान र उपस्थिति</string>
+    <string name="professional_strength_exceptional_abilities">छानिएको क्षेत्रमा असाधारण क्षमताहरू</string>
+    <string name="professional_strength_leadership">नेतृत्व र अधिकार</string>
+    <string name="professional_strength_public_appeal">सार्वजनिक अपील र भावनात्मक बुद्धि</string>
+    <string name="professional_strength_drive">ड्राइभ र प्रतिस्पर्धी भावना</string>
+    <string name="professional_strength_communication">सञ्चार र विश्लेषणात्मक कौशल</string>
+    <string name="professional_strength_wisdom">ज्ञान र सल्लाहकार क्षमताहरू</string>
+    <string name="professional_strength_creativity">रचनात्मकता र सम्बन्ध कौशल</string>
+    <string name="professional_strength_persistence">दृढता र संगठनात्मक क्षमता</string>
+    <string name="career_rec_primary_focus">प्राथमिक करियर फोकस: %1$s</string>
+    <string name="career_rec_top_industries">शीर्ष उद्योगहरू: %1$s</string>
+    <string name="career_rec_planet_favors">%1$s अवधिले पक्षमा: %2$s</string>
+
+    <!-- Dwadasamsa -->
+    <string name="parental_wellbeing_good_father">राम्रो स्वास्थ्य र समृद्धिको संकेत</string>
+    <string name="parental_wellbeing_moderate">मध्यम संकेतहरू</string>
+    <string name="parental_wellbeing_challenging_father">केही चुनौतीहरू संकेत - उपचार लाभदायक</string>
+    <string name="parental_wellbeing_good_mother">राम्रो स्वास्थ्य र भावनात्मक कल्याणको संकेत</string>
+    <string name="parental_wellbeing_challenging_mother">केही चुनौतीहरू संकेत - चन्द्रमा उपचार लाभदायक</string>
+    <string name="father_char_authoritative">आधिकारिक, सफल, सरकारी/प्रशासनिक भूमिका</string>
+    <string name="father_char_career_focused">करियर-केन्द्रित, महत्वाकांक्षी, प्रमुख पद</string>
+    <string name="father_char_religious">धार्मिक, ज्ञानी, उदार</string>
+    <string name="father_char_varies">विशेषताहरू समग्र चार्टमा आधारित हुन्छन्</string>
+    <string name="mother_char_nurturing">पोषण गर्ने, भावनात्मक रूपमा सहयोगी, समृद्ध</string>
+    <string name="mother_char_home_oriented">घर-उन्मुख, हेरचाह गर्ने, परिवार-केन्द्रित</string>
+    <string name="mother_char_artistic">कलात्मक, सुन्दर, आराम-प्रेमी</string>
+    <string name="mother_char_varies">विशेषताहरू समग्र चार्टमा आधारित हुन्छन्</string>
+    <string name="parent_relationship_strong">बलियो, सहयोगी सम्बन्ध</string>
+    <string name="parent_relationship_harmonious">सामंजस्यपूर्ण, लाभदायक सम्बन्ध</string>
+    <string name="parent_relationship_challenging">सम्बन्धमा केही चुनौतीहरू</string>
+    <string name="parent_relationship_moderate">मध्यम सम्बन्ध गुणस्तर</string>
+    <string name="parent_relationship_depends">सम्बन्ध गुणस्तर अन्य कारकहरूमा निर्भर गर्दछ</string>
+    <string name="inheritance_potential_good">राम्रो उत्तराधिकार सम्भावना</string>
+    <string name="inheritance_potential_moderate">मध्यम उत्तराधिकार</string>
+    <string name="inheritance_potential_limited">सीमित उत्तराधिकार संकेत</string>
+    <string name="inheritance_source_family">पारिवारिक धन</string>
+    <string name="inheritance_source_property">सम्पत्ति/भूमि</string>
+    <string name="inheritance_source_unexpected">अप्रत्याशित लाभ</string>
+    <string name="inheritance_timing">D-12 को २, ४, वा ८ औं घरमा शुभ ग्रहहरूको दशाको समयमा</string>
+    <string name="ancestral_property_old">पुरानो पैतृक सम्पत्ति संकेत</string>
+    <string name="ancestral_property_land">पुर्खाहरूबाट भूमि वा घरजग्गा</string>
+    <string name="ancestral_property_religious">धार्मिक वा शैक्षिक सम्पत्ति</string>
+    <string name="family_lineage_noble">कुलीन वा सम्मानित पारिवारिक वंश</string>
+    <string name="family_lineage_dharma">धर्म वा पेशाको लागि परिचित परिवार</string>
+    <string name="family_lineage_creative">रचनात्मक वा वित्तीय सफलता भएको परिवार</string>
+    <string name="family_lineage_depends">पारिवारिक वंश विशेषताहरू अन्य कारकहरूमा निर्भर गर्दछ</string>
+    <string name="parental_longevity_long">लामो जीवन संकेत</string>
+    <string name="parental_longevity_attention_needed">स्वास्थ्य ध्यान आवश्यक</string>
+    <string name="parental_longevity_moderate">मध्यम दीर्घायु</string>
+    <string name="parental_health_father">पिता: नियमित स्वास्थ्य परीक्षण सल्लाह</string>
+    <string name="parental_health_mother">आमा: भावनात्मक कल्याण ध्यान</string>
+    <string name="parental_rec_father">पिताको कल्याणको लागि आइतबार सूर्यलाई जल चढाउनुहोस्। पिता समान व्यक्तिहरूको सम्मान र सेवा गर्नुहोस्।</string>
+    <string name="parental_rec_mother">आमाको स्वास्थ्यको लागि सोमबार चन्द्रमाको पूजा गर्नुहोस्। दूध/सेतो वस्तुहरू दान गर्नुहोस्।</string>
+    <string name="parental_rec_ancestral">पितृ पक्षमा पितृ तर्पण गरेर पितृहरूको आशीर्वाद प्राप्त गर्नुहोस्</string>
+</resources>

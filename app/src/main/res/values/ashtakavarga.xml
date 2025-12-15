@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="ashtakavarga_analysis_title">ASHTAKAVARGA ANALYSIS</string>
+    <string name="sarvashtakavarga_title">SARVASHTAKAVARGA (Combined Strength)</string>
+    <string name="bhinnashtakavarga_title">BHINNASHTAKAVARGA (Individual Planet Strengths)</string>
+    <string name="ascendant">Ascendant</string>
+    <string name="bindus_label">%1$d bindus</string>
+    <string name="total_label">Total: %1$d bindus</string>
+    <string name="total_sav_bindus_label">Total SAV Bindus: %1$d</string>
+    <string name="average_per_sign_label">Average per Sign: %1$.1f</string>
+    <string name="strength_strong">Strong</string>
+    <string name="strength_good">Good</string>
+    <string name="strength_average">Average</string>
+    <string name="strength_weak">Weak</string>
+
+    <!-- Transit Score & Prediction -->
+    <string name="transit_interp_excellent">Excellent - Highly favorable transit</string>
+    <string name="transit_interp_good">Good - Favorable results expected</string>
+    <string name="transit_interp_average">Average - Mixed results</string>
+    <string name="transit_interp_below_avg">Below Average - Some challenges</string>
+    <string name="transit_interp_difficult">Difficult - Careful navigation needed</string>
+    <string name="transit_quality_excellent">Excellent</string>
+    <string name="transit_quality_good">Good</string>
+    <string name="transit_quality_average">Average</string>
+    <string name="transit_quality_below_average">Below Average</string>
+    <string name="transit_quality_challenging">Challenging</string>
+    <string name="transit_quality_difficult">Difficult</string>
+    <string name="transit_quality_unknown">Unknown</string>
+    <string name="transit_prediction_not_applicable">Ashtakavarga not applicable for %1$s</string>
+    <string name="transit_prediction_bav_not_found">Bhinnashtakavarga not found for %1$s</string>
+
+    <!-- Detailed Transit Prediction Text -->
+    <string name="transit_prediction_excellent_text">Transit through %1$s with %2$d BAV bindus and %3$d SAV bindus indicates excellent results. Matters related to %4$s will flourish. Areas of %5$s receive strong positive influence.</string>
+    <string name="transit_prediction_good_text">Transit through %1$s brings favorable results with %2$d BAV and %3$d SAV bindus. Good progress expected in %4$s. %5$s areas are positively influenced.</string>
+    <string name="transit_prediction_average_text">Transit through %1$s (%2$d BAV, %3$d SAV) brings mixed results. Some progress in %4$s with occasional challenges. Balance needed in %5$s.</string>
+    <string name="transit_prediction_below_average_text">Transit through %1$s (%2$d BAV, %3$d SAV) suggests caution needed. %4$s matters may face delays. Extra effort required in %5$s areas.</string>
+    <string name="transit_prediction_challenging_text">Challenging transit through %1$s with only %2$d BAV and %3$d SAV bindus. Difficulties possible in %4$s. Patience needed for %5$s matters.</string>
+    <string name="transit_prediction_difficult_text">Difficult transit period through %1$s (%2$d BAV, %3$d SAV). Significant challenges in %4$s areas. Careful handling of %5$s required.</string>
+    <string name="transit_prediction_unknown_text">Transit analysis not available for this planet.</string>
+
+
+    <!-- Planet Effects -->
+    <string name="planet_effects_sun">authority, father, health, government, career</string>
+    <string name="planet_effects_moon">mind, emotions, mother, public image</string>
+    <string name="planet_effects_mars">energy, siblings, property, courage</string>
+    <string name="planet_effects_mercury">communication, intellect, business, education</string>
+    <string name="planet_effects_jupiter">wisdom, children, fortune, spirituality</string>
+    <string name="planet_effects_venus">relationships, luxury, arts, vehicles</string>
+    <string name="planet_effects_saturn">career, longevity, discipline, challenges</string>
+    <string name="planet_effects_general">general matters</string>
+
+    <!-- House Matters -->
+    <string name="house_matters_1">self, personality, health</string>
+    <string name="house_matters_2">wealth, family, speech</string>
+    <string name="house_matters_3">courage, siblings, communication</string>
+    <string name="house_matters_4">home, mother, comfort</string>
+    <string name="house_matters_5">children, intelligence, romance</string>
+    <string name="house_matters_6">enemies, health issues, service</string>
+    <string name="house_matters_7">partnership, marriage, business</string>
+    <string name="house_matters_8">transformation, inheritance, occult</string>
+    <string name="house_matters_9">luck, father, higher learning</string>
+    <string name="house_matters_10">career, status, authority</string>
+    <string name="house_matters_11">gains, friends, aspirations</string>
+    <string name="house_matters_12">losses, spirituality, foreign</string>
+    <string name="house_matters_general">general areas</string>
+
+</resources>

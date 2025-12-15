@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Karaka Types -->
+    <string name="karaka_atmakaraka_name">Atmakaraka</string>
+    <string name="karaka_atmakaraka_sanskrit">आत्मकारक</string>
+    <string name="karaka_atmakaraka_signification">Soul, Self, King of the chart</string>
+    <string name="karaka_amatyakaraka_name">Amatyakaraka</string>
+    <string name="karaka_amatyakaraka_sanskrit">अमात्यकारक</string>
+    <string name="karaka_amatyakaraka_signification">Career, Minister, Profession</string>
+    <string name="karaka_bhratrikaraka_name">Bhratrikaraka</string>
+    <string name="karaka_bhratrikaraka_sanskrit">भ्रातृकारक</string>
+    <string name="karaka_bhratrikaraka_signification">Siblings, Courage, Efforts</string>
+    <string name="karaka_matrikaraka_name">Matrikaraka</string>
+    <string name="karaka_matrikaraka_sanskrit">मातृकारक</string>
+    <string name="karaka_matrikaraka_signification">Mother, Nurturing, Emotions</string>
+    <string name="karaka_pitrikaraka_name">Pitrikaraka</string>
+    <string name="karaka_pitrikaraka_sanskrit">पितृकारक</string>
+    <string name="karaka_pitrikaraka_signification">Father, Authority, Guidance</string>
+    <string name="karaka_putrakaraka_name">Putrakaraka</string>
+    <string name="karaka_putrakaraka_sanskrit">पुत्रकारक</string>
+    <string name="karaka_putrakaraka_signification">Children, Creativity, Intelligence</string>
+    <string name="karaka_gnatikaraka_name">Gnatikaraka</string>
+    <string name="karaka_gnatikaraka_sanskrit">ज्ञातिकारक</string>
+    <string name="karaka_gnatikaraka_signification">Cousins, Competition, Conflicts</string>
+    <string name="karaka_darakaraka_name">Darakaraka</string>
+    <string name="karaka_darakaraka_sanskrit">दारकारक</string>
+    <string name="karaka_darakaraka_signification">Spouse, Partnership, Marriage</string>
+
+    <!-- Descriptions and Summaries -->
+    <string name="karaka_info_description">%1$s: %2$s at %3$.2f° in %4$s</string>
+    <string name="karaka_info_not_determined">%1$s: Not determined</string>
+    <string name="mahadasha_special_significance_contains">Contains: %1$s</string>
+    <string name="mahadasha_special_significance_no_planets">No planets in natal chart</string>
+    <string name="current_period_summary_no_active_dasha">No active Chara Dasha period</string>
+    <string name="current_period_summary_title">=== CHARA DASHA - CURRENT PERIOD ===</string>
+    <string name="current_period_summary_mahadasha">Mahadasha: %1$s (%2$d years)</string>
+    <string name="current_period_summary_lord">Lord: %1$s</string>
+    <string name="current_period_summary_progress">Progress: %1$.1f%%</string>
+    <string name="current_period_summary_remaining">Remaining: %1$d days</string>
+    <string name="current_period_summary_antardasha">Antardasha: %1$s</string>
+    <string name="current_period_summary_atmakaraka">Atmakaraka: %1$s</string>
+    <string name="current_period_summary_karakamsha">Karakamsha: %1$s</string>
+    <string name="karaka_summary_title">=== CHARA KARAKAS (Jaimini Significators) ===</string>
+    <string name="karaka_summary_line">%1$s: %2$s (%3$.2f° in %4$s)</string>
+
+    <!-- Antardasha Interpretation -->
+    <string name="antardasha_interp_header">%1$s-%2$s: Antardasha of %2$s (%3$d house from Mahadasha). Lord %4$s activates %2$s themes.</string>
+    <string name="antardasha_interp_house1">Self-focused period, personal initiatives.</string>
+    <string name="antardasha_interp_house2">Focus on wealth, family, speech.</string>
+    <string name="antardasha_interp_house3">Courage, siblings, communication active.</string>
+    <string name="antardasha_interp_house4">Home, mother, property matters.</string>
+    <string name="antardasha_interp_house5">Children, creativity, romance highlighted.</string>
+    <string name="antardasha_interp_house6">Health, competition, service matters.</string>
+    <string name="antardasha_interp_house7">Partnerships, marriage, public dealings.</string>
+    <string name="antardasha_interp_house8">Transformation, inheritance, research.</string>
+    <string name="antardasha_interp_house9">Fortune, higher learning, spirituality.</string>
+    <string name="antardasha_interp_house10">Career, status, public recognition.</string>
+    <string name="antardasha_interp_house11">Gains, friendships, aspirations fulfilled.</string>
+    <string name="antardasha_interp_house12">Expenses, spirituality, foreign connections.</string>
+
+    <!-- Overall Dasha Interpretation -->
+    <string name="dasha_interp_overview">Chara Dasha for %1$s Lagna operates in %2$s direction. Your Atmakaraka is %3$s, indicating your soul\'s primary lesson involves %4$s.</string>
+    <string name="dasha_interp_forward">FORWARD</string>
+    <string name="dasha_interp_backward">BACKWARD</string>
+    <string name="dasha_interp_karakamsha_analysis">Karakamsha in %1$s: %2$s</string>
+    <string name="dasha_interp_current_phase">Currently in %1$s Mahadasha (%2$d years, %3$.1f%% complete). %4$s</string>
+    <string name="dasha_interp_no_current_phase">Dasha calculation extends beyond current date.</string>
+    <string name="dasha_interp_future_outlook">Monitor transits of sign lords for timing events within each dasha period.</string>
+    <string name="dasha_interp_guidance1">Strengthen your Atmakaraka (%1$s) through appropriate remedies</string>
+    <string name="dasha_interp_guidance2">Pay attention when Mahadasha sign is activated by major transits</string>
+    <string name="dasha_interp_guidance3">Use Chara Dasha alongside Vimsottari for comprehensive timing analysis</string>
+    <string name="dasha_interp_guidance4">Karakamsha house from Moon and Lagna provides additional insights</string>
+
+    <!-- Sign General Effects -->
+    <string name="sign_effects_aries">Period of initiative, leadership, and new beginnings. Mars-ruled energy brings action and courage.</string>
+    <string name="sign_effects_taurus">Focus on wealth, stability, and material comforts. Venus brings beauty and relationships.</string>
+    <string name="sign_effects_gemini">Communication, learning, and intellectual pursuits highlighted. Mercury brings versatility.</string>
+    <string name="sign_effects_cancer">Emotional growth, home, and mother-related matters. Moon brings nurturing energy.</string>
+    <string name="sign_effects_leo">Recognition, authority, and creative expression. Sun brings confidence and leadership.</string>
+    <string name="sign_effects_virgo">Analysis, health, and service matters. Mercury brings discrimination and healing.</string>
+    <string name="sign_effects_libra">Partnerships, balance, and justice. Venus brings harmony and relationships.</string>
+    <string name="sign_effects_scorpio">Transformation, research, and hidden matters. Mars/Ketu bring intensity.</string>
+    <string name="sign_effects_sagittarius">Higher learning, philosophy, and expansion. Jupiter brings wisdom.</string>
+    <string name="sign_effects_capricorn">Career, discipline, and long-term goals. Saturn brings structure.</string>
+    <string name="sign_effects_aquarius">Innovation, groups, and humanitarian concerns. Saturn/Rahu bring change.</string>
+    <string name="sign_effects_pisces">Spirituality, imagination, and liberation. Jupiter brings transcendence.</string>
+
+    <!-- Sign Lord Effects -->
+    <string name="sign_lord_effects_positioned">Sign lord %1$s is in %2$s (House %3$d), influencing this dasha through those house themes.</string>
+    <string name="sign_lord_effects_governs">Sign lord %1$s governs this period\'s outcomes.</string>
+
+    <!-- Karaka Activation -->
+    <string name="karaka_activation_text">%1$s (%2$s) is activated - %3$s</string>
+    <string name="karaka_activation_none">No major Karaka directly in this sign</string>
+
+    <!-- Favorable Areas by Element -->
+    <string name="favorable_areas_fire">Leadership, Initiative, Sports, Entrepreneurship</string>
+    <string name="favorable_areas_earth">Finance, Property, Career, Practical matters</string>
+    <string name="favorable_areas_air">Communication, Learning, Social activities, Travel</string>
+    <string name="favorable_areas_water">Emotions, Creativity, Spirituality, Intuition</string>
+    <string name="favorable_areas_general">General growth</string>
+
+    <!-- Challenging Areas by Sign -->
+    <string name="challenging_areas_aries">Patience, Diplomacy, Details</string>
+    <string name="challenging_areas_taurus">Flexibility, Change, Risk-taking</string>
+    <string name="challenging_areas_gemini">Focus, Commitment, Depth</string>
+    <string name="challenging_areas_cancer">Objectivity, Independence, Tough decisions</string>
+    <string name="challenging_areas_leo">Humility, Teamwork, Accepting criticism</string>
+    <string name="challenging_areas_virgo">Perfectionism, Over-analysis, Relaxation</string>
+    <string name="challenging_areas_libra">Decision-making, Independence, Confrontation</string>
+    <string name="challenging_areas_scorpio">Trust, Letting go, Forgiveness</string>
+    <string name="challenging_areas_sagittarius">Details, Patience, Routine</string>
+    <string name="challenging_areas_capricorn">Emotions, Spontaneity, Fun</string>
+    <string name="challenging_areas_aquarius">Tradition, One-on-one connection, Practicality</string>
+    <string name="challenging_areas_pisces">Boundaries, Practicality, Discipline</string>
+
+    <!-- Recommendations -->
+    <string name="recommendation_strengthen_lord">Strengthen %1$s through appropriate mantras and gemstones</string>
+    <string name="recommendation_honor_deity">Honor the deity associated with %1$s</string>
+    <string name="recommendation_fire">Channel energy through physical activity and creative expression</string>
+    <string name="recommendation_earth">Focus on building stable foundations and practical achievements</string>
+    <string name="recommendation_air">Engage in learning, communication, and social connections</string>
+    <string name="recommendation_water">Honor emotions through meditation and artistic expression</string>
+
+    <!-- Karakamsha Interpretation -->
+    <string name="karakamsha_interp_aries">Soul\'s purpose involves leadership, initiative, and pioneering activities.</string>
+    <string name="karakamsha_interp_taurus">Soul seeks stability, beauty, and material security.</string>
+    <string name="karakamsha_interp_gemini">Soul\'s evolution through communication, learning, and versatility.</string>
+    <string name="karakamsha_interp_cancer">Soul\'s path involves nurturing, emotions, and homeland.</string>
+    <string name="karakamsha_interp_leo">Soul seeks recognition, authority, and creative expression.</string>
+    <string name="karakamsha_interp_virgo">Soul evolves through service, analysis, and healing.</string>
+    <string name="karakamsha_interp_libra">Soul\'s purpose in balance, relationships, and justice.</string>
+    <string name="karakamsha_interp_scorpio">Deep transformation and uncovering hidden truths is the soul\'s journey.</string>
+    <string name="karakamsha_interp_sagittarius">Soul seeks higher knowledge, philosophy, and spiritual expansion.</string>
+    <string name="karakamsha_interp_capricorn">Soul\'s path through discipline, achievement, and social responsibility.</string>
+    <string name="karakamsha_interp_aquarius">Soul evolves through innovation, humanitarian work, and group consciousness.</string>
+    <string name="karakamsha_interp_pisces">Soul seeks liberation, spirituality, and divine connection.</string>
+</resources>

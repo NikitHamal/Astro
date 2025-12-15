@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Karaka Types -->
+    <string name="karaka_atmakaraka_name">आत्मकारक</string>
+    <string name="karaka_atmakaraka_sanskrit">आत्मकारक</string>
+    <string name="karaka_atmakaraka_signification">आत्मा, स्व, कुण्डलीको राजा</string>
+    <string name="karaka_amatyakaraka_name">अमात्यकारक</string>
+    <string name="karaka_amatyakaraka_sanskrit">अमात्यकारक</string>
+    <string name="karaka_amatyakaraka_signification">करियर, मन्त्री, पेशा</string>
+    <string name="karaka_bhratrikaraka_name">भ्रातृकारक</string>
+    <string name="karaka_bhratrikaraka_sanskrit">भ्रातृकारक</string>
+    <string name="karaka_bhratrikaraka_signification">दाजुभाइ, साहस, प्रयास</string>
+    <string name="karaka_matrikaraka_name">मातृकारक</string>
+    <string name="karaka_matrikaraka_sanskrit">मातृकारक</string>
+    <string name="karaka_matrikaraka_signification">आमा, पोषण, भावनाहरू</string>
+    <string name="karaka_pitrikaraka_name">पितृकारक</string>
+    <string name="karaka_pitrikaraka_sanskrit">पितृकारक</string>
+    <string name="karaka_pitrikaraka_signification">पिता, अधिकार, मार्गदर्शन</string>
+    <string name="karaka_putrakaraka_name">पुत्रकारक</string>
+    <string name="karaka_putrakaraka_sanskrit">पुत्रकारक</string>
+    <string name="karaka_putrakaraka_signification">सन्तान, रचनात्मकता, बुद्धि</string>
+    <string name="karaka_gnatikaraka_name">ज्ञातिकारक</string>
+    <string name="karaka_gnatikaraka_sanskrit">ज्ञातिकारक</string>
+    <string name="karaka_gnatikaraka_signification">भाइभतिजा, प्रतिस्पर्धा, द्वन्द्व</string>
+    <string name="karaka_darakaraka_name">दारकारक</string>
+    <string name="karaka_darakaraka_sanskrit">दारकारक</string>
+    <string name="karaka_darakaraka_signification">पति/पत्नी, साझेदारी, विवाह</string>
+
+    <!-- Descriptions and Summaries -->
+    <string name="karaka_info_description">%1$s: %2$s %4$s मा %3$.2f° मा</string>
+    <string name="karaka_info_not_determined">%1$s: निर्धारण नगरिएको</string>
+    <string name="mahadasha_special_significance_contains">समावेश छ: %1$s</string>
+    <string name="mahadasha_special_significance_no_planets">जन्म कुण्डलीमा कुनै ग्रह छैन</string>
+    <string name="current_period_summary_no_active_dasha">कुनै सक्रिय चर दशा अवधि छैन</string>
+    <string name="current_period_summary_title">=== चर दशा - वर्तमान अवधि ===</string>
+    <string name="current_period_summary_mahadasha">महादशा: %1$s (%2$d वर्ष)</string>
+    <string name="current_period_summary_lord">स्वामी: %1$s</string>
+    <string name="current_period_summary_progress">प्रगति: %1$.1f%%</string>
+    <string name="current_period_summary_remaining">बाँकी: %1$d दिन</string>
+    <string name="current_period_summary_antardasha">अन्तरदशा: %1$s</string>
+    <string name="current_period_summary_atmakaraka">आत्मकारक: %1$s</string>
+    <string name="current_period_summary_karakamsha">कारकांश: %1$s</string>
+    <string name="karaka_summary_title">=== चर कारक (जैमिनी सूचक) ===</string>
+    <string name="karaka_summary_line">%1$s: %2$s (%4$s मा %3$.2f°)</string>
+
+    <!-- Antardasha Interpretation -->
+    <string name="antardasha_interp_header">%1$s-%2$s: %2$s को अन्तरदशा (महादशाबाट %3$d घर)। स्वामी %4$s ले %2$s विषयहरू सक्रिय गर्दछ।</string>
+    <string name="antardasha_interp_house1">आत्म-केन्द्रित अवधि, व्यक्तिगत पहल।</string>
+    <string name="antardasha_interp_house2">धन, परिवार, बोलीमा ध्यान।</string>
+    <string name="antardasha_interp_house3">साहस, दाजुभाइ, सञ्चार सक्रिय।</string>
+    <string name="antardasha_interp_house4">घर, आमा, सम्पत्ति मामिला।</string>
+    <string name="antardasha_interp_house5">सन्तान, रचनात्मकता, रोमान्स हाइलाइट।</string>
+    <string name="antardasha_interp_house6">स्वास्थ्य, प्रतिस्पर्धा, सेवा मामिला।</string>
+    <string name="antardasha_interp_house7">साझेदारी, विवाह, सार्वजनिक कारोबार।</string>
+    <string name="antardasha_interp_house8">रूपान्तरण, उत्तराधिकार, अनुसन्धान।</string>
+    <string name="antardasha_interp_house9">भाग्य, उच्च शिक्षा, आध्यात्मिकता।</string>
+    <string name="antardasha_interp_house10">करियर, स्थिति, सार्वजनिक मान्यता।</string>
+    <string name="antardasha_interp_house11">लाभ, मित्रता, आकांक्षा पूरा।</string>
+    <string name="antardasha_interp_house12">खर्च, आध्यात्मिकता, विदेशी जडान।</string>
+
+    <!-- Overall Dasha Interpretation -->
+    <string name="dasha_interp_overview">%1$s लग्नका लागि चर दशा %2$s दिशामा सञ्चालन हुन्छ। तपाईंको आत्मकारक %3$s हो, जसले तपाईंको आत्माको प्राथमिक पाठ %4$s मा समावेश रहेको संकेत गर्दछ।</string>
+    <string name="dasha_interp_forward">अगाडि</string>
+    <string name="dasha_interp_backward">पछाडि</string>
+    <string name="dasha_interp_karakamsha_analysis">कारकांश %1$s मा: %2$s</string>
+    <string name="dasha_interp_current_phase">हाल %1$s महादशामा (%2$d वर्ष, %3$.1f%% पूरा)। %4$s</string>
+    <string name="dasha_interp_no_current_phase">दशा गणना वर्तमान मितिभन्दा बाहिर जान्छ।</string>
+    <string name="dasha_interp_future_outlook">प्रत्येक दशा अवधि भित्र घटनाहरूको समय निर्धारणको लागि राशि स्वामीहरूको गोचर निगरानी गर्नुहोस्।</string>
+    <string name="dasha_interp_guidance1">उपयुक्त उपचार मार्फत आफ्नो आत्मकारक (%1$s) लाई बलियो बनाउनुहोस्</string>
+    <string name="dasha_interp_guidance2">जब महादशा राशि प्रमुख गोचरद्वारा सक्रिय हुन्छ ध्यान दिनुहोस्</string>
+    <string name="dasha_interp_guidance3">व्यापक समय विश्लेषणको लागि विंशोत्तरीसँगै चर दशा प्रयोग गर्नुहोस्</string>
+    <string name="dasha_interp_guidance4">चन्द्रमा र लग्नबाट कारकांश घरले थप अन्तर्दृष्टि प्रदान गर्दछ</string>
+
+    <!-- Sign General Effects -->
+    <string name="sign_effects_aries">पहल, नेतृत्व, र नयाँ सुरुवातको अवधि। मंगल-शासित ऊर्जाले कार्य र साहस ल्याउँछ।</string>
+    <string name="sign_effects_taurus">धन, स्थिरता, र भौतिक सुखमा ध्यान। शुक्रले सौन्दर्य र सम्बन्ध ल्याउँछ।</string>
+    <string name="sign_effects_gemini">सञ्चार, शिक्षा, र बौद्धिक गतिविधिहरू हाइलाइट। बुधले बहुमुखी प्रतिभा ल्याउँछ।</string>
+    <string name="sign_effects_cancer">भावनात्मक वृद्धि, घर, र आमा-सम्बन्धित मामिलाहरू। चन्द्रमाले पोषण ऊर्जा ल्याउँछ।</string>
+    <string name="sign_effects_leo">मान्यता, अधिकार, र रचनात्मक अभिव्यक्ति। सूर्यले आत्मविश्वास र नेतृत्व ल्याउँछ।</string>
+    <string name="sign_effects_virgo">विश्लेषण, स्वास्थ्य, र सेवा मामिलाहरू। बुधले विवेक र उपचार ल्याउँछ।</string>
+    <string name="sign_effects_libra">साझेदारी, सन्तुलन, र न्याय। शुक्रले सद्भाव र सम्बन्ध ल्याउँछ।</string>
+    <string name="sign_effects_scorpio">रूपान्तरण, अनुसन्धान, र लुकेका मामिलाहरू। मंगल/केतुले तीव्रता ल्याउँछ।</string>
+    <string name="sign_effects_sagittarius">उच्च शिक्षा, दर्शन, र विस्तार। बृहस्पतिले ज्ञान ल्याउँछ।</string>
+    <string name="sign_effects_capricorn">करियर, अनुशासन, र दीर्घकालीन लक्ष्यहरू। शनिले संरचना ल्याउँछ।</string>
+    <string name="sign_effects_aquarius">नवीनता, समूह, र मानवीय चिन्ताहरू। शनि/राहुले परिवर्तन ल्याउँछ।</string>
+    <string name="sign_effects_pisces">आध्यात्मिकता, कल्पना, र मुक्ति। बृहस्पतिले अतिक्रमण ल्याउँछ।</string>
+
+    <!-- Sign Lord Effects -->
+    <string name="sign_lord_effects_positioned">राशि स्वामी %1$s %2$s (घर %3$d) मा छ, ती घर विषयहरू मार्फत यो दशालाई प्रभावित गर्दै।</string>
+    <string name="sign_lord_effects_governs">राशि स्वामी %1$s ले यस अवधिको परिणामहरू शासन गर्दछ।</string>
+
+    <!-- Karaka Activation -->
+    <string name="karaka_activation_text">%1$s (%2$s) सक्रिय छ - %3$s</string>
+    <string name="karaka_activation_none">यस राशिमा कुनै प्रमुख कारक सीधै छैन</string>
+
+    <!-- Favorable Areas by Element -->
+    <string name="favorable_areas_fire">नेतृत्व, पहल, खेल, उद्यमशीलता</string>
+    <string name="favorable_areas_earth">वित्त, सम्पत्ति, करियर, व्यावहारिक मामिलाहरू</string>
+    <string name="favorable_areas_air">सञ्चार, शिक्षा, सामाजिक गतिविधिहरू, यात्रा</string>
+    <string name="favorable_areas_water">भावनाहरू, रचनात्मकता, आध्यात्मिकता, अन्तर्ज्ञान</string>
+    <string name="favorable_areas_general">सामान्य वृद्धि</string>
+
+    <!-- Challenging Areas by Sign -->
+    <string name="challenging_areas_aries">धैर्य, कूटनीति, विवरण</string>
+    <string name="challenging_areas_taurus">लचकता, परिवर्तन, जोखिम लिने</string>
+    <string name="challenging_areas_gemini">ध्यान, प्रतिबद्धता, गहिराइ</string>
+    <string name="challenging_areas_cancer">वस्तुनिष्ठता, स्वतन्त्रता, कडा निर्णयहरू</string>
+    <string name="challenging_areas_leo">नम्रता, टिमवर्क, आलोचना स्वीकार गर्ने</string>
+    <string name="challenging_areas_virgo">पूर्णतावाद, अति-विश्लेषण, विश्राम</string>
+    <string name="challenging_areas_libra">निर्णय लिने, स्वतन्त्रता, टकराव</string>
+    <string name="challenging_areas_scorpio">विश्वास, छोड्ने, क्षमा</string>
+    <string name="challenging_areas_sagittarius">विवरण, धैर्य, दिनचर्या</string>
+    <string name="challenging_areas_capricorn">भावनाहरू, सहजता, रमाईलो</string>
+    <string name="challenging_areas_aquarius">परम्परा, एक-बाट-एक जडान, व्यावहारिकता</string>
+    <string name="challenging_areas_pisces">सीमा, व्यावहारिकता, अनुशासन</string>
+
+    <!-- Recommendations -->
+    <string name="recommendation_strengthen_lord">उपयुक्त मन्त्र र रत्न मार्फत %1$s लाई बलियो बनाउनुहोस्</string>
+    <string name="recommendation_honor_deity">%1$s सँग सम्बन्धित देवताको सम्मान गर्नुहोस्</string>
+    <string name="recommendation_fire">शारीरिक गतिविधि र रचनात्मक अभिव्यक्ति मार्फत ऊर्जा च्यानल गर्नुहोस्</string>
+    <string name="recommendation_earth">स्थिर जग र व्यावहारिक उपलब्धिहरू निर्माणमा ध्यान केन्द्रित गर्नुहोस्</string>
+    <string name="recommendation_air">शिक्षा, सञ्चार, र सामाजिक जडानहरूमा संलग्न हुनुहोस्</string>
+    <string name="recommendation_water">ध्यान र कलात्मक अभिव्यक्ति मार्फत भावनाहरूको सम्मान गर्नुहोस्</string>
+
+    <!-- Karakamsha Interpretation -->
+    <string name="karakamsha_interp_aries">आत्माको उद्देश्यमा नेतृत्व, पहल, र अग्रगामी गतिविधिहरू समावेश छन्।</string>
+    <string name="karakamsha_interp_taurus">आत्माले स्थिरता, सौन्दर्य, र भौतिक सुरक्षा खोज्छ।</string>
+    <string name="karakamsha_interp_gemini">आत्माको विकास सञ्चार, शिक्षा, र बहुमुखी प्रतिभा मार्फत हुन्छ।</string>
+    <string name="karakamsha_interp_cancer">आत्माको मार्गमा पोषण, भावनाहरू, र मातृभूमि समावेश छ।</string>
+    <string name="karakamsha_interp_leo">आत्माले मान्यता, अधिकार, र रचनात्मक अभिव्यक्ति खोज्छ।</string>
+    <string name="karakamsha_interp_virgo">आत्मा सेवा, विश्लेषण, र उपचार मार्फत विकसित हुन्छ।</string>
+    <string name="karakamsha_interp_libra">आत्माको उद्देश्य सन्तुलन, सम्बन्ध, र न्यायमा छ।</string>
+    <string name="karakamsha_interp_scorpio">गहिरो रूपान्तरण र लुकेका सत्यहरू उजागर गर्नु आत्माको यात्रा हो।</string>
+    <string name="karakamsha_interp_sagittarius">आत्माले उच्च ज्ञान, दर्शन, र आध्यात्मिक विस्तार खोज्छ।</string>
+    <string name="karakamsha_interp_capricorn">आत्माको मार्ग अनुशासन, उपलब्धि, र सामाजिक जिम्मेवारी मार्फत हो।</string>
+    <string name="karakamsha_interp_aquarius">आत्मा नवीनता, मानवीय कार्य, र समूह चेतना मार्फत विकसित हुन्छ।</string>
+    <string name="karakamsha_interp_pisces">आत्माले मुक्ति, आध्यात्मिकता, र ईश्वरीय जडान खोज्छ।</string>
+</resources>

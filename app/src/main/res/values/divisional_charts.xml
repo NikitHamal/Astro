@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="parent_father">Father</string>
+    <string name="parent_mother">Mother</string>
+
+    <!-- Wealth Sources (Sun Hora) -->
+    <string name="sun_hora_source_sun">Government positions, Gold investments, Father\'s legacy, Authority roles</string>
+    <string name="sun_hora_source_mars">Real estate, Engineering, Military/Police, Sports</string>
+    <string name="sun_hora_source_jupiter">Teaching, Consultancy, Banking, Religious institutions</string>
+    <string name="sun_hora_source_saturn">Mining, Oil/Petroleum, Labor management, Land</string>
+    <string name="sun_hora_source_mercury">Business, Communication, Technology, Trade</string>
+    <string name="sun_hora_source_venus">Arts, Entertainment, Luxury goods, Beauty industry</string>
+    <string name="sun_hora_source_moon">Public dealings, Hospitality, Dairy, Liquids</string>
+    <string name="sun_hora_source_rahu">Foreign sources, Technology, Unconventional means, Speculation</string>
+    <string name="sun_hora_source_ketu">Spiritual pursuits, Occult, Detachment-based gains, Research</string>
+
+    <!-- Wealth Sources (Moon Hora) -->
+    <string name="moon_hora_source_moon">Inheritance, Mother\'s side, Pearls, Silver, Liquids</string>
+    <string name="moon_hora_source_venus">Spouse\'s wealth, Luxury inheritance, Jewelry</string>
+    <string name="moon_hora_source_jupiter">Religious inheritance, Educational trusts, Family wealth</string>
+    <string name="moon_hora_source_mercury">Family business, Ancestral trade, Intellectual property</string>
+    <string name="moon_hora_source_sun">Government benefits, Royal grants, Authority inherited</string>
+    <string name="moon_hora_source_mars">Property inheritance, Land from family, Military pension</string>
+    <string name="moon_hora_source_saturn">Old wealth, Delayed inheritance, Hard-earned legacy</string>
+    <string name="moon_hora_source_rahu">Foreign inheritance, Unexpected gains, In-laws wealth</string>
+    <string name="moon_hora_source_ketu">Spiritual assets, Hidden treasures, Past-life accumulated</string>
+
+    <!-- Hora Recommendations -->
+    <string name="hora_rec_high_potential">Focus on indicated wealth sources for maximum prosperity. Invest during favorable Dasha periods of strong Hora planets.</string>
+    <string name="hora_rec_moderate_potential">Consistent effort in indicated areas will yield gradual wealth. Strengthen weak planets through appropriate remedies.</string>
+    <string name="hora_rec_low_potential">Worship Goddess Lakshmi for wealth blessings. Strengthen Jupiter and Venus through gemstones or mantras. Avoid speculation; focus on steady income sources.</string>
+    <string name="hora_rec_capitalize_strength">Capitalize on %1$s\'s strength in %2$s.</string>
+
+    <!-- Sibling Welfare -->
+    <string name="sibling_welfare_jupiter">Jupiter\'s blessing on younger siblings - prosperity for them</string>
+    <string name="sibling_welfare_saturn">Saturn indicates hard-working siblings with delayed success</string>
+    <string name="sibling_welfare_mars">Mars shows courageous and competitive siblings</string>
+
+    <!-- Courage Analysis -->
+    <string name="initiative_ability_strong">Strong initiative ability - natural leader and pioneer</string>
+    <string name="initiative_ability_moderate">Moderate initiative - benefits from preparation and planning</string>
+    <string name="physical_courage_exceptional">Exceptional physical courage and athletic ability</string>
+    <string name="physical_courage_strong">Strong physical constitution and bravery</string>
+    <string name="physical_courage_needs_development">Physical courage may need development</string>
+    <string name="physical_courage_adequate">Adequate physical courage for normal situations</string>
+    <string name="physical_courage_depends_on_factors">Physical courage depends on other factors</string>
+    <string name="mental_courage_wisdom">Exceptional wisdom-backed mental courage</string>
+    <string name="mental_courage_quick_decision">Sharp intellectual courage and quick decision-making</string>
+    <string name="mental_courage_stable">Stable mental fortitude</string>
+    <string name="mental_courage_develops">Mental courage develops through life experiences</string>
+
+    <!-- Communication Analysis -->
+    <string name="communication_level_exceptional">Exceptional</string>
+    <string name="communication_level_very_good">Very Good</string>
+    <string name="communication_level_good">Good</string>
+    <string name="communication_level_average">Average</string>
+    <string name="writing_ability_exceptional">Exceptional writing talent - potential author or journalist</string>
+    <string name="writing_ability_strong">Strong writing ability with wisdom and depth</string>
+    <string name="writing_ability_good">Good written communication skills</string>
+    <string name="writing_ability_average">Average writing ability</string>
+    <string name="speaking_ability_eloquent">Eloquent speaker with wisdom</string>
+    <string name="speaking_ability_authoritative">Authoritative and commanding speech</string>
+    <string name="speaking_ability_articulate">Quick and articulate speech</string>
+    <string name="speaking_ability_normal">Normal speaking abilities</string>
+    <string name="artistic_talent_visual">Visual arts and aesthetics</string>
+    <string name="artistic_talent_music">Music and rhythm</string>
+
+    <!-- Short Journeys -->
+    <string name="short_journey_frequent">Frequent short travels likely</string>
+    <string name="short_journey_business">Travel for communication or business purposes</string>
+    <string name="short_journey_unusual">Unusual or sudden short journeys</string>
+
+    <!-- Drekkana Recommendations -->
+    <string name="drekkana_rec_courage_high">Channel courage into leadership and pioneering ventures</string>
+    <string name="drekkana_rec_courage_low">Practice Mars-strengthening activities like sports or martial arts. Worship Lord Hanuman for courage.</string>
+    <string name="drekkana_rec_courage_moderate">Maintain balance between caution and boldness</string>
+    <string name="drekkana_rec_siblings_challenging">Practice patience and understanding with siblings. Consider family counseling if needed.</string>
+
+    <!-- Navamsa -->
+    <string name="marriage_transit_considerations">Jupiter transit over 7th house from Moon or Navamsa Lagna</string>
+    <string name="spouse_nature_sun">Dignified, authoritative, proud, loyal</string>
+    <string name="spouse_nature_moon">Emotional, nurturing, sensitive, caring</string>
+    <string name="spouse_nature_mars">Energetic, assertive, passionate, athletic</string>
+    <string name="spouse_nature_mercury">Intelligent, communicative, youthful, adaptable</string>
+    <string name="spouse_nature_jupiter">Wise, religious, generous, optimistic</string>
+    <string name="spouse_nature_venus">Beautiful, artistic, romantic, pleasure-loving</string>
+    <string name="spouse_nature_saturn">Serious, hardworking, mature, responsible</string>
+    <string name="spouse_nature_rahu">Unconventional, foreign influence, ambitious</string>
+    <string name="spouse_nature_ketu">Spiritual, detached, intuitive, mysterious</string>
+    <string name="spouse_nature_mixed">Mixed qualities</string>
+    <string name="spouse_appearance_sun">Medium height, well-built, commanding presence</string>
+    <string name="spouse_appearance_moon">Fair complexion, round face, attractive</string>
+    <string name="spouse_appearance_mars">Athletic build, sharp features, reddish complexion</string>
+    <string name="spouse_appearance_mercury">Youthful appearance, quick movements</string>
+    <string name="spouse_appearance_jupiter">Well-proportioned, dignified appearance</string>
+    <string name="spouse_appearance_venus">Very attractive, charming, pleasant features</string>
+    <string name="spouse_appearance_saturn">Tall, thin build, mature appearance</string>
+    <string name="spouse_appearance_varies">Appearance varies</string>
+    <string name="spouse_profession_various">Various professions possible</string>
+    <string name="spouse_profession_sun">Government, Administration, Medicine</string>
+    <string name="spouse_profession_moon">Healthcare, Hospitality, Public relations</string>
+    <string name="spouse_profession_mars">Engineering, Military, Sports</string>
+    <string name="spouse_profession_mercury">Business, Writing, Technology</string>
+    <string name="spouse_profession_jupiter">Teaching, Law, Finance</string>
+    <string name="spouse_profession_venus">Arts, Fashion, Entertainment</string>
+    <string name="spouse_profession_saturn">Labor, Construction, Agriculture</string>
+    <string name="spouse_profession_other">Various fields</string>
+    <string name="spouse_family_jupiter">Respectable, possibly from educated or religious family</string>
+    <string name="spouse_family_venus">Cultured family with appreciation for arts</string>
+    <string name="spouse_family_sun">Family with government or administrative background</string>
+    <string name="spouse_family_moon">Family-oriented, possibly business background</string>
+    <string name="spouse_family_saturn">Hardworking family, possibly modest beginnings</string>
+    <string name="spouse_family_varies">Family background varies</string>
+    <string name="spouse_direction_east">East direction</string>
+    <string name="spouse_direction_south">South direction</string>
+    <string name="spouse_direction_west">West direction</string>
+    <string name="spouse_direction_north">North direction</string>
+    <string name="spouse_direction_unclear">Direction not clearly indicated</string>
+    <string name="multiple_marriage_risk_multiple_planets">Multiple planets in 7th house</string>
+    <string name="multiple_marriage_risk_retro_venus">Retrograde Venus</string>
+    <string name="multiple_marriage_risk_7th_lord_dusthana">7th lord in dusthana</string>
+    <string name="multiple_marriage_mitigation_none">No strong multiple marriage indicators</string>
+    <string name="marriage_muhurta_compatibility">Best muhurta when Jupiter transits %1$s or its trikona</string>
+    <string name="marriage_rec_venus_strong">Venus is strong - romantic approach to marriage is favorable</string>
+    <string name="marriage_rec_venus_weak">Strengthen Venus through white colors, Fridays worship, and diamond/white sapphire</string>
+    <string name="marriage_rec_timing">Best marriage timing: During %1$s Dasha/Antardasha</string>
+
+    <!-- Dashamsa -->
+    <string name="career_type_admin">Administrative/Government</string>
+    <string name="career_type_public_service">Public Service/Nurturing</string>
+    <string name="career_type_technical">Technical/Competitive</string>
+    <string name="career_type_communication">Communication/Business</string>
+    <string name="career_type_advisory">Advisory/Educational</string>
+    <string name="career_type_creative">Creative/Luxury</string>
+    <string name="career_type_labor">Labor/Resource</string>
+    <string name="career_type_unconventional">Unconventional/Foreign</string>
+    <string name="career_type_spiritual">Spiritual/Research</string>
+    <string name="career_type_general">General</string>
+    <string name="government_service_potential_very_high">Very High</string>
+    <string name="government_service_potential_high">High</string>
+    <string name="government_service_potential_moderate">Moderate</string>
+    <string name="government_service_potential_low">Low</string>
+    <string name="government_factor_sun_in_10th">Sun in 10th house of D10</string>
+    <string name="government_factor_exalted_sun">Exalted Sun</string>
+    <string name="business_vs_service_business">Strong aptitude for business/entrepreneurship</string>
+    <string name="business_vs_service_service">Better suited for service/employment</string>
+    <string name="business_vs_service_both">Can excel in both business and service</string>
+    <string name="career_peak_10th_lord">10th lord Dasha - Primary career growth period</string>
+    <string name="career_peak_planet_dasha">%1$s Dasha/Antardasha</string>
+    <string name="career_peak_significance_major">Major career advancements and recognition</string>
+    <string name="career_peak_significance_opportunities">Career opportunities in %1$s</string>
+    <string name="multiple_careers_multiple_planets">Multiple planets in 10th house indicate potential for multiple careers</string>
+    <string name="multiple_careers_mercury">Strong Mercury suggests versatility in career</string>
+    <string name="multiple_careers_rahu">Rahu indicates unconventional career path or career changes</string>
+    <string name="professional_strength_identity">Strong professional identity and presence</string>
+    <string name="professional_strength_exceptional_abilities">Exceptional abilities in chosen field</string>
+    <string name="professional_strength_leadership">Leadership and authority</string>
+    <string name="professional_strength_public_appeal">Public appeal and emotional intelligence</string>
+    <string name="professional_strength_drive">Drive and competitive spirit</string>
+    <string name="professional_strength_communication">Communication and analytical skills</string>
+    <string name="professional_strength_wisdom">Wisdom and advisory capabilities</string>
+    <string name="professional_strength_creativity">Creativity and relationship skills</string>
+    <string name="professional_strength_persistence">Persistence and organizational ability</string>
+    <string name="career_rec_primary_focus">Primary career focus: %1$s</string>
+    <string name="career_rec_top_industries">Top industries: %1$s</string>
+    <string name="career_rec_planet_favors">%1$s period favors: %2$s</string>
+
+    <!-- Dwadasamsa -->
+    <string name="parental_wellbeing_good_father">Good health and prosperity indicated</string>
+    <string name="parental_wellbeing_moderate">Moderate indications</string>
+    <string name="parental_wellbeing_challenging_father">Some challenges indicated - remedies beneficial</string>
+    <string name="parental_wellbeing_good_mother">Good health and emotional wellbeing indicated</string>
+    <string name="parental_wellbeing_challenging_mother">Some challenges indicated - Moon remedies beneficial</string>
+    <string name="father_char_authoritative">Authoritative, successful, government/administrative role</string>
+    <string name="father_char_career_focused">Career-focused, ambitious, prominent position</string>
+    <string name="father_char_religious">Religious, wise, generous</string>
+    <string name="father_char_varies">Characteristics vary based on overall chart</string>
+    <string name="mother_char_nurturing">Nurturing, emotionally supportive, prosperous</string>
+    <string name="mother_char_home_oriented">Home-oriented, caring, family-focused</string>
+    <string name="mother_char_artistic">Artistic, beautiful, comfort-loving</string>
+    <string name="mother_char_varies">Characteristics vary based on overall chart</string>
+    <string name="parent_relationship_strong">Strong, supportive relationship</string>
+    <string name="parent_relationship_harmonious">Harmonious, beneficial relationship</string>
+    <string name="parent_relationship_challenging">Some challenges in relationship</string>
+    <string name="parent_relationship_moderate">Moderate relationship quality</string>
+    <string name="parent_relationship_depends">Relationship quality depends on other factors</string>
+    <string name="inheritance_potential_good">Good inheritance potential</string>
+    <string name="inheritance_potential_moderate">Moderate inheritance</string>
+    <string name="inheritance_potential_limited">Limited inheritance indicated</string>
+    <string name="inheritance_source_family">Family wealth</string>
+    <string name="inheritance_source_property">Property/Land</string>
+    <string name="inheritance_source_unexpected">Unexpected gains</string>
+    <string name="inheritance_timing">During Dasha of benefic planets in 2nd, 4th, or 8th house of D-12</string>
+    <string name="ancestral_property_old">Old ancestral property indicated</string>
+    <string name="ancestral_property_land">Land or real estate from ancestors</string>
+    <string name="ancestral_property_religious">Religious or educational property</string>
+    <string name="family_lineage_noble">Noble or respected family lineage</string>
+    <string name="family_lineage_dharma">Family known for dharma or profession</string>
+    <string name="family_lineage_creative">Family with creative or financial success</string>
+    <string name="family_lineage_depends">Family lineage characteristics depend on other factors</string>
+    <string name="parental_longevity_long">Long life indicated</string>
+    <string name="parental_longevity_attention_needed">Health attention needed</string>
+    <string name="parental_longevity_moderate">Moderate longevity</string>
+    <string name="parental_health_father">Father: Regular health checkups advised</string>
+    <string name="parental_health_mother">Mother: Emotional wellbeing attention</string>
+    <string name="parental_rec_father">Offer water to Sun on Sundays for father\'s wellbeing. Respect and serve father figures.</string>
+    <string name="parental_rec_mother">Worship Moon on Mondays for mother\'s health. Offer milk/white items in charity.</string>
+    <string name="parental_rec_ancestral">Perform Pitru Tarpan during Pitru Paksha for ancestral blessings</string>
+</resources>

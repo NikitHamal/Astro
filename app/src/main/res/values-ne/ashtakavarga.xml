@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="ashtakavarga_analysis_title">अष्टकवर्ग विश्लेषण</string>
+    <string name="sarvashtakavarga_title">सर्वाष्टकवर्ग (संयुक्त शक्ति)</string>
+    <string name="bhinnashtakavarga_title">भिन्नाष्टकवर्ग (व्यक्तिगत ग्रह शक्ति)</string>
+    <string name="ascendant">लग्न</string>
+    <string name="bindus_label">%1$d बिन्दु</string>
+    <string name="total_label">कुल: %1$d बिन्दु</string>
+    <string name="total_sav_bindus_label">कुल SAV बिन्दु: %1$d</string>
+    <string name="average_per_sign_label">प्रति राशि औसत: %1$.1f</string>
+    <string name="strength_strong">बलियो</string>
+    <string name="strength_good">राम्रो</string>
+    <string name="strength_average">औसत</string>
+    <string name="strength_weak">कमजोर</string>
+
+    <!-- Transit Score & Prediction -->
+    <string name="transit_interp_excellent">उत्कृष्ट - अत्यधिक अनुकूल गोचर</string>
+    <string name="transit_interp_good">राम्रो - अनुकूल परिणामको अपेक्षा</string>
+    <string name="transit_interp_average">औसत - मिश्रित परिणाम</string>
+    <string name="transit_interp_below_avg">औसतभन्दा कम - केही चुनौतीहरू</string>
+    <string name="transit_interp_difficult">कठिन - सावधानीपूर्वक हिड्नु आवश्यक छ</string>
+    <string name="transit_quality_excellent">उत्कृष्ट</string>
+    <string name="transit_quality_good">राम्रो</string>
+    <string name="transit_quality_average">औसत</string>
+    <string name="transit_quality_below_average">औसतभन्दा कम</string>
+    <string name="transit_quality_challenging">चुनौतीपूर्ण</string>
+    <string name="transit_quality_difficult">कठिन</string>
+    <string name="transit_quality_unknown">अज्ञात</string>
+    <string name="transit_prediction_not_applicable">%1$s को लागि अष्टकवर्ग लागू हुँदैन</string>
+    <string name="transit_prediction_bav_not_found">%1$s को लागि भिन्नाष्टकवर्ग फेला परेन</string>
+
+    <!-- Detailed Transit Prediction Text -->
+    <string name="transit_prediction_excellent_text">%1$s मार्फत %2$d BAV बिन्दु र %3$d SAV बिन्दु सहितको गोचरले उत्कृष्ट परिणामहरू संकेत गर्दछ। %4$s सम्बन्धित मामिलाहरू फस्टाउनेछन्। %5$s का क्षेत्रहरूले बलियो सकारात्मक प्रभाव प्राप्त गर्नेछन्।</string>
+    <string name="transit_prediction_good_text">%1$s मार्फत गोचरले %2$d BAV र %3$d SAV बिन्दु सहित अनुकूल परिणामहरू ल्याउँछ। %4$s मा राम्रो प्रगतिको अपेक्षा छ। %5$s क्षेत्रहरू सकारात्मक रूपमा प्रभावित छन्।</string>
+    <string name="transit_prediction_average_text">%1$s (%2$d BAV, %3$d SAV) मार्फत गोचरले मिश्रित परिणामहरू ल्याउँछ। %4$s मा कहिलेकाहीँ चुनौतीहरू सहित केही प्रगति। %5$s मा सन्तुलन आवश्यक छ।</string>
+    <string name="transit_prediction_below_average_text">%1$s (%2$d BAV, %3$d SAV) मार्फत गोचरले सावधानी आवश्यक रहेको सुझाव दिन्छ। %4$s मामिलाहरूमा ढिलाइ हुन सक्छ। %5$s क्षेत्रहरूमा अतिरिक्त प्रयास आवश्यक छ।</string>
+    <string name="transit_prediction_challenging_text">केवल %2$d BAV र %3$d SAV बिन्दु सहित %1$s मार्फत चुनौतीपूर्ण गोचर। %4$s मा कठिनाइहरू सम्भव छन्। %5$s मामिलाहरूको लागि धैर्य आवश्यक छ।</string>
+    <string name="transit_prediction_difficult_text">%1$s (%2$d BAV, %3$d SAV) मार्फत कठिन गोचर अवधि। %4$s क्षेत्रहरूमा महत्त्वपूर्ण चुनौतीहरू। %5$s को सावधानीपूर्वक ह्यान्डलिङ आवश्यक छ।</string>
+    <string name="transit_prediction_unknown_text">यस ग्रहको लागि गोचर विश्लेषण उपलब्ध छैन।</string>
+
+    <!-- Planet Effects -->
+    <string name="planet_effects_sun">अधिकार, पिता, स्वास्थ्य, सरकार, करियर</string>
+    <string name="planet_effects_moon">मन, भावना, आमा, सार्वजनिक छवि</string>
+    <string name="planet_effects_mars">ऊर्जा, दाजुभाइ, सम्पत्ति, साहस</string>
+    <string name="planet_effects_mercury">सञ्चार, बुद्धि, व्यापार, शिक्षा</string>
+    <string name="planet_effects_jupiter">ज्ञान, सन्तान, भाग्य, आध्यात्मिकता</string>
+    <string name="planet_effects_venus">सम्बन्ध, विलासिता, कला, सवारी साधन</string>
+    <string name="planet_effects_saturn">करियर, दीर्घायु, अनुशासन, चुनौतीहरू</string>
+    <string name="planet_effects_general">सामान्य मामिलाहरू</string>
+
+    <!-- House Matters -->
+    <string name="house_matters_1">स्व, व्यक्तित्व, स्वास्थ्य</string>
+    <string name="house_matters_2">धन, परिवार, बोली</string>
+    <string name="house_matters_3">साहस, दाजुभाइ, सञ्चार</string>
+    <string name="house_matters_4">घर, आमा, आराम</string>
+    <string name="house_matters_5">सन्तान, बुद्धि, रोमान्स</string>
+    <string name="house_matters_6">शत्रु, स्वास्थ्य समस्या, सेवा</string>
+    <string name="house_matters_7">साझेदारी, विवाह, व्यापार</string>
+    <string name="house_matters_8">रूपान्तरण, उत्तराधिकार, गुप्त</string>
+    <string name="house_matters_9">भाग्य, पिता, उच्च शिक्षा</string>
+    <string name="house_matters_10">करियर, स्थिति, अधिकार</string>
+    <string name="house_matters_11">लाभ, साथी, आकांक्षा</string>
+    <string name="house_matters_12">हानि, आध्यात्मिकता, विदेश</string>
+    <string name="house_matters_general">सामान्य क्षेत्रहरू</string>
+
+</resources>

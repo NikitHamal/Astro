@@ -1,9 +1,11 @@
 package com.astro.storm.ephemeris
 
+import com.astro.storm.R
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.util.LocalizableString
 
 /**
  * Argala (Intervention) Calculator
@@ -68,7 +70,7 @@ object ArgalaCalculator {
         val virodhaArgalas: List<VirodhaArgala>,
         val netArgalaStrength: Double,
         val effectiveArgala: EffectiveArgala,
-        val interpretation: String
+        val interpretation: LocalizableString
     )
 
     /**
@@ -79,7 +81,7 @@ object ArgalaCalculator {
         val argalasReceived: List<ArgalaInfluence>,
         val virodhasReceived: List<VirodhaArgala>,
         val netStrength: Double,
-        val interpretation: String
+        val interpretation: LocalizableString
     )
 
     /**
@@ -94,7 +96,7 @@ object ArgalaCalculator {
         val nature: ArgalaNature,
         val strength: Double,
         val planets: List<Planet>,
-        val description: String
+        val description: LocalizableString
     )
 
     /**
@@ -106,7 +108,7 @@ object ArgalaCalculator {
         val obstructingPlanets: List<Planet>,
         val obstructionStrength: Double,
         val isEffective: Boolean,
-        val description: String
+        val description: LocalizableString
     )
 
     /**
@@ -117,7 +119,7 @@ object ArgalaCalculator {
         val netMaleficStrength: Double,
         val dominantNature: ArgalaNature,
         val isSignificant: Boolean,
-        val summary: String
+        val summary: LocalizableString
     )
 
     /**
@@ -125,13 +127,13 @@ object ArgalaCalculator {
      */
     data class SignificantArgala(
         val targetHouse: Int,
-        val targetDescription: String,
+        val targetDescription: LocalizableString,
         val argalaType: ArgalaType,
         val nature: ArgalaNature,
         val strength: ArgalaStrength,
         val involvedPlanets: List<Planet>,
-        val lifeAreaEffect: String,
-        val recommendation: String
+        val lifeAreaEffect: LocalizableString,
+        val recommendation: LocalizableString
     )
 
     /**
@@ -142,9 +144,9 @@ object ArgalaCalculator {
         val strongestMaleficArgala: Int?,
         val mostObstructedHouse: Int?,
         val leastObstructedHouse: Int?,
-        val karmaPatterns: List<String>,
+        val karmaPatterns: List<LocalizableString>,
         val strengthDistribution: Map<Int, Double>,
-        val generalRecommendations: List<String>
+        val generalRecommendations: List<LocalizableString>
     )
 
     // ============================================
@@ -156,11 +158,11 @@ object ArgalaCalculator {
         PLANET      // Argala from a planet
     }
 
-    enum class ArgalaType(val offset: Int, val virodhaOffset: Int, val displayName: String) {
-        SECONDARY_ARGALA(2, 12, "Secondary Argala (Dhan)"),      // 2nd house, obstructed by 12th
-        PRIMARY_ARGALA(4, 10, "Primary Argala (Sukha)"),         // 4th house, obstructed by 10th
-        GAINS_ARGALA(11, 3, "Gains Argala (Labha)"),             // 11th house, obstructed by 3rd
-        SPECIAL_ARGALA(5, 9, "Special Argala (Putra)")           // 5th house, conditionally obstructed by 9th
+    enum class ArgalaType(val offset: Int, val virodhaOffset: Int, val displayName: LocalizableString) {
+        SECONDARY_ARGALA(2, 12, LocalizableString.Res(R.string.argala_type_secondary)),
+        PRIMARY_ARGALA(4, 10, LocalizableString.Res(R.string.argala_type_primary)),
+        GAINS_ARGALA(11, 3, LocalizableString.Res(R.string.argala_type_gains)),
+        SPECIAL_ARGALA(5, 9, LocalizableString.Res(R.string.argala_type_special))
     }
 
     enum class ArgalaNature {
@@ -387,11 +389,16 @@ object ArgalaCalculator {
             if (VedicAstrologyUtils.isDebilitated(pos)) strength -= 0.3
         }
 
-        val description = buildString {
-            append("${argalaType.displayName} from house $argalaHouse: ")
-            append(planets.joinToString(", ") { it.planet.displayName })
-            append(" (${nature.name.lowercase()})")
-        }
+        val planetNames = LocalizableString.Chain(
+            planets.map { it.planet.displayName }.reduce { acc, localizableString ->
+                LocalizableString.Chain(listOf(acc, LocalizableString.Raw(", "), localizableString))
+            }
+        )
+
+        val description = LocalizableString.ResWithArgs(
+            R.string.argala_influence_description,
+            listOf(argalaType.displayName, argalaHouse, planetNames, nature.name.lowercase())
+        )
 
         return ArgalaInfluence(
             sourceType = SourceType.HOUSE,
@@ -439,16 +446,16 @@ object ArgalaCalculator {
             if (VedicAstrologyUtils.isInOwnSign(pos)) obstructionStrength += 0.1
         }
 
-        val description = buildString {
-            append("House $virodhaHouse ")
-            if (isEffective) {
-                append("effectively obstructs")
-            } else {
-                append("partially obstructs")
+        val planetNames = LocalizableString.Chain(
+            virodhaPlanets.map { it.planet.displayName }.reduce { acc, localizableString ->
+                LocalizableString.Chain(listOf(acc, LocalizableString.Raw(", "), localizableString))
             }
-            append(" Argala from house $obstructedArgalaHouse")
-            append(" (${virodhaPlanets.joinToString(", ") { it.planet.displayName }})")
-        }
+        )
+
+        val description = LocalizableString.ResWithArgs(
+            if (isEffective) R.string.virodha_argala_description_effective else R.string.virodha_argala_description_partial,
+            listOf(virodhaHouse, obstructedArgalaHouse, planetNames)
+        )
 
         return VirodhaArgala(
             obstructingHouse = virodhaHouse,
@@ -497,16 +504,20 @@ object ArgalaCalculator {
 
         val isSignificant = (beneficStrength + maleficStrength) >= 1.0
 
-        val summary = buildString {
-            when {
-                beneficStrength > maleficStrength * 2 -> append("Strong auspicious intervention. ")
-                maleficStrength > beneficStrength * 2 -> append("Challenging intervention requiring remedies. ")
-                isSignificant -> append("Mixed but significant intervention. ")
-                else -> append("Minimal intervention from surrounding houses. ")
-            }
-            append("Benefic: ${String.format("%.2f", beneficStrength)}, ")
-            append("Malefic: ${String.format("%.2f", maleficStrength)}")
-        }
+        val summary = LocalizableString.Chain(
+            listOf(
+                when {
+                    beneficStrength > maleficStrength * 2 -> LocalizableString.Res(R.string.effective_argala_summary_strong_auspicious)
+                    maleficStrength > beneficStrength * 2 -> LocalizableString.Res(R.string.effective_argala_summary_challenging)
+                    isSignificant -> LocalizableString.Res(R.string.effective_argala_summary_mixed)
+                    else -> LocalizableString.Res(R.string.effective_argala_summary_minimal)
+                },
+                LocalizableString.Raw(" "),
+                LocalizableString.ResWithArgs(R.string.effective_argala_summary_benefic, listOf(beneficStrength)),
+                LocalizableString.Raw(", "),
+                LocalizableString.ResWithArgs(R.string.effective_argala_summary_malefic, listOf(maleficStrength))
+            )
+        )
 
         return EffectiveArgala(
             netBeneficStrength = beneficStrength,
@@ -619,82 +630,81 @@ object ArgalaCalculator {
         house: Int,
         effectiveArgala: EffectiveArgala,
         chart: VedicChart
-    ): String {
+    ): LocalizableString {
         val houseTheme = getHouseDescription(house)
 
-        return buildString {
-            append("$houseTheme: ")
-            when (effectiveArgala.dominantNature) {
-                ArgalaNature.SHUBHA -> {
-                    append("Receives beneficial intervention supporting its significations. ")
-                    append("The matters of this house tend to flourish with external support. ")
-                }
-                ArgalaNature.ASHUBHA -> {
-                    append("Receives challenging intervention creating obstacles. ")
-                    append("Requires conscious effort to overcome limitations. ")
-                }
-                ArgalaNature.MIXED -> {
-                    append("Receives mixed intervention - both support and challenges. ")
-                    append("Results depend on current dasha and transits. ")
-                }
-            }
-            append(effectiveArgala.summary)
-        }
+        return LocalizableString.Chain(
+            listOf(
+                houseTheme,
+                LocalizableString.Raw(": "),
+                when (effectiveArgala.dominantNature) {
+                    ArgalaNature.SHUBHA -> LocalizableString.Res(R.string.house_argala_interpretation_beneficial)
+                    ArgalaNature.ASHUBHA -> LocalizableString.Res(R.string.house_argala_interpretation_challenging)
+                    ArgalaNature.MIXED -> LocalizableString.Res(R.string.house_argala_interpretation_mixed)
+                },
+                LocalizableString.Raw(" "),
+                effectiveArgala.summary
+            )
+        )
     }
 
     private fun generatePlanetArgalaInterpretation(
         planet: Planet,
         argalas: List<ArgalaInfluence>,
         netStrength: Double
-    ): String {
-        return buildString {
-            append("${planet.displayName}: ")
-            when {
-                netStrength > 1.0 -> append("Strongly supported by beneficial Argala. ")
-                netStrength > 0 -> append("Moderately supported by Argala. ")
-                netStrength > -1.0 -> append("Faces some obstruction through Argala. ")
-                else -> append("Significantly challenged by malefic Argala. ")
-            }
-            if (argalas.isNotEmpty()) {
-                append("Receives ${argalas.size} Argala influence(s). ")
-            }
-        }
+    ): LocalizableString {
+        return LocalizableString.Chain(
+            listOfNotNull(
+                planet.displayName,
+                LocalizableString.Raw(": "),
+                when {
+                    netStrength > 1.0 -> LocalizableString.Res(R.string.planet_argala_interpretation_strongly_supported)
+                    netStrength > 0 -> LocalizableString.Res(R.string.planet_argala_interpretation_moderately_supported)
+                    netStrength > -1.0 -> LocalizableString.Res(R.string.planet_argala_interpretation_some_obstruction)
+                    else -> LocalizableString.Res(R.string.planet_argala_interpretation_significantly_challenged)
+                },
+                if (argalas.isNotEmpty()) LocalizableString.ResWithArgs(
+                    R.string.planet_argala_interpretation_influence_count,
+                    listOf(argalas.size)
+                ) else null
+            )
+        )
     }
 
     private fun generateKarmaPatterns(
         houseArgalas: Map<Int, HouseArgalaResult>,
         chart: VedicChart
-    ): List<String> {
-        val patterns = mutableListOf<String>()
+    ): List<LocalizableString> {
+        val patterns = mutableListOf<LocalizableString>()
 
         // Check Dharma houses (1, 5, 9)
         val dharmaStrength = listOf(1, 5, 9).sumOf { houseArgalas[it]?.netArgalaStrength ?: 0.0 }
         if (dharmaStrength > 3.0) {
-            patterns.add("Strong dharmic support through Argala - spiritual growth is favored")
+            patterns.add(LocalizableString.Res(R.string.karma_pattern_dharmic_support))
         } else if (dharmaStrength < -1.0) {
-            patterns.add("Dharma houses need strengthening through spiritual practices")
+            patterns.add(LocalizableString.Res(R.string.karma_pattern_dharmic_strengthening))
         }
 
         // Check Artha houses (2, 6, 10)
         val arthaStrength = listOf(2, 6, 10).sumOf { houseArgalas[it]?.netArgalaStrength ?: 0.0 }
         if (arthaStrength > 3.0) {
-            patterns.add("Career and wealth houses well supported by Argala")
+            patterns.add(LocalizableString.Res(R.string.karma_pattern_artha_support))
         } else if (arthaStrength < -1.0) {
-            patterns.add("Material success requires overcoming Argala obstacles")
+            patterns.add(LocalizableString.Res(R.string.karma_pattern_artha_obstacles))
         }
 
         // Check Kama houses (3, 7, 11)
         val kamaStrength = listOf(3, 7, 11).sumOf { houseArgalas[it]?.netArgalaStrength ?: 0.0 }
         if (kamaStrength > 3.0) {
-            patterns.add("Relationships and desires supported by beneficial Argala")
+            patterns.add(LocalizableString.Res(R.string.karma_pattern_kama_support))
         } else if (kamaStrength < -1.0) {
-            patterns.add("Fulfillment of desires faces Argala-based challenges")
+            patterns.add(LocalizableString.Res(R.string.karma_pattern_kama_challenges))
         }
 
         // Check Moksha houses (4, 8, 12)
         val mokshaStrength = listOf(4, 8, 12).sumOf { houseArgalas[it]?.netArgalaStrength ?: 0.0 }
         if (mokshaStrength > 3.0) {
-            patterns.add("Liberation and inner peace supported by Argala patterns")
+            patterns.add(LocalizableString.Res(R.string.karma_pattern_moksha_support))
         }
 
         return patterns
@@ -703,18 +713,18 @@ object ArgalaCalculator {
     private fun generateGeneralRecommendations(
         houseArgalas: Map<Int, HouseArgalaResult>,
         chart: VedicChart
-    ): List<String> {
-        val recommendations = mutableListOf<String>()
+    ): List<LocalizableString> {
+        val recommendations = mutableListOf<LocalizableString>()
 
         // Check for houses needing remedies
         houseArgalas.forEach { (house, result) ->
             if (result.effectiveArgala.dominantNature == ArgalaNature.ASHUBHA &&
                 result.effectiveArgala.netMaleficStrength > 1.5) {
                 val remedy = when (house) {
-                    1 -> "Strengthen Sun and ascendant lord through mantras"
-                    7 -> "Strengthen Venus through white clothing and charity on Fridays"
-                    10 -> "Strengthen Saturn through service and discipline"
-                    else -> "Perform remedies for house $house lord"
+                    1 -> LocalizableString.Res(R.string.recommendation_remedy_sun)
+                    7 -> LocalizableString.Res(R.string.recommendation_remedy_venus)
+                    10 -> LocalizableString.Res(R.string.recommendation_remedy_saturn)
+                    else -> LocalizableString.ResWithArgs(R.string.recommendation_remedy_house_lord, listOf(house))
                 }
                 recommendations.add(remedy)
             }
@@ -725,9 +735,9 @@ object ArgalaCalculator {
         val totalMalefic = houseArgalas.values.sumOf { it.effectiveArgala.netMaleficStrength }
 
         if (totalBenefic > totalMalefic * 1.5) {
-            recommendations.add("Overall Argala pattern is favorable - utilize periods when Argala lords are active in dasha")
+            recommendations.add(LocalizableString.Res(R.string.recommendation_overall_favorable))
         } else if (totalMalefic > totalBenefic * 1.5) {
-            recommendations.add("Focus on strengthening houses with Virodha Argala for better obstruction of malefic influences")
+            recommendations.add(LocalizableString.Res(R.string.recommendation_overall_strengthen))
         }
 
         return recommendations
@@ -747,63 +757,67 @@ object ArgalaCalculator {
     /**
      * Get description for a house
      */
-    private fun getHouseDescription(house: Int): String {
+    private fun getHouseDescription(house: Int): LocalizableString {
         return when (house) {
-            1 -> "1st House (Self, Personality, Health)"
-            2 -> "2nd House (Wealth, Family, Speech)"
-            3 -> "3rd House (Courage, Siblings, Communication)"
-            4 -> "4th House (Mother, Home, Happiness)"
-            5 -> "5th House (Children, Creativity, Intelligence)"
-            6 -> "6th House (Enemies, Health, Service)"
-            7 -> "7th House (Marriage, Partnership, Business)"
-            8 -> "8th House (Transformation, Inheritance, Longevity)"
-            9 -> "9th House (Fortune, Dharma, Higher Learning)"
-            10 -> "10th House (Career, Status, Authority)"
-            11 -> "11th House (Gains, Friends, Aspirations)"
-            12 -> "12th House (Loss, Liberation, Foreign Lands)"
-            else -> "House $house"
+            1 -> LocalizableString.Res(R.string.house_description_1)
+            2 -> LocalizableString.Res(R.string.house_description_2)
+            3 -> LocalizableString.Res(R.string.house_description_3)
+            4 -> LocalizableString.Res(R.string.house_description_4)
+            5 -> LocalizableString.Res(R.string.house_description_5)
+            6 -> LocalizableString.Res(R.string.house_description_6)
+            7 -> LocalizableString.Res(R.string.house_description_7)
+            8 -> LocalizableString.Res(R.string.house_description_8)
+            9 -> LocalizableString.Res(R.string.house_description_9)
+            10 -> LocalizableString.Res(R.string.house_description_10)
+            11 -> LocalizableString.Res(R.string.house_description_11)
+            12 -> LocalizableString.Res(R.string.house_description_12)
+            else -> LocalizableString.ResWithArgs(R.string.house_description_generic, listOf(house))
         }
     }
 
     /**
      * Get life area effect based on Argala
      */
-    private fun getLifeAreaEffect(house: Int, nature: ArgalaNature, argalaType: ArgalaType): String {
-        val effect = if (nature == ArgalaNature.SHUBHA) "support" else "challenge"
+    private fun getLifeAreaEffect(house: Int, nature: ArgalaNature, argalaType: ArgalaType): LocalizableString {
+        val effect = if (nature == ArgalaNature.SHUBHA)
+            LocalizableString.Res(R.string.life_area_effect_support)
+        else
+            LocalizableString.Res(R.string.life_area_effect_challenge)
+
         val source = when (argalaType) {
-            ArgalaType.SECONDARY_ARGALA -> "wealth and resources"
-            ArgalaType.PRIMARY_ARGALA -> "happiness and comfort"
-            ArgalaType.GAINS_ARGALA -> "gains and aspirations"
-            ArgalaType.SPECIAL_ARGALA -> "intelligence and creativity"
+            ArgalaType.SECONDARY_ARGALA -> LocalizableString.Res(R.string.life_area_source_wealth)
+            ArgalaType.PRIMARY_ARGALA -> LocalizableString.Res(R.string.life_area_source_happiness)
+            ArgalaType.GAINS_ARGALA -> LocalizableString.Res(R.string.life_area_source_gains)
+            ArgalaType.SPECIAL_ARGALA -> LocalizableString.Res(R.string.life_area_source_intelligence)
         }
 
         val area = when (house) {
-            1 -> "personality and health"
-            7 -> "relationships and marriage"
-            10 -> "career and public life"
-            4 -> "home and mother"
-            5 -> "children and creativity"
-            else -> "house $house matters"
+            1 -> LocalizableString.Res(R.string.life_area_personality)
+            7 -> LocalizableString.Res(R.string.life_area_relationships)
+            10 -> LocalizableString.Res(R.string.life_area_career)
+            4 -> LocalizableString.Res(R.string.life_area_home)
+            5 -> LocalizableString.Res(R.string.life_area_children)
+            else -> LocalizableString.ResWithArgs(R.string.life_area_house_matters, listOf(house))
         }
 
-        return "Through $source, there is $effect for $area"
+        return LocalizableString.ResWithArgs(R.string.life_area_effect_through_source, listOf(source, effect, area))
     }
 
     /**
      * Get recommendation for Argala
      */
-    private fun getArgalaRecommendation(house: Int, nature: ArgalaNature, planets: List<Planet>): String {
+    private fun getArgalaRecommendation(house: Int, nature: ArgalaNature, planets: List<Planet>): LocalizableString {
         return if (nature == ArgalaNature.ASHUBHA) {
             val mainPlanet = planets.firstOrNull()
             when (mainPlanet) {
-                Planet.SATURN -> "Perform Saturn remedies: service, blue sapphire (if suitable), Saturday fasting"
-                Planet.MARS -> "Perform Mars remedies: Hanuman Chalisa, coral (if suitable), Tuesday fasting"
-                Planet.RAHU -> "Perform Rahu remedies: Durga worship, hessonite (if suitable), meditation"
-                Planet.KETU -> "Perform Ketu remedies: Ganesha worship, cat's eye (if suitable), spiritual practices"
-                else -> "Strengthen the Argala-causing planet through appropriate remedies"
+                Planet.SATURN -> LocalizableString.Res(R.string.argala_recommendation_remedy_saturn)
+                Planet.MARS -> LocalizableString.Res(R.string.argala_recommendation_remedy_mars)
+                Planet.RAHU -> LocalizableString.Res(R.string.argala_recommendation_remedy_rahu)
+                Planet.KETU -> LocalizableString.Res(R.string.argala_recommendation_remedy_ketu)
+                else -> LocalizableString.Res(R.string.argala_recommendation_remedy_strengthen)
             }
         } else {
-            "Leverage this supportive Argala during favorable dashas"
+            LocalizableString.Res(R.string.argala_recommendation_leverage)
         }
     }
 
@@ -814,9 +828,9 @@ object ArgalaCalculator {
     /**
      * Get Argala summary for a specific house
      */
-    fun getHouseSummary(chart: VedicChart, house: Int): String {
+    fun getHouseSummary(chart: VedicChart, house: Int): LocalizableString {
         val analysis = analyzeArgala(chart)
-        val houseResult = analysis.houseArgalas[house] ?: return "No Argala data available"
+        val houseResult = analysis.houseArgalas[house] ?: return LocalizableString.Res(R.string.argala_house_summary_no_data)
         return houseResult.interpretation
     }
 
