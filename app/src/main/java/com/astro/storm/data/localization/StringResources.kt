@@ -386,6 +386,7 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     DASHA_CURRENTLY_ACTIVE("Currently Active", "हाल सक्रिय"),
     DASHA_PROGRESS("Progress", "प्रगति"),
     DASHA_NO_ACTIVE_PERIOD("No active Dasha period", "कुनै सक्रिय दशा अवधि छैन"),
+    DASHA_LORD("Lord", "स्वामी"),
 
     // Time Units
     YEARS("years", "वर्ष"),
@@ -5127,6 +5128,34 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     UPACHAYA_SCREEN_DURATION("Transit Duration", "गोचर अवधि"),
     UPACHAYA_SCREEN_EFFECTS("Expected Effects", "अपेक्षित प्रभावहरू"),
     UPACHAYA_IMPROVEMENT_AREAS("Areas of Improvement", "सुधारका क्षेत्रहरू"),
+
+    // Sudarshana Chakra Screen specific
+    SUDARSHANA_TRIPLE_VIEW("Triple Reference System", "त्रि-संदर्भ प्रणाली"),
+    SUDARSHANA_YEAR_ANALYSIS("Year Analysis", "वर्ष विश्लेषण"),
+    SUDARSHANA_LAGNA_INFLUENCE("Lagna Influence", "लग्न प्रभाव"),
+    SUDARSHANA_CHANDRA_INFLUENCE("Chandra Influence", "चन्द्र प्रभाव"),
+    SUDARSHANA_SURYA_INFLUENCE("Surya Influence", "सूर्य प्रभाव"),
+    SUDARSHANA_CURRENT_SIGNS("Current Signs", "वर्तमान राशि"),
+    SUDARSHANA_HOUSE_SIGNIFICATIONS("House Significations", "भाव महत्त्व"),
+    SUDARSHANA_PLANETS_IN_SIGN("Planets in Sign", "राशिमा ग्रह"),
+    SUDARSHANA_ASPECTS_RECEIVED("Aspects Received", "प्राप्त दृष्टि"),
+    SUDARSHANA_STRONG_CONVERGENCE("Strong Convergence", "शक्तिशाली अभिसरण"),
+    SUDARSHANA_WEAK_CONVERGENCE("Weak Convergence", "कमजोर अभिसरण"),
+
+    // Ashtottari Dasha Screen specific
+    ASHTOTTARI_SCREEN_TITLE("Ashtottari Dasha", "अष्टोत्तरी दशा"),
+    ASHTOTTARI_SCREEN_SUBTITLE("108-Year Cycle Timeline", "१०८-वर्ष चक्र समयरेखा"),
+    ASHTOTTARI_SCREEN_ABOUT("About Ashtottari Dasha", "अष्टोत्तरी दशा बारेमा"),
+
+    // Upachaya specific additions
+    UPACHAYA_HOUSE_ANALYSIS("House Analysis", "भाव विश्लेषण"),
+    UPACHAYA_TRANSIT_DETAILS("Transit Details", "गोचर विवरण"),
+    UPACHAYA_UPCOMING_TRANSITS("Upcoming Transits", "आगामी गोचर"),
+    UPACHAYA_ACTIVE_ALERTS("Active Alerts", "सक्रिय चेतावनीहरू"),
+    UPACHAYA_SIGNIFICANT_TRANSITS("Significant Transits", "महत्त्वपूर्ण गोचर"),
+    UPACHAYA_TRANSIT_ASSESSMENT("Transit Assessment", "गोचर मूल्याङ्कन"),
+    UPACHAYA_REFERENCE_POINTS("Reference Points", "संदर्भ बिन्दु"),
+    UPACHAYA_ABOUT("About Upachaya", "उपचय बारेमा"),
 
     // General UI labels needed by screens
     BIRTH_NAKSHATRA("Birth Nakshatra", "जन्म नक्षत्र"),

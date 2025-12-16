@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.currentLanguage
@@ -275,7 +276,7 @@ private fun TabSelector(
 }
 
 @Composable
-private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: String) {
+private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -510,7 +511,7 @@ private fun SectionHeader(title: String, icon: androidx.compose.ui.graphics.vect
 }
 
 @Composable
-private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: String) {
+private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language) {
     var expanded by remember { mutableStateOf(false) }
 
     val severityColor = when (result.severity) {
@@ -677,7 +678,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: String) {
 }
 
 @Composable
-private fun GandantaPlanetCard(result: GandantaResult, language: String) {
+private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
     var expanded by remember { mutableStateOf(false) }
 
     val severityColor = when (result.severity) {
@@ -800,7 +801,7 @@ private fun GandantaPlanetCard(result: GandantaResult, language: String) {
 }
 
 @Composable
-private fun PushkaraNavamsaCard(result: PushkaraNavamsaResult, language: String) {
+private fun PushkaraNavamsaCard(result: PushkaraNavamsaResult, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -844,7 +845,7 @@ private fun PushkaraNavamsaCard(result: PushkaraNavamsaResult, language: String)
 }
 
 @Composable
-private fun PushkaraBhagaCard(result: PushkaraBhagaResult, language: String) {
+private fun PushkaraBhagaCard(result: PushkaraBhagaResult, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -880,7 +881,7 @@ private fun PushkaraBhagaCard(result: PushkaraBhagaResult, language: String) {
 }
 
 @Composable
-private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: String) {
+private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -967,7 +968,7 @@ private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: String)
 }
 
 @Composable
-private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: String) {
+private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),

@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyDosha
+import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -166,11 +167,11 @@ fun DivisionalChartsScreen(
 
                     // Content based on selected tab
                     when (selectedTab) {
-                        0 -> horaAnalysis?.let { HoraTab(it, language) }
-                        1 -> drekkanaAnalysis?.let { DrekkanaTab(it, language) }
-                        2 -> navamsaAnalysis?.let { NavamsaTab(it, language) }
-                        3 -> dashamsaAnalysis?.let { DashamsaTab(it, language) }
-                        4 -> dwadasamsaAnalysis?.let { DwadasamsaTab(it, language) }
+                        0 -> horaAnalysis?.let { HoraTab(it, language.code) }
+                        1 -> drekkanaAnalysis?.let { DrekkanaTab(it, language.code) }
+                        2 -> navamsaAnalysis?.let { NavamsaTab(it, language.code) }
+                        3 -> dashamsaAnalysis?.let { DashamsaTab(it, language.code) }
+                        4 -> dwadasamsaAnalysis?.let { DwadasamsaTab(it, language.code) }
                     }
                 }
             }
@@ -400,6 +401,7 @@ private fun WealthPotentialCard(analysis: HoraAnalysis) {
 
 @Composable
 private fun PlanetChipsCard(planets: List<Planet>, description: String, language: String) {
+    val lang = Language.fromCode(language)
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -413,7 +415,7 @@ private fun PlanetChipsCard(planets: List<Planet>, description: String, language
                         shape = RoundedCornerShape(16.dp)
                     ) {
                         Text(
-                            planet.getLocalizedName(language),
+                            planet.getLocalizedName(lang),
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
@@ -430,6 +432,7 @@ private fun PlanetChipsCard(planets: List<Planet>, description: String, language
 
 @Composable
 private fun WealthIndicatorCard(indicator: com.astro.storm.ephemeris.WealthIndicator, language: String) {
+    val lang = Language.fromCode(language)
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -454,7 +457,7 @@ private fun WealthIndicatorCard(indicator: com.astro.storm.ephemeris.WealthIndic
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        indicator.planet.getLocalizedName(language),
+                        indicator.planet.getLocalizedName(lang),
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )

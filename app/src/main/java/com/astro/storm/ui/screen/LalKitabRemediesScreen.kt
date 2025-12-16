@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.currentLanguage
@@ -306,7 +307,7 @@ private fun TabSelector(
 }
 
 @Composable
-private fun OverviewTab(analysis: LalKitabAnalysis, language: String) {
+private fun OverviewTab(analysis: LalKitabAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -404,7 +405,7 @@ private fun SectionHeader(title: String, icon: ImageVector, tint: Color) {
 }
 
 @Composable
-private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: String) {
+private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: Language) {
     var expanded by remember { mutableStateOf(false) }
 
     val severityColor = when (affliction.severity) {
@@ -548,7 +549,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: S
 }
 
 @Composable
-private fun RemedyCard(remedy: LalKitabRemedy, language: String) {
+private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -670,7 +671,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
 }
 
 @Composable
-private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: String) {
+private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -753,7 +754,7 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: String) {
 }
 
 @Composable
-private fun KarmicDebtCard(debt: KarmicDebt, language: String) {
+private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
     var expanded by remember { mutableStateOf(false) }
 
     val (icon, color, title) = when (debt.type) {
@@ -963,7 +964,7 @@ private fun DebtTypesReferenceCard() {
 }
 
 @Composable
-private fun WeeklyScheduleTab(analysis: LalKitabAnalysis, language: String) {
+private fun WeeklyScheduleTab(analysis: LalKitabAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -992,7 +993,7 @@ private fun WeeklyScheduleTab(analysis: LalKitabAnalysis, language: String) {
 }
 
 @Composable
-private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: String) {
+private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1071,7 +1072,7 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: String) {
 }
 
 @Composable
-private fun ColorDirectionTab(analysis: LalKitabAnalysis, language: String) {
+private fun ColorDirectionTab(analysis: LalKitabAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -1107,7 +1108,7 @@ private fun ColorDirectionTab(analysis: LalKitabAnalysis, language: String) {
 }
 
 @Composable
-private fun ColorRemedyCard(remedy: ColorRemedy, language: String) {
+private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1206,7 +1207,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: String) {
 }
 
 @Composable
-private fun DirectionRemedyCard(remedy: DirectionRemedy, language: String) {
+private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
