@@ -4670,6 +4670,62 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     ARGALA_HOUSE_STRENGTH("House Argala Strength", "भाव अर्गला बल"),
     ARGALA_PLANET_CAUSES("Planet Argala Effects", "ग्रह अर्गला प्रभाव"),
 
+    // Argala UI Strings
+    ARGALA_CALCULATING("Calculating Argala...", "अर्गला गणना गर्दै..."),
+    ARGALA_CALCULATION_FAILED("Failed to calculate Argala", "अर्गला गणना असफल भयो"),
+    ARGALA_TYPES("Argala Types", "अर्गला प्रकारहरू"),
+    ARGALA_CHART_PATTERNS("Chart-Wide Argala Patterns", "कुण्डली-व्यापी अर्गला ढाँचाहरू"),
+    ARGALA_STRONGEST_SUPPORT("Strongest Support", "बलियो समर्थन"),
+    ARGALA_GREATEST_CHALLENGE("Greatest Challenge", "ठूलो चुनौती"),
+    ARGALA_MOST_OBSTRUCTED("Most Obstructed", "सबैभन्दा बाधित"),
+    ARGALA_LEAST_OBSTRUCTED("Least Obstructed", "कम बाधित"),
+    ARGALA_RECOMMENDATIONS("Recommendations", "सिफारिसहरू"),
+    ARGALA_KARMA_PATTERNS("Karma Patterns", "कर्म ढाँचाहरू"),
+    ARGALA_SIGNIFICANT("Significant Argalas", "महत्त्वपूर्ण अर्गलाहरू"),
+    ARGALA_SELECT_HOUSE("Select House to Analyze", "विश्लेषण गर्न भाव छान्नुहोस्"),
+    ARGALA_INFLUENCES("Argala Influences", "अर्गला प्रभावहरू"),
+    ARGALA_INFLUENCES_RECEIVED("Argala Influences Received", "प्राप्त अर्गला प्रभावहरू"),
+    ARGALA_OBSTRUCTIONS_RECEIVED("Obstructions Received", "प्राप्त बाधाहरू"),
+    ARGALA_KEY_CONCEPTS("Key Concepts:", "मुख्य अवधारणाहरू:"),
+    ARGALA_SOURCE("Source: Jaimini Sutras (Chapter 1, Pada 1, Sutras 5-8)", "स्रोत: जैमिनी सूत्र (अध्याय १, पद १, सूत्र ५-८)"),
+    ARGALA_STRENGTH_LABEL("Strength:", "बल:"),
+    ARGALA_OBSTRUCTION_LABEL("Obstruction:", "बाधा:"),
+    ARGALA_EFFECTIVE("Effective", "प्रभावकारी"),
+    ARGALA_BENEFIC_STRENGTH("Benefic Strength", "शुभ बल"),
+    ARGALA_MALEFIC_STRENGTH("Malefic Strength", "अशुभ बल"),
+    ARGALA_IN_HOUSE("In House %d", "भाव %d मा"),
+    ARGALA_NET_STRENGTH("Net Strength: %.2f", "शुद्ध बल: %.2f"),
+
+    // Argala Strength Levels
+    ARGALA_STRENGTH_VERY_STRONG("Very Strong", "धेरै बलियो"),
+    ARGALA_STRENGTH_STRONG("Strong", "बलियो"),
+    ARGALA_STRENGTH_MODERATE("Moderate", "मध्यम"),
+    ARGALA_STRENGTH_WEAK("Weak", "कमजोर"),
+    ARGALA_STRENGTH_OBSTRUCTED_LEVEL("Obstructed", "बाधित"),
+
+    // House Significations
+    ARGALA_HOUSE_1("Self, Personality", "आत्म, व्यक्तित्व"),
+    ARGALA_HOUSE_2("Wealth, Family", "धन, परिवार"),
+    ARGALA_HOUSE_3("Courage, Siblings", "साहस, भाइबहिनी"),
+    ARGALA_HOUSE_4("Home, Mother", "घर, आमा"),
+    ARGALA_HOUSE_5("Children, Intelligence", "सन्तान, बुद्धि"),
+    ARGALA_HOUSE_6("Enemies, Service", "शत्रु, सेवा"),
+    ARGALA_HOUSE_7("Marriage, Partnership", "विवाह, साझेदारी"),
+    ARGALA_HOUSE_8("Transformation, Longevity", "रूपान्तरण, दीर्घायु"),
+    ARGALA_HOUSE_9("Fortune, Dharma", "भाग्य, धर्म"),
+    ARGALA_HOUSE_10("Career, Status", "क्यारियर, स्थिति"),
+    ARGALA_HOUSE_11("Gains, Aspirations", "लाभ, आकांक्षाहरू"),
+    ARGALA_HOUSE_12("Loss, Liberation", "हानि, मुक्ति"),
+
+    // Key concepts for info dialog
+    ARGALA_CONCEPT_1("2nd, 4th, 11th, 5th houses create Argala", "दोस्रो, चौथो, एघारौं, पाँचौं भावहरूले अर्गला सिर्जना गर्छन्"),
+    ARGALA_CONCEPT_2("12th, 10th, 3rd, 9th houses obstruct Argala", "बाह्रौं, दशौं, तेस्रो, नवौं भावहरूले अर्गलामा बाधा गर्छन्"),
+    ARGALA_CONCEPT_3("Benefic planets = Shubha (auspicious) Argala", "शुभ ग्रहहरू = शुभ (शुभकारी) अर्गला"),
+    ARGALA_CONCEPT_4("Malefic planets = Ashubha (inauspicious) Argala", "पाप ग्रहहरू = अशुभ (अशुभकारी) अर्गला"),
+    ARGALA_CONCEPT_5("More planets = stronger intervention", "धेरै ग्रह = बलियो हस्तक्षेप"),
+    ARGALA_CONCEPT_6("Net effect = Primary Argala - Virodha", "शुद्ध प्रभाव = प्राथमिक अर्गला - विरोध"),
+    ARGALA_HOUSE_LABEL("House %d", "भाव %d"),
+
     // ============================================
     // CHARA DASHA (JAIMINI) SYSTEM
     // ============================================

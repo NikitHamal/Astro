@@ -12,7 +12,7 @@ import com.astro.storm.data.model.ZodiacSign
 import kotlin.math.abs
 
 /**
- * Centralized utility object for common Vedic astrology calculations.
+ * Utility object for common Vedic astrology calculations.
  *
  * This module provides reusable functions for:
  * - Planetary dignity (exaltation, debilitation, own sign, Moolatrikona)
@@ -22,103 +22,65 @@ import kotlin.math.abs
  * - Combustion and affliction calculations
  * - Aspect calculations
  *
+ * NOTE: This utility class delegates to AstrologicalConstants for all fundamental
+ * constant values. Any new constants should be added to AstrologicalConstants.kt,
+ * not here. This class focuses on utility functions that operate on those constants.
+ *
  * All calculations follow traditional Vedic (Parashari) astrology principles.
  *
+ * @see AstrologicalConstants for all fundamental constants
  * @see MatchmakingCalculator for Kundali matching calculations
  * @see YogaCalculator for yoga detection
  */
 object VedicAstrologyUtils {
 
     // ============================================================================
-    // PLANETARY DIGNITY - EXALTATION, DEBILITATION, MOOLATRIKONA, OWN SIGN
+    // PLANETARY DIGNITY - USING CENTRALIZED CONSTANTS
     // ============================================================================
 
-    /**
-     * Exaltation signs for each planet.
-     * A planet in its exaltation sign is at its strongest state.
-     *
-     * Classical references:
-     * - Sun: Aries (10 degrees - exact exaltation point)
-     * - Moon: Taurus (3 degrees)
-     * - Mars: Capricorn (28 degrees)
-     * - Mercury: Virgo (15 degrees)
-     * - Jupiter: Cancer (5 degrees)
-     * - Venus: Pisces (27 degrees)
-     * - Saturn: Libra (20 degrees)
-     * - Rahu: Gemini/Taurus (varies by tradition)
-     * - Ketu: Sagittarius/Scorpio (varies by tradition)
-     */
-    private val exaltationSigns = mapOf(
-        Planet.SUN to ZodiacSign.ARIES,
-        Planet.MOON to ZodiacSign.TAURUS,
-        Planet.MARS to ZodiacSign.CAPRICORN,
-        Planet.MERCURY to ZodiacSign.VIRGO,
-        Planet.JUPITER to ZodiacSign.CANCER,
-        Planet.VENUS to ZodiacSign.PISCES,
-        Planet.SATURN to ZodiacSign.LIBRA,
-        Planet.RAHU to ZodiacSign.GEMINI,    // Some texts use Taurus
-        Planet.KETU to ZodiacSign.SAGITTARIUS // Some texts use Scorpio
-    )
+    // Type alias for readability
+    typealias MoolatrikonaRange = AstrologicalConstants.MoolatrikonaRange
 
     /**
-     * Debilitation signs for each planet (opposite of exaltation).
-     * A planet in its debilitation sign is at its weakest state.
+     * Extended exaltation signs including Rahu/Ketu variations
+     * Uses AstrologicalConstants as base but extends with Rahu/Ketu using
+     * the Gemini/Sagittarius tradition (per some Parashari texts)
      */
-    private val debilitationSigns = mapOf(
-        Planet.SUN to ZodiacSign.LIBRA,
-        Planet.MOON to ZodiacSign.SCORPIO,
-        Planet.MARS to ZodiacSign.CANCER,
-        Planet.MERCURY to ZodiacSign.PISCES,
-        Planet.JUPITER to ZodiacSign.CAPRICORN,
-        Planet.VENUS to ZodiacSign.VIRGO,
-        Planet.SATURN to ZodiacSign.ARIES,
-        Planet.RAHU to ZodiacSign.SAGITTARIUS,
-        Planet.KETU to ZodiacSign.GEMINI
-    )
+    private val extendedExaltationSigns: Map<Planet, ZodiacSign> by lazy {
+        AstrologicalConstants.EXALTATION_SIGNS.toMutableMap().apply {
+            // Override Rahu/Ketu with Gemini/Sagittarius tradition if not already set
+            putIfAbsent(Planet.RAHU, ZodiacSign.GEMINI)
+            putIfAbsent(Planet.KETU, ZodiacSign.SAGITTARIUS)
+        }
+    }
 
     /**
-     * Moolatrikona signs and degree ranges.
-     * Moolatrikona is a special dignity between exaltation and own sign.
-     * The planet functions optimally in these degrees.
+     * Extended debilitation signs including Rahu/Ketu
      */
-    data class MoolatrikonaRange(val sign: ZodiacSign, val startDegree: Double, val endDegree: Double)
+    private val extendedDebilitationSigns: Map<Planet, ZodiacSign> by lazy {
+        AstrologicalConstants.DEBILITATION_SIGNS.toMutableMap().apply {
+            putIfAbsent(Planet.RAHU, ZodiacSign.SAGITTARIUS)
+            putIfAbsent(Planet.KETU, ZodiacSign.GEMINI)
+        }
+    }
 
     /**
-     * Moolatrikona signs and degree ranges.
-     * Using consolidated values from AstrologicalConstants for consistency.
-     * Moon's Moolatrikona is 4°-30° Taurus per BPHS Chapter 3.
+     * Extended own signs including Rahu/Ketu co-rulerships
+     * Note: Rahu is considered co-ruler of Aquarius, Ketu of Scorpio
      */
-    private val moolatrikonaSigns = mapOf(
-        Planet.SUN to MoolatrikonaRange(ZodiacSign.LEO, 0.0, 20.0),
-        Planet.MOON to MoolatrikonaRange(ZodiacSign.TAURUS, 4.0, 30.0),
-        Planet.MARS to MoolatrikonaRange(ZodiacSign.ARIES, 0.0, 12.0),
-        Planet.MERCURY to MoolatrikonaRange(ZodiacSign.VIRGO, 16.0, 20.0),
-        Planet.JUPITER to MoolatrikonaRange(ZodiacSign.SAGITTARIUS, 0.0, 10.0),
-        Planet.VENUS to MoolatrikonaRange(ZodiacSign.LIBRA, 0.0, 15.0),
-        Planet.SATURN to MoolatrikonaRange(ZodiacSign.AQUARIUS, 0.0, 20.0)
-    )
-
-    /**
-     * Own signs for each planet (Swakshetra).
-     * Each planet rules one or two signs.
-     */
-    private val ownSigns = mapOf(
-        Planet.SUN to listOf(ZodiacSign.LEO),
-        Planet.MOON to listOf(ZodiacSign.CANCER),
-        Planet.MARS to listOf(ZodiacSign.ARIES, ZodiacSign.SCORPIO),
-        Planet.MERCURY to listOf(ZodiacSign.GEMINI, ZodiacSign.VIRGO),
-        Planet.JUPITER to listOf(ZodiacSign.SAGITTARIUS, ZodiacSign.PISCES),
-        Planet.VENUS to listOf(ZodiacSign.TAURUS, ZodiacSign.LIBRA),
-        Planet.SATURN to listOf(ZodiacSign.CAPRICORN, ZodiacSign.AQUARIUS),
-        Planet.RAHU to listOf(ZodiacSign.AQUARIUS),  // Co-rulership
-        Planet.KETU to listOf(ZodiacSign.SCORPIO)    // Co-rulership
-    )
+    private val extendedOwnSigns: Map<Planet, List<ZodiacSign>> by lazy {
+        val base = AstrologicalConstants.OWN_SIGNS.mapValues { it.value.toList() }.toMutableMap()
+        base[Planet.RAHU] = listOf(ZodiacSign.AQUARIUS)
+        base[Planet.KETU] = listOf(ZodiacSign.SCORPIO)
+        base
+    }
 
     /**
      * Check if a planet is exalted in its current sign.
+     * Uses extended map that includes Rahu/Ketu.
      */
     fun isExalted(planet: Planet, sign: ZodiacSign): Boolean {
-        return exaltationSigns[planet] == sign
+        return extendedExaltationSigns[planet] == sign
     }
 
     /**
@@ -130,9 +92,10 @@ object VedicAstrologyUtils {
 
     /**
      * Check if a planet is debilitated in its current sign.
+     * Uses extended map that includes Rahu/Ketu.
      */
     fun isDebilitated(planet: Planet, sign: ZodiacSign): Boolean {
-        return debilitationSigns[planet] == sign
+        return extendedDebilitationSigns[planet] == sign
     }
 
     /**
@@ -144,9 +107,10 @@ object VedicAstrologyUtils {
 
     /**
      * Check if a planet is in its own sign (Swakshetra).
+     * Uses extended map that includes Rahu/Ketu co-rulerships.
      */
     fun isInOwnSign(planet: Planet, sign: ZodiacSign): Boolean {
-        return ownSigns[planet]?.contains(sign) == true || sign.ruler == planet
+        return extendedOwnSigns[planet]?.contains(sign) == true || sign.ruler == planet
     }
 
     /**
@@ -158,12 +122,10 @@ object VedicAstrologyUtils {
 
     /**
      * Check if a planet is in its Moolatrikona sign and degree range.
+     * Delegates to AstrologicalConstants.
      */
     fun isInMoolatrikona(planet: Planet, sign: ZodiacSign, degreeInSign: Double): Boolean {
-        val moolatrikona = moolatrikonaSigns[planet] ?: return false
-        return sign == moolatrikona.sign &&
-               degreeInSign >= moolatrikona.startDegree &&
-               degreeInSign <= moolatrikona.endDegree
+        return AstrologicalConstants.isInMoolatrikona(planet, sign, degreeInSign)
     }
 
     /**
@@ -204,38 +166,30 @@ object VedicAstrologyUtils {
 
     // ============================================================================
     // PLANETARY RELATIONSHIPS - FRIENDSHIPS
+    // Using AstrologicalConstants with extended support for Rahu/Ketu
     // ============================================================================
 
     /**
-     * Natural friendships between planets (Naisargika Mitra).
-     * Based on Parashari system.
+     * Extended natural friendships including Rahu/Ketu
+     * Based on Parashari system with traditional Rahu/Ketu relationships
      */
-    private val naturalFriends = mapOf(
-        Planet.SUN to setOf(Planet.MOON, Planet.MARS, Planet.JUPITER),
-        Planet.MOON to setOf(Planet.SUN, Planet.MERCURY),
-        Planet.MARS to setOf(Planet.SUN, Planet.MOON, Planet.JUPITER),
-        Planet.MERCURY to setOf(Planet.SUN, Planet.VENUS),
-        Planet.JUPITER to setOf(Planet.SUN, Planet.MOON, Planet.MARS),
-        Planet.VENUS to setOf(Planet.MERCURY, Planet.SATURN),
-        Planet.SATURN to setOf(Planet.MERCURY, Planet.VENUS),
-        Planet.RAHU to setOf(Planet.MERCURY, Planet.VENUS, Planet.SATURN),
-        Planet.KETU to setOf(Planet.MARS, Planet.VENUS, Planet.SATURN)
-    )
+    private val extendedNaturalFriends: Map<Planet, Set<Planet>> by lazy {
+        AstrologicalConstants.NATURAL_FRIENDS.toMutableMap().apply {
+            // Add Rahu/Ketu relationships per traditional texts
+            this[Planet.RAHU] = setOf(Planet.MERCURY, Planet.VENUS, Planet.SATURN)
+            this[Planet.KETU] = setOf(Planet.MARS, Planet.VENUS, Planet.SATURN)
+        }
+    }
 
     /**
-     * Natural enemies between planets (Naisargika Shatru).
+     * Extended natural enemies including Rahu/Ketu
      */
-    private val naturalEnemies = mapOf(
-        Planet.SUN to setOf(Planet.SATURN, Planet.VENUS),
-        Planet.MOON to setOf<Planet>(), // Moon has no natural enemies
-        Planet.MARS to setOf(Planet.MERCURY),
-        Planet.MERCURY to setOf(Planet.MOON),
-        Planet.JUPITER to setOf(Planet.MERCURY, Planet.VENUS),
-        Planet.VENUS to setOf(Planet.SUN, Planet.MOON),
-        Planet.SATURN to setOf(Planet.SUN, Planet.MOON, Planet.MARS),
-        Planet.RAHU to setOf(Planet.SUN, Planet.MOON, Planet.MARS),
-        Planet.KETU to setOf(Planet.SUN, Planet.MOON)
-    )
+    private val extendedNaturalEnemies: Map<Planet, Set<Planet>> by lazy {
+        AstrologicalConstants.NATURAL_ENEMIES.toMutableMap().apply {
+            this[Planet.RAHU] = setOf(Planet.SUN, Planet.MOON, Planet.MARS)
+            this[Planet.KETU] = setOf(Planet.SUN, Planet.MOON)
+        }
+    }
 
     /**
      * Relationship types between planets.
@@ -250,16 +204,18 @@ object VedicAstrologyUtils {
 
     /**
      * Check if two planets are natural friends.
+     * Uses extended map with Rahu/Ketu support.
      */
     fun areNaturalFriends(planet1: Planet, planet2: Planet): Boolean {
-        return naturalFriends[planet1]?.contains(planet2) == true
+        return extendedNaturalFriends[planet1]?.contains(planet2) == true
     }
 
     /**
      * Check if two planets are natural enemies.
+     * Uses extended map with Rahu/Ketu support.
      */
     fun areNaturalEnemies(planet1: Planet, planet2: Planet): Boolean {
-        return naturalEnemies[planet1]?.contains(planet2) == true
+        return extendedNaturalEnemies[planet1]?.contains(planet2) == true
     }
 
     /**
@@ -339,50 +295,53 @@ object VedicAstrologyUtils {
     }
 
     // ============================================================================
-    // HOUSE CLASSIFICATIONS
+    // HOUSE CLASSIFICATIONS - Delegates to AstrologicalConstants
     // ============================================================================
 
     /** Kendra houses (Angular/Quadrant) - 1, 4, 7, 10 */
-    val KENDRA_HOUSES = setOf(1, 4, 7, 10)
+    val KENDRA_HOUSES: Set<Int> get() = AstrologicalConstants.KENDRA_HOUSES
 
     /** Trikona houses (Trine) - 1, 5, 9 */
-    val TRIKONA_HOUSES = setOf(1, 5, 9)
+    val TRIKONA_HOUSES: Set<Int> get() = AstrologicalConstants.TRIKONA_HOUSES
 
     /** Dusthana houses (Malefic) - 6, 8, 12 */
-    val DUSTHANA_HOUSES = setOf(6, 8, 12)
+    val DUSTHANA_HOUSES: Set<Int> get() = AstrologicalConstants.DUSTHANA_HOUSES
 
     /** Upachaya houses (Growth) - 3, 6, 10, 11 */
-    val UPACHAYA_HOUSES = setOf(3, 6, 10, 11)
+    val UPACHAYA_HOUSES: Set<Int> get() = AstrologicalConstants.UPACHAYA_HOUSES
 
     /** Maraka houses (Death-inflicting) - 2, 7 */
-    val MARAKA_HOUSES = setOf(2, 7)
+    val MARAKA_HOUSES: Set<Int> get() = AstrologicalConstants.MARAKA_HOUSES
 
     /** Dharma houses - 1, 5, 9 */
-    val DHARMA_HOUSES = setOf(1, 5, 9)
+    val DHARMA_HOUSES: Set<Int> get() = AstrologicalConstants.DHARMA_HOUSES
 
     /** Artha houses - 2, 6, 10 */
-    val ARTHA_HOUSES = setOf(2, 6, 10)
+    val ARTHA_HOUSES: Set<Int> get() = AstrologicalConstants.ARTHA_HOUSES
 
     /** Kama houses - 3, 7, 11 */
-    val KAMA_HOUSES = setOf(3, 7, 11)
+    val KAMA_HOUSES: Set<Int> get() = AstrologicalConstants.KAMA_HOUSES
 
     /** Moksha houses - 4, 8, 12 */
-    val MOKSHA_HOUSES = setOf(4, 8, 12)
+    val MOKSHA_HOUSES: Set<Int> get() = AstrologicalConstants.MOKSHA_HOUSES
 
     /**
      * Check if a house is a Kendra (angular) house.
+     * Delegates to AstrologicalConstants.
      */
-    fun isKendra(house: Int): Boolean = house in KENDRA_HOUSES
+    fun isKendra(house: Int): Boolean = AstrologicalConstants.isKendra(house)
 
     /**
      * Check if a house is a Trikona (trine) house.
+     * Delegates to AstrologicalConstants.
      */
-    fun isTrikona(house: Int): Boolean = house in TRIKONA_HOUSES
+    fun isTrikona(house: Int): Boolean = AstrologicalConstants.isTrikona(house)
 
     /**
      * Check if a house is a Dusthana (malefic) house.
+     * Delegates to AstrologicalConstants.
      */
-    fun isDusthana(house: Int): Boolean = house in DUSTHANA_HOUSES
+    fun isDusthana(house: Int): Boolean = AstrologicalConstants.isDusthana(house)
 
     /**
      * Check if a house is an Upachaya (growth) house.
@@ -697,25 +656,13 @@ object VedicAstrologyUtils {
     }
 
     // ============================================================================
-    // COMBUSTION (ASTA) CALCULATIONS
+    // COMBUSTION (ASTA) CALCULATIONS - Using AstrologicalConstants
     // ============================================================================
-
-    /**
-     * Combustion orbs for each planet (degrees from Sun).
-     * When a planet is within these degrees of the Sun, it's considered combust.
-     */
-    private val combustionOrbs = mapOf(
-        Planet.MOON to 12.0,
-        Planet.MARS to 17.0,
-        Planet.MERCURY to 14.0,  // 12 when retrograde
-        Planet.JUPITER to 11.0,
-        Planet.VENUS to 10.0,    // 8 when retrograde
-        Planet.SATURN to 15.0
-    )
 
     /**
      * Check if a planet is combust (too close to Sun).
      * Combust planets lose strength and their significations suffer.
+     * Uses AstrologicalConstants.COMBUSTION_DEGREES for thresholds.
      *
      * @param planet The planet to check
      * @param planetLongitude The longitude of the planet
@@ -732,8 +679,9 @@ object VedicAstrologyUtils {
         // Sun, Rahu, Ketu cannot be combust
         if (planet in listOf(Planet.SUN, Planet.RAHU, Planet.KETU)) return false
 
-        val orb = combustionOrbs[planet] ?: return false
+        val orb = AstrologicalConstants.COMBUSTION_DEGREES[planet] ?: return false
         val adjustedOrb = when {
+            // Mercury and Venus have tighter orbs when retrograde (as per classical texts)
             planet == Planet.MERCURY && isRetrograde -> 12.0
             planet == Planet.VENUS && isRetrograde -> 8.0
             else -> orb
@@ -751,27 +699,15 @@ object VedicAstrologyUtils {
     }
 
     // ============================================================================
-    // DIG BALA (DIRECTIONAL STRENGTH)
+    // DIG BALA (DIRECTIONAL STRENGTH) - Using AstrologicalConstants
     // ============================================================================
 
     /**
-     * Houses where planets have maximum Dig Bala (directional strength).
-     */
-    private val digBalaHouses = mapOf(
-        Planet.SUN to 10,      // 10th house (South/Midheaven)
-        Planet.MARS to 10,     // 10th house
-        Planet.JUPITER to 1,   // 1st house (East/Ascendant)
-        Planet.MERCURY to 1,   // 1st house
-        Planet.MOON to 4,      // 4th house (North/IC)
-        Planet.VENUS to 4,     // 4th house
-        Planet.SATURN to 7     // 7th house (West/Descendant)
-    )
-
-    /**
      * Check if a planet has Dig Bala (directional strength).
+     * Delegates to AstrologicalConstants.
      */
     fun hasDigBala(planet: Planet, house: Int): Boolean {
-        return digBalaHouses[planet] == house
+        return AstrologicalConstants.hasDigBala(planet, house)
     }
 
     /**
@@ -782,29 +718,31 @@ object VedicAstrologyUtils {
     }
 
     // ============================================================================
-    // BENEFIC/MALEFIC CLASSIFICATION
+    // BENEFIC/MALEFIC CLASSIFICATION - Using AstrologicalConstants
     // ============================================================================
 
-    /** Natural benefics */
-    val NATURAL_BENEFICS = setOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY, Planet.MOON)
+    /** Natural benefics - delegates to AstrologicalConstants */
+    val NATURAL_BENEFICS: Set<Planet> get() = AstrologicalConstants.NATURAL_BENEFICS
 
-    /** Natural malefics */
-    val NATURAL_MALEFICS = setOf(Planet.SUN, Planet.MARS, Planet.SATURN, Planet.RAHU, Planet.KETU)
+    /** Natural malefics - delegates to AstrologicalConstants */
+    val NATURAL_MALEFICS: Set<Planet> get() = AstrologicalConstants.NATURAL_MALEFICS
 
     /**
      * Check if a planet is naturally benefic.
      * Note: Mercury becomes malefic when conjunct malefics.
      * Note: Moon becomes malefic when waning (Krishna Paksha).
+     * Delegates to AstrologicalConstants.
      */
     fun isNaturalBenefic(planet: Planet): Boolean {
-        return planet in NATURAL_BENEFICS
+        return AstrologicalConstants.isNaturalBenefic(planet)
     }
 
     /**
      * Check if a planet is naturally malefic.
+     * Delegates to AstrologicalConstants.
      */
     fun isNaturalMalefic(planet: Planet): Boolean {
-        return planet in NATURAL_MALEFICS
+        return AstrologicalConstants.isNaturalMalefic(planet)
     }
 
     /**
@@ -812,7 +750,7 @@ object VedicAstrologyUtils {
      * A planet ruling Kendra or Trikona becomes benefic for that ascendant.
      */
     fun isFunctionalBenefic(planet: Planet, ascendantSign: ZodiacSign): Boolean {
-        val ruledSigns = ownSigns[planet] ?: emptyList()
+        val ruledSigns = extendedOwnSigns[planet] ?: emptyList()
 
         return ruledSigns.any { sign ->
             val houseFromAsc = getHouseFromSigns(sign, ascendantSign)
@@ -825,7 +763,7 @@ object VedicAstrologyUtils {
      * A planet ruling Dusthana becomes malefic for that ascendant.
      */
     fun isFunctionalMalefic(planet: Planet, ascendantSign: ZodiacSign): Boolean {
-        val ruledSigns = ownSigns[planet] ?: emptyList()
+        val ruledSigns = extendedOwnSigns[planet] ?: emptyList()
 
         return ruledSigns.any { sign ->
             val houseFromAsc = getHouseFromSigns(sign, ascendantSign)
@@ -834,20 +772,22 @@ object VedicAstrologyUtils {
     }
 
     // ============================================================================
-    // ASPECT CALCULATIONS
+    // ASPECT CALCULATIONS - Using AstrologicalConstants
     // ============================================================================
 
     /**
-     * Standard aspects that all planets have (7th house from their position).
-     * Special aspects are handled separately.
+     * Extended special aspects including Rahu/Ketu (some schools treat them like Jupiter)
      */
-    private val specialAspects = mapOf(
-        Planet.MARS to listOf(4, 8),         // Mars aspects 4th and 8th additionally
-        Planet.JUPITER to listOf(5, 9),      // Jupiter aspects 5th and 9th additionally
-        Planet.SATURN to listOf(3, 10),      // Saturn aspects 3rd and 10th additionally
-        Planet.RAHU to listOf(5, 9),         // Rahu aspects like Jupiter (some schools)
-        Planet.KETU to listOf(5, 9)          // Ketu aspects like Jupiter (some schools)
-    )
+    private val extendedSpecialAspects: Map<Planet, List<Int>> by lazy {
+        // Start with AstrologicalConstants special aspects (Mars, Jupiter, Saturn)
+        val base = AstrologicalConstants.SPECIAL_ASPECTS.mapValues { (_, aspectMap) ->
+            aspectMap.keys.toList()
+        }.toMutableMap()
+        // Add Rahu/Ketu aspects (5th and 9th like Jupiter, per some traditions)
+        base[Planet.RAHU] = listOf(5, 9)
+        base[Planet.KETU] = listOf(5, 9)
+        base
+    }
 
     /**
      * Get all houses a planet aspects from its current house.
@@ -862,8 +802,8 @@ object VedicAstrologyUtils {
         val seventhHouse = ((fromHouse + 6) % 12).let { if (it == 0) 12 else it }
         aspects.add(seventhHouse)
 
-        // Add special aspects
-        specialAspects[planet]?.forEach { offset ->
+        // Add special aspects from extended map
+        extendedSpecialAspects[planet]?.forEach { offset ->
             val aspectedHouse = ((fromHouse + offset - 1) % 12).let { if (it == 0) 12 else it }
             aspects.add(aspectedHouse)
         }
@@ -878,15 +818,24 @@ object VedicAstrologyUtils {
         return targetHouse in getAspectedHouses(planet, fromHouse)
     }
 
+    /**
+     * Get aspect strength for a planet's aspect on a house.
+     * Delegates to AstrologicalConstants for strength values.
+     */
+    fun getAspectStrength(planet: Planet, aspectHouse: Int): Double {
+        return AstrologicalConstants.getSpecialAspectStrength(planet, aspectHouse)
+    }
+
     // ============================================================================
-    // UTILITY FUNCTIONS
+    // UTILITY FUNCTIONS - Some delegate to AstrologicalConstants
     // ============================================================================
 
     /**
      * Normalize an angle to 0-360 range.
+     * Delegates to AstrologicalConstants for consistency.
      */
     fun normalizeAngle(angle: Double): Double {
-        return ((angle % 360.0) + 360.0) % 360.0
+        return AstrologicalConstants.normalizeDegree(angle)
     }
 
     /**

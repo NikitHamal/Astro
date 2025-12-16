@@ -13,14 +13,25 @@ import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
+/**
+ * High-precision math context for dasha calculations
+ * Uses 20 significant digits to prevent floating-point errors at dasha boundaries
+ */
 private val MATH_CONTEXT = MathContext(20, RoundingMode.HALF_EVEN)
-private val DAYS_PER_YEAR_BD = BigDecimal("365.25")
-private val NAKSHATRA_SPAN_BD = BigDecimal("13.333333333333333333")
-private val TOTAL_CYCLE_YEARS_BD = BigDecimal("120")
 
+/** Local reference to nakshatra span from AstrologicalConstants */
+private val NAKSHATRA_SPAN_BD: BigDecimal get() = AstrologicalConstants.NAKSHATRA_SPAN_PRECISE
+
+/** Local reference to total Vimsottari cycle from AstrologicalConstants */
+private val TOTAL_CYCLE_YEARS_BD: BigDecimal get() = AstrologicalConstants.VIMSOTTARI_TOTAL_YEARS_PRECISE
+
+/**
+ * Convert years to days using high-precision BigDecimal arithmetic
+ * Uses AstrologicalConstants.DAYS_PER_YEAR_PRECISE for consistency
+ */
 private fun yearsToRoundedDays(years: Double): Long {
     return BigDecimal(years.toString())
-        .multiply(DAYS_PER_YEAR_BD, MATH_CONTEXT)
+        .multiply(AstrologicalConstants.DAYS_PER_YEAR_PRECISE, MATH_CONTEXT)
         .setScale(0, RoundingMode.HALF_EVEN)
         .toLong()
         .coerceAtLeast(1L)
@@ -28,43 +39,45 @@ private fun yearsToRoundedDays(years: Double): Long {
 
 private fun yearsToRoundedDays(years: BigDecimal): Long {
     return years
-        .multiply(DAYS_PER_YEAR_BD, MATH_CONTEXT)
+        .multiply(AstrologicalConstants.DAYS_PER_YEAR_PRECISE, MATH_CONTEXT)
         .setScale(0, RoundingMode.HALF_EVEN)
         .toLong()
         .coerceAtLeast(1L)
 }
 
+/**
+ * Vimsottari Dasha Calculator
+ *
+ * This calculator implements the traditional Vimsottari Dasha system from BPHS Chapter 46.
+ * The Vimsottari system is based on the Moon's nakshatra position at birth and provides
+ * a 120-year cycle of planetary periods.
+ *
+ * Key features:
+ * - High-precision BigDecimal calculations to prevent boundary errors
+ * - Support for all 6 dasha levels (Mahadasha to Dehadasha)
+ * - Accurate balance calculation based on Moon's position within nakshatra
+ *
+ * All constants are sourced from AstrologicalConstants to ensure consistency.
+ *
+ * Reference: Brihat Parashara Hora Shastra (BPHS), Chapter 46
+ */
 object DashaCalculator {
 
-    private val DASHA_YEARS: Map<Planet, BigDecimal> = mapOf(
-        Planet.KETU to BigDecimal("7"),
-        Planet.VENUS to BigDecimal("20"),
-        Planet.SUN to BigDecimal("6"),
-        Planet.MOON to BigDecimal("10"),
-        Planet.MARS to BigDecimal("7"),
-        Planet.RAHU to BigDecimal("18"),
-        Planet.JUPITER to BigDecimal("16"),
-        Planet.SATURN to BigDecimal("19"),
-        Planet.MERCURY to BigDecimal("17")
-    )
-
-    private val DASHA_SEQUENCE = listOf(
-        Planet.KETU,
-        Planet.VENUS,
-        Planet.SUN,
-        Planet.MOON,
-        Planet.MARS,
-        Planet.RAHU,
-        Planet.JUPITER,
-        Planet.SATURN,
-        Planet.MERCURY
-    )
-
+    /** Maximum number of mahadashas to calculate (covers full cycle plus buffer) */
     private const val MAX_MAHADASHAS = 12
 
+    /**
+     * Get Vimsottari dasha period in years for a planet.
+     * Delegates to AstrologicalConstants for the authoritative values.
+     */
     fun getDashaYears(planet: Planet): Double {
-        return DASHA_YEARS[planet]?.toDouble() ?: 0.0
+        return AstrologicalConstants.getVimsottariPeriodPrecise(planet).toDouble()
     }
+
+    /**
+     * Get the dasha sequence (used internally and by other calculators)
+     */
+    fun getDashaSequence(): List<Planet> = AstrologicalConstants.VIMSOTTARI_SEQUENCE
 
     enum class CalculationDepth {
         MAHADASHA_ONLY,
@@ -557,7 +570,7 @@ object DashaCalculator {
         val nakshatraProgressBd = degreesIntoNakshatra.divide(NAKSHATRA_SPAN_BD, MATH_CONTEXT)
         val nakshatraProgress = nakshatraProgressBd.toDouble().coerceIn(0.0, 1.0)
 
-        val firstDashaYearsBd = DASHA_YEARS[nakshatraLord] ?: BigDecimal.ZERO
+        val firstDashaYearsBd = AstrologicalConstants.VIMSOTTARI_PERIODS_PRECISE[nakshatraLord] ?: BigDecimal.ZERO
         val elapsedInFirstDashaBd = nakshatraProgressBd.multiply(firstDashaYearsBd, MATH_CONTEXT)
         val balanceOfFirstDashaBd = firstDashaYearsBd.subtract(elapsedInFirstDashaBd, MATH_CONTEXT)
         val balanceOfFirstDasha = balanceOfFirstDashaBd.toDouble().coerceAtLeast(0.0)
@@ -628,7 +641,7 @@ object DashaCalculator {
         val mahadashas = mutableListOf<Mahadasha>()
         var currentStartDate = birthDate
 
-        val startIndex = DASHA_SEQUENCE.indexOf(startingDashaLord)
+        val startIndex = AstrologicalConstants.VIMSOTTARI_SEQUENCE.indexOf(startingDashaLord)
         if (startIndex == -1) {
             throw IllegalArgumentException("Invalid starting dasha lord: $startingDashaLord")
         }
@@ -662,9 +675,9 @@ object DashaCalculator {
         currentStartDate = firstDashaEndDate
 
         repeat(MAX_MAHADASHAS - 1) { cycle ->
-            val planetIndex = (startIndex + 1 + cycle) % DASHA_SEQUENCE.size
-            val planet = DASHA_SEQUENCE[planetIndex]
-            val dashaYearsBd = DASHA_YEARS[planet] ?: BigDecimal.ZERO
+            val planetIndex = (startIndex + 1 + cycle) % AstrologicalConstants.VIMSOTTARI_SEQUENCE.size
+            val planet = AstrologicalConstants.VIMSOTTARI_SEQUENCE[planetIndex]
+            val dashaYearsBd = AstrologicalConstants.VIMSOTTARI_PERIODS_PRECISE[planet] ?: BigDecimal.ZERO
             val dashaDays = yearsToRoundedDays(dashaYearsBd)
             val endDate = currentStartDate.plusDays(dashaDays)
             val isActive = !targetDate.isBefore(currentStartDate) && !targetDate.isAfter(endDate)
@@ -704,13 +717,13 @@ object DashaCalculator {
         val antardashas = mutableListOf<Antardasha>()
         var currentStart = mahadashaStart
 
-        val startIndex = DASHA_SEQUENCE.indexOf(mahadashaPlanet)
+        val startIndex = AstrologicalConstants.VIMSOTTARI_SEQUENCE.indexOf(mahadashaPlanet)
 
         for (i in 0 until 9) {
-            val planetIndex = (startIndex + i) % DASHA_SEQUENCE.size
-            val antarPlanet = DASHA_SEQUENCE[planetIndex]
+            val planetIndex = (startIndex + i) % AstrologicalConstants.VIMSOTTARI_SEQUENCE.size
+            val antarPlanet = AstrologicalConstants.VIMSOTTARI_SEQUENCE[planetIndex]
 
-            val antarYearsBd = DASHA_YEARS[antarPlanet] ?: BigDecimal.ZERO
+            val antarYearsBd = AstrologicalConstants.VIMSOTTARI_PERIODS_PRECISE[antarPlanet] ?: BigDecimal.ZERO
             val proportionalDurationBd = antarYearsBd
                 .divide(TOTAL_CYCLE_YEARS_BD, MATH_CONTEXT)
                 .multiply(mahadashaDurationYearsBd, MATH_CONTEXT)
@@ -772,13 +785,13 @@ object DashaCalculator {
         val pratyantardashas = mutableListOf<Pratyantardasha>()
         var currentStart = antarStart
 
-        val startIndex = DASHA_SEQUENCE.indexOf(antardashaPlanet)
+        val startIndex = AstrologicalConstants.VIMSOTTARI_SEQUENCE.indexOf(antardashaPlanet)
 
         for (i in 0 until 9) {
-            val planetIndex = (startIndex + i) % DASHA_SEQUENCE.size
-            val pratyantarPlanet = DASHA_SEQUENCE[planetIndex]
+            val planetIndex = (startIndex + i) % AstrologicalConstants.VIMSOTTARI_SEQUENCE.size
+            val pratyantarPlanet = AstrologicalConstants.VIMSOTTARI_SEQUENCE[planetIndex]
 
-            val pratyantarYearsBd = DASHA_YEARS[pratyantarPlanet] ?: BigDecimal.ZERO
+            val pratyantarYearsBd = AstrologicalConstants.VIMSOTTARI_PERIODS_PRECISE[pratyantarPlanet] ?: BigDecimal.ZERO
             val proportionalDurationBd = pratyantarYearsBd
                 .divide(TOTAL_CYCLE_YEARS_BD, MATH_CONTEXT)
                 .multiply(antarDurationYearsBd, MATH_CONTEXT)
@@ -830,13 +843,13 @@ object DashaCalculator {
         val sookshmadashas = mutableListOf<Sookshmadasha>()
         var currentStart = pratyantarStart
 
-        val startIndex = DASHA_SEQUENCE.indexOf(pratyantardashaPlanet)
+        val startIndex = AstrologicalConstants.VIMSOTTARI_SEQUENCE.indexOf(pratyantardashaPlanet)
 
         for (i in 0 until 9) {
-            val planetIndex = (startIndex + i) % DASHA_SEQUENCE.size
-            val sookshmaPlanet = DASHA_SEQUENCE[planetIndex]
+            val planetIndex = (startIndex + i) % AstrologicalConstants.VIMSOTTARI_SEQUENCE.size
+            val sookshmaPlanet = AstrologicalConstants.VIMSOTTARI_SEQUENCE[planetIndex]
 
-            val sookshmaYearsBd = DASHA_YEARS[sookshmaPlanet] ?: BigDecimal.ZERO
+            val sookshmaYearsBd = AstrologicalConstants.VIMSOTTARI_PERIODS_PRECISE[sookshmaPlanet] ?: BigDecimal.ZERO
             val proportionalDurationBd = sookshmaYearsBd
                 .divide(TOTAL_CYCLE_YEARS_BD, MATH_CONTEXT)
                 .multiply(pratyantarDurationYearsBd, MATH_CONTEXT)
@@ -891,13 +904,13 @@ object DashaCalculator {
         val pranadashas = mutableListOf<Pranadasha>()
         var currentStart = sookshmaStart
 
-        val startIndex = DASHA_SEQUENCE.indexOf(sookshmadashaPlanet)
+        val startIndex = AstrologicalConstants.VIMSOTTARI_SEQUENCE.indexOf(sookshmadashaPlanet)
 
         for (i in 0 until 9) {
-            val planetIndex = (startIndex + i) % DASHA_SEQUENCE.size
-            val pranaPlanet = DASHA_SEQUENCE[planetIndex]
+            val planetIndex = (startIndex + i) % AstrologicalConstants.VIMSOTTARI_SEQUENCE.size
+            val pranaPlanet = AstrologicalConstants.VIMSOTTARI_SEQUENCE[planetIndex]
 
-            val pranaYearsBd = DASHA_YEARS[pranaPlanet] ?: BigDecimal.ZERO
+            val pranaYearsBd = AstrologicalConstants.VIMSOTTARI_PERIODS_PRECISE[pranaPlanet] ?: BigDecimal.ZERO
             val proportionalMinutes = pranaYearsBd
                 .divide(TOTAL_CYCLE_YEARS_BD, MATH_CONTEXT)
                 .multiply(BigDecimal(sookshmaDurationMinutes), MATH_CONTEXT)
@@ -956,13 +969,13 @@ object DashaCalculator {
         val dehadashas = mutableListOf<Dehadasha>()
         var currentStart = pranaStart
 
-        val startIndex = DASHA_SEQUENCE.indexOf(pranadashaPlanet)
+        val startIndex = AstrologicalConstants.VIMSOTTARI_SEQUENCE.indexOf(pranadashaPlanet)
 
         for (i in 0 until 9) {
-            val planetIndex = (startIndex + i) % DASHA_SEQUENCE.size
-            val dehaPlanet = DASHA_SEQUENCE[planetIndex]
+            val planetIndex = (startIndex + i) % AstrologicalConstants.VIMSOTTARI_SEQUENCE.size
+            val dehaPlanet = AstrologicalConstants.VIMSOTTARI_SEQUENCE[planetIndex]
 
-            val dehaYearsBd = DASHA_YEARS[dehaPlanet] ?: BigDecimal.ZERO
+            val dehaYearsBd = AstrologicalConstants.VIMSOTTARI_PERIODS_PRECISE[dehaPlanet] ?: BigDecimal.ZERO
             val proportionalMinutes = dehaYearsBd
                 .divide(TOTAL_CYCLE_YEARS_BD, MATH_CONTEXT)
                 .multiply(BigDecimal(pranaDurationMinutes), MATH_CONTEXT)
