@@ -85,7 +85,6 @@ fun ChartInputScreen(
     var selectedMinute by rememberSaveable { mutableStateOf(0) }
     var latitude by rememberSaveable { mutableStateOf("") }
     var longitude by rememberSaveable { mutableStateOf("") }
-    var altitude by rememberSaveable { mutableStateOf("") }
     var selectedTimezone by rememberSaveable { mutableStateOf(ZoneId.systemDefault().id) }
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -109,7 +108,6 @@ fun ChartInputScreen(
 
     val latitudeFocusRequester = remember { FocusRequester() }
     val longitudeFocusRequester = remember { FocusRequester() }
-    val altitudeFocusRequester = remember { FocusRequester() }
 
 
     LaunchedEffect(Unit) {
@@ -205,13 +203,10 @@ fun ChartInputScreen(
             CoordinatesSection(
                 latitude = latitude,
                 longitude = longitude,
-                altitude = altitude,
                 onLatitudeChange = { latitude = it },
                 onLongitudeChange = { longitude = it },
-                onAltitudeChange = { altitude = it },
                 latitudeFocusRequester = latitudeFocusRequester,
                 longitudeFocusRequester = longitudeFocusRequester,
-                altitudeFocusRequester = altitudeFocusRequester,
                 onDone = { focusManager.clearFocus() }
             )
 
@@ -230,8 +225,8 @@ fun ChartInputScreen(
                         return@GenerateButton
                     }
 
-                    val lat = latitude.toDouble()
-                    val lon = longitude.toDouble()
+                    val lat = parseCoordinate(latitude) ?: return@GenerateButton
+                    val lon = parseCoordinate(longitude) ?: return@GenerateButton
                     val dateTime = LocalDateTime.of(selectedDate, selectedTime)
 
                     val birthData = BirthData(
@@ -326,9 +321,24 @@ fun ChartInputScreen(
     }
 }
 
+/**
+ * Parse coordinate string, removing degree symbols and other non-numeric characters
+ * Supports formats like: "27.7", "27.7°", "27°7'", "-27.7", etc.
+ */
+private fun parseCoordinate(value: String): Double? {
+    val cleaned = value.trim()
+        .replace("°", "")
+        .replace("'", "")
+        .replace("\"", "")
+        .replace(",", ".")
+        .replace(Regex("[^0-9.\\-]"), "")
+        .trim()
+    return cleaned.toDoubleOrNull()
+}
+
 private fun validateInput(latitude: String, longitude: String): String? {
-    val lat = latitude.trim().toDoubleOrNull()
-    val lon = longitude.trim().toDoubleOrNull()
+    val lat = parseCoordinate(latitude)
+    val lon = parseCoordinate(longitude)
 
     return when {
         lat == null || lon == null -> "Please enter valid latitude and longitude"
@@ -339,8 +349,8 @@ private fun validateInput(latitude: String, longitude: String): String? {
 }
 
 private fun validateInputLocalized(latitude: String, longitude: String): StringKey? {
-    val lat = latitude.trim().toDoubleOrNull()
-    val lon = longitude.trim().toDoubleOrNull()
+    val lat = parseCoordinate(latitude)
+    val lon = parseCoordinate(longitude)
 
     return when {
         lat == null || lon == null -> StringKey.ERROR_INVALID_COORDS
@@ -563,13 +573,10 @@ private fun DateSystemToggle(
 private fun CoordinatesSection(
     latitude: String,
     longitude: String,
-    altitude: String,
     onLatitudeChange: (String) -> Unit,
     onLongitudeChange: (String) -> Unit,
-    onAltitudeChange: (String) -> Unit,
     latitudeFocusRequester: FocusRequester,
     longitudeFocusRequester: FocusRequester,
-    altitudeFocusRequester: FocusRequester,
     onDone: () -> Unit
 ) {
     Column {
@@ -605,27 +612,13 @@ private fun CoordinatesSection(
                     .focusRequester(longitudeFocusRequester),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Decimal,
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { altitudeFocusRequester.requestFocus() }
+                    onDone = { onDone() }
                 )
             )
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        ChartOutlinedTextField(
-            value = altitude,
-            onValueChange = onAltitudeChange,
-            label = stringResource(StringKey.INPUT_ALTITUDE),
-            modifier = Modifier.focusRequester(altitudeFocusRequester),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(onDone = { onDone() })
-        )
     }
 }
 
