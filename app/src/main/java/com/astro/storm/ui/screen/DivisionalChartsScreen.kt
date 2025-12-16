@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.currentLanguage
@@ -136,7 +137,7 @@ fun DivisionalChartsScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKey.ABOUT),
+                            contentDescription = stringResource(StringKeyDosha.DIVISIONAL_CHARTS_ABOUT),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -280,7 +281,7 @@ private fun SectionHeader(title: String, icon: ImageVector, tint: Color) {
 // D-2 HORA TAB - WEALTH ANALYSIS
 // ============================================
 @Composable
-private fun HoraTab(analysis: HoraAnalysis, language: String) {
+private fun HoraTab(analysis: HoraAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -399,7 +400,7 @@ private fun WealthPotentialCard(analysis: HoraAnalysis) {
 }
 
 @Composable
-private fun PlanetChipsCard(planets: List<Planet>, description: String, language: String) {
+private fun PlanetChipsCard(planets: List<Planet>, description: String, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -429,7 +430,7 @@ private fun PlanetChipsCard(planets: List<Planet>, description: String, language
 }
 
 @Composable
-private fun WealthIndicatorCard(indicator: com.astro.storm.ephemeris.WealthIndicator, language: String) {
+private fun WealthIndicatorCard(indicator: com.astro.storm.ephemeris.WealthIndicator, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -485,7 +486,7 @@ private fun WealthIndicatorCard(indicator: com.astro.storm.ephemeris.WealthIndic
 // D-3 DREKKANA TAB - SIBLINGS & COURAGE
 // ============================================
 @Composable
-private fun DrekkanaTab(analysis: DrekkanaAnalysis, language: String) {
+private fun DrekkanaTab(analysis: DrekkanaAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -606,7 +607,7 @@ private fun CourageAnalysisCard(analysis: com.astro.storm.ephemeris.CourageAnaly
 }
 
 @Composable
-private fun SiblingIndicatorsCard(indicators: com.astro.storm.ephemeris.SiblingIndicators, language: String) {
+private fun SiblingIndicatorsCard(indicators: com.astro.storm.ephemeris.SiblingIndicators, language: Language) {
     val relationshipColor = when (indicators.relationshipQuality) {
         RelationshipQuality.EXCELLENT -> AppTheme.SuccessColor
         RelationshipQuality.GOOD -> AppTheme.SuccessColor.copy(alpha = 0.7f)
@@ -732,7 +733,7 @@ private fun CommunicationCard(analysis: com.astro.storm.ephemeris.CommunicationA
 // D-9 NAVAMSA TAB - MARRIAGE
 // ============================================
 @Composable
-private fun NavamsaTab(analysis: NavamsaMarriageAnalysis, language: String) {
+private fun NavamsaTab(analysis: NavamsaMarriageAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -837,7 +838,7 @@ private fun InfoRow(label: String, value: String) {
 }
 
 @Composable
-private fun MarriageTimingCard(factors: com.astro.storm.ephemeris.MarriageTimingFactors, language: String) {
+private fun MarriageTimingCard(factors: com.astro.storm.ephemeris.MarriageTimingFactors, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -886,7 +887,7 @@ private fun StatColumn(label: String, value: String, color: Color) {
 }
 
 @Composable
-private fun NavamsaKeyPlanetsCard(analysis: NavamsaMarriageAnalysis, language: String) {
+private fun NavamsaKeyPlanetsCard(analysis: NavamsaMarriageAnalysis, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -983,7 +984,7 @@ private fun MultipleMarriageCard(indicators: com.astro.storm.ephemeris.MultipleM
 // D-10 DASHAMSA TAB - CAREER
 // ============================================
 @Composable
-private fun DashamsaTab(analysis: DashamsaAnalysis, language: String) {
+private fun DashamsaTab(analysis: DashamsaAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -1192,7 +1193,7 @@ private fun GovernmentServiceCard(analysis: com.astro.storm.ephemeris.Government
 // D-12 DWADASAMSA TAB - PARENTS
 // ============================================
 @Composable
-private fun DwadasamsaTab(analysis: DwadasamsaAnalysis, language: String) {
+private fun DwadasamsaTab(analysis: DwadasamsaAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),

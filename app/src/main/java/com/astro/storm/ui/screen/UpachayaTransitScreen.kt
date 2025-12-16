@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.currentLanguage
@@ -130,7 +131,7 @@ fun UpachayaTransitScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKey.ABOUT),
+                            contentDescription = stringResource(StringKeyDosha.UPACHAYA_SCREEN_ABOUT),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -321,7 +322,7 @@ private fun SectionHeader(title: String, icon: ImageVector, tint: Color) {
 // OVERVIEW TAB
 // ============================================
 @Composable
-private fun OverviewTab(analysis: UpachayaTransitAnalysis, language: String) {
+private fun OverviewTab(analysis: UpachayaTransitAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -461,7 +462,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis) {
             }
             Spacer(modifier = Modifier.height(4.dp))
             LinearProgressIndicator(
-                progress = { (assessment.score / 100f).coerceIn(0f, 1f) },
+                progress = { (assessment.score / 100.0).coerceIn(0.0, 1.0).toFloat() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
@@ -508,7 +509,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis) {
 }
 
 @Composable
-private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: String) {
+private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -607,7 +608,7 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Str
 }
 
 @Composable
-private fun AlertCard(alert: UpachayaAlert, language: String) {
+private fun AlertCard(alert: UpachayaAlert, language: Language) {
     val (backgroundColor, iconColor, icon) = when (alert.type) {
         AlertType.OPPORTUNITY -> Triple(
             AppTheme.SuccessColor.copy(alpha = 0.1f),
@@ -674,7 +675,7 @@ private fun AlertCard(alert: UpachayaAlert, language: String) {
 }
 
 @Composable
-private fun SignificantTransitCard(transit: UpachayaTransit, language: String) {
+private fun SignificantTransitCard(transit: UpachayaTransit, language: Language) {
     val qualityColor = when (transit.transitQuality) {
         TransitQuality.EXCELLENT -> AppTheme.SuccessColor
         TransitQuality.GOOD -> AppTheme.SuccessColor.copy(alpha = 0.8f)
@@ -794,7 +795,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
 // HOUSE ANALYSIS TAB
 // ============================================
 @Composable
-private fun HouseAnalysisTab(analysis: UpachayaTransitAnalysis, language: String) {
+private fun HouseAnalysisTab(analysis: UpachayaTransitAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -835,7 +836,7 @@ private fun HouseAnalysisTab(analysis: UpachayaTransitAnalysis, language: String
 }
 
 @Composable
-private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: String) {
+private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language) {
     val strengthColor = when (analysis.strength) {
         HouseStrength.VERY_STRONG -> AppTheme.SuccessColor
         HouseStrength.STRONG -> AppTheme.SuccessColor.copy(alpha = 0.8f)
@@ -975,7 +976,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: String) 
 // TRANSIT DETAILS TAB
 // ============================================
 @Composable
-private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: String) {
+private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: Language) {
     var selectedReference by remember { mutableStateOf(TransitReference.MOON) }
 
     LazyColumn(
@@ -1023,7 +1024,7 @@ private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: Strin
 }
 
 @Composable
-private fun TransitDetailCard(transit: UpachayaTransit, language: String) {
+private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
     var expanded by remember { mutableStateOf(false) }
 
     val cardColor = if (transit.isInUpachaya)
@@ -1181,7 +1182,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: String) {
 // UPCOMING TRANSITS TAB
 // ============================================
 @Composable
-private fun UpcomingTransitsTab(upcomingTransits: List<UpcomingUpachayaTransit>, language: String) {
+private fun UpcomingTransitsTab(upcomingTransits: List<UpcomingUpachayaTransit>, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -1225,7 +1226,7 @@ private fun UpcomingTransitsTab(upcomingTransits: List<UpcomingUpachayaTransit>,
 }
 
 @Composable
-private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: String) {
+private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),

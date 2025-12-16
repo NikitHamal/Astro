@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyDosha
+import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -417,7 +418,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKey.DASHA_LORD),
+                    stringResource(StringKeyMatch.DASHA_LORD),
                     color = AppTheme.TextMuted,
                     fontSize = 13.sp
                 )
