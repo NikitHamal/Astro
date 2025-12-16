@@ -6,6 +6,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.astro.storm.data.model.Planet
+import com.astro.storm.data.model.ZodiacSign
 
 /**
  * Unified App Theme Colors with Dark/Light Mode Support
@@ -363,6 +364,35 @@ object AppTheme {
         Planet.RAHU -> PlanetRahu
         Planet.KETU -> PlanetKetu
         else -> AccentGold
+    }
+
+    /**
+     * Get color for a specific zodiac sign based on its element
+     * - Fire signs (Aries, Leo, Sagittarius): Orange/Red tones
+     * - Earth signs (Taurus, Virgo, Capricorn): Brown/Green tones
+     * - Air signs (Gemini, Libra, Aquarius): Blue/Cyan tones
+     * - Water signs (Cancer, Scorpio, Pisces): Purple/Blue tones
+     */
+    fun getSignColor(sign: ZodiacSign): Color = when (sign) {
+        // Fire signs - energetic, warm tones
+        ZodiacSign.ARIES -> Color(0xFFE53935)      // Red
+        ZodiacSign.LEO -> Color(0xFFF57C00)        // Orange
+        ZodiacSign.SAGITTARIUS -> Color(0xFFFF7043) // Deep orange
+
+        // Earth signs - stable, grounded tones
+        ZodiacSign.TAURUS -> Color(0xFF43A047)     // Green
+        ZodiacSign.VIRGO -> Color(0xFF8BC34A)      // Light green
+        ZodiacSign.CAPRICORN -> Color(0xFF795548)  // Brown
+
+        // Air signs - intellectual, light tones
+        ZodiacSign.GEMINI -> Color(0xFF29B6F6)     // Light blue
+        ZodiacSign.LIBRA -> Color(0xFF26C6DA)      // Cyan
+        ZodiacSign.AQUARIUS -> Color(0xFF5C6BC0)   // Indigo
+
+        // Water signs - emotional, deep tones
+        ZodiacSign.CANCER -> Color(0xFF9575CD)     // Light purple
+        ZodiacSign.SCORPIO -> Color(0xFF7E57C2)    // Purple
+        ZodiacSign.PISCES -> Color(0xFF42A5F5)     // Blue
     }
 }
 
