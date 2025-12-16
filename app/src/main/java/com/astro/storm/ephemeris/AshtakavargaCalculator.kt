@@ -599,36 +599,91 @@ object AshtakavargaCalculator {
     }
 
     /**
-     * Calculate Ashtakavarga Shodhana (reduction)
-     * This is the process of reducing SAV to find Pinda (final value)
+     * Calculate Ashtakavarga Shodhana (reduction) per BPHS Chapter 71-72.
+     *
+     * Shodhana is the process of reducing SAV bindus to find the Pinda (essence/final value).
+     * This is used for more refined predictions and longevity calculations.
+     *
+     * Three types of Shodhana are applied:
+     * 1. **Trikona Shodhana (Trine Reduction)**:
+     *    - Find the minimum bindu count among a sign and its 5th and 9th houses
+     *    - Subtract this minimum from all three positions
+     *    - This is applied sequentially starting from Aries
+     *
+     * 2. **Ekadhipatya Shodhana (Same Lordship Reduction)**:
+     *    - For signs ruled by the same planet (e.g., Aries & Scorpio by Mars)
+     *    - Find the minimum bindu count between the two signs
+     *    - Subtract this minimum from both
+     *    - Sun and Moon rule only one sign each, so no reduction for Leo/Cancer
+     *
+     * 3. **Rasyadhipati Shodhana (Sign Lord Reduction)** - Not implemented in basic version:
+     *    - Further reduction based on sign lord's position
+     *    - More advanced technique used in specific contexts
+     *
+     * The final Pinda values are used for:
+     * - Ayurdaya (longevity calculations)
+     * - Refined transit predictions
+     * - Kaksha predictions
+     *
+     * @param analysis The pre-calculated Ashtakavarga analysis
+     * @return ShodhanaResult with all reduction steps and final Pinda values
      */
     fun calculateShodhana(analysis: AshtakavargaAnalysis): ShodhanaResult {
         val sav = analysis.sarvashtakavarga
         val reductions = mutableMapOf<ZodiacSign, ShodhanaStep>()
 
+        // Working copy of bindus for sequential reductions
+        val workingBindus = mutableMapOf<ZodiacSign, Int>()
         ZodiacSign.entries.forEach { sign ->
-            val originalBindus = sav.getBindusForSign(sign)
+            workingBindus[sign] = sav.getBindusForSign(sign)
+        }
 
-            // Trikona Shodhana (reduction from trines)
+        // Step 1: Trikona Shodhana (Trine Reduction)
+        // Process each sign sequentially
+        val afterTrikonaBindus = mutableMapOf<ZodiacSign, Int>()
+        ZodiacSign.entries.forEach { sign ->
+            val currentBindus = workingBindus[sign] ?: 0
             val trine5Sign = getSignAtHouse(sign, 5)
             val trine9Sign = getSignAtHouse(sign, 9)
 
-            val trine5Bindus = sav.getBindusForSign(trine5Sign)
-            val trine9Bindus = sav.getBindusForSign(trine9Sign)
+            val trine5Bindus = workingBindus[trine5Sign] ?: 0
+            val trine9Bindus = workingBindus[trine9Sign] ?: 0
 
-            val minTrikona = minOf(originalBindus, trine5Bindus, trine9Bindus)
-            val afterTrikona = originalBindus - minTrikona
+            // Find minimum among the three trine positions
+            val minTrikona = minOf(currentBindus, trine5Bindus, trine9Bindus)
 
-            // Ekadhipatya Shodhana (reduction from same lord signs)
-            val signLord = sign.ruler
-            val otherSign = ZodiacSign.entries.find { it.ruler == signLord && it != sign }
-            val afterEkadhipatya = if (otherSign != null) {
-                val otherBindus = sav.getBindusForSign(otherSign)
-                val minEkadhipatya = minOf(afterTrikona, otherBindus)
-                afterTrikona - minEkadhipatya
-            } else {
-                afterTrikona
-            }
+            // Store the after-trikona value
+            afterTrikonaBindus[sign] = currentBindus - minTrikona
+        }
+
+        // Step 2: Ekadhipatya Shodhana (Same Lordship Reduction)
+        // Process dual-ruled signs: Mars (Aries/Scorpio), Venus (Taurus/Libra),
+        // Mercury (Gemini/Virgo), Jupiter (Sagittarius/Pisces), Saturn (Capricorn/Aquarius)
+        val dualSignPairs = listOf(
+            ZodiacSign.ARIES to ZodiacSign.SCORPIO,       // Mars
+            ZodiacSign.TAURUS to ZodiacSign.LIBRA,        // Venus
+            ZodiacSign.GEMINI to ZodiacSign.VIRGO,        // Mercury
+            ZodiacSign.SAGITTARIUS to ZodiacSign.PISCES,  // Jupiter
+            ZodiacSign.CAPRICORN to ZodiacSign.AQUARIUS   // Saturn
+        )
+
+        val afterEkadhipatyaBindus = afterTrikonaBindus.toMutableMap()
+
+        dualSignPairs.forEach { (sign1, sign2) ->
+            val bindus1 = afterEkadhipatyaBindus[sign1] ?: 0
+            val bindus2 = afterEkadhipatyaBindus[sign2] ?: 0
+
+            val minEkadhipatya = minOf(bindus1, bindus2)
+            afterEkadhipatyaBindus[sign1] = bindus1 - minEkadhipatya
+            afterEkadhipatyaBindus[sign2] = bindus2 - minEkadhipatya
+        }
+        // Sun (Leo) and Moon (Cancer) rule only one sign each - no Ekadhipatya reduction
+
+        // Build results
+        ZodiacSign.entries.forEach { sign ->
+            val originalBindus = sav.getBindusForSign(sign)
+            val afterTrikona = afterTrikonaBindus[sign] ?: 0
+            val afterEkadhipatya = afterEkadhipatyaBindus[sign] ?: 0
 
             reductions[sign] = ShodhanaStep(
                 originalBindus = originalBindus,

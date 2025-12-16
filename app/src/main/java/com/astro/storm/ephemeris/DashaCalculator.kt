@@ -991,6 +991,28 @@ object DashaCalculator {
         return dehadashas
     }
 
+    /**
+     * Calculate upcoming Dasha Sandhis (transition periods) for the given timeline.
+     *
+     * Sandhi (junction/transition) is the period around dasha changes when the effects
+     * of both the ending and beginning dashas are felt. This is a critical period in
+     * Vedic astrology as it often brings significant life changes.
+     *
+     * Per classical texts:
+     * - The ending dasha loses strength and the incoming dasha gains strength
+     * - Events related to both dasha lords may manifest
+     * - Remedies are especially important during Sandhi periods
+     *
+     * This function calculates Sandhis for:
+     * - Mahadasha transitions (major 5-20 year periods)
+     * - Antardasha transitions (sub-periods of 1-3 years)
+     * - Pratyantardasha transitions (when within active Antardasha)
+     *
+     * @param mahadashas List of calculated Mahadashas
+     * @param fromDate Start date to search from
+     * @param lookAheadDays Number of days to look ahead
+     * @return List of upcoming Sandhis sorted by transition date
+     */
     private fun calculateUpcomingSandhis(
         mahadashas: List<Mahadasha>,
         fromDate: LocalDate,
@@ -1003,6 +1025,7 @@ object DashaCalculator {
             val currentMd = mahadashas[i]
             val nextMd = mahadashas[i + 1]
 
+            // Mahadasha Sandhi
             if (currentMd.endDate.isAfter(fromDate) && currentMd.endDate.isBefore(endDate)) {
                 val sandhiDays = calculateSandhiDuration(DashaLevel.MAHADASHA, currentMd.durationYears)
                 sandhis.add(
@@ -1017,12 +1040,15 @@ object DashaCalculator {
                 )
             }
 
-            if (currentMd.isActiveOn(fromDate) || 
+            // Antardasha and Pratyantardasha Sandhis
+            if (currentMd.isActiveOn(fromDate) ||
                 (currentMd.startDate.isAfter(fromDate) && currentMd.startDate.isBefore(endDate))) {
+
                 for (j in 0 until currentMd.antardashas.size - 1) {
                     val currentAd = currentMd.antardashas[j]
                     val nextAd = currentMd.antardashas[j + 1]
 
+                    // Antardasha Sandhi
                     if (currentAd.endDate.isAfter(fromDate) && currentAd.endDate.isBefore(endDate)) {
                         val sandhiDays = calculateSandhiDuration(DashaLevel.ANTARDASHA, currentAd.durationYears)
                         sandhis.add(
@@ -1035,6 +1061,36 @@ object DashaCalculator {
                                 sandhiEndDate = currentAd.endDate.plusDays(sandhiDays / 2)
                             )
                         )
+                    }
+
+                    // Pratyantardasha Sandhis (only for active or upcoming Antardashas within range)
+                    if (currentAd.isActiveOn(fromDate) ||
+                        (currentAd.startDate.isAfter(fromDate) && currentAd.startDate.isBefore(endDate))) {
+
+                        val pratyantardashas = if (currentAd.pratyantardashas.isNotEmpty()) {
+                            currentAd.pratyantardashas
+                        } else {
+                            calculatePratyantardashasForAntardasha(currentAd)
+                        }
+
+                        for (k in 0 until pratyantardashas.size - 1) {
+                            val currentPd = pratyantardashas[k]
+                            val nextPd = pratyantardashas[k + 1]
+
+                            if (currentPd.endDate.isAfter(fromDate) && currentPd.endDate.isBefore(endDate)) {
+                                val sandhiDays = calculateSandhiDuration(DashaLevel.PRATYANTARDASHA, currentPd.durationYears)
+                                sandhis.add(
+                                    DashaSandhi(
+                                        fromPlanet = currentPd.planet,
+                                        toPlanet = nextPd.planet,
+                                        transitionDate = currentPd.endDate,
+                                        level = DashaLevel.PRATYANTARDASHA,
+                                        sandhiStartDate = currentPd.endDate.minusDays(sandhiDays / 2),
+                                        sandhiEndDate = currentPd.endDate.plusDays(sandhiDays / 2)
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }
