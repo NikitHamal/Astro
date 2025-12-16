@@ -42,6 +42,21 @@ import com.astro.storm.ephemeris.AshtottariMahadasha
 import com.astro.storm.ephemeris.AshtottariAntardasha
 import com.astro.storm.ephemeris.PlanetRelationship
 import com.astro.storm.ui.theme.AppTheme
+
+// Helper extension for planet abbreviation
+private val Planet.abbreviation: String
+    get() = when (this) {
+        Planet.SUN -> "Su"
+        Planet.MOON -> "Mo"
+        Planet.MARS -> "Ma"
+        Planet.MERCURY -> "Me"
+        Planet.JUPITER -> "Ju"
+        Planet.VENUS -> "Ve"
+        Planet.SATURN -> "Sa"
+        Planet.RAHU -> "Ra"
+        Planet.KETU -> "Ke"
+        else -> name.take(2)
+    }
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -194,7 +209,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            CircularProgressIndicator(color = AppTheme.Primary)
+            CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyDosha.SCREEN_CALCULATING),
@@ -216,7 +231,7 @@ private fun ErrorContent(paddingValues: PaddingValues, message: String) {
             Icon(
                 Icons.Outlined.ErrorOutline,
                 contentDescription = null,
-                tint = AppTheme.Error,
+                tint = AppTheme.ErrorColor,
                 modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -253,8 +268,8 @@ private fun TabSelector(
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.Primary.copy(alpha = 0.2f),
-                    selectedLabelColor = AppTheme.Primary,
+                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
+                    selectedLabelColor = AppTheme.AccentPrimary,
                     containerColor = AppTheme.CardBackground,
                     labelColor = AppTheme.TextSecondary
                 )
@@ -305,9 +320,9 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = if (isApplicable)
-                AppTheme.Success.copy(alpha = 0.1f)
+                AppTheme.SuccessColor.copy(alpha = 0.1f)
             else
-                AppTheme.Warning.copy(alpha = 0.1f)
+                AppTheme.WarningColor.copy(alpha = 0.1f)
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -320,7 +335,7 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
                 Icon(
                     imageVector = if (isApplicable) Icons.Filled.CheckCircle else Icons.Outlined.Info,
                     contentDescription = null,
-                    tint = if (isApplicable) AppTheme.Success else AppTheme.Warning,
+                    tint = if (isApplicable) AppTheme.SuccessColor else AppTheme.WarningColor,
                     modifier = Modifier.size(32.dp)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
@@ -382,7 +397,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKey.BIRTH_NAKSHATRA),
+                    stringResource(StringKeyDosha.BIRTH_NAKSHATRA),
                     color = AppTheme.TextMuted,
                     fontSize = 13.sp
                 )
@@ -422,7 +437,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKey.BALANCE_LABEL),
+                    stringResource(StringKeyDosha.BALANCE_LABEL),
                     color = AppTheme.TextMuted,
                     fontSize = 13.sp
                 )
@@ -447,7 +462,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = AppTheme.Primary.copy(alpha = 0.1f)
+            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -460,7 +475,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
                 Icon(
                     Icons.Filled.Schedule,
                     contentDescription = null,
-                    tint = AppTheme.Primary,
+                    tint = AppTheme.AccentPrimary,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -479,7 +494,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        AppTheme.Primary.copy(alpha = 0.1f),
+                        AppTheme.AccentPrimary.copy(alpha = 0.1f),
                         RoundedCornerShape(12.dp)
                     )
                     .padding(16.dp),
@@ -488,7 +503,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
             ) {
                 Column {
                     Text(
-                        stringResource(StringKey.MAHADASHA),
+                        stringResource(StringKey.DASHA_MAHADASHA),
                         color = AppTheme.TextMuted,
                         fontSize = 12.sp
                     )
@@ -521,7 +536,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            AppTheme.Secondary.copy(alpha = 0.1f),
+                            AppTheme.AccentSecondary.copy(alpha = 0.1f),
                             RoundedCornerShape(12.dp)
                         )
                         .padding(16.dp),
@@ -530,7 +545,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
                 ) {
                     Column {
                         Text(
-                            stringResource(StringKey.ANTARDASHA),
+                            stringResource(StringKey.DASHA_ANTARDASHA),
                             color = AppTheme.TextMuted,
                             fontSize = 12.sp
                         )
@@ -555,13 +570,13 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        stringResource(StringKey.PROGRESS),
+                        stringResource(StringKey.DASHA_PROGRESS),
                         color = AppTheme.TextMuted,
                         fontSize = 12.sp
                     )
                     Text(
                         "${(progress * 100).toInt()}%",
-                        color = AppTheme.Primary,
+                        color = AppTheme.AccentPrimary,
                         fontWeight = FontWeight.Medium,
                         fontSize = 12.sp
                     )
@@ -573,8 +588,8 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
                         .fillMaxWidth()
                         .height(6.dp)
                         .clip(RoundedCornerShape(3.dp)),
-                    color = AppTheme.Primary,
-                    trackColor = AppTheme.Primary.copy(alpha = 0.2f)
+                    color = AppTheme.AccentPrimary,
+                    trackColor = AppTheme.AccentPrimary.copy(alpha = 0.2f)
                 )
             }
         }
@@ -585,10 +600,10 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
 private fun RelationshipChip(relationship: PlanetRelationship) {
     val language = currentLanguage()
     val (color, text) = when (relationship) {
-        PlanetRelationship.FRIEND -> AppTheme.Success to stringResource(StringKey.RELATIONSHIP_FRIEND)
-        PlanetRelationship.ENEMY -> AppTheme.Error to stringResource(StringKey.RELATIONSHIP_ENEMY)
-        PlanetRelationship.NEUTRAL -> AppTheme.Warning to stringResource(StringKey.RELATIONSHIP_NEUTRAL)
-        PlanetRelationship.SAME -> AppTheme.Primary to stringResource(StringKey.RELATIONSHIP_SAME)
+        PlanetRelationship.FRIEND -> AppTheme.SuccessColor to stringResource(StringKeyDosha.RELATIONSHIP_FRIEND)
+        PlanetRelationship.ENEMY -> AppTheme.ErrorColor to stringResource(StringKeyDosha.RELATIONSHIP_ENEMY)
+        PlanetRelationship.NEUTRAL -> AppTheme.WarningColor to stringResource(StringKeyDosha.RELATIONSHIP_NEUTRAL)
+        PlanetRelationship.SAME -> AppTheme.AccentPrimary to stringResource(StringKeyDosha.RELATIONSHIP_SAME)
     }
 
     Surface(
@@ -667,7 +682,7 @@ private fun SystemInfoCard() {
 
             Text(
                 stringResource(StringKeyDosha.ASHTOTTARI_TOTAL_YEARS),
-                color = AppTheme.Primary,
+                color = AppTheme.AccentPrimary,
                 fontWeight = FontWeight.Medium,
                 fontSize = 14.sp
             )
@@ -726,7 +741,7 @@ private fun MahadashaTimelineCard(
             .clickable { onExpandChange() },
         colors = CardDefaults.cardColors(
             containerColor = if (isCurrent)
-                AppTheme.Primary.copy(alpha = 0.15f)
+                AppTheme.AccentPrimary.copy(alpha = 0.15f)
             else
                 AppTheme.CardBackground
         ),
@@ -772,13 +787,13 @@ private fun MahadashaTimelineCard(
                             if (isCurrent) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Surface(
-                                    color = AppTheme.Success.copy(alpha = 0.2f),
+                                    color = AppTheme.SuccessColor.copy(alpha = 0.2f),
                                     shape = RoundedCornerShape(4.dp)
                                 ) {
                                     Text(
-                                        stringResource(StringKey.CURRENT),
+                                        stringResource(StringKeyDosha.CURRENT_LABEL),
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                        color = AppTheme.Success,
+                                        color = AppTheme.SuccessColor,
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Medium
                                     )
@@ -825,8 +840,8 @@ private fun MahadashaTimelineCard(
                         .fillMaxWidth()
                         .height(4.dp)
                         .clip(RoundedCornerShape(2.dp)),
-                    color = AppTheme.Primary,
-                    trackColor = AppTheme.Primary.copy(alpha = 0.2f)
+                    color = AppTheme.AccentPrimary,
+                    trackColor = AppTheme.AccentPrimary.copy(alpha = 0.2f)
                 )
             }
 
@@ -843,7 +858,7 @@ private fun MahadashaTimelineCard(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        stringResource(StringKey.ANTARDASHA),
+                        stringResource(StringKey.DASHA_ANTARDASHA),
                         fontWeight = FontWeight.Medium,
                         fontSize = 13.sp,
                         color = AppTheme.TextSecondary
@@ -871,7 +886,7 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
             .padding(vertical = 4.dp)
             .background(
                 if (antardasha.isCurrentlyRunning)
-                    AppTheme.Primary.copy(alpha = 0.1f)
+                    AppTheme.AccentPrimary.copy(alpha = 0.1f)
                 else
                     Color.Transparent,
                 RoundedCornerShape(6.dp)
@@ -883,7 +898,7 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 antardasha.antardashaLord.getLocalizedName(language),
-                color = if (antardasha.isCurrentlyRunning) AppTheme.Primary else AppTheme.TextSecondary,
+                color = if (antardasha.isCurrentlyRunning) AppTheme.AccentPrimary else AppTheme.TextSecondary,
                 fontWeight = if (antardasha.isCurrentlyRunning) FontWeight.Medium else FontWeight.Normal,
                 fontSize = 13.sp
             )
@@ -892,7 +907,7 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
                 Box(
                     modifier = Modifier
                         .size(6.dp)
-                        .background(AppTheme.Success, CircleShape)
+                        .background(AppTheme.SuccessColor, CircleShape)
                 )
             }
         }
@@ -924,7 +939,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Text(
-                            stringResource(StringKey.KEY_THEMES),
+                            stringResource(StringKeyDosha.KEY_THEMES),
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 16.sp,
                             color = AppTheme.TextPrimary
@@ -935,13 +950,13 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
                         ) {
                             items(interpretation.keyThemes) { theme ->
                                 Surface(
-                                    color = AppTheme.Primary.copy(alpha = 0.15f),
+                                    color = AppTheme.AccentPrimary.copy(alpha = 0.15f),
                                     shape = RoundedCornerShape(8.dp)
                                 ) {
                                     Text(
                                         theme,
                                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                        color = AppTheme.Primary,
+                                        color = AppTheme.AccentPrimary,
                                         fontSize = 13.sp,
                                         fontWeight = FontWeight.Medium
                                     )
@@ -982,7 +997,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
         if (interpretation.mahadashaEffects.isNotEmpty()) {
             item {
                 EffectsCard(
-                    title = stringResource(StringKey.MAHADASHA) + " " + stringResource(StringKey.EFFECTS),
+                    title = stringResource(StringKey.DASHA_MAHADASHA) + " " + stringResource(StringKeyDosha.EFFECTS_LABEL),
                     effects = interpretation.mahadashaEffects,
                     icon = Icons.Filled.Star
                 )
@@ -993,7 +1008,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
         if (interpretation.antardashaEffects.isNotEmpty()) {
             item {
                 EffectsCard(
-                    title = stringResource(StringKey.ANTARDASHA) + " " + stringResource(StringKey.EFFECTS),
+                    title = stringResource(StringKey.DASHA_ANTARDASHA) + " " + stringResource(StringKeyDosha.EFFECTS_LABEL),
                     effects = interpretation.antardashaEffects,
                     icon = Icons.Outlined.StarBorder
                 )
@@ -1025,7 +1040,7 @@ private fun EffectsCard(
                 Icon(
                     icon,
                     contentDescription = null,
-                    tint = AppTheme.Primary,
+                    tint = AppTheme.AccentPrimary,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -1041,7 +1056,7 @@ private fun EffectsCard(
                 Row(
                     modifier = Modifier.padding(vertical = 4.dp)
                 ) {
-                    Text("•", color = AppTheme.Primary, modifier = Modifier.padding(end = 8.dp))
+                    Text("•", color = AppTheme.AccentPrimary, modifier = Modifier.padding(end = 8.dp))
                     Text(
                         effect,
                         color = AppTheme.TextSecondary,
@@ -1061,7 +1076,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = AppTheme.Success.copy(alpha = 0.1f)
+            containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -1070,7 +1085,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 Icon(
                     Icons.Filled.Lightbulb,
                     contentDescription = null,
-                    tint = AppTheme.Success,
+                    tint = AppTheme.SuccessColor,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -1088,7 +1103,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 ) {
                     Text(
                         "${index + 1}.",
-                        color = AppTheme.Success,
+                        color = AppTheme.SuccessColor,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.padding(end = 8.dp)
                     )
@@ -1127,7 +1142,7 @@ private fun AshtottariInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.Primary)
+                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentPrimary)
             }
         }
     )
@@ -1155,6 +1170,6 @@ private fun getPlanetColor(planet: Planet): Color {
         Planet.SATURN -> Color(0xFF6C757D)
         Planet.RAHU -> Color(0xFF6366F1)
         Planet.KETU -> Color(0xFF8B5CF6)
-        else -> AppTheme.Primary
+        else -> AppTheme.AccentPrimary
     }
 }

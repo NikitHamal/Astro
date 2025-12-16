@@ -204,7 +204,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            CircularProgressIndicator(color = AppTheme.Primary)
+            CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyDosha.SCREEN_CALCULATING),
@@ -226,7 +226,7 @@ private fun ErrorContent(paddingValues: PaddingValues, message: String) {
             Icon(
                 Icons.Outlined.ErrorOutline,
                 contentDescription = null,
-                tint = AppTheme.Error,
+                tint = AppTheme.ErrorColor,
                 modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -294,9 +294,9 @@ private fun AgeSelector(
                     valueRange = 1f..100f,
                     modifier = Modifier.weight(1f),
                     colors = SliderDefaults.colors(
-                        thumbColor = AppTheme.Primary,
-                        activeTrackColor = AppTheme.Primary,
-                        inactiveTrackColor = AppTheme.Primary.copy(alpha = 0.2f)
+                        thumbColor = AppTheme.AccentPrimary,
+                        activeTrackColor = AppTheme.AccentPrimary,
+                        inactiveTrackColor = AppTheme.AccentPrimary.copy(alpha = 0.2f)
                     )
                 )
 
@@ -320,8 +320,8 @@ private fun AgeSelector(
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
                     Text(
-                        "${stringResource(StringKey.CURRENT)}: ${currentAge} ${stringResource(StringKey.YEARS)}",
-                        color = AppTheme.Primary,
+                        "${stringResource(StringKeyDosha.CURRENT_LABEL)}: ${currentAge} ${stringResource(StringKey.YEARS)}",
+                        color = AppTheme.AccentPrimary,
                         fontSize = 12.sp
                     )
                 }
@@ -356,8 +356,8 @@ private fun TabSelector(
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.Primary.copy(alpha = 0.2f),
-                    selectedLabelColor = AppTheme.Primary,
+                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
+                    selectedLabelColor = AppTheme.AccentPrimary,
                     containerColor = AppTheme.CardBackground,
                     labelColor = AppTheme.TextSecondary
                 )
@@ -424,7 +424,7 @@ private fun CurrentSignsCard(result: SudarshanaChakraResult) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = AppTheme.Primary.copy(alpha = 0.1f)
+            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -437,7 +437,7 @@ private fun CurrentSignsCard(result: SudarshanaChakraResult) {
                 Icon(
                     Icons.Filled.Visibility,
                     contentDescription = null,
-                    tint = AppTheme.Primary,
+                    tint = AppTheme.AccentPrimary,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -456,19 +456,19 @@ private fun CurrentSignsCard(result: SudarshanaChakraResult) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 SignIndicator(
-                    label = stringResource(StringKey.LAGNA),
+                    label = stringResource(StringKeyDosha.LAGNA_LABEL),
                     sign = result.lagnaChakra.activeSign,
                     house = result.lagnaChakra.activeHouse,
                     color = Color(0xFF6366F1)
                 )
                 SignIndicator(
-                    label = stringResource(StringKey.MOON),
+                    label = stringResource(StringKeyDosha.MOON_LABEL),
                     sign = result.chandraChakra.activeSign,
                     house = result.chandraChakra.activeHouse,
                     color = Color(0xFF4ECDC4)
                 )
                 SignIndicator(
-                    label = stringResource(StringKey.SUN),
+                    label = stringResource(StringKeyDosha.SUN_LABEL),
                     sign = result.suryaChakra.activeSign,
                     house = result.suryaChakra.activeHouse,
                     color = Color(0xFFFF6B35)
@@ -583,7 +583,7 @@ private fun ChakraCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 InfoColumn(
-                    label = stringResource(StringKey.SIGN),
+                    label = stringResource(StringKeyDosha.SIGN_LABEL),
                     value = chakra.activeSign.getLocalizedName(language)
                 )
                 InfoColumn(
@@ -591,7 +591,7 @@ private fun ChakraCard(
                     value = chakra.signLord.getLocalizedName(language)
                 )
                 InfoColumn(
-                    label = stringResource(StringKey.HOUSE),
+                    label = stringResource(StringKeyDosha.HOUSE_LABEL),
                     value = "H${chakra.activeHouse}"
                 )
             }
@@ -603,7 +603,7 @@ private fun ChakraCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKey.STRENGTH),
+                    stringResource(StringKeyDosha.STRENGTH_LABEL),
                     color = AppTheme.TextMuted,
                     fontSize = 12.sp
                 )
@@ -701,7 +701,7 @@ private fun ChakraCard(
                     if (chakra.signEffects.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKey.EFFECTS),
+                            stringResource(StringKeyDosha.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextSecondary
@@ -762,11 +762,11 @@ private fun InfoColumn(label: String, value: String) {
 @Composable
 private fun StrengthBadge(level: StrengthLevel, color: Color) {
     val (text, badgeColor) = when (level) {
-        StrengthLevel.EXCELLENT -> stringResource(StringKeyDosha.PANCHA_EXCELLENT) to AppTheme.Success
-        StrengthLevel.GOOD -> stringResource(StringKeyDosha.PANCHA_GOOD) to AppTheme.Success.copy(alpha = 0.8f)
-        StrengthLevel.MODERATE -> stringResource(StringKeyDosha.PANCHA_AVERAGE) to AppTheme.Warning
-        StrengthLevel.WEAK -> stringResource(StringKeyDosha.PANCHA_BELOW_AVERAGE) to AppTheme.Warning.copy(alpha = 0.8f)
-        StrengthLevel.VERY_WEAK -> stringResource(StringKeyDosha.PANCHA_WEAK) to AppTheme.Error
+        StrengthLevel.EXCELLENT -> stringResource(StringKeyDosha.PANCHA_EXCELLENT) to AppTheme.SuccessColor
+        StrengthLevel.GOOD -> stringResource(StringKeyDosha.PANCHA_GOOD) to AppTheme.SuccessColor.copy(alpha = 0.8f)
+        StrengthLevel.MODERATE -> stringResource(StringKeyDosha.PANCHA_AVERAGE) to AppTheme.WarningColor
+        StrengthLevel.WEAK -> stringResource(StringKeyDosha.PANCHA_BELOW_AVERAGE) to AppTheme.WarningColor.copy(alpha = 0.8f)
+        StrengthLevel.VERY_WEAK -> stringResource(StringKeyDosha.PANCHA_WEAK) to AppTheme.ErrorColor
     }
 
     Surface(
@@ -815,9 +815,9 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = if (synthesis.combinedStrengthScore >= 60)
-                AppTheme.Success.copy(alpha = 0.1f)
+                AppTheme.SuccessColor.copy(alpha = 0.1f)
             else
-                AppTheme.Warning.copy(alpha = 0.1f)
+                AppTheme.WarningColor.copy(alpha = 0.1f)
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -830,7 +830,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
                 Icon(
                     Icons.Filled.Hub,
                     contentDescription = null,
-                    tint = if (synthesis.combinedStrengthScore >= 60) AppTheme.Success else AppTheme.Warning,
+                    tint = if (synthesis.combinedStrengthScore >= 60) AppTheme.SuccessColor else AppTheme.WarningColor,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -859,7 +859,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
                     "${synthesis.combinedStrengthScore.toInt()}%",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (synthesis.combinedStrengthScore >= 60) AppTheme.Success else AppTheme.Warning
+                    color = if (synthesis.combinedStrengthScore >= 60) AppTheme.SuccessColor else AppTheme.WarningColor
                 )
             }
 
@@ -869,7 +869,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
             if (synthesis.commonThemes.isNotEmpty()) {
                 synthesis.commonThemes.forEach { theme ->
                     Row(modifier = Modifier.padding(vertical = 2.dp)) {
-                        Text("✓ ", color = AppTheme.Success)
+                        Text("✓ ", color = AppTheme.SuccessColor)
                         Text(
                             theme,
                             color = AppTheme.TextSecondary,
@@ -884,7 +884,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
                 Spacer(modifier = Modifier.height(8.dp))
                 synthesis.conflictingThemes.forEach { theme ->
                     Row(modifier = Modifier.padding(vertical = 2.dp)) {
-                        Text("⚠ ", color = AppTheme.Warning)
+                        Text("⚠ ", color = AppTheme.WarningColor)
                         Text(
                             theme,
                             color = AppTheme.TextSecondary,
@@ -945,7 +945,7 @@ private fun TimelineYearCard(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
                 containerColor = if (isCurrent)
-                    AppTheme.Primary.copy(alpha = 0.15f)
+                    AppTheme.AccentPrimary.copy(alpha = 0.15f)
                 else
                     AppTheme.CardBackground
             ),
@@ -966,7 +966,7 @@ private fun TimelineYearCard(
                         "$age",
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
-                        color = if (isCurrent) AppTheme.Primary else AppTheme.TextPrimary
+                        color = if (isCurrent) AppTheme.AccentPrimary else AppTheme.TextPrimary
                     )
                     Text(
                         stringResource(StringKey.YEARS),
@@ -978,7 +978,7 @@ private fun TimelineYearCard(
                         Box(
                             modifier = Modifier
                                 .size(8.dp)
-                                .background(AppTheme.Success, CircleShape)
+                                .background(AppTheme.SuccessColor, CircleShape)
                         )
                     }
                 }
@@ -1116,13 +1116,13 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = AppTheme.Primary.copy(alpha = 0.1f)
+                    containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
                 ),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        stringResource(StringKey.KEY_THEMES),
+                        stringResource(StringKeyDosha.KEY_THEMES),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
@@ -1131,8 +1131,8 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
                     Row(modifier = Modifier.padding(vertical = 4.dp)) {
                         Text(
-                            "${stringResource(StringKey.PRIMARY)}: ",
-                            color = AppTheme.Primary,
+                            "${stringResource(StringKeyDosha.PRIMARY_LABEL)}: ",
+                            color = AppTheme.AccentPrimary,
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp
                         )
@@ -1146,8 +1146,8 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     if (synthesis.secondaryFocus.isNotBlank()) {
                         Row(modifier = Modifier.padding(vertical = 4.dp)) {
                             Text(
-                                "${stringResource(StringKey.SECONDARY)}: ",
-                                color = AppTheme.Secondary,
+                                "${stringResource(StringKeyDosha.SECONDARY_LABEL)}: ",
+                                color = AppTheme.AccentSecondary,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 13.sp
                             )
@@ -1168,7 +1168,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.Success.copy(alpha = 0.1f)
+                        containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
                     ),
                     shape = RoundedCornerShape(16.dp)
                 ) {
@@ -1177,7 +1177,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                             Icon(
                                 Icons.Filled.Lightbulb,
                                 contentDescription = null,
-                                tint = AppTheme.Success,
+                                tint = AppTheme.SuccessColor,
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
@@ -1193,7 +1193,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                             Row(modifier = Modifier.padding(vertical = 4.dp)) {
                                 Text(
                                     "${index + 1}. ",
-                                    color = AppTheme.Success,
+                                    color = AppTheme.SuccessColor,
                                     fontWeight = FontWeight.Medium
                                 )
                                 Text(
@@ -1227,7 +1227,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
                     result.yearlyProgression.previousYearSummary?.let { prev ->
                         ProgressionRow(
-                            label = stringResource(StringKey.PREVIOUS),
+                            label = stringResource(StringKeyDosha.PREVIOUS_LABEL),
                             summary = prev,
                             isPast = true
                         )
@@ -1235,7 +1235,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     }
 
                     ProgressionRow(
-                        label = stringResource(StringKey.CURRENT),
+                        label = stringResource(StringKeyDosha.CURRENT_LABEL),
                         summary = result.yearlyProgression.currentYearSummary,
                         isCurrent = true
                     )
@@ -1243,7 +1243,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     Spacer(modifier = Modifier.height(8.dp))
 
                     ProgressionRow(
-                        label = stringResource(StringKey.NEXT),
+                        label = stringResource(StringKeyDosha.NEXT_LABEL),
                         summary = result.yearlyProgression.nextYearSummary,
                         isFuture = true
                     )
@@ -1304,7 +1304,7 @@ private fun ProgressionRow(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                if (isCurrent) AppTheme.Primary.copy(alpha = 0.1f) else Color.Transparent,
+                if (isCurrent) AppTheme.AccentPrimary.copy(alpha = 0.1f) else Color.Transparent,
                 RoundedCornerShape(8.dp)
             )
             .padding(8.dp),
@@ -1315,7 +1315,7 @@ private fun ProgressionRow(
             fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
             fontSize = 12.sp,
             color = when {
-                isCurrent -> AppTheme.Primary
+                isCurrent -> AppTheme.AccentPrimary
                 isPast -> AppTheme.TextMuted
                 else -> AppTheme.TextSecondary
             },
@@ -1353,7 +1353,7 @@ private fun SudarshanaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.Primary)
+                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentPrimary)
             }
         }
     )
