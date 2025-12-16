@@ -148,23 +148,31 @@ Implement the complete 16-divisional chart strength analysis (Shodashvarga Bala)
 
 ---
 
-## 7. Kalachakra Dasha System
+## 7. Kalachakra Dasha System ✅ IMPLEMENTED
 
 ### Description
 Implement Kalachakra Dasha as an alternative timing system, particularly useful for timing events related to health and spiritual matters.
 
 ### Implementation Details
-- Calculate Kalachakra starting point from Moon's nakshatra pada
-- Savya (clockwise) and Apsavya (anti-clockwise) group determination
-- Calculate Mahadasha and Antardasha periods
-- Deha (body) and Jeeva (soul) rashi analysis
-- Health timing predictions
-- Spiritual transformation periods
-- Compare with Vimsottari Dasha for validation
+- ✅ Calculate Kalachakra starting point from Moon's nakshatra pada
+- ✅ Savya (clockwise) and Apsavya (anti-clockwise) group determination
+- ✅ Calculate Mahadasha and Antardasha periods (100-year cycle)
+- ✅ Deha (body) and Jeeva (soul) rashi analysis with detailed interpretations
+- ✅ Health timing predictions with 5-level health indicators
+- ✅ Spiritual transformation periods with Jeeva rashi analysis
+- ✅ Deha-Jeeva relationship analysis (Harmonious, Supportive, Neutral, Challenging, Transformative)
+- ✅ Parama Ayush (longevity) sign detection
+- ✅ System applicability score based on chart factors
+- ✅ Complete UI with three tabs: Current Period, Deha-Jeeva, Timeline
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/KalachakraDashaCalculator.kt`
+`/app/src/main/java/com/astro/storm/ui/screen/KalachakraDashaScreen.kt`
 
 ### Vedic References
 - BPHS Chapter 45 on Kalachakra Dasha
 - Jataka Parijata on alternative Dasha systems
+- Uttara Kalamrita on Kalachakra application
 
 ---
 
@@ -490,10 +498,282 @@ Implement Lal Kitab-based remedial measures as a supplementary remedy system pop
 | Medium | Argala Analysis | Medium | Medium | ✅ DONE |
 | Medium | Lal Kitab Remedies | Medium | High | ✅ DONE |
 | Medium | Prashna Enhancements | Medium | Medium | Pending |
+| Medium | Kalachakra Dasha | High | Medium | ✅ DONE |
 | Low | Nadi Amsha | High | Medium | Pending |
-| Low | Kalachakra Dasha | High | Medium | Pending |
 | Low | Sarvatobhadra Chakra | High | Medium | Pending |
 | Low | Shri Pati Paddhati | Medium | Low | Pending |
+
+---
+
+## Future Development Ideas (New)
+
+The following are serious, relevant, production-ready next steps based on authentic Vedic astrology principles. All implementations should be offline-capable, requiring no cloud services, authentication, or database dependencies beyond local storage.
+
+---
+
+## 21. Ashtamangala Prashna (Eight-fold Horary) System
+
+### Description
+Implement the traditional Kerala Ashtamangala Prashna system - a powerful horary technique using eight cowrie shells or objects for divination, integrated with chart analysis.
+
+### Implementation Details
+- Digital cowrie shell throw simulation with proper randomization
+- Eight position analysis (Agni, Vayu, Indra, etc.)
+- Integration with Prashna chart for dual validation
+- Question category routing (health, wealth, travel, relationships)
+- Timing predictions from Ashtamangala positions
+- Traditional interpretations from Kerala texts
+- Numerical strength calculations
+
+### Vedic References
+- Kerala Jyotisha traditions
+- Prasna Marga (Chapter on Ashtamangala)
+
+---
+
+## 22. Shoola Dasha (Thorn Period) Calculator
+
+### Description
+Implement Shoola Dasha - a Jaimini dasha system specifically used for timing of health issues, accidents, and critical life events. Particularly important for medical astrology.
+
+### Implementation Details
+- Calculate from Rudra positions (two malefics in chart)
+- Brahma, Rudra, and Maheshwara identification
+- Shoola Dasha periods based on Trikona positions
+- Health vulnerability timing
+- Accident-prone period identification
+- Longevity assessment integration
+- Remedial measures for Shoola periods
+
+### Vedic References
+- Jaimini Sutras (Chapter on Ayurdaya)
+- K.N. Rao's research on Jaimini Dasha systems
+
+---
+
+## 23. Tarabala and Chandrabala Calculator
+
+### Description
+Implement daily and transit-based Tarabala (nakshatra strength) and Chandrabala (Moon's position) calculations for determining auspicious activities.
+
+### Implementation Details
+- Daily Tarabala calculation from birth nakshatra
+- Nine-fold nakshatra cycle (Janma, Sampat, Vipat, Kshema, Pratyari, Sadhana, Naidhana, Mitra, Ati-Mitra)
+- Chandrabala from Moon sign for daily activities
+- Combined strength score for muhurta selection
+- Activity-specific recommendations based on Tarabala
+- Integration with Panchanga for daily planning
+- Transit Moon nakshatra alerts
+
+### Vedic References
+- Muhurta Chintamani
+- Muhurta Martanda
+
+---
+
+## 24. Ashtavarga Transit Predictions
+
+### Description
+Enhance Ashtakavarga with specific transit prediction capabilities - predict the intensity and nature of events when planets transit through bindu-rich or bindu-poor signs.
+
+### Implementation Details
+- Transit prediction based on SAV scores
+- Bindu threshold alerts (less than 25 vs. more than 30)
+- Planet-specific transit results from Bhinnashtakavarga
+- Kaksha-level transit analysis (8-part sign division)
+- Reduction rules (Trikona, Ekadhipatya) for refined predictions
+- Time-based transit tracking with event probability scores
+- Historical transit correlation analysis
+
+### Vedic References
+- BPHS (Ashtakavarga chapters)
+- Jataka Parijata on Ashtakavarga transits
+
+---
+
+## 25. Gochara Vedha (Transit Obstruction) System
+
+### Description
+Implement classical Vedha rules for transits - positions where planetary transits get obstructed by other planets, reducing or nullifying their effects.
+
+### Implementation Details
+- Complete Vedha point mapping for all planets
+- Real-time Vedha detection in current transits
+- Transit effectiveness scoring with Vedha consideration
+- Saturn transit Vedha from Mars, Mars Vedha from Saturn analysis
+- Jupiter transit Vedha points tracking
+- Beneficial transit protection alerts
+- Malefic transit mitigation notifications
+
+### Vedic References
+- Phaladeepika (Transit chapters)
+- Saravali on Gochara Vedha
+
+---
+
+## 26. Dasha Sandhi (Period Junction) Analysis
+
+### Description
+Implement detailed Dasha Sandhi analysis - the critical transition periods between major and minor planetary periods where significant life changes occur.
+
+### Implementation Details
+- Major Dasha transition timing and alerts
+- Sandhi period intensity calculation (3-month pre/post)
+- Antardasha Sandhi tracking within Mahadashas
+- Planet relationship analysis at Sandhi (friend/enemy transitions)
+- Event probability patterns at Dasha junctions
+- Remedial measures for difficult Sandhi periods
+- Historical event correlation with past Sandhi
+
+### Vedic References
+- BPHS on Dasha transition effects
+- Traditional interpretations of planetary periods
+
+---
+
+## 27. Maraka (Death-Inflicting) Analysis
+
+### Description
+Implement comprehensive Maraka analysis - identification of planets and periods that can cause health issues, accidents, or critical life events based on 2nd and 7th house lordship.
+
+### Implementation Details
+- Primary Maraka identification (2nd and 7th lords)
+- Secondary Maraka analysis (planets in 2nd/7th)
+- Maraka Dasha period calculation
+- Longevity category determination (Alpayu, Madhyayu, Poornayu)
+- Maraka activation transit tracking
+- Protective planet identification (Ayush Karaka)
+- Remedial measures for Maraka periods
+
+### Vedic References
+- BPHS (Ayurdaya chapter)
+- Jataka Parijata on longevity
+
+---
+
+## 28. Badhaka (Obstruction) Planet Analysis
+
+### Description
+Implement Badhaka Sthana and Badhakesh analysis - identifying the houses and planets that create obstacles in life based on the type of Lagna (movable, fixed, dual).
+
+### Implementation Details
+- Badhaka Sthana determination by Lagna type:
+  - Movable signs: 11th house is Badhaka
+  - Fixed signs: 9th house is Badhaka
+  - Dual signs: 7th house is Badhaka
+- Badhakesh strength and affliction analysis
+- Badhaka Dasha effects prediction
+- Obstacle patterns in specific life areas
+- Transit of Badhakesh impact
+- Remedies for Badhaka planet affliction
+
+### Vedic References
+- Phaladeepika
+- Traditional Parashari texts
+
+---
+
+## 29. Vipareeta Raja Yoga Analysis
+
+### Description
+Implement detailed analysis of Vipareeta Raja Yoga - the yoga formed when dusthana lords (6th, 8th, 12th) occupy other dusthanas, converting negative energy into success.
+
+### Implementation Details
+- Vipareeta Raja Yoga detection in birth chart
+- Three types: Harsha (6L), Sarala (8L), Vimala (12L)
+- Yoga strength calculation based on planet dignity
+- Dasha periods when yoga activates
+- Life areas benefited by specific yoga type
+- Conditions that strengthen or weaken the yoga
+- Transit triggers for yoga activation
+
+### Vedic References
+- BPHS on Vipareeta Raja Yoga
+- Phaladeepika
+
+---
+
+## 30. Kakshya (8-fold House Division) Transit System
+
+### Description
+Implement Kakshya system - dividing each sign into 8 parts ruled by Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon, and Lagna, for precise transit timing.
+
+### Implementation Details
+- Calculate 8 Kakshya divisions per sign (3°45' each)
+- Transit planet's Kakshya position tracking
+- Bindu contribution based on Kakshya ruler
+- Micro-timing of transit events
+- Transit intensity based on Kakshya and Bindu correlation
+- Kakshya change alerts for major planets
+- Integration with Ashtakavarga for precision
+
+### Vedic References
+- BPHS Ashtakavarga chapters
+- Jataka Parijata on Kakshya
+
+---
+
+## 31. Panch Mahapurusha Yoga Calculator
+
+### Description
+Implement comprehensive detection and analysis of the five great yogas formed by Mars, Mercury, Jupiter, Venus, and Saturn when placed in Kendra in their own or exaltation signs.
+
+### Implementation Details
+- Five yoga detection: Ruchaka (Mars), Bhadra (Mercury), Hamsa (Jupiter), Malavya (Venus), Sasha (Saturn)
+- Yoga strength calculation based on:
+  - Distance from exact exaltation degree
+  - House placement (1st, 4th, 7th, 10th)
+  - Aspects from benefics/malefics
+  - Dignity in divisional charts
+- Dasha activation periods for yoga results
+- Life area predictions per yoga type
+- Combination analysis when multiple yogas present
+
+### Vedic References
+- BPHS on Panch Mahapurusha Yoga
+- Saravali
+
+---
+
+## 32. Kemadruma Yoga and Cancellation Analysis
+
+### Description
+Implement detection of Kemadruma Yoga (Moon without planetary support) and its various cancellation conditions - important for emotional and financial wellbeing.
+
+### Implementation Details
+- Kemadruma detection (no planets in 2nd/12th from Moon)
+- Strength assessment (degrees of affliction)
+- Cancellation conditions:
+  - Planets in Kendra from Moon or Lagna
+  - Full Moon condition
+  - Moon in Kendra
+  - Moon aspected by Jupiter
+- Dasha periods when Kemadruma activates
+- Remedial measures for uncancelled Kemadruma
+- Emotional and financial impact predictions
+
+### Vedic References
+- BPHS on Chandra Yogas
+- Phaladeepika
+
+---
+
+## Updated Implementation Priority Matrix
+
+| Priority | Feature | Complexity | Impact | Status |
+|----------|---------|------------|--------|--------|
+| High | Ashtavarga Transit Predictions | Medium | High | Pending |
+| High | Gochara Vedha System | Medium | High | Pending |
+| High | Dasha Sandhi Analysis | Medium | High | Pending |
+| High | Panch Mahapurusha Yoga | Low | High | Pending |
+| Medium | Tarabala/Chandrabala | Low | Medium | Pending |
+| Medium | Maraka Analysis | Medium | Medium | Pending |
+| Medium | Badhaka Planet Analysis | Medium | Medium | Pending |
+| Medium | Vipareeta Raja Yoga | Low | Medium | Pending |
+| Medium | Kemadruma Yoga Analysis | Low | Medium | Pending |
+| Medium | Shoola Dasha | High | Medium | Pending |
+| Medium | Kakshya Transit System | Medium | Medium | Pending |
+| Low | Ashtamangala Prashna | High | Medium | Pending |
 
 ---
 

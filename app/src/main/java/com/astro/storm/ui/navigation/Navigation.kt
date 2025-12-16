@@ -40,6 +40,7 @@ import com.astro.storm.ui.screen.MrityuBhagaScreen
 import com.astro.storm.ui.screen.LalKitabRemediesScreen
 import com.astro.storm.ui.screen.DivisionalChartsScreen
 import com.astro.storm.ui.screen.UpachayaTransitScreen
+import com.astro.storm.ui.screen.KalachakraDashaScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.screen.main.MainScreen
@@ -140,6 +141,9 @@ sealed class Screen(val route: String) {
     }
     object UpachayaTransit : Screen("upachaya_transit/{chartId}") {
         fun createRoute(chartId: Long) = "upachaya_transit/$chartId"
+    }
+    object KalachakraDasha : Screen("kalachakra_dasha/{chartId}") {
+        fun createRoute(chartId: Long) = "kalachakra_dasha/$chartId"
     }
 }
 
@@ -321,6 +325,11 @@ fun AstroStormNavigation(
                 onNavigateToUpachayaTransit = {
                     selectedChartId?.let { chartId ->
                         navController.navigate(Screen.UpachayaTransit.createRoute(chartId))
+                    }
+                },
+                onNavigateToKalachakraDasha = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.KalachakraDasha.createRoute(chartId))
                     }
                 },
                 onExportChart = { format ->
@@ -887,6 +896,25 @@ fun AstroStormNavigation(
             UpachayaTransitScreen(
                 chart = currentChart,
                 transitPositions = currentChart?.planetPositions ?: emptyList(),
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Kalachakra Dasha screen
+        composable(
+            route = Screen.KalachakraDasha.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            KalachakraDashaScreen(
+                chart = currentChart,
                 onBack = { navController.popBackStack() }
             )
         }

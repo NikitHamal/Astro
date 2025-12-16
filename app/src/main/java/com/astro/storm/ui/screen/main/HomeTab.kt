@@ -26,6 +26,7 @@ import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.CompareArrows
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.GridView
+import androidx.compose.material.icons.outlined.HealthAndSafety
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.PersonAddAlt
 import androidx.compose.material.icons.outlined.Public
@@ -542,6 +543,13 @@ enum class InsightFeature(
         descriptionKey = StringKey.FEATURE_UPACHAYA_TRANSIT_DESC,
         icon = Icons.Outlined.Stars,
         color = AppTheme.SuccessColor,
+        isImplemented = true
+    ),
+    KALACHAKRA_DASHA(
+        titleKey = StringKey.FEATURE_KALACHAKRA_DASHA,
+        descriptionKey = StringKey.FEATURE_KALACHAKRA_DASHA_DESC,
+        icon = Icons.Outlined.HealthAndSafety,
+        color = AppTheme.LifeAreaSpiritual,
         isImplemented = true
     );
 
