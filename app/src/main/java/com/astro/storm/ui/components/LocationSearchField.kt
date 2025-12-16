@@ -81,10 +81,20 @@ fun LocationSearchField(
         SearchErrorType.GENERIC -> searchFailedText
     }
 
+    // Use a MutableStateFlow to properly track value changes for debouncing
+    val searchQueryFlow = remember { MutableStateFlow("") }
+
+    // Update the flow whenever value changes
+    LaunchedEffect(value) {
+        searchQueryFlow.value = value
+    }
+
+    // Perform debounced search
     LaunchedEffect(searchState) {
-        snapshotFlow { value }
+        searchQueryFlow
             .debounce(400)
             .distinctUntilChanged()
+            .filter { it.isNotBlank() || searchState.results.isNotEmpty() }
             .collectLatest { query ->
                 if (query.length >= 3) {
                     searchState.search(query)

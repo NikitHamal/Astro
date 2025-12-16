@@ -78,8 +78,27 @@ class ThemeManager private constructor(context: Context) {
 /**
  * Available theme modes
  */
-enum class ThemeMode(val displayName: String, val description: String) {
-    LIGHT("Light", "Always use light theme"),
-    DARK("Dark", "Always use dark theme"),
-    SYSTEM("System", "Follow device settings")
+enum class ThemeMode(
+    val displayNameEn: String,
+    val displayNameNe: String,
+    val descriptionEn: String,
+    val descriptionNe: String
+) {
+    LIGHT("Light", "उज्यालो", "Always use light theme", "सधैं उज्यालो थिम प्रयोग गर्नुहोस्"),
+    DARK("Dark", "अँध्यारो", "Always use dark theme", "सधैं अँध्यारो थिम प्रयोग गर्नुहोस्"),
+    SYSTEM("System", "प्रणाली", "Follow device settings", "उपकरण सेटिङ अनुसरण गर्नुहोस्");
+
+    fun getDisplayName(language: com.astro.storm.data.localization.Language): String {
+        return when (language) {
+            com.astro.storm.data.localization.Language.ENGLISH -> displayNameEn
+            com.astro.storm.data.localization.Language.NEPALI -> displayNameNe
+        }
+    }
+
+    fun getDescription(language: com.astro.storm.data.localization.Language): String {
+        return when (language) {
+            com.astro.storm.data.localization.Language.ENGLISH -> descriptionEn
+            com.astro.storm.data.localization.Language.NEPALI -> descriptionNe
+        }
+    }
 }

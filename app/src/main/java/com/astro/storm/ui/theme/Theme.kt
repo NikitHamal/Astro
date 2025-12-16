@@ -64,24 +64,24 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF4A5ABA),
+    primary = Color(0xFF6B5D4D),
     onPrimary = Color.White,
-    primaryContainer = Color(0xFFE0E2FF),
-    onPrimaryContainer = Color(0xFF0F1649),
-    secondary = Color(0xFF8C4A42),
+    primaryContainer = Color(0xFFEDE7DF),
+    onPrimaryContainer = Color(0xFF2C2418),
+    secondary = Color(0xFF8B7355),
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFFFDAD6),
-    onSecondaryContainer = Color(0xFF3A0A06),
-    tertiary = Color(0xFF6F5D00),
+    secondaryContainer = Color(0xFFD4C8B8),
+    onSecondaryContainer = Color(0xFF3A2D1E),
+    tertiary = Color(0xFFB8860B),
     onTertiary = Color.White,
     tertiaryContainer = Color(0xFFFFF0C7),
     onTertiaryContainer = Color(0xFF231B00),
-    background = Color(0xFFFBF8FF),
-    onBackground = Color(0xFF1B1B21),
-    surface = Color(0xFFFBF8FF),
-    onSurface = Color(0xFF1B1B21),
-    surfaceVariant = Color(0xFFE4E1EC),
-    onSurfaceVariant = Color(0xFF46464F)
+    background = Color(0xFFF5F2ED),
+    onBackground = Color(0xFF2C2418),
+    surface = Color(0xFFFFFFFF),
+    onSurface = Color(0xFF2C2418),
+    surfaceVariant = Color(0xFFF5F2ED),
+    onSurfaceVariant = Color(0xFF5A4D3D)
 )
 
 @Composable
@@ -90,25 +90,27 @@ fun AstroStormTheme(
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    // Always use dark theme for astronomy app - clean, professional look
-    val colorScheme = DarkColorScheme
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val appThemeColors = if (darkTheme) DarkAppThemeColors else LightAppThemeColors
 
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.background.toArgb()
-            window.navigationBarColor = colorScheme.background.toArgb()
+            window.statusBarColor = appThemeColors.ScreenBackground.toArgb()
+            window.navigationBarColor = appThemeColors.NavBarBackground.toArgb()
             WindowCompat.getInsetsController(window, view).apply {
-                isAppearanceLightStatusBars = false
-                isAppearanceLightNavigationBars = false
+                isAppearanceLightStatusBars = !darkTheme
+                isAppearanceLightNavigationBars = !darkTheme
             }
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    ProvideAppThemeColors(colors = appThemeColors) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }

@@ -34,6 +34,8 @@ import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.HouseSystem
 import com.astro.storm.data.model.VedicChart
+import com.astro.storm.data.preferences.ThemeManager
+import com.astro.storm.data.preferences.ThemeMode
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.theme.AppTheme
 
@@ -122,6 +124,10 @@ fun SettingsTab(
 
         item {
             LanguageSetting(localizationManager = localizationManager)
+        }
+
+        item {
+            ThemeSetting()
         }
 
         // Note: Date system selector removed - it now automatically follows language
@@ -635,6 +641,120 @@ private fun LanguageSetting(localizationManager: LocalizationManager?) {
                             )
                             Text(
                                 text = language.englishName,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = AppTheme.TextMuted
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Theme Selection Setting
+ */
+@Composable
+private fun ThemeSetting() {
+    val context = LocalContext.current
+    val language = LocalLanguage.current
+    val themeManager = remember { ThemeManager.getInstance(context) }
+    val currentTheme by themeManager.themeMode.collectAsState()
+    var expanded by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(AppTheme.ChipBackground),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = when (currentTheme) {
+                            ThemeMode.LIGHT -> Icons.Outlined.LightMode
+                            ThemeMode.DARK -> Icons.Outlined.DarkMode
+                            ThemeMode.SYSTEM -> Icons.Outlined.SettingsBrightness
+                        },
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(StringKey.SETTINGS_THEME),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = currentTheme.getDisplayName(language),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.AccentPrimary
+                    )
+                }
+
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted
+                )
+            }
+
+            if (expanded) {
+                HorizontalDivider(color = AppTheme.DividerColor)
+
+                ThemeMode.entries.forEach { theme ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                themeManager.setThemeMode(theme)
+                                expanded = false
+                            }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = theme == currentTheme,
+                            onClick = {
+                                themeManager.setThemeMode(theme)
+                                expanded = false
+                            },
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = AppTheme.AccentPrimary,
+                                unselectedColor = AppTheme.TextMuted
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column {
+                            Text(
+                                text = theme.getDisplayName(language),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Medium,
+                                color = if (theme == currentTheme) AppTheme.TextPrimary else AppTheme.TextSecondary
+                            )
+                            Text(
+                                text = theme.getDescription(language),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
