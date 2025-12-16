@@ -316,17 +316,33 @@ fun ChartInputScreen(
  * Supports formats: "27.7", "27.7°", "27°42'", "-27.7", etc.
  */
 private fun parseCoordinate(value: String): Double? {
-    // Remove common coordinate symbols and whitespace
-    val cleaned = value.trim()
-        .replace("°", "")
-        .replace("'", "")
-        .replace("\"", "")
-        .replace("′", "")  // Unicode prime
-        .replace("″", "")  // Unicode double prime
-        .replace(",", ".")  // Handle comma as decimal separator
-        .trim()
+    // Using a single pass with StringBuilder is more efficient than
+    // chained replace() calls, as it avoids creating multiple
+    // intermediate String objects.
+    if (value.isBlank()) return null
 
-    return cleaned.toDoubleOrNull()
+    val sb = StringBuilder(value.length)
+    var hasDecimal = false
+
+    for (char in value) {
+        when (char) {
+            in '0'..'9' -> sb.append(char)
+            '.' -> if (!hasDecimal) {
+                sb.append(char)
+                hasDecimal = true
+            }
+            ',' -> if (!hasDecimal) {
+                sb.append('.')
+                hasDecimal = true
+            }
+            '-' -> if (sb.isEmpty()) {
+                sb.append(char)
+            }
+            // Ignore other characters like °, ′, ″, whitespace
+        }
+    }
+
+    return sb.toString().toDoubleOrNull()
 }
 
 private fun validateInput(latitude: String, longitude: String): String? {
