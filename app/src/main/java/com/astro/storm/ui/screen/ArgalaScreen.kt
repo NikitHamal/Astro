@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.data.localization.StringKeyArgala
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.currentLanguage
@@ -162,7 +163,7 @@ fun ArgalaScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        "Calculating Argala...",
+                        stringResource(StringKeyArgala.ARGALA_CALCULATING),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted
                     )
@@ -176,7 +177,7 @@ fun ArgalaScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    "Failed to calculate Argala",
+                    stringResource(StringKeyArgala.ARGALA_FAILED),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.ErrorColor
                 )

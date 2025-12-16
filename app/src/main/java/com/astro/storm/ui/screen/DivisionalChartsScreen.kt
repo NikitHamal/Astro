@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyDosha
+import com.astro.storm.data.localization.StringKeyScreen
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -296,7 +297,7 @@ private fun HoraTab(analysis: HoraAnalysis, language: Language) {
         if (analysis.sunHoraPlanets.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = "Sun Hora - Self-Earned Wealth",
+                    title = stringResource(StringKeyScreen.DIVISIONAL_SUN_HORA_TITLE),
                     icon = Icons.Filled.WbSunny,
                     tint = AppTheme.PlanetSun
                 )
@@ -304,7 +305,7 @@ private fun HoraTab(analysis: HoraAnalysis, language: Language) {
             item {
                 PlanetChipsCard(
                     planets = analysis.sunHoraPlanets,
-                    description = "These planets indicate potential for wealth through your own efforts",
+                    description = stringResource(StringKeyScreen.DIVISIONAL_SUN_HORA_DESC),
                     language = language
                 )
             }
@@ -314,7 +315,7 @@ private fun HoraTab(analysis: HoraAnalysis, language: Language) {
         if (analysis.moonHoraPlanets.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = "Moon Hora - Inherited/Liquid Wealth",
+                    title = stringResource(StringKeyScreen.DIVISIONAL_MOON_HORA_TITLE),
                     icon = Icons.Filled.NightsStay,
                     tint = AppTheme.PlanetMoon
                 )
@@ -322,7 +323,7 @@ private fun HoraTab(analysis: HoraAnalysis, language: Language) {
             item {
                 PlanetChipsCard(
                     planets = analysis.moonHoraPlanets,
-                    description = "These planets indicate potential for inherited or liquid assets",
+                    description = stringResource(StringKeyScreen.DIVISIONAL_MOON_HORA_DESC),
                     language = language
                 )
             }
@@ -332,7 +333,7 @@ private fun HoraTab(analysis: HoraAnalysis, language: Language) {
         if (analysis.wealthIndicators.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = "Wealth Sources",
+                    title = stringResource(StringKeyScreen.DIVISIONAL_WEALTH_SOURCES),
                     icon = Icons.Filled.AccountBalance,
                     tint = AppTheme.AccentGold
                 )

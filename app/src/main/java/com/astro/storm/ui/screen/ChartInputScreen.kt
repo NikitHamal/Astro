@@ -326,17 +326,6 @@ fun ChartInputScreen(
     }
 }
 
-private fun validateInput(latitude: String, longitude: String): String? {
-    val lat = latitude.trim().toDoubleOrNull()
-    val lon = longitude.trim().toDoubleOrNull()
-
-    return when {
-        lat == null || lon == null -> "Please enter valid latitude and longitude"
-        lat < -90 || lat > 90 -> "Latitude must be between -90 and 90"
-        lon < -180 || lon > 180 -> "Longitude must be between -180 and 180"
-        else -> null
-    }
-}
 
 private fun validateInputLocalized(latitude: String, longitude: String): StringKey? {
     val lat = latitude.trim().toDoubleOrNull()
@@ -507,14 +496,8 @@ private fun DateSystemToggle(
     language: Language,
     onToggle: () -> Unit
 ) {
-    val adLabel = when (language) {
-        Language.ENGLISH -> "AD"
-        Language.NEPALI -> "ई.सं."
-    }
-    val bsLabel = when (language) {
-        Language.ENGLISH -> "BS"
-        Language.NEPALI -> "वि.सं."
-    }
+    val adLabel = stringResource(StringKeyScreen.DATE_SYSTEM_AD)
+    val bsLabel = stringResource(StringKeyScreen.DATE_SYSTEM_BS)
 
     Surface(
         onClick = onToggle,

@@ -73,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyAshtakavarga
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.Planet
@@ -96,11 +97,11 @@ import com.astro.storm.ui.theme.AppTheme
  * - Smooth animations throughout
  */
 
-enum class AshtakavargaViewType(val title: String) {
-    OVERVIEW("Overview"),
-    SARVASHTAKAVARGA("Sarvashtakavarga"),
-    BY_PLANET("By Planet"),
-    BY_HOUSE("By House")
+enum class AshtakavargaViewType(val titleKey: StringKeyAshtakavarga) {
+    OVERVIEW(StringKeyAshtakavarga.VIEW_OVERVIEW),
+    SARVASHTAKAVARGA(StringKeyAshtakavarga.VIEW_SARVASHTAKAVARGA),
+    BY_PLANET(StringKeyAshtakavarga.VIEW_BY_PLANET),
+    BY_HOUSE(StringKeyAshtakavarga.VIEW_BY_HOUSE)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
