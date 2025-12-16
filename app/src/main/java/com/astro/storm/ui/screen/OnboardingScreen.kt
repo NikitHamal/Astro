@@ -180,7 +180,7 @@ private fun WelcomeSection(
         )
         Language.NEPALI -> Pair(
             "8M5>$ ",
-            "5H&? M/K$?7K 2>? $*>K 5M/M$?$ >!d 89@ (M.*$M0?>, &6>, /K 0 5M/M$?$ -5?7M/5>#@ *M0>*M$ 0M(A9K8Md"
+            "5H&? M/K$?7K 2>? $*>K 5M/M$?$ >!d 89@ (M.*$M0?>, &6>, /K 0 5M/M$?$ -5?7M/5>#@ *M0>*M$ 0M(A9K8M$"
         )
     }
 
