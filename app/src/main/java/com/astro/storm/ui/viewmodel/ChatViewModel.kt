@@ -7,6 +7,8 @@ import com.astro.storm.data.ai.agent.AgentResponse
 import com.astro.storm.data.ai.agent.StormyAgent
 import com.astro.storm.data.ai.provider.AiModel
 import com.astro.storm.data.ai.provider.AiProviderRegistry
+import com.astro.storm.data.ai.provider.ChatMessage
+import com.astro.storm.data.ai.provider.MessageRole
 import com.astro.storm.data.local.ChartDatabase
 import com.astro.storm.data.local.chat.ChatConversation
 import com.astro.storm.data.local.chat.ChatMessageModel
@@ -101,9 +103,9 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     val currentConversation: StateFlow<ChatConversation?> = _currentConversationId
         .flatMapLatest { id ->
             if (id != null) {
-                flow { emit(chatRepository.getConversationById(id)) }
+                flow<ChatConversation?> { emit(chatRepository.getConversationById(id)) }
             } else {
-                flowOf(null)
+                flowOf<ChatConversation?>(null)
             }
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
@@ -279,9 +281,18 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                     return@launch
                 }
 
-                // Get conversation history
-                val messages = chatRepository.getMessagesForConversationSync(conversationId)
+                // Get conversation history and convert to ChatMessage format
+                val dbMessages = chatRepository.getMessagesForConversationSync(conversationId)
                     .dropLast(1) // Exclude the placeholder
+                val chatMessages = dbMessages.map { msg ->
+                    ChatMessage(
+                        role = msg.role,
+                        content = msg.content
+                    )
+                }
+
+                // Get current profile
+                val currentProfile = savedCharts.find { it.id == selectedChartId }
 
                 // Process with agent
                 _uiState.value = ChatUiState.Streaming
@@ -292,43 +303,59 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
                 streamingJob = launch {
                     agent.processMessage(
-                        userMessage = content,
-                        conversationHistory = messages,
-                        model = model
+                        messages = chatMessages,
+                        model = model,
+                        currentProfile = currentProfile,
+                        allProfiles = savedCharts,
+                        currentChart = currentChart
                     ).collect { response ->
                         when (response) {
-                            is AgentResponse.Streaming -> {
-                                _streamingContent.value = response.content
-                                response.reasoningContent?.let {
-                                    _streamingReasoning.value = it
-                                }
+                            is AgentResponse.ContentChunk -> {
+                                _streamingContent.value = _streamingContent.value + response.text
 
                                 // Update database periodically
                                 currentMessageId?.let { msgId ->
                                     chatRepository.updateAssistantMessageContent(
                                         messageId = msgId,
-                                        content = response.content,
-                                        reasoningContent = response.reasoningContent,
+                                        content = _streamingContent.value,
+                                        reasoningContent = _streamingReasoning.value.takeIf { it.isNotEmpty() },
                                         isStreaming = true
                                     )
                                 }
                             }
-                            is AgentResponse.ToolCall -> {
-                                _toolsInProgress.value = _toolsInProgress.value + response.toolName
-                                toolsUsed.add(response.toolName)
+                            is AgentResponse.ReasoningChunk -> {
+                                _streamingReasoning.value = _streamingReasoning.value + response.text
+                            }
+                            is AgentResponse.ToolCallsStarted -> {
+                                _toolsInProgress.value = response.toolNames
+                                toolsUsed.addAll(response.toolNames)
+                            }
+                            is AgentResponse.ToolExecuting -> {
+                                if (!_toolsInProgress.value.contains(response.toolName)) {
+                                    _toolsInProgress.value = _toolsInProgress.value + response.toolName
+                                }
+                                if (!toolsUsed.contains(response.toolName)) {
+                                    toolsUsed.add(response.toolName)
+                                }
                             }
                             is AgentResponse.ToolResult -> {
                                 _toolsInProgress.value = _toolsInProgress.value - response.toolName
                             }
                             is AgentResponse.Complete -> {
                                 finalContent = response.content
-                                finalReasoning = response.reasoningContent
+                                finalReasoning = response.reasoning
                             }
                             is AgentResponse.Error -> {
                                 _uiState.value = ChatUiState.Error(response.message)
                                 currentMessageId?.let { msgId ->
                                     chatRepository.setMessageError(msgId, response.message)
                                 }
+                            }
+                            is AgentResponse.TokenUsage -> {
+                                // Token usage info - could log or track if needed
+                            }
+                            is AgentResponse.ModelInfo -> {
+                                // Model info - could log if needed
                             }
                         }
                     }
@@ -441,13 +468,9 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         savedCharts: List<SavedChart>,
         selectedChartId: Long?
     ) {
-        stormyAgent = StormyAgent(
-            context = getApplication(),
-            currentChart = currentChart,
-            currentProfile = savedCharts.find { it.id == selectedChartId },
-            allProfiles = savedCharts,
-            chatRepository = chatRepository
-        )
+        stormyAgent = StormyAgent.getInstance(getApplication())
+        // Context data (currentChart, savedCharts, selectedChartId) is passed
+        // directly to processMessage() when sending messages
     }
 
     /**
