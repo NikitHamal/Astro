@@ -253,8 +253,21 @@ class SwissEphemerisEngine internal constructor(
         }
     }
 
-    private fun getCacheKey(birthData: BirthData, houseSystem: HouseSystem): String {
-        return "${birthData.dateTime}_${birthData.latitude}_${birthData.longitude}_${birthData.timezone}_${houseSystem.name}_$ayanamsaType"
+    private fun getCacheKey(birthData: BirthData, houseSystem: HouseSystem): String = buildString(128) {
+        // Using buildString is more efficient for concatenations with multiple parts
+        // as it avoids creating intermediate String objects that string templates might produce.
+        // Impact: Reduces temporary object allocation in a performance-sensitive cache key generation path.
+        append(birthData.dateTime)
+        append('_')
+        append(birthData.latitude)
+        append('_')
+        append(birthData.longitude)
+        append('_')
+        append(birthData.timezone)
+        append('_')
+        append(houseSystem.name)
+        append('_')
+        append(ayanamsaType)
     }
 
     fun calculatePlanetPosition(
