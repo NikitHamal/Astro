@@ -499,14 +499,14 @@ object TarabalaCalculator {
      */
     private fun calculateTransitMoonSign(dateTime: LocalDateTime, chart: VedicChart): ZodiacSign? {
         return try {
-            val jd = SwissEphemerisEngine.calculateJulianDay(dateTime, chart.birthData.timezone)
-            val moonLongitude = SwissEphemerisEngine.calculatePlanetPosition(Planet.MOON, jd)
-
-            // Apply ayanamsa for sidereal position
-            val siderealLongitude = VedicAstrologyUtils.normalizeLongitude(
-                moonLongitude - chart.ayanamsa
+            val engineInstance = SwissEphemerisEngine.getInstance(null) ?: return null
+            val moonPos = engineInstance.calculatePlanetPosition(
+                Planet.MOON, dateTime, chart.birthData.timezone,
+                chart.birthData.latitude, chart.birthData.longitude
             )
-            ZodiacSign.fromLongitude(siderealLongitude)
+
+            // Position is already in sidereal
+            ZodiacSign.fromLongitude(moonPos.longitude)
         } catch (e: Exception) {
             null
         }
@@ -517,13 +517,15 @@ object TarabalaCalculator {
      */
     private fun calculateTransitNakshatra(dateTime: LocalDateTime, chart: VedicChart): Nakshatra? {
         return try {
-            val jd = SwissEphemerisEngine.calculateJulianDay(dateTime, chart.birthData.timezone)
-            val moonLongitude = SwissEphemerisEngine.calculatePlanetPosition(Planet.MOON, jd)
-
-            val siderealLongitude = VedicAstrologyUtils.normalizeLongitude(
-                moonLongitude - chart.ayanamsa
+            val engineInstance = SwissEphemerisEngine.getInstance(null) ?: return null
+            val moonPos = engineInstance.calculatePlanetPosition(
+                Planet.MOON, dateTime, chart.birthData.timezone,
+                chart.birthData.latitude, chart.birthData.longitude
             )
-            Nakshatra.fromLongitude(siderealLongitude)
+
+            // Position is already in sidereal
+            val nakshatraInfo = Nakshatra.fromLongitude(moonPos.longitude)
+            nakshatraInfo.first
         } catch (e: Exception) {
             null
         }

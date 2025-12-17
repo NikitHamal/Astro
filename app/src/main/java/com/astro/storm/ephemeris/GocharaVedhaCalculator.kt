@@ -779,6 +779,8 @@ object GocharaVedhaCalculator {
                 insights.add("Jupiter's blessings are currently obstructed - major fortune delayed")
             } else if (it.isNaturallyFavorable) {
                 insights.add("Jupiter favorably placed - expansion and wisdom available")
+            } else {
+                // Jupiter neutral
             }
         }
 
@@ -789,6 +791,8 @@ object GocharaVedhaCalculator {
                 insights.add("Saturn's challenging transit requires patience and discipline")
             } else if (!it.hasVedha) {
                 insights.add("Saturn supporting through steady effort - rewards for hard work")
+            } else {
+                // Saturn obstructed
             }
         }
 
@@ -872,7 +876,7 @@ object GocharaVedhaCalculator {
         dateTime: LocalDateTime = LocalDateTime.now()
     ): CompleteVedhaAnalysis? {
         // Calculate current transit positions
-        val jd = SwissEphemerisEngine.calculateJulianDay(dateTime, chart.birthData.timezone)
+        val engineInstance = SwissEphemerisEngine.getInstance(null) ?: return null
 
         val transitPositions = mutableListOf<PlanetPosition>()
         val gocharaPlanets = listOf(
@@ -882,26 +886,11 @@ object GocharaVedhaCalculator {
 
         for (planet in gocharaPlanets) {
             try {
-                val longitude = SwissEphemerisEngine.calculatePlanetPosition(planet, jd)
-                val siderealLong = VedicAstrologyUtils.normalizeLongitude(longitude - chart.ayanamsa)
-                val sign = ZodiacSign.fromLongitude(siderealLong)
-                val nakshatra = com.astro.storm.data.model.Nakshatra.fromLongitude(siderealLong)
-
-                transitPositions.add(PlanetPosition(
-                    planet = planet,
-                    longitude = siderealLong,
-                    latitude = 0.0,
-                    distance = 0.0,
-                    speed = 0.0,
-                    sign = sign,
-                    degree = siderealLong % 30.0,
-                    minutes = ((siderealLong % 1.0) * 60),
-                    seconds = ((((siderealLong % 1.0) * 60) % 1.0) * 60),
-                    isRetrograde = false,
-                    nakshatra = nakshatra,
-                    nakshatraPada = ((siderealLong % (360.0 / 27.0)) / (360.0 / 108.0)).toInt() + 1,
-                    house = 1
-                ))
+                val planetPos = engineInstance.calculatePlanetPosition(
+                    planet, dateTime, chart.birthData.timezone,
+                    chart.birthData.latitude, chart.birthData.longitude
+                )
+                transitPositions.add(planetPos)
             } catch (e: Exception) {
                 // Skip if calculation fails
             }
