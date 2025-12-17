@@ -786,7 +786,7 @@ private fun EnergyCard(overallEnergy: Int) {
         label = "energy_anim"
     )
 
-    val energyColor = remember(overallEnergy) { getEnergyColor(overallEnergy) }
+    val energyColor = getEnergyColor(overallEnergy)
     val energyDescription = remember(overallEnergy, language) { getEnergyDescription(overallEnergy, language) }
 
     Card(
@@ -912,7 +912,7 @@ private fun LifeAreasSection(lifeAreas: List<HoroscopeCalculator.LifeAreaPredict
 private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
     val language = LocalLanguage.current
     var expanded by remember { mutableStateOf(false) }
-    val areaConfig = remember(prediction.area) { getLifeAreaConfig(prediction.area) }
+    val areaConfig = getLifeAreaConfig(prediction.area)
     val interactionSource = remember { MutableInteractionSource() }
 
     // Get localized area name
@@ -1336,7 +1336,7 @@ private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
         label = "energy_bar_${highlight.dayOfWeek}"
     )
 
-    val barColor = remember(highlight.energy) { getEnergyColor(highlight.energy) }
+    val barColor = getEnergyColor(highlight.energy)
     val dayAbbrev = remember(highlight.dayOfWeek) { highlight.dayOfWeek.take(3) }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -1475,7 +1475,7 @@ private fun WeeklyPredictionsSection(predictions: Map<HoroscopeCalculator.LifeAr
 private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: String) {
     val language = LocalLanguage.current
     var expanded by remember { mutableStateOf(false) }
-    val areaConfig = remember(area) { getLifeAreaConfig(area) }
+    val areaConfig = getLifeAreaConfig(area)
     val interactionSource = remember { MutableInteractionSource() }
 
     // Get localized area name
