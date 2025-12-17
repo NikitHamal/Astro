@@ -150,14 +150,19 @@ fun PanchangaScreenRedesigned(
         }
     }
 
-    val tabs = remember {
+    // Capture composable colors outside remember
+    val accentPrimary = AppTheme.AccentPrimary
+    val accentGold = AppTheme.AccentGold
+    val accentTeal = AppTheme.AccentTeal
+
+    val tabs = remember(accentPrimary, accentGold, accentTeal) {
         PanchangaViewType.entries.map { type ->
             TabItem(
                 title = type.title,
                 accentColor = when (type) {
-                    PanchangaViewType.TODAY -> AppTheme.AccentPrimary
-                    PanchangaViewType.BIRTH -> AppTheme.AccentGold
-                    PanchangaViewType.ELEMENTS -> AppTheme.AccentTeal
+                    PanchangaViewType.TODAY -> accentPrimary
+                    PanchangaViewType.BIRTH -> accentGold
+                    PanchangaViewType.ELEMENTS -> accentTeal
                 }
             )
         }
