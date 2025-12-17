@@ -3750,7 +3750,132 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
 
     // Guna types
     GUNA_RAJAS("Rajas", "रजस्"),
-    GUNA_TAMAS("Tamas", "तमस्");
+    GUNA_TAMAS("Tamas", "तमस्"),
+
+    // ============================================
+    // DASHA SANDHI ANALYZER STRINGS
+    // ============================================
+    SANDHI_INTENSITY_CRITICAL("Critical", "गम्भीर"),
+    SANDHI_INTENSITY_HIGH("High", "उच्च"),
+    SANDHI_INTENSITY_MODERATE("Moderate", "मध्यम"),
+    SANDHI_INTENSITY_MILD("Mild", "हल्का"),
+    SANDHI_INTENSITY_MINIMAL("Minimal", "न्यूनतम"),
+    TRANSITION_FRIEND_FRIEND("Friend to Friend", "मित्र देखि मित्र"),
+    TRANSITION_FRIEND_NEUTRAL("Friend to Neutral", "मित्र देखि तटस्थ"),
+    TRANSITION_FRIEND_ENEMY("Friend to Enemy", "मित्र देखि शत्रु"),
+    TRANSITION_NEUTRAL_FRIEND("Neutral to Friend", "तटस्थ देखि मित्र"),
+    TRANSITION_NEUTRAL_NEUTRAL("Neutral to Neutral", "तटस्थ देखि तटस्थ"),
+    TRANSITION_NEUTRAL_ENEMY("Neutral to Enemy", "तटस्थ देखि शत्रु"),
+    TRANSITION_ENEMY_FRIEND("Enemy to Friend", "शत्रु देखि मित्र"),
+    TRANSITION_ENEMY_NEUTRAL("Enemy to Neutral", "शत्रु देखि तटस्थ"),
+    TRANSITION_ENEMY_ENEMY("Enemy to Enemy", "शत्रु देखि शत्रु"),
+
+    // ============================================
+    // GOCHARA VEDHA CALCULATOR STRINGS
+    // ============================================
+    VEDHA_COMPLETE("Complete", "पूर्ण"),
+    VEDHA_STRONG("Strong", "बलियो"),
+    VEDHA_MODERATE("Moderate", "मध्यम"),
+    VEDHA_PARTIAL("Partial", "आंशिक"),
+    VEDHA_NONE("None", "कुनै छैन"),
+    TRANSIT_EXCELLENT("Excellent", "उत्कृष्ट"),
+    TRANSIT_GOOD("Good", "राम्रो"),
+    TRANSIT_MODERATE("Moderate", "मध्यम"),
+    TRANSIT_WEAK("Weak", "कमजोर"),
+    TRANSIT_NULLIFIED("Nullified", "शून्य"),
+    TRANSIT_UNFAVORABLE("Unfavorable", "प्रतिकूल"),
+
+    // ============================================
+    // KEMADRUMA YOGA CALCULATOR STRINGS
+    // ============================================
+    KEMADRUMA_NOT_PRESENT("Not Present", "उपस्थित छैन"),
+    KEMADRUMA_FULLY_CANCELLED("Fully Cancelled", "पूर्ण रद्द"),
+    KEMADRUMA_MOSTLY_CANCELLED("Mostly Cancelled", "प्राय: रद्द"),
+    KEMADRUMA_PARTIALLY_CANCELLED("Partially Cancelled", "आंशिक रद्द"),
+    KEMADRUMA_WEAKLY_CANCELLED("Weakly Cancelled", "कमजोर रद्द"),
+    KEMADRUMA_ACTIVE_MODERATE("Active - Moderate", "सक्रिय - मध्यम"),
+    KEMADRUMA_ACTIVE_SEVERE("Active - Severe", "सक्रिय - गम्भीर"),
+    BHANGA_KENDRA_MOON("Kendra Moon", "केन्द्र चन्द्र"),
+    BHANGA_KENDRA_LAGNA("Kendra Lagna", "केन्द्र लग्न"),
+    BHANGA_MOON_KENDRA("Moon in Kendra", "चन्द्र केन्द्रमा"),
+    BHANGA_BENEFIC_ASPECT("Benefic Aspect", "शुभ दृष्टि"),
+    BHANGA_BENEFIC_CONJUNCTION("Benefic Conjunction", "शुभ संयोग"),
+    BHANGA_MOON_EXALTED("Moon Exalted", "चन्द्र उच्च"),
+    BHANGA_MOON_OWN("Moon Own Sign", "चन्द्र स्वराशि"),
+    BHANGA_MOON_FRIEND("Moon with Friend", "चन्द्र मित्र साथ"),
+    BHANGA_FULL_MOON("Full Moon", "पूर्ण चन्द्र"),
+    BHANGA_ANGULAR_MOON("Angular Moon", "केन्द्रीय चन्द्र"),
+    BHANGA_STRONG_DISPOSITOR("Strong Dispositor", "बलियो स्वामी"),
+    BHANGA_JUPITER_ASPECT("Jupiter Aspect", "गुरु दृष्टि"),
+    BHANGA_VENUS_ASPECT("Venus Aspect", "शुक्र दृष्टि"),
+
+    // ============================================
+    // TARABALA CALCULATOR STRINGS
+    // ============================================
+    TARA_JANMA("Janma", "जन्म"),
+    TARA_SAMPAT("Sampat", "सम्पत्ति"),
+    TARA_VIPAT("Vipat", "विपत्ति"),
+    TARA_KSHEMA("Kshema", "क्षेम"),
+    TARA_PRATYARI("Pratyari", "प्रत्यारी"),
+    TARA_SADHAKA("Sadhaka", "साधक"),
+    TARA_VADHA("Vadha", "वध"),
+    TARA_MITRA("Mitra", "मित्र"),
+    TARA_PARAMA_MITRA("Parama Mitra", "परम मित्र"),
+    TARA_JANMA_DESC("Birth Star", "जन्म नक्षत्र"),
+    TARA_SAMPAT_DESC("Wealth Star", "सम्पत्ति नक्षत्र"),
+    TARA_VIPAT_DESC("Misfortune Star", "विपत्ति नक्षत्र"),
+    TARA_KSHEMA_DESC("Welfare Star", "क्षेम नक्षत्र"),
+    TARA_PRATYARI_DESC("Enemy Star", "प्रत्यारी नक्षत्र"),
+    TARA_SADHAKA_DESC("Achiever Star", "साधक नक्षत्र"),
+    TARA_VADHA_DESC("Death Star", "वध नक्षत्र"),
+    TARA_MITRA_DESC("Friend Star", "मित्र नक्षत्र"),
+    TARA_PARAMA_MITRA_DESC("Highest Friend Star", "परम मित्र नक्षत्र"),
+    CHANDRABALA_EXCELLENT("Excellent", "उत्कृष्ट"),
+    CHANDRABALA_GOOD("Good", "राम्रो"),
+    CHANDRABALA_NEUTRAL("Neutral", "तटस्थ"),
+    CHANDRABALA_WEAK("Weak", "कमजोर"),
+    CHANDRABALA_UNFAVORABLE("Unfavorable", "प्रतिकूल"),
+    COMBINED_HIGHLY_FAVORABLE("Highly Favorable", "अत्यन्त अनुकूल"),
+    COMBINED_FAVORABLE("Favorable", "अनुकूल"),
+    COMBINED_MIXED("Mixed", "मिश्रित"),
+    COMBINED_CHALLENGING("Challenging", "चुनौतीपूर्ण"),
+    COMBINED_UNFAVORABLE("Unfavorable", "प्रतिकूल"),
+
+    // ============================================
+    // TARABALA SCREEN STRINGS
+    // ============================================
+    TARABALA_TITLE("Tarabala", "तारबल"),
+    TARABALA_TODAY("Today", "आज"),
+    TARABALA_WEEKLY("Weekly", "साप्ताहिक"),
+    TARABALA_ALL_NAKSHATRAS("All 27 Nakshatras", "सबै २७ नक्षत्र"),
+    TARABALA_WHAT_IS("What is Tarabala?", "तारबल के हो?"),
+    TARABALA_UNABLE_CALCULATE("Unable to calculate Tarabala without birth details", "जन्म विवरण बिना तारबल गणना गर्न सक्षम छैन"),
+    TARABALA_TODAY_STRENGTH("Today's Strength", "आजको शक्ति"),
+    TARABALA_LABEL("Tarabala", "तारबल"),
+    TARABALA_STAR_STRENGTH("Star Strength", "नक्षत्र शक्ति"),
+    TARABALA_FAVORABLE("Favorable", "अनुकूल"),
+    TARABALA_CHALLENGING("Challenging", "चुनौतीपूर्ण"),
+    TARABALA_BIRTH_STAR("Birth Star", "जन्म नक्षत्र"),
+    TARABALA_TRANSIT_STAR("Transit Star", "गोचर नक्षत्र"),
+    TARABALA_TARA_TYPE("Tara Type", "तार प्रकार"),
+    TARABALA_CYCLE("Cycle", "चक्र"),
+    CHANDRABALA_LABEL("Chandrabala", "चन्द्रबल"),
+    CHANDRABALA_MOON_STRENGTH("Moon Strength", "चन्द्र शक्ति"),
+    CHANDRABALA_NATAL_MOON("Natal Moon", "जन्मकालीन चन्द्र"),
+    CHANDRABALA_TRANSIT_MOON("Transit Moon", "गोचर चन्द्र"),
+    CHANDRABALA_HOUSE("House", "भाव"),
+    CHANDRABALA_SIGNIFICATIONS("Significations", "करकत्व"),
+    TARABALA_ACTIVITIES("Activities", "गतिविधिहरू"),
+    TARABALA_FAVORABLE_ACTIVITIES("Favorable Activities", "अनुकूल गतिविधिहरू"),
+    TARABALA_AVOID_ACTIVITIES("Activities to Avoid", "टाढा रहनु पर्ने गतिविधिहरू"),
+    TARABALA_DAILY_BREAKDOWN("Daily Breakdown", "दैनिक विभाजन"),
+    TARABALA_WEEKLY_OVERVIEW("Weekly Overview", "साप्ताहिक सिंहावलोकन"),
+    TARABALA_BEST_DAY("Best Day", "सबैभन्दा राम्रो दिन"),
+    TARABALA_AVOID_DAY("Day to Avoid", "टाढा रहनु पर्ने दिन"),
+    TARABALA_BEST_LABEL("Best", "सबैभन्दा राम्रो"),
+    TARABALA_ALL_27_DESC("All 27 Nakshatras with their Tarabala values", "सबै २७ नक्षत्र तिनीहरूको तारबल मानहरू साथ"),
+    TARABALA_EXPLANATION("Explanation", "व्याख्या"),
+    CHANDRABALA_EXPLANATION("Explanation", "व्याख्या");
 }
 
 /**
