@@ -43,6 +43,7 @@ import com.astro.storm.ui.screen.UpachayaTransitScreen
 import com.astro.storm.ui.screen.KalachakraDashaScreen
 import com.astro.storm.ui.screen.tarabala.TarabalaScreen
 import com.astro.storm.ui.screen.AiModelsScreen
+import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.screen.main.MainScreen
@@ -156,6 +157,12 @@ sealed class Screen(val route: String) {
 
     // AI Models configuration screen
     object AiModels : Screen("ai_models")
+
+    // Chat screen (individual conversation)
+    object Chat : Screen("chat/{conversationId}") {
+        fun createRoute(conversationId: Long) = "chat/$conversationId"
+        fun createNewRoute() = "chat/new"
+    }
 }
 
 /**
@@ -355,6 +362,13 @@ fun AstroStormNavigation(
                 },
                 onNavigateToAiModels = {
                     navController.navigate(Screen.AiModels.route)
+                },
+                onNavigateToChat = { conversationId ->
+                    if (conversationId != null) {
+                        navController.navigate(Screen.Chat.createRoute(conversationId))
+                    } else {
+                        navController.navigate(Screen.Chat.createNewRoute())
+                    }
                 },
                 onExportChart = { format ->
                     currentChart?.let { chart ->
@@ -974,6 +988,81 @@ fun AstroStormNavigation(
             AiModelsScreen(
                 providerRegistry = providerRegistry,
                 onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Chat screen (individual conversation)
+        composable(
+            route = Screen.Chat.route,
+            arguments = listOf(
+                navArgument("conversationId") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val conversationIdStr = backStackEntry.arguments?.getString("conversationId") ?: "new"
+            val conversationId = conversationIdStr.toLongOrNull()
+
+            // Collect states from viewmodel
+            val currentMessages by chatViewModel.currentMessages.collectAsState()
+            val availableModels by chatViewModel.availableModels.collectAsState()
+            val selectedModel by chatViewModel.selectedModel.collectAsState()
+            val uiState by chatViewModel.uiState.collectAsState()
+            val isStreaming by chatViewModel.isStreaming.collectAsState()
+            val streamingContent by chatViewModel.streamingContent.collectAsState()
+            val streamingReasoning by chatViewModel.streamingReasoning.collectAsState()
+            val toolsInProgress by chatViewModel.toolsInProgress.collectAsState()
+            val thinkingEnabled by chatViewModel.thinkingEnabled.collectAsState()
+            val webSearchEnabled by chatViewModel.webSearchEnabled.collectAsState()
+
+            // Initialize/open conversation
+            LaunchedEffect(conversationId) {
+                if (conversationId != null) {
+                    chatViewModel.openConversation(
+                        conversationId = conversationId,
+                        currentChart = currentChart,
+                        savedCharts = savedCharts,
+                        selectedChartId = selectedChartId
+                    )
+                } else {
+                    // Create new conversation
+                    chatViewModel.createConversation(
+                        currentChart = currentChart,
+                        savedCharts = savedCharts,
+                        selectedChartId = selectedChartId
+                    )
+                }
+            }
+
+            ChatScreen(
+                messages = currentMessages,
+                streamingContent = streamingContent,
+                streamingReasoning = streamingReasoning,
+                isStreaming = isStreaming,
+                toolsInProgress = toolsInProgress,
+                uiState = uiState,
+                selectedModel = selectedModel,
+                availableModels = availableModels,
+                thinkingEnabled = thinkingEnabled,
+                webSearchEnabled = webSearchEnabled,
+                onSendMessage = { message ->
+                    chatViewModel.sendMessage(message, currentChart, savedCharts, selectedChartId)
+                },
+                onCancelStreaming = { chatViewModel.cancelStreaming() },
+                onRegenerateResponse = {
+                    chatViewModel.regenerateResponse(currentChart, savedCharts, selectedChartId)
+                },
+                onSelectModel = { chatViewModel.selectModel(it) },
+                onSetThinkingEnabled = { chatViewModel.setThinkingEnabled(it) },
+                onSetWebSearchEnabled = { chatViewModel.setWebSearchEnabled(it) },
+                onBack = {
+                    chatViewModel.closeConversation()
+                    navController.popBackStack()
+                },
+                onClearChat = { chatViewModel.clearConversation() },
+                onNavigateToModels = {
+                    navController.navigate(Screen.AiModels.route)
+                }
             )
         }
     }

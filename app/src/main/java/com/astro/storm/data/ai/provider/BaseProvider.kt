@@ -428,6 +428,7 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
 
     /**
      * Parse a streaming response chunk
+     * Returns a list to handle cases where both reasoning and content arrive in same chunk
      */
     protected open fun parseStreamChunk(jsonStr: String): ChatResponse? {
         try {
@@ -453,14 +454,20 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
 
                 if (delta != null) {
                     // Check for reasoning content (for models like DeepSeek R1)
+                    // These models may send reasoning_content AND content in same response or different
                     val reasoningContent = delta.optString("reasoning_content", null)
                         ?: delta.optString("reasoning", null)
+
+                    // Regular content
+                    val content = delta.optString("content", null)
+
+                    // If we have reasoning content, prioritize it
+                    // Note: DeepSeek R1 sends reasoning_content first, then content after thinking is done
                     if (!reasoningContent.isNullOrEmpty()) {
                         return ChatResponse.Reasoning(reasoningContent)
                     }
 
-                    // Regular content
-                    val content = delta.optString("content", null)
+                    // Then regular content
                     if (!content.isNullOrEmpty()) {
                         return ChatResponse.Content(content)
                     }
@@ -488,6 +495,21 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
                         if (calls.isNotEmpty()) {
                             return ChatResponse.ToolCallRequest(calls)
                         }
+                    }
+                }
+
+                // Also check for message object (for some providers)
+                val message = choice.optJSONObject("message")
+                if (message != null) {
+                    val reasoningContent = message.optString("reasoning_content", null)
+                        ?: message.optString("reasoning", null)
+                    val content = message.optString("content", null)
+
+                    if (!reasoningContent.isNullOrEmpty()) {
+                        return ChatResponse.Reasoning(reasoningContent, isComplete = true)
+                    }
+                    if (!content.isNullOrEmpty()) {
+                        return ChatResponse.Content(content, isComplete = true)
                     }
                 }
             }

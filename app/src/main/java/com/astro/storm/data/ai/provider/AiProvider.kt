@@ -101,6 +101,8 @@ data class AiModel(
     val supportsVision: Boolean = false,
     val supportsTools: Boolean = false,
     val supportsReasoning: Boolean = false,
+    val supportsThinking: Boolean = false, // Can enable/disable thinking mode (e.g., Qwen models)
+    val supportsWebSearch: Boolean = false, // Can enable/disable web search (e.g., Qwen models)
     val enabled: Boolean = true,
     val aliasName: String? = null
 ) {

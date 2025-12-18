@@ -220,6 +220,8 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
         var toolIterations = 0
         var continueProcessing = true
         val toolsUsed = mutableListOf<String>()
+        val allContent = StringBuilder()
+        val allReasoning = StringBuilder()
 
         while (continueProcessing && iteration < MAX_TOTAL_ITERATIONS && toolIterations < MAX_TOOL_ITERATIONS) {
             iteration++
@@ -228,6 +230,7 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
             var pendingToolCalls = mutableListOf<ToolCallRequest>()
             var hasError = false
             var errorMessage: String? = null
+            var receivedDone = false
 
             // Call the AI model
             provider.chat(
@@ -243,14 +246,17 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                         emit(AgentResponse.ContentChunk(response.text))
                     }
                     is ChatResponse.Reasoning -> {
-                        currentReasoning.append(response.text)
-                        emit(AgentResponse.ReasoningChunk(response.text))
+                        // Skip empty reasoning markers
+                        if (response.text.isNotEmpty()) {
+                            currentReasoning.append(response.text)
+                            emit(AgentResponse.ReasoningChunk(response.text))
+                        }
                     }
                     is ChatResponse.ToolCallRequest -> {
                         response.toolCalls.forEach { call ->
                             pendingToolCalls.add(
                                 ToolCallRequest(
-                                    id = call.id,
+                                    id = call.id.ifEmpty { "tool_${UUID.randomUUID().toString().take(8)}" },
                                     name = call.function.name,
                                     arguments = call.function.arguments
                                 )
@@ -270,6 +276,7 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                         ))
                     }
                     is ChatResponse.Done -> {
+                        receivedDone = true
                         // Check for embedded tool calls in content
                         if (pendingToolCalls.isEmpty()) {
                             pendingToolCalls.addAll(parseEmbeddedToolCalls(currentContent.toString()))
@@ -290,6 +297,15 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                 }
             }
 
+            // Accumulate all content and reasoning across iterations
+            allContent.append(currentContent.toString().cleanToolCallBlocks())
+            if (currentReasoning.isNotEmpty()) {
+                if (allReasoning.isNotEmpty()) {
+                    allReasoning.append("\n\n")
+                }
+                allReasoning.append(currentReasoning)
+            }
+
             if (hasError) {
                 continueProcessing = false
                 continue
@@ -301,9 +317,10 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                 emit(AgentResponse.ToolCallsStarted(pendingToolCalls.map { it.name }))
 
                 // Add assistant message with tool calls
+                val assistantContent = currentContent.toString().cleanToolCallBlocks()
                 fullMessages.add(ChatMessage(
                     role = MessageRole.ASSISTANT,
-                    content = currentContent.toString().cleanToolCallBlocks(),
+                    content = assistantContent.ifEmpty { "I'll use some tools to help answer your question." },
                     toolCalls = pendingToolCalls.map { call ->
                         ToolCall(
                             id = call.id,
@@ -312,10 +329,12 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                     }
                 ))
 
-                // Execute each tool
+                // Execute each tool and add results
                 for (toolCall in pendingToolCalls) {
                     emit(AgentResponse.ToolExecuting(toolCall.name))
-                    toolsUsed.add(toolCall.name)
+                    if (!toolsUsed.contains(toolCall.name)) {
+                        toolsUsed.add(toolCall.name)
+                    }
 
                     val result = executeToolCall(toolCall, currentProfile, allProfiles, currentChart)
 
@@ -325,24 +344,66 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                     fullMessages.add(ChatMessage(
                         role = MessageRole.TOOL,
                         content = result.toJson(),
-                        toolCallId = toolCall.id
+                        toolCallId = toolCall.id,
+                        name = toolCall.name
                     ))
                 }
 
                 // Continue processing to let AI respond to tool results
                 // The agent will autonomously continue until it has enough info
             } else {
-                // No tool calls, we're done
+                // No tool calls - check if we have content to emit
+                val finalContent = allContent.toString().trim()
+                val finalReasoning = allReasoning.toString().trim()
+
+                // If we have no content but have reasoning, the AI might have stopped
+                // without generating the actual answer. This can happen with some models.
+                if (finalContent.isEmpty() && finalReasoning.isNotEmpty() && toolsUsed.isNotEmpty()) {
+                    // We used tools but got no final answer - prompt for continuation
+                    // by checking if the model stopped mid-thought
+
+                    // Add a hint message to encourage the model to provide the final answer
+                    fullMessages.add(ChatMessage(
+                        role = MessageRole.ASSISTANT,
+                        content = finalReasoning
+                    ))
+
+                    fullMessages.add(ChatMessage(
+                        role = MessageRole.USER,
+                        content = "Please provide your analysis and answer based on the tool results above."
+                    ))
+
+                    // Clear accumulators for the continuation
+                    allContent.clear()
+                    allReasoning.clear()
+
+                    // Continue for one more iteration
+                    continue
+                }
+
+                // We're done - emit the complete response
                 continueProcessing = false
                 emit(AgentResponse.Complete(
-                    content = currentContent.toString().cleanToolCallBlocks(),
-                    reasoning = currentReasoning.toString().takeIf { it.isNotEmpty() },
-                    toolsUsed = toolsUsed.toList()
+                    content = finalContent,
+                    reasoning = finalReasoning.takeIf { it.isNotEmpty() },
+                    toolsUsed = toolsUsed.distinct().toList()
                 ))
             }
         }
 
         if (iteration >= MAX_TOTAL_ITERATIONS || toolIterations >= MAX_TOOL_ITERATIONS) {
+            // Still emit what we have
+            val finalContent = allContent.toString().trim()
+            val finalReasoning = allReasoning.toString().trim()
+
+            if (finalContent.isNotEmpty() || finalReasoning.isNotEmpty()) {
+                emit(AgentResponse.Complete(
+                    content = finalContent.ifEmpty { "I apologize, but I wasn't able to complete my analysis within the allowed iterations. Here's what I was able to determine..." },
+                    reasoning = finalReasoning.takeIf { it.isNotEmpty() },
+                    toolsUsed = toolsUsed.distinct().toList()
+                ))
+            }
+
             emit(AgentResponse.Error(
                 "Maximum iterations reached ($iteration total, $toolIterations tool calls). The analysis may be incomplete.",
                 isRetryable = false
