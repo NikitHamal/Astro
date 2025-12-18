@@ -48,6 +48,7 @@ import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.screen.main.MainScreen
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.viewmodel.AiStatus
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import com.astro.storm.ui.viewmodel.ChatViewModel
 import com.astro.storm.data.ai.provider.AiProviderRegistry
@@ -1012,6 +1013,7 @@ fun AstroStormNavigation(
             val streamingContent by chatViewModel.streamingContent.collectAsState()
             val streamingReasoning by chatViewModel.streamingReasoning.collectAsState()
             val toolsInProgress by chatViewModel.toolsInProgress.collectAsState()
+            val aiStatus by chatViewModel.aiStatus.collectAsState()
             val thinkingEnabled by chatViewModel.thinkingEnabled.collectAsState()
             val webSearchEnabled by chatViewModel.webSearchEnabled.collectAsState()
 
@@ -1040,6 +1042,7 @@ fun AstroStormNavigation(
                 streamingReasoning = streamingReasoning,
                 isStreaming = isStreaming,
                 toolsInProgress = toolsInProgress,
+                aiStatus = aiStatus,
                 uiState = uiState,
                 selectedModel = selectedModel,
                 availableModels = availableModels,
