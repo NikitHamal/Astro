@@ -355,6 +355,17 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                                     .replace("undefined", "")
                                 if (cleanText.isNotBlank()) {
                                     _streamingReasoning.value = _streamingReasoning.value + cleanText
+
+                                    // Also update database periodically with reasoning
+                                    // This ensures the user sees progress even when only reasoning is being streamed
+                                    currentMessageId?.let { msgId ->
+                                        chatRepository.updateAssistantMessageContent(
+                                            messageId = msgId,
+                                            content = _streamingContent.value,
+                                            reasoningContent = _streamingReasoning.value,
+                                            isStreaming = true
+                                        )
+                                    }
                                 }
                             }
                             is AgentResponse.ToolCallsStarted -> {
@@ -406,10 +417,33 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
                 // Finalize message
                 currentMessageId?.let { msgId ->
+                    // Use the final content from agent, but fall back to streaming content if empty
+                    // This handles edge cases where agent Complete event might have empty content
+                    val contentToSave = if (finalContent.isNotEmpty()) {
+                        finalContent
+                    } else if (_streamingContent.value.isNotEmpty()) {
+                        _streamingContent.value
+                    } else if (_streamingReasoning.value.isNotEmpty()) {
+                        // Last resort: if only reasoning was received, use it as content
+                        _streamingReasoning.value
+                    } else {
+                        ""
+                    }
+
+                    // Determine reasoning - only include if we have both content AND separate reasoning
+                    val reasoningToSave = if (finalReasoning != null && finalContent.isNotEmpty()) {
+                        finalReasoning
+                    } else if (_streamingReasoning.value.isNotEmpty() && _streamingContent.value.isNotEmpty()) {
+                        _streamingReasoning.value
+                    } else {
+                        // If we used reasoning as content, don't save it separately
+                        null
+                    }
+
                     chatRepository.finalizeAssistantMessage(
                         messageId = msgId,
-                        content = finalContent,
-                        reasoningContent = finalReasoning,
+                        content = contentToSave,
+                        reasoningContent = reasoningToSave,
                         toolsUsed = toolsUsed.takeIf { it.isNotEmpty() }
                     )
                 }

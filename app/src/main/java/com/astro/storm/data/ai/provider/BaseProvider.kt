@@ -242,14 +242,21 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
                     var line: String?
                     val contentBuilder = StringBuilder()
                     val reasoningBuilder = StringBuilder()
+                    var receivedDone = false
 
                     while (reader.readLine().also { line = it } != null) {
                         val trimmedLine = line?.trim() ?: continue
-                        if (trimmedLine.isEmpty() || trimmedLine == "data: [DONE]") {
-                            if (trimmedLine == "data: [DONE]") {
-                                if (contentBuilder.isNotEmpty()) {
-                                    emit(ChatResponse.Content(contentBuilder.toString(), isComplete = true))
-                                }
+                        if (trimmedLine.isEmpty()) continue
+
+                        if (trimmedLine == "data: [DONE]") {
+                            // Emit final complete markers if we have accumulated content
+                            if (reasoningBuilder.isNotEmpty()) {
+                                emit(ChatResponse.Reasoning(reasoningBuilder.toString(), isComplete = true))
+                            }
+                            if (contentBuilder.isNotEmpty()) {
+                                emit(ChatResponse.Content(contentBuilder.toString(), isComplete = true))
+                            }
+                            if (!receivedDone) {
                                 emit(ChatResponse.Done())
                             }
                             continue
@@ -258,8 +265,9 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
                         if (trimmedLine.startsWith("data: ")) {
                             val jsonStr = trimmedLine.removePrefix("data: ")
                             try {
-                                val chunk = parseStreamChunk(jsonStr)
-                                chunk?.let { response ->
+                                // Use the multiple response parser to handle chunks with both reasoning and content
+                                val chunks = parseStreamChunkMultiple(jsonStr)
+                                for (response in chunks) {
                                     when (response) {
                                         is ChatResponse.Content -> {
                                             contentBuilder.append(response.text)
@@ -267,6 +275,10 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
                                         }
                                         is ChatResponse.Reasoning -> {
                                             reasoningBuilder.append(response.text)
+                                            emit(response)
+                                        }
+                                        is ChatResponse.Done -> {
+                                            receivedDone = true
                                             emit(response)
                                         }
                                         else -> emit(response)
@@ -278,6 +290,17 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
                         }
                     }
                     reader.close()
+
+                    // Ensure we always emit Done if we haven't already
+                    if (!receivedDone) {
+                        if (reasoningBuilder.isNotEmpty()) {
+                            emit(ChatResponse.Reasoning(reasoningBuilder.toString(), isComplete = true))
+                        }
+                        if (contentBuilder.isNotEmpty()) {
+                            emit(ChatResponse.Content(contentBuilder.toString(), isComplete = true))
+                        }
+                        emit(ChatResponse.Done())
+                    }
                 } else {
                     // Non-streaming response
                     val responseBody = connection.inputStream.bufferedReader().readText()
@@ -431,6 +454,15 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
      * Returns a list to handle cases where both reasoning and content arrive in same chunk
      */
     protected open fun parseStreamChunk(jsonStr: String): ChatResponse? {
+        return parseStreamChunkMultiple(jsonStr).firstOrNull()
+    }
+
+    /**
+     * Parse a streaming response chunk, returning multiple responses if both reasoning and content are present.
+     * This handles models that send both reasoning_content and content in the same chunk.
+     */
+    protected open fun parseStreamChunkMultiple(jsonStr: String): List<ChatResponse> {
+        val responses = mutableListOf<ChatResponse>()
         try {
             val json = JSONObject(jsonStr)
 
@@ -438,7 +470,8 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
             json.optJSONObject("error")?.let { error ->
                 val message = error.optString("message", "Unknown error")
                 val code = error.optString("code", "error")
-                return ChatResponse.Error(message, code)
+                responses.add(ChatResponse.Error(message, code))
+                return responses
             }
 
             // Parse choices
@@ -448,28 +481,24 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
                 val delta = choice.optJSONObject("delta")
                 val finishReason = choice.optString("finish_reason", null)
 
-                if (finishReason != null && finishReason != "null") {
-                    return ChatResponse.Done(finishReason)
-                }
-
                 if (delta != null) {
-                    // Check for reasoning content (for models like DeepSeek R1)
+                    // Check for reasoning content (for models like DeepSeek R1, Kimi K2, QwQ, etc.)
                     // These models may send reasoning_content AND content in same response or different
                     val reasoningContent = delta.optString("reasoning_content", null)
                         ?: delta.optString("reasoning", null)
+                        ?: delta.optString("thinking", null)
 
                     // Regular content
                     val content = delta.optString("content", null)
 
-                    // If we have reasoning content, prioritize it
-                    // Note: DeepSeek R1 sends reasoning_content first, then content after thinking is done
+                    // Emit reasoning first if present
                     if (!reasoningContent.isNullOrEmpty()) {
-                        return ChatResponse.Reasoning(reasoningContent)
+                        responses.add(ChatResponse.Reasoning(reasoningContent))
                     }
 
-                    // Then regular content
+                    // Then emit content if present (IMPORTANT: both can be present in same chunk)
                     if (!content.isNullOrEmpty()) {
-                        return ChatResponse.Content(content)
+                        responses.add(ChatResponse.Content(content))
                     }
 
                     // Tool calls
@@ -493,40 +522,47 @@ abstract class BaseOpenAiCompatibleProvider : AiProvider {
                             }
                         }
                         if (calls.isNotEmpty()) {
-                            return ChatResponse.ToolCallRequest(calls)
+                            responses.add(ChatResponse.ToolCallRequest(calls))
                         }
                     }
                 }
 
-                // Also check for message object (for some providers)
+                // Also check for message object (for some providers - non-streaming or final response)
                 val message = choice.optJSONObject("message")
                 if (message != null) {
                     val reasoningContent = message.optString("reasoning_content", null)
                         ?: message.optString("reasoning", null)
+                        ?: message.optString("thinking", null)
                     val content = message.optString("content", null)
 
+                    // Emit both if present
                     if (!reasoningContent.isNullOrEmpty()) {
-                        return ChatResponse.Reasoning(reasoningContent, isComplete = true)
+                        responses.add(ChatResponse.Reasoning(reasoningContent, isComplete = true))
                     }
                     if (!content.isNullOrEmpty()) {
-                        return ChatResponse.Content(content, isComplete = true)
+                        responses.add(ChatResponse.Content(content, isComplete = true))
                     }
+                }
+
+                // Handle finish_reason AFTER processing delta/message content
+                if (finishReason != null && finishReason != "null" && finishReason.isNotEmpty()) {
+                    responses.add(ChatResponse.Done(finishReason))
                 }
             }
 
             // Parse usage
             val usage = json.optJSONObject("usage")
             if (usage != null) {
-                return ChatResponse.Usage(
+                responses.add(ChatResponse.Usage(
                     promptTokens = usage.optInt("prompt_tokens", 0),
                     completionTokens = usage.optInt("completion_tokens", 0),
                     totalTokens = usage.optInt("total_tokens", 0)
-                )
+                ))
             }
         } catch (e: Exception) {
             // Malformed JSON, skip
         }
-        return null
+        return responses
     }
 
     /**
