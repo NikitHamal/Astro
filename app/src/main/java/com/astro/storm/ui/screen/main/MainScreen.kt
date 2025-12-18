@@ -83,6 +83,7 @@ fun MainScreen(
     onNavigateToKalachakraDasha: () -> Unit = {},
     onNavigateToTarabala: () -> Unit = {},
     onNavigateToAiModels: () -> Unit = {},
+    onNavigateToChat: (Long?) -> Unit = {}, // null for new chat, Long for existing
     onExportChart: (ExportFormat) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -142,10 +143,6 @@ fun MainScreen(
     // Find the current SavedChart for display
     val currentSavedChart = savedCharts.find { it.id == selectedChartId }
 
-    // Track if chat screen is open (full screen mode)
-    val currentConversationId by chatViewModel.currentConversationId.collectAsState()
-    val isChatScreenOpen = selectedTab == MainTab.CHAT && currentConversationId != null
-
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState) { data ->
@@ -168,23 +165,17 @@ fun MainScreen(
         },
         containerColor = colors.ScreenBackground,
         topBar = {
-            // Hide top bar when in chat screen (it has its own)
-            if (!isChatScreenOpen) {
-                MainTopBar(
-                    currentTab = selectedTab,
-                    currentChart = currentSavedChart,
-                    onProfileClick = { showProfileSwitcher = true }
-                )
-            }
+            MainTopBar(
+                currentTab = selectedTab,
+                currentChart = currentSavedChart,
+                onProfileClick = { showProfileSwitcher = true }
+            )
         },
         bottomBar = {
-            // Hide bottom navigation when chat screen is open
-            if (!isChatScreenOpen) {
-                MainBottomNavigation(
-                    selectedTab = selectedTab,
-                    onTabSelected = { selectedTab = it }
-                )
-            }
+            MainBottomNavigation(
+                selectedTab = selectedTab,
+                onTabSelected = { selectedTab = it }
+            )
         }
     ) { paddingValues ->
         Box(
@@ -250,14 +241,14 @@ fun MainScreen(
                         )
                     }
                     MainTab.CHAT -> {
-                        // Chat tab uses full screen when conversation is open
+                        // Chat tab shows conversations list
                         ChatTab(
                             viewModel = chatViewModel,
                             currentChart = currentChart,
                             savedCharts = savedCharts,
                             selectedChartId = selectedChartId,
                             onNavigateToModels = onNavigateToAiModels,
-                            isFullScreen = isChatScreenOpen
+                            onNavigateToChat = onNavigateToChat
                         )
                     }
                     MainTab.SETTINGS -> {

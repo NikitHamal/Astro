@@ -99,6 +99,27 @@ class QwenProvider : AiProvider {
         return true
     }
 
+    /**
+     * Models that support toggling thinking mode
+     */
+    private val thinkingCapableModels = setOf(
+        "qwq-32b",
+        "qvq-72b-preview-0310",
+        "qwen3-235b-a22b",
+        "qwen3-max-preview",
+        "qwen-max-latest"
+    )
+
+    /**
+     * Models that support web search
+     */
+    private val webSearchCapableModels = setOf(
+        "qwen3-235b-a22b",
+        "qwen3-max-preview",
+        "qwen-max-latest",
+        "qwen-plus-2025-01-25"
+    )
+
     private fun getDefaultModels(): List<AiModel> = availableModels.map { modelId ->
         AiModel(
             id = modelId,
@@ -108,7 +129,9 @@ class QwenProvider : AiProvider {
             description = getModelDescription(modelId),
             supportsVision = modelId in visionModels,
             supportsReasoning = modelId in reasoningModels,
-            supportsTools = true
+            supportsTools = true,
+            supportsThinking = modelId in thinkingCapableModels,
+            supportsWebSearch = modelId in webSearchCapableModels
         )
     }
 
@@ -315,7 +338,8 @@ class QwenProvider : AiProvider {
         content: String,
         token: String,
         stream: Boolean,
-        enableThinking: Boolean
+        enableThinking: Boolean,
+        enableWebSearch: Boolean = false
     ): Flow<ChatResponse> = flow {
         val messageId = UUID.randomUUID().toString()
         val url = URL("$apiEndpoint?chat_id=$chatId")
@@ -325,7 +349,7 @@ class QwenProvider : AiProvider {
             connection.requestMethod = "POST"
             connection.doOutput = true
             connection.connectTimeout = 30000
-            connection.readTimeout = 120000
+            connection.readTimeout = 180000 // Increased for reasoning models
 
             applyHeaders(connection, token)
 
@@ -347,6 +371,9 @@ class QwenProvider : AiProvider {
                         put("thinking_enabled", enableThinking)
                         put("output_schema", "phase")
                         put("thinking_budget", 81920)
+                        if (enableWebSearch) {
+                            put("web_search", true)
+                        }
                     })
                 }))
             }
@@ -374,6 +401,8 @@ class QwenProvider : AiProvider {
             val contentBuilder = StringBuilder()
             val reasoningBuilder = StringBuilder()
             var isThinking = false
+            var hasReceivedContent = false
+            var finishReason: String? = null
 
             var line: String?
             while (reader.readLine().also { line = it } != null) {
@@ -386,7 +415,15 @@ class QwenProvider : AiProvider {
                 val jsonStr = trimmedLine.removePrefix("data:").trim()
                 if (jsonStr.isEmpty() || jsonStr == "[DONE]") {
                     if (jsonStr == "[DONE]") {
-                        emit(ChatResponse.Done())
+                        // Final emission before Done
+                        if (reasoningBuilder.isNotEmpty() && !hasReceivedContent) {
+                            // Only reasoning was received - emit it as complete
+                            emit(ChatResponse.Reasoning(reasoningBuilder.toString(), isComplete = true))
+                        }
+                        if (contentBuilder.isNotEmpty()) {
+                            emit(ChatResponse.Content(contentBuilder.toString(), isComplete = true))
+                        }
+                        emit(ChatResponse.Done(finishReason ?: "stop"))
                     }
                     continue
                 }
@@ -397,7 +434,7 @@ class QwenProvider : AiProvider {
                     // Check for error
                     chunk.optJSONObject("error")?.let { error ->
                         val errorCode = error.optString("code", "")
-                        val errorDetails = error.optString("details", "Unknown error")
+                        val errorDetails = error.optString("details", error.optString("message", "Unknown error"))
                         if (errorCode == "RateLimited") {
                             throw RateLimitException(errorDetails)
                         }
@@ -408,10 +445,27 @@ class QwenProvider : AiProvider {
                     // Parse choices
                     val choices = chunk.optJSONArray("choices")
                     if (choices != null && choices.length() > 0) {
-                        val delta = choices.getJSONObject(0).optJSONObject("delta")
+                        val choice = choices.getJSONObject(0)
+                        val delta = choice.optJSONObject("delta")
+
+                        // Check for finish_reason
+                        val chunkFinishReason = choice.optString("finish_reason", null)
+                        if (!chunkFinishReason.isNullOrEmpty() && chunkFinishReason != "null") {
+                            finishReason = chunkFinishReason
+                        }
+
                         if (delta != null) {
                             val phase = delta.optString("phase", "")
                             val deltaContent = delta.optString("content", "")
+
+                            // Also check for reasoning_content field (OpenAI-compatible format)
+                            val reasoningContent = delta.optString("reasoning_content", "")
+
+                            // Handle reasoning_content field (if present)
+                            if (reasoningContent.isNotEmpty()) {
+                                reasoningBuilder.append(reasoningContent)
+                                emit(ChatResponse.Reasoning(reasoningContent))
+                            }
 
                             when (phase) {
                                 "think" -> {
@@ -426,23 +480,42 @@ class QwenProvider : AiProvider {
                                 "answer" -> {
                                     if (isThinking) {
                                         isThinking = false
-                                        // Emit final reasoning
+                                        // Emit final reasoning marker
                                         if (reasoningBuilder.isNotEmpty()) {
-                                            emit(ChatResponse.Reasoning(reasoningBuilder.toString(), isComplete = true))
+                                            emit(ChatResponse.Reasoning("", isComplete = true))
                                         }
                                     }
                                     if (deltaContent.isNotEmpty()) {
+                                        hasReceivedContent = true
                                         contentBuilder.append(deltaContent)
                                         emit(ChatResponse.Content(deltaContent))
                                     }
                                 }
                                 else -> {
-                                    // Regular content without phase
+                                    // Regular content without phase (non-thinking models)
                                     if (deltaContent.isNotEmpty()) {
+                                        hasReceivedContent = true
                                         contentBuilder.append(deltaContent)
                                         emit(ChatResponse.Content(deltaContent))
                                     }
                                 }
+                            }
+                        }
+
+                        // Also check message object for non-streaming or final response
+                        val message = choice.optJSONObject("message")
+                        if (message != null) {
+                            val messageContent = message.optString("content", "")
+                            val messageReasoning = message.optString("reasoning_content", "")
+
+                            if (messageReasoning.isNotEmpty() && reasoningBuilder.isEmpty()) {
+                                reasoningBuilder.append(messageReasoning)
+                                emit(ChatResponse.Reasoning(messageReasoning, isComplete = true))
+                            }
+                            if (messageContent.isNotEmpty() && contentBuilder.isEmpty()) {
+                                hasReceivedContent = true
+                                contentBuilder.append(messageContent)
+                                emit(ChatResponse.Content(messageContent, isComplete = true))
                             }
                         }
                     }
@@ -456,17 +529,16 @@ class QwenProvider : AiProvider {
                         ))
                     }
                 } catch (e: Exception) {
-                    // Skip malformed chunks
+                    // Skip malformed chunks but log for debugging
                 }
             }
 
             reader.close()
 
-            // Final content emission
-            if (contentBuilder.isNotEmpty()) {
-                emit(ChatResponse.Content(contentBuilder.toString(), isComplete = true))
+            // Ensure we always emit a Done
+            if (finishReason == null) {
+                emit(ChatResponse.Done("stop"))
             }
-            emit(ChatResponse.Done())
 
         } finally {
             connection.disconnect()

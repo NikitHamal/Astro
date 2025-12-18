@@ -63,6 +63,13 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val _toolsInProgress = MutableStateFlow<List<String>>(emptyList())
     val toolsInProgress: StateFlow<List<String>> = _toolsInProgress.asStateFlow()
 
+    // Model options - thinking and web search toggles
+    private val _thinkingEnabled = MutableStateFlow(true)
+    val thinkingEnabled: StateFlow<Boolean> = _thinkingEnabled.asStateFlow()
+
+    private val _webSearchEnabled = MutableStateFlow(false)
+    val webSearchEnabled: StateFlow<Boolean> = _webSearchEnabled.asStateFlow()
+
     // Current streaming message ID
     private var currentMessageId: Long? = null
     private var streamingJob: Job? = null
@@ -111,8 +118,12 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
     init {
-        // Set default model
+        // Initialize provider registry and set default model
         viewModelScope.launch {
+            // First, ensure models are loaded from providers
+            providerRegistry.initialize()
+
+            // Then set default model
             val defaultModel = providerRegistry.getDefaultModel()
             _selectedModel.value = defaultModel
         }
@@ -233,6 +244,20 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             val conversationId = _currentConversationId.value ?: return@launch
             chatRepository.updateConversationModel(conversationId, model.id, model.providerId)
         }
+    }
+
+    /**
+     * Toggle thinking mode (for supported models like Qwen)
+     */
+    fun setThinkingEnabled(enabled: Boolean) {
+        _thinkingEnabled.value = enabled
+    }
+
+    /**
+     * Toggle web search (for supported models like Qwen)
+     */
+    fun setWebSearchEnabled(enabled: Boolean) {
+        _webSearchEnabled.value = enabled
     }
 
     // ============================================

@@ -43,6 +43,13 @@ fun AiModelsScreen(
     val colors = AppTheme.current
     val scope = rememberCoroutineScope()
 
+    // Initialize provider registry if not already loaded
+    LaunchedEffect(Unit) {
+        if (providerRegistry.allModels.value.isEmpty()) {
+            providerRegistry.initialize()
+        }
+    }
+
     // Collect states
     val allModels by providerRegistry.allModels.collectAsState()
     val enabledModels by providerRegistry.enabledModels.collectAsState()
@@ -648,20 +655,20 @@ private fun getProviderInfo(providerId: String): ProviderInfo {
             icon = Icons.Outlined.Speed,
             color = androidx.compose.ui.graphics.Color(0xFF7C3AED)
         )
-        "pollinations" -> ProviderInfo(
-            displayName = "Pollinations AI",
-            icon = Icons.Outlined.Eco,
-            color = androidx.compose.ui.graphics.Color(0xFF10B981)
-        )
-        "cloudflare" -> ProviderInfo(
-            displayName = "Cloudflare AI",
-            icon = Icons.Outlined.Cloud,
-            color = androidx.compose.ui.graphics.Color(0xFFF6821F)
-        )
         "qwen" -> ProviderInfo(
             displayName = "Qwen",
             icon = Icons.Outlined.Psychology,
             color = androidx.compose.ui.graphics.Color(0xFF2563EB)
+        )
+        "blackbox" -> ProviderInfo(
+            displayName = "Blackbox AI",
+            icon = Icons.Outlined.Code,
+            color = androidx.compose.ui.graphics.Color(0xFF1A1A1A)
+        )
+        "ddg" -> ProviderInfo(
+            displayName = "DuckDuckGo AI",
+            icon = Icons.Outlined.Shield,
+            color = androidx.compose.ui.graphics.Color(0xFFDE5833)
         )
         else -> ProviderInfo(
             displayName = providerId.replaceFirstChar { it.uppercase() },

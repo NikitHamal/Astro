@@ -55,8 +55,9 @@ class AiProviderRegistry private constructor(context: Context) {
     init {
         // Register default providers
         registerProvider(DeepInfraProvider())
-        registerProvider(PollinationsProvider())
         registerProvider(QwenProvider())
+        registerProvider(BlackboxProvider())
+        registerProvider(DDGProvider())
 
         // Load saved configurations
         loadConfigurations()
