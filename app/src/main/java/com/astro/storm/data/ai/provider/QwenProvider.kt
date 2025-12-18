@@ -416,8 +416,8 @@ class QwenProvider : AiProvider {
                 if (jsonStr.isEmpty() || jsonStr == "[DONE]") {
                     if (jsonStr == "[DONE]") {
                         // Final emission before Done
-                        if (reasoningBuilder.isNotEmpty() && !hasReceivedContent) {
-                            // Only reasoning was received - emit it as complete
+                        // Always emit complete markers for accumulated content
+                        if (reasoningBuilder.isNotEmpty()) {
                             emit(ChatResponse.Reasoning(reasoningBuilder.toString(), isComplete = true))
                         }
                         if (contentBuilder.isNotEmpty()) {

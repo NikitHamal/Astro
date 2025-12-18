@@ -356,36 +356,58 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                 val finalContent = allContent.toString().trim()
                 val finalReasoning = allReasoning.toString().trim()
 
-                // If we have no content but have reasoning, the AI might have stopped
-                // without generating the actual answer. This can happen with some models.
-                if (finalContent.isEmpty() && finalReasoning.isNotEmpty() && toolsUsed.isNotEmpty()) {
-                    // We used tools but got no final answer - prompt for continuation
-                    // by checking if the model stopped mid-thought
+                // Check if we only have reasoning but no content
+                // This can happen with thinking models like Kimi K2, DeepSeek R1, QwQ
+                // They sometimes emit only reasoning_content without content field
+                if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
+                    // For reasoning-only responses, check if we used tools and might need continuation
+                    if (toolsUsed.isNotEmpty() && iteration < MAX_TOTAL_ITERATIONS - 1) {
+                        // We used tools but got no final answer - prompt for continuation
+                        // Add a hint message to encourage the model to provide the final answer
+                        fullMessages.add(ChatMessage(
+                            role = MessageRole.ASSISTANT,
+                            content = finalReasoning
+                        ))
 
-                    // Add a hint message to encourage the model to provide the final answer
-                    fullMessages.add(ChatMessage(
-                        role = MessageRole.ASSISTANT,
-                        content = finalReasoning
-                    ))
+                        fullMessages.add(ChatMessage(
+                            role = MessageRole.USER,
+                            content = "Please provide your analysis and answer based on the tool results above."
+                        ))
 
-                    fullMessages.add(ChatMessage(
-                        role = MessageRole.USER,
-                        content = "Please provide your analysis and answer based on the tool results above."
-                    ))
+                        // Clear accumulators for the continuation
+                        allContent.clear()
+                        allReasoning.clear()
 
-                    // Clear accumulators for the continuation
-                    allContent.clear()
-                    allReasoning.clear()
-
-                    // Continue for one more iteration
-                    continue
+                        // Continue for one more iteration
+                        continue
+                    }
+                    // If no tools were used, or we've exhausted iterations,
+                    // treat reasoning as the content (some models only output in reasoning_content)
+                    // This ensures the user sees something
                 }
 
                 // We're done - emit the complete response
+                // If we have no content but have reasoning, use reasoning as a fallback
+                // This handles cases where models emit only in reasoning_content
+                val contentToEmit = if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
+                    // Use reasoning as the actual response when there's no content
+                    // Clear reasoning since we're using it as content
+                    finalReasoning
+                } else {
+                    finalContent
+                }
+
+                // Only keep reasoning separate if we have both content AND reasoning
+                val reasoningToEmit = if (finalContent.isNotEmpty() && finalReasoning.isNotEmpty()) {
+                    finalReasoning
+                } else {
+                    null
+                }
+
                 continueProcessing = false
                 emit(AgentResponse.Complete(
-                    content = finalContent,
-                    reasoning = finalReasoning.takeIf { it.isNotEmpty() },
+                    content = contentToEmit,
+                    reasoning = reasoningToEmit,
                     toolsUsed = toolsUsed.distinct().toList()
                 ))
             }
@@ -397,9 +419,23 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
             val finalReasoning = allReasoning.toString().trim()
 
             if (finalContent.isNotEmpty() || finalReasoning.isNotEmpty()) {
+                // If we have no content but have reasoning, use reasoning as content
+                val contentToEmit = if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
+                    finalReasoning
+                } else {
+                    finalContent.ifEmpty { "I apologize, but I wasn't able to complete my analysis within the allowed iterations. Here's what I was able to determine..." }
+                }
+
+                // Only include reasoning separately if we have both
+                val reasoningToEmit = if (finalContent.isNotEmpty() && finalReasoning.isNotEmpty()) {
+                    finalReasoning
+                } else {
+                    null
+                }
+
                 emit(AgentResponse.Complete(
-                    content = finalContent.ifEmpty { "I apologize, but I wasn't able to complete my analysis within the allowed iterations. Here's what I was able to determine..." },
-                    reasoning = finalReasoning.takeIf { it.isNotEmpty() },
+                    content = contentToEmit,
+                    reasoning = reasoningToEmit,
                     toolsUsed = toolsUsed.distinct().toList()
                 ))
             }

@@ -95,15 +95,21 @@ class DeepInfraProvider : BaseOpenAiCompatibleProvider() {
 
     /**
      * Models with reasoning/thinking capabilities
+     * These models emit reasoning_content or thinking in their responses
      */
     private val reasoningModels = setOf(
+        // DeepSeek R1 series - reasoning models
         "deepseek-ai/DeepSeek-R1",
         "deepseek-ai/DeepSeek-R1-0528",
         "deepseek-ai/DeepSeek-R1-Turbo",
         "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
         "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+        // Qwen QwQ - reasoning model
         "Qwen/QwQ-32B",
-        "microsoft/phi-4-reasoning-plus"
+        // Microsoft Phi reasoning
+        "microsoft/phi-4-reasoning-plus",
+        // Kimi K2 - Moonshot's thinking model
+        "moonshotai/Kimi-K2-Instruct-0905"
     )
 
     override suspend fun fetchModels(): List<AiModel> = withContext(Dispatchers.IO) {
@@ -277,6 +283,17 @@ class DeepInfraProvider : BaseOpenAiCompatibleProvider() {
             providerId = providerId,
             displayName = "Mistral Small 3.1",
             description = "Mistral's efficient small model",
+            supportsTools = true
+        ),
+        // Moonshot Kimi K2 - Thinking model
+        AiModel(
+            id = "moonshotai/Kimi-K2-Instruct-0905",
+            name = "Kimi K2 Thinking",
+            providerId = providerId,
+            displayName = "Kimi K2 Thinking",
+            description = "Moonshot's Kimi K2 model with reasoning/thinking capabilities",
+            supportsReasoning = true,
+            supportsThinking = true,
             supportsTools = true
         )
     )
