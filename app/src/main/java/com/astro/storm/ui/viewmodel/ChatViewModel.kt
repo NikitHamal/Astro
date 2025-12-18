@@ -155,8 +155,17 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     // CONVERSATION MANAGEMENT
     // ============================================
 
+    // Track pending conversation context for lazy creation
+    private var pendingConversationContext: PendingConversationContext? = null
+
+    private data class PendingConversationContext(
+        val currentChart: VedicChart?,
+        val savedCharts: List<SavedChart>,
+        val selectedChartId: Long?
+    )
+
     /**
-     * Create a new conversation
+     * Prepare a new conversation (lazy creation - actually creates when first message is sent)
      */
     fun createConversation(
         currentChart: VedicChart?,
@@ -170,17 +179,18 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 return@launch
             }
 
-            val conversationId = chatRepository.createConversation(
-                title = "New Chat",
-                modelId = model.id,
-                providerId = model.providerId,
-                profileId = selectedChartId
+            // Store context for lazy creation - don't create conversation in database yet
+            pendingConversationContext = PendingConversationContext(
+                currentChart = currentChart,
+                savedCharts = savedCharts,
+                selectedChartId = selectedChartId
             )
+
+            // Clear current conversation ID (signals we're in "new chat" mode)
+            _currentConversationId.value = null
 
             // Initialize agent with context
             initializeAgent(currentChart, savedCharts, selectedChartId)
-
-            _currentConversationId.value = conversationId
         }
     }
 
@@ -218,6 +228,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     fun closeConversation() {
         cancelStreaming()
         _currentConversationId.value = null
+        pendingConversationContext = null
         stormyAgent = null
     }
 
@@ -295,7 +306,6 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         savedCharts: List<SavedChart>,
         selectedChartId: Long?
     ) {
-        val conversationId = _currentConversationId.value ?: return
         val model = _selectedModel.value ?: return
 
         // Cancel any existing streaming
@@ -313,6 +323,29 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 // Reset accumulators
                 rawContentAccumulator.clear()
                 rawReasoningAccumulator.clear()
+
+                // Get or create conversation ID
+                // If we're in "new chat" mode, create the conversation now (lazy creation)
+                val conversationId = _currentConversationId.value ?: run {
+                    val context = pendingConversationContext
+                    if (context == null) {
+                        _uiState.value = ChatUiState.Error("No conversation context")
+                        _isStreaming.value = false
+                        _aiStatus.value = AiStatus.Idle
+                        return@launch
+                    }
+
+                    // Create conversation in database now that we have a message
+                    val newConversationId = chatRepository.createConversation(
+                        title = "New Chat",
+                        modelId = model.id,
+                        providerId = model.providerId,
+                        profileId = context.selectedChartId
+                    )
+                    _currentConversationId.value = newConversationId
+                    pendingConversationContext = null
+                    newConversationId
+                }
 
                 // Add user message
                 chatRepository.addUserMessage(conversationId, content)
