@@ -54,12 +54,14 @@ class AiProviderRegistry private constructor(context: Context) {
 
     init {
         // Register default providers
-        // Note: Qwen, Blackbox, and DDG providers have been removed due to reliability issues
-        // DeepInfra is kept as it works well with API keys
-        // Pollinations and Chatai are free providers that work without authentication
+        // Note: Qwen, Blackbox, DDG, Pollinations, and ChatAI providers have been removed due to reliability issues
+        // DeepInfra is the primary provider - works reliably with multiple models
         registerProvider(DeepInfraProvider())
-        registerProvider(PollinationsProvider())
-        registerProvider(ChataiProvider())
+
+        // Free providers based on gpt4free implementations - no API key required
+        registerProvider(YqcloudProvider())
+        registerProvider(TeachAnythingProvider())
+        registerProvider(WeWordleProvider())
 
         // Load saved configurations
         loadConfigurations()

@@ -122,7 +122,6 @@ private fun ConversationsListScreen(
 ) {
     val colors = AppTheme.current
     val language = LocalLanguage.current
-    var showModelSelector by remember { mutableStateOf(false) }
     var conversationToDelete by remember { mutableStateOf<ChatConversation?>(null) }
 
     Box(
@@ -133,12 +132,7 @@ private fun ConversationsListScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            // Model selector row
-            ModelSelectorRow(
-                selectedModel = selectedModel,
-                onClick = { showModelSelector = true },
-                onNavigateToModels = onNavigateToModels
-            )
+            // Model selector row removed - users can select model in individual chat screens
 
             if (conversations.isEmpty()) {
                 // Empty state
@@ -185,23 +179,6 @@ private fun ConversationsListScreen(
                 )
             }
         }
-    }
-
-    // Model selector bottom sheet
-    if (showModelSelector) {
-        ModelSelectorBottomSheet(
-            models = availableModels,
-            selectedModel = selectedModel,
-            onSelectModel = {
-                onSelectModel(it)
-                showModelSelector = false
-            },
-            onDismiss = { showModelSelector = false },
-            onNavigateToModels = {
-                showModelSelector = false
-                onNavigateToModels()
-            }
-        )
     }
 
     // Delete confirmation dialog
