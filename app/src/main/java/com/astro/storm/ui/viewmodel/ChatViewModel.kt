@@ -63,6 +63,13 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val _toolsInProgress = MutableStateFlow<List<String>>(emptyList())
     val toolsInProgress: StateFlow<List<String>> = _toolsInProgress.asStateFlow()
 
+    // Model options - thinking and web search toggles
+    private val _thinkingEnabled = MutableStateFlow(true)
+    val thinkingEnabled: StateFlow<Boolean> = _thinkingEnabled.asStateFlow()
+
+    private val _webSearchEnabled = MutableStateFlow(false)
+    val webSearchEnabled: StateFlow<Boolean> = _webSearchEnabled.asStateFlow()
+
     // Current streaming message ID
     private var currentMessageId: Long? = null
     private var streamingJob: Job? = null
@@ -111,8 +118,12 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
     init {
-        // Set default model
+        // Initialize provider registry and set default model
         viewModelScope.launch {
+            // First, ensure models are loaded from providers
+            providerRegistry.initialize()
+
+            // Then set default model
             val defaultModel = providerRegistry.getDefaultModel()
             _selectedModel.value = defaultModel
         }
@@ -235,6 +246,20 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * Toggle thinking mode (for supported models like Qwen)
+     */
+    fun setThinkingEnabled(enabled: Boolean) {
+        _thinkingEnabled.value = enabled
+    }
+
+    /**
+     * Toggle web search (for supported models like Qwen)
+     */
+    fun setWebSearchEnabled(enabled: Boolean) {
+        _webSearchEnabled.value = enabled
+    }
+
     // ============================================
     // MESSAGE HANDLING
     // ============================================
@@ -324,7 +349,24 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                                 }
                             }
                             is AgentResponse.ReasoningChunk -> {
-                                _streamingReasoning.value = _streamingReasoning.value + response.text
+                                // Filter out "null" text artifacts that some models emit
+                                val cleanText = response.text
+                                    .replace("null", "")
+                                    .replace("undefined", "")
+                                if (cleanText.isNotBlank()) {
+                                    _streamingReasoning.value = _streamingReasoning.value + cleanText
+
+                                    // Also update database periodically with reasoning
+                                    // This ensures the user sees progress even when only reasoning is being streamed
+                                    currentMessageId?.let { msgId ->
+                                        chatRepository.updateAssistantMessageContent(
+                                            messageId = msgId,
+                                            content = _streamingContent.value,
+                                            reasoningContent = _streamingReasoning.value,
+                                            isStreaming = true
+                                        )
+                                    }
+                                }
                             }
                             is AgentResponse.ToolCallsStarted -> {
                                 _toolsInProgress.value = response.toolNames
@@ -343,7 +385,12 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                             }
                             is AgentResponse.Complete -> {
                                 finalContent = response.content
+                                // Clean reasoning from null artifacts
                                 finalReasoning = response.reasoning
+                                    ?.replace("null", "")
+                                    ?.replace("undefined", "")
+                                    ?.trim()
+                                    ?.takeIf { it.isNotBlank() }
                             }
                             is AgentResponse.Error -> {
                                 _uiState.value = ChatUiState.Error(response.message)
@@ -357,6 +404,11 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                             is AgentResponse.ModelInfo -> {
                                 // Model info - could log if needed
                             }
+                            is AgentResponse.RetryInfo -> {
+                                // Show retry info to user via streaming content
+                                val retryText = "\n[Retrying: ${response.reason} - Attempt ${response.attempt}/${response.maxAttempts}]\n"
+                                _streamingContent.value = _streamingContent.value + retryText
+                            }
                         }
                     }
                 }
@@ -365,10 +417,33 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
                 // Finalize message
                 currentMessageId?.let { msgId ->
+                    // Use the final content from agent, but fall back to streaming content if empty
+                    // This handles edge cases where agent Complete event might have empty content
+                    val contentToSave = if (finalContent.isNotEmpty()) {
+                        finalContent
+                    } else if (_streamingContent.value.isNotEmpty()) {
+                        _streamingContent.value
+                    } else if (_streamingReasoning.value.isNotEmpty()) {
+                        // Last resort: if only reasoning was received, use it as content
+                        _streamingReasoning.value
+                    } else {
+                        ""
+                    }
+
+                    // Determine reasoning - only include if we have both content AND separate reasoning
+                    val reasoningToSave = if (finalReasoning != null && finalContent.isNotEmpty()) {
+                        finalReasoning
+                    } else if (_streamingReasoning.value.isNotEmpty() && _streamingContent.value.isNotEmpty()) {
+                        _streamingReasoning.value
+                    } else {
+                        // If we used reasoning as content, don't save it separately
+                        null
+                    }
+
                     chatRepository.finalizeAssistantMessage(
                         messageId = msgId,
-                        content = finalContent,
-                        reasoningContent = finalReasoning,
+                        content = contentToSave,
+                        reasoningContent = reasoningToSave,
                         toolsUsed = toolsUsed.takeIf { it.isNotEmpty() }
                     )
                 }

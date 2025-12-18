@@ -10,6 +10,8 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -38,6 +40,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.astro.storm.data.ai.provider.AiModel
 import com.astro.storm.data.ai.provider.MessageRole
 import com.astro.storm.data.local.chat.ChatConversation
@@ -58,9 +61,8 @@ import java.util.*
 /**
  * Chat Tab - Main entry point for AI chat feature
  *
- * Shows either:
- * - Conversations list (when no conversation is open)
- * - Chat screen (when a conversation is open)
+ * Shows conversations list with option to create new or open existing chats.
+ * When a conversation is clicked, navigates to the ChatScreen as a separate destination.
  */
 @Composable
 fun ChatTab(
@@ -68,68 +70,33 @@ fun ChatTab(
     currentChart: VedicChart?,
     savedCharts: List<SavedChart>,
     selectedChartId: Long?,
-    onNavigateToModels: () -> Unit
+    onNavigateToModels: () -> Unit,
+    onNavigateToChat: (Long?) -> Unit,  // null for new chat, Long for existing
+    isFullScreen: Boolean = false
 ) {
     val conversations by viewModel.conversations.collectAsState()
-    val currentConversationId by viewModel.currentConversationId.collectAsState()
-    val currentMessages by viewModel.currentMessages.collectAsState()
     val availableModels by viewModel.availableModels.collectAsState()
     val selectedModel by viewModel.selectedModel.collectAsState()
-    val uiState by viewModel.uiState.collectAsState()
-    val isStreaming by viewModel.isStreaming.collectAsState()
-    val streamingContent by viewModel.streamingContent.collectAsState()
-    val streamingReasoning by viewModel.streamingReasoning.collectAsState()
-    val toolsInProgress by viewModel.toolsInProgress.collectAsState()
 
     val colors = AppTheme.current
 
-    // Show chat screen if conversation is open
-    if (currentConversationId != null) {
-        ChatScreen(
-            messages = currentMessages,
-            streamingContent = streamingContent,
-            streamingReasoning = streamingReasoning,
-            isStreaming = isStreaming,
-            toolsInProgress = toolsInProgress,
-            uiState = uiState,
-            selectedModel = selectedModel,
-            availableModels = availableModels,
-            onSendMessage = { message ->
-                viewModel.sendMessage(message, currentChart, savedCharts, selectedChartId)
-            },
-            onCancelStreaming = { viewModel.cancelStreaming() },
-            onRegenerateResponse = {
-                viewModel.regenerateResponse(currentChart, savedCharts, selectedChartId)
-            },
-            onSelectModel = { viewModel.selectModel(it) },
-            onBack = { viewModel.closeConversation() },
-            onClearChat = { viewModel.clearConversation() },
-            onNavigateToModels = onNavigateToModels
-        )
-    } else {
-        // Show conversations list
-        ConversationsListScreen(
-            conversations = conversations,
-            onConversationClick = { conversation ->
-                viewModel.openConversation(
-                    conversationId = conversation.id,
-                    currentChart = currentChart,
-                    savedCharts = savedCharts,
-                    selectedChartId = selectedChartId
-                )
-            },
-            onNewChat = {
-                viewModel.createConversation(currentChart, savedCharts, selectedChartId)
-            },
-            onDeleteConversation = { viewModel.deleteConversation(it.id) },
-            onArchiveConversation = { viewModel.archiveConversation(it.id) },
-            selectedModel = selectedModel,
-            availableModels = availableModels,
-            onSelectModel = { viewModel.selectModel(it) },
-            onNavigateToModels = onNavigateToModels,
-            hasModels = availableModels.isNotEmpty()
-        )
-    }
+    // Show conversations list
+    ConversationsListScreen(
+        conversations = conversations,
+        onConversationClick = { conversation ->
+            onNavigateToChat(conversation.id)
+        },
+        onNewChat = {
+            onNavigateToChat(null)  // Navigate to new chat
+        },
+        onDeleteConversation = { viewModel.deleteConversation(it.id) },
+        onArchiveConversation = { viewModel.archiveConversation(it.id) },
+        selectedModel = selectedModel,
+        availableModels = availableModels,
+        onSelectModel = { viewModel.selectModel(it) },
+        onNavigateToModels = onNavigateToModels,
+        hasModels = availableModels.isNotEmpty()
+    )
 }
 
 // ============================================
@@ -511,7 +478,7 @@ private fun ConversationCard(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ChatScreen(
+fun ChatScreen(
     messages: List<ChatMessageModel>,
     streamingContent: String,
     streamingReasoning: String,
@@ -520,10 +487,14 @@ private fun ChatScreen(
     uiState: ChatUiState,
     selectedModel: AiModel?,
     availableModels: List<AiModel>,
+    thinkingEnabled: Boolean = true,
+    webSearchEnabled: Boolean = false,
     onSendMessage: (String) -> Unit,
     onCancelStreaming: () -> Unit,
     onRegenerateResponse: () -> Unit,
     onSelectModel: (AiModel) -> Unit,
+    onSetThinkingEnabled: (Boolean) -> Unit = {},
+    onSetWebSearchEnabled: (Boolean) -> Unit = {},
     onBack: () -> Unit,
     onClearChat: () -> Unit,
     onNavigateToModels: () -> Unit
@@ -534,6 +505,7 @@ private fun ChatScreen(
     var messageText by remember { mutableStateOf("") }
     var showModelSelector by remember { mutableStateOf(false) }
     var showClearConfirm by remember { mutableStateOf(false) }
+    var showModelOptions by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     // Auto-scroll to bottom on new messages
@@ -576,6 +548,16 @@ private fun ChatScreen(
                     }
                 },
                 actions = {
+                    // Model options button (only for models with thinking/websearch support)
+                    if (selectedModel?.supportsThinking == true || selectedModel?.supportsWebSearch == true) {
+                        IconButton(onClick = { showModelOptions = true }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Tune,
+                                contentDescription = "Model options",
+                                tint = colors.AccentPrimary
+                            )
+                        }
+                    }
                     IconButton(onClick = { showModelSelector = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Psychology,
@@ -753,6 +735,109 @@ private fun ChatScreen(
             containerColor = colors.CardBackground
         )
     }
+
+    // Model options dialog
+    if (showModelOptions && selectedModel != null) {
+        AlertDialog(
+            onDismissRequest = { showModelOptions = false },
+            title = {
+                Text(
+                    text = "Model Options",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            },
+            text = {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = selectedModel!!.displayName,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = colors.TextMuted
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Thinking toggle
+                    if (selectedModel!!.supportsThinking) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(colors.ChipBackground)
+                                .padding(horizontal = 12.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Thinking Mode",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.Medium,
+                                    color = colors.TextPrimary
+                                )
+                                Text(
+                                    text = "Extended reasoning before answering",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = colors.TextMuted
+                                )
+                            }
+                            Switch(
+                                checked = thinkingEnabled,
+                                onCheckedChange = onSetThinkingEnabled,
+                                colors = SwitchDefaults.colors(
+                                    checkedThumbColor = colors.AccentPrimary,
+                                    checkedTrackColor = colors.AccentPrimary.copy(alpha = 0.5f)
+                                )
+                            )
+                        }
+                    }
+
+                    // Web search toggle
+                    if (selectedModel!!.supportsWebSearch) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(colors.ChipBackground)
+                                .padding(horizontal = 12.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Web Search",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.Medium,
+                                    color = colors.TextPrimary
+                                )
+                                Text(
+                                    text = "Search the web for current information",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = colors.TextMuted
+                                )
+                            }
+                            Switch(
+                                checked = webSearchEnabled,
+                                onCheckedChange = onSetWebSearchEnabled,
+                                colors = SwitchDefaults.colors(
+                                    checkedThumbColor = colors.AccentPrimary,
+                                    checkedTrackColor = colors.AccentPrimary.copy(alpha = 0.5f)
+                                )
+                            )
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showModelOptions = false }) {
+                    Text("Done", color = colors.AccentPrimary)
+                }
+            },
+            containerColor = colors.CardBackground
+        )
+    }
 }
 
 @Composable
@@ -864,6 +949,58 @@ private fun MessageBubble(
             modifier = Modifier.widthIn(max = 320.dp)
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
+                // Reasoning toggle at TOP for assistant messages
+                if (!isUser && !message.reasoningContent.isNullOrBlank()) {
+                    Surface(
+                        onClick = { showReasoning = !showReasoning },
+                        color = colors.ChipBackground.copy(alpha = 0.5f),
+                        shape = RoundedCornerShape(6.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Psychology,
+                                contentDescription = null,
+                                tint = colors.AccentPrimary,
+                                modifier = Modifier.size(14.dp)
+                            )
+                            Text(
+                                text = if (showReasoning) "Hide reasoning" else "Show reasoning",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.TextMuted
+                            )
+                            Icon(
+                                imageVector = if (showReasoning) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                contentDescription = null,
+                                tint = colors.TextMuted,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
+
+                    AnimatedVisibility(visible = showReasoning) {
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            color = colors.ChipBackground,
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                text = message.reasoningContent ?: "",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = colors.TextMuted,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
                 // Error state
                 if (message.errorMessage != null) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -886,44 +1023,6 @@ private fun MessageBubble(
                         style = MaterialTheme.typography.bodyMedium,
                         color = if (isUser) colors.ScreenBackground else colors.TextPrimary
                     )
-                }
-
-                // Reasoning toggle for assistant messages
-                if (!isUser && message.reasoningContent != null) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.clickable { showReasoning = !showReasoning },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = if (showReasoning) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                            contentDescription = null,
-                            tint = colors.TextMuted,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Text(
-                            text = if (showReasoning) "Hide reasoning" else "Show reasoning",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = colors.TextMuted
-                        )
-                    }
-
-                    AnimatedVisibility(visible = showReasoning) {
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                            color = colors.ChipBackground,
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text(
-                                text = message.reasoningContent,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = colors.TextMuted,
-                                modifier = Modifier.padding(8.dp)
-                            )
-                        }
-                    }
                 }
 
                 // Tools used
@@ -994,11 +1093,66 @@ private fun StreamingMessageBubble(
             modifier = Modifier.widthIn(max = 320.dp)
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
-                Text(
-                    text = content,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = colors.TextPrimary
-                )
+                // Reasoning toggle at TOP
+                if (reasoningContent.isNotBlank()) {
+                    Surface(
+                        onClick = { showReasoning = !showReasoning },
+                        color = colors.ChipBackground.copy(alpha = 0.5f),
+                        shape = RoundedCornerShape(6.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Psychology,
+                                contentDescription = null,
+                                tint = colors.AccentPrimary,
+                                modifier = Modifier.size(14.dp)
+                            )
+                            Text(
+                                text = if (showReasoning) "Hide reasoning" else "Show reasoning",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = colors.TextMuted
+                            )
+                            Icon(
+                                imageVector = if (showReasoning) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                contentDescription = null,
+                                tint = colors.TextMuted,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
+
+                    AnimatedVisibility(visible = showReasoning) {
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            color = colors.ChipBackground,
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                text = reasoningContent,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = colors.TextMuted,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                // Message content
+                if (content.isNotEmpty()) {
+                    Text(
+                        text = content,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = colors.TextPrimary
+                    )
+                }
 
                 // Typing indicator
                 Row(
@@ -1028,44 +1182,6 @@ private fun StreamingMessageBubble(
                                 .clip(CircleShape)
                                 .background(colors.TextMuted.copy(alpha = alpha))
                         )
-                    }
-                }
-
-                // Reasoning toggle
-                if (reasoningContent.isNotEmpty()) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.clickable { showReasoning = !showReasoning },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = if (showReasoning) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                            contentDescription = null,
-                            tint = colors.TextMuted,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Text(
-                            text = if (showReasoning) "Hide reasoning" else "Show reasoning",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = colors.TextMuted
-                        )
-                    }
-
-                    AnimatedVisibility(visible = showReasoning) {
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                            color = colors.ChipBackground,
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text(
-                                text = reasoningContent,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = colors.TextMuted,
-                                modifier = Modifier.padding(8.dp)
-                            )
-                        }
                     }
                 }
             }
@@ -1165,11 +1281,13 @@ private fun ChatInputArea(
 
     Surface(
         color = colors.CardBackground,
-        tonalElevation = 2.dp
+        tonalElevation = 2.dp,
+        modifier = Modifier.imePadding() // Handle keyboard overlap
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .navigationBarsPadding() // Padding for navigation bar
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.Bottom
         ) {
@@ -1182,9 +1300,14 @@ private fun ChatInputArea(
                 placeholder = {
                     Text(
                         text = "Ask Stormy...",
-                        color = colors.TextSubtle
+                        color = colors.TextSubtle,
+                        fontSize = 16.sp
                     )
                 },
+                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 16.sp,
+                    color = colors.TextPrimary
+                ),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colors.AccentPrimary,
                     unfocusedBorderColor = colors.BorderColor,

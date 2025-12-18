@@ -101,6 +101,8 @@ data class AiModel(
     val supportsVision: Boolean = false,
     val supportsTools: Boolean = false,
     val supportsReasoning: Boolean = false,
+    val supportsThinking: Boolean = false, // Can enable/disable thinking mode (e.g., Qwen models)
+    val supportsWebSearch: Boolean = false, // Can enable/disable web search (e.g., Qwen models)
     val enabled: Boolean = true,
     val aliasName: String? = null
 ) {
@@ -214,6 +216,16 @@ sealed class ChatResponse {
     data class ProviderInfo(
         val providerId: String,
         val model: String
+    ) : ChatResponse()
+
+    /**
+     * Retry notification (when auto-retrying due to rate limits or errors)
+     */
+    data class RetryNotification(
+        val attempt: Int,
+        val maxAttempts: Int,
+        val delayMs: Long,
+        val reason: String
     ) : ChatResponse()
 }
 

@@ -42,7 +42,18 @@ class StormyAgent private constructor(
         const val AGENT_NAME = "Stormy"
         const val AGENT_DESCRIPTION = "Your Vedic Astrology AI Assistant"
 
-        private const val MAX_TOOL_ITERATIONS = 10
+        /**
+         * Maximum number of autonomous tool execution iterations.
+         * The agent can call tools up to this many times in a single request
+         * to accomplish the user's task autonomously.
+         */
+        private const val MAX_TOOL_ITERATIONS = 15
+
+        /**
+         * Maximum total iterations (including non-tool responses)
+         * to prevent infinite loops in edge cases
+         */
+        private const val MAX_TOTAL_ITERATIONS = 20
 
         @Volatile
         private var INSTANCE: StormyAgent? = null
@@ -122,7 +133,17 @@ $toolsDescription
 4. If a tool returns an error, explain the issue and suggest alternatives
 5. Always verify you have the necessary profile/chart before calling chart-specific tools
 
-Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help users understand their charts, make informed decisions, and find guidance through the wisdom of Vedic astrology.
+## Autonomous Behavior Guidelines
+- Work AUTONOMOUSLY to accomplish the user's request without waiting for further input
+- If you need data, call the appropriate tools immediately
+- Continue analyzing and calling tools until you can provide a COMPLETE response
+- DO NOT stop midway with incomplete analysis - gather all necessary information first
+- If you need to clarify something with the user, do so AFTER providing what you can
+- Provide comprehensive, detailed responses that fully address the user's query
+- Only ask clarifying questions if absolutely necessary for the core request
+- Think step-by-step: what data do I need? Call tools. What does this mean? Explain thoroughly.
+
+Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help users understand their charts, make informed decisions, and find guidance through the wisdom of Vedic astrology. Always strive to provide COMPLETE, actionable insights.
         """.trimIndent()
     }
 
@@ -196,16 +217,20 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
         fullMessages.addAll(messages)
 
         var iteration = 0
+        var toolIterations = 0
         var continueProcessing = true
         val toolsUsed = mutableListOf<String>()
+        val allContent = StringBuilder()
+        val allReasoning = StringBuilder()
 
-        while (continueProcessing && iteration < MAX_TOOL_ITERATIONS) {
+        while (continueProcessing && iteration < MAX_TOTAL_ITERATIONS && toolIterations < MAX_TOOL_ITERATIONS) {
             iteration++
             var currentContent = StringBuilder()
             var currentReasoning = StringBuilder()
             var pendingToolCalls = mutableListOf<ToolCallRequest>()
             var hasError = false
             var errorMessage: String? = null
+            var receivedDone = false
 
             // Call the AI model
             provider.chat(
@@ -221,14 +246,17 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                         emit(AgentResponse.ContentChunk(response.text))
                     }
                     is ChatResponse.Reasoning -> {
-                        currentReasoning.append(response.text)
-                        emit(AgentResponse.ReasoningChunk(response.text))
+                        // Skip empty reasoning markers
+                        if (response.text.isNotEmpty()) {
+                            currentReasoning.append(response.text)
+                            emit(AgentResponse.ReasoningChunk(response.text))
+                        }
                     }
                     is ChatResponse.ToolCallRequest -> {
                         response.toolCalls.forEach { call ->
                             pendingToolCalls.add(
                                 ToolCallRequest(
-                                    id = call.id,
+                                    id = call.id.ifEmpty { "tool_${UUID.randomUUID().toString().take(8)}" },
                                     name = call.function.name,
                                     arguments = call.function.arguments
                                 )
@@ -248,6 +276,7 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                         ))
                     }
                     is ChatResponse.Done -> {
+                        receivedDone = true
                         // Check for embedded tool calls in content
                         if (pendingToolCalls.isEmpty()) {
                             pendingToolCalls.addAll(parseEmbeddedToolCalls(currentContent.toString()))
@@ -256,7 +285,25 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                     is ChatResponse.ProviderInfo -> {
                         emit(AgentResponse.ModelInfo(response.providerId, response.model))
                     }
+                    is ChatResponse.RetryNotification -> {
+                        // Emit retry notification so UI can show it
+                        emit(AgentResponse.RetryInfo(
+                            attempt = response.attempt,
+                            maxAttempts = response.maxAttempts,
+                            delayMs = response.delayMs,
+                            reason = response.reason
+                        ))
+                    }
                 }
+            }
+
+            // Accumulate all content and reasoning across iterations
+            allContent.append(currentContent.toString().cleanToolCallBlocks())
+            if (currentReasoning.isNotEmpty()) {
+                if (allReasoning.isNotEmpty()) {
+                    allReasoning.append("\n\n")
+                }
+                allReasoning.append(currentReasoning)
             }
 
             if (hasError) {
@@ -266,12 +313,14 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
 
             // Process tool calls if any
             if (pendingToolCalls.isNotEmpty()) {
+                toolIterations++
                 emit(AgentResponse.ToolCallsStarted(pendingToolCalls.map { it.name }))
 
                 // Add assistant message with tool calls
+                val assistantContent = currentContent.toString().cleanToolCallBlocks()
                 fullMessages.add(ChatMessage(
                     role = MessageRole.ASSISTANT,
-                    content = currentContent.toString().cleanToolCallBlocks(),
+                    content = assistantContent.ifEmpty { "I'll use some tools to help answer your question." },
                     toolCalls = pendingToolCalls.map { call ->
                         ToolCall(
                             id = call.id,
@@ -280,10 +329,12 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                     }
                 ))
 
-                // Execute each tool
+                // Execute each tool and add results
                 for (toolCall in pendingToolCalls) {
                     emit(AgentResponse.ToolExecuting(toolCall.name))
-                    toolsUsed.add(toolCall.name)
+                    if (!toolsUsed.contains(toolCall.name)) {
+                        toolsUsed.add(toolCall.name)
+                    }
 
                     val result = executeToolCall(toolCall, currentProfile, allProfiles, currentChart)
 
@@ -293,24 +344,106 @@ Remember: You are Stormy, a knowledgeable and caring astrology assistant. Help u
                     fullMessages.add(ChatMessage(
                         role = MessageRole.TOOL,
                         content = result.toJson(),
-                        toolCallId = toolCall.id
+                        toolCallId = toolCall.id,
+                        name = toolCall.name
                     ))
                 }
 
                 // Continue processing to let AI respond to tool results
+                // The agent will autonomously continue until it has enough info
             } else {
-                // No tool calls, we're done
+                // No tool calls - check if we have content to emit
+                val finalContent = allContent.toString().trim()
+                val finalReasoning = allReasoning.toString().trim()
+
+                // Check if we only have reasoning but no content
+                // This can happen with thinking models like Kimi K2, DeepSeek R1, QwQ
+                // They sometimes emit only reasoning_content without content field
+                if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
+                    // For reasoning-only responses, check if we used tools and might need continuation
+                    if (toolsUsed.isNotEmpty() && iteration < MAX_TOTAL_ITERATIONS - 1) {
+                        // We used tools but got no final answer - prompt for continuation
+                        // Add a hint message to encourage the model to provide the final answer
+                        fullMessages.add(ChatMessage(
+                            role = MessageRole.ASSISTANT,
+                            content = finalReasoning
+                        ))
+
+                        fullMessages.add(ChatMessage(
+                            role = MessageRole.USER,
+                            content = "Please provide your analysis and answer based on the tool results above."
+                        ))
+
+                        // Clear accumulators for the continuation
+                        allContent.clear()
+                        allReasoning.clear()
+
+                        // Continue for one more iteration
+                        continue
+                    }
+                    // If no tools were used, or we've exhausted iterations,
+                    // treat reasoning as the content (some models only output in reasoning_content)
+                    // This ensures the user sees something
+                }
+
+                // We're done - emit the complete response
+                // If we have no content but have reasoning, use reasoning as a fallback
+                // This handles cases where models emit only in reasoning_content
+                val contentToEmit = if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
+                    // Use reasoning as the actual response when there's no content
+                    // Clear reasoning since we're using it as content
+                    finalReasoning
+                } else {
+                    finalContent
+                }
+
+                // Only keep reasoning separate if we have both content AND reasoning
+                val reasoningToEmit = if (finalContent.isNotEmpty() && finalReasoning.isNotEmpty()) {
+                    finalReasoning
+                } else {
+                    null
+                }
+
                 continueProcessing = false
                 emit(AgentResponse.Complete(
-                    content = currentContent.toString().cleanToolCallBlocks(),
-                    reasoning = currentReasoning.toString().takeIf { it.isNotEmpty() },
-                    toolsUsed = toolsUsed.toList()
+                    content = contentToEmit,
+                    reasoning = reasoningToEmit,
+                    toolsUsed = toolsUsed.distinct().toList()
                 ))
             }
         }
 
-        if (iteration >= MAX_TOOL_ITERATIONS) {
-            emit(AgentResponse.Error("Maximum tool call iterations reached", isRetryable = false))
+        if (iteration >= MAX_TOTAL_ITERATIONS || toolIterations >= MAX_TOOL_ITERATIONS) {
+            // Still emit what we have
+            val finalContent = allContent.toString().trim()
+            val finalReasoning = allReasoning.toString().trim()
+
+            if (finalContent.isNotEmpty() || finalReasoning.isNotEmpty()) {
+                // If we have no content but have reasoning, use reasoning as content
+                val contentToEmit = if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
+                    finalReasoning
+                } else {
+                    finalContent.ifEmpty { "I apologize, but I wasn't able to complete my analysis within the allowed iterations. Here's what I was able to determine..." }
+                }
+
+                // Only include reasoning separately if we have both
+                val reasoningToEmit = if (finalContent.isNotEmpty() && finalReasoning.isNotEmpty()) {
+                    finalReasoning
+                } else {
+                    null
+                }
+
+                emit(AgentResponse.Complete(
+                    content = contentToEmit,
+                    reasoning = reasoningToEmit,
+                    toolsUsed = toolsUsed.distinct().toList()
+                ))
+            }
+
+            emit(AgentResponse.Error(
+                "Maximum iterations reached ($iteration total, $toolIterations tool calls). The analysis may be incomplete.",
+                isRetryable = false
+            ))
         }
     }
 
@@ -472,6 +605,16 @@ sealed class AgentResponse {
     data class Error(
         val message: String,
         val isRetryable: Boolean = false
+    ) : AgentResponse()
+
+    /**
+     * Retry notification (rate limit or transient error)
+     */
+    data class RetryInfo(
+        val attempt: Int,
+        val maxAttempts: Int,
+        val delayMs: Long,
+        val reason: String
     ) : AgentResponse()
 
     /**

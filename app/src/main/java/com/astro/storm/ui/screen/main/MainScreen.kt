@@ -83,6 +83,7 @@ fun MainScreen(
     onNavigateToKalachakraDasha: () -> Unit = {},
     onNavigateToTarabala: () -> Unit = {},
     onNavigateToAiModels: () -> Unit = {},
+    onNavigateToChat: (Long?) -> Unit = {}, // null for new chat, Long for existing
     onExportChart: (ExportFormat) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -240,12 +241,14 @@ fun MainScreen(
                         )
                     }
                     MainTab.CHAT -> {
+                        // Chat tab shows conversations list
                         ChatTab(
                             viewModel = chatViewModel,
                             currentChart = currentChart,
                             savedCharts = savedCharts,
                             selectedChartId = selectedChartId,
-                            onNavigateToModels = onNavigateToAiModels
+                            onNavigateToModels = onNavigateToAiModels,
+                            onNavigateToChat = onNavigateToChat
                         )
                     }
                     MainTab.SETTINGS -> {
