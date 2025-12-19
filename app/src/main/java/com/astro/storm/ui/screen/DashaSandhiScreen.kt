@@ -116,7 +116,7 @@ fun DashaSandhiScreen(
         delay(300) // Brief delay for smooth transition
         try {
             sandhiAnalysis = withContext(Dispatchers.Default) {
-                val dashaTimeline = DashaCalculator.calculateDashaTimeline(chart.birthData.birthDate)
+                val dashaTimeline = DashaCalculator.calculateDashaTimeline(chart)
                 DashaSandhiAnalyzer.analyzeCompleteSandhis(
                     chart = chart,
                     dashaTimeline = dashaTimeline,
@@ -509,7 +509,7 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "${sandhi.fromPlanet.getLocalizedName(language)} → ${sandhi.toPlanet.getLocalizedName(language)}",
+                text = "${sandhi.sandhi.fromPlanet.getLocalizedName(language)} → ${sandhi.sandhi.toPlanet.getLocalizedName(language)}",
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
@@ -527,7 +527,7 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    text = "Ends: ${sandhi.endDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
+                    text = "Ends: ${sandhi.sandhi.sandhiEndDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -626,7 +626,7 @@ private fun SandhiDetailCard(
                     )
                     Column {
                         Text(
-                            text = "${sandhi.fromPlanet.getLocalizedName(language)} → ${sandhi.toPlanet.getLocalizedName(language)}",
+                            text = "${sandhi.sandhi.fromPlanet.getLocalizedName(language)} → ${sandhi.sandhi.toPlanet.getLocalizedName(language)}",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -669,12 +669,12 @@ private fun SandhiDetailCard(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Start: ${sandhi.startDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
+                    text = "Start: ${sandhi.sandhi.sandhiStartDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    text = "End: ${sandhi.endDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
+                    text = "End: ${sandhi.sandhi.sandhiEndDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -705,7 +705,7 @@ private fun SandhiDetailCard(
                     }
 
                     // Life area impacts
-                    if (sandhi.predictions.lifeAreaImpacts.isNotEmpty()) {
+                    if (sandhi.affectedLifeAreas.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "Life Area Impacts",
@@ -718,7 +718,7 @@ private fun SandhiDetailCard(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            sandhi.predictions.lifeAreaImpacts.forEach { impact ->
+                            sandhi.affectedLifeAreas.forEach { impact ->
                                 LifeAreaChip(impact = impact)
                             }
                         }
@@ -768,7 +768,7 @@ private fun KeyDateItem(keyDate: DashaSandhiAnalyzer.KeyDatePrediction) {
                 color = AppTheme.TextPrimary
             )
             Text(
-                text = keyDate.recommendation,
+                text = keyDate.significance,
                 style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted
             )
@@ -969,13 +969,13 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
             // Event details
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = entry.eventType.name.replace("_", " "),
+                    text = entry.sandhiType,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = entry.description,
+                    text = "${entry.fromPlanet.displayName} → ${entry.toPlanet.displayName}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary,
                     maxLines = 2,
@@ -1119,11 +1119,11 @@ private fun getSandhiIntensityColor(intensity: DashaSandhiAnalyzer.SandhiIntensi
 }
 
 @Composable
-private fun getImpactColor(level: String): Color {
-    return when (level.lowercase()) {
-        "high" -> AppTheme.ErrorColor
-        "medium" -> AppTheme.WarningColor
-        "low" -> AppTheme.SuccessColor
-        else -> AppTheme.TextMuted
+private fun getImpactColor(level: Int): Color {
+    return when {
+        level >= 4 -> AppTheme.ErrorColor
+        level >= 3 -> AppTheme.WarningColor
+        level >= 2 -> AppTheme.AccentGold
+        else -> AppTheme.SuccessColor
     }
 }
