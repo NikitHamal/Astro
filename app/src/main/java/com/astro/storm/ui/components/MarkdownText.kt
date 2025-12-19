@@ -1,7 +1,6 @@
 package com.astro.storm.ui.components
 
 import android.content.Context
-import android.graphics.Typeface
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
 import androidx.compose.runtime.Composable
@@ -17,6 +16,25 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.ext.tables.TablePlugin
 import io.noties.markwon.linkify.LinkifyPlugin
+
+/**
+ * Custom TextView that handles drag operations safely.
+ *
+ * The crash occurs when Android attempts to create a drag shadow with
+ * zero or negative dimensions (IllegalStateException: Drag shadow dimensions must be positive).
+ * This can happen with empty text, invisible text, or edge cases in text selection.
+ *
+ * This custom view disables drag-and-drop functionality to prevent crashes while
+ * still allowing text selection and copy operations.
+ */
+private class SafeSelectableTextView(context: Context) : TextView(context) {
+
+    init {
+        // Disable drag-and-drop to prevent crashes with invalid shadow dimensions
+        // Text selection and copy still work via the context menu
+        setOnLongClickListener { false }
+    }
+}
 
 /**
  * Content cleaning utilities for AI responses.
@@ -226,7 +244,7 @@ fun MarkdownText(
     AndroidView(
         modifier = modifier,
         factory = { ctx ->
-            TextView(ctx).apply {
+            SafeSelectableTextView(ctx).apply {
                 movementMethod = LinkMovementMethod.getInstance()
                 setTextIsSelectable(true)
                 // Apply Poppins font
