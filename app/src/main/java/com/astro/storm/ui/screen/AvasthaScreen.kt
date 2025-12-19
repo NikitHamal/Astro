@@ -1364,6 +1364,9 @@ private fun getPlanetColor(planet: com.astro.storm.data.model.Planet): Color {
         com.astro.storm.data.model.Planet.SATURN -> AppTheme.PlanetSaturn
         com.astro.storm.data.model.Planet.RAHU -> AppTheme.PlanetRahu
         com.astro.storm.data.model.Planet.KETU -> AppTheme.PlanetKetu
+        com.astro.storm.data.model.Planet.URANUS -> AppTheme.PlanetSaturn
+        com.astro.storm.data.model.Planet.NEPTUNE -> AppTheme.PlanetMoon
+        com.astro.storm.data.model.Planet.PLUTO -> AppTheme.PlanetRahu
     }
 }
 

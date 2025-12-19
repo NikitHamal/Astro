@@ -76,14 +76,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.getLocalizedName
+import android.content.Context
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.GocharaVedhaCalculator
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.theme.AppTheme
+import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
@@ -106,6 +109,8 @@ fun GocharaVedhaScreen(
 
     val tabs = listOf("Overview", "Transits", "Vedhas", "Forecast")
 
+    val context = LocalContext.current
+
     // Calculate Vedha analysis
     LaunchedEffect(chart) {
         if (chart == null) {
@@ -116,7 +121,7 @@ fun GocharaVedhaScreen(
         delay(300)
         try {
             vedhaAnalysis = withContext(Dispatchers.Default) {
-                GocharaVedhaCalculator.calculateCurrentVedha(chart)
+                GocharaVedhaCalculator.calculateCurrentVedha(context, chart, LocalDateTime.now())
             }
         } catch (e: Exception) {
             // Handle calculation error
@@ -676,7 +681,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "in ${transit.currentSign.getLocalizedName(language)} (${transit.houseFromMoon}H from Moon)",
+                            text = "in ${transit.transitSign.getLocalizedName(language)} (${transit.houseFromMoon}H from Moon)",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -689,13 +694,13 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                     // Effectiveness badge
                     Surface(
                         shape = RoundedCornerShape(6.dp),
-                        color = getEffectivenessColor(transit.effectiveness).copy(alpha = 0.15f)
+                        color = getEffectivenessColor(transit.effectiveStrength).copy(alpha = 0.15f)
                     ) {
                         Text(
-                            text = "${transit.effectiveStrength}%",
+                            text = "${transit.effectiveStrength.score * 20}%",
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = getEffectivenessColor(transit.effectiveness),
+                            color = getEffectivenessColor(transit.effectiveStrength),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
                     }
@@ -714,13 +719,13 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Icon(
-                    imageVector = if (transit.isNaturallyBenefic) Icons.Default.CheckCircle else Icons.Default.Block,
+                    imageVector = if (transit.isNaturallyFavorable) Icons.Default.CheckCircle else Icons.Default.Block,
                     contentDescription = null,
-                    tint = if (transit.isNaturallyBenefic) AppTheme.SuccessColor else AppTheme.WarningColor,
+                    tint = if (transit.isNaturallyFavorable) AppTheme.SuccessColor else AppTheme.WarningColor,
                     modifier = Modifier.size(14.dp)
                 )
                 Text(
-                    text = if (transit.isNaturallyBenefic) "Naturally Benefic" else "Naturally Malefic",
+                    text = if (transit.isNaturallyFavorable) "Naturally Favorable" else "Naturally Unfavorable",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -759,7 +764,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    transit.transitEffects.forEach { effect ->
+                    transit.significations.forEach { effect ->
                         Text(
                             text = "• $effect",
                             style = MaterialTheme.typography.bodySmall,
@@ -769,7 +774,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                     }
 
                     // Vedha details if present
-                    if (transit.hasVedha && transit.vedhaDetails != null) {
+                    if (transit.hasVedha) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
@@ -785,17 +790,17 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
-                                    text = "From: ${transit.vedhaDetails.obstructingPlanet.getLocalizedName(language)}",
+                                    text = "From: ${transit.vedhaSourcePlanets.joinToString { it.getLocalizedName(language) }}",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = AppTheme.TextSecondary
                                 )
                                 Text(
-                                    text = "Severity: ${transit.vedhaDetails.severity.displayName}",
+                                    text = "Severity: ${transit.vedhaSeverity.displayName}",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = AppTheme.TextSecondary
                                 )
                                 Text(
-                                    text = "Reduction: ${transit.vedhaDetails.severity.reductionPercent}%",
+                                    text = "Reduction: ${transit.vedhaSeverity.reductionPercent}%",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = AppTheme.TextSecondary
                                 )
@@ -887,14 +892,14 @@ private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction)
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "${vedha.beneficPlanet.getLocalizedName(language)} obstructed by ${vedha.obstructingPlanet.getLocalizedName(language)}",
+                        text = "${vedha.obstructedPlanet.getLocalizedName(language)} obstructed by ${vedha.obstructingPlanet.getLocalizedName(language)}",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Vedha from ${vedha.vedhaFromHouse}H to ${vedha.vedhaToHouse}H",
+                        text = "Vedha from ${vedha.obstructingHouse}H to ${vedha.obstructedHouse}H",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )
@@ -946,7 +951,7 @@ private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction)
 
             // Description
             Text(
-                text = vedha.description,
+                text = vedha.interpretation,
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
@@ -1092,7 +1097,7 @@ private fun PlanetTransitSummaryCard(transit: GocharaVedhaCalculator.PlanetTrans
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = "${transit.currentSign.getLocalizedName(language)} • ${transit.houseFromMoon}H",
+                    text = "${transit.transitSign.getLocalizedName(language)} • ${transit.houseFromMoon}H",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1100,13 +1105,13 @@ private fun PlanetTransitSummaryCard(transit: GocharaVedhaCalculator.PlanetTrans
 
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = "${transit.effectiveStrength}%",
+                    text = "${transit.effectiveStrength.score * 20}%",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    color = getEffectivenessColor(transit.effectiveness)
+                    color = getEffectivenessColor(transit.effectiveStrength)
                 )
                 Text(
-                    text = transit.effectiveness.name.replace("_", " "),
+                    text = transit.effectiveStrength.name.replace("_", " "),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1243,10 +1248,11 @@ private fun getVedhaSeverityColor(severity: GocharaVedhaCalculator.VedhaSeverity
 @Composable
 private fun getEffectivenessColor(effectiveness: GocharaVedhaCalculator.TransitEffectiveness): Color {
     return when (effectiveness) {
-        GocharaVedhaCalculator.TransitEffectiveness.FULL -> AppTheme.SuccessColor
-        GocharaVedhaCalculator.TransitEffectiveness.STRONG -> AppTheme.AccentTeal
+        GocharaVedhaCalculator.TransitEffectiveness.EXCELLENT -> AppTheme.SuccessColor
+        GocharaVedhaCalculator.TransitEffectiveness.GOOD -> AppTheme.AccentTeal
         GocharaVedhaCalculator.TransitEffectiveness.MODERATE -> AppTheme.AccentGold
         GocharaVedhaCalculator.TransitEffectiveness.WEAK -> AppTheme.WarningColor
-        GocharaVedhaCalculator.TransitEffectiveness.BLOCKED -> AppTheme.ErrorColor
+        GocharaVedhaCalculator.TransitEffectiveness.NULLIFIED -> AppTheme.ErrorColor
+        GocharaVedhaCalculator.TransitEffectiveness.UNFAVORABLE -> AppTheme.ErrorColor
     }
 }

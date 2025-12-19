@@ -559,10 +559,9 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
 
                 // Moon details
                 MoonDetailRow(label = "Degree", value = String.format("%.2f°", moonAnalysis.degree))
-                MoonDetailRow(label = "Nakshatra", value = moonAnalysis.nakshatra.getLocalizedName(language))
-                MoonDetailRow(label = "Nakshatra Pada", value = moonAnalysis.nakshatraPada.toString())
+                MoonDetailRow(label = "Nakshatra", value = moonAnalysis.nakshatra)
                 MoonDetailRow(label = "Paksha", value = moonAnalysis.paksha.name.replace("_", " "))
-                MoonDetailRow(label = "Brightness", value = moonAnalysis.brightness.displayName)
+                MoonDetailRow(label = "Brightness", value = moonAnalysis.brightness.name.replace("_", " "))
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -596,7 +595,10 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
         }
 
         // Surrounding houses analysis
-        SurroundingHousesCard(moonAnalysis = moonAnalysis)
+        SurroundingHousesCard(
+            moonAnalysis = moonAnalysis,
+            formationDetails = analysis.formationDetails
+        )
     }
 }
 
@@ -623,7 +625,10 @@ private fun MoonDetailRow(label: String, value: String) {
 }
 
 @Composable
-private fun SurroundingHousesCard(moonAnalysis: KemadrumaYogaCalculator.MoonAnalysis) {
+private fun SurroundingHousesCard(
+    moonAnalysis: KemadrumaYogaCalculator.MoonAnalysis,
+    formationDetails: KemadrumaYogaCalculator.KemadrumaFormation
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -648,7 +653,7 @@ private fun SurroundingHousesCard(moonAnalysis: KemadrumaYogaCalculator.MoonAnal
                 HouseStatusBox(
                     house = houseBefore,
                     label = "Before Moon",
-                    hasplanets = moonAnalysis.planetsIn2ndFromMoon.isEmpty(),
+                    hasplanets = formationDetails.planetsInTwelfthFromMoon.isEmpty(),
                     isKendra = false
                 )
                 HouseStatusBox(
@@ -660,12 +665,12 @@ private fun SurroundingHousesCard(moonAnalysis: KemadrumaYogaCalculator.MoonAnal
                 HouseStatusBox(
                     house = houseAfter,
                     label = "After Moon",
-                    hasplanets = moonAnalysis.planetsIn12thFromMoon.isEmpty(),
+                    hasplanets = formationDetails.planetsInSecondFromMoon.isEmpty(),
                     isKendra = false
                 )
             }
 
-            if (moonAnalysis.planetsIn2ndFromMoon.isEmpty() && moonAnalysis.planetsIn12thFromMoon.isEmpty()) {
+            if (formationDetails.planetsInSecondFromMoon.isEmpty() && formationDetails.planetsInTwelfthFromMoon.isEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
@@ -993,23 +998,16 @@ private fun ImpactCard(
     color: Color
 ) {
     val level = when (impact) {
-        is KemadrumaYogaCalculator.EmotionalImpact -> impact.level.name
-        is KemadrumaYogaCalculator.FinancialImpact -> impact.level.name
-        is KemadrumaYogaCalculator.SocialImpact -> impact.level.name
+        is KemadrumaYogaCalculator.EmotionalImpact -> impact.overallLevel.name
+        is KemadrumaYogaCalculator.FinancialImpact -> impact.overallLevel.name
+        is KemadrumaYogaCalculator.SocialImpact -> impact.overallLevel.name
         else -> "NONE"
     }
 
-    val description = when (impact) {
-        is KemadrumaYogaCalculator.EmotionalImpact -> impact.description
-        is KemadrumaYogaCalculator.FinancialImpact -> impact.description
-        is KemadrumaYogaCalculator.SocialImpact -> impact.description
-        else -> ""
-    }
-
-    val challenges = when (impact) {
-        is KemadrumaYogaCalculator.EmotionalImpact -> impact.challenges
-        is KemadrumaYogaCalculator.FinancialImpact -> impact.challenges
-        is KemadrumaYogaCalculator.SocialImpact -> impact.challenges
+    val recommendations = when (impact) {
+        is KemadrumaYogaCalculator.EmotionalImpact -> impact.recommendations
+        is KemadrumaYogaCalculator.FinancialImpact -> impact.recommendations
+        is KemadrumaYogaCalculator.SocialImpact -> impact.recommendations
         else -> emptyList()
     }
 
@@ -1095,23 +1093,15 @@ private fun ImpactCard(
                     HorizontalDivider(color = AppTheme.DividerColor)
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = AppTheme.TextSecondary,
-                        lineHeight = 22.sp
-                    )
-
-                    if (challenges.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(12.dp))
+                    if (recommendations.isNotEmpty()) {
                         Text(
-                            text = "Potential Challenges:",
+                            text = "Recommendations:",
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        challenges.forEach { challenge ->
+                        recommendations.forEach { recommendation ->
                             Row(
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -1122,7 +1112,7 @@ private fun ImpactCard(
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text(
-                                    text = challenge,
+                                    text = recommendation,
                                     style = MaterialTheme.typography.bodySmall,
                                     color = AppTheme.TextSecondary
                                 )
@@ -1179,26 +1169,26 @@ private fun ActivationPeriodsCard(periods: List<KemadrumaYogaCalculator.Activati
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = period.periodName,
+                                text = "${period.planet.displayName} ${period.periodType}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
-                                text = period.dateRange,
+                                text = period.reason,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
                         }
                         Surface(
                             shape = RoundedCornerShape(6.dp),
-                            color = getIntensityColor(period.intensity).copy(alpha = 0.15f)
+                            color = getIntensityColorFromInt(period.intensity).copy(alpha = 0.15f)
                         ) {
                             Text(
-                                text = period.intensity,
+                                text = getIntensityLabel(period.intensity),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.SemiBold,
-                                color = getIntensityColor(period.intensity),
+                                color = getIntensityColorFromInt(period.intensity),
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                             )
                         }
@@ -1357,30 +1347,25 @@ private fun RemedyItem(remedy: KemadrumaYogaCalculator.KemadrumaRemedy) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = remedy.name,
+                    text = remedy.description,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    modifier = Modifier.weight(1f)
                 )
                 Surface(
                     shape = RoundedCornerShape(4.dp),
-                    color = getEffectivenessColor(remedy.effectiveness).copy(alpha = 0.15f)
+                    color = getPriorityColor(remedy.priority).copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = remedy.effectiveness,
+                        text = getPriorityLabel(remedy.priority),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
-                        color = getEffectivenessColor(remedy.effectiveness),
+                        color = getPriorityColor(remedy.priority),
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = remedy.description,
-                style = MaterialTheme.typography.bodySmall,
-                color = AppTheme.TextSecondary
-            )
             if (remedy.timing.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
@@ -1508,9 +1493,9 @@ private fun getMoonBrightnessColor(brightness: KemadrumaYogaCalculator.MoonBrigh
     return when (brightness) {
         KemadrumaYogaCalculator.MoonBrightness.FULL -> AppTheme.SuccessColor
         KemadrumaYogaCalculator.MoonBrightness.BRIGHT -> AppTheme.AccentTeal
-        KemadrumaYogaCalculator.MoonBrightness.MODERATE -> AppTheme.AccentGold
+        KemadrumaYogaCalculator.MoonBrightness.AVERAGE -> AppTheme.AccentGold
         KemadrumaYogaCalculator.MoonBrightness.DIM -> AppTheme.WarningColor
-        KemadrumaYogaCalculator.MoonBrightness.DARK -> AppTheme.ErrorColor
+        KemadrumaYogaCalculator.MoonBrightness.NEW -> AppTheme.ErrorColor
     }
 }
 
@@ -1518,9 +1503,9 @@ private fun getMoonBrightnessProgress(brightness: KemadrumaYogaCalculator.MoonBr
     return when (brightness) {
         KemadrumaYogaCalculator.MoonBrightness.FULL -> 1f
         KemadrumaYogaCalculator.MoonBrightness.BRIGHT -> 0.8f
-        KemadrumaYogaCalculator.MoonBrightness.MODERATE -> 0.6f
+        KemadrumaYogaCalculator.MoonBrightness.AVERAGE -> 0.6f
         KemadrumaYogaCalculator.MoonBrightness.DIM -> 0.4f
-        KemadrumaYogaCalculator.MoonBrightness.DARK -> 0.2f
+        KemadrumaYogaCalculator.MoonBrightness.NEW -> 0.2f
     }
 }
 
