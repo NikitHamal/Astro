@@ -798,6 +798,271 @@ class ArgalaCalculatorWrapper {
 // PRASHNA (HORARY) WRAPPER
 // ============================================
 
+// ============================================
+// NITYA YOGA WRAPPER
+// ============================================
+
+class NityaYogaCalculatorWrapper {
+
+    data class NityaYogaResult(
+        val yogaName: String,
+        val sanskritName: String,
+        val yogaIndex: Int,
+        val exactDegree: Double,
+        val percentComplete: Double,
+        val strength: String,
+        val auspiciousness: String,
+        val interpretation: String,
+        val generalNature: String,
+        val healthIndications: String,
+        val financialIndications: String,
+        val relationshipIndications: String,
+        val suitableActivities: List<String>,
+        val unsuitableActivities: List<String>,
+        val bestHours: List<String>,
+        val avoidHours: List<String>,
+        val generalTiming: String,
+        val recommendations: List<String>
+    )
+
+    fun analyze(chart: VedicChart): NityaYogaResult {
+        return try {
+            val analysis = NityaYogaCalculator.analyzeNityaYoga(chart)
+
+            NityaYogaResult(
+                yogaName = analysis.yoga.displayName,
+                sanskritName = analysis.yoga.name,
+                yogaIndex = analysis.yogaIndex,
+                exactDegree = analysis.exactDegree,
+                percentComplete = analysis.percentComplete,
+                strength = analysis.strength.displayName,
+                auspiciousness = analysis.effects.auspiciousness.displayName,
+                interpretation = analysis.interpretation,
+                generalNature = analysis.effects.generalNature,
+                healthIndications = analysis.effects.healthIndications,
+                financialIndications = analysis.effects.financialIndications,
+                relationshipIndications = analysis.effects.relationshipIndications,
+                suitableActivities = analysis.effects.suitableActivities,
+                unsuitableActivities = analysis.effects.unsuitableActivities,
+                bestHours = analysis.timingAdvice.bestHours,
+                avoidHours = analysis.timingAdvice.avoidHours,
+                generalTiming = analysis.timingAdvice.generalTiming,
+                recommendations = analysis.recommendations
+            )
+        } catch (e: Exception) {
+            // Return default
+            NityaYogaResult(
+                yogaName = "Vishkumbha",
+                sanskritName = "VISHKUMBHA",
+                yogaIndex = 1,
+                exactDegree = 0.0,
+                percentComplete = 0.0,
+                strength = "Moderate",
+                auspiciousness = "Neutral",
+                interpretation = "Unable to calculate Nitya Yoga",
+                generalNature = "Unknown",
+                healthIndications = "Consult chart for health analysis",
+                financialIndications = "Consult chart for financial analysis",
+                relationshipIndications = "Consult chart for relationship analysis",
+                suitableActivities = emptyList(),
+                unsuitableActivities = emptyList(),
+                bestHours = emptyList(),
+                avoidHours = emptyList(),
+                generalTiming = "Analyze full chart for timing advice",
+                recommendations = listOf("Please verify chart data for accurate analysis")
+            )
+        }
+    }
+}
+
+// ============================================
+// PANCH MAHAPURUSHA YOGA WRAPPER
+// ============================================
+
+class PanchMahapurushaCalculatorWrapper {
+
+    data class PanchMahapurushaResult(
+        val hasAnyYoga: Boolean,
+        val yogaCount: Int,
+        val overallStrength: String,
+        val interpretation: String,
+        val yogas: List<MahapurushaYogaInfo>,
+        val strongestYoga: MahapurushaYogaInfo?,
+        val combinedEffects: List<String>,
+        val activationPeriods: List<ActivationPeriodInfo>
+    )
+
+    data class MahapurushaYogaInfo(
+        val name: String,
+        val sanskritName: String,
+        val planet: String,
+        val house: Int,
+        val sign: String,
+        val signType: String,
+        val strength: Double,
+        val isRetrograde: Boolean,
+        val description: String,
+        val effects: List<String>,
+        val physicalTraits: List<String>,
+        val careerIndications: List<String>,
+        val challenges: List<String>
+    )
+
+    data class ActivationPeriodInfo(
+        val yoga: String,
+        val trigger: String,
+        val timing: String,
+        val intensity: String
+    )
+
+    fun analyze(chart: VedicChart): PanchMahapurushaResult {
+        return try {
+            val analysis = PanchMahapurushaYogaCalculator.analyzePanchMahapurushaYogas(chart)
+
+            val yogas = analysis.yogas.map { yoga ->
+                MahapurushaYogaInfo(
+                    name = yoga.type.displayName,
+                    sanskritName = yoga.type.name,
+                    planet = yoga.planet.displayName,
+                    house = yoga.house,
+                    sign = yoga.sign.displayName,
+                    signType = yoga.signCondition.displayName,
+                    strength = yoga.strength,
+                    isRetrograde = yoga.isRetrograde,
+                    description = yoga.type.description,
+                    effects = yoga.effects,
+                    physicalTraits = yoga.physicalTraits,
+                    careerIndications = yoga.careerIndications,
+                    challenges = yoga.challenges
+                )
+            }
+
+            val activationPeriods = analysis.activationPeriods.map { period ->
+                ActivationPeriodInfo(
+                    yoga = period.yogaType.displayName,
+                    trigger = period.trigger,
+                    timing = period.timing,
+                    intensity = period.intensity
+                )
+            }
+
+            PanchMahapurushaResult(
+                hasAnyYoga = analysis.hasAnyYoga,
+                yogaCount = analysis.yogaCount,
+                overallStrength = analysis.overallYogaStrength.displayName,
+                interpretation = analysis.interpretation,
+                yogas = yogas,
+                strongestYoga = analysis.strongestYoga?.let { strongest ->
+                    yogas.find { it.planet == strongest.planet.displayName }
+                },
+                combinedEffects = analysis.combinedEffects,
+                activationPeriods = activationPeriods
+            )
+        } catch (e: Exception) {
+            PanchMahapurushaResult(
+                hasAnyYoga = false,
+                yogaCount = 0,
+                overallStrength = "None",
+                interpretation = "Unable to analyze Panch Mahapurusha Yogas",
+                yogas = emptyList(),
+                strongestYoga = null,
+                combinedEffects = emptyList(),
+                activationPeriods = emptyList()
+            )
+        }
+    }
+}
+
+// ============================================
+// AVASTHA (PLANETARY STATES) WRAPPER
+// ============================================
+
+class AvasthaCalculatorWrapper {
+
+    data class AvasthaAnalysisResult(
+        val overallStrength: String,
+        val interpretation: String,
+        val planetaryAvasthas: List<PlanetAvasthaInfo>,
+        val strongestPlanet: PlanetAvasthaInfo?,
+        val weakestPlanet: PlanetAvasthaInfo?,
+        val recommendations: List<String>
+    )
+
+    data class PlanetAvasthaInfo(
+        val planet: String,
+        val sign: String,
+        val degree: Double,
+        val effectiveStrength: Double,
+        val baladiState: String,
+        val baladiDescription: String,
+        val baladiResultPercent: Int,
+        val jagradadiState: String,
+        val jagradadiDescription: String,
+        val jagradadiResultPercent: Int,
+        val deeptadiState: String,
+        val deeptadiDescription: String,
+        val deeptadiEffect: String,
+        val lajjitadiState: String,
+        val lajjitadiDescription: String,
+        val lajjitadiEmotionalState: String,
+        val interpretation: String
+    )
+
+    fun analyze(chart: VedicChart): AvasthaAnalysisResult {
+        return try {
+            val analysis = AvasthaCalculator.analyzeAvasthas(chart)
+
+            val planetaryAvasthas = analysis.planetaryAvasthas.map { avastha ->
+                PlanetAvasthaInfo(
+                    planet = avastha.planet.displayName,
+                    sign = avastha.sign.displayName,
+                    degree = avastha.degree,
+                    effectiveStrength = avastha.effectiveStrength,
+                    baladiState = avastha.baladiAvastha.state.displayName,
+                    baladiDescription = avastha.baladiAvastha.description,
+                    baladiResultPercent = avastha.baladiAvastha.resultPercent,
+                    jagradadiState = avastha.jagradadiAvastha.state.displayName,
+                    jagradadiDescription = avastha.jagradadiAvastha.description,
+                    jagradadiResultPercent = avastha.jagradadiAvastha.resultPercent,
+                    deeptadiState = avastha.deeptadiAvastha.state.displayName,
+                    deeptadiDescription = avastha.deeptadiAvastha.description,
+                    deeptadiEffect = avastha.deeptadiAvastha.effect,
+                    lajjitadiState = avastha.lajjitadiAvastha.state.displayName,
+                    lajjitadiDescription = avastha.lajjitadiAvastha.description,
+                    lajjitadiEmotionalState = avastha.lajjitadiAvastha.emotionalState,
+                    interpretation = avastha.interpretation
+                )
+            }
+
+            AvasthaAnalysisResult(
+                overallStrength = analysis.overallStrength,
+                interpretation = analysis.interpretation,
+                planetaryAvasthas = planetaryAvasthas,
+                strongestPlanet = analysis.strongestPlanet?.let { strongest ->
+                    planetaryAvasthas.find { it.planet == strongest.planet.displayName }
+                },
+                weakestPlanet = analysis.weakestPlanet?.let { weakest ->
+                    planetaryAvasthas.find { it.planet == weakest.planet.displayName }
+                },
+                recommendations = analysis.recommendations
+            )
+        } catch (e: Exception) {
+            AvasthaAnalysisResult(
+                overallStrength = "Unknown",
+                interpretation = "Unable to analyze planetary Avasthas",
+                planetaryAvasthas = emptyList(),
+                strongestPlanet = null,
+                weakestPlanet = null,
+                recommendations = listOf("Please verify chart data for accurate analysis")
+            )
+        }
+    }
+}
+
+// ============================================
+// PRASHNA (HORARY) WRAPPER
+// ============================================
+
 class PrashnaCalculatorWrapper(private val context: android.content.Context) {
 
     data class PrashnaAnalysisResult(
@@ -1021,127 +1286,3 @@ class PrashnaCalculatorWrapper(private val context: android.content.Context) {
     }
 }
 
-// ============================================
-// COMPATIBILITY DEEP DIVE WRAPPER
-// ============================================
-
-class CompatibilityDeepDiveWrapper {
-
-    data class DeepCompatibilityResult(
-        val totalScore: Double,
-        val maxScore: Double,
-        val rating: String,
-        val gunaAnalysis: List<GunaDetail>,
-        val manglikAnalysis: ManglikAnalysisResult,
-        val additionalFactors: AdditionalFactorsResult,
-        val specialConsiderations: List<String>,
-        val remedies: List<String>,
-        val summary: String,
-        val detailedAnalysis: String
-    )
-
-    data class GunaDetail(
-        val name: String,
-        val obtainedPoints: Double,
-        val maxPoints: Double,
-        val description: String,
-        val brideValue: String,
-        val groomValue: String,
-        val assessment: String
-    )
-
-    data class ManglikAnalysisResult(
-        val brideIsManglik: Boolean,
-        val groomIsManglik: Boolean,
-        val brideManglikStrength: String,
-        val groomManglikStrength: String,
-        val manglikCompatibility: String
-    )
-
-    data class AdditionalFactorsResult(
-        val vedhaPresent: Boolean,
-        val vedhaDetails: String,
-        val rajjuCompatible: Boolean,
-        val rajjuDetails: String,
-        val streeDeergha: Boolean,
-        val streeDeerghaCount: Int,
-        val mahendra: Boolean,
-        val mahendraDetails: String
-    )
-
-    fun analyzeDeepCompatibility(
-        chart1: VedicChart,
-        chart2: VedicChart
-    ): DeepCompatibilityResult {
-        return try {
-            val result = MatchmakingCalculator.calculateMatchmaking(chart1, chart2)
-
-            DeepCompatibilityResult(
-                totalScore = result.totalPoints,
-                maxScore = result.maxPoints,
-                rating = result.rating.displayName,
-                gunaAnalysis = result.gunaAnalyses.map { guna ->
-                    GunaDetail(
-                        name = guna.name,
-                        obtainedPoints = guna.obtainedPoints,
-                        maxPoints = guna.maxPoints,
-                        description = guna.description,
-                        brideValue = guna.brideValue,
-                        groomValue = guna.groomValue,
-                        assessment = guna.analysis
-                    )
-                },
-                manglikAnalysis = ManglikAnalysisResult(
-                    brideIsManglik = result.brideManglik.effectiveDosha != com.astro.storm.data.model.ManglikDosha.NONE,
-                    groomIsManglik = result.groomManglik.effectiveDosha != com.astro.storm.data.model.ManglikDosha.NONE,
-                    brideManglikStrength = result.brideManglik.effectiveDosha.displayName,
-                    groomManglikStrength = result.groomManglik.effectiveDosha.displayName,
-                    manglikCompatibility = result.manglikCompatibility
-                ),
-                additionalFactors = AdditionalFactorsResult(
-                    vedhaPresent = result.additionalFactors.vedhaPresent,
-                    vedhaDetails = result.additionalFactors.vedhaDetails,
-                    rajjuCompatible = result.additionalFactors.rajjuCompatible,
-                    rajjuDetails = result.additionalFactors.rajjuDetails,
-                    streeDeergha = result.additionalFactors.streeDeerghaSatisfied,
-                    streeDeerghaCount = result.additionalFactors.streeDeerghaDiff,
-                    mahendra = result.additionalFactors.mahendraSatisfied,
-                    mahendraDetails = result.additionalFactors.mahendraDetails
-                ),
-                specialConsiderations = result.specialConsiderations,
-                remedies = result.remedies,
-                summary = result.summary,
-                detailedAnalysis = result.detailedAnalysis
-            )
-        } catch (e: Exception) {
-            // Return default result on error
-            DeepCompatibilityResult(
-                totalScore = 0.0,
-                maxScore = 36.0,
-                rating = "Unable to calculate",
-                gunaAnalysis = emptyList(),
-                manglikAnalysis = ManglikAnalysisResult(
-                    brideIsManglik = false,
-                    groomIsManglik = false,
-                    brideManglikStrength = "Unknown",
-                    groomManglikStrength = "Unknown",
-                    manglikCompatibility = "Unable to analyze"
-                ),
-                additionalFactors = AdditionalFactorsResult(
-                    vedhaPresent = false,
-                    vedhaDetails = "Unable to analyze",
-                    rajjuCompatible = true,
-                    rajjuDetails = "Unable to analyze",
-                    streeDeergha = false,
-                    streeDeerghaCount = 0,
-                    mahendra = false,
-                    mahendraDetails = "Unable to analyze"
-                ),
-                specialConsiderations = emptyList(),
-                remedies = emptyList(),
-                summary = "Error analyzing compatibility",
-                detailedAnalysis = "Error: ${e.message ?: "Unknown error occurred"}"
-            )
-        }
-    }
-}

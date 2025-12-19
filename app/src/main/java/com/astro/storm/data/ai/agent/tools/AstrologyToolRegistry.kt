@@ -38,7 +38,9 @@ class AstrologyToolRegistry private constructor(
         registerTool(GetBhriguBinduTool())
         registerTool(GetArgalaTool())
         registerTool(GetPrashnaAnalysisTool())
-        registerTool(GetCompatibilityDeepDiveTool())
+        registerTool(GetNityaYogaTool())
+        registerTool(GetPanchMahapurushaTool())
+        registerTool(GetAvasthasTool())
     }
 
     /**
