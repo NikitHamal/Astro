@@ -459,6 +459,20 @@ private fun InterpretationCard(interpretation: String) {
 
 @Composable
 private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFormation) {
+    val formationDescription = buildString {
+        append("Moon lacks planetary support in adjacent houses.")
+        if (formation.hasSecondHouseEmpty) append(" 2nd house from Moon is empty.")
+        if (formation.hasTwelfthHouseEmpty) append(" 12th house from Moon is empty.")
+        if (formation.isMoonUnaspected) append(" Moon has no planetary conjunction.")
+    }
+
+    val reasons = buildList {
+        if (formation.hasSecondHouseEmpty) add("No planets in 2nd house from Moon")
+        if (formation.hasTwelfthHouseEmpty) add("No planets in 12th house from Moon")
+        if (formation.isMoonUnaspected) add("Moon is not conjunct with any planet")
+        if (formation.formationStrength > 70) add("Formation strength: ${formation.formationStrength}%")
+    }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.WarningColor.copy(alpha = 0.08f)),
@@ -473,15 +487,15 @@ private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFor
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = formation.description,
+                text = formationDescription,
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
 
-            if (formation.reasons.isNotEmpty()) {
+            if (reasons.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
-                formation.reasons.forEach { reason ->
+                reasons.forEach { reason ->
                     Row(
                         modifier = Modifier.padding(vertical = 4.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -585,7 +599,8 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                         trackColor = AppTheme.DividerColor
                     )
                     Text(
-                        text = moonAnalysis.brightness.displayName,
+                        text = moonAnalysis.brightness.name.replace("_", " ").lowercase()
+                            .replaceFirstChar { it.uppercase() },
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = getMoonBrightnessColor(moonAnalysis.brightness)
@@ -1355,13 +1370,13 @@ private fun RemedyItem(remedy: KemadrumaYogaCalculator.KemadrumaRemedy) {
                 )
                 Surface(
                     shape = RoundedCornerShape(4.dp),
-                    color = getPriorityColor(remedy.priority).copy(alpha = 0.15f)
+                    color = getPriorityColorFromInt(remedy.priority).copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = getPriorityLabel(remedy.priority),
+                        text = getPriorityLabelFromInt(remedy.priority),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
-                        color = getPriorityColor(remedy.priority),
+                        color = getPriorityColorFromInt(remedy.priority),
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                 }
@@ -1537,5 +1552,47 @@ private fun getEffectivenessColor(effectiveness: String): Color {
         "MODERATE", "MEDIUM" -> AppTheme.AccentTeal
         "LOW" -> AppTheme.AccentGold
         else -> AppTheme.TextMuted
+    }
+}
+
+@Composable
+private fun getIntensityColorFromInt(intensity: Int): Color {
+    return when (intensity) {
+        5 -> AppTheme.ErrorColor
+        4 -> Color(0xFFFF9800)
+        3 -> AppTheme.WarningColor
+        2 -> AppTheme.AccentGold
+        1 -> AppTheme.AccentTeal
+        else -> AppTheme.TextMuted
+    }
+}
+
+private fun getIntensityLabel(intensity: Int): String {
+    return when (intensity) {
+        5 -> "Very High"
+        4 -> "High"
+        3 -> "Moderate"
+        2 -> "Low"
+        1 -> "Mild"
+        else -> "Unknown"
+    }
+}
+
+@Composable
+private fun getPriorityColorFromInt(priority: Int): Color {
+    return when (priority) {
+        1 -> Color(0xFFF44336)
+        2 -> Color(0xFFFF9800)
+        3 -> Color(0xFF4CAF50)
+        else -> Color(0xFF9E9E9E)
+    }
+}
+
+private fun getPriorityLabelFromInt(priority: Int): String {
+    return when (priority) {
+        1 -> "Essential"
+        2 -> "Recommended"
+        3 -> "Optional"
+        else -> "Optional"
     }
 }
