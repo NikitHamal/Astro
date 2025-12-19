@@ -424,6 +424,38 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     HOURS_SHORT("h", "घ"),
     MINUTES_SHORT("m", "मि"),
 
+    // ============================================
+    // DASHA SYSTEMS SCREEN
+    // ============================================
+    DASHA_SYSTEM_VIMSOTTARI("Vimsottari", "विमशोत्तरी"),
+    DASHA_SYSTEM_YOGINI("Yogini", "योगिनी"),
+    DASHA_SYSTEM_ASHTOTTARI("Ashtottari", "अष्टोत्तरी"),
+    DASHA_SYSTEM_SUDARSHANA("Sudarshana", "सुदर्शन"),
+    DASHA_SYSTEM_CHARA("Chara", "चर"),
+    DASHA_SYSTEM_VIMSOTTARI_SHORT("Vim", "विम"),
+    DASHA_SYSTEM_YOGINI_SHORT("Yog", "योग"),
+    DASHA_SYSTEM_ASHTOTTARI_SHORT("Ash", "अष्ट"),
+    DASHA_SYSTEM_SUDARSHANA_SHORT("Sud", "सुद"),
+    DASHA_SYSTEM_CHARA_SHORT("Cha", "चर"),
+    DASHA_CYCLE_VIMSOTTARI("120 years", "१२० वर्ष"),
+    DASHA_CYCLE_YOGINI("36 years", "३६ वर्ष"),
+    DASHA_CYCLE_ASHTOTTARI("108 years", "१०८ वर्ष"),
+    DASHA_CYCLE_SUDARSHANA("Triple view", "त्रिगुण दृश्य"),
+    DASHA_CYCLE_CHARA("Variable", "चर"),
+    DASHA_DESC_VIMSOTTARI("Most widely used Nakshatra-based planetary period system", "सबैभन्दा व्यापक रूपमा प्रयोग हुने नक्षत्र-आधारित ग्रह अवधि प्रणाली"),
+    DASHA_DESC_YOGINI("Feminine energy-based system, especially for female charts", "स्त्री ऊर्जा-आधारित प्रणाली, विशेष गरी महिला कुण्डलीको लागि"),
+    DASHA_DESC_ASHTOTTARI("Traditional for night births, uses 8 planets", "रातको जन्मको लागि परम्परागत, ८ ग्रह प्रयोग गर्दछ"),
+    DASHA_DESC_SUDARSHANA("Chakra Dasha from Lagna, Moon, and Sun simultaneously", "लग्न, चन्द्र, र सूर्यबाट एकैसाथ चक्र दशा"),
+    DASHA_DESC_CHARA("Jaimini sign-based system with Karakamsha analysis", "जैमिनी राशि-आधारित प्रणाली कारकमांश विश्लेषण सहित"),
+    DASHA_INFO("Dasha information", "दशा जानकारी"),
+    DASHA_CALCULATING_VIMSOTTARI("Calculating Vimsottari Dasha timeline...", "विमशोत्तरी दशा समयरेखा गणना गर्दै..."),
+    DASHA_ASHTOTTARI_UNAVAILABLE("Ashtottari Dasha calculation not available for this chart.", "यस कुण्डलीको लागि अष्टोत्तरी दशा गणना उपलब्ध छैन।"),
+    DASHA_SUDARSHANA_UNAVAILABLE("Sudarshana Chakra calculation not available for this chart.", "यस कुण्डलीको लागि सुदर्शन चक्र गणना उपलब्ध छैन।"),
+    DASHA_VIEW_SYSTEM("View %s", "%s हेर्नुहोस्"),
+    DASHA_DIALOG_CYCLE_DURATION("Cycle Duration: %s", "चक्र अवधि: %s"),
+    YOGINI_PROMPT_DESC("The Yogini Dasha system uses 8 yoginis based on the Moon's nakshatra, with a 36-year total cycle. It's particularly recommended for analyzing feminine energies and spiritual development.", "योगिनी दशा प्रणालीले चन्द्रमाको नक्षत्रमा आधारित ८ योगिनीहरू प्रयोग गर्दछ, जम्मा ३६ वर्षको चक्र हुन्छ। यो विशेष गरी स्त्री ऊर्जा र आध्यात्मिक विकासको विश्लेषणको लागि सिफारिस गरिन्छ।"),
+    CHARA_PROMPT_DESC("Jaimini's Chara Dasha is a sign-based timing system that uses rashi (sign) dashas rather than planetary periods. It includes Karakamsha analysis for deeper insights.", "जैमिनीको चर दशा एक राशि-आधारित समय प्रणाली हो जसले ग्रह अवधिहरूको सट्टा राशि (संकेत) दशाहरू प्रयोग गर्दछ। यसमा गहिरो अन्तरदृष्टिको लागि कारकमांश विश्लेषण समावेश छ।"),
+
     // Yogini Dasha Names
     YOGINI_MANGALA("Mangala", "मङ्गला"),
     YOGINI_PINGALA("Pingala", "पिङ्गला"),
@@ -930,6 +962,7 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     YOGA_STRENGTH_LABEL("Yoga Strength", "योग बल"),
     YOGA_ACTIVATION_LABEL("Activation:", "सक्रियता:"),
     YOGA_NO_YOGAS_FOUND("No Yogas Found", "कुनै योग फेला परेन"),
+    YOGAS_FOUND_IN_CHART("%d yogas found - %s", "%s मा %d योगहरू फेला परे"),
 
     // ============================================
     // PROFILE SWITCHER

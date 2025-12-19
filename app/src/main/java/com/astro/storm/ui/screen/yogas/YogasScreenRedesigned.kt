@@ -1,16 +1,13 @@
 package com.astro.storm.ui.screen.yogas
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -46,8 +43,6 @@ import androidx.compose.material.icons.outlined.TipsAndUpdates
 import androidx.compose.material.icons.outlined.WorkspacePremium
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -59,9 +54,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -88,27 +81,15 @@ import com.astro.storm.ephemeris.YogaCalculator
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.theme.AppTheme
 
-/**
- * Redesigned Yogas Screen
- *
- * A modern, clean, and professional UI for displaying Vedic yogas with:
- * - Summary statistics card
- * - Category filter chips
- * - Expandable yoga cards with full details
- * - Visual strength indicators
- * - Smooth animations throughout
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun YogasScreenRedesigned(
     chart: VedicChart?,
     onBack: () -> Unit
 ) {
-    val language = LocalLanguage.current
     var selectedCategory by rememberSaveable { mutableStateOf<YogaCalculator.YogaCategory?>(null) }
     var expandedYogaKeys by rememberSaveable { mutableStateOf(setOf<String>()) }
 
-    // Calculate yogas
     val yogaAnalysis = remember(chart) {
         chart?.let {
             try {
@@ -156,12 +137,10 @@ fun YogasScreenRedesigned(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Summary Card
                 item(key = "summary") {
                     YogasSummaryCard(analysis = yogaAnalysis)
                 }
 
-                // Category Filter
                 item(key = "category_filter") {
                     YogaCategoryFilter(
                         selectedCategory = selectedCategory,
@@ -170,7 +149,6 @@ fun YogasScreenRedesigned(
                     )
                 }
 
-                // Category header when filtered
                 if (selectedCategory != null) {
                     item(key = "category_header") {
                         CategoryHeader(
@@ -180,7 +158,6 @@ fun YogasScreenRedesigned(
                     }
                 }
 
-                // Yoga cards
                 itemsIndexed(
                     items = filteredYogas,
                     key = { index, yoga -> "yoga_${index}_${yoga.name}_${yoga.category}" }
@@ -201,8 +178,6 @@ fun YogasScreenRedesigned(
                         }
                     )
                 }
-
-                // Bottom spacer
                 item { Spacer(modifier = Modifier.height(32.dp)) }
             }
         }
@@ -232,7 +207,7 @@ private fun YogasTopBar(
                     if (chartName.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "$totalYogas yogas found - $chartName",
+                            text = stringResource(StringKey.YOGAS_FOUND_IN_CHART, totalYogas, chartName),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -274,7 +249,6 @@ private fun YogasSummaryCard(
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            // Header
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -317,8 +291,6 @@ private fun YogasSummaryCard(
                     )
                 }
             }
-
-            // Stats Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -345,7 +317,6 @@ private fun YogasSummaryCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Overall strength bar
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
@@ -385,7 +356,6 @@ private fun YogasSummaryCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Dominant category
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -446,7 +416,6 @@ private fun YogaStatItem(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun YogaCategoryFilter(
     selectedCategory: YogaCalculator.YogaCategory?,
@@ -467,7 +436,6 @@ private fun YogaCategoryFilter(
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // All filter
             item {
                 val isSelected = selectedCategory == null
                 val chipColor by animateColorAsState(
@@ -485,7 +453,7 @@ private fun YogaCategoryFilter(
                     border = if (isSelected) null else androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor)
                 ) {
                     Text(
-                        text = "All (${categoryStats.values.sum()})",
+                        text = "${stringResource(StringKey.YOGA_ALL)} (${categoryStats.values.sum()})",
                         fontSize = 13.sp,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                         color = if (isSelected) AppTheme.AccentPrimary else AppTheme.TextSecondary,
@@ -493,8 +461,6 @@ private fun YogaCategoryFilter(
                     )
                 }
             }
-
-            // Category filters
             items(YogaCalculator.YogaCategory.entries.filter { categoryStats.containsKey(it) }) { category ->
                 val isSelected = selectedCategory == category
                 val categoryColor = getCategoryColor(category)
@@ -593,7 +559,6 @@ private fun YogaCard(
         Column(
             modifier = Modifier
                 .padding(16.dp)
-                .animateContentSize(animationSpec = tween(250))
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -604,7 +569,6 @@ private fun YogaCard(
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier.weight(1f)
                 ) {
-                    // Yoga icon with auspicious indicator
                     Box(
                         modifier = Modifier
                             .size(44.dp)
@@ -640,7 +604,7 @@ private fun YogaCard(
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Icon(
                                     imageVector = Icons.Outlined.Star,
-                                    contentDescription = "Auspicious",
+                                    contentDescription = stringResource(StringKey.YOGA_AUSPICIOUS),
                                     tint = AppTheme.SuccessColor,
                                     modifier = Modifier.size(14.dp)
                                 )
@@ -685,7 +649,7 @@ private fun YogaCard(
 
                 Icon(
                     Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (isExpanded) stringResource(StringKey.MISC_COLLAPSE) else stringResource(StringKey.MISC_EXPAND),
                     tint = AppTheme.TextMuted,
                     modifier = Modifier
                         .size(24.dp)
@@ -700,8 +664,6 @@ private fun YogaCard(
             ) {
                 Column(modifier = Modifier.padding(top = 14.dp)) {
                     HorizontalDivider(color = AppTheme.DividerColor, modifier = Modifier.padding(bottom = 14.dp))
-
-                    // Planets involved
                     if (yoga.planets.isNotEmpty()) {
                         Text(
                             text = stringResource(StringKey.YOGA_PLANETS_INVOLVED),
@@ -751,7 +713,6 @@ private fun YogaCard(
                         Spacer(modifier = Modifier.height(14.dp))
                     }
 
-                    // Houses
                     if (yoga.houses.isNotEmpty()) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -771,7 +732,6 @@ private fun YogaCard(
                         }
                     }
 
-                    // Strength indicator
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(10.dp),
@@ -811,7 +771,6 @@ private fun YogaCard(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Effects
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(10.dp),
@@ -843,7 +802,6 @@ private fun YogaCard(
                         }
                     }
 
-                    // Activation period
                     if (yoga.activationPeriod.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(10.dp))
                         Row(
@@ -862,7 +820,6 @@ private fun YogaCard(
                         }
                     }
 
-                    // Cancellation factors
                     if (yoga.cancellationFactors.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(

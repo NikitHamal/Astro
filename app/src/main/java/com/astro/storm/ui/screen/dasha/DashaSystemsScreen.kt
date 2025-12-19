@@ -46,6 +46,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyInterface
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import java.time.LocalDateTime
@@ -62,52 +63,41 @@ import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.DashaUiState
 import com.astro.storm.ui.viewmodel.DashaViewModel
 
-/**
- * Unified Dasha Systems Screen
- *
- * Displays all major dasha systems in a tabbed interface:
- * - Vimsottari (120-year cycle) - Most common system
- * - Yogini (36-year cycle) - Alternative system
- * - Ashtottari (108-year cycle) - For night births
- * - Sudarshana Chakra (Triple reference)
- * - Chara (Jaimini sign-based)
- */
-
 enum class DashaSystemType(
-    val displayName: String,
-    val shortName: String,
-    val cycleDuration: String,
-    val description: String
+    val displayNameKey: StringKeyInterface,
+    val shortNameKey: StringKeyInterface,
+    val cycleDurationKey: StringKeyInterface,
+    val descriptionKey: StringKeyInterface
 ) {
     VIMSOTTARI(
-        displayName = "Vimsottari",
-        shortName = "Vim",
-        cycleDuration = "120 years",
-        description = "Most widely used Nakshatra-based planetary period system"
+        displayNameKey = StringKey.DASHA_SYSTEM_VIMSOTTARI,
+        shortNameKey = StringKey.DASHA_SYSTEM_VIMSOTTARI_SHORT,
+        cycleDurationKey = StringKey.DASHA_CYCLE_VIMSOTTARI,
+        descriptionKey = StringKey.DASHA_DESC_VIMSOTTARI
     ),
     YOGINI(
-        displayName = "Yogini",
-        shortName = "Yog",
-        cycleDuration = "36 years",
-        description = "Feminine energy-based system, especially for female charts"
+        displayNameKey = StringKey.DASHA_SYSTEM_YOGINI,
+        shortNameKey = StringKey.DASHA_SYSTEM_YOGINI_SHORT,
+        cycleDurationKey = StringKey.DASHA_CYCLE_YOGINI,
+        descriptionKey = StringKey.DASHA_DESC_YOGINI
     ),
     ASHTOTTARI(
-        displayName = "Ashtottari",
-        shortName = "Ash",
-        cycleDuration = "108 years",
-        description = "Traditional for night births, uses 8 planets"
+        displayNameKey = StringKey.DASHA_SYSTEM_ASHTOTTARI,
+        shortNameKey = StringKey.DASHA_SYSTEM_ASHTOTTARI_SHORT,
+        cycleDurationKey = StringKey.DASHA_CYCLE_ASHTOTTARI,
+        descriptionKey = StringKey.DASHA_DESC_ASHTOTTARI
     ),
     SUDARSHANA(
-        displayName = "Sudarshana",
-        shortName = "Sud",
-        cycleDuration = "Triple view",
-        description = "Chakra Dasha from Lagna, Moon, and Sun simultaneously"
+        displayNameKey = StringKey.DASHA_SYSTEM_SUDARSHANA,
+        shortNameKey = StringKey.DASHA_SYSTEM_SUDARSHANA_SHORT,
+        cycleDurationKey = StringKey.DASHA_CYCLE_SUDARSHANA,
+        descriptionKey = StringKey.DASHA_DESC_SUDARSHANA
     ),
     CHARA(
-        displayName = "Chara",
-        shortName = "Cha",
-        cycleDuration = "Variable",
-        description = "Jaimini sign-based system with Karakamsha analysis"
+        displayNameKey = StringKey.DASHA_SYSTEM_CHARA,
+        shortNameKey = StringKey.DASHA_SYSTEM_CHARA_SHORT,
+        cycleDurationKey = StringKey.DASHA_CYCLE_CHARA,
+        descriptionKey = StringKey.DASHA_DESC_CHARA
     )
 }
 
@@ -120,7 +110,6 @@ fun DashaSystemsScreen(
     onNavigateToCharaDasha: () -> Unit,
     viewModel: DashaViewModel = viewModel()
 ) {
-    val context = LocalContext.current
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
@@ -130,14 +119,12 @@ fun DashaSystemsScreen(
         }
     }
 
-    // Load Vimsottari dasha
     LaunchedEffect(chartKey) {
         viewModel.loadDashaTimeline(chart)
     }
 
     val vimsottariState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // Calculate other dasha systems
     val ashtottariData = remember(chart) {
         chart?.let {
             try {
@@ -181,7 +168,6 @@ fun DashaSystemsScreen(
         }
     }
 
-    // Read colors outside remember
     val accentPrimary = AppTheme.AccentPrimary
     val lifeAreaLove = AppTheme.LifeAreaLove
     val accentGold = AppTheme.AccentGold
@@ -191,7 +177,7 @@ fun DashaSystemsScreen(
     val tabs = remember(accentPrimary, lifeAreaLove, accentGold, accentTeal, lifeAreaSpiritual) {
         DashaSystemType.entries.map { system ->
             TabItem(
-                title = system.displayName,
+                title = stringResource(system.displayNameKey),
                 accentColor = when (system) {
                     DashaSystemType.VIMSOTTARI -> accentPrimary
                     DashaSystemType.YOGINI -> lifeAreaLove
@@ -215,7 +201,7 @@ fun DashaSystemsScreen(
         topBar = {
             DashaSystemsTopBar(
                 chartName = chart?.birthData?.name ?: "",
-                systemName = DashaSystemType.entries[selectedTabIndex].displayName,
+                systemName = stringResource(DashaSystemType.entries[selectedTabIndex].displayNameKey),
                 onBack = onBack,
                 onInfoClick = { showInfoDialog = true },
                 onJumpToToday = {
@@ -233,7 +219,6 @@ fun DashaSystemsScreen(
                 .padding(paddingValues)
                 .background(AppTheme.ScreenBackground)
         ) {
-            // Tab row
             ModernPillTabRow(
                 tabs = tabs,
                 selectedIndex = selectedTabIndex,
@@ -241,7 +226,6 @@ fun DashaSystemsScreen(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
             )
 
-            // Content
             AnimatedContent(
                 targetState = selectedTabIndex,
                 transitionSpec = {
@@ -259,8 +243,8 @@ fun DashaSystemsScreen(
                     }
                     DashaSystemType.YOGINI -> {
                         NavigationPromptContent(
-                            systemName = "Yogini Dasha",
-                            description = "The Yogini Dasha system uses 8 yoginis based on the Moon's nakshatra, with a 36-year total cycle. It's particularly recommended for analyzing feminine energies and spiritual development.",
+                            systemNameKey = StringKey.DASHA_SYSTEM_YOGINI,
+                            descriptionKey = StringKey.YOGINI_PROMPT_DESC,
                             onNavigate = onNavigateToYoginiDasha
                         )
                     }
@@ -272,8 +256,8 @@ fun DashaSystemsScreen(
                     }
                     DashaSystemType.CHARA -> {
                         NavigationPromptContent(
-                            systemName = "Chara Dasha",
-                            description = "Jaimini's Chara Dasha is a sign-based timing system that uses rashi (sign) dashas rather than planetary periods. It includes Karakamsha analysis for deeper insights.",
+                            systemNameKey = StringKey.DASHA_SYSTEM_CHARA,
+                            descriptionKey = StringKey.CHARA_PROMPT_DESC,
                             onNavigate = onNavigateToCharaDasha
                         )
                     }
@@ -330,7 +314,7 @@ private fun DashaSystemsTopBar(
                     IconButton(onClick = onJumpToToday) {
                         Icon(
                             imageVector = Icons.Outlined.CalendarToday,
-                            contentDescription = "Jump to today",
+                            contentDescription = stringResource(StringKey.DASHA_JUMP_TO_TODAY),
                             tint = AppTheme.AccentPrimary
                         )
                     }
@@ -338,7 +322,7 @@ private fun DashaSystemsTopBar(
                 IconButton(onClick = onInfoClick) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
-                        contentDescription = "Dasha information",
+                        contentDescription = stringResource(StringKey.DASHA_INFO),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -358,7 +342,7 @@ private fun VimsottariDashaContent(
 ) {
     when (uiState) {
         is DashaUiState.Loading -> {
-            LoadingContent(message = "Calculating Vimsottari Dasha timeline...")
+            LoadingContent(message = stringResource(StringKey.DASHA_CALCULATING_VIMSOTTARI))
         }
         is DashaUiState.Success -> {
             DashasTabContent(
@@ -373,7 +357,7 @@ private fun VimsottariDashaContent(
             )
         }
         is DashaUiState.Idle -> {
-            EmptyContent(message = "No chart selected. Please select a birth chart to view dasha periods.")
+            EmptyContent(message = stringResource(StringKey.DASHA_NO_CHART_MESSAGE))
         }
     }
 }
@@ -383,7 +367,7 @@ private fun AshtottariDashaContent(
     data: AshtottariTimeline?
 ) {
     if (data == null) {
-        EmptyContent(message = "Ashtottari Dasha calculation not available for this chart.")
+        EmptyContent(message = stringResource(StringKey.DASHA_ASHTOTTARI_UNAVAILABLE))
         return
     }
 
@@ -395,7 +379,7 @@ private fun SudarshanaChakraContent(
     data: SudarshanaTimeline?
 ) {
     if (data == null) {
-        EmptyContent(message = "Sudarshana Chakra calculation not available for this chart.")
+        EmptyContent(message = stringResource(StringKey.DASHA_SUDARSHANA_UNAVAILABLE))
         return
     }
 
@@ -404,8 +388,8 @@ private fun SudarshanaChakraContent(
 
 @Composable
 private fun NavigationPromptContent(
-    systemName: String,
-    description: String,
+    systemNameKey: StringKeyInterface,
+    descriptionKey: StringKeyInterface,
     onNavigate: () -> Unit
 ) {
     Box(
@@ -425,14 +409,14 @@ private fun NavigationPromptContent(
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = systemName,
+                text = stringResource(systemNameKey),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = description,
+                text = stringResource(descriptionKey),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -444,7 +428,7 @@ private fun NavigationPromptContent(
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = "View $systemName",
+                    text = stringResource(StringKey.DASHA_VIEW_SYSTEM, stringResource(systemNameKey)),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.ButtonText,
@@ -486,7 +470,7 @@ private fun ErrorContent(message: String, onRetry: () -> Unit) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = "Calculation Error",
+                text = stringResource(StringKey.DASHA_ERROR),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.ErrorColor
@@ -504,7 +488,7 @@ private fun ErrorContent(message: String, onRetry: () -> Unit) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = "Try Again",
+                    text = stringResource(StringKey.BTN_TRY_AGAIN),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.ButtonText,
@@ -540,7 +524,7 @@ private fun DashaSystemInfoDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = system.displayName,
+                text = stringResource(system.displayNameKey),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -549,13 +533,13 @@ private fun DashaSystemInfoDialog(
         text = {
             Column {
                 Text(
-                    text = system.description,
+                    text = stringResource(system.descriptionKey),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Cycle Duration: ${system.cycleDuration}",
+                    text = stringResource(StringKey.DASHA_DIALOG_CYCLE_DURATION, stringResource(system.cycleDurationKey)),
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.AccentGold
@@ -565,7 +549,7 @@ private fun DashaSystemInfoDialog(
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
                 Text(
-                    text = "Got it",
+                    text = stringResource(StringKey.YOGA_GOT_IT),
                     color = AppTheme.AccentPrimary
                 )
             }
