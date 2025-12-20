@@ -53,13 +53,13 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.MarkdownText
+import com.astro.storm.ui.components.agentic.AgenticMessageCard
+import com.astro.storm.ui.components.agentic.CompletedAiMessageCard
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.AiStatus
 import com.astro.storm.ui.viewmodel.ChatUiState
 import com.astro.storm.ui.viewmodel.ChatViewModel
 import com.astro.storm.ui.viewmodel.StreamingMessageState
-import com.astro.storm.ui.viewmodel.ToolExecutionStep
-import com.astro.storm.ui.viewmodel.ToolStepStatus
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -618,9 +618,10 @@ fun ChatScreen(
                 }
 
                 // Streaming message with agentic UI - shows tool calls, thinking, and content
+                // Uses enhanced AgenticMessageCard with IDE-style layout
                 if (isStreaming || streamingMessageState != null) {
                     item(key = "streaming_message") {
-                        AgenticStreamingMessage(
+                        AgenticMessageCard(
                             streamingState = streamingMessageState,
                             streamingContent = streamingContent,
                             streamingReasoning = streamingReasoning,
@@ -937,166 +938,64 @@ private fun SuggestionChip(
     )
 }
 
+/**
+ * Message display component - Uses different layouts for user vs AI messages
+ *
+ * User messages: Traditional bubble style (right-aligned, colored background)
+ * AI messages: Modern IDE-style layout (full width, no bubble, professional look)
+ *
+ * This approach inspired by agentic coding IDEs like Cursor, Windsurf, and Google Antigravity
+ * but adapted for Vedic astrology assistant context.
+ */
 @Composable
 private fun MessageBubble(
     message: ChatMessageModel,
     onRegenerate: (() -> Unit)?
 ) {
-    val colors = AppTheme.current
     val isUser = message.role == MessageRole.USER
-    var showReasoning by remember { mutableStateOf(false) }
 
-    // Clean message content from tool call artifacts
-    val cleanedContent = remember(message.content) {
-        if (isUser) message.content else ContentCleaner.cleanForDisplay(message.content)
+    if (isUser) {
+        // User messages keep the bubble style
+        UserMessageBubble(message = message)
+    } else {
+        // AI messages use the new bubble-free professional layout
+        CompletedAiMessageCard(
+            content = message.content,
+            reasoning = message.reasoningContent,
+            toolsUsed = message.toolsUsed,
+            errorMessage = message.errorMessage,
+            onRegenerate = onRegenerate
+        )
     }
-    val cleanedReasoning = remember(message.reasoningContent) {
-        message.reasoningContent?.let { ContentCleaner.cleanReasoning(it) }
-    }
+}
+
+/**
+ * User message bubble - Maintains the traditional bubble style for user messages
+ */
+@Composable
+private fun UserMessageBubble(message: ChatMessageModel) {
+    val colors = AppTheme.current
 
     Column(
         modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = if (isUser) Alignment.End else Alignment.Start
+        horizontalAlignment = Alignment.End
     ) {
         Surface(
-            color = if (isUser) colors.AccentPrimary else colors.CardBackground,
+            color = colors.AccentPrimary,
             shape = RoundedCornerShape(
                 topStart = 16.dp,
                 topEnd = 16.dp,
-                bottomStart = if (isUser) 16.dp else 4.dp,
-                bottomEnd = if (isUser) 4.dp else 16.dp
+                bottomStart = 16.dp,
+                bottomEnd = 4.dp
             ),
             modifier = Modifier.widthIn(max = 320.dp)
         ) {
-            Column(modifier = Modifier.padding(12.dp)) {
-                // Reasoning toggle at TOP for assistant messages
-                if (!isUser && !cleanedReasoning.isNullOrBlank()) {
-                    Surface(
-                        onClick = { showReasoning = !showReasoning },
-                        color = colors.ChipBackground.copy(alpha = 0.5f),
-                        shape = RoundedCornerShape(6.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Psychology,
-                                contentDescription = null,
-                                tint = colors.AccentPrimary,
-                                modifier = Modifier.size(14.dp)
-                            )
-                            Text(
-                                text = if (showReasoning) "Hide reasoning" else "Show reasoning",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = colors.TextMuted
-                            )
-                            Icon(
-                                imageVector = if (showReasoning) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                contentDescription = null,
-                                tint = colors.TextMuted,
-                                modifier = Modifier.size(16.dp)
-                            )
-                        }
-                    }
-
-                    AnimatedVisibility(visible = showReasoning) {
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                            color = colors.ChipBackground,
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text(
-                                text = cleanedReasoning ?: "",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = colors.TextMuted,
-                                modifier = Modifier.padding(8.dp)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-
-                // Error state
-                if (message.errorMessage != null) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Outlined.ErrorOutline,
-                            contentDescription = null,
-                            tint = colors.ErrorColor,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = message.errorMessage,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = colors.ErrorColor
-                        )
-                    }
-                } else if (cleanedContent.isNotEmpty()) {
-                    // Use Markdown rendering for assistant messages, plain text for user
-                    if (isUser) {
-                        Text(
-                            text = cleanedContent,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = colors.ScreenBackground
-                        )
-                    } else {
-                        MarkdownText(
-                            markdown = cleanedContent,
-                            modifier = Modifier.fillMaxWidth(),
-                            textColor = colors.TextPrimary,
-                            linkColor = colors.AccentPrimary,
-                            textSize = 14f,
-                            cleanContent = false // Already cleaned above
-                        )
-                    }
-                }
-
-                // Tools used
-                if (!isUser && message.toolsUsed?.isNotEmpty() == true) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Build,
-                            contentDescription = null,
-                            tint = colors.TextSubtle,
-                            modifier = Modifier.size(12.dp)
-                        )
-                        Text(
-                            text = message.toolsUsed.joinToString(", "),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = colors.TextSubtle
-                        )
-                    }
-                }
-            }
-        }
-
-        // Regenerate button for last assistant message
-        if (onRegenerate != null && !isUser) {
-            TextButton(
-                onClick = onRegenerate,
-                modifier = Modifier.padding(start = 8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Refresh,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "Regenerate",
-                    style = MaterialTheme.typography.labelSmall
-                )
-            }
+            Text(
+                text = message.content,
+                style = MaterialTheme.typography.bodyMedium,
+                color = colors.ScreenBackground,
+                modifier = Modifier.padding(12.dp)
+            )
         }
     }
 }
@@ -1238,360 +1137,8 @@ private fun StreamingMessageBubble(
     }
 }
 
-/**
- * Agentic Streaming Message - Shows tool executions, reasoning, and content
- * in a structured, incremental way similar to modern AI coding agents.
- *
- * This prevents the duplicate message issue by showing streaming content
- * separately from database messages and displaying tool calls as collapsible sections.
- */
-@Composable
-private fun AgenticStreamingMessage(
-    streamingState: StreamingMessageState?,
-    streamingContent: String,
-    streamingReasoning: String,
-    aiStatus: AiStatus
-) {
-    val colors = AppTheme.current
-    var showReasoning by remember { mutableStateOf(false) }
-    var showToolSteps by remember { mutableStateOf(true) }
-
-    // Use streamingState if available, otherwise fall back to individual streams
-    val content = streamingState?.content?.ifEmpty { streamingContent } ?: streamingContent
-    val reasoning = streamingState?.reasoning?.ifEmpty { streamingReasoning } ?: streamingReasoning
-    val toolSteps = streamingState?.toolSteps ?: emptyList()
-
-    // Clean content from tool call artifacts
-    val cleanedContent = remember(content) {
-        if (content.isNotEmpty()) ContentCleaner.cleanForDisplay(content) else ""
-    }
-    val cleanedReasoning = remember(reasoning) {
-        if (reasoning.isNotBlank()) ContentCleaner.cleanReasoning(reasoning) else ""
-    }
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        // Tool Execution Steps - collapsible section showing what tools were called
-        if (toolSteps.isNotEmpty()) {
-            ToolExecutionSection(
-                toolSteps = toolSteps,
-                isExpanded = showToolSteps,
-                onToggle = { showToolSteps = !showToolSteps }
-            )
-        }
-
-        // Main message content bubble
-        Surface(
-            color = colors.CardBackground,
-            shape = RoundedCornerShape(
-                topStart = 16.dp,
-                topEnd = 16.dp,
-                bottomStart = 4.dp,
-                bottomEnd = 16.dp
-            ),
-            modifier = Modifier.widthIn(max = 340.dp)
-        ) {
-            Column(modifier = Modifier.padding(12.dp)) {
-                // Reasoning toggle at TOP (if we have reasoning)
-                if (cleanedReasoning.isNotBlank()) {
-                    Surface(
-                        onClick = { showReasoning = !showReasoning },
-                        color = colors.AccentPrimary.copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(6.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Psychology,
-                                contentDescription = null,
-                                tint = colors.AccentPrimary,
-                                modifier = Modifier.size(16.dp)
-                            )
-                            Text(
-                                text = if (showReasoning) "Hide thinking" else "Show thinking",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Medium,
-                                color = colors.AccentPrimary
-                            )
-                            Icon(
-                                imageVector = if (showReasoning) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                contentDescription = null,
-                                tint = colors.AccentPrimary,
-                                modifier = Modifier.size(16.dp)
-                            )
-                        }
-                    }
-
-                    AnimatedVisibility(
-                        visible = showReasoning,
-                        enter = expandVertically() + fadeIn(),
-                        exit = shrinkVertically() + fadeOut()
-                    ) {
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                            color = colors.ChipBackground,
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text(
-                                text = cleanedReasoning,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = colors.TextMuted,
-                                modifier = Modifier.padding(10.dp)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-
-                // Message content with Markdown rendering
-                if (cleanedContent.isNotEmpty()) {
-                    MarkdownText(
-                        markdown = cleanedContent,
-                        modifier = Modifier.fillMaxWidth(),
-                        textColor = colors.TextPrimary,
-                        linkColor = colors.AccentPrimary,
-                        textSize = 14f,
-                        cleanContent = false
-                    )
-                } else if (aiStatus != AiStatus.Idle && aiStatus != AiStatus.Complete) {
-                    // Show status when no content yet
-                    AgenticStatusIndicator(aiStatus = aiStatus)
-                }
-
-                // Typing indicator (show only when actively receiving content)
-                if (aiStatus == AiStatus.Typing ||
-                    (aiStatus != AiStatus.Idle && aiStatus != AiStatus.Complete && cleanedContent.isNotEmpty())) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    TypingDotsIndicator()
-                }
-            }
-        }
-    }
-}
-
-/**
- * Tool Execution Section - Shows tool calls with status indicators
- */
-@Composable
-private fun ToolExecutionSection(
-    toolSteps: List<ToolExecutionStep>,
-    isExpanded: Boolean,
-    onToggle: () -> Unit
-) {
-    val colors = AppTheme.current
-    val completedCount = toolSteps.count { it.status == ToolStepStatus.COMPLETED }
-    val totalCount = toolSteps.size
-
-    Surface(
-        onClick = onToggle,
-        color = colors.CardBackground,
-        shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.widthIn(max = 340.dp)
-    ) {
-        Column(modifier = Modifier.padding(12.dp)) {
-            // Header row
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Build,
-                        contentDescription = null,
-                        tint = colors.AccentTeal,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Text(
-                        text = "Tools ($completedCount/$totalCount)",
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.Medium,
-                        color = colors.TextPrimary
-                    )
-                }
-                Icon(
-                    imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                    contentDescription = null,
-                    tint = colors.TextMuted,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-
-            // Expandable tool list
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = expandVertically() + fadeIn(),
-                exit = shrinkVertically() + fadeOut()
-            ) {
-                Column(
-                    modifier = Modifier.padding(top = 10.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    toolSteps.forEach { step ->
-                        ToolStepItem(step = step)
-                    }
-                }
-            }
-        }
-    }
-}
-
-/**
- * Individual tool step item with status icon
- */
-@Composable
-private fun ToolStepItem(step: ToolExecutionStep) {
-    val colors = AppTheme.current
-
-    val (icon, iconColor) = when (step.status) {
-        ToolStepStatus.PENDING -> Icons.Outlined.Schedule to colors.TextMuted
-        ToolStepStatus.EXECUTING -> Icons.Outlined.Sync to colors.AccentTeal
-        ToolStepStatus.COMPLETED -> Icons.Default.CheckCircle to colors.SuccessColor
-        ToolStepStatus.FAILED -> Icons.Outlined.ErrorOutline to colors.ErrorColor
-    }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        // Status icon with animation for executing state
-        if (step.status == ToolStepStatus.EXECUTING) {
-            val infiniteTransition = rememberInfiniteTransition(label = "tool_executing")
-            val rotation by infiniteTransition.animateFloat(
-                initialValue = 0f,
-                targetValue = 360f,
-                animationSpec = infiniteRepeatable(
-                    animation = keyframes {
-                        durationMillis = 1000
-                    },
-                    repeatMode = RepeatMode.Restart
-                ),
-                label = "tool_rotation"
-            )
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = iconColor,
-                modifier = Modifier
-                    .size(16.dp)
-                    .rotate(rotation)
-            )
-        } else {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = iconColor,
-                modifier = Modifier.size(16.dp)
-            )
-        }
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = step.displayName,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.Medium,
-                color = colors.TextPrimary
-            )
-            step.result?.let { result ->
-                Text(
-                    text = result,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = colors.TextMuted,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-    }
-}
-
-/**
- * Compact status indicator for inside the message bubble
- */
-@Composable
-private fun AgenticStatusIndicator(aiStatus: AiStatus) {
-    val colors = AppTheme.current
-
-    val (statusText, statusIcon) = when (aiStatus) {
-        is AiStatus.Idle, is AiStatus.Complete -> return
-        is AiStatus.Thinking -> "Thinking..." to Icons.Outlined.Psychology
-        is AiStatus.Reasoning -> "Reasoning..." to Icons.Outlined.Lightbulb
-        is AiStatus.CallingTool -> "Using ${formatToolName(aiStatus.toolName)}..." to Icons.Outlined.Build
-        is AiStatus.ExecutingTools -> "Using tools..." to Icons.Outlined.Build
-        is AiStatus.Typing -> "Typing..." to Icons.Outlined.Edit
-    }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        // Small loading spinner
-        CircularProgressIndicator(
-            modifier = Modifier.size(14.dp),
-            strokeWidth = 2.dp,
-            color = colors.AccentPrimary
-        )
-        Icon(
-            imageVector = statusIcon,
-            contentDescription = null,
-            tint = colors.TextMuted,
-            modifier = Modifier.size(14.dp)
-        )
-        Text(
-            text = statusText,
-            style = MaterialTheme.typography.bodySmall,
-            color = colors.TextMuted
-        )
-    }
-}
-
-/**
- * Animated typing dots indicator
- */
-@Composable
-private fun TypingDotsIndicator() {
-    val colors = AppTheme.current
-
-    Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-        repeat(3) { index ->
-            val infiniteTransition = rememberInfiniteTransition(label = "typing_dot_$index")
-            val alpha by infiniteTransition.animateFloat(
-                initialValue = 0.3f,
-                targetValue = 1f,
-                animationSpec = infiniteRepeatable(
-                    animation = keyframes {
-                        durationMillis = 1000
-                        0.3f at 0
-                        1f at 300
-                        0.3f at 600
-                    },
-                    repeatMode = RepeatMode.Restart,
-                    initialStartOffset = StartOffset(index * 150)
-                ),
-                label = "typing_alpha_$index"
-            )
-            Box(
-                modifier = Modifier
-                    .size(5.dp)
-                    .clip(CircleShape)
-                    .background(colors.TextMuted.copy(alpha = alpha))
-            )
-        }
-    }
-}
+// Note: AgenticStreamingMessage, ToolExecutionSection, ToolStepItem, AgenticStatusIndicator,
+// and TypingDotsIndicator have been moved to AgenticMessageComponents.kt for better modularity
 
 /**
  * Displays the current AI processing status with appropriate icons and messages.
