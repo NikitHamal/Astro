@@ -233,7 +233,7 @@ private fun YogasTopBar(
                     if (chartName.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = stringResource(StringKey.YOGA_COUNT_IN_CHART_SUFFIX, totalYogas, chartName),
+                            text = stringResource(StringKeyYoga.YOGA_COUNT_IN_CHART_SUFFIX, totalYogas, chartName),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -486,7 +486,7 @@ private fun YogaCategoryFilter(
                     border = if (isSelected) null else androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor)
                 ) {
                     Text(
-                        text = "${stringResource(StringKey.FILTER_ALL)} (${categoryStats.values.sum()})",
+                        text = "${stringResource(StringKeyYoga.FILTER_ALL)} (${categoryStats.values.sum()})",
                         fontSize = 13.sp,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                         color = if (isSelected) AppTheme.AccentPrimary else AppTheme.TextSecondary,
@@ -716,7 +716,7 @@ private fun YogaCard(
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = stringResource(StringKey.YOGA_DESCRIPTION),
+                                    text = stringResource(StringKeyYoga.YOGA_DESCRIPTION),
                                     fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = categoryColor
                                 )
                             }

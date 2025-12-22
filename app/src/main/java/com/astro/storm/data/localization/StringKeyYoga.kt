@@ -103,6 +103,7 @@ enum class StringKeyYoga(override val en: String, override val ne: String) : Str
     YOGA_DESC_VIPARITA_RAJA("Lords of Dusthanas (6,8,12) connected", "दुस्थान (६,८,१२) का स्वामीहरू सम्बन्धित"),
     YOGA_DESC_NEECHA_BHANGA_RAJA(" debilitated but with cancellation", " नीच तर रद्द सहित"),
     YOGA_DESC_MAHA_RAJA("Jupiter and Venus in Kendra from Moon", "चन्द्रमाबाट केन्द्रमा बृहस्पति र शुक्र"),
+    YOGA_DESC_DHANA_YOGA("Lords of wealth houses (2, 5, 9, 11) in conjunction or exchange", "धन भाव (२, ५, ९, ११) का स्वामीहरू युति वा विनिमयमा"),
     YOGA_DESC_LAKSHMI("Venus in own/exalted sign in Kendra/Trikona", "केन्द्र/त्रिकोणमा शुक्र स्वराशि/उच्चमा"),
     YOGA_DESC_KUBERA("Jupiter and Mercury in 2nd house", "दोस्रो भावमा बृहस्पति र बुध"),
     YOGA_DESC_CHANDRA_MANGALA("Moon and Mars in conjunction", "चन्द्र र मंगलको युति"),
@@ -155,6 +156,8 @@ enum class StringKeyYoga(override val en: String, override val ne: String) : Str
     YOGA_DESC_SANYASA(" planets conjunct in th house", " ग्रहहरू औं भावमा युति"),
     YOGA_DESC_CHAMARA("Exalted Lagna lord aspected by Jupiter", "उच्च लग्न स्वामीमा बृहस्पतिको दृष्टि"),
     YOGA_DESC_DHARMA_KARMADHIPATI("9th lord (fortune) and 10th lord (karma) connected", "नवौं स्वामी (भाग्य) र दशौं स्वामी (कर्म) सम्बन्धित"),
+    YOGA_KALA_SARPA_DIRECTION_ASC("Ascending (Rahu moving towards Lagna)", "आरोही (राहु लग्नतिर सर्दै)"),
+    YOGA_KALA_SARPA_DIRECTION_DESC("Descending (Ketu moving towards Lagna)", "अवरोही (केतु लग्नतिर सर्दै)"),
 
     // ============================================
     // YOGA EFFECTS
@@ -352,4 +355,9 @@ enum class StringKeyYoga(override val en: String, override val ne: String) : Str
     NEECHA_BHANGA_CANCELLATION_TYPE_SIGN_LORD("Neecha Bhanga via sign lord in Kendra", "राशि स्वामी केन्द्रमा भएकोले नीच भंग"),
     NEECHA_BHANGA_CANCELLATION_CLEAN("Clean Neecha Bhanga - yoga operates fully", "स्वच्छ नीच भंग - योग पूर्ण रूपमा काम गर्दछ"),
     ACTIVATION_THROUGHOUT_LIFE("Throughout life", "जीवनभर"),
+
+    // UI Labels
+    YOGA_COUNT_IN_CHART_SUFFIX("%d yogas in %s's chart", "%s को कुण्डलीमा %d योगहरू"),
+    FILTER_ALL("All", "सबै"),
+    YOGA_DESCRIPTION("Description", "विवरण"),
 }

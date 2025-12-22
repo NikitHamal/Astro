@@ -282,7 +282,7 @@ private fun TopYogasSection(topYogas: List<YogaCalculator.Yoga>, language: Langu
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = yoga.name,
+                        text = yoga.name.asString(),
                         fontSize = 13.sp,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -407,7 +407,7 @@ private fun YogaCard(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = yoga.name,
+                            text = yoga.name.asString(),
                             fontSize = 15.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = ChartDetailColors.TextPrimary
@@ -443,9 +443,9 @@ private fun YogaCard(
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
 
-                    if (yoga.sanskritName.isNotEmpty() && yoga.sanskritName != yoga.name) {
+                    if (yoga.sanskritName.asString().isNotEmpty() && yoga.sanskritName.asString() != yoga.name.asString()) {
                         Text(
-                            text = "${stringResource(StringKey.YOGA_SANSKRIT)}: ${yoga.sanskritName}",
+                            text = "${stringResource(StringKey.YOGA_SANSKRIT)}: ${yoga.sanskritName.asString()}",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium,
                             color = ChartDetailColors.AccentPurple,
@@ -454,7 +454,7 @@ private fun YogaCard(
                     }
 
                     Text(
-                        text = yoga.description,
+                        text = yoga.description.asString(),
                         fontSize = 13.sp,
                         color = ChartDetailColors.TextSecondary,
                         modifier = Modifier.padding(bottom = 12.dp)
@@ -512,7 +512,7 @@ private fun YogaCard(
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = yoga.effects,
+                                text = yoga.effects.asString(),
                                 fontSize = 13.sp,
                                 color = ChartDetailColors.TextPrimary,
                                 lineHeight = 20.sp
@@ -520,16 +520,16 @@ private fun YogaCard(
                         }
                     }
 
-                    if (yoga.activationPeriod.isNotEmpty()) {
+                    if (yoga.activationPeriod.asString().isNotEmpty()) {
                         Text(
-                            text = "${stringResource(StringKey.YOGA_ACTIVATION)}: ${yoga.activationPeriod}",
+                            text = "${stringResource(StringKey.YOGA_ACTIVATION)}: ${yoga.activationPeriod.asString()}",
                             fontSize = 11.sp,
                             color = ChartDetailColors.AccentTeal,
                             modifier = Modifier.padding(top = 8.dp)
                         )
                     }
 
-                    if (!yoga.isAuspicious && yoga.cancellationFactors.isNotEmpty()) {
+                    if (!yoga.isAuspicious && yoga.cancellationFactors.any { it.asString().isNotEmpty() }) {
                         HorizontalDivider(
                             color = ChartDetailColors.DividerColor,
                             modifier = Modifier.padding(vertical = 8.dp)
@@ -543,7 +543,7 @@ private fun YogaCard(
                         )
                         yoga.cancellationFactors.forEach { factor ->
                             Text(
-                                text = "• $factor",
+                                text = "• ${factor.asString()}",
                                 fontSize = 12.sp,
                                 color = ChartDetailColors.TextSecondary
                             )

@@ -3,8 +3,6 @@ package com.astro.storm.data.localization
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
-import androidx.compose.runtime.Composable
-
 /**
  * A sealed class representing a string that can be localized.
  * This allows ViewModels and other business logic to provide strings
@@ -41,6 +39,7 @@ fun LocalizableString.asString(): String {
 
 /**
  * Resolves a [LocalizableString] into its final, displayable string format outside of a Composable context.
+ * This is essential for use in ViewModels, data layers, or any non-UI logic.
  *
  * @param language The target language for localization.
  * @return The final, localized string.
@@ -49,6 +48,6 @@ fun LocalizableString.asPlainText(language: Language): String {
     return when (this) {
         is LocalizableString.Plain -> this.text
         is LocalizableString.Resource -> StringResources.get(this.key, language)
-        is LocalizableString.ResourceWithArgs -> StringResources.get(this.key, language).format(*this.args.toTypedArray())
+        is LocalizableString.ResourceWithArgs -> StringResources.get(this.key, language, *this.args.toTypedArray())
     }
 }

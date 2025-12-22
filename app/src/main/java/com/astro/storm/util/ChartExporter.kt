@@ -814,21 +814,22 @@ class ChartExporter(private val context: Context) {
 
                 topYogas.forEach { yoga ->
                     val planets = yoga.planets.joinToString(", ") { it.displayName }
-
+                    val yogaName = locManager.getString(yoga.name)
+                    val effectsText = yoga.effects.asPlainText(locManager.language.value)
                     // Yoga name with dot indicator
                     paint.color = COLOR_SUCCESS
                     canvas.drawCircle(PDF_MARGIN.toFloat() + 6f, yPos + 6f, 3f, paint)
 
                     paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
                     paint.color = COLOR_TEXT
-                    canvas.drawText("${yoga.name}", PDF_MARGIN.toFloat() + 16f, yPos + 10f, paint)
+                    canvas.drawText(yogaName, PDF_MARGIN.toFloat() + 16f, yPos + 10f, paint)
 
                     paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
                     paint.color = COLOR_TEXT_MUTED
-                    canvas.drawText("($planets)", PDF_MARGIN.toFloat() + 16f + paint.measureText("${yoga.name} "), yPos + 10f, paint)
+                    canvas.drawText("($planets)", PDF_MARGIN.toFloat() + 16f + paint.measureText("$yogaName "), yPos + 10f, paint)
                     yPos += 14f
 
-                    val effectText = if (yoga.effects.length > 90) yoga.effects.substring(0, 87) + "..." else yoga.effects
+                    val effectText = if (effectsText.length > 90) effectsText.substring(0, 87) + "..." else effectsText
                     canvas.drawText("${yoga.strength.displayName}: $effectText", PDF_MARGIN.toFloat() + 16f, yPos + 10f, paint)
                     yPos += 18f
 
@@ -849,17 +850,18 @@ class ChartExporter(private val context: Context) {
                 paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
 
                 yogaAnalysis.negativeYogas.take(3).forEach { yoga ->
+                    val yogaName = locManager.getString(yoga.name)
                     // Warning dot indicator
                     paint.color = COLOR_WARNING
                     canvas.drawCircle(PDF_MARGIN.toFloat() + 6f, yPos + 6f, 3f, paint)
 
                     paint.color = COLOR_TEXT
-                    canvas.drawText("${yoga.name}", PDF_MARGIN.toFloat() + 16f, yPos + 10f, paint)
+                    canvas.drawText(yogaName, PDF_MARGIN.toFloat() + 16f, yPos + 10f, paint)
                     yPos += 14f
 
-                    if (yoga.cancellationFactors.isNotEmpty()) {
+                    if (yoga.cancellationFactors.any { it.asPlainText(locManager.language.value).isNotEmpty() }) {
                         paint.color = COLOR_SUCCESS
-                        canvas.drawText("${locManager.getString(StringKeyAnalysis.EXPORT_MITIGATED_BY)} ${yoga.cancellationFactors.first()}", PDF_MARGIN.toFloat() + 16f, yPos + 10f, paint)
+                        canvas.drawText("${locManager.getString(StringKeyAnalysis.EXPORT_MITIGATED_BY)} ${yoga.cancellationFactors.first().asPlainText(locManager.language.value)}", PDF_MARGIN.toFloat() + 16f, yPos + 10f, paint)
                         yPos += 14f
                     }
                 }
@@ -2301,17 +2303,17 @@ class ChartExporter(private val context: Context) {
             val yogasArray = JSONArray()
             yogaAnalysis.allYogas.forEach { yoga ->
                 val yogaJson = JSONObject().apply {
-                    put("name", yoga.name)
-                    put("sanskritName", yoga.sanskritName)
+                    put("name", locManager.getString(yoga.name))
+                    put("sanskritName", locManager.getString(yoga.sanskritName))
                     put("category", yoga.category.name)
                     put("planets", JSONArray(yoga.planets.map { it.name }))
                     put("houses", JSONArray(yoga.houses))
-                    put("description", yoga.description)
-                    put("effects", yoga.effects)
+                    put("description", yoga.description.asPlainText(locManager.language.value))
+                    put("effects", yoga.effects.asPlainText(locManager.language.value))
                     put("strength", yoga.strength.name)
                     put("strengthPercentage", yoga.strengthPercentage)
                     put("isAuspicious", yoga.isAuspicious)
-                    put("activationPeriod", yoga.activationPeriod)
+                    put("activationPeriod", yoga.activationPeriod.asPlainText(locManager.language.value))
                 }
                 yogasArray.put(yogaJson)
             }
@@ -2500,7 +2502,7 @@ class ChartExporter(private val context: Context) {
             yogaAnalysis.allYogas.forEach { yoga ->
                 val planets = yoga.planets.joinToString(";") { it.displayName }
                 csvBuilder.appendLine(
-                    "\"${yoga.name}\",${yoga.category.displayName},\"$planets\"," +
+                    "\"${locManager.getString(yoga.name)}\",${yoga.category.displayName},\"$planets\"," +
                             "${yoga.strength.displayName},${yoga.strengthPercentage},${yoga.isAuspicious}"
                 )
             }

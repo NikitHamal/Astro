@@ -119,16 +119,17 @@ class YogaCalculatorWrapper {
 
         try {
             val analysis = YogaCalculator.calculateYogas(chart)
+            val language = com.astro.storm.data.localization.LocalLanguage.current
 
             analysis.allYogas.forEach { yoga ->
                 yogas.add(YogaResult(
-                    name = yoga.name,
-                    sanskritName = yoga.sanskritName,
+                    name = com.astro.storm.data.localization.StringResources.get(yoga.name, language),
+                    sanskritName = com.astro.storm.data.localization.StringResources.get(yoga.sanskritName, language),
                     category = yoga.category.displayName,
                     isAuspicious = yoga.isAuspicious,
                     strength = yoga.strength.value,
-                    description = yoga.description,
-                    effects = yoga.effects,
+                    description = yoga.description.asPlainText(language),
+                    effects = yoga.effects.asPlainText(language),
                     formingPlanets = yoga.planets
                 ))
             }
