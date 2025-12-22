@@ -16,6 +16,7 @@ import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.StringKeyMatch
+import com.astro.storm.data.localization.asPlainText
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
@@ -1782,7 +1783,7 @@ class ChartExporter(private val context: Context) {
             if (manglikAnalysis.cancellationFactors.isNotEmpty()) {
                 paint.color = COLOR_SUCCESS
                 val cancellationFactor = manglikAnalysis.cancellationFactors.firstOrNull()
-                val cancellation = cancellationFactor?.getTitle(locManager.language.value) ?: ""
+                val cancellation = cancellationFactor?.asPlainText(locManager.language.value) ?: ""
                 val truncated = if (cancellation.length > 80) cancellation.substring(0, 77) + "..." else cancellation
                 canvas.drawText("Cancellation: $truncated", PDF_MARGIN.toFloat() + 16f, yPos + 74f, paint)
             }
@@ -1822,7 +1823,7 @@ class ChartExporter(private val context: Context) {
         if (pitraAnalysis.isPresent) {
             canvas.drawText("Level: ${pitraAnalysis.level.name}", PDF_MARGIN.toFloat() + 16f, yPos + 42f, paint)
             if (pitraAnalysis.affectedLifeAreas.isNotEmpty()) {
-                val factor = pitraAnalysis.affectedLifeAreas.firstOrNull() ?: ""
+                val factor = pitraAnalysis.affectedLifeAreas.firstOrNull()?.asPlainText(locManager.language.value) ?: ""
                 val truncatedFactor = if (factor.length > 70) factor.substring(0, 67) + "..." else factor
                 canvas.drawText("Area: $truncatedFactor", PDF_MARGIN.toFloat() + 16f, yPos + 58f, paint)
             }
@@ -1964,7 +1965,7 @@ class ChartExporter(private val context: Context) {
             paint.color = COLOR_TEXT
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
 
-            val prediction = insight.prediction
+            val prediction = insight.prediction.asPlainText(locManager.language.value)
             // Split long predictions into multiple lines
             val words = prediction.split(" ")
             var line1 = ""
@@ -2100,7 +2101,7 @@ class ChartExporter(private val context: Context) {
             mantras.take(3).forEachIndexed { index, mantra ->
                 val mantraText = mantra.mantraText?.let { text ->
                     if (text.length > 60) text.substring(0, 57) + "..." else text
-                } ?: mantra.title
+                } ?: mantra.title.asPlainText(locManager.language.value)
                 canvas.drawText("${mantra.planet?.displayName ?: "General"}: $mantraText", PDF_MARGIN.toFloat() + 16f, yPos + 38f + (index * 14f), paint)
             }
         }
@@ -2131,7 +2132,7 @@ class ChartExporter(private val context: Context) {
 
         if (charities.isNotEmpty()) {
             charities.take(3).forEachIndexed { index, charity ->
-                val charityText = if (charity.description.length > 70) charity.description.substring(0, 67) + "..." else charity.description
+                val charityText = if (charity.description.asPlainText(locManager.language.value).length > 70) charity.description.asPlainText(locManager.language.value).substring(0, 67) + "..." else charity.description.asPlainText(locManager.language.value)
                 canvas.drawText("${charity.planet?.displayName ?: "General"}: $charityText", PDF_MARGIN.toFloat() + 16f, yPos + 38f + (index * 14f), paint)
             }
         }

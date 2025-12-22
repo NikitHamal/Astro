@@ -1177,12 +1177,12 @@ object YogaCalculator {
                         category = YogaCategory.NEGATIVE_YOGA,
                         planets = listOf(lord11),
                         houses = listOf(lord11Pos.house),
-                        description = LocalizableString.ResourceWithArgs(StringKeyYoga.YOGA_DESC_DARIDRA, listOf(lord11.displayName, lord11Pos.house)),
+                        description = LocalizableString.ResourceWithArgs(StringKeyYoga.YOGA_DESC_DARIDRA, listOf(planetToStringKey(lord11), lord11Pos.house)),
                         effects = LocalizableString.Resource(StringKeyYoga.YOGA_EFFECTS_DARIDRA),
                         strength = YogaStrength.MODERATE,
                         strengthPercentage = 60.0,
                         isAuspicious = false,
-                        activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_11_LORD, listOf(lord11.displayName)),
+                        activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_11_LORD, listOf(planetToStringKey(lord11))),
                         cancellationFactors = listOf(LocalizableString.Resource(StringKeyYoga.CANCELLATION_ASPECTED_BY_JUPITER_OR_LORD_STRONG))
                     )
                 )
@@ -1502,7 +1502,7 @@ object YogaCalculator {
             mainPlanets.forEach { planet ->
                 if (areConjunct(planet, rahuPos, customOrb = 3.0) ||
                     areConjunct(planet, ketuPos, customOrb = 3.0)) {
-                    cancellations.add(LocalizableString.ResourceWithArgs(StringKeyYoga.KALASARPA_CANCELLATION_CONJUNCT_NODE, listOf(planet.planet.displayName)))
+                    cancellations.add(LocalizableString.ResourceWithArgs(StringKeyYoga.KALASARPA_CANCELLATION_CONJUNCT_NODE, listOf(planetToStringKey(planet.planet))))
                 }
             }
 
@@ -1584,7 +1584,7 @@ object YogaCalculator {
                         category = YogaCategory.NEGATIVE_YOGA,
                         planets = listOf(Planet.MOON),
                         houses = listOf(moonPos.house),
-                        description = LocalizableString.ResourceWithArgs(StringKeyYoga.YOGA_DESC_DASA_MULA, listOf(birthNakshatra.displayName)),
+                        description = LocalizableString.ResourceWithArgs(StringKeyYoga.YOGA_DESC_DASA_MULA, listOf(birthNakshatra.name)),
                         effects = LocalizableString.Resource(StringKeyYoga.YOGA_EFFECTS_DASA_MULA),
                         strength = YogaStrength.MODERATE,
                         strengthPercentage = 60.0,
@@ -1610,12 +1610,12 @@ object YogaCalculator {
                         category = YogaCategory.SPECIAL_YOGA,
                         planets = listOf(pos.planet),
                         houses = listOf(pos.house),
-                        description = LocalizableString.ResourceWithArgs(StringKeyYoga.YOGA_DESC_VARGOTTAMA_STRENGTH, listOf(pos.planet.displayName)),
+                        description = LocalizableString.ResourceWithArgs(StringKeyYoga.YOGA_DESC_VARGOTTAMA_STRENGTH, listOf(planetToStringKey(pos.planet))),
                         effects = LocalizableString.Resource(StringKeyYoga.YOGA_EFFECTS_VARGOTTAMA_STRENGTH),
                         strength = strengthFromPercentage(strength),
                         strengthPercentage = strength,
                         isAuspicious = true,
-                        activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_11_LORD, listOf(pos.planet.displayName)),
+                        activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_11_LORD, listOf(planetToStringKey(pos.planet))),
                         cancellationFactors = emptyList()
                     )
                 )
@@ -1678,12 +1678,12 @@ object YogaCalculator {
                         category = YogaCategory.SPECIAL_YOGA,
                         planets = listOf(beneficPos.planet),
                         houses = listOf(10),
-                        description = LocalizableString.ResourceWithArgs(StringKeyYoga.YOGA_DESC_AMALA, listOf(beneficPos.planet.displayName)),
+                        description = LocalizableString.ResourceWithArgs(StringKeyYoga.YOGA_DESC_AMALA, listOf(planetToStringKey(beneficPos.planet))),
                         effects = LocalizableString.Resource(StringKeyYoga.YOGA_EFFECTS_AMALA),
                         strength = strengthFromPercentage(strength),
                         strengthPercentage = strength,
                         isAuspicious = true,
-                        activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_11_LORD, listOf(beneficPos.planet.displayName)),
+                        activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_11_LORD, listOf(planetToStringKey(beneficPos.planet))),
                         cancellationFactors = emptyList()
                     )
                 )
@@ -1774,7 +1774,7 @@ object YogaCalculator {
                             strength = strengthFromPercentage(strength),
                             strengthPercentage = strength,
                             isAuspicious = true,
-                            activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_DHANA_YOGA, listOf(lord4.displayName, lord9.displayName)),
+                            activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_DHANA_YOGA, listOf(planetToStringKey(lord4), planetToStringKey(lord9))),
                             cancellationFactors = emptyList()
                         )
                     )
@@ -1871,7 +1871,7 @@ object YogaCalculator {
                             strength = strengthFromPercentage(strength),
                             strengthPercentage = strength,
                             isAuspicious = true,
-                            activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_DHANA_YOGA, listOf(lord1.displayName, "Jupiter")),
+                            activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_DHANA_YOGA, listOf(planetToStringKey(lord1), planetToStringKey(Planet.JUPITER))),
                             cancellationFactors = emptyList()
                         )
                     )
@@ -1899,7 +1899,7 @@ object YogaCalculator {
                         strength = strengthFromPercentage(strength),
                         strengthPercentage = strength,
                         isAuspicious = true,
-                        activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_DHANA_YOGA, listOf(houseLords[9]!!.displayName, lord10.displayName)),
+                        activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_DHANA_YOGA, listOf(planetToStringKey(houseLords[9]!!), planetToStringKey(lord10!!))),
                         cancellationFactors = emptyList()
                     )
                 )
@@ -2169,8 +2169,8 @@ object YogaCalculator {
     private fun calculateCancellationFactor(
         positions: List<PlanetPosition>,
         chart: VedicChart
-    ): Pair<Double, List<String>> {
-        val cancellationFactors = mutableListOf<String>()
+    ): Pair<Double, List<LocalizableString>> {
+        val cancellationFactors = mutableListOf<LocalizableString>()
         var netFactor = 1.0
 
         positions.forEach { pos ->
@@ -2179,16 +2179,16 @@ object YogaCalculator {
             if (combustionFactor < 0.9) {
                 netFactor *= combustionFactor
                 if (combustionFactor < 0.5) {
-                    cancellationFactors.add("${pos.planet.displayName} is deeply combust")
+                    cancellationFactors.add(LocalizableString.ResourceWithArgs(StringKeyYoga.CANCELLATION_FACTOR_DEEPLY_COMBUST, listOf(planetToStringKey(pos.planet))))
                 } else if (combustionFactor < 0.8) {
-                    cancellationFactors.add("${pos.planet.displayName} is combust")
+                    cancellationFactors.add(LocalizableString.ResourceWithArgs(StringKeyYoga.CANCELLATION_FACTOR_COMBUST, listOf(planetToStringKey(pos.planet))))
                 }
             }
 
             // 2. Check Papakartari
             if (isPapakartari(pos, chart)) {
                 netFactor *= 0.7 // 30% reduction
-                cancellationFactors.add("${pos.planet.displayName} hemmed between malefics")
+                cancellationFactors.add(LocalizableString.ResourceWithArgs(StringKeyYoga.CANCELLATION_FACTOR_HEMMED, listOf(planetToStringKey(pos.planet))))
             }
 
             // 3. Check malefic aspects
@@ -2196,7 +2196,7 @@ object YogaCalculator {
             if (afflictionFactor < 0.9) {
                 netFactor *= afflictionFactor
                 if (afflictionFactor < 0.7) {
-                    cancellationFactors.add("${pos.planet.displayName} severely afflicted by malefics")
+                    cancellationFactors.add(LocalizableString.ResourceWithArgs(StringKeyYoga.CANCELLATION_FACTOR_AFFLICTED, listOf(planetToStringKey(pos.planet))))
                 }
             }
 
@@ -2204,14 +2204,14 @@ object YogaCalculator {
             if (isDebilitated(pos)) {
                 if (!hasNeechaBhanga(pos, chart)) {
                     netFactor *= 0.5 // 50% reduction for uncancelled debilitation
-                    cancellationFactors.add("${pos.planet.displayName} debilitated without cancellation")
+                    cancellationFactors.add(LocalizableString.ResourceWithArgs(StringKeyYoga.CANCELLATION_FACTOR_DEBILITATED, listOf(planetToStringKey(pos.planet))))
                 }
             }
 
             // 5. Check enemy sign (Shatru Kshetra)
             if (isInEnemySign(pos)) {
                 netFactor *= 0.85 // 15% reduction
-                cancellationFactors.add("${pos.planet.displayName} in enemy sign")
+                cancellationFactors.add(LocalizableString.ResourceWithArgs(StringKeyYoga.CANCELLATION_FACTOR_ENEMY_SIGN, listOf(planetToStringKey(pos.planet))))
             }
 
             // 6. Benefic aspect boost (positive factor)
@@ -2396,7 +2396,7 @@ object YogaCalculator {
     private fun calculateYogaStrengthWithReasons(
         chart: VedicChart,
         positions: List<PlanetPosition>
-    ): Pair<Double, List<String>> {
+    ): Pair<Double, List<LocalizableString>> {
         var baseStrength = 50.0
 
         positions.forEach { pos ->
@@ -2519,8 +2519,8 @@ object YogaCalculator {
     private fun calculateMahapurushaStrengthWithReasons(
         pos: PlanetPosition,
         chart: VedicChart
-    ): Pair<Double, List<String>> {
-        val cancellations = mutableListOf<String>()
+    ): Pair<Double, List<LocalizableString>> {
+        val cancellations = mutableListOf<LocalizableString>()
         var strength = 70.0
 
         when (pos.house) {
@@ -2536,7 +2536,7 @@ object YogaCalculator {
         if (combustionFactor < 1.0) {
             strength *= combustionFactor
             if (combustionFactor < 0.6) {
-                cancellations.add("${pos.planet.displayName} is combust - yoga significantly weakened")
+                cancellations.add(LocalizableString.ResourceWithArgs(StringKeyYoga.MAHAPURUSHA_CANCELLATION_COMBUST, listOf(planetToStringKey(pos.planet))))
             }
         }
 
@@ -2545,12 +2545,12 @@ object YogaCalculator {
         val afflictionFactor = getMaleficAfflictionFactor(pos, chart)
         if (afflictionFactor < 0.85) {
             strength *= afflictionFactor
-            cancellations.add("Malefic aspects reduce yoga results")
+            cancellations.add(LocalizableString.Resource(StringKeyYoga.MAHAPURUSHA_CANCELLATION_MALEFIC_ASPECTS))
         }
 
         if (isPapakartari(pos, chart)) {
             strength *= 0.75
-            cancellations.add("Planet hemmed between malefics")
+            cancellations.add(LocalizableString.Resource(StringKeyYoga.MAHAPURUSHA_CANCELLATION_HEMMED))
         }
 
         val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
@@ -2558,7 +2558,7 @@ object YogaCalculator {
             val houseFromMoon = getHouseFrom(pos.sign, moonPos.sign)
             if (houseFromMoon in listOf(6, 8, 12)) {
                 strength *= 0.85
-                cancellations.add("Weak position from Moon")
+                cancellations.add(LocalizableString.Resource(StringKeyYoga.MAHAPURUSHA_CANCELLATION_WEAK_FROM_MOON))
             } else if (houseFromMoon in listOf(1, 4, 7, 10)) {
                 strength *= 1.1
             }
@@ -2607,7 +2607,7 @@ object YogaCalculator {
             strengthPercentage = adjustedStrength,
             isAuspicious = true,
             activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_DHANA_YOGA, listOf(planetToStringKey(kendraLord), planetToStringKey(trikonaLord))),
-            cancellationFactors = cancellationReasons.map { LocalizableString.Plain(it) }.ifEmpty { listOf(LocalizableString.Resource(StringKeyYoga.CANCELLATION_NONE)) }
+            cancellationFactors = cancellationReasons.ifEmpty { listOf(LocalizableString.Resource(StringKeyYoga.CANCELLATION_NONE)) }
         )
     }
 
@@ -2637,7 +2637,7 @@ object YogaCalculator {
             strengthPercentage = adjustedStrength,
             isAuspicious = true,
             activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_DHANA_YOGA, listOf(planetToStringKey(planet1), planetToStringKey(planet2))),
-            cancellationFactors = cancellationReasons.map { LocalizableString.Plain(it) }.ifEmpty { listOf(LocalizableString.Resource(StringKeyYoga.CANCELLATION_NONE)) }
+            cancellationFactors = cancellationReasons.ifEmpty { listOf(LocalizableString.Resource(StringKeyYoga.CANCELLATION_NONE)) }
         )
     }
 
@@ -2660,7 +2660,7 @@ object YogaCalculator {
         // Viparita Raja works best when Dusthana lords are weak; strong lords may not give classical results
         positions.forEach { pos ->
             if (isExalted(pos) || isInOwnSign(pos)) {
-                specificReasons.add("${pos.planet.displayName} is strong - Viparita results may be modified")
+                specificReasons.add(LocalizableString.ResourceWithArgs(StringKeyYoga.VIPARITA_CANCELLATION_STRONG_LORD, listOf(planetToStringKey(pos.planet))))
             }
         }
 
@@ -2676,7 +2676,7 @@ object YogaCalculator {
             strengthPercentage = adjustedStrength,
             isAuspicious = true,
             activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_DHANA_YOGA, listOf(planetToStringKey(planet1), planetToStringKey(planet2))),
-            cancellationFactors = specificReasons.map { LocalizableString.Plain(it) }.ifEmpty { listOf(LocalizableString.Resource(StringKeyYoga.CANCELLATION_NONE)) }
+            cancellationFactors = specificReasons.ifEmpty { listOf(LocalizableString.Resource(StringKeyYoga.CANCELLATION_NONE)) }
         )
     }
 
@@ -2690,7 +2690,7 @@ object YogaCalculator {
 
         // For Neecha Bhanga, we apply different cancellation rules
         // The debilitation is already cancelled, so we only check other factors
-        val cancellationReasons = mutableListOf<String>()
+        val cancellationReasons = mutableListOf<LocalizableString>()
         var adjustedStrength = baseStrength
 
         if (pos != null) {
@@ -2699,7 +2699,7 @@ object YogaCalculator {
             if (combustionFactor < 0.9) {
                 adjustedStrength *= combustionFactor
                 if (combustionFactor < 0.6) {
-                    cancellationReasons.add("${planet.displayName} is combust - Neecha Bhanga weakened")
+                    cancellationReasons.add(LocalizableString.ResourceWithArgs(StringKeyYoga.NEECHA_BHANGA_CANCELLATION_COMBUST, listOf(planetToStringKey(planet))))
                 }
             }
 
@@ -2707,13 +2707,13 @@ object YogaCalculator {
             val afflictionFactor = getMaleficAfflictionFactor(pos, chart)
             if (afflictionFactor < 0.85) {
                 adjustedStrength *= afflictionFactor
-                cancellationReasons.add("Malefic aspects reduce yoga effectiveness")
+                cancellationReasons.add(LocalizableString.Resource(StringKeyYoga.NEECHA_BHANGA_CANCELLATION_ASPECTS))
             }
 
             // Check Papakartari
             if (isPapakartari(pos, chart)) {
                 adjustedStrength *= 0.8
-                cancellationReasons.add("Planet hemmed between malefics")
+                cancellationReasons.add(LocalizableString.Resource(StringKeyYoga.NEECHA_BHANGA_CANCELLATION_HEMMED))
             }
 
             // Benefic aspects boost Neecha Bhanga
@@ -2724,12 +2724,12 @@ object YogaCalculator {
 
             // Identify the cancellation type for informational purposes
             if (pos.house in listOf(1, 4, 7, 10)) {
-                cancellationReasons.add(0, "Neecha Bhanga via Kendra placement")
+                cancellationReasons.add(0, LocalizableString.Resource(StringKeyYoga.NEECHA_BHANGA_CANCELLATION_TYPE_KENDRA))
             } else {
                 val debilitatedSignLord = pos.sign.ruler
                 val lordPos = chart.planetPositions.find { it.planet == debilitatedSignLord }
                 if (lordPos != null && lordPos.house in listOf(1, 4, 7, 10)) {
-                    cancellationReasons.add(0, "Neecha Bhanga via sign lord in Kendra")
+                    cancellationReasons.add(0, LocalizableString.Resource(StringKeyYoga.NEECHA_BHANGA_CANCELLATION_TYPE_SIGN_LORD))
                 }
             }
         }
@@ -2746,7 +2746,7 @@ object YogaCalculator {
             strengthPercentage = adjustedStrength.coerceIn(10.0, 100.0),
             isAuspicious = true,
             activationPeriod = LocalizableString.ResourceWithArgs(StringKeyYoga.ACTIVATION_11_LORD, listOf(planetToStringKey(planet))),
-            cancellationFactors = cancellationReasons.map { LocalizableString.Plain(it) }.ifEmpty { listOf(LocalizableString.Resource(StringKeyYoga.NEECHA_BHANGA_CANCELLATION_CLEAN)) }
+            cancellationFactors = cancellationReasons.ifEmpty { listOf(LocalizableString.Resource(StringKeyYoga.NEECHA_BHANGA_CANCELLATION_CLEAN)) }
         )
     }
 

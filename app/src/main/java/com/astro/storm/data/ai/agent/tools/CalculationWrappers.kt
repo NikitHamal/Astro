@@ -8,6 +8,7 @@ import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.*
 import java.time.LocalDate
 import java.util.Date
+import com.astro.storm.data.localization.asPlainText
 
 /**
  * Wrapper classes for integrating existing calculators with the AI tool system.
@@ -119,7 +120,7 @@ class YogaCalculatorWrapper {
 
         try {
             val analysis = YogaCalculator.calculateYogas(chart)
-            val language = com.astro.storm.data.localization.LocalLanguage.current
+            val language = com.astro.storm.data.localization.Language.ENGLISH // Default to English for AI context
 
             analysis.allYogas.forEach { yoga ->
                 yogas.add(YogaResult(
