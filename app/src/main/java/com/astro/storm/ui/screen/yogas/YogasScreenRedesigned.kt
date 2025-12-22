@@ -81,6 +81,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.asString
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
@@ -232,7 +233,7 @@ private fun YogasTopBar(
                     if (chartName.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "$totalYogas yogas found - $chartName",
+                            text = stringResource(StringKey.YOGA_COUNT_IN_CHART_SUFFIX, totalYogas, chartName),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -485,7 +486,7 @@ private fun YogaCategoryFilter(
                     border = if (isSelected) null else androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor)
                 ) {
                     Text(
-                        text = "All (${categoryStats.values.sum()})",
+                        text = "${stringResource(StringKey.FILTER_ALL)} (${categoryStats.values.sum()})",
                         fontSize = 13.sp,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                         color = if (isSelected) AppTheme.AccentPrimary else AppTheme.TextSecondary,
@@ -629,7 +630,7 @@ private fun YogaCard(
                     Column(modifier = Modifier.weight(1f)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = yoga.name,
+                            text = stringResource(yoga.name),
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary,
@@ -640,14 +641,14 @@ private fun YogaCard(
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Icon(
                                     imageVector = Icons.Outlined.Star,
-                                    contentDescription = "Auspicious",
+                                contentDescription = stringResource(StringKey.YOGA_AUSPICIOUS),
                                     tint = AppTheme.SuccessColor,
                                     modifier = Modifier.size(14.dp)
                                 )
                             }
                         }
                         Text(
-                            text = yoga.sanskritName,
+                        text = stringResource(yoga.sanskritName),
                             fontSize = 12.sp,
                             color = AppTheme.TextMuted,
                             fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
@@ -700,6 +701,30 @@ private fun YogaCard(
             ) {
                 Column(modifier = Modifier.padding(top = 14.dp)) {
                     HorizontalDivider(color = AppTheme.DividerColor, modifier = Modifier.padding(bottom = 14.dp))
+
+                    // Yoga Description
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(10.dp),
+                        color = AppTheme.CardBackgroundElevated
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    Icons.Outlined.Star, contentDescription = null,
+                                    tint = categoryColor, modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = stringResource(StringKey.YOGA_DESCRIPTION),
+                                    fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = categoryColor
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(text = yoga.description.asString(), fontSize = 13.sp, color = AppTheme.TextPrimary, lineHeight = 19.sp)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
 
                     // Planets involved
                     if (yoga.planets.isNotEmpty()) {
@@ -835,7 +860,7 @@ private fun YogaCard(
                             }
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = yoga.effects,
+                                text = yoga.effects.asString(),
                                 fontSize = 13.sp,
                                 color = AppTheme.TextPrimary,
                                 lineHeight = 19.sp
@@ -844,7 +869,8 @@ private fun YogaCard(
                     }
 
                     // Activation period
-                    if (yoga.activationPeriod.isNotEmpty()) {
+                val activationText = yoga.activationPeriod.asString()
+                if (activationText.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(10.dp))
                         Row(
                             verticalAlignment = Alignment.Top
@@ -855,7 +881,7 @@ private fun YogaCard(
                                 color = AppTheme.TextMuted
                             )
                             Text(
-                                text = yoga.activationPeriod,
+                            text = activationText,
                                 fontSize = 12.sp,
                                 color = AppTheme.TextPrimary
                             )
@@ -863,7 +889,7 @@ private fun YogaCard(
                     }
 
                     // Cancellation factors
-                    if (yoga.cancellationFactors.isNotEmpty()) {
+                if (yoga.cancellationFactors.any { it.asString().isNotEmpty() }) {
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
                             text = stringResource(StringKey.YOGA_CANCELLATION_FACTORS),
@@ -873,6 +899,8 @@ private fun YogaCard(
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
                         yoga.cancellationFactors.forEach { factor ->
+                        val factorText = factor.asString()
+                        if (factorText.isNotEmpty()) {
                             Row(
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
@@ -884,10 +912,11 @@ private fun YogaCard(
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = factor,
+                                    text = factorText,
                                     fontSize = 11.sp,
                                     color = AppTheme.TextMuted
                                 )
+                            }
                             }
                         }
                     }

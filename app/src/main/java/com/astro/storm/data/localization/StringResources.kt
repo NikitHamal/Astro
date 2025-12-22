@@ -34,7 +34,11 @@ object StringResources {
     fun get(key: StringKeyInterface, language: Language, vararg args: Any): String {
         val template = get(key, language)
         return try {
-            String.format(template, *args)
+            // Resolve any StringKeyInterface arguments before formatting
+            val resolvedArgs = args.map {
+                if (it is StringKeyInterface) get(it, language) else it
+            }.toTypedArray()
+            String.format(template, *resolvedArgs)
         } catch (e: Exception) {
             template
         }
