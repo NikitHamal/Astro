@@ -77,7 +77,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.getLocalizedName
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.KemadrumaYogaCalculator
 import com.astro.storm.ui.theme.AppTheme
@@ -103,7 +105,13 @@ fun KemadrumaYogaScreen(
     var kemadrumaAnalysis by remember { mutableStateOf<KemadrumaYogaCalculator.KemadrumaAnalysis?>(null) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    val tabs = listOf("Overview", "Moon", "Cancellations", "Impacts", "Remedies")
+    val tabs = listOf(
+        stringResource(StringKey.TAB_OVERVIEW),
+        stringResource(StringKey.TAB_MOON),
+        stringResource(StringKey.TAB_CANCELLATIONS),
+        stringResource(StringKey.TAB_IMPACTS),
+        stringResource(StringKey.TAB_REMEDIES)
+    )
 
     // Calculate Kemadruma analysis
     LaunchedEffect(chart) {
@@ -130,13 +138,13 @@ fun KemadrumaYogaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Kemadruma Yoga",
+                            text = stringResource(StringKey.KEMADRUMA_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Moon Isolation Analysis",
+                            text = stringResource(StringKey.KEMADRUMA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -146,7 +154,7 @@ fun KemadrumaYogaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.A11Y_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -155,7 +163,7 @@ fun KemadrumaYogaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKey.A11Y_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }

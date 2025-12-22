@@ -22,6 +22,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.astro.storm.data.ai.provider.AiModel
 import com.astro.storm.data.ai.provider.AiProviderRegistry
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
@@ -68,13 +70,13 @@ fun AiModelsScreen(
                 title = {
                     Column {
                         Text(
-                            text = "AI Models",
+                            text = stringResource(StringKey.AI_MODELS_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.TextPrimary
                         )
                         Text(
-                            text = "${enabledModels.size} models enabled",
+                            text = stringResource(StringKey.AI_MODELS_ENABLED_COUNT).replace("%d", enabledModels.size.toString()),
                             style = MaterialTheme.typography.labelSmall,
                             color = colors.TextMuted
                         )
@@ -84,7 +86,7 @@ fun AiModelsScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.A11Y_BACK),
                             tint = colors.TextPrimary
                         )
                     }
@@ -109,7 +111,7 @@ fun AiModelsScreen(
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
-                                contentDescription = "Refresh models",
+                                contentDescription = stringResource(StringKey.AI_MODELS_REFRESH),
                                 tint = colors.TextSecondary
                             )
                         }
@@ -215,14 +217,14 @@ private fun InfoCard() {
 
             Column {
                 Text(
-                    text = "Free AI Models",
+                    text = stringResource(StringKey.AI_MODELS_FREE_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "These models are provided by free API providers and don't require any API keys. Model availability may vary.",
+                    text = stringResource(StringKey.AI_MODELS_FREE_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.TextMuted
                 )
@@ -271,13 +273,13 @@ private fun DefaultModelSection(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Default Model",
+                    text = stringResource(StringKey.AI_MODELS_DEFAULT),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Medium,
                     color = colors.TextPrimary
                 )
                 Text(
-                    text = defaultModel?.displayName ?: "Not set",
+                    text = defaultModel?.displayName ?: stringResource(StringKey.AI_MODELS_NOT_SET),
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.TextMuted
                 )
@@ -295,7 +297,7 @@ private fun DefaultModelSection(
     if (showSelector) {
         AlertDialog(
             onDismissRequest = { showSelector = false },
-            title = { Text("Select Default Model") },
+            title = { Text(stringResource(StringKey.AI_MODELS_SELECT_DEFAULT)) },
             text = {
                 LazyColumn {
                     items(enabledModels) { model ->
@@ -343,7 +345,7 @@ private fun DefaultModelSection(
             },
             confirmButton = {
                 TextButton(onClick = { showSelector = false }) {
-                    Text("Cancel")
+                    Text(stringResource(StringKey.UI_CANCEL))
                 }
             },
             containerColor = colors.CardBackground
@@ -413,7 +415,8 @@ private fun ProviderSection(
                             color = colors.TextPrimary
                         )
                         Text(
-                            text = "$enabledCount/${models.size} models enabled",
+                            text = stringResource(StringKey.AI_MODELS_ENABLED_PROVIDER)
+                                .replace("%d/%d", "$enabledCount/${models.size}"),
                             style = MaterialTheme.typography.bodySmall,
                             color = colors.TextMuted
                         )
@@ -464,7 +467,7 @@ private fun ProviderSection(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Enable All",
+                                text = stringResource(StringKey.AI_MODELS_ENABLE_ALL),
                                 style = MaterialTheme.typography.labelMedium
                             )
                         }
@@ -486,7 +489,7 @@ private fun ProviderSection(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Disable All",
+                                text = stringResource(StringKey.AI_MODELS_DISABLE_ALL),
                                 style = MaterialTheme.typography.labelMedium
                             )
                         }
@@ -552,13 +555,13 @@ private fun ModelItem(
                 modifier = Modifier.padding(top = 4.dp)
             ) {
                 if (model.supportsTools) {
-                    CapabilityBadge("Tools")
+                    CapabilityBadge(stringResource(StringKey.AI_MODELS_TOOLS))
                 }
                 if (model.supportsReasoning) {
-                    CapabilityBadge("Reasoning")
+                    CapabilityBadge(stringResource(StringKey.AI_MODELS_REASONING))
                 }
                 if (model.supportsVision) {
-                    CapabilityBadge("Vision")
+                    CapabilityBadge(stringResource(StringKey.AI_MODELS_VISION))
                 }
             }
         }
@@ -613,7 +616,7 @@ private fun EmptyModelsState(onRefresh: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "No Models Available",
+            text = stringResource(StringKey.AI_MODELS_NONE_AVAILABLE),
             style = MaterialTheme.typography.titleMedium,
             color = colors.TextPrimary
         )
@@ -621,7 +624,7 @@ private fun EmptyModelsState(onRefresh: () -> Unit) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Unable to fetch AI models. Check your internet connection and try again.",
+            text = stringResource(StringKey.AI_MODELS_FETCH_ERROR),
             style = MaterialTheme.typography.bodyMedium,
             color = colors.TextMuted,
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -636,7 +639,7 @@ private fun EmptyModelsState(onRefresh: () -> Unit) {
                 modifier = Modifier.size(18.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Retry")
+            Text(stringResource(StringKey.AI_MODELS_RETRY))
         }
     }
 }

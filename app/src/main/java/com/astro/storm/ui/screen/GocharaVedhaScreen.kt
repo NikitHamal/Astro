@@ -75,7 +75,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.getLocalizedName
+import com.astro.storm.data.localization.stringResource
 import android.content.Context
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.GocharaVedhaCalculator
@@ -107,7 +109,12 @@ fun GocharaVedhaScreen(
     var vedhaAnalysis by remember { mutableStateOf<GocharaVedhaCalculator.CompleteVedhaAnalysis?>(null) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    val tabs = listOf("Overview", "Transits", "Vedhas", "Forecast")
+    val tabs = listOf(
+        stringResource(StringKey.TAB_OVERVIEW),
+        stringResource(StringKey.TAB_TRANSITS),
+        stringResource(StringKey.TAB_VEDHAS),
+        stringResource(StringKey.TAB_FORECAST)
+    )
 
     val context = LocalContext.current
 
@@ -136,13 +143,13 @@ fun GocharaVedhaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Gochara Vedha",
+                            text = stringResource(StringKey.GOCHARA_VEDHA_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Transit Obstructions",
+                            text = stringResource(StringKey.GOCHARA_VEDHA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -152,7 +159,7 @@ fun GocharaVedhaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.A11Y_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -161,7 +168,7 @@ fun GocharaVedhaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKey.A11Y_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }

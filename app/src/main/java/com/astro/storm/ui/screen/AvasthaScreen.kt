@@ -74,6 +74,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.AvasthaCalculator
 import com.astro.storm.ui.theme.AppTheme
@@ -100,7 +102,14 @@ fun AvasthaScreen(
     var analysis by remember { mutableStateOf<AvasthaCalculator.AvasthaAnalysis?>(null) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    val tabs = listOf("Overview", "Planets", "Baladi", "Jagradadi", "Deeptadi", "Lajjitadi")
+    val tabs = listOf(
+        stringResource(StringKey.TAB_OVERVIEW),
+        stringResource(StringKey.TAB_PLANETS),
+        stringResource(StringKey.TAB_BALADI),
+        stringResource(StringKey.TAB_JAGRADADI),
+        stringResource(StringKey.TAB_DEEPTADI),
+        stringResource(StringKey.TAB_LAJJITADI)
+    )
 
     // Calculate analysis
     LaunchedEffect(chart) {
@@ -127,13 +136,13 @@ fun AvasthaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Planetary Avasthas",
+                            text = stringResource(StringKey.AVASTHA_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Planetary States & Conditions",
+                            text = stringResource(StringKey.AVASTHA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -143,7 +152,7 @@ fun AvasthaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.A11Y_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -152,7 +161,7 @@ fun AvasthaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKey.A11Y_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }

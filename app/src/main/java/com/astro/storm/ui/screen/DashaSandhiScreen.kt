@@ -104,7 +104,12 @@ fun DashaSandhiScreen(
     var sandhiAnalysis by remember { mutableStateOf<DashaSandhiAnalyzer.CompleteSandhiAnalysis?>(null) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    val tabs = listOf("Overview", "Current", "Upcoming", "Calendar")
+    val tabs = listOf(
+        stringResource(StringKey.TAB_OVERVIEW),
+        stringResource(StringKey.TAB_CURRENT),
+        stringResource(StringKey.TAB_UPCOMING),
+        stringResource(StringKey.TAB_CALENDAR)
+    )
 
     // Calculate Dasha Sandhi analysis
     LaunchedEffect(chart) {
@@ -137,13 +142,13 @@ fun DashaSandhiScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Dasha Sandhi",
+                            text = stringResource(StringKey.DASHA_SANDHI_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Period Transitions",
+                            text = stringResource(StringKey.DASHA_SANDHI_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -153,7 +158,7 @@ fun DashaSandhiScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.A11Y_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -162,7 +167,7 @@ fun DashaSandhiScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKey.A11Y_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }

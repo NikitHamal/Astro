@@ -202,13 +202,13 @@ fun UpachayaTransitScreen(
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(
-                                "Upachaya Houses:",
+                                stringResource(StringKeyDosha.UPACHAYA_HOUSES_LABEL),
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 13.sp,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
-                                "3rd (Courage), 6th (Enemies), 10th (Career), 11th (Gains)",
+                                stringResource(StringKeyDosha.UPACHAYA_HOUSES_LIST),
                                 fontSize = 12.sp,
                                 color = AppTheme.TextSecondary
                             )
@@ -432,7 +432,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis) {
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        "Level: ${assessment.level.name}",
+                        "${stringResource(StringKeyDosha.UPACHAYA_LEVEL)} ${assessment.level.name}",
                         fontSize = 14.sp,
                         color = iconColor,
                         fontWeight = FontWeight.Medium
@@ -448,7 +448,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Transit Strength",
+                    stringResource(StringKeyDosha.UPACHAYA_TRANSIT_STRENGTH),
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
@@ -544,7 +544,7 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text("Moon Sign", fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.UPACHAYA_MOON_SIGN), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(
                         analysis.moonSign.getLocalizedName(language),
                         fontSize = 13.sp,
@@ -569,7 +569,7 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text("Lagna", fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.UPACHAYA_LAGNA), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(
                         analysis.lagnaSign.getLocalizedName(language),
                         fontSize = 13.sp,
@@ -594,9 +594,9 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text("Active", fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.UPACHAYA_ACTIVE), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(
-                        "Upachaya",
+                        stringResource(StringKeyDosha.UPACHAYA_UPACHAYA_LABEL),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -819,7 +819,7 @@ private fun HouseAnalysisTab(analysis: UpachayaTransitAnalysis, language: Langua
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        "Upachaya houses (3, 6, 10, 11) are 'growth houses' where planets, especially malefics, give increasingly positive results over time. Transits through these houses bring opportunities for growth and success.",
+                        stringResource(StringKeyDosha.UPACHAYA_ABOUT_DESC_SHORT),
                         fontSize = 13.sp,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
@@ -886,7 +886,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            "${analysis.houseName} House",
+                            "${analysis.houseName} ${stringResource(StringKeyDosha.UPACHAYA_HOUSE_SUFFIX)}",
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -917,7 +917,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
             // Transiting Planets
             if (analysis.transitingPlanets.isNotEmpty()) {
                 Text(
-                    "Transiting Planets:",
+                    stringResource(StringKeyDosha.UPACHAYA_TRANSITING_PLANETS),
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
@@ -993,7 +993,7 @@ private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: Langu
                 FilterChip(
                     selected = selectedReference == TransitReference.MOON,
                     onClick = { selectedReference = TransitReference.MOON },
-                    label = { Text("From Moon") },
+                    label = { Text(stringResource(StringKeyDosha.UPACHAYA_FROM_MOON)) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = AppTheme.PlanetMoon.copy(alpha = 0.2f),
                         selectedLabelColor = AppTheme.PlanetMoon
@@ -1003,7 +1003,7 @@ private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: Langu
                 FilterChip(
                     selected = selectedReference == TransitReference.LAGNA,
                     onClick = { selectedReference = TransitReference.LAGNA },
-                    label = { Text("From Lagna") },
+                    label = { Text(stringResource(StringKeyDosha.UPACHAYA_FROM_LAGNA)) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
                         selectedLabelColor = AppTheme.AccentPrimary
@@ -1077,14 +1077,14 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        "${getHouseName(transit.houseFromReference)} House",
+                        "${getHouseName(transit.houseFromReference)} ${stringResource(StringKeyDosha.UPACHAYA_HOUSE_SUFFIX)}",
                         fontWeight = FontWeight.Medium,
                         fontSize = 13.sp,
                         color = if (transit.isInUpachaya) AppTheme.SuccessColor else AppTheme.TextSecondary
                     )
                     if (transit.isInUpachaya) {
                         Text(
-                            "UPACHAYA",
+                            stringResource(StringKeyDosha.UPACHAYA_UPACHAYA_LABEL).uppercase(),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.SuccessColor
@@ -1197,7 +1197,7 @@ private fun UpcomingTransitsTab(upcomingTransits: List<UpcomingUpachayaTransit>,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
-                "Key planetary transits to watch for Upachaya house activation",
+                stringResource(StringKeyDosha.UPACHAYA_KEY_TRANSITS_WATCH),
                 fontSize = 13.sp,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -1210,7 +1210,7 @@ private fun UpcomingTransitsTab(upcomingTransits: List<UpcomingUpachayaTransit>,
         groupedByHouse.forEach { (house, transits) ->
             item {
                 Text(
-                    "${getHouseName(house)} House Transits",
+                    "${getHouseName(house)} ${stringResource(StringKeyDosha.UPACHAYA_HOUSE_TRANSITS_SUFFIX)}",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
                     color = AppTheme.TextPrimary,

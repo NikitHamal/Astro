@@ -76,7 +76,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.getLocalizedName
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator
 import com.astro.storm.ui.theme.AppTheme
@@ -102,7 +104,13 @@ fun PanchMahapurushaScreen(
     var analysis by remember { mutableStateOf<PanchMahapurushaYogaCalculator.PanchMahapurushaAnalysis?>(null) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    val tabs = listOf("Overview", "Yogas", "Effects", "Timing", "Remedies")
+    val tabs = listOf(
+        stringResource(StringKey.TAB_OVERVIEW),
+        stringResource(StringKey.TAB_YOGAS),
+        stringResource(StringKey.TAB_EFFECTS),
+        stringResource(StringKey.TAB_TIMING),
+        stringResource(StringKey.TAB_REMEDIES)
+    )
 
     // Calculate analysis
     LaunchedEffect(chart) {
@@ -129,13 +137,13 @@ fun PanchMahapurushaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Panch Mahapurusha Yoga",
+                            text = stringResource(StringKey.PANCH_MAHAPURUSHA_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Five Great Person Yogas",
+                            text = stringResource(StringKey.PANCH_MAHAPURUSHA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -145,7 +153,7 @@ fun PanchMahapurushaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.A11Y_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -154,7 +162,7 @@ fun PanchMahapurushaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKey.A11Y_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }

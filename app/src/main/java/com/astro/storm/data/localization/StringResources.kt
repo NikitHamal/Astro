@@ -1009,7 +1009,38 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     ONBOARDING_BTN_NEXT("Next", "अर्को"),
     ONBOARDING_BTN_BACK("Back", "पछाडि"),
     ONBOARDING_BTN_GET_STARTED("Get Started", "सुरु गर्नुहोस्"),
-    ONBOARDING_BTN_SKIP("Skip", "छोड्नुहोस्");
+    ONBOARDING_BTN_SKIP("Skip", "छोड्नुहोस्"),
+    ONBOARDING_BTN_CREATE_CHART("Create Chart", "कुण्डली बनाउनुहोस्"),
+
+    ONBOARDING_TAGLINE("Precision Vedic Astrology", "सटीक वैदिक ज्योतिष"),
+    ONBOARDING_GRID_CHARTS("Birth Charts", "जन्म कुण्डली"),
+    ONBOARDING_GRID_DASHAS("Dashas", "दशाहरू"),
+    ONBOARDING_GRID_TRANSITS("Transits", "गोचरहरू"),
+    ONBOARDING_GRID_YOGAS("Yogas", "योगहरू"),
+
+    ONBOARDING_OFFERS_TITLE("What AstroStorm Offers", "AstroStorm ले के प्रदान गर्छ"),
+    ONBOARDING_CAT_CHART_ANALYSIS("Complete Chart Analysis", "पूर्ण कुण्डली विश्लेषण"),
+    ONBOARDING_CAT_CHART_ITEM1("Rashi & Divisional Charts", "राशि र विभागीय कुण्डली"),
+    ONBOARDING_CAT_CHART_ITEM2("Shadbala & Ashtakavarga", "षड्बल र अष्टकवर्ग"),
+    ONBOARDING_CAT_CHART_ITEM3("All 16 Vargas", "सबै १६ वर्ग"),
+    ONBOARDING_CAT_DASHA_SYSTEMS("Dasha Systems", "दशा प्रणालीहरू"),
+    ONBOARDING_CAT_DASHA_ITEM1("Vimshottari & Yogini", "विंशोत्तरी र योगिनी"),
+    ONBOARDING_CAT_DASHA_ITEM2("Ashtottari & Chara", "अष्टोत्तरी र चर"),
+    ONBOARDING_CAT_DASHA_ITEM3("Kalachakra Dasha", "कालचक्र दशा"),
+    ONBOARDING_CAT_PREDICTIONS("Predictions & Yogas", "भविष्यवाणी र योगहरू"),
+    ONBOARDING_CAT_PRED_ITEM1("200+ Yoga Calculations", "२००+ योग गणनाहरू"),
+    ONBOARDING_CAT_PRED_ITEM2("Transit Analysis", "गोचर विश्लेषण"),
+    ONBOARDING_CAT_PRED_ITEM3("Matchmaking (Kundali Milan)", "कुण्डली मिलान"),
+    ONBOARDING_CAT_REMEDIES("Remedies & Muhurta", "उपचार र मुहूर्त"),
+    ONBOARDING_CAT_REM_ITEM1("Vedic & Lal Kitab Remedies", "वैदिक र लाल किताब उपचारहरू"),
+    ONBOARDING_CAT_REM_ITEM2("Auspicious Timing", "शुभ समय"),
+    ONBOARDING_CAT_REM_ITEM3("Panchanga", "पञ्चाङ्ग"),
+
+    ONBOARDING_CREATE_FIRST("Create Your First Chart", "आफ्नो पहिलो कुण्डली बनाउनुहोस्"),
+    ONBOARDING_YOULL_NEED("You'll need:", "तपाईंलाई चाहिन्छ:"),
+    ONBOARDING_NEED_DATE("Birth date & time", "जन्म मिति र समय"),
+    ONBOARDING_NEED_LOCATION("Birth location (city)", "जन्म स्थान (शहर)"),
+    ONBOARDING_THATS_ALL("That's all!", "बस्, त्यति नै!");
 
 }
 
@@ -2274,6 +2305,175 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     TAB_ASPECTS("Aspects", "दृष्टि"),
     TAB_STRENGTH("Strength", "बल"),
     TAB_DIGNITIES("Dignities", "मर्यादाहरू"),
+    TAB_CURRENT("Current", "वर्तमान"),
+    TAB_UPCOMING("Upcoming", "आगामी"),
+    TAB_CALENDAR("Calendar", "पात्रो"),
+    TAB_FORECAST("Forecast", "पूर्वानुमान"),
+    TAB_VEDHAS("Vedhas", "वेधहरू"),
+    TAB_YOGAS("Yogas", "योगहरू"),
+    TAB_EFFECTS("Effects", "प्रभावहरू"),
+    TAB_TIMING("Timing", "समय"),
+    TAB_MOON("Moon", "चन्द्रमा"),
+    TAB_CANCELLATIONS("Cancellations", "भङ्गहरू"),
+    TAB_IMPACTS("Impacts", "प्रभावहरू"),
+    TAB_ACTIVITIES("Activities", "गतिविधिहरू"),
+    TAB_ALL_YOGAS("All Yogas", "सबै योगहरू"),
+    TAB_BALADI("Baladi", "बालादि"),
+    TAB_JAGRADADI("Jagradadi", "जाग्रादादि"),
+    TAB_DEEPTADI("Deeptadi", "दीप्तादि"),
+    TAB_LAJJITADI("Lajjitadi", "लज्जितादि"),
+
+    // ============================================
+    // AVASTHA SCREEN
+    // ============================================
+    AVASTHA_TITLE("Planetary Avasthas", "ग्रह अवस्थाहरू"),
+    AVASTHA_SUBTITLE("Planetary States & Conditions", "ग्रह अवस्था र स्थितिहरू"),
+    AVASTHA_CALCULATING("Calculating planetary states...", "ग्रह अवस्थाहरू गणना गर्दै..."),
+    AVASTHA_NO_CHART("No Chart Selected", "कुनै कुण्डली छानिएको छैन"),
+    AVASTHA_NO_CHART_MESSAGE("Please select a birth chart to view Avasthas", "अवस्थाहरू हेर्न जन्म कुण्डली छान्नुहोस्"),
+
+    // ============================================
+    // GOCHARA VEDHA SCREEN
+    // ============================================
+    GOCHARA_VEDHA_TITLE("Gochara Vedha", "गोचर वेध"),
+    GOCHARA_VEDHA_SUBTITLE("Transit Obstructions", "गोचर अवरोधहरू"),
+    GOCHARA_VEDHA_CALCULATING("Calculating transit obstructions...", "गोचर अवरोधहरू गणना गर्दै..."),
+    GOCHARA_VEDHA_NO_CHART("No Chart Selected", "कुनै कुण्डली छानिएको छैन"),
+    GOCHARA_VEDHA_NO_CHART_MESSAGE("Please select a birth chart to view Vedha analysis", "वेध विश्लेषण हेर्न जन्म कुण्डली छान्नुहोस्"),
+
+    // ============================================
+    // DASHA SANDHI SCREEN
+    // ============================================
+    DASHA_SANDHI_TITLE("Dasha Sandhi", "दशा सन्धि"),
+    DASHA_SANDHI_SUBTITLE("Period Transitions", "अवधि संक्रमणहरू"),
+    DASHA_SANDHI_CALCULATING("Calculating period transitions...", "अवधि संक्रमणहरू गणना गर्दै..."),
+    DASHA_SANDHI_NO_CHART("No Chart Selected", "कुनै कुण्डली छानिएको छैन"),
+    DASHA_SANDHI_NO_CHART_MESSAGE("Please select a birth chart to view Dasha Sandhi", "दशा सन्धि हेर्न जन्म कुण्डली छान्नुहोस्"),
+
+    // ============================================
+    // PANCH MAHAPURUSHA SCREEN
+    // ============================================
+    PANCH_MAHAPURUSHA_TITLE("Panch Mahapurusha Yoga", "पञ्च महापुरुष योग"),
+    PANCH_MAHAPURUSHA_SUBTITLE("Five Great Person Yogas", "पाँच महान् व्यक्ति योगहरू"),
+    PANCH_MAHAPURUSHA_CALCULATING("Calculating Mahapurusha Yogas...", "महापुरुष योगहरू गणना गर्दै..."),
+    PANCH_MAHAPURUSHA_NO_CHART("No Chart Selected", "कुनै कुण्डली छानिएको छैन"),
+    PANCH_MAHAPURUSHA_NO_CHART_MESSAGE("Please select a birth chart to view Panch Mahapurusha Yogas", "पञ्च महापुरुष योगहरू हेर्न जन्म कुण्डली छान्नुहोस्"),
+
+    // ============================================
+    // KEMADRUMA YOGA SCREEN
+    // ============================================
+    KEMADRUMA_TITLE("Kemadruma Yoga", "केमद्रुम योग"),
+    KEMADRUMA_SUBTITLE("Moon Isolation Analysis", "चन्द्र एकान्त विश्लेषण"),
+    KEMADRUMA_CALCULATING("Analyzing Moon's condition...", "चन्द्रमाको अवस्था विश्लेषण गर्दै..."),
+    KEMADRUMA_NO_CHART("No Chart Selected", "कुनै कुण्डली छानिएको छैन"),
+    KEMADRUMA_NO_CHART_MESSAGE("Please select a birth chart to view Kemadruma analysis", "केमद्रुम विश्लेषण हेर्न जन्म कुण्डली छान्नुहोस्"),
+
+    // ============================================
+    // NITYA YOGA SCREEN
+    // ============================================
+    NITYA_YOGA_TITLE("Nitya Yoga", "नित्य योग"),
+    NITYA_YOGA_SUBTITLE("27 Daily Yogas", "२७ दैनिक योगहरू"),
+    NITYA_YOGA_CALCULATING("Calculating daily yogas...", "दैनिक योगहरू गणना गर्दै..."),
+    NITYA_YOGA_NO_CHART("No Chart Selected", "कुनै कुण्डली छानिएको छैन"),
+    NITYA_YOGA_NO_CHART_MESSAGE("Please select a birth chart to view Nitya Yogas", "नित्य योगहरू हेर्न जन्म कुण्डली छान्नुहोस्"),
+
+    // ============================================
+    // COMMON ACCESSIBILITY DESCRIPTIONS
+    // ============================================
+    A11Y_BACK("Back", "पछाडि"),
+    A11Y_INFO("Info", "जानकारी"),
+    A11Y_EXPAND("Expand", "विस्तार गर्नुहोस्"),
+    A11Y_COLLAPSE("Collapse", "संकुचित गर्नुहोस्"),
+    A11Y_NAVIGATE_BACK("Navigate back", "पछाडि जानुहोस्"),
+
+    // ============================================
+    // COMMON UI LABELS
+    // ============================================
+    UI_GOT_IT("Got it", "बुझेँ"),
+    UI_LEARN_MORE("Learn more", "थप जान्नुहोस्"),
+    UI_SHOW_MORE("Show more", "थप देखाउनुहोस्"),
+    UI_SHOW_LESS("Show less", "कम देखाउनुहोस्"),
+    UI_LOADING("Loading...", "लोड हुँदैछ..."),
+    UI_CALCULATING("Calculating...", "गणना गर्दै..."),
+    UI_ERROR("Error", "त्रुटि"),
+    UI_RETRY("Retry", "पुनः प्रयास"),
+    UI_NO_DATA("No data available", "कुनै डाटा उपलब्ध छैन"),
+    UI_SELECT_CHART("Select a chart", "कुण्डली छान्नुहोस्"),
+
+    // ============================================
+    // CHAT / AI ASSISTANT STRINGS
+    // ============================================
+    CHAT_NEW_CHAT("New Chat", "नयाँ च्याट"),
+    CHAT_START_NEW("Start New Chat", "नयाँ च्याट सुरु गर्नुहोस्"),
+    CHAT_DELETE("Delete Chat", "च्याट मेट्नुहोस्"),
+    CHAT_DELETE_CONFIRM("Are you sure you want to delete \"%s\"? This cannot be undone.", "के तपाईं \"%s\" मेट्न निश्चित हुनुहुन्छ? यो पूर्ववत हुन सक्दैन।"),
+    CHAT_MEET_STORMY("Meet Stormy", "Stormy लाई भेट्नुहोस्"),
+    CHAT_AI_ASSISTANT("Your Vedic astrology AI assistant", "तपाईंको वैदिक ज्योतिष AI सहायक"),
+    CHAT_AI_DESCRIPTION("Ask about your birth chart, planetary periods, transits, compatibility, remedies, and more.", "आफ्नो जन्म कुण्डली, ग्रह अवधि, गोचर, मेलापक, उपाय, र थपको बारेमा सोध्नुहोस्।"),
+    CHAT_CONFIGURE_AI("Configure AI Models", "AI मोडेलहरू कन्फिगर गर्नुहोस्"),
+    CHAT_ENABLE_MODELS("Enable AI models to start chatting", "च्याट सुरु गर्न AI मोडेलहरू सक्षम गर्नुहोस्"),
+    CHAT_TYPE_MESSAGE("Type a message...", "सन्देश टाइप गर्नुहोस्..."),
+    CHAT_SEND("Send", "पठाउनुहोस्"),
+    CHAT_THINKING("Thinking...", "सोच्दैछ..."),
+    CHAT_SELECT_CHART("Select Chart", "कुण्डली छान्नुहोस्"),
+    CHAT_NO_CHART("No chart selected", "कुनै कुण्डली छानिएको छैन"),
+    CHAT_USING_CHART("Using: %s", "प्रयोग गर्दै: %s"),
+    CHAT_TODAY("Today", "आज"),
+    CHAT_YESTERDAY("Yesterday", "हिजो"),
+    CHAT_CLEAR_HISTORY("Clear History", "इतिहास खाली गर्नुहोस्"),
+    CHAT_ARCHIVE("Archive", "अर्काइभ गर्नुहोस्"),
+    CHAT_STORMY_INTRO("Hi! I'm Stormy, your Vedic astrology assistant. How can I help you today?", "नमस्ते! म Stormy हुँ, तपाईंको वैदिक ज्योतिष सहायक। आज म तपाईंलाई कसरी सहयोग गर्न सक्छु?"),
+    CHAT_MODEL_OPTIONS("Model options", "मोडेल विकल्पहरू"),
+    CHAT_CHANGE_MODEL("Change model", "मोडेल परिवर्तन गर्नुहोस्"),
+    CHAT_SELECT_MODEL("Select AI Model", "AI मोडेल चयन गर्नुहोस्"),
+    CHAT_NO_MODELS("No models available", "कुनै मोडेल उपलब्ध छैन"),
+    CHAT_MANAGE_MODELS("Manage AI Models", "AI मोडेलहरू व्यवस्थापन गर्नुहोस्"),
+    CHAT_ASK_STORMY("Ask Stormy...", "Stormy लाई सोध्नुहोस्..."),
+    CHAT_STOP("Stop", "रोक्नुहोस्"),
+    CHAT_CLEAR_CHAT("Clear Chat", "च्याट खाली गर्नुहोस्"),
+    CHAT_CLEAR_CONFIRM("Are you sure you want to clear all messages in this conversation?", "के तपाईं यस कुराकानीका सबै सन्देशहरू खाली गर्न निश्चित हुनुहुन्छ?"),
+    CHAT_CLEAR("Clear", "खाली गर्नुहोस्"),
+    CHAT_MODEL_OPTIONS_TITLE("Model Options", "मोडेल विकल्पहरू"),
+    CHAT_THINKING_MODE("Thinking Mode", "सोचाइ मोड"),
+    CHAT_THINKING_DESC("Extended reasoning before answering", "जवाफ दिनु अघि विस्तृत तर्क"),
+    CHAT_WEB_SEARCH("Web Search", "वेब खोज"),
+    CHAT_WEB_SEARCH_DESC("Search the web for current information", "हालको जानकारीको लागि वेब खोज्नुहोस्"),
+    CHAT_DONE("Done", "सम्पन्न"),
+    CHAT_MESSAGES_COUNT("%d messages", "%d सन्देशहरू"),
+    CHAT_MORE_OPTIONS("More options", "थप विकल्पहरू"),
+    CHAT_HELLO_STORMY("Hello! I'm Stormy", "नमस्ते! म Stormy हुँ"),
+    CHAT_WELCOME_DESC("Your Vedic astrology assistant. Ask me anything about your birth chart, planetary periods, transits, compatibility, or remedies.", "तपाईंको वैदिक ज्योतिष सहायक। आफ्नो जन्म कुण्डली, ग्रह अवधि, गोचर, मेलापक, वा उपायको बारेमा जे पनि सोध्नुहोस्।"),
+    CHAT_SUGGESTION_DASHA("What's my current dasha period?", "मेरो हालको दशा अवधि के हो?"),
+    CHAT_SUGGESTION_ANALYZE("Analyze my birth chart", "मेरो जन्म कुण्डली विश्लेषण गर्नुहोस्"),
+    CHAT_SUGGESTION_YOGAS("What yogas are present in my chart?", "मेरो कुण्डलीमा कुन योगहरू छन्?"),
+    UI_CANCEL("Cancel", "रद्द गर्नुहोस्"),
+
+    // Time-related strings
+    TIME_JUST_NOW("Just now", "अहिले मात्र"),
+    TIME_MINUTES_AGO("%dm ago", "%d मि. अघि"),
+    TIME_HOURS_AGO("%dh ago", "%d घ. अघि"),
+    TIME_DAYS_AGO("%dd ago", "%d दि. अघि"),
+
+    // ============================================
+    // AI MODELS SCREEN
+    // ============================================
+    AI_MODELS_TITLE("AI Models", "AI मोडेलहरू"),
+    AI_MODELS_ENABLED_COUNT("%d models enabled", "%d मोडेलहरू सक्षम"),
+    AI_MODELS_REFRESH("Refresh models", "मोडेलहरू रिफ्रेश गर्नुहोस्"),
+    AI_MODELS_FREE_TITLE("Free AI Models", "निःशुल्क AI मोडेलहरू"),
+    AI_MODELS_FREE_DESC("These models are provided by free API providers and don't require any API keys. Model availability may vary.", "यी मोडेलहरू निःशुल्क API प्रदायकहरूबाट प्रदान गरिन्छन् र कुनै API कुञ्जी आवश्यक पर्दैन। मोडेल उपलब्धता भिन्न हुन सक्छ।"),
+    AI_MODELS_DEFAULT("Default Model", "पूर्वनिर्धारित मोडेल"),
+    AI_MODELS_NOT_SET("Not set", "सेट गरिएको छैन"),
+    AI_MODELS_SELECT_DEFAULT("Select Default Model", "पूर्वनिर्धारित मोडेल चयन गर्नुहोस्"),
+    AI_MODELS_ENABLE_ALL("Enable All", "सबै सक्षम गर्नुहोस्"),
+    AI_MODELS_DISABLE_ALL("Disable All", "सबै अक्षम गर्नुहोस्"),
+    AI_MODELS_ENABLED_PROVIDER("%d/%d models enabled", "%d/%d मोडेलहरू सक्षम"),
+    AI_MODELS_NONE_AVAILABLE("No Models Available", "कुनै मोडेल उपलब्ध छैन"),
+    AI_MODELS_FETCH_ERROR("Unable to fetch AI models. Check your internet connection and try again.", "AI मोडेलहरू प्राप्त गर्न असमर्थ। आफ्नो इन्टरनेट जडान जाँच गर्नुहोस् र पुन: प्रयास गर्नुहोस्।"),
+    AI_MODELS_RETRY("Retry", "पुन: प्रयास"),
+    AI_MODELS_TOOLS("Tools", "उपकरणहरू"),
+    AI_MODELS_REASONING("Reasoning", "तर्क"),
+    AI_MODELS_VISION("Vision", "दृष्टि"),
 
     // ============================================
     // REMEDIES SCREEN SPECIFIC
@@ -5403,6 +5603,19 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     UPACHAYA_TRANSIT_ASSESSMENT("Transit Assessment", "गोचर मूल्याङ्कन"),
     UPACHAYA_REFERENCE_POINTS("Reference Points", "सन्दर्भ बिन्दुहरू"),
     UPACHAYA_ABOUT("About Upachaya", "उपचयको बारेमा"),
+    UPACHAYA_HOUSES_LABEL("Upachaya Houses:", "उपचय भावहरू:"),
+    UPACHAYA_HOUSES_LIST("3rd (Courage), 6th (Enemies), 10th (Career), 11th (Gains)", "३ (साहस), ६ (शत्रु), १० (क्यारियर), ११ (लाभ)"),
+    UPACHAYA_TRANSIT_STRENGTH("Transit Strength", "गोचर बल"),
+    UPACHAYA_MOON_SIGN("Moon Sign", "चन्द्र राशि"),
+    UPACHAYA_LAGNA("Lagna", "लग्न"),
+    UPACHAYA_ACTIVE("Active", "सक्रिय"),
+    UPACHAYA_UPACHAYA_LABEL("Upachaya", "उपचय"),
+    UPACHAYA_LEVEL("Level:", "स्तर:"),
+    UPACHAYA_TRANSITING_PLANETS("Transiting Planets:", "गोचर गर्दै भएका ग्रहहरू:"),
+    UPACHAYA_HOUSE_SUFFIX("House", "भाव"),
+    UPACHAYA_HOUSE_TRANSITS_SUFFIX("House Transits", "भाव गोचरहरू"),
+    UPACHAYA_KEY_TRANSITS_WATCH("Key planetary transits to watch for Upachaya house activation", "उपचय भाव सक्रियताका लागि हेर्नुपर्ने मुख्य ग्रह गोचरहरू"),
+    UPACHAYA_ABOUT_DESC_SHORT("Upachaya houses (3, 6, 10, 11) are 'growth houses' where planets, especially malefics, give increasingly positive results over time. Transits through these houses bring opportunities for growth and success.", "उपचय भावहरू (३, ६, १०, ११) 'वृद्धि भावहरू' हुन् जहाँ ग्रहहरू, विशेष गरी पापग्रहहरूले, समयसँगै बढ्दो सकारात्मक परिणामहरू दिन्छन्। यी भावहरूबाट गोचरले वृद्धि र सफलताका अवसरहरू ल्याउँछ।"),
 
     // General UI labels needed by screens
     BIRTH_NAKSHATRA("Birth Nakshatra", "जन्म नक्षत्र"),

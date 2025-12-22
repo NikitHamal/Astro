@@ -78,6 +78,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.NityaYogaCalculator
 import com.astro.storm.ui.theme.AppTheme
@@ -103,7 +105,13 @@ fun NityaYogaScreen(
     var analysis by remember { mutableStateOf<NityaYogaCalculator.NityaYogaAnalysis?>(null) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    val tabs = listOf("Overview", "Effects", "Activities", "Timing", "All Yogas")
+    val tabs = listOf(
+        stringResource(StringKey.TAB_OVERVIEW),
+        stringResource(StringKey.TAB_EFFECTS),
+        stringResource(StringKey.TAB_ACTIVITIES),
+        stringResource(StringKey.TAB_TIMING),
+        stringResource(StringKey.TAB_ALL_YOGAS)
+    )
 
     // Calculate analysis
     LaunchedEffect(chart) {
@@ -130,13 +138,13 @@ fun NityaYogaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Nitya Yoga",
+                            text = stringResource(StringKey.NITYA_YOGA_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "27 Daily Yogas",
+                            text = stringResource(StringKey.NITYA_YOGA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -146,7 +154,7 @@ fun NityaYogaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.A11Y_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -155,7 +163,7 @@ fun NityaYogaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKey.A11Y_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }

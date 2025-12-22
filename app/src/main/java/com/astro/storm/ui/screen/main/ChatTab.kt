@@ -49,6 +49,7 @@ import com.astro.storm.data.local.chat.ChatMessageModel
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringResources
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.components.ContentCleaner
@@ -184,7 +185,7 @@ private fun ConversationsListScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "New Chat"
+                    contentDescription = stringResource(StringKey.CHAT_NEW_CHAT)
                 )
             }
         }
@@ -194,8 +195,8 @@ private fun ConversationsListScreen(
     conversationToDelete?.let { conversation ->
         AlertDialog(
             onDismissRequest = { conversationToDelete = null },
-            title = { Text("Delete Chat") },
-            text = { Text("Are you sure you want to delete \"${conversation.title}\"? This cannot be undone.") },
+            title = { Text(stringResource(StringKey.CHAT_DELETE)) },
+            text = { Text(stringResource(StringKey.CHAT_DELETE_CONFIRM).replace("{title}", conversation.title)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -203,12 +204,12 @@ private fun ConversationsListScreen(
                         conversationToDelete = null
                     }
                 ) {
-                    Text("Delete", color = colors.ErrorColor)
+                    Text(stringResource(StringKey.CHAT_DELETE), color = colors.ErrorColor)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { conversationToDelete = null }) {
-                    Text("Cancel")
+                    Text(stringResource(StringKey.UI_CANCEL))
                 }
             },
             containerColor = colors.CardBackground
@@ -257,7 +258,7 @@ private fun EmptyChatState(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Meet Stormy",
+            text = stringResource(StringKey.CHAT_MEET_STORMY),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary
@@ -266,7 +267,7 @@ private fun EmptyChatState(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Your Vedic astrology AI assistant",
+            text = stringResource(StringKey.CHAT_AI_ASSISTANT),
             style = MaterialTheme.typography.bodyLarge,
             color = colors.TextSecondary,
             textAlign = TextAlign.Center
@@ -275,7 +276,7 @@ private fun EmptyChatState(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Ask about your birth chart, planetary periods, transits, compatibility, remedies, and more.",
+            text = stringResource(StringKey.CHAT_AI_DESCRIPTION),
             style = MaterialTheme.typography.bodyMedium,
             color = colors.TextMuted,
             textAlign = TextAlign.Center,
@@ -299,7 +300,7 @@ private fun EmptyChatState(
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Start New Chat")
+                Text(stringResource(StringKey.CHAT_START_NEW))
             }
         } else {
             OutlinedButton(
@@ -316,7 +317,7 @@ private fun EmptyChatState(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Configure AI Models",
+                    text = stringResource(StringKey.CHAT_CONFIGURE_AI),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -325,7 +326,7 @@ private fun EmptyChatState(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Enable AI models to start chatting",
+                text = stringResource(StringKey.CHAT_ENABLE_MODELS),
                 style = MaterialTheme.typography.bodySmall,
                 color = colors.TextMuted
             )
@@ -411,7 +412,7 @@ private fun ConversationCard(
                     )
 
                     Text(
-                        text = "${conversation.messageCount} messages",
+                        text = stringResource(StringKey.CHAT_MESSAGES_COUNT).replace("%d", conversation.messageCount.toString()),
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.TextSubtle
                     )
@@ -422,7 +423,7 @@ private fun ConversationCard(
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
-                        contentDescription = "More options",
+                        contentDescription = stringResource(StringKey.CHAT_MORE_OPTIONS),
                         tint = colors.TextMuted
                     )
                 }
@@ -432,7 +433,7 @@ private fun ConversationCard(
                     onDismissRequest = { showMenu = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("Archive") },
+                        text = { Text(stringResource(StringKey.CHAT_ARCHIVE)) },
                         onClick = {
                             showMenu = false
                             onArchive()
@@ -442,7 +443,7 @@ private fun ConversationCard(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("Delete", color = colors.ErrorColor) },
+                        text = { Text(stringResource(StringKey.CHAT_DELETE), color = colors.ErrorColor) },
                         onClick = {
                             showMenu = false
                             onDelete()
@@ -538,7 +539,7 @@ fun ChatScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.A11Y_BACK),
                             tint = colors.TextPrimary
                         )
                     }
@@ -549,7 +550,7 @@ fun ChatScreen(
                         IconButton(onClick = { showModelOptions = true }) {
                             Icon(
                                 imageVector = Icons.Outlined.Tune,
-                                contentDescription = "Model options",
+                                contentDescription = stringResource(StringKey.CHAT_MODEL_OPTIONS),
                                 tint = colors.AccentPrimary
                             )
                         }
@@ -557,14 +558,14 @@ fun ChatScreen(
                     IconButton(onClick = { showModelSelector = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Psychology,
-                            contentDescription = "Change model",
+                            contentDescription = stringResource(StringKey.CHAT_CHANGE_MODEL),
                             tint = colors.TextSecondary
                         )
                     }
                     IconButton(onClick = { showClearConfirm = true }) {
                         Icon(
                             imageVector = Icons.Outlined.DeleteSweep,
-                            contentDescription = "Clear chat",
+                            contentDescription = stringResource(StringKey.CHAT_CLEAR_HISTORY),
                             tint = colors.TextSecondary
                         )
                     }
@@ -736,8 +737,8 @@ fun ChatScreen(
     if (showClearConfirm) {
         AlertDialog(
             onDismissRequest = { showClearConfirm = false },
-            title = { Text("Clear Chat") },
-            text = { Text("Are you sure you want to clear all messages in this conversation?") },
+            title = { Text(stringResource(StringKey.CHAT_CLEAR_CHAT)) },
+            text = { Text(stringResource(StringKey.CHAT_CLEAR_CONFIRM)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -745,12 +746,12 @@ fun ChatScreen(
                         showClearConfirm = false
                     }
                 ) {
-                    Text("Clear", color = colors.ErrorColor)
+                    Text(stringResource(StringKey.CHAT_CLEAR), color = colors.ErrorColor)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showClearConfirm = false }) {
-                    Text("Cancel")
+                    Text(stringResource(StringKey.UI_CANCEL))
                 }
             },
             containerColor = colors.CardBackground
@@ -763,7 +764,7 @@ fun ChatScreen(
             onDismissRequest = { showModelOptions = false },
             title = {
                 Text(
-                    text = "Model Options",
+                    text = stringResource(StringKey.CHAT_MODEL_OPTIONS_TITLE),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -793,13 +794,13 @@ fun ChatScreen(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "Thinking Mode",
+                                    text = stringResource(StringKey.CHAT_THINKING_MODE),
                                     style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Medium,
                                     color = colors.TextPrimary
                                 )
                                 Text(
-                                    text = "Extended reasoning before answering",
+                                    text = stringResource(StringKey.CHAT_THINKING_DESC),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = colors.TextMuted
                                 )
@@ -828,13 +829,13 @@ fun ChatScreen(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "Web Search",
+                                    text = stringResource(StringKey.CHAT_WEB_SEARCH),
                                     style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Medium,
                                     color = colors.TextPrimary
                                 )
                                 Text(
-                                    text = "Search the web for current information",
+                                    text = stringResource(StringKey.CHAT_WEB_SEARCH_DESC),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = colors.TextMuted
                                 )
@@ -853,7 +854,7 @@ fun ChatScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showModelOptions = false }) {
-                    Text("Done", color = colors.AccentPrimary)
+                    Text(stringResource(StringKey.CHAT_DONE), color = colors.AccentPrimary)
                 }
             },
             containerColor = colors.CardBackground
@@ -898,7 +899,7 @@ private fun WelcomeMessage(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Hello! I'm Stormy",
+            text = stringResource(StringKey.CHAT_HELLO_STORMY),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = colors.TextPrimary
@@ -907,7 +908,7 @@ private fun WelcomeMessage(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Your Vedic astrology assistant. Ask me anything about your birth chart, planetary periods, transits, compatibility, or remedies.",
+            text = stringResource(StringKey.CHAT_WELCOME_DESC),
             style = MaterialTheme.typography.bodyMedium,
             color = colors.TextMuted,
             textAlign = TextAlign.Center,
@@ -917,20 +918,24 @@ private fun WelcomeMessage(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Suggestion chips - clickable to populate input field
+        val suggestionDasha = stringResource(StringKey.CHAT_SUGGESTION_DASHA)
+        val suggestionAnalyze = stringResource(StringKey.CHAT_SUGGESTION_ANALYZE)
+        val suggestionYogas = stringResource(StringKey.CHAT_SUGGESTION_YOGAS)
+
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             SuggestionChip(
-                text = "What's my current dasha period?",
-                onClick = { onSuggestionClick("What's my current dasha period?") }
+                text = suggestionDasha,
+                onClick = { onSuggestionClick(suggestionDasha) }
             )
             SuggestionChip(
-                text = "Analyze my birth chart",
-                onClick = { onSuggestionClick("Analyze my birth chart") }
+                text = suggestionAnalyze,
+                onClick = { onSuggestionClick(suggestionAnalyze) }
             )
             SuggestionChip(
-                text = "What yogas are present in my chart?",
-                onClick = { onSuggestionClick("What yogas are present in my chart?") }
+                text = suggestionYogas,
+                onClick = { onSuggestionClick(suggestionYogas) }
             )
         }
     }
@@ -1140,7 +1145,7 @@ private fun ChatInputArea(
                     .focusRequester(focusRequester),
                 placeholder = {
                     Text(
-                        text = "Ask Stormy...",
+                        text = stringResource(StringKey.CHAT_ASK_STORMY),
                         color = colors.TextSubtle,
                         fontSize = 14.sp
                     )
@@ -1181,7 +1186,7 @@ private fun ChatInputArea(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Stop,
-                        contentDescription = "Stop",
+                        contentDescription = stringResource(StringKey.CHAT_STOP),
                         tint = Color.White
                     )
                 }
@@ -1207,7 +1212,7 @@ private fun ChatInputArea(
                     } else {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = "Send",
+                            contentDescription = stringResource(StringKey.CHAT_SEND),
                             tint = if (messageText.isNotBlank() && enabled) colors.ScreenBackground
                             else colors.TextMuted
                         )
@@ -1308,7 +1313,7 @@ private fun ModelSelectorBottomSheet(
                 .padding(bottom = 32.dp)
         ) {
             Text(
-                text = "Select AI Model",
+                text = stringResource(StringKey.CHAT_SELECT_MODEL),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.TextPrimary
@@ -1331,13 +1336,13 @@ private fun ModelSelectorBottomSheet(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "No models available",
+                        text = stringResource(StringKey.CHAT_NO_MODELS),
                         style = MaterialTheme.typography.bodyMedium,
                         color = colors.TextMuted
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     TextButton(onClick = onNavigateToModels) {
-                        Text("Configure Models")
+                        Text(stringResource(StringKey.CHAT_CONFIGURE_AI))
                     }
                 }
             } else {
@@ -1415,7 +1420,7 @@ private fun ModelSelectorBottomSheet(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Manage AI Models")
+                    Text(stringResource(StringKey.CHAT_MANAGE_MODELS))
                 }
             }
         }
@@ -1426,15 +1431,16 @@ private fun ModelSelectorBottomSheet(
 // UTILITIES
 // ============================================
 
+@Composable
 private fun formatTimestamp(timestamp: Long): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp
 
     return when {
-        diff < 60_000 -> "Just now"
-        diff < 3600_000 -> "${diff / 60_000}m ago"
-        diff < 86400_000 -> "${diff / 3600_000}h ago"
-        diff < 604800_000 -> "${diff / 86400_000}d ago"
+        diff < 60_000 -> stringResource(StringKey.TIME_JUST_NOW)
+        diff < 3600_000 -> stringResource(StringKey.TIME_MINUTES_AGO).replace("%d", (diff / 60_000).toString())
+        diff < 86400_000 -> stringResource(StringKey.TIME_HOURS_AGO).replace("%d", (diff / 3600_000).toString())
+        diff < 604800_000 -> stringResource(StringKey.TIME_DAYS_AGO).replace("%d", (diff / 86400_000).toString())
         else -> SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(timestamp))
     }
 }
