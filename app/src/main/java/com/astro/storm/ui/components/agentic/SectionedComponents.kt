@@ -31,6 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.ui.components.MarkdownText
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringResources
 
 /**
  * Sectioned UI Components for Dynamic Agentic Message Layout
@@ -63,6 +66,7 @@ fun TaskBoundarySection(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
 
     Column(
         modifier = modifier
@@ -118,7 +122,10 @@ fun TaskBoundarySection(
                         modifier = Modifier.size(14.dp)
                     )
                     Text(
-                        text = if (section.isStart) "Started: ${section.taskName}" else "Completed: ${section.taskName}",
+                        text = if (section.isStart)
+                            StringResources.get(StringKey.CHAT_TASK_STARTED, language, section.taskName)
+                        else
+                            StringResources.get(StringKey.CHAT_TASK_COMPLETED, language, section.taskName),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
                         color = if (section.isStart) colors.AccentPrimary else colors.SuccessColor
@@ -181,6 +188,7 @@ fun ReasoningSection(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
     val isActive = !section.isComplete
 
     Surface(
@@ -222,7 +230,7 @@ fun ReasoningSection(
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             Text(
-                                text = "Reasoning",
+                                text = StringResources.get(StringKey.CHAT_REASONING_TITLE, language),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color = colors.AccentPrimary
@@ -235,11 +243,11 @@ fun ReasoningSection(
                         // Duration or status
                         Text(
                             text = if (section.isComplete && section.durationMs > 0)
-                                "Reasoned for ${section.durationDisplay}"
+                                StringResources.get(StringKey.CHAT_REASONING_DURATION, language, section.durationDisplay)
                             else if (isActive)
-                                "Analyzing..."
+                                StringResources.get(StringKey.CHAT_REASONING_ANALYZING, language)
                             else
-                                "Tap to view",
+                                StringResources.get(StringKey.CHAT_REASONING_TAP_VIEW, language),
                             style = MaterialTheme.typography.labelSmall,
                             color = colors.TextMuted
                         )
@@ -248,7 +256,10 @@ fun ReasoningSection(
 
                 Icon(
                     imageVector = if (section.isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                    contentDescription = if (section.isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (section.isExpanded)
+                        StringResources.get(StringKey.CHAT_COLLAPSE, language)
+                    else
+                        StringResources.get(StringKey.CHAT_EXPAND, language),
                     tint = colors.AccentPrimary,
                     modifier = Modifier.size(22.dp)
                 )
@@ -327,6 +338,7 @@ fun ToolGroupSection(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
 
     // Determine overall status color
     val statusColor = when {
@@ -392,7 +404,7 @@ fun ToolGroupSection(
 
                     Column {
                         Text(
-                            text = "Astrological Tools",
+                            text = StringResources.get(StringKey.CHAT_TOOLS_TITLE, language),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.TextPrimary
@@ -407,7 +419,10 @@ fun ToolGroupSection(
 
                 Icon(
                     imageVector = if (section.isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                    contentDescription = if (section.isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (section.isExpanded)
+                        StringResources.get(StringKey.CHAT_COLLAPSE, language)
+                    else
+                        StringResources.get(StringKey.CHAT_EXPAND, language),
                     tint = colors.TextMuted,
                     modifier = Modifier.size(22.dp)
                 )
@@ -559,8 +574,12 @@ private fun ToolExecutionRow(tool: ToolExecution) {
 /**
  * Content Section - Main response text
  *
- * Displays the AI's response content with Markdown rendering
- * and an optional typing indicator.
+ * For a cleaner UX, we do NOT stream content progressively.
+ * Instead, we show a "Composing response..." indicator while the AI is typing,
+ * and only display the full content when complete.
+ *
+ * This eliminates visual glitches, content duplication issues, and provides
+ * a more polished user experience similar to professional AI assistants.
  */
 @Composable
 fun ContentSection(
@@ -573,7 +592,9 @@ fun ContentSection(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        if (section.text.isNotEmpty()) {
+        // Only show content when the section is complete (not streaming)
+        // This eliminates streaming glitches and content duplication
+        if (section.isComplete && section.text.isNotEmpty()) {
             MarkdownText(
                 markdown = section.text,
                 modifier = Modifier.fillMaxWidth(),
@@ -582,49 +603,64 @@ fun ContentSection(
                 textSize = 15f,
                 cleanContent = false
             )
-
-            // Typing indicator
-            if (section.isTyping && !section.isComplete) {
-                Spacer(modifier = Modifier.height(4.dp))
-                TypingIndicator()
-            }
-        } else if (section.isTyping && !section.isComplete) {
-            // Show typing indicator even without content
-            TypingIndicator()
+        } else if (!section.isComplete) {
+            // Show composing indicator while AI is generating content
+            ComposingIndicator()
         }
     }
 }
 
 /**
- * Animated typing indicator
+ * Composing indicator shown while AI is generating response
+ * More elegant than streaming text character by character
  */
 @Composable
-private fun TypingIndicator() {
+private fun ComposingIndicator() {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
 
-    Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-        repeat(3) { index ->
-            val infiniteTransition = rememberInfiniteTransition(label = "type_dot_$index")
-            val alpha by infiniteTransition.animateFloat(
-                initialValue = 0.3f,
-                targetValue = 1f,
-                animationSpec = infiniteRepeatable(
-                    animation = keyframes {
-                        durationMillis = 1000
-                        0.3f at 0
-                        1f at 300
-                        0.3f at 600
-                    },
-                    repeatMode = RepeatMode.Restart,
-                    initialStartOffset = StartOffset(index * 150)
-                ),
-                label = "type_alpha_$index"
-            )
-            Box(
-                modifier = Modifier
-                    .size(5.dp)
-                    .clip(CircleShape)
-                    .background(colors.TextMuted.copy(alpha = alpha))
+    Surface(
+        color = colors.ChipBackground,
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            // Animated dots
+            Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+                repeat(3) { index ->
+                    val infiniteTransition = rememberInfiniteTransition(label = "compose_dot_$index")
+                    val alpha by infiniteTransition.animateFloat(
+                        initialValue = 0.3f,
+                        targetValue = 1f,
+                        animationSpec = infiniteRepeatable(
+                            animation = keyframes {
+                                durationMillis = 1200
+                                0.3f at 0
+                                1f at 400
+                                0.3f at 800
+                            },
+                            repeatMode = RepeatMode.Restart,
+                            initialStartOffset = StartOffset(index * 200)
+                        ),
+                        label = "compose_alpha_$index"
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .clip(CircleShape)
+                            .background(colors.AccentPrimary.copy(alpha = alpha))
+                    )
+                }
+            }
+
+            Text(
+                text = StringResources.get(StringKey.CHAT_STATUS_COMPOSING, language),
+                style = MaterialTheme.typography.bodySmall,
+                color = colors.TextMuted
             )
         }
     }
@@ -648,6 +684,7 @@ fun AskUserSection(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
     var customInput by remember { mutableStateOf("") }
 
     Surface(
@@ -681,7 +718,7 @@ fun AskUserSection(
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Stormy needs your input",
+                        text = StringResources.get(StringKey.CHAT_ASK_USER_TITLE, language),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.AccentGold
@@ -739,7 +776,7 @@ fun AskUserSection(
                             Box {
                                 if (customInput.isEmpty()) {
                                     Text(
-                                        text = "Type your response...",
+                                        text = StringResources.get(StringKey.CHAT_ASK_USER_PLACEHOLDER, language),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = colors.TextMuted
                                     )
@@ -759,7 +796,7 @@ fun AskUserSection(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Send,
-                            contentDescription = "Send",
+                            contentDescription = StringResources.get(StringKey.CHAT_SEND, language),
                             tint = if (customInput.isNotBlank())
                                 colors.AccentPrimary
                             else
@@ -789,7 +826,7 @@ fun AskUserSection(
                         Text(
                             text = section.customResponse
                                 ?: section.options.find { it.id == section.selectedOptionId }?.label
-                                ?: "Response submitted",
+                                ?: StringResources.get(StringKey.CHAT_ASK_USER_SUBMITTED, language),
                             style = MaterialTheme.typography.bodySmall,
                             color = colors.TextPrimary
                         )
@@ -888,6 +925,7 @@ fun TodoListSection(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
 
     // Progress color based on completion
     val progressColor = when {
@@ -961,7 +999,10 @@ fun TodoListSection(
 
                     Icon(
                         imageVector = if (section.isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                        contentDescription = if (section.isExpanded) "Collapse" else "Expand",
+                        contentDescription = if (section.isExpanded)
+                            StringResources.get(StringKey.CHAT_COLLAPSE, language)
+                        else
+                            StringResources.get(StringKey.CHAT_EXPAND, language),
                         tint = colors.TextMuted,
                         modifier = Modifier.size(22.dp)
                     )
@@ -979,7 +1020,7 @@ fun TodoListSection(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     section.items.forEach { item ->
-                        TodoItemRow(item = item)
+                        TodoItemRow(item = item, language = language)
                     }
                 }
             }
@@ -991,7 +1032,10 @@ fun TodoListSection(
  * Individual todo item row
  */
 @Composable
-private fun TodoItemRow(item: TodoItem) {
+private fun TodoItemRow(
+    item: TodoItem,
+    language: com.astro.storm.data.localization.Language
+) {
     val colors = AppTheme.current
 
     val (icon, iconColor, textColor) = when {
@@ -1067,7 +1111,7 @@ private fun TodoItemRow(item: TodoItem) {
                 shape = RoundedCornerShape(4.dp)
             ) {
                 Text(
-                    text = "In Progress",
+                    text = StringResources.get(StringKey.CHAT_TODO_IN_PROGRESS, language),
                     style = MaterialTheme.typography.labelSmall,
                     color = colors.AccentTeal,
                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -1092,35 +1136,36 @@ fun ProfileOperationSection(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
 
     val (icon, statusColor, statusText) = when (section.status) {
         ProfileOperationStatus.PENDING -> Triple(
             Icons.Outlined.Schedule,
             colors.TextMuted,
-            "Pending"
+            StringResources.get(StringKey.CHAT_PROFILE_PENDING, language)
         )
         ProfileOperationStatus.IN_PROGRESS -> Triple(
             Icons.Outlined.Sync,
             colors.AccentTeal,
-            "In Progress"
+            StringResources.get(StringKey.CHAT_PROFILE_IN_PROGRESS, language)
         )
         ProfileOperationStatus.SUCCESS -> Triple(
             Icons.Filled.CheckCircle,
             colors.SuccessColor,
-            "Success"
+            StringResources.get(StringKey.CHAT_PROFILE_SUCCESS, language)
         )
         ProfileOperationStatus.FAILED -> Triple(
             Icons.Outlined.ErrorOutline,
             colors.ErrorColor,
-            "Failed"
+            StringResources.get(StringKey.CHAT_PROFILE_FAILED, language)
         )
     }
 
     val operationText = when (section.operation) {
-        ProfileOperationType.CREATE -> "Creating Profile"
-        ProfileOperationType.UPDATE -> "Updating Profile"
-        ProfileOperationType.DELETE -> "Deleting Profile"
-        ProfileOperationType.VIEW -> "Viewing Profile"
+        ProfileOperationType.CREATE -> StringResources.get(StringKey.CHAT_PROFILE_CREATING, language)
+        ProfileOperationType.UPDATE -> StringResources.get(StringKey.CHAT_PROFILE_UPDATING, language)
+        ProfileOperationType.DELETE -> StringResources.get(StringKey.CHAT_PROFILE_DELETING, language)
+        ProfileOperationType.VIEW -> StringResources.get(StringKey.CHAT_PROFILE_VIEWING, language)
     }
 
     Surface(
@@ -1201,7 +1246,7 @@ fun ProfileOperationSection(
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
-                        text = "ID: ${section.profileId}",
+                        text = StringResources.get(StringKey.CHAT_PROFILE_ID, language, section.profileId),
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.TextSubtle,
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)

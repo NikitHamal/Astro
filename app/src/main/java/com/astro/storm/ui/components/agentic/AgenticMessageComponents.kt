@@ -34,6 +34,10 @@ import com.astro.storm.ui.viewmodel.AiStatus
 import com.astro.storm.ui.viewmodel.StreamingMessageState
 import com.astro.storm.ui.viewmodel.ToolExecutionStep
 import com.astro.storm.ui.viewmodel.ToolStepStatus
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringResources
 
 /**
  * Modern Agentic Message Layout - Professional IDE-style AI Message Display
@@ -666,8 +670,9 @@ private fun ThinkingIndicator() {
 /**
  * Main Content Panel - Response content with status indicators
  *
- * Displays the main response content with Markdown rendering.
- * Shows appropriate status indicators during processing phases.
+ * For a cleaner UX, we do NOT stream content progressively.
+ * Instead, we show a "Composing response..." indicator while the AI is generating,
+ * and only display the full content when complete.
  */
 @Composable
 fun ContentPanel(
@@ -677,16 +682,16 @@ fun ContentPanel(
     isProcessing: Boolean = false
 ) {
     val colors = AppTheme.current
-    val isTyping = aiStatus is AiStatus.Typing ||
-        (aiStatus !is AiStatus.Idle && aiStatus !is AiStatus.Complete && content.isNotEmpty())
+    val isComplete = aiStatus is AiStatus.Complete || aiStatus is AiStatus.Idle
 
     // Content container - clean, no bubble for AI messages
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Main content area
-        if (content.isNotEmpty()) {
+        // Only show content when AI has finished generating (not streaming)
+        // This eliminates streaming glitches and provides a cleaner UX
+        if (isComplete && content.isNotEmpty()) {
             // Render content with Markdown support
             MarkdownText(
                 markdown = content,
@@ -696,19 +701,13 @@ fun ContentPanel(
                 textSize = 15f,
                 cleanContent = false // Already cleaned above
             )
-
-            // Typing indicator at end when actively typing
-            if (isTyping) {
-                Spacer(modifier = Modifier.height(4.dp))
-                TypingDots()
-            }
-        } else if (aiStatus !is AiStatus.Idle && aiStatus !is AiStatus.Complete) {
-            // Show status indicator when no content yet
-            StatusIndicatorInline(aiStatus = aiStatus)
+        } else if (!isComplete) {
+            // Show composing indicator while AI is generating
+            ComposingIndicatorLegacy(aiStatus = aiStatus)
         }
 
         // Tools used badge - show after completion
-        if (toolsUsed.isNotEmpty() && !isProcessing && aiStatus is AiStatus.Complete) {
+        if (toolsUsed.isNotEmpty() && isComplete) {
             Spacer(modifier = Modifier.height(4.dp))
             ToolsUsedBadge(tools = toolsUsed)
         }
@@ -716,76 +715,63 @@ fun ContentPanel(
 }
 
 /**
- * Inline status indicator for pre-content phases
+ * Composing indicator for legacy AgenticMessageCard
  */
 @Composable
-private fun StatusIndicatorInline(aiStatus: AiStatus) {
+private fun ComposingIndicatorLegacy(aiStatus: AiStatus) {
     val colors = AppTheme.current
 
-    val (statusText, statusIcon) = when (aiStatus) {
-        is AiStatus.Idle, is AiStatus.Complete -> return
-        is AiStatus.Thinking -> "Analyzing your question..." to Icons.Outlined.Psychology
-        is AiStatus.Reasoning -> "Applying Vedic principles..." to Icons.Outlined.Lightbulb
-        is AiStatus.CallingTool -> "Using ${ToolDisplayUtils.formatToolName(aiStatus.toolName)}..." to Icons.Outlined.Build
-        is AiStatus.ExecutingTools -> "Gathering astrological data..." to Icons.Outlined.Build
-        is AiStatus.Typing -> "Composing response..." to Icons.Outlined.Edit
+    val statusText = when (aiStatus) {
+        is AiStatus.Thinking -> "Analyzing your question..."
+        is AiStatus.Reasoning -> "Applying Vedic principles..."
+        is AiStatus.CallingTool -> "Using ${ToolDisplayUtils.formatToolName(aiStatus.toolName)}..."
+        is AiStatus.ExecutingTools -> "Gathering astrological data..."
+        is AiStatus.Typing -> "Composing response..."
+        else -> "Processing..."
     }
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier.padding(vertical = 8.dp)
+    Surface(
+        color = colors.ChipBackground,
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(16.dp),
-            strokeWidth = 2.dp,
-            color = colors.AccentPrimary
-        )
-        Icon(
-            imageVector = statusIcon,
-            contentDescription = null,
-            tint = colors.TextMuted,
-            modifier = Modifier.size(16.dp)
-        )
-        Text(
-            text = statusText,
-            style = MaterialTheme.typography.bodySmall,
-            color = colors.TextMuted,
-            fontStyle = FontStyle.Italic
-        )
-    }
-}
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            // Animated dots
+            Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+                repeat(3) { index ->
+                    val infiniteTransition = rememberInfiniteTransition(label = "legacy_dot_$index")
+                    val alpha by infiniteTransition.animateFloat(
+                        initialValue = 0.3f,
+                        targetValue = 1f,
+                        animationSpec = infiniteRepeatable(
+                            animation = keyframes {
+                                durationMillis = 1200
+                                0.3f at 0
+                                1f at 400
+                                0.3f at 800
+                            },
+                            repeatMode = RepeatMode.Restart,
+                            initialStartOffset = StartOffset(index * 200)
+                        ),
+                        label = "legacy_alpha_$index"
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .clip(CircleShape)
+                            .background(colors.AccentPrimary.copy(alpha = alpha))
+                    )
+                }
+            }
 
-/**
- * Animated typing dots indicator
- */
-@Composable
-fun TypingDots() {
-    val colors = AppTheme.current
-
-    Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-        repeat(3) { index ->
-            val infiniteTransition = rememberInfiniteTransition(label = "type_dot_$index")
-            val alpha by infiniteTransition.animateFloat(
-                initialValue = 0.3f,
-                targetValue = 1f,
-                animationSpec = infiniteRepeatable(
-                    animation = keyframes {
-                        durationMillis = 1000
-                        0.3f at 0
-                        1f at 300
-                        0.3f at 600
-                    },
-                    repeatMode = RepeatMode.Restart,
-                    initialStartOffset = StartOffset(index * 150)
-                ),
-                label = "type_alpha_$index"
-            )
-            Box(
-                modifier = Modifier
-                    .size(5.dp)
-                    .clip(CircleShape)
-                    .background(colors.TextMuted.copy(alpha = alpha))
+            Text(
+                text = statusText,
+                style = MaterialTheme.typography.bodySmall,
+                color = colors.TextMuted
             )
         }
     }

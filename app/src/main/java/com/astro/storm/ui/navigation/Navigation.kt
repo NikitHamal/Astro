@@ -11,17 +11,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ui.screen.ArgalaScreen
-import com.astro.storm.ui.screen.AshtakavargaScreen
+import com.astro.storm.ui.screen.ashtakavarga.AshtakavargaScreenRedesigned
 import com.astro.storm.ui.screen.BhriguBinduScreen
 import com.astro.storm.ui.screen.BirthChartScreen
 import com.astro.storm.ui.screen.CharaDashaScreen
 import com.astro.storm.ui.screen.ChartAnalysisScreen
 import com.astro.storm.ui.screen.ChartInputScreen
-import com.astro.storm.ui.screen.DashasScreen
+import com.astro.storm.ui.screen.dasha.DashaSystemsScreen
 import com.astro.storm.ui.screen.matchmaking.MatchmakingScreen
 import com.astro.storm.ui.screen.MuhurtaScreen
 import com.astro.storm.ui.screen.NakshatraScreen
-import com.astro.storm.ui.screen.PanchangaScreen
+import com.astro.storm.ui.screen.panchanga.PanchangaScreenRedesigned
 import com.astro.storm.ui.screen.PlanetsScreen
 import com.astro.storm.ui.screen.PrashnaScreen
 import com.astro.storm.ui.screen.PredictionsScreen
@@ -29,9 +29,9 @@ import com.astro.storm.ui.screen.RemediesScreen
 import com.astro.storm.ui.screen.ShadbalaScreen
 import com.astro.storm.ui.screen.ShodashvargaScreen
 import com.astro.storm.ui.screen.SynastryScreen
-import com.astro.storm.ui.screen.TransitsScreen
+import com.astro.storm.ui.screen.transits.TransitsScreenRedesigned
 import com.astro.storm.ui.screen.VarshaphalaScreen
-import com.astro.storm.ui.screen.YogasScreen
+import com.astro.storm.ui.screen.yogas.YogasScreenRedesigned
 import com.astro.storm.ui.screen.YoginiDashaScreen
 import com.astro.storm.ui.screen.AshtottariDashaScreen
 import com.astro.storm.ui.screen.SudarshanaChakraScreen
@@ -648,7 +648,7 @@ fun AstroStormNavigation(
                 }
             }
 
-            YogasScreen(
+            YogasScreenRedesigned(
                 chart = currentChart,
                 onBack = { navController.popBackStack() }
             )
@@ -667,7 +667,7 @@ fun AstroStormNavigation(
                 }
             }
 
-            DashasScreen(
+            DashaSystemsScreen(
                 chart = currentChart,
                 onBack = { navController.popBackStack() },
                 onNavigateToYoginiDasha = {
@@ -692,7 +692,7 @@ fun AstroStormNavigation(
                 }
             }
 
-            TransitsScreen(
+            TransitsScreenRedesigned(
                 chart = currentChart,
                 onBack = { navController.popBackStack() }
             )
@@ -711,7 +711,7 @@ fun AstroStormNavigation(
                 }
             }
 
-            AshtakavargaScreen(
+            AshtakavargaScreenRedesigned(
                 chart = currentChart,
                 onBack = { navController.popBackStack() }
             )
@@ -730,7 +730,7 @@ fun AstroStormNavigation(
                 }
             }
 
-            PanchangaScreen(
+            PanchangaScreenRedesigned(
                 chart = currentChart,
                 onBack = { navController.popBackStack() }
             )

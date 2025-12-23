@@ -150,8 +150,11 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private var streamingJob: Job? = null
 
     // Raw content accumulators for proper cleaning
+    // These are cleared at the start of each message
     private var rawContentAccumulator = StringBuilder()
-    private var rawReasoningAccumulator = StringBuilder()
+
+    // Per-section reasoning accumulator - resets when a new reasoning section starts
+    private var currentReasoningAccumulator = StringBuilder()
 
     // Tool steps accumulator for agentic UI
     private var currentToolSteps = mutableListOf<ToolExecutionStep>()
@@ -164,6 +167,9 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private var currentTodoList: AgentSection.TodoList? = null
     private var activeTaskId: String? = null
     private var reasoningStartTime: Long = 0L
+
+    // Track whether we're in reasoning mode or content mode
+    private var isInReasoningMode: Boolean = false
 
     // Performance optimization: Throttling for UI updates
     private var lastUiUpdateTime = 0L
@@ -404,7 +410,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
                 // Reset accumulators and throttle timers
                 rawContentAccumulator.clear()
-                rawReasoningAccumulator.clear()
+                currentReasoningAccumulator.clear()
                 currentToolSteps.clear()
                 lastUiUpdateTime = 0L
                 lastDbUpdateTime = 0L
@@ -418,6 +424,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 currentTodoList = null
                 activeTaskId = null
                 reasoningStartTime = 0L
+                isInReasoningMode = false
 
                 // Get or create conversation ID
                 // If we're in "new chat" mode, create the conversation now (lazy creation)
@@ -516,9 +523,13 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                                 // Accumulate raw content
                                 rawContentAccumulator.append(response.text)
 
-                                // Mark reasoning as complete when content starts
-                                if (currentReasoningSection != null && !currentReasoningSection!!.isComplete) {
-                                    finalizeReasoningSection()
+                                // Switch out of reasoning mode when content starts
+                                if (isInReasoningMode) {
+                                    isInReasoningMode = false
+                                    // Mark reasoning as complete when content starts
+                                    if (currentReasoningSection != null && !currentReasoningSection!!.isComplete) {
+                                        finalizeReasoningSection()
+                                    }
                                 }
 
                                 // Throttled UI update for smooth performance
@@ -551,34 +562,41 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                                     lastDbUpdateTime = currentTime
                                     currentMessageId?.let { msgId ->
                                         val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
-                                        val cleanedReasoning = if (rawReasoningAccumulator.isNotEmpty()) {
-                                            ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
-                                        } else null
+                                        val cleanedReasoning = getCombinedReasoning()
 
                                         chatRepository.updateAssistantMessageContent(
                                             messageId = msgId,
                                             content = cleanedContent,
-                                            reasoningContent = cleanedReasoning?.takeIf { it.isNotEmpty() },
+                                            reasoningContent = cleanedReasoning.takeIf { it.isNotEmpty() },
                                             isStreaming = true
                                         )
                                     }
                                 }
                             }
                             is AgentResponse.ReasoningChunk -> {
-                                // Accumulate raw reasoning
-                                rawReasoningAccumulator.append(response.text)
-
-                                // Track reasoning section start time
-                                if (reasoningStartTime == 0L) {
+                                // If we were in content mode, finalize the current reasoning section
+                                // and start a new one (this handles the A->content->B scenario)
+                                if (!isInReasoningMode) {
+                                    // Finalize any existing reasoning section
+                                    if (currentReasoningSection != null && !currentReasoningSection!!.isComplete) {
+                                        finalizeReasoningSection()
+                                    }
+                                    // Reset for new reasoning section
+                                    currentReasoningAccumulator.clear()
+                                    currentReasoningSection = null
                                     reasoningStartTime = System.currentTimeMillis()
+                                    isInReasoningMode = true
                                 }
+
+                                // Accumulate reasoning for current section only
+                                currentReasoningAccumulator.append(response.text)
 
                                 // Throttled UI update for reasoning
                                 val currentTime = System.currentTimeMillis()
                                 if (currentTime - lastUiUpdateTime >= UI_UPDATE_THROTTLE_MS) {
                                     lastUiUpdateTime = currentTime
 
-                                    val cleanedReasoning = ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                                    val cleanedReasoning = ContentCleaner.cleanReasoning(currentReasoningAccumulator.toString())
                                     if (cleanedReasoning.isNotEmpty()) {
                                         _streamingReasoning.value = cleanedReasoning
 
@@ -587,7 +605,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                                             _aiStatus.value = AiStatus.Reasoning
                                         }
 
-                                        // Update or create reasoning section
+                                        // Update or create reasoning section with per-section content
                                         updateReasoningSection(cleanedReasoning, isComplete = false)
 
                                         // Update streaming message state
@@ -601,7 +619,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                                     lastDbUpdateTime = currentTime
                                     currentMessageId?.let { msgId ->
                                         val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
-                                        val cleanedReasoning = ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                                        val cleanedReasoning = getCombinedReasoning()
                                         chatRepository.updateAssistantMessageContent(
                                             messageId = msgId,
                                             content = cleanedContent,
@@ -844,12 +862,23 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             _streamingMessageState.value = StreamingMessageState(
                 messageId = msgId,
                 content = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString()),
-                reasoning = if (rawReasoningAccumulator.isNotEmpty()) {
-                    ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
-                } else "",
+                reasoning = getCombinedReasoning(),
                 toolSteps = currentToolSteps.toList(),
                 isComplete = false
             )
+        }
+    }
+
+    /**
+     * Get combined reasoning from all reasoning sections.
+     * Each section's content is kept separate for display, but combined for storage.
+     */
+    private fun getCombinedReasoning(): String {
+        val reasoningSections = currentSections.filterIsInstance<AgentSection.Reasoning>()
+        return if (reasoningSections.isNotEmpty()) {
+            reasoningSections.joinToString("\n\n---\n\n") { it.content }
+        } else {
+            ""
         }
     }
 
@@ -990,7 +1019,11 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                         existingTools.add(newTool)
                     }
                 }
-                currentToolGroup = currentToolGroup!!.copy(tools = existingTools)
+                // Preserve the isExpanded state when updating tools
+                currentToolGroup = currentToolGroup!!.copy(
+                    tools = existingTools,
+                    isExpanded = currentToolGroup!!.isExpanded
+                )
                 currentSections[index] = currentToolGroup!!
             }
         }
@@ -1302,6 +1335,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         currentTodoList = null
         activeTaskId = null
         reasoningStartTime = 0L
+        isInReasoningMode = false
         _sectionedMessageState.value = null
     }
 
@@ -1406,7 +1440,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
         // Clear accumulators
         rawContentAccumulator.clear()
-        rawReasoningAccumulator.clear()
+        currentReasoningAccumulator.clear()
         currentToolSteps.clear()
 
         // Reset throttle timers

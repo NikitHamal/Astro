@@ -21,6 +21,10 @@ import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.MarkdownText
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.AiStatus
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringResources
 
 /**
  * Sectioned Agentic Message Card
@@ -157,6 +161,7 @@ private fun SectionedAgentHeader(
     aiStatus: AiStatus
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -220,7 +225,7 @@ private fun SectionedAgentHeader(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Stormy",
+                    text = StringResources.get(StringKey.CHAT_STORMY_NAME, language),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
@@ -232,7 +237,7 @@ private fun SectionedAgentHeader(
             }
 
             // Status text
-            val statusText = getStatusText(aiStatus)
+            val statusText = getStatusText(aiStatus, language)
             statusText?.let {
                 Text(
                     text = it,
@@ -307,7 +312,9 @@ private fun ErrorBanner(message: String) {
 @Composable
 private fun ProcessingIndicator(aiStatus: AiStatus) {
     val colors = AppTheme.current
-    val statusText = getStatusText(aiStatus) ?: "Processing..."
+    val language = LocalLanguage.current
+    val statusText = getStatusText(aiStatus, language)
+        ?: StringResources.get(StringKey.CHAT_STATUS_COMPOSING, language)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -330,15 +337,15 @@ private fun ProcessingIndicator(aiStatus: AiStatus) {
 /**
  * Get status text for current AI status
  */
-private fun getStatusText(aiStatus: AiStatus): String? {
+private fun getStatusText(aiStatus: AiStatus, language: Language): String? {
     return when (aiStatus) {
         is AiStatus.Idle -> null
         is AiStatus.Complete -> null
-        is AiStatus.Thinking -> "Analyzing your question..."
-        is AiStatus.Reasoning -> "Reasoning through Vedic principles..."
-        is AiStatus.CallingTool -> "Using ${ToolDisplayUtils.formatToolName(aiStatus.toolName)}..."
-        is AiStatus.ExecutingTools -> "Gathering astrological data..."
-        is AiStatus.Typing -> "Composing response..."
+        is AiStatus.Thinking -> StringResources.get(StringKey.CHAT_STATUS_ANALYZING, language)
+        is AiStatus.Reasoning -> StringResources.get(StringKey.CHAT_STATUS_REASONING_VEDIC, language)
+        is AiStatus.CallingTool -> StringResources.get(StringKey.CHAT_STATUS_CALLING_TOOL, language, ToolDisplayUtils.formatToolName(aiStatus.toolName))
+        is AiStatus.ExecutingTools -> StringResources.get(StringKey.CHAT_STATUS_GATHERING, language)
+        is AiStatus.Typing -> StringResources.get(StringKey.CHAT_STATUS_COMPOSING, language)
     }
 }
 

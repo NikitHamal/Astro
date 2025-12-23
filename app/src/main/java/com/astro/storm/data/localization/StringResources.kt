@@ -1009,7 +1009,115 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     ONBOARDING_BTN_NEXT("Next", "अर्को"),
     ONBOARDING_BTN_BACK("Back", "पछाडि"),
     ONBOARDING_BTN_GET_STARTED("Get Started", "सुरु गर्नुहोस्"),
-    ONBOARDING_BTN_SKIP("Skip", "छोड्नुहोस्");
+    ONBOARDING_BTN_SKIP("Skip", "छोड्नुहोस्"),
+
+    // ============================================
+    // CHAT / AI ASSISTANT (STORMY)
+    // ============================================
+    // General
+    CHAT_STORMY_NAME("Stormy", "Stormy"),
+    CHAT_TITLE("Chat", "च्याट"),
+    CHAT_NEW("Start New Chat", "नयाँ च्याट सुरु गर्नुहोस्"),
+    CHAT_CLEAR("Clear Chat", "च्याट खाली गर्नुहोस्"),
+    CHAT_CLEAR_CONFIRM("Are you sure you want to clear all messages in this conversation?", "के तपाईं यस कुराकानीका सबै सन्देशहरू खाली गर्न चाहनुहुन्छ?"),
+    CHAT_DELETE("Delete Chat", "च्याट मेट्नुहोस्"),
+    CHAT_DELETE_CONFIRM("Are you sure you want to delete \"%s\"? This cannot be undone.", "के तपाईं \"%s\" मेट्न चाहनुहुन्छ? यो पूर्ववत गर्न सकिँदैन।"),
+    CHAT_ARCHIVE("Archive", "संग्रह गर्नुहोस्"),
+
+    // Welcome/Empty State
+    CHAT_WELCOME_TITLE("Meet Stormy", "Stormy लाई भेट्नुहोस्"),
+    CHAT_WELCOME_SUBTITLE("Your Vedic astrology AI assistant", "तपाईंको वैदिक ज्योतिष AI सहायक"),
+    CHAT_WELCOME_DESC("Ask about your birth chart, planetary periods, transits, compatibility, remedies, and more.", "आफ्नो जन्म कुण्डली, ग्रह अवधि, गोचर, अनुकूलता, उपायहरू, र थप बारेमा सोध्नुहोस्।"),
+    CHAT_HELLO_STORMY("Hello! I'm Stormy", "नमस्ते! म Stormy हुँ"),
+    CHAT_HELLO_DESC("Your Vedic astrology assistant. Ask me anything about your birth chart, planetary periods, transits, compatibility, or remedies.", "तपाईंको वैदिक ज्योतिष सहायक। जन्म कुण्डली, ग्रह अवधि, गोचर, अनुकूलता, वा उपायहरूको बारेमा जे सोध्नुहोस्।"),
+    CHAT_NO_MODELS("No models available", "कुनै मोडेल उपलब्ध छैन"),
+    CHAT_NO_MODELS_HINT("Enable AI models to start chatting", "च्याट सुरु गर्न AI मोडेलहरू सक्षम गर्नुहोस्"),
+    CHAT_CONFIGURE_MODELS("Configure AI Models", "AI मोडेलहरू कन्फिगर गर्नुहोस्"),
+
+    // Input
+    CHAT_INPUT_PLACEHOLDER("Ask Stormy...", "Stormy लाई सोध्नुहोस्..."),
+    CHAT_SEND("Send", "पठाउनुहोस्"),
+    CHAT_STOP("Stop", "रोक्नुहोस्"),
+
+    // AI Status Messages
+    CHAT_STATUS_THINKING("Stormy is thinking...", "Stormy सोच्दैछ..."),
+    CHAT_STATUS_REASONING("Stormy is reasoning...", "Stormy विचार गर्दैछ..."),
+    CHAT_STATUS_CALLING_TOOL("Calling %s...", "%s कल गर्दै..."),
+    CHAT_STATUS_USING_TOOLS("Using tools: %s", "उपकरणहरू प्रयोग गर्दै: %s"),
+    CHAT_STATUS_TYPING("Stormy is typing...", "Stormy टाइप गर्दैछ..."),
+    CHAT_STATUS_COMPOSING("Composing response...", "प्रतिक्रिया तयार गर्दै..."),
+    CHAT_STATUS_ANALYZING("Analyzing your question...", "तपाईंको प्रश्न विश्लेषण गर्दै..."),
+    CHAT_STATUS_GATHERING("Gathering astrological data...", "ज्योतिषीय डाटा संकलन गर्दै..."),
+    CHAT_STATUS_REASONING_VEDIC("Reasoning through Vedic principles...", "वैदिक सिद्धान्तहरूमा विचार गर्दै..."),
+
+    // Reasoning Section
+    CHAT_REASONING_TITLE("Reasoning", "विचार प्रक्रिया"),
+    CHAT_REASONING_ANALYZING("Analyzing...", "विश्लेषण गर्दै..."),
+    CHAT_REASONING_TAP_VIEW("Tap to view", "हेर्न ट्याप गर्नुहोस्"),
+    CHAT_REASONING_TAP_VIEW_REASONING("Tap to view reasoning", "विचार हेर्न ट्याप गर्नुहोस्"),
+    CHAT_REASONING_VEDIC_PROCESS("Vedic analysis process", "वैदिक विश्लेषण प्रक्रिया"),
+    CHAT_REASONING_DURATION("Reasoned for %s", "%s मा विचार गरियो"),
+
+    // Tool Section
+    CHAT_TOOLS_TITLE("Astrological Tools", "ज्योतिषीय उपकरणहरू"),
+    CHAT_TOOL_PENDING("Pending", "पर्खदै"),
+    CHAT_TOOL_EXECUTING("Executing", "कार्यान्वयन गर्दै"),
+    CHAT_TOOL_COMPLETED("Completed", "सम्पन्न"),
+    CHAT_TOOL_FAILED("Failed", "असफल"),
+
+    // Ask User Section
+    CHAT_ASK_USER_TITLE("Stormy needs your input", "Stormy लाई तपाईंको इनपुट चाहिन्छ"),
+    CHAT_ASK_USER_PLACEHOLDER("Type your response...", "आफ्नो प्रतिक्रिया टाइप गर्नुहोस्..."),
+    CHAT_ASK_USER_SUBMITTED("Response submitted", "प्रतिक्रिया पठाइयो"),
+
+    // Todo Section
+    CHAT_TODO_IN_PROGRESS("In Progress", "प्रगतिमा"),
+
+    // Task Boundary
+    CHAT_TASK_STARTED("Started: %s", "सुरु भयो: %s"),
+    CHAT_TASK_COMPLETED("Completed: %s", "सम्पन्न भयो: %s"),
+
+    // Profile Operation
+    CHAT_PROFILE_CREATING("Creating Profile", "प्रोफाइल बनाउँदै"),
+    CHAT_PROFILE_UPDATING("Updating Profile", "प्रोफाइल अपडेट गर्दै"),
+    CHAT_PROFILE_DELETING("Deleting Profile", "प्रोफाइल मेट्दै"),
+    CHAT_PROFILE_VIEWING("Viewing Profile", "प्रोफाइल हेर्दै"),
+    CHAT_PROFILE_PENDING("Pending", "पर्खदै"),
+    CHAT_PROFILE_IN_PROGRESS("In Progress", "प्रगतिमा"),
+    CHAT_PROFILE_SUCCESS("Success", "सफल"),
+    CHAT_PROFILE_FAILED("Failed", "असफल"),
+    CHAT_PROFILE_ID("ID: %d", "ID: %d"),
+
+    // Model Options
+    CHAT_MODEL_OPTIONS("Model Options", "मोडेल विकल्पहरू"),
+    CHAT_THINKING_MODE("Thinking Mode", "विचार मोड"),
+    CHAT_THINKING_MODE_DESC("Extended reasoning before answering", "जवाफ दिनुअघि विस्तारित विचार"),
+    CHAT_WEB_SEARCH("Web Search", "वेब खोज"),
+    CHAT_WEB_SEARCH_DESC("Search the web for current information", "वर्तमान जानकारीको लागि वेब खोज्नुहोस्"),
+    CHAT_SELECT_MODEL("Select AI Model", "AI मोडेल छान्नुहोस्"),
+    CHAT_AI_MODEL("AI Model", "AI मोडेल"),
+    CHAT_MANAGE_MODELS("Manage AI Models", "AI मोडेलहरू व्यवस्थापन गर्नुहोस्"),
+    CHAT_CHANGE_MODEL("Change model", "मोडेल परिवर्तन गर्नुहोस्"),
+
+    // Suggestions
+    CHAT_SUGGESTION_DASHA("What's my current dasha period?", "मेरो हालको दशा अवधि के हो?"),
+    CHAT_SUGGESTION_CHART("Analyze my birth chart", "मेरो जन्म कुण्डली विश्लेषण गर्नुहोस्"),
+    CHAT_SUGGESTION_YOGAS("What yogas are present in my chart?", "मेरो कुण्डलीमा कुन योगहरू छन्?"),
+
+    // Conversation List
+    CHAT_MESSAGE_COUNT("%d messages", "%d सन्देशहरू"),
+
+    // Actions
+    CHAT_REGENERATE("Regenerate response", "प्रतिक्रिया पुनर्जेनरेट गर्नुहोस्"),
+    CHAT_EXPAND("Expand", "विस्तार गर्नुहोस्"),
+    CHAT_COLLAPSE("Collapse", "सङ्कुचित गर्नुहोस्"),
+    CHAT_MORE_OPTIONS("More options", "थप विकल्पहरू"),
+
+    // Timestamps
+    CHAT_TIME_JUST_NOW("Just now", "अहिले मात्र"),
+    CHAT_TIME_MINUTES_AGO("%dm ago", "%d मिनेट अघि"),
+    CHAT_TIME_HOURS_AGO("%dh ago", "%d घण्टा अघि"),
+    CHAT_TIME_DAYS_AGO("%dd ago", "%d दिन अघि");
 
 }
 
