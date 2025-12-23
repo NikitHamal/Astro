@@ -155,17 +155,17 @@ fun PanchangaScreenRedesigned(
     val accentGold = AppTheme.AccentGold
     val accentTeal = AppTheme.AccentTeal
 
-    val tabs = remember(accentPrimary, accentGold, accentTeal, language) {
-        PanchangaViewType.entries.map { type ->
-            TabItem(
-                title = stringResource(type.titleKey, language),
-                accentColor = when (type) {
-                    PanchangaViewType.TODAY -> accentPrimary
-                    PanchangaViewType.BIRTH -> accentGold
-                    PanchangaViewType.ELEMENTS -> accentTeal
-                }
-            )
-        }
+    // Get tab titles outside remember to avoid Composable calls inside remember
+    val todayTitle = stringResource(PanchangaViewType.TODAY.titleKey, language)
+    val birthTitle = stringResource(PanchangaViewType.BIRTH.titleKey, language)
+    val elementsTitle = stringResource(PanchangaViewType.ELEMENTS.titleKey, language)
+
+    val tabs = remember(accentPrimary, accentGold, accentTeal, todayTitle, birthTitle, elementsTitle) {
+        listOf(
+            TabItem(title = todayTitle, accentColor = accentPrimary),
+            TabItem(title = birthTitle, accentColor = accentGold),
+            TabItem(title = elementsTitle, accentColor = accentTeal)
+        )
     }
 
     if (showInfoDialog) {

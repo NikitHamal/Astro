@@ -58,11 +58,7 @@ object VedicAstrologyUtils {
      */
     private val debilitationSigns get() = AstrologicalConstants.DEBILITATION_SIGNS
 
-    /**
-     * Moolatrikona data class alias for compatibility.
-     */
-    @Suppress("unused")
-    private typealias MoolatrikonaRange = AstrologicalConstants.MoolatrikonaRange
+    // MoolatrikonaRange is available from AstrologicalConstants.MoolatrikonaRange
 
     /**
      * Moolatrikona signs and degree ranges.
