@@ -141,18 +141,19 @@ fun TransitsScreenRedesigned(
     val accentGold = AppTheme.AccentGold
     val lifeAreaSpiritual = AppTheme.LifeAreaSpiritual
 
-    val tabs = remember(accentPrimary, accentTeal, accentGold, lifeAreaSpiritual, language) {
-        TransitViewType.entries.map { type ->
-            TabItem(
-                title = stringResource(type.titleKey, language),
-                accentColor = when (type) {
-                    TransitViewType.CURRENT -> accentPrimary
-                    TransitViewType.BY_HOUSE -> accentTeal
-                    TransitViewType.UPCOMING -> accentGold
-                    TransitViewType.ASPECTS -> lifeAreaSpiritual
-                }
-            )
-        }
+    // Get tab titles outside remember to avoid Composable calls inside remember
+    val currentTitle = stringResource(TransitViewType.CURRENT.titleKey, language)
+    val byHouseTitle = stringResource(TransitViewType.BY_HOUSE.titleKey, language)
+    val upcomingTitle = stringResource(TransitViewType.UPCOMING.titleKey, language)
+    val aspectsTitle = stringResource(TransitViewType.ASPECTS.titleKey, language)
+
+    val tabs = remember(accentPrimary, accentTeal, accentGold, lifeAreaSpiritual, currentTitle, byHouseTitle, upcomingTitle, aspectsTitle) {
+        listOf(
+            TabItem(title = currentTitle, accentColor = accentPrimary),
+            TabItem(title = byHouseTitle, accentColor = accentTeal),
+            TabItem(title = upcomingTitle, accentColor = accentGold),
+            TabItem(title = aspectsTitle, accentColor = lifeAreaSpiritual)
+        )
     }
 
     Scaffold(

@@ -132,18 +132,19 @@ fun AshtakavargaScreenRedesigned(
     val accentGold = AppTheme.AccentGold
     val accentTeal = AppTheme.AccentTeal
 
-    val tabs = remember(accentPrimary, successColor, accentGold, accentTeal, language) {
-        AshtakavargaViewType.entries.map { type ->
-            TabItem(
-                title = stringResource(type.titleKey, language),
-                accentColor = when (type) {
-                    AshtakavargaViewType.OVERVIEW -> accentPrimary
-                    AshtakavargaViewType.SARVASHTAKAVARGA -> successColor
-                    AshtakavargaViewType.BY_PLANET -> accentGold
-                    AshtakavargaViewType.BY_HOUSE -> accentTeal
-                }
-            )
-        }
+    // Get tab titles outside remember to avoid Composable calls inside remember
+    val overviewTitle = stringResource(AshtakavargaViewType.OVERVIEW.titleKey, language)
+    val sarvaTitle = stringResource(AshtakavargaViewType.SARVASHTAKAVARGA.titleKey, language)
+    val byPlanetTitle = stringResource(AshtakavargaViewType.BY_PLANET.titleKey, language)
+    val byHouseTitle = stringResource(AshtakavargaViewType.BY_HOUSE.titleKey, language)
+
+    val tabs = remember(accentPrimary, successColor, accentGold, accentTeal, overviewTitle, sarvaTitle, byPlanetTitle, byHouseTitle) {
+        listOf(
+            TabItem(title = overviewTitle, accentColor = accentPrimary),
+            TabItem(title = sarvaTitle, accentColor = successColor),
+            TabItem(title = byPlanetTitle, accentColor = accentGold),
+            TabItem(title = byHouseTitle, accentColor = accentTeal)
+        )
     }
 
     if (showInfoDialog) {
@@ -313,6 +314,7 @@ private fun AshtakavargaOverviewContent(
 private fun AshtakavargaSummaryCard(
     ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis
 ) {
+    val language = LocalLanguage.current
     val totalBindus = ashtakavarga.sarvashtakavarga.totalBindus
     val averageBindus = totalBindus / 12.0
     val strengthPercent = (totalBindus / 337.0 * 100).coerceIn(0.0, 100.0)
@@ -1356,6 +1358,7 @@ private fun getBinduStrengthColor(percent: Double): Color {
     }
 }
 
+@Composable
 private fun getBinduLabel(bindus: Int, language: Language): String {
     val key = when {
         bindus >= 30 -> StringKey.STRENGTH_STRONG
@@ -1366,6 +1369,7 @@ private fun getBinduLabel(bindus: Int, language: Language): String {
     return stringResource(key, language)
 }
 
+@Composable
 private fun getStrengthLabel(percent: Double, language: Language): String {
     val key = when {
         percent >= 75 -> StringKey.STRENGTH_EXCELLENT
