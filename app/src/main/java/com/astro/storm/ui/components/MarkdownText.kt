@@ -73,18 +73,26 @@ object ContentCleaner {
         Regex("""```(?:json|tool_call)?\s*\n\s*\{[^`]*"tool"[^`]*\}\s*\n```""", RegexOption.MULTILINE)
     )
 
-    // Pattern to match inline tool call JSON (various formats)
+    // Simple inline tool call patterns for basic cases
+    // Complex nested structures are handled by extractAndRemoveToolCallJson()
     private val inlineToolCallPatterns = listOf(
-        // Standard format
-        Regex("""\{"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^}]*\}\s*\}"""),
+        // Standard format with simple arguments (no nested objects/arrays)
+        Regex("""\{"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^{}\[\]]*\}\s*\}"""),
         // Alternate order
-        Regex("""\{"arguments"\s*:\s*\{[^}]*\}\s*,\s*"tool"\s*:\s*"[^"]+"\s*\}"""),
+        Regex("""\{"arguments"\s*:\s*\{[^{}\[\]]*\}\s*,\s*"tool"\s*:\s*"[^"]+"\s*\}"""),
         // With extra whitespace
-        Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^}]*\}\s*\}"""),
+        Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^{}\[\]]*\}\s*\}"""),
         // Name-first format
-        Regex("""\{\s*"name"\s*:\s*"[^"]+"\s*,\s*"parameters"\s*:\s*\{[^}]*\}\s*\}"""),
+        Regex("""\{\s*"name"\s*:\s*"[^"]+"\s*,\s*"parameters"\s*:\s*\{[^{}\[\]]*\}\s*\}"""),
         // Function call format
-        Regex("""\{\s*"function"\s*:\s*"[^"]+"\s*,\s*"args"\s*:\s*\{[^}]*\}\s*\}""")
+        Regex("""\{\s*"function"\s*:\s*"[^"]+"\s*,\s*"args"\s*:\s*\{[^{}\[\]]*\}\s*\}""")
+    )
+
+    // Tool call signatures that indicate the start of a tool call JSON block
+    private val toolCallSignatures = listOf(
+        """"tool"\s*:\s*"""",
+        """"name"\s*:\s*"[^"]+"\s*,\s*"parameters"""",
+        """"function"\s*:\s*"[^"]+"\s*,\s*"args""""
     )
 
     // Pattern to match thinking/reasoning blocks that shouldn't be in main content
@@ -118,6 +126,98 @@ object ContentCleaner {
     )
 
     /**
+     * Extract and remove tool call JSON blocks from content.
+     *
+     * This method uses bracket matching to properly handle nested JSON structures
+     * like the ask_user tool which has options arrays containing objects:
+     * {"tool": "ask_user", "arguments": {"question": "...", "options": [{"label": "..."}]}}
+     *
+     * Unlike regex, this properly handles arbitrary nesting depth.
+     */
+    private fun extractAndRemoveToolCallJson(content: String): String {
+        var result = content
+        var searchStart = 0
+
+        // Find all potential tool call JSON blocks by looking for signatures
+        while (searchStart < result.length) {
+            // Find the next opening brace
+            val braceIndex = result.indexOf('{', searchStart)
+            if (braceIndex == -1) break
+
+            // Check if this looks like a tool call JSON by examining the next ~50 chars
+            val lookahead = result.substring(braceIndex, minOf(braceIndex + 100, result.length))
+            val isToolCall = toolCallSignatures.any { sig ->
+                Regex(sig).containsMatchIn(lookahead)
+            }
+
+            if (isToolCall) {
+                // Find the matching closing brace using bracket counting
+                val endIndex = findMatchingBrace(result, braceIndex)
+                if (endIndex != -1) {
+                    // Verify this is valid JSON-like structure (has the tool signature)
+                    val jsonBlock = result.substring(braceIndex, endIndex + 1)
+                    if (looksLikeToolCallJson(jsonBlock)) {
+                        // Remove this block and continue searching from the same position
+                        result = result.substring(0, braceIndex) + result.substring(endIndex + 1)
+                        // Don't advance searchStart - there might be more tool calls at this position
+                        continue
+                    }
+                }
+            }
+
+            // Move past this brace
+            searchStart = braceIndex + 1
+        }
+
+        return result
+    }
+
+    /**
+     * Find the index of the closing brace that matches the opening brace at startIndex.
+     * Returns -1 if no matching brace is found.
+     */
+    private fun findMatchingBrace(text: String, startIndex: Int): Int {
+        if (startIndex >= text.length || text[startIndex] != '{') return -1
+
+        var depth = 0
+        var inString = false
+        var escape = false
+        var i = startIndex
+
+        while (i < text.length) {
+            val c = text[i]
+
+            if (escape) {
+                escape = false
+                i++
+                continue
+            }
+
+            when {
+                c == '\\' && inString -> escape = true
+                c == '"' -> inString = !inString
+                !inString && c == '{' -> depth++
+                !inString && c == '}' -> {
+                    depth--
+                    if (depth == 0) return i
+                }
+            }
+            i++
+        }
+
+        return -1 // No matching brace found
+    }
+
+    /**
+     * Check if a JSON block looks like a tool call.
+     */
+    private fun looksLikeToolCallJson(json: String): Boolean {
+        return json.contains("\"tool\"") ||
+               (json.contains("\"name\"") && json.contains("\"parameters\"")) ||
+               (json.contains("\"function\"") && json.contains("\"args\""))
+    }
+
+    /**
      * Clean content for display by removing tool calls, artifacts, and formatting issues.
      * This should be called before displaying any AI response content.
      */
@@ -131,7 +231,10 @@ object ContentCleaner {
             cleaned = pattern.replace(cleaned, "")
         }
 
-        // Remove inline tool call JSON (all patterns)
+        // Remove complex nested tool call JSON using bracket matching
+        cleaned = extractAndRemoveToolCallJson(cleaned)
+
+        // Remove simple inline tool call JSON (fallback for edge cases)
         for (pattern in inlineToolCallPatterns) {
             cleaned = pattern.replace(cleaned, "")
         }

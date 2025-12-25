@@ -152,7 +152,8 @@ private object PrashnaFormatters {
 @Composable
 fun PrashnaScreen(
     chart: VedicChart?,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onConsultAI: ((String) -> Unit)? = null
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -282,7 +283,10 @@ fun PrashnaScreen(
                     PrashnaLoadingContent()
                 }
                 is PrashnaUiState.Success -> {
-                    PrashnaResultContent(result = state.result)
+                    PrashnaResultContent(
+                        result = state.result,
+                        onConsultAI = onConsultAI
+                    )
                 }
                 is PrashnaUiState.Error -> {
                     PrashnaErrorContent(
@@ -883,7 +887,10 @@ private fun PrashnaErrorContent(
 }
 
 @Composable
-private fun PrashnaResultContent(result: PrashnaCalculator.PrashnaResult) {
+private fun PrashnaResultContent(
+    result: PrashnaCalculator.PrashnaResult,
+    onConsultAI: ((String) -> Unit)? = null
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 32.dp),
@@ -924,6 +931,16 @@ private fun PrashnaResultContent(result: PrashnaCalculator.PrashnaResult) {
         if (result.recommendations.isNotEmpty()) {
             item(key = "recommendations") {
                 RecommendationsCard(recommendations = result.recommendations)
+            }
+        }
+
+        // AI Insight Card - shown when AI consultation is available
+        if (onConsultAI != null) {
+            item(key = "ai_insight") {
+                AiInsightCard(
+                    result = result,
+                    onConsultAI = onConsultAI
+                )
             }
         }
     }
@@ -1829,6 +1846,182 @@ private fun RecommendationsCard(recommendations: List<String>) {
             }
         }
     }
+}
+
+@Composable
+private fun AiInsightCard(
+    result: PrashnaCalculator.PrashnaResult,
+    onConsultAI: (String) -> Unit
+) {
+    val haptic = LocalHapticFeedback.current
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(AppTheme.AccentPrimary.copy(alpha = 0.15f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Outlined.AutoAwesome,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        stringResource(StringKey.PRASHNA_AI_INSIGHT),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        stringResource(StringKey.PRASHNA_AI_INSIGHT_SUBTITLE),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AppTheme.AccentPrimary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                stringResource(StringKey.PRASHNA_AI_INSIGHT_DESC),
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextMuted
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    // Build context string for AI
+                    val contextString = buildPrashnaContextForAI(result)
+                    onConsultAI(contextString)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = AppTheme.AccentPrimary
+                ),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Icon(
+                    Icons.Outlined.AutoAwesome,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                    tint = AppTheme.ButtonText
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    stringResource(StringKey.PRASHNA_GENERATE_AI_INSIGHT),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Medium,
+                    color = AppTheme.ButtonText
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Build a context string summarizing the Prashna result for AI consultation
+ */
+private fun buildPrashnaContextForAI(result: PrashnaCalculator.PrashnaResult): String {
+    val sb = StringBuilder()
+    sb.appendLine("I just performed a Prashna (Horary) analysis and would like your deeper interpretation.")
+    sb.appendLine()
+    sb.appendLine("**Question:** ${result.question}")
+    sb.appendLine("**Category:** ${result.category.displayName}")
+    sb.appendLine("**Question Time:** ${result.questionTime.format(PrashnaFormatters.dateTimeFormatter)}")
+    sb.appendLine()
+    sb.appendLine("**Verdict:** ${result.judgment.verdict.displayName}")
+    sb.appendLine("**Confidence:** ${result.confidence}%")
+    sb.appendLine("**Certainty Level:** ${result.judgment.certaintyLevel.displayName}")
+    sb.appendLine("**Overall Score:** ${result.judgment.overallScore}")
+    sb.appendLine("**Primary Reason:** ${result.judgment.primaryReason}")
+    sb.appendLine()
+    sb.appendLine("**Moon Analysis:**")
+    sb.appendLine("- Moon Sign: ${result.moonAnalysis.moonSign.displayName}")
+    sb.appendLine("- Moon House: ${result.moonAnalysis.moonHouse}")
+    sb.appendLine("- Nakshatra: ${result.moonAnalysis.nakshatra.displayName} (Pada ${result.moonAnalysis.nakshatraPada})")
+    sb.appendLine("- Moon Strength: ${result.moonAnalysis.moonStrength.displayName}")
+    sb.appendLine("- Phase: ${if (result.moonAnalysis.isWaxing) "Waxing" else "Waning"}")
+    sb.appendLine("- Tithi: ${result.moonAnalysis.tithiName}")
+    if (result.moonAnalysis.isVoidOfCourse) {
+        sb.appendLine("- Moon is Void of Course")
+    }
+    sb.appendLine("- Interpretation: ${result.moonAnalysis.interpretation}")
+    sb.appendLine()
+    sb.appendLine("**Lagna Analysis:**")
+    sb.appendLine("- Rising Sign: ${result.lagnaAnalysis.lagnaSign.displayName}")
+    sb.appendLine("- Lagna Lord: ${result.lagnaAnalysis.lagnaLord.displayName}")
+    sb.appendLine("- Lord Position: House ${result.lagnaAnalysis.lagnaLordPosition.house}")
+    sb.appendLine("- Condition: ${result.lagnaAnalysis.lagnaCondition.displayName}")
+    if (result.lagnaAnalysis.planetsInLagna.isNotEmpty()) {
+        sb.appendLine("- Planets in Lagna: ${result.lagnaAnalysis.planetsInLagna.joinToString { it.planet.displayName }}")
+    }
+    sb.appendLine("- Interpretation: ${result.lagnaAnalysis.interpretation}")
+
+    if (result.timingPrediction.willEventOccur) {
+        sb.appendLine()
+        sb.appendLine("**Timing Prediction:**")
+        sb.appendLine("- Estimated Time: ${result.timingPrediction.estimatedTime}")
+        sb.appendLine("- Method: ${result.timingPrediction.timingMethod.displayName}")
+        sb.appendLine("- Confidence: ${result.timingPrediction.confidence}%")
+        sb.appendLine("- Explanation: ${result.timingPrediction.explanation}")
+    }
+
+    if (result.specialYogas.isNotEmpty()) {
+        sb.appendLine()
+        sb.appendLine("**Special Yogas Found:**")
+        result.specialYogas.forEach { yoga ->
+            val indicator = if (yoga.isPositive) "+" else "-"
+            sb.appendLine("- [$indicator] ${yoga.name} (Strength: ${yoga.strength}/3): ${yoga.interpretation}")
+        }
+    }
+
+    if (result.judgment.supportingFactors.isNotEmpty()) {
+        sb.appendLine()
+        sb.appendLine("**Supporting Factors:**")
+        result.judgment.supportingFactors.forEach { factor ->
+            sb.appendLine("- $factor")
+        }
+    }
+
+    if (result.judgment.opposingFactors.isNotEmpty()) {
+        sb.appendLine()
+        sb.appendLine("**Opposing Factors/Challenges:**")
+        result.judgment.opposingFactors.forEach { factor ->
+            sb.appendLine("- $factor")
+        }
+    }
+
+    if (result.recommendations.isNotEmpty()) {
+        sb.appendLine()
+        sb.appendLine("**Recommendations:**")
+        result.recommendations.forEachIndexed { index, rec ->
+            sb.appendLine("${index + 1}. $rec")
+        }
+    }
+
+    sb.appendLine()
+    sb.appendLine("Please provide a deeper, personalized interpretation of this Prashna chart. Consider the interplay of all factors and offer practical guidance based on classical Vedic astrology principles.")
+
+    return sb.toString()
 }
 
 // Helper functions

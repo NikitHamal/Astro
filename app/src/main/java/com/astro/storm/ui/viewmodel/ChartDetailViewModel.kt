@@ -1,7 +1,6 @@
 package com.astro.storm.ui.viewmodel
 
 import android.app.Application
-import android.content.Context
 import androidx.compose.ui.unit.Density
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -73,7 +72,7 @@ class ChartDetailViewModel(application: Application) : AndroidViewModel(applicat
     /**
      * Export chart using the chart exporter
      */
-    fun exportChart(chart: VedicChart, context: Context) {
+    fun exportChart(chart: VedicChart) {
         viewModelScope.launch {
             try {
                 _exportState.value = ExportState.Exporting

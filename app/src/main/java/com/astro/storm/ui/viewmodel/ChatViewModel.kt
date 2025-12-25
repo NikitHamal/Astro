@@ -133,6 +133,10 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val _webSearchEnabled = MutableStateFlow(false)
     val webSearchEnabled: StateFlow<Boolean> = _webSearchEnabled.asStateFlow()
 
+    // Pending message to send when chat screen opens (used for AI consultation from other screens)
+    private val _pendingMessage = MutableStateFlow<String?>(null)
+    val pendingMessage: StateFlow<String?> = _pendingMessage.asStateFlow()
+
     // Streaming message state for agentic UI - replaces separate content/reasoning flows
     private val _streamingMessageState = MutableStateFlow<StreamingMessageState?>(null)
     val streamingMessageState: StateFlow<StreamingMessageState?> = _streamingMessageState.asStateFlow()
@@ -375,6 +379,22 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         _webSearchEnabled.value = enabled
     }
 
+    /**
+     * Set a pending message to be sent when chat opens (for AI consultation from other screens)
+     */
+    fun setPendingMessage(message: String?) {
+        _pendingMessage.value = message
+    }
+
+    /**
+     * Consume and clear the pending message
+     */
+    fun consumePendingMessage(): String? {
+        val message = _pendingMessage.value
+        _pendingMessage.value = null
+        return message
+    }
+
     // ============================================
     // MESSAGE HANDLING
     // ============================================
@@ -502,6 +522,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 var finalReasoning: String? = null
                 val toolsUsed = mutableListOf<String>()
                 var hasReceivedContent = false
+                var waitingForUserInput = false  // Flag to track ask_user pending state
 
                 streamingJob = launch {
                     agent.processMessage(
@@ -756,11 +777,74 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                                 // Don't add retry info to content - just update status
                                 // The UI can show this via aiStatus if needed
                             }
+                            is AgentResponse.AskUserPending -> {
+                                // Agent is pausing to wait for user input
+                                // Create an AskUser section in the UI
+                                val askUserOptions = response.options.map { opt ->
+                                    AskUserOption(
+                                        label = opt.label,
+                                        value = opt.value,
+                                        description = opt.description
+                                    )
+                                }
+
+                                val askSection = AgentSection.AskUser(
+                                    question = response.question,
+                                    options = askUserOptions,
+                                    allowCustomInput = response.allowCustomInput,
+                                    isAnswered = false
+                                )
+                                currentSections.add(askSection)
+
+                                // Update the sectioned state to show the ask_user UI
+                                updateSectionedMessageState()
+
+                                // Stop streaming indicator but keep state for resumption
+                                _aiStatus.value = AiStatus.Idle
+                                _isStreaming.value = false
+
+                                // Save the current state to database (partial message)
+                                currentMessageId?.let { msgId ->
+                                    val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
+                                    val cleanedReasoning = if (rawReasoningAccumulator.isNotEmpty()) {
+                                        ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                                    } else null
+
+                                    // Serialize current sections for persistence
+                                    val sectionsJsonToSave = _sectionedMessageState.value?.let { state ->
+                                        try {
+                                            SectionedMessageSerializer.serialize(state)
+                                        } catch (e: Exception) {
+                                            null
+                                        }
+                                    }
+
+                                    chatRepository.updateAssistantMessageContent(
+                                        messageId = msgId,
+                                        content = cleanedContent,
+                                        reasoningContent = cleanedReasoning?.takeIf { it.isNotEmpty() },
+                                        isStreaming = false // Mark as not streaming while waiting
+                                    )
+                                }
+
+                                // Mark that we're waiting for user input
+                                waitingForUserInput = true
+
+                                // Note: The streaming job will complete after this
+                                // The UI will show the AskUser section and wait for user input
+                                // User response will trigger a new sendMessage with their answer
+                            }
                         }
                     }
                 }
 
                 streamingJob?.join()
+
+                // If we're waiting for user input, don't finalize - keep state for UI display
+                if (waitingForUserInput) {
+                    _uiState.value = ChatUiState.Idle
+                    return@launch  // Exit early, keeping streaming state intact for ask_user UI
+                }
 
                 // Finalize message with cleaned content
                 currentMessageId?.let { msgId ->
@@ -878,13 +962,14 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             )
             currentSections.add(currentReasoningSection!!)
         } else {
-            // Update existing reasoning section
+            // Update existing reasoning section - preserve isExpanded state
             val index = currentSections.indexOfFirst { it.id == currentReasoningSection!!.id }
             if (index >= 0) {
                 currentReasoningSection = currentReasoningSection!!.copy(
                     content = content,
                     isComplete = isComplete,
-                    durationMs = durationMs
+                    durationMs = durationMs,
+                    isExpanded = currentReasoningSection!!.isExpanded // Preserve user toggle
                 )
                 currentSections[index] = currentReasoningSection!!
             }
@@ -977,7 +1062,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             )
             currentSections.add(currentToolGroup!!)
         } else {
-            // Update existing tool group with new tools
+            // Update existing tool group with new tools - preserve isExpanded state
             val index = currentSections.indexOfFirst { it.id == currentToolGroup!!.id }
             if (index >= 0) {
                 // Merge existing tools with new ones
@@ -990,7 +1075,10 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                         existingTools.add(newTool)
                     }
                 }
-                currentToolGroup = currentToolGroup!!.copy(tools = existingTools)
+                currentToolGroup = currentToolGroup!!.copy(
+                    tools = existingTools,
+                    isExpanded = currentToolGroup!!.isExpanded // Preserve user toggle
+                )
                 currentSections[index] = currentToolGroup!!
             }
         }
@@ -1028,10 +1116,16 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 it.status == ToolExecutionStatus.COMPLETED || it.status == ToolExecutionStatus.FAILED
             }
 
+            // Preserve user's expansion preference, but auto-collapse only when first completing
+            // (not on every subsequent update)
+            val wasComplete = currentToolGroup!!.isComplete
+            val shouldCollapse = allComplete && !wasComplete // Only collapse on first completion
+            val newExpanded = if (shouldCollapse) false else currentToolGroup!!.isExpanded
+
             currentToolGroup = currentToolGroup!!.copy(
                 tools = updatedTools,
                 isComplete = allComplete,
-                isExpanded = !allComplete
+                isExpanded = newExpanded
             )
             currentSections[index] = currentToolGroup!!
         }
@@ -1268,13 +1362,16 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
 
-        // Mark tool group as complete
+        // Mark tool group as complete - preserve user's expansion preference
         if (currentToolGroup != null) {
             val index = currentSections.indexOfFirst { it.id == currentToolGroup!!.id }
             if (index >= 0) {
+                // Only auto-collapse if not already complete (first finalization)
+                // Otherwise preserve user's manual toggle state
+                val shouldAutoCollapse = !currentToolGroup!!.isComplete
                 currentToolGroup = currentToolGroup!!.copy(
                     isComplete = true,
-                    isExpanded = false
+                    isExpanded = if (shouldAutoCollapse) false else currentToolGroup!!.isExpanded
                 )
                 currentSections[index] = currentToolGroup!!
             }
@@ -1307,52 +1404,159 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
     /**
      * Handle user response to an AskUser section.
-     * Updates the section state and can trigger continuation.
+     * Updates the section state and triggers continuation with the user's response.
      */
-    fun handleAskUserResponse(sectionId: String, response: String) {
+    fun handleAskUserResponse(
+        sectionId: String,
+        response: String,
+        currentChart: VedicChart? = null,
+        savedCharts: List<SavedChart> = emptyList(),
+        selectedChartId: Long? = null
+    ) {
         val index = currentSections.indexOfFirst { it.id == sectionId }
         if (index >= 0) {
             val section = currentSections[index]
-            if (section is AgentSection.AskUser) {
+            if (section is AgentSection.AskUser && !section.isAnswered) {
+                // Mark as answered
                 currentSections[index] = section.copy(
                     isAnswered = true,
                     customResponse = response
                 )
                 updateSectionedMessageState()
+
+                // Finalize the current assistant message with sections
+                finalizeAskUserMessage()
+
+                // Send the user's response as a new message to continue the conversation
+                // This will trigger the AI to continue processing
+                sendUserResponseMessage(response, currentChart, savedCharts, selectedChartId)
             }
         }
     }
 
     /**
      * Handle user selection of an option in AskUser section.
+     * Updates the section state and triggers continuation with the selected option.
      */
-    fun handleAskUserOptionSelect(sectionId: String, option: AskUserOption) {
+    fun handleAskUserOptionSelect(
+        sectionId: String,
+        option: AskUserOption,
+        currentChart: VedicChart? = null,
+        savedCharts: List<SavedChart> = emptyList(),
+        selectedChartId: Long? = null
+    ) {
         val index = currentSections.indexOfFirst { it.id == sectionId }
         if (index >= 0) {
             val section = currentSections[index]
-            if (section is AgentSection.AskUser) {
+            if (section is AgentSection.AskUser && !section.isAnswered) {
+                // Mark as answered with selected option
                 currentSections[index] = section.copy(
                     isAnswered = true,
                     selectedOptionId = option.id
                 )
                 updateSectionedMessageState()
+
+                // Finalize the current assistant message with sections
+                finalizeAskUserMessage()
+
+                // Send the selected option as a new message to continue the conversation
+                // Use the option's value (or label as fallback) as the response
+                val responseText = option.value.ifEmpty { option.label }
+                sendUserResponseMessage(responseText, currentChart, savedCharts, selectedChartId)
             }
         }
     }
 
     /**
+     * Finalize the assistant message when ask_user is answered.
+     * Saves the current sections state to the database.
+     */
+    private fun finalizeAskUserMessage() {
+        viewModelScope.launch {
+            currentMessageId?.let { msgId ->
+                val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
+                val cleanedReasoning = if (rawReasoningAccumulator.isNotEmpty()) {
+                    ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                } else null
+
+                // Serialize sections with answered state
+                val sectionsJsonToSave = _sectionedMessageState.value?.let { state ->
+                    try {
+                        SectionedMessageSerializer.serialize(state)
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+
+                chatRepository.finalizeAssistantMessage(
+                    messageId = msgId,
+                    content = cleanedContent,
+                    reasoningContent = cleanedReasoning,
+                    toolsUsed = null,
+                    sectionsJson = sectionsJsonToSave
+                )
+            }
+
+            // Clear streaming state
+            _streamingMessageId.value = null
+            _streamingMessageState.value = null
+            _sectionedMessageState.value = null
+            clearSectionTracking()
+            currentMessageId = null
+        }
+    }
+
+    /**
+     * Send the user's response to an ask_user prompt as a new message.
+     * This continues the conversation with the AI.
+     */
+    private fun sendUserResponseMessage(
+        response: String,
+        currentChart: VedicChart?,
+        savedCharts: List<SavedChart>,
+        selectedChartId: Long?
+    ) {
+        // Use sendMessage to continue the conversation
+        // The AI will receive the user's response and continue processing
+        sendMessage(response, currentChart, savedCharts, selectedChartId)
+    }
+
+    /**
      * Toggle expansion state of a section (for reasoning, tools, todo).
+     * Also updates the tracking variables to preserve state during streaming updates.
      */
     fun toggleSectionExpanded(sectionId: String) {
         val index = currentSections.indexOfFirst { it.id == sectionId }
         if (index >= 0) {
             val section = currentSections[index]
-            currentSections[index] = when (section) {
+            val updatedSection = when (section) {
                 is AgentSection.Reasoning -> section.copy(isExpanded = !section.isExpanded)
                 is AgentSection.ToolGroup -> section.copy(isExpanded = !section.isExpanded)
                 is AgentSection.TodoList -> section.copy(isExpanded = !section.isExpanded)
                 else -> section
             }
+            currentSections[index] = updatedSection
+
+            // Also update tracking variables to preserve toggle state during streaming updates
+            when (updatedSection) {
+                is AgentSection.Reasoning -> {
+                    if (currentReasoningSection?.id == sectionId) {
+                        currentReasoningSection = updatedSection
+                    }
+                }
+                is AgentSection.ToolGroup -> {
+                    if (currentToolGroup?.id == sectionId) {
+                        currentToolGroup = updatedSection
+                    }
+                }
+                is AgentSection.TodoList -> {
+                    if (currentTodoList?.id == sectionId) {
+                        currentTodoList = updatedSection
+                    }
+                }
+                else -> {}
+            }
+
             updateSectionedMessageState()
         }
     }

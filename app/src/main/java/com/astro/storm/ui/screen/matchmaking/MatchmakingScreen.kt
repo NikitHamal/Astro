@@ -65,7 +65,8 @@ import java.time.format.DateTimeFormatter
 fun MatchmakingScreen(
     savedCharts: List<SavedChart>,
     viewModel: ChartViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onConsultAI: ((String) -> Unit)? = null
 ) {
     val scope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
@@ -331,6 +332,19 @@ fun MatchmakingScreen(
                         item {
                             EnhancedRemediesSection(result)
                         }
+                    }
+                }
+
+                // AI Insight Card - only show when onConsultAI is provided
+                if (onConsultAI != null) {
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        MatchmakingAiInsightCard(
+                            result = result,
+                            brideChart = brideChart,
+                            groomChart = groomChart,
+                            onConsultAI = onConsultAI
+                        )
                     }
                 }
             }
@@ -2432,6 +2446,196 @@ private fun ShareOptionItem(
             )
         }
     }
+}
+
+// AI Insight Card for consulting Stormy about matchmaking results
+@Composable
+private fun MatchmakingAiInsightCard(
+    result: MatchmakingResult,
+    brideChart: VedicChart?,
+    groomChart: VedicChart?,
+    onConsultAI: (String) -> Unit
+) {
+    val haptic = LocalHapticFeedback.current
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(AppTheme.AccentPrimary.copy(alpha = 0.15f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Outlined.AutoAwesome,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text(
+                        stringResource(StringKeyMatch.MATCH_AI_INSIGHT),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        stringResource(StringKeyMatch.MATCH_AI_INSIGHT_SUBTITLE),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextMuted
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                stringResource(StringKeyMatch.MATCH_AI_INSIGHT_DESC),
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextSecondary,
+                lineHeight = 18.sp
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    val contextString = buildMatchmakingContextForAI(result, brideChart, groomChart)
+                    onConsultAI(contextString)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = AppTheme.AccentPrimary
+                ),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Icon(
+                    Icons.Outlined.Chat,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    stringResource(StringKeyMatch.MATCH_GENERATE_AI_INSIGHT),
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+    }
+}
+
+// Build comprehensive context string for AI consultation
+private fun buildMatchmakingContextForAI(
+    result: MatchmakingResult,
+    brideChart: VedicChart?,
+    groomChart: VedicChart?
+): String {
+    val sb = StringBuilder()
+
+    sb.appendLine("=== MATCHMAKING COMPATIBILITY ANALYSIS ===")
+    sb.appendLine()
+
+    // Profiles
+    if (brideChart != null && groomChart != null) {
+        sb.appendLine("PROFILES:")
+        sb.appendLine("Bride: ${brideChart.birthData.name ?: "Bride"}")
+        brideChart.birthData.dateTime?.let { sb.appendLine("  Birth: $it") }
+        brideChart.birthData.location?.let { sb.appendLine("  Location: $it") }
+
+        sb.appendLine("Groom: ${groomChart.birthData.name ?: "Groom"}")
+        groomChart.birthData.dateTime?.let { sb.appendLine("  Birth: $it") }
+        groomChart.birthData.location?.let { sb.appendLine("  Location: $it") }
+        sb.appendLine()
+    }
+
+    // Overall Score
+    sb.appendLine("OVERALL COMPATIBILITY:")
+    sb.appendLine("Total Score: ${String.format("%.1f", result.totalPoints)} out of ${result.maxPoints.toInt()} (${String.format("%.1f", result.percentage)}%)")
+    sb.appendLine("Rating: ${result.rating.displayName}")
+    sb.appendLine("Description: ${result.rating.description}")
+    sb.appendLine()
+
+    // Guna Analysis
+    sb.appendLine("ASHTAKOOTA GUNA ANALYSIS:")
+    result.gunaAnalyses.forEach { guna ->
+        val status = if (guna.isPositive) "✓" else "⚠"
+        sb.appendLine("$status ${guna.name} (${guna.description}): ${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()}")
+        sb.appendLine("   Bride: ${guna.brideValue} | Groom: ${guna.groomValue}")
+        sb.appendLine("   Analysis: ${guna.analysis}")
+        if (guna.hasDosha) {
+            sb.appendLine("   ⚠ Dosha Present")
+        }
+    }
+    sb.appendLine()
+
+    // Manglik Analysis
+    sb.appendLine("MANGLIK DOSHA ANALYSIS:")
+    sb.appendLine("Compatibility Status: ${result.manglikCompatibility}")
+    sb.appendLine()
+    sb.appendLine("Bride's Manglik Analysis:")
+    sb.appendLine("  Status: ${result.brideManglik.effectiveDosha.displayName}")
+    sb.appendLine("  Mars House: ${result.brideManglik.marsHouse}")
+    if (result.brideManglik.factors.isNotEmpty()) {
+        sb.appendLine("  Contributing Factors: ${result.brideManglik.factors.joinToString(", ")}")
+    }
+    if (result.brideManglik.cancellations.isNotEmpty()) {
+        sb.appendLine("  Cancellation Factors: ${result.brideManglik.cancellations.joinToString(", ")}")
+    }
+    sb.appendLine()
+    sb.appendLine("Groom's Manglik Analysis:")
+    sb.appendLine("  Status: ${result.groomManglik.effectiveDosha.displayName}")
+    sb.appendLine("  Mars House: ${result.groomManglik.marsHouse}")
+    if (result.groomManglik.factors.isNotEmpty()) {
+        sb.appendLine("  Contributing Factors: ${result.groomManglik.factors.joinToString(", ")}")
+    }
+    if (result.groomManglik.cancellations.isNotEmpty()) {
+        sb.appendLine("  Cancellation Factors: ${result.groomManglik.cancellations.joinToString(", ")}")
+    }
+    sb.appendLine()
+
+    // Special Considerations
+    if (result.specialConsiderations.isNotEmpty()) {
+        sb.appendLine("SPECIAL CONSIDERATIONS:")
+        result.specialConsiderations.forEach { consideration ->
+            sb.appendLine("• $consideration")
+        }
+        sb.appendLine()
+    }
+
+    // Remedies
+    if (result.remedies.isNotEmpty()) {
+        sb.appendLine("SUGGESTED REMEDIES:")
+        result.remedies.forEachIndexed { index, remedy ->
+            sb.appendLine("${index + 1}. $remedy")
+        }
+        sb.appendLine()
+    }
+
+    sb.appendLine("Please analyze this matchmaking compatibility analysis and provide:")
+    sb.appendLine("1. Your assessment of the overall compatibility")
+    sb.appendLine("2. Key strengths and challenges in this match")
+    sb.appendLine("3. Specific areas that need attention")
+    sb.appendLine("4. Any additional remedies or recommendations")
+    sb.appendLine("5. Your overall advice for this couple")
+
+    return sb.toString()
 }
 
 // Report generation functions moved to MatchmakingReportUtils.kt

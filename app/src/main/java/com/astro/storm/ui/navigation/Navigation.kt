@@ -527,7 +527,12 @@ fun AstroStormNavigation(
             MatchmakingScreen(
                 savedCharts = savedCharts,
                 viewModel = viewModel,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onConsultAI = { contextMessage ->
+                    // Set pending message and navigate to new chat
+                    chatViewModel.setPendingMessage(contextMessage)
+                    navController.navigate(Screen.Chat.createNewRoute())
+                }
             )
         }
 
@@ -581,7 +586,12 @@ fun AstroStormNavigation(
         composable(Screen.Prashna.route) {
             PrashnaScreen(
                 chart = currentChart,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onConsultAI = { contextMessage ->
+                    // Set pending message and navigate to new chat
+                    chatViewModel.setPendingMessage(contextMessage)
+                    navController.navigate(Screen.Chat.createNewRoute())
+                }
             )
         }
 
@@ -1260,6 +1270,9 @@ fun AstroStormNavigation(
             val streamingMessageId by chatViewModel.streamingMessageId.collectAsState()
             val sectionedMessageState by chatViewModel.sectionedMessageState.collectAsState()
 
+            // Track pending message
+            val pendingMessage by chatViewModel.pendingMessage.collectAsState()
+
             // Initialize/open conversation
             LaunchedEffect(conversationId) {
                 if (conversationId != null) {
@@ -1276,6 +1289,16 @@ fun AstroStormNavigation(
                         savedCharts = savedCharts,
                         selectedChartId = selectedChartId
                     )
+                }
+            }
+
+            // Handle pending message (from Prashna/Matchmaking AI consultation)
+            LaunchedEffect(pendingMessage) {
+                pendingMessage?.let { message ->
+                    // Small delay to ensure conversation is initialized
+                    kotlinx.coroutines.delay(100)
+                    chatViewModel.consumePendingMessage()
+                    chatViewModel.sendMessage(message, currentChart, savedCharts, selectedChartId)
                 }
             }
 
@@ -1305,10 +1328,22 @@ fun AstroStormNavigation(
                 onSetThinkingEnabled = { chatViewModel.setThinkingEnabled(it) },
                 onSetWebSearchEnabled = { chatViewModel.setWebSearchEnabled(it) },
                 onAskUserResponse = { sectionId, response ->
-                    chatViewModel.handleAskUserResponse(sectionId, response)
+                    chatViewModel.handleAskUserResponse(
+                        sectionId = sectionId,
+                        response = response,
+                        currentChart = currentChart,
+                        savedCharts = savedCharts,
+                        selectedChartId = selectedChartId
+                    )
                 },
                 onAskUserOptionSelect = { sectionId, option ->
-                    chatViewModel.handleAskUserOptionSelect(sectionId, option)
+                    chatViewModel.handleAskUserOptionSelect(
+                        sectionId = sectionId,
+                        option = option,
+                        currentChart = currentChart,
+                        savedCharts = savedCharts,
+                        selectedChartId = selectedChartId
+                    )
                 },
                 onToggleSection = { sectionId ->
                     chatViewModel.toggleSectionExpanded(sectionId)

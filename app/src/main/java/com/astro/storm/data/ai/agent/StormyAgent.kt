@@ -398,6 +398,7 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                 ))
 
                 // Execute each tool and add results
+                var askUserPending = false
                 for (toolCall in pendingToolCalls) {
                     emit(AgentResponse.ToolExecuting(toolCall.name))
                     if (!toolsUsed.contains(toolCall.name)) {
@@ -415,6 +416,49 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                         toolCallId = toolCall.id,
                         name = toolCall.name
                     ))
+
+                    // Check if this is an ask_user tool - pause execution to wait for user response
+                    if (toolCall.name == "ask_user" && result.success && result.data != null) {
+                        val askData = result.data
+                        val question = askData.optString("question", "")
+                        val optionsArray = askData.optJSONArray("options")
+                        val allowCustomInput = askData.optBoolean("allow_custom_input", true)
+                        val context = askData.optString("context", "").takeIf { it.isNotEmpty() }
+
+                        // Parse options
+                        val options = mutableListOf<AskUserOptionData>()
+                        optionsArray?.let { array ->
+                            for (i in 0 until array.length()) {
+                                val opt = array.optJSONObject(i)
+                                if (opt != null) {
+                                    options.add(AskUserOptionData(
+                                        label = opt.optString("label", ""),
+                                        value = opt.optString("value", opt.optString("label", "")),
+                                        description = opt.optString("description", "").takeIf { it.isNotEmpty() }
+                                    ))
+                                }
+                            }
+                        }
+
+                        // Emit AskUserPending and stop processing
+                        emit(AgentResponse.AskUserPending(
+                            question = question,
+                            options = options,
+                            allowCustomInput = allowCustomInput,
+                            context = context
+                        ))
+
+                        // Mark that we need to pause and wait for user input
+                        askUserPending = true
+                        break // Stop processing more tools
+                    }
+                }
+
+                // If ask_user was called, stop processing and wait for user response
+                if (askUserPending) {
+                    continueProcessing = false
+                    // Note: The UI will need to call a continuation method with the user's response
+                    // The conversation history (fullMessages) already contains the ask_user result
                 }
 
                 // Continue processing to let AI respond to tool results
@@ -839,4 +883,24 @@ sealed class AgentResponse {
         val reasoning: String?,
         val toolsUsed: List<String>
     ) : AgentResponse()
+
+    /**
+     * Agent is paused waiting for user input (ask_user tool)
+     * The UI should display the question and options, then resume with user's response
+     */
+    data class AskUserPending(
+        val question: String,
+        val options: List<AskUserOptionData>,
+        val allowCustomInput: Boolean,
+        val context: String?
+    ) : AgentResponse()
 }
+
+/**
+ * Option data for ask_user responses
+ */
+data class AskUserOptionData(
+    val label: String,
+    val value: String,
+    val description: String? = null
+)
