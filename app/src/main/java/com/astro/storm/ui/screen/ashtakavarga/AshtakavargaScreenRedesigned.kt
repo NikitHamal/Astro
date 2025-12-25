@@ -71,6 +71,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.getLocalizedName
@@ -96,11 +97,11 @@ import com.astro.storm.ui.theme.AppTheme
  * - Smooth animations throughout
  */
 
-enum class AshtakavargaViewType(val title: String) {
-    OVERVIEW("Overview"),
-    SARVASHTAKAVARGA("Sarvashtakavarga"),
-    BY_PLANET("By Planet"),
-    BY_HOUSE("By House")
+enum class AshtakavargaViewType(val titleKey: StringKey) {
+    OVERVIEW(StringKey.TAB_OVERVIEW),
+    SARVASHTAKAVARGA(StringKey.TAB_SARVASHTAKAVARGA),
+    BY_PLANET(StringKey.TAB_BY_PLANET),
+    BY_HOUSE(StringKey.TAB_BY_HOUSE)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -131,18 +132,19 @@ fun AshtakavargaScreenRedesigned(
     val accentGold = AppTheme.AccentGold
     val accentTeal = AppTheme.AccentTeal
 
-    val tabs = remember(accentPrimary, successColor, accentGold, accentTeal) {
-        AshtakavargaViewType.entries.map { type ->
-            TabItem(
-                title = type.title,
-                accentColor = when (type) {
-                    AshtakavargaViewType.OVERVIEW -> accentPrimary
-                    AshtakavargaViewType.SARVASHTAKAVARGA -> successColor
-                    AshtakavargaViewType.BY_PLANET -> accentGold
-                    AshtakavargaViewType.BY_HOUSE -> accentTeal
-                }
-            )
-        }
+    // Get tab titles outside remember to avoid Composable calls inside remember
+    val overviewTitle = stringResource(AshtakavargaViewType.OVERVIEW.titleKey, language)
+    val sarvaTitle = stringResource(AshtakavargaViewType.SARVASHTAKAVARGA.titleKey, language)
+    val byPlanetTitle = stringResource(AshtakavargaViewType.BY_PLANET.titleKey, language)
+    val byHouseTitle = stringResource(AshtakavargaViewType.BY_HOUSE.titleKey, language)
+
+    val tabs = remember(accentPrimary, successColor, accentGold, accentTeal, overviewTitle, sarvaTitle, byPlanetTitle, byHouseTitle) {
+        listOf(
+            TabItem(title = overviewTitle, accentColor = accentPrimary),
+            TabItem(title = sarvaTitle, accentColor = successColor),
+            TabItem(title = byPlanetTitle, accentColor = accentGold),
+            TabItem(title = byHouseTitle, accentColor = accentTeal)
+        )
     }
 
     if (showInfoDialog) {
@@ -192,7 +194,7 @@ fun AshtakavargaScreenRedesigned(
                             )
                         }
                         AshtakavargaViewType.SARVASHTAKAVARGA -> {
-                            SarvashtakavargaContent(ashtakavarga = ashtakavarga)
+                            SarvashtakavargaContent(ashtakavarga = ashtakavarga, language = language)
                         }
                         AshtakavargaViewType.BY_PLANET -> {
                             AshtakavargaByPlanetContent(
@@ -312,6 +314,7 @@ private fun AshtakavargaOverviewContent(
 private fun AshtakavargaSummaryCard(
     ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis
 ) {
+    val language = LocalLanguage.current
     val totalBindus = ashtakavarga.sarvashtakavarga.totalBindus
     val averageBindus = totalBindus / 12.0
     val strengthPercent = (totalBindus / 337.0 * 100).coerceIn(0.0, 100.0)
@@ -419,7 +422,7 @@ private fun AshtakavargaSummaryCard(
                             color = AppTheme.TextMuted
                         )
                         Text(
-                            text = getStrengthLabel(strengthPercent),
+                            text = getStrengthLabel(strengthPercent, language),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = getBinduStrengthColor(strengthPercent)
@@ -791,7 +794,8 @@ private fun PlanetQuickView(
 
 @Composable
 private fun SarvashtakavargaContent(
-    ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis
+    ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis,
+    language: Language
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -821,6 +825,7 @@ private fun SarvashtakavargaContent(
                         house = house,
                         sign = sign,
                         bindus = bindus,
+                        language = language,
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -840,6 +845,7 @@ private fun SarvashtakavargaHouseCard(
     house: Int,
     sign: ZodiacSign,
     bindus: Int,
+    language: Language,
     modifier: Modifier = Modifier
 ) {
     val color = getBinduColor(bindus)
@@ -897,7 +903,7 @@ private fun SarvashtakavargaHouseCard(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = getBinduLabel(bindus),
+                text = getBinduLabel(bindus, language),
                 fontSize = 10.sp,
                 color = color,
                 fontWeight = FontWeight.Medium
@@ -1352,22 +1358,26 @@ private fun getBinduStrengthColor(percent: Double): Color {
     }
 }
 
-private fun getBinduLabel(bindus: Int): String {
-    return when {
-        bindus >= 30 -> "Strong"
-        bindus >= 25 -> "Good"
-        bindus >= 20 -> "Average"
-        else -> "Weak"
+@Composable
+private fun getBinduLabel(bindus: Int, language: Language): String {
+    val key = when {
+        bindus >= 30 -> StringKey.STRENGTH_STRONG
+        bindus >= 25 -> StringKey.STRENGTH_GOOD
+        bindus >= 20 -> StringKey.STRENGTH_AVERAGE
+        else -> StringKey.STRENGTH_WEAK
     }
+    return stringResource(key, language)
 }
 
-private fun getStrengthLabel(percent: Double): String {
-    return when {
-        percent >= 75 -> "Excellent"
-        percent >= 55 -> "Good"
-        percent >= 40 -> "Average"
-        else -> "Below Average"
+@Composable
+private fun getStrengthLabel(percent: Double, language: Language): String {
+    val key = when {
+        percent >= 75 -> StringKey.STRENGTH_EXCELLENT
+        percent >= 55 -> StringKey.STRENGTH_GOOD
+        percent >= 40 -> StringKey.STRENGTH_AVERAGE
+        else -> StringKey.STRENGTH_BELOW_AVERAGE
     }
+    return stringResource(key, language)
 }
 
 private fun getHouseSignification(house: Int): String {
