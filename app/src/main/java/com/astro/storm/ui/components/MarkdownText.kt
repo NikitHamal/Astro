@@ -61,7 +61,7 @@ object ContentCleaner {
 
     // Pattern to match tool_call code blocks (various formats models might use)
     private val toolCallBlockPatterns = listOf(
-        // Standard tool_call code block
+        // Standard tool_call code block (greedy for nested braces)
         Regex("""```tool_call\s*\n?\s*\{[\s\S]*?\}\s*\n?```""", RegexOption.MULTILINE),
         // JSON code block with tool call inside
         Regex("""```json\s*\n?\s*\{"tool"\s*:[\s\S]*?\}\s*\n?```""", RegexOption.MULTILINE),
@@ -69,22 +69,30 @@ object ContentCleaner {
         Regex("""```\s*\n?\s*\{"tool"\s*:[\s\S]*?\}\s*\n?```""", RegexOption.MULTILINE),
         // Code block with function name
         Regex("""```\s*\n?\s*\{"name"\s*:[\s\S]*?\}\s*\n?```""", RegexOption.MULTILINE),
-        // Code block with nested arguments (multi-line)
-        Regex("""```(?:json|tool_call)?\s*\n\s*\{[^`]*"tool"[^`]*\}\s*\n```""", RegexOption.MULTILINE)
+        // Code block with nested arguments (multi-line) - more aggressive
+        Regex("""```(?:json|tool_call)?\s*\n\s*\{[^`]*"tool"[^`]*\}\s*\n?```""", RegexOption.MULTILINE),
+        // Catch any code block that contains tool JSON with nested objects
+        Regex("""```[^`]*\n\s*\{\s*\n?\s*"tool"\s*:[^`]*\}\s*\n?```""", RegexOption.MULTILINE)
     )
 
-    // Pattern to match inline tool call JSON (various formats)
+    // Pattern to match inline tool call JSON (various formats including multi-line)
     private val inlineToolCallPatterns = listOf(
-        // Standard format
+        // Multi-line tool call with nested arguments (most common issue from screenshots)
+        Regex("""\{\s*\n?\s*"tool"\s*:\s*"[^"]+"\s*,\s*\n?\s*"arguments"\s*:\s*\{[\s\S]*?\}\s*\n?\s*\}""", RegexOption.MULTILINE),
+        // Standard format (single line)
         Regex("""\{"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^}]*\}\s*\}"""),
         // Alternate order
         Regex("""\{"arguments"\s*:\s*\{[^}]*\}\s*,\s*"tool"\s*:\s*"[^"]+"\s*\}"""),
-        // With extra whitespace
+        // With extra whitespace (single line)
         Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^}]*\}\s*\}"""),
+        // Multi-line with nested arrays (for ask_user options)
+        Regex("""\{\s*\n?\s*"tool"\s*:\s*"[^"]+"\s*,\s*\n?\s*"arguments"\s*:\s*\{[^}]*\[[^\]]*\][^}]*\}\s*\n?\s*\}""", RegexOption.MULTILINE),
         // Name-first format
         Regex("""\{\s*"name"\s*:\s*"[^"]+"\s*,\s*"parameters"\s*:\s*\{[^}]*\}\s*\}"""),
         // Function call format
-        Regex("""\{\s*"function"\s*:\s*"[^"]+"\s*,\s*"args"\s*:\s*\{[^}]*\}\s*\}""")
+        Regex("""\{\s*"function"\s*:\s*"[^"]+"\s*,\s*"args"\s*:\s*\{[^}]*\}\s*\}"""),
+        // Deeply nested JSON tool call (handles ask_user with options array containing objects)
+        Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^{}]*(?:\{[^{}]*\}[^{}]*)*(?:\[[^\[\]]*(?:\{[^\{\}]*\}[^\[\]]*)*\][^{}]*)*\}\s*\}""", RegexOption.MULTILINE)
     )
 
     // Pattern to match thinking/reasoning blocks that shouldn't be in main content
@@ -136,6 +144,10 @@ object ContentCleaner {
             cleaned = pattern.replace(cleaned, "")
         }
 
+        // Additional pass: Remove any remaining JSON objects that look like tool calls
+        // This catches edge cases where regex patterns miss complex nested JSON
+        cleaned = removeToolCallJsonObjects(cleaned)
+
         // Remove thinking blocks (these should be shown separately)
         for (pattern in thinkingBlockPatterns) {
             cleaned = pattern.replace(cleaned, "")
@@ -160,6 +172,106 @@ object ContentCleaner {
     }
 
     /**
+     * Remove JSON objects that look like tool calls using bracket matching.
+     * This handles deeply nested JSON that regex patterns may miss.
+     */
+    private fun removeToolCallJsonObjects(content: String): String {
+        var result = content
+        var searchStart = 0
+
+        while (true) {
+            // Find potential tool call JSON start
+            val toolIndicators = listOf(
+                """"tool"""",
+                """"tool" :""",
+                """"name"""",
+                """"function""""
+            )
+
+            var foundIndex = -1
+            var foundIndicator = ""
+            for (indicator in toolIndicators) {
+                val idx = result.indexOf(indicator, searchStart)
+                if (idx != -1 && (foundIndex == -1 || idx < foundIndex)) {
+                    foundIndex = idx
+                    foundIndicator = indicator
+                }
+            }
+
+            if (foundIndex == -1) break
+
+            // Find the opening brace before this indicator
+            var braceStart = foundIndex - 1
+            while (braceStart >= 0 && result[braceStart] != '{') {
+                if (!result[braceStart].isWhitespace() && result[braceStart] != '"') {
+                    // Found non-whitespace/quote char before finding brace - not a standalone JSON
+                    braceStart = -1
+                    break
+                }
+                braceStart--
+            }
+
+            if (braceStart == -1) {
+                searchStart = foundIndex + foundIndicator.length
+                continue
+            }
+
+            // Use bracket matching to find the complete JSON object
+            val jsonEnd = findMatchingBrace(result, braceStart)
+            if (jsonEnd != -1) {
+                val potentialJson = result.substring(braceStart, jsonEnd + 1)
+
+                // Verify it's actually a tool call JSON (contains "tool" or "arguments" keys)
+                if (potentialJson.contains(""""tool"""") &&
+                    (potentialJson.contains(""""arguments"""") || potentialJson.contains(""""parameters""""))) {
+                    // Remove this JSON block
+                    result = result.substring(0, braceStart) + result.substring(jsonEnd + 1)
+                    // Don't advance searchStart since we removed content
+                } else {
+                    searchStart = jsonEnd + 1
+                }
+            } else {
+                searchStart = foundIndex + foundIndicator.length
+            }
+        }
+
+        return result
+    }
+
+    /**
+     * Find the matching closing brace for an opening brace.
+     * Returns -1 if no match is found.
+     */
+    private fun findMatchingBrace(text: String, openIndex: Int): Int {
+        if (openIndex < 0 || openIndex >= text.length || text[openIndex] != '{') return -1
+
+        var depth = 0
+        var inString = false
+        var escapeNext = false
+
+        for (i in openIndex until text.length) {
+            val c = text[i]
+
+            if (escapeNext) {
+                escapeNext = false
+                continue
+            }
+
+            when {
+                c == '\\' -> escapeNext = true
+                c == '"' && !escapeNext -> inString = !inString
+                !inString && c == '{' -> depth++
+                !inString && c == '}' -> {
+                    depth--
+                    if (depth == 0) return i
+                }
+            }
+        }
+
+        return -1
+    }
+
+    /**
      * Detect and remove duplicated content sections.
      *
      * AI models sometimes repeat content after tool calls. This function
@@ -170,9 +282,16 @@ object ContentCleaner {
      * 1. Split content into paragraphs/sections
      * 2. Look for repeating sequences of paragraphs
      * 3. If found, keep only the first occurrence
+     * 4. Also detect mid-content duplication using sliding window
      */
     private fun removeDuplicatedContent(content: String): String {
         if (content.length < 200) return content // Too short to have meaningful duplication
+
+        // First check for mid-content duplication (content repeated mid-stream)
+        val midDuplicated = detectAndRemoveMidDuplication(content)
+        if (midDuplicated != content) {
+            return removeDuplicatedContent(midDuplicated) // Recursive check for remaining duplicates
+        }
 
         // Split into paragraphs (using double newlines as delimiter)
         val paragraphs = content.split(Regex("\n\n+"))
@@ -220,6 +339,41 @@ object ContentCleaner {
     }
 
     /**
+     * Detect and remove mid-content duplication.
+     * This handles cases where content repeats starting mid-way through the text.
+     * Example: "Hello world. How are you? Hello world. How are you?"
+     */
+    private fun detectAndRemoveMidDuplication(content: String): String {
+        val minChunkSize = 100 // Minimum chunk to consider as a duplicate
+
+        // Look for repeating substring patterns
+        for (start in 0 until minOf(content.length / 2, 500)) {
+            for (chunkSize in minChunkSize until (content.length - start) / 2) {
+                val chunk = content.substring(start, start + chunkSize)
+                val remainingContent = content.substring(start + chunkSize)
+
+                // Check if this chunk appears again in the remaining content
+                if (remainingContent.contains(chunk)) {
+                    val repeatIndex = remainingContent.indexOf(chunk)
+                    // Verify it's a substantial repeat (not just a common phrase)
+                    if (repeatIndex < chunkSize * 2) { // Close enough to be a duplicate
+                        val beforeRepeat = content.substring(0, start + chunkSize + repeatIndex)
+                        val afterRepeat = content.substring(start + chunkSize + repeatIndex)
+
+                        // Check if afterRepeat continues the pattern
+                        if (calculateSimilarity(chunk, afterRepeat.take(chunk.length)) > 0.8) {
+                            // Found duplication - return content up to the repeat
+                            return beforeRepeat.trim()
+                        }
+                    }
+                }
+            }
+        }
+
+        return content
+    }
+
+    /**
      * Calculate similarity ratio between two strings (0.0 to 1.0)
      */
     private fun calculateSimilarity(a: String, b: String): Float {
@@ -243,8 +397,56 @@ object ContentCleaner {
     }
 
     /**
+     * Remove duplicated content in reasoning/thinking blocks.
+     * Reasoning often gets accumulated and may have repeated sections.
+     * Uses sentence-based detection for better accuracy with reasoning text.
+     */
+    private fun removeReasoningDuplication(content: String): String {
+        if (content.length < 150) return content // Too short for meaningful duplication
+
+        // Split into sentences/lines for reasoning content
+        val lines = content.split(Regex("(?<=[.!?\\n])\\s*"))
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+
+        if (lines.size < 3) return content
+
+        // Look for repeating sequences of lines
+        val uniqueLines = mutableListOf<String>()
+        val seenNormalized = mutableSetOf<String>()
+
+        for (line in lines) {
+            // Normalize line for comparison (lowercase, remove extra spaces)
+            val normalized = line.lowercase().replace(Regex("\\s+"), " ").trim()
+
+            // Skip if we've seen this exact or very similar line
+            if (normalized.isNotEmpty() && normalized.length > 10) {
+                val isDuplicate = seenNormalized.any { seen ->
+                    seen == normalized ||
+                    (normalized.length > 30 && seen.contains(normalized.take(30))) ||
+                    calculateSimilarity(seen, normalized) > 0.9f
+                }
+
+                if (!isDuplicate) {
+                    uniqueLines.add(line)
+                    seenNormalized.add(normalized)
+                }
+            } else if (normalized.isNotEmpty()) {
+                // Short lines - just check exact match
+                if (normalized !in seenNormalized) {
+                    uniqueLines.add(line)
+                    seenNormalized.add(normalized)
+                }
+            }
+        }
+
+        return uniqueLines.joinToString(" ")
+    }
+
+    /**
      * Clean reasoning/thinking content.
      * Similar to cleanForDisplay but preserves internal thinking format.
+     * Also removes duplicated reasoning content.
      */
     fun cleanReasoning(content: String): String {
         if (content.isBlank()) return ""
@@ -265,7 +467,11 @@ object ContentCleaner {
         cleaned = cleaned
             .replace(Regex("""</?think(?:ing)?>"""), "")
             .replace(Regex("""</?reasoning>"""), "")
-            .replace(Regex("""</?reflection>"""), "")
+
+        cleaned = cleaned.replace(Regex("""</?reflection>"""), "")
+
+        // Apply deduplication to reasoning as well
+        cleaned = removeReasoningDuplication(cleaned)
 
         // Clean up whitespace
         cleaned = cleaned

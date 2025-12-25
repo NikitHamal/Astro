@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.astro.storm.data.ai.agent.AgentResponse
+import com.astro.storm.data.ai.agent.AskUserOptionData
 import com.astro.storm.data.ai.agent.StormyAgent
+import com.astro.storm.data.ai.provider.ChatMessage as AgentChatMessage
 import com.astro.storm.data.ai.provider.AiModel
 import com.astro.storm.data.ai.provider.AiProviderRegistry
 import com.astro.storm.data.ai.provider.ChatMessage
@@ -138,6 +140,14 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     // Sectioned message state for dynamic agentic UI layout
     private val _sectionedMessageState = MutableStateFlow<SectionedMessageState?>(null)
     val sectionedMessageState: StateFlow<SectionedMessageState?> = _sectionedMessageState.asStateFlow()
+
+    // Ask user interrupt state - when agent needs user input before continuing
+    private val _askUserState = MutableStateFlow<AskUserInterruptState?>(null)
+    val askUserState: StateFlow<AskUserInterruptState?> = _askUserState.asStateFlow()
+
+    // Pending conversation history for resuming after ask_user
+    private var pendingConversationHistory: List<AgentChatMessage>? = null
+    private var pendingToolsUsed: List<String> = emptyList()
 
     // Track the ID of the message being streamed to exclude from regular message list
     private val _streamingMessageId = MutableStateFlow<Long?>(null)
@@ -753,11 +763,59 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                                 // Don't add retry info to content - just update status
                                 // The UI can show this via aiStatus if needed
                             }
+                            is AgentResponse.AskUserInterrupt -> {
+                                // Agent is asking a question and pausing execution
+                                // Store the conversation history for resuming later
+                                pendingConversationHistory = response.conversationHistory
+                                pendingToolsUsed = response.toolsUsed
+
+                                // Create the AskUser section in the UI
+                                val options = response.options.map { opt ->
+                                    AskUserOption(
+                                        label = opt.label,
+                                        description = opt.description,
+                                        value = opt.value
+                                    )
+                                }
+
+                                val askSection = AgentSection.AskUser(
+                                    question = response.question,
+                                    options = options,
+                                    allowCustomInput = response.allowCustomInput,
+                                    isAnswered = false
+                                )
+                                currentSections.add(askSection)
+                                updateSectionedMessageState()
+
+                                // Set the ask user state for UI handling
+                                _askUserState.value = AskUserInterruptState(
+                                    question = response.question,
+                                    options = response.options,
+                                    allowCustomInput = response.allowCustomInput,
+                                    context = response.context,
+                                    sectionId = askSection.id
+                                )
+
+                                // Update UI state to waiting for user input
+                                _uiState.value = ChatUiState.WaitingForUserInput
+                                _aiStatus.value = AiStatus.Idle
+                                _isStreaming.value = false
+
+                                // Don't clear streaming message - keep it visible
+                                // The streaming message ID stays set so the UI shows the partial response
+                            }
                         }
                     }
                 }
 
                 streamingJob?.join()
+
+                // If we're waiting for user input (ask_user interrupt), don't finalize yet
+                if (_uiState.value == ChatUiState.WaitingForUserInput) {
+                    // Don't finalize the message - keep it in streaming state
+                    // The resumeAfterAskUser function will handle continuation
+                    return@launch
+                }
 
                 // Finalize message with cleaned content
                 currentMessageId?.let { msgId ->
@@ -1447,6 +1505,364 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
+     * Resume agent execution after user responds to ask_user question.
+     * This continues the agent from where it paused with the user's response.
+     */
+    fun resumeAfterAskUser(
+        response: String,
+        currentChart: VedicChart?,
+        savedCharts: List<SavedChart>,
+        selectedChartId: Long?
+    ) {
+        val askUserState = _askUserState.value ?: return
+        val conversationHistory = pendingConversationHistory ?: return
+        val model = _selectedModel.value ?: return
+
+        // Mark the ask_user section as answered
+        handleAskUserResponse(askUserState.sectionId, response)
+
+        // Clear the ask user state
+        _askUserState.value = null
+
+        // Resume streaming
+        _isStreaming.value = true
+        _aiStatus.value = AiStatus.Thinking
+        _uiState.value = ChatUiState.Streaming
+
+        viewModelScope.launch {
+            try {
+                val agent = stormyAgent ?: run {
+                    _uiState.value = ChatUiState.Error("Failed to resume AI agent")
+                    _aiStatus.value = AiStatus.Idle
+                    return@launch
+                }
+
+                // Add the user's response as a user message in the conversation
+                val updatedHistory = conversationHistory.toMutableList()
+                updatedHistory.add(AgentChatMessage(
+                    role = MessageRole.USER,
+                    content = response
+                ))
+
+                // Get current profile
+                val currentProfile = savedCharts.find { it.id == selectedChartId }
+
+                // Continue with agent processing
+                var finalContent = ""
+                var finalReasoning: String? = null
+                val toolsUsed = pendingToolsUsed.toMutableList()
+                var hasReceivedContent = false
+
+                streamingJob = launch {
+                    agent.processMessage(
+                        messages = updatedHistory,
+                        model = model,
+                        currentProfile = currentProfile,
+                        allProfiles = savedCharts,
+                        currentChart = currentChart
+                    ).collect { response ->
+                        when (response) {
+                            is AgentResponse.ContentChunk -> {
+                                rawContentAccumulator.append(response.text)
+
+                                if (currentReasoningSection != null && !currentReasoningSection!!.isComplete) {
+                                    finalizeReasoningSection()
+                                }
+
+                                val currentTime = System.currentTimeMillis()
+                                if (currentTime - lastUiUpdateTime >= UI_UPDATE_THROTTLE_MS) {
+                                    lastUiUpdateTime = currentTime
+
+                                    val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
+                                    _streamingContent.value = cleanedContent
+
+                                    if (!hasReceivedContent && cleanedContent.isNotEmpty()) {
+                                        hasReceivedContent = true
+                                        _aiStatus.value = AiStatus.Typing
+                                    }
+
+                                    updateContentSection(cleanedContent, isComplete = false)
+                                    updateStreamingMessageState()
+                                    updateSectionedMessageState()
+                                }
+
+                                if (currentTime - lastDbUpdateTime >= DB_UPDATE_THROTTLE_MS) {
+                                    lastDbUpdateTime = currentTime
+                                    currentMessageId?.let { msgId ->
+                                        val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
+                                        val cleanedReasoning = if (rawReasoningAccumulator.isNotEmpty()) {
+                                            ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                                        } else null
+
+                                        chatRepository.updateAssistantMessageContent(
+                                            messageId = msgId,
+                                            content = cleanedContent,
+                                            reasoningContent = cleanedReasoning?.takeIf { it.isNotEmpty() },
+                                            isStreaming = true
+                                        )
+                                    }
+                                }
+                            }
+                            is AgentResponse.ReasoningChunk -> {
+                                rawReasoningAccumulator.append(response.text)
+
+                                if (reasoningStartTime == 0L) {
+                                    reasoningStartTime = System.currentTimeMillis()
+                                }
+
+                                val currentTime = System.currentTimeMillis()
+                                if (currentTime - lastUiUpdateTime >= UI_UPDATE_THROTTLE_MS) {
+                                    lastUiUpdateTime = currentTime
+
+                                    val cleanedReasoning = ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                                    if (cleanedReasoning.isNotEmpty()) {
+                                        _streamingReasoning.value = cleanedReasoning
+
+                                        if (_aiStatus.value == AiStatus.Thinking) {
+                                            _aiStatus.value = AiStatus.Reasoning
+                                        }
+
+                                        updateReasoningSection(cleanedReasoning, isComplete = false)
+                                        updateStreamingMessageState()
+                                        updateSectionedMessageState()
+                                    }
+                                }
+                            }
+                            is AgentResponse.ToolCallsStarted -> {
+                                _toolsInProgress.value = response.toolNames
+                                toolsUsed.addAll(response.toolNames)
+                                _aiStatus.value = AiStatus.ExecutingTools(response.toolNames)
+
+                                response.toolNames.forEach { toolName ->
+                                    val step = ToolExecutionStep(
+                                        toolName = toolName,
+                                        displayName = ToolDisplayUtils.formatToolName(toolName),
+                                        status = ToolStepStatus.PENDING
+                                    )
+                                    if (currentToolSteps.none { it.toolName == toolName }) {
+                                        currentToolSteps.add(step)
+                                    }
+                                }
+
+                                updateToolGroupSection(response.toolNames)
+                                updateStreamingMessageState()
+                                updateSectionedMessageState()
+                            }
+                            is AgentResponse.ToolExecuting -> {
+                                if (!_toolsInProgress.value.contains(response.toolName)) {
+                                    _toolsInProgress.value = _toolsInProgress.value + response.toolName
+                                }
+                                if (!toolsUsed.contains(response.toolName)) {
+                                    toolsUsed.add(response.toolName)
+                                }
+                                _aiStatus.value = AiStatus.CallingTool(response.toolName)
+
+                                val stepIndex = currentToolSteps.indexOfFirst { it.toolName == response.toolName }
+                                if (stepIndex >= 0) {
+                                    currentToolSteps[stepIndex] = currentToolSteps[stepIndex].copy(
+                                        status = ToolStepStatus.EXECUTING
+                                    )
+                                } else {
+                                    currentToolSteps.add(ToolExecutionStep(
+                                        toolName = response.toolName,
+                                        displayName = ToolDisplayUtils.formatToolName(response.toolName),
+                                        status = ToolStepStatus.EXECUTING
+                                    ))
+                                }
+
+                                updateToolExecutionStatus(response.toolName, ToolExecutionStatus.EXECUTING)
+                                updateStreamingMessageState()
+                                updateSectionedMessageState()
+                            }
+                            is AgentResponse.ToolResult -> {
+                                _toolsInProgress.value = _toolsInProgress.value - response.toolName
+                                if (_toolsInProgress.value.isEmpty()) {
+                                    _aiStatus.value = AiStatus.Thinking
+                                }
+
+                                val stepIndex = currentToolSteps.indexOfFirst { it.toolName == response.toolName }
+                                if (stepIndex >= 0) {
+                                    currentToolSteps[stepIndex] = currentToolSteps[stepIndex].copy(
+                                        status = if (response.success) ToolStepStatus.COMPLETED else ToolStepStatus.FAILED,
+                                        endTime = System.currentTimeMillis(),
+                                        result = response.summary
+                                    )
+                                }
+
+                                updateToolExecutionStatus(
+                                    toolName = response.toolName,
+                                    status = if (response.success) ToolExecutionStatus.COMPLETED else ToolExecutionStatus.FAILED,
+                                    result = response.summary
+                                )
+
+                                if (response.success && isAgenticTool(response.toolName)) {
+                                    try {
+                                        val resultJson = parseToolResultJson(response.summary)
+                                        processAgenticToolResult(response.toolName, resultJson)
+                                    } catch (e: Exception) {
+                                        // Non-JSON result, ignore
+                                    }
+                                }
+
+                                updateStreamingMessageState()
+                                updateSectionedMessageState()
+                            }
+                            is AgentResponse.Complete -> {
+                                finalContent = ContentCleaner.cleanForDisplay(response.content)
+                                finalReasoning = response.reasoning?.let {
+                                    ContentCleaner.cleanReasoning(it)
+                                }?.takeIf { it.isNotBlank() }
+                                _aiStatus.value = AiStatus.Complete
+
+                                if (_streamingContent.value != finalContent) {
+                                    _streamingContent.value = finalContent
+                                    finalReasoning?.let { _streamingReasoning.value = it }
+                                }
+
+                                if (finalContent.isNotEmpty()) {
+                                    updateContentSection(finalContent, isComplete = true)
+                                }
+
+                                finalizeSections()
+
+                                _streamingMessageState.value = _streamingMessageState.value?.copy(
+                                    content = finalContent,
+                                    reasoning = finalReasoning ?: "",
+                                    isComplete = true
+                                )
+                            }
+                            is AgentResponse.Error -> {
+                                _uiState.value = ChatUiState.Error(response.message)
+                                _aiStatus.value = AiStatus.Idle
+                                currentMessageId?.let { msgId ->
+                                    chatRepository.setMessageError(msgId, response.message)
+                                }
+
+                                _streamingMessageState.value = _streamingMessageState.value?.copy(
+                                    hasError = true,
+                                    errorMessage = response.message
+                                )
+
+                                _sectionedMessageState.value = _sectionedMessageState.value?.copy(
+                                    hasError = true,
+                                    errorMessage = response.message
+                                )
+                            }
+                            is AgentResponse.AskUserInterrupt -> {
+                                // Another ask_user - store and pause again
+                                pendingConversationHistory = response.conversationHistory
+                                pendingToolsUsed = response.toolsUsed
+
+                                val options = response.options.map { opt ->
+                                    AskUserOption(
+                                        label = opt.label,
+                                        description = opt.description,
+                                        value = opt.value
+                                    )
+                                }
+
+                                val askSection = AgentSection.AskUser(
+                                    question = response.question,
+                                    options = options,
+                                    allowCustomInput = response.allowCustomInput,
+                                    isAnswered = false
+                                )
+                                currentSections.add(askSection)
+                                updateSectionedMessageState()
+
+                                _askUserState.value = AskUserInterruptState(
+                                    question = response.question,
+                                    options = response.options,
+                                    allowCustomInput = response.allowCustomInput,
+                                    context = response.context,
+                                    sectionId = askSection.id
+                                )
+
+                                _uiState.value = ChatUiState.WaitingForUserInput
+                                _aiStatus.value = AiStatus.Idle
+                                _isStreaming.value = false
+                            }
+                            else -> {
+                                // Ignore other responses (TokenUsage, ModelInfo, RetryInfo)
+                            }
+                        }
+                    }
+                }
+
+                streamingJob?.join()
+
+                // If waiting for user input again, don't finalize
+                if (_uiState.value == ChatUiState.WaitingForUserInput) {
+                    return@launch
+                }
+
+                // Finalize message
+                currentMessageId?.let { msgId ->
+                    val contentToSave = when {
+                        finalContent.isNotEmpty() -> finalContent
+                        _streamingContent.value.isNotEmpty() -> _streamingContent.value
+                        _streamingReasoning.value.isNotEmpty() -> _streamingReasoning.value
+                        else -> ""
+                    }
+
+                    val reasoningToSave = when {
+                        finalReasoning != null && finalContent.isNotEmpty() -> finalReasoning
+                        _streamingReasoning.value.isNotEmpty() && _streamingContent.value.isNotEmpty() -> _streamingReasoning.value
+                        else -> null
+                    }
+
+                    val sectionsJsonToSave = _sectionedMessageState.value?.let { state ->
+                        try {
+                            SectionedMessageSerializer.serialize(state)
+                        } catch (e: Exception) {
+                            null
+                        }
+                    }
+
+                    chatRepository.finalizeAssistantMessage(
+                        messageId = msgId,
+                        content = contentToSave,
+                        reasoningContent = reasoningToSave,
+                        toolsUsed = toolsUsed.distinct().takeIf { it.isNotEmpty() },
+                        sectionsJson = sectionsJsonToSave
+                    )
+                }
+
+                // Clean up
+                _isStreaming.value = false
+                _toolsInProgress.value = emptyList()
+                _aiStatus.value = AiStatus.Idle
+                _uiState.value = ChatUiState.Idle
+                _streamingMessageId.value = null
+                _streamingMessageState.value = null
+                _sectionedMessageState.value = null
+                clearSectionTracking()
+                pendingConversationHistory = null
+                pendingToolsUsed = emptyList()
+                currentMessageId = null
+
+            } catch (e: Exception) {
+                _isStreaming.value = false
+                _toolsInProgress.value = emptyList()
+                _aiStatus.value = AiStatus.Idle
+                _uiState.value = ChatUiState.Error(e.message ?: "Unknown error occurred")
+
+                currentMessageId?.let { msgId ->
+                    chatRepository.setMessageError(msgId, e.message ?: "Unknown error")
+                }
+
+                _streamingMessageId.value = null
+                _streamingMessageState.value = null
+                _sectionedMessageState.value = null
+                clearSectionTracking()
+                pendingConversationHistory = null
+                pendingToolsUsed = emptyList()
+                currentMessageId = null
+            }
+        }
+    }
+
+    /**
      * Toggle expansion state of a section (for reasoning, tools, todo).
      */
     fun toggleSectionExpanded(sectionId: String) {
@@ -1663,5 +2079,17 @@ sealed class ChatUiState {
     object Idle : ChatUiState()
     object Sending : ChatUiState()
     object Streaming : ChatUiState()
+    object WaitingForUserInput : ChatUiState() // Agent is paused waiting for user response
     data class Error(val message: String) : ChatUiState()
 }
+
+/**
+ * State for ask_user interrupts - when agent needs user input before continuing
+ */
+data class AskUserInterruptState(
+    val question: String,
+    val options: List<AskUserOptionData>,
+    val allowCustomInput: Boolean,
+    val context: String?,
+    val sectionId: String // ID of the AskUser section in the UI
+)
