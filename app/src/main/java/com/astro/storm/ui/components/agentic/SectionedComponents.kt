@@ -323,6 +323,9 @@ private fun ThinkingDotsIndicator() {
  *
  * This matches the Codex-style layout where each tool operation appears
  * as a distinct, chronologically-ordered section.
+ *
+ * IMPORTANT: Each tool has its own independent expanded state to allow
+ * users to expand/collapse tools individually.
  */
 @Composable
 fun ToolGroupSection(
@@ -330,6 +333,17 @@ fun ToolGroupSection(
     onToggleExpand: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Each tool maintains its own independent expanded state
+    // This allows users to expand/collapse individual tools
+    val expandedStates = remember(section.id) {
+        mutableStateMapOf<String, Boolean>().apply {
+            // Initialize all tools with the group's default expanded state
+            section.tools.forEach { tool ->
+                this[tool.id] = section.isExpanded
+            }
+        }
+    }
+
     // Render each tool as its own visual card for Codex-style appearance
     // Using key() for efficient recomposition when tools list changes
     Column(
@@ -338,10 +352,18 @@ fun ToolGroupSection(
     ) {
         section.tools.forEach { tool ->
             key(tool.id) {
+                // Ensure new tools get added to the state map
+                if (!expandedStates.containsKey(tool.id)) {
+                    expandedStates[tool.id] = section.isExpanded
+                }
+
                 IndividualToolCard(
                     tool = tool,
-                    isExpanded = section.isExpanded,
-                    onToggleExpand = onToggleExpand
+                    isExpanded = expandedStates[tool.id] ?: false,
+                    onToggleExpand = {
+                        // Toggle only this specific tool's expanded state
+                        expandedStates[tool.id] = !(expandedStates[tool.id] ?: false)
+                    }
                 )
             }
         }

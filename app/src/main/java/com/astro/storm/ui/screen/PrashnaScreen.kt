@@ -121,10 +121,20 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.stringResource
+import com.astro.storm.data.ai.agent.AgentResponse
+import com.astro.storm.data.ai.agent.StormyAgent
+import com.astro.storm.data.ai.provider.AiModel
+import com.astro.storm.data.ai.provider.AiProviderRegistry
+import com.astro.storm.data.ai.provider.ChatMessage
+import com.astro.storm.data.ai.provider.MessageRole
+import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ephemeris.PrashnaCalculator
+import com.astro.storm.ui.components.ContentCleaner
+import com.astro.storm.ui.components.MarkdownText
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
@@ -884,6 +894,8 @@ private fun PrashnaErrorContent(
 
 @Composable
 private fun PrashnaResultContent(result: PrashnaCalculator.PrashnaResult) {
+    val context = LocalContext.current
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 32.dp),
@@ -925,6 +937,11 @@ private fun PrashnaResultContent(result: PrashnaCalculator.PrashnaResult) {
             item(key = "recommendations") {
                 RecommendationsCard(recommendations = result.recommendations)
             }
+        }
+
+        // AI Insight Card - Ask Stormy for deeper interpretation
+        item(key = "ai_insight") {
+            AiInsightCard(result = result)
         }
     }
 }
@@ -1828,6 +1845,401 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 }
             }
         }
+    }
+}
+
+/**
+ * AI Insight Card - Allows users to get AI-powered interpretation of Prashna results
+ */
+@Composable
+private fun AiInsightCard(result: PrashnaCalculator.PrashnaResult) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    // AI state management
+    var aiState by remember { mutableStateOf<AiInsightState>(AiInsightState.Initial) }
+    var streamingContent by remember { mutableStateOf("") }
+    var streamingJob by remember { mutableStateOf<Job?>(null) }
+
+    // Get AI dependencies
+    val agent = remember(context) { StormyAgent.getInstance(context) }
+    val providerRegistry = remember(context) { AiProviderRegistry.getInstance(context) }
+
+    // Generate Prashna context for the AI
+    val prashnaContext = remember(result) { formatPrashnaForAi(result) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            // Header
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(CircleShape)
+                        .background(AppTheme.AccentPrimary.copy(alpha = 0.15f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Outlined.AutoAwesome,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        stringResource(StringKey.PRASHNA_AI_INSIGHT),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        stringResource(StringKey.PRASHNA_AI_INSIGHT_SUBTITLE),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AppTheme.TextMuted
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Content based on state
+            AnimatedContent(
+                targetState = aiState,
+                label = "ai_insight_state"
+            ) { state ->
+                when (state) {
+                    is AiInsightState.Initial -> {
+                        // Show generate button
+                        Button(
+                            onClick = {
+                                scope.launch {
+                                    val model = providerRegistry.getDefaultModel()
+                                    if (model == null) {
+                                        aiState = AiInsightState.Error("No AI model configured. Please set up an AI provider in settings.")
+                                        return@launch
+                                    }
+
+                                    aiState = AiInsightState.Loading
+                                    streamingContent = ""
+
+                                    streamingJob = launch {
+                                        try {
+                                            val messages = listOf(
+                                                ChatMessage(
+                                                    role = MessageRole.USER,
+                                                    content = prashnaContext
+                                                )
+                                            )
+
+                                            agent.processMessage(
+                                                messages = messages,
+                                                model = model,
+                                                currentProfile = null,
+                                                allProfiles = emptyList(),
+                                                currentChart = result.chart
+                                            ).collect { response ->
+                                                when (response) {
+                                                    is AgentResponse.ContentChunk -> {
+                                                        streamingContent += response.text
+                                                        aiState = AiInsightState.Streaming(
+                                                            ContentCleaner.cleanForDisplay(streamingContent)
+                                                        )
+                                                    }
+                                                    is AgentResponse.Complete -> {
+                                                        val finalContent = ContentCleaner.cleanForDisplay(response.content)
+                                                        aiState = AiInsightState.Success(finalContent)
+                                                    }
+                                                    is AgentResponse.Error -> {
+                                                        aiState = AiInsightState.Error(response.message)
+                                                    }
+                                                    else -> { /* Ignore other responses */ }
+                                                }
+                                            }
+                                        } catch (e: CancellationException) {
+                                            throw e
+                                        } catch (e: Exception) {
+                                            aiState = AiInsightState.Error(e.message ?: "Failed to generate insight")
+                                        }
+                                    }
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = AppTheme.AccentPrimary
+                            ),
+                            shape = RoundedCornerShape(10.dp)
+                        ) {
+                            Icon(
+                                Icons.Outlined.AutoAwesome,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = AppTheme.ButtonText
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                stringResource(StringKey.PRASHNA_GENERATE_AI_INSIGHT),
+                                style = MaterialTheme.typography.labelLarge,
+                                fontWeight = FontWeight.Medium,
+                                color = AppTheme.ButtonText
+                            )
+                        }
+                    }
+
+                    is AiInsightState.Loading -> {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator(
+                                color = AppTheme.AccentPrimary,
+                                strokeWidth = 3.dp,
+                                modifier = Modifier.size(32.dp)
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                "Stormy is analyzing...",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = AppTheme.TextMuted
+                            )
+                        }
+                    }
+
+                    is AiInsightState.Streaming -> {
+                        Column {
+                            Surface(
+                                color = AppTheme.CardBackgroundElevated,
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(modifier = Modifier.padding(12.dp)) {
+                                    MarkdownText(
+                                        markdown = state.content,
+                                        textColor = AppTheme.TextSecondary,
+                                        linkColor = AppTheme.AccentPrimary,
+                                        textSize = 13f
+                                    )
+                                    // Typing indicator
+                                    Row(
+                                        modifier = Modifier.padding(top = 8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        CircularProgressIndicator(
+                                            color = AppTheme.AccentPrimary,
+                                            strokeWidth = 2.dp,
+                                            modifier = Modifier.size(14.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            "Generating...",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = AppTheme.TextMuted
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    is AiInsightState.Success -> {
+                        Column {
+                            Surface(
+                                color = AppTheme.CardBackgroundElevated,
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                MarkdownText(
+                                    markdown = state.content,
+                                    modifier = Modifier.padding(12.dp),
+                                    textColor = AppTheme.TextSecondary,
+                                    linkColor = AppTheme.AccentPrimary,
+                                    textSize = 13f
+                                )
+                            }
+                            // Regenerate button
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Surface(
+                                    onClick = {
+                                        aiState = AiInsightState.Initial
+                                    },
+                                    color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    Row(
+                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            Icons.Filled.Refresh,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(16.dp),
+                                            tint = AppTheme.AccentPrimary
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Text(
+                                            "Regenerate",
+                                            style = MaterialTheme.typography.labelMedium,
+                                            color = AppTheme.AccentPrimary
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    is AiInsightState.Error -> {
+                        Column {
+                            Surface(
+                                color = AppTheme.ErrorColor.copy(alpha = 0.1f),
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        Icons.Outlined.ErrorOutline,
+                                        contentDescription = null,
+                                        tint = AppTheme.ErrorColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Text(
+                                        state.message,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = AppTheme.ErrorColor,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Button(
+                                onClick = { aiState = AiInsightState.Initial },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = AppTheme.AccentPrimary
+                                ),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Icon(
+                                    Icons.Filled.Refresh,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp),
+                                    tint = AppTheme.ButtonText
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    stringResource(StringKey.BTN_TRY_AGAIN),
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = AppTheme.ButtonText
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Cleanup on disposal
+    DisposableEffect(Unit) {
+        onDispose {
+            streamingJob?.cancel()
+        }
+    }
+}
+
+/**
+ * State for AI insight generation
+ */
+private sealed interface AiInsightState {
+    data object Initial : AiInsightState
+    data object Loading : AiInsightState
+    data class Streaming(val content: String) : AiInsightState
+    data class Success(val content: String) : AiInsightState
+    data class Error(val message: String) : AiInsightState
+}
+
+/**
+ * Format Prashna result as context for AI interpretation
+ */
+private fun formatPrashnaForAi(result: PrashnaCalculator.PrashnaResult): String {
+    return buildString {
+        appendLine("Please provide a deeper Vedic astrology interpretation of this Prashna (horary) chart analysis. Be insightful, practical, and compassionate in your guidance.")
+        appendLine()
+        appendLine("## Question")
+        appendLine("\"${result.question}\"")
+        appendLine("Category: ${result.category.displayName}")
+        appendLine("Time: ${result.questionTime}")
+        appendLine()
+        appendLine("## Initial Verdict")
+        appendLine("Verdict: ${result.judgment.verdict.displayName}")
+        appendLine("Confidence: ${result.confidence}%")
+        appendLine("Certainty: ${result.judgment.certaintyLevel.displayName}")
+        appendLine()
+        appendLine("## Moon Analysis")
+        appendLine("Moon Sign: ${result.moonAnalysis.moonSign.displayName}")
+        appendLine("Moon House: ${result.moonAnalysis.moonHouse}")
+        appendLine("Nakshatra: ${result.moonAnalysis.nakshatra.displayName} (Pada ${result.moonAnalysis.nakshatraPada})")
+        appendLine("Moon Strength: ${result.moonAnalysis.moonStrength.displayName}")
+        appendLine("Phase: ${if (result.moonAnalysis.isWaxing) "Waxing" else "Waning"}")
+        appendLine("Void of Course: ${if (result.moonAnalysis.isVoidOfCourse) "Yes" else "No"}")
+        appendLine()
+        appendLine("## Lagna Analysis")
+        appendLine("Rising Sign: ${result.lagnaAnalysis.lagnaSign.displayName}")
+        appendLine("Lagna Lord: ${result.lagnaAnalysis.lagnaLord.displayName}")
+        appendLine("Lagna Lord Position: House ${result.lagnaAnalysis.lagnaLordPosition.house}")
+        appendLine("Condition: ${result.lagnaAnalysis.lagnaCondition.displayName}")
+        if (result.lagnaAnalysis.planetsInLagna.isNotEmpty()) {
+            appendLine("Planets in Lagna: ${result.lagnaAnalysis.planetsInLagna.joinToString { it.planet.displayName }}")
+        }
+        appendLine()
+        if (result.timingPrediction.willEventOccur) {
+            appendLine("## Timing Prediction")
+            appendLine("Estimated Time: ${result.timingPrediction.estimatedTime}")
+            appendLine("Method: ${result.timingPrediction.timingMethod.displayName}")
+            appendLine("Confidence: ${result.timingPrediction.confidence}%")
+            appendLine()
+        }
+        if (result.specialYogas.isNotEmpty()) {
+            appendLine("## Special Prashna Yogas")
+            result.specialYogas.forEach { yoga ->
+                val sign = if (yoga.isPositive) "+" else "-"
+                appendLine("$sign ${yoga.name}: ${yoga.description}")
+            }
+            appendLine()
+        }
+        appendLine("## Supporting Factors")
+        result.judgment.supportingFactors.forEach { appendLine("- $it") }
+        appendLine()
+        if (result.judgment.opposingFactors.isNotEmpty()) {
+            appendLine("## Challenges/Opposing Factors")
+            result.judgment.opposingFactors.forEach { appendLine("- $it") }
+            appendLine()
+        }
+        appendLine("Please provide:")
+        appendLine("1. Your overall interpretation of this Prashna chart")
+        appendLine("2. Key insights the querent should know")
+        appendLine("3. What the Moon's position reveals about their mindset")
+        appendLine("4. Practical advice based on the astrological factors")
+        appendLine("5. Any additional considerations or cautions")
     }
 }
 

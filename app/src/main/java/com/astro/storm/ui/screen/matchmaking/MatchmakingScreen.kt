@@ -54,11 +54,21 @@ import com.astro.storm.ephemeris.MatchmakingCalculator
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.ChartViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
+import androidx.compose.ui.platform.LocalContext
+import com.astro.storm.data.ai.agent.AgentResponse
+import com.astro.storm.data.ai.agent.StormyAgent
+import com.astro.storm.data.ai.provider.AiProviderRegistry
+import com.astro.storm.data.ai.provider.ChatMessage
+import com.astro.storm.data.ai.provider.MessageRole
+import com.astro.storm.ui.components.ContentCleaner
+import com.astro.storm.ui.components.MarkdownText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -330,6 +340,13 @@ fun MatchmakingScreen(
                     4 -> {
                         item {
                             EnhancedRemediesSection(result)
+                        }
+                        item {
+                            MatchmakingAiInsightCard(
+                                result = result,
+                                brideChart = brideChart,
+                                groomChart = groomChart
+                            )
                         }
                     }
                 }
@@ -2480,4 +2497,423 @@ private fun getYoni(chart: VedicChart): String {
     val moonPosition = getMoonPosition(chart) ?: return unknownText
     // Use centralized VedicAstrologyUtils for consistent Yoni lookup
     return VedicAstrologyUtils.getYoniDisplayName(moonPosition.nakshatra)
+}
+
+/**
+ * State for AI insight generation in Matchmaking
+ */
+private sealed interface MatchmakingAiInsightState {
+    data object Initial : MatchmakingAiInsightState
+    data object Loading : MatchmakingAiInsightState
+    data class Streaming(val content: String) : MatchmakingAiInsightState
+    data class Success(val content: String) : MatchmakingAiInsightState
+    data class Error(val message: String) : MatchmakingAiInsightState
+}
+
+/**
+ * AI Insight Card for Matchmaking - Provides AI-powered interpretation of compatibility results
+ */
+@Composable
+private fun MatchmakingAiInsightCard(
+    result: MatchmakingResult,
+    brideChart: VedicChart?,
+    groomChart: VedicChart?
+) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    // AI state management
+    var aiState by remember { mutableStateOf<MatchmakingAiInsightState>(MatchmakingAiInsightState.Initial) }
+    var streamingContent by remember { mutableStateOf("") }
+    var streamingJob by remember { mutableStateOf<Job?>(null) }
+
+    // Get AI dependencies
+    val agent = remember(context) { StormyAgent.getInstance(context) }
+    val providerRegistry = remember(context) { AiProviderRegistry.getInstance(context) }
+
+    // Generate matchmaking context for the AI
+    val matchmakingContext = remember(result, brideChart, groomChart) {
+        formatMatchmakingForAi(result, brideChart, groomChart)
+    }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            // Header
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(CircleShape)
+                        .background(AppTheme.AccentPrimary.copy(alpha = 0.15f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Outlined.AutoAwesome,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        stringResource(StringKeyMatch.MATCH_AI_INSIGHT),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        stringResource(StringKeyMatch.MATCH_AI_INSIGHT_SUBTITLE),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AppTheme.TextMuted
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Content based on state
+            AnimatedContent(
+                targetState = aiState,
+                label = "matchmaking_ai_insight_state"
+            ) { state ->
+                when (state) {
+                    is MatchmakingAiInsightState.Initial -> {
+                        // Show generate button
+                        Button(
+                            onClick = {
+                                scope.launch {
+                                    val model = providerRegistry.getDefaultModel()
+                                    if (model == null) {
+                                        aiState = MatchmakingAiInsightState.Error("No AI model configured. Please set up an AI provider in settings.")
+                                        return@launch
+                                    }
+
+                                    aiState = MatchmakingAiInsightState.Loading
+                                    streamingContent = ""
+
+                                    streamingJob = launch {
+                                        try {
+                                            val messages = listOf(
+                                                ChatMessage(
+                                                    role = MessageRole.USER,
+                                                    content = matchmakingContext
+                                                )
+                                            )
+
+                                            agent.processMessage(
+                                                messages = messages,
+                                                model = model,
+                                                currentProfile = null,
+                                                allProfiles = emptyList(),
+                                                currentChart = brideChart
+                                            ).collect { response ->
+                                                when (response) {
+                                                    is AgentResponse.ContentChunk -> {
+                                                        streamingContent += response.text
+                                                        aiState = MatchmakingAiInsightState.Streaming(
+                                                            ContentCleaner.cleanForDisplay(streamingContent)
+                                                        )
+                                                    }
+                                                    is AgentResponse.Complete -> {
+                                                        val finalContent = ContentCleaner.cleanForDisplay(response.content)
+                                                        aiState = MatchmakingAiInsightState.Success(finalContent)
+                                                    }
+                                                    is AgentResponse.Error -> {
+                                                        aiState = MatchmakingAiInsightState.Error(response.message)
+                                                    }
+                                                    else -> { /* Ignore other responses */ }
+                                                }
+                                            }
+                                        } catch (e: CancellationException) {
+                                            throw e
+                                        } catch (e: Exception) {
+                                            aiState = MatchmakingAiInsightState.Error(e.message ?: "Failed to generate insight")
+                                        }
+                                    }
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = AppTheme.AccentPrimary
+                            ),
+                            shape = RoundedCornerShape(10.dp)
+                        ) {
+                            Icon(
+                                Icons.Outlined.AutoAwesome,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = AppTheme.ButtonText
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                stringResource(StringKeyMatch.MATCH_GENERATE_AI_INSIGHT),
+                                style = MaterialTheme.typography.labelLarge,
+                                fontWeight = FontWeight.Medium,
+                                color = AppTheme.ButtonText
+                            )
+                        }
+                    }
+
+                    is MatchmakingAiInsightState.Loading -> {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator(
+                                color = AppTheme.AccentPrimary,
+                                strokeWidth = 3.dp,
+                                modifier = Modifier.size(32.dp)
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                "Stormy is analyzing compatibility...",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = AppTheme.TextMuted
+                            )
+                        }
+                    }
+
+                    is MatchmakingAiInsightState.Streaming -> {
+                        Column {
+                            Surface(
+                                color = AppTheme.CardBackgroundElevated,
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(modifier = Modifier.padding(12.dp)) {
+                                    MarkdownText(
+                                        markdown = state.content,
+                                        textColor = AppTheme.TextSecondary,
+                                        linkColor = AppTheme.AccentPrimary,
+                                        textSize = 13f
+                                    )
+                                    // Typing indicator
+                                    Row(
+                                        modifier = Modifier.padding(top = 8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        CircularProgressIndicator(
+                                            color = AppTheme.AccentPrimary,
+                                            strokeWidth = 2.dp,
+                                            modifier = Modifier.size(14.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            "Generating...",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = AppTheme.TextMuted
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    is MatchmakingAiInsightState.Success -> {
+                        Column {
+                            Surface(
+                                color = AppTheme.CardBackgroundElevated,
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                MarkdownText(
+                                    markdown = state.content,
+                                    modifier = Modifier.padding(12.dp),
+                                    textColor = AppTheme.TextSecondary,
+                                    linkColor = AppTheme.AccentPrimary,
+                                    textSize = 13f
+                                )
+                            }
+                            // Regenerate button
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Surface(
+                                    onClick = {
+                                        aiState = MatchmakingAiInsightState.Initial
+                                    },
+                                    color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    Row(
+                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            Icons.Filled.Refresh,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(16.dp),
+                                            tint = AppTheme.AccentPrimary
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Text(
+                                            "Regenerate",
+                                            style = MaterialTheme.typography.labelMedium,
+                                            color = AppTheme.AccentPrimary
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    is MatchmakingAiInsightState.Error -> {
+                        Column {
+                            Surface(
+                                color = AppTheme.ErrorColor.copy(alpha = 0.1f),
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        Icons.Outlined.ErrorOutline,
+                                        contentDescription = null,
+                                        tint = AppTheme.ErrorColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Text(
+                                        state.message,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = AppTheme.ErrorColor,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Button(
+                                onClick = { aiState = MatchmakingAiInsightState.Initial },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = AppTheme.AccentPrimary
+                                ),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Icon(
+                                    Icons.Filled.Refresh,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp),
+                                    tint = AppTheme.ButtonText
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    stringResource(StringKey.BTN_TRY_AGAIN),
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = AppTheme.ButtonText
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Cleanup on disposal
+    DisposableEffect(Unit) {
+        onDispose {
+            streamingJob?.cancel()
+        }
+    }
+}
+
+/**
+ * Format Matchmaking result as context for AI interpretation
+ */
+private fun formatMatchmakingForAi(
+    result: MatchmakingResult,
+    brideChart: VedicChart?,
+    groomChart: VedicChart?
+): String {
+    return buildString {
+        appendLine("Please provide a deeper Vedic astrology interpretation of this Kundli Milan (matchmaking/compatibility) analysis. Be insightful, practical, and compassionate in your guidance. Focus on helping the couple understand their compatibility and how to strengthen their relationship.")
+        appendLine()
+        appendLine("## Overall Compatibility Score")
+        appendLine("Total Points: ${result.totalPoints} out of ${result.maxPoints} (${String.format("%.1f", (result.totalPoints / result.maxPoints) * 100)}%)")
+        appendLine("Rating: ${result.rating}")
+        appendLine()
+
+        // Bride's details
+        brideChart?.let { chart ->
+            appendLine("## Bride's Chart Details")
+            val brideMoon = chart.planetPositions.find { it.planet == Planet.MOON }
+            brideMoon?.let { moon ->
+                appendLine("- Moon Sign (Rashi): ${moon.sign.displayName}")
+                appendLine("- Nakshatra: ${moon.nakshatra.displayName} (Pada ${moon.nakshatraPada})")
+                appendLine("- Nakshatra Lord: ${moon.nakshatra.ruler.displayName}")
+            }
+            appendLine()
+        }
+
+        // Groom's details
+        groomChart?.let { chart ->
+            appendLine("## Groom's Chart Details")
+            val groomMoon = chart.planetPositions.find { it.planet == Planet.MOON }
+            groomMoon?.let { moon ->
+                appendLine("- Moon Sign (Rashi): ${moon.sign.displayName}")
+                appendLine("- Nakshatra: ${moon.nakshatra.displayName} (Pada ${moon.nakshatraPada})")
+                appendLine("- Nakshatra Lord: ${moon.nakshatra.ruler.displayName}")
+            }
+            appendLine()
+        }
+
+        appendLine("## Ashtakoota (8-fold) Guna Analysis")
+        result.gunaAnalyses.forEach { guna ->
+            appendLine("### ${guna.name} (${guna.obtainedPoints}/${guna.maxPoints} points)")
+            appendLine("- Bride: ${guna.brideValue}")
+            appendLine("- Groom: ${guna.groomValue}")
+            appendLine("- Significance: ${guna.significance}")
+            if (guna.interpretation.isNotEmpty()) {
+                appendLine("- Analysis: ${guna.interpretation}")
+            }
+            appendLine()
+        }
+
+        appendLine("## Manglik (Kuja Dosha) Analysis")
+        appendLine("- Bride Manglik Status: ${if (result.brideManglik) "Yes (Manglik)" else "No"}")
+        appendLine("- Groom Manglik Status: ${if (result.groomManglik) "Yes (Manglik)" else "No"}")
+        appendLine("- Compatibility: ${result.manglikCompatibility}")
+        appendLine()
+
+        if (result.specialConsiderations.isNotEmpty()) {
+            appendLine("## Special Considerations")
+            result.specialConsiderations.forEach { consideration ->
+                appendLine("- $consideration")
+            }
+            appendLine()
+        }
+
+        if (result.remedies.isNotEmpty()) {
+            appendLine("## Suggested Remedies")
+            result.remedies.forEach { remedy ->
+                appendLine("- $remedy")
+            }
+            appendLine()
+        }
+
+        appendLine("Please provide:")
+        appendLine("1. Your overall interpretation of this compatibility match")
+        appendLine("2. Key strengths of this union based on the Guna scores")
+        appendLine("3. Areas that may need attention or conscious effort")
+        appendLine("4. How the Nakshatra pairing influences their emotional connection")
+        appendLine("5. Practical advice for building a harmonious relationship")
+        appendLine("6. If there are any doshas, explain their impact and effective remedies")
+    }
 }

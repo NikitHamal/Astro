@@ -272,6 +272,11 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
 
         // Keep track of what we've already emitted to avoid duplicates
         var totalEmittedContent = StringBuilder()
+        var totalEmittedReasoning = StringBuilder()
+
+        // Track the last emitted content/reasoning lengths for delta calculation
+        var lastEmittedContentLength = 0
+        var lastEmittedReasoningLength = 0
 
         while (continueProcessing && iteration < MAX_TOTAL_ITERATIONS && toolIterations < MAX_TOOL_ITERATIONS) {
             iteration++
@@ -293,13 +298,31 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                 when (response) {
                     is ChatResponse.Content -> {
                         currentContent.append(response.text)
-                        emit(AgentResponse.ContentChunk(response.text))
+                        // Only emit if this content hasn't already been emitted
+                        // This handles cases where models repeat content in subsequent iterations
+                        val newContent = response.text
+                        if (newContent.isNotEmpty()) {
+                            // Check if this chunk is already in our total emitted content
+                            val currentTotal = totalEmittedContent.toString()
+                            if (!currentTotal.endsWith(newContent) &&
+                                !currentTotal.contains(newContent.take(50))) {
+                                totalEmittedContent.append(newContent)
+                                emit(AgentResponse.ContentChunk(newContent))
+                            }
+                        }
                     }
                     is ChatResponse.Reasoning -> {
                         // Skip empty reasoning markers
                         if (response.text.isNotEmpty()) {
                             currentReasoning.append(response.text)
-                            emit(AgentResponse.ReasoningChunk(response.text))
+                            // Check for duplicate reasoning chunks
+                            val newReasoning = response.text
+                            val currentTotalReasoning = totalEmittedReasoning.toString()
+                            if (!currentTotalReasoning.endsWith(newReasoning) &&
+                                !currentTotalReasoning.contains(newReasoning.take(50))) {
+                                totalEmittedReasoning.append(newReasoning)
+                                emit(AgentResponse.ReasoningChunk(newReasoning))
+                            }
                         }
                     }
                     is ChatResponse.ToolCallRequest -> {
@@ -398,6 +421,8 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                 ))
 
                 // Execute each tool and add results
+                var askUserInterrupt: AgentResponse.AskUserInterrupt? = null
+
                 for (toolCall in pendingToolCalls) {
                     emit(AgentResponse.ToolExecuting(toolCall.name))
                     if (!toolsUsed.contains(toolCall.name)) {
@@ -415,6 +440,53 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                         toolCallId = toolCall.id,
                         name = toolCall.name
                     ))
+
+                    // Check if this is an ask_user tool - if so, we need to interrupt
+                    if (toolCall.name == "ask_user" && result.success) {
+                        try {
+                            val resultData = result.data
+                            if (resultData != null) {
+                                val question = resultData.optString("question", "")
+                                val optionsArray = resultData.optJSONArray("options")
+                                val allowCustomInput = resultData.optBoolean("allow_custom_input", true)
+                                val context = resultData.optString("context", null)
+
+                                val options = mutableListOf<AskUserOptionData>()
+                                optionsArray?.let { array ->
+                                    for (i in 0 until array.length()) {
+                                        val opt = array.optJSONObject(i)
+                                        if (opt != null) {
+                                            options.add(AskUserOptionData(
+                                                label = opt.optString("label", "Option ${i + 1}"),
+                                                description = opt.optString("description", null),
+                                                value = opt.optString("value", opt.optString("label", ""))
+                                            ))
+                                        }
+                                    }
+                                }
+
+                                if (question.isNotEmpty()) {
+                                    askUserInterrupt = AgentResponse.AskUserInterrupt(
+                                        question = question,
+                                        options = options,
+                                        allowCustomInput = allowCustomInput,
+                                        context = context,
+                                        conversationHistory = fullMessages.toList(),
+                                        toolsUsed = toolsUsed.distinct().toList()
+                                    )
+                                }
+                            }
+                        } catch (e: Exception) {
+                            // Failed to parse ask_user result, continue normally
+                        }
+                    }
+                }
+
+                // If ask_user was called, interrupt and wait for user response
+                if (askUserInterrupt != null) {
+                    emit(askUserInterrupt!!)
+                    continueProcessing = false
+                    return@flow // Exit the flow - UI will handle resuming with user response
                 }
 
                 // Continue processing to let AI respond to tool results
@@ -832,6 +904,19 @@ sealed class AgentResponse {
     ) : AgentResponse()
 
     /**
+     * Agent is asking the user a question and waiting for response.
+     * This pauses the agent execution until the user responds.
+     */
+    data class AskUserInterrupt(
+        val question: String,
+        val options: List<AskUserOptionData>,
+        val allowCustomInput: Boolean,
+        val context: String?,
+        val conversationHistory: List<ChatMessage>,
+        val toolsUsed: List<String>
+    ) : AgentResponse()
+
+    /**
      * Response complete
      */
     data class Complete(
@@ -840,3 +925,12 @@ sealed class AgentResponse {
         val toolsUsed: List<String>
     ) : AgentResponse()
 }
+
+/**
+ * Data class for ask_user options
+ */
+data class AskUserOptionData(
+    val label: String,
+    val description: String?,
+    val value: String
+)
