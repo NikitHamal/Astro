@@ -63,10 +63,23 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     TAB_INSIGHTS("Insights", "अन्तर्दृष्टि"),
     TAB_CHAT("Chat", "च्याट"),
     TAB_SETTINGS("Settings", "सेटिङ्स"),
-
+    // ============================================
+    // GENERAL
+    // ============================================
+    FEATURES_LABEL("Features", "विशेषताहरु"),
+    EXPAND("Expand", "विस्तार"),
+    COLLAPSE("Collapse", "संक्षिप्त"),
     // ============================================
     // HOME TAB - SECTION HEADERS
     // ============================================
+    CATEGORY_ALL("All", "सबै"),
+    CATEGORY_CHARTS("Charts", "चार्टहरू"),
+    CATEGORY_DASHAS("Dashas", "दशाहरू"),
+    CATEGORY_YOGAS("Yogas", "योगहरू"),
+    CATEGORY_TRANSITS("Transits", "गोचरहरू"),
+    CATEGORY_PREDICTIONS("Predictions", "भविष्यवाणीहरू"),
+    CATEGORY_COMPATIBILITY("Compatibility", "अनुकूलता"),
+    HOME_QUICK_ACCESS("Quick Access", "द्रुत पहुँच"),
     HOME_CHART_ANALYSIS("Chart Analysis", "कुण्डली विश्लेषण"),
     HOME_COMING_SOON("Coming Soon", "छिट्टै आउँदैछ"),
     HOME_SOON_BADGE("Soon", "छिट्टै"),
