@@ -113,6 +113,7 @@ private object PlanetaryDignityCalculator {
         else -> DignityStatus.NEUTRAL
     }
 
+    @Composable
     fun getColor(status: DignityStatus): Color = when (status) {
         DignityStatus.EXALTED -> ChartDetailColors.SuccessColor
         DignityStatus.DEBILITATED -> ChartDetailColors.ErrorColor

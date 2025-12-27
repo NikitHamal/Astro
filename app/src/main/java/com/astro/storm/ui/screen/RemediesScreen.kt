@@ -201,11 +201,12 @@ fun RemediesScreen(
                         .padding(paddingValues)
                 ) {
                     // Modern Pill Tab Row
-                    val tabItems = remember(tabs) {
+                    val accentColor = AppTheme.LifeAreaHealth
+                    val tabItems = remember(tabs, accentColor) {
                         tabs.map { title ->
                             TabItem(
                                 title = title,
-                                accentColor = AppTheme.LifeAreaHealth
+                                accentColor = accentColor
                             )
                         }
                     }

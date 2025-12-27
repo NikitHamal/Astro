@@ -202,11 +202,12 @@ fun CharaDashaScreen(
                                 stringResource(StringKeyDosha.CHARA_DASHA_TIMELINE)
                             )
 
-                            val tabItems = remember(tabs) {
+                            val accentColor = AppTheme.AccentPrimary
+                            val tabItems = remember(tabs, accentColor) {
                                 tabs.map { title ->
                                     TabItem(
                                         title = title,
-                                        accentColor = AppTheme.AccentPrimary
+                                        accentColor = accentColor
                                     )
                                 }
                             }
