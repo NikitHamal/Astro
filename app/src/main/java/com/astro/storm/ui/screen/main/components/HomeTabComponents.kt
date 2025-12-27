@@ -117,7 +117,7 @@ internal fun CategoryChip(
         label = "chip_bg"
     )
     val borderColor by animateColorAsState(
-        targetValue = if (isSelected) color else AppTheme.Divider,
+        targetValue = if (isSelected) color else AppTheme.DividerColor,
         animationSpec = spring(stiffness = Spring.StiffnessMedium),
         label = "chip_border"
     )

@@ -85,7 +85,7 @@ fun HomeTab(
             item {
                 Divider(
                     modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp),
-                    color = AppTheme.Divider.copy(alpha = 0.5f)
+                    color = AppTheme.DividerColor.copy(alpha = 0.5f)
                 )
             }
         }
