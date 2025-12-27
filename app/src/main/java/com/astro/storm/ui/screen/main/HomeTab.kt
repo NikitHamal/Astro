@@ -1,14 +1,20 @@
 package com.astro.storm.ui.screen.main
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,13 +23,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.BarChart
+import androidx.compose.material.icons.outlined.Block
+import androidx.compose.material.icons.outlined.Brightness2
 import androidx.compose.material.icons.outlined.Cake
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.CompareArrows
@@ -33,14 +44,12 @@ import androidx.compose.material.icons.outlined.HealthAndSafety
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.PersonAddAlt
 import androidx.compose.material.icons.outlined.Public
+import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Spa
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.Stars
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.Timeline
-import androidx.compose.material.icons.outlined.Block
-import androidx.compose.material.icons.outlined.Brightness2
-import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -52,10 +61,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
@@ -78,11 +89,8 @@ import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 
 private val GridSpacing = 12.dp
-private val CardCornerRadius = 12.dp
-private val IconContainerSize = 40.dp
-private val IconContainerCornerRadius = 10.dp
-private val IconSize = 22.dp
-private val CardContentPadding = 16.dp
+private val CardCornerRadius = 16.dp
+private val QuickAccessIconSize = 28.dp
 
 @Composable
 fun HomeTab(
@@ -101,7 +109,18 @@ fun HomeTab(
     }
 
     val allFeatures = remember { InsightFeature.entries.toList() }
-    val comingSoonFeatures = remember { InsightFeature.comingSoonFeatures }
+    val quickAccessFeatures = remember {
+        listOf(
+            InsightFeature.FULL_CHART,
+            InsightFeature.PLANETS,
+            InsightFeature.DASHAS,
+            InsightFeature.YOGAS,
+            InsightFeature.TRANSITS
+        )
+    }
+    val otherFeatures = remember(allFeatures, quickAccessFeatures) {
+        allFeatures - quickAccessFeatures.toSet()
+    }
 
     LazyColumn(
         modifier = modifier
@@ -109,13 +128,22 @@ fun HomeTab(
             .background(AppTheme.ScreenBackground),
         contentPadding = contentPadding
     ) {
-        item(key = "header_chart_analysis") {
+        // Quick Access Section
+        item(key = "quick_access_section") {
+            QuickAccessSection(
+                features = quickAccessFeatures,
+                onFeatureClick = onFeatureClick
+            )
+        }
+
+        // All Features Section
+        item(key = "header_all_features") {
             SectionHeader(
                 textKey = StringKey.HOME_CHART_ANALYSIS,
                 modifier = Modifier.padding(
-                    start = 16.dp,
-                    top = 16.dp,
-                    end = 16.dp,
+                    start = 20.dp,
+                    top = 24.dp,
+                    end = 20.dp,
                     bottom = 12.dp
                 )
             )
@@ -123,39 +151,102 @@ fun HomeTab(
 
         item(key = "grid_all_features") {
             FeatureGrid(
-                features = allFeatures,
+                features = otherFeatures,
                 onFeatureClick = onFeatureClick,
                 isDisabled = false
             )
         }
 
-        // Only show coming soon section if there are pending features
-        if (comingSoonFeatures.isNotEmpty()) {
-            item(key = "header_coming_soon") {
-                SectionHeader(
-                    textKey = StringKey.HOME_COMING_SOON,
-                    isMuted = true,
-                    modifier = Modifier.padding(
-                        start = 16.dp,
-                        top = 24.dp,
-                        end = 16.dp,
-                        bottom = 12.dp
-                    )
-                )
-            }
-
-            item(key = "grid_coming_soon") {
-                FeatureGrid(
-                    features = comingSoonFeatures,
-                    onFeatureClick = {},
-                    isDisabled = true
-                )
-            }
-        }
-
         item(key = "bottom_spacer") {
             Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+}
+
+@Composable
+private fun QuickAccessSection(
+    features: List<InsightFeature>,
+    onFeatureClick: (InsightFeature) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 16.dp)
+    ) {
+        Text(
+            text = stringResource(StringKey.HOME_QUICK_ACCESS),
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.SemiBold,
+            color = AppTheme.TextMuted,
+            letterSpacing = 0.5.sp
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            features.forEach { feature ->
+                QuickAccessItem(
+                    feature = feature,
+                    onClick = { onFeatureClick(feature) },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+    }
+}
+
+@Suppress("DEPRECATION")
+@Composable
+private fun QuickAccessItem(
+    feature: InsightFeature,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val language = LocalLanguage.current
+    val interactionSource = remember { MutableInteractionSource() }
+    val title = feature.getLocalizedTitle(language)
+
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(
+                role = Role.Button,
+                interactionSource = interactionSource,
+                indication = rememberRipple(bounded = true, color = feature.color),
+                onClick = onClick
+            )
+            .padding(vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .size(52.dp)
+                .clip(CircleShape)
+                .background(feature.color.copy(alpha = 0.12f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = feature.icon,
+                contentDescription = title,
+                tint = feature.color,
+                modifier = Modifier.size(QuickAccessIconSize)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        Text(
+            text = title.split(" ").first(), // Short name for quick access
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Medium,
+            color = AppTheme.TextSecondary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
@@ -189,7 +280,7 @@ private fun FeatureGrid(
     }
 
     Column(
-        modifier = modifier.padding(horizontal = 16.dp),
+        modifier = modifier.padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(verticalSpacing)
     ) {
         chunkedFeatures.forEach { rowFeatures ->
@@ -222,8 +313,6 @@ private fun FeatureCard(
     modifier: Modifier = Modifier
 ) {
     val language = LocalLanguage.current
-
-    // Read colors outside remember
     val cardBackground = AppTheme.CardBackground
     val textSubtle = AppTheme.TextSubtle
 
@@ -234,7 +323,7 @@ private fun FeatureCard(
 
     val iconBackgroundColor = remember(isDisabled, feature.color, textSubtle) {
         if (isDisabled) textSubtle.copy(alpha = 0.1f)
-        else feature.color.copy(alpha = 0.15f)
+        else feature.color.copy(alpha = 0.12f)
     }
 
     val iconTint = if (isDisabled) AppTheme.TextSubtle else feature.color
@@ -252,7 +341,7 @@ private fun FeatureCard(
     val description = feature.getLocalizedDescription(language)
     val comingSoonText = stringResource(StringKey.HOME_COMING_SOON)
 
-    Card(
+    Surface(
         modifier = modifier
             .semantics(mergeDescendants = true) {
                 contentDescription = buildString {
@@ -270,38 +359,62 @@ private fun FeatureCard(
                 indication = rippleIndication,
                 onClick = onClick
             ),
-        colors = CardDefaults.cardColors(containerColor = containerColor),
+        color = containerColor,
         shape = RoundedCornerShape(CardCornerRadius),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = if (isDisabled) 0.dp else 2.dp,
-            pressedElevation = 4.dp
-        )
+        shadowElevation = if (isDisabled) 0.dp else 1.dp,
+        tonalElevation = 0.dp
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(CardContentPadding)
+                .padding(14.dp)
         ) {
-            FeatureCardHeader(
-                icon = feature.icon,
-                iconBackgroundColor = iconBackgroundColor,
-                iconTint = iconTint,
-                showComingSoonBadge = isDisabled
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                // Icon container with subtle border
+                Box(
+                    modifier = Modifier
+                        .size(42.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(iconBackgroundColor)
+                        .then(
+                            if (!isDisabled) Modifier.border(
+                                width = 1.dp,
+                                color = feature.color.copy(alpha = 0.2f),
+                                shape = RoundedCornerShape(12.dp)
+                            ) else Modifier
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = feature.icon,
+                        contentDescription = null,
+                        tint = iconTint,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                if (isDisabled) {
+                    ComingSoonBadge()
+                }
+            }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 color = titleColor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.clearAndSetSemantics { }
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(2.dp))
 
             Text(
                 text = description,
@@ -317,51 +430,17 @@ private fun FeatureCard(
 }
 
 @Composable
-private fun FeatureCardHeader(
-    icon: ImageVector,
-    iconBackgroundColor: Color,
-    iconTint: Color,
-    showComingSoonBadge: Boolean,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(IconContainerSize)
-                .clip(RoundedCornerShape(IconContainerCornerRadius))
-                .background(iconBackgroundColor),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = iconTint,
-                modifier = Modifier.size(IconSize)
-            )
-        }
-
-        if (showComingSoonBadge) {
-            ComingSoonBadge()
-        }
-    }
-}
-
-@Composable
 private fun ComingSoonBadge(modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(4.dp),
-        color = AppTheme.TextSubtle.copy(alpha = 0.12f)
+        shape = RoundedCornerShape(6.dp),
+        color = AppTheme.TextSubtle.copy(alpha = 0.08f)
     ) {
         Text(
             text = stringResource(StringKey.HOME_SOON_BADGE),
             style = MaterialTheme.typography.labelSmall,
             color = AppTheme.TextSubtle,
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
         )
     }
 }
@@ -731,7 +810,7 @@ private fun EmptyHomeState(
                 modifier = Modifier
                     .height(52.dp)
                     .widthIn(min = 200.dp),
-                shape = RoundedCornerShape(26.dp), // Fully rounded
+                shape = RoundedCornerShape(26.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colors.AccentPrimary,
                     contentColor = colors.ButtonText

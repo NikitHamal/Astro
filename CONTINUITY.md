@@ -1,61 +1,74 @@
-# AstroStorm Continuity Ledger
+# AstroStorm UI/UX & Performance Overhaul - Continuity Ledger
 
 ## Goal (incl. success criteria)
-Complete refactoring and bug fixes for AstroStorm Vedic astrology app:
-1. Fix critical chat UI bugs (message duplication, raw tool JSON display, ask_user flow, section expansion)
-2. Implement 3+ new features from IDEAS.md
-3. Add AI integration to Prashna and Matchmaking screens
-4. Comprehensive codebase cleanup and refactoring
-5. Performance optimization
-6. Localization of hardcoded strings
+Comprehensive UI/UX redesign and performance optimization of the AstroStorm Vedic astrology Android app:
+1. **Light Mode Optimization**: Fix all screens not optimized for light mode (birth chart, full screen chart, dialogs, planets, dashas)
+2. **Remove Shadbala from Planets Screen**: Remove shadbala summary card and dialog (separate screen exists)
+3. **Home Tab Revamp**: Complete redesign - modern, minimal, clean, uncluttered, responsive
+4. **Tab Navigation Consistency**: Standardize all screens to use modern tab navigation (like nakshatras, shadbala, shodasvarga screens)
+5. **AppBar Title Fixes**: Single line titles with ellipsis for all long titles
+6. **Responsive Layouts**: Fix text justification, vertical crowding, overflow issues throughout
+7. **Matchmaking Screen Fixes**: Show numeric values beside progress bars, fix AI insights lag/freeze
+8. **Performance Optimization**: Address app-wide lag, freezing, poor user experience
+9. **Separate Dasha Screens**: Create individual screens for each dasha type
+10. **Birth Chart Accuracy**: Fix house number inconsistencies between chart image and planet details
+11. **Codebase Cleanup**: Remove redundancies, duplications, dead code; modularize; localize hardcoded strings
+12. **Vedic Accuracy**: Verify all calculators are precise and based on authentic Vedic astrology
 
 ## Constraints/Assumptions
+- Kotlin + Jetpack Compose codebase (182 files, 164K+ LOC)
 - Must maintain all existing functionality
-- All Vedic astrology calculations must remain accurate per classical texts
-- Production-grade, fully functional implementations only
-- Use modularization and best practices
-- No hardcoded strings - use localization
-- Kotlin/Jetpack Compose codebase
+- No git commits - only file changes
+- Production-grade implementations only
+- Localization for English and Nepali
+- MVVM architecture with Room database
+- Must not break existing navigation or features
 
-## Key Decisions
-1. Fix tool expansion bug by giving each tool its own independent expanded state
-2. Fix ask_user tool to properly interrupt agent flow and wait for user response
-3. Improve deduplication in StormyAgent to prevent duplicate content emission
-4. Clean tool call JSON from appearing in content
-5. Implement features from IDEAS.md: Transit Alert System, Context-Aware Dasha, Educational Mode
+## Key decisions
+- Use `ModernTabRow` component pattern (from newer screens) for tab navigation consistency
+- Follow `AppThemeColors` system for all light/dark mode colors
+- StringResources.kt is the source for localization
+- Focus on performance through: LazyColumn optimization, coroutine scoping, remember/derivedStateOf usage
 
 ## State
+### Done:
+- Initial codebase exploration and analysis completed
+- Identified 36+ screens, 46 calculators, 7 ViewModels
+- Mapped navigation structure (50+ routes)
+- Identified key issues: redesigned screen duplication, color spread, large dialogs
 
-### Done
-- Analyzed codebase structure and identified all relevant files
-- Reviewed all screenshots showing issues
-- Identified root causes of bugs:
-  - Tool expansion: all tools share same isExpanded state from ToolGroup
-  - Raw JSON: tool call blocks not being cleaned from content properly
-  - Duplicates: content being emitted multiple times during streaming
-  - ask_user: not interrupting flow, showing as raw JSON
+### Now:
+- Starting implementation - Light mode fixes and Planets screen cleanup
 
-### Now
-- Fixing critical chat UI bugs
+### Next (Priority Order):
+1. Light mode fixes for birth chart, planets, dashas screens
+2. Remove Shadbala card/dialog from PlanetsScreen
+3. Standardize tab navigation across all screens
+4. Home tab complete revamp
+5. AppBar title truncation fixes
+6. Responsive layout fixes (overflow, crowding)
+7. Matchmaking screen fixes
+8. Performance optimizations
+9. Dasha screen separation
+10. Birth chart house number accuracy
+11. Codebase cleanup and dead code removal
 
-### Next
-- Implement AI integration in Prashna screen
-- Implement AI integration in Matchmaking screen
-- Implement 3+ new features from IDEAS.md
-- Codebase cleanup and dead code removal
-- Performance optimization
-- Localization improvements
+## Open questions (UNCONFIRMED if needed)
+- UNCONFIRMED: Exact visual design preferences for home tab (will create modern minimal design)
+- UNCONFIRMED: Specific screens with most critical overflow issues beyond screenshots
 
-## Open Questions
-- None currently
+## Working set (files/ids/commands)
+### Key Files:
+- `app/src/main/java/com/astro/storm/ui/screen/home/HomeTab.kt`
+- `app/src/main/java/com/astro/storm/ui/screen/planets/PlanetsScreen.kt`
+- `app/src/main/java/com/astro/storm/ui/screen/birthchart/BirthChartScreen.kt`
+- `app/src/main/java/com/astro/storm/ui/screen/dashas/DashasScreen.kt`
+- `app/src/main/java/com/astro/storm/ui/theme/AppTheme.kt`
+- `app/src/main/java/com/astro/storm/ui/theme/Color.kt`
+- `app/src/main/java/com/astro/storm/ui/components/ModernTabRow.kt`
+- `app/src/main/java/com/astro/storm/ui/navigation/Navigation.kt`
+- `app/src/main/java/com/astro/storm/data/localization/StringResources.kt`
 
-## Working Set
-- `ChatViewModel.kt` - Main chat logic with duplication issues
-- `StormyAgent.kt` - Agent processing with content cleaning issues
-- `SectionedComponents.kt` - Tool expansion bug (isExpanded shared)
-- `SectionedMessageCard.kt` - Message rendering
-- `AgentSectionModels.kt` - Section data models
-- `PrashnaScreen.kt` - Needs AI integration
-- `MatchmakingScreen.kt` - Needs AI integration
-- `IDEAS.md` - Feature ideas to implement
-- `AI.md` - AI enhancement roadmap
+### Commands:
+- Build: `./gradlew assembleDebug`
+- Test: `./gradlew test`

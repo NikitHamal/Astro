@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.MainActivity
@@ -70,7 +71,14 @@ fun DebugScreen(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(StringKeyAnalysis.DEBUG_UNHANDLED_EXCEPTION), color = AppTheme.TextPrimary) },
+                title = {
+                    Text(
+                        stringResource(StringKeyAnalysis.DEBUG_UNHANDLED_EXCEPTION),
+                        color = AppTheme.TextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = AppTheme.CardBackground)
             )
         }

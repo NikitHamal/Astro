@@ -237,14 +237,18 @@ private fun AshtakavargaTopBar(
                         text = stringResource(StringKey.FEATURE_ASHTAKAVARGA),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     if (chartName.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = "Bindu strength analysis - $chartName",
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }

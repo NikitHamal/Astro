@@ -55,10 +55,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -97,6 +93,8 @@ import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.YoginiDashaCalculator
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.YoginiDashaUiState
 import com.astro.storm.ui.viewmodel.YoginiDashaViewModel
@@ -341,33 +339,21 @@ private fun YoginiDashaTabRow(
         stringResource(StringKeyMatch.DETAILS)
     )
 
-    TabRow(
-        selectedTabIndex = selectedTab,
-        containerColor = AppTheme.CardBackground,
-        contentColor = AppTheme.AccentPrimary,
-        indicator = { tabPositions ->
-            SecondaryIndicator(
-                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
-                color = AppTheme.AccentPrimary
-            )
-        }
-    ) {
-        tabs.forEachIndexed { index, title ->
-            Tab(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                text = {
-                    Text(
-                        text = title,
-                        fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal,
-                        fontSize = 14.sp
-                    )
-                },
-                selectedContentColor = AppTheme.AccentPrimary,
-                unselectedContentColor = AppTheme.TextMuted
+    val tabItems = remember(tabs) {
+        tabs.map { title ->
+            TabItem(
+                title = title,
+                accentColor = AppTheme.AccentPrimary
             )
         }
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+    )
 }
 
 @Composable
