@@ -42,6 +42,7 @@ import com.astro.storm.ephemeris.PlanetaryShadbala
 import com.astro.storm.ephemeris.ShadbalaAnalysis
 import com.astro.storm.ephemeris.ShadbalaCalculator
 import com.astro.storm.ephemeris.StrengthRating
+import com.astro.storm.ui.components.ModernTabSelector
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -109,21 +110,17 @@ fun ShadbalaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
+            val titleText = "${stringResource(StringKeyDosha.SHADBALA_TITLE)} - ${chart.birthData.name}"
             TopAppBar(
                 title = {
-                    Column {
-                        Text(
-                            stringResource(StringKeyDosha.SHADBALA_TITLE),
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
-                        )
-                        Text(
-                            chart.birthData.name,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
-                        )
-                    }
+                    Text(
+                        text = titleText,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.TextPrimary,
+                        fontSize = 18.sp,
+                        maxLines = 1,
+                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -193,7 +190,7 @@ fun ShadbalaScreen(
             ) {
                 // Tab selector
                 item {
-                    ShadbalaTabSelector(
+                    ModernTabSelector(
                         tabs = tabs,
                         selectedTab = selectedTab,
                         onTabSelected = { selectedTab = it }
@@ -231,40 +228,6 @@ fun ShadbalaScreen(
 // ============================================
 // UI Components
 // ============================================
-
-@Composable
-private fun ShadbalaTabSelector(
-    tabs: List<String>,
-    selectedTab: Int,
-    onTabSelected: (Int) -> Unit
-) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            val isSelected = selectedTab == index
-            FilterChip(
-                selected = isSelected,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tabs[index],
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.ChipBackground,
-                    labelColor = AppTheme.TextSecondary
-                )
-            )
-        }
-    }
-}
 
 @Composable
 private fun ShadbalaOverviewTab(

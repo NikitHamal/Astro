@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,7 +29,6 @@ import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ui.components.NakshatraDetailDialog
 import com.astro.storm.ui.components.PlanetDetailDialog
-import com.astro.storm.ui.components.ShadbalaDialog
 import com.astro.storm.ui.screen.chartdetail.tabs.PlanetsTabContent
 import com.astro.storm.ui.theme.AppTheme
 
@@ -63,7 +61,6 @@ fun PlanetsScreen(
     // Dialog states
     var selectedPlanetPosition by remember { mutableStateOf<PlanetPosition?>(null) }
     var selectedNakshatra by remember { mutableStateOf<Pair<Nakshatra, Int>?>(null) }
-    var showShadbalaDialog by remember { mutableStateOf(false) }
 
     // Render dialogs
     selectedPlanetPosition?.let { position ->
@@ -82,20 +79,12 @@ fun PlanetsScreen(
         )
     }
 
-    if (showShadbalaDialog) {
-        ShadbalaDialog(
-            chart = chart,
-            onDismiss = { showShadbalaDialog = false }
-        )
-    }
-
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
             PlanetsTopBar(
                 chartName = chart.birthData.name,
-                onBack = onBack,
-                onShowShadbala = { showShadbalaDialog = true }
+                onBack = onBack
             )
         }
     ) { paddingValues ->
@@ -110,8 +99,7 @@ fun PlanetsScreen(
                 onPlanetClick = { selectedPlanetPosition = it },
                 onNakshatraClick = { nakshatra, pada ->
                     selectedNakshatra = nakshatra to pada
-                },
-                onShadbalaClick = { showShadbalaDialog = true }
+                }
             )
         }
     }
@@ -121,24 +109,19 @@ fun PlanetsScreen(
 @Composable
 private fun PlanetsTopBar(
     chartName: String,
-    onBack: () -> Unit,
-    onShowShadbala: () -> Unit
+    onBack: () -> Unit
 ) {
+    val titleText = "${stringResource(StringKey.FEATURE_PLANETS)} - $chartName"
     TopAppBar(
         title = {
-            Column {
-                Text(
-                    text = stringResource(StringKey.FEATURE_PLANETS),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
-                )
-                Text(
-                    text = chartName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted
-                )
-            }
+            Text(
+                text = titleText,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         },
         navigationIcon = {
             IconButton(onClick = onBack) {
@@ -149,15 +132,7 @@ private fun PlanetsTopBar(
                 )
             }
         },
-        actions = {
-            IconButton(onClick = onShowShadbala) {
-                Icon(
-                    imageVector = Icons.Outlined.Analytics,
-                    contentDescription = stringResource(StringKey.FEATURE_SHADBALA),
-                    tint = AppTheme.TextPrimary
-                )
-            }
-        },
+        actions = {},
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = AppTheme.ScreenBackground
         )

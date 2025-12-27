@@ -44,6 +44,7 @@ import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.ui.components.ModernTabSelector
 import com.astro.storm.ui.theme.AppTheme
 
 /**
@@ -96,21 +97,17 @@ fun NakshatraScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
+            val titleText = "${stringResource(StringKeyDosha.NAKSHATRA_TITLE)} - ${chart.birthData.name}"
             TopAppBar(
                 title = {
-                    Column {
-                        Text(
-                            stringResource(StringKeyDosha.NAKSHATRA_TITLE),
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
-                        )
-                        Text(
-                            chart.birthData.name,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
-                        )
-                    }
+                    Text(
+                        text = titleText,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.TextPrimary,
+                        fontSize = 18.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -145,7 +142,7 @@ fun NakshatraScreen(
         ) {
             // Tab selector
             item {
-                NakshatraTabSelector(
+                ModernTabSelector(
                     tabs = tabs,
                     selectedTab = selectedTab,
                     onTabSelected = { selectedTab = it }
@@ -759,40 +756,6 @@ private fun getLuckyColors(nakshatra: Nakshatra): List<String> = when (nakshatra
 // ============================================
 // UI Components
 // ============================================
-
-@Composable
-private fun NakshatraTabSelector(
-    tabs: List<String>,
-    selectedTab: Int,
-    onTabSelected: (Int) -> Unit
-) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            val isSelected = selectedTab == index
-            FilterChip(
-                selected = isSelected,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tabs[index],
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.ChipBackground,
-                    labelColor = AppTheme.TextSecondary
-                )
-            )
-        }
-    }
-}
 
 @Composable
 private fun NakshatraOverviewTab(

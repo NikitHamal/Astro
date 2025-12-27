@@ -76,8 +76,7 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.PanchangaCalculator
 import com.astro.storm.ephemeris.PanchangaData
-import com.astro.storm.ui.components.common.ModernPillTabRow
-import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.ModernTabSelector
 import com.astro.storm.ui.theme.AppTheme
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -150,22 +149,8 @@ fun PanchangaScreenRedesigned(
         }
     }
 
-    // Capture composable colors outside remember
-    val accentPrimary = AppTheme.AccentPrimary
-    val accentGold = AppTheme.AccentGold
-    val accentTeal = AppTheme.AccentTeal
-
-    // Get tab titles outside remember to avoid Composable calls inside remember
-    val todayTitle = stringResource(PanchangaViewType.TODAY.titleKey, language)
-    val birthTitle = stringResource(PanchangaViewType.BIRTH.titleKey, language)
-    val elementsTitle = stringResource(PanchangaViewType.ELEMENTS.titleKey, language)
-
-    val tabs = remember(accentPrimary, accentGold, accentTeal, todayTitle, birthTitle, elementsTitle) {
-        listOf(
-            TabItem(title = todayTitle, accentColor = accentPrimary),
-            TabItem(title = birthTitle, accentColor = accentGold),
-            TabItem(title = elementsTitle, accentColor = accentTeal)
-        )
+    val tabs = remember {
+        PanchangaViewType.entries.map { stringResource(it.titleKey, language) }
     }
 
     if (showInfoDialog) {
@@ -189,11 +174,10 @@ fun PanchangaScreenRedesigned(
                 .background(AppTheme.ScreenBackground)
         ) {
             // Tab row
-            ModernPillTabRow(
+                ModernTabSelector(
                 tabs = tabs,
-                selectedIndex = selectedTabIndex,
-                onTabSelected = { selectedTabIndex = it },
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                    selectedTab = selectedTabIndex,
+                    onTabSelected = { selectedTabIndex = it }
             )
 
             // Content
@@ -233,33 +217,32 @@ private fun PanchangaTopBar(
     onBack: () -> Unit,
     onInfoClick: () -> Unit
 ) {
+    val titleText = if (chartName.isNotEmpty()) {
+        "${stringResource(StringKey.FEATURE_PANCHANGA)} - $chartName"
+    } else {
+        stringResource(StringKey.FEATURE_PANCHANGA)
+    }
     Surface(
-        color = AppTheme.ScreenBackground,
+        color = AppTheme.current.ScreenBackground,
         shadowElevation = 2.dp
     ) {
         TopAppBar(
             title = {
-                Column {
-                    Text(
-                        text = stringResource(StringKey.FEATURE_PANCHANGA),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = "Five Limbs of Hindu Calendar",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextMuted
-                    )
-                }
+                Text(
+                    text = titleText,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = AppTheme.current.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(StringKey.BTN_BACK),
-                        tint = AppTheme.TextPrimary
+                        tint = AppTheme.current.TextPrimary
                     )
                 }
             },
@@ -268,12 +251,12 @@ private fun PanchangaTopBar(
                     Icon(
                         imageVector = Icons.Outlined.Info,
                         contentDescription = "Panchanga info",
-                        tint = AppTheme.TextPrimary
+                        tint = AppTheme.current.TextPrimary
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = AppTheme.ScreenBackground
+                containerColor = AppTheme.current.ScreenBackground
             )
         )
     }

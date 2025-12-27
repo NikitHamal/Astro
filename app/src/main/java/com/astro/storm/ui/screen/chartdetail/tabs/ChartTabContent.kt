@@ -75,8 +75,9 @@ import com.astro.storm.ephemeris.DivisionalChartCalculator
 import com.astro.storm.ephemeris.DivisionalChartData
 import com.astro.storm.ephemeris.DivisionalChartType
 import com.astro.storm.ui.chart.ChartRenderer
-import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
+import com.astro.storm.ui.components.ModernTabSelector
 import com.astro.storm.ui.screen.chartdetail.ChartDetailUtils
+import com.astro.storm.ui.theme.AppTheme
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -129,77 +130,94 @@ fun ChartTabContent(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        contentPadding = PaddingValues(vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            ChartTypeSelector(
-                selectedType = selectedChartType,
-                onTypeSelected = { selectedChartType = it }
-            )
-        }
-
-        item {
-            MainChartCard(
-                chart = chart,
-                chartRenderer = chartRenderer,
-                chartInfo = chartInfo,
-                selectedChartType = selectedChartType,
-                currentChartData = currentChartData,
-                onChartClick = onChartClick
-            )
-        }
-
-        item {
-            ChartDetailsCard(
-                chart = chart,
-                currentChartData = currentChartData,
-                selectedChartType = selectedChartType,
-                onPlanetClick = onPlanetClick
-            )
-        }
-
-        item {
-            HouseCuspsCard(
-                chart = chart,
-                onHouseClick = onHouseClick,
-                isExpanded = "HouseCusps" in expandedCardTitles,
-                onToggleExpand = {
-                    if (it) {
-                        expandedCardTitles.add("HouseCusps")
-                    } else {
-                        expandedCardTitles.remove("HouseCusps")
-                    }
+            val tabTitles = remember { chartTypeChips.map { stringResource(it.stringKey) } }
+            val selectedIndex = remember(selectedChartType) {
+                chartTypeChips.indexOfFirst { it.code == selectedChartType }
+            }
+            ModernTabSelector(
+                tabs = tabTitles,
+                selectedTab = selectedIndex,
+                onTabSelected = { index ->
+                    selectedChartType = chartTypeChips[index].code
                 }
             )
         }
 
         item {
-            BirthDetailsCard(
-                chart = chart,
-                isExpanded = "BirthDetails" in expandedCardTitles,
-                onToggleExpand = {
-                    if (it) {
-                        expandedCardTitles.add("BirthDetails")
-                    } else {
-                        expandedCardTitles.remove("BirthDetails")
-                    }
-                }
-            )
+            Column(Modifier.padding(horizontal = 16.dp)) {
+                MainChartCard(
+                    chart = chart,
+                    chartRenderer = chartRenderer,
+                    chartInfo = chartInfo,
+                    selectedChartType = selectedChartType,
+                    currentChartData = currentChartData,
+                    onChartClick = onChartClick
+                )
+            }
         }
 
         item {
-            AstronomicalDataCard(
-                chart = chart,
-                isExpanded = "AstronomicalData" in expandedCardTitles,
-                onToggleExpand = {
-                    if (it) {
-                        expandedCardTitles.add("AstronomicalData")
-                    } else {
-                        expandedCardTitles.remove("AstronomicalData")
+            Column(Modifier.padding(horizontal = 16.dp)) {
+                ChartDetailsCard(
+                    chart = chart,
+                    currentChartData = currentChartData,
+                    selectedChartType = selectedChartType,
+                    onPlanetClick = onPlanetClick
+                )
+            }
+        }
+
+        item {
+            Column(Modifier.padding(horizontal = 16.dp)) {
+                HouseCuspsCard(
+                    chart = chart,
+                    onHouseClick = onHouseClick,
+                    isExpanded = "HouseCusps" in expandedCardTitles,
+                    onToggleExpand = {
+                        if (it) {
+                            expandedCardTitles.add("HouseCusps")
+                        } else {
+                            expandedCardTitles.remove("HouseCusps")
+                        }
                     }
-                }
-            )
+                )
+            }
+        }
+
+        item {
+            Column(Modifier.padding(horizontal = 16.dp)) {
+                BirthDetailsCard(
+                    chart = chart,
+                    isExpanded = "BirthDetails" in expandedCardTitles,
+                    onToggleExpand = {
+                        if (it) {
+                            expandedCardTitles.add("BirthDetails")
+                        } else {
+                            expandedCardTitles.remove("BirthDetails")
+                        }
+                    }
+                )
+            }
+        }
+
+        item {
+            Column(Modifier.padding(horizontal = 16.dp)) {
+                AstronomicalDataCard(
+                    chart = chart,
+                    isExpanded = "AstronomicalData" in expandedCardTitles,
+                    onToggleExpand = {
+                        if (it) {
+                            expandedCardTitles.add("AstronomicalData")
+                        } else {
+                            expandedCardTitles.remove("AstronomicalData")
+                        }
+                    }
+                )
+            }
         }
 
         item {
@@ -278,34 +296,6 @@ private val chartTypeChips = listOf(
 )
 
 @Composable
-private fun ChartTypeSelector(
-    selectedType: String,
-    onTypeSelected: (String) -> Unit
-) {
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        items(chartTypeChips) { chip ->
-            FilterChip(
-                selected = selectedType == chip.code,
-                onClick = { onTypeSelected(chip.code) },
-                label = { Text(text = stringResource(chip.stringKey), fontSize = 12.sp) },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = ChartDetailColors.AccentGold.copy(alpha = 0.2f),
-                    selectedLabelColor = ChartDetailColors.AccentGold,
-                    containerColor = ChartDetailColors.CardBackground,
-                    labelColor = ChartDetailColors.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = ChartDetailColors.DividerColor,
-                    selectedBorderColor = ChartDetailColors.AccentGold,
-                    enabled = true,
-                    selected = selectedType == chip.code
-                )
-            )
-        }
-    }
-}
-
-@Composable
 private fun MainChartCard(
     chart: VedicChart,
     chartRenderer: ChartRenderer,
@@ -319,7 +309,7 @@ private fun MainChartCard(
             .fillMaxWidth()
             .clickable { onChartClick(chartInfo.first, currentChartData) },
         shape = RoundedCornerShape(16.dp),
-        color = ChartDetailColors.CardBackground
+        color = AppTheme.current.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -332,13 +322,13 @@ private fun MainChartCard(
                         text = chartInfo.first,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.AccentGold
+                        color = AppTheme.current.AccentGold
                     )
                     if (chartInfo.second.isNotEmpty()) {
                         Text(
                             text = chartInfo.second,
                             fontSize = 12.sp,
-                            color = ChartDetailColors.TextMuted
+                            color = AppTheme.current.TextMuted
                         )
                     }
                 }
@@ -346,19 +336,19 @@ private fun MainChartCard(
                     Icon(
                         Icons.Default.Fullscreen,
                         contentDescription = "View fullscreen",
-                        tint = ChartDetailColors.TextMuted,
+                        tint = AppTheme.current.TextMuted,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Surface(
                         shape = RoundedCornerShape(8.dp),
-                        color = ChartDetailColors.AccentGold.copy(alpha = 0.15f)
+                        color = AppTheme.current.AccentGold.copy(alpha = 0.15f)
                     ) {
                         Text(
                             text = chartInfo.third,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            color = ChartDetailColors.AccentGold,
+                            color = AppTheme.current.AccentGold,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                         )
                     }
@@ -402,7 +392,7 @@ private fun MainChartCard(
             Text(
                 text = stringResource(StringKeyAnalysis.CHART_TAP_FULLSCREEN),
                 fontSize = 11.sp,
-                color = ChartDetailColors.TextMuted,
+                color = AppTheme.current.TextMuted,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -417,7 +407,7 @@ private fun ChartLegend() {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
-        color = ChartDetailColors.ChartBackground
+        color = AppTheme.current.ChartBackground
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
@@ -427,9 +417,9 @@ private fun ChartLegend() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                TextLegendItem(symbol = "*", label = stringResource(StringKeyAnalysis.CHART_LEGEND_RETRO), color = ChartDetailColors.AccentGold)
-                TextLegendItem(symbol = "^", label = stringResource(StringKeyAnalysis.CHART_LEGEND_COMBUST), color = ChartDetailColors.AccentGold)
-                TextLegendItem(symbol = "\u00A4", label = stringResource(StringKeyAnalysis.CHART_LEGEND_VARGOTTAMA), color = ChartDetailColors.AccentGold)
+                TextLegendItem(symbol = "*", label = stringResource(StringKeyAnalysis.CHART_LEGEND_RETRO), color = AppTheme.current.AccentGold)
+                TextLegendItem(symbol = "^", label = stringResource(StringKeyAnalysis.CHART_LEGEND_COMBUST), color = AppTheme.current.AccentGold)
+                TextLegendItem(symbol = "\u00A4", label = stringResource(StringKeyAnalysis.CHART_LEGEND_VARGOTTAMA), color = AppTheme.current.AccentGold)
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -463,7 +453,7 @@ private fun TextLegendItem(
         Text(
             text = label,
             fontSize = 10.sp,
-            color = ChartDetailColors.TextMuted
+            color = AppTheme.current.TextMuted
         )
     }
 }
@@ -505,7 +495,7 @@ private fun BirthDetailsCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = ChartDetailColors.CardBackground
+        color = AppTheme.current.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -519,7 +509,7 @@ private fun BirthDetailsCard(
                     Icon(
                         Icons.Outlined.Info,
                         contentDescription = null,
-                        tint = ChartDetailColors.AccentPurple,
+                        tint = AppTheme.current.AccentSecondary,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -527,13 +517,13 @@ private fun BirthDetailsCard(
                         text = stringResource(StringKeyAnalysis.CHART_BIRTH_DETAILS),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.TextPrimary
+                        color = AppTheme.current.TextPrimary
                     )
                 }
                 Icon(
                     Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) "Collapse" else "Expand",
-                    tint = ChartDetailColors.TextMuted,
+                    tint = AppTheme.current.TextMuted,
                     modifier = Modifier.rotate(rotation)
                 )
             }
@@ -598,21 +588,21 @@ private fun BirthDataItem(
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = ChartDetailColors.TextMuted,
+            tint = AppTheme.current.TextMuted,
             modifier = Modifier.size(20.dp)
         )
         Column {
             Text(
                 text = label,
                 fontSize = 11.sp,
-                color = ChartDetailColors.TextMuted,
+                color = AppTheme.current.TextMuted,
                 lineHeight = 12.sp
             )
             Text(
                 text = value,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
-                color = ChartDetailColors.TextPrimary,
+                color = AppTheme.current.TextPrimary,
                 lineHeight = 14.sp
             )
         }
@@ -660,7 +650,7 @@ private fun ArrowLegendItem(
         Text(
             text = label,
             fontSize = 10.sp,
-            color = ChartDetailColors.TextMuted
+            color = AppTheme.current.TextMuted
         )
     }
 }
@@ -702,7 +692,7 @@ private fun ShapeLegendItem(
         Text(
             text = label,
             fontSize = 10.sp,
-            color = ChartDetailColors.TextMuted
+            color = AppTheme.current.TextMuted
         )
     }
 }
@@ -723,7 +713,7 @@ private fun ChartDetailsCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = ChartDetailColors.CardBackground
+        color = AppTheme.current.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -733,7 +723,7 @@ private fun ChartDetailsCard(
                 Icon(
                     Icons.Outlined.Star,
                     contentDescription = null,
-                    tint = ChartDetailColors.AccentTeal,
+                    tint = AppTheme.current.AccentTeal,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -741,20 +731,20 @@ private fun ChartDetailsCard(
                     text = stringResource(StringKeyAnalysis.CHART_PLANETARY_POSITIONS),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = ChartDetailColors.TextPrimary
+                    color = AppTheme.current.TextPrimary
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = stringResource(StringKeyAnalysis.CHART_TAP_FOR_DETAILS),
                     fontSize = 11.sp,
-                    color = ChartDetailColors.TextMuted
+                    color = AppTheme.current.TextMuted
                 )
             }
 
             if (selectedChartType == "D1") {
                 AscendantRow(chart = chart)
                 HorizontalDivider(
-                    color = ChartDetailColors.DividerColor,
+                    color = AppTheme.current.DividerColor,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
@@ -779,7 +769,7 @@ private fun AscendantRow(chart: VedicChart) {
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         shape = RoundedCornerShape(8.dp),
-        color = ChartDetailColors.AccentGold.copy(alpha = 0.1f)
+        color = AppTheme.current.AccentGold.copy(alpha = 0.1f)
     ) {
         Row(
             modifier = Modifier
@@ -792,19 +782,19 @@ private fun AscendantRow(chart: VedicChart) {
                 text = stringResource(StringKeyAnalysis.CHART_ASCENDANT_LAGNA),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
-                color = ChartDetailColors.AccentGold
+                color = AppTheme.current.AccentGold
             )
             Row {
                 Text(
                     text = ascSign.displayName,
                     fontSize = 13.sp,
-                    color = ChartDetailColors.AccentTeal
+                    color = AppTheme.current.AccentTeal
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "${ascDegree.toInt()}°",
                     fontSize = 13.sp,
-                    color = ChartDetailColors.TextSecondary
+                    color = AppTheme.current.TextSecondary
                 )
             }
         }
@@ -816,7 +806,7 @@ private fun ClickablePlanetPositionRow(
     position: PlanetPosition,
     onClick: () -> Unit
 ) {
-    val color = ChartDetailColors.getPlanetColor(position.planet)
+    val color = AppTheme.getPlanetColor(position.planet)
 
     Surface(
         modifier = Modifier
@@ -853,14 +843,14 @@ private fun ClickablePlanetPositionRow(
                 if (position.isRetrograde) {
                     Surface(
                         shape = RoundedCornerShape(4.dp),
-                        color = ChartDetailColors.WarningColor.copy(alpha = 0.2f),
+                        color = AppTheme.current.WarningColor.copy(alpha = 0.2f),
                         modifier = Modifier.padding(start = 4.dp)
                     ) {
                         Text(
                             text = "R",
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = ChartDetailColors.WarningColor,
+                            color = AppTheme.current.WarningColor,
                             modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
                         )
                     }
@@ -870,7 +860,7 @@ private fun ClickablePlanetPositionRow(
             Text(
                 text = position.sign.displayName,
                 fontSize = 13.sp,
-                color = ChartDetailColors.AccentTeal,
+                color = AppTheme.current.AccentTeal,
                 modifier = Modifier.width(80.dp),
                 textAlign = TextAlign.Center
             )
@@ -878,7 +868,7 @@ private fun ClickablePlanetPositionRow(
             Text(
                 text = "${(position.longitude % 30.0).toInt()}°",
                 fontSize = 13.sp,
-                color = ChartDetailColors.TextSecondary,
+                color = AppTheme.current.TextSecondary,
                 modifier = Modifier.width(40.dp),
                 textAlign = TextAlign.Center
             )
@@ -886,7 +876,7 @@ private fun ClickablePlanetPositionRow(
             Text(
                 text = "H${position.house}",
                 fontSize = 12.sp,
-                color = ChartDetailColors.TextMuted,
+                color = AppTheme.current.TextMuted,
                 modifier = Modifier.width(30.dp),
                 textAlign = TextAlign.End
             )
@@ -894,7 +884,7 @@ private fun ClickablePlanetPositionRow(
             Icon(
                 Icons.Default.ChevronRight,
                 contentDescription = "View details",
-                tint = ChartDetailColors.TextMuted,
+                tint = AppTheme.current.TextMuted,
                 modifier = Modifier.size(16.dp)
             )
         }
@@ -916,7 +906,7 @@ private fun HouseCuspsCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = ChartDetailColors.CardBackground
+        color = AppTheme.current.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -930,7 +920,7 @@ private fun HouseCuspsCard(
                     Icon(
                         Icons.Outlined.Home,
                         contentDescription = null,
-                        tint = ChartDetailColors.AccentPurple,
+                        tint = AppTheme.current.AccentSecondary,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -938,13 +928,13 @@ private fun HouseCuspsCard(
                         text = stringResource(StringKeyAnalysis.CHART_HOUSE_CUSPS),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.TextPrimary
+                        color = AppTheme.current.TextPrimary
                     )
                 }
                 Icon(
                     Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) "Collapse" else "Expand",
-                    tint = ChartDetailColors.TextMuted,
+                    tint = AppTheme.current.TextMuted,
                     modifier = Modifier.rotate(rotation)
                 )
             }
@@ -997,7 +987,7 @@ private fun HouseCuspItem(
     Surface(
         modifier = modifier.clickable { onClick() },
         shape = RoundedCornerShape(8.dp),
-        color = ChartDetailColors.CardBackgroundElevated
+        color = AppTheme.current.CardBackgroundElevated
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -1008,18 +998,18 @@ private fun HouseCuspItem(
                 text = "H$houseNumber",
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
-                color = ChartDetailColors.AccentGold
+                color = AppTheme.current.AccentGold
             )
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = sign.abbreviation,
                     fontSize = 12.sp,
-                    color = ChartDetailColors.AccentTeal
+                    color = AppTheme.current.AccentTeal
                 )
                 Text(
                     text = "${degreeInSign.toInt()}°",
                     fontSize = 11.sp,
-                    color = ChartDetailColors.TextMuted
+                    color = AppTheme.current.TextMuted
                 )
             }
         }
@@ -1040,7 +1030,7 @@ private fun AstronomicalDataCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = ChartDetailColors.CardBackground
+        color = AppTheme.current.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1054,7 +1044,7 @@ private fun AstronomicalDataCard(
                     Icon(
                         Icons.Outlined.Info,
                         contentDescription = null,
-                        tint = ChartDetailColors.AccentPurple,
+                        tint = AppTheme.current.AccentSecondary,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -1062,13 +1052,13 @@ private fun AstronomicalDataCard(
                         text = stringResource(StringKeyAnalysis.CHART_ASTRONOMICAL_DATA),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.TextPrimary
+                        color = AppTheme.current.TextPrimary
                     )
                 }
                 Icon(
                     Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) "Collapse" else "Expand",
-                    tint = ChartDetailColors.TextMuted,
+                    tint = AppTheme.current.TextMuted,
                     modifier = Modifier.rotate(rotation)
                 )
             }
@@ -1101,12 +1091,12 @@ private fun InfoRow(label: String, value: String) {
         Text(
             text = label,
             fontSize = 13.sp,
-            color = ChartDetailColors.TextMuted
+            color = AppTheme.current.TextMuted
         )
         Text(
             text = value,
             fontSize = 13.sp,
-            color = ChartDetailColors.TextPrimary
+            color = AppTheme.current.TextPrimary
         )
     }
 }

@@ -81,8 +81,7 @@ import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.TransitAnalyzer
-import com.astro.storm.ui.components.common.ModernPillTabRow
-import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.ModernTabSelector
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.theme.AppTheme
 import java.time.LocalDate
@@ -135,25 +134,8 @@ fun TransitsScreenRedesigned(
         transitAnalysis?.transitPositions ?: emptyList()
     }
 
-    // Read colors outside remember
-    val accentPrimary = AppTheme.AccentPrimary
-    val accentTeal = AppTheme.AccentTeal
-    val accentGold = AppTheme.AccentGold
-    val lifeAreaSpiritual = AppTheme.LifeAreaSpiritual
-
-    // Get tab titles outside remember to avoid Composable calls inside remember
-    val currentTitle = stringResource(TransitViewType.CURRENT.titleKey, language)
-    val byHouseTitle = stringResource(TransitViewType.BY_HOUSE.titleKey, language)
-    val upcomingTitle = stringResource(TransitViewType.UPCOMING.titleKey, language)
-    val aspectsTitle = stringResource(TransitViewType.ASPECTS.titleKey, language)
-
-    val tabs = remember(accentPrimary, accentTeal, accentGold, lifeAreaSpiritual, currentTitle, byHouseTitle, upcomingTitle, aspectsTitle) {
-        listOf(
-            TabItem(title = currentTitle, accentColor = accentPrimary),
-            TabItem(title = byHouseTitle, accentColor = accentTeal),
-            TabItem(title = upcomingTitle, accentColor = accentGold),
-            TabItem(title = aspectsTitle, accentColor = lifeAreaSpiritual)
-        )
+    val tabs = remember {
+        TransitViewType.entries.map { stringResource(it.titleKey, language) }
     }
 
     Scaffold(
@@ -175,11 +157,10 @@ fun TransitsScreenRedesigned(
                     .background(AppTheme.ScreenBackground)
             ) {
                 // Tab row
-                ModernPillTabRow(
+                ModernTabSelector(
                     tabs = tabs,
-                    selectedIndex = selectedTabIndex,
-                    onTabSelected = { selectedTabIndex = it },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                    selectedTab = selectedTabIndex,
+                    onTabSelected = { selectedTabIndex = it }
                 )
 
                 // Content
@@ -226,40 +207,37 @@ private fun TransitsTopBar(
     chartName: String,
     onBack: () -> Unit
 ) {
+    val titleText = if (chartName.isNotEmpty()) {
+        "${stringResource(StringKey.FEATURE_TRANSITS)} - $chartName"
+    } else {
+        stringResource(StringKey.FEATURE_TRANSITS)
+    }
     Surface(
-        color = AppTheme.ScreenBackground,
+        color = AppTheme.current.ScreenBackground,
         shadowElevation = 2.dp
     ) {
         TopAppBar(
             title = {
-                Column {
-                    Text(
-                        text = stringResource(StringKey.FEATURE_TRANSITS),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
-                    )
-                    if (chartName.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = stringResource(StringKey.TRANSIT_CURRENT_MOVEMENTS, chartName),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
-                        )
-                    }
-                }
+                Text(
+                    text = titleText,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = AppTheme.current.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(StringKey.BTN_BACK),
-                        tint = AppTheme.TextPrimary
+                        tint = AppTheme.current.TextPrimary
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = AppTheme.ScreenBackground
+                containerColor = AppTheme.current.ScreenBackground
             )
         )
     }
