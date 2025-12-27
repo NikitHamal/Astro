@@ -80,8 +80,7 @@ import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.AshtakavargaCalculator
-import com.astro.storm.ui.components.common.ModernPillTabRow
-import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.ModernTabSelector
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.theme.AppTheme
 
@@ -126,25 +125,8 @@ fun AshtakavargaScreenRedesigned(
         }
     }
 
-    // Read colors outside remember
-    val accentPrimary = AppTheme.AccentPrimary
-    val successColor = AppTheme.SuccessColor
-    val accentGold = AppTheme.AccentGold
-    val accentTeal = AppTheme.AccentTeal
-
-    // Get tab titles outside remember to avoid Composable calls inside remember
-    val overviewTitle = stringResource(AshtakavargaViewType.OVERVIEW.titleKey, language)
-    val sarvaTitle = stringResource(AshtakavargaViewType.SARVASHTAKAVARGA.titleKey, language)
-    val byPlanetTitle = stringResource(AshtakavargaViewType.BY_PLANET.titleKey, language)
-    val byHouseTitle = stringResource(AshtakavargaViewType.BY_HOUSE.titleKey, language)
-
-    val tabs = remember(accentPrimary, successColor, accentGold, accentTeal, overviewTitle, sarvaTitle, byPlanetTitle, byHouseTitle) {
-        listOf(
-            TabItem(title = overviewTitle, accentColor = accentPrimary),
-            TabItem(title = sarvaTitle, accentColor = successColor),
-            TabItem(title = byPlanetTitle, accentColor = accentGold),
-            TabItem(title = byHouseTitle, accentColor = accentTeal)
-        )
+    val tabs = remember {
+        AshtakavargaViewType.entries.map { stringResource(it.titleKey, language) }
     }
 
     if (showInfoDialog) {
@@ -171,11 +153,10 @@ fun AshtakavargaScreenRedesigned(
                     .background(AppTheme.ScreenBackground)
             ) {
                 // Tab row
-                ModernPillTabRow(
+                ModernTabSelector(
                     tabs = tabs,
-                    selectedIndex = selectedTabIndex,
-                    onTabSelected = { selectedTabIndex = it },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                    selectedTab = selectedTabIndex,
+                    onTabSelected = { selectedTabIndex = it }
                 )
 
                 // Content
@@ -226,35 +207,32 @@ private fun AshtakavargaTopBar(
     onBack: () -> Unit,
     onInfoClick: () -> Unit
 ) {
+    val titleText = if (chartName.isNotEmpty()) {
+        "${stringResource(StringKey.FEATURE_ASHTAKAVARGA)} - $chartName"
+    } else {
+        stringResource(StringKey.FEATURE_ASHTAKAVARGA)
+    }
     Surface(
-        color = AppTheme.ScreenBackground,
+        color = AppTheme.current.ScreenBackground,
         shadowElevation = 2.dp
     ) {
         TopAppBar(
             title = {
-                Column {
-                    Text(
-                        text = stringResource(StringKey.FEATURE_ASHTAKAVARGA),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
-                    )
-                    if (chartName.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = "Bindu strength analysis - $chartName",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
-                        )
-                    }
-                }
+                Text(
+                    text = titleText,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = AppTheme.current.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(StringKey.BTN_BACK),
-                        tint = AppTheme.TextPrimary
+                        tint = AppTheme.current.TextPrimary
                     )
                 }
             },
@@ -263,12 +241,12 @@ private fun AshtakavargaTopBar(
                     Icon(
                         imageVector = Icons.Outlined.Info,
                         contentDescription = "Ashtakavarga info",
-                        tint = AppTheme.TextPrimary
+                        tint = AppTheme.current.TextPrimary
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = AppTheme.ScreenBackground
+                containerColor = AppTheme.current.ScreenBackground
             )
         )
     }

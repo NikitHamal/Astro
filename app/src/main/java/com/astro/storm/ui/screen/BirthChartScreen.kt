@@ -189,23 +189,17 @@ private fun BirthChartTopBar(
     onBack: () -> Unit,
     onCopyToClipboard: () -> Unit
 ) {
+    val titleText = "${stringResource(StringKey.FEATURE_BIRTH_CHART)} - $chartName"
     TopAppBar(
         title = {
-            Column {
-                Text(
-                    text = stringResource(StringKey.FEATURE_BIRTH_CHART),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
-                )
-                Text(
-                    text = chartName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+            Text(
+                text = titleText,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         },
         navigationIcon = {
             IconButton(onClick = onBack) {

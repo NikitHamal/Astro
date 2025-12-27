@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -55,8 +56,7 @@ import com.astro.storm.ephemeris.AshtottariDashaCalculator
 import com.astro.storm.ephemeris.AshtottariTimeline
 import com.astro.storm.ephemeris.SudarshanaChakraDashaCalculator
 import com.astro.storm.ephemeris.SudarshanaTimeline
-import com.astro.storm.ui.components.common.ModernPillTabRow
-import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.ModernTabSelector
 import com.astro.storm.ui.screen.chartdetail.tabs.DashasTabContent
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.DashaUiState
@@ -181,26 +181,8 @@ fun DashaSystemsScreen(
         }
     }
 
-    // Read colors outside remember
-    val accentPrimary = AppTheme.AccentPrimary
-    val lifeAreaLove = AppTheme.LifeAreaLove
-    val accentGold = AppTheme.AccentGold
-    val accentTeal = AppTheme.AccentTeal
-    val lifeAreaSpiritual = AppTheme.LifeAreaSpiritual
-
-    val tabs = remember(accentPrimary, lifeAreaLove, accentGold, accentTeal, lifeAreaSpiritual) {
-        DashaSystemType.entries.map { system ->
-            TabItem(
-                title = system.displayName,
-                accentColor = when (system) {
-                    DashaSystemType.VIMSOTTARI -> accentPrimary
-                    DashaSystemType.YOGINI -> lifeAreaLove
-                    DashaSystemType.ASHTOTTARI -> accentGold
-                    DashaSystemType.SUDARSHANA -> accentTeal
-                    DashaSystemType.CHARA -> lifeAreaSpiritual
-                }
-            )
-        }
+    val tabs = remember {
+        DashaSystemType.entries.map { it.displayName }
     }
 
     if (showInfoDialog) {
@@ -234,11 +216,10 @@ fun DashaSystemsScreen(
                 .background(AppTheme.ScreenBackground)
         ) {
             // Tab row
-            ModernPillTabRow(
+            ModernTabSelector(
                 tabs = tabs,
-                selectedIndex = selectedTabIndex,
-                onTabSelected = { selectedTabIndex = it },
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                selectedTab = selectedTabIndex,
+                onTabSelected = { selectedTabIndex = it }
             )
 
             // Content
@@ -293,35 +274,32 @@ private fun DashaSystemsTopBar(
     onJumpToToday: () -> Unit,
     showJumpToToday: Boolean
 ) {
+    val titleText = if (chartName.isNotEmpty()) {
+        "${stringResource(StringKey.FEATURE_DASHAS)}: $systemName - $chartName"
+    } else {
+        stringResource(StringKey.FEATURE_DASHAS)
+    }
     Surface(
-        color = AppTheme.ScreenBackground,
+        color = AppTheme.current.ScreenBackground,
         shadowElevation = 2.dp
     ) {
         TopAppBar(
             title = {
-                Column {
-                    Text(
-                        text = stringResource(StringKey.FEATURE_DASHAS),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
-                    )
-                    if (chartName.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = "$systemName - $chartName",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
-                        )
-                    }
-                }
+                Text(
+                    text = titleText,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = AppTheme.current.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(StringKey.BTN_BACK),
-                        tint = AppTheme.TextPrimary
+                        tint = AppTheme.current.TextPrimary
                     )
                 }
             },
@@ -331,7 +309,7 @@ private fun DashaSystemsTopBar(
                         Icon(
                             imageVector = Icons.Outlined.CalendarToday,
                             contentDescription = "Jump to today",
-                            tint = AppTheme.AccentPrimary
+                            tint = AppTheme.current.AccentPrimary
                         )
                     }
                 }
@@ -339,12 +317,12 @@ private fun DashaSystemsTopBar(
                     Icon(
                         imageVector = Icons.Outlined.Info,
                         contentDescription = "Dasha information",
-                        tint = AppTheme.TextPrimary
+                        tint = AppTheme.current.TextPrimary
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = AppTheme.ScreenBackground
+                containerColor = AppTheme.current.ScreenBackground
             )
         )
     }

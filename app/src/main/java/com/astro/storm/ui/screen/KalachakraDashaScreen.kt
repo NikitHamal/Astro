@@ -57,10 +57,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -100,6 +96,7 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.KalachakraDashaCalculator
+import com.astro.storm.ui.components.ModernTabSelector
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.KalachakraDashaUiState
 import com.astro.storm.ui.viewmodel.KalachakraDashaViewModel
@@ -177,8 +174,16 @@ fun KalachakraDashaScreen(
                     }
                     is KalachakraDashaUiState.Success -> {
                         Column(modifier = Modifier.fillMaxSize()) {
-                            KalachakraTabRow(
+                            val tabs = remember {
+                                listOf(
+                                    StringKeyDosha.KALACHAKRA_CURRENT,
+                                    StringKeyDosha.KALACHAKRA_DEHA_JEEVA,
+                                    StringKeyDosha.KALACHAKRA_TIMELINE
+                                ).map { stringResource(it) }
+                            }
+                            ModernTabSelector(
                                 selectedTab = selectedTab,
+                                tabs = tabs,
                                 onTabSelected = { selectedTab = it }
                             )
                             when (selectedTab) {
@@ -244,7 +249,7 @@ private fun KalachakraDashaTopBar(
     ) {
         TopAppBar(
             title = {
-                Column(modifier = Modifier.fillMaxWidth(0.85f)) {
+                Column {
                     Text(
                         text = stringResource(StringKeyDosha.KALACHAKRA_DASHA_TITLE),
                         style = MaterialTheme.typography.titleMedium,
@@ -298,7 +303,9 @@ private fun TopBarSubtitleContent(
                     text = stringResource(StringKey.DASHA_CALCULATING),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
             periodInfo.hasError -> {
@@ -339,45 +346,6 @@ private fun TopBarSubtitleContent(
     }
 }
 
-@Composable
-private fun KalachakraTabRow(
-    selectedTab: Int,
-    onTabSelected: (Int) -> Unit
-) {
-    val tabs = listOf(
-        stringResource(StringKeyDosha.KALACHAKRA_CURRENT),
-        stringResource(StringKeyDosha.KALACHAKRA_DEHA_JEEVA),
-        stringResource(StringKeyDosha.KALACHAKRA_TIMELINE)
-    )
-
-    TabRow(
-        selectedTabIndex = selectedTab,
-        containerColor = AppTheme.CardBackground,
-        contentColor = AppTheme.AccentPrimary,
-        indicator = { tabPositions ->
-            SecondaryIndicator(
-                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
-                color = AppTheme.AccentPrimary
-            )
-        }
-    ) {
-        tabs.forEachIndexed { index, title ->
-            Tab(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                text = {
-                    Text(
-                        text = title,
-                        fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal,
-                        fontSize = 14.sp
-                    )
-                },
-                selectedContentColor = AppTheme.AccentPrimary,
-                unselectedContentColor = AppTheme.TextMuted
-            )
-        }
-    }
-}
 
 // ============================================
 // CURRENT PERIOD TAB
