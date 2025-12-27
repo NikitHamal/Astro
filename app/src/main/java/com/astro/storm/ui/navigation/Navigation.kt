@@ -52,7 +52,7 @@ import com.astro.storm.ui.screen.NityaYogaScreen
 import com.astro.storm.ui.screen.AvasthaScreen
 import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
-import com.astro.storm.ui.screen.main.InsightFeature
+import com.astro.storm.ui.screen.main.uimodel.InsightFeature
 import com.astro.storm.ui.screen.main.MainScreen
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.AiStatus

@@ -44,7 +44,7 @@ import com.astro.storm.ui.components.NakshatraDetailDialog
 import com.astro.storm.ui.components.PlanetDetailDialog
 import com.astro.storm.ui.components.ShadbalaDialog
 import com.astro.storm.ui.screen.chartdetail.tabs.*
-import com.astro.storm.ui.screen.main.InsightFeature
+import com.astro.storm.ui.screen.main.uimodel.InsightFeature
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.ChartViewModel
 
