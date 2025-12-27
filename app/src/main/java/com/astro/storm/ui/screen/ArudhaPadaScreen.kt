@@ -162,11 +162,12 @@ fun ArudhaPadaScreen(
                     .padding(paddingValues)
             ) {
                 // Tab row
-                val tabItems = remember(tabs) {
+                val accentColor = AppTheme.AccentPrimary
+                val tabItems = remember(tabs, accentColor) {
                     tabs.map { title ->
                         TabItem(
                             title = title,
-                            accentColor = AppTheme.AccentPrimary
+                            accentColor = accentColor
                         )
                     }
                 }

@@ -653,6 +653,7 @@ private fun getCategoryDisplayName(category: YogaCalculator.YogaCategory, langua
     }
 }
 
+@Composable
 private fun getCategoryColor(category: YogaCalculator.YogaCategory): Color = when (category) {
     YogaCalculator.YogaCategory.RAJA_YOGA -> ChartDetailColors.AccentGold
     YogaCalculator.YogaCategory.DHANA_YOGA -> ChartDetailColors.SuccessColor

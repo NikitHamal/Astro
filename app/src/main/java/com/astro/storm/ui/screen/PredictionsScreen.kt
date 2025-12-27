@@ -157,17 +157,18 @@ fun PredictionsScreen(
                         .padding(paddingValues)
                 ) {
                     // Tab Row - Modern Pill Style
-                    val tabs = remember(language) {
+                    val accentColor = AppTheme.AccentPrimary
+                    val tabItems = remember(language, accentColor) {
                         PredictionsTab.entries.map { tab ->
                             TabItem(
                                 title = tab.getLocalizedTitle(language),
-                                accentColor = AppTheme.AccentPrimary
+                                accentColor = accentColor
                             )
                         }
                     }
 
                     ModernPillTabRow(
-                        tabs = tabs,
+                        tabs = tabItems,
                         selectedIndex = selectedTab.ordinal,
                         onTabSelected = { index ->
                             selectedTab = PredictionsTab.entries[index]
