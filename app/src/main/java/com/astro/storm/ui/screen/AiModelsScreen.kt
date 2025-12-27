@@ -71,12 +71,16 @@ fun AiModelsScreen(
                             text = "AI Models",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = colors.TextPrimary
+                            color = colors.TextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             text = "${enabledModels.size} models enabled",
                             style = MaterialTheme.typography.labelSmall,
-                            color = colors.TextMuted
+                            color = colors.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 },

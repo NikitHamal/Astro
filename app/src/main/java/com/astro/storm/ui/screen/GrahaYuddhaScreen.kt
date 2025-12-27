@@ -40,6 +40,8 @@ import com.astro.storm.ephemeris.GrahaYuddhaCalculator.WarIntensity
 import com.astro.storm.ephemeris.GrahaYuddhaCalculator.WarImpactLevel
 import com.astro.storm.ephemeris.GrahaYuddhaCalculator.WarStatus
 import com.astro.storm.ephemeris.GrahaYuddhaCalculator.RemedyType
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -112,12 +114,16 @@ fun GrahaYuddhaScreen(
                             "Graha Yuddha",
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             chart.birthData.name,
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 },
@@ -154,26 +160,21 @@ fun GrahaYuddhaScreen(
                     .padding(paddingValues)
             ) {
                 // Tab row
-                ScrollableTabRow(
-                    selectedTabIndex = selectedTab,
-                    containerColor = AppTheme.ScreenBackground,
-                    contentColor = AppTheme.AccentPrimary,
-                    edgePadding = 16.dp
-                ) {
-                    tabs.forEachIndexed { index, title ->
-                        Tab(
-                            selected = selectedTab == index,
-                            onClick = { selectedTab = index },
-                            text = {
-                                Text(
-                                    text = title,
-                                    color = if (selectedTab == index)
-                                        AppTheme.AccentPrimary else AppTheme.TextMuted
-                                )
-                            }
+                val tabItems = remember(tabs) {
+                    tabs.map { title ->
+                        TabItem(
+                            title = title,
+                            accentColor = AppTheme.AccentPrimary
                         )
                     }
                 }
+
+                ModernPillTabRow(
+                    tabs = tabItems,
+                    selectedIndex = selectedTab,
+                    onTabSelected = { selectedTab = it },
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                )
 
                 // Content based on selected tab
                 when (selectedTab) {

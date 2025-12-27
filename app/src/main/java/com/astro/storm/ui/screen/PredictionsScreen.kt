@@ -44,6 +44,8 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ephemeris.HoroscopeCalculator
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -99,7 +101,9 @@ fun PredictionsScreen(
                     Text(
                         StringResources.get(StringKey.FEATURE_PREDICTIONS, language),
                         fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
@@ -152,29 +156,24 @@ fun PredictionsScreen(
                         .fillMaxSize()
                         .padding(paddingValues)
                 ) {
-                    // Tab Row
-                    ScrollableTabRow(
-                        selectedTabIndex = selectedTab.ordinal,
-                        containerColor = Color.Transparent,
-                        contentColor = AppTheme.AccentPrimary,
-                        edgePadding = 16.dp,
-                        divider = { HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.5f)) }
-                    ) {
-                        PredictionsTab.entries.forEach { tab ->
-                            Tab(
-                                selected = selectedTab == tab,
-                                onClick = { selectedTab = tab },
-                                text = {
-                                    Text(
-                                        tab.getLocalizedTitle(language),
-                                        fontWeight = if (selectedTab == tab) FontWeight.SemiBold else FontWeight.Normal,
-                                        color = if (selectedTab == tab) AppTheme.AccentPrimary else AppTheme.TextMuted,
-                                        fontSize = 14.sp
-                                    )
-                                }
+                    // Tab Row - Modern Pill Style
+                    val tabs = remember(language) {
+                        PredictionsTab.entries.map { tab ->
+                            TabItem(
+                                title = tab.getLocalizedTitle(language),
+                                accentColor = AppTheme.AccentPrimary
                             )
                         }
                     }
+
+                    ModernPillTabRow(
+                        tabs = tabs,
+                        selectedIndex = selectedTab.ordinal,
+                        onTabSelected = { index ->
+                            selectedTab = PredictionsTab.entries[index]
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                    )
 
                     // Tab Content
                     predictionData?.let { data ->

@@ -624,7 +624,7 @@ private fun ArrowLegendItem(
     isExalted: Boolean,
     label: String
 ) {
-    val color = if (isExalted) Color(0xFF1E8449) else Color(0xFFC0392B)
+    val color = if (isExalted) ChartDetailColors.SuccessColor else ChartDetailColors.ErrorColor
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -670,7 +670,7 @@ private fun ShapeLegendItem(
     isOwnSign: Boolean,
     label: String
 ) {
-    val color = if (isOwnSign) Color(0xFF2874A6) else Color(0xFF6C3483)
+    val color = if (isOwnSign) ChartDetailColors.AccentTeal else ChartDetailColors.AccentPurple
 
     Row(
         verticalAlignment = Alignment.CenterVertically,

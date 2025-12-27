@@ -67,6 +67,7 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     // ============================================
     // HOME TAB - SECTION HEADERS
     // ============================================
+    HOME_QUICK_ACCESS("Quick Access", "द्रुत पहुँच"),
     HOME_CHART_ANALYSIS("Chart Analysis", "कुण्डली विश्लेषण"),
     HOME_COMING_SOON("Coming Soon", "छिट्टै आउँदैछ"),
     HOME_SOON_BADGE("Soon", "छिट्टै"),

@@ -219,7 +219,9 @@ fun PrashnaScreen(
                     Text(
                         stringResource(StringKey.PRASHNA_KUNDALI),
                         fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {

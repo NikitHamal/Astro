@@ -154,13 +154,17 @@ fun MatchmakingScreen(
                             stringResource(StringKeyMatch.MATCH_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         AnimatedVisibility(visible = matchingResult != null) {
                             Text(
                                 stringResource(StringKeyMatch.MATCH_ASHTAKOOTA),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.TextMuted
+                                color = AppTheme.TextMuted,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }

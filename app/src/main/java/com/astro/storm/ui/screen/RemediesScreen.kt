@@ -49,6 +49,8 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.RemediesCalculator
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -125,7 +127,9 @@ fun RemediesScreen(
                             Text(
                                 stringResource(StringKeyMatch.REMEDY_TITLE),
                                 fontWeight = FontWeight.SemiBold,
-                                color = AppTheme.TextPrimary
+                                color = AppTheme.TextPrimary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }
@@ -196,32 +200,25 @@ fun RemediesScreen(
                         .fillMaxSize()
                         .padding(paddingValues)
                 ) {
-                    PrimaryTabRow(
-                        selectedTabIndex = selectedTab,
-                        containerColor = Color.Transparent,
-                        contentColor = AppTheme.AccentPrimary,
-                        divider = { HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.5f)) }
-                    ) {
-                        tabs.forEachIndexed { index, title ->
-                            Tab(
-                                selected = selectedTab == index,
-                                onClick = {
-                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                    selectedTab = index
-                                },
-                                text = {
-                                    Text(
-                                        title,
-                                        fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal,
-                                        color = if (selectedTab == index) AppTheme.AccentPrimary else AppTheme.TextMuted
-                                    )
-                                },
-                                modifier = Modifier.semantics {
-                                    contentDescription = "$title tab"
-                                }
+                    // Modern Pill Tab Row
+                    val tabItems = remember(tabs) {
+                        tabs.map { title ->
+                            TabItem(
+                                title = title,
+                                accentColor = AppTheme.LifeAreaHealth
                             )
                         }
                     }
+
+                    ModernPillTabRow(
+                        tabs = tabItems,
+                        selectedIndex = selectedTab,
+                        onTabSelected = { index ->
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            selectedTab = index
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                    )
 
                     remediesResult?.let { result ->
                         Box(modifier = Modifier.fillMaxSize()) {
