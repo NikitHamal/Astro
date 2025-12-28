@@ -1,61 +1,59 @@
 # AstroStorm Continuity Ledger
 
 ## Goal (incl. success criteria)
-Complete refactoring and bug fixes for AstroStorm Vedic astrology app:
-1. Fix critical chat UI bugs (message duplication, raw tool JSON display, ask_user flow, section expansion)
-2. Implement 3+ new features from IDEAS.md
-3. Add AI integration to Prashna and Matchmaking screens
-4. Comprehensive codebase cleanup and refactoring
-5. Performance optimization
-6. Localization of hardcoded strings
+Complete AstroStorm refactoring with three major objectives:
+1. **Complete Nepali Localization** - Translate all hardcoded English texts (currently ~45-70% done)
+2. **Fix Birth Chart House Number Inconsistency** - Planet positions not matching chart visualization
+3. **Codebase Refactoring & Optimization** - Clean up redundancies, dead code, improve performance
+
+Success Criteria:
+- 100% user-visible text localized in English and Nepali
+- House numbers in chart image match planet details below
+- Codebase size reduced, performance improved
+- All Vedic astrology calculations remain accurate
+- No breaking changes
 
 ## Constraints/Assumptions
 - Must maintain all existing functionality
 - All Vedic astrology calculations must remain accurate per classical texts
 - Production-grade, fully functional implementations only
 - Use modularization and best practices
-- No hardcoded strings - use localization
 - Kotlin/Jetpack Compose codebase
+- Cannot break existing features
 
 ## Key Decisions
-1. Fix tool expansion bug by giving each tool its own independent expanded state
-2. Fix ask_user tool to properly interrupt agent flow and wait for user response
-3. Improve deduplication in StormyAgent to prevent duplicate content emission
-4. Clean tool call JSON from appearing in content
-5. Implement features from IDEAS.md: Transit Alert System, Context-Aware Dasha, Educational Mode
+1. Use existing StringResources.kt system for new localizations
+2. Investigate house calculation in ChartRenderer.kt vs planet position display
+3. Focus on high-impact refactoring first (large files, obvious duplications)
 
 ## State
 
 ### Done
-- Analyzed codebase structure and identified all relevant files
-- Reviewed all screenshots showing issues
-- Identified root causes of bugs:
-  - Tool expansion: all tools share same isExpanded state from ToolGroup
-  - Raw JSON: tool call blocks not being cleaned from content properly
-  - Duplicates: content being emitted multiple times during streaming
-  - ask_user: not interrupting flow, showing as raw JSON
+- Explored full codebase structure (182 Kotlin files, ~164K lines)
+- Identified localization architecture (StringResources.kt, LocalizedDisplayNames.kt)
+- Located hardcoded English texts in multiple files
+- Found birth chart related files (VedicChart.kt, ChartRenderer.kt)
+- Identified major calculator files (44 calculators)
 
 ### Now
-- Fixing critical chat UI bugs
+- Investigating birth chart house number inconsistency
+- Identifying all hardcoded English texts for localization
 
 ### Next
-- Implement AI integration in Prashna screen
-- Implement AI integration in Matchmaking screen
-- Implement 3+ new features from IDEAS.md
-- Codebase cleanup and dead code removal
+- Fix house number display bug
+- Add missing string keys for localization
+- Refactor large files (LocalizedDisplayNames.kt - 34K lines)
 - Performance optimization
-- Localization improvements
+- Dead code removal
 
 ## Open Questions
-- None currently
+- UNCONFIRMED: Exact mechanism causing house number mismatch
+- UNCONFIRMED: Which specific UI screens need hardcoded text extraction
 
 ## Working Set
-- `ChatViewModel.kt` - Main chat logic with duplication issues
-- `StormyAgent.kt` - Agent processing with content cleaning issues
-- `SectionedComponents.kt` - Tool expansion bug (isExpanded shared)
-- `SectionedMessageCard.kt` - Message rendering
-- `AgentSectionModels.kt` - Section data models
-- `PrashnaScreen.kt` - Needs AI integration
-- `MatchmakingScreen.kt` - Needs AI integration
-- `IDEAS.md` - Feature ideas to implement
-- `AI.md` - AI enhancement roadmap
+- `StringResources.kt` - 5,740 lines, centralized string keys
+- `LocalizedDisplayNames.kt` - 34,470 lines, enum localizations
+- `VedicChart.kt` - Birth chart model
+- `ChartRenderer.kt` - Chart visualization
+- `BirthChartScreen.kt` - Birth chart display screen
+- 44 calculator files in `/ephemeris/`
