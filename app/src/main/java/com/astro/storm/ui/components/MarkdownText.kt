@@ -76,23 +76,27 @@ object ContentCleaner {
     )
 
     // Pattern to match inline tool call JSON (various formats including multi-line)
+    // IMPORTANT: Order matters - more specific patterns first, then general ones
     private val inlineToolCallPatterns = listOf(
-        // Multi-line tool call with nested arguments (most common issue from screenshots)
+        // Deeply nested JSON tool call (handles ask_user with options array containing objects)
+        // This is the most complex pattern - handles nested arrays with objects inside
+        Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^{}]*(?:\{[^{}]*\}[^{}]*)*(?:\[[^\[\]]*(?:\{[^\{\}]*\}[^\[\]]*)*\][^{}]*)*\}\s*\}""", RegexOption.MULTILINE),
+        // Multi-line tool call with ANY nested content (greedy but bounded by outer braces)
         Regex("""\{\s*\n?\s*"tool"\s*:\s*"[^"]+"\s*,\s*\n?\s*"arguments"\s*:\s*\{[\s\S]*?\}\s*\n?\s*\}""", RegexOption.MULTILINE),
+        // Multi-line with nested arrays containing objects (for ask_user options)
+        Regex("""\{\s*\n?\s*"tool"\s*:\s*"[^"]+"\s*,\s*\n?\s*"arguments"\s*:\s*\{[^}]*\[[^\]]*\{[^\}]*\}[^\]]*\][^}]*\}\s*\n?\s*\}""", RegexOption.MULTILINE),
         // Standard format (single line)
         Regex("""\{"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^}]*\}\s*\}"""),
         // Alternate order
         Regex("""\{"arguments"\s*:\s*\{[^}]*\}\s*,\s*"tool"\s*:\s*"[^"]+"\s*\}"""),
         // With extra whitespace (single line)
         Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^}]*\}\s*\}"""),
-        // Multi-line with nested arrays (for ask_user options)
+        // Multi-line with nested arrays (simpler case - array without nested objects)
         Regex("""\{\s*\n?\s*"tool"\s*:\s*"[^"]+"\s*,\s*\n?\s*"arguments"\s*:\s*\{[^}]*\[[^\]]*\][^}]*\}\s*\n?\s*\}""", RegexOption.MULTILINE),
         // Name-first format
         Regex("""\{\s*"name"\s*:\s*"[^"]+"\s*,\s*"parameters"\s*:\s*\{[^}]*\}\s*\}"""),
         // Function call format
-        Regex("""\{\s*"function"\s*:\s*"[^"]+"\s*,\s*"args"\s*:\s*\{[^}]*\}\s*\}"""),
-        // Deeply nested JSON tool call (handles ask_user with options array containing objects)
-        Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^{}]*(?:\{[^{}]*\}[^{}]*)*(?:\[[^\[\]]*(?:\{[^\{\}]*\}[^\[\]]*)*\][^{}]*)*\}\s*\}""", RegexOption.MULTILINE)
+        Regex("""\{\s*"function"\s*:\s*"[^"]+"\s*,\s*"args"\s*:\s*\{[^}]*\}\s*\}""")
     )
 
     // Pattern to match thinking/reasoning blocks that shouldn't be in main content
@@ -240,12 +244,14 @@ object ContentCleaner {
 
     /**
      * Find the matching closing brace for an opening brace.
+     * Properly handles nested objects AND arrays (for ask_user options).
      * Returns -1 if no match is found.
      */
     private fun findMatchingBrace(text: String, openIndex: Int): Int {
         if (openIndex < 0 || openIndex >= text.length || text[openIndex] != '{') return -1
 
-        var depth = 0
+        var braceDepth = 0
+        var bracketDepth = 0 // Track array brackets [] separately
         var inString = false
         var escapeNext = false
 
@@ -260,11 +266,14 @@ object ContentCleaner {
             when {
                 c == '\\' -> escapeNext = true
                 c == '"' && !escapeNext -> inString = !inString
-                !inString && c == '{' -> depth++
+                !inString && c == '{' -> braceDepth++
                 !inString && c == '}' -> {
-                    depth--
-                    if (depth == 0) return i
+                    braceDepth--
+                    // Only return when we've closed the ORIGINAL brace AND all array brackets
+                    if (braceDepth == 0 && bracketDepth == 0) return i
                 }
+                !inString && c == '[' -> bracketDepth++
+                !inString && c == ']' -> bracketDepth--
             }
         }
 

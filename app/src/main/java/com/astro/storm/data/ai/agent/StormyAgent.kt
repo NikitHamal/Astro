@@ -820,12 +820,142 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
 
     /**
      * Clean tool call blocks from content for display
+     *
+     * This comprehensive cleaning handles all formats of tool call JSON that
+     * may appear in AI model responses, including:
+     * - Code blocks with tool_call, json, or no language marker
+     * - Inline JSON with simple or nested arguments
+     * - Multi-line formatted JSON
+     * - Tool calls with arrays in arguments (like ask_user options)
      */
     private fun String.cleanToolCallBlocks(): String {
-        return this
-            .replace(Regex("""```tool_call\s*\n?\s*\{[\s\S]*?\}\s*\n?```"""), "")
-            .replace(Regex("""\{"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^}]*\}\s*\}"""), "")
-            .trim()
+        var result = this
+
+        // Pattern 1: Code blocks with tool_call marker
+        result = result.replace(Regex("""```tool_call\s*\n?\s*\{[\s\S]*?\}\s*\n?```""", RegexOption.MULTILINE), "")
+
+        // Pattern 2: JSON code blocks containing tool calls
+        result = result.replace(Regex("""```json\s*\n?\s*\{[^`]*"tool"[^`]*\}\s*\n?```""", RegexOption.MULTILINE), "")
+
+        // Pattern 3: Plain code blocks containing tool JSON
+        result = result.replace(Regex("""```\s*\n?\s*\{[^`]*"tool"[^`]*\}\s*\n?```""", RegexOption.MULTILINE), "")
+
+        // Pattern 4: Multi-line inline tool call JSON with nested objects/arrays
+        // This handles ask_user with options array containing objects
+        result = result.replace(Regex(
+            """\{\s*\n?\s*"tool"\s*:\s*"[^"]+"\s*,\s*\n?\s*"arguments"\s*:\s*\{[\s\S]*?\}\s*\n?\s*\}""",
+            RegexOption.MULTILINE
+        ), "")
+
+        // Pattern 5: Single-line tool call JSON
+        result = result.replace(Regex("""\{"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^}]*\}\s*\}"""), "")
+
+        // Pattern 6: Name-first format (some models use this)
+        result = result.replace(Regex("""\{"name"\s*:\s*"[^"]+"\s*,\s*"parameters"\s*:\s*\{[^}]*\}\s*\}"""), "")
+
+        // Pattern 7: Use bracket matching for complex nested JSON
+        result = removeNestedToolCallJson(result)
+
+        // Clean up excessive whitespace left by removals
+        result = result.replace(Regex("\n{3,}"), "\n\n").trim()
+
+        return result
+    }
+
+    /**
+     * Remove deeply nested tool call JSON using bracket matching.
+     * Handles cases where regex fails on complex nested structures.
+     */
+    private fun removeNestedToolCallJson(content: String): String {
+        var result = content
+        var searchStart = 0
+
+        while (true) {
+            // Find potential tool call JSON start
+            val toolIndicators = listOf(""""tool"""", """"tool" :""")
+
+            var foundIndex = -1
+            for (indicator in toolIndicators) {
+                val idx = result.indexOf(indicator, searchStart)
+                if (idx != -1 && (foundIndex == -1 || idx < foundIndex)) {
+                    foundIndex = idx
+                }
+            }
+
+            if (foundIndex == -1) break
+
+            // Find the opening brace before this indicator
+            var braceStart = foundIndex - 1
+            while (braceStart >= 0 && result[braceStart] != '{') {
+                if (!result[braceStart].isWhitespace() && result[braceStart] != '"') {
+                    braceStart = -1
+                    break
+                }
+                braceStart--
+            }
+
+            if (braceStart == -1 || braceStart < 0) {
+                searchStart = foundIndex + 6
+                continue
+            }
+
+            // Use bracket matching to find the complete JSON object
+            val jsonEnd = findMatchingBraceForCleaning(result, braceStart)
+            if (jsonEnd != -1) {
+                val potentialJson = result.substring(braceStart, jsonEnd + 1)
+
+                // Verify it's actually a tool call JSON
+                if (potentialJson.contains(""""tool"""") &&
+                    (potentialJson.contains(""""arguments"""") || potentialJson.contains(""""parameters""""))) {
+                    // Remove this JSON block
+                    result = result.substring(0, braceStart) + result.substring(jsonEnd + 1)
+                    // Don't advance searchStart since we removed content
+                } else {
+                    searchStart = jsonEnd + 1
+                }
+            } else {
+                searchStart = foundIndex + 6
+            }
+        }
+
+        return result
+    }
+
+    /**
+     * Find the matching closing brace for an opening brace.
+     * Properly handles nested objects AND arrays (for ask_user options with nested objects).
+     */
+    private fun findMatchingBraceForCleaning(text: String, openIndex: Int): Int {
+        if (openIndex < 0 || openIndex >= text.length || text[openIndex] != '{') return -1
+
+        var braceDepth = 0
+        var bracketDepth = 0 // Track array brackets [] separately
+        var inString = false
+        var escapeNext = false
+
+        for (i in openIndex until text.length) {
+            val c = text[i]
+
+            if (escapeNext) {
+                escapeNext = false
+                continue
+            }
+
+            when {
+                c == '\\' -> escapeNext = true
+                c == '"' && !escapeNext -> inString = !inString
+                !inString && c == '{' -> braceDepth++
+                !inString && c == '}' -> {
+                    braceDepth--
+                    // Only return when we've closed the ORIGINAL brace AND all array brackets
+                    if (braceDepth == 0 && bracketDepth == 0) return i
+                }
+                !inString && c == '[' -> bracketDepth++
+                !inString && c == ']' -> bracketDepth--
+            }
+        }
+
+        return -1
     }
 }
 

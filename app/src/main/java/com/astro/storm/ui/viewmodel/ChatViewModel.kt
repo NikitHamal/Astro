@@ -1236,33 +1236,10 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             "ask_user" -> {
-                val question = resultJson.optString("question", "")
-                val optionsArray = resultJson.optJSONArray("options")
-                val allowCustomInput = resultJson.optBoolean("allow_custom_input", true)
-
-                val options = mutableListOf<AskUserOption>()
-                optionsArray?.let { array ->
-                    for (i in 0 until array.length()) {
-                        val opt = array.optJSONObject(i)
-                        if (opt != null) {
-                            options.add(
-                                AskUserOption(
-                                    label = opt.optString("label", "Option ${i + 1}"),
-                                    description = opt.optString("description", null),
-                                    value = opt.optString("value", opt.optString("label", ""))
-                                )
-                            )
-                        }
-                    }
-                }
-
-                val askSection = AgentSection.AskUser(
-                    question = question,
-                    options = options,
-                    allowCustomInput = allowCustomInput,
-                    isAnswered = false
-                )
-                currentSections.add(askSection)
+                // NOTE: ask_user section is handled by AgentResponse.AskUserInterrupt
+                // Do NOT create a duplicate section here. The AskUserInterrupt handler
+                // already creates the section with proper state tracking for user response.
+                // This case is left as a no-op to prevent duplicate AskUser sections.
             }
 
             "update_todo" -> {

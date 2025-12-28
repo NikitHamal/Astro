@@ -324,8 +324,9 @@ private fun ThinkingDotsIndicator() {
  * This matches the Codex-style layout where each tool operation appears
  * as a distinct, chronologically-ordered section.
  *
- * IMPORTANT: Each tool has its own independent expanded state to allow
- * users to expand/collapse tools individually.
+ * IMPORTANT: Each tool has its own FULLY INDEPENDENT expanded state to allow
+ * users to expand/collapse tools individually. The state is keyed by tool ID
+ * and is NOT affected by parent section's isExpanded property after initial creation.
  */
 @Composable
 fun ToolGroupSection(
@@ -333,13 +334,24 @@ fun ToolGroupSection(
     onToggleExpand: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Each tool maintains its own independent expanded state
-    // This allows users to expand/collapse individual tools
+    // Each tool maintains its own FULLY INDEPENDENT expanded state
+    // This allows users to expand/collapse individual tools WITHOUT affecting others
+    //
+    // Key insight: We use a stable key (section.id) but only initialize ONCE.
+    // The section.isExpanded is used ONLY for the initial default, not for updates.
+    // This prevents the parent toggle from affecting individual tool states.
     val expandedStates = remember(section.id) {
-        mutableStateMapOf<String, Boolean>().apply {
-            // Initialize all tools with the group's default expanded state
-            section.tools.forEach { tool ->
-                this[tool.id] = section.isExpanded
+        mutableStateMapOf<String, Boolean>()
+    }
+
+    // Track which tools we've initialized to avoid resetting their state
+    // This LaunchedEffect only runs when new tools appear, not on every recomposition
+    LaunchedEffect(section.tools.map { it.id }) {
+        section.tools.forEach { tool ->
+            // Only initialize if this tool hasn't been seen before
+            if (!expandedStates.containsKey(tool.id)) {
+                // New tools start collapsed for completed tools, expanded for executing
+                expandedStates[tool.id] = tool.status == ToolExecutionStatus.EXECUTING
             }
         }
     }
@@ -352,17 +364,18 @@ fun ToolGroupSection(
     ) {
         section.tools.forEach { tool ->
             key(tool.id) {
-                // Ensure new tools get added to the state map
-                if (!expandedStates.containsKey(tool.id)) {
-                    expandedStates[tool.id] = section.isExpanded
+                // Synchronously ensure the tool has an entry (for first render before LaunchedEffect)
+                val isExpanded = expandedStates.getOrPut(tool.id) {
+                    tool.status == ToolExecutionStatus.EXECUTING
                 }
 
                 IndividualToolCard(
                     tool = tool,
-                    isExpanded = expandedStates[tool.id] ?: false,
+                    isExpanded = isExpanded,
                     onToggleExpand = {
-                        // Toggle only this specific tool's expanded state
-                        expandedStates[tool.id] = !(expandedStates[tool.id] ?: false)
+                        // Toggle ONLY this specific tool's expanded state
+                        // This does NOT affect any other tools in the group
+                        expandedStates[tool.id] = !isExpanded
                     }
                 )
             }
