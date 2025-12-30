@@ -129,13 +129,13 @@ fun AvasthaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Planetary Avasthas",
+                            text = stringResource(StringKeyDosha.AVASTHA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Planetary States & Conditions",
+                            text = stringResource(StringKeyDosha.AVASTHA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -311,7 +311,7 @@ private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Overall Planetary Strength",
+                text = stringResource(StringKeyDosha.AVASTHA_OVERALL_STRENGTH),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -397,7 +397,7 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
                         color = AppTheme.SuccessColor
                     )
                     Text(
-                        text = "Strongest",
+                        text = stringResource(StringKeyDosha.AVASTHA_STRONGEST),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -441,7 +441,7 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
                         color = AppTheme.WarningColor
                     )
                     Text(
-                        text = "Needs Attention",
+                        text = stringResource(StringKeyDosha.AVASTHA_NEEDS_ATTENTION),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -535,7 +535,7 @@ private fun AvasthaInterpretationCard(analysis: AvasthaCalculator.AvasthaAnalysi
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Interpretation",
+                    text = stringResource(StringKeyDosha.UI_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -561,7 +561,7 @@ private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.A
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Recommendations",
+                text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1281,14 +1281,14 @@ private fun AvasthaEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "No Chart Data",
+                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Create or select a birth chart to analyze planetary Avasthas.",
+                text = stringResource(StringKeyDosha.AVASTHA_NO_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1303,32 +1303,14 @@ private fun AvasthaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "About Planetary Avasthas",
+                text = stringResource(StringKeyDosha.AVASTHA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = """
-                    Avasthas are planetary states that indicate how effectively a planet can deliver its results.
-
-                    Four Types of Avasthas:
-
-                    1. Baladi (Age-based):
-                    Bala (Infant), Kumara (Youth), Yuva (Adult), Vriddha (Old), Mrita (Dead)
-
-                    2. Jagradadi (Alertness):
-                    Jagrat (Awake), Swapna (Dreaming), Sushupti (Deep Sleep)
-
-                    3. Deeptadi (Dignity):
-                    Deepta, Swastha, Mudita, Shanta, Dina, Vikala, Khala, Kopa, Bhita
-
-                    4. Lajjitadi (Emotional):
-                    Lajjita, Garvita, Kshudita, Trushita, Mudita, Kshobhita
-
-                    A planet in good avasthas gives its full results, while one in poor avasthas struggles to manifest its significations.
-                """.trimIndent(),
+                text = stringResource(StringKeyDosha.AVASTHA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp

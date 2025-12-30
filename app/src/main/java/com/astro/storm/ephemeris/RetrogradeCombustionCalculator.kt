@@ -1,6 +1,9 @@
 package com.astro.storm.ephemeris
 
 import android.content.Context
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
@@ -11,6 +14,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
+
 
 object RetrogradeCombustionCalculator {
 
@@ -69,7 +73,18 @@ object RetrogradeCombustionCalculator {
         RETROGRADE("Retrograde", "R", 1.25),
         STATIONARY_RETROGRADE("Stationary Retrograde", "SR", 1.75),
         STATIONARY_DIRECT("Stationary Direct", "SD", 1.75),
-        ALWAYS_RETROGRADE("Perpetual Retrograde", "℞", 1.0)
+        ALWAYS_RETROGRADE("Perpetual Retrograde", "℞", 1.0);
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                DIRECT -> StringKeyAnalysis.RETRO_DIRECT
+                RETROGRADE -> StringKeyAnalysis.RETRO_RETROGRADE
+                STATIONARY_RETROGRADE -> StringKeyAnalysis.RETRO_STATIONARY_RETRO
+                STATIONARY_DIRECT -> StringKeyAnalysis.RETRO_STATIONARY_DIRECT
+                ALWAYS_RETROGRADE -> StringKeyAnalysis.RETRO_ALWAYS_RETROGRADE
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     enum class CombustionStatus(val displayName: String, val symbol: String, val strengthFactor: Double) {
@@ -78,7 +93,19 @@ object RetrogradeCombustionCalculator {
         COMBUST("Combust", "☉", 0.25),
         DEEP_COMBUST("Deep Combustion", "●☉", 0.1),
         CAZIMI("Cazimi", "♡", 1.5),
-        SEPARATING("Separating", "☉→", 0.55)
+        SEPARATING("Separating", "☉→", 0.55);
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                NOT_COMBUST -> StringKeyAnalysis.COMBUST_NOT
+                APPROACHING -> StringKeyAnalysis.COMBUST_APPROACHING
+                COMBUST -> StringKeyAnalysis.COMBUST_COMBUST
+                DEEP_COMBUST -> StringKeyAnalysis.COMBUST_DEEP
+                CAZIMI -> StringKeyAnalysis.COMBUST_CAZIMI
+                SEPARATING -> StringKeyAnalysis.COMBUST_SEPARATING
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     enum class SpeedStatus(val displayName: String, val strengthFactor: Double) {
@@ -88,14 +115,37 @@ object RetrogradeCombustionCalculator {
         MANDA("Slow", 0.85),
         ATHI_MANDA("Very Slow", 0.7),
         STHIRA("Stationary", 1.5),
-        VAKRA("Retrograde Motion", 1.0)
+        VAKRA("Retrograde Motion", 1.0);
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                ATHI_SHEEGHRA -> StringKeyAnalysis.SPEED_VERY_FAST
+                SHEEGHRA -> StringKeyAnalysis.SPEED_FAST
+                SAMA -> StringKeyAnalysis.SPEED_NORMAL
+                MANDA -> StringKeyAnalysis.SPEED_SLOW
+                ATHI_MANDA -> StringKeyAnalysis.SPEED_VERY_SLOW
+                STHIRA -> StringKeyAnalysis.SPEED_STATIONARY
+                VAKRA -> StringKeyAnalysis.SPEED_RETROGRADE_MOTION
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     enum class WarAdvantage(val displayName: String) {
         NORTHERN_LATITUDE("Northern Latitude"),
         BRIGHTNESS("Greater Brightness"),
         COMBINED("Both Factors"),
-        INDETERMINATE("Evenly Matched")
+        INDETERMINATE("Evenly Matched");
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                NORTHERN_LATITUDE -> StringKeyAnalysis.WAR_NORTHERN_LAT
+                BRIGHTNESS -> StringKeyAnalysis.WAR_BRIGHTNESS
+                COMBINED -> StringKeyAnalysis.WAR_COMBINED
+                INDETERMINATE -> StringKeyAnalysis.WAR_INDETERMINATE
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     data class PlanetCondition(

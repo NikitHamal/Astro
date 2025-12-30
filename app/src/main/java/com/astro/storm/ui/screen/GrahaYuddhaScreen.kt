@@ -65,7 +65,7 @@ fun GrahaYuddhaScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = "Graha Yuddha",
+            title = stringResource(StringKeyDosha.GRAHA_SCREEN_TITLE),
             message = stringResource(StringKey.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
@@ -79,10 +79,10 @@ fun GrahaYuddhaScreen(
     var yuddhaAnalysis by remember { mutableStateOf<GrahaYuddhaAnalysis?>(null) }
 
     val tabs = listOf(
-        "Overview",
-        "Active Wars",
-        "Dasha Effects",
-        "Remedies"
+        stringResource(StringKeyDosha.UI_OVERVIEW),
+        stringResource(StringKeyDosha.GRAHA_ACTIVE_WARS),
+        stringResource(StringKeyDosha.GRAHA_DASHA_EFFECTS),
+        stringResource(StringKeyDosha.UI_REMEDIES)
     )
 
     // Calculate Graha Yuddha
@@ -110,7 +110,7 @@ fun GrahaYuddhaScreen(
                 title = {
                     Column {
                         Text(
-                            "Graha Yuddha",
+                            stringResource(StringKeyDosha.GRAHA_SCREEN_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
@@ -135,7 +135,7 @@ fun GrahaYuddhaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = "About Graha Yuddha",
+                            contentDescription = stringResource(StringKeyDosha.GRAHA_ABOUT_TITLE),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -205,7 +205,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
                 modifier = Modifier.size(48.dp)
             )
             Text(
-                text = "Analyzing Planetary Wars...",
+                text = stringResource(StringKeyDosha.GRAHA_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -275,7 +275,7 @@ private fun WarStatusCard(analysis: GrahaYuddhaAnalysis) {
         Triple(
             AppTheme.SuccessColor,
             Icons.Outlined.CheckCircle,
-            "No Planetary Wars Present"
+            stringResource(StringKeyDosha.GRAHA_NO_WARS)
         )
     }
 
@@ -317,7 +317,7 @@ private fun WarStatusCard(analysis: GrahaYuddhaAnalysis) {
                     text = if (hasWar)
                         "Wars affect planetary significations significantly"
                     else
-                        "Planets operate without war-related obstructions",
+                        stringResource(StringKeyDosha.GRAHA_NO_WARS_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -348,7 +348,7 @@ private fun SummaryCard(summary: String) {
                     modifier = Modifier.size(24.dp)
                 )
                 Text(
-                    text = "Analysis Summary",
+                    text = stringResource(StringKeyDosha.GRAHA_ANALYSIS_SUMMARY),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -386,7 +386,7 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Overall War Impact",
+                text = stringResource(StringKeyDosha.GRAHA_OVERALL_IMPACT),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -440,7 +440,7 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
                     // Winners
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Victorious",
+                            text = stringResource(StringKeyDosha.GRAHA_VICTORY),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -454,7 +454,7 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
                     // Losers
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Defeated",
+                            text = stringResource(StringKeyDosha.GRAHA_DEFEATED),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -509,7 +509,7 @@ private fun KeyInsightsCard(insights: List<String>) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Key Insights",
+                    text = stringResource(StringKeyDosha.UI_KEY_INSIGHTS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -550,7 +550,7 @@ private fun AffectedAreasCard(areas: List<String>) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Affected Life Areas",
+                text = stringResource(StringKeyDosha.GRAHA_AFFECTED_AREAS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -597,7 +597,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Recommendations",
+                    text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -647,12 +647,12 @@ private fun ActiveWarsTab(analysis: GrahaYuddhaAnalysis) {
                     modifier = Modifier.size(48.dp)
                 )
                 Text(
-                    text = "No Active Planetary Wars",
+                    text = stringResource(StringKeyDosha.GRAHA_NO_WARS),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    text = "All planets are operating peacefully",
+                    text = stringResource(StringKeyDosha.GRAHA_NO_WARS_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSubtle
                 )
@@ -731,7 +731,7 @@ private fun WarCard(war: GrahaYuddhaResult) {
                             modifier = Modifier.size(20.dp)
                         )
                         Text(
-                            text = "vs",
+                            text = stringResource(StringKeyDosha.GRAHA_VS),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -777,13 +777,13 @@ private fun WarCard(war: GrahaYuddhaResult) {
             ) {
                 Column {
                     Text(
-                        text = "${war.winner.displayName} defeats ${war.loser.displayName}",
+                        text = stringResource(StringKeyDosha.GRAHA_DEFEATS_MSG, war.winner.displayName, war.loser.displayName),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = "in ${war.warSign.displayName} (House ${war.warHouse})",
+                        text = stringResource(StringKeyDosha.GRAHA_IN_HOUSE_MSG, war.warSign.displayName, war.warHouse),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )
@@ -796,11 +796,11 @@ private fun WarCard(war: GrahaYuddhaResult) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 DetailChip(
-                    label = "Separation",
+                    label = stringResource(StringKeyDosha.GRAHA_SEPARATION),
                     value = "${String.format("%.2f", war.separation)}°"
                 )
                 DetailChip(
-                    label = "Advantage",
+                    label = stringResource(StringKeyDosha.GRAHA_ADVANTAGE),
                     value = war.winnerAdvantage.displayName
                 )
             }
@@ -952,7 +952,7 @@ private fun DashaEffectsTab(analysis: GrahaYuddhaAnalysis) {
                     modifier = Modifier.size(48.dp)
                 )
                 Text(
-                    text = "No War-Related Dasha Effects",
+                    text = stringResource(StringKeyDosha.GRAHA_NO_DASHA_EFFECTS),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextMuted
                 )
@@ -1097,12 +1097,12 @@ private fun RemediesTab(analysis: GrahaYuddhaAnalysis) {
                     modifier = Modifier.size(48.dp)
                 )
                 Text(
-                    text = "No Specific Remedies Needed",
+                    text = stringResource(StringKeyDosha.GRAHA_NO_REMEDIES),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    text = "No active wars to remediate",
+                    text = stringResource(StringKeyDosha.GRAHA_NO_REMEDIES_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSubtle
                 )
@@ -1239,91 +1239,21 @@ private fun GrahaYuddhaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "About Graha Yuddha",
+                text = stringResource(StringKeyDosha.GRAHA_ABOUT_TITLE),
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
-            LazyColumn(
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                item {
-                    Text(
-                        text = "What is Graha Yuddha?",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
-                    )
-                    Text(
-                        text = "Graha Yuddha (Planetary War) occurs when two planets are within one degree of each other. The planets engage in combat, significantly affecting both planets' ability to deliver results.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextSecondary
-                    )
-                }
-
-                item {
-                    Text(
-                        text = "Who Can Fight?",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
-                    )
-                    Text(
-                        text = "Only Mars, Mercury, Jupiter, Venus, and Saturn can engage in planetary war. Sun and Moon are luminaries and don't participate. Rahu and Ketu are shadow planets and also don't participate.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextSecondary
-                    )
-                }
-
-                item {
-                    Text(
-                        text = "Determining the Winner",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
-                    )
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        listOf(
-                            "1. Northern latitude (higher declination) wins",
-                            "2. If equal, brighter planet wins",
-                            "3. Brightness order: Venus > Jupiter > Mars > Mercury > Saturn"
-                        ).forEach { rule ->
-                            Text(
-                                text = rule,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.TextSecondary
-                            )
-                        }
-                    }
-                }
-
-                item {
-                    Text(
-                        text = "Effects of War",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
-                    )
-                    Text(
-                        text = "The winner gains strength and dominance, often delivering results more forcefully. The loser's significations are weakened, obstructed, or manifest with difficulty. Effects intensify during dasha/antardasha of involved planets.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextSecondary
-                    )
-                }
-
-                item {
-                    Text(
-                        text = "References",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
-                    )
-                    Text(
-                        text = "• Brihat Parashara Hora Shastra\n• Surya Siddhanta\n• Phaladeepika\n• Jataka Parijata",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextSecondary
-                    )
-                }
+                Text(
+                    text = stringResource(StringKeyDosha.GRAHA_ABOUT_DESC),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = AppTheme.TextSecondary,
+                    lineHeight = 22.sp
+                )
             }
         },
         confirmButton = {

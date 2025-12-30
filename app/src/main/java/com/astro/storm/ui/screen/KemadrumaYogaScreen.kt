@@ -105,7 +105,13 @@ fun KemadrumaYogaScreen(
     var kemadrumaAnalysis by remember { mutableStateOf<KemadrumaYogaCalculator.KemadrumaAnalysis?>(null) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    val tabs = listOf("Overview", "Moon", "Cancellations", "Impacts", "Remedies")
+    val tabs = listOf(
+        "Overview",
+        stringResource(StringKeyDosha.KEMA_MOON),
+        stringResource(StringKeyDosha.KEMA_CANCELLATIONS),
+        stringResource(StringKeyDosha.KEMA_IMPACTS),
+        stringResource(StringKey.FEATURE_REMEDIES)
+    )
 
     // Calculate Kemadruma analysis
     LaunchedEffect(chart) {
@@ -132,13 +138,13 @@ fun KemadrumaYogaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Kemadruma Yoga",
+                            text = stringResource(StringKeyDosha.KEMA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Moon Isolation Analysis",
+                            text = stringResource(StringKeyDosha.KEMA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -323,9 +329,9 @@ private fun KemadrumaStatusCard(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
 
             Text(
                 text = if (analysis.isKemadrumaFormed) {
-                    "Kemadruma Yoga is formed in this chart"
+                    stringResource(StringKeyDosha.KEMA_FORMED)
                 } else {
-                    "Kemadruma Yoga is not formed"
+                    stringResource(StringKeyDosha.KEMA_NOT_FORMED)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
@@ -350,7 +356,7 @@ private fun KemadrumaStatusCard(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                             modifier = Modifier.size(16.dp)
                         )
                         Text(
-                            text = "${analysis.cancellations.size} Cancellation(s) Found",
+                            text = stringResource(StringKeyDosha.KEMA_CANCELLATIONS_FOUND, analysis.cancellations.size),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor
@@ -462,17 +468,17 @@ private fun InterpretationCard(interpretation: String) {
 @Composable
 private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFormation) {
     val formationDescription = buildString {
-        append("Moon lacks planetary support in adjacent houses.")
-        if (formation.hasSecondHouseEmpty) append(" 2nd house from Moon is empty.")
-        if (formation.hasTwelfthHouseEmpty) append(" 12th house from Moon is empty.")
-        if (formation.isMoonUnaspected) append(" Moon has no planetary conjunction.")
+        append(stringResource(StringKeyDosha.KEMA_FORMATION_MAIN))
+        if (formation.hasSecondHouseEmpty) append(" " + stringResource(StringKeyDosha.KEMA_FORMATION_2ND_EMPTY))
+        if (formation.hasTwelfthHouseEmpty) append(" " + stringResource(StringKeyDosha.KEMA_FORMATION_12TH_EMPTY))
+        if (formation.isMoonUnaspected) append(" " + stringResource(StringKeyDosha.KEMA_FORMATION_UNASPECTED))
     }
 
     val reasons = buildList {
-        if (formation.hasSecondHouseEmpty) add("No planets in 2nd house from Moon")
-        if (formation.hasTwelfthHouseEmpty) add("No planets in 12th house from Moon")
-        if (formation.isMoonUnaspected) add("Moon is not conjunct with any planet")
-        if (formation.formationStrength > 70) add("Formation strength: ${formation.formationStrength}%")
+        if (formation.hasSecondHouseEmpty) add(stringResource(StringKeyDosha.KEMA_REASON_2ND))
+        if (formation.hasTwelfthHouseEmpty) add(stringResource(StringKeyDosha.KEMA_REASON_12TH))
+        if (formation.isMoonUnaspected) add(stringResource(StringKeyDosha.KEMA_REASON_CONJUNCT))
+        if (formation.formationStrength > 70) add(stringResource(StringKeyDosha.KEMA_FORMATION_STRENGTH, formation.formationStrength))
     }
 
     Card(
@@ -482,7 +488,7 @@ private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFor
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Formation Details",
+                text = stringResource(StringKeyDosha.KEMA_FORMATION_DETAILS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -556,13 +562,13 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                     }
                     Column {
                         Text(
-                            text = "Moon Position",
+                            text = stringResource(StringKeyDosha.KEMA_MOON_POSITION),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${moonAnalysis.sign.getLocalizedName(language)} in House ${moonAnalysis.house}",
+                            text = "${moonAnalysis.sign.getLocalizedName(language)} in ${stringResource(StringKey.VARSHAPHALA_HOUSE)} ${moonAnalysis.house}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextMuted
                         )
@@ -575,9 +581,9 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
 
                 // Moon details
                 MoonDetailRow(label = "Degree", value = String.format("%.2f°", moonAnalysis.degree))
-                MoonDetailRow(label = "Nakshatra", value = moonAnalysis.nakshatra)
-                MoonDetailRow(label = "Paksha", value = moonAnalysis.paksha.name.replace("_", " "))
-                MoonDetailRow(label = "Brightness", value = moonAnalysis.brightness.name.replace("_", " "))
+                MoonDetailRow(label = stringResource(StringKeyDosha.KEMA_NAKSHATRA), value = moonAnalysis.nakshatra)
+                MoonDetailRow(label = stringResource(StringKeyDosha.KEMA_PAKSHA), value = moonAnalysis.paksha.name.replace("_", " "))
+                MoonDetailRow(label = stringResource(StringKeyDosha.KEMA_BRIGHTNESS), value = moonAnalysis.brightness.name.replace("_", " "))
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -587,7 +593,7 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Moon Strength:",
+                        text = stringResource(StringKeyDosha.KEMA_MOON_STRENGTH),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -653,7 +659,7 @@ private fun SurroundingHousesCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Surrounding Houses Analysis",
+                text = stringResource(StringKeyDosha.KEMA_SURROUNDING_HOUSES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -669,19 +675,19 @@ private fun SurroundingHousesCard(
             ) {
                 HouseStatusBox(
                     house = houseBefore,
-                    label = "Before Moon",
+                    label = stringResource(StringKeyDosha.KEMA_BEFORE_MOON),
                     hasplanets = formationDetails.planetsInTwelfthFromMoon.isEmpty(),
                     isKendra = false
                 )
                 HouseStatusBox(
                     house = moonAnalysis.house,
-                    label = "Moon's House",
+                    label = stringResource(StringKeyDosha.KEMA_MOON_HOUSE),
                     hasplanets = true,
                     isKendra = true
                 )
                 HouseStatusBox(
                     house = houseAfter,
-                    label = "After Moon",
+                    label = stringResource(StringKeyDosha.KEMA_AFTER_MOON),
                     hasplanets = formationDetails.planetsInSecondFromMoon.isEmpty(),
                     isKendra = false
                 )
@@ -695,7 +701,7 @@ private fun SurroundingHousesCard(
                     color = AppTheme.WarningColor.copy(alpha = 0.1f)
                 ) {
                     Text(
-                        text = "No planets in houses adjacent to Moon - Kemadruma condition met",
+                        text = stringResource(StringKeyDosha.KEMA_CONDITION_MET),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.WarningColor,
                         textAlign = TextAlign.Center,
@@ -775,7 +781,7 @@ private fun CancellationsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnal
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = if (analysis.isKemadrumaFormed) "No Cancellations Found" else "Not Applicable",
+                        text = if (analysis.isKemadrumaFormed) stringResource(StringKeyDosha.KEMA_NO_CANCELLATIONS) else stringResource(StringKeyDosha.KEMA_NA),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -783,7 +789,7 @@ private fun CancellationsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnal
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = if (analysis.isKemadrumaFormed) {
-                            "No Kemadruma Bhanga (cancellation) factors were found in your chart."
+                            stringResource(StringKeyDosha.KEMA_NO_CANCELLATIONS_DESC)
                         } else {
                             "Kemadruma Yoga is not formed, so cancellations are not applicable."
                         },

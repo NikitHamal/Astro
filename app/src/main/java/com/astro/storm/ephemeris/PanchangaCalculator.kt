@@ -1,6 +1,9 @@
 package com.astro.storm.ephemeris
 
 import android.content.Context
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.Planet
 import swisseph.DblObj
@@ -466,7 +469,29 @@ enum class TithiGroup(val displayName: String, val nature: String) {
     BHADRA("Bhadra", "Auspicious"),
     JAYA("Jaya", "Victorious"),
     RIKTA("Rikta", "Empty"),
-    PURNA("Purna", "Complete")
+    PURNA("Purna", "Complete");
+
+    fun getLocalizedName(language: Language): String {
+        val key = when (this) {
+            NANDA -> StringKeyAnalysis.TITHI_GROUP_NANDA
+            BHADRA -> StringKeyAnalysis.TITHI_GROUP_BHADRA
+            JAYA -> StringKeyAnalysis.TITHI_GROUP_JAYA
+            RIKTA -> StringKeyAnalysis.TITHI_GROUP_RIKTA
+            PURNA -> StringKeyAnalysis.TITHI_GROUP_PURNA
+        }
+        return StringResources.get(key, language)
+    }
+
+    fun getLocalizedNature(language: Language): String {
+        val key = when (this) {
+            NANDA -> StringKeyAnalysis.TITHI_GROUP_NANDA_NATURE
+            BHADRA -> StringKeyAnalysis.TITHI_GROUP_BHADRA_NATURE
+            JAYA -> StringKeyAnalysis.TITHI_GROUP_JAYA_NATURE
+            RIKTA -> StringKeyAnalysis.TITHI_GROUP_RIKTA_NATURE
+            PURNA -> StringKeyAnalysis.TITHI_GROUP_PURNA_NATURE
+        }
+        return StringResources.get(key, language)
+    }
 }
 
 enum class Yoga(val number: Int, val displayName: String, val sanskrit: String, val nature: YogaNature) {
@@ -502,7 +527,16 @@ enum class Yoga(val number: Int, val displayName: String, val sanskrit: String, 
 enum class YogaNature(val displayName: String) {
     AUSPICIOUS("Auspicious"),
     INAUSPICIOUS("Inauspicious"),
-    MIXED("Mixed")
+    MIXED("Mixed");
+
+    fun getLocalizedName(language: Language): String {
+        val key = when (this) {
+            AUSPICIOUS -> StringKeyAnalysis.YOGA_NATURE_AUSPICIOUS
+            INAUSPICIOUS -> StringKeyAnalysis.YOGA_NATURE_INAUSPICIOUS
+            MIXED -> StringKeyAnalysis.YOGA_NATURE_MIXED
+        }
+        return StringResources.get(key, language)
+    }
 }
 
 enum class Karana(val displayName: String, val sanskrit: String, val type: KaranaType) {
@@ -539,7 +573,15 @@ enum class Vara(val number: Int, val displayName: String, val sanskrit: String, 
 
 enum class Paksha(val displayName: String, val sanskrit: String) {
     SHUKLA("Shukla Paksha", "शुक्ल पक्ष"),
-    KRISHNA("Krishna Paksha", "कृष्ण पक्ष")
+    KRISHNA("Krishna Paksha", "कृष्ण पक्ष");
+
+    fun getLocalizedName(language: Language): String {
+        val key = when (this) {
+            SHUKLA -> StringKeyAnalysis.PAKSHA_SHUKLA
+            KRISHNA -> StringKeyAnalysis.PAKSHA_KRISHNA
+        }
+        return StringResources.get(key, language)
+    }
 }
 
 data class TithiData(

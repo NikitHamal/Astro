@@ -66,7 +66,7 @@ fun ArudhaPadaScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = "Arudha Pada",
+            title = stringResource(StringKeyDosha.ARUDHA_SCREEN_TITLE),
             message = stringResource(StringKey.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
@@ -112,7 +112,7 @@ fun ArudhaPadaScreen(
                 title = {
                     Column {
                         Text(
-                            "Arudha Pada",
+                            stringResource(StringKeyDosha.ARUDHA_SCREEN_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
@@ -137,7 +137,7 @@ fun ArudhaPadaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = "About Arudha Pada",
+                            contentDescription = stringResource(StringKeyDosha.ARUDHA_ABOUT_BTN),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -211,7 +211,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
                 modifier = Modifier.size(48.dp)
             )
             Text(
-                text = "Calculating Arudha Padas...",
+                text = stringResource(StringKeyDosha.ARUDHA_CALCULATING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -281,7 +281,7 @@ private fun SummaryCard(analysis: ArudhaPadaAnalysis) {
                     modifier = Modifier.size(24.dp)
                 )
                 Text(
-                    text = "Arudha Pada Analysis",
+                    text = stringResource(StringKeyDosha.ARUDHA_ANALYSIS_TITLE),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -310,7 +310,7 @@ private fun KeyArudhasCard(analysis: ArudhaPadaAnalysis) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Key Arudha Positions",
+                text = stringResource(StringKeyDosha.ARUDHA_KEY_POSITIONS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -415,7 +415,7 @@ private fun AssessmentCard(assessment: ArudhaPadaCalculator.ArudhaOverallAssessm
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Manifestation Strength",
+                text = stringResource(StringKeyDosha.ARUDHA_MANIFESTATION),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -423,22 +423,22 @@ private fun AssessmentCard(assessment: ArudhaPadaCalculator.ArudhaOverallAssessm
 
             // Strength bars
             StrengthBar(
-                label = "Public Image",
+                label = stringResource(StringKeyDosha.ARUDHA_PUBLIC_IMAGE),
                 value = assessment.publicImageStrength,
                 icon = Icons.Outlined.Person
             )
             StrengthBar(
-                label = "Career",
+                label = stringResource(StringKeyDosha.ARUDHA_CAREER),
                 value = assessment.careerManifestationStrength,
                 icon = Icons.Outlined.Work
             )
             StrengthBar(
-                label = "Gains",
+                label = stringResource(StringKeyDosha.ARUDHA_GAINS),
                 value = assessment.gainsAndFulfillment,
                 icon = Icons.Outlined.TrendingUp
             )
             StrengthBar(
-                label = "Relationships",
+                label = stringResource(StringKeyDosha.ARUDHA_RELATIONSHIPS),
                 value = assessment.relationshipIndicator,
                 icon = Icons.Outlined.Favorite
             )
@@ -448,7 +448,7 @@ private fun AssessmentCard(assessment: ArudhaPadaCalculator.ArudhaOverallAssessm
             // Key themes
             if (assessment.keyThemes.isNotEmpty()) {
                 Text(
-                    text = "Key Themes",
+                    text = stringResource(StringKeyDosha.ARUDHA_KEY_THEMES),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
@@ -543,7 +543,7 @@ private fun KeyYogasPreview(yogas: List<ArudhaYoga>) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Arudha Yogas",
+                    text = stringResource(StringKeyDosha.ARUDHA_YOGAS_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -625,7 +625,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Recommendations",
+                    text = stringResource(StringKeyDosha.ARUDHA_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -901,7 +901,7 @@ private fun YogasTab(analysis: ArudhaPadaAnalysis) {
                     modifier = Modifier.size(48.dp)
                 )
                 Text(
-                    text = "No significant Arudha Yogas found",
+                    text = stringResource(StringKeyDosha.UI_NO_ARUDHA_YOGAS),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextMuted
                 )

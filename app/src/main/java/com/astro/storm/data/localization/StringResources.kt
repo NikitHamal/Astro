@@ -3948,8 +3948,307 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     TARABALA_BEST_LABEL("Best", "सबैभन्दा राम्रो"),
     TARABALA_ALL_27_DESC("All 27 Nakshatras with their Tarabala values", "सबै २७ नक्षत्र तिनीहरूको तारबल मानहरू साथ"),
     TARABALA_EXPLANATION("Explanation", "व्याख्या"),
-    CHANDRABALA_EXPLANATION("Explanation", "व्याख्या");
+    CHANDRABALA_EXPLANATION("Explanation", "व्याख्या"),
+
+    // ============================================
+    // PRASHNA (HORARY) CALCULATOR STRINGS
+    // ============================================
+    
+    // PrashnaCategory enum
+    PRASHNA_CAT_YES_NO("Yes/No", "हो/होइन"),
+    PRASHNA_CAT_YES_NO_DESC("Simple yes or no questions", "साधारण हो वा होइन प्रश्नहरू"),
+    PRASHNA_CAT_CAREER("Career", "क्यारियर"),
+    PRASHNA_CAT_CAREER_DESC("Job, profession, and career-related questions", "जागिर, पेशा र क्यारियर सम्बन्धी प्रश्नहरू"),
+    PRASHNA_CAT_MARRIAGE("Marriage", "विवाह"),
+    PRASHNA_CAT_MARRIAGE_DESC("Marriage and spouse-related questions", "विवाह र जीवनसाथी सम्बन्धी प्रश्नहरू"),
+    PRASHNA_CAT_CHILDREN("Children", "सन्तान"),
+    PRASHNA_CAT_CHILDREN_DESC("Questions about children and progeny", "सन्तान र सन्ततिका बारेमा प्रश्नहरू"),
+    PRASHNA_CAT_HEALTH("Health", "स्वास्थ्य"),
+    PRASHNA_CAT_HEALTH_DESC("Health and illness-related questions", "स्वास्थ्य र रोग सम्बन्धी प्रश्नहरू"),
+    PRASHNA_CAT_WEALTH("Wealth", "धन-सम्पत्ति"),
+    PRASHNA_CAT_WEALTH_DESC("Financial and wealth-related questions", "आर्थिक र धन-सम्पत्ति सम्बन्धी प्रश्नहरू"),
+    PRASHNA_CAT_PROPERTY("Property", "सम्पत्ति"),
+    PRASHNA_CAT_PROPERTY_DESC("Real estate and property questions", "जग्गा-जमिन र सम्पत्ति सम्बन्धी प्रश्नहरू"),
+    PRASHNA_CAT_TRAVEL("Travel", "यात्रा"),
+    PRASHNA_CAT_TRAVEL_DESC("Journey and travel-related questions", "यात्रा सम्बन्धी प्रश्नहरू"),
+    PRASHNA_CAT_EDUCATION("Education", "शिक्षा"),
+    PRASHNA_CAT_EDUCATION_DESC("Studies and educational questions", "अध्ययन र शैक्षिक प्रश्नहरू"),
+    PRASHNA_CAT_LEGAL("Legal", "कानुनी"),
+    PRASHNA_CAT_LEGAL_DESC("Court cases and legal matters", "मुद्दा-मामिला र कानुनी विषयहरू"),
+    PRASHNA_CAT_LOST_OBJECT("Lost Object", "हराएको वस्तु"),
+    PRASHNA_CAT_LOST_OBJECT_DESC("Finding lost or stolen items", "हराएको वा चोरी भएको वस्तु खोज्ने"),
+    PRASHNA_CAT_RELATIONSHIP("Relationship", "सम्बन्ध"),
+    PRASHNA_CAT_RELATIONSHIP_DESC("Love and relationship questions", "प्रेम र सम्बन्ध सम्बन्धी प्रश्नहरू"),
+    PRASHNA_CAT_BUSINESS("Business", "व्यापार"),
+    PRASHNA_CAT_BUSINESS_DESC("Business partnership and deals", "व्यापार साझेदारी र सौदाहरू"),
+    PRASHNA_CAT_SPIRITUAL("Spiritual", "आध्यात्मिक"),
+    PRASHNA_CAT_SPIRITUAL_DESC("Spiritual and religious questions", "आध्यात्मिक र धार्मिक प्रश्नहरू"),
+    PRASHNA_CAT_GENERAL("General", "सामान्य"),
+    PRASHNA_CAT_GENERAL_DESC("General questions and queries", "सामान्य प्रश्नहरू"),
+
+    // Tattva enum
+    PRASHNA_TATTVA_FIRE("Agni/Fire", "अग्नि"),
+    PRASHNA_TATTVA_FIRE_SIGNS("Aries, Leo, Sagittarius", "मेष, सिंह, धनु"),
+    PRASHNA_TATTVA_EARTH("Prithvi/Earth", "पृथ्वी"),
+    PRASHNA_TATTVA_EARTH_SIGNS("Taurus, Virgo, Capricorn", "वृष, कन्या, मकर"),
+    PRASHNA_TATTVA_AIR("Vayu/Air", "वायु"),
+    PRASHNA_TATTVA_AIR_SIGNS("Gemini, Libra, Aquarius", "मिथुन, तुला, कुम्भ"),
+    PRASHNA_TATTVA_WATER("Jala/Water", "जल"),
+    PRASHNA_TATTVA_WATER_SIGNS("Cancer, Scorpio, Pisces", "कर्कट, वृश्चिक, मीन"),
+    PRASHNA_TATTVA_ETHER("Akasha/Ether", "आकाश"),
+    PRASHNA_TATTVA_ETHER_SIGNS("None - represents void/space", "कुनै पनि होइन - शून्य/अन्तरिक्ष"),
+
+    // TimingUnit enum
+    PRASHNA_TIMING_HOURS("Hours", "घण्टा"),
+    PRASHNA_TIMING_DAYS("Days", "दिन"),
+    PRASHNA_TIMING_WEEKS("Weeks", "हप्ता"),
+    PRASHNA_TIMING_MONTHS("Months", "महिना"),
+    PRASHNA_TIMING_YEARS("Years", "वर्ष"),
+
+    // PrashnaVerdict enum
+    PRASHNA_VERDICT_STRONGLY_YES("Strongly Yes - Success Indicated", "निश्चित हो - सफलताको संकेत"),
+    PRASHNA_VERDICT_YES("Yes - Favorable Outcome", "हो - अनुकूल परिणाम"),
+    PRASHNA_VERDICT_LIKELY_YES("Likely Yes - Conditions Apply", "सम्भवतः हो - सर्तहरू लागू"),
+    PRASHNA_VERDICT_UNCERTAIN("Uncertain - Mixed Indications", "अनिश्चित - मिश्रित संकेत"),
+    PRASHNA_VERDICT_LIKELY_NO("Likely No - Difficulties Indicated", "सम्भवतः होइन - कठिनाइहरू संकेत"),
+    PRASHNA_VERDICT_NO("No - Unfavorable Outcome", "होइन - प्रतिकूल परिणाम"),
+    PRASHNA_VERDICT_STRONGLY_NO("Strongly No - Failure Indicated", "निश्चित होइन - असफलताको संकेत"),
+    PRASHNA_VERDICT_TIMING_DEPENDENT("Timing Dependent - Wait Indicated", "समय निर्भर - प्रतीक्षा गर्नुहोस्"),
+
+    // CertaintyLevel enum
+    PRASHNA_CERTAINTY_VERY_HIGH("Very High Certainty", "अत्यधिक निश्चितता"),
+    PRASHNA_CERTAINTY_HIGH("High Certainty", "उच्च निश्चितता"),
+    PRASHNA_CERTAINTY_MODERATE("Moderate Certainty", "मध्यम निश्चितता"),
+    PRASHNA_CERTAINTY_LOW("Low Certainty", "न्यून निश्चितता"),
+    PRASHNA_CERTAINTY_VERY_LOW("Very Low Certainty", "अति न्यून निश्चितता"),
+
+    // MoonStrength enum
+    PRASHNA_MOON_EXCELLENT("Excellent", "उत्कृष्ट"),
+    PRASHNA_MOON_GOOD("Good", "राम्रो"),
+    PRASHNA_MOON_AVERAGE("Average", "औसत"),
+    PRASHNA_MOON_WEAK("Weak", "कमजोर"),
+    PRASHNA_MOON_VERY_WEAK("Very Weak", "अत्यन्त कमजोर"),
+    PRASHNA_MOON_AFFLICTED("Afflicted", "पीडित"),
+
+    // LagnaCondition enum
+    PRASHNA_LAGNA_STRONG("Strong - Well placed lord", "बलियो - राम्रोसँग स्थापित स्वामी"),
+    PRASHNA_LAGNA_MODERATE("Moderate - Mixed influences", "मध्यम - मिश्रित प्रभावहरू"),
+    PRASHNA_LAGNA_WEAK("Weak - Afflicted or poorly placed", "कमजोर - पीडित वा खराब स्थापित"),
+    PRASHNA_LAGNA_COMBUST("Combust - Lord too close to Sun", "अस्त - स्वामी सूर्यको अत्यधिक नजिक"),
+    PRASHNA_LAGNA_RETROGRADE_LORD("Lord is Retrograde", "स्वामी वक्री छ"),
+
+    // StrengthLevel enum
+    PRASHNA_STRENGTH_VERY_STRONG("Very Strong", "अत्यन्त बलियो"),
+    PRASHNA_STRENGTH_STRONG("Strong", "बलियो"),
+    PRASHNA_STRENGTH_MODERATE("Moderate", "मध्यम"),
+    PRASHNA_STRENGTH_WEAK("Weak", "कमजोर"),
+    PRASHNA_STRENGTH_VERY_WEAK("Very Weak", "अत्यन्त कमजोर"),
+    PRASHNA_STRENGTH_DEBILITATED("Debilitated", "नीच"),
+
+    // AspectType enum
+    PRASHNA_ASPECT_CONJUNCTION("Conjunction", "युति"),
+    PRASHNA_ASPECT_SEXTILE("Sextile", "षष्ठ"),
+    PRASHNA_ASPECT_SQUARE("Square", "चतुर्थ"),
+    PRASHNA_ASPECT_TRINE("Trine", "त्रिकोण"),
+    PRASHNA_ASPECT_OPPOSITION("Opposition", "सप्तम"),
+    PRASHNA_ASPECT_MARS_4TH("Mars 4th Aspect", "मंगल ४ औं दृष्टि"),
+    PRASHNA_ASPECT_MARS_8TH("Mars 8th Aspect", "मंगल ८ औं दृष्टि"),
+    PRASHNA_ASPECT_JUPITER_5TH("Jupiter 5th Aspect", "गुरु ५ औं दृष्टि"),
+    PRASHNA_ASPECT_JUPITER_9TH("Jupiter 9th Aspect", "गुरु ९ औं दृष्टि"),
+    PRASHNA_ASPECT_SATURN_3RD("Saturn 3rd Aspect", "शनि ३ रो दृष्टि"),
+    PRASHNA_ASPECT_SATURN_10TH("Saturn 10th Aspect", "शनि १० औं दृष्टि"),
+
+    // HouseStrength enum
+    PRASHNA_HOUSE_EXCELLENT("Excellent", "उत्कृष्ट"),
+    PRASHNA_HOUSE_GOOD("Good", "राम्रो"),
+    PRASHNA_HOUSE_MODERATE("Moderate", "मध्यम"),
+    PRASHNA_HOUSE_POOR("Poor", "कमजोर"),
+    PRASHNA_HOUSE_AFFLICTED("Afflicted", "पीडित"),
+
+    // TimingMethod enum
+    PRASHNA_METHOD_MOON_TRANSIT("Moon Transit Method", "चन्द्र गोचर विधि"),
+    PRASHNA_METHOD_MOON_NAKSHATRA("Moon Nakshatra Method", "चन्द्र नक्षत्र विधि"),
+    PRASHNA_METHOD_HOUSE_LORD_DEGREES("House Lord Degrees", "भावेश अंश विधि"),
+    PRASHNA_METHOD_LAGNA_DEGREES("Lagna Degrees Method", "लग्न अंश विधि"),
+    PRASHNA_METHOD_PLANETARY_CONJUNCTION("Planetary Conjunction", "ग्रह युति विधि"),
+    PRASHNA_METHOD_DASHA_BASED("Dasha-based Timing", "दशा आधारित समय"),
+    PRASHNA_METHOD_MIXED("Combined Methods", "संयुक्त विधिहरू"),
+
+    // OmenType enum
+    PRASHNA_OMEN_LAGNA("Prashna Lagna Sign", "प्रश्न लग्न राशि"),
+    PRASHNA_OMEN_MOON_PLACEMENT("Moon Placement", "चन्द्र स्थिति"),
+    PRASHNA_OMEN_HORA_LORD("Hora Lord", "होरा स्वामी"),
+    PRASHNA_OMEN_DAY_LORD("Day Lord", "दिन स्वामी"),
+    PRASHNA_OMEN_NAKSHATRA("Question Nakshatra", "प्रश्न नक्षत्र"),
+    PRASHNA_OMEN_PLANETARY_WAR("Planetary War", "ग्रह युद्ध"),
+    PRASHNA_OMEN_COMBUSTION("Combustion", "अस्त"),
+    PRASHNA_OMEN_RETROGRADE("Retrograde Planet", "वक्री ग्रह"),
+    PRASHNA_OMEN_GANDANTA("Gandanta Position", "गण्डान्त स्थिति"),
+    PRASHNA_OMEN_PUSHKARA("Pushkara Navamsha", "पुष्कर नवांश"),
+
+    // ============================================
+    // NITYA YOGA CALCULATOR STRINGS
+    // ============================================
+    
+    // Auspiciousness enum
+    AUSPICIOUSNESS_HIGHLY_AUSPICIOUS("Highly Auspicious", "अत्यन्त शुभ"),
+    AUSPICIOUSNESS_AUSPICIOUS("Auspicious", "शुभ"),
+    AUSPICIOUSNESS_NEUTRAL("Neutral", "तटस्थ"),
+    AUSPICIOUSNESS_INAUSPICIOUS("Inauspicious", "अशुभ"),
+    AUSPICIOUSNESS_HIGHLY_INAUSPICIOUS("Highly Inauspicious", "अत्यन्त अशुभ"),
+
+    // YogaStrength enum (generic for Nitya Yoga)
+    NITYA_STRENGTH_VERY_STRONG("Very Strong", "अत्यन्त बलियो"),
+    NITYA_STRENGTH_STRONG("Strong", "बलियो"),
+    NITYA_STRENGTH_MODERATE("Moderate", "मध्यम"),
+    NITYA_STRENGTH_WEAK("Weak", "कमजोर"),
+    NITYA_STRENGTH_VERY_WEAK("Very Weak", "अत्यन्त कमजोर"),
+
+    // RecommendationCategory enum
+    RECOMMEND_SPIRITUAL("Spiritual Practice", "आध्यात्मिक अभ्यास"),
+    RECOMMEND_ACTIVITY("Activity Guidance", "गतिविधि मार्गदर्शन"),
+    RECOMMEND_MANTRA("Mantra Recitation", "मन्त्र जप"),
+    RECOMMEND_TIMING("Timing Advice", "समय सल्लाह"),
+    RECOMMEND_GENERAL("General Guidance", "सामान्य मार्गदर्शन"),
+
+    // ============================================
+    // MUHURTA CALCULATOR STRINGS
+    // ============================================
+    
+    // Vara enum (days of week)
+    VARA_SUNDAY("Sunday", "आइतबार"),
+    VARA_MONDAY("Monday", "सोमबार"),
+    VARA_TUESDAY("Tuesday", "मंगलबार"),
+    VARA_WEDNESDAY("Wednesday", "बुधबार"),
+    VARA_THURSDAY("Thursday", "बिहीबार"),
+    VARA_FRIDAY("Friday", "शुक्रबार"),
+    VARA_SATURDAY("Saturday", "शनिबार"),
+
+    // Choghadiya enum
+    CHOGHADIYA_UDVEG("Udveg", "उद्वेग"),
+    CHOGHADIYA_CHAR("Char", "चर"),
+    CHOGHADIYA_LABH("Labh", "लाभ"),
+    CHOGHADIYA_AMRIT("Amrit", "अमृत"),
+    CHOGHADIYA_KAAL("Kaal", "काल"),
+    CHOGHADIYA_SHUBH("Shubh", "शुभ"),
+    CHOGHADIYA_ROG("Rog", "रोग"),
+
+    // ChoghadiyaNature enum
+    CHOGHADIYA_NATURE_AUSPICIOUS("Auspicious", "शुभ"),
+    CHOGHADIYA_NATURE_INAUSPICIOUS("Inauspicious", "अशुभ"),
+    CHOGHADIYA_NATURE_MIXED("Mixed", "मिश्रित"),
+
+    // NakshatraNature enum
+    NAKSHATRA_NATURE_FIXED("Fixed", "स्थिर"),
+    NAKSHATRA_NATURE_MOVABLE("Movable", "चर"),
+    NAKSHATRA_NATURE_SWIFT("Swift", "क्षिप्र"),
+    NAKSHATRA_NATURE_SHARP("Sharp", "उग्र"),
+    NAKSHATRA_NATURE_SOFT("Soft", "मृदु"),
+    NAKSHATRA_NATURE_DREADFUL("Dreadful", "क्रूर"),
+    NAKSHATRA_NATURE_MIXED("Mixed", "मिश्र"),
+
+    // HoraNature enum
+    HORA_NATURE_BENEFIC("Benefic", "शुभ"),
+    HORA_NATURE_MALEFIC("Malefic", "पापी"),
+    HORA_NATURE_NEUTRAL("Neutral", "तटस्थ"),
+
+    // TithiNature enum
+    TITHI_NATURE_NANDA("Nanda", "नन्दा"),
+    TITHI_NATURE_BHADRA("Bhadra", "भद्रा"),
+    TITHI_NATURE_JAYA("Jaya", "जया"),
+    TITHI_NATURE_RIKTA("Rikta", "रिक्ता"),
+    TITHI_NATURE_PURNA("Purna", "पूर्णा"),
+
+    // NakshatraGana enum
+    NAKSHATRA_GANA_DEVA("Deva", "देव"),
+    NAKSHATRA_GANA_MANUSHYA("Manushya", "मनुष्य"),
+    NAKSHATRA_GANA_RAKSHASA("Rakshasa", "राक्षस"),
+
+    // NakshatraElement enum
+    NAKSHATRA_ELEMENT_FIRE("Fire", "अग्नि"),
+    NAKSHATRA_ELEMENT_EARTH("Earth", "पृथ्वी"),
+    NAKSHATRA_ELEMENT_AIR("Air", "वायु"),
+    NAKSHATRA_ELEMENT_WATER("Water", "जल"),
+    NAKSHATRA_ELEMENT_ETHER("Ether", "आकाश"),
+
+    // KaranaType enum
+    KARANA_MOVABLE("Movable", "चर"),
+    KARANA_FIXED("Fixed", "स्थिर"),
+
+    // ============================================
+    // PANCHANGA CALCULATOR STRINGS
+    // ============================================
+    
+    // TithiGroup enum
+    TITHI_GROUP_NANDA("Nanda", "नन्दा"),
+    TITHI_GROUP_NANDA_NATURE("Joyful", "आनन्दमय"),
+    TITHI_GROUP_BHADRA("Bhadra", "भद्रा"),
+    TITHI_GROUP_BHADRA_NATURE("Auspicious", "शुभ"),
+    TITHI_GROUP_JAYA("Jaya", "जया"),
+    TITHI_GROUP_JAYA_NATURE("Victorious", "विजयी"),
+    TITHI_GROUP_RIKTA("Rikta", "रिक्ता"),
+    TITHI_GROUP_RIKTA_NATURE("Empty", "रित्त"),
+    TITHI_GROUP_PURNA("Purna", "पूर्णा"),
+    TITHI_GROUP_PURNA_NATURE("Complete", "पूर्ण"),
+
+    // YogaNature enum
+    YOGA_NATURE_AUSPICIOUS("Auspicious", "शुभ"),
+    YOGA_NATURE_INAUSPICIOUS("Inauspicious", "अशुभ"),
+    YOGA_NATURE_MIXED("Mixed", "मिश्र"),
+
+    // Paksha enum
+    PAKSHA_SHUKLA("Shukla Paksha", "शुक्ल पक्ष"),
+    PAKSHA_KRISHNA("Krishna Paksha", "कृष्ण पक्ष"),
+
+    // ============================================
+    // RETROGRADE/COMBUSTION CALCULATOR STRINGS
+    // ============================================
+    
+    // RetrogradeStatus enum
+    RETRO_DIRECT("Direct", "मार्गी"),
+    RETRO_RETROGRADE("Retrograde", "वक्री"),
+    RETRO_STATIONARY_RETRO("Stationary Retrograde", "स्थिर वक्री"),
+    RETRO_STATIONARY_DIRECT("Stationary Direct", "स्थिर मार्गी"),
+    RETRO_ALWAYS_RETROGRADE("Perpetual Retrograde", "सदा वक्री"),
+
+    // CombustionStatus enum
+    COMBUST_NOT("Not Combust", "अस्त छैन"),
+    COMBUST_APPROACHING("Approaching Combustion", "अस्त हुँदै"),
+    COMBUST_COMBUST("Combust", "अस्त"),
+    COMBUST_DEEP("Deep Combustion", "गहिरो अस्त"),
+    COMBUST_CAZIMI("Cazimi", "कज़िमी"),
+    COMBUST_SEPARATING("Separating", "अलग हुँदै"),
+
+    // SpeedStatus enum
+    SPEED_VERY_FAST("Very Fast", "अति छिटो"),
+    SPEED_FAST("Fast", "छिटो"),
+    SPEED_NORMAL("Normal", "सामान्य"),
+    SPEED_SLOW("Slow", "ढिलो"),
+    SPEED_VERY_SLOW("Very Slow", "अति ढिलो"),
+    SPEED_STATIONARY("Stationary", "स्थिर"),
+    SPEED_RETROGRADE_MOTION("Retrograde Motion", "वक्री गति"),
+
+    // WarAdvantage enum
+    WAR_NORTHERN_LAT("Northern Latitude", "उत्तरी अक्षांश"),
+    WAR_BRIGHTNESS("Greater Brightness", "अधिक चमक"),
+    WAR_COMBINED("Both Factors", "दुवै कारक"),
+    WAR_INDETERMINATE("Evenly Matched", "बराबर"),
+
+    // ============================================
+    // SHADBALA CALCULATOR STRINGS
+    // ============================================
+    
+    // StrengthRating enum
+    STRENGTH_EXTREMELY_WEAK("Extremely Weak", "अत्यन्त कमजोर"),
+    STRENGTH_WEAK("Weak", "कमजोर"),
+    STRENGTH_BELOW_AVERAGE("Below Average", "औसतभन्दा कम"),
+    STRENGTH_AVERAGE("Average", "औसत"),
+    STRENGTH_ABOVE_AVERAGE("Above Average", "औसतभन्दा माथि"),
+    STRENGTH_STRONG("Strong", "बलियो"),
+    STRENGTH_VERY_STRONG("Very Strong", "अत्यन्त बलियो"),
+    STRENGTH_EXTREMELY_STRONG("Extremely Strong", "अति शक्तिशाली");
 }
+
 
 /**
  * Divisional charts, Shadbala, and Dosha (Sade Sati, Manglik, Pitra) string keys
@@ -5925,7 +6224,307 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // ============================================
     UPACHAYA_MOON_SIGN("Moon Sign", "चन्द्र राशि"),
     UPACHAYA_LAGNA("Lagna", "लग्न"),
-    UPACHAYA_ACTIVE("Active", "सक्रिय");
+    UPACHAYA_ACTIVE("Active", "सक्रिय"),
+
+    // ============================================
+    // UI SCREENS & EMPTY STATES
+    // ============================================
+    UI_NO_CHART_DATA("No Chart Data", "कुन्डली डाटा उपलब्ध छैन"),
+    UI_NO_BIRTH_CHART("No Birth Chart", "कुनै जन्म कुन्डली छैन"),
+    UI_SELECT_CHART("Please select a birth chart", "कृपया जन्म कुन्डली चयन गर्नुहोस्"),
+    UI_ERROR_LOADING("Error loading chart", "कुन्डली लोड गर्दा त्रुटि"),
+    
+    // Ashtakavarga
+    UI_NO_ASHTAKAVARGA_DATA("No Ashtakavarga Data", "अष्टकवर्ग डाटा छैन"),
+    
+    // Arudha
+    UI_NO_ARUDHA_YOGAS("No significant Arudha Yogas found", "कुनै महत्त्वपूर्ण आरुढ योग फेला परेन"),
+    
+    // Dasha Sandhi
+    UI_NO_ACTIVE_SANDHI("No Active Sandhi", "कुनै सक्रिय सन्धि छैन"),
+    UI_NO_UPCOMING_SANDHI("No upcoming Sandhi periods in the analysis window.", "विश्लेषण अवधिमा कुनै आगामी सन्धि अवधि छैन।"),
+    UI_NO_CALENDAR_ENTRIES("No calendar entries available.", "कुनै क्यालेन्डर प्रविष्टिहरू उपलब्ध छैनन्।"),
+    
+    // Gochara Vedha
+    UI_NO_ACTIVE_VEDHAS("No Active Vedhas", "कुनै सक्रिय वेध छैन"),
+    
+    // Graha Yuddha
+    UI_NO_PLANET_WARS("No Active Planetary Wars", "कुनै सक्रिय ग्रह युद्ध छैन"),
+    UI_NO_WAR_DASHA("No War-Related Dasha Effects", "कुनै युद्ध-सम्बन्धित दशा प्रभावहरू छैन"),
+    UI_NO_WAR_REMEDIES("No Specific Remedies Needed", "कुनै विशिष्ट उपाय आवश्यक छैन"),
+    UI_NO_ACTIVE_WAR_REMEDIES("No active wars to remediate", "उपचार गर्न कुनै सक्रिय युद्ध छैन"),
+    
+    // Kemadruma
+    UI_KEMADRUMA_CONDITION_MET("No planets in houses adjacent to Moon - Kemadruma condition met", "चन्द्रमाको छेउका भावहरूमा कुनै ग्रह छैन - केमद्रुम अवस्था पूरा भयो"),
+    UI_NO_REMEDIES_NEEDED("No Remedies Needed", "कुनै उपाय आवश्यक छैन"),
+    
+    // Panch Mahapurusha / Yogas
+    UI_NO_YOGAS_FORMED("No Yogas Formed", "कुनै योग बनेको छैन"),
+    UI_NO_YOGAS_DISPLAY("No Yogas to Display", "देखाउनको लागि कुनै योग छैन"),
+    
+    // ============================================
+    // ARUDHA PADA SCREEN
+    // ============================================
+    ARUDHA_SCREEN_TITLE("Arudha Pada", "आरुढ पद"),
+    ARUDHA_ANALYSIS_TITLE("Arudha Pada Analysis", "आरुढ पद विश्लेषण"),
+    ARUDHA_KEY_POSITIONS("Key Arudha Positions", "मुख्य आरुढ स्थितिहरू"),
+    ARUDHA_MANIFESTATION("Manifestation Strength", "प्रकटीकरण शक्ति"),
+    ARUDHA_PUBLIC_IMAGE("Public Image", "सार्वजनिक छवि"),
+    ARUDHA_CAREER("Career", "क्यारियर"),
+    ARUDHA_GAINS("Gains", "लाभ"),
+    ARUDHA_RELATIONSHIPS("Relationships", "सम्बन्धहरू"),
+    ARUDHA_KEY_THEMES("Key Themes", "मुख्य विषयवस्तुहरू"),
+    ARUDHA_YOGAS_TITLE("Arudha Yogas", "आरुढ योगहरू"),
+    ARUDHA_RECOMMENDATIONS("Recommendations", "सिफारिसहरू"),
+    ARUDHA_CALCULATING("Calculating Arudha Padas...", "आरुढ पद गणना गर्दै..."),
+    ARUDHA_ABOUT_BTN("About Arudha Pada", "आरुढ पदको बारेमा"),
+    
+    // ============================================
+    // ASHTAKAVARGA SCREEN
+    // ============================================
+    ASHTAKAVARGA_KEY_INSIGHTS("Key Insights", "मुख्य अन्तर्दृष्टि"),
+    ASHTAKAVARGA_STRONGEST("STRONGEST HOUSES", "सबैभन्दा बलियो भावहरू"),
+    ASHTAKAVARGA_WEAKEST("WEAKEST HOUSES", "सबैभन्दा कमजोर भावहरू"),
+    ASHTAKAVARGA_PLANET_TOTALS("Planet Bindu Totals", "ग्रह बिन्दु योग"),
+    ASHTAKAVARGA_SARVA_DESC("Sarvashtakavarga is the combined bindu strength from all seven planets for each house/sign.", "सर्वाष्टकवर्ग प्रत्येक भाव/राशिको लागि सातै ग्रहहरूको संयुक्त बिन्दु शक्ति हो।"),
+    ASHTAKAVARGA_ABOUT_TITLE("About Ashtakavarga", "अष्टकवर्गको बारेमा"),
+    ASHTAKAVARGA_ABOUT_DESC("Ashtakavarga is a unique Vedic system that calculates the strength of each house by analyzing beneficial points (bindus) contributed by seven planets.", "अष्टकवर्ग एक अद्वितीय वैदिक प्रणाली हो जसले सात ग्रहहरूद्वारा प्रदान गरिएको शुभ बिन्दुहरूको विश्लेषण गरेर प्रत्येक भावको शक्ति गणना गर्दछ।"),
+    ASHTAKAVARGA_INTERPRETATION("Interpretation Guide:", "व्याख्या मार्गदर्शन:"),
+    ASHTAKAVARGA_GUIDE_TEXT("• 30+ bindus: Very strong, excellent results\n• 25-30 bindus: Good strength, favorable\n• 20-25 bindus: Average, mixed results\n• Below 20: Weak, challenges expected", "• ३०+ बिन्दु: धेरै बलियो, उत्कृष्ट परिणाम\n• २५-३० बिन्दु: राम्रो शक्ति, अनुकूल\n• २०-२५ बिन्दु: औसत, मिश्रित परिणाम\n• २० भन्दा कम: कमजोर, चुनौतीहरू अपेक्षित"),
+    ASHTAKAVARGA_BINDUS_SUFFIX("bindus", "बिन्दुहरू"),
+    
+    // House Significations (Short)
+    HOUSE_SIG_1("Self, Body, Personality", "स्वयं, शरीर, व्यक्तित्व"),
+    HOUSE_SIG_2("Wealth, Speech, Family", "धन, वाणी, परिवार"),
+    HOUSE_SIG_3("Siblings, Courage", "दाजुभाइ, साहस"),
+    HOUSE_SIG_4("Home, Mother, Property", "घर, आमा, सम्पत्ति"),
+    HOUSE_SIG_5("Children, Education", "सन्तान, शिक्षा"),
+    HOUSE_SIG_6("Health, Enemies", "स्वास्थ्य, शत्रु"),
+    HOUSE_SIG_7("Marriage, Partnership", "विवाह, साझेदारी"),
+    HOUSE_SIG_8("Transformation", "रूपान्तरण"),
+    HOUSE_SIG_9("Fortune, Father", "भाग्य, पिता"),
+    HOUSE_SIG_10("Career, Fame", "क्यारियर, प्रसिद्धि"),
+    HOUSE_SIG_11("Gains, Wishes", "लाभ, इच्छा"),
+    HOUSE_SIG_12("Losses, Liberation", "हानी, मोक्ष"),
+    
+    // ============================================
+    // AVASTHA SCREEN
+    // ============================================
+    AVASTHA_SCREEN_TITLE("Planetary Avasthas", "ग्रह अवस्थाहरू"),
+    AVASTHA_SUBTITLE("Planetary States & Conditions", "ग्रह स्थिति र अवस्थाहरू"),
+    AVASTHA_NO_CHART_DESC("Create or select a birth chart to analyze planetary Avasthas.", "ग्रह अवस्थाहरू विश्लेषण गर्न जन्म कुण्डली सिर्जना गर्नुहोस् वा छान्नुहोस्।"),
+    AVASTHA_ABOUT_TITLE("About Planetary Avasthas", "ग्रह अवस्थाहरूको बारेमा"),
+    AVASTHA_ABOUT_DESC("Avasthas are planetary states that indicate how effectively a planet can deliver its results.\n\nFour Types of Avasthas:\n\n1. Baladi (Age-based):\nBala (Infant), Kumara (Youth), Yuva (Adult), Vriddha (Old), Mrita (Dead)\n\n2. Jagradadi (Alertness):\nJagrat (Awake), Swapna (Dreaming), Sushupti (Deep Sleep)\n\n3. Deeptadi (Dignity):\nDeepta, Swastha, Mudita, Shanta, Dina, Vikala, Khala, Kopa, Bhita\n\n4. Lajjitadi (Emotional):\nLajjita, Garvita, Kshudita, Trushita, Mudita, Kshobhita\n\nA planet in good avasthas gives its full results, while one in poor avasthas struggles to manifest its significations.", "अवस्थाहरू ग्रहका स्थितिहरू हुन् जसले ग्रहले आफ्ना नतिजाहरू कत्तिको प्रभावकारी रूपमा दिन सक्छ भनेर संकेत गर्दछ।\n\nचार प्रकारका अवस्थाहरू:\n\n१. बालादि (उमेरमा आधारित):\nबाल, कुमार, युवा, वृद्ध, मृत\n\n२. जाग्रदादि (जागरूकता):\nजाग्रत, स्वप्न, सुषुप्ति\n\n३. दीप्तादि (मर्यादा):\nदीप्त, स्वस्थ, मुदित, शान्त, दीन, विकल, खल, कोप, भीत\n\n४. लज्जितादि (भावनात्मक):\nलज्जित, गर्वित, क्षुधित, तृषित, मुदित, क्षोभित\n\nराम्रो अवस्थामा रहेको ग्रहले पूर्ण फल दिन्छ, जबकि कमजोर अवस्थामा रहेको ग्रहले आफ्ना कारकहरू व्यक्त गर्न संघर्ष गर्दछ।"),
+    AVASTHA_OVERALL_STRENGTH("Overall Planetary Strength", "समग्र ग्रह बल"),
+    AVASTHA_STRONGEST("Strongest", "सबैभन्दा बलियो"),
+    AVASTHA_NEEDS_ATTENTION("Needs Attention", "ध्यान दिनुपर्ने"),
+    
+    // ============================================
+    // NITYA YOGA SCREEN
+    // ============================================
+    NITYA_SCREEN_TITLE("Nitya Yoga", "नित्य योग"),
+    NITYA_SUBTITLE("27 Daily Yogas", "२७ दैनिक योगहरू"),
+    NITYA_NO_DATA_DESC("Create or select a birth chart to view Nitya Yoga analysis.", "नित्य योग विश्लेषण हेर्न जन्म कुण्डली सिर्जना गर्नुहोस् वा छान्नुहोस्।"),
+    NITYA_ABOUT_TITLE("About Nitya Yoga", "नित्य योगको बारेमा"),
+    NITYA_ABOUT_DESC("Nitya Yoga (Daily Yoga) is one of the five elements of the Panchanga (Hindu almanac).\n\nThere are 27 Nitya Yogas, each spanning 13°20' of the combined longitude of Sun and Moon.\n\nCalculation:\nNitya Yoga = (Sun longitude + Moon longitude) ÷ 13°20'\n\nThese yogas indicate the general auspiciousness of a moment and are used in Muhurta (electional astrology) to select favorable times for important activities.\n\nEach yoga is ruled by a planet and has specific characteristics affecting health, wealth, relationships, and spiritual matters.", "नित्य योग पञ्चाङ्गका पाँच अंगहरू मध्ये एक हो।\n\nत्यहाँ २७ नित्य योगहरू छन्, प्रत्येकले सूर्य र चन्द्रमाको संयुक्त देशान्तरको १३°२०' समेट्छ।\n\nगणना:\nनित्य योग = (सूर्य स्पष्ट + चन्द्र स्पष्ट) ÷ १३°२०'\n\nयी योगहरूले समयको सामान्य शुभतालाई संकेत गर्दछ र महत्त्वपूर्ण गतिविधिहरूको लागि शुभ समय छनौट गर्न मुहूर्तमा प्रयोग गरिन्छ।\n\nप्रत्येक योग एक ग्रहद्वारा शासित हुन्छ र यसले स्वास्थ्य, धन, सम्बन्ध र आध्यात्मिक मामिलाहरूलाई असर गर्ने विशिष्ट विशेषताहरू राख्छ।"),
+    
+    NITYA_PROGRESS("Progress", "प्रगति"),
+    NITYA_POSITION("Position", "स्थिति"),
+    NITYA_NATURE("Nature", "प्रकृति"),
+    NITYA_CURRENT_PROGRESS("Progress in Current Yoga", "वर्तमान योगमा प्रगति"),
+    NITYA_SUITABLE("Suitable Activities", "उपयुक्त गतिविधिहरू"),
+    NITYA_AVOID("Activities to Avoid", "बच्नुपर्ने गतिविधिहरू"),
+    NITYA_NEXT("Next:", "अर्को:"),
+    NITYA_REMAINING("remaining", "बाँकी"),
+    
+    // Common
+    UI_INTERPRETATION("Interpretation", "व्याख्या"),
+    UI_RECOMMENDATIONS("Recommendations", "सिफारिसहरू"),
+    UI_OVERVIEW("Overview", "अवलोकन"),
+    UI_YOGAS("Yogas", "योगहरू"),
+    UI_EFFECTS("Effects", "प्रभावहरू"),
+    UI_TIMING("Timing", "समय"),
+    UI_REMEDIES("Remedies", "उपायहरू"),
+    UI_TRANSITS("Transits", "गोचरहरू"),
+    UI_CURRENT("Current", "वर्तमान"),
+    UI_UPCOMING("Upcoming", "आगामी"),
+    UI_CALENDAR("Calendar", "पात्रो"),
+    UI_KEY_INSIGHTS("Key Insights", "मुख्य अन्तरदृष्टिहरू"),
+    UI_START("Start:", "सुरु:"),
+    UI_END("End:", "अन्त्य:"),
+
+    // ============================================
+    // PANCH MAHAPURUSHA SCREEN
+    // ============================================
+    PANCHA_SCREEN_TITLE("Panch Mahapurusha Yoga", "पञ्च महापुरुष योग"),
+    PANCHA_SUBTITLE("Five Great Person Yogas", "पाँच महापुरुष योगहरू"),
+    PANCHA_ABOUT_TITLE("About Panch Mahapurusha Yoga", "पञ्च महापुरुष योगको बारेमा"),
+    PANCHA_ABOUT_DESC("Panch Mahapurusha Yoga (Five Great Person Yogas) are special planetary combinations that indicate exceptional qualities and achievements.\n\nThe five yogas are:\n• Ruchaka (Mars) - Courage, leadership, military prowess\n• Bhadra (Mercury) - Intelligence, communication, commerce\n• Hamsa (Jupiter) - Wisdom, spirituality, fortune\n• Malavya (Venus) - Beauty, luxury, artistic talents\n• Sasha (Saturn) - Discipline, authority, longevity\n\nFormation requirements:\nThe planet must be in a Kendra house (1st, 4th, 7th, or 10th) AND in its own sign or exaltation sign.\n\nHaving one or more of these yogas in a chart indicates the native will possess the exceptional qualities of that planet and achieve success in related areas.", "पञ्च महापुरुष योगहरू विशेष ग्रह संयोजनहरू हुन् जसले असाधारण गुणहरू र उपलब्धिहरूलाई संकेत गर्दछ।\n\nपाँच योगहरू हुन्:\n• रुचक (मंगल) - साहस, नेतृत्व, सैन्य कौशल\n• भद्र (बुध) - बुद्धि, सञ्चार, वाणिज्य\n• हंस (बृहस्पति) - ज्ञान, आध्यात्मिकता, भाग्य\n• मालव्य (शुक्र) - सौन्दर्य, विलासिता, कलात्मक प्रतिभा\n• शश (शनि) - अनुशासन, अधिकार, दीर्घायु\n\nबन्ने शर्तहरू:\nग्रह केन्द्र भाव (१, ४, ७, वा १०) मा हुनुपर्छ र आफ्नै राशि वा उच्च राशिमा हुनुपर्छ।\n\nकुण्डलीमा यी मध्ये एक वा बढी योगहरू हुनुले जातकमा त्यस ग्रहका असाधारण गुणहरू हुनेछन् र सम्बन्धित क्षेत्रमा सफलता प्राप्त गर्नेछन् भन्ने संकेत गर्दछ।"),
+    PANCHA_NO_YOGAS_DISPLAY("No Yogas to Display", "देखाउनको लागि कुनै योगहरू छैनन्"),
+    PANCHA_NO_YOGAS_DESC("For a Mahapurusha Yoga to form, Mars, Mercury, Jupiter, Venus, or Saturn must be in Kendra (1,4,7,10) in its own or exaltation sign.", "महापुरुष योग बन्नको लागि, मंगल, बुध, बृहस्पति, शुक्र वा शनि केन्द्र (१, ४, ७, १०) मा आफ्नै वा उच्च राशिमा हुनुपर्छ।"),
+    PANCHA_STATUS_FOUND("Yoga(s) Found!", "योग(हरू) फेला पर्यो!"),
+    PANCHA_STATUS_FOUND_DESC("You have %1\$d Panch Mahapurusha Yoga(s) in your chart", "तपाईंको कुण्डलीमा %1\$d पञ्च महापुरुष योग(हरू) छन्"),
+    PANCHA_STATUS_NONE_DESC("None of the five Mahapurusha Yogas are formed", "पाँच महापुरुष योगहरू मध्ये कुनै पनि बनेको छैन"),
+    PANCHA_COMBINED("Combined Effects", "संयुक्त प्रभावहरू"),
+    PANCHA_SYNERGIES("Synergies:", "समन्वयहरू:"),
+    PANCHA_NO_CHART_DESC("Create or select a birth chart to analyze Panch Mahapurusha Yogas.", "पञ्च महापुरुष योगहरू विश्लेषण गर्न जन्म कुण्डली सिर्जना गर्नुहोस् वा छान्नुहोस्।"),
+    
+    // ============================================
+    // GOCHARA VEDHA SCREEN
+    // ============================================
+    GOCHARA_SCREEN_TITLE("Gochara Vedha", "गोचर वेध"),
+    GOCHARA_SUBTITLE("Transit Obstructions", "गोचर अवरोधहरू"),
+    GOCHARA_ABOUT_TITLE("About Gochara Vedha", "गोचर वेधको बारेमा"),
+    GOCHARA_ABOUT_DESC("Gochara refers to planetary transits, while Vedha means \"obstruction\" in Sanskrit.\n\nWhen a planet transits through a favorable house from your natal Moon, its positive effects can be blocked (Vedha) by another planet positioned in specific houses.\n\nKey concepts:\n• Each house has specific Vedha points\n• Benefic transits can be nullified by malefic planets\n• The severity of Vedha varies based on planetary combinations\n• Understanding Vedha helps predict when good transits may not deliver expected results\n\nThis analysis helps you identify periods when planetary energies are blocked and plan accordingly.", "गोचर भन्नाले ग्रहहरूको वर्तमान चाललाई जनाउँछ, जबकि वेधको अर्थ संस्कृतमा \"अवरोध\" हो।\n\nजब कुनै ग्रह तपाईंको जन्म चन्द्रमाबाट शुभ भावमा गोचर गर्छ, यसको सकारात्मक प्रभावहरू विशिष्ट भावहरूमा रहेका अन्य ग्रहहरूद्वारा अवरोधित (वेध) हुन सक्छन्।\n\nमुख्य अवधारणाहरू:\n• प्रत्येक भावका विशिष्ट वेध बिन्दुहरू हुन्छन्\n• शुभ गोचरहरू पाप ग्रहहरूद्वारा निष्फल हुन सक्छन्\n• वेधको गम्भीरता ग्रह संयोजनहरूमा आधारित हुन्छ\n• वेध बुझ्नाले राम्रो गोचरले कहिले अपेक्षित नतिजा नदिन सक्छ भनी अनुमान गर्न मद्दत गर्छ\n\nयो विश्लेषणले तपाईंलाई ग्रह उर्जाहरू कहिले अवरोधित हुन्छन् भनी पहिचान गर्न र सोही अनुसार योजना बनाउन मद्दत गर्छ।"),
+    GOCHARA_SCORE("Overall Transit Score", "समग्र गोचर अङ्क"),
+    GOCHARA_FAVORABLE("Favorable", "शुभ"),
+    GOCHARA_OBSTRUCTED("Obstructed", "अवरोधित"),
+    GOCHARA_MOON_SIGN("Natal Moon Sign", "जन्म राशी"),
+    GOCHARA_ACTIVE_VEDHAS("Active Vedhas", "सक्रिय वेध"),
+    GOCHARA_TRANSITS_TRACKED("Transits Tracked", "ट्र्याक गरिएका गोचरहरू"),
+    GOCHARA_CURRENT_TRANSITS("Current Planetary Transits", "वर्तमान ग्रह गोचरहरू"),
+    GOCHARA_NATURALLY_FAVORABLE("Naturally Favorable", "स्वाभाविक रूपमा शुभ"),
+    GOCHARA_NATURALLY_UNFAVORABLE("Naturally Unfavorable", "स्वाभाविक रूपमा अशुभ"),
+    GOCHARA_VEDHA_LABEL("VEDHA", "वेध"),
+    GOCHARA_TRANSIT_EFFECTS("Transit Effects", "गोचर प्रभावहरू"),
+    GOCHARA_VEDHA_OBSTRUCTION("Vedha Obstruction", "वेध अवरोध"),
+    GOCHARA_FROM("From:", "बाट:"),
+    GOCHARA_SEVERITY("Severity:", "गम्भीरता:"),
+    GOCHARA_NO_CHART_DESC("Create or select a birth chart to analyze Gochara Vedha effects.", "गोचर वेध प्रभावहरू विश्लेषण गर्न जन्म कुण्डली सिर्जना गर्नुहोस् वा छान्नुहोस्।"),
+    GOCHARA_VEDHAS("Vedhas", "वेधहरू"),
+    GOCHARA_FORECAST("Forecast", "पूर्वानुमान"),
+
+    // ============================================
+    // DASHA SANDHI SCREEN
+    // ============================================
+    SANDHI_SCREEN_TITLE("Dasha Sandhi", "दशा सन्धि"),
+    SANDHI_SUBTITLE("Period Transitions", "दशा परिवर्तनहरू"),
+    SANDHI_ABOUT_TITLE("About Dasha Sandhi", "दशा सन्धिको बारेमा"),
+    SANDHI_ABOUT_DESC("Dasha Sandhi refers to the junction or transition point between two planetary periods (Dashas) in Vedic astrology.\n\nThese transition periods are considered sensitive times when:\n• The energy shifts from one planetary influence to another\n• Both planets' effects may be felt simultaneously\n• Major life changes often occur\n• Careful planning is advised\n\nThe intensity of a Sandhi depends on:\n• The nature of the transitioning planets\n• Their relationship in your chart\n• Current transits and aspects\n\nUnderstanding your Sandhi periods helps you prepare for and navigate these significant life transitions.", "दशा सन्धि भन्नाले वैदिक ज्योतिषमा दुई ग्रह दशा (समय अवधि) बीचको मिलन वा संक्रमण बिन्दुलाई जनाउँछ।\n\nयी संक्रमण अवधिहरूलाई संवेदनशील समय मानिन्छ जब:\n• ऊर्जा एक ग्रहको प्रभावबाट अर्कोमा सर्छ\n• दुबै ग्रहका प्रभावहरू एक साथ महसुस हुन सक्छ\n• अक्सर ठूला जीवन परिवर्तनहरू हुन्छन्\n• सावधानीपूर्वक योजना बनाउन सल्लाह दिइन्छ\n\nसन्धिको तीव्रता यसमा निर्भर गर्दछ:\n• संक्रमण भइरहेका ग्रहहरूको प्रकृति\n• तपाईंको कुण्डलीमा तिनीहरूको सम्बन्ध\n• वर्तमान गोचर र दृष्टिहरू\n\nतपाईंको सन्धि अवधिहरू बुझ्नाले तपाईंलाई यी महत्त्वपूर्ण जीवन संक्रमणहरूको तयारी गर्न र नेभिगेट गर्न मद्दत गर्छ।"),
+    SANDHI_VOLATILITY("Overall Volatility", "समग्र अस्थिरता"),
+    SANDHI_VOLATILITY_DESC("Based on current and upcoming period transitions", "वर्तमान र आगामी दशा परिवर्तनहरूमा आधारित"),
+    SANDHI_ACTIVE("Active", "सक्रिय"),
+    SANDHI_UPCOMING("Upcoming", "आगामी"),
+    SANDHI_RECENT("Recent", "हालसालैको"),
+    SANDHI_GUIDANCE("General Guidance", "सामान्य मार्गदर्शन"),
+    SANDHI_CURRENT_ACTIVE("Currently in Sandhi Period", "वर्तमानमा सन्धि अवधिमा"),
+    SANDHI_INTENSITY("Intensity:", "तीव्रता:"),
+    SANDHI_ENDS("Ends:", "अन्त्य:"),
+    SANDHI_NO_ACTIVE("No Active Sandhi", "कुनै सक्रिय सन्धि छैन"),
+    SANDHI_NO_ACTIVE_DESC("You are not currently in a Dasha Sandhi period. Check the Upcoming tab for future transitions.", "तपाईं हाल दशा सन्धि अवधिमा हुनुहुन्न। भविष्यका परिवर्तनहरूको लागि आगामी ट्याब जाँच गर्नुहोस्।"),
+    SANDHI_PREDICTIONS("Predictions", "भविष्यवाणीहरू"),
+    SANDHI_IMPACTS("Life Area Impacts", "जीवन क्षेत्र प्रभावहरू"),
+    SANDHI_REMEDIES("Recommended Remedies", "सिफारिस गरिएका उपायहरू"),
+    SANDHI_NO_CHART_DESC("Create or select a birth chart to analyze Dasha Sandhi periods.", "दशा सन्धि अवधिहरू विश्लेषण गर्न जन्म कुण्डली सिर्जना गर्नुहोस् वा छान्नुहोस्।"),
+    SANDHI_NO_UPCOMING("No upcoming Sandhi periods in the analysis window.", "विश्लेषण अवधिमा कुनै आगामी सन्धि अवधिहरू छैनन्।"),
+    SANDHI_NO_CALENDAR("No calendar entries available.", "कुनै पात्रो प्रविष्टिहरू उपलब्ध छैनन्।"),
+
+    // Graha Yuddha
+    GRAHA_SCREEN_TITLE("Graha Yuddha", "ग्रह युद्ध"),
+    GRAHA_SUBTITLE("Planetary War Analysis", "ग्रह युद्ध विश्लेषण"),
+    GRAHA_ACTIVE_WARS("Active Wars", "सक्रिय युद्धहरू"),
+    GRAHA_DASHA_EFFECTS("Dasha Effects", "दशा प्रभावहरू"),
+    GRAHA_ANALYZING("Analyzing Planetary Wars...", "ग्रह युद्ध विश्लेषण गर्दै..."),
+    GRAHA_WAR_STATUS("War Status", "युद्ध स्थिति"),
+    GRAHA_ANALYSIS_SUMMARY("Analysis Summary", "विश्लेषण सारांश"),
+    GRAHA_OVERALL_IMPACT("Overall War Impact", "समग्र युद्ध प्रभाव"),
+    GRAHA_VICTORY("Victorious", "विजयी"),
+    GRAHA_DEFEATED("Defeated", "पराजित"),
+    GRAHA_AFFECTED_AREAS("Affected Life Areas", "प्रभावित जीवन क्षेत्रहरू"),
+    GRAHA_NO_WARS("No Active Planetary Wars", "कुनै सक्रिय ग्रह युद्ध छैन"),
+    GRAHA_NO_WARS_DESC("All planets are operating peacefully", "सबै ग्रहहरू शान्तिपूर्ण रूपमा काम गरिरहेका छन्"),
+    GRAHA_VS("vs", "विरुद्ध"),
+    GRAHA_SEPARATION("Separation", "अन्तर"),
+    GRAHA_ADVANTAGE("Advantage", "फाइदा"),
+    GRAHA_NO_DASHA_EFFECTS("No War-Related Dasha Effects", "कुनै युद्ध-सम्बन्धित दशा प्रभावहरू छैनन्"),
+    GRAHA_NO_REMEDIES("No Specific Remedies Needed", "कुनै विशेष उपाय आवश्यक छैन"),
+    GRAHA_NO_DASHA_DESC("Planets in War not currently activated in Dasha/Antardasha.", "युद्धमा रहेका ग्रहहरू हाल दशा/अन्तर्दशामा सक्रिय छैनन्।"),
+    GRAHA_NO_REMEDIES_DESC("Since there are no active planetary wars, remedial measures are not required.", "कुनै सक्रिय ग्रह युद्ध नभएकोले, उपायहरू आवश्यक छैनन्।"),
+    GRAHA_ABOUT_TITLE("About Graha Yuddha", "ग्रह युद्धको बारेमा"),
+    GRAHA_ABOUT_DESC("Graha Yuddha (Planetary War) occurs when two planets (excluding Sun and Moon) are within 1 degree of each other.\n\nThe planet with the lower longitude is usually considered the winner, while the one with higher longitude is the loser.\n\nImpacts:\n• The losing planet's significations may suffer\n• If the losing planet rules important houses, those areas may be affected\n• The war is most intense during close conjunctions", "ग्रह युद्ध तब हुन्छ जब दुई ग्रहहरू (सूर्य र चन्द्रमा बाहेक) एक अर्काको १ डिग्री भित्र हुन्छन्।\n\nकम देशान्तर भएको ग्रहलाई सामान्यतया विजेता मानिन्छ, जबकि उच्च देशान्तर भएको ग्रहलाई पराजित मानिन्छ।\n\nप्रभावहरू:\n• पराजित ग्रहका कारकत्वहरूमा असर पर्न सक्छ\n• यदि पराजित ग्रहले महत्त्वपूर्ण भावहरूको स्वामी हो भने, ती क्षेत्रहरू प्रभावित हुन सक्छन्\n• नजिकको युतिमा युद्ध सबैभन्दा तीव्र हुन्छ"),
+    GRAHA_DEFEATS_MSG("%1$s defeats %2$s", "%1$s ले %2$s लाई जित्छ"),
+    GRAHA_IN_HOUSE_MSG("in %1$s (House %2$d)", "%1$s (भाव %2$d) मा"),
+
+    // Kemadruma Yoga
+    KEMA_SCREEN_TITLE("Kemadruma Yoga", "केमद्रुम योग"),
+    KEMA_SUBTITLE("Moon Isolation Analysis", "चन्द्रमा एक्लोपन विश्लेषण"),
+    KEMA_MOON("Moon", "चन्द्रमा"),
+    KEMA_CANCELLATIONS("Cancellations", "भंग"),
+    KEMA_IMPACTS("Impacts", "प्रभावहरू"),
+    KEMA_FORMED("Kemadruma Yoga is formed in this chart", "यो कुण्डलीमा केमद्रुम योग बनेको छ"),
+    KEMA_NOT_FORMED("Kemadruma Yoga is not formed", "केमद्रुम योग बनेको छैन"),
+    KEMA_FORMATION_DETAILS("Formation Details", "योग निर्माण विवरण"),
+    KEMA_MOON_POSITION("Moon Position", "चन्द्रमाको स्थिति"),
+    KEMA_SURROUNDING_HOUSES("Surrounding Houses Analysis", "वरपरका भावहरूको विश्लेषण"),
+    KEMA_BEFORE_MOON("Before Moon", "चन्द्रमा अघि"),
+    KEMA_AFTER_MOON("After Moon", "चन्द्रमा पछि"),
+    KEMA_MOON_HOUSE("Moon's House", "चन्द्रमाको भाव"),
+    KEMA_CONDITION_MET("No planets in houses adjacent to Moon - Kemadruma condition met", "चन्द्रमाको नजिकका भावहरूमा कुनै ग्रह छैन - केमद्रुम शर्त पूरा भयो"),
+    KEMA_NO_CANCELLATIONS("No Cancellations Found", "कुनै भंग फेला परेन"),
+    KEMA_NA("Not Applicable", "लागू हुँदैन"),
+    KEMA_NO_CANCELLATIONS_DESC("No Kemadruma Bhanga (cancellation) factors were found in your chart.", "तपाईंको कुण्डलीमा कुनै केमद्रुम भंग कारकहरू फेला परेनन्।"),
+    KEMA_NO_IMPACTS("No Negative Impacts", "कुनै नकारात्मक प्रभाव छैन"),
+    KEMA_NO_IMPACTS_DESC("Moon is well-supported, ensuring emotional stability and mental peace.", "चन्द्रमा राम्रोसँग समर्थित छ, जसले भावनात्मक स्थिरता र मानसिक शान्ति सुनिश्चित गर्दछ।"),
+    KEMA_NO_REMEDIES("No Remedies Needed", "कुनै उपाय आवश्यक छैन"),
+    KEMA_NO_REMEDIES_DESC("Since Kemadruma Yoga is not formed or is fully cancelled, no remedies are required.", "केमद्रुम योग नबनेको वा पूर्ण रूपमा भंग भएकोले, कुनै उपाय आवश्यक छैन।"),
+    KEMA_ABOUT_TITLE("About Kemadruma Yoga", "केमद्रुम योगको बारेमा"),
+    KEMA_ABOUT_DESC("Kemadruma Yoga forms when the Moon has no planets (except Sun, Rahu, Ketu) in the 2nd and 12th houses from it, and no planets are in Kendra from the Moon or Lagna.\n\nIt is considered an inauspicious yoga indicating loneliness, mental unrest, and financial instability. However, it is often cancelled (Bhanga) by the presence of planets in Kendra houses or if the Moon interacts with other planets.", "केमद्रुम योग तब बन्छ जब चन्द्रमाको दोस्रो र बाह्रौं भावमा कुनै ग्रहहरू (सूर्य, राहु, केतु बाहेक) हुँदैनन्, र चन्द्रमा वा लग्नबाट केन्द्रमा कुनै ग्रहहरू हुँदैनन्।\n\nयसलाई अशुभ योग मानिन्छ जसले एक्लोपन, मानसिक अशान्ति र आर्थिक अस्थिरतालाई संकेत गर्दछ। यद्यपि, केन्द्र भावहरूमा ग्रहहरूको उपस्थिति वा चन्द्रमाले अन्य ग्रहहरूसँग अन्तरक्रिया गरेमा यो अक्सर भंग हुन्छ।"),
+    KEMA_CANCELLATIONS_FOUND("%1$d Cancellation(s) Found", "%1$d भंग(हरू) फेला पर्यो"),
+    KEMA_FORMATION_MAIN("Moon lacks planetary support in adjacent houses.", "चन्द्रमालाई नजिकका भावहरूमा ग्रहहरूको समर्थन छैन।"),
+    KEMA_FORMATION_2ND_EMPTY("2nd house from Moon is empty.", "चन्द्रमाबाट दोस्रो भाव खाली छ।"),
+    KEMA_FORMATION_12TH_EMPTY("12th house from Moon is empty.", "चन्द्रमाबाट बाह्रौं भाव खाली छ।"),
+    KEMA_FORMATION_UNASPECTED("Moon has no planetary conjunction.", "चन्द्रमाको कुनै ग्रहसँग युति छैन।"),
+    KEMA_REASON_2ND("No planets in 2nd house from Moon", "चन्द्रमाबाट दोस्रो भावमा कुनै ग्रह छैन"),
+    KEMA_REASON_12TH("No planets in 12th house from Moon", "चन्द्रमाबाट बाह्रौं भावमा कुनै ग्रह छैन"),
+    KEMA_REASON_CONJUNCT("Moon is not conjunct with any planet", "चन्द्रमा कुनै ग्रहसँग युतिमा छैन"),
+    KEMA_FORMATION_STRENGTH("Formation strength: %1$d%%", "योग बल: %1$d%%"),
+    KEMA_NAKSHATRA("Nakshatra", "नक्षत्र"),
+    KEMA_PAKSHA("Paksha", "पक्ष"),
+    KEMA_BRIGHTNESS("Brightness", "चमक"),
+    KEMA_MOON_STRENGTH("Moon Strength:", "चन्द्रमा बल:"),
+
+    // Panchanga Redesigned
+    PANCHANGA_LIMBS_TITLE("Five Limbs of Hindu Calendar", "हिन्दु पात्रोका पाँच अंगहरू"),
+    PANCHANGA_FIVE_LIMBS("Five Limbs (Pancha Anga)", "पाँच अंगहरू (पञ्चाङ्ग)"),
+    PANCHANGA_TIMING_AUSPICIOUSNESS("Timing & Auspiciousness", "समय र शुभता"),
+    PANCHANGA_SUN_MOON("Sun & Moon", "सूर्य र चन्द्रमा"),
+    PANCHANGA_RISE("Rise", "उदय"),
+    PANCHANGA_SET("Set", "अस्त"),
+    PANCHANGA_LUNAR_DAY_FMT("Lunar day (%1$s)", "चन्द्र दिन (%1$s)"),
+    PANCHANGA_VARA_DESC("Weekday, ruled by specific planet", "बार, विशिष्ट ग्रहद्वारा शासित"),
+    PANCHANGA_NAKSHATRA_DESC_FMT("Lunar mansion (Pada %1$d)", "नक्षत्र (पद %1$d)"),
+    PANCHANGA_YOGA_DESC("Auspicious combination", "शुभ संयोग"),
+    PANCHANGA_KARANA_DESC("Half of a tithi", "तिथिको आधा भाग"),
+    PANCHANGA_AVOID_ACTIVITIES("Avoid important activities", "महत्त्वपूर्ण कार्यहरू नगर्नुहोस्"),
+    PANCHANGA_AUSPICIOUS_TIMING("Auspicious timing", "शुभ समय"),
+    PANCHANGA_CALCULATE_DAY("Calculate based on day", "दिनको आधारमा गणना गर्नुहोस्"),
+    PANCHANGA_MIDDAY_HOUR("Midday hour", "मध्यान्ह समय"),
+    PANCHANGA_SUN("Sun", "सूर्य"),
+    PANCHANGA_MOON("Moon", "चन्द्रमा"),
+    PANCHANGA_TITHI_LABEL("Tithi", "तिथि"),
+    PANCHANGA_VARA_LABEL("Vara", "वार"),
+    PANCHANGA_NAKSHATRA_LABEL("Nakshatra", "नक्षत्र"),
+    PANCHANGA_YOGA_LABEL("Yoga", "योग"),
+    PANCHANGA_KARANA_LABEL("Karana", "करण"),
+    PANCHANGA_RAHU("Rahu Kaal", "राहु काल"),
+    PANCHANGA_YAMAGANDAM("Yamagandam", "यमगण्डम"),
+    PANCHANGA_GULIKA("Gulika Kaal", "गुलिक काल"),
+    PANCHANGA_ABHIJIT("Abhijit Muhurta", "अभिजित मुहूर्त"),
+    PANCHANGA_INTRO("Panchanga comprises five essential elements (Pancha Anga) that determine the quality and auspiciousness of any moment in the Hindu calendar system.", "पञ्चाङ्गमा पाँच आवश्यक तत्वहरू (पञ्च अंग) हुन्छन् जसले हिन्दु पात्रो प्रणालीमा कुनै पनि क्षणको गुणस्तर र शुभता निर्धारण गर्दछ।"),
+    PANCHANGA_TITHI_DESC_LONG("The lunar day, calculated based on the angular distance between the Sun and Moon. Each tithi represents 12 degrees of lunar motion. There are 30 tithis in a lunar month, divided into Shukla (waxing) and Krishna (waning) Paksha.", "चन्द्र दिन, जुन सूर्य र चन्द्रमा बीचको कोणीय दूरीको आधारमा गणना गरिन्छ। प्रत्येक तिथिले १२ डिग्रीको चन्द्र गति प्रतिनिधित्व गर्दछ। एक चन्द्र मासमा ३० तिथिहरू हुन्छन्, जुन शुक्ल (बढ्दो) र कृष्ण (घट्दो) पक्षमा विभाजित हुन्छन्।"),
+    PANCHANGA_TITHI_SIG("Determines the nature of activities suitable for the day. Some tithis like Purnima (full moon) and Amavasya (new moon) have special significance.", "दिनको लागि उपयुक्त गतिविधिहरूको प्रकृति निर्धारण गर्दछ। पूर्णिमा र औंशी जस्ता केही तिथिहरूको विशेष महत्त्व हुन्छ।"),
+    PANCHANGA_VARA_DESC_LONG("The weekday, each ruled by a specific planet. The planetary ruler influences the nature and appropriate activities for that day.", "वार, प्रत्येक एक विशिष्ट ग्रहद्वारा शासित हुन्छ। ग्रह शासकले त्यस दिनको प्रकृति र उपयुक्त गतिविधिहरूलाई प्रभाव पार्छ।"),
+    PANCHANGA_VARA_SIG("Each vara has specific activities that are considered favorable. For example, Sunday is good for authority matters, Monday for emotional work.", "प्रत्येक वारमा विशिष्ट गतिविधिहरू हुन्छन् जुन अनुकूल मानिन्छन्। उदाहरणका लागि, आइतबार अधिकार मामिलाहरूको लागि राम्रो हुन्छ, सोमबार भावनात्मक कार्यको लागि।"),
+    PANCHANGA_NAKSHATRA_DESC_LONG("The lunar mansion where the Moon resides. There are 27 nakshatras, each spanning 13°20' of the zodiac. Each nakshatra has a ruling deity and planet.", "चन्द्रमा बस्ने नक्षत्र। त्यहाँ २७ नक्षत्रहरू छन्, प्रत्येकले राशिको १३°२०' ओगटेका छन्। प्रत्येक नक्षत्रको एक शासक देवता र ग्रह हुन्छ।"),
+    PANCHANGA_NAKSHATRA_SIG("Birth nakshatra determines personality traits and compatibility. Moon's nakshatra is crucial for muhurta selection.", "जन्म नक्षत्रले व्यक्तित्व गुणहरू र अनुकूलता निर्धारण गर्दछ। मुहूर्त चयनको लागि चन्द्रमाको नक्षत्र महत्त्वपूर्ण छ।"),
+    PANCHANGA_YOGA_DESC_LONG("Calculated from the combined longitudes of Sun and Moon. There are 27 yogas, each with specific qualities ranging from highly auspicious to inauspicious.", "सूर्य र चन्द्रमाको संयुक्त देशान्तरबाट गणना गरिएको। त्यहाँ २७ योगहरू छन्, प्रत्येकसँग अत्यधिक शुभ देखि अशुभ सम्मका विशिष्ट गुणहरू छन्।"),
+    PANCHANGA_YOGA_SIG("Yogas indicate the general nature of results from activities undertaken. Siddha, Amrita, and Shubha yogas are highly favorable.", "योगहरूले गरिएका गतिविधिहरूको परिणामको सामान्य प्रकृति संकेत गर्दछ। सिद्ध, अमृत र शुभ योगहरू अत्यधिक अनुकूल हुन्छन्।"),
+    PANCHANGA_KARANA_DESC_LONG("Half of a tithi, there are 11 karanas total. Seven are movable and four are fixed. Each karana has its own nature and suitable activities.", "तिथिको आधा भाग, कुल ११ करणहरू छन्। सात चर र चार स्थिर छन्। प्रत्येक करणको आफ्नै प्रकृति र उपयुक्त गतिविधिहरू छन्।"),
+    PANCHANGA_KARANA_SIG("Karanas fine-tune the effects of tithis. Movable karanas recur throughout the month while fixed ones appear only once.", "करणहरूले तिथिका प्रभावहरूलाई सुष्म बनाउँछन्। चर करणहरू महिनाभर दोहोरिन्छन् भने स्थिर करणहरू एक पटक मात्र आउँछन्।"),
+    PANCHANGA_ABOUT_TITLE("About Panchanga", "पञ्चाङ्गको बारेमा"),
+    PANCHANGA_ABOUT_DESC_1("Panchanga (Sanskrit: पञ्चाङ्ग) means 'five limbs' and refers to the traditional Hindu almanac that tracks five elements of time: Tithi, Vara, Nakshatra, Yoga, and Karana.", "पञ्चाङ्ग (संस्कृत: पञ्चाङ्ग) को अर्थ 'पाँच अंग' हो र यसले समयका पाँच तत्वहरू: तिथि, वार, नक्षत्र, योग र करण ट्र्याक गर्ने परम्परागत हिन्दु पात्रोलाई जनाउँछ।"),
+    PANCHANGA_ABOUT_DESC_2("These five elements together determine the auspiciousness of any moment and are crucial for selecting muhurtas (auspicious timings) for important activities.", "यी पाँच तत्वहरूले मिलेर कुनै पनि क्षणको शुभता निर्धारण गर्दछ र महत्त्वपूर्ण गतिविधिहरूको लागि मुहूर्त (शुभ समय) चयन गर्न महत्त्वपूर्ण छन्।"),
+    PANCHANGA_SIGNIFICANCE("Significance", "महत्त्व");
 }
 
 /**

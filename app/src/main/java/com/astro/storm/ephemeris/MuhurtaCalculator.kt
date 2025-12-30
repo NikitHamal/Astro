@@ -1,6 +1,9 @@
 package com.astro.storm.ephemeris
 
 import android.content.Context
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.Nakshatra
 import swisseph.DblObj
@@ -288,7 +291,18 @@ class MuhurtaCalculator(context: Context) {
         VERY_GOOD("Very Good", 3),
         GOOD("Good", 2),
         NEUTRAL("Neutral", 1),
-        INAUSPICIOUS("Inauspicious", 0)
+        INAUSPICIOUS("Inauspicious", 0);
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                EXCELLENT -> StringKeyAnalysis.AUSPICIOUSNESS_HIGHLY_AUSPICIOUS
+                VERY_GOOD -> StringKeyAnalysis.AUSPICIOUSNESS_AUSPICIOUS
+                GOOD -> StringKeyAnalysis.AUSPICIOUSNESS_NEUTRAL
+                NEUTRAL -> StringKeyAnalysis.AUSPICIOUSNESS_NEUTRAL
+                INAUSPICIOUS -> StringKeyAnalysis.CHOGHADIYA_NATURE_INAUSPICIOUS
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     enum class NakshatraNature(val displayName: String) {
@@ -313,7 +327,16 @@ class MuhurtaCalculator(context: Context) {
     enum class HoraNature(val displayName: String) {
         BENEFIC("Benefic"),
         MALEFIC("Malefic"),
-        NEUTRAL("Neutral")
+        NEUTRAL("Neutral");
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                BENEFIC -> StringKeyAnalysis.HORA_NATURE_BENEFIC
+                MALEFIC -> StringKeyAnalysis.HORA_NATURE_MALEFIC
+                NEUTRAL -> StringKeyAnalysis.HORA_NATURE_NEUTRAL
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     data class InauspiciousPeriods(
@@ -381,7 +404,18 @@ class MuhurtaCalculator(context: Context) {
         BHADRA("Bhadra - Auspicious"),
         JAYA("Jaya - Victory"),
         RIKTA("Rikta - Empty"),
-        PURNA("Purna - Full")
+        PURNA("Purna - Full");
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                NANDA -> StringKeyAnalysis.TITHI_NATURE_NANDA
+                BHADRA -> StringKeyAnalysis.TITHI_NATURE_BHADRA
+                JAYA -> StringKeyAnalysis.TITHI_NATURE_JAYA
+                RIKTA -> StringKeyAnalysis.TITHI_NATURE_RIKTA
+                PURNA -> StringKeyAnalysis.TITHI_NATURE_PURNA
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     data class NakshatraInfo(
@@ -396,7 +430,16 @@ class MuhurtaCalculator(context: Context) {
     enum class NakshatraGana(val displayName: String) {
         DEVA("Divine"),
         MANUSHYA("Human"),
-        RAKSHASA("Demonic")
+        RAKSHASA("Demonic");
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                DEVA -> StringKeyAnalysis.NAKSHATRA_GANA_DEVA
+                MANUSHYA -> StringKeyAnalysis.NAKSHATRA_GANA_MANUSHYA
+                RAKSHASA -> StringKeyAnalysis.NAKSHATRA_GANA_RAKSHASA
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     enum class NakshatraElement(val displayName: String) {
@@ -404,7 +447,18 @@ class MuhurtaCalculator(context: Context) {
         AGNI("Fire"),
         PRITHVI("Earth"),
         JALA("Water"),
-        AKASHA("Ether")
+        AKASHA("Ether");
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                VAYU -> StringKeyAnalysis.NAKSHATRA_ELEMENT_AIR
+                AGNI -> StringKeyAnalysis.NAKSHATRA_ELEMENT_FIRE
+                PRITHVI -> StringKeyAnalysis.NAKSHATRA_ELEMENT_EARTH
+                JALA -> StringKeyAnalysis.NAKSHATRA_ELEMENT_WATER
+                AKASHA -> StringKeyAnalysis.NAKSHATRA_ELEMENT_ETHER
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     data class YogaInfo(
@@ -423,7 +477,15 @@ class MuhurtaCalculator(context: Context) {
 
     enum class KaranaType(val displayName: String) {
         STHIRA("Fixed"),
-        CHARA("Movable")
+        CHARA("Movable");
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                STHIRA -> StringKeyAnalysis.KARANA_FIXED
+                CHARA -> StringKeyAnalysis.KARANA_MOVABLE
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     data class ChoghadiyaInfo(

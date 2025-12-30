@@ -132,13 +132,13 @@ fun NityaYogaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Nitya Yoga",
+                            text = stringResource(StringKeyDosha.NITYA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "27 Daily Yogas",
+                            text = stringResource(StringKeyDosha.NITYA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -376,19 +376,19 @@ private fun NityaQuickStatsRow(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         NityaStatCard(
-            title = "Progress",
+            title = stringResource(StringKeyDosha.NITYA_PROGRESS),
             value = "${analysis.percentComplete.toInt()}%",
             color = AppTheme.AccentGold,
             modifier = Modifier.weight(1f)
         )
         NityaStatCard(
-            title = "Position",
+            title = stringResource(StringKeyDosha.NITYA_POSITION),
             value = "${analysis.yogaIndex}/27",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
         NityaStatCard(
-            title = "Nature",
+            title = stringResource(StringKeyDosha.NITYA_NATURE),
             value = analysis.yoga.nature,
             color = getAuspiciousnessColor(analysis.yoga.auspiciousness),
             modifier = Modifier.weight(1f)
@@ -444,7 +444,7 @@ private fun NextYogaProgressCard(analysis: NityaYogaCalculator.NityaYogaAnalysis
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Progress in Current Yoga",
+                    text = stringResource(StringKeyDosha.NITYA_CURRENT_PROGRESS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -478,12 +478,12 @@ private fun NextYogaProgressCard(analysis: NityaYogaCalculator.NityaYogaAnalysis
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Next: ${nextYoga.displayName}",
+                        text = "${stringResource(StringKeyDosha.NITYA_NEXT)} ${nextYoga.displayName}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )
                     Text(
-                        text = "${String.format("%.1f", analysis.degreesToNextYoga)}° remaining",
+                        text = "${String.format("%.1f", analysis.degreesToNextYoga)}° ${stringResource(StringKeyDosha.NITYA_REMAINING)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )
@@ -512,7 +512,7 @@ private fun NityaInterpretationCard(analysis: NityaYogaCalculator.NityaYogaAnaly
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Interpretation",
+                    text = stringResource(StringKeyDosha.UI_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -644,7 +644,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "Suitable Activities",
+                        text = stringResource(StringKeyDosha.NITYA_SUITABLE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -690,7 +690,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "Activities to Avoid",
+                        text = stringResource(StringKeyDosha.NITYA_AVOID),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -726,7 +726,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "Recommendations",
+                    text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1097,7 +1097,7 @@ private fun NityaEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Create or select a birth chart to view Nitya Yoga analysis.",
+                text = stringResource(StringKeyDosha.NITYA_NO_DATA_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1112,25 +1112,14 @@ private fun NityaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "About Nitya Yoga",
+                text = stringResource(StringKeyDosha.NITYA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = """
-                    Nitya Yoga (Daily Yoga) is one of the five elements of the Panchanga (Hindu almanac).
-
-                    There are 27 Nitya Yogas, each spanning 13°20' of the combined longitude of Sun and Moon.
-
-                    Calculation:
-                    Nitya Yoga = (Sun longitude + Moon longitude) ÷ 13°20'
-
-                    These yogas indicate the general auspiciousness of a moment and are used in Muhurta (electional astrology) to select favorable times for important activities.
-
-                    Each yoga is ruled by a planet and has specific characteristics affecting health, wealth, relationships, and spiritual matters.
-                """.trimIndent(),
+                text = stringResource(StringKeyDosha.NITYA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp

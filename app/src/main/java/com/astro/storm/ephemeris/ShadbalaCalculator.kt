@@ -1,5 +1,8 @@
 package com.astro.storm.ephemeris
 
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
@@ -13,6 +16,7 @@ import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
+
 
 enum class StrengthRating(
     val displayName: String,
@@ -60,6 +64,20 @@ enum class StrengthRating(
         150.0
     );
 
+    fun getLocalizedName(language: Language): String {
+        val key = when (this) {
+            EXTREMELY_WEAK -> StringKeyAnalysis.STRENGTH_EXTREMELY_WEAK
+            WEAK -> StringKeyAnalysis.STRENGTH_WEAK
+            BELOW_AVERAGE -> StringKeyAnalysis.STRENGTH_BELOW_AVERAGE
+            AVERAGE -> StringKeyAnalysis.STRENGTH_AVERAGE
+            ABOVE_AVERAGE -> StringKeyAnalysis.STRENGTH_ABOVE_AVERAGE
+            STRONG -> StringKeyAnalysis.STRENGTH_STRONG
+            VERY_STRONG -> StringKeyAnalysis.STRENGTH_VERY_STRONG
+            EXTREMELY_STRONG -> StringKeyAnalysis.STRENGTH_EXTREMELY_STRONG
+        }
+        return StringResources.get(key, language)
+    }
+
     companion object {
         fun fromPercentage(percentage: Double): StrengthRating {
             return entries.asReversed().firstOrNull { percentage >= it.minPercentage }
@@ -67,6 +85,7 @@ enum class StrengthRating(
         }
     }
 }
+
 
 data class SthanaBala(
     val ucchaBala: Double,

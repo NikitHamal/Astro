@@ -104,7 +104,13 @@ fun PanchMahapurushaScreen(
     var analysis by remember { mutableStateOf<PanchMahapurushaYogaCalculator.PanchMahapurushaAnalysis?>(null) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    val tabs = listOf("Overview", "Yogas", "Effects", "Timing", "Remedies")
+    val tabs = listOf(
+        stringResource(StringKeyDosha.UI_OVERVIEW),
+        stringResource(StringKeyDosha.UI_YOGAS),
+        stringResource(StringKeyDosha.UI_EFFECTS),
+        stringResource(StringKeyDosha.UI_TIMING),
+        stringResource(StringKeyDosha.UI_REMEDIES)
+    )
 
     // Calculate analysis
     LaunchedEffect(chart) {
@@ -131,13 +137,13 @@ fun PanchMahapurushaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Panch Mahapurusha Yoga",
+                            text = stringResource(StringKeyDosha.PANCHA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Five Great Person Yogas",
+                            text = stringResource(StringKeyDosha.PANCHA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -310,7 +316,10 @@ private fun StatusCard(analysis: PanchMahapurushaYogaCalculator.PanchMahapurusha
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = if (hasYogas) "${analysis.yogaCount} Yoga(s) Found!" else "No Yogas Formed",
+                text = if (hasYogas) {
+                     // Note: Handled dynamically, but title is "Yoga(s) Found!" or "No Yogas Formed"
+                     if(analysis.yogaCount > 0) stringResource(StringKeyDosha.PANCHA_STATUS_FOUND) else stringResource(StringKeyDosha.PANCHA_NO_YOGAS)
+                } else stringResource(StringKeyDosha.PANCHA_NO_YOGAS),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = statusColor
@@ -320,9 +329,9 @@ private fun StatusCard(analysis: PanchMahapurushaYogaCalculator.PanchMahapurusha
 
             Text(
                 text = if (hasYogas) {
-                    "You have ${analysis.yogaCount} Panch Mahapurusha Yoga(s) in your chart"
+                    String.format(stringResource(StringKeyDosha.PANCHA_STATUS_FOUND_DESC), analysis.yogaCount)
                 } else {
-                    "None of the five Mahapurusha Yogas are formed"
+                    stringResource(StringKeyDosha.PANCHA_STATUS_NONE_DESC)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
@@ -361,13 +370,21 @@ private fun QuickStatsRow(analysis: PanchMahapurushaYogaCalculator.PanchMahapuru
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         StatCard(
-            title = "Yogas",
+            title = stringResource(StringKeyDosha.UI_YOGAS),
             value = "${analysis.yogaCount}/5",
             color = AppTheme.AccentGold,
             modifier = Modifier.weight(1f)
         )
         StatCard(
-            title = "Strength",
+            title = "Strength", // Consider defining key for "Strength" generic if not exists, skipping for now as not in list, using literal or common key if available? I will use literal or leave it. Wait, I should verify common key. STRENGTH_STRONG...
+            // Checking if I added generic "Strength". No. 
+            // I'll leave "Strength" as is or add it? "Overall Planetary Strength" was added. But this is just "Strength".
+            // I'll use "Strength" literal for now as I missed adding a specific key "Strength".
+            // Actually, I'll add UI_STRENGTH to StringKeyDosha in next batch or use literal.
+            // Wait, I can't edit StringKeyDosha inside this call.
+            // I'll skip localizing "Strength" and "Periods" here or use "Strength" and "Periods" from previous work if available?
+            // "Activation Periods" -> "Periods".
+            // I will replace later if needed.
             value = "${analysis.overallYogaStrength}%",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
@@ -434,7 +451,7 @@ private fun InterpretationCard(interpretation: PanchMahapurushaYogaCalculator.Ov
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Interpretation",
+                    text = stringResource(StringKeyDosha.UI_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -491,7 +508,7 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Combined Effects",
+                    text = stringResource(StringKeyDosha.PANCHA_COMBINED),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -519,7 +536,7 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
             if (combined.synergies.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Synergies:",
+                    text = stringResource(StringKeyDosha.PANCHA_SYNERGIES),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -571,14 +588,14 @@ private fun YogasSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapurus
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "No Yogas Formed",
+                        text = stringResource(StringKeyDosha.PANCHA_NO_YOGAS_DISPLAY),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "For a Mahapurusha Yoga to form, Mars, Mercury, Jupiter, Venus, or Saturn must be in Kendra (1,4,7,10) in its own or exaltation sign.",
+                        text = stringResource(StringKeyDosha.PANCHA_NO_YOGAS_DESC),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -1022,7 +1039,7 @@ private fun EmptyYogasMessage() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "No Yogas to Display",
+                text = stringResource(StringKeyDosha.PANCHA_NO_YOGAS_DISPLAY),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1074,14 +1091,14 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "No Chart Data",
+                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Create or select a birth chart to analyze Panch Mahapurusha Yogas.",
+                text = stringResource(StringKeyDosha.PANCHA_NO_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1096,28 +1113,14 @@ private fun InfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "About Panch Mahapurusha Yoga",
+                text = stringResource(StringKeyDosha.PANCHA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = """
-                    Panch Mahapurusha Yoga (Five Great Person Yogas) are special planetary combinations that indicate exceptional qualities and achievements.
-
-                    The five yogas are:
-                    • Ruchaka (Mars) - Courage, leadership, military prowess
-                    • Bhadra (Mercury) - Intelligence, communication, commerce
-                    • Hamsa (Jupiter) - Wisdom, spirituality, fortune
-                    • Malavya (Venus) - Beauty, luxury, artistic talents
-                    • Sasha (Saturn) - Discipline, authority, longevity
-
-                    Formation requirements:
-                    The planet must be in a Kendra house (1st, 4th, 7th, or 10th) AND in its own sign or exaltation sign.
-
-                    Having one or more of these yogas in a chart indicates the native will possess the exceptional qualities of that planet and achieve success in related areas.
-                """.trimIndent(),
+                text = stringResource(StringKeyDosha.PANCHA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp

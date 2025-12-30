@@ -1,5 +1,8 @@
 package com.astro.storm.ephemeris
 
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
@@ -764,7 +767,18 @@ object NityaYogaCalculator {
         AUSPICIOUS("Auspicious", 4),
         NEUTRAL("Neutral", 3),
         INAUSPICIOUS("Inauspicious", 2),
-        HIGHLY_INAUSPICIOUS("Highly Inauspicious", 1)
+        HIGHLY_INAUSPICIOUS("Highly Inauspicious", 1);
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                HIGHLY_AUSPICIOUS -> StringKeyAnalysis.AUSPICIOUSNESS_HIGHLY_AUSPICIOUS
+                AUSPICIOUS -> StringKeyAnalysis.AUSPICIOUSNESS_AUSPICIOUS
+                NEUTRAL -> StringKeyAnalysis.AUSPICIOUSNESS_NEUTRAL
+                INAUSPICIOUS -> StringKeyAnalysis.AUSPICIOUSNESS_INAUSPICIOUS
+                HIGHLY_INAUSPICIOUS -> StringKeyAnalysis.AUSPICIOUSNESS_HIGHLY_INAUSPICIOUS
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     enum class YogaStrength(val displayName: String) {
@@ -772,7 +786,18 @@ object NityaYogaCalculator {
         STRONG("Strong"),
         MODERATE("Moderate"),
         WEAK("Weak"),
-        VERY_WEAK("Very Weak")
+        VERY_WEAK("Very Weak");
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                VERY_STRONG -> StringKeyAnalysis.NITYA_STRENGTH_VERY_STRONG
+                STRONG -> StringKeyAnalysis.NITYA_STRENGTH_STRONG
+                MODERATE -> StringKeyAnalysis.NITYA_STRENGTH_MODERATE
+                WEAK -> StringKeyAnalysis.NITYA_STRENGTH_WEAK
+                VERY_WEAK -> StringKeyAnalysis.NITYA_STRENGTH_VERY_WEAK
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     enum class RecommendationCategory(val displayName: String) {
@@ -780,6 +805,17 @@ object NityaYogaCalculator {
         ACTIVITY("Activity Guidance"),
         MANTRA("Mantra Recitation"),
         TIMING("Timing Advice"),
-        GENERAL("General Guidance")
+        GENERAL("General Guidance");
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                SPIRITUAL -> StringKeyAnalysis.RECOMMEND_SPIRITUAL
+                ACTIVITY -> StringKeyAnalysis.RECOMMEND_ACTIVITY
+                MANTRA -> StringKeyAnalysis.RECOMMEND_MANTRA
+                TIMING -> StringKeyAnalysis.RECOMMEND_TIMING
+                GENERAL -> StringKeyAnalysis.RECOMMEND_GENERAL
+            }
+            return StringResources.get(key, language)
+        }
     }
 }

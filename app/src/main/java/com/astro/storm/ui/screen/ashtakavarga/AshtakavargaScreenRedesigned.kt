@@ -627,7 +627,7 @@ private fun AshtakavargaInsightsCard(
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
-                text = "Key Insights",
+                text = stringResource(StringKeyDosha.ASHTAKAVARGA_KEY_INSIGHTS),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
@@ -636,7 +636,7 @@ private fun AshtakavargaInsightsCard(
 
             // Strongest houses
             Text(
-                text = "STRONGEST HOUSES",
+                text = stringResource(StringKeyDosha.ASHTAKAVARGA_STRONGEST),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.SuccessColor,
@@ -663,7 +663,7 @@ private fun AshtakavargaInsightsCard(
 
             // Weakest houses
             Text(
-                text = "WEAKEST HOUSES",
+                text = stringResource(StringKeyDosha.ASHTAKAVARGA_WEAKEST),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.WarningColor,
@@ -742,7 +742,7 @@ private fun PlanetQuickView(
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
-                text = "Planet Bindu Totals",
+                text = stringResource(StringKeyDosha.ASHTAKAVARGA_PLANET_TOTALS),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
@@ -805,7 +805,7 @@ private fun SarvashtakavargaContent(
     ) {
         item(key = "sarva_header") {
             Text(
-                text = "Sarvashtakavarga is the combined bindu strength from all seven planets for each house/sign.",
+                text = stringResource(StringKeyDosha.ASHTAKAVARGA_SARVA_DESC),
                 fontSize = 13.sp,
                 color = AppTheme.TextMuted,
                 lineHeight = 19.sp,
@@ -1016,7 +1016,7 @@ private fun PlanetAshtakavargaCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Total: $totalBindus bindus",
+                            text = "Total: $totalBindus ${stringResource(StringKeyDosha.ASHTAKAVARGA_BINDUS_SUFFIX)}",
                             fontSize = 12.sp,
                             color = planetColor
                         )
@@ -1211,7 +1211,7 @@ private fun HouseDetailCard(
                         color = getBinduColor(totalBindus)
                     )
                     Text(
-                        text = "bindus",
+                        text = stringResource(StringKeyDosha.ASHTAKAVARGA_BINDUS_SUFFIX),
                         fontSize = 10.sp,
                         color = AppTheme.TextMuted
                     )
@@ -1274,14 +1274,14 @@ private fun EmptyAshtakavargaContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "No Ashtakavarga Data",
+                text = stringResource(StringKeyDosha.UI_NO_ASHTAKAVARGA_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Please select a birth chart to view Ashtakavarga",
+                text = stringResource(StringKeyDosha.UI_SELECT_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1296,7 +1296,7 @@ private fun AshtakavargaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "About Ashtakavarga",
+                text = stringResource(StringKeyDosha.ASHTAKAVARGA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1305,24 +1305,21 @@ private fun AshtakavargaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Column {
                 Text(
-                    text = "Ashtakavarga is a unique Vedic system that calculates the strength of each house by analyzing beneficial points (bindus) contributed by seven planets.",
+                    text = stringResource(StringKeyDosha.ASHTAKAVARGA_ABOUT_DESC),
                     fontSize = 13.sp,
                     color = AppTheme.TextSecondary,
                     lineHeight = 19.sp
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Interpretation Guide:",
+                    text = stringResource(StringKeyDosha.ASHTAKAVARGA_INTERPRETATION),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextSecondary
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "• 30+ bindus: Very strong, excellent results\n" +
-                            "• 25-30 bindus: Good strength, favorable\n" +
-                            "• 20-25 bindus: Average, mixed results\n" +
-                            "• Below 20: Weak, challenges expected",
+                    text = stringResource(StringKeyDosha.ASHTAKAVARGA_GUIDE_TEXT),
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted,
                     lineHeight = 18.sp
