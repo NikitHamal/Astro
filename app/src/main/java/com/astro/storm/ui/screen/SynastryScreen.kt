@@ -124,7 +124,7 @@ fun SynastryScreen(
                     calculateSynastry(chart1!!, chart2!!, language)
                 }
             } catch (e: Exception) {
-                errorMessage = e.message ?: "Calculation failed"
+                errorMessage = e.message ?: com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_CALC_FAILED, language)
             }
             isCalculating = false
         } else {
@@ -337,8 +337,8 @@ enum class SynastryAspectType(
         TRINE -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_TRINE, language)
         SQUARE -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_SQUARE, language)
         SEXTILE -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_SEXTILE, language)
-        QUINCUNX -> displayName
-        SEMI_SEXTILE -> displayName
+        QUINCUNX -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_QUINCUNX, language)
+        SEMI_SEXTILE -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_SEMI_SEXTILE, language)
     }
 }
 
@@ -547,7 +547,7 @@ private fun calculateHouseOverlays(
 
     for (pos in sourceChart.planetPositions) {
         val houseNumber = getHouseForLongitude(pos.longitude, targetChart.houseCusps)
-        val lifeArea = getLifeAreaForHouse(houseNumber)
+        val lifeArea = getLifeAreaForHouse(houseNumber, language)
         val interpretation = generateHouseOverlayInterpretation(pos.planet, houseNumber, sourceChartNum, language)
 
         overlays.add(
@@ -584,22 +584,23 @@ private fun getHouseForLongitude(longitude: Double, houseCusps: List<Double>): I
     return 1
 }
 
-private fun getLifeAreaForHouse(house: Int): String {
-    return when (house) {
-        1 -> "Self, Identity, Appearance"
-        2 -> "Wealth, Values, Family"
-        3 -> "Communication, Siblings"
-        4 -> "Home, Mother, Emotions"
-        5 -> "Romance, Children, Creativity"
-        6 -> "Health, Service, Enemies"
-        7 -> "Partnership, Marriage"
-        8 -> "Transformation, Joint Resources"
-        9 -> "Higher Learning, Dharma"
-        10 -> "Career, Status, Father"
-        11 -> "Gains, Friends, Aspirations"
-        12 -> "Spirituality, Loss, Liberation"
-        else -> "General"
+private fun getLifeAreaForHouse(house: Int, language: Language): String {
+    val key = when (house) {
+        1 -> StringKeyDosha.HOUSE_SIG_1
+        2 -> StringKeyDosha.HOUSE_SIG_2
+        3 -> StringKeyDosha.HOUSE_SIG_3
+        4 -> StringKeyDosha.HOUSE_SIG_4
+        5 -> StringKeyDosha.HOUSE_SIG_5
+        6 -> StringKeyDosha.HOUSE_SIG_6
+        7 -> StringKeyDosha.HOUSE_SIG_7
+        8 -> StringKeyDosha.HOUSE_SIG_8
+        9 -> StringKeyDosha.HOUSE_SIG_9
+        10 -> StringKeyDosha.HOUSE_SIG_10
+        11 -> StringKeyDosha.HOUSE_SIG_11
+        12 -> StringKeyDosha.HOUSE_SIG_12
+        else -> StringKeyDosha.SYNASTRY_LIFE_AREA_GENERAL
     }
+    return com.astro.storm.data.localization.StringResources.get(key, language)
 }
 
 private fun generateAspectInterpretation(
@@ -611,20 +612,33 @@ private fun generateAspectInterpretation(
     val p1Name = planet1.getLocalizedName(language)
     val p2Name = planet2.getLocalizedName(language)
 
-    return when (aspectType.nature) {
-        AspectNature.HARMONIOUS -> "$p1Name and $p2Name work together harmoniously, creating mutual understanding and support."
-        AspectNature.CHALLENGING -> "$p1Name and $p2Name create tension that requires conscious effort to integrate."
-        AspectNature.MAJOR -> "$p1Name and $p2Name are closely connected, amplifying each other's energies."
-        AspectNature.MINOR -> "$p1Name and $p2Name have a subtle connection that adds nuance to the relationship."
+    val key = when (aspectType.nature) {
+        AspectNature.HARMONIOUS -> StringKeyDosha.SYNASTRY_INTERPRET_HARMONIOUS
+        AspectNature.CHALLENGING -> StringKeyDosha.SYNASTRY_INTERPRET_CHALLENGING
+        AspectNature.MAJOR -> StringKeyDosha.SYNASTRY_INTERPRET_MAJOR
+        AspectNature.MINOR -> StringKeyDosha.SYNASTRY_INTERPRET_MINOR
     }
+    return com.astro.storm.data.localization.StringResources.get(key, language, p1Name, p2Name)
 }
 
 private fun generateAscendantInterpretation(planet: Planet, chartNum: Int, language: Language): String {
-    return "${planet.getLocalizedName(language)} conjunct Person $chartNum's Ascendant creates a strong personal connection."
+    return com.astro.storm.data.localization.StringResources.get(
+        StringKeyDosha.SYNASTRY_INTERPRET_ASCENDANT,
+        language,
+        planet.getLocalizedName(language),
+        chartNum
+    )
 }
 
 private fun generateHouseOverlayInterpretation(planet: Planet, house: Int, chartNum: Int, language: Language): String {
-    return "Person $chartNum's ${planet.getLocalizedName(language)} falls in the ${house}th house, influencing ${getLifeAreaForHouse(house).lowercase()}."
+    return com.astro.storm.data.localization.StringResources.get(
+        StringKeyDosha.SYNASTRY_INTERPRET_OVERLAY,
+        language,
+        chartNum,
+        planet.getLocalizedName(language),
+        house,
+        getLifeAreaForHouse(house, language).lowercase()
+    )
 }
 
 private fun calculateCompatibilityCategories(
@@ -661,35 +675,35 @@ private fun calculateCompatibilityCategories(
             name = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_EMOTIONAL_BOND, language),
             score = emotionalScore,
             maxScore = 10.0,
-            description = "Emotional understanding and nurturing",
+            description = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_DESC_EMOTIONAL, language),
             icon = Icons.Filled.Favorite
         ),
         CompatibilityCategory(
             name = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_ROMANCE, language),
             score = romanceScore,
             maxScore = 10.0,
-            description = "Physical attraction and passion",
+            description = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_DESC_ROMANCE, language),
             icon = Icons.Filled.FavoriteBorder
         ),
         CompatibilityCategory(
             name = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_COMMUNICATION, language),
             score = communicationScore,
             maxScore = 10.0,
-            description = "Mental connection and dialogue",
+            description = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_DESC_COMMUNICATION, language),
             icon = Icons.Filled.ChatBubble
         ),
         CompatibilityCategory(
             name = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_STABILITY, language),
             score = stabilityScore,
             maxScore = 10.0,
-            description = "Commitment and endurance",
+            description = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_DESC_STABILITY, language),
             icon = Icons.Filled.Shield
         ),
         CompatibilityCategory(
             name = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_GROWTH, language),
             score = growthScore,
             maxScore = 10.0,
-            description = "Mutual expansion and learning",
+            description = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_DESC_GROWTH, language),
             icon = Icons.Filled.TrendingUp
         )
     )
@@ -705,12 +719,28 @@ private fun generateKeyFindings(
 
     // Find strongest aspects
     aspects.take(3).forEach { aspect ->
-        findings.add("Strong ${aspect.aspectType.displayName} between ${aspect.planet1.displayName} and ${aspect.planet2.displayName}")
+        findings.add(
+            com.astro.storm.data.localization.StringResources.get(
+                StringKeyDosha.SYNASTRY_FINDING_ASPECT,
+                language,
+                aspect.aspectType.getLocalizedName(language),
+                aspect.planet1.getLocalizedName(language),
+                aspect.planet2.getLocalizedName(language)
+            )
+        )
     }
 
     // Key house placements
     overlays1In2.filter { it.houseNumber in listOf(1, 5, 7, 10) }.take(2).forEach { overlay ->
-        findings.add("${overlay.planet.displayName} activates the ${overlay.houseNumber}th house of ${overlay.lifeArea.lowercase()}")
+        findings.add(
+            com.astro.storm.data.localization.StringResources.get(
+                StringKeyDosha.SYNASTRY_FINDING_HOUSE,
+                language,
+                overlay.planet.getLocalizedName(language),
+                overlay.houseNumber,
+                getLifeAreaForHouse(overlay.houseNumber, language).lowercase()
+            )
+        )
     }
 
     return findings.take(5)
@@ -1624,7 +1654,7 @@ private fun ChartSelectorBottomSheet(
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        "${availableCharts.size} charts available",
+                        stringResource(StringKeyDosha.SYNASTRY_AVAILABLE_CHARTS, availableCharts.size),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )

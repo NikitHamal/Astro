@@ -133,7 +133,7 @@ fun CharaDashaScreen(
                 charaDashaResult = CharaDashaCalculator.calculateCharaDasha(chart, numberOfCycles = 3)
                 isCalculating = false
             } catch (e: Exception) {
-                calculationError = e.message ?: "Unknown error calculating Chara Dasha"
+                calculationError = e.message ?: stringResource(StringKeyAnalysis.CHARA_DASHA_CALC_ERROR)
                 isCalculating = false
             }
         }
@@ -187,7 +187,7 @@ fun CharaDashaScreen(
                                     charaDashaResult = CharaDashaCalculator.calculateCharaDasha(chart, numberOfCycles = 3)
                                     isCalculating = false
                                 } catch (e: Exception) {
-                                    calculationError = e.message ?: "Unknown error"
+                                    calculationError = e.message ?: stringResource(StringKeyAnalysis.CHARA_DASHA_CALC_ERROR)
                                     isCalculating = false
                                 }
                             }
@@ -685,7 +685,7 @@ private fun CharaDashaSystemInfoCard(
                 }
             )
             InfoRow(
-                label = "Type",
+                label = stringResource(StringKeyAnalysis.CHARA_DASHA_TYPE),
                 value = if (result.isOddLagna) {
                     stringResource(StringKeyDosha.CHARA_DASHA_ODD_LAGNA)
                 } else {
@@ -793,7 +793,7 @@ private fun CharaDashaInterpretationCard(
 
                     if (mahadasha.interpretation.karakaActivation.isNotEmpty()) {
                         InterpretationSection(
-                            title = "Karaka Activation",
+                            title = stringResource(StringKeyAnalysis.KARAKA_ACTIVATION),
                             items = mahadasha.interpretation.karakaActivation
                         )
                     }

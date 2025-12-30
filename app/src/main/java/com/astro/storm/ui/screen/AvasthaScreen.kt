@@ -26,7 +26,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyAnalysis
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.AutoAwesome
@@ -102,7 +103,14 @@ fun AvasthaScreen(
     var analysis by remember { mutableStateOf<AvasthaCalculator.AvasthaAnalysis?>(null) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    val tabs = listOf("Overview", "Planets", "Baladi", "Jagradadi", "Deeptadi", "Lajjitadi")
+    val tabs = listOf(
+        stringResource(StringKeyAnalysis.AVASTHA_TAB_OVERVIEW),
+        stringResource(StringKeyAnalysis.AVASTHA_TAB_PLANETS),
+        stringResource(StringKeyAnalysis.AVASTHA_TAB_BALADI),
+        stringResource(StringKeyAnalysis.AVASTHA_TAB_JAGRADADI),
+        stringResource(StringKeyAnalysis.AVASTHA_TAB_DEEPTADI),
+        stringResource(StringKeyAnalysis.AVASTHA_TAB_LAJJITADI)
+    )
 
     // Calculate analysis
     LaunchedEffect(chart) {
@@ -145,7 +153,7 @@ fun AvasthaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -154,7 +162,7 @@ fun AvasthaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKeyDosha.UI_INFO_CIRCLE),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -343,9 +351,9 @@ private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
 
             Text(
                 text = when {
-                    analysis.overallStrength >= 70 -> "Strong overall planetary configuration"
-                    analysis.overallStrength >= 50 -> "Moderate overall planetary strength"
-                    else -> "Planets need strengthening measures"
+                    analysis.overallStrength >= 70 -> stringResource(StringKeyAnalysis.AVASTHA_STRONG_CONFIG)
+                    analysis.overallStrength >= 50 -> stringResource(StringKeyAnalysis.AVASTHA_MODERATE_STRENGTH)
+                    else -> stringResource(StringKeyAnalysis.AVASTHA_NEEDS_MEASURES)
                 },
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
@@ -462,19 +470,19 @@ private fun AvasthaQuickStatsRow(analysis: AvasthaCalculator.AvasthaAnalysis) {
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         AvasthaStatCard(
-            title = "Strong",
+            title = stringResource(StringKey.STRENGTH_STRONG),
             value = "$strongCount",
             color = AppTheme.SuccessColor,
             modifier = Modifier.weight(1f)
         )
         AvasthaStatCard(
-            title = "Moderate",
+            title = stringResource(StringKey.STRENGTH_AVERAGE),
             value = "$moderateCount",
             color = AppTheme.AccentGold,
             modifier = Modifier.weight(1f)
         )
         AvasthaStatCard(
-            title = "Weak",
+            title = stringResource(StringKey.STRENGTH_WEAK),
             value = "$weakCount",
             color = AppTheme.WarningColor,
             modifier = Modifier.weight(1f)
@@ -742,25 +750,25 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
 
                     // All four avasthas with descriptions
                     AvasthaDetailRow(
-                        title = "Age State (Baladi)",
+                        title = stringResource(StringKeyAnalysis.AVASTHA_AGE_STATE),
                         value = avastha.baladiAvastha.displayName,
                         description = avastha.baladiAvastha.description,
                         color = getBaladiColor(avastha.baladiAvastha)
                     )
                     AvasthaDetailRow(
-                        title = "Alertness (Jagradadi)",
+                        title = stringResource(StringKeyAnalysis.AVASTHA_ALERTNESS),
                         value = avastha.jagradadiAvastha.displayName,
                         description = avastha.jagradadiAvastha.description,
                         color = getJagradadiColor(avastha.jagradadiAvastha)
                     )
                     AvasthaDetailRow(
-                        title = "Dignity (Deeptadi)",
+                        title = stringResource(StringKeyAnalysis.AVASTHA_DIGNITY),
                         value = avastha.deeptadiAvastha.displayName,
                         description = avastha.deeptadiAvastha.description,
                         color = getDeeptadiColor(avastha.deeptadiAvastha)
                     )
                     AvasthaDetailRow(
-                        title = "Emotional (Lajjitadi)",
+                        title = stringResource(StringKeyAnalysis.AVASTHA_EMOTIONAL),
                         value = avastha.lajjitadiAvastha.displayName,
                         description = avastha.lajjitadiAvastha.description,
                         color = getLajjitadiColor(avastha.lajjitadiAvastha)

@@ -47,13 +47,13 @@ class KalachakraDashaViewModel : ViewModel() {
     /**
      * Load Kalachakra Dasha for the given chart
      */
-    fun loadKalachakraDasha(chart: VedicChart?) {
+    fun loadKalachakraDasha(chart: VedicChart?, language: com.astro.storm.data.localization.Language = com.astro.storm.data.localization.Language.ENGLISH) {
         if (chart == null) {
             _uiState.value = KalachakraDashaUiState.Idle
             return
         }
 
-        val chartKey = generateChartKey(chart)
+        val chartKey = generateChartKey(chart, language)
 
         // Check cache first
         cache.get()?.let { cached ->
@@ -78,7 +78,8 @@ class KalachakraDashaViewModel : ViewModel() {
                 val result = withContext(Dispatchers.Default) {
                     KalachakraDashaCalculator.calculateKalachakraDasha(
                         chart = chart,
-                        numberOfCycles = 2 // Calculate 2 cycles = 200 years
+                        numberOfCycles = 2, // Calculate 2 cycles = 200 years
+                        language = language
                     )
                 }
 
@@ -114,7 +115,7 @@ class KalachakraDashaViewModel : ViewModel() {
     /**
      * Generate a unique key for the chart to use for caching
      */
-    private fun generateChartKey(chart: VedicChart): String {
+    private fun generateChartKey(chart: VedicChart, language: com.astro.storm.data.localization.Language): String {
         val birthData = chart.birthData
         return buildString {
             append(birthData.dateTime.toEpochSecond(java.time.ZoneOffset.UTC))
@@ -124,7 +125,8 @@ class KalachakraDashaViewModel : ViewModel() {
             append((birthData.longitude * 1_000_000).toLong())
             append('|')
             append(chart.ayanamsaName)
-            append("|kalachakra")
+            append("|kalachakra|")
+            append(language.name)
         }
     }
 

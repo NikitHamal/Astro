@@ -111,7 +111,7 @@ fun BhriguBinduScreen(
     if (bbAnalysis == null) {
         EmptyChartScreen(
             title = stringResource(StringKeyDosha.BHRIGU_BINDU_TITLE),
-            message = "Unable to calculate Bhrigu Bindu. Please check chart data.",
+            message = stringResource(StringKeyDosha.BHRIGU_BINDU_CALC_ERROR),
             onBack = onBack
         )
         return
@@ -446,12 +446,12 @@ private fun BhriguBinduOverviewTab(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     InfluenceIndicator(
-                        label = "Benefic",
+                        label = stringResource(StringKey.BENEFIC),
                         value = analysis.strengthAssessment.beneficInfluence,
                         color = AppTheme.SuccessColor
                     )
                     InfluenceIndicator(
-                        label = "Malefic",
+                        label = stringResource(StringKey.MALEFIC),
                         value = analysis.strengthAssessment.maleficInfluence,
                         color = AppTheme.WarningColor
                     )
@@ -469,7 +469,7 @@ private fun BhriguBinduOverviewTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "Lords",
+                    stringResource(StringKey.LORDS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -581,7 +581,7 @@ private fun BhriguBinduAnalysisTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "Position Interpretation",
+                    stringResource(StringKeyDosha.POSITION_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -600,7 +600,7 @@ private fun BhriguBinduAnalysisTab(
 
         // Strength Factors
         Text(
-            "Strength Factors",
+            stringResource(StringKeyDosha.STRENGTH_FACTORS),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = AppTheme.TextPrimary,
@@ -694,7 +694,7 @@ private fun BhriguBinduTransitsTab(
 
         // Current Transits
         Text(
-            "Current Planetary Positions",
+            stringResource(StringKeyDosha.CURRENT_PLANETARY_POSITIONS),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = AppTheme.TextPrimary,
@@ -711,7 +711,7 @@ private fun BhriguBinduTransitsTab(
         // Upcoming Transits
         if (analysis.transitAnalysis.upcomingTransits.isNotEmpty()) {
             Text(
-                "Upcoming Significant Transits",
+                stringResource(StringKeyDosha.UPCOMING_TRANSITS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary,
@@ -750,8 +750,7 @@ private fun BhriguBinduTransitsTab(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    "When slow-moving planets (Saturn, Jupiter, Rahu, Ketu) transit over your Bhrigu Bindu, " +
-                    "significant karmic events tend to manifest. Pay special attention during these periods for life-changing opportunities and challenges.",
+                text = stringResource(StringKeyDosha.TRANSIT_TIMING_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary,
                     lineHeight = 18.sp
@@ -1215,7 +1214,7 @@ private fun AspectingPlanetCard(
                 )
                 if (aspectingPlanet.isApplying) {
                     Text(
-                        "Applying",
+                        stringResource(StringKeyDosha.APPLYING),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.AccentTeal
                     )
@@ -1282,7 +1281,7 @@ private fun TransitCard(
                         shape = RoundedCornerShape(6.dp)
                     ) {
                         Text(
-                            "Conjunct",
+                            stringResource(StringKeyDosha.CONJUNCT),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.AccentGold,
@@ -1486,8 +1485,7 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            "The Bhrigu Bindu is calculated as the midpoint between Rahu and Moon positions, " +
-                            "representing a sensitive karmic point in the chart.",
+                            stringResource(StringKeyDosha.BHRIGU_BINDU_ABOUT_DESC),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary,
                             lineHeight = 16.sp
@@ -1510,11 +1508,11 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
 // ============================================
 
 private fun getStrengthText(strength: OverallStrength): String = when (strength) {
-    OverallStrength.EXCELLENT -> "Excellent"
-    OverallStrength.GOOD -> "Good"
-    OverallStrength.MODERATE -> "Moderate"
-    OverallStrength.CHALLENGING -> "Challenging"
-    OverallStrength.DIFFICULT -> "Difficult"
+    OverallStrength.EXCELLENT -> stringResource(StringKey.STRENGTH_EXCELLENT)
+    OverallStrength.GOOD -> stringResource(StringKey.STRENGTH_GOOD)
+    OverallStrength.MODERATE -> stringResource(StringKey.STRENGTH_MODERATE)
+    OverallStrength.CHALLENGING -> stringResource(StringKey.STRENGTH_CHALLENGING)
+    OverallStrength.DIFFICULT -> stringResource(StringKey.STRENGTH_DIFFICULT)
 }
 
 @Composable
@@ -1563,11 +1561,11 @@ private fun getAreaInfluenceColor(influence: AreaInfluence): Color = when (influ
 }
 
 private fun getAreaInfluenceName(influence: AreaInfluence): String = when (influence) {
-    AreaInfluence.VERY_FAVORABLE -> "Very Favorable"
-    AreaInfluence.FAVORABLE -> "Favorable"
-    AreaInfluence.NEUTRAL -> "Neutral"
-    AreaInfluence.CHALLENGING -> "Challenging"
-    AreaInfluence.NEEDS_ATTENTION -> "Needs Attention"
+    AreaInfluence.VERY_FAVORABLE -> stringResource(StringKeyAnalysis.INFLUENCE_VERY_FAVORABLE)
+    AreaInfluence.FAVORABLE -> stringResource(StringKeyAnalysis.INFLUENCE_FAVORABLE)
+    AreaInfluence.NEUTRAL -> stringResource(StringKeyAnalysis.INFLUENCE_NEUTRAL)
+    AreaInfluence.CHALLENGING -> stringResource(StringKey.STRENGTH_CHALLENGING)
+    AreaInfluence.NEEDS_ATTENTION -> stringResource(StringKeyAnalysis.INFLUENCE_NEEDS_ATTENTION)
 }
 
 private fun getLifeAreaIcon(area: LifeArea): ImageVector = when (area) {
@@ -1582,21 +1580,21 @@ private fun getLifeAreaIcon(area: LifeArea): ImageVector = when (area) {
 }
 
 private fun getLifeAreaName(area: LifeArea): String = when (area) {
-    LifeArea.CAREER -> "Career"
-    LifeArea.RELATIONSHIPS -> "Relationships"
-    LifeArea.HEALTH -> "Health"
-    LifeArea.SPIRITUALITY -> "Spirituality"
-    LifeArea.WEALTH -> "Wealth"
-    LifeArea.FAMILY -> "Family"
-    LifeArea.EDUCATION -> "Education"
-    LifeArea.FOREIGN_CONNECTIONS -> "Foreign Connections"
+    LifeArea.CAREER -> stringResource(StringKeyAnalysis.AREA_CAREER)
+    LifeArea.RELATIONSHIPS -> stringResource(StringKeyAnalysis.AREA_RELATIONSHIPS)
+    LifeArea.HEALTH -> stringResource(StringKeyAnalysis.AREA_HEALTH)
+    LifeArea.SPIRITUALITY -> stringResource(StringKeyAnalysis.AREA_SPIRITUALITY)
+    LifeArea.WEALTH -> stringResource(StringKeyAnalysis.AREA_WEALTH)
+    LifeArea.FAMILY -> stringResource(StringKeyAnalysis.AREA_FAMILY)
+    LifeArea.EDUCATION -> stringResource(StringKeyAnalysis.AREA_EDUCATION)
+    LifeArea.FOREIGN_CONNECTIONS -> stringResource(StringKeyAnalysis.AREA_FOREIGN_CONNECTIONS)
 }
 
 private fun getAspectTypeName(aspectType: AspectType): String = when (aspectType) {
-    AspectType.CONJUNCTION -> "Conjunction"
-    AspectType.OPPOSITION -> "Opposition"
-    AspectType.TRINE -> "Trine"
-    AspectType.SQUARE -> "Square"
+    AspectType.CONJUNCTION -> stringResource(StringKeyAnalysis.ASPECT_CONJUNCTION)
+    AspectType.OPPOSITION -> stringResource(StringKeyAnalysis.ASPECT_OPPOSITION)
+    AspectType.TRINE -> stringResource(StringKeyAnalysis.ASPECT_TRINE)
+    AspectType.SQUARE -> stringResource(StringKeyAnalysis.ASPECT_SQUARE)
     AspectType.SEXTILE -> "Sextile"
     AspectType.SPECIAL_ASPECT -> "Special Aspect"
 }

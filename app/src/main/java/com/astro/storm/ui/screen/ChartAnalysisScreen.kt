@@ -41,7 +41,7 @@ import com.astro.storm.ui.chart.ChartRenderer
 import com.astro.storm.ui.components.FullScreenChartDialog
 import com.astro.storm.ui.components.HouseDetailDialog
 import com.astro.storm.ui.components.NakshatraDetailDialog
-import com.astro.storm.ui.components.PlanetDetailDialog
+import com.astro.storm.ui.components.dialogs.PlanetDetailDialog
 import com.astro.storm.ui.components.ShadbalaDialog
 import com.astro.storm.ui.screen.chartdetail.tabs.*
 import com.astro.storm.ui.screen.main.InsightFeature
@@ -77,9 +77,8 @@ fun ChartAnalysisScreen(
         ChartRenderer(if (isDarkTheme) ChartColorConfig.Dark else ChartColorConfig.Light)
     }
 
-    // Dialog states - managed at the top level for all tabs
-    var showFullScreenChart by remember { mutableStateOf(false) }
-    var fullScreenChartTitle by remember { mutableStateOf("Lagna") }
+    val defaultTitle = stringResource(StringKeyAnalysis.CHART_LAGNA)
+    var fullScreenChartTitle by remember { mutableStateOf(defaultTitle) }
     var fullScreenDivisionalData by remember { mutableStateOf<DivisionalChartData?>(null) }
     var showShadbalaDialog by remember { mutableStateOf(false) }
     var selectedPlanetPosition by remember { mutableStateOf<PlanetPosition?>(null) }

@@ -452,7 +452,7 @@ enum class CompatibilityRating(val displayName: String, val description: String)
         EXCELLENT -> StringResources.get(StringKeyMatch.COMPAT_EXCELLENT, language)
         GOOD -> StringResources.get(StringKeyMatch.COMPAT_GOOD, language)
         AVERAGE -> StringResources.get(StringKeyMatch.COMPAT_AVERAGE, language)
-        BELOW_AVERAGE -> StringResources.get(StringKeyDosha.COMPAT_BELOW_AVG, language)
+        BELOW_AVERAGE -> StringResources.get(StringKeyMatch.COMPAT_BELOW_AVERAGE, language)
         POOR -> StringResources.get(StringKeyMatch.COMPAT_POOR, language)
     }
 
@@ -460,7 +460,7 @@ enum class CompatibilityRating(val displayName: String, val description: String)
         EXCELLENT -> StringResources.get(StringKeyMatch.COMPAT_EXCELLENT_DESC, language)
         GOOD -> StringResources.get(StringKeyMatch.COMPAT_GOOD_DESC, language)
         AVERAGE -> StringResources.get(StringKeyMatch.COMPAT_AVERAGE_DESC, language)
-        BELOW_AVERAGE -> StringResources.get(StringKeyDosha.COMPAT_BELOW_AVG_DESC, language)
+        BELOW_AVERAGE -> StringResources.get(StringKeyMatch.COMPAT_BELOW_AVERAGE_DESC, language)
         POOR -> StringResources.get(StringKeyMatch.COMPAT_POOR_DESC, language)
     }
 

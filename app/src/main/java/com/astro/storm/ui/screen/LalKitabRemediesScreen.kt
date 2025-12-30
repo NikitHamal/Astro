@@ -209,7 +209,7 @@ fun LalKitabRemediesScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                "Note: Lal Kitab is a distinct system from classical Vedic astrology.",
+                                stringResource(StringKeyDosha.LAL_KITAB_NOTE_DISTINCT),
                                 fontSize = 12.sp,
                                 color = AppTheme.InfoColor,
                                 lineHeight = 16.sp
@@ -362,7 +362,7 @@ private fun OverviewTab(analysis: LalKitabAnalysis, language: Language) {
         if (analysis.remedies.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = "Recommended Remedies",
+                    title = stringResource(StringKeyDosha.LAL_KITAB_RECOMMENDED_REMEDIES),
                     icon = Icons.Filled.Healing,
                     tint = AppTheme.SuccessColor
                 )
@@ -419,10 +419,10 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
         AfflictionType.PITRU_DOSH -> stringResource(StringKeyDosha.LAL_KITAB_DEBT_PITRU)
         AfflictionType.MATRU_RIN -> stringResource(StringKeyDosha.LAL_KITAB_DEBT_MATRU)
         AfflictionType.STRI_RIN -> stringResource(StringKeyDosha.LAL_KITAB_DEBT_STRI)
-        AfflictionType.KANYA_RIN -> "Kanya Rin"
-        AfflictionType.GRAHAN_DOSH -> "Grahan Dosh"
-        AfflictionType.SHANI_PEEDA -> "Shani Peeda"
-        AfflictionType.NONE -> "General"
+        AfflictionType.KANYA_RIN -> stringResource(StringKeyDosha.LAL_KITAB_AFFLICTION_KANYA)
+        AfflictionType.GRAHAN_DOSH -> stringResource(StringKeyDosha.LAL_KITAB_AFFLICTION_GRAHAN)
+        AfflictionType.SHANI_PEEDA -> stringResource(StringKeyDosha.LAL_KITAB_AFFLICTION_SHANI)
+        AfflictionType.NONE -> stringResource(StringKeyDosha.LAL_KITAB_AFFLICTION_GENERAL)
     }
 
     Card(
@@ -515,7 +515,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                     if (affliction.remedies.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            "Remedies",
+                            stringResource(StringKeyDosha.LAL_KITAB_SECTION_REMEDIES),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.SuccessColor
@@ -642,7 +642,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    "General Principles",
+                    stringResource(StringKeyDosha.LAL_KITAB_GENERAL_PRINCIPLES),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary
@@ -688,14 +688,14 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        "Understanding Karmic Debts (Rin)",
+                        stringResource(StringKeyDosha.LAL_KITAB_RIN_TITLE),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        "In Lal Kitab, karmic debts represent obligations carried from past lives. These manifest as specific challenges in current life until properly addressed through remedies and right actions.",
+                        stringResource(StringKeyDosha.LAL_KITAB_RIN_DESC),
                         fontSize = 13.sp,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
@@ -731,12 +731,12 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
                             Text(
-                                "No Major Karmic Debts",
+                                stringResource(StringKeyDosha.LAL_KITAB_RIN_NONE_TITLE),
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
-                                "No significant karmic debt indicators found in your chart",
+                                stringResource(StringKeyDosha.LAL_KITAB_RIN_NONE_DESC),
                                 fontSize = 13.sp,
                                 color = AppTheme.TextMuted
                             )
@@ -761,7 +761,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
         DebtType.PITRU_RIN -> Triple(Icons.Filled.Elderly, AppTheme.AccentGold, stringResource(StringKeyDosha.LAL_KITAB_DEBT_PITRU))
         DebtType.MATRU_RIN -> Triple(Icons.Filled.Face, AppTheme.AccentTeal, stringResource(StringKeyDosha.LAL_KITAB_DEBT_MATRU))
         DebtType.STRI_RIN -> Triple(Icons.Filled.Favorite, AppTheme.ErrorColor.copy(alpha = 0.8f), stringResource(StringKeyDosha.LAL_KITAB_DEBT_STRI))
-        DebtType.KANYA_RIN -> Triple(Icons.Filled.ChildCare, AppTheme.AccentPrimary, stringResource(StringKeyDosha.LAL_KITAB_DEBT_SELF))
+        DebtType.KANYA_RIN -> Triple(Icons.Filled.ChildCare, AppTheme.AccentPrimary, stringResource(StringKeyDosha.LAL_KITAB_DEBT_KANYA))
     }
 
     Card(
@@ -821,7 +821,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
 
                     if (debt.indicators.isNotEmpty()) {
                         Text(
-                            "Indicators",
+                            stringResource(StringKeyDosha.LAL_KITAB_INDICATORS),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextPrimary
@@ -876,7 +876,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                     if (debt.remedies.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            "Remedies",
+                            stringResource(StringKeyDosha.LAL_KITAB_REMEDIES_LABEL),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.SuccessColor
@@ -917,7 +917,7 @@ private fun DebtTypesReferenceCard() {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                "Types of Karmic Debts",
+                stringResource(StringKeyDosha.LAL_KITAB_TYPES_TITLE),
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 color = AppTheme.TextPrimary
@@ -926,10 +926,10 @@ private fun DebtTypesReferenceCard() {
             Spacer(modifier = Modifier.height(16.dp))
 
             val debtTypes = listOf(
-                Triple(stringResource(StringKeyDosha.LAL_KITAB_DEBT_PITRU), "Debt towards father and ancestors", AppTheme.AccentGold),
-                Triple(stringResource(StringKeyDosha.LAL_KITAB_DEBT_MATRU), "Debt towards mother and maternal lineage", AppTheme.AccentTeal),
-                Triple(stringResource(StringKeyDosha.LAL_KITAB_DEBT_STRI), "Debt towards wife/women", AppTheme.ErrorColor.copy(alpha = 0.8f)),
-                Triple(stringResource(StringKeyDosha.LAL_KITAB_DEBT_SELF), "Debt towards self and karma", AppTheme.AccentPrimary)
+                Triple(stringResource(StringKeyDosha.LAL_KITAB_DEBT_PITRU), stringResource(StringKeyDosha.LAL_KITAB_DESC_PITRU), AppTheme.AccentGold),
+                Triple(stringResource(StringKeyDosha.LAL_KITAB_DEBT_MATRU), stringResource(StringKeyDosha.LAL_KITAB_DESC_MATRU), AppTheme.AccentTeal),
+                Triple(stringResource(StringKeyDosha.LAL_KITAB_DEBT_STRI), stringResource(StringKeyDosha.LAL_KITAB_DESC_STRI), AppTheme.ErrorColor.copy(alpha = 0.8f)),
+                Triple(stringResource(StringKeyDosha.LAL_KITAB_DEBT_SELF), stringResource(StringKeyDosha.LAL_KITAB_DESC_SELF), AppTheme.AccentPrimary)
             )
 
             debtTypes.forEach { (name, desc, color) ->
@@ -979,7 +979,7 @@ private fun WeeklyScheduleTab(analysis: LalKitabAnalysis, language: Language) {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
-                "Daily remedies for each planetary day as per Lal Kitab tradition",
+                stringResource(StringKeyDosha.LAL_KITAB_DAILY_REMEDIES_DESC),
                 fontSize = 13.sp,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -1146,7 +1146,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
             ) {
                 Column {
                     Text(
-                        "Favorable",
+                        stringResource(StringKeyDosha.LAL_KITAB_FAVORABLE),
                         fontSize = 11.sp,
                         color = AppTheme.SuccessColor,
                         fontWeight = FontWeight.Medium
@@ -1170,7 +1170,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        "Avoid",
+                        stringResource(StringKeyDosha.LAL_KITAB_AVOID),
                         fontSize = 11.sp,
                         color = AppTheme.ErrorColor,
                         fontWeight = FontWeight.Medium

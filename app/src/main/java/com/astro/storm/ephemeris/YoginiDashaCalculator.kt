@@ -1,11 +1,15 @@
 package com.astro.storm.ephemeris
 
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyDosha
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.util.VedicAstrologyUtils
 import java.math.BigDecimal
-import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -18,33 +22,10 @@ import java.time.temporal.ChronoUnit
  * - Timing of relationships and marriage
  * - Specific event prediction
  * - Short-term predictions
- *
- * The Eight Yoginis:
- * 1. Mangala (Moon) - 1 year
- * 2. Pingala (Sun) - 2 years
- * 3. Dhanya (Jupiter) - 3 years
- * 4. Bhramari (Mars) - 4 years
- * 5. Bhadrika (Mercury) - 5 years
- * 6. Ulka (Saturn) - 6 years
- * 7. Siddha (Venus) - 7 years
- * 8. Sankata (Rahu) - 8 years
- * Total: 36 years
- *
- * Nakshatra Assignment:
- * Nakshatras are assigned to Yoginis based on their sequence:
- * - Nakshatra number modulo 8 determines the starting Yogini
- *
- * References:
- * - Tantra texts on Yogini Dasha
- * - Traditional paramparas on female chart timing
- * - Brihat Parashara Hora Shastra (conditional dasha systems)
- *
- * @author AstroStorm
  */
 object YoginiDashaCalculator {
 
     private val MATH_CONTEXT = DashaUtils.MATH_CONTEXT
-    private val DAYS_PER_YEAR = DashaUtils.DAYS_PER_YEAR
     private val NAKSHATRA_SPAN_DEGREES = DashaUtils.NAKSHATRA_SPAN
 
     /**
@@ -56,7 +37,7 @@ object YoginiDashaCalculator {
         val displayName: String,
         val sanskrit: String,
         val nature: YoginiNature,
-        val description: String
+        val descriptionKey: StringKeyDosha
     ) {
         MANGALA(
             planet = Planet.MOON,
@@ -64,7 +45,7 @@ object YoginiDashaCalculator {
             displayName = "Mangala",
             sanskrit = "मंगला",
             nature = YoginiNature.AUSPICIOUS,
-            description = "Auspicious beginnings, prosperity, and happiness. Moon's nurturing energy brings emotional fulfillment."
+            descriptionKey = StringKeyDosha.YOGINI_MANGALA_DESC
         ),
         PINGALA(
             planet = Planet.SUN,
@@ -72,7 +53,7 @@ object YoginiDashaCalculator {
             displayName = "Pingala",
             sanskrit = "पिंगला",
             nature = YoginiNature.MIXED,
-            description = "Authority, father-related matters, government dealings. Can bring recognition but also ego challenges."
+            descriptionKey = StringKeyDosha.YOGINI_PINGALA_DESC
         ),
         DHANYA(
             planet = Planet.JUPITER,
@@ -80,7 +61,7 @@ object YoginiDashaCalculator {
             displayName = "Dhanya",
             sanskrit = "धान्या",
             nature = YoginiNature.HIGHLY_AUSPICIOUS,
-            description = "Wealth, wisdom, children, and spiritual growth. Jupiter's grace brings expansion and good fortune."
+            descriptionKey = StringKeyDosha.YOGINI_DHANYA_DESC
         ),
         BHRAMARI(
             planet = Planet.MARS,
@@ -88,7 +69,7 @@ object YoginiDashaCalculator {
             displayName = "Bhramari",
             sanskrit = "भ्रामरी",
             nature = YoginiNature.CHALLENGING,
-            description = "Energy, conflicts, property matters, siblings. Mars brings action but requires careful handling."
+            descriptionKey = StringKeyDosha.YOGINI_BHRAMARI_DESC
         ),
         BHADRIKA(
             planet = Planet.MERCURY,
@@ -96,7 +77,7 @@ object YoginiDashaCalculator {
             displayName = "Bhadrika",
             sanskrit = "भद्रिका",
             nature = YoginiNature.AUSPICIOUS,
-            description = "Intelligence, communication, business success. Mercury's wit brings learning and commercial gains."
+            descriptionKey = StringKeyDosha.YOGINI_BHADRIKA_DESC
         ),
         ULKA(
             planet = Planet.SATURN,
@@ -104,7 +85,7 @@ object YoginiDashaCalculator {
             displayName = "Ulka",
             sanskrit = "उल्का",
             nature = YoginiNature.CHALLENGING,
-            description = "Hardship, discipline, delays, but eventual success through perseverance. Saturn teaches patience."
+            descriptionKey = StringKeyDosha.YOGINI_ULKA_DESC
         ),
         SIDDHA(
             planet = Planet.VENUS,
@@ -112,7 +93,7 @@ object YoginiDashaCalculator {
             displayName = "Siddha",
             sanskrit = "सिद्धा",
             nature = YoginiNature.HIGHLY_AUSPICIOUS,
-            description = "Success, luxury, marriage, artistic achievements. Venus brings pleasure, love, and material comforts."
+            descriptionKey = StringKeyDosha.YOGINI_SIDDHA_DESC
         ),
         SANKATA(
             planet = Planet.RAHU,
@@ -120,8 +101,19 @@ object YoginiDashaCalculator {
             displayName = "Sankata",
             sanskrit = "संकटा",
             nature = YoginiNature.DIFFICULT,
-            description = "Obstacles, foreign influences, unconventional experiences. Rahu brings sudden changes and karmic lessons."
+            descriptionKey = StringKeyDosha.YOGINI_SANKATA_DESC
         );
+
+        fun getDescription(language: Language): String {
+            return StringResources.get(descriptionKey, language)
+        }
+
+        fun getLocalizedName(language: Language): String {
+            return when (language) {
+                Language.ENGLISH -> displayName
+                Language.NEPALI -> sanskrit
+            }
+        }
 
         companion object {
             /**
@@ -149,7 +141,17 @@ object YoginiDashaCalculator {
         AUSPICIOUS,
         MIXED,
         CHALLENGING,
-        DIFFICULT
+        DIFFICULT;
+
+        fun getLocalizedName(language: Language): String {
+            return when (this) {
+                HIGHLY_AUSPICIOUS -> StringResources.get(StringKeyDosha.YOGINI_NATURE_HIGHLY_AUSPICIOUS, language)
+                AUSPICIOUS -> StringResources.get(StringKeyDosha.YOGINI_NATURE_AUSPICIOUS, language)
+                MIXED -> StringResources.get(StringKeyDosha.YOGINI_NATURE_MIXED, language)
+                CHALLENGING -> StringResources.get(StringKeyDosha.YOGINI_NATURE_CHALLENGING, language)
+                DIFFICULT -> StringResources.get(StringKeyDosha.YOGINI_NATURE_DIFFICULT, language)
+            }
+        }
     }
 
     /**
@@ -291,14 +293,11 @@ object YoginiDashaCalculator {
 
     /**
      * Calculate complete Yogini Dasha from a VedicChart
-     *
-     * @param chart The VedicChart containing birth information
-     * @param numberOfCycles Number of complete cycles to calculate (default: 3 = 108 years)
-     * @return Complete YoginiDashaResult
      */
     fun calculateYoginiDasha(
         chart: VedicChart,
-        numberOfCycles: Int = 3
+        numberOfCycles: Int = 3,
+        language: Language = Language.ENGLISH
     ): YoginiDashaResult {
         val moonPosition = chart.planetPositions.find { it.planet == Planet.MOON }
             ?: throw IllegalArgumentException("Moon position not found in chart")
@@ -306,23 +305,18 @@ object YoginiDashaCalculator {
         val birthDate = chart.birthData.dateTime.toLocalDate()
         val moonLongitude = moonPosition.longitude
 
-        return calculateYoginiDashaFromMoon(moonLongitude, birthDate, numberOfCycles, chart)
+        return calculateYoginiDashaFromMoon(moonLongitude, birthDate, numberOfCycles, chart, language)
     }
 
     /**
      * Calculate Yogini Dasha from Moon longitude and birth date
-     *
-     * @param moonLongitude Moon's longitude in degrees (0-360)
-     * @param birthDate Date of birth
-     * @param numberOfCycles Number of 36-year cycles to calculate
-     * @param chart Optional chart for additional analysis
-     * @return Complete YoginiDashaResult
      */
     fun calculateYoginiDashaFromMoon(
         moonLongitude: Double,
         birthDate: LocalDate,
         numberOfCycles: Int = 3,
-        chart: VedicChart? = null
+        chart: VedicChart? = null,
+        language: Language = Language.ENGLISH
     ): YoginiDashaResult {
         // Get birth nakshatra
         val (birthNakshatra, _) = Nakshatra.fromLongitude(moonLongitude)
@@ -342,7 +336,8 @@ object YoginiDashaCalculator {
             balanceAtBirth,
             birthDate,
             numberOfCycles,
-            chart
+            chart,
+            language
         )
 
         // Find current periods
@@ -351,7 +346,7 @@ object YoginiDashaCalculator {
         val currentAntardasha = currentMahadasha?.getAntardashaOn(today)
 
         // Assess applicability
-        val applicability = assessApplicability(chart)
+        val applicability = assessApplicability(chart, language)
 
         return YoginiDashaResult(
             birthNakshatra = birthNakshatra,
@@ -410,7 +405,8 @@ object YoginiDashaCalculator {
         balanceAtBirth: BalanceAtBirth,
         birthDate: LocalDate,
         numberOfCycles: Int,
-        chart: VedicChart?
+        chart: VedicChart?,
+        language: Language
     ): List<YoginiMahadasha> {
         val mahadashas = mutableListOf<YoginiMahadasha>()
 
@@ -424,9 +420,10 @@ object YoginiDashaCalculator {
                 balanceAtBirth.yogini,
                 currentDate,
                 endDate,
-                chart
+                chart,
+                language
             )
-            val interpretation = generateInterpretation(balanceAtBirth.yogini, chart)
+            val interpretation = generateInterpretation(balanceAtBirth.yogini, chart, language)
 
             mahadashas.add(
                 YoginiMahadasha(
@@ -450,8 +447,8 @@ object YoginiDashaCalculator {
             val durationDays = yearsToRoundedDays(yogini.years.toDouble())
             val endDate = currentDate.plusDays(durationDays)
 
-            val antardashas = calculateAntardashas(yogini, currentDate, endDate, chart)
-            val interpretation = generateInterpretation(yogini, chart)
+            val antardashas = calculateAntardashas(yogini, currentDate, endDate, chart, language)
+            val interpretation = generateInterpretation(yogini, chart, language)
 
             mahadashas.add(
                 YoginiMahadasha(
@@ -474,15 +471,13 @@ object YoginiDashaCalculator {
 
     /**
      * Calculate Antardashas within a Mahadasha
-     *
-     * In Yogini Dasha, Antardashas follow the same sequence as Mahadashas,
-     * starting from the Mahadasha lord, with proportionate duration.
      */
     private fun calculateAntardashas(
         mahadashaYogini: Yogini,
         mahadashaStart: LocalDate,
         mahadashaEnd: LocalDate,
-        chart: VedicChart?
+        chart: VedicChart?,
+        language: Language
     ): List<YoginiAntardasha> {
         val antardashas = mutableListOf<YoginiAntardasha>()
         val mahaDurationDays = ChronoUnit.DAYS.between(mahadashaStart, mahadashaEnd)
@@ -515,7 +510,8 @@ object YoginiDashaCalculator {
             val interpretation = generateAntardashaInterpretation(
                 mahadashaYogini,
                 antardashaYogini,
-                chart
+                chart,
+                language
             )
 
             antardashas.add(
@@ -541,113 +537,149 @@ object YoginiDashaCalculator {
     /**
      * Generate interpretation for Yogini Mahadasha
      */
-    private fun generateInterpretation(yogini: Yogini, chart: VedicChart?): YoginiInterpretation {
-        val generalEffects = yogini.description
+    fun generateInterpretation(
+        yogini: Yogini,
+        chart: VedicChart?,
+        language: Language
+    ): YoginiInterpretation {
+        val generalEffects = yogini.getDescription(language)
 
         val careerEffects = when (yogini) {
-            Yogini.MANGALA -> "Career brings emotional satisfaction. Good for nurturing professions, public relations, and hospitality industry."
-            Yogini.PINGALA -> "Leadership opportunities arise. Government jobs, authority positions, and recognition in career. Father may influence career."
-            Yogini.DHANYA -> "Expansion in career, promotions, and higher learning. Excellent for teaching, consulting, and advisory roles."
-            Yogini.BHRAMARI -> "Active period in career with competition. Good for technical, engineering, and defense-related fields. Property dealings."
-            Yogini.BHADRIKA -> "Business acumen peaks. Excellent for trade, communication, writing, and intellectual pursuits. Good for learning new skills."
-            Yogini.ULKA -> "Slow but steady career progress. Hard work brings delayed rewards. Good for perseverance in long-term projects."
-            Yogini.SIDDHA -> "Career success through creativity and charm. Excellent for arts, entertainment, luxury goods, and beauty industries."
-            Yogini.SANKATA -> "Unconventional career paths, foreign opportunities. May bring sudden changes in profession. Research and technology favored."
+            Yogini.MANGALA -> StringResources.get(StringKeyDosha.YOGINI_MANGALA_CAREER, language)
+            Yogini.PINGALA -> StringResources.get(StringKeyDosha.YOGINI_PINGALA_CAREER, language)
+            Yogini.DHANYA -> StringResources.get(StringKeyDosha.YOGINI_DHANYA_CAREER, language)
+            Yogini.BHRAMARI -> StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_CAREER, language)
+            Yogini.BHADRIKA -> StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_CAREER, language)
+            Yogini.ULKA -> StringResources.get(StringKeyDosha.YOGINI_ULKA_CAREER, language)
+            Yogini.SIDDHA -> StringResources.get(StringKeyDosha.YOGINI_SIDDHA_CAREER, language)
+            Yogini.SANKATA -> StringResources.get(StringKeyDosha.YOGINI_SANKATA_CAREER, language)
         }
 
         val relationshipEffects = when (yogini) {
-            Yogini.MANGALA -> "Emotional connections deepen. Good for starting relationships. Mother's influence prominent. Nurturing partnerships."
-            Yogini.PINGALA -> "Relationships with authority figures. Father-related matters in marriage. May face ego conflicts with partners."
-            Yogini.DHANYA -> "Excellent for marriage and childbirth. Spiritual connections in relationships. Teachers and mentors become important."
-            Yogini.BHRAMARI -> "Passionate but potentially conflicting relationships. Brothers/sisters prominent. Physical attraction strong."
-            Yogini.BHADRIKA -> "Communication improves relationships. Intellectual compatibility matters. Good for understanding partners better."
-            Yogini.ULKA -> "Delays or challenges in relationships. Karmic partners appear. Long-distance relationships possible."
-            Yogini.SIDDHA -> "Excellent for romance, marriage, and love. Harmonious relationships. Beauty and pleasure in partnerships."
-            Yogini.SANKATA -> "Unusual or foreign partners. Sudden attractions or separations. Need to address karmic relationship patterns."
+            Yogini.MANGALA -> StringResources.get(StringKeyDosha.YOGINI_MANGALA_RELATIONSHIP, language)
+            Yogini.PINGALA -> StringResources.get(StringKeyDosha.YOGINI_PINGALA_RELATIONSHIP, language)
+            Yogini.DHANYA -> StringResources.get(StringKeyDosha.YOGINI_DHANYA_RELATIONSHIP, language)
+            Yogini.BHRAMARI -> StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_RELATIONSHIP, language)
+            Yogini.BHADRIKA -> StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_RELATIONSHIP, language)
+            Yogini.ULKA -> StringResources.get(StringKeyDosha.YOGINI_ULKA_RELATIONSHIP, language)
+            Yogini.SIDDHA -> StringResources.get(StringKeyDosha.YOGINI_SIDDHA_RELATIONSHIP, language)
+            Yogini.SANKATA -> StringResources.get(StringKeyDosha.YOGINI_SANKATA_RELATIONSHIP, language)
         }
 
         val healthEffects = when (yogini) {
-            Yogini.MANGALA -> "Generally good health. Focus on emotional and mental well-being. Water-related activities beneficial."
-            Yogini.PINGALA -> "Watch heart, eyes, and overall vitality. Morning sun exposure beneficial. Maintain healthy ego."
-            Yogini.DHANYA -> "Good health generally. Watch liver and weight. Spiritual practices enhance well-being."
-            Yogini.BHRAMARI -> "Watch for injuries, inflammations, and accidents. Physical exercise important but avoid overexertion."
-            Yogini.BHADRIKA -> "Nervous system needs attention. Skin issues possible. Mental relaxation techniques helpful."
-            Yogini.ULKA -> "Chronic issues may arise. Bones, joints, and teeth need care. Patience in recovery."
-            Yogini.SIDDHA -> "Generally good health. Watch reproductive system. Beauty treatments beneficial."
-            Yogini.SANKATA -> "Unusual or hard-to-diagnose health issues. Mental health important. Alternative therapies may help."
+            Yogini.MANGALA -> StringResources.get(StringKeyDosha.YOGINI_MANGALA_HEALTH, language)
+            Yogini.PINGALA -> StringResources.get(StringKeyDosha.YOGINI_PINGALA_HEALTH, language)
+            Yogini.DHANYA -> StringResources.get(StringKeyDosha.YOGINI_DHANYA_HEALTH, language)
+            Yogini.BHRAMARI -> StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_HEALTH, language)
+            Yogini.BHADRIKA -> StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_HEALTH, language)
+            Yogini.ULKA -> StringResources.get(StringKeyDosha.YOGINI_ULKA_HEALTH, language)
+            Yogini.SIDDHA -> StringResources.get(StringKeyDosha.YOGINI_SIDDHA_HEALTH, language)
+            Yogini.SANKATA -> StringResources.get(StringKeyDosha.YOGINI_SANKATA_HEALTH, language)
         }
 
         val spiritualEffects = when (yogini) {
-            Yogini.MANGALA -> "Devotional practices strengthen. Mother goddess worship beneficial. Emotional cleansing through meditation."
-            Yogini.PINGALA -> "Solar meditation and surya namaskar beneficial. Connection with divine father principle. Self-realization focus."
-            Yogini.DHANYA -> "Excellent for spiritual growth and higher learning. Guru connection strengthens. Sacred knowledge flows."
-            Yogini.BHRAMARI -> "Active spiritual practices like yoga and pranayama. Kundalini may activate. Mars-related deity worship helps."
-            Yogini.BHADRIKA -> "Intellectual approach to spirituality. Study of scriptures beneficial. Mantra practice effective."
-            Yogini.ULKA -> "Deep karmic cleansing period. Meditation on impermanence. Service-oriented spirituality."
-            Yogini.SIDDHA -> "Tantric practices may attract. Beauty in spirituality. Heart-centered practices beneficial."
-            Yogini.SANKATA -> "Deep transformation possible. Occult interests may arise. Breaking free from illusions."
+            Yogini.MANGALA -> StringResources.get(StringKeyDosha.YOGINI_MANGALA_SPIRITUAL, language)
+            Yogini.PINGALA -> StringResources.get(StringKeyDosha.YOGINI_PINGALA_SPIRITUAL, language)
+            Yogini.DHANYA -> StringResources.get(StringKeyDosha.YOGINI_DHANYA_SPIRITUAL, language)
+            Yogini.BHRAMARI -> StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_SPIRITUAL, language)
+            Yogini.BHADRIKA -> StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_SPIRITUAL, language)
+            Yogini.ULKA -> StringResources.get(StringKeyDosha.YOGINI_ULKA_SPIRITUAL, language)
+            Yogini.SIDDHA -> StringResources.get(StringKeyDosha.YOGINI_SIDDHA_SPIRITUAL, language)
+            Yogini.SANKATA -> StringResources.get(StringKeyDosha.YOGINI_SANKATA_SPIRITUAL, language)
         }
 
         val recommendations = when (yogini) {
             Yogini.MANGALA -> listOf(
-                "Wear pearl or moonstone",
-                "Honor your mother and maternal figures",
-                "Practice moon salutations",
-                "Donate white items on Mondays"
+                StringResources.get(StringKeyDosha.YOGINI_MANGALA_REC_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_MANGALA_REC_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_MANGALA_REC_3, language),
+                StringResources.get(StringKeyDosha.YOGINI_MANGALA_REC_4, language)
             )
             Yogini.PINGALA -> listOf(
-                "Wear ruby if suitable",
-                "Practice Surya Namaskar at sunrise",
-                "Honor your father",
-                "Donate wheat or jaggery on Sundays"
+                StringResources.get(StringKeyDosha.YOGINI_PINGALA_REC_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_PINGALA_REC_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_PINGALA_REC_3, language),
+                StringResources.get(StringKeyDosha.YOGINI_PINGALA_REC_4, language)
             )
             Yogini.DHANYA -> listOf(
-                "Wear yellow sapphire if suitable",
-                "Seek blessings from teachers",
-                "Study sacred texts",
-                "Donate to educational causes on Thursdays"
+                StringResources.get(StringKeyDosha.YOGINI_DHANYA_REC_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_DHANYA_REC_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_DHANYA_REC_3, language),
+                StringResources.get(StringKeyDosha.YOGINI_DHANYA_REC_4, language)
             )
             Yogini.BHRAMARI -> listOf(
-                "Wear red coral if suitable",
-                "Practice physical exercise regularly",
-                "Channel energy constructively",
-                "Donate red items on Tuesdays"
+                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_REC_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_REC_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_REC_3, language),
+                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_REC_4, language)
             )
             Yogini.BHADRIKA -> listOf(
-                "Wear emerald if suitable",
-                "Engage in learning and communication",
-                "Write and express yourself",
-                "Donate green items on Wednesdays"
+                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_REC_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_REC_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_REC_3, language),
+                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_REC_4, language)
             )
             Yogini.ULKA -> listOf(
-                "Wear blue sapphire with caution",
-                "Practice patience and discipline",
-                "Serve the elderly and disadvantaged",
-                "Donate oil and black items on Saturdays"
+                StringResources.get(StringKeyDosha.YOGINI_ULKA_REC_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_ULKA_REC_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_ULKA_REC_3, language),
+                StringResources.get(StringKeyDosha.YOGINI_ULKA_REC_4, language)
             )
             Yogini.SIDDHA -> listOf(
-                "Wear diamond or white sapphire if suitable",
-                "Engage in arts and creativity",
-                "Cultivate harmonious relationships",
-                "Donate white items on Fridays"
+                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_REC_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_REC_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_REC_3, language),
+                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_REC_4, language)
             )
             Yogini.SANKATA -> listOf(
-                "Wear hessonite after careful analysis",
-                "Stay grounded during sudden changes",
-                "Address past-life patterns through meditation",
-                "Donate blue/black items on Saturdays"
+                StringResources.get(StringKeyDosha.YOGINI_SANKATA_REC_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_SANKATA_REC_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_SANKATA_REC_3, language),
+                StringResources.get(StringKeyDosha.YOGINI_SANKATA_REC_4, language)
             )
         }
 
         val cautionAreas = when (yogini) {
-            Yogini.MANGALA -> listOf("Emotional volatility", "Over-attachment", "Water-related issues")
-            Yogini.PINGALA -> listOf("Ego conflicts", "Eye problems", "Father's health")
-            Yogini.DHANYA -> listOf("Over-expansion", "Weight issues", "Over-optimism")
-            Yogini.BHRAMARI -> listOf("Anger management", "Accidents", "Property disputes")
-            Yogini.BHADRIKA -> listOf("Nervousness", "Overthinking", "Skin issues")
-            Yogini.ULKA -> listOf("Depression", "Delays", "Chronic health issues")
-            Yogini.SIDDHA -> listOf("Indulgence", "Relationship complications", "Luxury overspending")
-            Yogini.SANKATA -> listOf("Sudden obstacles", "Confusion", "Unusual diseases")
+            Yogini.MANGALA -> listOf(
+                StringResources.get(StringKeyDosha.YOGINI_MANGALA_CAUTION_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_MANGALA_CAUTION_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_MANGALA_CAUTION_3, language)
+            )
+            Yogini.PINGALA -> listOf(
+                StringResources.get(StringKeyDosha.YOGINI_PINGALA_CAUTION_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_PINGALA_CAUTION_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_PINGALA_CAUTION_3, language)
+            )
+            Yogini.DHANYA -> listOf(
+                StringResources.get(StringKeyDosha.YOGINI_DHANYA_CAUTION_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_DHANYA_CAUTION_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_DHANYA_CAUTION_3, language)
+            )
+            Yogini.BHRAMARI -> listOf(
+                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_CAUTION_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_CAUTION_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_CAUTION_3, language)
+            )
+            Yogini.BHADRIKA -> listOf(
+                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_CAUTION_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_CAUTION_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_CAUTION_3, language)
+            )
+            Yogini.ULKA -> listOf(
+                StringResources.get(StringKeyDosha.YOGINI_ULKA_CAUTION_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_ULKA_CAUTION_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_ULKA_CAUTION_3, language)
+            )
+            Yogini.SIDDHA -> listOf(
+                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_CAUTION_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_CAUTION_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_CAUTION_3, language)
+            )
+            Yogini.SANKATA -> listOf(
+                StringResources.get(StringKeyDosha.YOGINI_SANKATA_CAUTION_1, language),
+                StringResources.get(StringKeyDosha.YOGINI_SANKATA_CAUTION_2, language),
+                StringResources.get(StringKeyDosha.YOGINI_SANKATA_CAUTION_3, language)
+            )
         }
 
         return YoginiInterpretation(
@@ -667,7 +699,8 @@ object YoginiDashaCalculator {
     private fun generateAntardashaInterpretation(
         mahadashaYogini: Yogini,
         antardashaYogini: Yogini,
-        chart: VedicChart?
+        chart: VedicChart?,
+        language: Language
     ): String {
         val mahaPlanet = mahadashaYogini.planet
         val antarPlanet = antardashaYogini.planet
@@ -681,28 +714,30 @@ object YoginiDashaCalculator {
         val isHostile = relationship == VedicAstrologyUtils.PlanetaryRelationship.ENEMY ||
                         relationship == VedicAstrologyUtils.PlanetaryRelationship.BITTER_ENEMY
 
+        val mahaName = mahadashaYogini.getLocalizedName(language)
+        val antarName = antardashaYogini.getLocalizedName(language)
+        val mahaPlanetName = mahaPlanet.getLocalizedName(language)
+        val antarPlanetName = antarPlanet.getLocalizedName(language)
+
         return when {
-            isFriendly -> buildString {
-                append("${mahadashaYogini.displayName}-${antardashaYogini.displayName}: ")
-                append("Harmonious sub-period with complementary energies. ")
-                append("${antarPlanet.displayName}'s significations blend well with ")
-                append("${mahaPlanet.displayName}'s ongoing influence. ")
-                append("Good for collaborative efforts and relationship building.")
-            }
-            isHostile -> buildString {
-                append("${mahadashaYogini.displayName}-${antardashaYogini.displayName}: ")
-                append("Potentially challenging sub-period with conflicting energies. ")
-                append("${antarPlanet.displayName} may create tension with ")
-                append("${mahaPlanet.displayName}'s ongoing themes. ")
-                append("Requires patience, remedies, and conscious effort for harmony.")
-            }
-            else -> buildString {
-                append("${mahadashaYogini.displayName}-${antardashaYogini.displayName}: ")
-                append("Balanced sub-period requiring conscious integration. ")
-                append("${antarPlanet.displayName}'s themes activate within ")
-                append("${mahaPlanet.displayName}'s framework. ")
-                append("Results depend on individual chart placements.")
-            }
+            isFriendly -> StringResources.get(
+                StringKeyDosha.YOGINI_ANTAR_FRIENDLY,
+                language,
+                mahaName, antarName, // %s-%s (Header)
+                antarPlanetName, mahaPlanetName // %s's significations blend with %s's
+            )
+            isHostile -> StringResources.get(
+                StringKeyDosha.YOGINI_ANTAR_HOSTILE,
+                language,
+                mahaName, antarName,
+                antarPlanetName, mahaPlanetName
+            )
+            else -> StringResources.get(
+                StringKeyDosha.YOGINI_ANTAR_NEUTRAL,
+                language,
+                mahaName, antarName,
+                antarPlanetName, mahaPlanetName
+            )
         }
     }
 
@@ -717,19 +752,13 @@ object YoginiDashaCalculator {
 
     /**
      * Assess applicability of Yogini Dasha for a chart
-     *
-     * Yogini Dasha is particularly recommended for:
-     * - Female horoscopes
-     * - Charts with strong Moon
-     * - Night births
-     * - When Vimsottari gives conflicting results
      */
-    private fun assessApplicability(chart: VedicChart?): Applicability {
+    private fun assessApplicability(chart: VedicChart?, language: Language): Applicability {
         if (chart == null) {
             return Applicability(
                 isRecommended = true,
                 applicabilityScore = 0.7,
-                reasons = listOf("Yogini Dasha is universally applicable for timing specific events")
+                reasons = listOf(StringResources.get(StringKeyDosha.YOGINI_APP_UNIVERSAL, language))
             )
         }
 
@@ -739,7 +768,7 @@ object YoginiDashaCalculator {
         // Check gender (if available - traditionally more applicable for females)
         if (chart.birthData.gender == com.astro.storm.data.model.Gender.FEMALE) {
             score += 0.2
-            reasons.add("Yogini Dasha is traditionally considered more accurate for female horoscopes")
+            reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_FEMALE, language))
         }
 
         // Check Moon strength
@@ -749,7 +778,7 @@ object YoginiDashaCalculator {
             // Moon strong in Taurus (exalted) or Cancer (own sign)
             if (moonSign == ZodiacSign.TAURUS || moonSign == ZodiacSign.CANCER) {
                 score += 0.15
-                reasons.add("Strong Moon in ${moonSign.displayName} enhances Yogini Dasha applicability")
+                reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_STRONG_MOON, language, moonSign.getLocalizedName(language)))
             }
         }
 
@@ -758,14 +787,14 @@ object YoginiDashaCalculator {
         val birthHour = chart.birthData.dateTime.hour
         if (birthHour < 6 || birthHour >= 18) {
             score += 0.1
-            reasons.add("Night birth traditionally favors Yogini Dasha")
+            reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_NIGHT_BIRTH, language))
         }
 
         // Always applicable for relationship timing
-        reasons.add("Yogini Dasha excels at timing relationship and marriage events")
+        reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_RELATIONSHIP, language))
 
         // Add general applicability statement
-        reasons.add("Can be used alongside Vimsottari Dasha for validation")
+        reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_VALIDATION, language))
 
         return Applicability(
             isRecommended = score >= 0.6,
@@ -781,29 +810,33 @@ object YoginiDashaCalculator {
     /**
      * Get current Yogini period summary
      */
-    fun getCurrentPeriodSummary(result: YoginiDashaResult): String {
-        val maha = result.currentMahadasha ?: return "No active Yogini Dasha period"
+    fun getCurrentPeriodSummary(result: YoginiDashaResult, language: Language = Language.ENGLISH): String {
+        val maha = result.currentMahadasha ?: return StringResources.get(StringKey.DASHA_NO_ACTIVE_PERIOD, language)
         val antar = result.currentAntardasha
 
+        // Helper to format days
+        fun formatDays(days: Long): String {
+             val months = days / 30
+             val remainingDays = days % 30
+             val parts = mutableListOf<String>()
+             if (months > 0) parts.add("$months m")
+             if (remainingDays > 0) parts.add("$remainingDays d")
+             return if (parts.isEmpty()) "0 d" else parts.joinToString(" ")
+        }
+
         return buildString {
-            append("Current Yogini Mahadasha: ${maha.yogini.displayName} (${maha.yogini.sanskrit})\n")
-            append("Planet: ${maha.yogini.planet.displayName}\n")
-            append("Duration: ${maha.durationYears} years\n")
-            append("Progress: ${String.format("%.1f", maha.getProgressPercent())}%\n")
-            append("Remaining: ${maha.getRemainingDays()} days\n")
+            appendLine("${StringResources.get(StringKeyDosha.YOGINI_DASHA_TITLE, language)}: ${maha.yogini.getLocalizedName(language)}")
+            appendLine("${StringResources.get(StringKey.PLANET, language)}: ${maha.yogini.planet.getLocalizedName(language)}")
+            appendLine("Duration: ${maha.durationYears} years") // TODO: Localize 'years' if strictly needed, or leave universal
+            appendLine("Progress: ${String.format("%.1f", maha.getProgressPercent())}%")
+            appendLine("Remaining: ${formatDays(maha.getRemainingDays())}")
 
             if (antar != null) {
-                append("\nCurrent Antardasha: ${antar.yogini.displayName}\n")
-                append("Progress: ${String.format("%.1f", antar.getProgressPercent())}%\n")
-                append("Remaining: ${antar.getRemainingDays()} days")
+                appendLine()
+                appendLine("${StringResources.get(StringKey.DASHA_ANTARDASHA, language)}: ${antar.yogini.getLocalizedName(language)}")
+                appendLine("Progress: ${String.format("%.1f", antar.getProgressPercent())}%")
+                append("Remaining: ${formatDays(antar.getRemainingDays())}")
             }
         }
-    }
-
-    /**
-     * Get Yogini sequence starting from a given Yogini
-     */
-    fun getYoginiSequence(startingYogini: Yogini): List<Yogini> {
-        return (0 until 8).map { Yogini.fromIndex(startingYogini.ordinal + it) }
     }
 }

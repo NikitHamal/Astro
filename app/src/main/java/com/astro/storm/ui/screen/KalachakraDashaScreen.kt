@@ -121,7 +121,10 @@ fun KalachakraDashaScreen(
     onBack: () -> Unit,
     viewModel: KalachakraDashaViewModel = viewModel()
 ) {
-    val chartKey = remember(chart) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val language = LocalLanguage.current
+
+    val chartKey = remember(chart, language) {
         chart?.let {
             buildString {
                 append(it.birthData.dateTime.toString())
@@ -129,16 +132,15 @@ fun KalachakraDashaScreen(
                 append(String.format("%.6f", it.birthData.latitude))
                 append("|")
                 append(String.format("%.6f", it.birthData.longitude))
+                append("|")
+                append(language.name)
             }
         }
     }
 
     LaunchedEffect(chartKey) {
-        viewModel.loadKalachakraDasha(chart)
+        viewModel.loadKalachakraDasha(chart, language)
     }
-
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val language = LocalLanguage.current
 
     val currentPeriodInfo = remember(uiState, language) {
         extractCurrentPeriodInfo(uiState, language)
@@ -191,7 +193,7 @@ fun KalachakraDashaScreen(
                     is KalachakraDashaUiState.Error -> {
                         ErrorContent(
                             message = state.message,
-                            onRetry = { viewModel.loadKalachakraDasha(chart) }
+                            onRetry = { viewModel.loadKalachakraDasha(chart, language) }
                         )
                     }
                     is KalachakraDashaUiState.Idle -> {
@@ -757,7 +759,7 @@ private fun NakshatraGroupCard(
                         fontWeight = FontWeight.Medium
                     )
                     Text(
-                        text = getGroupLocalizedName(result.nakshatraGroup, language),
+                        text = result.nakshatraGroup.getLocalizedName(language),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = groupColor
@@ -787,7 +789,7 @@ private fun NakshatraGroupCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = result.nakshatraGroup.description,
+                text = result.nakshatraGroup.getLocalizedDescription(language),
                 fontSize = 12.sp,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
@@ -861,7 +863,7 @@ private fun HealthIndicatorCard(
                         fontWeight = FontWeight.Medium
                     )
                     Text(
-                        text = getHealthLocalizedName(healthIndicator, language),
+                        text = healthIndicator.getLocalizedName(language),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = healthColor
@@ -872,7 +874,7 @@ private fun HealthIndicatorCard(
             Spacer(modifier = Modifier.height(14.dp))
 
             Text(
-                text = healthIndicator.description,
+                text = healthIndicator.getLocalizedDescription(language),
                 fontSize = 13.sp,
                 color = AppTheme.TextSecondary,
                 lineHeight = 19.sp
@@ -1427,7 +1429,7 @@ private fun RelationshipCard(
                         fontWeight = FontWeight.Medium
                     )
                     Text(
-                        text = getRelationshipLocalizedName(relationship, language),
+                        text = relationship.getLocalizedName(language),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = relationshipColor
@@ -1438,7 +1440,7 @@ private fun RelationshipCard(
             Spacer(modifier = Modifier.height(14.dp))
 
             Text(
-                text = relationship.description,
+                text = relationship.getLocalizedDescription(language),
                 fontSize = 13.sp,
                 color = AppTheme.TextSecondary,
                 lineHeight = 19.sp
@@ -2113,71 +2115,7 @@ private fun EmptyContent(onBack: () -> Unit) {
 // HELPER FUNCTIONS
 // ============================================
 
-private fun getGroupLocalizedName(group: KalachakraDashaCalculator.NakshatraGroup, language: Language): String {
-    return when (group) {
-        KalachakraDashaCalculator.NakshatraGroup.SAVYA -> when (language) {
-            Language.ENGLISH -> "Savya (Direct)"
-            Language.NEPALI -> "सव्य (सीधो)"
-        }
-        KalachakraDashaCalculator.NakshatraGroup.APSAVYA -> when (language) {
-            Language.ENGLISH -> "Apsavya (Retrograde)"
-            Language.NEPALI -> "अपसव्य (उल्टो)"
-        }
-    }
-}
 
-private fun getHealthLocalizedName(health: KalachakraDashaCalculator.HealthIndicator, language: Language): String {
-    return when (health) {
-        KalachakraDashaCalculator.HealthIndicator.EXCELLENT -> when (language) {
-            Language.ENGLISH -> "Excellent"
-            Language.NEPALI -> "उत्कृष्ट"
-        }
-        KalachakraDashaCalculator.HealthIndicator.GOOD -> when (language) {
-            Language.ENGLISH -> "Good"
-            Language.NEPALI -> "राम्रो"
-        }
-        KalachakraDashaCalculator.HealthIndicator.MODERATE -> when (language) {
-            Language.ENGLISH -> "Moderate"
-            Language.NEPALI -> "मध्यम"
-        }
-        KalachakraDashaCalculator.HealthIndicator.CHALLENGING -> when (language) {
-            Language.ENGLISH -> "Challenging"
-            Language.NEPALI -> "चुनौतीपूर्ण"
-        }
-        KalachakraDashaCalculator.HealthIndicator.CRITICAL -> when (language) {
-            Language.ENGLISH -> "Critical"
-            Language.NEPALI -> "गम्भीर"
-        }
-    }
-}
-
-private fun getRelationshipLocalizedName(
-    relationship: KalachakraDashaCalculator.DehaJeevaRelationship,
-    language: Language
-): String {
-    return when (relationship) {
-        KalachakraDashaCalculator.DehaJeevaRelationship.HARMONIOUS -> when (language) {
-            Language.ENGLISH -> "Harmonious"
-            Language.NEPALI -> "सामञ्जस्यपूर्ण"
-        }
-        KalachakraDashaCalculator.DehaJeevaRelationship.SUPPORTIVE -> when (language) {
-            Language.ENGLISH -> "Supportive"
-            Language.NEPALI -> "सहयोगी"
-        }
-        KalachakraDashaCalculator.DehaJeevaRelationship.NEUTRAL -> when (language) {
-            Language.ENGLISH -> "Neutral"
-            Language.NEPALI -> "तटस्थ"
-        }
-        KalachakraDashaCalculator.DehaJeevaRelationship.CHALLENGING -> when (language) {
-            Language.ENGLISH -> "Challenging"
-            Language.NEPALI -> "चुनौतीपूर्ण"
-        }
-        KalachakraDashaCalculator.DehaJeevaRelationship.TRANSFORMATIVE -> when (language) {
-            Language.ENGLISH -> "Transformative"
-            Language.NEPALI -> "परिवर्तनकारी"
-        }
-    }
-}
 
 @Composable
 private fun getHealthColor(health: KalachakraDashaCalculator.HealthIndicator): Color {

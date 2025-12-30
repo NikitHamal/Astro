@@ -671,7 +671,7 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
 
                 Surface(color = choghadiyaColor.copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)) {
                     Text(
-                        "${muhurta.choghadiya.choghadiya.displayName} Choghadiya",
+                        stringResource(StringKeyMatch.MUHURTA_CHOGHADIYA_SUFFIX, muhurta.choghadiya.choghadiya.getLocalizedName(currentLanguage())),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = choghadiyaColor,
@@ -682,7 +682,7 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    "${muhurta.hora.lord.displayName} Hora",
+                    stringResource(StringKeyMatch.MUHURTA_HORA_SUFFIX, muhurta.hora.lord.getLocalizedName(currentLanguage())),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -721,7 +721,7 @@ private fun PanchangaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
 
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    PanchangaItem(label = stringResource(StringKeyMatch.MUHURTA_VARA), value = muhurta.vara.displayName, modifier = Modifier.weight(1f))
+                    PanchangaItem(label = stringResource(StringKeyMatch.MUHURTA_VARA), value = muhurta.vara.getLocalizedName(currentLanguage()), modifier = Modifier.weight(1f))
                     PanchangaItem(
                         label = stringResource(StringKeyMatch.MUHURTA_TITHI),
                         value = muhurta.tithi.name,
@@ -1031,7 +1031,7 @@ private fun ChoghadiyaRow(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        choghadiya.choghadiya.displayName.take(2),
+                        choghadiya.choghadiya.getLocalizedName(currentLanguage()).take(2),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         color = choghadiyaColor
@@ -1041,7 +1041,7 @@ private fun ChoghadiyaRow(
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            choghadiya.choghadiya.displayName,
+                            choghadiya.choghadiya.getLocalizedName(currentLanguage()),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Normal,
                             color = AppTheme.TextPrimary
@@ -1063,7 +1063,7 @@ private fun ChoghadiyaRow(
                         }
                     }
                     Text(
-                        choghadiya.choghadiya.nature.displayName,
+                        choghadiya.choghadiya.nature.getLocalizedName(currentLanguage()),
                         style = MaterialTheme.typography.labelSmall,
                         color = choghadiyaColor
                     )
@@ -1159,7 +1159,7 @@ private fun ActivityChip(
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                activity.displayName,
+                activity.getLocalizedName(currentLanguage()),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Medium,
                 color = contentColor
@@ -1349,7 +1349,7 @@ private fun ActivitySelectorCard(
                         onClick = { onActivityChange(activity) },
                         label = {
                             Text(
-                                activity.displayName,
+                                activity.getLocalizedName(currentLanguage()),
                                 style = MaterialTheme.typography.labelMedium
                             )
                         },
@@ -1420,14 +1420,14 @@ private fun ActivityInfoCard(selectedActivity: MuhurtaCalculator.ActivityType) {
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    selectedActivity.displayName,
+                    selectedActivity.getLocalizedName(currentLanguage()),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    selectedActivity.description,
+                    selectedActivity.getLocalizedDescription(currentLanguage()),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
                     lineHeight = MaterialTheme.typography.bodySmall.lineHeight * 1.2

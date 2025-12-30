@@ -4,6 +4,9 @@ import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringResources
+import com.astro.storm.data.localization.StringKeyDosha
 import kotlin.math.abs
 
 /**
@@ -676,7 +679,17 @@ data class MrityuBhagaResult(
 )
 
 enum class MrityuBhagaSeverity {
-    EXACT, VERY_CLOSE, WITHIN_ORB, APPROACHING, SAFE
+    EXACT, VERY_CLOSE, WITHIN_ORB, APPROACHING, SAFE;
+
+    fun getLocalizedName(language: Language): String {
+        return StringResources.get(when(this) {
+            EXACT -> StringKeyDosha.MB_SEV_EXACT
+            VERY_CLOSE -> StringKeyDosha.MB_SEV_VERY_CLOSE
+            WITHIN_ORB -> StringKeyDosha.MB_SEV_WITHIN_ORB
+            APPROACHING -> StringKeyDosha.MB_SEV_APPROACHING
+            SAFE -> StringKeyDosha.MB_SEV_SAFE
+        }, language)
+    }
 }
 
 data class GandantaResult(
@@ -694,7 +707,17 @@ data class GandantaResult(
 )
 
 enum class GandantaSeverity {
-    EXACT_JUNCTION, CRITICAL, SEVERE, MODERATE, MILD
+    EXACT_JUNCTION, CRITICAL, SEVERE, MODERATE, MILD;
+
+    fun getLocalizedName(language: Language): String {
+        return StringResources.get(when(this) {
+            EXACT_JUNCTION -> StringKeyDosha.GANDANTA_SEV_EXACT
+            CRITICAL -> StringKeyDosha.GANDANTA_SEV_CRITICAL
+            SEVERE -> StringKeyDosha.GANDANTA_SEV_SEVERE
+            MODERATE -> StringKeyDosha.GANDANTA_SEV_MODERATE
+            MILD -> StringKeyDosha.GANDANTA_SEV_MILD
+        }, language)
+    }
 }
 
 enum class GandantaType {

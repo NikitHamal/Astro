@@ -386,17 +386,7 @@ private fun parseCoordinate(value: String): Double? {
     return cleaned.toDoubleOrNull()
 }
 
-private fun validateInput(latitude: String, longitude: String): String? {
-    val lat = parseCoordinate(latitude)
-    val lon = parseCoordinate(longitude)
 
-    return when {
-        lat == null || lon == null -> "Please enter valid latitude and longitude"
-        lat < -90 || lat > 90 -> "Latitude must be between -90 and 90"
-        lon < -180 || lon > 180 -> "Longitude must be between -180 and 180"
-        else -> null
-    }
-}
 
 /**
  * Comprehensive input validation for birth data entry.
@@ -467,17 +457,7 @@ private fun validateBirthDataInput(
     return null
 }
 
-private fun validateInputLocalized(latitude: String, longitude: String): StringKey? {
-    val lat = parseCoordinate(latitude)
-    val lon = parseCoordinate(longitude)
 
-    return when {
-        lat == null || lon == null -> StringKey.ERROR_INVALID_COORDS
-        lat < -90 || lat > 90 -> StringKey.ERROR_LATITUDE_RANGE
-        lon < -180 || lon > 180 -> StringKey.ERROR_LONGITUDE_RANGE
-        else -> null
-    }
-}
 
 @Composable
 private fun ChartInputHeader(

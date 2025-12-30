@@ -540,7 +540,7 @@ private fun CategorySelectorCard(
                         onClick = { onCategoryChange(category) },
                         label = {
                             Text(
-                                category.displayName,
+                                category.getLocalizedName(LocalLanguage.current),
                                 style = MaterialTheme.typography.labelMedium
                             )
                         },
@@ -590,13 +590,13 @@ private fun CategorySelectorCard(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            selectedCategory.displayName,
+                            selectedCategory.getLocalizedName(LocalLanguage.current),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            selectedCategory.description,
+                            selectedCategory.getLocalizedDescription(LocalLanguage.current),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -993,7 +993,7 @@ private fun VerdictCard(result: PrashnaCalculator.PrashnaResult) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    result.judgment.verdict.displayName,
+                    result.judgment.verdict.getLocalizedName(LocalLanguage.current),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = verdictColor,
@@ -1058,7 +1058,7 @@ private fun CertaintyBadge(certainty: PrashnaCalculator.CertaintyLevel) {
         shape = RoundedCornerShape(6.dp)
     ) {
         Text(
-            certainty.displayName,
+            certainty.getLocalizedName(LocalLanguage.current),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium,
             color = AppTheme.InfoColor,
@@ -1178,7 +1178,7 @@ private fun QuestionSummaryCard(result: PrashnaCalculator.PrashnaResult) {
             ) {
                 InfoChip(
                     icon = Icons.Outlined.Star,
-                    label = result.category.displayName,
+                    label = result.category.getLocalizedName(LocalLanguage.current),
                     modifier = Modifier.weight(1f)
                 )
                 InfoChip(
@@ -1257,7 +1257,7 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
                     shape = RoundedCornerShape(6.dp)
                 ) {
                     Text(
-                        moonAnalysis.moonStrength.displayName,
+                        moonAnalysis.moonStrength.getLocalizedName(LocalLanguage.current),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
                         color = strengthColor,
@@ -1283,7 +1283,7 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
             ) {
                 MoonDetailItem(
                     label = signLabel,
-                    value = moonAnalysis.moonSign.displayName,
+                    value = moonAnalysis.moonSign.getLocalizedName(LocalLanguage.current),
                     modifier = Modifier.weight(1f)
                 )
                 MoonDetailItem(
@@ -1301,7 +1301,7 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
             ) {
                 MoonDetailItem(
                     label = nakshatraLabel,
-                    value = "${moonAnalysis.nakshatra.displayName} (Pada ${moonAnalysis.nakshatraPada})",
+                    value = "${moonAnalysis.nakshatra.getLocalizedName(LocalLanguage.current)} (Pada ${moonAnalysis.nakshatraPada})",
                     modifier = Modifier.weight(1f)
                 )
                 MoonDetailItem(
@@ -1324,7 +1324,7 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
                 )
                 MoonDetailItem(
                     label = nakshatraLordLabel,
-                    value = moonAnalysis.nakshatraLord.displayName,
+                    value = moonAnalysis.nakshatraLord.getLocalizedName(LocalLanguage.current),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -1438,12 +1438,12 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
             ) {
                 MoonDetailItem(
                     label = risingSignLabel,
-                    value = lagnaAnalysis.lagnaSign.displayName,
+                    value = lagnaAnalysis.lagnaSign.getLocalizedName(LocalLanguage.current),
                     modifier = Modifier.weight(1f)
                 )
                 MoonDetailItem(
                     label = lagnaLordLabel,
-                    value = lagnaAnalysis.lagnaLord.displayName,
+                    value = lagnaAnalysis.lagnaLord.getLocalizedName(LocalLanguage.current),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -1461,7 +1461,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
                 )
                 MoonDetailItem(
                     label = conditionLabel,
-                    value = lagnaAnalysis.lagnaCondition.displayName,
+                    value = lagnaAnalysis.lagnaCondition.getLocalizedName(LocalLanguage.current),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -1485,7 +1485,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            "$planetsInLagnaLabel: ${lagnaAnalysis.planetsInLagna.joinToString { it.planet.displayName }}",
+                            "$planetsInLagnaLabel: ${lagnaAnalysis.planetsInLagna.joinToString { it.planet.getLocalizedName(LocalLanguage.current) }}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.InfoColor
                         )
@@ -1566,7 +1566,7 @@ private fun TimingPredictionCard(timing: PrashnaCalculator.TimingPrediction) {
             ) {
                 InfoChip(
                     icon = Icons.Outlined.Visibility,
-                    label = timing.timingMethod.displayName,
+                    label = timing.timingMethod.getLocalizedName(LocalLanguage.current),
                     modifier = Modifier.weight(1f)
                 )
                 InfoChip(

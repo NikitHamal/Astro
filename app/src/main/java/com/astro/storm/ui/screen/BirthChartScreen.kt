@@ -65,7 +65,7 @@ import com.astro.storm.ui.chart.ChartRenderer
 import com.astro.storm.ui.components.FullScreenChartDialog
 import com.astro.storm.ui.components.HouseDetailDialog
 import com.astro.storm.ui.components.NakshatraDetailDialog
-import com.astro.storm.ui.components.PlanetDetailDialog
+import com.astro.storm.ui.components.dialogs.PlanetDetailDialog
 import com.astro.storm.ui.screen.chartdetail.tabs.ChartTabContent
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.ChartViewModel

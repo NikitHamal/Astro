@@ -105,7 +105,7 @@ fun SudarshanaChakraScreen(
         delay(200)
         try {
             chakraResult = withContext(Dispatchers.Default) {
-                SudarshanaChakraDashaCalculator.calculateSudarshanaChakra(chart, selectedAge)
+                SudarshanaChakraDashaCalculator.calculateSudarshanaChakra(chart, selectedAge, language)
             }
         } catch (e: Exception) {
             // Handle error silently
@@ -934,7 +934,7 @@ private fun TimelineYearCard(
 
     LaunchedEffect(age) {
         result = try {
-            SudarshanaChakraDashaCalculator.calculateSudarshanaChakra(chart, age)
+            SudarshanaChakraDashaCalculator.calculateSudarshanaChakra(chart, age, language)
         } catch (e: Exception) {
             null
         }

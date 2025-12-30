@@ -83,8 +83,8 @@ class MuhurtaCalculator(context: Context) {
     }
 
     enum class ActivityType(
-        val displayName: String,
-        val description: String,
+        val displayNameKey: StringKeyMatch,
+        val descriptionKey: StringKeyMatch,
         val icon: String,
         val favorableNakshatras: List<Nakshatra>,
         val favorableTithis: List<Int>,
@@ -92,8 +92,8 @@ class MuhurtaCalculator(context: Context) {
         val avoidNakshatras: List<Nakshatra>
     ) {
         MARRIAGE(
-            "Marriage",
-            "Wedding ceremonies and engagements",
+            StringKeyMatch.ACTIVITY_MARRIAGE_NAME,
+            StringKeyMatch.ACTIVITY_MARRIAGE_DESC,
             "ring",
             listOf(
                 Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.MAGHA,
@@ -108,8 +108,8 @@ class MuhurtaCalculator(context: Context) {
                    Nakshatra.JYESHTHA, Nakshatra.PURVA_ASHADHA, Nakshatra.PURVA_BHADRAPADA)
         ),
         TRAVEL(
-            "Travel",
-            "Journey and trips",
+            StringKeyMatch.ACTIVITY_TRAVEL_NAME,
+            StringKeyMatch.ACTIVITY_TRAVEL_DESC,
             "flight",
             listOf(
                 Nakshatra.ASHWINI, Nakshatra.MRIGASHIRA, Nakshatra.PUNARVASU,
@@ -122,8 +122,8 @@ class MuhurtaCalculator(context: Context) {
                    Nakshatra.MULA, Nakshatra.BHARANI)
         ),
         BUSINESS(
-            "Business",
-            "New ventures, contracts, deals",
+            StringKeyMatch.ACTIVITY_BUSINESS_NAME,
+            StringKeyMatch.ACTIVITY_BUSINESS_DESC,
             "business",
             listOf(
                 Nakshatra.ROHINI, Nakshatra.PUSHYA, Nakshatra.HASTA,
@@ -137,8 +137,8 @@ class MuhurtaCalculator(context: Context) {
                    Nakshatra.JYESHTHA, Nakshatra.ARDRA)
         ),
         PROPERTY(
-            "Property",
-            "Buying/selling property, house entry",
+            StringKeyMatch.ACTIVITY_PROPERTY_NAME,
+            StringKeyMatch.ACTIVITY_PROPERTY_DESC,
             "home",
             listOf(
                 Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.UTTARA_PHALGUNI,
@@ -153,8 +153,8 @@ class MuhurtaCalculator(context: Context) {
                    Nakshatra.MULA, Nakshatra.BHARANI, Nakshatra.KRITTIKA)
         ),
         EDUCATION(
-            "Education",
-            "Starting studies, examinations, Vidyarambha",
+            StringKeyMatch.ACTIVITY_EDUCATION_NAME,
+            StringKeyMatch.ACTIVITY_EDUCATION_DESC,
             "school",
             listOf(
                 Nakshatra.ASHWINI, Nakshatra.ROHINI, Nakshatra.MRIGASHIRA,
@@ -168,8 +168,8 @@ class MuhurtaCalculator(context: Context) {
                    Nakshatra.BHARANI, Nakshatra.MULA)
         ),
         MEDICAL(
-            "Medical",
-            "Surgery, treatments, health procedures",
+            StringKeyMatch.ACTIVITY_MEDICAL_NAME,
+            StringKeyMatch.ACTIVITY_MEDICAL_DESC,
             "medical",
             listOf(
                 Nakshatra.ASHWINI, Nakshatra.ROHINI, Nakshatra.MRIGASHIRA,
@@ -183,8 +183,8 @@ class MuhurtaCalculator(context: Context) {
                    Nakshatra.ASHLESHA, Nakshatra.JYESHTHA, Nakshatra.MULA)
         ),
         VEHICLE(
-            "Vehicle",
-            "Purchasing or first drive of vehicle",
+            StringKeyMatch.ACTIVITY_VEHICLE_NAME,
+            StringKeyMatch.ACTIVITY_VEHICLE_DESC,
             "car",
             listOf(
                 Nakshatra.ASHWINI, Nakshatra.ROHINI, Nakshatra.PUSHYA,
@@ -197,8 +197,8 @@ class MuhurtaCalculator(context: Context) {
                    Nakshatra.ARDRA, Nakshatra.ASHLESHA)
         ),
         SPIRITUAL(
-            "Spiritual",
-            "Religious ceremonies, puja, initiation, Upanayana",
+            StringKeyMatch.ACTIVITY_SPIRITUAL_NAME,
+            StringKeyMatch.ACTIVITY_SPIRITUAL_DESC,
             "temple",
             listOf(
                 Nakshatra.ASHWINI, Nakshatra.PUNARVASU, Nakshatra.PUSHYA,
@@ -212,8 +212,8 @@ class MuhurtaCalculator(context: Context) {
                    Nakshatra.BHARANI, Nakshatra.MULA, Nakshatra.JYESHTHA)
         ),
         GRIHA_PRAVESHA(
-            "Griha Pravesha",
-            "House warming ceremony",
+            StringKeyMatch.ACTIVITY_GRIHA_PRAVESHA_NAME,
+            StringKeyMatch.ACTIVITY_GRIHA_PRAVESHA_DESC,
             "home_work",
             listOf(
                 Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.UTTARA_PHALGUNI,
@@ -229,8 +229,8 @@ class MuhurtaCalculator(context: Context) {
                    Nakshatra.PURVA_BHADRAPADA)
         ),
         NAMING_CEREMONY(
-            "Naming Ceremony",
-            "Namakarana - naming a child",
+            StringKeyMatch.ACTIVITY_NAMING_NAME,
+            StringKeyMatch.ACTIVITY_NAMING_DESC,
             "child_care",
             listOf(
                 Nakshatra.ASHWINI, Nakshatra.ROHINI, Nakshatra.MRIGASHIRA,
@@ -245,8 +245,8 @@ class MuhurtaCalculator(context: Context) {
                    Nakshatra.ASHLESHA, Nakshatra.MULA, Nakshatra.JYESHTHA)
         ),
         GENERAL(
-            "General",
-            "General auspicious activities",
+            StringKeyMatch.ACTIVITY_GENERAL_NAME,
+            StringKeyMatch.ACTIVITY_GENERAL_DESC,
             "star",
             listOf(
                 Nakshatra.ASHWINI, Nakshatra.ROHINI, Nakshatra.MRIGASHIRA,
@@ -259,31 +259,47 @@ class MuhurtaCalculator(context: Context) {
             listOf(Vara.MONDAY, Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY),
             listOf(Nakshatra.BHARANI, Nakshatra.KRITTIKA, Nakshatra.ARDRA, 
                    Nakshatra.ASHLESHA, Nakshatra.MULA, Nakshatra.JYESHTHA)
-        )
+        );
+
+        fun getLocalizedName(language: Language): String {
+            return StringResources.get(displayNameKey, language)
+        }
+
+        fun getLocalizedDescription(language: Language): String {
+            return StringResources.get(descriptionKey, language)
+        }
     }
 
-    enum class Vara(val dayNumber: Int, val displayName: String, val lord: Planet) {
-        SUNDAY(0, "Ravivara", Planet.SUN),
-        MONDAY(1, "Somavara", Planet.MOON),
-        TUESDAY(2, "Mangalavara", Planet.MARS),
-        WEDNESDAY(3, "Budhavara", Planet.MERCURY),
-        THURSDAY(4, "Guruvara", Planet.JUPITER),
-        FRIDAY(5, "Shukravara", Planet.VENUS),
-        SATURDAY(6, "Shanivara", Planet.SATURN)
+    enum class Vara(val dayNumber: Int, val displayNameKey: StringKeyMatch, val lord: Planet) {
+        SUNDAY(0, StringKeyMatch.VARA_SUNDAY, Planet.SUN),
+        MONDAY(1, StringKeyMatch.VARA_MONDAY, Planet.MOON),
+        TUESDAY(2, StringKeyMatch.VARA_TUESDAY, Planet.MARS),
+        WEDNESDAY(3, StringKeyMatch.VARA_WEDNESDAY, Planet.MERCURY),
+        THURSDAY(4, StringKeyMatch.VARA_THURSDAY, Planet.JUPITER),
+        FRIDAY(5, StringKeyMatch.VARA_FRIDAY, Planet.VENUS),
+        SATURDAY(6, StringKeyMatch.VARA_SATURDAY, Planet.SATURN);
+
+        fun getLocalizedName(language: Language): String {
+            return StringResources.get(displayNameKey, language)
+        }
     }
 
     enum class Choghadiya(
-        val displayName: String,
+        val displayNameKey: StringKeyMatch,
         val nature: ChoghadiyaNature,
         val lord: Planet
     ) {
-        UDVEG("Udveg", ChoghadiyaNature.INAUSPICIOUS, Planet.SUN),
-        CHAR("Char", ChoghadiyaNature.GOOD, Planet.VENUS),
-        LABH("Labh", ChoghadiyaNature.VERY_GOOD, Planet.MERCURY),
-        AMRIT("Amrit", ChoghadiyaNature.EXCELLENT, Planet.MOON),
-        KAAL("Kaal", ChoghadiyaNature.INAUSPICIOUS, Planet.SATURN),
-        SHUBH("Shubh", ChoghadiyaNature.VERY_GOOD, Planet.JUPITER),
-        ROG("Rog", ChoghadiyaNature.INAUSPICIOUS, Planet.MARS)
+        UDVEG(StringKeyMatch.CHOGHADIYA_UDVEG, ChoghadiyaNature.INAUSPICIOUS, Planet.SUN),
+        CHAR(StringKeyMatch.CHOGHADIYA_CHAR, ChoghadiyaNature.GOOD, Planet.VENUS),
+        LABH(StringKeyMatch.CHOGHADIYA_LABH, ChoghadiyaNature.VERY_GOOD, Planet.MERCURY),
+        AMRIT(StringKeyMatch.CHOGHADIYA_AMRIT, ChoghadiyaNature.EXCELLENT, Planet.MOON),
+        KAAL(StringKeyMatch.CHOGHADIYA_KAAL, ChoghadiyaNature.INAUSPICIOUS, Planet.SATURN),
+        SHUBH(StringKeyMatch.CHOGHADIYA_SHUBH, ChoghadiyaNature.VERY_GOOD, Planet.JUPITER),
+        ROG(StringKeyMatch.CHOGHADIYA_ROG, ChoghadiyaNature.INAUSPICIOUS, Planet.MARS);
+
+        fun getLocalizedName(language: Language): String {
+            return StringResources.get(displayNameKey, language)
+        }
     }
 
     enum class ChoghadiyaNature(val displayName: String, val score: Int) {

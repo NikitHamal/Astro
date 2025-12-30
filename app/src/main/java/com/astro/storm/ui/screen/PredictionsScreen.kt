@@ -38,6 +38,7 @@ import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringResources
+import com.astro.storm.data.localization.StringKeyPrediction
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
@@ -82,7 +83,7 @@ fun PredictionsScreen(
             errorMessage = null
             try {
                 predictionData = withContext(Dispatchers.Default) {
-                    calculatePredictions(chart)
+                    calculatePredictions(chart, language)
                 }
             } catch (e: Exception) {
                 errorMessage = e.message ?: StringResources.get(StringKey.PREDICTIONS_CALC_FAILED, language)
@@ -131,7 +132,7 @@ fun PredictionsScreen(
                             errorMessage = null
                             try {
                                 predictionData = withContext(Dispatchers.Default) {
-                                    calculatePredictions(chart)
+                                    calculatePredictions(chart, language)
                                 }
                             } catch (e: Exception) {
                                 errorMessage = e.message ?: StringResources.get(StringKey.PREDICTIONS_CALC_FAILED, language)
@@ -1088,7 +1089,7 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
                         Spacer(modifier = Modifier.height(12.dp))
 
                         Text(
-                            "Key Factors",
+                            StringResources.get(StringKeyPrediction.PRED_LABEL_KEY_FACTORS, language),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = areaColor
@@ -1128,7 +1129,7 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Column {
                                 Text(
-                                    "Advice",
+                                    StringResources.get(StringKeyPrediction.PRED_LABEL_ADVICE, language),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.SemiBold,
                                     color = areaColor
@@ -1432,7 +1433,7 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                "For your current $currentPeriod period:",
+                StringResources.get(StringKeyPrediction.PRED_REMEDY_FOR_PERIOD, language, currentPeriod),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -1600,26 +1601,30 @@ private suspend fun calculatePredictions(chart: VedicChart): PredictionData {
         }
     }
 
+private fun calculatePredictions(chart: VedicChart, language: Language): PredictionData {
+    // Calculate dasha timeline
+    val dashaTimeline = DashaCalculator.calculateDashaTimeline(chart)
+
     // Calculate life overview
-    val lifeOverview = calculateLifeOverview(chart, dashaTimeline)
+    val lifeOverview = calculateLifeOverview(chart, dashaTimeline, language)
 
     // Calculate current period analysis
-    val currentPeriod = calculateCurrentPeriod(chart, dashaTimeline)
+    val currentPeriod = calculateCurrentPeriod(chart, dashaTimeline, language)
 
     // Calculate life areas predictions
-    val lifeAreas = calculateLifeAreasPredictions(chart, dashaTimeline)
+    val lifeAreas = calculateLifeAreasPredictions(chart, dashaTimeline, language)
 
     // Calculate active yogas (simplified for now)
-    val activeYogas = calculateActiveYogas(chart)
+    val activeYogas = calculateActiveYogas(chart, language)
 
     // Calculate challenges and opportunities
-    val challengesOpportunities = calculateChallengesOpportunities(chart, dashaTimeline)
+    val challengesOpportunities = calculateChallengesOpportunities(chart, dashaTimeline, language)
 
     // Calculate timing
-    val timing = calculateTiming(chart, dashaTimeline)
+    val timing = calculateTiming(chart, dashaTimeline, language)
 
     // Calculate remedies
-    val remedies = calculateRemedies(chart, dashaTimeline)
+    val remedies = calculateRemedies(chart, dashaTimeline, language)
 
     return PredictionData(
         chart = chart,
@@ -1633,25 +1638,41 @@ private suspend fun calculatePredictions(chart: VedicChart): PredictionData {
     )
 }
 
-private fun calculateLifeOverview(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline): LifeOverview {
+private fun calculateLifeOverview(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): LifeOverview {
     val ascendant = ZodiacSign.fromLongitude(chart.ascendant)
     val moonPosition = chart.planetPositions.find { it.planet == Planet.MOON }
     val sunPosition = chart.planetPositions.find { it.planet == Planet.SUN }
 
-    val overallPath = "Your life path is shaped by your ${ascendant.displayName} ascendant, indicating a personality focused on ${getAscendantPath(ascendant)}. " +
-            "With your Moon in ${moonPosition?.sign?.displayName ?: "unknown"}, your emotional nature seeks ${getMoonPath(moonPosition?.sign)}."
+    val ascendantPath = getAscendantPath(ascendant, language)
+    val moonPath = getMoonPath(moonPosition?.sign, language)
+    
+    val overallPath = if (moonPosition?.sign != null) {
+        StringResources.get(StringKeyPrediction.PRED_PATH_TEMPLATE, language, 
+            ascendant.getLocalizedName(language), 
+            ascendantPath, 
+            moonPosition.sign.getLocalizedName(language), 
+            moonPath
+        )
+    } else {
+        StringResources.get(StringKeyPrediction.PRED_PATH_TEMPLATE_UNKNOWN_MOON, language, 
+            ascendant.getLocalizedName(language), 
+            ascendantPath
+        )
+    }
 
     val keyStrengths = listOf(
         "Strong determination and resilience in your character",
         "Natural ability to connect with spiritual wisdom",
         "Capacity for deep emotional understanding",
         "Practical approach to life's challenges"
+    ) // TODO: Localize generic strengths
+
+    val lifeTheme = "Path of ${getLifeTheme(ascendant, language)}"
+
+    val spiritualPath = StringResources.get(StringKeyPrediction.PRED_SPIRIT_TEMPLATE, language, 
+        getSpiritualPath(moonPosition?.sign, language),
+        dashaTimeline.currentMahadasha?.planet?.getLocalizedName(language) ?: StringResources.get(StringKeyPrediction.PRED_CURRENT, language)
     )
-
-    val lifeTheme = "Path of ${getLifeTheme(ascendant)}"
-
-    val spiritualPath = "Your spiritual journey emphasizes ${getSpiritualPath(moonPosition?.sign)} " +
-            "through ${dashaTimeline.currentMahadasha?.planet?.displayName ?: "current"} influences."
 
     return LifeOverview(
         overallPath = overallPath,
@@ -1661,39 +1682,48 @@ private fun calculateLifeOverview(chart: VedicChart, dashaTimeline: DashaCalcula
     )
 }
 
-private fun calculateCurrentPeriod(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline): CurrentPeriodAnalysis {
+private fun calculateCurrentPeriod(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): CurrentPeriodAnalysis {
     val currentMahadasha = dashaTimeline.currentMahadasha
     val currentAntardasha = dashaTimeline.currentAntardasha
 
-    val dashaInfo = buildString {
-        currentMahadasha?.let { md ->
-            append("${md.planet.displayName} Mahadasha")
-            currentAntardasha?.let { ad ->
-                append(" - ${ad.planet.displayName} Antardasha")
-            }
-        } ?: append("Dasha Period")
-    }
+    val dashaInfo = currentMahadasha?.let { md ->
+        val mdName = md.planet.getLocalizedName(language)
+        if (currentAntardasha != null) {
+            val adName = currentAntardasha.planet.getLocalizedName(language)
+            StringResources.get(StringKeyPrediction.PRED_DASHA_INFO_TEMPLATE, language, mdName, adName)
+        } else {
+            "$mdName Mahadasha"
+        }
+    } ?: StringResources.get(StringKeyPrediction.PRED_DASHA_PERIOD_DEFAULT, language)
 
     val dashaEffect = currentMahadasha?.let { md ->
-        "The ${md.planet.displayName} period brings focus on ${getDashaEffect(md.planet)}. " +
-                "${if (currentAntardasha != null) "The ${currentAntardasha.planet.displayName} sub-period adds ${getAntardashaEffect(currentAntardasha.planet)}." else ""}"
-    } ?: "Current period influences are being calculated."
+        val mdName = md.planet.getLocalizedName(language)
+        val effect = getDashaEffect(md.planet, language)
+        val baseText = StringResources.get(StringKeyPrediction.PRED_DASHA_EFFECT_TEMPLATE, language, mdName, effect, "")
+        
+        if (currentAntardasha != null) {
+            val adName = currentAntardasha.planet.getLocalizedName(language)
+            val adEffect = getAntardashaEffect(currentAntardasha.planet, language)
+            val subText = StringResources.get(StringKeyPrediction.PRED_AD_EFFECT_SUB_TEMPLATE, language, adName, adEffect)
+            "$baseText $subText"
+        } else {
+            baseText
+        }
+    } ?: StringResources.get(StringKeyPrediction.PRED_CALC_PROGRESS, language)
 
     val transitHighlights = chart.planetPositions.take(5).map { pos ->
         TransitHighlight(
             planet = pos.planet,
-            description = getTransitDescription(pos.planet),
+            description = getTransitDescription(pos.planet, language),
             impact = (5..9).random(),
             isPositive = (0..1).random() == 1
         )
     }
 
-    val period = buildString {
-        currentMahadasha?.let { md ->
-            val remainingYears = md.getRemainingYears()
-            append("${String.format("%.1f", remainingYears)} years remaining")
-        }
-    }
+    val period = currentMahadasha?.let { md ->
+        val remainingYears = md.getRemainingYears()
+        StringResources.get(StringKeyPrediction.PRED_YEARS_REMAINING, language, remainingYears)
+    } ?: ""
 
     return CurrentPeriodAnalysis(
         dashaInfo = dashaInfo,
@@ -1704,61 +1734,61 @@ private fun calculateCurrentPeriod(chart: VedicChart, dashaTimeline: DashaCalcul
     )
 }
 
-private fun calculateLifeAreasPredictions(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline): List<LifeAreaPrediction> {
+private fun calculateLifeAreasPredictions(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): List<LifeAreaPrediction> {
     return LifeArea.entries.map { area ->
         LifeAreaPrediction(
             area = area,
             rating = (2..5).random(),
-            shortTerm = getShortTermPrediction(area),
-            mediumTerm = getMediumTermPrediction(area),
-            longTerm = getLongTermPrediction(area),
-            keyFactors = getKeyFactors(area),
-            advice = getAdvice(area)
+            shortTerm = getShortTermPrediction(area, language),
+            mediumTerm = getMediumTermPrediction(area, language),
+            longTerm = getLongTermPrediction(area, language),
+            keyFactors = getKeyFactors(area, language),
+            advice = getAdvice(area, language)
         )
     }
 }
 
-private fun calculateActiveYogas(chart: VedicChart): List<ActiveYoga> {
+private fun calculateActiveYogas(chart: VedicChart, language: Language): List<ActiveYoga> {
     return listOf(
         ActiveYoga(
-            name = "Dhana Yoga",
-            description = "Wealth-creating planetary combination",
+            name = StringResources.get(StringKeyPrediction.PRED_YOGA_DHANA_NAME, language),
+            description = StringResources.get(StringKeyPrediction.PRED_YOGA_DHANA_DESC, language),
             strength = 4,
-            effects = "Favorable for financial growth and material prosperity",
+            effects = StringResources.get(StringKeyPrediction.PRED_YOGA_DHANA_EFFECT, language),
             planets = listOf(Planet.JUPITER, Planet.VENUS)
         ),
         ActiveYoga(
-            name = "Raja Yoga",
-            description = "Royal combination indicating success",
+            name = StringResources.get(StringKeyPrediction.PRED_YOGA_RAJA_NAME, language),
+            description = StringResources.get(StringKeyPrediction.PRED_YOGA_RAJA_DESC, language),
             strength = 3,
-            effects = "Support for leadership and achievement",
+            effects = StringResources.get(StringKeyPrediction.PRED_YOGA_RAJA_EFFECT, language),
             planets = listOf(Planet.SUN, Planet.JUPITER)
         )
     )
 }
 
-private fun calculateChallengesOpportunities(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline): ChallengesOpportunities {
+private fun calculateChallengesOpportunities(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): ChallengesOpportunities {
     val challenges = listOf(
         Challenge(
-            area = "Career Transitions",
-            description = "Period of professional reassessment and potential changes",
+            area = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_NAME, language),
+            description = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_DESC, language),
             severity = 3,
-            mitigation = "Focus on skill development and networking"
+            mitigation = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_MIT, language)
         )
     )
 
     val opportunities = listOf(
         Opportunity(
-            area = "Financial Growth",
-            description = "Favorable period for investments and wealth accumulation",
-            timing = "Next 6 months",
-            howToLeverage = "Explore new income sources and strategic investments"
+            area = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_NAME, language),
+            description = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_DESC, language),
+            timing = StringResources.get(StringKeyPrediction.PRED_OPP_TIMING_6M, language),
+            howToLeverage = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_LEV, language)
         ),
         Opportunity(
-            area = "Personal Development",
-            description = "Excellent time for learning and self-improvement",
-            timing = "Current period",
-            howToLeverage = "Enroll in courses, read extensively, seek mentorship"
+            area = StringResources.get(StringKeyPrediction.PRED_OPP_PERSONAL_NAME, language),
+            description = StringResources.get(StringKeyPrediction.PRED_OPP_PERSONAL_DESC, language),
+            timing = StringResources.get(StringKeyPrediction.PRED_CURRENT, language),
+            howToLeverage = StringResources.get(StringKeyPrediction.PRED_OPP_PERSONAL_LEV, language)
         )
     )
 
@@ -1768,15 +1798,19 @@ private fun calculateChallengesOpportunities(chart: VedicChart, dashaTimeline: D
     )
 }
 
-private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline): TimingAnalysis {
+private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): TimingAnalysis {
     val today = LocalDate.now()
 
     val favorablePeriods = listOf(
         FavorablePeriod(
             startDate = today.plusDays(30),
             endDate = today.plusDays(90),
-            reason = "Jupiter transit supports growth",
-            bestFor = listOf("New ventures", "Important decisions", "Relationships")
+            reason = StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_REASON, language),
+            bestFor = listOf(
+                StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_1, language),
+                StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_2, language),
+                StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_3, language)
+            )
         )
     )
 
@@ -1784,16 +1818,20 @@ private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.Da
         UnfavorablePeriod(
             startDate = today.plusDays(120),
             endDate = today.plusDays(150),
-            reason = "Saturn transit requires caution",
-            avoid = listOf("Major investments", "Hasty decisions", "Conflicts")
+            reason = StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_REASON, language),
+            avoid = listOf(
+                StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_1, language),
+                StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_2, language),
+                StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_3, language)
+            )
         )
     )
 
     val keyDates = listOf(
         KeyDate(
             date = today.plusDays(45),
-            event = "Favorable Jupiter Aspect",
-            significance = "Excellent for new beginnings",
+            event = StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_ASPECT_EVENT, language),
+            significance = StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_ASPECT_SIG, language),
             isPositive = true
         )
     )
@@ -1805,168 +1843,198 @@ private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.Da
     )
 }
 
-private fun calculateRemedies(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline): List<String> {
+private fun calculateRemedies(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): List<String> {
     val currentPlanet = dashaTimeline.currentMahadasha?.planet
+    val planetName = currentPlanet?.getLocalizedName(language) ?: "planetary"
+    val planetNameOrChart = currentPlanet?.getLocalizedName(language) ?: "your chart"
 
     return listOf(
-        "Perform ${currentPlanet?.displayName ?: "planetary"} mantra recitation during morning hours",
-        "Donate items associated with ${currentPlanet?.displayName ?: "the current period"} on appropriate days",
-        "Wear gemstone related to ${currentPlanet?.displayName ?: "your chart"} after proper consultation",
-        "Practice meditation and yoga to balance planetary energies",
-        "Maintain regular worship and spiritual practices"
+        StringResources.get(StringKeyPrediction.PRED_REMEDY_MANTRA, language, planetName),
+        StringResources.get(StringKeyPrediction.PRED_REMEDY_DONATE, language, planetName),
+        StringResources.get(StringKeyPrediction.PRED_REMEDY_GEM, language, planetNameOrChart),
+        StringResources.get(StringKeyPrediction.PRED_REMEDY_YOGA, language),
+        StringResources.get(StringKeyPrediction.PRED_REMEDY_WORSHIP, language)
     )
 }
 
 // Helper utility functions
-private fun getAscendantPath(sign: ZodiacSign): String = when (sign) {
-    ZodiacSign.ARIES -> "courage, independence, and pioneering spirit"
-    ZodiacSign.TAURUS -> "stability, material security, and perseverance"
-    ZodiacSign.GEMINI -> "communication, versatility, and intellectual pursuits"
-    ZodiacSign.CANCER -> "nurturing, emotional depth, and family connections"
-    ZodiacSign.LEO -> "leadership, creativity, and self-expression"
-    ZodiacSign.VIRGO -> "service, analysis, and practical perfection"
-    ZodiacSign.LIBRA -> "harmony, relationships, and balanced judgment"
-    ZodiacSign.SCORPIO -> "transformation, intensity, and deep research"
-    ZodiacSign.SAGITTARIUS -> "wisdom, exploration, and philosophical understanding"
-    ZodiacSign.CAPRICORN -> "discipline, ambition, and long-term achievement"
-    ZodiacSign.AQUARIUS -> "innovation, humanitarian ideals, and progressive thinking"
-    ZodiacSign.PISCES -> "spirituality, compassion, and transcendent wisdom"
+private fun getAscendantPath(sign: ZodiacSign, language: Language): String = when (sign) {
+    ZodiacSign.ARIES -> StringResources.get(StringKeyPrediction.PRED_ASC_ARIES, language)
+    ZodiacSign.TAURUS -> StringResources.get(StringKeyPrediction.PRED_ASC_TAURUS, language)
+    ZodiacSign.GEMINI -> StringResources.get(StringKeyPrediction.PRED_ASC_GEMINI, language)
+    ZodiacSign.CANCER -> StringResources.get(StringKeyPrediction.PRED_ASC_CANCER, language)
+    ZodiacSign.LEO -> StringResources.get(StringKeyPrediction.PRED_ASC_LEO, language)
+    ZodiacSign.VIRGO -> StringResources.get(StringKeyPrediction.PRED_ASC_VIRGO, language)
+    ZodiacSign.LIBRA -> StringResources.get(StringKeyPrediction.PRED_ASC_LIBRA, language)
+    ZodiacSign.SCORPIO -> StringResources.get(StringKeyPrediction.PRED_ASC_SCORPIO, language)
+    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyPrediction.PRED_ASC_SAGITTARIUS, language)
+    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyPrediction.PRED_ASC_CAPRICORN, language)
+    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyPrediction.PRED_ASC_AQUARIUS, language)
+    ZodiacSign.PISCES -> StringResources.get(StringKeyPrediction.PRED_ASC_PISCES, language)
 }
 
-private fun getMoonPath(sign: ZodiacSign?): String = when (sign) {
-    ZodiacSign.ARIES -> "excitement and action"
-    ZodiacSign.TAURUS -> "comfort and stability"
-    ZodiacSign.GEMINI -> "variety and mental stimulation"
-    ZodiacSign.CANCER -> "security and emotional connection"
-    ZodiacSign.LEO -> "recognition and warmth"
-    ZodiacSign.VIRGO -> "order and practical service"
-    ZodiacSign.LIBRA -> "partnership and aesthetic beauty"
-    ZodiacSign.SCORPIO -> "depth and emotional transformation"
-    ZodiacSign.SAGITTARIUS -> "meaning and philosophical truth"
-    ZodiacSign.CAPRICORN -> "achievement and respect"
-    ZodiacSign.AQUARIUS -> "freedom and humanitarian connection"
-    ZodiacSign.PISCES -> "unity and spiritual transcendence"
-    else -> "emotional fulfillment"
+private fun getMoonPath(sign: ZodiacSign?, language: Language): String = when (sign) {
+    ZodiacSign.ARIES -> StringResources.get(StringKeyPrediction.PRED_MOON_ARIES, language)
+    ZodiacSign.TAURUS -> StringResources.get(StringKeyPrediction.PRED_MOON_TAURUS, language)
+    ZodiacSign.GEMINI -> StringResources.get(StringKeyPrediction.PRED_MOON_GEMINI, language)
+    ZodiacSign.CANCER -> StringResources.get(StringKeyPrediction.PRED_MOON_CANCER, language)
+    ZodiacSign.LEO -> StringResources.get(StringKeyPrediction.PRED_MOON_LEO, language)
+    ZodiacSign.VIRGO -> StringResources.get(StringKeyPrediction.PRED_MOON_VIRGO, language)
+    ZodiacSign.LIBRA -> StringResources.get(StringKeyPrediction.PRED_MOON_LIBRA, language)
+    ZodiacSign.SCORPIO -> StringResources.get(StringKeyPrediction.PRED_MOON_SCORPIO, language)
+    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyPrediction.PRED_MOON_SAGITTARIUS, language)
+    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyPrediction.PRED_MOON_CAPRICORN, language)
+    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyPrediction.PRED_MOON_AQUARIUS, language)
+    ZodiacSign.PISCES -> StringResources.get(StringKeyPrediction.PRED_MOON_PISCES, language)
+    else -> StringResources.get(StringKeyPrediction.PRED_MOON_DEFAULT, language)
 }
 
-private fun getLifeTheme(sign: ZodiacSign): String = when (sign) {
-    ZodiacSign.ARIES -> "Pioneer & Warrior"
-    ZodiacSign.TAURUS -> "Builder & Preserver"
-    ZodiacSign.GEMINI -> "Communicator & Learner"
-    ZodiacSign.CANCER -> "Nurturer & Protector"
-    ZodiacSign.LEO -> "Leader & Creator"
-    ZodiacSign.VIRGO -> "Server & Healer"
-    ZodiacSign.LIBRA -> "Diplomat & Artist"
-    ZodiacSign.SCORPIO -> "Transformer & Investigator"
-    ZodiacSign.SAGITTARIUS -> "Philosopher & Explorer"
-    ZodiacSign.CAPRICORN -> "Achiever & Master"
-    ZodiacSign.AQUARIUS -> "Innovator & Humanitarian"
-    ZodiacSign.PISCES -> "Mystic & Compassionate Soul"
+private fun getLifeTheme(sign: ZodiacSign, language: Language): String = when (sign) {
+    ZodiacSign.ARIES -> StringResources.get(StringKeyPrediction.PRED_THEME_ARIES, language)
+    ZodiacSign.TAURUS -> StringResources.get(StringKeyPrediction.PRED_THEME_TAURUS, language)
+    ZodiacSign.GEMINI -> StringResources.get(StringKeyPrediction.PRED_THEME_GEMINI, language)
+    ZodiacSign.CANCER -> StringResources.get(StringKeyPrediction.PRED_THEME_CANCER, language)
+    ZodiacSign.LEO -> StringResources.get(StringKeyPrediction.PRED_THEME_LEO, language)
+    ZodiacSign.VIRGO -> StringResources.get(StringKeyPrediction.PRED_THEME_VIRGO, language)
+    ZodiacSign.LIBRA -> StringResources.get(StringKeyPrediction.PRED_THEME_LIBRA, language)
+    ZodiacSign.SCORPIO -> StringResources.get(StringKeyPrediction.PRED_THEME_SCORPIO, language)
+    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyPrediction.PRED_THEME_SAGITTARIUS, language)
+    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyPrediction.PRED_THEME_CAPRICORN, language)
+    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyPrediction.PRED_THEME_AQUARIUS, language)
+    ZodiacSign.PISCES -> StringResources.get(StringKeyPrediction.PRED_THEME_PISCES, language)
 }
 
-private fun getSpiritualPath(sign: ZodiacSign?): String = when (sign) {
-    ZodiacSign.ARIES -> "self-realization through action"
-    ZodiacSign.TAURUS -> "grounding and material transcendence"
-    ZodiacSign.GEMINI -> "integration of duality"
-    ZodiacSign.CANCER -> "emotional mastery and nurturing wisdom"
-    ZodiacSign.LEO -> "heart-centered consciousness"
-    ZodiacSign.VIRGO -> "perfection through service"
-    ZodiacSign.LIBRA -> "balance and unity consciousness"
-    ZodiacSign.SCORPIO -> "death and rebirth cycles"
-    ZodiacSign.SAGITTARIUS -> "truth-seeking and higher knowledge"
-    ZodiacSign.CAPRICORN -> "mastery and enlightened leadership"
-    ZodiacSign.AQUARIUS -> "universal love and detachment"
-    ZodiacSign.PISCES -> "dissolution into divine consciousness"
-    else -> "spiritual awakening"
+private fun getSpiritualPath(sign: ZodiacSign?, language: Language): String = when (sign) {
+    ZodiacSign.ARIES -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_ARIES, language)
+    ZodiacSign.TAURUS -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_TAURUS, language)
+    ZodiacSign.GEMINI -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_GEMINI, language)
+    ZodiacSign.CANCER -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_CANCER, language)
+    ZodiacSign.LEO -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_LEO, language)
+    ZodiacSign.VIRGO -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_VIRGO, language)
+    ZodiacSign.LIBRA -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_LIBRA, language)
+    ZodiacSign.SCORPIO -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_SCORPIO, language)
+    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_SAGITTARIUS, language)
+    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_CAPRICORN, language)
+    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_AQUARIUS, language)
+    ZodiacSign.PISCES -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_PISCES, language)
+    else -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_DEFAULT, language)
 }
 
-private fun getDashaEffect(planet: Planet): String = when (planet) {
-    Planet.SUN -> "self-confidence, authority, and father-related matters"
-    Planet.MOON -> "emotions, mind, and mother-related matters"
-    Planet.MARS -> "energy, courage, and taking action"
-    Planet.MERCURY -> "communication, intellect, and business"
-    Planet.JUPITER -> "wisdom, expansion, and spiritual growth"
-    Planet.VENUS -> "relationships, luxury, and artistic pursuits"
-    Planet.SATURN -> "discipline, karmic lessons, and hard work"
-    Planet.RAHU -> "worldly desires, unconventional paths, and material success"
-    Planet.KETU -> "spirituality, detachment, and moksha"
-    else -> "various life experiences"
+private fun getDashaEffect(planet: Planet, language: Language): String = when (planet) {
+    Planet.SUN -> StringResources.get(StringKeyPrediction.PRED_DASHA_SUN, language)
+    Planet.MOON -> StringResources.get(StringKeyPrediction.PRED_DASHA_MOON, language)
+    Planet.MARS -> StringResources.get(StringKeyPrediction.PRED_DASHA_MARS, language)
+    Planet.MERCURY -> StringResources.get(StringKeyPrediction.PRED_DASHA_MERCURY, language)
+    Planet.JUPITER -> StringResources.get(StringKeyPrediction.PRED_DASHA_JUPITER, language)
+    Planet.VENUS -> StringResources.get(StringKeyPrediction.PRED_DASHA_VENUS, language)
+    Planet.SATURN -> StringResources.get(StringKeyPrediction.PRED_DASHA_SATURN, language)
+    Planet.RAHU -> StringResources.get(StringKeyPrediction.PRED_DASHA_RAHU, language)
+    Planet.KETU -> StringResources.get(StringKeyPrediction.PRED_DASHA_KETU, language)
+    else -> StringResources.get(StringKeyPrediction.PRED_DASHA_DEFAULT, language)
 }
 
-private fun getAntardashaEffect(planet: Planet): String = when (planet) {
-    Planet.SUN -> "emphasis on leadership and recognition"
-    Planet.MOON -> "heightened emotional sensitivity"
-    Planet.MARS -> "increased drive and assertiveness"
-    Planet.MERCURY -> "enhanced mental clarity"
-    Planet.JUPITER -> "blessings and fortunate opportunities"
-    Planet.VENUS -> "pleasure and harmonious experiences"
-    Planet.SATURN -> "patience and perseverance requirements"
-    Planet.RAHU -> "sudden changes and ambition"
-    Planet.KETU -> "spiritual insights and letting go"
-    else -> "additional influences"
+private fun getAntardashaEffect(planet: Planet, language: Language): String = when (planet) {
+    Planet.SUN -> StringResources.get(StringKeyPrediction.PRED_AD_SUN, language)
+    Planet.MOON -> StringResources.get(StringKeyPrediction.PRED_AD_MOON, language)
+    Planet.MARS -> StringResources.get(StringKeyPrediction.PRED_AD_MARS, language)
+    Planet.MERCURY -> StringResources.get(StringKeyPrediction.PRED_AD_MERCURY, language)
+    Planet.JUPITER -> StringResources.get(StringKeyPrediction.PRED_AD_JUPITER, language)
+    Planet.VENUS -> StringResources.get(StringKeyPrediction.PRED_AD_VENUS, language)
+    Planet.SATURN -> StringResources.get(StringKeyPrediction.PRED_AD_SATURN, language)
+    Planet.RAHU -> StringResources.get(StringKeyPrediction.PRED_AD_RAHU, language)
+    Planet.KETU -> StringResources.get(StringKeyPrediction.PRED_AD_KETU, language)
+    else -> StringResources.get(StringKeyPrediction.PRED_AD_DEFAULT, language)
 }
 
-private fun getTransitDescription(planet: Planet): String = when (planet) {
-    Planet.SUN -> "Illuminating life purpose"
-    Planet.MOON -> "Emotional fluctuations"
-    Planet.MARS -> "Increased energy and drive"
-    Planet.MERCURY -> "Mental activity and communication"
-    Planet.JUPITER -> "Growth and opportunities"
-    Planet.VENUS -> "Harmony and relationships"
-    Planet.SATURN -> "Discipline and restrictions"
-    Planet.RAHU -> "Unexpected developments"
-    Planet.KETU -> "Spiritual awakening"
-    else -> "Planetary influence active"
+private fun getTransitDescription(planet: Planet, language: Language): String = when (planet) {
+    Planet.SUN -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_SUN, language)
+    Planet.MOON -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_MOON, language)
+    Planet.MARS -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_MARS, language)
+    Planet.MERCURY -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_MERCURY, language)
+    Planet.JUPITER -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_JUPITER, language)
+    Planet.VENUS -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_VENUS, language)
+    Planet.SATURN -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_SATURN, language)
+    Planet.RAHU -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_RAHU, language)
+    Planet.KETU -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_KETU, language)
+    else -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_DEFAULT, language)
 }
 
-private fun getShortTermPrediction(area: LifeArea): String = when (area) {
-    LifeArea.CAREER -> "Focus on current projects and networking. New opportunities may emerge through professional contacts."
-    LifeArea.FINANCE -> "Steady income flow with potential for incremental growth. Good time to review budget and savings."
-    LifeArea.RELATIONSHIPS -> "Existing relationships deepen. Communication is key for resolving minor conflicts."
-    LifeArea.HEALTH -> "Maintain regular exercise and balanced diet. Energy levels are stable."
-    LifeArea.EDUCATION -> "Good period for learning and skill development. Short courses bring benefits."
-    LifeArea.FAMILY -> "Harmonious domestic atmosphere. Small celebrations or gatherings bring joy."
-    LifeArea.SPIRITUAL -> "Daily practices bring mental peace. Insights come through meditation."
+private fun getShortTermPrediction(area: LifeArea, language: Language): String = when (area) {
+    LifeArea.CAREER -> StringResources.get(StringKeyPrediction.PRED_CAREER_SHORT, language)
+    LifeArea.FINANCE -> StringResources.get(StringKeyPrediction.PRED_FINANCE_SHORT, language)
+    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyPrediction.PRED_REL_SHORT, language)
+    LifeArea.HEALTH -> StringResources.get(StringKeyPrediction.PRED_HEALTH_SHORT, language)
+    LifeArea.EDUCATION -> StringResources.get(StringKeyPrediction.PRED_EDU_SHORT, language)
+    LifeArea.FAMILY -> StringResources.get(StringKeyPrediction.PRED_FAMILY_SHORT, language)
+    LifeArea.SPIRITUAL -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_SHORT, language)
 }
 
-private fun getMediumTermPrediction(area: LifeArea): String = when (area) {
-    LifeArea.CAREER -> "Significant professional advancement possible. Leadership opportunities may present themselves."
-    LifeArea.FINANCE -> "Potential for larger gains through investments or promotions. Financial security strengthens."
-    LifeArea.RELATIONSHIPS -> "Important relationship milestones. Marriage or commitment possibilities for singles."
-    LifeArea.HEALTH -> "Vitality improves with consistent practices. Consider preventive health measures."
-    LifeArea.EDUCATION -> "Major educational achievements or certifications. Academic success likely."
-    LifeArea.FAMILY -> "Family expansions or property matters. Supportive period for family bonds."
-    LifeArea.SPIRITUAL -> "Deepening spiritual understanding. Connection with teachers or spiritual communities."
+private fun getMediumTermPrediction(area: LifeArea, language: Language): String = when (area) {
+    LifeArea.CAREER -> StringResources.get(StringKeyPrediction.PRED_CAREER_MED, language)
+    LifeArea.FINANCE -> StringResources.get(StringKeyPrediction.PRED_FINANCE_MED, language)
+    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyPrediction.PRED_REL_MED, language)
+    LifeArea.HEALTH -> StringResources.get(StringKeyPrediction.PRED_HEALTH_MED, language)
+    LifeArea.EDUCATION -> StringResources.get(StringKeyPrediction.PRED_EDU_MED, language)
+    LifeArea.FAMILY -> StringResources.get(StringKeyPrediction.PRED_FAMILY_MED, language)
+    LifeArea.SPIRITUAL -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_MED, language)
 }
 
-private fun getLongTermPrediction(area: LifeArea): String = when (area) {
-    LifeArea.CAREER -> "Establishment as authority in your field. Long-term career goals manifest."
-    LifeArea.FINANCE -> "Wealth accumulation and financial independence. Legacy building period."
-    LifeArea.RELATIONSHIPS -> "Mature, stable partnerships. Family life flourishes with mutual support."
-    LifeArea.HEALTH -> "Strong vitality and longevity indicators. Healthy lifestyle becomes natural."
-    LifeArea.EDUCATION -> "Mastery in chosen field. Potential to become teacher or expert."
-    LifeArea.FAMILY -> "Strong family foundation. Ancestral blessings and property matters resolved."
-    LifeArea.SPIRITUAL -> "Significant spiritual evolution. Inner peace and wisdom established."
+private fun getLongTermPrediction(area: LifeArea, language: Language): String = when (area) {
+    LifeArea.CAREER -> StringResources.get(StringKeyPrediction.PRED_CAREER_LONG, language)
+    LifeArea.FINANCE -> StringResources.get(StringKeyPrediction.PRED_FINANCE_LONG, language)
+    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyPrediction.PRED_REL_LONG, language)
+    LifeArea.HEALTH -> StringResources.get(StringKeyPrediction.PRED_HEALTH_LONG, language)
+    LifeArea.EDUCATION -> StringResources.get(StringKeyPrediction.PRED_EDU_LONG, language)
+    LifeArea.FAMILY -> StringResources.get(StringKeyPrediction.PRED_FAMILY_LONG, language)
+    LifeArea.SPIRITUAL -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_LONG, language)
 }
 
-private fun getKeyFactors(area: LifeArea): List<String> = when (area) {
-    LifeArea.CAREER -> listOf("Professional networking", "Skill enhancement", "Leadership development")
-    LifeArea.FINANCE -> listOf("Strategic investments", "Multiple income streams", "Financial discipline")
-    LifeArea.RELATIONSHIPS -> listOf("Communication quality", "Emotional maturity", "Shared values")
-    LifeArea.HEALTH -> listOf("Regular exercise", "Balanced nutrition", "Stress management")
-    LifeArea.EDUCATION -> listOf("Consistent study", "Practical application", "Mentor guidance")
-    LifeArea.FAMILY -> listOf("Quality time", "Mutual respect", "Emotional support")
-    LifeArea.SPIRITUAL -> listOf("Daily practice", "Self-reflection", "Service to others")
+private fun getKeyFactors(area: LifeArea, language: Language): List<String> = when (area) {
+    LifeArea.CAREER -> listOf(
+        StringResources.get(StringKeyPrediction.PRED_CAREER_KEY_1, language),
+        StringResources.get(StringKeyPrediction.PRED_CAREER_KEY_2, language),
+        StringResources.get(StringKeyPrediction.PRED_CAREER_KEY_3, language)
+    )
+    LifeArea.FINANCE -> listOf(
+        StringResources.get(StringKeyPrediction.PRED_FINANCE_KEY_1, language),
+        StringResources.get(StringKeyPrediction.PRED_FINANCE_KEY_2, language),
+        StringResources.get(StringKeyPrediction.PRED_FINANCE_KEY_3, language)
+    )
+    LifeArea.RELATIONSHIPS -> listOf(
+        StringResources.get(StringKeyPrediction.PRED_REL_KEY_1, language),
+        StringResources.get(StringKeyPrediction.PRED_REL_KEY_2, language),
+        StringResources.get(StringKeyPrediction.PRED_REL_KEY_3, language)
+    )
+    LifeArea.HEALTH -> listOf(
+        StringResources.get(StringKeyPrediction.PRED_HEALTH_KEY_1, language),
+        StringResources.get(StringKeyPrediction.PRED_HEALTH_KEY_2, language),
+        StringResources.get(StringKeyPrediction.PRED_HEALTH_KEY_3, language)
+    )
+    LifeArea.EDUCATION -> listOf(
+        StringResources.get(StringKeyPrediction.PRED_EDU_KEY_1, language),
+        StringResources.get(StringKeyPrediction.PRED_EDU_KEY_2, language),
+        StringResources.get(StringKeyPrediction.PRED_EDU_KEY_3, language)
+    )
+    LifeArea.FAMILY -> listOf(
+        StringResources.get(StringKeyPrediction.PRED_FAMILY_KEY_1, language),
+        StringResources.get(StringKeyPrediction.PRED_FAMILY_KEY_2, language),
+        StringResources.get(StringKeyPrediction.PRED_FAMILY_KEY_3, language)
+    )
+    LifeArea.SPIRITUAL -> listOf(
+        StringResources.get(StringKeyPrediction.PRED_SPIRIT_KEY_1, language),
+        StringResources.get(StringKeyPrediction.PRED_SPIRIT_KEY_2, language),
+        StringResources.get(StringKeyPrediction.PRED_SPIRIT_KEY_3, language)
+    )
 }
 
-private fun getAdvice(area: LifeArea): String = when (area) {
-    LifeArea.CAREER -> "Take calculated risks and invest in professional development. Network actively and stay open to new opportunities."
-    LifeArea.FINANCE -> "Create diversified income sources and maintain financial discipline. Seek expert advice for major investments."
-    LifeArea.RELATIONSHIPS -> "Practice active listening and express appreciation regularly. Invest quality time in nurturing bonds."
-    LifeArea.HEALTH -> "Establish sustainable wellness routines. Prevention is better than cure - regular check-ups recommended."
-    LifeArea.EDUCATION -> "Apply theoretical knowledge practically. Seek mentors and engage in continuous learning."
-    LifeArea.FAMILY -> "Balance personal and family time. Address conflicts with patience and understanding."
-    LifeArea.SPIRITUAL -> "Maintain daily spiritual practices. Connect with like-minded seekers and serve others."
+private fun getAdvice(area: LifeArea, language: Language): String = when (area) {
+    LifeArea.CAREER -> StringResources.get(StringKeyPrediction.PRED_CAREER_ADVICE, language)
+    LifeArea.FINANCE -> StringResources.get(StringKeyPrediction.PRED_FINANCE_ADVICE, language)
+    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyPrediction.PRED_REL_ADVICE, language)
+    LifeArea.HEALTH -> StringResources.get(StringKeyPrediction.PRED_HEALTH_ADVICE, language)
+    LifeArea.EDUCATION -> StringResources.get(StringKeyPrediction.PRED_EDU_ADVICE, language)
+    LifeArea.FAMILY -> StringResources.get(StringKeyPrediction.PRED_FAMILY_ADVICE, language)
+    LifeArea.SPIRITUAL -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_ADVICE, language)
 }
 
 @Composable

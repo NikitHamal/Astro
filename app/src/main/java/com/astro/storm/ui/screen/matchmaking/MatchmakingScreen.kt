@@ -1497,7 +1497,7 @@ private fun EnhancedManglikPersonCard(
 
 @Composable
 private fun NadiDoshaCard(result: MatchmakingResult) {
-    val nadiGuna = result.gunaAnalyses.find { it.name == "Nadi" }
+    val nadiGuna = result.gunaAnalyses.find { it.gunaType == GunaType.NADI }
     val hasNadiDosha = nadiGuna?.obtainedPoints == 0.0
 
     Card(
@@ -1601,7 +1601,7 @@ private fun NadiDoshaCard(result: MatchmakingResult) {
 
 @Composable
 private fun BhakootDoshaCard(result: MatchmakingResult) {
-    val bhakootGuna = result.gunaAnalyses.find { it.name == "Bhakoot" }
+    val bhakootGuna = result.gunaAnalyses.find { it.gunaType == GunaType.BHAKOOT }
     val hasBhakootDosha = bhakootGuna?.obtainedPoints == 0.0
 
     Card(
@@ -1769,9 +1769,7 @@ private fun NakshatraSection(
 
 @Composable
 private fun RajjuAnalysisCard(result: MatchmakingResult) {
-    val hasRajjuDosha = result.specialConsiderations.any { 
-        it.contains("Rajju", ignoreCase = true) 
-    }
+    val hasRajjuDosha = !result.additionalFactors.rajjuCompatible
 
     Card(
         modifier = Modifier
@@ -1839,9 +1837,7 @@ private fun RajjuAnalysisCard(result: MatchmakingResult) {
 
 @Composable
 private fun VedhaAnalysisCard(result: MatchmakingResult) {
-    val hasVedha = result.specialConsiderations.any { 
-        it.contains("Vedha", ignoreCase = true) 
-    }
+    val hasVedha = result.additionalFactors.vedhaPresent
 
     Card(
         modifier = Modifier

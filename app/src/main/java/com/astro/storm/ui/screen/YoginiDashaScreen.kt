@@ -114,8 +114,8 @@ fun YoginiDashaScreen(
         chart?.generateUniqueKey()
     }
 
-    LaunchedEffect(chartKey) {
-        viewModel.loadYoginiDasha(chart)
+    LaunchedEffect(chartKey, language) {
+        viewModel.loadYoginiDasha(chart, language)
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -210,8 +210,8 @@ private fun extractCurrentYoginiPeriodInfo(
             val md = uiState.result.currentMahadasha
             val ad = uiState.result.currentAntardasha
             CurrentYoginiPeriodInfo(
-                mahadasha = md?.yogini?.let { getYoginiLocalizedName(it, language) },
-                antardasha = ad?.yogini?.let { getYoginiLocalizedName(it, language) },
+                mahadasha = md?.yogini?.getLocalizedName(language),
+                antardasha = ad?.yogini?.getLocalizedName(language),
                 isLoading = false,
                 hasError = false
             )
@@ -626,7 +626,7 @@ private fun YoginiPeriodRow(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = getYoginiLocalizedName(yogini, language),
+                        text = yogini.getLocalizedName(language),
                         fontSize = mainFontSize,
                         fontWeight = if (isLarge) FontWeight.Bold else FontWeight.SemiBold,
                         color = yoginiColor
@@ -770,7 +770,7 @@ private fun BirthBalanceCard(
             ) {
                 InfoItem(
                     label = stringResource(StringKeyDosha.YOGINI_DASHA_CURRENT),
-                    value = getYoginiLocalizedName(balance.yogini, language),
+                    value = balance.yogini.getLocalizedName(language),
                     color = getYoginiColor(balance.yogini)
                 )
                 InfoItem(
@@ -947,7 +947,7 @@ private fun RowScope.YoginiSequenceItem(
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(
-                    text = getYoginiLocalizedName(yogini, language),
+                    text = yogini.getLocalizedName(language),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
@@ -1074,7 +1074,7 @@ private fun YoginiMahadashaCard(
                     Column {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = getYoginiLocalizedName(mahadasha.yogini, language),
+                                text = mahadasha.yogini.getLocalizedName(language),
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
@@ -1217,7 +1217,7 @@ private fun YoginiAntardashaRow(
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = getYoginiLocalizedName(antardasha.yogini, language),
+                        text = antardasha.yogini.getLocalizedName(language),
                         fontSize = 13.sp,
                         fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
                         color = when {
@@ -1321,7 +1321,7 @@ private fun YoginiDetailCard(
                     Spacer(modifier = Modifier.width(14.dp))
                     Column {
                         Text(
-                            text = getYoginiLocalizedName(yogini, language),
+                            text = yogini.getLocalizedName(language),
                             fontSize = 17.sp,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
@@ -1350,7 +1350,7 @@ private fun YoginiDetailCard(
                             color = natureColor.copy(alpha = 0.15f)
                         ) {
                             Text(
-                                text = getNatureLocalizedName(yogini.nature, language),
+                                text = yogini.nature.getLocalizedName(language),
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = natureColor,
@@ -1378,24 +1378,9 @@ private fun YoginiDetailCard(
                 Column(modifier = Modifier.padding(top = 16.dp)) {
                     HorizontalDivider(color = AppTheme.DividerColor, modifier = Modifier.padding(bottom = 14.dp))
 
-                    // Get interpretation (mock data for now - in real implementation this would come from calculator)
-                    val interpretation = remember(yogini) {
-                        YoginiDashaCalculator.YoginiInterpretation(
-                            generalEffects = yogini.description,
-                            careerEffects = "Career-related effects for ${yogini.displayName}",
-                            relationshipEffects = "Relationship effects for ${yogini.displayName}",
-                            healthEffects = "Health considerations for ${yogini.displayName}",
-                            spiritualEffects = "Spiritual growth during ${yogini.displayName}",
-                            recommendations = listOf(
-                                "Honor the presiding deity",
-                                "Practice specific remedies",
-                                "Wear appropriate gemstone if suitable"
-                            ),
-                            cautionAreas = listOf(
-                                "Be aware of potential challenges",
-                                "Maintain balance and moderation"
-                            )
-                        )
+                    // Get interpretation from calculator
+                    val interpretation = remember(yogini, language) {
+                        YoginiDashaCalculator.generateInterpretation(yogini, null, language)
                     }
 
                     EffectSection(
@@ -1777,36 +1762,6 @@ private fun YoginiDashaEmptyContent(onBack: () -> Unit) {
         }
     }
 }
-
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
-
-private fun getYoginiLocalizedName(yogini: YoginiDashaCalculator.Yogini, language: Language): String {
-    return when (language) {
-        Language.ENGLISH -> yogini.displayName
-        Language.NEPALI -> yogini.sanskrit
-    }
-}
-
-private fun getNatureLocalizedName(nature: YoginiDashaCalculator.YoginiNature, language: Language): String {
-    return when (nature) {
-        YoginiDashaCalculator.YoginiNature.HIGHLY_AUSPICIOUS -> when (language) {
-            Language.ENGLISH -> "Highly Auspicious"
-            Language.NEPALI -> "अत्यन्त शुभ"
-        }
-        YoginiDashaCalculator.YoginiNature.AUSPICIOUS -> when (language) {
-            Language.ENGLISH -> "Auspicious"
-            Language.NEPALI -> "शुभ"
-        }
-        YoginiDashaCalculator.YoginiNature.MIXED -> when (language) {
-            Language.ENGLISH -> "Mixed"
-            Language.NEPALI -> "मिश्रित"
-        }
-        YoginiDashaCalculator.YoginiNature.CHALLENGING -> when (language) {
-            Language.ENGLISH -> "Challenging"
-            Language.NEPALI -> "चुनौतीपूर्ण"
-        }
         YoginiDashaCalculator.YoginiNature.DIFFICULT -> when (language) {
             Language.ENGLISH -> "Difficult"
             Language.NEPALI -> "कठिन"

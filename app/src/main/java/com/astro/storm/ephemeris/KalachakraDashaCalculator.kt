@@ -6,6 +6,9 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringKeyDosha
+import com.astro.storm.data.localization.StringResources
 
 /**
  * Kalachakra Dasha Calculator - Production-grade Implementation
@@ -200,7 +203,21 @@ object KalachakraDashaCalculator {
      */
     enum class NakshatraGroup(val displayName: String, val description: String) {
         SAVYA("Savya (Direct)", "Clockwise progression through signs - generally smoother life flow"),
-        APSAVYA("Apsavya (Retrograde)", "Anti-clockwise progression - more karmic intensity and transformation")
+        APSAVYA("Apsavya (Retrograde)", "Anti-clockwise progression - more karmic intensity and transformation");
+
+        fun getLocalizedName(language: Language): String {
+            return when (this) {
+                SAVYA -> StringResources.get(StringKeyDosha.KALACHAKRA_GROUP_SAVYA, language)
+                APSAVYA -> StringResources.get(StringKeyDosha.KALACHAKRA_GROUP_APSAVYA, language)
+            }
+        }
+
+        fun getLocalizedDescription(language: Language): String {
+            return when (this) {
+                SAVYA -> StringResources.get(StringKeyDosha.KALACHAKRA_DESC_SAVYA, language)
+                APSAVYA -> StringResources.get(StringKeyDosha.KALACHAKRA_DESC_APSAVYA, language)
+            }
+        }
     }
 
     /**
@@ -285,7 +302,27 @@ object KalachakraDashaCalculator {
         GOOD("Good", "Generally supportive of health", 4),
         MODERATE("Moderate", "Mixed health indications", 3),
         CHALLENGING("Challenging", "Need to take care of health", 2),
-        CRITICAL("Critical", "Extra caution needed - follow remedies", 1)
+        CRITICAL("Critical", "Extra caution needed - follow remedies", 1);
+
+        fun getLocalizedName(language: Language): String {
+             return when (this) {
+                EXCELLENT -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_EXCELLENT, language)
+                GOOD -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_GOOD, language)
+                MODERATE -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_MODERATE, language)
+                CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_CHALLENGING, language)
+                CRITICAL -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_CRITICAL, language)
+            }
+        }
+
+        fun getLocalizedDescription(language: Language): String {
+            return when (this) {
+                EXCELLENT -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_DESC_EXCELLENT, language)
+                GOOD -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_DESC_GOOD, language)
+                MODERATE -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_DESC_MODERATE, language)
+                CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_DESC_CHALLENGING, language)
+                CRITICAL -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_DESC_CRITICAL, language)
+            }
+        }
     }
 
     /**
@@ -312,7 +349,27 @@ object KalachakraDashaCalculator {
         SUPPORTIVE("Supportive", "Jeeva supports Deha - spiritual practices benefit health"),
         NEUTRAL("Neutral", "Independent functioning of body and spirit"),
         CHALLENGING("Challenging", "Some friction between material and spiritual needs"),
-        TRANSFORMATIVE("Transformative", "Deep karmic work needed to align body and soul")
+        TRANSFORMATIVE("Transformative", "Deep karmic work needed to align body and soul");
+
+        fun getLocalizedName(language: Language): String {
+            return when (this) {
+                HARMONIOUS -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_HARMONIOUS, language)
+                SUPPORTIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_SUPPORTIVE, language)
+                NEUTRAL -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_NEUTRAL, language)
+                CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_CHALLENGING, language)
+                TRANSFORMATIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_TRANSFORMATIVE, language)
+            }
+        }
+
+        fun getLocalizedDescription(language: Language): String {
+            return when (this) {
+                HARMONIOUS -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_DESC_HARMONIOUS, language)
+                SUPPORTIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_DESC_SUPPORTIVE, language)
+                NEUTRAL -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_DESC_NEUTRAL, language)
+                CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_DESC_CHALLENGING, language)
+                TRANSFORMATIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_DESC_TRANSFORMATIVE, language)
+            }
+        }
     }
 
     /**
@@ -354,7 +411,8 @@ object KalachakraDashaCalculator {
      */
     fun calculateKalachakraDasha(
         chart: VedicChart,
-        numberOfCycles: Int = 2
+        numberOfCycles: Int = 2,
+        language: Language = Language.ENGLISH
     ): KalachakraDashaResult {
         val birthDate = chart.birthData.dateTime.toLocalDate()
 
@@ -535,7 +593,8 @@ object KalachakraDashaCalculator {
         dehaRashi: ZodiacSign,
         jeevaRashi: ZodiacSign,
         numberOfCycles: Int,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): List<KalachakraMahadasha> {
         val mahadashas = mutableListOf<KalachakraMahadasha>()
         var currentDate = birthDate
@@ -573,7 +632,8 @@ object KalachakraDashaCalculator {
                 mahaEnd = endDate,
                 dehaRashi = dehaRashi,
                 jeevaRashi = jeevaRashi,
-                chart = chart
+                chart = chart,
+                language = language
             )
 
             val interpretation = generateMahadashaInterpretation(
@@ -582,7 +642,8 @@ object KalachakraDashaCalculator {
                 healthIndicator = healthIndicator,
                 dehaRashi = dehaRashi,
                 jeevaRashi = jeevaRashi,
-                chart = chart
+                chart = chart,
+                language = language
             )
 
             mahadashas.add(
@@ -653,7 +714,8 @@ object KalachakraDashaCalculator {
         mahaEnd: LocalDate,
         dehaRashi: ZodiacSign,
         jeevaRashi: ZodiacSign,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): List<KalachakraAntardasha> {
         val antardashas = mutableListOf<KalachakraAntardasha>()
         val mahaDurationDays = ChronoUnit.DAYS.between(mahaStart, mahaEnd)
@@ -692,7 +754,8 @@ object KalachakraDashaCalculator {
                 mahadashaSign = mahadashaSign,
                 antardashaSign = antarSign,
                 isDeha = isDeha,
-                isJeeva = isJeeva
+                isJeeva = isJeeva,
+                language = language
             )
 
             antardashas.add(
@@ -786,7 +849,8 @@ object KalachakraDashaCalculator {
     private fun analyzeDehaJeeva(
         dehaRashi: ZodiacSign,
         jeevaRashi: ZodiacSign,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): DehaJeevaAnalysis {
         val dehaLord = dehaRashi.ruler
         val jeevaLord = jeevaRashi.ruler
@@ -794,19 +858,19 @@ object KalachakraDashaCalculator {
         val dehaLordPosition = chart.planetPositions.find { it.planet == dehaLord }
         val jeevaLordPosition = chart.planetPositions.find { it.planet == jeevaLord }
 
-        val dehaLordStrength = assessPlanetStrength(dehaLord, dehaLordPosition, chart)
-        val jeevaLordStrength = assessPlanetStrength(jeevaLord, jeevaLordPosition, chart)
+        val dehaLordStrength = assessPlanetStrength(dehaLord, dehaLordPosition, chart, language)
+        val jeevaLordStrength = assessPlanetStrength(jeevaLord, jeevaLordPosition, chart, language)
 
         // Determine relationship
         val relationship = determineDehaJeevaRelationship(
             dehaRashi, jeevaRashi, dehaLord, jeevaLord, chart
         )
 
-        val healthPrediction = generateHealthPrediction(dehaLordStrength, relationship)
-        val spiritualPrediction = generateSpiritualPrediction(jeevaLordStrength, relationship)
+        val healthPrediction = generateHealthPrediction(dehaLordStrength, relationship, language)
+        val spiritualPrediction = generateSpiritualPrediction(jeevaLordStrength, relationship, language)
 
         val recommendations = generateDehaJeevaRecommendations(
-            dehaLord, jeevaLord, relationship
+            dehaLord, jeevaLord, relationship, language
         )
 
         return DehaJeevaAnalysis(
@@ -829,16 +893,17 @@ object KalachakraDashaCalculator {
     private fun assessPlanetStrength(
         planet: Planet,
         position: com.astro.storm.data.model.PlanetPosition?,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): String {
-        if (position == null) return "Unknown"
+        if (position == null) return StringResources.get(StringKeyDosha.PLANET_STRENGTH_UNKNOWN, language)
 
         return when {
-            position.sign == planet.exaltationSign -> "Exalted - Very Strong"
-            position.sign.ruler == planet -> "Own Sign - Strong"
-            position.sign == planet.debilitationSign -> "Debilitated - Weak"
-            position.isRetrograde -> "Retrograde - Introspective"
-            else -> "Moderate"
+            position.sign == planet.exaltationSign -> StringResources.get(StringKeyDosha.PLANET_STRENGTH_EXALTED, language)
+            position.sign.ruler == planet -> StringResources.get(StringKeyDosha.PLANET_STRENGTH_OWN_SIGN, language)
+            position.sign == planet.debilitationSign -> StringResources.get(StringKeyDosha.PLANET_STRENGTH_DEBILITATED, language)
+            position.isRetrograde -> StringResources.get(StringKeyDosha.PLANET_STRENGTH_RETROGRADE, language)
+            else -> StringResources.get(StringKeyDosha.PLANET_STRENGTH_MODERATE, language)
         }
     }
 
@@ -883,23 +948,21 @@ object KalachakraDashaCalculator {
      */
     private fun generateHealthPrediction(
         dehaLordStrength: String,
-        relationship: DehaJeevaRelationship
+        relationship: DehaJeevaRelationship,
+        language: Language
     ): String {
         return buildString {
-            append("Based on Deha lord's $dehaLordStrength status and ")
-            append("${relationship.displayName.lowercase()} Deha-Jeeva relationship: ")
-            when (relationship) {
-                DehaJeevaRelationship.HARMONIOUS ->
-                    append("Physical health is well-supported by spiritual practices. Body responds well to holistic healing.")
-                DehaJeevaRelationship.SUPPORTIVE ->
-                    append("Good baseline health with spiritual practices enhancing physical wellbeing.")
-                DehaJeevaRelationship.NEUTRAL ->
-                    append("Health matters follow their natural course. Maintain regular routines.")
-                DehaJeevaRelationship.CHALLENGING ->
-                    append("May experience tension between physical demands and spiritual aspirations. Balance is key.")
-                DehaJeevaRelationship.TRANSFORMATIVE ->
-                    append("Health challenges may serve as catalysts for spiritual growth. Deep healing possible.")
+            // "Based on Deha lord's %1$s status and %2$s Deha-Jeeva relationship: "
+            append(StringResources.get(StringKeyDosha.KALACHAKRA_PRED_INTRO_DEHA, language, dehaLordStrength, relationship.getLocalizedName(language)))
+            
+            val effect = when (relationship) {
+                DehaJeevaRelationship.HARMONIOUS -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_PRED_HARMONIOUS, language)
+                DehaJeevaRelationship.SUPPORTIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_PRED_SUPPORTIVE, language)
+                DehaJeevaRelationship.NEUTRAL -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_PRED_NEUTRAL, language)
+                DehaJeevaRelationship.CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_PRED_CHALLENGING, language)
+                DehaJeevaRelationship.TRANSFORMATIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_PRED_TRANSFORMATIVE, language)
             }
+            append(effect)
         }
     }
 
@@ -908,22 +971,21 @@ object KalachakraDashaCalculator {
      */
     private fun generateSpiritualPrediction(
         jeevaLordStrength: String,
-        relationship: DehaJeevaRelationship
+        relationship: DehaJeevaRelationship,
+        language: Language
     ): String {
         return buildString {
-            append("Jeeva lord's $jeevaLordStrength condition indicates ")
-            when (relationship) {
-                DehaJeevaRelationship.HARMONIOUS ->
-                    append("natural spiritual progress. Meditation and dharmic practices flow easily.")
-                DehaJeevaRelationship.SUPPORTIVE ->
-                    append("spiritual growth through practical application of wisdom.")
-                DehaJeevaRelationship.NEUTRAL ->
-                    append("steady spiritual development through consistent practice.")
-                DehaJeevaRelationship.CHALLENGING ->
-                    append("spiritual growth through overcoming material attachments.")
-                DehaJeevaRelationship.TRANSFORMATIVE ->
-                    append("profound spiritual transformation through life's challenges.")
+            // "Jeeva lord's %1$s condition indicates "
+            append(StringResources.get(StringKeyDosha.KALACHAKRA_PRED_INTRO_JEEVA, language, jeevaLordStrength))
+            
+            val effect = when (relationship) {
+                DehaJeevaRelationship.HARMONIOUS -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_PRED_HARMONIOUS, language)
+                DehaJeevaRelationship.SUPPORTIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_PRED_SUPPORTIVE, language)
+                DehaJeevaRelationship.NEUTRAL -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_PRED_NEUTRAL, language)
+                DehaJeevaRelationship.CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_PRED_CHALLENGING, language)
+                DehaJeevaRelationship.TRANSFORMATIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_PRED_TRANSFORMATIVE, language)
             }
+            append(effect)
         }
     }
 
@@ -933,37 +995,40 @@ object KalachakraDashaCalculator {
     private fun generateDehaJeevaRecommendations(
         dehaLord: Planet,
         jeevaLord: Planet,
-        relationship: DehaJeevaRelationship
+        relationship: DehaJeevaRelationship,
+        language: Language
     ): List<String> {
         val recommendations = mutableListOf<String>()
 
         // Deha lord remedies
-        recommendations.add("Strengthen Deha lord (${dehaLord.displayName}) through appropriate mantras and gemstones")
+        val dehaLordName = dehaLord.displayName // Ideally localized
+        recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_DEHA_LORD, language, dehaLordName))
 
         // Jeeva lord remedies
-        recommendations.add("Honor Jeeva lord (${jeevaLord.displayName}) through spiritual practices")
+        val jeevaLordName = jeevaLord.displayName // Ideally localized
+        recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_JEEVA_LORD, language, jeevaLordName))
 
         // Relationship-specific recommendations
         when (relationship) {
             DehaJeevaRelationship.HARMONIOUS -> {
-                recommendations.add("Continue current spiritual and health practices - they are aligned")
-                recommendations.add("Use this favorable period for deepening meditation")
+                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_HARMONIOUS_1, language))
+                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_HARMONIOUS_2, language))
             }
             DehaJeevaRelationship.SUPPORTIVE -> {
-                recommendations.add("Integrate physical yoga with spiritual practices")
-                recommendations.add("Serve others as part of spiritual path")
+                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_SUPPORTIVE_1, language))
+                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_SUPPORTIVE_2, language))
             }
             DehaJeevaRelationship.NEUTRAL -> {
-                recommendations.add("Establish regular routines for both physical and spiritual health")
-                recommendations.add("Create balance between material and spiritual pursuits")
+                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_NEUTRAL_1, language))
+                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_NEUTRAL_2, language))
             }
             DehaJeevaRelationship.CHALLENGING -> {
-                recommendations.add("Practice patience and acceptance with physical limitations")
-                recommendations.add("Transform challenges into spiritual growth opportunities")
+                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_CHALLENGING_1, language))
+                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_CHALLENGING_2, language))
             }
             DehaJeevaRelationship.TRANSFORMATIVE -> {
-                recommendations.add("Embrace transformation as part of soul's journey")
-                recommendations.add("Seek guidance from spiritual teachers during difficult periods")
+                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_TRANSFORMATIVE_1, language))
+                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_TRANSFORMATIVE_2, language))
             }
         }
 
@@ -1016,15 +1081,16 @@ object KalachakraDashaCalculator {
         healthIndicator: HealthIndicator,
         dehaRashi: ZodiacSign,
         jeevaRashi: ZodiacSign,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): MahadashaInterpretation {
-        val generalEffects = getSignGeneralEffects(sign)
-        val healthPrediction = "Health outlook: ${healthIndicator.displayName} - ${healthIndicator.description}"
-        val spiritualPrediction = getSignSpiritualEffects(sign)
-        val materialPrediction = getSignMaterialEffects(sign, chart)
-        val favorableAreas = getFavorableAreas(sign, signLord)
-        val cautionAreas = getCautionAreas(sign, healthIndicator)
-        val remedies = getKalachakraRemedies(sign, signLord)
+        val generalEffects = getSignGeneralEffects(sign, language)
+        val healthPrediction = "Health outlook: ${healthIndicator.getLocalizedName(language)} - ${healthIndicator.getLocalizedDescription(language)}"
+        val spiritualPrediction = getSignSpiritualEffects(sign) // Needs keys
+        val materialPrediction = getSignMaterialEffects(sign, chart) // Needs keys
+        val favorableAreas = getFavorableAreas(sign, signLord) // Needs keys
+        val cautionAreas = getCautionAreas(sign, healthIndicator) // Needs keys
+        val remedies = getKalachakraRemedies(sign, signLord) // Needs keys
 
         return MahadashaInterpretation(
             generalEffects = generalEffects,
@@ -1044,7 +1110,8 @@ object KalachakraDashaCalculator {
         mahadashaSign: ZodiacSign,
         antardashaSign: ZodiacSign,
         isDeha: Boolean,
-        isJeeva: Boolean
+        isJeeva: Boolean,
+        language: Language
     ): String {
         return buildString {
             append("${antardashaSign.displayName} period within ${mahadashaSign.displayName}: ")
@@ -1059,7 +1126,7 @@ object KalachakraDashaCalculator {
                 append("General period for ${antardashaSign.displayName} themes. ")
             }
 
-            append(getSignBriefEffect(antardashaSign))
+            append(getSignBriefEffect(antardashaSign, language))
         }
     }
 
@@ -1072,31 +1139,28 @@ object KalachakraDashaCalculator {
         jeevaRashi: ZodiacSign,
         currentMahadasha: KalachakraMahadasha?,
         dehaJeevaAnalysis: DehaJeevaAnalysis,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): KalachakraInterpretation {
-        val systemOverview = buildString {
-            append("Kalachakra Dasha is a sophisticated timing system particularly useful for ")
-            append("health predictions and spiritual transformation timing. It operates on the ")
-            append("principle that body (Deha) and soul (Jeeva) follow different but related cycles.")
-        }
+        val systemOverview = StringResources.get(StringKeyDosha.KALACHAKRA_OVERVIEW_TEXT, language)
 
         val nakshatraGroupAnalysis = buildString {
-            append("Your Moon falls in ${nakshatraGroup.displayName} group. ")
-            append(nakshatraGroup.description)
+            append("Your Moon falls in ${nakshatraGroup.getLocalizedName(language)} group. ")
+            append(nakshatraGroup.getLocalizedDescription(language))
             append(" This influences the direction and nature of your life's unfoldment.")
         }
 
         val dehaJeevaSummary = buildString {
             append("Deha (Body) Rashi: ${dehaRashi.displayName}, ")
             append("Jeeva (Soul) Rashi: ${jeevaRashi.displayName}. ")
-            append("Relationship: ${dehaJeevaAnalysis.dehaJeevaRelationship.description}")
+            append("Relationship: ${dehaJeevaAnalysis.dehaJeevaRelationship.getLocalizedDescription(language)}")
         }
 
         val currentPhaseAnalysis = if (currentMahadasha != null) {
             buildString {
                 append("Currently in ${currentMahadasha.sign.displayName} Mahadasha ")
                 append("(${currentMahadasha.durationYears} years). ")
-                append("Health outlook: ${currentMahadasha.healthIndicator.displayName}. ")
+                append("Health outlook: ${currentMahadasha.healthIndicator.getLocalizedName(language)}. ")
                 append(currentMahadasha.interpretation.generalEffects)
             }
         } else {
@@ -1107,11 +1171,11 @@ object KalachakraDashaCalculator {
         val spiritualOutlook = dehaJeevaAnalysis.spiritualPrediction
 
         val generalGuidance = listOf(
-            "Monitor transits over Deha Rashi for physical health events",
-            "Observe transits over Jeeva Rashi for spiritual opportunities",
-            "When Deha and Jeeva sign lords are strong in transit, both health and spiritual progress are favored",
-            "Use Kalachakra Dasha alongside Vimsottari for comprehensive analysis",
-            "Pay special attention when malefics transit your Deha Rashi"
+            StringResources.get(StringKeyDosha.KALACHAKRA_GUIDANCE_1, language),
+            StringResources.get(StringKeyDosha.KALACHAKRA_GUIDANCE_2, language),
+            StringResources.get(StringKeyDosha.KALACHAKRA_GUIDANCE_3, language),
+            StringResources.get(StringKeyDosha.KALACHAKRA_GUIDANCE_4, language),
+            StringResources.get(StringKeyDosha.KALACHAKRA_GUIDANCE_5, language)
         )
 
         return KalachakraInterpretation(
@@ -1131,20 +1195,20 @@ object KalachakraDashaCalculator {
 
     private fun yearsToRoundedDays(years: Double): Long = DashaUtils.yearsToRoundedDays(years)
 
-    private fun getSignGeneralEffects(sign: ZodiacSign): String {
+    private fun getSignGeneralEffects(sign: ZodiacSign, language: Language): String {
         return when (sign) {
-            ZodiacSign.ARIES -> "Period of initiative, new beginnings, and physical vitality. Mars energy brings action and courage."
-            ZodiacSign.TAURUS -> "Focus on stability, wealth accumulation, and sensory pleasures. Venus brings comfort and beauty."
-            ZodiacSign.GEMINI -> "Communication, learning, and intellectual pursuits are highlighted. Mercury brings versatility."
-            ZodiacSign.CANCER -> "Emotional growth, home, and family matters take center stage. Moon brings nurturing energy."
-            ZodiacSign.LEO -> "Recognition, authority, and creative self-expression. Sun brings confidence and vitality."
-            ZodiacSign.VIRGO -> "Analysis, health consciousness, and service. Mercury brings discrimination and healing potential."
-            ZodiacSign.LIBRA -> "Partnerships, balance, and aesthetic pursuits. Venus brings harmony and relationships."
-            ZodiacSign.SCORPIO -> "Deep transformation, hidden matters, and research. Mars/Ketu bring intensity and rebirth."
-            ZodiacSign.SAGITTARIUS -> "Higher learning, philosophy, and expansion. Jupiter brings wisdom and fortune."
-            ZodiacSign.CAPRICORN -> "Career, discipline, and long-term achievements. Saturn brings structure and maturity."
-            ZodiacSign.AQUARIUS -> "Innovation, humanitarian concerns, and group activities. Saturn/Rahu bring progressive change."
-            ZodiacSign.PISCES -> "Spirituality, imagination, and transcendence. Jupiter brings divine connection and liberation."
+            ZodiacSign.ARIES -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_ARIES, language)
+            ZodiacSign.TAURUS -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_TAURUS, language)
+            ZodiacSign.GEMINI -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_GEMINI, language)
+            ZodiacSign.CANCER -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_CANCER, language)
+            ZodiacSign.LEO -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_LEO, language)
+            ZodiacSign.VIRGO -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_VIRGO, language)
+            ZodiacSign.LIBRA -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_LIBRA, language)
+            ZodiacSign.SCORPIO -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_SCORPIO, language)
+            ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_SAGITTARIUS, language)
+            ZodiacSign.CAPRICORN -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_CAPRICORN, language)
+            ZodiacSign.AQUARIUS -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_AQUARIUS, language)
+            ZodiacSign.PISCES -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_PISCES, language)
         }
     }
 
@@ -1244,20 +1308,20 @@ object KalachakraDashaCalculator {
         return remedies
     }
 
-    private fun getSignBriefEffect(sign: ZodiacSign): String {
+    private fun getSignBriefEffect(sign: ZodiacSign, language: Language): String {
         return when (sign) {
-            ZodiacSign.ARIES -> "Energy, initiative, new starts."
-            ZodiacSign.TAURUS -> "Stability, wealth, comfort."
-            ZodiacSign.GEMINI -> "Communication, learning, versatility."
-            ZodiacSign.CANCER -> "Emotions, home, nurturing."
-            ZodiacSign.LEO -> "Recognition, creativity, authority."
-            ZodiacSign.VIRGO -> "Analysis, health, service."
-            ZodiacSign.LIBRA -> "Balance, relationships, harmony."
-            ZodiacSign.SCORPIO -> "Transformation, depth, intensity."
-            ZodiacSign.SAGITTARIUS -> "Expansion, wisdom, fortune."
-            ZodiacSign.CAPRICORN -> "Career, discipline, achievement."
-            ZodiacSign.AQUARIUS -> "Innovation, humanity, progress."
-            ZodiacSign.PISCES -> "Spirituality, imagination, liberation."
+            ZodiacSign.ARIES -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_ARIES, language)
+            ZodiacSign.TAURUS -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_TAURUS, language)
+            ZodiacSign.GEMINI -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_GEMINI, language)
+            ZodiacSign.CANCER -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_CANCER, language)
+            ZodiacSign.LEO -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_LEO, language)
+            ZodiacSign.VIRGO -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_VIRGO, language)
+            ZodiacSign.LIBRA -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_LIBRA, language)
+            ZodiacSign.SCORPIO -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_SCORPIO, language)
+            ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_SAGITTARIUS, language)
+            ZodiacSign.CAPRICORN -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_CAPRICORN, language)
+            ZodiacSign.AQUARIUS -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_AQUARIUS, language)
+            ZodiacSign.PISCES -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_PISCES, language)
         }
     }
 
@@ -1311,6 +1375,22 @@ object KalachakraDashaCalculator {
             appendLine("Relationship: ${result.dehaJeevaAnalysis.dehaJeevaRelationship.displayName}")
             appendLine(result.dehaJeevaAnalysis.dehaJeevaRelationship.description)
         }
+    }
+
+    private fun getLocalizedPlanetName(planet: Planet, language: Language): String {
+        val key = when (planet) {
+            Planet.SUN -> com.astro.storm.data.localization.StringKey.PLANET_SUN
+            Planet.MOON -> com.astro.storm.data.localization.StringKey.PLANET_MOON
+            Planet.MARS -> com.astro.storm.data.localization.StringKey.PLANET_MARS
+            Planet.MERCURY -> com.astro.storm.data.localization.StringKey.PLANET_MERCURY
+            Planet.JUPITER -> com.astro.storm.data.localization.StringKey.PLANET_JUPITER
+            Planet.VENUS -> com.astro.storm.data.localization.StringKey.PLANET_VENUS
+            Planet.SATURN -> com.astro.storm.data.localization.StringKey.PLANET_SATURN
+            Planet.RAHU -> com.astro.storm.data.localization.StringKey.PLANET_RAHU
+            Planet.KETU -> com.astro.storm.data.localization.StringKey.PLANET_KETU
+            else -> return planet.displayName
+        }
+        return StringResources.get(key, language)
     }
 }
 

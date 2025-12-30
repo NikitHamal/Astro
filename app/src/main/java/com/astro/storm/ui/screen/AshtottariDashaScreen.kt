@@ -49,6 +49,8 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
+import com.astro.storm.data.localization.Language
 
 // Helper extension for planet abbreviation
 private val Planet.abbreviation: String
@@ -418,7 +420,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKeyMatch.DASHA_LORD),
+                    stringResource(StringKeyDosha.ASHTOTTARI_STARTING_LORD),
                     color = AppTheme.TextMuted,
                     fontSize = 13.sp
                 )
@@ -438,7 +440,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKeyDosha.BALANCE_LABEL),
+                    stringResource(StringKeyDosha.ASHTOTTARI_BALANCE),
                     color = AppTheme.TextMuted,
                     fontSize = 13.sp
                 )
@@ -458,7 +460,8 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
     val language = currentLanguage()
     val mahadasha = result.currentMahadasha ?: return
     val antardasha = result.currentAntardasha
-    val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
+    val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
+    val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", locale)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -731,7 +734,8 @@ private fun MahadashaTimelineCard(
     isCurrent: Boolean
 ) {
     val language = currentLanguage()
-    val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
+    val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
+    val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", locale)
     val antardashas = remember(mahadasha) {
         AshtottariDashaCalculator.calculateAntardashas(mahadasha)
     }

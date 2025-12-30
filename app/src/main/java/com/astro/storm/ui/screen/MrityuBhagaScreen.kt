@@ -307,7 +307,7 @@ private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         if (gandantaPlanets.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = "Gandanta Placements",
+                    title = stringResource(StringKeyDosha.MRITYU_BHAGA_GANDANTA_PLACEMENTS),
                     icon = Icons.Filled.Waves,
                     tint = AppTheme.ErrorColor
                 )
@@ -324,7 +324,7 @@ private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         if (pushkaraNavamsa.isNotEmpty() || pushkaraBhaga.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = "Auspicious Placements",
+                    title = stringResource(StringKeyDosha.MRITYU_BHAGA_AUSPICIOUS_PLACEMENTS),
                     icon = Icons.Filled.Star,
                     tint = AppTheme.SuccessColor
                 )
@@ -365,7 +365,7 @@ private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                                 color = AppTheme.TextPrimary
                             )
                             Text(
-                                "No planets are in critical sensitive degrees",
+                                stringResource(StringKeyDosha.MRITYU_BHAGA_NO_CRITICAL),
                                 fontSize = 13.sp,
                                 color = AppTheme.TextMuted
                             )
@@ -425,13 +425,19 @@ private fun OverallAssessmentCard(analysis: SensitiveDegreesAnalysis) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        "Overall Assessment",
+                        stringResource(StringKeyDosha.MRITYU_BHAGA_OVERALL_ASSESSMENT),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        assessment.level.name.replace("_", " "),
+                        when (assessment.level) {
+                            AssessmentLevel.NEEDS_ATTENTION -> stringResource(StringKeyDosha.MRITYU_BHAGA_LEVEL_NEEDS_ATTENTION)
+                            AssessmentLevel.MODERATE_CONCERN -> stringResource(StringKeyDosha.MRITYU_BHAGA_LEVEL_MODERATE_CONCERN)
+                            AssessmentLevel.BALANCED -> stringResource(StringKeyDosha.MRITYU_BHAGA_LEVEL_BALANCED)
+                            AssessmentLevel.GENERALLY_POSITIVE -> stringResource(StringKeyDosha.MRITYU_BHAGA_LEVEL_GENERALLY_POSITIVE)
+                            AssessmentLevel.HIGHLY_AUSPICIOUS -> stringResource(StringKeyDosha.MRITYU_BHAGA_LEVEL_HIGHLY_AUSPICIOUS)
+                        },
                         fontSize = 13.sp,
                         color = iconColor,
                         fontWeight = FontWeight.Medium
@@ -455,12 +461,12 @@ private fun OverallAssessmentCard(analysis: SensitiveDegreesAnalysis) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 StatItem(
-                    label = "Critical",
+                    label = stringResource(StringKeyDosha.MRITYU_BHAGA_CRITICAL_COUNT),
                     value = assessment.criticalPlacementCount.toString(),
                     color = if (assessment.criticalPlacementCount > 0) AppTheme.ErrorColor else AppTheme.TextMuted
                 )
                 StatItem(
-                    label = "Auspicious",
+                    label = stringResource(StringKeyDosha.MRITYU_BHAGA_AUSPICIOUS_COUNT),
                     value = assessment.auspiciousPlacementCount.toString(),
                     color = if (assessment.auspiciousPlacementCount > 0) AppTheme.SuccessColor else AppTheme.TextMuted
                 )
@@ -571,7 +577,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        result.severity.name.replace("_", " "),
+                        result.severity.getLocalizedName(language),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Medium,
@@ -690,9 +696,9 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
     }
 
     val gandantaTypeName = when (result.gandantaType) {
-        GandantaType.BRAHMA_GANDANTA -> "Brahma Gandanta"
-        GandantaType.VISHNU_GANDANTA -> "Vishnu Gandanta"
-        GandantaType.SHIVA_GANDANTA -> "Shiva Gandanta"
+        GandantaType.BRAHMA_GANDANTA -> stringResource(StringKeyDosha.MRITYU_BHAGA_GANDANTA_BRAHMA)
+        GandantaType.VISHNU_GANDANTA -> stringResource(StringKeyDosha.MRITYU_BHAGA_GANDANTA_VISHNU)
+        GandantaType.SHIVA_GANDANTA -> stringResource(StringKeyDosha.MRITYU_BHAGA_GANDANTA_SHIVA)
     }
 
     Card(
@@ -744,7 +750,7 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        result.severity.name.replace("_", " "),
+                        result.severity.getLocalizedName(language),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Medium,
@@ -755,12 +761,12 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
 
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                "${result.waterSign.getLocalizedName(language)} ↔ ${result.fireSign.getLocalizedName(language)} junction",
+                stringResource(StringKeyDosha.MRITYU_BHAGA_JUNCTION_DESC, result.waterSign.getLocalizedName(language), result.fireSign.getLocalizedName(language)),
                 fontSize = 12.sp,
                 color = AppTheme.TextMuted
             )
             Text(
-                "Distance from junction: ${String.format("%.2f", result.distanceFromJunction)}°",
+                stringResource(StringKeyDosha.MRITYU_BHAGA_DISTANCE_JUNCTION, String.format("%.2f", result.distanceFromJunction) + "°"),
                 fontSize = 12.sp,
                 color = severityColor
             )

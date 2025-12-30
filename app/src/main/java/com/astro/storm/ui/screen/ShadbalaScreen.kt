@@ -178,7 +178,7 @@ fun ShadbalaScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    "Failed to calculate Shadbala",
+                    stringResource(StringKeyDosha.SHADBALA_CALCULATION_ERROR),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.ErrorColor
                 )
@@ -434,7 +434,7 @@ private fun StrengthCountChip(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                if (count == 1) "planet" else "planets",
+                if (count == 1) stringResource(StringKey.REPORT_PLANET).lowercase() else stringResource(StringKey.FEATURE_PLANETS).lowercase(),
                 style = MaterialTheme.typography.bodySmall,
                 color = color.copy(alpha = 0.8f)
             )
@@ -674,7 +674,7 @@ private fun PlanetShadbalaDetailCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKeyDosha.SHADBALA_PLANET_ANALYSIS, planet.displayName),
+                            stringResource(StringKeyDosha.SHADBALA_PLANET_ANALYSIS, planet.getLocalizedName(language)),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1050,7 +1050,7 @@ private fun ShadbalaComparisonTab(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        "Planet",
+                        stringResource(StringKey.REPORT_PLANET),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextMuted,
@@ -1220,7 +1220,7 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    "The six sources of strength:",
+                    stringResource(StringKeyDosha.SHADBALA_INFO_INTRO),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1229,12 +1229,12 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 listOf(
-                    "1. Sthana Bala - Positional strength based on exaltation, own sign, etc.",
-                    "2. Dig Bala - Directional strength based on house placement",
-                    "3. Kala Bala - Temporal strength from time of birth",
-                    "4. Chesta Bala - Motional strength from planetary motion",
-                    "5. Naisargika Bala - Natural inherent strength",
-                    "6. Drik Bala - Strength from aspects received"
+                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_1),
+                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_2),
+                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_3),
+                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_4),
+                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_5),
+                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_6)
                 ).forEach { item ->
                     Text(
                         item,
@@ -1270,14 +1270,5 @@ private fun getStrengthColor(percentage: Double): Color {
 }
 
 private fun getLocalizedStrengthRating(rating: StrengthRating, language: Language): String {
-    return when (rating) {
-        StrengthRating.EXTREMELY_WEAK -> StringResources.get(StringKeyMatch.SHADBALA_EXTREMELY_WEAK, language)
-        StrengthRating.WEAK -> StringResources.get(StringKeyMatch.SHADBALA_WEAK, language)
-        StrengthRating.BELOW_AVERAGE -> StringResources.get(StringKeyMatch.SHADBALA_BELOW_AVERAGE, language)
-        StrengthRating.AVERAGE -> StringResources.get(StringKeyMatch.SHADBALA_AVERAGE, language)
-        StrengthRating.ABOVE_AVERAGE -> StringResources.get(StringKeyMatch.SHADBALA_ABOVE_AVERAGE, language)
-        StrengthRating.STRONG -> StringResources.get(StringKeyMatch.SHADBALA_STRONG, language)
-        StrengthRating.VERY_STRONG -> StringResources.get(StringKeyMatch.SHADBALA_VERY_STRONG, language)
-        StrengthRating.EXTREMELY_STRONG -> StringResources.get(StringKeyMatch.SHADBALA_EXTREMELY_STRONG, language)
-    }
+    return rating.getLocalizedName(language)
 }

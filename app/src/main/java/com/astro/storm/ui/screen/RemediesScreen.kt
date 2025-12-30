@@ -50,6 +50,8 @@ import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.RemediesCalculator
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.ephemeris.Language
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -62,6 +64,7 @@ fun RemediesScreen(
 ) {
     val scope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
+    val language = LocalLanguage.current
 
     var remediesResult by remember { mutableStateOf<RemediesCalculator.RemediesResult?>(null) }
     var isLoading by remember { mutableStateOf(false) }
@@ -82,12 +85,12 @@ fun RemediesScreen(
     val remediesListState = rememberLazyListState()
     val planetsListState = rememberLazyListState()
 
-    suspend fun calculateRemedies(chartData: VedicChart) {
+    suspend fun calculateRemedies(chartData: VedicChart, lang: Language) {
         isLoading = true
         errorMessage = null
         try {
             withContext(Dispatchers.Default) {
-                remediesResult = RemediesCalculator.calculateRemedies(chartData)
+                remediesResult = RemediesCalculator.calculateRemedies(chartData, lang)
             }
         } catch (e: Exception) {
             errorMessage = e.message ?: "Unknown error"
@@ -96,8 +99,8 @@ fun RemediesScreen(
         }
     }
 
-    LaunchedEffect(chart) {
-        chart?.let { calculateRemedies(it) }
+    LaunchedEffect(chart, language) {
+        chart?.let { calculateRemedies(it, language) }
     }
 
     Scaffold(

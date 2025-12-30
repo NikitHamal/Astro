@@ -162,7 +162,7 @@ fun ArgalaScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        "Calculating Argala...",
+                        stringResource(StringKeyAnalysis.ARGALA_CALCULATING),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted
                     )
@@ -176,7 +176,7 @@ fun ArgalaScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    "Failed to calculate Argala",
+                    stringResource(StringKeyAnalysis.ARGALA_FAILED),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.ErrorColor
                 )
@@ -332,7 +332,7 @@ private fun ArgalaOverviewTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "Argala Types",
+                    stringResource(StringKeyAnalysis.ARGALA_TYPES_TITLE),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -342,8 +342,8 @@ private fun ArgalaOverviewTab(
 
                 ArgalaTypeItem(
                     icon = Icons.Filled.Star,
-                    title = stringResource(StringKeyDosha.ARGALA_PRIMARY),
-                    description = "4th & 11th houses create primary interventions",
+                    title = stringResource(StringKeyAnalysis.ARGALA_TYPES_TITLE), // Mistake in previous thought, title was "Argala Types" generic title above
+                    description = stringResource(StringKeyAnalysis.ARGALA_PRIMARY_DESC),
                     color = AppTheme.AccentGold
                 )
 
@@ -352,7 +352,7 @@ private fun ArgalaOverviewTab(
                 ArgalaTypeItem(
                     icon = Icons.Filled.StarHalf,
                     title = stringResource(StringKeyDosha.ARGALA_SECONDARY),
-                    description = "2nd house creates secondary interventions",
+                    description = stringResource(StringKeyAnalysis.ARGALA_SECONDARY_DESC),
                     color = AppTheme.AccentTeal
                 )
 
@@ -361,7 +361,7 @@ private fun ArgalaOverviewTab(
                 ArgalaTypeItem(
                     icon = Icons.Filled.AutoAwesome,
                     title = stringResource(StringKeyDosha.ARGALA_FIFTH_HOUSE),
-                    description = "5th house creates special interventions",
+                    description = stringResource(StringKeyAnalysis.ARGALA_FIFTH_HOUSE_DESC),
                     color = AppTheme.InfoColor
                 )
 
@@ -370,7 +370,7 @@ private fun ArgalaOverviewTab(
                 ArgalaTypeItem(
                     icon = Icons.Filled.Block,
                     title = stringResource(StringKeyDosha.ARGALA_VIRODHA),
-                    description = "12th, 10th, 3rd, 9th houses obstruct Argala",
+                    description = stringResource(StringKeyAnalysis.ARGALA_VIRODHA_DESC),
                     color = AppTheme.WarningColor
                 )
             }
@@ -453,7 +453,7 @@ private fun OverallArgalaCard(
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                "Chart-Wide Argala Patterns",
+                stringResource(StringKeyAnalysis.ARGALA_CHART_WIDE_PATTERNS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -464,8 +464,8 @@ private fun OverallArgalaCard(
             // Strongest Benefic Argala
             analysis.overallAssessment.strongestBeneficArgala?.let { house ->
                 ArgalaHighlightRow(
-                    label = "Strongest Support",
-                    value = "House $house",
+                    label = stringResource(StringKeyAnalysis.ARGALA_STRONGEST_SUPPORT),
+                    value = stringResource(StringKeyMatch.HOUSE_LABEL, house),
                     icon = Icons.Filled.TrendingUp,
                     color = AppTheme.SuccessColor
                 )
@@ -475,8 +475,8 @@ private fun OverallArgalaCard(
             // Strongest Malefic Argala
             analysis.overallAssessment.strongestMaleficArgala?.let { house ->
                 ArgalaHighlightRow(
-                    label = "Greatest Challenge",
-                    value = "House $house",
+                    label = stringResource(StringKeyAnalysis.ARGALA_GREATEST_CHALLENGE),
+                    value = stringResource(StringKeyMatch.HOUSE_LABEL, house),
                     icon = Icons.Filled.TrendingDown,
                     color = AppTheme.WarningColor
                 )
@@ -486,8 +486,8 @@ private fun OverallArgalaCard(
             // Most Obstructed
             analysis.overallAssessment.mostObstructedHouse?.let { house ->
                 ArgalaHighlightRow(
-                    label = "Most Obstructed",
-                    value = "House $house",
+                    label = stringResource(StringKeyAnalysis.ARGALA_MOST_OBSTRUCTED),
+                    value = stringResource(StringKeyMatch.HOUSE_LABEL, house),
                     icon = Icons.Filled.Block,
                     color = AppTheme.ErrorColor
                 )
@@ -497,8 +497,8 @@ private fun OverallArgalaCard(
             // Least Obstructed
             analysis.overallAssessment.leastObstructedHouse?.let { house ->
                 ArgalaHighlightRow(
-                    label = "Least Obstructed",
-                    value = "House $house",
+                    label = stringResource(StringKeyAnalysis.ARGALA_LEAST_OBSTRUCTED),
+                    value = stringResource(StringKeyMatch.HOUSE_LABEL, house),
                     icon = Icons.Filled.CheckCircle,
                     color = AppTheme.InfoColor
                 )
@@ -511,7 +511,7 @@ private fun OverallArgalaCard(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    "Recommendations",
+                    stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -595,7 +595,7 @@ private fun KarmaPatternCard(analysis: ArgalaAnalysis) {
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    "Karma Patterns",
+                    stringResource(StringKeyAnalysis.ARGALA_KARMA_PATTERNS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -640,7 +640,7 @@ private fun SignificantArgalasCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                "Significant Argalas",
+                stringResource(StringKeyAnalysis.ARGALA_SIGNIFICANT_ARGALAS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -709,11 +709,11 @@ private fun SignificantArgalaItem(
 @Composable
 private fun ArgalaStrengthBadge(strength: ArgalaStrength, color: Color) {
     val (label, bgColor) = when (strength) {
-        ArgalaStrength.VERY_STRONG -> "Very Strong" to color
-        ArgalaStrength.STRONG -> "Strong" to color
-        ArgalaStrength.MODERATE -> "Moderate" to color.copy(alpha = 0.7f)
-        ArgalaStrength.WEAK -> "Weak" to AppTheme.TextMuted
-        ArgalaStrength.OBSTRUCTED -> "Obstructed" to AppTheme.ErrorColor
+        ArgalaStrength.VERY_STRONG -> stringResource(StringKeyAnalysis.ARGALA_STRENGTH_VERY_STRONG) to color
+        ArgalaStrength.STRONG -> stringResource(StringKeyAnalysis.ARGALA_STRENGTH_STRONG) to color
+        ArgalaStrength.MODERATE -> stringResource(StringKeyAnalysis.ARGALA_STRENGTH_MODERATE) to color.copy(alpha = 0.7f)
+        ArgalaStrength.WEAK -> stringResource(StringKeyAnalysis.ARGALA_STRENGTH_WEAK) to AppTheme.TextMuted
+        ArgalaStrength.OBSTRUCTED -> stringResource(StringKeyAnalysis.ARGALA_STRENGTH_OBSTRUCTED) to AppTheme.ErrorColor
     }
 
     Surface(
@@ -765,7 +765,7 @@ private fun ArgalaHousesTab(
     Column(modifier = Modifier.padding(16.dp)) {
         // House selector
         Text(
-            "Select House to Analyze",
+            stringResource(StringKeyAnalysis.ARGALA_HOUSE_SELECTOR_LABEL),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,

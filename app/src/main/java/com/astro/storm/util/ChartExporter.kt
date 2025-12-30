@@ -2775,7 +2775,7 @@ class ChartExporter(private val context: Context) {
 
                 // Shadbala Summary
                 val shadbala = ShadbalaCalculator.calculateShadbala(chart)
-                append(shadbala.getSummaryInterpretation())
+                append(shadbala.getSummaryInterpretation(locManager.language.value))
                 appendLine()
 
                 // Ashtakavarga Summary

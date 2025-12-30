@@ -653,22 +653,22 @@ private data class ProviderInfo(
 private fun getProviderInfo(providerId: String): ProviderInfo {
     return when (providerId.lowercase()) {
         "deepinfra" -> ProviderInfo(
-            displayName = "DeepInfra",
+            displayName = stringResource(StringKeyDosha.AI_PROVIDER_DEEPINFRA),
             icon = Icons.Outlined.Speed,
             color = androidx.compose.ui.graphics.Color(0xFF7C3AED)
         )
         "qwen" -> ProviderInfo(
-            displayName = "Qwen",
+            displayName = stringResource(StringKeyDosha.AI_PROVIDER_QWEN),
             icon = Icons.Outlined.Psychology,
             color = androidx.compose.ui.graphics.Color(0xFF2563EB)
         )
         "blackbox" -> ProviderInfo(
-            displayName = "Blackbox AI",
+            displayName = stringResource(StringKeyDosha.AI_PROVIDER_BLACKBOX),
             icon = Icons.Outlined.Code,
             color = androidx.compose.ui.graphics.Color(0xFF1A1A1A)
         )
         "ddg" -> ProviderInfo(
-            displayName = "DuckDuckGo AI",
+            displayName = stringResource(StringKeyDosha.AI_PROVIDER_DDG),
             icon = Icons.Outlined.Shield,
             color = androidx.compose.ui.graphics.Color(0xFFDE5833)
         )

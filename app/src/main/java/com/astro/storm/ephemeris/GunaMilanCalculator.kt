@@ -84,7 +84,7 @@ object GunaMilanCalculator {
 
         return GunaAnalysis(
             gunaType = GunaType.VARNA,
-            name = "Varna",
+            name = GunaType.VARNA.getLocalizedName(language),
             maxPoints = MatchmakingConstants.MAX_VARNA,
             obtainedPoints = points,
             description = StringResources.get(StringKeyMatch.VARNA_DESC, language),
@@ -119,7 +119,7 @@ object GunaMilanCalculator {
 
         return GunaAnalysis(
             gunaType = GunaType.VASHYA,
-            name = "Vashya",
+            name = GunaType.VASHYA.getLocalizedName(language),
             maxPoints = MatchmakingConstants.MAX_VASHYA,
             obtainedPoints = points,
             description = StringResources.get(StringKeyMatch.VASHYA_DESC, language),
@@ -182,7 +182,7 @@ object GunaMilanCalculator {
 
         return GunaAnalysis(
             gunaType = GunaType.TARA,
-            name = "Tara",
+            name = GunaType.TARA.getLocalizedName(language),
             maxPoints = MatchmakingConstants.MAX_TARA,
             obtainedPoints = points,
             description = StringResources.get(StringKeyMatch.TARA_DESC, language),
@@ -237,7 +237,7 @@ object GunaMilanCalculator {
 
         return GunaAnalysis(
             gunaType = GunaType.YONI,
-            name = "Yoni",
+            name = GunaType.YONI.getLocalizedName(language),
             maxPoints = MatchmakingConstants.MAX_YONI,
             obtainedPoints = points,
             description = StringResources.get(StringKeyMatch.YONI_DESC, language),
@@ -288,7 +288,7 @@ object GunaMilanCalculator {
 
         return GunaAnalysis(
             gunaType = GunaType.GRAHA_MAITRI,
-            name = "Graha Maitri",
+            name = GunaType.GRAHA_MAITRI.getLocalizedName(language),
             maxPoints = MatchmakingConstants.MAX_GRAHA_MAITRI,
             obtainedPoints = points,
             description = StringResources.get(StringKeyMatch.GRAHA_MAITRI_DESC, language),
@@ -342,7 +342,7 @@ object GunaMilanCalculator {
 
         return GunaAnalysis(
             gunaType = GunaType.GANA,
-            name = "Gana",
+            name = GunaType.GANA.getLocalizedName(language),
             maxPoints = MatchmakingConstants.MAX_GANA,
             obtainedPoints = points,
             description = StringResources.get(StringKeyMatch.GANA_DESC, language),
@@ -390,7 +390,7 @@ object GunaMilanCalculator {
 
         return GunaAnalysis(
             gunaType = GunaType.BHAKOOT,
-            name = "Bhakoot",
+            name = GunaType.BHAKOOT.getLocalizedName(language),
             maxPoints = MatchmakingConstants.MAX_BHAKOOT,
             obtainedPoints = points,
             description = StringResources.get(StringKeyMatch.BHAKOOT_DESC, language),
@@ -476,8 +476,8 @@ object GunaMilanCalculator {
         }
 
         // Same element cancellation
-        val brideElement = getSignElement(brideSign)
-        val groomElement = getSignElement(groomSign)
+        val brideElement = getSignElement(brideSign, language)
+        val groomElement = getSignElement(groomSign, language)
         if (brideElement == groomElement) {
             return StringResources.get(StringKeyMatch.BHAKOOT_CANCEL_ELEMENT, language).replace("{element}", brideElement)
         }
@@ -498,11 +498,11 @@ object GunaMilanCalculator {
         else -> null
     }
 
-    private fun getSignElement(sign: ZodiacSign): String = when (sign) {
-        ZodiacSign.ARIES, ZodiacSign.LEO, ZodiacSign.SAGITTARIUS -> "Fire"
-        ZodiacSign.TAURUS, ZodiacSign.VIRGO, ZodiacSign.CAPRICORN -> "Earth"
-        ZodiacSign.GEMINI, ZodiacSign.LIBRA, ZodiacSign.AQUARIUS -> "Air"
-        ZodiacSign.CANCER, ZodiacSign.SCORPIO, ZodiacSign.PISCES -> "Water"
+    private fun getSignElement(sign: ZodiacSign, language: Language): String = when (sign) {
+        ZodiacSign.ARIES, ZodiacSign.LEO, ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyMatch.ELEMENT_FIRE, language)
+        ZodiacSign.TAURUS, ZodiacSign.VIRGO, ZodiacSign.CAPRICORN -> StringResources.get(StringKeyMatch.ELEMENT_EARTH, language)
+        ZodiacSign.GEMINI, ZodiacSign.LIBRA, ZodiacSign.AQUARIUS -> StringResources.get(StringKeyMatch.ELEMENT_AIR, language)
+        ZodiacSign.CANCER, ZodiacSign.SCORPIO, ZodiacSign.PISCES -> StringResources.get(StringKeyMatch.ELEMENT_WATER, language)
     }
 
     // ============================================
@@ -545,7 +545,7 @@ object GunaMilanCalculator {
 
         return GunaAnalysis(
             gunaType = GunaType.NADI,
-            name = "Nadi",
+            name = GunaType.NADI.getLocalizedName(language),
             maxPoints = MatchmakingConstants.MAX_NADI,
             obtainedPoints = points,
             description = StringResources.get(StringKeyMatch.NADI_DESC, language),

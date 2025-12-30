@@ -58,6 +58,7 @@ import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.PlanetaryShadbala
 import com.astro.storm.ephemeris.RetrogradeCombustionCalculator
 import com.astro.storm.ephemeris.ShadbalaCalculator
+import com.astro.storm.data.localization.LocalLanguage
 
 /**
  * Comprehensive planet detail dialog showing position, strength, and interpretations.
@@ -138,13 +139,13 @@ private fun PlanetDialogHeader(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
-                        text = planetPosition.planet.displayName,
+                        text = planetPosition.planet.getLocalizedName(LocalLanguage.current),
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         color = DialogColors.TextPrimary
                     )
                     Text(
-                        text = "${planetPosition.sign.displayName} • ${stringResource(StringKeyAnalysis.HOUSE)} ${planetPosition.house}",
+                        text = "${planetPosition.sign.getLocalizedName(LocalLanguage.current)} • ${stringResource(StringKeyAnalysis.HOUSE)} ${planetPosition.house}",
                         fontSize = 14.sp,
                         color = DialogColors.TextSecondary
                     )
@@ -161,11 +162,11 @@ private fun PlanetDialogHeader(
 private fun PlanetPositionCard(position: PlanetPosition) {
     DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_POSITION_DETAILS), icon = Icons.Outlined.LocationOn) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), position.sign.displayName, DialogColors.AccentTeal)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), position.sign.getLocalizedName(LocalLanguage.current), DialogColors.AccentTeal)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_DEGREE), formatDegree(position.longitude), DialogColors.TextPrimary)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE), "${stringResource(StringKeyAnalysis.HOUSE)} ${position.house}", DialogColors.AccentGold)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA), "${position.nakshatra.displayName} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${position.nakshatraPada})", DialogColors.AccentPurple)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.displayName, DialogColors.TextSecondary)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(LocalLanguage.current)} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${position.nakshatraPada})", DialogColors.AccentPurple)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.getLocalizedName(LocalLanguage.current), DialogColors.TextSecondary)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_DEITY), position.nakshatra.deity, DialogColors.TextSecondary)
             if (position.isRetrograde) {
                 DetailRow(stringResource(StringKeyAnalysis.DIALOG_MOTION), stringResource(StringKeyAnalysis.DIALOG_RETROGRADE), DialogColors.AccentOrange)
@@ -323,7 +324,7 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
                 if (cond.isInPlanetaryWar) {
                     StatusChip(
                         label = stringResource(StringKeyAnalysis.DIALOG_PLANETARY_WAR),
-                        value = stringResource(StringKeyAnalysis.DIALOG_AT_WAR_WITH, cond.warData?.loser?.displayName ?: ""),
+                        value = stringResource(StringKeyAnalysis.DIALOG_AT_WAR_WITH, cond.warData?.loser?.getLocalizedName(LocalLanguage.current) ?: ""),
                         color = DialogColors.AccentPurple
                     )
                 }
@@ -557,7 +558,7 @@ private fun getHousePlacementInterpretation(planet: Planet, house: Int): HousePl
 
     val houseName = houseNameKeys.getOrNull(house)?.let { stringResource(it) } ?: "${stringResource(StringKeyAnalysis.HOUSE)} $house"
     val houseSignification = houseSigKeys.getOrNull(house)?.let { stringResource(it) } ?: ""
-    val interpretation = "${planet.displayName} ${stringResource(StringKeyAnalysis.DIALOG_HOUSE)} $house"
+    val interpretation = "${planet.getLocalizedName(LocalLanguage.current)} ${stringResource(StringKeyAnalysis.DIALOG_HOUSE)} $house"
 
     return HousePlacementInterpretation(
         houseName = houseName,
@@ -606,13 +607,13 @@ private fun getPlanetPredictions(
     if (shadbala.isStrong) {
         predictions.add(Prediction(
             PredictionType.POSITIVE,
-            stringResource(StringKeyAnalysis.PREDICTION_STRONG_PLANET, planet.displayName),
+            stringResource(StringKeyAnalysis.PREDICTION_STRONG_PLANET, planet.getLocalizedName(LocalLanguage.current)),
             stringResource(StringKeyAnalysis.PREDICTION_STRONG_DESC)
         ))
     } else {
         predictions.add(Prediction(
             PredictionType.NEGATIVE,
-            stringResource(StringKeyAnalysis.PREDICTION_WEAK_PLANET, planet.displayName),
+            stringResource(StringKeyAnalysis.PREDICTION_WEAK_PLANET, planet.getLocalizedName(LocalLanguage.current)),
             stringResource(StringKeyAnalysis.PREDICTION_WEAK_DESC)
         ))
     }
@@ -626,17 +627,17 @@ private fun getPlanetPredictions(
         exaltedStatus -> predictions.add(Prediction(
             PredictionType.POSITIVE,
             stringResource(StringKeyAnalysis.PREDICTION_EXALTED),
-            stringResource(StringKeyAnalysis.PREDICTION_EXALTED_DESC, planet.displayName)
+            stringResource(StringKeyAnalysis.PREDICTION_EXALTED_DESC, planet.getLocalizedName(LocalLanguage.current))
         ))
         debilitatedStatus -> predictions.add(Prediction(
             PredictionType.NEGATIVE,
             stringResource(StringKeyAnalysis.PREDICTION_DEBILITATED),
-            stringResource(StringKeyAnalysis.PREDICTION_DEBILITATED_DESC, planet.displayName)
+            stringResource(StringKeyAnalysis.PREDICTION_DEBILITATED_DESC, planet.getLocalizedName(LocalLanguage.current))
         ))
         ownSignStatus -> predictions.add(Prediction(
             PredictionType.POSITIVE,
             stringResource(StringKeyAnalysis.PREDICTION_OWN_SIGN),
-            stringResource(StringKeyAnalysis.PREDICTION_OWN_SIGN_DESC, planet.displayName)
+            stringResource(StringKeyAnalysis.PREDICTION_OWN_SIGN_DESC, planet.getLocalizedName(LocalLanguage.current))
         ))
     }
 

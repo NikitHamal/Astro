@@ -181,7 +181,7 @@ fun ShodashvargaScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    "Failed to calculate Shodashvarga analysis",
+                    stringResource(StringKeyDosha.SHODASHVARGA_CALCULATION_ERROR),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.ErrorColor
                 )
@@ -852,7 +852,7 @@ private fun PlanetDetailCard(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                "Vargottama in ${strength.vargottamaCount} chart(s)",
+                                String.format(stringResource(StringKeyDosha.SHODASHVARGA_VARGOTTAMA_COUNT_FMT), strength.vargottamaCount),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.AccentGold
                             )
@@ -912,7 +912,7 @@ private fun PlanetDetailCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        "Interpretation",
+                        stringResource(StringKeyDosha.SHADBALA_INTERPRETATION),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1276,7 +1276,7 @@ private fun VargottamaTab(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            "No Vargottama planets found",
+                            stringResource(StringKeyDosha.SHODASHVARGA_NO_VARGOTTAMA),
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextMuted
                         )
@@ -1346,7 +1346,7 @@ private fun VargottamaPlanetCard(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            "Vargottama in ${vargottamas.size} chart(s)",
+                            String.format(stringResource(StringKeyDosha.SHODASHVARGA_VARGOTTAMA_COUNT_FMT), vargottamas.size),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.AccentGold
                         )
@@ -1422,7 +1422,7 @@ private fun ShodashvargaInfoDialog(onDismiss: () -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        "The 16 Divisional Charts:",
+                        stringResource(StringKeyDosha.SHODASHVARGA_16_DIAGRAMS_HEADER),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1437,16 +1437,17 @@ private fun ShodashvargaInfoDialog(onDismiss: () -> Unit) {
                         verticalAlignment = Alignment.Top
                     ) {
                         Text(
-                            varga.name.padEnd(12),
+                            varga.getLocalizedName(language),
                             style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.AccentPrimary,
-                            fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace
+                            modifier = Modifier.width(120.dp)
                         )
                         Text(
-                            "- ${varga.domain}",
+                            "- ${varga.getLocalizedDomain(language)}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            modifier = Modifier.weight(1f)
                         )
                     }
                 }

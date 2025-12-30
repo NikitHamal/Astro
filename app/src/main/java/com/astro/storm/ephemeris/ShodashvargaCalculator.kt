@@ -4,6 +4,9 @@ import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringKeyDosha
+import com.astro.storm.data.localization.StringResources
 
 /**
  * Shodashvarga (16 Divisional Charts) Strength Calculator
@@ -153,7 +156,51 @@ object ShodashvargaCalculator {
         D30_TRIMSHAMSHA(30, "त्रिंशांश", "Evils", 1.0, 1.0, 1.0),
         D40_KHAVEDAMSHA(40, "खवेदांश", "Auspicious", 0.5, 1.0, 0.5),
         D45_AKSHAVEDAMSHA(45, "अक्षवेदांश", "General", 0.5, 0.5, 0.5),
-        D60_SHASHTIAMSHA(60, "षष्ट्यंश", "Past Karma", 4.0, 2.0, 4.0)
+        D60_SHASHTIAMSHA(60, "षष्ट्यंश", "Past Karma", 4.0, 2.0, 4.0);
+
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                D1_RASHI -> StringKeyDosha.VARGA_D1_TITLE
+                D2_HORA -> StringKeyDosha.VARGA_D2_TITLE
+                D3_DREKKANA -> StringKeyDosha.VARGA_D3_TITLE
+                D4_CHATURTHAMSHA -> StringKeyDosha.VARGA_D4_TITLE
+                D7_SAPTAMSHA -> StringKeyDosha.VARGA_D7_TITLE
+                D9_NAVAMSA -> StringKeyDosha.VARGA_D9_TITLE
+                D10_DASHAMSHA -> StringKeyDosha.VARGA_D10_TITLE
+                D12_DWADASHAMSHA -> StringKeyDosha.VARGA_D12_TITLE
+                D16_SHODASHAMSHA -> StringKeyDosha.VARGA_D16_TITLE
+                D20_VIMSHAMSHA -> StringKeyDosha.VARGA_D20_TITLE
+                D24_CHATURVIMSHAMSHA -> StringKeyDosha.VARGA_D24_TITLE
+                D27_SAPTAVIMSHAMSHA -> StringKeyDosha.VARGA_D27_TITLE
+                D30_TRIMSHAMSHA -> StringKeyDosha.VARGA_D30_TITLE
+                D40_KHAVEDAMSHA -> StringKeyDosha.VARGA_D40_TITLE
+                D45_AKSHAVEDAMSHA -> StringKeyDosha.VARGA_D45_TITLE
+                D60_SHASHTIAMSHA -> StringKeyDosha.VARGA_D60_TITLE
+            }
+            return StringResources.get(key, language)
+        }
+
+        fun getLocalizedDomain(language: Language): String {
+            val key = when (this) {
+                D1_RASHI -> StringKeyDosha.VARGA_D1_DESC
+                D2_HORA -> StringKeyDosha.VARGA_D2_DESC
+                D3_DREKKANA -> StringKeyDosha.VARGA_D3_DESC
+                D4_CHATURTHAMSHA -> StringKeyDosha.VARGA_D4_DESC
+                D7_SAPTAMSHA -> StringKeyDosha.VARGA_D7_DESC
+                D9_NAVAMSA -> StringKeyDosha.VARGA_D9_DESC
+                D10_DASHAMSHA -> StringKeyDosha.VARGA_D10_DESC
+                D12_DWADASHAMSHA -> StringKeyDosha.VARGA_D12_DESC
+                D16_SHODASHAMSHA -> StringKeyDosha.VARGA_D16_DESC
+                D20_VIMSHAMSHA -> StringKeyDosha.VARGA_D20_DESC
+                D24_CHATURVIMSHAMSHA -> StringKeyDosha.VARGA_D24_DESC
+                D27_SAPTAVIMSHAMSHA -> StringKeyDosha.VARGA_D27_DESC
+                D30_TRIMSHAMSHA -> StringKeyDosha.VARGA_D30_DESC
+                D40_KHAVEDAMSHA -> StringKeyDosha.VARGA_D40_DESC
+                D45_AKSHAVEDAMSHA -> StringKeyDosha.VARGA_D45_DESC
+                D60_SHASHTIAMSHA -> StringKeyDosha.VARGA_D60_DESC
+            }
+            return StringResources.get(key, language)
+        }
     }
 
     /**

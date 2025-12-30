@@ -3,6 +3,7 @@ package com.astro.storm.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.astro.storm.data.model.VedicChart
+import com.astro.storm.data.localization.Language
 import com.astro.storm.ephemeris.YoginiDashaCalculator
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -35,13 +36,13 @@ class YoginiDashaViewModel : ViewModel() {
         val result: YoginiDashaCalculator.YoginiDashaResult
     )
 
-    fun loadYoginiDasha(chart: VedicChart?) {
+    fun loadYoginiDasha(chart: VedicChart?, language: Language = Language.ENGLISH) {
         if (chart == null) {
             _uiState.value = YoginiDashaUiState.Idle
             return
         }
 
-        val chartKey = generateChartKey(chart)
+        val chartKey = generateChartKey(chart, language)
 
         // Check cache first
         cache.get()?.let { cached ->
@@ -66,7 +67,8 @@ class YoginiDashaViewModel : ViewModel() {
                 val result = withContext(Dispatchers.Default) {
                     YoginiDashaCalculator.calculateYoginiDasha(
                         chart = chart,
-                        numberOfCycles = 3 // Calculate 3 cycles = 108 years
+                        numberOfCycles = 3, // Calculate 3 cycles = 108 years
+                        language = language
                     )
                 }
 
@@ -96,7 +98,7 @@ class YoginiDashaViewModel : ViewModel() {
         cache.set(null)
     }
 
-    private fun generateChartKey(chart: VedicChart): String {
+    private fun generateChartKey(chart: VedicChart, language: Language): String {
         val birthData = chart.birthData
         return buildString {
             append(birthData.dateTime.toEpochSecond(java.time.ZoneOffset.UTC))
@@ -106,7 +108,8 @@ class YoginiDashaViewModel : ViewModel() {
             append((birthData.longitude * 1_000_000).toLong())
             append('|')
             append(chart.ayanamsaName)
-            append("|yogini")
+            append("|yogini|")
+            append(language.name)
         }
     }
 

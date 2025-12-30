@@ -58,8 +58,8 @@ object MatchmakingCalculator {
         val totalPoints = gunaAnalyses.sumOf { it.obtainedPoints }
         val percentage = (totalPoints / MatchmakingConstants.MAX_TOTAL) * 100.0
 
-        val nadiScore = gunaAnalyses.find { it.name == "Nadi" }?.obtainedPoints ?: 0.0
-        val bhakootScore = gunaAnalyses.find { it.name == "Bhakoot" }?.obtainedPoints ?: 0.0
+        val nadiScore = gunaAnalyses.find { it.gunaType == GunaType.NADI }?.obtainedPoints ?: 0.0
+        val bhakootScore = gunaAnalyses.find { it.gunaType == GunaType.BHAKOOT }?.obtainedPoints ?: 0.0
         val rating = CompatibilityRating.fromScore(totalPoints, nadiScore, bhakootScore)
 
         val brideManglikEphemeris = ManglikDoshaCalculator.calculateManglikDosha(brideChart)
@@ -244,12 +244,12 @@ object MatchmakingCalculator {
     ): List<String> {
         val considerations = mutableListOf<String>()
 
-        val nadiAnalysis = gunaAnalyses.find { it.name == "Nadi" }
+        val nadiAnalysis = gunaAnalyses.find { it.gunaType == GunaType.NADI }
         if (nadiAnalysis != null && nadiAnalysis.obtainedPoints == 0.0) {
             considerations.add(StringResources.get(StringKeyMatch.SPECIAL_NADI_DOSHA, language))
         }
 
-        val bhakootAnalysis = gunaAnalyses.find { it.name == "Bhakoot" }
+        val bhakootAnalysis = gunaAnalyses.find { it.gunaType == GunaType.BHAKOOT }
         if (bhakootAnalysis != null && bhakootAnalysis.obtainedPoints == 0.0) {
             considerations.add(
                 StringResources.get(StringKeyMatch.SPECIAL_BHAKOOT_DOSHA, language)
@@ -269,12 +269,12 @@ object MatchmakingCalculator {
             )
         }
 
-        val ganaAnalysis = gunaAnalyses.find { it.name == "Gana" }
+        val ganaAnalysis = gunaAnalyses.find { it.gunaType == GunaType.GANA }
         if (ganaAnalysis != null && ganaAnalysis.obtainedPoints == 0.0) {
             considerations.add(StringResources.get(StringKeyMatch.SPECIAL_GANA_INCOMPAT, language))
         }
 
-        val yoniAnalysis = gunaAnalyses.find { it.name == "Yoni" }
+        val yoniAnalysis = gunaAnalyses.find { it.gunaType == GunaType.YONI }
         if (yoniAnalysis != null && yoniAnalysis.obtainedPoints == 0.0) {
             considerations.add(StringResources.get(StringKeyMatch.SPECIAL_YONI_INCOMPAT, language))
         }
@@ -344,14 +344,14 @@ object MatchmakingCalculator {
     ): List<String> {
         val remedies = mutableListOf<String>()
 
-        val nadiAnalysis = gunaAnalyses.find { it.name == "Nadi" }
+        val nadiAnalysis = gunaAnalyses.find { it.gunaType == GunaType.NADI }
         if (nadiAnalysis != null && nadiAnalysis.obtainedPoints == 0.0) {
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_NADI_1, language))
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_NADI_2, language))
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_NADI_3, language))
         }
 
-        val bhakootAnalysis = gunaAnalyses.find { it.name == "Bhakoot" }
+        val bhakootAnalysis = gunaAnalyses.find { it.gunaType == GunaType.BHAKOOT }
         if (bhakootAnalysis != null && bhakootAnalysis.obtainedPoints == 0.0) {
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_BHAKOOT_1, language))
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_BHAKOOT_2, language))
@@ -378,20 +378,20 @@ object MatchmakingCalculator {
             }
         }
 
-        val ganaAnalysis = gunaAnalyses.find { it.name == "Gana" }
+        val ganaAnalysis = gunaAnalyses.find { it.gunaType == GunaType.GANA }
         if (ganaAnalysis != null && ganaAnalysis.obtainedPoints <= 1.0) {
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_GANA_1, language))
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_GANA_2, language))
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_GANA_3, language))
         }
 
-        val grahaMaitri = gunaAnalyses.find { it.name == "Graha Maitri" }
+        val grahaMaitri = gunaAnalyses.find { it.gunaType == GunaType.GRAHA_MAITRI }
         if (grahaMaitri != null && grahaMaitri.obtainedPoints <= 1.0) {
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_GRAHA_MAITRI_1, language))
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_GRAHA_MAITRI_2, language))
         }
 
-        val yoniAnalysis = gunaAnalyses.find { it.name == "Yoni" }
+        val yoniAnalysis = gunaAnalyses.find { it.gunaType == GunaType.YONI }
         if (yoniAnalysis != null && yoniAnalysis.obtainedPoints == 0.0) {
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_YONI_1, language))
             remedies.add(StringResources.get(StringKeyMatch.REMEDY_YONI_2, language))
