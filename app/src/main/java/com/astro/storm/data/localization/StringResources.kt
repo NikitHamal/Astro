@@ -2507,7 +2507,99 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     // ============================================
     // DASHA RECOMMENDATIONS
     // ============================================
-    DASHA_RECOMMENDATIONS("Recommendations", "सिफारिसहरू");
+    DASHA_RECOMMENDATIONS("Recommendations", "सिफारिसहरू"),
+
+    // ============================================
+    // BATCH 2 SCREEN KEYS
+    // ============================================
+
+    // Generic Actions & Accessibility
+    ACC_VIEW_DETAILS("View details", "विवरण हेर्नुहोस्"),
+    ACC_COLLAPSE("Collapse", "लुकाउनुहोस्"),
+    ACC_EXPAND("Expand", "देखाउनुहोस्"),
+    ACC_FULLSCREEN("View fullscreen", "पूरा स्क्रीन हेर्नुहोस्"),
+    ACC_CHART_ANALYSIS("Chart analysis", "कुण्डली विश्लेषण"),
+    ACC_COMING_SOON("Coming soon", "चाँडै आउँदैछ"),
+    ACC_PROFILE_AVATAR("Profile avatar", "प्रोफाइल अवतार"),
+
+    // Chart & Planets
+    CHART_LAGNA("Lagna", "लग्न"),
+    CHART_MOON("Moon", "चन्द्रमा"),
+    CHART_SUN("Sun", "सूर्य"),
+    CHART_NAKSHATRA_LABEL("Nakshatra", "नक्षत्र"),
+    CHART_ASCENDANT_LABEL("Ascendant", "लग्न"),
+    LABEL_NA("N/A", "-"),
+    LABEL_DASH("-", "-"),
+
+    // Settings Theme
+    THEME_LIGHT("Light", "उज्यालो"),
+    THEME_DARK("Dark", "गाढा"),
+    THEME_SYSTEM("System", "सिस्टम"),
+    THEME_DESC_LIGHT("Always use light theme", "सधैं उज्यालो थीम प्रयोग गर्नुहोस्"),
+    THEME_DESC_DARK("Always use dark theme", "सधैं गाढा थीम प्रयोग गर्नुहोस्"),
+    THEME_DESC_SYSTEM("Follow device settings", "डिभाइस सेटिङ अनुसरण गर्नुहोस्"),
+    SETTINGS_THEME_TITLE("Theme", "थीम"),
+
+    // Dignity Status
+    DIGNITY_EXALTED_STATUS("Exalted", "उच्च"),
+    DIGNITY_DEBILITATED_STATUS("Debilitated", "नीच"),
+    DIGNITY_OWN_SIGN_STATUS("Own Sign", "स्वराशि"),
+    DIGNITY_NEUTRAL_STATUS("Neutral", "सम"),
+
+    // Errors & Dialogs
+    ERROR_HOROSCOPE_UNAVAILABLE_FMT("Horoscope for {0} is currently unavailable.", "{0}को राशिफल हाल उपलब्ध छैन।"),
+    ERROR_GENERIC_RETRY("Please try again later.", "कृपया पछि फेरि प्रयास गर्नुहोस्।"),
+
+    // Navigation & Tabs
+    NAV_HOME("Home", "गृह"),
+    NAV_INSIGHTS("Insights", "अन्तर्दृष्टि"),
+    NAV_CHAT("Chat", "कुराकानी"),
+    NAV_SETTINGS("Settings", "सेटिङहरू"),
+
+    // Home Screen
+    HOME_CHART_ANALYSIS("Your Chart Analysis", "तपाईंको कुण्डली विश्लेषण"),
+    HOME_COMING_SOON("Coming Soon", "चाँडै आउँदैछ"),
+    HOME_SOON_BADGE("Soon", "चाँडै"),
+    NO_PROFILE_SELECTED("No Profile Selected", "कुनै प्रोफाइल छानिएको छैन"),
+    NO_PROFILE_MESSAGE("Create or select a profile to view personalized insights and charts.", "व्यक्तिगत अन्तर्दृष्टि र कुण्डलीहरू हेर्न प्रोफाइल बनाउनुहोस् वा छान्नुहोस्।"),
+    BTN_CREATE_CHART("Create New Chart", "नयाँ कुण्डली बनाउनुहोस्"),
+    BTN_VIEW_DETAILS("View Details", "विवरण हेर्नुहोस्"),
+
+    // Insights Error States
+    ERROR_PARTIAL("Partial Data Loaded", "आंशिक डाटा लोड भयो"),
+    ERROR_CALCULATIONS_FAILED("{0} calculations failed", "{0} गणनाहरू असफल भए"),
+    ERROR_UNABLE_TO_LOAD("Unable to Load", "लोड गर्न सकिएन"),
+    BTN_RETRY("Retry", "फेरि प्रयास गर्नुहोस्"),
+    BTN_TRY_AGAIN("Try Again", "फेरि प्रयास गर्नुहोस्"),
+    BTN_PREVIEW("Preview", "पूर्वावलोकन"),
+
+    // Insights - Transits
+    TRANSITS_MOON_IN("Moon in {0}", "{0}मा चन्द्रमा"),
+
+    SETTINGS_PROFILE("Profile", "प्रोफाइल"),
+    SETTINGS_EDIT_PROFILE("Edit Profile", "प्रोफाइल सम्पादन गर्नुहोस्"),
+    SETTINGS_EDIT_PROFILE_DESC("Modify current charts details", "हालको कुण्डली विवरण परिमार्जन गर्नुहोस्"),
+    SETTINGS_MANAGE_PROFILES("Manage Profiles", "प्रोफाइलहरू व्यवस्थापन गर्नुहोस्"),
+    SETTINGS_NO_PROFILE("No Profile", "कुनै प्रोफाइल छैन"),
+    SETTINGS_TAP_TO_SELECT("Tap to create or select a profile", "प्रोफाइल बनाउन वा छान्न ट्याप गर्नुहोस्"),
+    SETTINGS_EXPORT("Export", "निर्यात"),
+    SETTINGS_EXPORT_PDF("Export as PDF", "PDF को रूपमा निर्यात गर्नुहोस्"),
+    SETTINGS_EXPORT_PDF_DESC("Save chart details as PDF file", "कुण्डली विवरण PDF फाइलको रूपमा बचत गर्नुहोस्"),
+    SETTINGS_AI_CHAT("AI & Chat", "AI र कुराकानी"),
+    SETTINGS_AI_MODELS("AI Models", "AI मोडेलहरू"),
+    SETTINGS_AI_MODELS_DESC("Configure AI model settings", "AI मोडेल सेटिङहरू कन्फिगर गर्नुहोस्"),
+    SETTINGS_PREFERENCES("Preferences", "प्राथमिकताहरू"),
+    SETTINGS_LANGUAGE("Language", "भाषा"),
+    SETTINGS_HOUSE_SYSTEM("House System", "भाव प्रणाली"),
+    SETTINGS_ABOUT("About", "बारेमा"),
+    SETTINGS_ABOUT_APP("AstroStorm", "एस्ट्रोस्टर्म"),
+    SETTINGS_VERSION("Version {0}", "संस्करण {0}"),
+    SETTINGS_CALC_ENGINE("Calculation Engine", "गणना इन्जिन"),
+    SETTINGS_CALC_ENGINE_DESC("Swiss Ephemeris & Vedic Algorithms", "स्विस एफिमेरिस र वैदिक एल्गोरिदमहरू"),
+    DIALOG_DELETE_PROFILE("Delete Profile", "प्रोफाइल मेटाउनुहोस्"),
+    DIALOG_DELETE_CONFIRM("Are you sure you want to delete profile ''{0}''? This action cannot be undone.", "के तपाईं साँच्चिकै ''{0}'' प्रोफाइल मेटाउन चाहनुहुन्छ? यो कार्य पूर्ववत गर्न सकिँदैन।"),
+    BTN_DELETE("Delete", "मेटाउनुहोस्"),
+    BTN_CANCEL("Cancel", "रद्ध गर्नुहोस्");
 }
 
 /**

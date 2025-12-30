@@ -66,10 +66,20 @@ enum class HoroscopePeriod(val titleKey: StringKey) {
 }
 
 private object InsightsFormatters {
-    val dayMonth: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d")
-    val monthYear: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
-    val monthDay: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM d")
-    val fullDate: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy")
+    fun getDayMonth(language: Language): DateTimeFormatter {
+        val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
+        return DateTimeFormatter.ofPattern("EEEE, MMMM d", locale)
+    }
+
+    fun getMonthYear(language: Language): DateTimeFormatter {
+        val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
+        return DateTimeFormatter.ofPattern("MMM yyyy", locale)
+    }
+
+    fun getMonthDay(language: Language): DateTimeFormatter {
+        val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
+        return DateTimeFormatter.ofPattern("MMM d", locale)
+    }
 }
 
 @Stable
@@ -670,8 +680,9 @@ private fun DailyHoroscopeHeader(
     horoscope: HoroscopeCalculator.DailyHoroscope,
     isTomorrow: Boolean
 ) {
-    val formattedDate = remember(horoscope.date) {
-        horoscope.date.format(InsightsFormatters.dayMonth)
+    val language = LocalLanguage.current
+    val formattedDate = remember(horoscope.date, language) {
+        horoscope.date.format(InsightsFormatters.getDayMonth(language))
     }
 
     Card(

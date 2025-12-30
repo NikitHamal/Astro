@@ -315,18 +315,18 @@ private fun CurrentProfileCard(
             ) {
                 ChartDetailItem(
                     labelKey = StringKey.CHART_ASCENDANT,
-                    value = chart.planetPositions.find { it.planet.displayName == "Sun" }?.sign?.getLocalizedName(language)
+                    value = chart.planetPositions.find { it.planet == com.astro.storm.data.model.Planet.SUN }?.sign?.getLocalizedName(language)
                         ?: com.astro.storm.data.model.ZodiacSign.fromLongitude(chart.ascendant).getLocalizedName(language)
                 )
                 ChartDetailItem(
                     labelKey = StringKey.CHART_MOON_SIGN,
                     value = chart.planetPositions.find { it.planet == com.astro.storm.data.model.Planet.MOON }?.sign?.getLocalizedName(language)
-                        ?: "-"
+                        ?: stringResource(StringKey.LABEL_DASH)
                 )
                 ChartDetailItem(
                     labelKey = StringKey.CHART_NAKSHATRA,
                     value = chart.planetPositions.find { it.planet == com.astro.storm.data.model.Planet.MOON }?.nakshatra?.getLocalizedName(language)?.take(8)
-                        ?: "-"
+                        ?: stringResource(StringKey.LABEL_DASH)
                 )
             }
         }
@@ -680,9 +680,9 @@ private fun ThemeSetting() {
     var expanded by remember { mutableStateOf(false) }
 
     val themeModes = listOf(
-        ThemeMode.LIGHT to Triple(Icons.Outlined.LightMode, "Light", "Always use light theme"),
-        ThemeMode.DARK to Triple(Icons.Outlined.DarkMode, "Dark", "Always use dark theme"),
-        ThemeMode.SYSTEM to Triple(Icons.Outlined.Brightness6, "System", "Follow device settings")
+        ThemeMode.LIGHT to Triple(Icons.Outlined.LightMode, StringKey.THEME_LIGHT, StringKey.THEME_DESC_LIGHT),
+        ThemeMode.DARK to Triple(Icons.Outlined.DarkMode, StringKey.THEME_DARK, StringKey.THEME_DESC_DARK),
+        ThemeMode.SYSTEM to Triple(Icons.Outlined.Brightness6, StringKey.THEME_SYSTEM, StringKey.THEME_DESC_SYSTEM)
     )
 
     Card(
@@ -724,13 +724,13 @@ private fun ThemeSetting() {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Theme",
+                        text = stringResource(StringKey.SETTINGS_THEME_TITLE),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = currentTheme.displayName,
+                        text = currentTheme.displayName, // This should eventually be localized too if ThemeMode doesn't support it yet
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.AccentPrimary
                     )
@@ -747,7 +747,7 @@ private fun ThemeSetting() {
                 HorizontalDivider(color = AppTheme.DividerColor)
 
                 themeModes.forEach { (mode, info) ->
-                    val (icon, name, description) = info
+                    val (icon, nameKey, descKey) = info
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -779,13 +779,13 @@ private fun ThemeSetting() {
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
                             Text(
-                                text = name,
+                                text = stringResource(nameKey),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
                                 color = if (mode == currentTheme) AppTheme.TextPrimary else AppTheme.TextSecondary
                             )
                             Text(
-                                text = description,
+                                text = stringResource(descKey),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )

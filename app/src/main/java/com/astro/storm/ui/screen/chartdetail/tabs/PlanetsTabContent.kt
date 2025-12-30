@@ -69,12 +69,11 @@ import com.astro.storm.ui.screen.chartdetail.components.ConditionChip
 import com.astro.storm.ui.screen.chartdetail.components.StyledDivider
 import java.text.DecimalFormat
 
-@Immutable
-enum class DignityStatus(val stringKey: com.astro.storm.data.localization.StringKeyInterface, val displayName: String) {
-    EXALTED(StringKeyAnalysis.DIGNITY_EXALTED_STATUS, "Exalted"),
-    DEBILITATED(StringKeyAnalysis.DIGNITY_DEBILITATED_STATUS, "Debilitated"),
-    OWN_SIGN(StringKeyAnalysis.DIGNITY_OWN_SIGN_STATUS, "Own Sign"),
-    NEUTRAL(StringKeyAnalysis.DIGNITY_NEUTRAL_STATUS, "Neutral");
+enum class DignityStatus(val stringKey: com.astro.storm.data.localization.StringKeyInterface) {
+    EXALTED(StringKey.DIGNITY_EXALTED_STATUS),
+    DEBILITATED(StringKey.DIGNITY_DEBILITATED_STATUS),
+    OWN_SIGN(StringKey.DIGNITY_OWN_SIGN_STATUS),
+    NEUTRAL(StringKey.DIGNITY_NEUTRAL_STATUS);
 
     val isSignificant: Boolean get() = this != NEUTRAL
 }
@@ -378,7 +377,7 @@ private fun ViewDetailsIndicator(
     text: String = "",
     color: Color = ChartDetailColors.AccentGold
 ) {
-    val displayText = text.ifEmpty { stringResource(StringKeyAnalysis.PLANETS_VIEW_DETAILS) }
+    val displayText = text.ifEmpty { stringResource(StringKey.BTN_VIEW_DETAILS) }
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = displayText,
@@ -575,7 +574,7 @@ private fun NakshatraChip(
             Spacer(modifier = Modifier.width(2.dp))
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "View nakshatra details",
+                contentDescription = stringResource(StringKey.ACC_VIEW_DETAILS),
                 tint = ChartDetailColors.AccentPurple,
                 modifier = Modifier.size(12.dp)
             )
@@ -701,7 +700,7 @@ private fun TapForDetailsHint() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(StringKeyAnalysis.PLANETS_TAP_FOR_DETAILS),
+            text = stringResource(StringKey.ACC_VIEW_DETAILS),
             fontSize = 11.sp,
             color = ChartDetailColors.TextMuted
         )

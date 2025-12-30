@@ -968,7 +968,7 @@ fun AskUserSection(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Send,
-                            contentDescription = "Send",
+                            contentDescription = stringResource(StringKey.CHAT_SEND),
                             tint = if (customInput.isNotBlank())
                                 colors.AccentPrimary
                             else
