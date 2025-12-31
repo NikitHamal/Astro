@@ -1339,7 +1339,7 @@ class MuhurtaCalculator(context: Context) {
             }
             Vara.TUESDAY, Vara.SATURDAY -> {
                 score -= 5
-                recommendations.add("${vara.displayName} requires caution for new beginnings")
+                recommendations.add("${vara.getLocalizedName(language)} requires caution for new beginnings")
             }
             Vara.SUNDAY -> {
                 score += 5
@@ -1364,10 +1364,10 @@ class MuhurtaCalculator(context: Context) {
         val generalActivity = ActivityType.GENERAL
         if (nakshatra.nakshatra in generalActivity.favorableNakshatras) {
             score += 20
-            recommendations.add("${nakshatra.nakshatra.displayName} is auspicious")
+            recommendations.add("${nakshatra.nakshatra.getLocalizedName(language)} is auspicious")
         } else if (nakshatra.nakshatra in generalActivity.avoidNakshatras) {
             score -= 15
-            recommendations.add("${nakshatra.nakshatra.displayName} requires caution")
+            recommendations.add("${nakshatra.nakshatra.getLocalizedName(language)} requires caution")
         } else {
             score += 5
         }
@@ -1409,21 +1409,21 @@ class MuhurtaCalculator(context: Context) {
 
         score += when (choghadiya.choghadiya.nature) {
             ChoghadiyaNature.EXCELLENT -> {
-                recommendations.add("${choghadiya.choghadiya.displayName} Choghadiya - excellent period")
+                recommendations.add("${choghadiya.choghadiya.getLocalizedName(language)} Choghadiya - excellent period")
                 15
             }
             ChoghadiyaNature.VERY_GOOD -> 10
             ChoghadiyaNature.GOOD -> 5
             ChoghadiyaNature.NEUTRAL -> 0
             ChoghadiyaNature.INAUSPICIOUS -> {
-                recommendations.add("${choghadiya.choghadiya.displayName} Choghadiya - inauspicious period")
+                recommendations.add("${choghadiya.choghadiya.getLocalizedName(language)} Choghadiya - inauspicious period")
                 -10
             }
         }
 
         score += when (hora.nature) {
             HoraNature.BENEFIC -> {
-                recommendations.add("${hora.lord.displayName} Hora - benefic influence")
+                recommendations.add("${hora.lord.getLocalizedName(language)} Hora - benefic influence")
                 10
             }
             HoraNature.MALEFIC -> -8
@@ -1506,19 +1506,19 @@ class MuhurtaCalculator(context: Context) {
 
         if (muhurta.nakshatra.nakshatra in activity.favorableNakshatras) {
             score += 20
-            reasons.add("Excellent Nakshatra: ${muhurta.nakshatra.nakshatra.displayName}")
+            reasons.add("Excellent Nakshatra: ${muhurta.nakshatra.nakshatra.getLocalizedName(language)}")
         } else if (muhurta.nakshatra.nakshatra in activity.avoidNakshatras) {
             score -= 25
-            warnings.add("Unfavorable Nakshatra: ${muhurta.nakshatra.nakshatra.displayName}")
+            warnings.add("Unfavorable Nakshatra: ${muhurta.nakshatra.nakshatra.getLocalizedName(language)}")
         }
 
         if (muhurta.vara in activity.favorableVaras) {
             score += 15
-            reasons.add("Favorable day: ${muhurta.vara.displayName}")
+            reasons.add("Favorable day: ${muhurta.vara.getLocalizedName(language)}")
         } else if (muhurta.vara == Vara.TUESDAY || muhurta.vara == Vara.SATURDAY) {
             if (activity != ActivityType.MEDICAL) {
                 score -= 5
-                warnings.add("${muhurta.vara.displayName} is not ideal for ${activity.displayName}")
+                warnings.add("${muhurta.vara.getLocalizedName(language)} is not ideal for ${activity.name}")
             }
         }
 
@@ -1542,18 +1542,18 @@ class MuhurtaCalculator(context: Context) {
         when (muhurta.choghadiya.choghadiya.nature) {
             ChoghadiyaNature.EXCELLENT, ChoghadiyaNature.VERY_GOOD -> {
                 score += 10
-                reasons.add("Auspicious Choghadiya: ${muhurta.choghadiya.choghadiya.displayName}")
+                reasons.add("Auspicious Choghadiya: ${muhurta.choghadiya.choghadiya.getLocalizedName(language)}")
             }
             ChoghadiyaNature.INAUSPICIOUS -> {
                 score -= 12
-                warnings.add("Inauspicious Choghadiya: ${muhurta.choghadiya.choghadiya.displayName}")
+                warnings.add("Inauspicious Choghadiya: ${muhurta.choghadiya.choghadiya.getLocalizedName(language)}")
             }
             else -> {}
         }
 
         if (muhurta.hora.nature == HoraNature.BENEFIC) {
             score += 5
-            reasons.add("Benefic Hora: ${muhurta.hora.lord.displayName}")
+            reasons.add("Benefic Hora: ${muhurta.hora.lord.getLocalizedName(language)}")
         } else if (muhurta.hora.nature == HoraNature.MALEFIC) {
             score -= 5
         }

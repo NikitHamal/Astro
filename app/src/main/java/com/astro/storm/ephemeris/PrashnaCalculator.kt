@@ -1824,67 +1824,65 @@ class PrashnaCalculator(context: Context) {
         )
     }
 
-    /**
-     * Generate recommendations based on analysis
-     */
     private fun generateRecommendations(
         judgment: PrashnaJudgment,
         moonAnalysis: MoonAnalysis,
         lagnaAnalysis: LagnaAnalysis,
         houseAnalysis: HouseAnalysis,
-        specialYogas: List<PrashnaYoga>
+        specialYogas: List<PrashnaYoga>,
+        language: Language = Language.ENGLISH
     ): List<String> {
         val recommendations = mutableListOf<String>()
 
         // Based on verdict
         when (judgment.verdict) {
             PrashnaVerdict.STRONGLY_YES, PrashnaVerdict.YES -> {
-                recommendations.add("Proceed with confidence. The chart strongly supports your endeavor.")
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_STRONGLY_SUPPORT, language))
             }
             PrashnaVerdict.LIKELY_YES -> {
-                recommendations.add("Proceed with awareness. Minor adjustments may improve outcomes.")
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_AWARENESS, language))
             }
             PrashnaVerdict.UNCERTAIN -> {
-                recommendations.add("Exercise patience. Wait for clearer signs before major action.")
-                recommendations.add("Seek additional guidance or information before proceeding.")
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_PATIENCE, language))
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_GUIDANCE, language))
             }
             PrashnaVerdict.TIMING_DEPENDENT -> {
-                recommendations.add("The matter requires better timing. Moon is void of course.")
-                recommendations.add("Consider re-asking when Moon enters a new sign.")
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_VOID_MOON, language))
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_VOID_MOON_REASK, language))
             }
             PrashnaVerdict.LIKELY_NO, PrashnaVerdict.NO -> {
-                recommendations.add("Reconsider your approach. Current conditions are not supportive.")
-                recommendations.add("Explore alternative options or modify your plans.")
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_RECONSIDER, language))
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_EXPLORE, language))
             }
             PrashnaVerdict.STRONGLY_NO -> {
-                recommendations.add("It is advisable to abandon or significantly modify this pursuit.")
-                recommendations.add("Focus energy on matters with more favorable indications.")
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_ABANDON, language))
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_FOCUS_FAVORABLE, language))
             }
         }
 
         // Based on Moon condition
         if (!moonAnalysis.isWaxing) {
-            recommendations.add("Waning Moon suggests completion or ending phases. Good for finishing, not starting.")
+            recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_WANING_MOON, language))
         }
         if (moonAnalysis.moonStrength in listOf(MoonStrength.WEAK, MoonStrength.VERY_WEAK, MoonStrength.AFFLICTED)) {
-            recommendations.add("Strengthen Moon energies through white colors, pearl, and Monday observances.")
+            recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_STRENGTHEN_MOON, language))
         }
 
         // Based on Lagna
         if (lagnaAnalysis.lagnaCondition == LagnaCondition.COMBUST) {
-            recommendations.add("Avoid direct confrontation. Work behind the scenes temporarily.")
+            recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_AVOID_CONFRONTATION, language))
         }
         if (lagnaAnalysis.lagnaCondition == LagnaCondition.RETROGRADE_LORD) {
-            recommendations.add("Review past decisions. Something may need to be reconsidered.")
+            recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_REVIEW_PAST, language))
         }
 
         // Based on special yogas
         val positiveYogas = specialYogas.filter { it.isPositive }
         if (positiveYogas.any { it.name == "Ithasala Yoga" }) {
-            recommendations.add("Act promptly while the favorable applying aspect is in effect.")
+            recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_ACT_PROMPTLY, language))
         }
         if (specialYogas.any { it.name == "Nakta Yoga" }) {
-            recommendations.add("Seek assistance from an intermediary or third party.")
+            recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_SEEK_ASSISTANCE, language))
         }
 
         // Remedial measures based on weak houses
@@ -1894,16 +1892,13 @@ class PrashnaCalculator(context: Context) {
         for ((house, condition) in weakHouses) {
             val karaka = PRASHNA_HOUSE_SIGNIFICATIONS[house]?.karaka
             if (karaka != null) {
-                recommendations.add("Propitiate ${karaka.displayName} to strengthen ${house}th house matters.")
+                recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_PROPITIATE, language, karaka.getLocalizedName(language), house))
             }
         }
 
         return recommendations.take(7) // Limit to 7 most relevant recommendations
     }
 
-    /**
-     * Generate detailed interpretation
-     */
     private fun generateDetailedInterpretation(
         question: String,
         category: PrashnaCategory,
@@ -1912,45 +1907,46 @@ class PrashnaCalculator(context: Context) {
         lagnaAnalysis: LagnaAnalysis,
         houseAnalysis: HouseAnalysis,
         timingPrediction: TimingPrediction,
-        specialYogas: List<PrashnaYoga>
+        specialYogas: List<PrashnaYoga>,
+        language: Language = Language.ENGLISH
     ): String {
         return buildString {
-            appendLine("PRASHNA ANALYSIS REPORT")
+            appendLine(StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_TITLE, language))
             appendLine("=" .repeat(50))
             appendLine()
 
-            appendLine("QUESTION: $question")
-            appendLine("CATEGORY: ${category.displayName}")
+            appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_QUESTION, language)}: $question")
+            appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_CATEGORY, language)}: ${category.getLocalizedName(language)}")
             appendLine()
 
-            appendLine("VERDICT: ${judgment.verdict.displayName}")
-            appendLine("Certainty: ${judgment.certaintyLevel.displayName}")
+            appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_VERDICT, language)}: ${judgment.verdict.getLocalizedName(language)}")
+            appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_CERTAINTY, language)}: ${judgment.certaintyLevel.getLocalizedName(language)}")
             appendLine()
 
-            appendLine("PRIMARY INDICATION:")
+            appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_PRIMARY_INDICATION, language)}:")
             appendLine(judgment.primaryReason)
             appendLine()
 
-            appendLine("MOON ANALYSIS (Primary Significator):")
-            appendLine("- Position: ${moonAnalysis.moonSign.displayName} in House ${moonAnalysis.moonHouse}")
-            appendLine("- Nakshatra: ${moonAnalysis.nakshatra.displayName} (Pada ${moonAnalysis.nakshatraPada})")
-            appendLine("- Phase: ${if (moonAnalysis.isWaxing) "Waxing" else "Waning"} - ${moonAnalysis.tithiName}")
-            appendLine("- Strength: ${moonAnalysis.moonStrength.displayName}")
+            appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_MOON_ANALYSIS, language)}:")
+            appendLine("- ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_POSITION, language)}: ${moonAnalysis.moonSign.getLocalizedName(language)} in ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_HOUSE, language)} ${moonAnalysis.moonHouse}")
+            appendLine("- ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_NAKSHATRA, language)}: ${moonAnalysis.nakshatra.getLocalizedName(language)} (${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_PADA, language)} ${moonAnalysis.nakshatraPada})")
+            appendLine("- ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_PHASE, language)}: ${if (moonAnalysis.isWaxing) StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_WAXING, language) else StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_WANING, language)} - ${moonAnalysis.tithiName}")
+            appendLine("- ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_STRENGTH, language)}: ${moonAnalysis.moonStrength.getLocalizedName(language)}")
             if (moonAnalysis.isVoidOfCourse) {
-                appendLine("- WARNING: Moon is Void of Course")
+                appendLine("- ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_WARNING_VOID, language)}")
             }
             appendLine()
 
-            appendLine("LAGNA ANALYSIS:")
-            appendLine("- Rising Sign: ${lagnaAnalysis.lagnaSign.displayName}")
-            appendLine("- Lagna Lord: ${lagnaAnalysis.lagnaLord.displayName} in House ${lagnaAnalysis.lagnaLordPosition.house}")
-            appendLine("- Condition: ${lagnaAnalysis.lagnaCondition.displayName}")
+            appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_LAGNA_ANALYSIS, language)}:")
+            appendLine("- ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_RISING_SIGN, language)}: ${lagnaAnalysis.lagnaSign.getLocalizedName(language)}")
+            appendLine("- ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_LAGNA_LORD, language)}: ${lagnaAnalysis.lagnaLord.getLocalizedName(language)} in ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_HOUSE, language)} ${lagnaAnalysis.lagnaLordPosition.house}")
+            appendLine("- ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_CONDITION, language)}: ${lagnaAnalysis.lagnaCondition.getLocalizedName(language)}")
             appendLine()
 
-            appendLine("RELEVANT HOUSES (${houseAnalysis.relevantHouses.joinToString()}):")
+            appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_RELEVANT_HOUSES, language)} (${houseAnalysis.relevantHouses.joinToString()}):")
             for (house in houseAnalysis.relevantHouses) {
                 val condition = houseAnalysis.houseConditions[house]
-                appendLine("- House $house: ${condition?.condition?.displayName} (Lord in House ${condition?.lordPosition})")
+                appendLine("- ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_HOUSE, language)} $house: ${condition?.condition?.getLocalizedName(language)} (${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_LAGNA_LORD, language)} in ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_HOUSE, language)} ${condition?.lordPosition})")
             }
             appendLine()
 

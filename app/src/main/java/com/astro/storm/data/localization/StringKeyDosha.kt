@@ -2691,6 +2691,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     COLOR_RED("Red", "रातो"),
     COLOR_WHITE("White", "सेतो"),
     COLOR_SILVER("Silver", "चाँदी"),
+    COLOR_PEARL("Pearl White", "मोती"),
     COLOR_CORAL("Coral", "मुगा रंग"),
     COLOR_SCARLET("Scarlet", "सिन्दूरे"),
     COLOR_GREEN("Green", "हरियो"),

@@ -76,6 +76,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKeyDosha
+import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.AvasthaCalculator
@@ -97,7 +98,7 @@ fun AvasthaScreen(
     chart: VedicChart?,
     onBack: () -> Unit
 ) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var isCalculating by remember { mutableStateOf(true) }
     var analysis by remember { mutableStateOf<AvasthaCalculator.AvasthaAnalysis?>(null) }
@@ -152,7 +153,7 @@ fun AvasthaScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            imageVector = Icons.Default.ArrowBack,
                             contentDescription = stringResource(StringKey.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
@@ -162,7 +163,7 @@ fun AvasthaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDosha.UI_INFO_CIRCLE),
+                            contentDescription = stringResource(StringKey.MISC_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }

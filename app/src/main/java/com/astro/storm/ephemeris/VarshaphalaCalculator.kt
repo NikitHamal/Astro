@@ -1354,7 +1354,7 @@ class VarshaphalaCalculator(context: Context) {
             TajikaAspectType.KAMBOOLA -> StringResources.get(StringKeyAnalysis.TAJIKA_KAMBOOLA_EFFECT, language)
             TajikaAspectType.RADDA -> StringResources.get(StringKeyAnalysis.TAJIKA_RADDA_EFFECT, language)
             TajikaAspectType.DURAPHA -> StringResources.get(StringKeyAnalysis.TAJIKA_DURAPHA_EFFECT, language)
-            else -> StringResources.get(StringKeyAnalysis.TAJIKA_INFLUENCE_ENERGY, language, type.displayNameKey.getLocalizedValue(language), if (type.isPositive) StringResources.get(StringKeyAnalysis.VARSHA_TONE_SUPPORTIVE, language) else StringResources.get(StringKeyAnalysis.VARSHA_TONE_CHALLENGING, language))
+            else -> StringResources.get(StringKeyAnalysis.TAJIKA_INFLUENCE_ENERGY, language, type.getDisplayName(language), if (type.isPositive) StringResources.get(StringKeyAnalysis.VARSHA_TONE_SUPPORTIVE, language) else StringResources.get(StringKeyAnalysis.VARSHA_TONE_CHALLENGING, language))
         }
     }
 
@@ -1364,7 +1364,7 @@ class VarshaphalaCalculator(context: Context) {
         }
         val quality = if (type.isPositive) StringResources.get(StringKeyAnalysis.VARSHA_TONE_FAVORABLE, language) else StringResources.get(StringKeyAnalysis.VARSHA_TONE_CHALLENGING, language)
 
-        return StringResources.get(StringKeyAnalysis.TAJIKA_PREDICTION_X_FOR_Y, language, type.displayNameKey.getLocalizedValue(language), planet1.getLocalizedName(language), planet2.getLocalizedName(language), quality, houseStr)
+        return StringResources.get(StringKeyAnalysis.TAJIKA_PREDICTION_X_FOR_Y, language, type.getDisplayName(language), planet1.getLocalizedName(language), planet2.getLocalizedName(language), quality, houseStr)
     }
 
     private fun calculateMuddaDasha(chart: SolarReturnChart, startDate: LocalDate, language: Language): List<MuddaDashaPeriod> {

@@ -9,7 +9,6 @@ import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.StringKeyRemedy
-import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.StringResources
 import java.util.UUID
 import kotlin.math.abs
@@ -1308,32 +1307,6 @@ object RemediesCalculator {
 
         val shouldRecommend = analysis.isFunctionalBenefic || analysis.isYogakaraka
 
-        if (!shouldRecommend) {
-            val titleSuffix = StringResources.get(StringKeyRemedy.GEM_CAUTION_TITLE_SUFFIX, language)
-            val desc = StringResources.get(StringKeyRemedy.GEM_CAUTION_DESC, language, planet.getLocalizedName(language), gemInfo.primaryName)
-            val method = StringResources.get(StringKeyRemedy.GEM_CAUTION_METHOD, language, gemInfo.minCarat, gemInfo.maxCarat, gemInfo.primaryName, gemInfo.metal, gemInfo.fingerName)
-            val duration = StringResources.get(StringKeyRemedy.GEM_CAUTION_DURATION, language)
-            
-            return Remedy(
-                category = RemedyCategory.GEMSTONE,
-                title = "${gemInfo.primaryName}$titleSuffix",
-                description = desc,
-                method = method,
-                timing = StringResources.get(StringKeyRemedy.GEM_CAUTION_TRIAL, language), // Reusing trial caution as timing context or just use original timing?
-                // Actually original timing is strict. Let's use the explicit caution string or keep specific timing?
-                // Logic: Caution remedy still needs timing info.
-                // I'll grab the specific timing key: GEM_SUN_TIMING.
-                // Using dynamic lookup.
-                // Wait, gemInfo.primaryName is English. I should use localized name.
-                // localizedName = StringResources.get(StringKeyRemedy.valueOf("GEM_${planet.name}_NAME"), language)
-                // Let's rewrite to use dynamic keys properly.
-                
-                // Redoing the strict lookup:
-                // nameKey = GEM_{PLANET}_NAME
-            )
-        }
-        
-        // Proper Implementation with Dynamic Keys
         val pName = planet.name
         val nameKey = StringKeyRemedy.valueOf("GEM_${pName}_NAME")
         val localizedGemName = StringResources.get(nameKey, language)

@@ -39,6 +39,7 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.localization.StringKeyPrediction
+import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
@@ -69,7 +70,7 @@ fun PredictionsScreen(
     onBack: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val language = LocalLanguage.current
+    val language = currentLanguage()
 
     var selectedTab by remember { mutableStateOf(PredictionsTab.OVERVIEW) }
     var isLoading by remember { mutableStateOf(false) }
@@ -107,7 +108,7 @@ fun PredictionsScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = StringResources.get(StringKey.BTN_BACK, language),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -428,7 +429,7 @@ private fun RemediesTabContent(data: PredictionData) {
 // Card Composables
 @Composable
 private fun LifePathCard(overview: LifeOverview) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
 
     Card(
         modifier = Modifier
@@ -543,7 +544,7 @@ private fun LifePathCard(overview: LifeOverview) {
 
 @Composable
 private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
 
     Card(
         modifier = Modifier
@@ -646,7 +647,7 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
 
 @Composable
 private fun TransitHighlightChip(transit: TransitHighlight) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
     val planetColor = getPlanetColor(transit.planet)
 
     Surface(
@@ -694,7 +695,7 @@ private fun TransitHighlightChip(transit: TransitHighlight) {
 
 @Composable
 private fun ActiveYogasSummaryCard(yogas: List<ActiveYoga>) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
 
     Card(
         modifier = Modifier
@@ -788,7 +789,7 @@ private fun YogaItem(yoga: ActiveYoga) {
 
 @Composable
 private fun ChallengesOpportunitiesCard(data: ChallengesOpportunities) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
 
     Card(
         modifier = Modifier
@@ -933,7 +934,7 @@ private fun ChallengeItem(challenge: Challenge) {
 
 @Composable
 private fun QuickLifeAreasSummary(areas: List<LifeAreaPrediction>) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
 
     Card(
         modifier = Modifier
@@ -961,7 +962,7 @@ private fun QuickLifeAreasSummary(areas: List<LifeAreaPrediction>) {
 
 @Composable
 private fun QuickLifeAreaRow(area: LifeAreaPrediction) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
     val areaColor = getLifeAreaColor(area.area)
 
     Row(
@@ -996,7 +997,7 @@ private fun QuickLifeAreaRow(area: LifeAreaPrediction) {
 
 @Composable
 private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
     var expanded by remember { mutableStateOf(false) }
     val areaColor = getLifeAreaColor(area.area)
 
@@ -1170,7 +1171,7 @@ private fun PredictionTimeframe(title: String, prediction: String, color: Color)
 
 @Composable
 private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
     val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
 
     Card(
@@ -1245,7 +1246,7 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
 
 @Composable
 private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
     val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
 
     Card(
@@ -1320,7 +1321,7 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
 
 @Composable
 private fun KeyDatesCard(dates: List<KeyDate>) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
     val dateFormatter = DateTimeFormatter.ofPattern("EEEE, MMM dd")
 
     Card(
@@ -1406,7 +1407,7 @@ private fun KeyDatesCard(dates: List<KeyDate>) {
 
 @Composable
 private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: String) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -1483,7 +1484,7 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
 // Empty and Error States
 @Composable
 private fun EmptyPredictionsState(modifier: Modifier = Modifier) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -1513,7 +1514,7 @@ private fun EmptyPredictionsState(modifier: Modifier = Modifier) {
 
 @Composable
 private fun LoadingState(modifier: Modifier = Modifier) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -1540,7 +1541,7 @@ private fun ErrorState(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val language = LocalLanguage.current
+    val language = currentLanguage()
 
     Box(
         modifier = modifier.fillMaxSize(),

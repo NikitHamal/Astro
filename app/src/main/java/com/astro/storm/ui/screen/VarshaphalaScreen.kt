@@ -100,15 +100,16 @@ fun VarshaphalaScreen(
         stringResource(StringKeyMatch.TAB_HOUSES)
     )
 
-    LaunchedEffect(chart, selectedYear, currentLanguage) {
+    val lang = currentLanguage()
+    LaunchedEffect(chart, selectedYear, lang) {
         if (chart != null && selectedYear >= birthYear) {
             isLoading = true
             error = null
             withContext(Dispatchers.IO) {
                 try {
-                    varshaphalaResult = calculator.calculateVarshaphala(chart, selectedYear, currentLanguage)
+                    varshaphalaResult = calculator.calculateVarshaphala(chart, selectedYear, lang)
                 } catch (e: Exception) {
-                    error = if (currentLanguage == Language.NEPALI) "गणना त्रुटि: ${e.message ?: "अज्ञात त्रुटि"}" else "Calculation error: ${e.message ?: "Unknown error"}"
+                    error = if (lang == com.astro.storm.data.localization.Language.NEPALI) "गणना त्रुटि: ${e.message ?: "अज्ञात त्रुटि"}" else "Calculation error: ${e.message ?: "Unknown error"}"
                 }
             }
             isLoading = false
@@ -607,13 +608,13 @@ private fun SolarReturnCard(result: VarshaphalaResult) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 InfoChip(
                     label = stringResource(StringKey.CHART_ASCENDANT),
-                    value = "${result.solarReturnChart.ascendant.getLocalizedName(currentLanguage)} ${String.format("%.1f", result.solarReturnChart.ascendantDegree)}°",
+                    value = "${result.solarReturnChart.ascendant.getLocalizedName(currentLanguage())} ${String.format("%.1f", result.solarReturnChart.ascendantDegree)}°",
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 InfoChip(
                     label = stringResource(StringKey.PLANET_MOON),
-                    value = result.solarReturnChart.moonSign.getLocalizedName(currentLanguage),
+                    value = result.solarReturnChart.moonSign.getLocalizedName(currentLanguage()),
                     subValue = result.solarReturnChart.moonNakshatra,
                     modifier = Modifier.weight(1f)
                 )
@@ -706,13 +707,13 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                             color = AppTheme.TextMuted
                         )
                         Text(
-                            result.yearLord.getLocalizedName(currentLanguage),
+                            result.yearLord.getLocalizedName(currentLanguage()),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            StrengthBadge(result.yearLordStrength)
+                            StrengthBadge(result.yearLordStrength, currentLanguage())
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 stringResource(StringKeyAnalysis.VARSHAPHALA_IN_HOUSE, result.yearLordHouse),
@@ -779,7 +780,7 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                                 color = AppTheme.TextMuted
                             )
                             Text(
-                                result.muntha.sign.getLocalizedName(currentLanguage),
+                                result.muntha.sign.getLocalizedName(currentLanguage()),
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.TextPrimary
@@ -793,7 +794,7 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
 
                         Column(horizontalAlignment = Alignment.End) {
                             Text(
-                                stringResource(StringKeyAnalysis.VARSHAPHALA_LORD_PREFIX, result.muntha.lord.getLocalizedName(currentLanguage)),
+                                stringResource(StringKeyAnalysis.VARSHAPHALA_LORD_PREFIX, result.muntha.lord.getLocalizedName(currentLanguage())),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = getPlanetColor(result.muntha.lord),
                                 fontWeight = FontWeight.Medium
@@ -815,7 +816,7 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                                 shape = RoundedCornerShape(8.dp)
                             ) {
                                 Text(
-                                    getMunthaThemeLocalized(theme),
+                                    theme,
                                     style = MaterialTheme.typography.labelSmall,
                                     color = AppTheme.AccentGold,
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -839,7 +840,7 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
 }
 
 @Composable
-private fun StrengthBadge(strength: String, language: Language) {
+private fun StrengthBadge(strength: String, language: com.astro.storm.data.localization.Language) {
     Surface(
         color = getStrengthColor(strength, language).copy(alpha = 0.15f),
         shape = RoundedCornerShape(6.dp)
@@ -1194,7 +1195,7 @@ private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
         )
 
         Text(
-            bala.planet.getLocalizedName(currentLanguage),
+            bala.planet.getLocalizedName(currentLanguage()),
             style = MaterialTheme.typography.bodyMedium,
             color = AppTheme.TextPrimary,
             modifier = Modifier.width(80.dp)
@@ -1206,7 +1207,7 @@ private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
                 .weight(1f)
                 .height(8.dp)
                 .clip(RoundedCornerShape(4.dp)),
-            color = getStrengthColor(bala.category),
+            color = getStrengthColor(bala.category, currentLanguage()),
             trackColor = AppTheme.DividerColor
         )
 
@@ -2071,7 +2072,7 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                 Column(modifier = Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            period.planet.getLocalizedName(currentLanguage),
+                            period.planet.getLocalizedName(currentLanguage()),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -2106,7 +2107,7 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
-                    StrengthBadge(period.planetStrength, currentLanguage)
+                    StrengthBadge(period.planetStrength, currentLanguage())
                 }
             }
 
@@ -2220,13 +2221,13 @@ private fun HousePredictionCard(prediction: HousePrediction) {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        stringResource(StringKeyAnalysis.VARSHAPHALA_HOUSE_SIGN, prediction.house, prediction.signOnCusp.getLocalizedName(currentLanguage)),
+                        stringResource(StringKeyAnalysis.VARSHAPHALA_HOUSE_SIGN, prediction.house, prediction.signOnCusp.getLocalizedName(currentLanguage())),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        stringResource(StringKeyAnalysis.VARSHAPHALA_LORD_IN_HOUSE, prediction.houseLord.getLocalizedName(currentLanguage), prediction.lordPosition),
+                        stringResource(StringKeyAnalysis.VARSHAPHALA_LORD_IN_HOUSE, prediction.houseLord.getLocalizedName(currentLanguage()), prediction.lordPosition),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -2245,7 +2246,7 @@ private fun HousePredictionCard(prediction: HousePrediction) {
                             )
                         }
                     }
-                    StrengthBadge(prediction.strength, currentLanguage)
+                    StrengthBadge(prediction.strength, currentLanguage())
                 }
             }
 

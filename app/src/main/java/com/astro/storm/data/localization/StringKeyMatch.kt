@@ -1262,16 +1262,6 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     YOGA_EFFECT_GOLA("Poor, dirty, ignorant, idle", "गरिब, फोहोरी, अज्ञानी, अल्छी"),
     YOGA_EFFECT_VEENA("Fond of music, dance, leader, wealthy, happy", "संगीत र नृत्यको शौकीन, नेता, धनी, खुशी"),
 
-    // ============================================
-    // CHOGHADIYA NAMES
-    // ============================================
-    CHOGHADIYA_AMRIT("Amrit", "अमृत"),
-    CHOGHADIYA_SHUBH("Shubh", "शुभ"),
-    CHOGHADIYA_LABH("Labh", "लाभ"),
-    CHOGHADIYA_CHAR("Char", "चर"),
-    CHOGHADIYA_ROG("Rog", "रोग"),
-    CHOGHADIYA_KAAL("Kaal", "काल"),
-    CHOGHADIYA_UDVEG("Udveg", "उद्वेग"),
 
     // ============================================
     // ADDITIONAL UI STRINGS

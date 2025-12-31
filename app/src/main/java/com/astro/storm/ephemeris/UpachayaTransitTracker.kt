@@ -6,8 +6,7 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.util.AstrologicalConstants
+import com.astro.storm.data.localization.StringKeyAnalysis
 import java.time.LocalDateTime
 
 /**
@@ -316,7 +315,7 @@ object UpachayaTransitTracker {
                 effects = getHouseTransitSummary(house, planets, language),
                 timing = if (houseTransits.isNotEmpty()) {
                     val activeLabel = StringResources.get(StringKeyAnalysis.VARSHAPHALA_ACTIVE, language)
-                    "$activeLabel: $planetNames"
+                    "$activeLabel: ${planets.joinToString { it.getLocalizedName(language) }}"
                 } else StringResources.get(StringKeyDosha.UPACHAYA_HOUSE_INACTIVE, language)
             )
         }
@@ -483,6 +482,18 @@ object UpachayaTransitTracker {
         }
 
         return upcomingTransits.sortedBy { it.targetHouse }
+    }
+    private fun calculateHouseTransitStrength(transits: List<UpachayaTransit>): Int {
+        if (transits.isEmpty()) return 0
+        var score = 0
+        for (transit in transits) {
+            score += when (transit.planet) {
+                Planet.SUN, Planet.MARS, Planet.SATURN, Planet.RAHU -> 20
+                Planet.JUPITER -> 15
+                else -> 10
+            }
+        }
+        return (score / transits.size).coerceAtMost(100)
     }
 }
 
