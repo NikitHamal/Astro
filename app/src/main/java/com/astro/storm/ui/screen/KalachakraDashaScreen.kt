@@ -2149,6 +2149,19 @@ private fun getApplicabilityColor(score: Int): Color {
     }
 }
 
+/**
+ * Get localized name for HealthIndicator
+ */
+private fun getHealthLocalizedName(health: KalachakraDashaCalculator.HealthIndicator, language: Language): String {
+    return when (health) {
+        KalachakraDashaCalculator.HealthIndicator.EXCELLENT -> StringResources.get(StringKeyDosha.STRENGTH_EXCELLENT, language)
+        KalachakraDashaCalculator.HealthIndicator.GOOD -> StringResources.get(StringKeyDosha.STRENGTH_GOOD, language)
+        KalachakraDashaCalculator.HealthIndicator.MODERATE -> StringResources.get(StringKeyDosha.STRENGTH_AVERAGE, language)
+        KalachakraDashaCalculator.HealthIndicator.CHALLENGING -> StringResources.get(StringKeyDosha.YOGINI_NATURE_CHALLENGING, language)
+        KalachakraDashaCalculator.HealthIndicator.CRITICAL -> StringResources.get(StringKeyDosha.STRENGTH_VERY_WEAK, language)
+    }
+}
+
 private fun formatNumber(number: Int, language: Language): String {
     return when (language) {
         Language.ENGLISH -> number.toString()

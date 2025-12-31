@@ -1403,6 +1403,8 @@ private fun MoonDetailItem(
 
 @Composable
 private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
+    // Hoist language call to Composable scope
+    val language = currentLanguage()
     val risingSignLabel = stringResource(StringKeyAnalysis.PRASHNA_RISING_SIGN)
     val lagnaLordLabel = stringResource(StringKeyAnalysis.PRASHNA_LAGNA_LORD)
     val lordPositionLabel = stringResource(StringKeyAnalysis.PRASHNA_LORD_POSITION)
@@ -1442,12 +1444,12 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
             ) {
                 MoonDetailItem(
                     label = risingSignLabel,
-                    value = lagnaAnalysis.lagnaSign.getLocalizedName(currentLanguage()),
+                    value = lagnaAnalysis.lagnaSign.getLocalizedName(language),
                     modifier = Modifier.weight(1f)
                 )
                 MoonDetailItem(
                     label = lagnaLordLabel,
-                    value = lagnaAnalysis.lagnaLord.getLocalizedName(currentLanguage()),
+                    value = lagnaAnalysis.lagnaLord.getLocalizedName(language),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -1465,7 +1467,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
                 )
                 MoonDetailItem(
                     label = conditionLabel,
-                    value = lagnaAnalysis.lagnaCondition.getLocalizedName(currentLanguage()),
+                    value = lagnaAnalysis.lagnaCondition.getLocalizedName(language),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -1489,7 +1491,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            "$planetsInLagnaLabel: ${lagnaAnalysis.planetsInLagna.joinToString { it.planet.getLocalizedName(currentLanguage()) }}",
+                            "$planetsInLagnaLabel: ${lagnaAnalysis.planetsInLagna.joinToString { it.planet.getLocalizedName(language) }}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.InfoColor
                         )

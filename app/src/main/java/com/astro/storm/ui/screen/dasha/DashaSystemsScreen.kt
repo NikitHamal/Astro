@@ -192,20 +192,23 @@ fun DashaSystemsScreen(
     val accentTeal = AppTheme.AccentTeal
     val lifeAreaSpiritual = AppTheme.LifeAreaSpiritual
 
-    val tabs = remember(accentPrimary, lifeAreaLove, accentGold, accentTeal, lifeAreaSpiritual) {
-        DashaSystemType.entries.map { system ->
-            TabItem(
-                title = stringResource(system.displayNameKey),
-                accentColor = when (system) {
-                    DashaSystemType.VIMSOTTARI -> accentPrimary
-                    DashaSystemType.YOGINI -> lifeAreaLove
-                    DashaSystemType.ASHTOTTARI -> accentGold
-                    DashaSystemType.SUDARSHANA -> accentTeal
-                    DashaSystemType.CHARA -> lifeAreaSpiritual
-                }
-            )
-        }
+    // Pre-resolve localized tab names outside remember
+    val vimsottariName = stringResource(DashaSystemType.VIMSOTTARI.displayNameKey)
+    val yoginiName = stringResource(DashaSystemType.YOGINI.displayNameKey)
+    val ashtottariName = stringResource(DashaSystemType.ASHTOTTARI.displayNameKey)
+    val sudarshanaName = stringResource(DashaSystemType.SUDARSHANA.displayNameKey)
+    val charaName = stringResource(DashaSystemType.CHARA.displayNameKey)
+
+    val tabs = remember(accentPrimary, lifeAreaLove, accentGold, accentTeal, lifeAreaSpiritual, vimsottariName, yoginiName, ashtottariName, sudarshanaName, charaName) {
+        listOf(
+            TabItem(title = vimsottariName, accentColor = accentPrimary),
+            TabItem(title = yoginiName, accentColor = lifeAreaLove),
+            TabItem(title = ashtottariName, accentColor = accentGold),
+            TabItem(title = sudarshanaName, accentColor = accentTeal),
+            TabItem(title = charaName, accentColor = lifeAreaSpiritual)
+        )
     }
+
 
     if (showInfoDialog) {
         DashaSystemInfoDialog(

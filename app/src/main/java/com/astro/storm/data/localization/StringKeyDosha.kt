@@ -2997,5 +2997,13 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // ============================================
     // YOGINI DASHA SCREEN MISSING KEYS
     // ============================================
-    YOGINI_SEQUENCE("Yogini Sequence", "योगिनी क्रम");
+    YOGINI_SEQUENCE("Yogini Sequence", "योगिनी क्रम"),
+
+    // ============================================
+    // UPACHAYA TRANSIT SCREEN MISSING KEYS
+    // ============================================
+    QUALITY_LABEL("Quality", "गुणस्तर"),
+    FROM_LABEL("from", "बाट"),
+    PLANETS_TITLE("Transiting Planets", "गोचर ग्रहहरू"),
+    UPACHAYA_TRANSITS_LABEL("Transits", "गोचरहरू");
 }

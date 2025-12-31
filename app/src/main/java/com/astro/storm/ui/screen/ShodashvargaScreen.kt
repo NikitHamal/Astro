@@ -1401,6 +1401,7 @@ private fun VargottamaPlanetCard(
 
 @Composable
 private fun ShodashvargaInfoDialog(onDismiss: () -> Unit) {
+    val language = LocalLanguage.current
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {

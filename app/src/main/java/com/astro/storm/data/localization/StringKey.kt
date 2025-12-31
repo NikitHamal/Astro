@@ -950,6 +950,34 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     A11Y_COLLAPSE("Collapse", "संक्षिप्त गर्नुहोस्"),
     A11Y_NAVIGATE_BACK("Navigate back", "पछाडि जानुहोस्"),
     A11Y_SHOW_INFO("Show information", "जानकारी देखाउनुहोस्"),
-    LABEL_DASH("-", "-");
+    LABEL_DASH("-", "-"),
+
+    // ============================================
+    // ADDITIONAL ACCESSIBILITY STRINGS
+    // ============================================
+    ACC_FULLSCREEN("Fullscreen", "पूर्णस्क्रीन"),
+    ACC_COLLAPSE("Collapse section", "खण्ड संक्षिप्त गर्नुहोस्"),
+    ACC_EXPAND("Expand section", "खण्ड विस्तार गर्नुहोस्"),
+    ACC_VIEW_DETAILS("View details", "विवरण हेर्नुहोस्"),
+
+    // ============================================
+    // DIGNITY STATUS STRINGS
+    // ============================================
+    DIGNITY_EXALTED_STATUS("Exalted", "उच्च"),
+    DIGNITY_DEBILITATED_STATUS("Debilitated", "नीच"),
+    DIGNITY_OWN_SIGN_STATUS("Own Sign", "स्वगृह"),
+    DIGNITY_NEUTRAL_STATUS("Neutral", "तटस्थ"),
+
+    // ============================================
+    // BUTTON & FEATURE STRINGS
+    // ============================================
+    BTN_VIEW_DETAILS("View Details", "विवरण हेर्नुहोस्"),
+    REPORT_PLANET("planet", "ग्रह"),
+    FEATURE_PLANETS("planets", "ग्रहहरू"),
+
+    // ============================================
+    // ERROR STRINGS
+    // ============================================
+    ERROR_CALCULATION("Calculation Error", "गणना त्रुटि");
 
 }

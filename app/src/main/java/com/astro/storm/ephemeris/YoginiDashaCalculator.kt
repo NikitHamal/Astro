@@ -838,4 +838,18 @@ object YoginiDashaCalculator {
             }
         }
     }
+    /**
+     * Get the Yogini sequence starting from a given Yogini
+     * Returns all 8 Yoginis in order, starting from the specified Yogini
+     */
+    fun getYoginiSequence(startingYogini: Yogini): List<Yogini> {
+        val sequence = mutableListOf<Yogini>()
+        var currentIndex = startingYogini.ordinal
+        for (i in 0 until 8) {
+            sequence.add(Yogini.fromIndex(currentIndex))
+            currentIndex = (currentIndex + 1) % 8
+        }
+        return sequence
+    }
 }
+
