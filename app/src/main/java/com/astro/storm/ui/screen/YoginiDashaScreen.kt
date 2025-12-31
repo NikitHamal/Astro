@@ -110,6 +110,8 @@ fun YoginiDashaScreen(
     onBack: () -> Unit,
     viewModel: YoginiDashaViewModel = viewModel()
 ) {
+    val language = LocalLanguage.current
+
     val chartKey = remember(chart) {
         chart?.generateUniqueKey()
     }
@@ -119,7 +121,6 @@ fun YoginiDashaScreen(
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val language = LocalLanguage.current
 
     val currentPeriodInfo = remember(uiState, language) {
         extractCurrentYoginiPeriodInfo(uiState, language)

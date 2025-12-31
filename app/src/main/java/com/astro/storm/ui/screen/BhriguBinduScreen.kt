@@ -1507,6 +1507,7 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
 // Helper Functions
 // ============================================
 
+@Composable
 private fun getStrengthText(strength: OverallStrength): String = when (strength) {
     OverallStrength.EXCELLENT -> stringResource(StringKeyAnalysis.STRENGTH_EXCELLENT)
     OverallStrength.GOOD -> stringResource(StringKeyAnalysis.STRENGTH_GOOD)
@@ -1560,6 +1561,7 @@ private fun getAreaInfluenceColor(influence: AreaInfluence): Color = when (influ
     AreaInfluence.NEEDS_ATTENTION -> AppTheme.ErrorColor
 }
 
+@Composable
 private fun getAreaInfluenceName(influence: AreaInfluence): String = when (influence) {
     AreaInfluence.VERY_FAVORABLE -> stringResource(StringKeyAnalysis.INFLUENCE_VERY_FAVORABLE)
     AreaInfluence.FAVORABLE -> stringResource(StringKeyAnalysis.INFLUENCE_FAVORABLE)
@@ -1579,6 +1581,7 @@ private fun getLifeAreaIcon(area: LifeArea): ImageVector = when (area) {
     LifeArea.FOREIGN_CONNECTIONS -> Icons.Filled.Flight
 }
 
+@Composable
 private fun getLifeAreaName(area: LifeArea): String = when (area) {
     LifeArea.CAREER -> stringResource(StringKeyAnalysis.AREA_CAREER)
     LifeArea.RELATIONSHIPS -> stringResource(StringKeyAnalysis.AREA_RELATIONSHIPS)
@@ -1590,6 +1593,7 @@ private fun getLifeAreaName(area: LifeArea): String = when (area) {
     LifeArea.FOREIGN_CONNECTIONS -> stringResource(StringKeyAnalysis.AREA_FOREIGN_CONNECTIONS)
 }
 
+@Composable
 private fun getAspectTypeName(aspectType: AspectType): String = when (aspectType) {
     AspectType.CONJUNCTION -> stringResource(StringKeyAnalysis.ASPECT_CONJUNCTION)
     AspectType.OPPOSITION -> stringResource(StringKeyAnalysis.ASPECT_OPPOSITION)
