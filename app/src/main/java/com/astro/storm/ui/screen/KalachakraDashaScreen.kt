@@ -97,7 +97,8 @@ import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.formatLocalized
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.data.localization.StringResources
+import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.KalachakraDashaCalculator
 import com.astro.storm.ui.theme.AppTheme

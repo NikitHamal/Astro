@@ -973,8 +973,7 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     // ============================================
     BTN_VIEW_DETAILS("View Details", "विवरण हेर्नुहोस्"),
     REPORT_PLANET("planet", "ग्रह"),
-    FEATURE_PLANETS("planets", "ग्रहहरू"),
-
+    
     // ============================================
     // ERROR STRINGS
     // ============================================

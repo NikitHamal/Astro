@@ -423,6 +423,7 @@ private fun PlanetDetailCard(
 ) {
     val position = state.position
     val planetColor = ChartDetailColors.getPlanetColor(position.planet)
+    val dignityDisplayName = state.dignityStatus.localizedDisplayName()
 
     Surface(
         onClick = onClick,
@@ -435,7 +436,7 @@ private fun PlanetDetailCard(
                     append(", House ${position.house}")
                     append(", ${position.nakshatra.displayName} pada ${position.nakshatraPada}")
                     if (position.isRetrograde) append(", Retrograde")
-                    if (state.dignityStatus.isSignificant) append(", ${state.dignityStatus.displayName}")
+                    if (state.dignityStatus.isSignificant) append(", $dignityDisplayName")
                 }
             },
         shape = RoundedCornerShape(16.dp),
