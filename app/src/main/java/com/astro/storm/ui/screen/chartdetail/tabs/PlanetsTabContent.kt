@@ -427,6 +427,17 @@ private fun PlanetDetailCard(
     val planetColor = ChartDetailColors.getPlanetColor(position.planet)
     val dignityDisplayName = state.dignityStatus.localizedDisplayName()
 
+    // Hoist all localized strings for accessibility (outside non-Composable lambda)
+    val planetName = position.planet.localizedName()
+    val signName = position.sign.localizedName()
+    val nakshatraName = position.nakshatra.localizedName()
+    val houseNum = position.house.localized()
+    val padaNum = position.nakshatraPada.localized()
+    val planetInSignStr = stringResource(StringKey.PLANET_IN_SIGN_ACCESSIBILITY, planetName, signName)
+    val houseStr = stringResource(StringKey.CHART_HOUSE)
+    val nakshatraPadaStr = stringResource(StringKey.NAKSHATRA_PADA_ACCESSIBILITY, nakshatraName, padaNum)
+    val retrogradeStr = stringResource(StringKey.PLANET_RETROGRADE)
+
     Surface(
         onClick = onClick,
         modifier = Modifier
@@ -434,10 +445,10 @@ private fun PlanetDetailCard(
             .semantics {
                 role = Role.Button
                 contentDescription = buildString {
-                    append(stringResource(StringKey.PLANET_IN_SIGN_ACCESSIBILITY, position.planet.localizedName(), position.sign.localizedName()))
-                    append(", ${stringResource(StringKey.CHART_HOUSE)} ${position.house.localized()}")
-                    append(", ${stringResource(StringKey.NAKSHATRA_PADA_ACCESSIBILITY, position.nakshatra.localizedName(), position.nakshatraPada.localized())}")
-                    if (position.isRetrograde) append(", ${stringResource(StringKey.PLANET_RETROGRADE)}")
+                    append(planetInSignStr)
+                    append(", $houseStr $houseNum")
+                    append(", $nakshatraPadaStr")
+                    if (position.isRetrograde) append(", $retrogradeStr")
                     if (state.dignityStatus.isSignificant) append(", $dignityDisplayName")
                 }
             },
