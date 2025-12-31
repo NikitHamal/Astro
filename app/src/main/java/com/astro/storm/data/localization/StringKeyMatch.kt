@@ -257,6 +257,14 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     MUHURTA_AVOID_ACTIVITIES("Activities to Avoid", "बच्नुपर्ने गतिविधिहरू"),
     MUHURTA_RECOMMENDATIONS("Recommendations", "सिफारिसहरू"),
     MUHURTA_DATE_RANGE_LABEL("Date Range", "मिति दायरा"),
+    MUHURTA_CHOGHADIYA_SUFFIX("Choghadiya: %s", "चौघडिया: %s"),
+    MUHURTA_HORA_SUFFIX("Hora: %s", "होरा: %s"),
+
+    // ============================================
+    // MISCELLANEOUS / SHARED
+    // ============================================
+    HOUSE_LABEL("House %d", "भाव %d"),
+    PANCHA_NO_YOGAS("No major Panch Mahapurusha Yogas found.", "कुनै प्रमुख पञ्च महापुरुष योग फेला परेन।"),
 
     // ============================================
     // REMEDIES

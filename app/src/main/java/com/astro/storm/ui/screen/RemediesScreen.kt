@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -51,7 +50,7 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.RemediesCalculator
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.ephemeris.Language
+import com.astro.storm.data.localization.Language
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -146,7 +145,7 @@ fun RemediesScreen(
                         }
                     ) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            Icons.Default.ArrowBack,
                             contentDescription = stringResource(StringKey.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
@@ -184,7 +183,7 @@ fun RemediesScreen(
             errorMessage != null -> {
                 ErrorState(
                     message = errorMessage!!,
-                    onRetry = { scope.launch { calculateRemedies(chart) } },
+                    onRetry = { scope.launch { calculateRemedies(chart, language) } },
                     modifier = Modifier.padding(paddingValues)
                 )
             }

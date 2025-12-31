@@ -138,7 +138,7 @@ fun VarshaphalaScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            Icons.Default.ArrowBack,
                             contentDescription = stringResource(StringKeyMatch.NAV_BACK),
                             tint = AppTheme.TextPrimary
                         )
@@ -2354,7 +2354,7 @@ private fun getPlanetColor(planet: Planet): Color {
 }
 
 @Composable
-private fun getStrengthColor(strength: String, language: Language): Color {
+private fun getStrengthColor(strength: String, language: com.astro.storm.data.localization.Language): Color {
     val excellent = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_EXCELLENT)
     val strong = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_STRONG)
     val good = stringResource(StringKeyAnalysis.PANCHA_GOOD)
