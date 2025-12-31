@@ -592,8 +592,48 @@ enum class StringKeyRemedy(override val en: String, override val ne: String) : S
     ANALYSIS_MOON_DARK("Dark Moon (Krishna Paksha) - emotionally challenged", "कृष्ण पक्षको चन्द्रमा - भावनात्मक चुनौती"),
     ANALYSIS_MOON_BRIGHT("Bright Moon (Shukla Paksha)", "शुक्ल पक्षको चन्द्रमा"),
     
+    // New keys for improved localization
+    GEM_DURATION_CONTINUOUS("Continuous wear recommended", "निरन्तर लगाउन सिफारिस गरिएको"),
+    MANTRA_TIMING_WAXING("during Shukla Paksha", "शुक्ल पक्षमा"),
+    CHARITY_TIMING_MORNING("Morning", "बिहान"),
+    CHARITY_TIMING_EVENING("Evening", "साँझ"),
+    CHARITY_TIMING_NIGHT("Night", "राती"),
+    CHARITY_TIMING_BEFORE_SUNSET("Before sunset", "सूर्यास्त अघि"),
+    CHARITY_TIMING_BEFORE_SUNRISE_AFTER_SUNSET("Before sunrise or after sunset", "सूर्योदय अघि वा सूर्यास्त पछि"),
+    FASTING_TIMING_SUNRISE_SUNSET("Sunrise to Sunset", "सूर्योदयदेखि सूर्यास्तसम्म"),
+    RUDRAKSHA_DESC("Wear %d mukhi Rudraksha to balance %s energy. Deity: %s.", "%s ऊर्जा सन्तुलन गर्न %d मुखी रुद्राक्ष लगाउनुहोस्। देवता: %s।"),
+
+    // Deities for Rudraksha/Nakshatra
+    DEITY_ASHWINI_KUMARAS("Ashwini Kumaras", "अश्विनी कुमार"),
+    DEITY_YAMA("Yama", "यम"),
+    DEITY_AGNI("Agni", "अग्नि"),
+    DEITY_BRAHMA("Brahma", "ब्रह्मा"),
+    DEITY_SOMA("Soma/Chandra", "सोम/चन्द्र"),
+    DEITY_RUDRA("Rudra", "रुद्र"),
+    DEITY_ADITI("Aditi", "अदिति"),
+    DEITY_BRIHASPATI("Brihaspati", "बृहस्पति"),
+    DEITY_NAGAS("Nagas", "नाग"),
+    DEITY_PITRIS("Pitris", "पितृ"),
+    DEITY_BHAGA("Bhaga", "भग"),
+    DEITY_ARYAMAN("Aryaman", "अर्यमा"),
+    DEITY_SAVITAR("Savitar", "सविता"),
+    DEITY_VISHWAKARMA("Vishwakarma", "विश्वकर्मा"),
+    DEITY_VAYU("Vayu", "वायु"),
+    DEITY_INDRA_AGNI("Indra-Agni", "इन्द्राग्नी"),
+    DEITY_MITRA("Mitra", "मित्र"),
+    DEITY_INDRA("Indra", "इन्द्र"),
+    DEITY_KALI("Kali", "काली"),
+    DEITY_APAS("Apas", "आप"),
+    DEITY_VISHVADEVAS("Vishvadevas", "विश्वेदेव"),
+    DEITY_VISHNU("Vishnu", "विष्णु"),
+    DEITY_VASUS("Vasus", "वसु"),
+    DEITY_VARUNA("Varuna", "वरुण"),
+    DEITY_AJA_EKAPAD("Aja Ekapad", "अज एकपाद"),
+    DEITY_AHIR_BUDHNYA("Ahir Budhnya", "अहिर्बुध्न्य"),
+    DEITY_PUSHAN("Pushan", "पूषा"),
+
     // Default Labels if null
     LABEL_UNKNOWN("Unknown", "अज्ञात");
     
-    override fun getKey(): String = name
+    fun getKey(): String = name
 }

@@ -745,10 +745,11 @@ class PrashnaCalculator(context: Context) {
         category: PrashnaCategory,
         latitude: Double,
         longitude: Double,
-        timezone: String
+        timezone: String,
+        language: Language = Language.ENGLISH
     ): PrashnaResult {
         val questionTime = LocalDateTime.now()
-        return analyzePrashna(question, category, questionTime, latitude, longitude, timezone)
+        return analyzePrashna(question, category, questionTime, latitude, longitude, timezone, language)
     }
 
     /**
@@ -760,7 +761,8 @@ class PrashnaCalculator(context: Context) {
         questionTime: LocalDateTime,
         latitude: Double,
         longitude: Double,
-        timezone: String
+        timezone: String,
+        language: Language = Language.ENGLISH
     ): PrashnaResult {
         // Create BirthData for the question moment
         val prashnaData = BirthData(
@@ -784,23 +786,23 @@ class PrashnaCalculator(context: Context) {
 
         // Calculate main judgment
         val judgment = calculateJudgment(
-            chart, category, moonAnalysis, lagnaAnalysis, houseAnalysis, specialYogas, omens
+            chart, category, moonAnalysis, lagnaAnalysis, houseAnalysis, specialYogas, omens, language
         )
 
         // Calculate timing
         val timingPrediction = calculateTiming(
-            chart, category, moonAnalysis, lagnaAnalysis, houseAnalysis
+            chart, category, moonAnalysis, lagnaAnalysis, houseAnalysis, language
         )
 
         // Generate recommendations
         val recommendations = generateRecommendations(
-            judgment, moonAnalysis, lagnaAnalysis, houseAnalysis, specialYogas
+            judgment, moonAnalysis, lagnaAnalysis, houseAnalysis, specialYogas, language
         )
 
         // Generate detailed interpretation
         val interpretation = generateDetailedInterpretation(
             question, category, judgment, moonAnalysis, lagnaAnalysis,
-            houseAnalysis, timingPrediction, specialYogas
+            houseAnalysis, timingPrediction, specialYogas, language
         )
 
         // Calculate confidence score
@@ -1334,7 +1336,8 @@ class PrashnaCalculator(context: Context) {
     private fun detectPrashnaYogas(
         chart: VedicChart,
         moonAnalysis: MoonAnalysis,
-        lagnaAnalysis: LagnaAnalysis
+        lagnaAnalysis: LagnaAnalysis,
+        language: Language = Language.ENGLISH
     ): List<PrashnaYoga> {
         val yogas = mutableListOf<PrashnaYoga>()
 
@@ -1342,11 +1345,11 @@ class PrashnaCalculator(context: Context) {
         if (isIthasalaPresent(chart, moonAnalysis)) {
             yogas.add(
                 PrashnaYoga(
-                    name = "Ithasala Yoga",
-                    description = "Moon is applying to aspect with relevant significator",
+                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_ITHASALA_NAME, language),
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_ITHASALA_DESC, language),
                     isPositive = true,
                     strength = 4,
-                    interpretation = "Success in the matter is indicated. The event will come to fruition."
+                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_ITHASALA_INTERP, language)
                 )
             )
         }
@@ -1355,24 +1358,25 @@ class PrashnaCalculator(context: Context) {
         if (isMusariphaPresent(chart, moonAnalysis)) {
             yogas.add(
                 PrashnaYoga(
-                    name = "Musaripha Yoga",
-                    description = "Moon is separating from significant aspect",
+                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MUSARIPHA_NAME, language),
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MUSARIPHA_DESC, language),
                     isPositive = false,
                     strength = 3,
-                    interpretation = "The matter has already passed or opportunity was missed."
+                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MUSARIPHA_INTERP, language)
                 )
             )
         }
 
         // 3. Nakta Yoga - transfer of light
+        // 3. Nakta Yoga - transfer of light
         if (isNaktaPresent(chart)) {
             yogas.add(
                 PrashnaYoga(
-                    name = "Nakta Yoga",
-                    description = "Transfer of light between planets",
+                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_NAKTA_NAME, language),
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_NAKTA_DESC, language),
                     isPositive = true,
                     strength = 3,
-                    interpretation = "Success through an intermediary or third party assistance."
+                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_NAKTA_INTERP, language)
                 )
             )
         }
@@ -1381,11 +1385,11 @@ class PrashnaCalculator(context: Context) {
         if (isManaouPresent(chart)) {
             yogas.add(
                 PrashnaYoga(
-                    name = "Manaou Yoga",
-                    description = "Third planet prohibits completion",
+                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MANAOU_NAME, language),
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MANAOU_DESC, language),
                     isPositive = false,
                     strength = 4,
-                    interpretation = "Third party or external factor will prevent success."
+                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MANAOU_INTERP, language)
                 )
             )
         }
@@ -1394,11 +1398,11 @@ class PrashnaCalculator(context: Context) {
         if (isKamboolaPresent(chart, moonAnalysis)) {
             yogas.add(
                 PrashnaYoga(
-                    name = "Kamboola Yoga",
-                    description = "Moon in angular position with dignified lord",
+                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_KAMBOOLA_NAME, language),
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_KAMBOOLA_DESC, language),
                     isPositive = true,
                     strength = 4,
-                    interpretation = "Very favorable for success. Quick positive results expected."
+                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_KAMBOOLA_INTERP, language)
                 )
             )
         }
@@ -1407,11 +1411,11 @@ class PrashnaCalculator(context: Context) {
         if (isGairiKamboolaPresent(chart, moonAnalysis)) {
             yogas.add(
                 PrashnaYoga(
-                    name = "Gairi Kamboola",
-                    description = "Moon weak though in angular house",
+                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GAIRI_KAMBOOLA_NAME, language),
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GAIRI_KAMBOOLA_DESC, language),
                     isPositive = false,
                     strength = 2,
-                    interpretation = "Initial hopes but eventual disappointment. Success after delays."
+                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GAIRI_KAMBOOLA_INTERP, language)
                 )
             )
         }
@@ -1420,25 +1424,24 @@ class PrashnaCalculator(context: Context) {
         if (isDhurufaPresent(chart, moonAnalysis)) {
             yogas.add(
                 PrashnaYoga(
-                    name = "Dhurufa Yoga",
-                    description = "Moon in cadent house without strength",
+                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_DHURUFA_NAME, language),
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_DHURUFA_DESC, language),
                     isPositive = false,
                     strength = 4,
-                    interpretation = "Failure is indicated. Best to abandon the matter."
+                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_DHURUFA_INTERP, language)
                 )
             )
         }
 
         // 8. Check Pushkara Navamsha
-        val moonNavamsha = calculateNavamshaSign(moonAnalysis.position.longitude)
         if (isPushkaraNavamsha(moonAnalysis.position.longitude)) {
             yogas.add(
                 PrashnaYoga(
-                    name = "Pushkara Navamsha",
-                    description = "Moon in auspicious navamsha division",
+                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_PUSHKARA_NAME, language),
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_PUSHKARA_DESC, language),
                     isPositive = true,
                     strength = 5,
-                    interpretation = "Excellent omen. The matter will have nourishing, supportive outcomes."
+                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_PUSHKARA_INTERP, language)
                 )
             )
         }
@@ -1447,11 +1450,11 @@ class PrashnaCalculator(context: Context) {
         if (isGandanta(moonAnalysis.position.longitude)) {
             yogas.add(
                 PrashnaYoga(
-                    name = "Gandanta Position",
-                    description = "Moon at junction point between water and fire signs",
+                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GANDANTA_NAME, language),
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GANDANTA_DESC, language),
                     isPositive = false,
                     strength = 5,
-                    interpretation = "Danger, crisis, or difficult transformation indicated."
+                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GANDANTA_INTERP, language)
                 )
             )
         }
@@ -1461,11 +1464,11 @@ class PrashnaCalculator(context: Context) {
             angularDistance(moonAnalysis.position.longitude, lagnaAnalysis.lagnaLordPosition.longitude) < 10) {
             yogas.add(
                 PrashnaYoga(
-                    name = "Lagna-Moon Union",
-                    description = "Moon with Lagna Lord",
+                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_UNION_NAME, language),
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_UNION_DESC, language),
                     isPositive = true,
                     strength = 4,
-                    interpretation = "Strong personal involvement and favorable outcome."
+                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_UNION_INTERP, language)
                 )
             )
         }
@@ -1595,7 +1598,8 @@ class PrashnaCalculator(context: Context) {
         lagnaAnalysis: LagnaAnalysis,
         houseAnalysis: HouseAnalysis,
         specialYogas: List<PrashnaYoga>,
-        omens: List<PrashnaOmen>
+        omens: List<PrashnaOmen>,
+        language: Language = Language.ENGLISH
     ): PrashnaJudgment {
         var score = 0
         val supportingFactors = mutableListOf<String>()
@@ -1605,66 +1609,66 @@ class PrashnaCalculator(context: Context) {
         when (moonAnalysis.moonStrength) {
             MoonStrength.EXCELLENT -> {
                 score += 25
-                supportingFactors.add("Moon is excellently placed - strong foundation for success")
+                supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_EXCELLENT, language))
             }
             MoonStrength.GOOD -> {
                 score += 18
-                supportingFactors.add("Moon is well placed - favorable conditions")
+                supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_GOOD, language))
             }
             MoonStrength.AVERAGE -> {
                 score += 8
-                supportingFactors.add("Moon is average - moderate indications")
+                supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_AVERAGE, language))
             }
             MoonStrength.WEAK -> {
                 score -= 10
-                opposingFactors.add("Moon is weak - challenges indicated")
+                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_WEAK, language))
             }
             MoonStrength.VERY_WEAK -> {
                 score -= 18
-                opposingFactors.add("Moon is very weak - significant obstacles")
+                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_VERY_WEAK, language))
             }
             MoonStrength.AFFLICTED -> {
                 score -= 25
-                opposingFactors.add("Moon is afflicted - unfavorable outcome likely")
+                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_AFFLICTED, language))
             }
         }
 
         // 2. Moon waxing/waning - weight: 10
         if (moonAnalysis.isWaxing) {
             score += 10
-            supportingFactors.add("Waxing Moon - matter will grow and develop")
+            supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_WAXING, language))
         } else {
             score -= 5
-            opposingFactors.add("Waning Moon - matter may decline or diminish")
+            opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_WANING, language))
         }
 
         // 3. Void of Course Moon - weight: 15
         if (moonAnalysis.isVoidOfCourse) {
             score -= 15
-            opposingFactors.add("Moon is Void of Course - nothing will come of the matter")
+            opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_VOID, language))
         }
 
         // 4. Lagna strength - weight: 20
         when (lagnaAnalysis.lagnaCondition) {
             LagnaCondition.STRONG -> {
                 score += 20
-                supportingFactors.add("Strong Lagna Lord - querent has power to succeed")
+                supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_LAGNA_STRONG, language))
             }
             LagnaCondition.MODERATE -> {
                 score += 10
-                supportingFactors.add("Moderately strong Lagna - mixed personal influence")
+                supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_LAGNA_MODERATE, language))
             }
             LagnaCondition.WEAK -> {
                 score -= 10
-                opposingFactors.add("Weak Lagna Lord - querent lacks resources or ability")
+                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_LAGNA_WEAK, language))
             }
             LagnaCondition.COMBUST -> {
                 score -= 15
-                opposingFactors.add("Combust Lagna Lord - querent's efforts are hidden or ineffective")
+                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_LAGNA_COMBUST, language))
             }
             LagnaCondition.RETROGRADE_LORD -> {
                 score -= 5
-                opposingFactors.add("Retrograde Lagna Lord - delays and reconsideration needed")
+                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_LAGNA_RETRO, language))
             }
         }
 
@@ -1681,9 +1685,9 @@ class PrashnaCalculator(context: Context) {
         }
         score += (relevantHouseScore * 15) / (houseAnalysis.relevantHouses.size * 5)
         if (relevantHouseScore > 0) {
-            supportingFactors.add("Relevant houses are favorably disposed")
+            supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_HOUSES_FAVORABLE, language))
         } else if (relevantHouseScore < 0) {
-            opposingFactors.add("Relevant houses show affliction")
+            opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_HOUSES_AFFLICTED, language))
         }
 
         // 6. Special Yogas - weight: varies
@@ -1760,7 +1764,8 @@ class PrashnaCalculator(context: Context) {
         category: PrashnaCategory,
         moonAnalysis: MoonAnalysis,
         lagnaAnalysis: LagnaAnalysis,
-        houseAnalysis: HouseAnalysis
+        houseAnalysis: HouseAnalysis,
+        language: Language = Language.ENGLISH
     ): TimingPrediction {
         // Use multiple timing methods and combine
 
@@ -1803,10 +1808,10 @@ class PrashnaCalculator(context: Context) {
         val willOccur = moonAnalysis.moonStrength.score >= 2 &&
                        lagnaAnalysis.lagnaCondition != LagnaCondition.WEAK
 
-        val estimatedTime = formatTimingEstimate(timingValue, timingUnit)
+        val estimatedTime = formatTimingEstimate(timingValue, timingUnit, language)
         val confidence = calculateTimingConfidence(moonAnalysis, lagnaAnalysis)
 
-        val explanation = buildTimingExplanation(primaryMethod, timingValue, timingUnit, moonAnalysis)
+        val explanation = buildTimingExplanation(primaryMethod, timingValue, timingUnit, moonAnalysis, language)
 
         return TimingPrediction(
             willEventOccur = willOccur,
@@ -2513,12 +2518,14 @@ class PrashnaCalculator(context: Context) {
         return Pair(remainingDegrees, unit)
     }
 
-    private fun formatTimingEstimate(value: Double, unit: TimingUnit): String {
+    private fun formatTimingEstimate(value: Double, unit: TimingUnit, language: Language): String {
         val roundedValue = kotlin.math.round(value * 10) / 10
+        val unitName = unit.getLocalizedName(language)
+        
         return when {
-            roundedValue < 1 -> "Within 1 ${unit.displayName.lowercase().dropLast(1)}"
-            roundedValue == 1.0 -> "About 1 ${unit.displayName.lowercase().dropLast(1)}"
-            else -> "About ${roundedValue.toInt()} ${unit.displayName.lowercase()}"
+            roundedValue < 1 -> StringResources.get(StringKeyAnalysis.PRASHNA_TIMING_WITHIN, language).format("1 $unitName")
+            roundedValue == 1.0 -> StringResources.get(StringKeyAnalysis.PRASHNA_TIMING_ABOUT, language).format("1 $unitName")
+            else -> StringResources.get(StringKeyAnalysis.PRASHNA_TIMING_ABOUT, language).format("${roundedValue.toInt()} $unitName")
         }
     }
 
@@ -2540,12 +2547,15 @@ class PrashnaCalculator(context: Context) {
         method: TimingMethod,
         value: Double,
         unit: TimingUnit,
-        moonAnalysis: MoonAnalysis
+        moonAnalysis: MoonAnalysis,
+        language: Language
     ): String {
-        return "Based on ${method.displayName}, the estimated timing is approximately " +
-               "${formatTimingEstimate(value, unit)}. " +
-               "Moon's current position and speed (${moonAnalysis.moonSpeed.format(2)}°/day) " +
-               "were primary factors in this calculation."
+        val methodLabel = method.getLocalizedName(language)
+        val timeframe = formatTimingEstimate(value, unit, language)
+        val moonSpeed = moonAnalysis.moonSpeed.format(2)
+        
+        return StringResources.get(StringKeyAnalysis.PRASHNA_TIMING_EXPLANATION, language)
+            .format(methodLabel, timeframe, moonSpeed)
     }
 
     private fun getOrdinalSuffix(number: Int): String {

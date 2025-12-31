@@ -650,6 +650,7 @@ private data class ProviderInfo(
     val color: androidx.compose.ui.graphics.Color
 )
 
+@Composable
 private fun getProviderInfo(providerId: String): ProviderInfo {
     return when (providerId.lowercase()) {
         "deepinfra" -> ProviderInfo(

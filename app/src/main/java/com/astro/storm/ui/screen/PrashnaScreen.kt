@@ -117,8 +117,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.ai.agent.AgentResponse
@@ -168,6 +170,7 @@ fun PrashnaScreen(
     val scope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
     val focusManager = LocalFocusManager.current
+    val currentLang = LocalLanguage.current
 
     var question by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(PrashnaCalculator.PrashnaCategory.YES_NO) }
@@ -180,13 +183,13 @@ fun PrashnaScreen(
     val locationName = remember(chart) { chart?.birthData?.location ?: "New Delhi, India" }
 
     val calculator = remember(context) { PrashnaCalculator(context) }
-    val analyzeErrorMessage = stringResource(StringKey.PRASHNA_ANALYZE_ERROR)
+    val analyzeErrorMessage = stringResource(StringKeyAnalysis.PRASHNA_ANALYZE_ERROR)
 
     DisposableEffect(calculator) {
         onDispose { calculator.close() }
     }
 
-    val performAnalysis: () -> Unit = remember(calculator, question, selectedCategory, latitude, longitude, timezone, analyzeErrorMessage) {
+    val performAnalysis: () -> Unit = remember(calculator, question, selectedCategory, latitude, longitude, timezone, analyzeErrorMessage, currentLang) {
         {
             if (question.isNotBlank()) {
                 scope.launch {
@@ -198,7 +201,8 @@ fun PrashnaScreen(
                                 category = selectedCategory,
                                 latitude = latitude,
                                 longitude = longitude,
-                                timezone = timezone
+                                timezone = timezone,
+                                language = currentLang
                             )
                             uiState = PrashnaUiState.Success(result)
                         }
@@ -217,7 +221,7 @@ fun PrashnaScreen(
             TopAppBar(
                 title = {
                     Text(
-                        stringResource(StringKey.PRASHNA_KUNDALI),
+                        stringResource(StringKeyAnalysis.PRASHNA_KUNDALI),
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -247,7 +251,7 @@ fun PrashnaScreen(
                         ) {
                             Icon(
                                 Icons.Filled.Refresh,
-                                contentDescription = stringResource(StringKey.PRASHNA_NEW_QUESTION),
+                                contentDescription = stringResource(StringKeyAnalysis.PRASHNA_NEW_QUESTION),
                                 tint = AppTheme.TextPrimary
                             )
                         }
@@ -395,7 +399,7 @@ private fun PrashnaHeaderCard() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                stringResource(StringKey.PRASHNA_KUNDALI),
+                stringResource(StringKeyAnalysis.PRASHNA_KUNDALI),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
@@ -404,7 +408,7 @@ private fun PrashnaHeaderCard() {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                stringResource(StringKey.PRASHNA_HORARY),
+                stringResource(StringKeyAnalysis.PRASHNA_HORARY),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.AccentTeal
             )
@@ -412,7 +416,7 @@ private fun PrashnaHeaderCard() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                stringResource(StringKey.PRASHNA_INTRO),
+                stringResource(StringKeyAnalysis.PRASHNA_INTRO),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -444,7 +448,7 @@ private fun QuestionInputCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKey.PRASHNA_YOUR_QUESTION),
+                    stringResource(StringKeyAnalysis.PRASHNA_YOUR_QUESTION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -459,7 +463,7 @@ private fun QuestionInputCard(
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
-                        stringResource(StringKey.PRASHNA_QUESTION_HINT),
+                        stringResource(StringKeyAnalysis.PRASHNA_QUESTION_HINT),
                         color = AppTheme.TextSubtle
                     )
                 },
@@ -487,7 +491,7 @@ private fun QuestionInputCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                stringResource(StringKey.PRASHNA_QUESTION_HELP),
+                stringResource(StringKeyAnalysis.PRASHNA_QUESTION_HELP),
                 style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted
             )
@@ -520,7 +524,7 @@ private fun CategorySelectorCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKey.PRASHNA_CATEGORY),
+                    stringResource(StringKeyAnalysis.PRASHNA_CATEGORY),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -639,7 +643,7 @@ private fun LocationInfoCard(locationName: String) {
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    stringResource(StringKey.PRASHNA_LOCATION),
+                    stringResource(StringKeyAnalysis.PRASHNA_LOCATION),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -666,7 +670,7 @@ private fun LocationInfoCard(locationName: String) {
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        stringResource(StringKey.PRASHNA_TIME_NOW),
+                        stringResource(StringKeyAnalysis.PRASHNA_TIME_NOW),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.InfoColor
@@ -703,7 +707,7 @@ private fun AnalyzeButton(
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
-            stringResource(StringKey.PRASHNA_ANALYZE),
+            stringResource(StringKeyAnalysis.PRASHNA_ANALYZE),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = if (enabled) AppTheme.ButtonText else AppTheme.ButtonText.copy(alpha = 0.5f)
@@ -743,7 +747,7 @@ private fun PrashnaInstructionsCard() {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        stringResource(StringKey.PRASHNA_ABOUT),
+                        stringResource(StringKeyAnalysis.PRASHNA_ABOUT),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -766,11 +770,11 @@ private fun PrashnaInstructionsCard() {
             ) {
                 Column(modifier = Modifier.padding(top = 16.dp)) {
                     val instructions = listOf(
-                        stringResource(StringKey.PRASHNA_INST_1),
-                        stringResource(StringKey.PRASHNA_INST_2),
-                        stringResource(StringKey.PRASHNA_INST_3),
-                        stringResource(StringKey.PRASHNA_INST_4),
-                        stringResource(StringKey.PRASHNA_INST_5)
+                        stringResource(StringKeyAnalysis.PRASHNA_INST_1),
+                        stringResource(StringKeyAnalysis.PRASHNA_INST_2),
+                        stringResource(StringKeyAnalysis.PRASHNA_INST_3),
+                        stringResource(StringKeyAnalysis.PRASHNA_INST_4),
+                        stringResource(StringKeyAnalysis.PRASHNA_INST_5)
                     )
 
                     instructions.forEachIndexed { index, instruction ->
@@ -825,14 +829,14 @@ private fun PrashnaLoadingContent() {
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                stringResource(StringKey.PRASHNA_ANALYZING),
+                stringResource(StringKeyAnalysis.PRASHNA_ANALYZING),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                stringResource(StringKey.PRASHNA_CALCULATING),
+                stringResource(StringKeyAnalysis.PRASHNA_CALCULATING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -863,7 +867,7 @@ private fun PrashnaErrorContent(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKey.PRASHNA_ANALYSIS_FAILED),
+                stringResource(StringKeyAnalysis.PRASHNA_ANALYSIS_FAILED),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1042,7 +1046,7 @@ private fun ConfidenceBadge(confidence: Int) {
         shape = RoundedCornerShape(6.dp)
     ) {
         Text(
-            stringResource(StringKey.PRASHNA_CONFIDENCE, confidence),
+            stringResource(StringKeyAnalysis.PRASHNA_CONFIDENCE, confidence),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium,
             color = color,
@@ -1109,18 +1113,18 @@ private fun ScoreIndicator(score: Int) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                stringResource(StringKey.PRASHNA_UNFAVORABLE),
+                stringResource(StringKeyAnalysis.PRASHNA_UNFAVORABLE),
                 style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted
             )
             Text(
-                stringResource(StringKey.PRASHNA_SCORE, score),
+                stringResource(StringKeyAnalysis.PRASHNA_SCORE, score),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Medium,
                 color = scoreColor
             )
             Text(
-                stringResource(StringKey.PRASHNA_FAVORABLE),
+                stringResource(StringKeyAnalysis.PRASHNA_FAVORABLE),
                 style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted
             )
@@ -1147,7 +1151,7 @@ private fun QuestionSummaryCard(result: PrashnaCalculator.PrashnaResult) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKey.PRASHNA_QUESTION_DETAILS),
+                    stringResource(StringKeyAnalysis.PRASHNA_QUESTION_DETAILS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1246,7 +1250,7 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKey.PRASHNA_MOON_ANALYSIS),
+                    stringResource(StringKeyAnalysis.PRASHNA_MOON_ANALYSIS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1268,14 +1272,14 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            val signLabel = stringResource(StringKey.PRASHNA_SIGN)
+            val signLabel = stringResource(StringKeyAnalysis.PRASHNA_SIGN)
             val houseLabel = stringResource(StringKey.VARSHAPHALA_HOUSE)
             val nakshatraLabel = stringResource(StringKey.CHART_NAKSHATRA)
-            val phaseLabel = stringResource(StringKey.PRASHNA_PHASE)
-            val tithiLabel = stringResource(StringKey.PRASHNA_TITHI)
-            val nakshatraLordLabel = stringResource(StringKey.PRASHNA_NAKSHATRA_LORD)
-            val waxingLabel = stringResource(StringKey.PRASHNA_MOON_PHASE_WAXING)
-            val waningLabel = stringResource(StringKey.PRASHNA_MOON_PHASE_WANING)
+            val phaseLabel = stringResource(StringKeyAnalysis.PRASHNA_PHASE)
+            val tithiLabel = stringResource(StringKeyAnalysis.PRASHNA_TITHI)
+            val nakshatraLordLabel = stringResource(StringKeyAnalysis.PRASHNA_NAKSHATRA_LORD)
+            val waxingLabel = stringResource(StringKeyAnalysis.PRASHNA_MOON_PHASE_WAXING)
+            val waningLabel = stringResource(StringKeyAnalysis.PRASHNA_MOON_PHASE_WANING)
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -1348,7 +1352,7 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            stringResource(StringKey.PRASHNA_MOON_VOID),
+                            stringResource(StringKeyAnalysis.PRASHNA_MOON_VOID),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.WarningColor
                         )
@@ -1399,12 +1403,12 @@ private fun MoonDetailItem(
 
 @Composable
 private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
-    val risingSignLabel = stringResource(StringKey.PRASHNA_RISING_SIGN)
-    val lagnaLordLabel = stringResource(StringKey.PRASHNA_LAGNA_LORD)
-    val lordPositionLabel = stringResource(StringKey.PRASHNA_LORD_POSITION)
-    val conditionLabel = stringResource(StringKey.PRASHNA_CONDITION)
+    val risingSignLabel = stringResource(StringKeyAnalysis.PRASHNA_RISING_SIGN)
+    val lagnaLordLabel = stringResource(StringKeyAnalysis.PRASHNA_LAGNA_LORD)
+    val lordPositionLabel = stringResource(StringKeyAnalysis.PRASHNA_LORD_POSITION)
+    val conditionLabel = stringResource(StringKeyAnalysis.PRASHNA_CONDITION)
     val houseLabel = stringResource(StringKey.VARSHAPHALA_HOUSE)
-    val planetsInLagnaLabel = stringResource(StringKey.PRASHNA_PLANETS_IN_LAGNA)
+    val planetsInLagnaLabel = stringResource(StringKeyAnalysis.PRASHNA_PLANETS_IN_LAGNA)
 
     Card(
         modifier = Modifier
@@ -1423,7 +1427,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKey.PRASHNA_LAGNA_ANALYSIS),
+                    stringResource(StringKeyAnalysis.PRASHNA_LAGNA_ANALYSIS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1525,7 +1529,7 @@ private fun TimingPredictionCard(timing: PrashnaCalculator.TimingPrediction) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKey.PRASHNA_TIMING),
+                    stringResource(StringKeyAnalysis.PRASHNA_TIMING),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1551,7 +1555,7 @@ private fun TimingPredictionCard(timing: PrashnaCalculator.TimingPrediction) {
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        stringResource(StringKey.PRASHNA_ESTIMATED_TIMEFRAME),
+                        stringResource(StringKeyAnalysis.PRASHNA_ESTIMATED_TIMEFRAME),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1571,7 +1575,7 @@ private fun TimingPredictionCard(timing: PrashnaCalculator.TimingPrediction) {
                 )
                 InfoChip(
                     icon = Icons.Outlined.TrendingUp,
-                    label = stringResource(StringKey.PRASHNA_CONFIDENCE, timing.confidence),
+                    label = stringResource(StringKeyAnalysis.PRASHNA_CONFIDENCE, timing.confidence),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -1606,7 +1610,7 @@ private fun SpecialYogasCard(yogas: List<PrashnaCalculator.PrashnaYoga>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKey.PRASHNA_SPECIAL_YOGAS),
+                    stringResource(StringKeyAnalysis.PRASHNA_SPECIAL_YOGAS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1703,7 +1707,7 @@ private fun FactorsCard(judgment: PrashnaCalculator.PrashnaJudgment) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        stringResource(StringKey.PRASHNA_SUPPORTING_FACTORS),
+                        stringResource(StringKeyAnalysis.PRASHNA_SUPPORTING_FACTORS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1752,7 +1756,7 @@ private fun FactorsCard(judgment: PrashnaCalculator.PrashnaJudgment) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        stringResource(StringKey.PRASHNA_CHALLENGES),
+                        stringResource(StringKeyAnalysis.PRASHNA_CHALLENGES),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1805,7 +1809,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKey.PRASHNA_RECOMMENDATIONS),
+                    stringResource(StringKeyAnalysis.PRASHNA_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1900,13 +1904,13 @@ private fun AiInsightCard(result: PrashnaCalculator.PrashnaResult) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        stringResource(StringKey.PRASHNA_AI_INSIGHT),
+                        stringResource(StringKeyAnalysis.PRASHNA_AI_INSIGHT),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        stringResource(StringKey.PRASHNA_AI_INSIGHT_SUBTITLE),
+                        stringResource(StringKeyAnalysis.PRASHNA_AI_INSIGHT_SUBTITLE),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1990,7 +1994,7 @@ private fun AiInsightCard(result: PrashnaCalculator.PrashnaResult) {
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                stringResource(StringKey.PRASHNA_GENERATE_AI_INSIGHT),
+                                stringResource(StringKeyAnalysis.PRASHNA_GENERATE_AI_INSIGHT),
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.ButtonText

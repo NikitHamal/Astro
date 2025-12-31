@@ -470,19 +470,19 @@ private fun AvasthaQuickStatsRow(analysis: AvasthaCalculator.AvasthaAnalysis) {
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         AvasthaStatCard(
-            title = stringResource(StringKey.STRENGTH_STRONG),
+            title = stringResource(StringKeyAnalysis.STRENGTH_STRONG),
             value = "$strongCount",
             color = AppTheme.SuccessColor,
             modifier = Modifier.weight(1f)
         )
         AvasthaStatCard(
-            title = stringResource(StringKey.STRENGTH_AVERAGE),
+            title = stringResource(StringKeyAnalysis.STRENGTH_AVERAGE),
             value = "$moderateCount",
             color = AppTheme.AccentGold,
             modifier = Modifier.weight(1f)
         )
         AvasthaStatCard(
-            title = stringResource(StringKey.STRENGTH_WEAK),
+            title = stringResource(StringKeyAnalysis.STRENGTH_WEAK),
             value = "$weakCount",
             color = AppTheme.WarningColor,
             modifier = Modifier.weight(1f)

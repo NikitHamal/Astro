@@ -442,7 +442,8 @@ object KalachakraDashaCalculator {
             dehaRashi = dehaRashi,
             jeevaRashi = jeevaRashi,
             numberOfCycles = numberOfCycles,
-            chart = chart
+            chart = chart,
+            language = language
         )
 
         // Find current periods
@@ -451,7 +452,7 @@ object KalachakraDashaCalculator {
         val currentAntardasha = currentMahadasha?.getAntardashaOn(today)
 
         // Deha-Jeeva analysis
-        val dehaJeevaAnalysis = analyzeDehaJeeva(dehaRashi, jeevaRashi, chart)
+        val dehaJeevaAnalysis = analyzeDehaJeeva(dehaRashi, jeevaRashi, chart, language)
 
         // Calculate applicability score
         val applicabilityScore = calculateApplicabilityScore(chart, birthNakshatra)
@@ -463,7 +464,8 @@ object KalachakraDashaCalculator {
             jeevaRashi = jeevaRashi,
             currentMahadasha = currentMahadasha,
             dehaJeevaAnalysis = dehaJeevaAnalysis,
-            chart = chart
+            chart = chart,
+            language = language
         )
 
         return KalachakraDashaResult(

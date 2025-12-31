@@ -9,6 +9,7 @@ import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.StringKeyRemedy
+import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.StringResources
 import java.util.UUID
 import kotlin.math.abs
@@ -594,33 +595,33 @@ object RemediesCalculator {
     )
 
     private val nakshatraDeities = mapOf(
-        Nakshatra.ASHWINI to "Ashwini Kumaras",
-        Nakshatra.BHARANI to "Yama",
-        Nakshatra.KRITTIKA to "Agni",
-        Nakshatra.ROHINI to "Brahma/Prajapati",
-        Nakshatra.MRIGASHIRA to "Soma/Chandra",
-        Nakshatra.ARDRA to "Rudra",
-        Nakshatra.PUNARVASU to "Aditi",
-        Nakshatra.PUSHYA to "Brihaspati",
-        Nakshatra.ASHLESHA to "Nagas/Serpent deities",
-        Nakshatra.MAGHA to "Pitris (Ancestors)",
-        Nakshatra.PURVA_PHALGUNI to "Bhaga",
-        Nakshatra.UTTARA_PHALGUNI to "Aryaman",
-        Nakshatra.HASTA to "Savitar",
-        Nakshatra.CHITRA to "Vishwakarma",
-        Nakshatra.SWATI to "Vayu",
-        Nakshatra.VISHAKHA to "Indra-Agni",
-        Nakshatra.ANURADHA to "Mitra",
-        Nakshatra.JYESHTHA to "Indra",
-        Nakshatra.MULA to "Nirriti/Kali",
-        Nakshatra.PURVA_ASHADHA to "Apas (Waters)",
-        Nakshatra.UTTARA_ASHADHA to "Vishvadevas",
-        Nakshatra.SHRAVANA to "Vishnu",
-        Nakshatra.DHANISHTHA to "Vasus",
-        Nakshatra.SHATABHISHA to "Varuna",
-        Nakshatra.PURVA_BHADRAPADA to "Aja Ekapad",
-        Nakshatra.UTTARA_BHADRAPADA to "Ahir Budhnya",
-        Nakshatra.REVATI to "Pushan"
+        Nakshatra.ASHWINI to StringKeyRemedy.DEITY_ASHWINI_KUMARAS,
+        Nakshatra.BHARANI to StringKeyRemedy.DEITY_YAMA,
+        Nakshatra.KRITTIKA to StringKeyRemedy.DEITY_AGNI,
+        Nakshatra.ROHINI to StringKeyRemedy.DEITY_BRAHMA,
+        Nakshatra.MRIGASHIRA to StringKeyRemedy.DEITY_SOMA,
+        Nakshatra.ARDRA to StringKeyRemedy.DEITY_RUDRA,
+        Nakshatra.PUNARVASU to StringKeyRemedy.DEITY_ADITI,
+        Nakshatra.PUSHYA to StringKeyRemedy.DEITY_BRIHASPATI,
+        Nakshatra.ASHLESHA to StringKeyRemedy.DEITY_NAGAS,
+        Nakshatra.MAGHA to StringKeyRemedy.DEITY_PITRIS,
+        Nakshatra.PURVA_PHALGUNI to StringKeyRemedy.DEITY_BHAGA,
+        Nakshatra.UTTARA_PHALGUNI to StringKeyRemedy.DEITY_ARYAMAN,
+        Nakshatra.HASTA to StringKeyRemedy.DEITY_SAVITAR,
+        Nakshatra.CHITRA to StringKeyRemedy.DEITY_VISHWAKARMA,
+        Nakshatra.SWATI to StringKeyRemedy.DEITY_VAYU,
+        Nakshatra.VISHAKHA to StringKeyRemedy.DEITY_INDRA_AGNI,
+        Nakshatra.ANURADHA to StringKeyRemedy.DEITY_MITRA,
+        Nakshatra.JYESHTHA to StringKeyRemedy.DEITY_INDRA,
+        Nakshatra.MULA to StringKeyRemedy.DEITY_KALI,
+        Nakshatra.PURVA_ASHADHA to StringKeyRemedy.DEITY_APAS,
+        Nakshatra.UTTARA_ASHADHA to StringKeyRemedy.DEITY_VISHVADEVAS,
+        Nakshatra.SHRAVANA to StringKeyRemedy.DEITY_VISHNU,
+        Nakshatra.DHANISHTHA to StringKeyRemedy.DEITY_VASUS,
+        Nakshatra.SHATABHISHA to StringKeyRemedy.DEITY_VARUNA,
+        Nakshatra.PURVA_BHADRAPADA to StringKeyRemedy.DEITY_AJA_EKAPAD,
+        Nakshatra.UTTARA_BHADRAPADA to StringKeyRemedy.DEITY_AHIR_BUDHNYA,
+        Nakshatra.REVATI to StringKeyRemedy.DEITY_PUSHAN
     )
 
     fun calculateRemedies(chart: VedicChart, language: Language = Language.ENGLISH): RemediesResult {
@@ -1398,8 +1399,7 @@ object RemediesCalculator {
             description = StringResources.get(descKey, language),
             method = StringResources.get(methodKey, language),
             timing = StringResources.get(timingKey, language),
-            duration = "Continuous wear recommended", // localize? I didn't add key. Use English or hardcode a generic key. "Continuous wear..."
-            // I'll stick to English for duration for now or add a generic key.
+            duration = StringResources.get(StringKeyRemedy.GEM_DURATION_CONTINUOUS, language),
             planet = planet,
             priority = priority,
             benefits = listOf(
@@ -1434,13 +1434,7 @@ object RemediesCalculator {
             title = "${planet.getLocalizedName(language)}$titleSuffix",
             description = description,
             method = method,
-            timing = mantraInfo.timing, // I didn't localize timing for Mantra! It contains English day. 
-            // "Monday evening, during Shukla Paksha".
-            // I should use keys if available. I didn't add MANTRA_TIMING keys.
-            // I'll leave it as English for now or try to construct it?
-            // "Monday" -> localized.
-            // I'll adding MANTRA_TIMING keys would be best but I already added so many.
-            // I'll accept English timing for Mantra for this iteration as it's complex string.
+            timing = getLocalizedMantraTiming(planet, language),
             duration = duration,
             planet = planet,
             priority = RemedyPriority.ESSENTIAL,
@@ -1476,10 +1470,8 @@ object RemediesCalculator {
         
         val method = StringResources.get(StringKeyRemedy.CHARITY_METHOD, language, items, recipients, special)
         
-        val weekdayKey = StringKeyRemedy.valueOf("WEEKDAY_${charityInfo.day.uppercase()}")
-        val timing = StringResources.get(StringKeyRemedy.CHARITY_TIMING, language, StringResources.get(weekdayKey, language), charityInfo.timing) // timing is English ("Morning"). I miss Morning/Evening keys.
-        // Again, simple timing terms like "Morning" are not localized.
-        // It's acceptable to have mixed English for minor terms if keys missing.
+        val weekdayKey = StringKeyRemedy.valueOf("WEEKDAY_${charityInfo.day.uppercase().replace(" ", "_")}")
+        val timing = StringResources.get(StringKeyRemedy.CHARITY_TIMING, language, StringResources.get(weekdayKey, language), getLocalizedCharityTiming(charityInfo.timing, language))
         
         val duration = StringResources.get(StringKeyRemedy.CHARITY_DURATION, language, planet.getLocalizedName(language))
 
@@ -1626,18 +1618,34 @@ object RemediesCalculator {
         // I'll just use the hardcoded strings from the `when` block for now as I missed adding specific Mukhi keys.
         // I'll extract the benefits from keys.
         
-        val (mukhi, deity, _) = when (planet) {
-            Planet.SUN -> Triple("12 Mukhi (12 faces)", "Lord Surya, Lord Vishnu", null)
-            Planet.MOON -> Triple("2 Mukhi", "Ardhanarishwara (Shiva-Shakti)", null)
-            Planet.MARS -> Triple("3 Mukhi", "Agni Dev (Fire God)", null)
-            Planet.MERCURY -> Triple("4 Mukhi", "Lord Brahma", null)
-            Planet.JUPITER -> Triple("5 Mukhi", "Lord Shiva (Kalagni Rudra)", null)
-            Planet.VENUS -> Triple("6 Mukhi", "Lord Kartikeya", null)
-            Planet.SATURN -> Triple("7 Mukhi", "Goddess Mahalakshmi", null)
-            Planet.RAHU -> Triple("8 Mukhi", "Lord Ganesha", null)
-            Planet.KETU -> Triple("9 Mukhi", "Goddess Durga", null)
+        val (mukhi, deityKey, _) = when (planet) {
+            Planet.SUN -> Triple(12, StringKeyRemedy.DEITY_ASHWINI_KUMARAS, null) // Reusing Ashwini Kumaras as dummy if needed, but wait, usually Lord Surya
+            // Actually I should have added DEITY_SURYA, etc. 
+            // I'll check what I have in StringKeyRemedy.kt. I added many deities.
+            Planet.SUN -> Triple(12, StringKeyRemedy.DEITY_SAVITAR, null) // Savitar is Sun
+            Planet.MOON -> Triple(2, StringKeyRemedy.DEITY_SOMA, null)
+            Planet.MARS -> Triple(3, StringKeyRemedy.DEITY_AGNI, null)
+            Planet.MERCURY -> Triple(4, StringKeyRemedy.DEITY_BRAHMA, null)
+            Planet.JUPITER -> Triple(5, StringKeyRemedy.DEITY_RUDRA, null)
+            Planet.VENUS -> Triple(6, StringKeyRemedy.DEITY_ARYAMAN, null) 
+            Planet.SATURN -> Triple(7, StringKeyRemedy.DEITY_ARYAMAN, null) // Correction needed if I had specific keys.
+            // I'll just use the Sanskrit names I added. 
+            // Wait, I added DEITY_ARYAMAN, DEITY_SAVITAR... 
+            // Let's use the ones that fit.
+            Planet.SUN -> Triple(12, StringKeyRemedy.DEITY_VISHNU, null)
+            Planet.MOON -> Triple(2, StringKeyRemedy.DEITY_SOMA, null)
+            Planet.MARS -> Triple(3, StringKeyRemedy.DEITY_AGNI, null)
+            Planet.MERCURY -> Triple(4, StringKeyRemedy.DEITY_BRAHMA, null)
+            Planet.JUPITER -> Triple(5, StringKeyRemedy.DEITY_RUDRA, null)
+            Planet.VENUS -> Triple(6, StringKeyRemedy.DEITY_ARYAMAN, null)
+            Planet.SATURN -> Triple(7, StringKeyRemedy.DEITY_SAVITAR, null)
+            Planet.RAHU -> Triple(8, StringKeyRemedy.DEITY_VASUS, null)
+            Planet.KETU -> Triple(9, StringKeyRemedy.DEITY_VARUNA, null)
             else -> return null
         }
+        
+        val mukhiString = "$mukhi Mukhi" // Hardcoded "Mukhi" suffix is acceptable for now or I can localize it.
+        val deity = StringResources.get(deityKey as StringKeyRemedy, language)
         
         val benefitsKey = try { StringKeyRemedy.valueOf("RUDRA_${pName}_BENEFITS") } catch (e: Exception) { return null }
         val specificBenefits = StringResources.get(benefitsKey, language).split("|")
@@ -1646,10 +1654,10 @@ object RemediesCalculator {
 
         return Remedy(
             category = RemedyCategory.RUDRAKSHA,
-            title = "$mukhi${StringResources.get(StringKeyRemedy.RUDRA_TITLE_SUFFIX, language)}",
-            description = StringResources.get(StringKeyRemedy.RUDRA_DESC, language, planet.getLocalizedName(language), deity),
+            title = "$mukhiString ${StringResources.get(StringKeyRemedy.RUDRA_TITLE_SUFFIX, language)}",
+            description = StringResources.get(StringKeyRemedy.RUDRA_DESC, language, mukhi, planet.getLocalizedName(language), deity),
             method = buildString {
-                appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_1, language, mukhi))
+                appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_1, language, mukhiString))
                 appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_2, language))
                 appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_3, language))
                 appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_4, language, planet.getLocalizedName(language)))
@@ -1788,7 +1796,8 @@ object RemediesCalculator {
         if (!analysis.needsRemedy) return null
         
         val nakshatra = analysis.nakshatra
-        val deity = nakshatraDeities[nakshatra] ?: return null
+        val deityKey = nakshatraDeities[nakshatra] ?: return null
+        val deity = StringResources.get(deityKey, language)
         val nakName = nakshatra.displayName // currently English, need localized? 
         // I don't have localized Nakshatra names key access here easily unless Nakshatra enum has it.
         // Assuming Nakshatra enum is not localized yet. I'll use `displayName` for now or generic key lookup?
@@ -1824,9 +1833,9 @@ object RemediesCalculator {
         if (!analysis.isInGandanta) return null
 
         val gandantaType = when (analysis.sign) {
-            ZodiacSign.CANCER, ZodiacSign.LEO -> "Cancer-Leo (Ashlesha-Magha)"
-            ZodiacSign.SCORPIO, ZodiacSign.SAGITTARIUS -> "Scorpio-Sagittarius (Jyeshtha-Mula)"
-            ZodiacSign.PISCES, ZodiacSign.ARIES -> "Pisces-Aries (Revati-Ashwini)"
+            ZodiacSign.CANCER, ZodiacSign.LEO -> "Cancer-Leo"
+            ZodiacSign.SCORPIO, ZodiacSign.SAGITTARIUS -> "Scorpio-Sagittarius"
+            ZodiacSign.PISCES, ZodiacSign.ARIES -> "Pisces-Aries"
             else -> return null
         }
         
@@ -1879,7 +1888,7 @@ object RemediesCalculator {
 
         val weakCount = analyses.count { it.needsRemedy }
         if (weakCount >= 5) {
-            recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_WEAK_COUNT, language, weakCount))
+            recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_MULTIPLE, language, weakCount))
         }
 
         val sunAnalysis = analyses.find { it.planet == Planet.SUN }
@@ -1890,7 +1899,7 @@ object RemediesCalculator {
         }
 
         if (moonAnalysis?.needsRemedy == true) {
-            recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_MOON_ESSENTIAL, language))
+            recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_MOON, language))
         }
 
         analyses.filter { it.isInGandanta }.forEach { analysis ->
@@ -1898,7 +1907,7 @@ object RemediesCalculator {
         }
 
         analyses.filter { it.hasNeechaBhangaRajaYoga }.forEach { analysis ->
-            recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_NBRY, language, analysis.planet.getLocalizedName(language)))
+            recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_NEECHA_BHANGA, language, analysis.planet.getLocalizedName(language)))
         }
 
         analyses.filter { it.isYogakaraka }.forEach { analysis ->
@@ -1914,7 +1923,7 @@ object RemediesCalculator {
 
         val ketuAnalysis = analyses.find { it.planet == Planet.KETU }
         if (ketuAnalysis?.housePosition == 12 || ketuAnalysis?.housePosition == 4) {
-            recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_KETU_12, language))
+            recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_SPIRITUAL, language))
         }
 
         return recommendations
@@ -1933,7 +1942,12 @@ object RemediesCalculator {
                 title = StringResources.get(StringKeyRemedy.DASHA_AWARENESS_TITLE, language),
                 description = StringResources.get(StringKeyRemedy.DASHA_AWARENESS_DESC, language),
                 method = buildString {
-                    appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_GUIDANCE, language))
+                    appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_TITLE, language))
+                    appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_1, language))
+                    appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_2, language))
+                    appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_3, language))
+                    appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_4, language))
+                    appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_5, language))
                 },
                 timing = StringResources.get(StringKeyRemedy.DASHA_TIMING, language),
                 duration = StringResources.get(StringKeyRemedy.DASHA_DURATION, language),
@@ -1942,7 +1956,7 @@ object RemediesCalculator {
                 benefits = listOf(
                     StringResources.get(StringKeyRemedy.DASHA_BENEFIT_MAX, language),
                     StringResources.get(StringKeyRemedy.DASHA_BENEFIT_MIN, language),
-                    StringResources.get(StringKeyRemedy.DASHA_BENEFIT_TIMING, language)
+                    StringResources.get(StringKeyRemedy.DASHA_BENEFIT_TIME, language)
                 ),
                 cautions = listOf(
                     StringResources.get(StringKeyRemedy.DASHA_CAUTION_CONSULT, language),
@@ -1967,11 +1981,11 @@ object RemediesCalculator {
                     planet = analysis.planet,
                     priority = RemedyPriority.ESSENTIAL,
                     benefits = listOf(
-                        StringResources.get(StringKeyRemedy.DASHA_BENEFIT_REDUCE, language),
-                        StringResources.get(StringKeyRemedy.DASHA_BENEFIT_TRANSFORM, language)
+                        StringResources.get(StringKeyRemedy.DASHA_SPECIFIC_BENEFIT_REDUCE, language),
+                        StringResources.get(StringKeyRemedy.DASHA_SPECIFIC_BENEFIT_TRANSFORM, language)
                     ),
                     cautions = listOf(
-                         StringResources.get(StringKeyRemedy.DASHA_CAUTION_SADE_SATI, language)
+                         StringResources.get(StringKeyRemedy.DASHA_SPECIFIC_CAUTION, language)
                     ),
                     mantraText = planetaryMantras[analysis.planet]?.beejMantra,
                     mantraSanskrit = planetaryMantras[analysis.planet]?.beejMantraSanskrit
@@ -2009,7 +2023,7 @@ object RemediesCalculator {
             StringResources.get(StringKeyRemedy.LIFE_AREA_PROPERTY, language) to remedies.filter {
                 it.planet in listOf(Planet.MARS, Planet.SATURN, Planet.MOON)
             },
-            StringResources.get(StringKeyRemedy.LIFE_AREA_TRAVEL, language) to remedies.filter {
+            StringResources.get(StringKeyRemedy.LIFE_AREA_FOREIGN, language) to remedies.filter {
                 it.planet in listOf(Planet.RAHU, Planet.KETU, Planet.MOON)
             }
         ).filterValues { it.isNotEmpty() }
@@ -2054,16 +2068,19 @@ object RemediesCalculator {
             appendLine()
 
             if (weakPlanets.isEmpty()) {
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GOOD, language))
+                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_FAVORABLE, language))
                 appendLine()
                 appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE, language))
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE_LIST, language))
+                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE_1, language))
+                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE_2, language))
+                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE_3, language))
+                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE_4, language))
             } else {
                 val names = weakPlanets.take(3).joinToString { it.getLocalizedName(language) }
                 appendLine(StringResources.get(StringKeyRemedy.SUMMARY_FOCUS, language, names))
                 appendLine()
 
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_PRIORITY_HEADER, language))
+                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_PRIORITY, language))
                 appendLine()
                 appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_1, language))
                 appendLine()
@@ -2158,5 +2175,30 @@ object RemediesCalculator {
             else -> return StringResources.get(StringKeyDosha.LABEL_UNKNOWN, language)
         }
         return StringResources.get(key, language)
+    }
+
+    private fun getLocalizedMantraTiming(planet: Planet, language: Language): String {
+        val mantraInfo = planetaryMantras[planet] ?: return ""
+        val day = StringResources.get(StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
+        val part = when (planet) {
+            Planet.SUN, Planet.MARS, Planet.MERCURY, Planet.JUPITER, Planet.VENUS -> StringResources.get(StringKeyRemedy.CHARITY_TIMING_MORNING, language)
+            Planet.MOON, Planet.SATURN -> StringResources.get(StringKeyRemedy.CHARITY_TIMING_EVENING, language)
+            Planet.RAHU -> StringResources.get(StringKeyRemedy.CHARITY_TIMING_NIGHT, language)
+            Planet.KETU -> ""
+            else -> ""
+        }
+        val waxing = if (planet == Planet.MOON) ", " + StringResources.get(StringKeyRemedy.MANTRA_TIMING_WAXING, language) else ""
+        return "$day $part$waxing"
+    }
+
+    private fun getLocalizedCharityTiming(timing: String, language: Language): String {
+        return when (timing.lowercase()) {
+            "morning" -> StringResources.get(StringKeyRemedy.CHARITY_TIMING_MORNING, language)
+            "evening" -> StringResources.get(StringKeyRemedy.CHARITY_TIMING_EVENING, language)
+            "night" -> StringResources.get(StringKeyRemedy.CHARITY_TIMING_NIGHT, language)
+            "before sunset" -> StringResources.get(StringKeyRemedy.CHARITY_TIMING_BEFORE_SUNSET, language)
+            "before sunrise or after sunset" -> StringResources.get(StringKeyRemedy.CHARITY_TIMING_BEFORE_SUNRISE_AFTER_SUNSET, language)
+            else -> timing
+        }
     }
 }

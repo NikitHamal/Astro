@@ -1359,10 +1359,10 @@ private fun getBinduStrengthColor(percent: Double): Color {
 @Composable
 private fun getBinduLabel(bindus: Int, language: Language): String {
     val key = when {
-        bindus >= 30 -> StringKey.STRENGTH_STRONG
-        bindus >= 25 -> StringKey.STRENGTH_GOOD
-        bindus >= 20 -> StringKey.STRENGTH_AVERAGE
-        else -> StringKey.STRENGTH_WEAK
+        bindus >= 30 -> StringKeyAnalysis.STRENGTH_STRONG
+        bindus >= 25 -> StringKeyAnalysis.STRENGTH_GOOD
+        bindus >= 20 -> StringKeyAnalysis.STRENGTH_AVERAGE
+        else -> StringKeyAnalysis.STRENGTH_WEAK
     }
     return stringResource(key, language)
 }
@@ -1370,10 +1370,10 @@ private fun getBinduLabel(bindus: Int, language: Language): String {
 @Composable
 private fun getStrengthLabel(percent: Double, language: Language): String {
     val key = when {
-        percent >= 75 -> StringKey.STRENGTH_EXCELLENT
-        percent >= 55 -> StringKey.STRENGTH_GOOD
-        percent >= 40 -> StringKey.STRENGTH_AVERAGE
-        else -> StringKey.STRENGTH_BELOW_AVERAGE
+        percent >= 75 -> StringKeyAnalysis.STRENGTH_EXCELLENT
+        percent >= 55 -> StringKeyAnalysis.STRENGTH_GOOD
+        percent >= 40 -> StringKeyAnalysis.STRENGTH_AVERAGE
+        else -> StringKeyAnalysis.STRENGTH_BELOW_AVERAGE
     }
     return stringResource(key, language)
 }

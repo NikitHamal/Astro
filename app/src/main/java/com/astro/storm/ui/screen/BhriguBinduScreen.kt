@@ -446,12 +446,12 @@ private fun BhriguBinduOverviewTab(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     InfluenceIndicator(
-                        label = stringResource(StringKey.BENEFIC),
+                        label = stringResource(StringKeyAnalysis.BENEFIC),
                         value = analysis.strengthAssessment.beneficInfluence,
                         color = AppTheme.SuccessColor
                     )
                     InfluenceIndicator(
-                        label = stringResource(StringKey.MALEFIC),
+                        label = stringResource(StringKeyAnalysis.MALEFIC),
                         value = analysis.strengthAssessment.maleficInfluence,
                         color = AppTheme.WarningColor
                     )
@@ -469,7 +469,7 @@ private fun BhriguBinduOverviewTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKey.LORDS),
+                    stringResource(StringKeyAnalysis.LORDS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1508,11 +1508,11 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
 // ============================================
 
 private fun getStrengthText(strength: OverallStrength): String = when (strength) {
-    OverallStrength.EXCELLENT -> stringResource(StringKey.STRENGTH_EXCELLENT)
-    OverallStrength.GOOD -> stringResource(StringKey.STRENGTH_GOOD)
-    OverallStrength.MODERATE -> stringResource(StringKey.STRENGTH_MODERATE)
-    OverallStrength.CHALLENGING -> stringResource(StringKey.STRENGTH_CHALLENGING)
-    OverallStrength.DIFFICULT -> stringResource(StringKey.STRENGTH_DIFFICULT)
+    OverallStrength.EXCELLENT -> stringResource(StringKeyAnalysis.STRENGTH_EXCELLENT)
+    OverallStrength.GOOD -> stringResource(StringKeyAnalysis.STRENGTH_GOOD)
+    OverallStrength.MODERATE -> stringResource(StringKeyAnalysis.STRENGTH_MODERATE)
+    OverallStrength.CHALLENGING -> stringResource(StringKeyAnalysis.STRENGTH_CHALLENGING)
+    OverallStrength.DIFFICULT -> stringResource(StringKeyAnalysis.STRENGTH_DIFFICULT)
 }
 
 @Composable
@@ -1564,7 +1564,7 @@ private fun getAreaInfluenceName(influence: AreaInfluence): String = when (influ
     AreaInfluence.VERY_FAVORABLE -> stringResource(StringKeyAnalysis.INFLUENCE_VERY_FAVORABLE)
     AreaInfluence.FAVORABLE -> stringResource(StringKeyAnalysis.INFLUENCE_FAVORABLE)
     AreaInfluence.NEUTRAL -> stringResource(StringKeyAnalysis.INFLUENCE_NEUTRAL)
-    AreaInfluence.CHALLENGING -> stringResource(StringKey.STRENGTH_CHALLENGING)
+    AreaInfluence.CHALLENGING -> stringResource(StringKeyAnalysis.STRENGTH_CHALLENGING)
     AreaInfluence.NEEDS_ATTENTION -> stringResource(StringKeyAnalysis.INFLUENCE_NEEDS_ATTENTION)
 }
 
