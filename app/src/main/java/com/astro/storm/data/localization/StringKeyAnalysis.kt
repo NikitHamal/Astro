@@ -1630,13 +1630,7 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     CHOGHADIYA_NATURE_MIXED("Mixed", "à¤®à¤¿à¤¶à¥à¤°à¤¿à¤¤"),
 
     // NakshatraNature enum
-    NAKSHATRA_NATURE_FIXED("Fixed", "à¤¸à¥à¤¥à¤¿à¤°"),
-    NAKSHATRA_NATURE_MOVABLE("Movable", "à¤šà¤°"),
-    NAKSHATRA_NATURE_SWIFT("Swift", "à¤•à¥à¤·à¤¿à¤ªà¥à¤°"),
-    NAKSHATRA_NATURE_SHARP("Sharp", "à¤‰à¤—à¥à¤°"),
-    NAKSHATRA_NATURE_SOFT("Soft", "à¤®à¥ƒà¤¦à¥"),
     NAKSHATRA_NATURE_DREADFUL("Dreadful", "à¤•à¥à¤°à¥‚à¤°"),
-    NAKSHATRA_NATURE_MIXED("Mixed", "à¤®à¤¿à¤¶à¥à¤°"),
 
     // HoraNature enum
     HORA_NATURE_BENEFIC("Benefic", "à¤¶à¥à¤­"),
@@ -1795,38 +1789,14 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     ASPECT_SQUARE("Square", "à¤•à¥‡à¤¨à¥à¤¦à¥à¤°"),
 
     // Chara Dasha
-    CHARA_DASHA_CALC_ERROR("Unknown error calculating Chara Dasha", "à¤•à¤¾à¤°à¤¾ à¤¦à¤¶à¤¾ à¤—à¤£à¤¨à¤¾ à¤—à¤°à¥à¤¦à¤¾ à¤…à¤œà¥à¤žà¤¾à¤¤ à¤¤à¥à¤°à¥à¤Ÿà¤¿"),
-    CALCULATING_CHARA_DASHA("Calculating Chara Dasha periods...", "à¤•à¤¾à¤°à¤¾ à¤¦à¤¶à¤¾ à¤…à¤µà¤§à¤¿ à¤—à¤£à¤¨à¤¾ à¤—à¤°à¥à¤¦à¥ˆ..."),
-    KARAKA_ACTIVATION("Karaka Activation", "à¤•à¤¾à¤°à¤• à¤¸à¤•à¥à¤°à¤¿à¤¯à¤¤à¤¾"),
     
     // Generic Strength/Status
-    STRENGTH_EXCELLENT("Excellent", "à¤‰à¤¤à¥à¤•à¥ƒà¤·à¥à¤Ÿ"),
-    STRENGTH_GOOD("Good", "à¤°à¤¾à¤®à¥à¤°à¥‹"),
-    STRENGTH_MODERATE("Moderate", "à¤®à¤§à¥à¤¯à¤®"),
-    STRENGTH_CHALLENGING("Challenging", "à¤šà¥à¤¨à¥Œà¤¤à¥€à¤ªà¥‚à¤°à¥à¤£"),
-    STRENGTH_DIFFICULT("Difficult", "à¤•à¤ à¤¿à¤¨"),
     
     // Influence
-    INFLUENCE_VERY_FAVORABLE("Very Favorable", "à¤§à¥‡à¤°à¥ˆ à¤…à¤¨à¥à¤•à¥‚à¤²"),
-    INFLUENCE_FAVORABLE("Favorable", "à¤…à¤¨à¥à¤•à¥‚à¤²"),
-    INFLUENCE_NEUTRAL("Neutral", "à¤¤à¤Ÿà¤¸à¥à¤¥"),
-    INFLUENCE_NEEDS_ATTENTION("Needs Attention", "à¤§à¥à¤¯à¤¾à¤¨ à¤¦à¤¿à¤¨à¥à¤ªà¤°à¥à¤¨à¥‡"),
 
     // Life Areas
-    AREA_CAREER("Career", "à¤•à¤°à¤¿à¤¯à¤°"),
-    AREA_RELATIONSHIPS("Relationships", "à¤¸à¤®à¥à¤¬à¤¨à¥à¤§"),
-    AREA_HEALTH("Health", "à¤¸à¥à¤µà¤¾à¤¸à¥à¤¥à¥à¤¯"),
-    AREA_SPIRITUALITY("Spirituality", "à¤†à¤§à¥à¤¯à¤¾à¤¤à¥à¤®à¤¿à¤•à¤¤à¤¾"),
-    AREA_WEALTH("Wealth", "à¤§à¤¨"),
-    AREA_FAMILY("Family", "à¤ªà¤°à¤¿à¤µà¤¾à¤°"),
-    AREA_EDUCATION("Education", "à¤¶à¤¿à¤•à¥à¤·à¤¾"),
-    AREA_FOREIGN_CONNECTIONS("Foreign Connections", "à¤µà¤¿à¤¦à¥‡à¤¶à¥€ à¤¸à¤®à¥à¤¬à¤¨à¥à¤§"),
 
     // Aspects
-    ASPECT_CONJUNCTION("Conjunction", "à¤¯à¥à¤¤à¤¿"),
-    ASPECT_OPPOSITION("Opposition", "à¤¦à¥ƒà¤·à¥à¤Ÿà¤¿"), // Approximated
-    ASPECT_TRINE("Trine", "à¤¤à¥à¤°à¤¿à¤•à¥‹à¤£"),
-    ASPECT_SQUARE("Square", "à¤•à¥‡à¤¨à¥à¤¦à¥à¤°"),
     ARGALA_LEAST_OBSTRUCTED("Least Obstructed", "à¤•à¤® à¤¸à¥‡ à¤•à¤® à¤¬à¤¾à¤§à¤¿à¤¤"),
     ARGALA_KARMA_PATTERNS("Karma Patterns", "à¤•à¤°à¥à¤® à¤¢à¤¾à¤à¤šà¤¾à¤¹à¤°à¥‚"),
     ARGALA_SIGNIFICANT_ARGALAS("Significant Argalas", "à¤®à¤¹à¤¤à¥à¤µà¤ªà¥‚à¤°à¥à¤£ à¤…à¤°à¥à¤—à¤¾à¤²à¤¾à¤¹à¤°à¥‚"),

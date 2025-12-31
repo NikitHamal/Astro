@@ -281,21 +281,21 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     SYNASTRY_SELECT_BOTH("Please select both charts to compare", "à¤•à¥ƒà¤ªà¤¯à¤¾ à¤¤à¥à¤²à¤¨à¤¾ à¤—à¤°à¥à¤¨ à¤¦à¥à¤µà¥ˆ à¤•à¥à¤£à¥à¤¡à¤²à¥€ à¤›à¤¾à¤¨à¥à¤¨à¥à¤¹à¥‹à¤¸à¥"),
     SYNASTRY_QUINCUNX("Quincunx", "à¤•à¥à¤µà¤¿à¤¨à¤•à¤¨à¤•à¥à¤¸"),
     SYNASTRY_SEMI_SEXTILE("Semi-Sextile", "à¤…à¤°à¥à¤§-à¤·à¤¡à¥à¤­à¤¾à¤—"),
-    SYNASTRY_INTERPRET_HARMONIOUS("%1$s and %2$s work together harmoniously, creating mutual understanding and support.", "%1$s à¤° %2$s à¤¸à¤¾à¤®à¤žà¥à¤œà¤¸à¥à¤¯à¤ªà¥‚à¤°à¥à¤£ à¤°à¥‚à¤ªà¤®à¤¾ à¤¸à¤ à¤—à¥ˆ à¤•à¤¾à¤® à¤—à¤°à¥à¤›à¤¨à¥, à¤œà¤¸à¤²à¥‡ à¤†à¤ªà¤¸à¥€ à¤¸à¤®à¤ à¤¦à¤¾à¤°à¥€ à¤° à¤¸à¤®à¤°à¥à¤¥à¤¨ à¤¸à¤¿à¤°à¥à¤œà¤¨à¤¾ à¤—à¤°à¥à¤¦à¤›à¥¤"),
-    SYNASTRY_INTERPRET_CHALLENGING("%1$s and %2$s create tension that requires conscious effort to integrate.", "%1$s à¤° %2$s à¤²à¥‡ à¤¤à¤¨à¤¾à¤µ à¤¸à¤¿à¤°à¥à¤œà¤¨à¤¾ à¤—à¤°à¥à¤¦à¤›à¤¨à¥ à¤œà¤¸à¤²à¤¾à¤ˆ à¤ à¤•¥€à¤•à¥ƒà¤¤ à¤—à¤°à¥à¤¨ à¤¸à¤šà¥‡à¤¤ à¤ªà¥à¤°à¤¯à¤¾à¤¸à¤•à¥‹ à¤†à¤µà¤¶à¥à¤¯à¤• à¤ªà¤°à¥à¤¦à¤›à¥¤"),
-    SYNASTRY_INTERPRET_MAJOR("%1$s and %2$s are closely connected, amplifying each other's energies.", "%1$s à¤° %2$s à¤¨à¤œà¤¿à¤•à¤¬à¤¾à¤Ÿ à¤œà¥‹à¤¡à¤¿à¤ à¤•à¤¾ à¤›à¤¨à¥, à¤ à¤• à¤…à¤°à¥à¤•à¤¾à¤•à¥‹ à¤Šà¤°à¥à¤œà¤¾à¤²à¤¾à¤ˆ à¤¬à¤¢à¤¾à¤‰à¤à¤¦à¥ˆà¥¤"),
-    SYNASTRY_INTERPRET_MINOR("%1$s and %2$s have a subtle connection that adds nuance to the relationship.", "%1$s à¤° %2$s à¤¬à¥€à¤š à¤ à¤• à¤¸à¥‚à¤•à¥à¤·à¥à¤® à¤¸à¤®à¥à¤¬à¤¨à¥à¤§ à¤› à¤œà¤¸à¤²à¥‡ à¤¸à¤®à¥à¤¬à¤¨à¥à¤§à¤®à¤¾ à¤¨à¤¯à¤¾à¤ à¤ªà¤•à¥à¤· à¤¥à¤ªà¥à¤¦à¤›à¥¤"),
-    SYNASTRY_INTERPRET_ASCENDANT("%1$s conjunct Person %2$d's Ascendant creates a strong personal connection.", "%1$s à¤µà¥à¤¯à¤•à¥à¤¤à¤¿ %2$d à¤•à¥‹ à¤²à¤—à¥à¤¨à¤®à¤¾ à¤¹à¥à¤¨à¥à¤²à¥‡ à¤ à¤• à¤¬à¤²à¤¿à¤¯à¥‹ à¤µà¥à¤¯à¤•à¥à¤¤à¤¿à¤—à¤¤ à¤¸à¤®à¥à¤¬à¤¨à¥à¤§ à¤¸à¤¿à¤°à¥à¤œà¤¨à¤¾ à¤—à¤°à¥à¤¦à¤›à¥¤"),
-    SYNASTRY_INTERPRET_OVERLAY("Person %1$d's %2$s falls in the %3$dth house, influencing %4$s.", "à¤µà¥à¤¯à¤•à¥à¤¤à¤¿ %1$d à¤•à¥‹ %2$s %3$d à¤­à¤¾à¤µà¤®à¤¾ à¤ªà¤°à¥à¤¦à¤›, à¤œà¤¸à¤²à¥‡ %4$s à¤²à¤¾à¤ˆ à¤ªà¥à¤°à¤­à¤¾à¤µà¤¿à¤¤ à¤—à¤°à¥à¤¦à¤›à¥¤"),
+    SYNASTRY_INTERPRET_HARMONIOUS("%1\$s and %2\$s work together harmoniously, creating mutual understanding and support.", "%1\$s à¤° %2\$s à¤¸à¤¾à¤®à¤žà¥à¤œà¤¸à¥à¤¯à¤ªà¥‚à¤°à¥à¤£ à¤°à¥‚à¤ªà¤®à¤¾ à¤¸à¤ à¤—à¥ˆ à¤•à¤¾à¤® à¤—à¤°à¥à¤›à¤¨à¥, à¤œà¤¸à¤²à¥‡ à¤†à¤ªà¤¸à¥€ à¤¸à¤®à¤ à¤¦à¤¾à¤°à¥€ à¤° à¤¸à¤®à¤°à¥à¤¥à¤¨ à¤¸à¤¿à¤°à¥à¤œà¤¨à¤¾ à¤—à¤°à¥à¤¦à¤›à¥¤"),
+    SYNASTRY_INTERPRET_CHALLENGING("%1\$s and %2\$s create tension that requires conscious effort to integrate.", "%1\$s à¤° %2\$s à¤²à¥‡ à¤¤à¤¨à¤¾à¤µ à¤¸à¤¿à¤°à¥à¤œà¤¨à¤¾ à¤—à¤°à¥à¤¦à¤›à¤¨à¥ à¤œà¤¸à¤²à¤¾à¤ˆ à¤ à¤•¥€à¤•à¥ƒà¤¤ à¤—à¤°à¥à¤¨ à¤¸à¤šà¥‡à¤¤ à¤ªà¥à¤°à¤¯à¤¾à¤¸à¤•à¥‹ à¤†à¤µà¤¶à¥à¤¯à¤• à¤ªà¤°à¥à¤¦à¤›à¥¤"),
+    SYNASTRY_INTERPRET_MAJOR("%1\$s and %2\$s are closely connected, amplifying each other's energies.", "%1\$s à¤° %2\$s à¤¨à¤œà¤¿à¤•à¤¬à¤¾à¤Ÿ à¤œà¥‹à¤¡à¤¿à¤ à¤•à¤¾ à¤›à¤¨à¥, à¤ à¤• à¤…à¤°à¥à¤•à¤¾à¤•à¥‹ à¤Šà¤°à¥à¤œà¤¾à¤²à¤¾à¤ˆ à¤¬à¤¢à¤¾à¤‰à¤à¤¦à¥ˆà¥¤"),
+    SYNASTRY_INTERPRET_MINOR("%1\$s and %2\$s have a subtle connection that adds nuance to the relationship.", "%1\$s à¤° %2\$s à¤¬à¥€à¤š à¤ à¤• à¤¸à¥‚à¤•à¥à¤·à¥à¤® à¤¸à¤®à¥à¤¬à¤¨à¥à¤§ à¤› à¤œà¤¸à¤²à¥‡ à¤¸à¤®à¥à¤¬à¤¨à¥à¤§à¤®à¤¾ à¤¨à¤¯à¤¾à¤ à¤ªà¤•à¥à¤· à¤¥à¤ªà¥à¤¦à¤›à¥¤"),
+    SYNASTRY_INTERPRET_ASCENDANT("%1\$s conjunct Person %2\$d's Ascendant creates a strong personal connection.", "%1\$s à¤µà¥à¤¯à¤•à¥à¤¤à¤¿ %2\$d à¤•à¥‹ à¤²à¤—à¥à¤¨à¤®à¤¾ à¤¹à¥à¤¨à¥à¤²à¥‡ à¤ à¤• à¤¬à¤²à¤¿à¤¯à¥‹ à¤µà¥à¤¯à¤•à¥à¤¤à¤¿à¤—à¤¤ à¤¸à¤®à¥à¤¬à¤¨à¥à¤§ à¤¸à¤¿à¤°à¥à¤œà¤¨à¤¾ à¤—à¤°à¥à¤¦à¤›à¥¤"),
+    SYNASTRY_INTERPRET_OVERLAY("Person %1\$d's %2\$s falls in the %3\$dth house, influencing %4\$s.", "à¤µà¥à¤¯à¤•à¥à¤¤à¤¿ %1\$d à¤•à¥‹ %2\$s %3\$d à¤­à¤¾à¤µà¤®à¤¾ à¤ªà¤°à¥à¤¦à¤›, à¤œà¤¸à¤²à¥‡ %4\$s à¤²à¤¾à¤ˆ à¤ªà¥à¤°à¤­à¤¾à¤µà¤¿à¤¤ à¤—à¤°à¥à¤¦à¤›à¥¤"),
     SYNASTRY_DESC_EMOTIONAL("Emotional understanding and nurturing", "à¤­à¤¾à¤µà¤¨à¤¾à¤¤à¥à¤®à¤• à¤¸à¤®à¤ à¤¦à¤¾à¤°à¥€ à¤° à¤ªà¥‹à¤·à¤£"),
     SYNASTRY_DESC_ROMANCE("Physical attraction and passion", "à¤¶à¤¾à¤°à¥€à¤°à¤¿à¤• à¤†à¤•à¤°à¥à¤·à¤£ à¤° à¤œà¥à¤¨à¥‚à¤¨"),
     SYNASTRY_DESC_COMMUNICATION("Mental connection and dialogue", "à¤®à¤¾à¤¨à¤¸à¤¿à¤• à¤¸à¤®à¥à¤¬à¤¨à¥à¤§ à¤° à¤¸à¤‚à¤µà¤¾à¤¦"),
     SYNASTRY_DESC_STABILITY("Commitment and endurance", "à¤ªà¥à¤°à¤¤à¤¿à¤¬à¤¦à¥à¤§à¤¤à¤¾ à¤° à¤§à¥ˆà¤°à¥à¤¯à¤¤à¤¾"),
     SYNASTRY_DESC_GROWTH("Mutual expansion and learning", "à¤†à¤ªà¤¸à¥€ à¤µà¤¿à¤¸à¥à¤¤à¤¾à¤° à¤° à¤¸à¤¿à¤•à¤¾à¤‡"),
-    SYNASTRY_FINDING_ASPECT("Strong %1$s between %2$s and %3$s", "%2$s à¤° %3$s à¤¬à¥€à¤š à¤¬à¤²à¤¿à¤¯à¥‹ %1$s"),
-    SYNASTRY_FINDING_HOUSE("%1$s activates the %2$dth house of %3$s", "%1$s à¤²à¥‡ %3$s à¤•à¥‹ %2$d à¤­à¤¾à¤µà¤²à¤¾à¤ˆ à¤¸à¤•à¥ à¤°à¤¿à¤¯ à¤—à¤°à¥à¤¦à¤›"),
+    SYNASTRY_FINDING_ASPECT("Strong %1\$s between %2\$s and %3\$s", "%2\$s à¤° %3\$s à¤¬à¥€à¤š à¤¬à¤²à¤¿à¤¯à¥‹ %1\$s"),
+    SYNASTRY_FINDING_HOUSE("%1\$s activates the %2\$dth house of %3\$s", "%1\$s à¤²à¥‡ %3\$s à¤•à¥‹ %2\$d à¤­à¤¾à¤µà¤²à¤¾à¤ˆ à¤¸à¤•à¥ à¤°à¤¿à¤¯ à¤—à¤°à¥à¤¦à¤›"),
     SYNASTRY_CALC_FAILED("Calculation failed", "à¤—à¤£à¤¨à¤¾ à¤…à¤¸à¤«à¤² à¤­à¤¯à¥‹"),
-    SYNASTRY_AVAILABLE_CHARTS("%d charts available", "%d à¤•à¥à¤£à¥à¤¡à¤²à¥€à¤¹à¤°à¥‚ à¤‰à¤ªà¤²à¤¬à¥à¤§ à¤›à¤¨à¥"),
+    SYNASTRY_AVAILABLE_CHARTS("%%d charts available", "%%d à¤•à¥à¤£à¥à¤¡à¤²à¥€à¤¹à¤°à¥‚ à¤‰à¤ªà¤²à¤¬à¥à¤§ à¤›à¤¨à¥"),
     SYNASTRY_LIFE_AREA_GENERAL("General", "à¤¸à¤¾à¤®à¤¾à¤¨à¥à¤¯"),
 
     // ============================================
@@ -358,8 +358,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     SHADBALA_STRONGEST_PLANET("Strongest Planet", "à¤¸à¤¬à¥ˆà¤­à¤¨à¥à¤¦à¤¾ à¤¬à¤²à¤¿à¤¯à¥‹ à¤—à¥à¤°à¤¹"),
     SHADBALA_WEAKEST_PLANET("Weakest Planet", "à¤¸à¤¬à¥ˆà¤­à¤¨à¥à¤¦à¤¾ à¤•à¤®à¤œà¥‹à¤° à¤—à¥à¤°à¤¹"),
     SHADBALA_OVERALL_STRENGTH("Overall Chart Strength", "à¤¸à¤®à¤—à¥à¤° à¤•à¥à¤£à¥à¤¡à¤²à¥€ à¤¶à¤•à¥à¤¤à¤¿"),
-    SHADBALA_STRONG_COUNT("%d planets above required", "%d à¤—à¥à¤°à¤¹ à¤†à¤µà¤¶à¥à¤¯à¤•à¤¤à¤¾à¤­à¤¨à¥à¤¦à¤¾ à¤®à¤¾à¤¥à¤¿"),
-    SHADBALA_WEAK_COUNT("%d planets below required", "%d à¤—à¥à¤°à¤¹ à¤†à¤µà¤¶à¥à¤¯à¤•à¤¤à¤¾à¤­à¤¨à¥à¤¦à¤¾ à¤¤à¤²"),
+    SHADBALA_STRONG_COUNT("%%d planets above required", "%%d à¤—à¥à¤°à¤¹ à¤†à¤µà¤¶à¥à¤¯à¤•à¤¤à¤¾à¤­à¤¨à¥à¤¦à¤¾ à¤®à¤¾à¤¥à¤¿"),
+    SHADBALA_WEAK_COUNT("%%d planets below required", "%%d à¤—à¥à¤°à¤¹ à¤†à¤µà¤¶à¥à¤¯à¤•à¤¤à¤¾à¤­à¤¨à¥à¤¦à¤¾ à¤¤à¤²"),
     SHADBALA_STHANA_BALA("Sthana Bala", "à¤¸à¥à¤¥à¤¾à¤¨ à¤¬à¤²"),
     SHADBALA_STHANA_BALA_DESC("Positional Strength", "à¤¸à¥à¤¥à¤¿à¤¤à¤¿à¤—à¤¤ à¤¶à¤•à¥à¤¤à¤¿"),
     SHADBALA_DIG_BALA("Dig Bala", "à¤¦à¤¿à¤—à¥ à¤¬à¤²"),
@@ -1460,8 +1460,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     LAL_KITAB_SATURDAY("Saturday - Saturn", "à¤¶à¤¨à¤¿à¤¬à¤¾à¤° - à¤¶à¤¨à¤¿"),
 
     // Bhrigu Bindu
-    BHRIGU_BINDU_REMEDIES("Remedial Measures", "à¤‰à¤ªà¤šà¤¾à¤°à¤¾à¤¤à¥à¤®à¤• à¤‰à¤ªà¤¾à¤¯à¤¹à¤°à¥‚"),
-    BHRIGU_BINDU_ABOUT_DESC("The Bhrigu Bindu is a sensitive mathematical point between the Moon and Rahu that reveals karmic destiny and life purpose.", "à¤­à¥ƒà¤—à¥ à¤¬à¤¿à¤¨à¥à¤¦à¥ à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾ à¤° à¤°à¤¾à¤¹à¥ à¤¬à¥€à¤šà¤•à¥‹ à¤à¤• à¤¸à¤‚à¤µà¥‡à¤¦à¤¨à¤¶à¥€à¤² à¤—à¤£à¤¿à¤¤à¥€à¤¯ à¤¬à¤¿à¤¨à¥à¤¦à¥ à¤¹à¥‹ à¤œà¤¸à¤²à¥‡ à¤•à¤¾à¤°à¥à¤®à¤¿à¤• à¤­à¤¾à¤—à¥à¤¯ à¤° à¤œà¥€à¤µà¤¨ à¤‰à¤¦à¥à¤¦à¥‡à¤¶à¥à¤¯ à¤ªà¥à¤°à¤•à¤Ÿ à¤—à¤°à¥à¤¦à¤›à¥¤"),
     BHRIGU_BINDU_CALC_ERROR("Unable to calculate Bhrigu Bindu. Please check chart data.", "à¤­à¥ƒà¤—à¥ à¤¬à¤¿à¤¨à¥à¤¦à¥ à¤—à¤£à¤¨à¤¾ à¤—à¤°à¥à¤¨ à¤…à¤¸à¤®à¤°à¥à¤¥à¥¤ à¤•à¥ƒà¤ªà¤¯à¤¾ à¤•à¥à¤£à¥à¤¡à¤²à¥€ à¤¡à¤¾à¤Ÿà¤¾ à¤œà¤¾à¤à¤š à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤"),
     POSITION_INTERPRETATION("Position Interpretation", "à¤¸à¥à¤¥à¤¿à¤¤à¤¿ à¤µà¥à¤¯à¤¾à¤–à¥à¤¯à¤¾"),
     STRENGTH_FACTORS("Strength Factors", "à¤¬à¤² à¤•à¤¾à¤°à¤•à¤¹à¤°à¥‚"),
@@ -1530,7 +1528,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // ============================================
     // Ashtottari Screen specific
     ASHTOTTARI_TITLE("Ashtottari Dasha", "à¤…à¤·à¥à¤Ÿà¥‹à¤¤à¥à¤¤à¤°à¥€ à¤¦à¤¶à¤¾"),
-    ASHTOTTARI_STARTING_LORD("Starting Lord", "à¤¸à¥à¤°à¥à¤µà¤¾à¤¤ à¤¸à¥à¤µà¤¾à¤®à¥€"),
     ASHTOTTARI_BALANCE("Balance at Birth", "à¤œà¤¨à¥à¤®à¤®à¤¾ à¤¶à¥‡à¤·"),
     ASHTOTTARI_SUBTITLE("108-Year Conditional Dasha System", "à¥§à¥¦à¥® à¤µà¤°à¥à¤·à¤•à¥‹ à¤¸à¤¶à¤°à¥à¤¤ à¤¦à¤¶à¤¾ à¤ªà¥à¤°à¤£à¤¾à¤²à¥€"),
     ASHTOTTARI_ABOUT("About Ashtottari Dasha", "à¤…à¤·à¥à¤Ÿà¥‹à¤¤à¥à¤¤à¤°à¥€ à¤¦à¤¶à¤¾à¤•à¥‹ à¤¬à¤¾à¤°à¥‡à¤®à¤¾"),
@@ -1686,8 +1683,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     MRITYU_BHAGA_GANDANTA_VISHNU("Vishnu Gandanta", "à¤µà¤¿à¤·à¥à¤£à¥ à¤—à¤£à¥à¤¡à¤¾à¤¨à¥à¤¤"),
     MRITYU_BHAGA_GANDANTA_SHIVA("Shiva Gandanta", "à¤¶à¤¿à¤µ à¤—à¤£à¥à¤¡à¤¾à¤¨à¥à¤¤"),
     
-    MRITYU_BHAGA_JUNCTION_DESC("Junction between %1$s and %2$s", "%1$s à¤° %2$s à¤¬à¥€à¤šà¤•à¥‹ à¤¸à¤¨à¥à¤§à¤¿"),
-    MRITYU_BHAGA_DISTANCE_JUNCTION("Distance from Junction: %1$s", "à¤¸à¤¨à¥à¤§à¤¿à¤¬à¤¾à¤Ÿ à¤¦à¥‚à¤°à¥€: %1$s"),
+    MRITYU_BHAGA_JUNCTION_DESC("Junction between %1\$s and %2\$s", "%1\$s à¤° %2\$s à¤¬à¥€à¤šà¤•à¥‹ à¤¸à¤¨à¥à¤§à¤¿"),
+    MRITYU_BHAGA_DISTANCE_JUNCTION("Distance from Junction: %1\$s", "à¤¸à¤¨à¥à¤§à¤¿à¤¬à¤¾à¤Ÿ à¤¦à¥‚à¤°à¥€: %1\$s"),
     
     // Pushkara
     MRITYU_BHAGA_PUSHKARA_NAVAMSA_TITLE("Pushkara Navamsa", "à¤ªà¥à¤·à¥à¤•à¤° à¤¨à¤µà¤®à¤¾à¤‚à¤¶"),
@@ -1802,8 +1799,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     PLANET_STRENGTH_UNKNOWN("Unknown", "à¤…à¤œà¥à¤žà¤¾à¤¤"),
 
     // Kalachakra Predictions
-    KALACHAKRA_PRED_INTRO_DEHA("Based on Deha lord's %1$s status and %2$s Deha-Jeeva relationship: ", "à¤¦à¥‡à¤¹ à¤¸à¥à¤µà¤¾à¤®à¥€à¤•à¥‹ %1$s à¤…à¤µà¤¸à¥à¤¥à¤¾ à¤° %2$s à¤¦à¥‡à¤¹-à¤œà¥€à¤µ à¤¸à¤®à¥à¤¬à¤¨à¥à¤§à¤•à¥‹ à¤†à¤§à¤¾à¤°à¤®à¤¾: "),
-    KALACHAKRA_PRED_INTRO_JEEVA("Jeeva lord's %1$s condition indicates ", "à¤œà¥€à¤µ à¤¸à¥à¤µà¤¾à¤®à¥€à¤•à¥‹ %1$s à¤…à¤µà¤¸à¥à¤¥à¤¾à¤²à¥‡ à¤¸à¤‚à¤•à¥‡à¤¤ à¤—à¤°à¥à¤¦à¤› "),
+    KALACHAKRA_PRED_INTRO_DEHA("Based on Deha lord's %1\$s status and %2\$s Deha-Jeeva relationship: ", "à¤¦à¥‡à¤¹ à¤¸à¥à¤µà¤¾à¤®à¥€à¤•à¥‹ %1\$s à¤…à¤µà¤¸à¥à¤¥à¤¾ à¤° %2\$s à¤¦à¥‡à¤¹-à¤œà¥€à¤µ à¤¸à¤®à¥à¤¬à¤¨à¥à¤§à¤•à¥‹ à¤†à¤§à¤¾à¤°à¤®à¤¾: "),
+    KALACHAKRA_PRED_INTRO_JEEVA("Jeeva lord's %1\$s condition indicates ", "à¤œà¥€à¤µ à¤¸à¥à¤µà¤¾à¤®à¥€à¤•à¥‹ %1\$s à¤…à¤µà¤¸à¥à¤¥à¤¾à¤²à¥‡ à¤¸à¤‚à¤•à¥‡à¤¤ à¤—à¤°à¥à¤¦à¤› "),
 
     KALACHAKRA_HEALTH_PRED_HARMONIOUS("Physical health is well-supported by spiritual practices. Body responds well to holistic healing.", "à¤¶à¤¾à¤°à¥€à¤°à¤¿à¤• à¤¸à¥à¤µà¤¾à¤¸à¥à¤¥à¥à¤¯à¤²à¤¾à¤ˆ à¤†à¤§à¥à¤¯à¤¾à¤¤à¥à¤®à¤¿à¤• à¤…à¤­à¥à¤¯à¤¾à¤¸à¤¹à¤°à¥‚à¤²à¥‡ à¤°à¤¾à¤®à¥à¤°à¥‹ à¤¸à¤®à¤°à¥à¤¥à¤¨ à¤—à¤°à¥à¤¦à¤›à¥¤ à¤¶à¤°à¥€à¤°à¤²à¥‡ à¤¸à¤®à¤—à¥à¤° à¤‰à¤ªà¤šà¤¾à¤°à¤²à¤¾à¤ˆ à¤°à¤¾à¤®à¥à¤°à¥‹ à¤ªà¥à¤°à¤¤à¤¿à¤•à¥à¤°à¤¿à¤¯à¤¾ à¤¦à¤¿à¤¨à¥à¤›à¥¤"),
     KALACHAKRA_HEALTH_PRED_SUPPORTIVE("Good baseline health with spiritual practices enhancing physical wellbeing.", "à¤°à¤¾à¤®à¥à¤°à¥‹ à¤†à¤§à¤¾à¤°à¤­à¥‚à¤¤ à¤¸à¥à¤µà¤¾à¤¸à¥à¤¥à¥à¤¯à¤•à¥‹ à¤¸à¤¾à¤¥ à¤†à¤§à¥à¤¯à¤¾à¤¤à¥à¤®à¤¿à¤• à¤…à¤­à¥à¤¯à¤¾à¤¸à¤¹à¤°à¥‚à¤²à¥‡ à¤¶à¤¾à¤°à¥€à¤°à¤¿à¤• à¤•à¤²à¥à¤¯à¤¾à¤£ à¤¬à¤¢à¤¾à¤‰à¤à¤›à¥¤"),
@@ -1818,8 +1815,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_SPIRITUAL_PRED_TRANSFORMATIVE("profound spiritual transformation through life's challenges.", "à¤œà¥€à¤µà¤¨à¤•à¤¾ à¤šà¥à¤¨à¥Œà¤¤à¥€à¤¹à¤°à¥‚ à¤®à¤¾à¤°à¥à¤«à¤¤ à¤—à¤¹à¤¿à¤°à¥‹ à¤†à¤§à¥à¤¯à¤¾à¤¤à¥à¤®à¤¿à¤• à¤°à¥‚à¤ªà¤¾à¤¨à¥à¤¤à¤°à¤£à¥¤"),
 
     // Recommendations
-    KALACHAKRA_REC_DEHA_LORD("Strengthen Deha lord (%1$s) through appropriate mantras and gemstones", "à¤‰à¤ªà¤¯à¥à¤•à¥à¤¤ à¤®à¤¨à¥à¤¤à¥à¤° à¤° à¤°à¤¤à¥à¤¨à¤¹à¤°à¥‚ à¤®à¤¾à¤°à¥à¤«à¤¤ à¤¦à¥‡à¤¹ à¤¸à¥à¤µà¤¾à¤®à¥€ (%1$s) à¤²à¤¾à¤ˆ à¤¬à¤²à¤¿à¤¯à¥‹ à¤¬à¤¨à¤¾à¤‰à¤¨à¥à¤¹à¥‹à¤¸à¥"),
-    KALACHAKRA_REC_JEEVA_LORD("Honor Jeeva lord (%1$s) through spiritual practices", "à¤†à¤§à¥à¤¯à¤¾à¤¤à¥à¤®à¤¿à¤• à¤…à¤­à¥à¤¯à¤¾à¤¸à¤¹à¤°à¥‚ à¤®à¤¾à¤°à¥à¤«à¤¤ à¤œà¥€à¤µ à¤¸à¥à¤µà¤¾à¤®à¥€ (%1$s) à¤²à¤¾à¤ˆ à¤¸à¤®à¥à¤®à¤¾à¤¨ à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥"),
+    KALACHAKRA_REC_DEHA_LORD("Strengthen Deha lord (%1\$s) through appropriate mantras and gemstones", "à¤‰à¤ªà¤¯à¥à¤•à¥à¤¤ à¤®à¤¨à¥à¤¤à¥à¤° à¤° à¤°à¤¤à¥à¤¨à¤¹à¤°à¥‚ à¤®à¤¾à¤°à¥à¤«à¤¤ à¤¦à¥‡à¤¹ à¤¸à¥à¤µà¤¾à¤®à¥€ (%1\$s) à¤²à¤¾à¤ˆ à¤¬à¤²à¤¿à¤¯à¥‹ à¤¬à¤¨à¤¾à¤‰à¤¨à¥à¤¹à¥‹à¤¸à¥"),
+    KALACHAKRA_REC_JEEVA_LORD("Honor Jeeva lord (%1\$s) through spiritual practices", "à¤†à¤§à¥à¤¯à¤¾à¤¤à¥à¤®à¤¿à¤• à¤…à¤­à¥à¤¯à¤¾à¤¸à¤¹à¤°à¥‚ à¤®à¤¾à¤°à¥à¤«à¤¤ à¤œà¥€à¤µ à¤¸à¥à¤µà¤¾à¤®à¥€ (%1\$s) à¤²à¤¾à¤ˆ à¤¸à¤®à¥à¤®à¤¾à¤¨ à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥"),
     
     KALACHAKRA_REC_HARMONIOUS_1("Continue current spiritual and health practices - they are aligned", "à¤µà¤°à¥à¤¤à¤®à¤¾à¤¨ à¤†à¤§à¥à¤¯à¤¾à¤¤à¥à¤®à¤¿à¤• à¤° à¤¸à¥à¤µà¤¾à¤¸à¥à¤¥à¥à¤¯ à¤…à¤­à¥à¤¯à¤¾à¤¸à¤¹à¤°à¥‚ à¤œà¤¾à¤°à¥€ à¤°à¤¾à¤–à¥à¤¨à¥à¤¹à¥‹à¤¸à¥ - à¤¤à¤¿à¤¨à¥€à¤¹à¤°à¥‚ à¤ªà¤™à¥à¤•à¥à¤¤à¤¿à¤¬à¤¦à¥à¤§ à¤›à¤¨à¥"),
     KALACHAKRA_REC_HARMONIOUS_2("Use this favorable period for deepening meditation", "à¤¯à¥‹ à¤…à¤¨à¥à¤•à¥‚à¤² à¤…à¤µà¤§à¤¿à¤²à¤¾à¤ˆ à¤§à¥à¤¯à¤¾à¤¨ à¤—à¤¹à¤¿à¤°à¥‹ à¤¬à¤¨à¤¾à¤‰à¤¨ à¤ªà¥à¤°à¤¯à¥‹à¤— à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥"),
@@ -1831,9 +1828,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_REC_CHALLENGING_2("Transform challenges into spiritual growth opportunities", "à¤šà¥à¤¨à¥Œà¤¤à¥€à¤¹à¤°à¥‚à¤²à¤¾à¤ˆ à¤†à¤§à¥à¤¯à¤¾à¤¤à¥à¤®à¤¿à¤• à¤µà¥ƒà¤¦à¥à¤§à¤¿à¤•à¥‹ à¤…à¤µà¤¸à¤°à¤®à¤¾ à¤°à¥‚à¤ªà¤¾à¤¨à¥à¤¤à¤°à¤£ à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥"),
     KALACHAKRA_REC_TRANSFORMATIVE_1("Embrace transformation as part of soul's journey", "à¤°à¥‚à¤ªà¤¾à¤¨à¥à¤¤à¤°à¤£à¤²à¤¾à¤ˆ à¤†à¤¤à¥à¤®à¤¾à¤•à¥‹ à¤¯à¤¾à¤¤à¥à¤°à¤¾à¤•à¥‹ à¤­à¤¾à¤—à¤•à¥‹ à¤°à¥‚à¤ªà¤®à¤¾ à¤…à¤à¤—à¤¾à¤²à¥à¤¨à¥à¤¹à¥‹à¤¸à¥"),
     KALACHAKRA_REC_TRANSFORMATIVE_2("Seek guidance from spiritual teachers during difficult periods", "à¤•à¤ à¤¿à¤¨ à¤¸à¤®à¤¯à¤®à¤¾ à¤†à¤§à¥à¤¯à¤¾à¤¤à¥à¤®à¤¿à¤• à¤—à¥à¤°à¥à¤¹à¤°à¥‚à¤¬à¤¾à¤Ÿ à¤®à¤¾à¤°à¥à¤—à¤¦à¤°à¥à¤¶à¤¨ à¤²à¤¿à¤¨à¥à¤¹à¥‹à¤¸à¥"),
-    LAL_KITAB_SCREEN_SUBTITLE("Practical Karmic Remedies", "à¤µà¥à¤¯à¤¾à¤µà¤¹à¤¾à¤°à¤¿à¤• à¤•à¤¾à¤°à¥à¤®à¤¿à¤• à¤‰à¤ªà¤¾à¤¯à¤¹à¤°à¥‚"),
-    LAL_KITAB_SCREEN_ABOUT("About Lal Kitab", "à¤²à¤¾à¤² à¤•à¤¿à¤¤à¤¾à¤¬à¤•à¥‹ à¤¬à¤¾à¤°à¥‡à¤®à¤¾"),
-    LAL_KITAB_SCREEN_ABOUT_DESC("Lal Kitab offers simple, practical remedies using everyday items like turmeric, milk, honey, and specific actions. These remedies work on karmic debts and planetary afflictions without expensive rituals.", "à¤²à¤¾à¤² à¤•à¤¿à¤¤à¤¾à¤¬à¤²à¥‡ à¤¬à¥‡à¤¸à¤¾à¤°, à¤¦à¥‚à¤§, à¤®à¤¹ à¤œà¤¸à¥à¤¤à¤¾ à¤¦à¥ˆà¤¨à¤¿à¤• à¤µà¤¸à¥à¤¤à¥à¤¹à¤°à¥‚ à¤ªà¥à¤°à¤¯à¥‹à¤— à¤—à¤°à¥€ à¤¸à¤°à¤², à¤µà¥à¤¯à¤¾à¤µà¤¹à¤¾à¤°à¤¿à¤• à¤‰à¤ªà¤¾à¤¯à¤¹à¤°à¥‚ à¤ªà¥à¤°à¤¦à¤¾à¤¨ à¤—à¤°à¥à¤¦à¤›à¥¤ à¤¯à¥€ à¤‰à¤ªà¤¾à¤¯à¤¹à¤°à¥‚à¤²à¥‡ à¤®à¤¹à¤à¤—à¥‹ à¤µà¤¿à¤§à¤¿ à¤¬à¤¿à¤¨à¤¾ à¤•à¤¾à¤°à¥à¤®à¤¿à¤• à¤‹à¤£ à¤° à¤—à¥à¤°à¤¹ à¤ªà¥€à¤¡à¤¾à¤®à¤¾ à¤•à¤¾à¤® à¤—à¤°à¥à¤¦à¤›à¤¨à¥à¥¤"),
     LAL_KITAB_SCREEN_KARMIC_DEBTS("Karmic Debts (Rin)", "à¤•à¤¾à¤°à¥à¤®à¤¿à¤• à¤‹à¤£à¤¹à¤°à¥‚"),
     LAL_KITAB_SCREEN_PLANETARY_AFFLICTIONS("Planetary Afflictions", "à¤—à¥à¤°à¤¹ à¤ªà¥€à¤¡à¤¾à¤¹à¤°à¥‚"),
     LAL_KITAB_HOUSE_REMEDIES("House-Based Remedies", "à¤­à¤¾à¤µ-à¤†à¤§à¤¾à¤°à¤¿à¤¤ à¤‰à¤ªà¤¾à¤¯à¤¹à¤°à¥‚"),
@@ -1857,11 +1851,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     DIVISIONAL_CHARTS_SUBTITLE("Detailed Varga Analysis", "à¤µà¤¿à¤¸à¥à¤¤à¥ƒà¤¤ à¤µà¤°à¥à¤— à¤µà¤¿à¤¶à¥à¤²à¥‡à¤·à¤£"),
     DIVISIONAL_CHARTS_ABOUT("About Divisional Charts", "à¤µà¤¿à¤­à¤¾à¤—à¥€à¤¯ à¤•à¥à¤£à¥à¤¡à¤²à¥€à¤•à¥‹ à¤¬à¤¾à¤°à¥‡à¤®à¤¾"),
     DIVISIONAL_CHARTS_ABOUT_DESC("Divisional charts (Vargas) provide deeper insights into specific life areas. D-2 for wealth, D-3 for siblings, D-9 for marriage, D-10 for career, D-12 for parents.", "à¤µà¤¿à¤­à¤¾à¤—à¥€à¤¯ à¤•à¥à¤£à¥à¤¡à¤²à¥€à¤¹à¤°à¥‚à¤²à¥‡ à¤µà¤¿à¤¶à¥‡à¤· à¤œà¥€à¤µà¤¨ à¤•à¥à¤·à¥‡à¤¤à¥à¤°à¤¹à¤°à¥‚à¤®à¤¾ à¤—à¤¹à¤¿à¤°à¥‹ à¤…à¤¨à¥à¤¤à¤°à¥à¤¦à¥ƒà¤·à¥à¤Ÿà¤¿ à¤ªà¥à¤°à¤¦à¤¾à¤¨ à¤—à¤°à¥à¤¦à¤›à¤¨à¥à¥¤ D-2 à¤§à¤¨à¤•à¥‹ à¤²à¤¾à¤—à¤¿, D-3 à¤­à¤¾à¤‡à¤¬à¤¹à¤¿à¤¨à¥€à¤•à¥‹ à¤²à¤¾à¤—à¤¿, D-9 à¤µà¤¿à¤µà¤¾à¤¹à¤•à¥‹ à¤²à¤¾à¤—à¤¿, D-10 à¤•à¥à¤¯à¤¾à¤°à¤¿à¤¯à¤°à¤•à¥‹ à¤²à¤¾à¤—à¤¿, D-12 à¤…à¤­à¤¿à¤­à¤¾à¤µà¤•à¤•à¥‹ à¤²à¤¾à¤—à¤¿à¥¤"),
-    DIVISIONAL_HORA_TAB("D-2 Hora", "D-2 à¤¹à¥‹à¤°à¤¾"),
-    DIVISIONAL_DREKKANA_TAB("D-3 Drekkana", "D-3 à¤¦à¥à¤°à¥‡à¤•à¥à¤•à¤¾à¤£"),
-    DIVISIONAL_NAVAMSA_TAB("D-9 Navamsa", "D-9 à¤¨à¤µà¤¾à¤‚à¤¶"),
-    DIVISIONAL_DASHAMSA_TAB("D-10 Dashamsa", "D-10 à¤¦à¤¶à¤¾à¤‚à¤¶"),
-    DIVISIONAL_DWADASAMSA_TAB("D-12 Dwadasamsa", "D-12 à¤¦à¥à¤µà¤¾à¤¦à¤¶à¤¾à¤‚à¤¶"),
     DIVISIONAL_WEALTH_ANALYSIS("Wealth & Finance", "à¤§à¤¨ à¤° à¤µà¤¿à¤¤à¥à¤¤"),
     DIVISIONAL_SIBLING_ANALYSIS("Siblings & Courage", "à¤­à¤¾à¤‡à¤¬à¤¹à¤¿à¤¨à¥€ à¤° à¤¸à¤¾à¤¹à¤¸"),
     DIVISIONAL_MARRIAGE_ANALYSIS("Marriage & Dharma", "à¤µà¤¿à¤µà¤¾à¤¹ à¤° à¤§à¤°à¥à¤®"),
@@ -1997,11 +1986,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_RELATIONSHIP("Deha-Jeeva Relationship", "à¤¦à¥‡à¤¹-à¤œà¥€à¤µ à¤¸à¤®à¥à¤¬à¤¨à¥à¤§"),
     KALACHAKRA_SAVYA("Savya (Direct)", "à¤¸à¤µà¥à¤¯ (à¤¸à¥€à¤§à¥‹)"),
     KALACHAKRA_APSAVYA("Apsavya (Retrograde)", "à¤…à¤ªà¤¸à¤µà¥à¤¯ (à¤‰à¤²à¥à¤Ÿà¥‹)"),
-    KALACHAKRA_HEALTH_EXCELLENT("Excellent", "à¤‰à¤¤à¥à¤•à¥ƒà¤·à¥à¤Ÿ"),
-    KALACHAKRA_HEALTH_GOOD("Good", "à¤°à¤¾à¤®à¥à¤°à¥‹"),
-    KALACHAKRA_HEALTH_MODERATE("Moderate", "à¤®à¤§à¥à¤¯à¤®"),
-    KALACHAKRA_HEALTH_CHALLENGING("Challenging", "à¤šà¥à¤¨à¥Œà¤¤à¥€à¤ªà¥‚à¤°à¥à¤£"),
-    KALACHAKRA_HEALTH_CRITICAL("Critical", "à¤—à¤®à¥à¤­à¥€à¤°"),
     KALACHAKRA_RELATIONSHIP_HARMONIOUS("Harmonious", "à¤¸à¤¾à¤®à¤žà¥à¤œà¤¸à¥à¤¯à¤ªà¥‚à¤°à¥à¤£"),
     KALACHAKRA_RELATIONSHIP_SUPPORTIVE("Supportive", "à¤¸à¤¹à¤¯à¥‹à¤—à¥€"),
     KALACHAKRA_RELATIONSHIP_NEUTRAL("Neutral", "à¤¤à¤Ÿà¤¸à¥à¤¥"),
@@ -2230,11 +2214,11 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     CHAT_CANCEL_BTN("Cancel", "à¤°à¤¦à¥à¤¦ à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥"),
     CHAT_ARCHIVE("Archive", "à¤¸à¤‚à¤—à¥à¤°à¤¹"),
     CHAT_MORE_OPTIONS("More options", "à¤¥à¤ª à¤µà¤¿à¤•à¤²à¥à¤ªà¤¹à¤°à¥‚"),
-    CHAT_MESSAGES_COUNT("%d messages", "%d à¤¸à¤¨à¥à¤¦à¥‡à¤¶à¤¹à¤°à¥‚"),
+    CHAT_MESSAGES_COUNT("%%d messages", "%%d à¤¸à¤¨à¥à¤¦à¥‡à¤¶à¤¹à¤°à¥‚"),
     CHAT_JUST_NOW("Just now", "à¤…à¤¹à¤¿à¤²à¥‡ à¤­à¤°à¥à¤–à¤°à¥ˆ"),
     CHAT_MINUTES_AGO("%dm ago", "%dà¤®à¤¿. à¤ªà¤¹à¤¿à¤²à¥‡"),
-    CHAT_HOURS_AGO("%dh ago", "%d à¤˜à¤£à¥à¤Ÿà¤¾ à¤ªà¤¹à¤¿à¤²à¥‡"),
-    CHAT_DAYS_AGO("%dd ago", "%d à¤¦à¤¿à¤¨ à¤ªà¤¹à¤¿à¤²à¥‡"),
+    CHAT_HOURS_AGO("%dh ago", "%%d à¤˜à¤£à¥à¤Ÿà¤¾ à¤ªà¤¹à¤¿à¤²à¥‡"),
+    CHAT_DAYS_AGO("%dd ago", "%%d à¤¦à¤¿à¤¨ à¤ªà¤¹à¤¿à¤²à¥‡"),
 
     // Stormy AI Welcome
     STORMY_TITLE("Stormy", "à¤¸à¥à¤Ÿà¤°à¥à¤®à¥€"),
@@ -2294,97 +2278,39 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     HORA_MOON_TITLE("Moon Hora - Inherited/Liquid Wealth", "à¤šà¤¨à¥à¤¦à¥à¤° à¤¹à¥‹à¤°à¤¾ - à¤µà¤¿à¤°à¤¾à¤¸à¤¤/à¤¤à¤°à¤² à¤§à¤¨"),
     HORA_MOON_DESC("These planets indicate potential for inherited or liquid assets", "à¤¯à¥€ à¤—à¥à¤°à¤¹à¤¹à¤°à¥‚à¤²à¥‡ à¤µà¤¿à¤°à¤¾à¤¸à¤¤ à¤µà¤¾ à¤¤à¤°à¤² à¤¸à¤®à¥à¤ªà¤¤à¥à¤¤à¤¿à¤•à¥‹ à¤¸à¤®à¥à¤­à¤¾à¤µà¤¨à¤¾ à¤¸à¤‚à¤•à¥‡à¤¤ à¤—à¤°à¥à¤›à¤¨à¥"),
     HORA_WEALTH_SOURCES("Wealth Sources", "à¤§à¤¨à¤•à¤¾ à¤¸à¥à¤°à¥‹à¤¤à¤¹à¤°à¥‚"),
-    HORA_POTENTIAL("Potential", "à¤¸à¤®à¥à¤­à¤¾à¤µà¥à¤¯à¤¤à¤¾"),
-    HORA_POTENTIAL_EXCEPTIONAL("Exceptional", "à¤…à¤¸à¤¾à¤§à¤¾à¤°à¤£"),
-    HORA_POTENTIAL_HIGH("High", "à¤‰à¤šà¥à¤š"),
-    HORA_POTENTIAL_MODERATE("Moderate", "à¤®à¤§à¥à¤¯à¤®"),
-    HORA_POTENTIAL_AVERAGE("Average", "à¤”à¤¸à¤¤"),
-    HORA_POTENTIAL_NEEDS_EFFORT("Needs Effort", "à¤ªà¥à¤°à¤¯à¤¾à¤¸ à¤†à¤µà¤¶à¥à¤¯à¤•"),
-    HORA_SELF_EARNED("Self-Earned", "à¤¸à¥à¤µ-à¤…à¤°à¥à¤œà¤¿à¤¤"),
-    HORA_INHERITED("Inherited/Liquid", "à¤µà¤¿à¤°à¤¾à¤¸à¤¤/à¤¤à¤°à¤²"),
 
     // ============================================
     // DIVISIONAL CHARTS - DREKKANA (D-3) SIBLINGS
     // ============================================
-    DREKKANA_COURAGE_TITLE("Courage & Initiative", "à¤¸à¤¾à¤¹à¤¸ à¤° à¤ªà¤¹à¤²"),
     DREKKANA_PHYSICAL("Physical", "à¤¶à¤¾à¤°à¥€à¤°à¤¿à¤•"),
     DREKKANA_MENTAL("Mental", "à¤®à¤¾à¤¨à¤¸à¤¿à¤•"),
     DREKKANA_INITIATIVE("Initiative", "à¤ªà¤¹à¤²"),
-    DREKKANA_YOUNGER("Younger", "à¤¸à¤¾à¤¨à¥‹"),
-    DREKKANA_ELDER("Elder", "à¤ à¥‚à¤²à¥‹"),
-    DREKKANA_RELATIONSHIP("Relationship", "à¤¸à¤®à¥à¤¬à¤¨à¥à¤§"),
-    DREKKANA_SHORT_JOURNEYS("Short Journeys", "à¤›à¥‹à¤Ÿà¤¾ à¤¯à¤¾à¤¤à¥à¤°à¤¾à¤¹à¤°à¥‚"),
-    DREKKANA_COMMUNICATION_TITLE("Communication Skills", "à¤¸à¤žà¥à¤šà¤¾à¤° à¤¸à¥€à¤ªà¤¹à¤°à¥‚"),
-    DREKKANA_OVERALL("Overall", "à¤¸à¤®à¤—à¥à¤°"),
-    DREKKANA_WRITING("Writing", "à¤²à¥‡à¤–à¤¨"),
-    DREKKANA_SPEAKING("Speaking", "à¤¬à¥‹à¤²à¥à¤¨à¥‡"),
     DREKKANA_ARTISTIC("Artistic Talents", "à¤•à¤²à¤¾à¤¤à¥à¤®à¤• à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤¹à¤°à¥‚"),
-    DREKKANA_ARTISTIC_TALENTS("Artistic Talents", "à¤•à¤²à¤¾à¤¤à¥à¤®à¤• à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤¹à¤°à¥‚"),
 
     // Courage Levels
     COURAGE_LEVEL("Level", "à¤¸à¥à¤¤à¤°"),
     COURAGE_PHYSICAL("Physical Courage", "à¤¶à¤¾à¤°à¥€à¤°à¤¿à¤• à¤¸à¤¾à¤¹à¤¸"),
     COURAGE_MENTAL("Mental Courage", "à¤®à¤¾à¤¨à¤¸à¤¿à¤• à¤¸à¤¾à¤¹à¤¸"),
     COURAGE_INITIATIVE("Initiative", "à¤ªà¤¹à¤²"),
-    COURAGE_EXCEPTIONAL("Exceptional", "à¤…à¤¸à¤¾à¤§à¤¾à¤°à¤£"),
-    COURAGE_HIGH("High", "à¤‰à¤šà¥à¤š"),
-    COURAGE_MODERATE("Moderate", "à¤®à¤§à¥à¤¯à¤®"),
-    COURAGE_DEVELOPING("Developing", "à¤µà¤¿à¤•à¤¾à¤¸à¤¶à¥€à¤²"),
-    COURAGE_NEEDS_WORK("Needs Work", "à¤•à¤¾à¤® à¤†à¤µà¤¶à¥à¤¯à¤•"),
 
     // ============================================
     // DIVISIONAL CHARTS - NAVAMSA (D-9) MARRIAGE
     // ============================================
-    NAVAMSA_SPOUSE_TITLE("Spouse Characteristics", "à¤œà¥€à¤µà¤¨à¤¸à¤¾à¤¥à¥€ à¤µà¤¿à¤¶à¥‡à¤·à¤¤à¤¾à¤¹à¤°à¥‚"),
-    NAVAMSA_NATURE("Nature", "à¤¸à¥à¤µà¤­à¤¾à¤µ"),
-    NAVAMSA_PHYSICAL_TRAITS("Physical Traits", "à¤¶à¤¾à¤°à¥€à¤°à¤¿à¤• à¤—à¥à¤£à¤¹à¤°à¥‚"),
-    NAVAMSA_FAMILY_BACKGROUND("Family Background", "à¤ªà¤¾à¤°à¤¿à¤µà¤¾à¤°à¤¿à¤• à¤ªà¥ƒà¤·à¥à¤ à¤­à¥‚à¤®à¤¿"),
-    NAVAMSA_DIRECTION("Direction", "à¤¦à¤¿à¤¶à¤¾"),
-    NAVAMSA_PROBABLE_PROFESSIONS("Probable Professions", "à¤¸à¤®à¥à¤­à¤¾à¤µà¤¿à¤¤ à¤ªà¥‡à¤¶à¤¾à¤¹à¤°à¥‚"),
-    NAVAMSA_TIMING_TITLE("Marriage Timing", "à¤µà¤¿à¤µà¤¾à¤¹ à¤¸à¤®à¤¯"),
-    NAVAMSA_VENUS("Venus", "à¤¶à¥à¤•à¥à¤°"),
-    NAVAMSA_JUPITER("Jupiter", "à¤¬à¥ƒà¤¹à¤¸à¥à¤ªà¤¤à¤¿"),
-    NAVAMSA_DARAKARAKA("Darakaraka", "à¤¦à¤¾à¤°à¤•à¤¾à¤°à¤•"),
-    NAVAMSA_FAVORABLE_DASHA("Favorable Dasha Periods", "à¤…à¤¨à¥à¤•à¥‚à¤² à¤¦à¤¶à¤¾ à¤…à¤µà¤§à¤¿à¤¹à¤°à¥‚"),
-    NAVAMSA_KEY_PLANETS_TITLE("Key Planet Positions (D-9)", "à¤®à¥à¤–à¥à¤¯ à¤—à¥à¤°à¤¹ à¤¸à¥à¤¥à¤¿à¤¤à¤¿à¤¹à¤°à¥‚ (D-9)"),
-    NAVAMSA_UPAPADA("Upapada", "à¤‰à¤ªà¤ªà¤¦"),
-    NAVAMSA_RELATIONSHIP_STABILITY("Relationship Stability", "à¤¸à¤®à¥à¤¬à¤¨à¥à¤§ à¤¸à¥à¤¥à¤¿à¤°à¤¤à¤¾"),
-    NAVAMSA_AREAS_ATTENTION("Areas of Attention", "à¤§à¥à¤¯à¤¾à¤¨ à¤¦à¤¿à¤¨à¥à¤ªà¤°à¥à¤¨à¥‡ à¤•à¥à¤·à¥‡à¤¤à¥à¤°à¤¹à¤°à¥‚"),
-    NAVAMSA_PROTECTIVE_FACTORS("Protective Factors", "à¤¸à¥à¤°à¤•à¥à¤·à¤¾à¤¤à¥à¤®à¤• à¤•à¤¾à¤°à¤•à¤¹à¤°à¥‚"),
 
     // ============================================
     // DIVISIONAL CHARTS - DASHAMSA (D-10) CAREER
     // ============================================
-    DASHAMSA_BUSINESS_VS_SERVICE("Business vs Service Aptitude", "à¤µà¥à¤¯à¤¾à¤ªà¤¾à¤° à¤¬à¤¨à¤¾à¤® à¤¸à¥‡à¤µà¤¾ à¤¯à¥‹à¤—à¥à¤¯à¤¤à¤¾"),
-    DASHAMSA_BUSINESS("Business", "à¤µà¥à¤¯à¤¾à¤ªà¤¾à¤°"),
-    DASHAMSA_SERVICE("Service", "à¤¸à¥‡à¤µà¤¾"),
-    DASHAMSA_GOVT_SERVICE_TITLE("Government Service Potential", "à¤¸à¤°à¤•à¤¾à¤°à¥€ à¤¸à¥‡à¤µà¤¾ à¤¸à¤®à¥à¤­à¤¾à¤µà¤¨à¤¾"),
-    DASHAMSA_POTENTIAL("Potential", "à¤¸à¤®à¥à¤­à¤¾à¤µà¤¨à¤¾"),
-    DASHAMSA_RECOMMENDED_AREAS("Recommended Areas", "à¤¸à¤¿à¤«à¤¾à¤°à¤¿à¤¸ à¤—à¤°à¤¿à¤à¤•à¤¾ à¤•à¥à¤·à¥‡à¤¤à¥à¤°à¤¹à¤°à¥‚"),
-    DASHAMSA_PROFESSIONAL_STRENGTHS("Professional Strengths", "à¤µà¥à¤¯à¤¾à¤µà¤¸à¤¾à¤¯à¤¿à¤• à¤¬à¤²à¤¹à¤°à¥‚"),
 
     // ============================================
     // DIVISIONAL CHARTS - DWADASAMSA (D-12) PARENTS
     // ============================================
-    DWADASAMSA_FATHER("Father", "à¤¬à¥à¤¬à¤¾"),
-    DWADASAMSA_MOTHER("Mother", "à¤†à¤®à¤¾"),
-    DWADASAMSA_SIGNIFICATOR("Significator", "à¤•à¤¾à¤°à¤•"),
-    DWADASAMSA_HOUSE_LORD("House Lord", "à¤­à¤¾à¤µ à¤¸à¥à¤µà¤¾à¤®à¥€"),
-    DWADASAMSA_CHARACTERISTICS("Characteristics", "à¤µà¤¿à¤¶à¥‡à¤·à¤¤à¤¾à¤¹à¤°à¥‚"),
-    DWADASAMSA_RELATIONSHIP("Relationship", "à¤¸à¤®à¥à¤¬à¤¨à¥à¤§"),
-    DWADASAMSA_INHERITANCE_TITLE("Inheritance", "à¤µà¤¿à¤°à¤¾à¤¸à¤¤"),
-    DWADASAMSA_POTENTIAL("Potential", "à¤¸à¤®à¥à¤­à¤¾à¤µà¤¨à¤¾"),
-    DWADASAMSA_TIMING("Timing", "à¤¸à¤®à¤¯"),
-    DWADASAMSA_SOURCES("Sources", "à¤¸à¥à¤°à¥‹à¤¤à¤¹à¤°à¥‚"),
-    DWADASAMSA_ANCESTRAL_PROPERTY("Ancestral Property", "à¤ªà¥ˆà¤¤à¥ƒà¤• à¤¸à¤®à¥à¤ªà¤¤à¥à¤¤à¤¿"),
-    DWADASAMSA_LONGEVITY_TITLE("Longevity Indicators", "à¤¦à¥€à¤°à¥à¤˜à¤¾à¤¯à¥ à¤¸à¥‚à¤šà¤•à¤¹à¤°à¥‚"),
     DWADASAMSA_HEALTH_CONCERNS("Health Concerns", "à¤¸à¥à¤µà¤¾à¤¸à¥à¤¥à¥à¤¯ à¤šà¤¿à¤¨à¥à¤¤à¤¾à¤¹à¤°à¥‚"),
 
     // ============================================
     // AI MODELS SCREEN
     // ============================================
     AI_MODELS_TITLE("AI Models", "AI à¤®à¥‹à¤¡à¥‡à¤²à¤¹à¤°à¥‚"),
-    AI_MODELS_ENABLED_COUNT("%d models enabled", "%d à¤®à¥‹à¤¡à¥‡à¤²à¤¹à¤°à¥‚ à¤¸à¤•à¥à¤·à¤®"),
+    AI_MODELS_ENABLED_COUNT("%%d models enabled", "%%d à¤®à¥‹à¤¡à¥‡à¤²à¤¹à¤°à¥‚ à¤¸à¤•à¥à¤·à¤®"),
     AI_MODELS_BACK("Back", "à¤ªà¤›à¤¾à¤¡à¤¿"),
     AI_MODELS_REFRESH("Refresh models", "à¤®à¥‹à¤¡à¥‡à¤²à¤¹à¤°à¥‚ à¤°à¤¿à¤«à¥à¤°à¥‡à¤¸ à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥"),
     AI_MODELS_FREE_TITLE("Free AI Models", "à¤¨à¤¿à¤ƒà¤¶à¥à¤²à¥à¤• AI à¤®à¥‹à¤¡à¥‡à¤²à¤¹à¤°à¥‚"),
@@ -2718,21 +2644,16 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // DASHA SANDHI SCREEN
     // ============================================
     SANDHI_SCREEN_TITLE("Dasha Sandhi", "à¤¦à¤¶à¤¾ à¤¸à¤¨à¥à¤§à¤¿"),
-    SANDHI_SUBTITLE("Period Transitions", "à¤¦à¤¶à¤¾ à¤ªà¤°à¤¿à¤µà¤°à¥à¤¤à¤¨à¤¹à¤°à¥‚"),
     SANDHI_ABOUT_TITLE("About Dasha Sandhi", "à¤¦à¤¶à¤¾ à¤¸à¤¨à¥à¤§à¤¿à¤•à¥‹ à¤¬à¤¾à¤°à¥‡à¤®à¤¾"),
     SANDHI_ABOUT_DESC("Dasha Sandhi refers to the junction or transition point between two planetary periods (Dashas) in Vedic astrology.\n\nThese transition periods are considered sensitive times when:\nâ€¢ The energy shifts from one planetary influence to another\nâ€¢ Both planets' effects may be felt simultaneously\nâ€¢ Major life changes often occur\nâ€¢ Careful planning is advised\n\nThe intensity of a Sandhi depends on:\nâ€¢ The nature of the transitioning planets\nâ€¢ Their relationship in your chart\nâ€¢ Current transits and aspects\n\nUnderstanding your Sandhi periods helps you prepare for and navigate these significant life transitions.", "à¤¦à¤¶à¤¾ à¤¸à¤¨à¥à¤§à¤¿ à¤­à¤¨à¥à¤¨à¤¾à¤²à¥‡ à¤µà¥ˆà¤¦à¤¿à¤• à¤œà¥à¤¯à¥‹à¤¤à¤¿à¤·à¤®à¤¾ à¤¦à¥à¤ˆ à¤—à¥à¤°à¤¹ à¤¦à¤¶à¤¾ (à¤¸à¤®à¤¯ à¤…à¤µà¤§à¤¿) à¤¬à¥€à¤šà¤•à¥‹ à¤®à¤¿à¤²à¤¨ à¤µà¤¾ à¤¸à¤‚à¤•à¥à¤°à¤®à¤£ à¤¬à¤¿à¤¨à¥à¤¦à¥à¤²à¤¾à¤ˆ à¤œà¤¨à¤¾à¤‰à¤à¤›à¥¤\n\nà¤¯à¥€ à¤¸à¤‚à¤•à¥à¤°à¤®à¤£ à¤…à¤µà¤§à¤¿à¤¹à¤°à¥‚à¤²à¤¾à¤ˆ à¤¸à¤‚à¤µà¥‡à¤¦à¤¨à¤¶à¥€à¤² à¤¸à¤®à¤¯ à¤®à¤¾à¤¨à¤¿à¤¨à¥à¤› à¤œà¤¬:\nâ€¢ à¤Šà¤°à¥à¤œà¤¾ à¤à¤• à¤—à¥à¤°à¤¹à¤•à¥‹ à¤ªà¥à¤°à¤­à¤¾à¤µà¤¬à¤¾à¤Ÿ à¤…à¤°à¥à¤•à¥‹à¤®à¤¾ à¤¸à¤°à¥à¤›\nâ€¢ à¤¦à¥à¤¬à¥ˆ à¤—à¥à¤°à¤¹à¤•à¤¾ à¤ªà¥à¤°à¤­à¤¾à¤µà¤¹à¤°à¥‚ à¤à¤• à¤¸à¤¾à¤¥ à¤®à¤¹à¤¸à¥à¤¸ à¤¹à¥à¤¨ à¤¸à¤•à¥à¤›\nâ€¢ à¤…à¤•à¥à¤¸à¤° à¤ à¥‚à¤²à¤¾ à¤œà¥€à¤µà¤¨ à¤ªà¤°à¤¿à¤µà¤°à¥à¤¤à¤¨à¤¹à¤°à¥‚ à¤¹à¥à¤¨à¥à¤›à¤¨à¥\nâ€¢ à¤¸à¤¾à¤µà¤§à¤¾à¤¨à¥€à¤ªà¥‚à¤°à¥à¤µà¤• à¤¯à¥‹à¤œà¤¨à¤¾ à¤¬à¤¨à¤¾à¤‰à¤¨ à¤¸à¤²à¥à¤²à¤¾à¤¹ à¤¦à¤¿à¤‡à¤¨à¥à¤›\n\nà¤¸à¤¨à¥à¤§à¤¿à¤•à¥‹ à¤¤à¥€à¤µà¥à¤°à¤¤à¤¾ à¤¯à¤¸à¤®à¤¾ à¤¨à¤¿à¤°à¥à¤­à¤° à¤—à¤°à¥à¤¦à¤›:\nâ€¢ à¤¸à¤‚à¤•à¥à¤°à¤®à¤£ à¤­à¤‡à¤°à¤¹à¥‡à¤•à¤¾ à¤—à¥à¤°à¤¹à¤¹à¤°à¥‚à¤•à¥‹ à¤ªà¥à¤°à¤•à¥ƒà¤¤à¤¿\nâ€¢ à¤¤à¤ªà¤¾à¤ˆà¤‚à¤•à¥‹ à¤•à¥à¤£à¥à¤¡à¤²à¥€à¤®à¤¾ à¤¤à¤¿à¤¨à¥€à¤¹à¤°à¥‚à¤•à¥‹ à¤¸à¤®à¥à¤¬à¤¨à¥à¤§\nâ€¢ à¤µà¤°à¥à¤¤à¤®à¤¾à¤¨ à¤—à¥‹à¤šà¤° à¤° à¤¦à¥ƒà¤·à¥à¤Ÿà¤¿à¤¹à¤°à¥‚\n\nà¤¤à¤ªà¤¾à¤ˆà¤‚à¤•à¥‹ à¤¸à¤¨à¥à¤§à¤¿ à¤…à¤µà¤§à¤¿à¤¹à¤°à¥‚ à¤¬à¥à¤à¥à¤¨à¤¾à¤²à¥‡ à¤¤à¤ªà¤¾à¤ˆà¤‚à¤²à¤¾à¤ˆ à¤¯à¥€ à¤®à¤¹à¤¤à¥à¤¤à¥à¤µà¤ªà¥‚à¤°à¥à¤£ à¤œà¥€à¤µà¤¨ à¤¸à¤‚à¤•à¥à¤°à¤®à¤£à¤¹à¤°à¥‚à¤•à¥‹ à¤¤à¤¯à¤¾à¤°à¥€ à¤—à¤°à¥à¤¨ à¤° à¤¨à¥‡à¤­à¤¿à¤—à¥‡à¤Ÿ à¤—à¤°à¥à¤¨ à¤®à¤¦à¥à¤¦à¤¤ à¤—à¤°à¥à¤›à¥¤"),
-    SANDHI_VOLATILITY("Overall Volatility", "à¤¸à¤®à¤—à¥à¤° à¤…à¤¸à¥à¤¥à¤¿à¤°à¤¤à¤¾"),
     SANDHI_VOLATILITY_DESC("Based on current and upcoming period transitions", "à¤µà¤°à¥à¤¤à¤®à¤¾à¤¨ à¤° à¤†à¤—à¤¾à¤®à¥€ à¤¦à¤¶à¤¾ à¤ªà¤°à¤¿à¤µà¤°à¥à¤¤à¤¨à¤¹à¤°à¥‚à¤®à¤¾ à¤†à¤§à¤¾à¤°à¤¿à¤¤"),
     SANDHI_ACTIVE("Active", "à¤¸à¤•à¥à¤°à¤¿à¤¯"),
-    SANDHI_UPCOMING("Upcoming", "à¤†à¤—à¤¾à¤®à¥€"),
-    SANDHI_RECENT("Recent", "à¤¹à¤¾à¤²à¤¸à¤¾à¤²à¥ˆà¤•à¥‹"),
     SANDHI_GUIDANCE("General Guidance", "à¤¸à¤¾à¤®à¤¾à¤¨à¥à¤¯ à¤®à¤¾à¤°à¥à¤—à¤¦à¤°à¥à¤¶à¤¨"),
     SANDHI_CURRENT_ACTIVE("Currently in Sandhi Period", "à¤µà¤°à¥à¤¤à¤®à¤¾à¤¨à¤®à¤¾ à¤¸à¤¨à¥à¤§à¤¿ à¤…à¤µà¤§à¤¿à¤®à¤¾"),
     SANDHI_INTENSITY("Intensity:", "à¤¤à¥€à¤µà¥à¤°à¤¤à¤¾:"),
     SANDHI_ENDS("Ends:", "à¤…à¤¨à¥à¤¤à¥à¤¯:"),
     SANDHI_NO_ACTIVE("No Active Sandhi", "à¤•à¥à¤¨à¥ˆ à¤¸à¤•à¥à¤°à¤¿à¤¯ à¤¸à¤¨à¥à¤§à¤¿ à¤›à¥ˆà¤¨"),
     SANDHI_NO_ACTIVE_DESC("You are not currently in a Dasha Sandhi period. Check the Upcoming tab for future transitions.", "à¤¤à¤ªà¤¾à¤ˆà¤‚ à¤¹à¤¾à¤² à¤¦à¤¶à¤¾ à¤¸à¤¨à¥à¤§à¤¿ à¤…à¤µà¤§à¤¿à¤®à¤¾ à¤¹à¥à¤¨à¥à¤¹à¥à¤¨à¥à¤¨à¥¤ à¤­à¤µà¤¿à¤·à¥à¤¯à¤•à¤¾ à¤ªà¤°à¤¿à¤µà¤°à¥à¤¤à¤¨à¤¹à¤°à¥‚à¤•à¥‹ à¤²à¤¾à¤—à¤¿ à¤†à¤—à¤¾à¤®à¥€ à¤Ÿà¥à¤¯à¤¾à¤¬ à¤œà¤¾à¤à¤š à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤"),
-    SANDHI_PREDICTIONS("Predictions", "à¤­à¤µà¤¿à¤·à¥à¤¯à¤µà¤¾à¤£à¥€à¤¹à¤°à¥‚"),
     SANDHI_IMPACTS("Life Area Impacts", "à¤œà¥€à¤µà¤¨ à¤•à¥à¤·à¥‡à¤¤à¥à¤° à¤ªà¥à¤°à¤­à¤¾à¤µà¤¹à¤°à¥‚"),
     SANDHI_REMEDIES("Recommended Remedies", "à¤¸à¤¿à¤«à¤¾à¤°à¤¿à¤¸ à¤—à¤°à¤¿à¤à¤•à¤¾ à¤‰à¤ªà¤¾à¤¯à¤¹à¤°à¥‚"),
     SANDHI_NO_CHART_DESC("Create or select a birth chart to analyze Dasha Sandhi periods.", "à¤¦à¤¶à¤¾ à¤¸à¤¨à¥à¤§à¤¿ à¤…à¤µà¤§à¤¿à¤¹à¤°à¥‚ à¤µà¤¿à¤¶à¥à¤²à¥‡à¤·à¤£ à¤—à¤°à¥à¤¨ à¤œà¤¨à¥à¤® à¤•à¥à¤£à¥à¤¡à¤²à¥€ à¤¸à¤¿à¤°à¥à¤œà¤¨à¤¾ à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥ à¤µà¤¾ à¤›à¤¾à¤¨à¥à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤"),
@@ -2762,8 +2683,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     GRAHA_NO_REMEDIES_DESC("Since there are no active planetary wars, remedial measures are not required.", "à¤•à¥à¤¨à¥ˆ à¤¸à¤•à¥à¤°à¤¿à¤¯ à¤—à¥à¤°à¤¹ à¤¯à¥à¤¦à¥à¤§ à¤¨à¤­à¤à¤•à¥‹à¤²à¥‡, à¤‰à¤ªà¤¾à¤¯à¤¹à¤°à¥‚ à¤†à¤µà¤¶à¥à¤¯à¤• à¤›à¥ˆà¤¨à¤¨à¥à¥¤"),
     GRAHA_ABOUT_TITLE("About Graha Yuddha", "à¤—à¥à¤°à¤¹ à¤¯à¥à¤¦à¥à¤§à¤•à¥‹ à¤¬à¤¾à¤°à¥‡à¤®à¤¾"),
     GRAHA_ABOUT_DESC("Graha Yuddha (Planetary War) occurs when two planets (excluding Sun and Moon) are within 1 degree of each other.\n\nThe planet with the lower longitude is usually considered the winner, while the one with higher longitude is the loser.\n\nImpacts:\nâ€¢ The losing planet's significations may suffer\nâ€¢ If the losing planet rules important houses, those areas may be affected\nâ€¢ The war is most intense during close conjunctions", "à¤—à¥à¤°à¤¹ à¤¯à¥à¤¦à¥à¤§ à¤¤à¤¬ à¤¹à¥à¤¨à¥à¤› à¤œà¤¬ à¤¦à¥à¤ˆ à¤—à¥à¤°à¤¹à¤¹à¤°à¥‚ (à¤¸à¥‚à¤°à¥à¤¯ à¤° à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾ à¤¬à¤¾à¤¹à¥‡à¤•) à¤à¤• à¤…à¤°à¥à¤•à¤¾à¤•à¥‹ à¥§ à¤¡à¤¿à¤—à¥à¤°à¥€ à¤­à¤¿à¤¤à¥à¤° à¤¹à¥à¤¨à¥à¤›à¤¨à¥à¥¤\n\nà¤•à¤® à¤¦à¥‡à¤¶à¤¾à¤¨à¥à¤¤à¤° à¤­à¤à¤•à¥‹ à¤—à¥à¤°à¤¹à¤²à¤¾à¤ˆ à¤¸à¤¾à¤®à¤¾à¤¨à¥à¤¯à¤¤à¤¯à¤¾ à¤µà¤¿à¤œà¥‡à¤¤à¤¾ à¤®à¤¾à¤¨à¤¿à¤¨à¥à¤›, à¤œà¤¬à¤•à¤¿ à¤‰à¤šà¥à¤š à¤¦à¥‡à¤¶à¤¾à¤¨à¥à¤¤à¤° à¤­à¤à¤•à¥‹ à¤—à¥à¤°à¤¹à¤²à¤¾à¤ˆ à¤ªà¤°à¤¾à¤œà¤¿à¤¤ à¤®à¤¾à¤¨à¤¿à¤¨à¥à¤›à¥¤\n\nà¤ªà¥à¤°à¤­à¤¾à¤µà¤¹à¤°à¥‚:\nâ€¢ à¤ªà¤°à¤¾à¤œà¤¿à¤¤ à¤—à¥à¤°à¤¹à¤•à¤¾ à¤•à¤¾à¤°à¤•à¤¤à¥à¤µà¤¹à¤°à¥‚à¤®à¤¾ à¤…à¤¸à¤° à¤ªà¤°à¥à¤¨ à¤¸à¤•à¥à¤›\nâ€¢ à¤¯à¤¦à¤¿ à¤ªà¤°à¤¾à¤œà¤¿à¤¤ à¤—à¥à¤°à¤¹à¤²à¥‡ à¤®à¤¹à¤¤à¥à¤¤à¥à¤µà¤ªà¥‚à¤°à¥à¤£ à¤­à¤¾à¤µà¤¹à¤°à¥‚à¤•à¥‹ à¤¸à¥à¤µà¤¾à¤®à¥€ à¤¹à¥‹ à¤­à¤¨à¥‡, à¤¤à¥€ à¤•à¥à¤·à¥‡à¤¤à¥à¤°à¤¹à¤°à¥‚ à¤ªà¥à¤°à¤­à¤¾à¤µà¤¿à¤¤ à¤¹à¥à¤¨ à¤¸à¤•à¥à¤›à¤¨à¥\nâ€¢ à¤¨à¤œà¤¿à¤•à¤•à¥‹ à¤¯à¥à¤¤à¤¿à¤®à¤¾ à¤¯à¥à¤¦à¥à¤§ à¤¸à¤¬à¥ˆà¤­à¤¨à¥à¤¦à¤¾ à¤¤à¥€à¤µà¥à¤° à¤¹à¥à¤¨à¥à¤›"),
-    GRAHA_DEFEATS_MSG("%1$s defeats %2$s", "%1$s à¤²à¥‡ %2$s à¤²à¤¾à¤ˆ à¤œà¤¿à¤¤à¥à¤›"),
-    GRAHA_IN_HOUSE_MSG("in %1$s (House %2$d)", "%1$s (à¤­à¤¾à¤µ %2$d) à¤®à¤¾"),
+    GRAHA_DEFEATS_MSG("%1\$s defeats %2\$s", "%1\$s à¤²à¥‡ %2\$s à¤²à¤¾à¤ˆ à¤œà¤¿à¤¤à¥à¤›"),
+    GRAHA_IN_HOUSE_MSG("in %1\$s (House %2\$d)", "%1\$s (à¤­à¤¾à¤µ %2\$d) à¤®à¤¾"),
 
     // Kemadruma Yoga
     KEMA_SCREEN_TITLE("Kemadruma Yoga", "à¤•à¥‡à¤®à¤¦à¥à¤°à¥à¤® à¤¯à¥‹à¤—"),
@@ -2789,7 +2710,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KEMA_NO_REMEDIES_DESC("Since Kemadruma Yoga is not formed or is fully cancelled, no remedies are required.", "à¤•à¥‡à¤®à¤¦à¥à¤°à¥à¤® à¤¯à¥‹à¤— à¤¨à¤¬à¤¨à¥‡à¤•à¥‹ à¤µà¤¾ à¤ªà¥‚à¤°à¥à¤£ à¤°à¥‚à¤ªà¤®à¤¾ à¤­à¤‚à¤— à¤­à¤à¤•à¥‹à¤²à¥‡, à¤•à¥à¤¨à¥ˆ à¤‰à¤ªà¤¾à¤¯ à¤†à¤µà¤¶à¥à¤¯à¤• à¤›à¥ˆà¤¨à¥¤"),
     KEMA_ABOUT_TITLE("About Kemadruma Yoga", "à¤•à¥‡à¤®à¤¦à¥à¤°à¥à¤® à¤¯à¥‹à¤—à¤•à¥‹ à¤¬à¤¾à¤°à¥‡à¤®à¤¾"),
     KEMA_ABOUT_DESC("Kemadruma Yoga forms when the Moon has no planets (except Sun, Rahu, Ketu) in the 2nd and 12th houses from it, and no planets are in Kendra from the Moon or Lagna.\n\nIt is considered an inauspicious yoga indicating loneliness, mental unrest, and financial instability. However, it is often cancelled (Bhanga) by the presence of planets in Kendra houses or if the Moon interacts with other planets.", "à¤•à¥‡à¤®à¤¦à¥à¤°à¥à¤® à¤¯à¥‹à¤— à¤¤à¤¬ à¤¬à¤¨à¥à¤› à¤œà¤¬ à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾à¤•à¥‹ à¤¦à¥‹à¤¸à¥à¤°à¥‹ à¤° à¤¬à¤¾à¤¹à¥à¤°à¥Œà¤‚ à¤­à¤¾à¤µà¤®à¤¾ à¤•à¥à¤¨à¥ˆ à¤—à¥à¤°à¤¹à¤¹à¤°à¥‚ (à¤¸à¥‚à¤°à¥à¤¯, à¤°à¤¾à¤¹à¥, à¤•à¥‡à¤¤à¥ à¤¬à¤¾à¤¹à¥‡à¤•) à¤¹à¥à¤à¤¦à¥ˆà¤¨à¤¨à¥, à¤° à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾ à¤µà¤¾ à¤²à¤—à¥à¤¨à¤¬à¤¾à¤Ÿ à¤•à¥‡à¤¨à¥à¤¦à¥à¤°à¤®à¤¾ à¤•à¥à¤¨à¥ˆ à¤—à¥à¤°à¤¹à¤¹à¤°à¥‚ à¤¹à¥à¤à¤¦à¥ˆà¤¨à¤¨à¥à¥¤\n\nà¤¯à¤¸à¤²à¤¾à¤ˆ à¤…à¤¶à¥à¤­ à¤¯à¥‹à¤— à¤®à¤¾à¤¨à¤¿à¤¨à¥à¤› à¤œà¤¸à¤²à¥‡ à¤à¤•à¥à¤²à¥‹à¤ªà¤¨, à¤®à¤¾à¤¨à¤¸à¤¿à¤• à¤…à¤¶à¤¾à¤¨à¥à¤¤à¤¿ à¤° à¤†à¤°à¥à¤¥à¤¿à¤• à¤…à¤¸à¥à¤¥à¤¿à¤°à¤¤à¤¾à¤²à¤¾à¤ˆ à¤¸à¤‚à¤•à¥‡à¤¤ à¤—à¤°à¥à¤¦à¤›à¥¤ à¤¯à¤¦à¥à¤¯à¤ªà¤¿, à¤•à¥‡à¤¨à¥à¤¦à¥à¤° à¤­à¤¾à¤µà¤¹à¤°à¥‚à¤®à¤¾ à¤—à¥à¤°à¤¹à¤¹à¤°à¥‚à¤•à¥‹ à¤‰à¤ªà¤¸à¥à¤¥à¤¿à¤¤à¤¿ à¤µà¤¾ à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾à¤²à¥‡ à¤…à¤¨à¥à¤¯ à¤—à¥à¤°à¤¹à¤¹à¤°à¥‚à¤¸à¤à¤— à¤…à¤¨à¥à¤¤à¤°à¤•à¥à¤°à¤¿à¤¯à¤¾ à¤—à¤°à¥‡à¤®à¤¾ à¤¯à¥‹ à¤…à¤•à¥à¤¸à¤° à¤­à¤‚à¤— à¤¹à¥à¤¨à¥à¤›à¥¤"),
-    KEMA_CANCELLATIONS_FOUND("%1$d Cancellation(s) Found", "%1$d à¤­à¤‚à¤—(à¤¹à¤°à¥‚) à¤«à¥‡à¤²à¤¾ à¤ªà¤°à¥à¤¯à¥‹"),
+    KEMA_CANCELLATIONS_FOUND("%1\$d Cancellation(s) Found", "%1\$d à¤­à¤‚à¤—(à¤¹à¤°à¥‚) à¤«à¥‡à¤²à¤¾ à¤ªà¤°à¥à¤¯à¥‹"),
     KEMA_FORMATION_MAIN("Moon lacks planetary support in adjacent houses.", "à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾à¤²à¤¾à¤ˆ à¤¨à¤œà¤¿à¤•à¤•à¤¾ à¤­à¤¾à¤µà¤¹à¤°à¥‚à¤®à¤¾ à¤—à¥à¤°à¤¹à¤¹à¤°à¥‚à¤•à¥‹ à¤¸à¤®à¤°à¥à¤¥à¤¨ à¤›à¥ˆà¤¨à¥¤"),
     KEMA_FORMATION_2ND_EMPTY("2nd house from Moon is empty.", "à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾à¤¬à¤¾à¤Ÿ à¤¦à¥‹à¤¸à¥à¤°à¥‹ à¤­à¤¾à¤µ à¤–à¤¾à¤²à¥€ à¤›à¥¤"),
     KEMA_FORMATION_12TH_EMPTY("12th house from Moon is empty.", "à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾à¤¬à¤¾à¤Ÿ à¤¬à¤¾à¤¹à¥à¤°à¥Œà¤‚ à¤­à¤¾à¤µ à¤–à¤¾à¤²à¥€ à¤›à¥¤"),
@@ -2797,7 +2718,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KEMA_REASON_2ND("No planets in 2nd house from Moon", "à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾à¤¬à¤¾à¤Ÿ à¤¦à¥‹à¤¸à¥à¤°à¥‹ à¤­à¤¾à¤µà¤®à¤¾ à¤•à¥à¤¨à¥ˆ à¤—à¥à¤°à¤¹ à¤›à¥ˆà¤¨"),
     KEMA_REASON_12TH("No planets in 12th house from Moon", "à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾à¤¬à¤¾à¤Ÿ à¤¬à¤¾à¤¹à¥à¤°à¥Œà¤‚ à¤­à¤¾à¤µà¤®à¤¾ à¤•à¥à¤¨à¥ˆ à¤—à¥à¤°à¤¹ à¤›à¥ˆà¤¨"),
     KEMA_REASON_CONJUNCT("Moon is not conjunct with any planet", "à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾ à¤•à¥à¤¨à¥ˆ à¤—à¥à¤°à¤¹à¤¸à¤à¤— à¤¯à¥à¤¤à¤¿à¤®à¤¾ à¤›à¥ˆà¤¨"),
-    KEMA_FORMATION_STRENGTH("Formation strength: %1$d%%", "à¤¯à¥‹à¤— à¤¬à¤²: %1$d%%"),
+    KEMA_FORMATION_STRENGTH("Formation strength: %1\$d%%", "à¤¯à¥‹à¤— à¤¬à¤²: %1\$d%%"),
     KEMA_NAKSHATRA("Nakshatra", "à¤¨à¤•à¥à¤·à¤¤à¥à¤°"),
     KEMA_PAKSHA("Paksha", "à¤ªà¤•à¥à¤·"),
     KEMA_BRIGHTNESS("Brightness", "à¤šà¤®à¤•"),
@@ -2810,9 +2731,9 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     PANCHANGA_SUN_MOON("Sun & Moon", "à¤¸à¥‚à¤°à¥à¤¯ à¤° à¤šà¤¨à¥à¤¦à¥à¤°à¤®à¤¾"),
     PANCHANGA_RISE("Rise", "à¤‰à¤¦à¤¯"),
     PANCHANGA_SET("Set", "à¤…à¤¸à¥à¤¤"),
-    PANCHANGA_LUNAR_DAY_FMT("Lunar day (%1$s)", "à¤šà¤¨à¥à¤¦à¥à¤° à¤¦à¤¿à¤¨ (%1$s)"),
+    PANCHANGA_LUNAR_DAY_FMT("Lunar day (%1\$s)", "à¤šà¤¨à¥à¤¦à¥à¤° à¤¦à¤¿à¤¨ (%1\$s)"),
     PANCHANGA_VARA_DESC("Weekday, ruled by specific planet", "à¤¬à¤¾à¤°, à¤µà¤¿à¤¶à¤¿à¤·à¥à¤Ÿ à¤—à¥à¤°à¤¹à¤¦à¥à¤µà¤¾à¤°à¤¾ à¤¶à¤¾à¤¸à¤¿à¤¤"),
-    PANCHANGA_NAKSHATRA_DESC_FMT("Lunar mansion (Pada %1$d)", "à¤¨à¤•à¥à¤·à¤¤à¥à¤° (à¤ªà¤¦ %1$d)"),
+    PANCHANGA_NAKSHATRA_DESC_FMT("Lunar mansion (Pada %1\$d)", "à¤¨à¤•à¥à¤·à¤¤à¥à¤° (à¤ªà¤¦ %1\$d)"),
     PANCHANGA_YOGA_DESC("Auspicious combination", "à¤¶à¥à¤­ à¤¸à¤‚à¤¯à¥‹à¤—"),
     PANCHANGA_KARANA_DESC("Half of a tithi", "à¤¤à¤¿à¤¥à¤¿à¤•à¥‹ à¤†à¤§à¤¾ à¤­à¤¾à¤—"),
     PANCHANGA_AVOID_ACTIVITIES("Avoid important activities", "à¤®à¤¹à¤¤à¥à¤¤à¥à¤µà¤ªà¥‚à¤°à¥à¤£ à¤•à¤¾à¤°à¥à¤¯à¤¹à¤°à¥‚ à¤¨à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥"),
@@ -2875,8 +2796,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     SUDARSHANA_INFLUENCE_ASPECT("%s aspects from %s", "%s ले %s बाट दृष्टि दिन्छ"),
 
     SUDARSHANA_FACTOR_DIGNITY("Sign lord %s dignity: %s", "राशि स्वामी %s अवस्था: %s"),
-    SUDARSHANA_FACTOR_PLANETS("%d planets in active sign", "%d ग्रहहरू सक्रिय राशिमा"),
-    SUDARSHANA_FACTOR_ASPECTS("%d planets aspecting", "%d ग्रहहरूको दृष्टि"),
+    SUDARSHANA_FACTOR_PLANETS("%%d planets in active sign", "%%d ग्रहहरू सक्रिय राशिमा"),
+    SUDARSHANA_FACTOR_ASPECTS("%%d planets aspecting", "%%d ग्रहहरूको दृष्टि"),
 
     SUDARSHANA_ASSESSMENT_HIGHLY_FAVORABLE("Highly favorable year with aligned energies from all three references", "तीनै सन्दर्भहरूबाट समान ऊर्जासहित अत्यन्त अनुकूल वर्ष"),
     SUDARSHANA_ASSESSMENT_POSITIVE("Generally positive year with good support from chart references", "कुण्डली सन्दर्भहरूबाट राम्रो समर्थनसहित सामान्यतया सकारात्मक वर्ष"),
@@ -2909,7 +2830,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
 
     SUDARSHANA_DIG_EXALTED("Exalted", "उच्च"),
     SUDARSHANA_DIG_OWN("Own Sign", "स्वराशि"),
-    SUDARSHANA_DIG_DEBILITATED("Debilitated", "नीच"),
     SUDARSHANA_DIG_DEBILITATED("Debilitated", "नीच"),
     SUDARSHANA_DIG_NORMAL("Normal", "सामान्य"),
 
