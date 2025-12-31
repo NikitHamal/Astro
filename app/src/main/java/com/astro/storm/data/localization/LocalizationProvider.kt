@@ -175,10 +175,11 @@ fun Int.localized(): String {
 @ReadOnlyComposable
 fun Double.localized(precision: Int = 1): String {
     val language = LocalLanguage.current
+    val formatted = String.format("%.${precision}f", this)
     return if (language == Language.NEPALI) {
-        BikramSambatConverter.toNepaliNumerals(this, precision)
+        BikramSambatConverter.toNepaliNumerals(formatted)
     } else {
-        String.format("%.${precision}f", this)
+        formatted
     }
 }
 

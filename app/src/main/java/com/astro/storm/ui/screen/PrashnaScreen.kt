@@ -1259,7 +1259,7 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
                     shape = RoundedCornerShape(6.dp)
                 ) {
                     Text(
-                        moonAnalysis.moonStrength.localizedName(),
+                        moonAnalysis.moonStrength.getLocalizedName(currentLanguage()),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
                         color = strengthColor,

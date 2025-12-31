@@ -701,8 +701,8 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     UNIT_MONTHS("months", "महिना"),
     UNIT_YEARS("years", "वर्ष"),
 
-    PLANET_IN_SIGN_ACCESSIBILITY("%1$s in %2$s", "%2$sमा %1$s"),
-    NAKSHATRA_PADA_ACCESSIBILITY("%1$s pada %2$s", "%1$s पद %2$s"),
+    PLANET_IN_SIGN_ACCESSIBILITY("%1\$s in %2\$s", "%2\$sमा %1\$s"),
+    NAKSHATRA_PADA_ACCESSIBILITY("%1\$s pada %2\$s", "%1\$s पद %2\$s"),
 
     // ============================================
     // PLANETS
