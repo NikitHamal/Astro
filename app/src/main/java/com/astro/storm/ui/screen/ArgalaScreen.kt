@@ -465,7 +465,7 @@ private fun OverallArgalaCard(
             analysis.overallAssessment.strongestBeneficArgala?.let { house ->
                 ArgalaHighlightRow(
                     label = stringResource(StringKeyAnalysis.ARGALA_STRONGEST_SUPPORT),
-                    value = stringResource(StringKeyMatch.HOUSE_LABEL, house),
+                    value = stringResource(StringKeyAnalysis.TRANSIT_HOUSE_FROM_MOON, house),
                     icon = Icons.Filled.TrendingUp,
                     color = AppTheme.SuccessColor
                 )
@@ -476,7 +476,7 @@ private fun OverallArgalaCard(
             analysis.overallAssessment.strongestMaleficArgala?.let { house ->
                 ArgalaHighlightRow(
                     label = stringResource(StringKeyAnalysis.ARGALA_GREATEST_CHALLENGE),
-                    value = stringResource(StringKeyMatch.HOUSE_LABEL, house),
+                    value = stringResource(StringKeyAnalysis.TRANSIT_HOUSE_FROM_MOON, house),
                     icon = Icons.Filled.TrendingDown,
                     color = AppTheme.WarningColor
                 )
@@ -487,7 +487,7 @@ private fun OverallArgalaCard(
             analysis.overallAssessment.mostObstructedHouse?.let { house ->
                 ArgalaHighlightRow(
                     label = stringResource(StringKeyAnalysis.ARGALA_MOST_OBSTRUCTED),
-                    value = stringResource(StringKeyMatch.HOUSE_LABEL, house),
+                    value = stringResource(StringKeyAnalysis.TRANSIT_HOUSE_FROM_MOON, house),
                     icon = Icons.Filled.Block,
                     color = AppTheme.ErrorColor
                 )
@@ -498,7 +498,7 @@ private fun OverallArgalaCard(
             analysis.overallAssessment.leastObstructedHouse?.let { house ->
                 ArgalaHighlightRow(
                     label = stringResource(StringKeyAnalysis.ARGALA_LEAST_OBSTRUCTED),
-                    value = stringResource(StringKeyMatch.HOUSE_LABEL, house),
+                    value = stringResource(StringKeyAnalysis.TRANSIT_HOUSE_FROM_MOON, house),
                     icon = Icons.Filled.CheckCircle,
                     color = AppTheme.InfoColor
                 )

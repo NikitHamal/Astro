@@ -2130,6 +2130,7 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     KEYWORD_FAME("Fame", "नाम"),
     KEYWORD_GAINS("Gains", "लाभ"),
     KEYWORD_INCOME("Income", "आय"),
+    KEYWORD_FRIENDS("Friends", "साथीहरू"),
     KEYWORD_ELDER_SIBLINGS("Elder Siblings", "ठूला भाइबहिनी"),
     KEYWORD_ASPIRATIONS("Aspirations", "आंकाक्षा"),
     KEYWORD_LOSSES("Losses", "हानि"),

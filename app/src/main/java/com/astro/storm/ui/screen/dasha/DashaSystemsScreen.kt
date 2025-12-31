@@ -46,6 +46,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.data.localization.StringKeyDosha
+import com.astro.storm.data.localization.StringKeyMatch
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import java.time.LocalDateTime
@@ -191,10 +195,11 @@ fun DashaSystemsScreen(
     val accentTeal = AppTheme.AccentTeal
     val lifeAreaSpiritual = AppTheme.LifeAreaSpiritual
 
-    val tabs = remember(accentPrimary, lifeAreaLove, accentGold, accentTeal, lifeAreaSpiritual) {
+    val language = LocalLanguage.current
+    val tabs = remember(accentPrimary, lifeAreaLove, accentGold, accentTeal, lifeAreaSpiritual, language) {
         DashaSystemType.entries.map { system ->
             TabItem(
-                title = stringResource(system.displayNameKey),
+                title = StringResources.get(system.displayNameKey, language),
                 accentColor = when (system) {
                     DashaSystemType.VIMSOTTARI -> accentPrimary
                     DashaSystemType.YOGINI -> lifeAreaLove

@@ -594,6 +594,7 @@ class MuhurtaCalculator(context: Context) {
         latitude: Double,
         longitude: Double,
         timezone: String,
+        language: Language,
         minScore: Int = 60
     ): List<MuhurtaSearchResult> {
         val results = mutableListOf<MuhurtaSearchResult>()
@@ -615,7 +616,7 @@ class MuhurtaCalculator(context: Context) {
             for (time in timeSlots) {
                 val slotDateTime = LocalDateTime.of(currentDate, time)
                 val muhurta = calculateMuhurta(slotDateTime, latitude, longitude, timezone)
-                val (score, reasons, warnings) = evaluateForActivity(muhurta, activity)
+                val (score, reasons, warnings) = evaluateForActivity(muhurta, activity, language)
 
                 if (score >= minScore) {
                     results.add(
@@ -1500,7 +1501,8 @@ class MuhurtaCalculator(context: Context) {
 
     private fun evaluateForActivity(
         muhurta: MuhurtaDetails,
-        activity: ActivityType
+        activity: ActivityType,
+        language: Language
     ): Triple<Int, List<String>, List<String>> {
         var score = 50
         val reasons = mutableListOf<String>()

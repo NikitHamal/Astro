@@ -88,6 +88,7 @@ import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.StringKeyMatch
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.localization.formatDate
 import com.astro.storm.data.localization.formatDateRange
 import com.astro.storm.data.localization.formatDurationYearsMonths
@@ -133,7 +134,7 @@ fun CharaDashaScreen(
                 charaDashaResult = CharaDashaCalculator.calculateCharaDasha(chart, numberOfCycles = 3)
                 isCalculating = false
             } catch (e: Exception) {
-                calculationError = e.message ?: stringResource(StringKeyAnalysis.CHARA_DASHA_CALC_ERROR)
+                calculationError = e.message ?: StringResources.get(StringKeyAnalysis.CHARA_DASHA_CALC_ERROR, language)
                 isCalculating = false
             }
         }
@@ -187,7 +188,7 @@ fun CharaDashaScreen(
                                     charaDashaResult = CharaDashaCalculator.calculateCharaDasha(chart, numberOfCycles = 3)
                                     isCalculating = false
                                 } catch (e: Exception) {
-                                    calculationError = e.message ?: stringResource(StringKeyAnalysis.CHARA_DASHA_CALC_ERROR)
+                                    calculationError = e.message ?: StringResources.get(StringKeyAnalysis.CHARA_DASHA_CALC_ERROR, language)
                                     isCalculating = false
                                 }
                             }

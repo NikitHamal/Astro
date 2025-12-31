@@ -80,6 +80,7 @@ fun ChartAnalysisScreen(
     val defaultTitle = stringResource(StringKeyAnalysis.CHART_LAGNA)
     var fullScreenChartTitle by remember { mutableStateOf(defaultTitle) }
     var fullScreenDivisionalData by remember { mutableStateOf<DivisionalChartData?>(null) }
+    var showFullScreenChart by remember { mutableStateOf(false) }
     var showShadbalaDialog by remember { mutableStateOf(false) }
     var selectedPlanetPosition by remember { mutableStateOf<PlanetPosition?>(null) }
     var selectedNakshatra by remember { mutableStateOf<Pair<Nakshatra, Int>?>(null) }

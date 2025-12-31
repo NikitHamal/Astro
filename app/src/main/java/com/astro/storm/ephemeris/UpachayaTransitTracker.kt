@@ -484,8 +484,8 @@ object UpachayaTransitTracker {
 
         return upcomingTransits.sortedBy { it.targetHouse }
     }
-    private fun calculateHouseTransitStrength(transits: List<UpachayaTransit>): Int {
-        if (transits.isEmpty()) return 0
+    private fun calculateHouseTransitStrength(transits: List<UpachayaTransit>): HouseStrength {
+        if (transits.isEmpty()) return HouseStrength.INACTIVE
         var score = 0
         for (transit in transits) {
             score += when (transit.planet) {
@@ -494,7 +494,14 @@ object UpachayaTransitTracker {
                 else -> 10
             }
         }
-        return (score / transits.size).coerceAtMost(100)
+        val finalScore = (score / transits.size).coerceAtMost(100)
+        return when {
+            finalScore >= 80 -> HouseStrength.VERY_STRONG
+            finalScore >= 60 -> HouseStrength.STRONG
+            finalScore >= 40 -> HouseStrength.MODERATE
+            finalScore >= 20 -> HouseStrength.MILD
+            else -> HouseStrength.INACTIVE
+        }
     }
 }
 

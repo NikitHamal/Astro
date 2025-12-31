@@ -1,4 +1,4 @@
-﻿package com.astro.storm.data.localization
+package com.astro.storm.data.localization
 
 
 /**
@@ -175,6 +175,8 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     MUHURTA_SCORE("Score", "अंक"),
     MUHURTA_AUSPICIOUS_TIME("Auspicious Time", "शुभ समय"),
     MUHURTA_AVERAGE_TIME("Average Time", "सामान्य समय"),
+    MUHURTA_CHOGHADIYA_SUFFIX("Current Choghadiya: %s", "वर्तमान चौघडिया: %s"),
+    MUHURTA_HORA_SUFFIX("Current Hora: %s", "वर्तमान होरा: %s"),
     MUHURTA_PANCHANGA("Panchanga", "पञ्चाङ्ग"),
     MUHURTA_INAUSPICIOUS_PERIODS("Inauspicious Periods", "अशुभ अवधिहरू"),
     MUHURTA_RAHUKALA("Rahukala", "राहुकाल"),

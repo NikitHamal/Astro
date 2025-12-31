@@ -48,6 +48,10 @@ import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ephemeris.HoroscopeCalculator
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.InsightsUiState
+import java.util.Locale
+import java.time.format.DateTimeFormatter
+import java.time.LocalDateTime
+import java.time.LocalDate
 import com.astro.storm.ui.viewmodel.InsightsViewModel
 import com.astro.storm.ui.viewmodel.InsightsData
 import com.astro.storm.ui.viewmodel.InsightError
@@ -79,6 +83,11 @@ private object InsightsFormatters {
     fun getMonthDay(language: Language): DateTimeFormatter {
         val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
         return DateTimeFormatter.ofPattern("MMM d", locale)
+    }
+
+    fun getFullDate(language: Language): DateTimeFormatter {
+        val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
+        return DateTimeFormatter.ofPattern("MMMM d, yyyy", locale)
     }
 }
 
@@ -1272,8 +1281,9 @@ private fun AffirmationCard(affirmation: String) {
 
 @Composable
 private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
-    val dateRange = remember(weekly.startDate, weekly.endDate) {
-        "${weekly.startDate.format(InsightsFormatters.monthDay)} - ${weekly.endDate.format(InsightsFormatters.monthDay)}"
+    val language = LocalLanguage.current
+    val dateRange = remember(weekly.startDate, weekly.endDate, language) {
+        "${weekly.startDate.format(InsightsFormatters.getMonthDay(language))} - ${weekly.endDate.format(InsightsFormatters.getMonthDay(language))}"
     }
 
     Card(
@@ -1753,8 +1763,9 @@ private fun DashaPeriodRow(
     val planetColor = getPlanetColor(planet)
     val label = stringResource(labelKey)
 
-    val dateRange = remember(startDate, endDate) {
-        "${startDate.format(InsightsFormatters.monthYear)} - ${endDate.format(InsightsFormatters.monthYear)}"
+    val language = LocalLanguage.current
+    val dateRange = remember(startDate, endDate, language) {
+        "${startDate.format(InsightsFormatters.getMonthYear(language))} - ${endDate.format(InsightsFormatters.getMonthYear(language))}"
     }
 
     val daysRemaining = remember(endDate) {
@@ -1928,8 +1939,8 @@ private fun UpcomingPeriodItem(
     val language = LocalLanguage.current
     val planetColor = getPlanetColor(planet)
 
-    val formattedDate = remember(startDate) {
-        startDate.format(InsightsFormatters.fullDate)
+    val formattedDate = remember(startDate, language) {
+        startDate.format(InsightsFormatters.getFullDate(language))
     }
 
     val daysUntil = remember(startDate) {

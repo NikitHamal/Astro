@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.ui.components.MarkdownText
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.stringResource
 
 /**
@@ -970,7 +971,7 @@ fun AskUserSection(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Send,
-                            contentDescription = stringResource(StringKey.CHAT_SEND),
+                            contentDescription = stringResource(StringKeyDosha.CHAT_SEND),
                             tint = if (customInput.isNotBlank())
                                 colors.AccentPrimary
                             else

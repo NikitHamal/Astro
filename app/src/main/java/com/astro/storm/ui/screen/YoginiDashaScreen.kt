@@ -110,6 +110,7 @@ fun YoginiDashaScreen(
     onBack: () -> Unit,
     viewModel: YoginiDashaViewModel = viewModel()
 ) {
+    val language = LocalLanguage.current
     val chartKey = remember(chart) {
         chart?.generateUniqueKey()
     }
@@ -119,7 +120,6 @@ fun YoginiDashaScreen(
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val language = LocalLanguage.current
 
     val currentPeriodInfo = remember(uiState, language) {
         extractCurrentYoginiPeriodInfo(uiState, language)
@@ -881,7 +881,7 @@ private fun YoginiSequenceCard(
     startingYogini: YoginiDashaCalculator.Yogini,
     language: Language
 ) {
-    val sequence = YoginiDashaCalculator.getYoginiSequence(startingYogini)
+    val sequence = YoginiDashaCalculator.Yogini.getYoginiSequence(startingYogini)
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -898,12 +898,12 @@ private fun YoginiSequenceCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            sequence.chunked(2).forEach { row ->
+            sequence.chunked(2).forEach { row: List<YoginiDashaCalculator.Yogini> ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    row.forEach { yogini ->
+                    row.forEach { yogini: YoginiDashaCalculator.Yogini ->
                         YoginiSequenceItem(yogini = yogini, language = language)
                     }
                     if (row.size == 1) {

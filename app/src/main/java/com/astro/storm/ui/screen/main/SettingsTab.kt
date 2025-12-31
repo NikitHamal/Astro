@@ -29,6 +29,7 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.LocalLocalizationManager
 import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -321,12 +322,12 @@ private fun CurrentProfileCard(
                 ChartDetailItem(
                     labelKey = StringKey.CHART_MOON_SIGN,
                     value = chart.planetPositions.find { it.planet == com.astro.storm.data.model.Planet.MOON }?.sign?.getLocalizedName(language)
-                        ?: stringResource(StringKey.LABEL_DASH)
+                        ?: stringResource(StringKeyMatch.LABEL_DASH)
                 )
                 ChartDetailItem(
                     labelKey = StringKey.CHART_NAKSHATRA,
                     value = chart.planetPositions.find { it.planet == com.astro.storm.data.model.Planet.MOON }?.nakshatra?.getLocalizedName(language)?.take(8)
-                        ?: stringResource(StringKey.LABEL_DASH)
+                        ?: stringResource(StringKeyMatch.LABEL_DASH)
                 )
             }
         }
@@ -680,9 +681,9 @@ private fun ThemeSetting() {
     var expanded by remember { mutableStateOf(false) }
 
     val themeModes = listOf(
-        ThemeMode.LIGHT to Triple(Icons.Outlined.LightMode, StringKey.THEME_LIGHT, StringKey.THEME_DESC_LIGHT),
-        ThemeMode.DARK to Triple(Icons.Outlined.DarkMode, StringKey.THEME_DARK, StringKey.THEME_DESC_DARK),
-        ThemeMode.SYSTEM to Triple(Icons.Outlined.Brightness6, StringKey.THEME_SYSTEM, StringKey.THEME_DESC_SYSTEM)
+        ThemeMode.LIGHT to Triple(Icons.Outlined.LightMode, StringKey.THEME_LIGHT, StringKeyMatch.THEME_DESC_LIGHT),
+        ThemeMode.DARK to Triple(Icons.Outlined.DarkMode, StringKey.THEME_DARK, StringKeyMatch.THEME_DESC_DARK),
+        ThemeMode.SYSTEM to Triple(Icons.Outlined.Brightness6, StringKey.THEME_SYSTEM, StringKeyMatch.THEME_DESC_SYSTEM)
     )
 
     Card(
@@ -724,7 +725,7 @@ private fun ThemeSetting() {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(StringKey.SETTINGS_THEME_TITLE),
+                        text = stringResource(StringKeyMatch.SETTINGS_THEME_TITLE),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary

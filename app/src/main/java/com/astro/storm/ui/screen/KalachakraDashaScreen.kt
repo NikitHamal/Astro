@@ -1694,7 +1694,7 @@ private fun MahadashaCard(
                             color = healthColor.copy(alpha = 0.15f)
                         ) {
                             Text(
-                                text = getHealthLocalizedName(mahadasha.healthIndicator, language),
+                                text = mahadasha.healthIndicator.getLocalizedName(language),
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = healthColor,

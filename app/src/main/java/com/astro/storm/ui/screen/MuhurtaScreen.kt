@@ -163,6 +163,7 @@ fun MuhurtaScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
+    val language = com.astro.storm.data.localization.currentLanguage()
     val scope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
 
@@ -297,7 +298,7 @@ fun MuhurtaScreen(
                                 try {
                                     withContext(Dispatchers.IO) {
                                         val results = calculator.findAuspiciousMuhurtas(
-                                            activity, startDate, endDate, latitude, longitude, timezone
+                                            activity, startDate, endDate, latitude, longitude, timezone, language
                                         )
                                         searchState = SearchUiState.Results(results)
                                     }
