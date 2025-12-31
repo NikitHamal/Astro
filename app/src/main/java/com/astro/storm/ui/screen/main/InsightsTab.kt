@@ -56,6 +56,7 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 
 enum class HoroscopePeriod(val titleKey: StringKey) {
     TODAY(StringKey.PERIOD_TODAY),

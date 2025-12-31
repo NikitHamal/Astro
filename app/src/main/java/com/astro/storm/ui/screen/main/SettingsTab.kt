@@ -680,9 +680,9 @@ private fun ThemeSetting() {
     var expanded by remember { mutableStateOf(false) }
 
     val themeModes = listOf(
-        ThemeMode.LIGHT to Triple(Icons.Outlined.LightMode, StringKey.THEME_LIGHT, StringKey.THEME_DESC_LIGHT),
-        ThemeMode.DARK to Triple(Icons.Outlined.DarkMode, StringKey.THEME_DARK, StringKey.THEME_DESC_DARK),
-        ThemeMode.SYSTEM to Triple(Icons.Outlined.Brightness6, StringKey.THEME_SYSTEM, StringKey.THEME_DESC_SYSTEM)
+        ThemeMode.LIGHT to Triple(Icons.Outlined.LightMode, StringKey.THEME_LIGHT, StringKey.THEME_LIGHT_DESC),
+        ThemeMode.DARK to Triple(Icons.Outlined.DarkMode, StringKey.THEME_DARK, StringKey.THEME_DARK_DESC),
+        ThemeMode.SYSTEM to Triple(Icons.Outlined.Brightness6, StringKey.THEME_SYSTEM, StringKey.THEME_SYSTEM_DESC)
     )
 
     Card(
@@ -724,7 +724,7 @@ private fun ThemeSetting() {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(StringKey.SETTINGS_THEME_TITLE),
+                        text = stringResource(StringKey.SETTINGS_THEME),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -982,10 +982,10 @@ enum class ExportFormat(
     val icon: ImageVector
 ) {
     PDF(StringKey.SETTINGS_EXPORT_PDF, StringKey.SETTINGS_EXPORT_PDF_DESC, Icons.Outlined.PictureAsPdf),
-    IMAGE(StringKey.SETTINGS_EXPORT_PDF, StringKey.SETTINGS_EXPORT_PDF_DESC, Icons.Outlined.Image),
-    JSON(StringKey.SETTINGS_EXPORT_PDF, StringKey.SETTINGS_EXPORT_PDF_DESC, Icons.Outlined.Code),
-    CSV(StringKey.SETTINGS_EXPORT_PDF, StringKey.SETTINGS_EXPORT_PDF_DESC, Icons.Outlined.TableChart),
-    CLIPBOARD(StringKey.SETTINGS_EXPORT_PDF, StringKey.SETTINGS_EXPORT_PDF_DESC, Icons.Outlined.ContentCopy);
+    IMAGE(StringKey.SETTINGS_EXPORT_IMAGE, StringKey.SETTINGS_EXPORT_IMAGE_DESC, Icons.Outlined.Image),
+    JSON(StringKey.SETTINGS_EXPORT_JSON, StringKey.SETTINGS_EXPORT_JSON_DESC, Icons.Outlined.Code),
+    CSV(StringKey.SETTINGS_EXPORT_CSV, StringKey.SETTINGS_EXPORT_CSV_DESC, Icons.Outlined.TableChart),
+    CLIPBOARD(StringKey.SETTINGS_EXPORT_CLIPBOARD, StringKey.SETTINGS_EXPORT_CLIPBOARD_DESC, Icons.Outlined.ContentCopy);
 
     fun getLocalizedTitle(language: Language): String = StringResources.get(titleKey, language)
     fun getLocalizedDescription(language: Language): String = StringResources.get(descriptionKey, language)

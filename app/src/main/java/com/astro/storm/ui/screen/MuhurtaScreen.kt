@@ -1836,17 +1836,17 @@ private fun SearchResultCard(result: MuhurtaCalculator.MuhurtaSearchResult) {
             ) {
                 ResultDetailChip(
                     label = stringResource(StringKeyMatch.MUHURTA_DETAIL_DAY),
-                    value = result.vara.displayName,
+                    value = result.vara.getLocalizedName(LocalLanguage.current),
                     modifier = Modifier.weight(1f)
                 )
                 ResultDetailChip(
                     label = stringResource(StringKey.CHART_NAKSHATRA),
-                    value = result.nakshatra.displayName,
+                    value = result.nakshatra.getLocalizedName(LocalLanguage.current),
                     modifier = Modifier.weight(1f)
                 )
                 ResultDetailChip(
                     label = stringResource(StringKeyMatch.MUHURTA_DETAIL_CHOGHADIYA),
-                    value = result.choghadiya.displayName,
+                    value = result.choghadiya.getLocalizedName(LocalLanguage.current),
                     modifier = Modifier.weight(1f)
                 )
             }
