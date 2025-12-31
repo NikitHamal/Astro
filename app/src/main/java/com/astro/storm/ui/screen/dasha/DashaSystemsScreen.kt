@@ -494,7 +494,7 @@ private fun ErrorContent(message: String, onRetry: () -> Unit) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = stringResource(StringKey.ERROR_CALCULATION),
+                text = stringResource(StringKeyDosha.ERROR_CALCULATION),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.ErrorColor

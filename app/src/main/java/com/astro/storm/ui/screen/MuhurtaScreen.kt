@@ -116,6 +116,7 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.MuhurtaCalculator
 import com.astro.storm.ui.theme.AppTheme
@@ -616,6 +617,7 @@ private fun TodayTabList(
 
 @Composable
 private fun CurrentMuhurtaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
+    val language = currentLanguage()
     val scoreColor = remember(muhurta.overallScore) { getScoreColor(muhurta.overallScore) }
     val choghadiyaColor = remember(muhurta.choghadiya.choghadiya) { getChoghadiyaColor(muhurta.choghadiya.choghadiya) }
 
@@ -672,7 +674,7 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
 
                 Surface(color = choghadiyaColor.copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)) {
                     Text(
-                        stringResource(StringKeyMatch.MUHURTA_CHOGHADIYA_SUFFIX, muhurta.choghadiya.choghadiya.getLocalizedName(currentLanguage())),
+                        stringResource(StringKeyMatch.MUHURTA_CHOGHADIYA_SUFFIX, muhurta.choghadiya.choghadiya.getLocalizedName(language)),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = choghadiyaColor,
@@ -683,7 +685,7 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    stringResource(StringKeyMatch.MUHURTA_HORA_SUFFIX, muhurta.hora.lord.getLocalizedName(currentLanguage())),
+                    stringResource(StringKeyMatch.MUHURTA_HORA_SUFFIX, muhurta.hora.lord.getLocalizedName(language)),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -694,6 +696,7 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
 
 @Composable
 private fun PanchangaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
+    val language = currentLanguage()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -722,7 +725,7 @@ private fun PanchangaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
 
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    PanchangaItem(label = stringResource(StringKeyMatch.MUHURTA_VARA), value = muhurta.vara.getLocalizedName(currentLanguage()), modifier = Modifier.weight(1f))
+                    PanchangaItem(label = stringResource(StringKeyMatch.MUHURTA_VARA), value = muhurta.vara.getLocalizedName(language), modifier = Modifier.weight(1f))
                     PanchangaItem(
                         label = stringResource(StringKeyMatch.MUHURTA_TITHI),
                         value = muhurta.tithi.name,
@@ -734,7 +737,7 @@ private fun PanchangaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     PanchangaItem(
                         label = stringResource(StringKey.CHART_NAKSHATRA),
-                        value = "${muhurta.nakshatra.nakshatra.displayName} (${stringResource(StringKeyAnalysis.NAKSHATRA_PADA)} ${muhurta.nakshatra.pada})",
+                        value = "${muhurta.nakshatra.nakshatra.getLocalizedName(language)} (${stringResource(StringKeyAnalysis.NAKSHATRA_PADA)} ${muhurta.nakshatra.pada})",
                         modifier = Modifier.weight(1f)
                     )
                     PanchangaItem(
@@ -1001,6 +1004,7 @@ private fun ChoghadiyaRow(
     choghadiya: MuhurtaCalculator.ChoghadiyaInfo,
     isCurrent: Boolean
 ) {
+    val language = currentLanguage()
     val choghadiyaColor = remember(choghadiya.choghadiya) { getChoghadiyaColor(choghadiya.choghadiya) }
 
     Surface(
@@ -1032,7 +1036,7 @@ private fun ChoghadiyaRow(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        choghadiya.choghadiya.getLocalizedName(currentLanguage()).take(2),
+                        choghadiya.choghadiya.getLocalizedName(language).take(2),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         color = choghadiyaColor
@@ -1042,7 +1046,7 @@ private fun ChoghadiyaRow(
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            choghadiya.choghadiya.getLocalizedName(currentLanguage()),
+                            choghadiya.choghadiya.getLocalizedName(language),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Normal,
                             color = AppTheme.TextPrimary
@@ -1064,7 +1068,7 @@ private fun ChoghadiyaRow(
                         }
                     }
                     Text(
-                        choghadiya.choghadiya.nature.getLocalizedName(currentLanguage()),
+                        choghadiya.choghadiya.nature.getLocalizedName(language),
                         style = MaterialTheme.typography.labelSmall,
                         color = choghadiyaColor
                     )
@@ -1148,6 +1152,7 @@ private fun ActivityChip(
     val icon = remember(activity) { getActivityIcon(activity) }
 
     Surface(color = chipColor, shape = RoundedCornerShape(20.dp)) {
+        val language = currentLanguage()
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -1160,7 +1165,7 @@ private fun ActivityChip(
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                activity.getLocalizedName(currentLanguage()),
+                activity.getLocalizedName(language),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Medium,
                 color = contentColor
@@ -1312,6 +1317,7 @@ private fun ActivitySelectorCard(
     selectedActivity: MuhurtaCalculator.ActivityType,
     onActivityChange: (MuhurtaCalculator.ActivityType) -> Unit
 ) {
+    val language = currentLanguage()
     val activities = remember { MuhurtaCalculator.ActivityType.entries.toList() }
 
     Card(
@@ -1350,7 +1356,7 @@ private fun ActivitySelectorCard(
                         onClick = { onActivityChange(activity) },
                         label = {
                             Text(
-                                activity.getLocalizedName(currentLanguage()),
+                                activity.getLocalizedName(language),
                                 style = MaterialTheme.typography.labelMedium
                             )
                         },
@@ -1384,6 +1390,7 @@ private fun ActivitySelectorCard(
 
 @Composable
 private fun ActivityInfoCard(selectedActivity: MuhurtaCalculator.ActivityType) {
+    val language = currentLanguage()
     val icon = remember(selectedActivity) { getActivityIcon(selectedActivity) }
 
     Card(
@@ -1421,14 +1428,14 @@ private fun ActivityInfoCard(selectedActivity: MuhurtaCalculator.ActivityType) {
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    selectedActivity.getLocalizedName(currentLanguage()),
+                    selectedActivity.getLocalizedName(language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    selectedActivity.getLocalizedDescription(currentLanguage()),
+                    selectedActivity.getLocalizedDescription(language),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
                     lineHeight = MaterialTheme.typography.bodySmall.lineHeight * 1.2
@@ -1764,6 +1771,7 @@ private fun ResultsHeader(count: Int) {
 
 @Composable
 private fun SearchResultCard(result: MuhurtaCalculator.MuhurtaSearchResult) {
+    val language = currentLanguage()
     val scoreColor = remember(result.score) { getScoreColor(result.score) }
 
     Card(
@@ -1836,17 +1844,17 @@ private fun SearchResultCard(result: MuhurtaCalculator.MuhurtaSearchResult) {
             ) {
                 ResultDetailChip(
                     label = stringResource(StringKeyMatch.MUHURTA_DETAIL_DAY),
-                    value = result.vara.displayName,
+                    value = result.vara.getLocalizedName(language),
                     modifier = Modifier.weight(1f)
                 )
                 ResultDetailChip(
                     label = stringResource(StringKey.CHART_NAKSHATRA),
-                    value = result.nakshatra.displayName,
+                    value = result.nakshatra.getLocalizedName(language),
                     modifier = Modifier.weight(1f)
                 )
                 ResultDetailChip(
                     label = stringResource(StringKeyMatch.MUHURTA_DETAIL_CHOGHADIYA),
-                    value = result.choghadiya.displayName,
+                    value = result.choghadiya.getLocalizedName(language),
                     modifier = Modifier.weight(1f)
                 )
             }

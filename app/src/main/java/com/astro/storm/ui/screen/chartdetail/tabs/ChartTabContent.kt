@@ -348,7 +348,7 @@ private fun MainChartCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Default.Fullscreen,
-                        contentDescription = stringResource(StringKey.ACC_FULLSCREEN),
+                        contentDescription = stringResource(StringKeyMatch.ACC_FULLSCREEN),
                         tint = ChartDetailColors.TextMuted,
                         modifier = Modifier.size(20.dp)
                     )
@@ -536,9 +536,9 @@ private fun BirthDetailsCard(
                 Icon(
                     Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) 
-                        stringResource(StringKey.ACC_COLLAPSE)
+                        stringResource(StringKeyMatch.ACC_COLLAPSE)
                     else 
-                        stringResource(StringKey.ACC_EXPAND),
+                        stringResource(StringKeyMatch.ACC_EXPAND),
                     tint = ChartDetailColors.TextMuted,
                     modifier = Modifier.rotate(rotation)
                 )
@@ -899,7 +899,7 @@ private fun ClickablePlanetPositionRow(
 
             Icon(
                 Icons.Default.ChevronRight,
-                contentDescription = stringResource(StringKey.ACC_VIEW_DETAILS),
+                contentDescription = stringResource(StringKeyMatch.ACC_VIEW_DETAILS),
                 tint = ChartDetailColors.TextMuted,
                 modifier = Modifier.size(16.dp)
             )

@@ -42,6 +42,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringKeyAnalysis
@@ -50,8 +52,6 @@ import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.RemediesCalculator
 import com.astro.storm.ui.theme.AppTheme
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.ephemeris.Language
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -184,7 +184,7 @@ fun RemediesScreen(
             errorMessage != null -> {
                 ErrorState(
                     message = errorMessage!!,
-                    onRetry = { scope.launch { calculateRemedies(chart) } },
+                    onRetry = { scope.launch { calculateRemedies(chart, language) } },
                     modifier = Modifier.padding(paddingValues)
                 )
             }

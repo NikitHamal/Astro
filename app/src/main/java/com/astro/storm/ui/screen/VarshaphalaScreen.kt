@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringKeyAnalysis
@@ -1180,6 +1181,7 @@ private fun PanchaVargiyaBalaCard(result: VarshaphalaResult) {
 
 @Composable
 private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
+    val language = currentLanguage()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -1195,7 +1197,7 @@ private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
         )
 
         Text(
-            bala.planet.getLocalizedName(currentLanguage()),
+            bala.planet.getLocalizedName(language),
             style = MaterialTheme.typography.bodyMedium,
             color = AppTheme.TextPrimary,
             modifier = Modifier.width(80.dp)
@@ -1207,7 +1209,7 @@ private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
                 .weight(1f)
                 .height(8.dp)
                 .clip(RoundedCornerShape(4.dp)),
-            color = getStrengthColor(bala.category, currentLanguage()),
+            color = getStrengthColor(bala.category, language),
             trackColor = AppTheme.DividerColor
         )
 

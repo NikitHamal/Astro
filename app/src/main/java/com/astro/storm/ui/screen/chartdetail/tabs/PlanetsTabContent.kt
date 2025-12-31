@@ -56,6 +56,7 @@ import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.StringKeyMatch
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.Planet
@@ -73,10 +74,10 @@ import com.astro.storm.ui.screen.chartdetail.components.StyledDivider
 import java.text.DecimalFormat
 
 enum class DignityStatus(val stringKey: com.astro.storm.data.localization.StringKeyInterface) {
-    EXALTED(StringKey.DIGNITY_EXALTED_STATUS),
-    DEBILITATED(StringKey.DIGNITY_DEBILITATED_STATUS),
-    OWN_SIGN(StringKey.DIGNITY_OWN_SIGN_STATUS),
-    NEUTRAL(StringKey.DIGNITY_NEUTRAL_STATUS);
+    EXALTED(StringKeyAnalysis.DIGNITY_EXALTED_STATUS),
+    DEBILITATED(StringKeyAnalysis.DIGNITY_DEBILITATED_STATUS),
+    OWN_SIGN(StringKeyAnalysis.DIGNITY_OWN_SIGN_STATUS),
+    NEUTRAL(StringKeyAnalysis.DIGNITY_NEUTRAL_STATUS);
 
     val isSignificant: Boolean get() = this != NEUTRAL
 }
@@ -380,7 +381,7 @@ private fun ViewDetailsIndicator(
     text: String = "",
     color: Color = ChartDetailColors.AccentGold
 ) {
-    val displayText = text.ifEmpty { stringResource(StringKey.BTN_VIEW_DETAILS) }
+    val displayText = text.ifEmpty { stringResource(StringKeyMatch.BTN_VIEW_DETAILS) }
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = displayText,
@@ -423,6 +424,7 @@ private fun PlanetDetailCard(
     onClick: () -> Unit,
     onNakshatraClick: () -> Unit
 ) {
+    val language = currentLanguage()
     val position = state.position
     val planetColor = ChartDetailColors.getPlanetColor(position.planet)
 
@@ -433,11 +435,11 @@ private fun PlanetDetailCard(
             .semantics {
                 role = Role.Button
                 contentDescription = buildString {
-                    append("${position.planet.displayName} in ${position.sign.displayName}")
+                    append("${position.planet.getLocalizedName(language)} in ${position.sign.getLocalizedName(language)}")
                     append(", House ${position.house}")
-                    append(", ${position.nakshatra.displayName} pada ${position.nakshatraPada}")
+                    append(", ${position.nakshatra.getLocalizedName(language)} pada ${position.nakshatraPada}")
                     if (position.isRetrograde) append(", Retrograde")
-                    if (state.dignityStatus.isSignificant) append(", ${state.dignityStatus.displayName}")
+                    if (state.dignityStatus.isSignificant) append(", ${StringResources.get(state.dignityStatus.stringKey, language)}")
                 }
             },
         shape = RoundedCornerShape(16.dp),
@@ -577,7 +579,7 @@ private fun NakshatraChip(
             Spacer(modifier = Modifier.width(2.dp))
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = stringResource(StringKey.ACC_VIEW_DETAILS),
+                contentDescription = stringResource(StringKeyMatch.ACC_VIEW_DETAILS),
                 tint = ChartDetailColors.AccentPurple,
                 modifier = Modifier.size(12.dp)
             )
@@ -703,7 +705,7 @@ private fun TapForDetailsHint() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(StringKey.ACC_VIEW_DETAILS),
+            text = stringResource(StringKeyMatch.ACC_VIEW_DETAILS),
             fontSize = 11.sp,
             color = ChartDetailColors.TextMuted
         )

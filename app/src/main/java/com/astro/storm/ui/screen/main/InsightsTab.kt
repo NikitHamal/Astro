@@ -57,8 +57,6 @@ import com.astro.storm.ui.viewmodel.InsightsData
 import com.astro.storm.ui.viewmodel.InsightError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 enum class HoroscopePeriod(val titleKey: StringKey) {
@@ -1763,7 +1761,6 @@ private fun DashaPeriodRow(
     val planetColor = getPlanetColor(planet)
     val label = stringResource(labelKey)
 
-    val language = LocalLanguage.current
     val dateRange = remember(startDate, endDate, language) {
         "${startDate.format(InsightsFormatters.getMonthYear(language))} - ${endDate.format(InsightsFormatters.getMonthYear(language))}"
     }

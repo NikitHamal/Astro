@@ -434,7 +434,7 @@ private fun StrengthCountChip(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                if (count == 1) stringResource(StringKey.REPORT_PLANET).lowercase() else stringResource(StringKey.FEATURE_PLANETS).lowercase(),
+                if (count == 1) stringResource(StringKeyMatch.REPORT_PLANET).lowercase() else stringResource(StringKey.FEATURE_PLANETS).lowercase(),
                 style = MaterialTheme.typography.bodySmall,
                 color = color.copy(alpha = 0.8f)
             )
@@ -1050,7 +1050,7 @@ private fun ShadbalaComparisonTab(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        stringResource(StringKey.REPORT_PLANET),
+                        stringResource(StringKeyMatch.REPORT_PLANET),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextMuted,

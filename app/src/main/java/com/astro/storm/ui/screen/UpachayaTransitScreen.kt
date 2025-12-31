@@ -432,7 +432,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis) {
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        "${stringResource(StringKeyDosha.QUALITY_LABEL)}: ${assessment.level.name}",
+                        "${stringResource(StringKeyDosha.UPACHAYA_TRANSIT_QUALITY)}: ${assessment.level.name}",
                         fontSize = 14.sp,
                         color = iconColor,
                         fontWeight = FontWeight.Medium
