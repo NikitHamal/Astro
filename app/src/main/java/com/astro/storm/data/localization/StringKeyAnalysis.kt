@@ -1902,6 +1902,10 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     PRASHNA_REPORT_LAGNA_LORD("Lagna Lord", "लग्नेश"),
     PRASHNA_REPORT_CONDITION("Condition", "अवस्था"),
     PRASHNA_REPORT_RELEVANT_HOUSES("Relevant Houses", "सम्बन्धित भावहरू"),
+    PRASHNA_REPORT_TIMING("Timing Prediction", "समय भविष्यवाणी"),
+    PRASHNA_REPORT_ESTIMATED("Estimated Time", "अनुमानित समय"),
+    PRASHNA_REPORT_METHOD("Method", "विधि"),
+    PRASHNA_REPORT_CONFIDENCE("Confidence", "विश्वास"),
     PRASHNA_OMEN_LAGNA_DESC("Rising sign is %s", "उदय राशि %s हो"),
     PRASHNA_OMEN_MOON_PLACEMENT_DESC("Moon in %d house (%s)", "चन्द्रमा %d भाव (%s) मा"),
     PRASHNA_OMEN_HORA_LORD_DESC("Question in %s Hora", "प्रश्न %s को होरामा"),
@@ -1909,23 +1913,9 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     PRASHNA_OMEN_NAKSHATRA_DESC("Moon in %s Nakshatra", "चन्द्रमा %s नक्षत्रमा"),
     PRASHNA_OMEN_PLANETARY_WAR_DESC("%s in war with %s", "%s र %s बीच ग्रह युद्ध"),
     PRASHNA_OMEN_COMBUSTION_DESC("%s is combust", "%s अस्त छ"),
-    PRASHNA_MOON_EXCELLENT("Excellent", "उत्कृष्ट"),
-    PRASHNA_MOON_GOOD("Good", "राम्रो"),
-    PRASHNA_MOON_AVERAGE("Average", "सामान्य"),
-    PRASHNA_MOON_WEAK("Weak", "कमजोर"),
-    PRASHNA_MOON_VERY_WEAK("Very Weak", "धेरै कमजोर"),
-    PRASHNA_MOON_AFFLICTED("Afflicted", "पीडित"),
     PRASHNA_OMEN_RETROGRADE_DESC("%s is retrograde", "%s वक्री छ"),
     PRASHNA_OMEN_GANDANTA_DESC("%s is in Gandanta", "%s गण्डान्तमा छ"),
     PRASHNA_OMEN_PUSHKARA_DESC("%s is in Pushkara Navamsha", "%s पुष्कर नवांशमा छ"),
-    PRASHNA_OMEN_WAR_IND("Conflict and competition indicated in the matter", "विषयमा द्वन्द्व र प्रतिस्पर्धाको संकेत"),
-    PRASHNA_OMEN_COMBUST_IND("%s's significations are weakened", "%s को कारकत्व कमजोर भएको छ"),
-    PRASHNA_OMEN_RETRO_IND("Delays, reversals, or need to revisit matters related to %s", "%s सँग सम्बन्धित मामिलाहरूमा ढिलाइ, उल्टो वा पुनर्विचारको आवश्यकता"),
-    PRASHNA_REASON_STRONGLY_YES("Strong Moon and favorable planetary configurations indicate success", "बलियो चन्द्रमा र अनुकूल ग्रह स्थितिले सफलतालाई संकेत गर्दछ"),
-    PRASHNA_REASON_YES("Generally favorable indications with some conditions", "केही सर्तहरू सहित सामान्यतया अनुकूल संकेतहरू"),
-    PRASHNA_REASON_UNCERTAIN("Mixed indications - outcome depends on additional factors and timing", "मिश्रित संकेतहरू - परिणाम थप कारक र समयमा निर्भर गर्दछ"),
-    PRASHNA_REASON_CHALLENGES("Challenges indicated - careful consideration advised", "चुनौतीहरू संकेत गरिएको - सावधानीपूर्वक विचार गर्न सल्लाह दिइन्छ"),
-    PRASHNA_REASON_STRONGLY_NO("Multiple unfavorable factors suggest difficulty in achieving desired outcome", "धेरै प्रतिकूल कारकहरूले इच्छित परिणाम प्राप्त गर्न कठिनाइ सुझाव दिन्छ"),
 
     // Prashna Yogas
     PRASHNA_YOGA_ITHASALA_NAME("Ithasala Yoga", "इत्थशाल योग"),
@@ -1954,43 +1944,14 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     PRASHNA_YOGA_PUSHKARA_INTERP("Excellent omen. The matter will have nourishing, supportive outcomes.", "उत्कृष्ट शकुन। विषयमा पोषक, सहयोगी नतिजाहरू प्राप्त हुनेछन्।"),
     PRASHNA_YOGA_GANDANTA_NAME("Gandanta Position", "गण्डान्त स्थिति"),
     PRASHNA_YOGA_GANDANTA_DESC("Moon at junction point between water and fire signs", "चन्द्रमा जल र अग्नि राशि बीचको सन्धि बिन्दुमा"),
-
-    // Prashna Timing Units
-    PRASHNA_TIMING_HOURS("Hours", "घण्टा"),
-    PRASHNA_TIMING_DAYS("Days", "दिन"),
-    PRASHNA_TIMING_WEEKS("Weeks", "हप्ता"),
-    PRASHNA_TIMING_MONTHS("Months", "महिना"),
-    PRASHNA_TIMING_YEARS("Years", "वर्ष"),
-    PRASHNA_TIMING_ABOUT("About %s", "लगभग %s"),
-    PRASHNA_TIMING_WITHIN("Within %s", "%s भित्र"),
     PRASHNA_YOGA_GANDANTA_INTERP("Danger, crisis, or difficult transformation indicated.", "खतरा, संकट वा कठिन रूपान्तरणको संकेत।"),
     PRASHNA_YOGA_UNION_NAME("Lagna-Moon Union", "लग्न-चन्द्र युति"),
     PRASHNA_YOGA_UNION_DESC("Moon with Lagna Lord", "चन्द्रमा लग्न स्वामीसँग"),
     PRASHNA_YOGA_UNION_INTERP("Strong personal involvement and favorable outcome.", "बलियो व्यक्तिगत संलग्नता र अनुकूल परिणाम।"),
 
-    // Prashna Factors
-    PRASHNA_FACTOR_MOON_EXCELLENT("Moon is excellently placed - strong foundation for success", "चन्द्रमा उत्कृष्ट रूपमा राखिएको छ - सफलताको लागि बलियो आधार"),
-    PRASHNA_FACTOR_MOON_GOOD("Moon is well placed - favorable conditions", "चन्द्रमा राम्ररी राखिएको छ - अनुकूल परिस्थितिहरू"),
-    PRASHNA_FACTOR_MOON_AVERAGE("Moon is average - moderate indications", "चन्द्रमा औसत छ - मध्यम संकेतहरू"),
-    PRASHNA_FACTOR_MOON_WEAK("Moon is weak - challenges indicated", "चन्द्रमा कमजोर छ - चुनौतीहरूको संकेत"),
-    PRASHNA_FACTOR_MOON_VERY_WEAK("Moon is very weak - significant obstacles", "चन्द्रमा धेरै कमजोर छ - महत्त्वपूर्ण बाधाहरू"),
-    PRASHNA_FACTOR_MOON_AFFLICTED("Moon is afflicted - unfavorable outcome likely", "चन्द्रमा पीडित छ - प्रतिकूल परिणामको सम्भावना"),
-    PRASHNA_FACTOR_MOON_WAXING("Waxing Moon - matter will grow and develop", "शुक्ल पक्षको चन्द्रमा - विषय बढ्ने र विकसित हुनेछ"),
-    PRASHNA_FACTOR_MOON_WANING("Waning Moon - matter may decline or diminish", "कृष्ण पक्षको चन्द्रमा - विषय घट्न वा कम हुन सक्छ"),
-    PRASHNA_FACTOR_MOON_VOID("Moon is Void of Course - nothing will come of the matter", "चन्द्रमा शून्य छ - विषयबाट केही प्राप्त हुने छैन"),
-    PRASHNA_FACTOR_LAGNA_STRONG("Strong Lagna Lord - querent has power to succeed", "बलियो लग्न स्वामी - प्रश्नकर्तासँग सफल हुने शक्ति छ"),
-    PRASHNA_FACTOR_LAGNA_MODERATE("Moderately strong Lagna - mixed personal influence", "मध्यम बलियो लग्न - मिश्रित व्यक्तिगत प्रभाव"),
-    PRASHNA_FACTOR_LAGNA_WEAK("Weak Lagna Lord - querent lacks resources or ability", "कमजोर लग्न स्वामी - प्रश्नकर्तासँग स्रोत वा क्षमताको अभाव छ"),
-    PRASHNA_FACTOR_LAGNA_COMBUST("Combust Lagna Lord - querent's efforts are hidden or ineffective", "अस्त लग्न स्वामी - प्रश्नकर्ताका प्रयासहरू लुकेका वा प्रभावहीन छन्"),
-    PRASHNA_FACTOR_LAGNA_RETRO("Retrograde Lagna Lord - delays and reconsideration needed", "वक्री लग्न स्वामी - ढिलाइ र पुनर्विचार आवश्यक छ"),
-    PRASHNA_FACTOR_HOUSES_FAVORABLE("Relevant houses are favorably disposed", "सम्बन्धित भावहरू अनुकूल रूपमा व्यवस्थित छन्"),
-    PRASHNA_FACTOR_HOUSES_AFFLICTED("Relevant houses show affliction", "सम्बन्धित भावहरूले पीडा देखाउँछन्"),
-
     // Prashna Recommendations
-    PRASHNA_TIMING_ABOUT("About %s", "लगभग %s"),
-    PRASHNA_TIMING_WITHIN("Within %s", "%s भित्र"),
     PRASHNA_TIMING_EXPLANATION("Based on %1\$s, the estimated timing is approximately %2\$s. Moon's current position and speed (%3\$s°/day) were primary factors in this calculation.", "%1\$s को आधारमा, अनुमानित समय लगभग %2\$s हो। चन्द्रमाको वर्तमान स्थिति र गति (%3\$s°/दिन) यस गणनामा प्राथमिक कारकहरू थिए।"),
-    
+
     PRASHNA_REC_PROCEED("Proceed with confidence. The cosmic conditions are supportive.", "आत्मविश्वासका साथ अगाडि बढ्नुहोस्। ब्रह्माण्डीय परिस्थितिहरू सहयोगी छन्।"),
     PRASHNA_REC_CAUTION("Proceed with caution. Carefully monitor developments.", "सावधानीका साथ अगाडि बढ्नुहोस्। विकासक्रमहरूलाई ध्यानपूर्वक निगरानी गर्नुहोस्।"),
     PRASHNA_REC_DELAY("Expect delays. Patience and persistence will be required.", "ढिलाइको अपेक्षा गर्नुहोस्। धैर्य र दृढता आवश्यक हुनेछ।"),
@@ -2024,32 +1985,6 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     PRASHNA_SUMMARY_CATEGORY("Category", "श्रेणी"),
     PRASHNA_SUMMARY_TIME("Time", "समय"),
     PRASHNA_SUMMARY_CONFIDENCE("Confidence Score", "निश्चितता अंक"),
-
-    PRASHNA_REPORT_TITLE("PRASHNA ANALYSIS REPORT", "प्रश्न विश्लेषण रिपोर्ट"),
-    PRASHNA_REPORT_QUESTION("QUESTION", "प्रश्न"),
-    PRASHNA_REPORT_CATEGORY("CATEGORY", "श्रेणी"),
-    PRASHNA_REPORT_VERDICT("VERDICT", "निर्णय"),
-    PRASHNA_REPORT_CERTAINTY("Certainty", "निश्चितता"),
-    PRASHNA_REPORT_PRIMARY_INDICATION("PRIMARY INDICATION", "प्राथमिक संकेत"),
-    PRASHNA_REPORT_MOON_ANALYSIS("MOON ANALYSIS (Primary Significator)", "चन्द्र विश्लेषण (प्राथमिक कारक)"),
-    PRASHNA_REPORT_POSITION("Position", "स्थिति"),
-    PRASHNA_REPORT_HOUSE("House", "भाव"),
-    PRASHNA_REPORT_NAKSHATRA("Nakshatra", "नक्षत्र"),
-    PRASHNA_REPORT_PADA("Pada", "पद"),
-    PRASHNA_REPORT_PHASE("Phase", "पक्ष"),
-    PRASHNA_REPORT_WAXING("Waxing", "शुक्ल पक्ष"),
-    PRASHNA_REPORT_WANING("Waning", "कृष्ण पक्ष"),
-    PRASHNA_REPORT_STRENGTH("Strength", "बल"),
-    PRASHNA_REPORT_WARNING_VOID("WARNING: Moon is Void of Course", "चेतावनी: चन्द्रमा शून्य (Void) छ"),
-    PRASHNA_REPORT_LAGNA_ANALYSIS("LAGNA ANALYSIS", "लग्न विश्लेषण"),
-    PRASHNA_REPORT_RISING_SIGN("Rising Sign", "उदय लग्न"),
-    PRASHNA_REPORT_LAGNA_LORD("Lagna Lord", "लग्न स्वामी"),
-    PRASHNA_REPORT_CONDITION("Condition", "स्थिति"),
-    PRASHNA_REPORT_RELEVANT_HOUSES("RELEVANT HOUSES", "सम्बन्धित भावहरू"),
-    PRASHNA_REPORT_YOGA_ANALYSIS("YOGA ANALYSIS (Tajika Yogas)", "योग विश्लेषण (ताजिक योग)"),
-    PRASHNA_REPORT_TIMING_PREDICTION("TIMING PREDICTION", "समय भविष्यवाणी"),
-    PRASHNA_REPORT_TIMING_EXPLANATION("Timing Explanation", "समय व्याख्या"),
-    PRASHNA_REPORT_RECOMMENDATIONS("RECOMMENDATIONS", "सिफारिसहरू"),
 
     // ============================================
     // VARSHAPHALA - TRI-PATAKI CHAKRA
@@ -2265,10 +2200,7 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     PRASHNA_TITHI_AMAVASYA("Amavasya", "औंसी"),
 
     // Additional Prashna Strings
-    PRASHNA_PLANETS_IN_LAGNA("Planets in Lagna", "लग्नमा ग्रहहरू"),
     PRASHNA_YOGAS_TITLE("Special Yogas Present", "विशेष योगहरू"),
-    PRASHNA_SUPPORTING_FACTORS("Supporting Factors", "समर्थन गर्ने कारकहरू"),
-    PRASHNA_CHALLENGES("Challenges", "चुनौतीहरू"),
 
     // Dasha Systems Screen Strings
     DASHA_VIMSHOTTARI_TITLE("Vimshottari Dasha", "विंशोत्तरी दशा"),
@@ -2282,18 +2214,6 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     DASHA_ASHTOTTARI_TITLE("Ashtottari Dasha", "अष्टोत्तरी दशा"),
     DASHA_ASHTOTTARI_DESC("A 108-year dasha system used when Rahu is in a quadrant from Lagna Lord.", "१०८ वर्षे दशा प्रणाली, राहु लग्नको स्वामीबाट केन्द्रमा हुँदा प्रयोग गरिन्छ।"),
     DASHA_VIEW_DETAILS("View Details", "थप विवरण"),
-    
-    PRASHNA_TATTVA_FIRE("Fire element - quick, energetic results", "अग्नि तत्व - छिटो, ऊर्जावान परिणाम"),
-    PRASHNA_TATTVA_EARTH("Earth element - stable, material results", "पृथ्वी तत्व - स्थिर, भौतिक परिणाम"),
-    PRASHNA_TATTVA_AIR("Air element - intellectual, communicative results", "वायु तत्व - बौद्धिक, सञ्चारमूलक परिणाम"),
-    PRASHNA_TATTVA_WATER("Water element - emotional, fertile results", "जल तत्व - भावनात्मक, उर्वर परिणाम"),
-    PRASHNA_TATTVA_ETHER("Ether element - represents void/space", "आकाश तत्व - शून्य/अन्तरिक्षलाई प्रतिनिधित्व गर्दछ"),
-
-    PRASHNA_TATTVA_FIRE_SIGNS("Aries, Leo, Sagittarius", "मेष, सिंह, धनु"),
-    PRASHNA_TATTVA_EARTH_SIGNS("Taurus, Virgo, Capricorn", "वृष, कन्या, मकर"),
-    PRASHNA_TATTVA_AIR_SIGNS("Gemini, Libra, Aquarius", "मिथुन, तुला, कुम्भ"),
-    PRASHNA_TATTVA_WATER_SIGNS("Cancer, Scorpio, Pisces", "कर्कट, वृश्चिक, मीन"),
-    PRASHNA_TATTVA_ETHER_SIGNS("None - represents void/space", "कुनै छैन - शून्य/अन्तरिक्षलाई प्रतिनिधित्व गर्दछ"),
 
     // Prashna House Names
     PRASHNA_HOUSE_1_NAME("Lagna/Querent", "लग्न/प्रश्नकर्ता"),
@@ -2346,48 +2266,6 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     PRASHNA_COLOR_GOLDEN("Golden", "सुनौलो"),
     PRASHNA_COLOR_GOLDEN_YELLOW("Golden Yellow", "सुनौलो पहेंलो"),
     PRASHNA_COLOR_BROWN("Brown", "खैरो"),
-
-    // Factors
-    PRASHNA_FACTOR_MOON_EXCELLENT("Moon is exceptionally strong", "चन्द्रमा असाधारण रूपमा बलियो छ"),
-    PRASHNA_FACTOR_MOON_GOOD("Moon is in a good position", "चन्द्रमा राम्रो अवस्थामा छ"),
-    PRASHNA_FACTOR_MOON_AVERAGE("Moon strength is average", "चन्द्रमाको बल औसत छ"),
-    PRASHNA_FACTOR_MOON_WEAK("Moon is weak", "चन्द्रमा कमजोर छ"),
-    PRASHNA_FACTOR_MOON_VERY_WEAK("Moon is very weak", "चन्द्रमा धेरै कमजोर छ"),
-    PRASHNA_FACTOR_MOON_AFFLICTED("Moon is severely afflicted", "चन्द्रमा गम्भीर रूपमा पीडित छ"),
-    PRASHNA_FACTOR_MOON_WAXING("Moon is waxing (increasing in light)", "शुक्ल पक्षको चन्द्रमा (प्रकाश बढ्दै गरेको)"),
-    PRASHNA_FACTOR_MOON_WANING("Moon is waning (decreasing in light)", "कृष्ण पक्षको चन्द्रमा (प्रकाश घट्दै गरेको)"),
-    PRASHNA_FACTOR_MOON_VOID("Moon is Void of Course (no major upcoming aspects)", "चन्द्रमा शून्य (Void) छ (कुनै प्रमुख आगामी दृष्टि छैन)"),
-    PRASHNA_FACTOR_LAGNA_STRONG("Lagna (Ascendant) is strong", "लग्न बलियो छ"),
-    PRASHNA_FACTOR_LAGNA_MODERATE("Lagna condition is moderate", "लग्नको अवस्था मध्यम छ"),
-    PRASHNA_FACTOR_LAGNA_WEAK("Lagna is weak or afflicted", "लग्न कमजोर वा पीडित छ"),
-    PRASHNA_FACTOR_LAGNA_COMBUST("Lagna lord is combust", "लग्न स्वामी अस्त छ"),
-    PRASHNA_FACTOR_LAGNA_RETRO("Lagna lord is retrograde", "लग्न स्वामी वक्री छ"),
-    PRASHNA_FACTOR_HOUSES_FAVORABLE("Relevant houses are well-disposed", "सम्बन्धित भावहरू अनुकूल छन्"),
-    PRASHNA_FACTOR_HOUSES_AFFLICTED("Relevant houses are afflicted", "सम्बन्धित भावहरू पीडित छन्"),
-
-    // Reasons
-    PRASHNA_REASON_STRONGLY_YES("Multiple strong factors indicate definite success.", "धेरै बलिया कारकहरूले निश्चित सफलता संकेत गर्दछ।"),
-    PRASHNA_REASON_YES("Positive indications outweigh challenges.", "सकारात्मक संकेतहरू चुनौतीहरू भन्दा बढी छन्।"),
-    PRASHNA_REASON_UNCERTAIN("Conflicting factors make the outcome uncertain.", "द्वन्द्वात्मक कारकहरूले नतिजालाई अनिश्चित बनाउँछन्।"),
-    PRASHNA_REASON_CHALLENGES("Significant obstacles are indicated.", "महत्त्वपूर्ण बाधाहरू संकेत गरिएको छ।"),
-    PRASHNA_REASON_STRONGLY_NO("Strong negative factors suggest failure or major delay.", "बलिया नकारात्मक कारकहरूले असफलता वा ठूलो ढिलाइ संकेत गर्दछ।"),
-
-    // Timing
-    PRASHNA_TIMING_WITHIN("Within %s", "%s भित्र"),
-    PRASHNA_TIMING_ABOUT("About %s", "लगभग %s"),
-
-    // Omens
-    PRASHNA_OMEN_LAGNA_DESC("Prashna Lagna Sign: %s", "प्रश्न लग्न राशि: %s"),
-    PRASHNA_OMEN_MOON_PLACEMENT_DESC("Moon in House %d (%s)", "चन्द्रमा भाव %d मा (%s)"),
-    PRASHNA_OMEN_HORA_LORD_DESC("Current Hora Lord: %s", "वर्तमान होरा स्वामी: %s"),
-    PRASHNA_OMEN_DAY_LORD_DESC("Current Day Lord: %s", "वर्तमान दिन स्वामी: %s"),
-    PRASHNA_OMEN_NAKSHATRA_DESC("Moon Nakshatra: %s", "चन्द्र नक्षत्र: %s"),
-    PRASHNA_OMEN_PLANETARY_WAR_DESC("Planetary War between %s and %s", "%s र %s बीच ग्रह युद्ध"),
-    PRASHNA_OMEN_COMBUSTION_DESC("%s is Combust", "%s अस्त छ"),
-    PRASHNA_OMEN_RETROGRADE_DESC("%s is Retrograde", "%s वक्री छ"),
-    PRASHNA_OMEN_WAR_IND("Indicates intense struggle and instability.", "तीव्र संघर्ष र अस्थिरता संकेत गर्दछ।"),
-    PRASHNA_OMEN_COMBUST_IND("%s's power is neutralized by Sun.", "%s को शक्ति सूर्यद्वारा निष्क्रिय पारिएको छ।"),
-    PRASHNA_OMEN_RETRO_IND("%s's energy is internally focused or unpredictable.", "%s को ऊर्जा आन्तरिक रूपमा केन्द्रित वा अप्रत्याशित छ।"),
 
     PRASHNA_CHART_LABEL("Prashna Chart", "प्रश्न कुण्डली"),
     PRASHNA_QUESTION_LOCATION("Question Location", "प्रश्नस्थान"),

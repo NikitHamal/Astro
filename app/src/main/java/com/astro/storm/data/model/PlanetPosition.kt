@@ -1,5 +1,8 @@
 package com.astro.storm.data.model
 
+import com.astro.storm.data.localization.Language
+import com.astro.storm.data.localization.StringResources
+
 /**
  * Position of a planet in the chart
  */
