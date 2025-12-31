@@ -140,8 +140,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Locale
+import com.astro.storm.data.localization.DateFormat
+import com.astro.storm.data.localization.formatLocalized
+import com.astro.storm.data.localization.localized
+import com.astro.storm.data.localization.localizedName
 
 /**
  * UI State for Prashna Screen
@@ -153,12 +156,7 @@ private sealed interface PrashnaUiState {
     data class Error(val message: String) : PrashnaUiState
 }
 
-@Stable
-private object PrashnaFormatters {
-    val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, MMM d, yyyy 'at' h:mm a", Locale.getDefault())
-    val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("h:mm a", Locale.getDefault())
-    val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.getDefault())
-}
+// PrashnaFormatters removed in favor of localized extensions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -789,7 +787,7 @@ private fun PrashnaInstructionsCard() {
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Text(
-                                        "${index + 1}",
+                                        (index + 1).localized(),
                                         style = MaterialTheme.typography.labelSmall,
                                         fontWeight = FontWeight.Bold,
                                         color = AppTheme.InfoColor
@@ -1118,7 +1116,7 @@ private fun ScoreIndicator(score: Int) {
                 color = AppTheme.TextMuted
             )
             Text(
-                stringResource(StringKeyAnalysis.PRASHNA_SCORE, score),
+                stringResource(StringKeyAnalysis.PRASHNA_SCORE, score.localized()),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Medium,
                 color = scoreColor
@@ -1187,7 +1185,7 @@ private fun QuestionSummaryCard(result: PrashnaCalculator.PrashnaResult) {
                 )
                 InfoChip(
                     icon = Icons.Outlined.AccessTime,
-                    label = result.questionTime.format(PrashnaFormatters.timeFormatter),
+                    label = result.questionTime.formatLocalized(DateFormat.TIME_ONLY),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -1261,7 +1259,7 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
                     shape = RoundedCornerShape(6.dp)
                 ) {
                     Text(
-                        moonAnalysis.moonStrength.getLocalizedName(currentLanguage()),
+                        moonAnalysis.moonStrength.localizedName(),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
                         color = strengthColor,
@@ -1292,7 +1290,7 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
                 )
                 MoonDetailItem(
                     label = houseLabel,
-                    value = moonAnalysis.moonHouse.toString(),
+                    value = moonAnalysis.moonHouse.localized(),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -1305,7 +1303,7 @@ private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
             ) {
                 MoonDetailItem(
                     label = nakshatraLabel,
-                    value = "${moonAnalysis.nakshatra.getLocalizedName(currentLanguage())} (Pada ${moonAnalysis.nakshatraPada})",
+                    value = stringResource(StringKey.NAKSHATRA_PADA_ACCESSIBILITY, moonAnalysis.nakshatra.localizedName(), moonAnalysis.nakshatraPada.localized()),
                     modifier = Modifier.weight(1f)
                 )
                 MoonDetailItem(
@@ -1462,7 +1460,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
             ) {
                 MoonDetailItem(
                     label = lordPositionLabel,
-                    value = "$houseLabel ${lagnaAnalysis.lagnaLordPosition.house}",
+                    value = "${stringResource(StringKey.CHART_HOUSE)} ${lagnaAnalysis.lagnaLordPosition.house.localized()}",
                     modifier = Modifier.weight(1f)
                 )
                 MoonDetailItem(
@@ -1491,7 +1489,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            "$planetsInLagnaLabel: ${lagnaAnalysis.planetsInLagna.joinToString { it.planet.getLocalizedName(language) }}",
+                            "$planetsInLagnaLabel: ${lagnaAnalysis.planetsInLagna.joinToString { it.planet.localizedName() }}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.InfoColor
                         )
@@ -1577,7 +1575,7 @@ private fun TimingPredictionCard(timing: PrashnaCalculator.TimingPrediction) {
                 )
                 InfoChip(
                     icon = Icons.Outlined.TrendingUp,
-                    label = stringResource(StringKeyAnalysis.PRASHNA_CONFIDENCE, timing.confidence),
+                    label = stringResource(StringKeyAnalysis.PRASHNA_CONFIDENCE, timing.confidence.localized()),
                     modifier = Modifier.weight(1f)
                 )
             }

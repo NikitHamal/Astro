@@ -76,43 +76,43 @@ import com.astro.storm.ui.viewmodel.DashaViewModel
 
 enum class DashaSystemType(
     val displayNameKey: StringKeyDosha,
-    val shortName: String, // Keeping short name hardcoded for now or use key? Short names like "Vim", "Yog" might be fine or need transliteration. "विं", "यो". 
-    // I'll stick to English short names for tab pills or localize them.
-    // The screen uses `displayName` for tabs. `shortName` unused?
-    // ModernPillTabRow uses `title`.
+    val shortNameKey: StringKeyDosha,
     val cycleDurationKey: StringKeyDosha,
     val descriptionKey: StringKeyDosha
 ) {
     VIMSOTTARI(
         displayNameKey = StringKeyDosha.DASHA_VIMSOTTARI_NAME,
-        shortName = "Vim",
+        shortNameKey = StringKeyDosha.DASHA_SHORT_VIM,
         cycleDurationKey = StringKeyDosha.DASHA_VIMSOTTARI_DURATION,
         descriptionKey = StringKeyDosha.DASHA_VIMSOTTARI_DESC
     ),
     YOGINI(
         displayNameKey = StringKeyDosha.DASHA_YOGINI,
-        shortName = "Yog",
+        shortNameKey = StringKeyDosha.DASHA_SHORT_YOG,
         cycleDurationKey = StringKeyDosha.DASHA_YOGINI_DURATION,
         descriptionKey = StringKeyDosha.DASHA_YOGINI_DESC
     ),
     ASHTOTTARI(
         displayNameKey = StringKeyDosha.DASHA_ASHTOTTARI,
-        shortName = "Ash",
+        shortNameKey = StringKeyDosha.DASHA_SHORT_ASH,
         cycleDurationKey = StringKeyDosha.DASHA_ASHTOTTARI_DURATION,
         descriptionKey = StringKeyDosha.DASHA_ASHTOTTARI_DESC
     ),
     SUDARSHANA(
         displayNameKey = StringKeyDosha.DASHA_SUDARSHANA,
-        shortName = "Sud",
+        shortNameKey = StringKeyDosha.DASHA_SHORT_SUD,
         cycleDurationKey = StringKeyDosha.DASHA_SUDARSHANA_DURATION,
         descriptionKey = StringKeyDosha.DASHA_SUDARSHANA_DESC
     ),
     CHARA(
         displayNameKey = StringKeyDosha.DASHA_CHARA,
-        shortName = "Cha",
+        shortNameKey = StringKeyDosha.DASHA_SHORT_CHA,
         cycleDurationKey = StringKeyDosha.DASHA_CHARA_DURATION,
         descriptionKey = StringKeyDosha.DASHA_CHARA_DESC
-    )
+    );
+
+    fun getShortName(language: com.astro.storm.data.localization.Language): String =
+        com.astro.storm.data.localization.StringResources.get(shortNameKey, language)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -337,7 +337,7 @@ private fun DashaSystemsTopBar(
                     IconButton(onClick = onJumpToToday) {
                         Icon(
                             imageVector = Icons.Outlined.CalendarToday,
-                            contentDescription = "Jump to today",
+                            contentDescription = stringResource(StringKey.BTN_JUMP_TODAY),
                             tint = AppTheme.AccentPrimary
                         )
                     }
@@ -345,7 +345,7 @@ private fun DashaSystemsTopBar(
                 IconButton(onClick = onInfoClick) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
-                        contentDescription = "Dasha information",
+                        contentDescription = stringResource(StringKey.INFO_DASHA),
                         tint = AppTheme.TextPrimary
                     )
                 }

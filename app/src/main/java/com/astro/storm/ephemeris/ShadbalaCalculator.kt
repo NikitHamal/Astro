@@ -20,63 +20,64 @@ import kotlin.math.sin
 
 
 enum class StrengthRating(
+    @Deprecated("Use stringResource(rating.stringKey) or getLocalizedName(language)")
     val displayName: String,
+    @Deprecated("Use localized interpretation")
     val description: String,
-    val minPercentage: Double
+    val minPercentage: Double,
+    val stringKey: com.astro.storm.data.localization.StringKeyInterface
 ) {
     EXTREMELY_WEAK(
         "Extremely Weak",
         "Planet is severely debilitated and may cause significant challenges",
-        0.0
+        0.0,
+        StringKeyAnalysis.STRENGTH_EXTREMELY_WEAK
     ),
     WEAK(
         "Weak",
         "Planet struggles to deliver its significations effectively",
-        50.0
+        50.0,
+        StringKeyAnalysis.STRENGTH_WEAK
     ),
     BELOW_AVERAGE(
         "Below Average",
         "Planet has limited capacity to provide positive results",
-        70.0
+        70.0,
+        StringKeyAnalysis.STRENGTH_BELOW_AVERAGE
     ),
     AVERAGE(
         "Average",
         "Planet functions at a baseline level with mixed results",
-        85.0
+        85.0,
+        StringKeyAnalysis.STRENGTH_AVERAGE
     ),
     ABOVE_AVERAGE(
         "Above Average",
         "Planet is reasonably strong and delivers good results",
-        100.0
+        100.0,
+        StringKeyAnalysis.STRENGTH_ABOVE_AVERAGE
     ),
     STRONG(
         "Strong",
         "Planet is well-positioned and gives excellent results",
-        115.0
+        115.0,
+        StringKeyAnalysis.STRENGTH_STRONG
     ),
     VERY_STRONG(
         "Very Strong",
         "Planet is highly potent and provides outstanding outcomes",
-        130.0
+        130.0,
+        StringKeyAnalysis.STRENGTH_VERY_STRONG
     ),
     EXTREMELY_STRONG(
         "Extremely Strong",
         "Planet is exceptionally powerful and dominates the chart",
-        150.0
+        150.0,
+        StringKeyAnalysis.STRENGTH_EXTREMELY_STRONG
     );
 
     fun getLocalizedName(language: Language): String {
-        val key = when (this) {
-            EXTREMELY_WEAK -> StringKeyAnalysis.STRENGTH_EXTREMELY_WEAK
-            WEAK -> StringKeyAnalysis.STRENGTH_WEAK
-            BELOW_AVERAGE -> StringKeyAnalysis.STRENGTH_BELOW_AVERAGE
-            AVERAGE -> StringKeyAnalysis.STRENGTH_AVERAGE
-            ABOVE_AVERAGE -> StringKeyAnalysis.STRENGTH_ABOVE_AVERAGE
-            STRONG -> StringKeyAnalysis.STRENGTH_STRONG
-            VERY_STRONG -> StringKeyAnalysis.STRENGTH_VERY_STRONG
-            EXTREMELY_STRONG -> StringKeyAnalysis.STRENGTH_EXTREMELY_STRONG
-        }
-        return StringResources.get(key, language)
+        return StringResources.get(stringKey, language)
     }
 
     companion object {

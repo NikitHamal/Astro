@@ -126,6 +126,62 @@ fun StringKeyInterface.localized(): String = stringResource(this)
 @ReadOnlyComposable
 fun StringKeyInterface.localized(vararg args: Any): String = stringResource(this, *args)
 
+/**
+ * Extension function for Planet to get localized name in Compose
+ */
+@Composable
+@ReadOnlyComposable
+fun com.astro.storm.data.model.Planet.localizedName(): String = stringResource(this.stringKey)
+
+/**
+ * Extension function for ZodiacSign to get localized name in Compose
+ */
+@Composable
+@ReadOnlyComposable
+fun com.astro.storm.data.model.ZodiacSign.localizedName(): String = stringResource(this.stringKey)
+
+/**
+ * Extension function for Nakshatra to get localized name in Compose
+ */
+@Composable
+@ReadOnlyComposable
+fun com.astro.storm.data.model.Nakshatra.localizedName(): String = stringResource(this.stringKey)
+
+/**
+ * Extension function for StrengthRating to get localized name in Compose
+ */
+@Composable
+@ReadOnlyComposable
+fun com.astro.storm.ephemeris.StrengthRating.localizedName(): String = stringResource(this.stringKey)
+
+/**
+ * Extension function for Int to get localized numeral string in Compose
+ */
+@Composable
+@ReadOnlyComposable
+fun Int.localized(): String {
+    val language = LocalLanguage.current
+    return if (language == Language.NEPALI) {
+        BikramSambatConverter.toNepaliNumerals(this)
+    } else {
+        this.toString()
+    }
+}
+
+/**
+ * Extension function for Double to get localized numeral string in Compose
+ */
+@Composable
+@ReadOnlyComposable
+fun Double.localized(precision: Int = 1): String {
+    val language = LocalLanguage.current
+    return if (language == Language.NEPALI) {
+        BikramSambatConverter.toNepaliNumerals(this, precision)
+    } else {
+        String.format("%.${precision}f", this)
+    }
+}
+
 // ============================================
 // DATE FORMATTING UTILITIES
 // ============================================
@@ -157,10 +213,17 @@ fun java.time.LocalDateTime.formatLocalized(
 ): String {
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
+    
+    if (format == DateFormat.TIME_ONLY) {
+        val timeStr = java.time.format.DateTimeFormatter.ofPattern("h:mm a").format(this)
+        return if (language == Language.NEPALI) convertToNepaliNumerals(timeStr) else timeStr
+    }
+    
     val dateStr = formatDate(this.toLocalDate(), dateSystem, language, format)
-    return if (includeTime) {
-        val timeStr = java.time.format.DateTimeFormatter.ofPattern("HH:mm").format(this)
-        "$dateStr $timeStr"
+    return if (includeTime || format == DateFormat.DATE_TIME) {
+        val timeStr = java.time.format.DateTimeFormatter.ofPattern("h:mm a").format(this)
+        val localizedTime = if (language == Language.NEPALI) convertToNepaliNumerals(timeStr) else timeStr
+        "$dateStr $localizedTime"
     } else {
         dateStr
     }
@@ -181,7 +244,11 @@ enum class DateFormat {
     /** Day Month: "15 Magh" or "१५ माघ" */
     DAY_MONTH,
     /** Full with weekday: "Sunday, 2081 Magh 15" */
-    FULL_WITH_WEEKDAY
+    FULL_WITH_WEEKDAY,
+    /** Time only: "10:30 AM" */
+    TIME_ONLY,
+    /** Date and time */
+    DATE_TIME
 }
 
 /**
@@ -241,6 +308,7 @@ private fun formatBSDate(
                 Language.NEPALI -> "$weekday, ${BikramSambatConverter.toNepaliNumerals(bsDate.year)} ${month.nepaliName} ${BikramSambatConverter.toNepaliNumerals(bsDate.day)}"
             }
         }
+        DateFormat.TIME_ONLY, DateFormat.DATE_TIME -> formatADDate(date, language, format)
     }
 }
 
@@ -259,6 +327,8 @@ private fun formatADDate(
         DateFormat.YEAR_ONLY -> java.time.format.DateTimeFormatter.ofPattern("yyyy")
         DateFormat.DAY_MONTH -> java.time.format.DateTimeFormatter.ofPattern("d MMM")
         DateFormat.FULL_WITH_WEEKDAY -> java.time.format.DateTimeFormatter.ofPattern("EEEE, yyyy MMM d")
+        DateFormat.TIME_ONLY -> java.time.format.DateTimeFormatter.ofPattern("h:mm a")
+        DateFormat.DATE_TIME -> java.time.format.DateTimeFormatter.ofPattern("yyyy MMM d, h:mm a")
     }
 
     val formatted = date.format(formatter)

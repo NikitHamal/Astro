@@ -241,6 +241,8 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     BTN_PREVIEW("Preview", "पूर्वावलोकन"),
     BTN_OK("OK", "ठीक छ"),
     BTN_CANCEL("Cancel", "रद्द गर्नुहोस्"),
+    BTN_JUMP_TODAY("Jump to today", "आजमा जानुहोस्"),
+    INFO_DASHA("Dasha information", "दशा जानकारी"),
     BTN_DELETE("Delete", "मेट्नुहोस्"),
     BTN_EDIT("Edit", "सम्पादन गर्नुहोस्"),
     BTN_SAVE("Save", "सेभ गर्नुहोस्"),
@@ -686,6 +688,21 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     GENDER_MALE("Male", "पुरुष"),
     GENDER_FEMALE("Female", "महिला"),
     GENDER_OTHER("Other", "अन्य"),
+
+    // ============================================
+    // GENERIC ASTROLOGICAL TERMS
+    // ============================================
+    CHART_HOUSE("House", "भाव"),
+    NAKSHATRA_PADA("Pada", "पद"),
+    PLANET_RETROGRADE("Retrograde", "वक्री"),
+    PLANET_RETROGRADE_SHORT("(R)", "(व)"),
+    UNIT_RUPAS("rupas", "रुपास"),
+    UNIT_DAYS("days", "दिन"),
+    UNIT_MONTHS("months", "महिना"),
+    UNIT_YEARS("years", "वर्ष"),
+
+    PLANET_IN_SIGN_ACCESSIBILITY("%1$s in %2$s", "%2$sमा %1$s"),
+    NAKSHATRA_PADA_ACCESSIBILITY("%1$s pada %2$s", "%1$s पद %2$s"),
 
     // ============================================
     // PLANETS

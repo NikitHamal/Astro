@@ -73,134 +73,134 @@ class PrashnaCalculator(context: Context) {
         private val PRASHNA_HOUSE_SIGNIFICATIONS = mapOf(
             1 to PrashnaHouseSignification(
                 house = 1,
-                name = "Lagna/Querent",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_1_NAME,
                 primaryTopics = listOf("The querent", "Health", "Self", "Beginning of matter"),
                 secondaryTopics = listOf("Physical appearance", "General success", "Life force"),
                 karaka = Planet.SUN,
-                bodyPart = "Head",
-                direction = "East",
-                color = "Red",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_HEAD,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_EAST,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_RED,
                 element = Tattva.FIRE
             ),
             2 to PrashnaHouseSignification(
                 house = 2,
-                name = "Dhana",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_2_NAME,
                 primaryTopics = listOf("Wealth", "Family", "Speech", "Resources"),
                 secondaryTopics = listOf("Food", "Right eye", "Face", "Possessions"),
                 karaka = Planet.JUPITER,
-                bodyPart = "Face/Mouth",
-                direction = "South-East",
-                color = "Orange",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_FACE_MOUTH,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_SOUTH_EAST,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_ORANGE,
                 element = Tattva.EARTH
             ),
             3 to PrashnaHouseSignification(
                 house = 3,
-                name = "Sahaja",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_3_NAME,
                 primaryTopics = listOf("Courage", "Siblings", "Short journeys", "Communication"),
                 secondaryTopics = listOf("Neighbors", "Skills", "Efforts", "Right ear"),
                 karaka = Planet.MARS,
-                bodyPart = "Arms/Shoulders",
-                direction = "West",
-                color = "Green",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_ARMS_SHOULDERS,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_WEST,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_GREEN,
                 element = Tattva.AIR
             ),
             4 to PrashnaHouseSignification(
                 house = 4,
-                name = "Sukha",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_4_NAME,
                 primaryTopics = listOf("Home", "Mother", "Property", "Vehicles"),
                 secondaryTopics = listOf("Education", "Happiness", "Buried treasure", "Heart"),
                 karaka = Planet.MOON,
-                bodyPart = "Chest",
-                direction = "North",
-                color = "White",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_CHEST,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_NORTH,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_WHITE,
                 element = Tattva.WATER
             ),
             5 to PrashnaHouseSignification(
                 house = 5,
-                name = "Putra",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_5_NAME,
                 primaryTopics = listOf("Children", "Intelligence", "Romance", "Speculation"),
                 secondaryTopics = listOf("Education", "Mantras", "Past merit", "Stomach"),
                 karaka = Planet.JUPITER,
-                bodyPart = "Upper Abdomen",
-                direction = "East-North",
-                color = "Yellow",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_UPPER_ABDOMEN,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_EAST_NORTH,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_YELLOW,
                 element = Tattva.FIRE
             ),
             6 to PrashnaHouseSignification(
                 house = 6,
-                name = "Ripu",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_6_NAME,
                 primaryTopics = listOf("Enemies", "Disease", "Obstacles", "Service"),
                 secondaryTopics = listOf("Debts", "Competitors", "Maternal uncle", "Intestines"),
                 karaka = Planet.MARS,
-                bodyPart = "Lower Abdomen",
-                direction = "South",
-                color = "Greyish Blue",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_LOWER_ABDOMEN,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_SOUTH,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_GREY_BLUE,
                 element = Tattva.EARTH
             ),
             7 to PrashnaHouseSignification(
                 house = 7,
-                name = "Kalatra",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_7_NAME,
                 primaryTopics = listOf("Marriage", "Partnership", "Business deals", "Opponent"),
                 secondaryTopics = listOf("Foreign travel", "Death", "Sexual matters", "Kidneys"),
                 karaka = Planet.VENUS,
-                bodyPart = "Below Navel",
-                direction = "West",
-                color = "Multi-colored",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_BELOW_NAVEL,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_WEST,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_MULTI,
                 element = Tattva.AIR
             ),
             8 to PrashnaHouseSignification(
                 house = 8,
-                name = "Ayu",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_8_NAME,
                 primaryTopics = listOf("Death", "Hidden things", "Inheritance", "Transformation"),
                 secondaryTopics = listOf("Chronic illness", "Occult", "Mystery", "Reproductive organs"),
                 karaka = Planet.SATURN,
-                bodyPart = "Private Parts",
-                direction = "South-West",
-                color = "Black",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_PRIVATE_PARTS,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_SOUTH_WEST,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_BLACK,
                 element = Tattva.WATER
             ),
             9 to PrashnaHouseSignification(
                 house = 9,
-                name = "Dharma",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_9_NAME,
                 primaryTopics = listOf("Luck", "Father", "Long journeys", "Higher learning"),
                 secondaryTopics = listOf("Religion", "Guru", "Fortune", "Thighs"),
                 karaka = Planet.JUPITER,
-                bodyPart = "Thighs",
-                direction = "East",
-                color = "Golden",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_THIGHS,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_EAST,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_GOLDEN,
                 element = Tattva.FIRE
             ),
             10 to PrashnaHouseSignification(
                 house = 10,
-                name = "Karma",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_10_NAME,
                 primaryTopics = listOf("Career", "Status", "Authority", "Government"),
                 secondaryTopics = listOf("Father", "Public life", "Achievement", "Knees"),
                 karaka = Planet.SUN,
-                bodyPart = "Knees",
-                direction = "South",
-                color = "White",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_KNEES,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_SOUTH,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_WHITE,
                 element = Tattva.EARTH
             ),
             11 to PrashnaHouseSignification(
                 house = 11,
-                name = "Labha",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_11_NAME,
                 primaryTopics = listOf("Gains", "Fulfillment", "Elder siblings", "Friends"),
                 secondaryTopics = listOf("Income", "Wishes", "Recovery from illness", "Ankles"),
                 karaka = Planet.JUPITER,
-                bodyPart = "Calves/Ankles",
-                direction = "North-West",
-                color = "Golden Yellow",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_CALVES_ANKLES,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_GOLDEN_YELLOW,
                 element = Tattva.AIR
             ),
             12 to PrashnaHouseSignification(
                 house = 12,
-                name = "Vyaya",
+                nameKey = StringKeyAnalysis.PRASHNA_HOUSE_12_NAME,
                 primaryTopics = listOf("Losses", "Expenses", "Liberation", "Foreign lands"),
                 secondaryTopics = listOf("Bed pleasures", "Sleep", "Hospital", "Feet"),
                 karaka = Planet.SATURN,
-                bodyPart = "Feet",
-                direction = "North-East",
-                color = "Brown",
+                bodyPartKey = StringKeyAnalysis.PRASHNA_BODY_FEET,
+                directionKey = StringKeyAnalysis.PRASHNA_DIR_NORTH_EAST,
+                colorKey = StringKeyAnalysis.PRASHNA_COLOR_BROWN,
                 element = Tattva.WATER
             )
         )
@@ -313,34 +313,15 @@ class PrashnaCalculator(context: Context) {
     /**
      * Five elements/Tattvas in Prashna
      */
-    enum class Tattva(val displayName: String, val signIndicator: String) {
-        FIRE("Agni/Fire", "Aries, Leo, Sagittarius"),
-        EARTH("Prithvi/Earth", "Taurus, Virgo, Capricorn"),
-        AIR("Vayu/Air", "Gemini, Libra, Aquarius"),
-        WATER("Jala/Water", "Cancer, Scorpio, Pisces"),
-        ETHER("Akasha/Ether", "None - represents void/space");
+    enum class Tattva(val nameKey: StringKeyAnalysis, val signsKey: StringKeyAnalysis) {
+        FIRE(StringKeyAnalysis.PRASHNA_TATTVA_FIRE, StringKeyAnalysis.PRASHNA_TATTVA_FIRE_SIGNS),
+        EARTH(StringKeyAnalysis.PRASHNA_TATTVA_EARTH, StringKeyAnalysis.PRASHNA_TATTVA_EARTH_SIGNS),
+        AIR(StringKeyAnalysis.PRASHNA_TATTVA_AIR, StringKeyAnalysis.PRASHNA_TATTVA_AIR_SIGNS),
+        WATER(StringKeyAnalysis.PRASHNA_TATTVA_WATER, StringKeyAnalysis.PRASHNA_TATTVA_WATER_SIGNS),
+        ETHER(StringKeyAnalysis.PRASHNA_TATTVA_ETHER, StringKeyAnalysis.PRASHNA_TATTVA_ETHER_SIGNS);
 
-        fun getLocalizedName(language: Language): String {
-            val key = when (this) {
-                FIRE -> StringKeyAnalysis.PRASHNA_TATTVA_FIRE
-                EARTH -> StringKeyAnalysis.PRASHNA_TATTVA_EARTH
-                AIR -> StringKeyAnalysis.PRASHNA_TATTVA_AIR
-                WATER -> StringKeyAnalysis.PRASHNA_TATTVA_WATER
-                ETHER -> StringKeyAnalysis.PRASHNA_TATTVA_ETHER
-            }
-            return StringResources.get(key, language)
-        }
-
-        fun getLocalizedSignIndicator(language: Language): String {
-            val key = when (this) {
-                FIRE -> StringKeyAnalysis.PRASHNA_TATTVA_FIRE_SIGNS
-                EARTH -> StringKeyAnalysis.PRASHNA_TATTVA_EARTH_SIGNS
-                AIR -> StringKeyAnalysis.PRASHNA_TATTVA_AIR_SIGNS
-                WATER -> StringKeyAnalysis.PRASHNA_TATTVA_WATER_SIGNS
-                ETHER -> StringKeyAnalysis.PRASHNA_TATTVA_ETHER_SIGNS
-            }
-            return StringResources.get(key, language)
-        }
+        fun getLocalizedName(language: Language): String = StringResources.get(nameKey, language)
+        fun getLocalizedSignIndicator(language: Language): String = StringResources.get(signsKey, language)
     }
 
     /**
@@ -370,15 +351,20 @@ class PrashnaCalculator(context: Context) {
      */
     data class PrashnaHouseSignification(
         val house: Int,
-        val name: String,
-        val primaryTopics: List<String>,
+        val nameKey: StringKeyAnalysis,
+        val primaryTopics: List<String>, // These are still list of strings for now, might need further refinement
         val secondaryTopics: List<String>,
         val karaka: Planet,
-        val bodyPart: String,
-        val direction: String,
-        val color: String,
+        val bodyPartKey: StringKeyAnalysis,
+        val directionKey: StringKeyAnalysis,
+        val colorKey: StringKeyAnalysis,
         val element: Tattva
-    )
+    ) {
+        fun getLocalizedName(language: Language): String = StringResources.get(nameKey, language)
+        fun getLocalizedBodyPart(language: Language): String = StringResources.get(bodyPartKey, language)
+        fun getLocalizedDirection(language: Language): String = StringResources.get(directionKey, language)
+        fun getLocalizedColor(language: Language): String = StringResources.get(colorKey, language)
+    }
 
     /**
      * Complete Prashna Analysis Result
@@ -766,23 +752,23 @@ class PrashnaCalculator(context: Context) {
     ): PrashnaResult {
         // Create BirthData for the question moment
         val prashnaData = BirthData(
-            name = "Prashna Chart",
+            name = StringResources.get(StringKeyAnalysis.PRASHNA_CHART_LABEL, language),
             dateTime = questionTime,
             latitude = latitude,
             longitude = longitude,
             timezone = timezone,
-            location = "Question Location"
+            location = StringResources.get(StringKeyAnalysis.PRASHNA_QUESTION_LOCATION, language)
         )
 
         // Calculate the chart using Swiss Ephemeris directly
         val chart = calculatePrashnaChart(prashnaData)
 
         // Perform comprehensive analysis
-        val moonAnalysis = analyzeMoon(chart, questionTime, latitude, longitude, timezone)
-        val lagnaAnalysis = analyzeLagna(chart)
-        val houseAnalysis = analyzeHouses(chart, category)
-        val specialYogas = detectPrashnaYogas(chart, moonAnalysis, lagnaAnalysis)
-        val omens = detectOmens(chart, questionTime, moonAnalysis)
+        val moonAnalysis = analyzeMoon(chart, questionTime, latitude, longitude, timezone, language)
+        val lagnaAnalysis = analyzeLagna(chart, language)
+        val houseAnalysis = analyzeHouses(chart, category, language)
+        val specialYogas = detectPrashnaYogas(chart, moonAnalysis, lagnaAnalysis, language)
+        val omens = detectOmens(chart, questionTime, moonAnalysis, language)
 
         // Calculate main judgment
         val judgment = calculateJudgment(
@@ -942,7 +928,8 @@ class PrashnaCalculator(context: Context) {
         questionTime: LocalDateTime,
         latitude: Double,
         longitude: Double,
-        timezone: String
+        timezone: String,
+        language: Language
     ): MoonAnalysis {
         val moonPosition = chart.planetPositions.first { it.planet == Planet.MOON }
         val sunPosition = chart.planetPositions.first { it.planet == Planet.SUN }
@@ -950,7 +937,6 @@ class PrashnaCalculator(context: Context) {
         // Calculate tithi
         val moonSunDiff = normalizeDegrees(moonPosition.longitude - sunPosition.longitude)
         val tithiNumber = (floor(moonSunDiff / 12.0).toInt() % 30) + 1
-        val tithiName = getTithiName(tithiNumber)
 
         // Determine if moon is waxing or waning
         val isWaxing = moonSunDiff < 180.0
@@ -965,8 +951,9 @@ class PrashnaCalculator(context: Context) {
         val (isVoid, lastAspect, nextAspect) = checkVoidOfCourse(moonPosition, chart)
 
         // Generate interpretation
+        val tithiName = getTithiName(tithiNumber, language)
         val interpretation = generateMoonInterpretation(
-            moonPosition, moonStrength, isWaxing, isVoid, tithiNumber, tithiName
+            moonPosition, moonStrength, isWaxing, isVoid, tithiNumber, tithiName, language
         )
 
         return MoonAnalysis(
@@ -1100,7 +1087,7 @@ class PrashnaCalculator(context: Context) {
     /**
      * Analyze Lagna (Ascendant)
      */
-    private fun analyzeLagna(chart: VedicChart): LagnaAnalysis {
+    private fun analyzeLagna(chart: VedicChart, language: Language): LagnaAnalysis {
         val lagnaSign = ZodiacSign.fromLongitude(chart.ascendant)
         val lagnaLord = lagnaSign.ruler
         val lagnaLordPosition = chart.planetPositions.first { it.planet == lagnaLord }
@@ -1110,7 +1097,7 @@ class PrashnaCalculator(context: Context) {
 
         // Find aspects to Lagna
         val lagnaAspects = chart.planetPositions.mapNotNull { planet ->
-            if (isAspectingHouse(planet, 1, chart)) {
+            if (isAspectingHouse(planet, 1)) {
                 PlanetaryAspect(
                     aspectingPlanet = planet.planet,
                     aspectedPlanet = null,
@@ -1139,7 +1126,7 @@ class PrashnaCalculator(context: Context) {
 
         // Generate interpretation
         val interpretation = generateLagnaInterpretation(
-            lagnaSign, lagnaLordPosition, lagnaCondition, planetsInLagna
+            lagnaSign, lagnaLordPosition, lagnaCondition, planetsInLagna, language
         )
 
         return LagnaAnalysis(
@@ -1263,7 +1250,8 @@ class PrashnaCalculator(context: Context) {
      */
     private fun analyzeHouses(
         chart: VedicChart,
-        category: PrashnaCategory
+        category: PrashnaCategory,
+        language: Language
     ): HouseAnalysis {
         val relevantHouses = QUESTION_CATEGORIES[category] ?: listOf(1, 7)
 
@@ -1283,7 +1271,7 @@ class PrashnaCalculator(context: Context) {
 
             // Calculate aspects to house
             val aspectsToHouse = chart.planetPositions.mapNotNull { planet ->
-                if (isAspectingHouse(planet, house, chart)) {
+                if (isAspectingHouse(planet, house)) {
                     PlanetaryAspect(
                         aspectingPlanet = planet.planet,
                         aspectedPlanet = null,
@@ -1319,7 +1307,7 @@ class PrashnaCalculator(context: Context) {
             )
         }
 
-        val interpretation = generateHouseInterpretation(relevantHouses, houseConditions, category)
+        val interpretation = generateHouseInterpretation(relevantHouses, houseConditions, category, language)
 
         return HouseAnalysis(
             relevantHouses = relevantHouses,
@@ -1482,7 +1470,8 @@ class PrashnaCalculator(context: Context) {
     private fun detectOmens(
         chart: VedicChart,
         questionTime: LocalDateTime,
-        moonAnalysis: MoonAnalysis
+        moonAnalysis: MoonAnalysis,
+        language: Language
     ): List<PrashnaOmen> {
         val omens = mutableListOf<PrashnaOmen>()
 
@@ -1491,8 +1480,8 @@ class PrashnaCalculator(context: Context) {
         omens.add(
             PrashnaOmen(
                 type = OmenType.PRASHNA_LAGNA,
-                description = "Question asked when ${lagnaSign.displayName} is rising",
-                indication = getLagnaSignIndication(lagnaSign),
+                description = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_LAGNA_DESC, language, lagnaSign.getLocalizedName(language)),
+                indication = getLagnaSignIndication(lagnaSign, language),
                 isPositive = lagnaSign.element in listOf("Fire", "Air")
             )
         )
@@ -1502,8 +1491,8 @@ class PrashnaCalculator(context: Context) {
         omens.add(
             PrashnaOmen(
                 type = OmenType.MOON_PLACEMENT,
-                description = "Moon in ${moonAnalysis.moonHouse} house (${moonHouseSignification?.name})",
-                indication = getMoonHouseIndication(moonAnalysis.moonHouse),
+                description = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_MOON_PLACEMENT_DESC, language, moonAnalysis.moonHouse, moonHouseSignification?.getLocalizedName(language) ?: ""),
+                indication = getMoonHouseIndication(moonAnalysis.moonHouse, language),
                 isPositive = moonAnalysis.moonHouse in listOf(1, 4, 5, 7, 9, 10, 11)
             )
         )
@@ -1513,8 +1502,8 @@ class PrashnaCalculator(context: Context) {
         omens.add(
             PrashnaOmen(
                 type = OmenType.HORA_LORD,
-                description = "Question in ${horaLord.displayName} Hora",
-                indication = getHoraLordIndication(horaLord),
+                description = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_HORA_LORD_DESC, language, horaLord.getLocalizedName(language)),
+                indication = getHoraLordIndication(horaLord, language),
                 isPositive = horaLord in NATURAL_BENEFICS
             )
         )
@@ -1524,8 +1513,8 @@ class PrashnaCalculator(context: Context) {
         omens.add(
             PrashnaOmen(
                 type = OmenType.DAY_LORD,
-                description = "Question on ${dayLord.displayName}'s day",
-                indication = getDayLordIndication(dayLord),
+                description = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_DAY_LORD_DESC, language, dayLord.getLocalizedName(language)),
+                indication = getDayLordIndication(dayLord, language),
                 isPositive = dayLord in listOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY)
             )
         )
@@ -1534,8 +1523,8 @@ class PrashnaCalculator(context: Context) {
         omens.add(
             PrashnaOmen(
                 type = OmenType.NAKSHATRA,
-                description = "Moon in ${moonAnalysis.nakshatra.displayName} Nakshatra",
-                indication = getNakshatraIndication(moonAnalysis.nakshatra),
+                description = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_NAKSHATRA_DESC, language, moonAnalysis.nakshatra.getLocalizedName(language)),
+                indication = getNakshatraIndication(moonAnalysis.nakshatra, language),
                 isPositive = isAuspiciousNakshatra(moonAnalysis.nakshatra)
             )
         )
@@ -1546,8 +1535,8 @@ class PrashnaCalculator(context: Context) {
             omens.add(
                 PrashnaOmen(
                     type = OmenType.PLANETARY_WAR,
-                    description = "${war.first.displayName} in war with ${war.second.displayName}",
-                    indication = "Conflict and competition indicated in the matter",
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_PLANETARY_WAR_DESC, language, war.first.getLocalizedName(language), war.second.getLocalizedName(language)),
+                    indication = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_WAR_IND, language),
                     isPositive = false
                 )
             )
@@ -1563,8 +1552,8 @@ class PrashnaCalculator(context: Context) {
             omens.add(
                 PrashnaOmen(
                     type = OmenType.COMBUSTION,
-                    description = "${planet.planet.displayName} is combust",
-                    indication = "${planet.planet.displayName}'s significations are weakened",
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_COMBUSTION_DESC, language, planet.planet.getLocalizedName(language)),
+                    indication = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_COMBUST_IND, language, planet.planet.getLocalizedName(language)),
                     isPositive = false
                 )
             )
@@ -1578,8 +1567,8 @@ class PrashnaCalculator(context: Context) {
             omens.add(
                 PrashnaOmen(
                     type = OmenType.RETROGRADE,
-                    description = "${planet.planet.displayName} is retrograde",
-                    indication = "Delays, reversals, or need to revisit matters related to ${planet.planet.displayName}",
+                    description = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_RETROGRADE_DESC, language, planet.planet.getLocalizedName(language)),
+                    indication = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_RETRO_IND, language, planet.planet.getLocalizedName(language)),
                     isPositive = false
                 )
             )
@@ -1729,11 +1718,11 @@ class PrashnaCalculator(context: Context) {
 
         // Determine primary reason
         val primaryReason = when {
-            score >= 50 -> "Strong Moon and favorable planetary configurations indicate success"
-            score >= 20 -> "Generally favorable indications with some conditions"
-            score >= -20 -> "Mixed indications - outcome depends on additional factors and timing"
-            score >= -50 -> "Challenges indicated - careful consideration advised"
-            else -> "Multiple unfavorable factors suggest difficulty in achieving desired outcome"
+            score >= 50 -> StringResources.get(StringKeyAnalysis.PRASHNA_REASON_STRONGLY_YES, language)
+            score >= 20 -> StringResources.get(StringKeyAnalysis.PRASHNA_REASON_YES, language)
+            score >= -20 -> StringResources.get(StringKeyAnalysis.PRASHNA_REASON_UNCERTAIN, language)
+            score >= -50 -> StringResources.get(StringKeyAnalysis.PRASHNA_REASON_CHALLENGES, language)
+            else -> StringResources.get(StringKeyAnalysis.PRASHNA_REASON_STRONGLY_NO, language)
         }
 
         // Calculate certainty
@@ -1878,10 +1867,10 @@ class PrashnaCalculator(context: Context) {
 
         // Based on special yogas
         val positiveYogas = specialYogas.filter { it.isPositive }
-        if (positiveYogas.any { it.name == "Ithasala Yoga" }) {
+        if (positiveYogas.any { it.name == StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_ITHASALA_NAME, language) }) {
             recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_ACT_PROMPTLY, language))
         }
-        if (specialYogas.any { it.name == "Nakta Yoga" }) {
+        if (specialYogas.any { it.name == StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_NAKTA_NAME, language) }) {
             recommendations.add(StringResources.get(StringKeyAnalysis.PRASHNA_REC_SEEK_ASSISTANCE, language))
         }
 
@@ -1951,30 +1940,30 @@ class PrashnaCalculator(context: Context) {
             appendLine()
 
             if (specialYogas.isNotEmpty()) {
-                appendLine("SPECIAL YOGAS PRESENT:")
+                appendLine(StringResources.get(StringKeyAnalysis.PRASHNA_YOGAS_TITLE, language) + ":")
                 for (yoga in specialYogas) {
                     val symbol = if (yoga.isPositive) "+" else "-"
-                    appendLine("$symbol ${yoga.name}: ${yoga.description}")
+                    appendLine("$symbol ${yoga.name}: ${yoga.interpretation}")
                 }
                 appendLine()
             }
 
             if (timingPrediction.willEventOccur) {
-                appendLine("TIMING PREDICTION:")
-                appendLine("Estimated: ${timingPrediction.estimatedTime}")
-                appendLine("Method: ${timingPrediction.timingMethod.displayName}")
-                appendLine("Confidence: ${timingPrediction.confidence}%")
+                appendLine(StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_TIMING, language) + ":")
+                appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_ESTIMATED, language)}: ${timingPrediction.estimatedTime}")
+                appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_METHOD, language)}: ${timingPrediction.timingMethod.getLocalizedName(language)}")
+                appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_CONFIDENCE, language)}: ${timingPrediction.confidence}%")
                 appendLine()
             }
 
-            appendLine("SUPPORTING FACTORS:")
+            appendLine(StringResources.get(StringKeyAnalysis.PRASHNA_SUPPORTING_FACTORS, language) + ":")
             for (factor in judgment.supportingFactors.take(5)) {
                 appendLine("+ $factor")
             }
             appendLine()
 
             if (judgment.opposingFactors.isNotEmpty()) {
-                appendLine("CHALLENGES:")
+                appendLine(StringResources.get(StringKeyAnalysis.PRASHNA_CHALLENGES, language) + ":")
                 for (factor in judgment.opposingFactors.take(5)) {
                     appendLine("- $factor")
                 }
@@ -2064,18 +2053,33 @@ class PrashnaCalculator(context: Context) {
         return 1
     }
 
-    private fun getTithiName(tithiNumber: Int): String {
-        val tithiNames = listOf(
-            "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami",
-            "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami",
-            "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi"
-        )
+    private fun getTithiName(tithiNumber: Int, language: Language): String {
+        val tithiKey = when (tithiNumber) {
+            1, 16 -> StringKeyAnalysis.PRASHNA_TITHI_PRATIPADA
+            2, 17 -> StringKeyAnalysis.PRASHNA_TITHI_DWITIYA
+            3, 18 -> StringKeyAnalysis.PRASHNA_TITHI_TRITIYA
+            4, 19 -> StringKeyAnalysis.PRASHNA_TITHI_CHATURTHI
+            5, 20 -> StringKeyAnalysis.PRASHNA_TITHI_PANCHAMI
+            6, 21 -> StringKeyAnalysis.PRASHNA_TITHI_SHASHTHI
+            7, 22 -> StringKeyAnalysis.PRASHNA_TITHI_SAPTAMI
+            8, 23 -> StringKeyAnalysis.PRASHNA_TITHI_ASHTAMI
+            9, 24 -> StringKeyAnalysis.PRASHNA_TITHI_NAVAMI
+            10, 25 -> StringKeyAnalysis.PRASHNA_TITHI_DASHAMI
+            11, 26 -> StringKeyAnalysis.PRASHNA_TITHI_EKADASHI
+            12, 27 -> StringKeyAnalysis.PRASHNA_TITHI_DWADASHI
+            13, 28 -> StringKeyAnalysis.PRASHNA_TITHI_TRAYODASHI
+            14, 29 -> StringKeyAnalysis.PRASHNA_TITHI_CHATURDASHI
+            15 -> StringKeyAnalysis.PRASHNA_TITHI_PURNIMA
+            30 -> StringKeyAnalysis.PRASHNA_TITHI_AMAVASYA
+            else -> StringKeyAnalysis.PRASHNA_TITHI_PRATIPADA
+        }
 
+        val name = StringResources.get(tithiKey, language)
+        
         return when {
-            tithiNumber == 15 -> "Purnima"
-            tithiNumber == 30 -> "Amavasya"
-            tithiNumber <= 15 -> "Shukla ${tithiNames.getOrElse(tithiNumber - 1) { "" }}"
-            else -> "Krishna ${tithiNames.getOrElse(tithiNumber - 16) { "" }}"
+            tithiNumber == 15 || tithiNumber == 30 -> name
+            tithiNumber < 15 -> StringResources.get(StringKeyAnalysis.PRASHNA_TITHI_SHUKLA, language).format(name)
+            else -> StringResources.get(StringKeyAnalysis.PRASHNA_TITHI_KRISHNA, language).format(name)
         }
     }
 
@@ -2108,11 +2112,10 @@ class PrashnaCalculator(context: Context) {
             }
             else -> {}
         }
-
         return false
     }
 
-    private fun isAspectingHouse(planet: PlanetPosition, targetHouse: Int, chart: VedicChart): Boolean {
+    private fun isAspectingHouse(planet: PlanetPosition, targetHouse: Int): Boolean {
         val houseDiff = ((targetHouse - planet.house + 12) % 12)
 
         // 7th aspect (all planets)
@@ -2369,94 +2372,97 @@ class PrashnaCalculator(context: Context) {
         isWaxing: Boolean,
         isVoid: Boolean,
         tithiNumber: Int,
-        tithiName: String
+        tithiName: String,
+        language: Language
     ): String {
-        val phaseDesc = if (isWaxing) "waxing (growing)" else "waning (diminishing)"
-        val voidDesc = if (isVoid) " Moon is void of course, indicating that nothing will come of this matter as currently proposed." else ""
+        val phaseDesc = if (isWaxing) StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_WAXING, language) else StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_WANING, language)
+        val voidDesc = if (isVoid) " " + StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_WARNING_VOID, language) else ""
 
-        return "The Moon, primary significator in Prashna, is in ${position.sign.displayName} " +
-               "in the ${position.house}${getOrdinalSuffix(position.house)} house. " +
-               "Moon is $phaseDesc on $tithiName. " +
-               "The Moon's strength is ${strength.displayName.lowercase()}.$voidDesc"
+        return "${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_MOON_ANALYSIS, language)}: " +
+               "${position.planet.getLocalizedName(language)} ${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_POSITION, language)} ${position.sign.getLocalizedName(language)} " +
+               "${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_HOUSE, language)} ${position.house}. " +
+               "${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_PHASE, language)} $phaseDesc, $tithiName. " +
+               "${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_STRENGTH, language)}: ${strength.getLocalizedName(language)}.$voidDesc"
     }
 
     private fun generateLagnaInterpretation(
         lagnaSign: ZodiacSign,
         lordPosition: PlanetPosition,
         condition: LagnaCondition,
-        planetsInLagna: List<PlanetPosition>
+        planetsInLagna: List<PlanetPosition>,
+        language: Language
     ): String {
         val planetsDesc = if (planetsInLagna.isEmpty()) {
-            "No planets occupy the Lagna."
+            ""
         } else {
-            "Planets in Lagna: ${planetsInLagna.joinToString { it.planet.displayName }}."
+            " " + StringResources.get(StringKeyAnalysis.PRASHNA_PLANETS_IN_LAGNA, language) + ": ${planetsInLagna.joinToString { it.planet.getLocalizedName(language) }}."
         }
 
-        return "${lagnaSign.displayName} rises at the time of question. " +
-               "The Lagna Lord ${lagnaSign.ruler.displayName} is in the ${lordPosition.house}${getOrdinalSuffix(lordPosition.house)} house. " +
-               "Lagna condition: ${condition.displayName}. $planetsDesc"
+        return "${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_RISING_SIGN, language)}: ${lagnaSign.getLocalizedName(language)}. " +
+               "${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_LAGNA_LORD, language)} ${lagnaSign.ruler.getLocalizedName(language)} " +
+               "${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_HOUSE, language)} ${lordPosition.house}. " +
+               "${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_CONDITION, language)}: ${condition.getLocalizedName(language)}.$planetsDesc"
     }
 
     private fun generateHouseInterpretation(
         relevantHouses: List<Int>,
         conditions: Map<Int, HouseCondition>,
-        category: PrashnaCategory
+        category: PrashnaCategory,
+        language: Language
     ): String {
         val houseDescs = relevantHouses.map { house ->
             val condition = conditions[house]
-            val signification = PRASHNA_HOUSE_SIGNIFICATIONS[house]
-            "House $house (${signification?.name}): ${condition?.condition?.displayName ?: "Unknown"}"
+            "${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_HOUSE, language)} $house: ${condition?.condition?.getLocalizedName(language) ?: ""}"
         }
 
-        return "For ${category.displayName} questions, we examine houses ${relevantHouses.joinToString()}. " +
+        return "${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_RELEVANT_HOUSES, language)} (${category.getLocalizedName(language)}): " +
                houseDescs.joinToString(". ") + "."
     }
 
-    private fun getLagnaSignIndication(sign: ZodiacSign): String {
+    private fun getLagnaSignIndication(sign: ZodiacSign, language: Language): String {
         return when (sign.element) {
-            "Fire" -> "Dynamic energy, quick results, direct action needed"
-            "Earth" -> "Practical matters, material concerns, patience required"
-            "Air" -> "Communication important, mental approach, flexibility needed"
-            "Water" -> "Emotional undertones, intuition important, hidden factors"
-            else -> "Mixed indications"
+            "Fire" -> StringResources.get(StringKeyAnalysis.PRASHNA_TATTVA_FIRE, language)
+            "Earth" -> StringResources.get(StringKeyAnalysis.PRASHNA_TATTVA_EARTH, language)
+            "Air" -> StringResources.get(StringKeyAnalysis.PRASHNA_TATTVA_AIR, language)
+            "Water" -> StringResources.get(StringKeyAnalysis.PRASHNA_TATTVA_WATER, language)
+            else -> ""
         }
     }
 
-    private fun getMoonHouseIndication(house: Int): String {
-        return PRASHNA_HOUSE_SIGNIFICATIONS[house]?.let {
-            "Focus on ${it.primaryTopics.take(2).joinToString()}"
-        } ?: "General indications"
+    private fun getMoonHouseIndication(house: Int, language: Language): String {
+        return StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_HOUSE, language) + " $house"
     }
 
-    private fun getHoraLordIndication(lord: Planet): String {
-        return when (lord) {
-            Planet.SUN -> "Authority, government matters favorable"
-            Planet.MOON -> "Public, women, emotional matters favored"
-            Planet.MARS -> "Action, conflict, competitive matters"
-            Planet.MERCURY -> "Communication, business, learning favored"
-            Planet.JUPITER -> "Excellent for wisdom, growth, spirituality"
-            Planet.VENUS -> "Favorable for relationships, pleasures, arts"
-            Planet.SATURN -> "Delays possible, persistence needed"
-            else -> "Mixed indications"
+    private fun getHoraLordIndication(lord: Planet, language: Language): String {
+        val key = when (lord) {
+            Planet.SUN -> StringKeyAnalysis.VARSHA_YEARLORD_SUN
+            Planet.MOON -> StringKeyAnalysis.VARSHA_YEARLORD_MOON
+            Planet.MARS -> StringKeyAnalysis.VARSHA_YEARLORD_MARS
+            Planet.MERCURY -> StringKeyAnalysis.VARSHA_YEARLORD_MERCURY
+            Planet.JUPITER -> StringKeyAnalysis.VARSHA_YEARLORD_JUPITER
+            Planet.VENUS -> StringKeyAnalysis.VARSHA_YEARLORD_VENUS
+            Planet.SATURN -> StringKeyAnalysis.VARSHA_YEARLORD_SATURN
+            else -> StringKeyAnalysis.VARSHA_YEARLORD_GENERIC
         }
+        return StringResources.get(key, language)
     }
 
-    private fun getDayLordIndication(lord: Planet): String {
-        return when (lord) {
-            Planet.SUN -> "Sunday favors authority, vitality matters"
-            Planet.MOON -> "Monday favors public, emotional matters"
-            Planet.MARS -> "Tuesday favors action, competitive matters"
-            Planet.MERCURY -> "Wednesday favors communication, business"
-            Planet.JUPITER -> "Thursday highly favorable for most matters"
-            Planet.VENUS -> "Friday favors relationships, pleasures"
-            Planet.SATURN -> "Saturday requires patience, delays likely"
-            else -> "Mixed day influences"
+    private fun getDayLordIndication(lord: Planet, language: Language): String {
+        val key = when (lord) {
+            Planet.SUN -> StringKeyAnalysis.VARA_SUNDAY
+            Planet.MOON -> StringKeyAnalysis.VARA_MONDAY
+            Planet.MARS -> StringKeyAnalysis.VARA_TUESDAY
+            Planet.MERCURY -> StringKeyAnalysis.VARA_WEDNESDAY
+            Planet.JUPITER -> StringKeyAnalysis.VARA_THURSDAY
+            Planet.VENUS -> StringKeyAnalysis.VARA_FRIDAY
+            Planet.SATURN -> StringKeyAnalysis.VARA_SATURDAY
+            else -> StringKeyAnalysis.AUSPICIOUSNESS_NEUTRAL
         }
+        return StringResources.get(key, language)
     }
 
-    private fun getNakshatraIndication(nakshatra: Nakshatra): String {
-        return "${nakshatra.displayName} ruled by ${nakshatra.ruler.displayName}. " +
-               "Deity: ${nakshatra.deity}."
+    private fun getNakshatraIndication(nakshatra: Nakshatra, language: Language): String {
+        return "${nakshatra.getLocalizedName(language)} (${StringResources.get(StringKeyAnalysis.PANCHANGA_LORD, language)}: ${nakshatra.ruler.getLocalizedName(language)})"
     }
 
     // Timing calculation helpers
@@ -2548,25 +2554,11 @@ class PrashnaCalculator(context: Context) {
     ): String {
         val methodLabel = method.getLocalizedName(language)
         val timeframe = formatTimingEstimate(value, unit, language)
-        val moonSpeed = moonAnalysis.moonSpeed.format(2)
+        val moonSpeed = moonAnalysis.moonSpeed.let { "%.2f".format(it) }
         
-        return StringResources.get(StringKeyAnalysis.PRASHNA_TIMING_EXPLANATION, language)
-            .format(methodLabel, timeframe, moonSpeed)
+        return "$methodLabel: $timeframe ($moonSpeed)"
     }
 
-    private fun getOrdinalSuffix(number: Int): String {
-        return when {
-            number in 11..13 -> "th"
-            number % 10 == 1 -> "st"
-            number % 10 == 2 -> "nd"
-            number % 10 == 3 -> "rd"
-            else -> "th"
-        }
-    }
-
-    private fun Double.format(decimals: Int): String {
-        return "%.${decimals}f".format(this)
-    }
 
     /**
      * Get house signification for Prashna

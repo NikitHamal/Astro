@@ -95,9 +95,10 @@ import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyDosha
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.formatLocalized
-import com.astro.storm.data.localization.getLocalizedName
-import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.localization.StringResources
+import com.astro.storm.data.localization.localized
+import com.astro.storm.data.localization.localizedName
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
@@ -559,7 +560,7 @@ private fun SignPeriodRow(
 
     val startDateFormatted = startDate.formatLocalized(DateFormat.FULL)
     val endDateFormatted = endDate.formatLocalized(DateFormat.FULL)
-    val percentComplete = formatNumber((progress * 100).toInt(), language)
+    val percentComplete = ((progress * 100).toInt()).localized()
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -595,7 +596,7 @@ private fun SignPeriodRow(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = sign.getLocalizedName(language),
+                        text = sign.localizedName(),
                         fontSize = mainFontSize,
                         fontWeight = if (isLarge) FontWeight.Bold else FontWeight.SemiBold,
                         color = signColor
@@ -778,12 +779,12 @@ private fun NakshatraGroupCard(
             ) {
                 InfoItem(
                     label = stringResource(StringKeyDosha.KALACHAKRA_BIRTH_NAKSHATRA),
-                    value = result.birthNakshatra.getLocalizedName(language),
+                    value = result.birthNakshatra.localizedName(),
                     color = AppTheme.TextPrimary
                 )
                 InfoItem(
                     label = stringResource(StringKeyDosha.KALACHAKRA_PADA),
-                    value = formatNumber(result.birthNakshatraPada, language),
+                    value = result.birthNakshatraPada.localized(),
                     color = AppTheme.TextSecondary
                 )
             }
@@ -1822,7 +1823,7 @@ private fun AntardashaRow(
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = antardasha.sign.getLocalizedName(language),
+                        text = antardasha.sign.localizedName(),
                         fontSize = 13.sp,
                         fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
                         color = when {
@@ -1834,7 +1835,7 @@ private fun AntardashaRow(
                     if (isCurrent) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "${String.format("%.0f", antardasha.getProgressPercent())}%",
+                            text = "${antardasha.getProgressPercent().toInt().localized()}%",
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = signColor.copy(alpha = 0.9f)
@@ -1889,7 +1890,7 @@ private fun AntardashaRow(
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = String.format("%.1f", antardasha.durationMonths) + (if (language == Language.ENGLISH) " months" else " महिना"),
+                text = "${antardasha.durationMonths.localized(1)} ${stringResource(StringKey.UNIT_MONTHS)}",
                 fontSize = 10.sp,
                 color = AppTheme.TextMuted.copy(alpha = 0.8f)
             )

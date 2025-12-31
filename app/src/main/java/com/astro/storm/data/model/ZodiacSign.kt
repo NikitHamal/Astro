@@ -9,25 +9,27 @@ import com.astro.storm.data.localization.StringResources
  */
 enum class ZodiacSign(
     val number: Int,
+    @Deprecated("Use stringResource(sign.stringKey) or getLocalizedName(language)")
     val displayName: String,
     val abbreviation: String,
     val element: String,
     val ruler: Planet,
     val quality: Quality,
-    val symbol: String
+    val symbol: String,
+    val stringKey: com.astro.storm.data.localization.StringKeyInterface
 ) {
-    ARIES(1, "Aries", "Ar", "Fire", Planet.MARS, Quality.CARDINAL, "♈"),
-    TAURUS(2, "Taurus", "Ta", "Earth", Planet.VENUS, Quality.FIXED, "♉"),
-    GEMINI(3, "Gemini", "Ge", "Air", Planet.MERCURY, Quality.MUTABLE, "♊"),
-    CANCER(4, "Cancer", "Ca", "Water", Planet.MOON, Quality.CARDINAL, "♋"),
-    LEO(5, "Leo", "Le", "Fire", Planet.SUN, Quality.FIXED, "♌"),
-    VIRGO(6, "Virgo", "Vi", "Earth", Planet.MERCURY, Quality.MUTABLE, "♍"),
-    LIBRA(7, "Libra", "Li", "Air", Planet.VENUS, Quality.CARDINAL, "♎"),
-    SCORPIO(8, "Scorpio", "Sc", "Water", Planet.MARS, Quality.FIXED, "♏"),
-    SAGITTARIUS(9, "Sagittarius", "Sg", "Fire", Planet.JUPITER, Quality.MUTABLE, "♐"),
-    CAPRICORN(10, "Capricorn", "Cp", "Earth", Planet.SATURN, Quality.CARDINAL, "♑"),
-    AQUARIUS(11, "Aquarius", "Aq", "Air", Planet.SATURN, Quality.FIXED, "♒"),
-    PISCES(12, "Pisces", "Pi", "Water", Planet.JUPITER, Quality.MUTABLE, "♓");
+    ARIES(1, "Aries", "Ar", "Fire", Planet.MARS, Quality.CARDINAL, "♈", StringKey.SIGN_ARIES),
+    TAURUS(2, "Taurus", "Ta", "Earth", Planet.VENUS, Quality.FIXED, "♉", StringKey.SIGN_TAURUS),
+    GEMINI(3, "Gemini", "Ge", "Air", Planet.MERCURY, Quality.MUTABLE, "♊", StringKey.SIGN_GEMINI),
+    CANCER(4, "Cancer", "Ca", "Water", Planet.MOON, Quality.CARDINAL, "♋", StringKey.SIGN_CANCER),
+    LEO(5, "Leo", "Le", "Fire", Planet.SUN, Quality.FIXED, "♌", StringKey.SIGN_LEO),
+    VIRGO(6, "Virgo", "Vi", "Earth", Planet.MERCURY, Quality.MUTABLE, "♍", StringKey.SIGN_VIRGO),
+    LIBRA(7, "Libra", "Li", "Air", Planet.VENUS, Quality.CARDINAL, "♎", StringKey.SIGN_LIBRA),
+    SCORPIO(8, "Scorpio", "Sc", "Water", Planet.MARS, Quality.FIXED, "♏", StringKey.SIGN_SCORPIO),
+    SAGITTARIUS(9, "Sagittarius", "Sg", "Fire", Planet.JUPITER, Quality.MUTABLE, "♐", StringKey.SIGN_SAGITTARIUS),
+    CAPRICORN(10, "Capricorn", "Cp", "Earth", Planet.SATURN, Quality.CARDINAL, "♑", StringKey.SIGN_CAPRICORN),
+    AQUARIUS(11, "Aquarius", "Aq", "Air", Planet.SATURN, Quality.FIXED, "♒", StringKey.SIGN_AQUARIUS),
+    PISCES(12, "Pisces", "Pi", "Water", Planet.JUPITER, Quality.MUTABLE, "♓", StringKey.SIGN_PISCES);
 
     val startDegree: Double get() = (number - 1) * ZODIAC_SIGN_SPAN
     val endDegree: Double get() = number * ZODIAC_SIGN_SPAN
@@ -36,21 +38,7 @@ enum class ZodiacSign(
      * Get localized sign name based on current language
      */
     fun getLocalizedName(language: Language): String {
-        val key = when (this) {
-            ARIES -> StringKey.SIGN_ARIES
-            TAURUS -> StringKey.SIGN_TAURUS
-            GEMINI -> StringKey.SIGN_GEMINI
-            CANCER -> StringKey.SIGN_CANCER
-            LEO -> StringKey.SIGN_LEO
-            VIRGO -> StringKey.SIGN_VIRGO
-            LIBRA -> StringKey.SIGN_LIBRA
-            SCORPIO -> StringKey.SIGN_SCORPIO
-            SAGITTARIUS -> StringKey.SIGN_SAGITTARIUS
-            CAPRICORN -> StringKey.SIGN_CAPRICORN
-            AQUARIUS -> StringKey.SIGN_AQUARIUS
-            PISCES -> StringKey.SIGN_PISCES
-        }
-        return StringResources.get(key, language)
+        return StringResources.get(stringKey, language)
     }
 
     companion object {

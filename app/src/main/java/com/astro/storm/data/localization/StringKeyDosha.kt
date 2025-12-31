@@ -2993,6 +2993,11 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // DASHA SYSTEMS SCREEN MISSING KEYS
     // ============================================
     ERROR_CALCULATION("Calculation Error", "गणना त्रुटि"),
+    DASHA_SHORT_VIM("Vim", "विं"),
+    DASHA_SHORT_YOG("Yog", "यो"),
+    DASHA_SHORT_ASH("Ash", "अष्टो"),
+    DASHA_SHORT_SUD("Sud", "सुद"),
+    DASHA_SHORT_CHA("Cha", "चर"),
 
     // ============================================
     // YOGINI DASHA SCREEN MISSING KEYS

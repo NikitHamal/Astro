@@ -14,39 +14,31 @@ import com.astro.storm.data.localization.StringResources
  * Modern additions (optional):
  * - Outer planets: Uranus, Neptune, Pluto
  */
-enum class Planet(val swissEphId: Int, val displayName: String, val symbol: String) {
-    SUN(0, "Sun", "Su"),
-    MOON(1, "Moon", "Mo"),
-    MERCURY(2, "Mercury", "Me"),
-    VENUS(3, "Venus", "Ve"),
-    MARS(4, "Mars", "Ma"),
-    JUPITER(5, "Jupiter", "Ju"),
-    SATURN(6, "Saturn", "Sa"),
-    RAHU(10, "Rahu", "Ra"),  // Mean node (North Node)
-    KETU(-1, "Ketu", "Ke"),  // 180° from Rahu (South Node)
-    URANUS(7, "Uranus", "Ur"),
-    NEPTUNE(8, "Neptune", "Ne"),
-    PLUTO(9, "Pluto", "Pl");
+enum class Planet(
+    val swissEphId: Int,
+    @Deprecated("Use stringResource(planet.stringKey) or getLocalizedName(language)")
+    val displayName: String,
+    val symbol: String,
+    val stringKey: com.astro.storm.data.localization.StringKeyInterface
+) {
+    SUN(0, "Sun", "Su", StringKey.PLANET_SUN),
+    MOON(1, "Moon", "Mo", StringKey.PLANET_MOON),
+    MERCURY(2, "Mercury", "Me", StringKey.PLANET_MERCURY),
+    VENUS(3, "Venus", "Ve", StringKey.PLANET_VENUS),
+    MARS(4, "Mars", "Ma", StringKey.PLANET_MARS),
+    JUPITER(5, "Jupiter", "Ju", StringKey.PLANET_JUPITER),
+    SATURN(6, "Saturn", "Sa", StringKey.PLANET_SATURN),
+    RAHU(10, "Rahu", "Ra", StringKey.PLANET_RAHU),  // Mean node (North Node)
+    KETU(-1, "Ketu", "Ke", StringKey.PLANET_KETU),  // 180° from Rahu (South Node)
+    URANUS(7, "Uranus", "Ur", StringKey.PLANET_URANUS),
+    NEPTUNE(8, "Neptune", "Ne", StringKey.PLANET_NEPTUNE),
+    PLUTO(9, "Pluto", "Pl", StringKey.PLANET_PLUTO);
 
     /**
      * Get localized planet name based on current language
      */
     fun getLocalizedName(language: Language): String {
-        val key = when (this) {
-            SUN -> StringKey.PLANET_SUN
-            MOON -> StringKey.PLANET_MOON
-            MERCURY -> StringKey.PLANET_MERCURY
-            VENUS -> StringKey.PLANET_VENUS
-            MARS -> StringKey.PLANET_MARS
-            JUPITER -> StringKey.PLANET_JUPITER
-            SATURN -> StringKey.PLANET_SATURN
-            RAHU -> StringKey.PLANET_RAHU
-            KETU -> StringKey.PLANET_KETU
-            URANUS -> StringKey.PLANET_URANUS
-            NEPTUNE -> StringKey.PLANET_NEPTUNE
-            PLUTO -> StringKey.PLANET_PLUTO
-        }
-        return StringResources.get(key, language)
+        return StringResources.get(stringKey, language)
     }
 
     companion object {

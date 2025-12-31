@@ -54,6 +54,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.data.localization.localized
+import com.astro.storm.data.localization.localizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.Planet
@@ -432,10 +434,10 @@ private fun PlanetDetailCard(
             .semantics {
                 role = Role.Button
                 contentDescription = buildString {
-                    append("${position.planet.displayName} in ${position.sign.displayName}")
-                    append(", House ${position.house}")
-                    append(", ${position.nakshatra.displayName} pada ${position.nakshatraPada}")
-                    if (position.isRetrograde) append(", Retrograde")
+                    append(stringResource(StringKey.PLANET_IN_SIGN_ACCESSIBILITY, position.planet.localizedName(), position.sign.localizedName()))
+                    append(", ${stringResource(StringKey.CHART_HOUSE)} ${position.house.localized()}")
+                    append(", ${stringResource(StringKey.NAKSHATRA_PADA_ACCESSIBILITY, position.nakshatra.localizedName(), position.nakshatraPada.localized())}")
+                    if (position.isRetrograde) append(", ${stringResource(StringKey.PLANET_RETROGRADE)}")
                     if (state.dignityStatus.isSignificant) append(", $dignityDisplayName")
                 }
             },
@@ -503,13 +505,13 @@ private fun PlanetCardHeader(
             Spacer(modifier = Modifier.width(12.dp))
             Column {
                 Text(
-                    text = position.planet.displayName,
+                    text = position.planet.localizedName(),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
                 )
                 Text(
-                    text = "${position.sign.displayName} • House ${position.house}",
+                    text = "${position.sign.localizedName()} • ${stringResource(StringKey.CHART_HOUSE)} ${position.house.localized()}",
                     fontSize = 12.sp,
                     color = ChartDetailColors.TextSecondary
                 )
@@ -569,7 +571,7 @@ private fun NakshatraChip(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "${nakshatra.displayName} $pada",
+                text = "${nakshatra.localizedName()} ${pada.localized()}",
                 fontSize = 11.sp,
                 color = ChartDetailColors.AccentPurple
             )
@@ -612,7 +614,7 @@ private fun ShadbalaProgressSection(shadbala: PlanetaryShadbala) {
                 color = ChartDetailColors.TextSecondary
             )
             Text(
-                text = shadbala.strengthRating.displayName,
+                text = shadbala.strengthRating.localizedName(),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = strengthColor
@@ -634,7 +636,7 @@ private fun ShadbalaProgressSection(shadbala: PlanetaryShadbala) {
         Spacer(modifier = Modifier.height(2.dp))
 
         Text(
-            text = "$formattedTotal / $formattedRequired rupas ($formattedPercentage%)",
+            text = "$formattedTotal / $formattedRequired ${stringResource(StringKey.UNIT_RUPAS)} ($formattedPercentage%)",
             fontSize = 10.sp,
             color = ChartDetailColors.TextMuted
         )
