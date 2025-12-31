@@ -281,19 +281,19 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     SYNASTRY_SELECT_BOTH("Please select both charts to compare", "कृपया तुलना गर्न दुवै कुण्डली छान्नुहोस्"),
     SYNASTRY_QUINCUNX("Quincunx", "क्विनकनक्स"),
     SYNASTRY_SEMI_SEXTILE("Semi-Sextile", "अर्ध-षड्भाग"),
-    SYNASTRY_INTERPRET_HARMONIOUS("%1$s and %2$s work together harmoniously, creating mutual understanding and support.", "%1$s र %2$s सामञ्जस्यपूर्ण रूपमा स� गै काम गर्छन्, जसले आपसी सम� दारी र समर्थन सिर्जना गर्दछ।"),
-    SYNASTRY_INTERPRET_CHALLENGING("%1$s and %2$s create tension that requires conscious effort to integrate.", "%1$s र %2$s ले तनाव सिर्जना गर्दछन् जसलाई � क��कृत गर्न सचेत प्रयासको आवश्यक पर्दछ।"),
-    SYNASTRY_INTERPRET_MAJOR("%1$s and %2$s are closely connected, amplifying each other's energies.", "%1$s र %2$s नजिकबाट जोडि� का छन्, � क अर्काको ऊर्जालाई बढाउँदै।"),
-    SYNASTRY_INTERPRET_MINOR("%1$s and %2$s have a subtle connection that adds nuance to the relationship.", "%1$s र %2$s बीच � क सूक्ष्म सम्बन्ध छ जसले सम्बन्धमा नयाँ पक्ष थप्दछ।"),
-    SYNASTRY_INTERPRET_ASCENDANT("%1$s conjunct Person %2$d's Ascendant creates a strong personal connection.", "%1$s व्यक्ति %2$d को लग्नमा हुनुले � क बलियो व्यक्तिगत सम्बन्ध सिर्जना गर्दछ।"),
-    SYNASTRY_INTERPRET_OVERLAY("Person %1$d's %2$s falls in the %3$dth house, influencing %4$s.", "व्यक्ति %1$d को %2$s %3$d भावमा पर्दछ, जसले %4$s लाई प्रभावित गर्दछ।"),
-    SYNASTRY_DESC_EMOTIONAL("Emotional understanding and nurturing", "भावनात्मक सम� दारी र पोषण"),
+    SYNASTRY_INTERPRET_HARMONIOUS("%1\$s and %2\$s work together harmoniously, creating mutual understanding and support.", "%1\$s र %2\$s सामञ्जस्यपूर्ण रूपमा सँगै काम गर्छन्, जसले आपसी समझदारी र समर्थन सिर्जना गर्दछ।"),
+    SYNASTRY_INTERPRET_CHALLENGING("%1\$s and %2\$s create tension that requires conscious effort to integrate.", "%1\$s र %2\$s ले तनाव सिर्जना गर्दछन् जसलाई एकीकृत गर्न सचेत प्रयासको आवश्यक पर्दछ।"),
+    SYNASTRY_INTERPRET_MAJOR("%1\$s and %2\$s are closely connected, amplifying each other's energies.", "%1\$s र %2\$s नजिकबाट जोडिएका छन्, एक अर्काको ऊर्जालाई बढाउँदै।"),
+    SYNASTRY_INTERPRET_MINOR("%1\$s and %2\$s have a subtle connection that adds nuance to the relationship.", "%1\$s र %2\$s बीच एक सूक्ष्म सम्बन्ध छ जसले सम्बन्धमा नयाँ पक्ष थप्दछ।"),
+    SYNASTRY_INTERPRET_ASCENDANT("%1\$s conjunct Person %2\$d's Ascendant creates a strong personal connection.", "%1\$s व्यक्ति %2\$d को लग्नमा हुनुले एक बलियो व्यक्तिगत सम्बन्ध सिर्जना गर्दछ।"),
+    SYNASTRY_INTERPRET_OVERLAY("Person %1\$d's %2\$s falls in the %3\$dth house, influencing %4\$s.", "व्यक्ति %1\$d को %2\$s %3\$d भावमा पर्दछ, जसले %4\$s लाई प्रभावित गर्दछ।"),
+        SYNASTRY_DESC_EMOTIONAL("Emotional understanding and nurturing", "भावनात्मक समझदारी र पोषण"),
     SYNASTRY_DESC_ROMANCE("Physical attraction and passion", "शारीरिक आकर्षण र जुनून"),
     SYNASTRY_DESC_COMMUNICATION("Mental connection and dialogue", "मानसिक सम्बन्ध र संवाद"),
     SYNASTRY_DESC_STABILITY("Commitment and endurance", "प्रतिबद्धता र धैर्यता"),
     SYNASTRY_DESC_GROWTH("Mutual expansion and learning", "आपसी विस्तार र सिकाइ"),
-    SYNASTRY_FINDING_ASPECT("Strong %1$s between %2$s and %3$s", "%2$s र %3$s बीच बलियो %1$s"),
-    SYNASTRY_FINDING_HOUSE("%1$s activates the %2$dth house of %3$s", "%1$s ले %3$s को %2$d भावलाई सक� रिय गर्दछ"),
+    SYNASTRY_FINDING_ASPECT("Strong %1\$s between %2\$s and %3\$s", "%2\$s र %3\$s बीच बलियो %1\$s"),
+    SYNASTRY_FINDING_HOUSE("%1\$s activates the %2\$dth house of %3\$s", "%1\$s ले %3\$s को %2\$d भावलाई सक्रिय गर्दछ"),
     SYNASTRY_CALC_FAILED("Calculation failed", "गणना असफल भयो"),
     SYNASTRY_AVAILABLE_CHARTS("%d charts available", "%d कुण्डलीहरू उपलब्ध छन्"),
     SYNASTRY_LIFE_AREA_GENERAL("General", "सामान्य"),
@@ -1460,8 +1460,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     LAL_KITAB_SATURDAY("Saturday - Saturn", "शनिबार - शनि"),
 
     // Bhrigu Bindu
-    BHRIGU_BINDU_REMEDIES("Remedial Measures", "उपचारात्मक उपायहरू"),
-    BHRIGU_BINDU_ABOUT_DESC("The Bhrigu Bindu is a sensitive mathematical point between the Moon and Rahu that reveals karmic destiny and life purpose.", "भृगु बिन्दु चन्द्रमा र राहु बीचको एक संवेदनशील गणितीय बिन्दु हो जसले कार्मिक भाग्य र जीवन उद्देश्य प्रकट गर्दछ।"),
     BHRIGU_BINDU_CALC_ERROR("Unable to calculate Bhrigu Bindu. Please check chart data.", "भृगु बिन्दु गणना गर्न असमर्थ। कृपया कुण्डली डाटा जाँच गर्नुहोस्।"),
     POSITION_INTERPRETATION("Position Interpretation", "स्थिति व्याख्या"),
     STRENGTH_FACTORS("Strength Factors", "बल कारकहरू"),
@@ -1530,7 +1528,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // ============================================
     // Ashtottari Screen specific
     ASHTOTTARI_TITLE("Ashtottari Dasha", "अष्टोत्तरी दशा"),
-    ASHTOTTARI_STARTING_LORD("Starting Lord", "सुरुवात स्वामी"),
     ASHTOTTARI_BALANCE("Balance at Birth", "जन्ममा शेष"),
     ASHTOTTARI_SUBTITLE("108-Year Conditional Dasha System", "१०८ वर्षको सशर्त दशा प्रणाली"),
     ASHTOTTARI_ABOUT("About Ashtottari Dasha", "अष्टोत्तरी दशाको बारेमा"),
@@ -1686,8 +1683,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     MRITYU_BHAGA_GANDANTA_VISHNU("Vishnu Gandanta", "विष्णु गण्डान्त"),
     MRITYU_BHAGA_GANDANTA_SHIVA("Shiva Gandanta", "शिव गण्डान्त"),
     
-    MRITYU_BHAGA_JUNCTION_DESC("Junction between %1$s and %2$s", "%1$s र %2$s बीचको सन्धि"),
-    MRITYU_BHAGA_DISTANCE_JUNCTION("Distance from Junction: %1$s", "सन्धिबाट दूरी: %1$s"),
+    MRITYU_BHAGA_JUNCTION_DESC("Junction between %1\$2 and %2\$2", "%1\$2 र %2\$2 बीचको सन्धि"),
+    MRITYU_BHAGA_DISTANCE_JUNCTION("Distance from Junction: %1\$2", "सन्धिबाट दूरी: %1\$2"),
     
     // Pushkara
     MRITYU_BHAGA_PUSHKARA_NAVAMSA_TITLE("Pushkara Navamsa", "पुष्कर नवमांश"),
@@ -1802,8 +1799,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     PLANET_STRENGTH_UNKNOWN("Unknown", "अज्ञात"),
 
     // Kalachakra Predictions
-    KALACHAKRA_PRED_INTRO_DEHA("Based on Deha lord's %1$s status and %2$s Deha-Jeeva relationship: ", "देह स्वामीको %1$s अवस्था र %2$s देह-जीव सम्बन्धको आधारमा: "),
-    KALACHAKRA_PRED_INTRO_JEEVA("Jeeva lord's %1$s condition indicates ", "जीव स्वामीको %1$s अवस्थाले संकेत गर्दछ "),
+    KALACHAKRA_PRED_INTRO_DEHA("Based on Deha lord's %1\$2 status and %2\$2 Deha-Jeeva relationship: ", "देह स्वामीको %1\$2 अवस्था र %2\$2 देह-जीव सम्बन्धको आधारमा: "),
+    KALACHAKRA_PRED_INTRO_JEEVA("Jeeva lord's %1\$2 condition indicates ", "जीव स्वामीको %1\$2 अवस्थाले संकेत गर्दछ "),
 
     KALACHAKRA_HEALTH_PRED_HARMONIOUS("Physical health is well-supported by spiritual practices. Body responds well to holistic healing.", "शारीरिक स्वास्थ्यलाई आध्यात्मिक अभ्यासहरूले राम्रो समर्थन गर्दछ। शरीरले समग्र उपचारलाई राम्रो प्रतिक्रिया दिन्छ।"),
     KALACHAKRA_HEALTH_PRED_SUPPORTIVE("Good baseline health with spiritual practices enhancing physical wellbeing.", "राम्रो आधारभूत स्वास्थ्यको साथ आध्यात्मिक अभ्यासहरूले शारीरिक कल्याण बढाउँछ।"),
@@ -1818,8 +1815,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_SPIRITUAL_PRED_TRANSFORMATIVE("profound spiritual transformation through life's challenges.", "जीवनका चुनौतीहरू मार्फत गहिरो आध्यात्मिक रूपान्तरण।"),
 
     // Recommendations
-    KALACHAKRA_REC_DEHA_LORD("Strengthen Deha lord (%1$s) through appropriate mantras and gemstones", "उपयुक्त मन्त्र र रत्नहरू मार्फत देह स्वामी (%1$s) लाई बलियो बनाउनुहोस्"),
-    KALACHAKRA_REC_JEEVA_LORD("Honor Jeeva lord (%1$s) through spiritual practices", "आध्यात्मिक अभ्यासहरू मार्फत जीव स्वामी (%1$s) लाई सम्मान गर्नुहोस्"),
+    KALACHAKRA_REC_DEHA_LORD("Strengthen Deha lord (%1\$2) through appropriate mantras and gemstones", "उपयुक्त मन्त्र र रत्नहरू मार्फत देह स्वामी (%1\$2) लाई बलियो बनाउनुहोस्"),
+    KALACHAKRA_REC_JEEVA_LORD("Honor Jeeva lord (%1\$2) through spiritual practices", "आध्यात्मिक अभ्यासहरू मार्फत जीव स्वामी (%1\$2) लाई सम्मान गर्नुहोस्"),
     
     KALACHAKRA_REC_HARMONIOUS_1("Continue current spiritual and health practices - they are aligned", "वर्तमान आध्यात्मिक र स्वास्थ्य अभ्यासहरू जारी राख्नुहोस् - तिनीहरू पङ्क्तिबद्ध छन्"),
     KALACHAKRA_REC_HARMONIOUS_2("Use this favorable period for deepening meditation", "यो अनुकूल अवधिलाई ध्यान गहिरो बनाउन प्रयोग गर्नुहोस्"),
@@ -1831,9 +1828,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_REC_CHALLENGING_2("Transform challenges into spiritual growth opportunities", "चुनौतीहरूलाई आध्यात्मिक वृद्धिको अवसरमा रूपान्तरण गर्नुहोस्"),
     KALACHAKRA_REC_TRANSFORMATIVE_1("Embrace transformation as part of soul's journey", "रूपान्तरणलाई आत्माको यात्राको भागको रूपमा अँगाल्नुहोस्"),
     KALACHAKRA_REC_TRANSFORMATIVE_2("Seek guidance from spiritual teachers during difficult periods", "कठिन समयमा आध्यात्मिक गुरुहरूबाट मार्गदर्शन लिनुहोस्"),
-    LAL_KITAB_SCREEN_SUBTITLE("Practical Karmic Remedies", "व्यावहारिक कार्मिक उपायहरू"),
-    LAL_KITAB_SCREEN_ABOUT("About Lal Kitab", "लाल किताबको बारेमा"),
-    LAL_KITAB_SCREEN_ABOUT_DESC("Lal Kitab offers simple, practical remedies using everyday items like turmeric, milk, honey, and specific actions. These remedies work on karmic debts and planetary afflictions without expensive rituals.", "लाल किताबले बेसार, दूध, मह जस्ता दैनिक वस्तुहरू प्रयोग गरी सरल, व्यावहारिक उपायहरू प्रदान गर्दछ। यी उपायहरूले महँगो विधि बिना कार्मिक ऋण र ग्रह पीडामा काम गर्दछन्।"),
     LAL_KITAB_SCREEN_KARMIC_DEBTS("Karmic Debts (Rin)", "कार्मिक ऋणहरू"),
     LAL_KITAB_SCREEN_PLANETARY_AFFLICTIONS("Planetary Afflictions", "ग्रह पीडाहरू"),
     LAL_KITAB_HOUSE_REMEDIES("House-Based Remedies", "भाव-आधारित उपायहरू"),
@@ -1857,11 +1851,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     DIVISIONAL_CHARTS_SUBTITLE("Detailed Varga Analysis", "विस्तृत वर्ग विश्लेषण"),
     DIVISIONAL_CHARTS_ABOUT("About Divisional Charts", "विभागीय कुण्डलीको बारेमा"),
     DIVISIONAL_CHARTS_ABOUT_DESC("Divisional charts (Vargas) provide deeper insights into specific life areas. D-2 for wealth, D-3 for siblings, D-9 for marriage, D-10 for career, D-12 for parents.", "विभागीय कुण्डलीहरूले विशेष जीवन क्षेत्रहरूमा गहिरो अन्तर्दृष्टि प्रदान गर्दछन्। D-2 धनको लागि, D-3 भाइबहिनीको लागि, D-9 विवाहको लागि, D-10 क्यारियरको लागि, D-12 अभिभावकको लागि।"),
-    DIVISIONAL_HORA_TAB("D-2 Hora", "D-2 होरा"),
-    DIVISIONAL_DREKKANA_TAB("D-3 Drekkana", "D-3 द्रेक्काण"),
-    DIVISIONAL_NAVAMSA_TAB("D-9 Navamsa", "D-9 नवांश"),
-    DIVISIONAL_DASHAMSA_TAB("D-10 Dashamsa", "D-10 दशांश"),
-    DIVISIONAL_DWADASAMSA_TAB("D-12 Dwadasamsa", "D-12 द्वादशांश"),
     DIVISIONAL_WEALTH_ANALYSIS("Wealth & Finance", "धन र वित्त"),
     DIVISIONAL_SIBLING_ANALYSIS("Siblings & Courage", "भाइबहिनी र साहस"),
     DIVISIONAL_MARRIAGE_ANALYSIS("Marriage & Dharma", "विवाह र धर्म"),
@@ -1997,11 +1986,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_RELATIONSHIP("Deha-Jeeva Relationship", "देह-जीव सम्बन्ध"),
     KALACHAKRA_SAVYA("Savya (Direct)", "सव्य (सीधो)"),
     KALACHAKRA_APSAVYA("Apsavya (Retrograde)", "अपसव्य (उल्टो)"),
-    KALACHAKRA_HEALTH_EXCELLENT("Excellent", "उत्कृष्ट"),
-    KALACHAKRA_HEALTH_GOOD("Good", "राम्रो"),
-    KALACHAKRA_HEALTH_MODERATE("Moderate", "मध्यम"),
-    KALACHAKRA_HEALTH_CHALLENGING("Challenging", "चुनौतीपूर्ण"),
-    KALACHAKRA_HEALTH_CRITICAL("Critical", "गम्भीर"),
     KALACHAKRA_RELATIONSHIP_HARMONIOUS("Harmonious", "सामञ्जस्यपूर्ण"),
     KALACHAKRA_RELATIONSHIP_SUPPORTIVE("Supportive", "सहयोगी"),
     KALACHAKRA_RELATIONSHIP_NEUTRAL("Neutral", "तटस्थ"),
@@ -2294,90 +2278,32 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     HORA_MOON_TITLE("Moon Hora - Inherited/Liquid Wealth", "चन्द्र होरा - विरासत/तरल धन"),
     HORA_MOON_DESC("These planets indicate potential for inherited or liquid assets", "यी ग्रहहरूले विरासत वा तरल सम्पत्तिको सम्भावना संकेत गर्छन्"),
     HORA_WEALTH_SOURCES("Wealth Sources", "धनका स्रोतहरू"),
-    HORA_POTENTIAL("Potential", "सम्भाव्यता"),
-    HORA_POTENTIAL_EXCEPTIONAL("Exceptional", "असाधारण"),
-    HORA_POTENTIAL_HIGH("High", "उच्च"),
-    HORA_POTENTIAL_MODERATE("Moderate", "मध्यम"),
-    HORA_POTENTIAL_AVERAGE("Average", "औसत"),
-    HORA_POTENTIAL_NEEDS_EFFORT("Needs Effort", "प्रयास आवश्यक"),
-    HORA_SELF_EARNED("Self-Earned", "स्व-अर्जित"),
-    HORA_INHERITED("Inherited/Liquid", "विरासत/तरल"),
 
     // ============================================
     // DIVISIONAL CHARTS - DREKKANA (D-3) SIBLINGS
     // ============================================
-    DREKKANA_COURAGE_TITLE("Courage & Initiative", "साहस र पहल"),
     DREKKANA_PHYSICAL("Physical", "शारीरिक"),
     DREKKANA_MENTAL("Mental", "मानसिक"),
     DREKKANA_INITIATIVE("Initiative", "पहल"),
-    DREKKANA_YOUNGER("Younger", "सानो"),
-    DREKKANA_ELDER("Elder", "ठूलो"),
-    DREKKANA_RELATIONSHIP("Relationship", "सम्बन्ध"),
-    DREKKANA_SHORT_JOURNEYS("Short Journeys", "छोटा यात्राहरू"),
-    DREKKANA_COMMUNICATION_TITLE("Communication Skills", "सञ्चार सीपहरू"),
-    DREKKANA_OVERALL("Overall", "समग्र"),
-    DREKKANA_WRITING("Writing", "लेखन"),
-    DREKKANA_SPEAKING("Speaking", "बोल्ने"),
     DREKKANA_ARTISTIC("Artistic Talents", "कलात्मक प्रतिभाहरू"),
-    DREKKANA_ARTISTIC_TALENTS("Artistic Talents", "कलात्मक प्रतिभाहरू"),
 
     // Courage Levels
     COURAGE_LEVEL("Level", "स्तर"),
     COURAGE_PHYSICAL("Physical Courage", "शारीरिक साहस"),
     COURAGE_MENTAL("Mental Courage", "मानसिक साहस"),
     COURAGE_INITIATIVE("Initiative", "पहल"),
-    COURAGE_EXCEPTIONAL("Exceptional", "असाधारण"),
-    COURAGE_HIGH("High", "उच्च"),
-    COURAGE_MODERATE("Moderate", "मध्यम"),
-    COURAGE_DEVELOPING("Developing", "विकासशील"),
-    COURAGE_NEEDS_WORK("Needs Work", "काम आवश्यक"),
 
     // ============================================
     // DIVISIONAL CHARTS - NAVAMSA (D-9) MARRIAGE
     // ============================================
-    NAVAMSA_SPOUSE_TITLE("Spouse Characteristics", "जीवनसाथी विशेषताहरू"),
-    NAVAMSA_NATURE("Nature", "स्वभाव"),
-    NAVAMSA_PHYSICAL_TRAITS("Physical Traits", "शारीरिक गुणहरू"),
-    NAVAMSA_FAMILY_BACKGROUND("Family Background", "पारिवारिक पृष्ठभूमि"),
-    NAVAMSA_DIRECTION("Direction", "दिशा"),
-    NAVAMSA_PROBABLE_PROFESSIONS("Probable Professions", "सम्भावित पेशाहरू"),
-    NAVAMSA_TIMING_TITLE("Marriage Timing", "विवाह समय"),
-    NAVAMSA_VENUS("Venus", "शुक्र"),
-    NAVAMSA_JUPITER("Jupiter", "बृहस्पति"),
-    NAVAMSA_DARAKARAKA("Darakaraka", "दारकारक"),
-    NAVAMSA_FAVORABLE_DASHA("Favorable Dasha Periods", "अनुकूल दशा अवधिहरू"),
-    NAVAMSA_KEY_PLANETS_TITLE("Key Planet Positions (D-9)", "मुख्य ग्रह स्थितिहरू (D-9)"),
-    NAVAMSA_UPAPADA("Upapada", "उपपद"),
-    NAVAMSA_RELATIONSHIP_STABILITY("Relationship Stability", "सम्बन्ध स्थिरता"),
-    NAVAMSA_AREAS_ATTENTION("Areas of Attention", "ध्यान दिनुपर्ने क्षेत्रहरू"),
-    NAVAMSA_PROTECTIVE_FACTORS("Protective Factors", "सुरक्षात्मक कारकहरू"),
 
     // ============================================
     // DIVISIONAL CHARTS - DASHAMSA (D-10) CAREER
     // ============================================
-    DASHAMSA_BUSINESS_VS_SERVICE("Business vs Service Aptitude", "व्यापार बनाम सेवा योग्यता"),
-    DASHAMSA_BUSINESS("Business", "व्यापार"),
-    DASHAMSA_SERVICE("Service", "सेवा"),
-    DASHAMSA_GOVT_SERVICE_TITLE("Government Service Potential", "सरकारी सेवा सम्भावना"),
-    DASHAMSA_POTENTIAL("Potential", "सम्भावना"),
-    DASHAMSA_RECOMMENDED_AREAS("Recommended Areas", "सिफारिस गरिएका क्षेत्रहरू"),
-    DASHAMSA_PROFESSIONAL_STRENGTHS("Professional Strengths", "व्यावसायिक बलहरू"),
 
     // ============================================
     // DIVISIONAL CHARTS - DWADASAMSA (D-12) PARENTS
     // ============================================
-    DWADASAMSA_FATHER("Father", "बुबा"),
-    DWADASAMSA_MOTHER("Mother", "आमा"),
-    DWADASAMSA_SIGNIFICATOR("Significator", "कारक"),
-    DWADASAMSA_HOUSE_LORD("House Lord", "भाव स्वामी"),
-    DWADASAMSA_CHARACTERISTICS("Characteristics", "विशेषताहरू"),
-    DWADASAMSA_RELATIONSHIP("Relationship", "सम्बन्ध"),
-    DWADASAMSA_INHERITANCE_TITLE("Inheritance", "विरासत"),
-    DWADASAMSA_POTENTIAL("Potential", "सम्भावना"),
-    DWADASAMSA_TIMING("Timing", "समय"),
-    DWADASAMSA_SOURCES("Sources", "स्रोतहरू"),
-    DWADASAMSA_ANCESTRAL_PROPERTY("Ancestral Property", "पैतृक सम्पत्ति"),
-    DWADASAMSA_LONGEVITY_TITLE("Longevity Indicators", "दीर्घायु सूचकहरू"),
     DWADASAMSA_HEALTH_CONCERNS("Health Concerns", "स्वास्थ्य चिन्ताहरू"),
 
     // ============================================
@@ -2718,21 +2644,16 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // DASHA SANDHI SCREEN
     // ============================================
     SANDHI_SCREEN_TITLE("Dasha Sandhi", "दशा सन्धि"),
-    SANDHI_SUBTITLE("Period Transitions", "दशा परिवर्तनहरू"),
     SANDHI_ABOUT_TITLE("About Dasha Sandhi", "दशा सन्धिको बारेमा"),
     SANDHI_ABOUT_DESC("Dasha Sandhi refers to the junction or transition point between two planetary periods (Dashas) in Vedic astrology.\n\nThese transition periods are considered sensitive times when:\n• The energy shifts from one planetary influence to another\n• Both planets' effects may be felt simultaneously\n• Major life changes often occur\n• Careful planning is advised\n\nThe intensity of a Sandhi depends on:\n• The nature of the transitioning planets\n• Their relationship in your chart\n• Current transits and aspects\n\nUnderstanding your Sandhi periods helps you prepare for and navigate these significant life transitions.", "दशा सन्धि भन्नाले वैदिक ज्योतिषमा दुई ग्रह दशा (समय अवधि) बीचको मिलन वा संक्रमण बिन्दुलाई जनाउँछ।\n\nयी संक्रमण अवधिहरूलाई संवेदनशील समय मानिन्छ जब:\n• ऊर्जा एक ग्रहको प्रभावबाट अर्कोमा सर्छ\n• दुबै ग्रहका प्रभावहरू एक साथ महसुस हुन सक्छ\n• अक्सर ठूला जीवन परिवर्तनहरू हुन्छन्\n• सावधानीपूर्वक योजना बनाउन सल्लाह दिइन्छ\n\nसन्धिको तीव्रता यसमा निर्भर गर्दछ:\n• संक्रमण भइरहेका ग्रहहरूको प्रकृति\n• तपाईंको कुण्डलीमा तिनीहरूको सम्बन्ध\n• वर्तमान गोचर र दृष्टिहरू\n\nतपाईंको सन्धि अवधिहरू बुझ्नाले तपाईंलाई यी महत्त्वपूर्ण जीवन संक्रमणहरूको तयारी गर्न र नेभिगेट गर्न मद्दत गर्छ।"),
-    SANDHI_VOLATILITY("Overall Volatility", "समग्र अस्थिरता"),
     SANDHI_VOLATILITY_DESC("Based on current and upcoming period transitions", "वर्तमान र आगामी दशा परिवर्तनहरूमा आधारित"),
     SANDHI_ACTIVE("Active", "सक्रिय"),
-    SANDHI_UPCOMING("Upcoming", "आगामी"),
-    SANDHI_RECENT("Recent", "हालसालैको"),
     SANDHI_GUIDANCE("General Guidance", "सामान्य मार्गदर्शन"),
     SANDHI_CURRENT_ACTIVE("Currently in Sandhi Period", "वर्तमानमा सन्धि अवधिमा"),
     SANDHI_INTENSITY("Intensity:", "तीव्रता:"),
     SANDHI_ENDS("Ends:", "अन्त्य:"),
     SANDHI_NO_ACTIVE("No Active Sandhi", "कुनै सक्रिय सन्धि छैन"),
     SANDHI_NO_ACTIVE_DESC("You are not currently in a Dasha Sandhi period. Check the Upcoming tab for future transitions.", "तपाईं हाल दशा सन्धि अवधिमा हुनुहुन्न। भविष्यका परिवर्तनहरूको लागि आगामी ट्याब जाँच गर्नुहोस्।"),
-    SANDHI_PREDICTIONS("Predictions", "भविष्यवाणीहरू"),
     SANDHI_IMPACTS("Life Area Impacts", "जीवन क्षेत्र प्रभावहरू"),
     SANDHI_REMEDIES("Recommended Remedies", "सिफारिस गरिएका उपायहरू"),
     SANDHI_NO_CHART_DESC("Create or select a birth chart to analyze Dasha Sandhi periods.", "दशा सन्धि अवधिहरू विश्लेषण गर्न जन्म कुण्डली सिर्जना गर्नुहोस् वा छान्नुहोस्।"),
@@ -2762,8 +2683,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     GRAHA_NO_REMEDIES_DESC("Since there are no active planetary wars, remedial measures are not required.", "कुनै सक्रिय ग्रह युद्ध नभएकोले, उपायहरू आवश्यक छैनन्।"),
     GRAHA_ABOUT_TITLE("About Graha Yuddha", "ग्रह युद्धको बारेमा"),
     GRAHA_ABOUT_DESC("Graha Yuddha (Planetary War) occurs when two planets (excluding Sun and Moon) are within 1 degree of each other.\n\nThe planet with the lower longitude is usually considered the winner, while the one with higher longitude is the loser.\n\nImpacts:\n• The losing planet's significations may suffer\n• If the losing planet rules important houses, those areas may be affected\n• The war is most intense during close conjunctions", "ग्रह युद्ध तब हुन्छ जब दुई ग्रहहरू (सूर्य र चन्द्रमा बाहेक) एक अर्काको १ डिग्री भित्र हुन्छन्।\n\nकम देशान्तर भएको ग्रहलाई सामान्यतया विजेता मानिन्छ, जबकि उच्च देशान्तर भएको ग्रहलाई पराजित मानिन्छ।\n\nप्रभावहरू:\n• पराजित ग्रहका कारकत्वहरूमा असर पर्न सक्छ\n• यदि पराजित ग्रहले महत्त्वपूर्ण भावहरूको स्वामी हो भने, ती क्षेत्रहरू प्रभावित हुन सक्छन्\n• नजिकको युतिमा युद्ध सबैभन्दा तीव्र हुन्छ"),
-    GRAHA_DEFEATS_MSG("%1$s defeats %2$s", "%1$s ले %2$s लाई जित्छ"),
-    GRAHA_IN_HOUSE_MSG("in %1$s (House %2$d)", "%1$s (भाव %2$d) मा"),
+    GRAHA_DEFEATS_MSG("%1\$2 defeats %2\$2", "%1\$2 ले %2\$2 लाई जित्छ"),
+    GRAHA_IN_HOUSE_MSG("in %1\$2 (House %2\$2)", "%1\$2 (भाव %2\$2) मा"),
 
     // Kemadruma Yoga
     KEMA_SCREEN_TITLE("Kemadruma Yoga", "केमद्रुम योग"),
@@ -2789,7 +2710,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KEMA_NO_REMEDIES_DESC("Since Kemadruma Yoga is not formed or is fully cancelled, no remedies are required.", "केमद्रुम योग नबनेको वा पूर्ण रूपमा भंग भएकोले, कुनै उपाय आवश्यक छैन।"),
     KEMA_ABOUT_TITLE("About Kemadruma Yoga", "केमद्रुम योगको बारेमा"),
     KEMA_ABOUT_DESC("Kemadruma Yoga forms when the Moon has no planets (except Sun, Rahu, Ketu) in the 2nd and 12th houses from it, and no planets are in Kendra from the Moon or Lagna.\n\nIt is considered an inauspicious yoga indicating loneliness, mental unrest, and financial instability. However, it is often cancelled (Bhanga) by the presence of planets in Kendra houses or if the Moon interacts with other planets.", "केमद्रुम योग तब बन्छ जब चन्द्रमाको दोस्रो र बाह्रौं भावमा कुनै ग्रहहरू (सूर्य, राहु, केतु बाहेक) हुँदैनन्, र चन्द्रमा वा लग्नबाट केन्द्रमा कुनै ग्रहहरू हुँदैनन्।\n\nयसलाई अशुभ योग मानिन्छ जसले एक्लोपन, मानसिक अशान्ति र आर्थिक अस्थिरतालाई संकेत गर्दछ। यद्यपि, केन्द्र भावहरूमा ग्रहहरूको उपस्थिति वा चन्द्रमाले अन्य ग्रहहरूसँग अन्तरक्रिया गरेमा यो अक्सर भंग हुन्छ।"),
-    KEMA_CANCELLATIONS_FOUND("%1$d Cancellation(s) Found", "%1$d भंग(हरू) फेला पर्यो"),
+    KEMA_CANCELLATIONS_FOUND("%1\$2 Cancellation(s) Found", "%1\$2 भंग(हरू) फेला पर्यो"),
     KEMA_FORMATION_MAIN("Moon lacks planetary support in adjacent houses.", "चन्द्रमालाई नजिकका भावहरूमा ग्रहहरूको समर्थन छैन।"),
     KEMA_FORMATION_2ND_EMPTY("2nd house from Moon is empty.", "चन्द्रमाबाट दोस्रो भाव खाली छ।"),
     KEMA_FORMATION_12TH_EMPTY("12th house from Moon is empty.", "चन्द्रमाबाट बाह्रौं भाव खाली छ।"),
@@ -2797,7 +2718,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KEMA_REASON_2ND("No planets in 2nd house from Moon", "चन्द्रमाबाट दोस्रो भावमा कुनै ग्रह छैन"),
     KEMA_REASON_12TH("No planets in 12th house from Moon", "चन्द्रमाबाट बाह्रौं भावमा कुनै ग्रह छैन"),
     KEMA_REASON_CONJUNCT("Moon is not conjunct with any planet", "चन्द्रमा कुनै ग्रहसँग युतिमा छैन"),
-    KEMA_FORMATION_STRENGTH("Formation strength: %1$d%%", "योग बल: %1$d%%"),
+    KEMA_FORMATION_STRENGTH("Formation strength: %1\$2%%", "योग बल: %1\$2%%"),
     KEMA_NAKSHATRA("Nakshatra", "नक्षत्र"),
     KEMA_PAKSHA("Paksha", "पक्ष"),
     KEMA_BRIGHTNESS("Brightness", "चमक"),
@@ -2810,9 +2731,9 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     PANCHANGA_SUN_MOON("Sun & Moon", "सूर्य र चन्द्रमा"),
     PANCHANGA_RISE("Rise", "उदय"),
     PANCHANGA_SET("Set", "अस्त"),
-    PANCHANGA_LUNAR_DAY_FMT("Lunar day (%1$s)", "चन्द्र दिन (%1$s)"),
+    PANCHANGA_LUNAR_DAY_FMT("Lunar day (%1\$2)", "चन्द्र दिन (%1\$2)"),
     PANCHANGA_VARA_DESC("Weekday, ruled by specific planet", "बार, विशिष्ट ग्रहद्वारा शासित"),
-    PANCHANGA_NAKSHATRA_DESC_FMT("Lunar mansion (Pada %1$d)", "नक्षत्र (पद %1$d)"),
+    PANCHANGA_NAKSHATRA_DESC_FMT("Lunar mansion (Pada %1\$2)", "नक्षत्र (पद %1\$2)"),
     PANCHANGA_YOGA_DESC("Auspicious combination", "शुभ संयोग"),
     PANCHANGA_KARANA_DESC("Half of a tithi", "तिथिको आधा भाग"),
     PANCHANGA_AVOID_ACTIVITIES("Avoid important activities", "महत्त्वपूर्ण कार्यहरू नगर्नुहोस्"),
@@ -2909,7 +2830,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
 
     SUDARSHANA_DIG_EXALTED("Exalted", "उच्च"),
     SUDARSHANA_DIG_OWN("Own Sign", "स्वराशि"),
-    SUDARSHANA_DIG_DEBILITATED("Debilitated", "नीच"),
     SUDARSHANA_DIG_DEBILITATED("Debilitated", "नीच"),
     SUDARSHANA_DIG_NORMAL("Normal", "सामान्य"),
 

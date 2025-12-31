@@ -1,6 +1,6 @@
 package com.astro.storm.data.localization
 
-enum class StringKeyRemedy(override val textEn: String, override val textNp: String) : StringKeyInterface {
+enum class StringKeyRemedy(override val en: String, override val ne: String) : StringKeyInterface {
     // Planetary Strength Labels
     STRENGTH_VERY_STRONG("Very Strong", "अति बलियो"),
     STRENGTH_STRONG("Strong", "बलियो"),

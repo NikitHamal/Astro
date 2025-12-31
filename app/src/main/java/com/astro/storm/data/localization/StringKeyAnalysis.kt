@@ -1630,13 +1630,7 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     CHOGHADIYA_NATURE_MIXED("Mixed", "मिश्रित"),
 
     // NakshatraNature enum
-    NAKSHATRA_NATURE_FIXED("Fixed", "स्थिर"),
-    NAKSHATRA_NATURE_MOVABLE("Movable", "चर"),
-    NAKSHATRA_NATURE_SWIFT("Swift", "क्षिप्र"),
-    NAKSHATRA_NATURE_SHARP("Sharp", "उग्र"),
-    NAKSHATRA_NATURE_SOFT("Soft", "मृदु"),
     NAKSHATRA_NATURE_DREADFUL("Dreadful", "क्रूर"),
-    NAKSHATRA_NATURE_MIXED("Mixed", "मिश्र"),
 
     // HoraNature enum
     HORA_NATURE_BENEFIC("Benefic", "शुभ"),
@@ -1795,38 +1789,14 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     ASPECT_SQUARE("Square", "केन्द्र"),
 
     // Chara Dasha
-    CHARA_DASHA_CALC_ERROR("Unknown error calculating Chara Dasha", "कारा दशा गणना गर्दा अज्ञात त्रुटि"),
-    CALCULATING_CHARA_DASHA("Calculating Chara Dasha periods...", "कारा दशा अवधि गणना गर्दै..."),
-    KARAKA_ACTIVATION("Karaka Activation", "कारक सक्रियता"),
     
     // Generic Strength/Status
-    STRENGTH_EXCELLENT("Excellent", "उत्कृष्ट"),
-    STRENGTH_GOOD("Good", "राम्रो"),
-    STRENGTH_MODERATE("Moderate", "मध्यम"),
-    STRENGTH_CHALLENGING("Challenging", "चुनौतीपूर्ण"),
-    STRENGTH_DIFFICULT("Difficult", "कठिन"),
     
     // Influence
-    INFLUENCE_VERY_FAVORABLE("Very Favorable", "धेरै अनुकूल"),
-    INFLUENCE_FAVORABLE("Favorable", "अनुकूल"),
-    INFLUENCE_NEUTRAL("Neutral", "तटस्थ"),
-    INFLUENCE_NEEDS_ATTENTION("Needs Attention", "ध्यान दिनुपर्ने"),
 
     // Life Areas
-    AREA_CAREER("Career", "करियर"),
-    AREA_RELATIONSHIPS("Relationships", "सम्बन्ध"),
-    AREA_HEALTH("Health", "स्वास्थ्य"),
-    AREA_SPIRITUALITY("Spirituality", "आध्यात्मिकता"),
-    AREA_WEALTH("Wealth", "धन"),
-    AREA_FAMILY("Family", "परिवार"),
-    AREA_EDUCATION("Education", "शिक्षा"),
-    AREA_FOREIGN_CONNECTIONS("Foreign Connections", "विदेशी सम्बन्ध"),
 
     // Aspects
-    ASPECT_CONJUNCTION("Conjunction", "युति"),
-    ASPECT_OPPOSITION("Opposition", "दृष्टि"), // Approximated
-    ASPECT_TRINE("Trine", "त्रिकोण"),
-    ASPECT_SQUARE("Square", "केन्द्र"),
     ARGALA_LEAST_OBSTRUCTED("Least Obstructed", "कम से कम बाधित"),
     ARGALA_KARMA_PATTERNS("Karma Patterns", "कर्म ढाँचाहरू"),
     ARGALA_SIGNIFICANT_ARGALAS("Significant Argalas", "महत्वपूर्ण अर्गालाहरू"),
