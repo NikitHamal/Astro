@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.ui.components.MarkdownText
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.stringResource
 
 /**
  * Sectioned UI Components for Dynamic Agentic Message Layout

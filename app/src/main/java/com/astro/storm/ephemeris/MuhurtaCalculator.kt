@@ -562,7 +562,8 @@ class MuhurtaCalculator(context: Context) {
 
         val (score, suitable, avoid, recommendations) = evaluateMuhurta(
             vara, tithi, nakshatra, yoga, karana, choghadiya, hora,
-            dateTime.toLocalTime(), inauspiciousPeriods, abhijitMuhurta, specialYogas
+            dateTime.toLocalTime(), inauspiciousPeriods, abhijitMuhurta, specialYogas,
+            Language.ENGLISH // Default for internal evaluation
         )
 
         return MuhurtaDetails(
@@ -1326,7 +1327,8 @@ class MuhurtaCalculator(context: Context) {
         time: LocalTime,
         inauspiciousPeriods: InauspiciousPeriods,
         abhijitMuhurta: AbhijitMuhurta,
-        specialYogas: List<SpecialYoga>
+        specialYogas: List<SpecialYoga>,
+        language: Language
     ): Quadruple<Int, List<ActivityType>, List<ActivityType>, List<String>> {
         var score = 50
         val recommendations = mutableListOf<String>()

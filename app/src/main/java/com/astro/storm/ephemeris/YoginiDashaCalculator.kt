@@ -132,6 +132,12 @@ object YoginiDashaCalculator {
                 val yoginiIndex = (nakshatraIndex + 3) % 8
                 return fromIndex(yoginiIndex)
             }
+
+            fun getYoginiSequence(startingYogini: Yogini): List<Yogini> {
+                val all = entries
+                val startIndex = all.indexOf(startingYogini)
+                return all.subList(startIndex, all.size) + all.subList(0, startIndex)
+            }
         }
     }
 

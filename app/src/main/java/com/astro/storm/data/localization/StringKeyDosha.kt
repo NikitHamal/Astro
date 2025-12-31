@@ -1,4 +1,4 @@
-﻿package com.astro.storm.data.localization
+package com.astro.storm.data.localization
 
 
 
@@ -45,6 +45,51 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     VARGA_D60_TITLE("Shashtiamsa (D60)", "षष्ट्यंश (D60)"),
     VARGA_D60_DESC("Past Life Karma", "पूर्वजन्मको कर्म"),
     VARGA_PLANETARY_POSITIONS("PLANETARY POSITIONS", "ग्रह स्थितिहरू"),
+
+    // DASHA SYSTEMS
+    DASHA_VIMSOTTARI_NAME("Vimsottari", "विंशोत्तरी"),
+    DASHA_VIMSOTTARI_DURATION("120 Years", "१२० वर्ष"),
+    DASHA_VIMSOTTARI_DESC("Most widely used dasha system based on Moon's nakshatra.", "चन्द्रमाको नक्षत्रमा आधारित सबैभन्दा व्यापक रूपमा प्रयोग हुने दशा प्रणाली।"),
+    DASHA_YOGINI("Yogini", "योगिनी"),
+    DASHA_YOGINI_DURATION("36 Years", "३६ वर्ष"),
+    DASHA_YOGINI_DESC("Nakshatra-based system with 36-year cycle, effective for specific timing.", "३६-वर्षे चक्र भएको नक्षत्रमा आधारित प्रणाली, विशिष्ट समयको लागि प्रभावकारी।"),
+    DASHA_ASHTOTTARI("Ashtottari", "अष्टोत्तरी"),
+    DASHA_ASHTOTTARI_DURATION("108 Years", "१०८ वर्ष"),
+    DASHA_ASHTOTTARI_DESC("Alternative 108-year system used for specific birth conditions.", "विशिष्ट जन्म परिस्थितिहरूको लागि प्रयोग गरिने वैकल्पिक १०८-वर्षे प्रणाली।"),
+    DASHA_SUDARSHANA("Sudarshana", "सुदर्शन"),
+    DASHA_SUDARSHANA_DURATION("Annual/Monthly", "वार्षिक/मासिक"),
+    DASHA_SUDARSHANA_DESC("Progressed dasha from Lagna, Moon, and Sun simultaneously.", "लग्न, चन्द्र र सूर्यबाट एकैसाथ अघि बढाइएको दशा।"),
+    DASHA_CHARA("Chara (Jaimini)", "चर (जैमिनी)"),
+    DASHA_CHARA_DURATION("Variable", "परिवर्तनशील"),
+    DASHA_CHARA_DESC("Jaimini's sign-based dasha system for unique life events.", "जैमिनीको राशि-आधारित दशा प्रणाली, अद्वितीय जीवन घटनाहरूको लागि।"),
+
+    // LAL KITAB
+    LAL_KITAB_NOTE_DISTINCT("Lal Kitab is a distinct astrological system with practical remedies.", "लाल किताब व्यावहारिक उपचारका साथ एक विशिष्ट ज्योतिष प्रणाली हो।"),
+    LAL_KITAB_RECOMMENDED_REMEDIES("Recommended Remedies", "सिफारिस गरिएका उपायहरू"),
+    LAL_KITAB_AFFLICTION_KANYA("Kanya Rin (Debt to Daughter)", "कन्या ऋण"),
+    LAL_KITAB_AFFLICTION_GRAHAN("Grahan Dosh (Eclipse)", "ग्रहण दोष"),
+    LAL_KITAB_AFFLICTION_SHANI("Shani Affliction", "शनि पीडा"),
+    LAL_KITAB_AFFLICTION_GENERAL("General Affliction", "सामान्य पीडा"),
+    LAL_KITAB_SECTION_REMEDIES("Remedies & Solutions", "उपाय र समाधानहरू"),
+    LAL_KITAB_GENERAL_PRINCIPLES("General Principles", "सामान्य सिद्धान्तहरू"),
+    LAL_KITAB_RIN_TITLE("Karmic Debt (Rin)", "कार्मिक ऋण"),
+    LAL_KITAB_RIN_DESC("Specific karmic debts identified in the chart.", "कुण्डलीमा पहिचान गरिएका विशिष्ट कार्मिक ऋणहरू।"),
+    LAL_KITAB_RIN_NONE_TITLE("No Major Rin", "कुनै ठूलो ऋण छैन"),
+    LAL_KITAB_RIN_NONE_DESC("Your chart does not show major Lal Kitab karmic debts.", "तपाईको कुण्डलीमा कुनै ठूलो लाल किताब कार्मिक ऋण देखिँदैन।"),
+
+    // OTHER
+    UPACHAYA_TRANSITS_LABEL("Upachaya Transits", "उपचय गोचर"),
+    UPACHAYA_EFFECT_COURAGE("Increased courage and initiative", "साहस र पहलमा वृद्धि"),
+    UPACHAYA_EFFECT_TRAVELS("Short travels and communication gains", "छोटो यात्रा र सञ्चार लाभ"),
+    UPACHAYA_EFFECT_SIBLINGS("Support from siblings/peers", "भाइबहिनी/साथीहरूबाट सहयोग"),
+    UPACHAYA_EFFECT_SKILLS("Development of new skills", "नयाँ सीपको विकास"),
+    UPACHAYA_EFFECT_ENEMIES("Victory over enemies and obstacles", "शत्रु र बाधाहरूमाथि विजय"),
+    UPACHAYA_EFFECT_HEALTH_IMPROVE("Improvement in health and vitality", "स्वास्थ्य र जीवनशक्तिमा सुधार"),
+    UPACHAYA_EFFECT_SERVICE("Success in service and competition", "सेवा र प्रतिस्पर्धामा सफलता"),
+    UPACHAYA_EFFECT_DEBTS("Reduction of debts and liabilities", "ऋण र दायित्वमा कमी"),
+
+    PANCHA_NO_YOGAS("No Pancha Mahapurusha Yogas found in this chart", "यस कुण्डलीमा कुनै पञ्च महापुरुष योग भेटिएन"),
+    ERROR_CALCULATION("Calculation error occurred", "गणनामा त्रुटि भयो"),
 
     // ============================================
     // HOROSCOPE CALCULATOR (Life Areas & Themes)

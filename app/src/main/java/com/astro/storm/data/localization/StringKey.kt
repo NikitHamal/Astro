@@ -1,4 +1,4 @@
-﻿package com.astro.storm.data.localization
+package com.astro.storm.data.localization
 
 
 
@@ -43,6 +43,7 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
 
     FEATURE_ASHTAKAVARGA("Ashtakavarga", "अष्टकवर्ग"),
     FEATURE_ASHTAKAVARGA_DESC("Strength analysis by house", "भावानुसार बल विश्लेषण"),
+    PLANET("Planet", "ग्रह"),
 
     // Ashtakavarga Details
     ASHTAKAVARGA_ABOUT_TITLE("About Ashtakavarga", "अष्टकवर्ग बारेमा"),
