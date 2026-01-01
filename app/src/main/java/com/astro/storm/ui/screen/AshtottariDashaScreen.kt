@@ -251,9 +251,7 @@ private fun TabSelector(
     selectedIndex: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    val tabItems = remember {
-        tabs.map { TabItem(title = it, accentColor = AppTheme.AccentPrimary) }
-    }
+    val tabItems = tabs.map { TabItem(title = it, accentColor = AppTheme.AccentPrimary) }
 
     ModernPillTabRow(
         tabs = tabItems,

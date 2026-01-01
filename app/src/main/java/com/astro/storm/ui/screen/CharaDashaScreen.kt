@@ -198,16 +198,14 @@ fun CharaDashaScreen(
                     result != null -> {
                         Column(modifier = Modifier.fillMaxSize()) {
                             // Tabs
-                            val tabs = remember {
-                                listOf(
-                                    TabItem(title = stringResource(StringKeyDosha.CHARA_DASHA_CURRENT), accentColor = AppTheme.AccentPrimary),
-                                    TabItem(title = stringResource(StringKeyDosha.KARAKA_TITLE), accentColor = AppTheme.AccentPrimary),
-                                    TabItem(title = stringResource(StringKeyDosha.CHARA_DASHA_TIMELINE), accentColor = AppTheme.AccentPrimary)
-                                )
-                            }
+                            val tabItems = listOf(
+                                TabItem(title = stringResource(StringKeyDosha.CHARA_DASHA_CURRENT), accentColor = AppTheme.AccentPrimary),
+                                TabItem(title = stringResource(StringKeyDosha.KARAKA_TITLE), accentColor = AppTheme.AccentPrimary),
+                                TabItem(title = stringResource(StringKeyDosha.CHARA_DASHA_TIMELINE), accentColor = AppTheme.AccentPrimary)
+                            )
                             
                             ModernPillTabRow(
-                                tabs = tabs,
+                                tabs = tabItems,
                                 selectedIndex = selectedTabIndex,
                                 onTabSelected = { selectedTabIndex = it },
                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

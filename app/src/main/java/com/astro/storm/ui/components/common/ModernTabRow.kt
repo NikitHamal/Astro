@@ -109,10 +109,8 @@ fun ModernPillTabRow(
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = tab.accentColor.copy(alpha = 0.15f),
                     selectedLabelColor = tab.accentColor,
-                    selectedLeadingIconColor = tab.accentColor,
                     containerColor = AppTheme.ChipBackground,
-                    labelColor = AppTheme.TextSecondary,
-                    leadingIconColor = AppTheme.TextMuted
+                    labelColor = AppTheme.TextSecondary
                 ),
                 border = FilterChipDefaults.filterChipBorder(
                     enabled = true,

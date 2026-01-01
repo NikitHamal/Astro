@@ -156,10 +156,8 @@ fun PredictionsScreen(
                         .padding(paddingValues)
                 ) {
                     // Tab Row
-                    val tabItems = remember(language) {
-                        PredictionsTab.entries.map { tab ->
-                            TabItem(title = tab.getLocalizedTitle(language), accentColor = AppTheme.AccentPrimary)
-                        }
+                    val tabItems = PredictionsTab.entries.map { tab ->
+                        TabItem(title = tab.getLocalizedTitle(language), accentColor = AppTheme.AccentPrimary)
                     }
                     
                     ModernPillTabRow(
