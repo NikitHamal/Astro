@@ -1,5 +1,7 @@
 package com.astro.storm.data.model
 
+import com.astro.storm.ephemeris.DashaCalculator
+
 /**
  * Complete Vedic astrology chart
  */
@@ -18,6 +20,22 @@ data class VedicChart(
     val planetsByHouse: Map<Int, List<PlanetPosition>> by lazy {
         planetPositions.groupBy { it.house }
     }
+
+    val ascendantSign: ZodiacSign
+        get() = ZodiacSign.fromLongitude(ascendant)
+
+    val moonNakshatra: Nakshatra
+        get() {
+            val moonPos = planetPositions.find { it.planet == Planet.MOON }
+            return moonPos?.nakshatra ?: Nakshatra.ASHWINI // Fallback if moon not found (shouldn't happen)
+        }
+
+    val currentMahaDasha: DashaCalculator.Mahadasha?
+        get() = try {
+            DashaCalculator.calculateDashaTimeline(this).currentMahadasha
+        } catch (e: Exception) {
+            null
+        }
 
     fun toPlainText(): String {
         return buildString {

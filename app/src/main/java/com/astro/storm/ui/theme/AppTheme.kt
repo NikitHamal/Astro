@@ -531,6 +531,21 @@ object AppTheme {
         @ReadOnlyComposable
         get() = LocalAppThemeColors.current.LifeAreaSpiritual
 
+    val InputBackground: Color
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalAppThemeColors.current.InputBackground
+
+    val DialogBackground: Color
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalAppThemeColors.current.DialogBackground
+
+    val ScrimColor: Color
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalAppThemeColors.current.ScrimColor
+
     // Alias for backward compatibility
     val CardElevated: Color
         @Composable

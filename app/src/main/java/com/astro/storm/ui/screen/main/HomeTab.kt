@@ -680,7 +680,8 @@ enum class InsightFeature(
     val titleKey: StringKey,
     val descriptionKey: StringKey,
     val icon: ImageVector,
-    val color: Color
+    val color: Color,
+    val isImplemented: Boolean = true
 ) {
     FULL_CHART(
         titleKey = StringKey.FEATURE_BIRTH_CHART,
