@@ -244,7 +244,7 @@ private fun AshtakavargaTopBar(
                     if (chartName.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "Bindu strength analysis - $chartName",
+                            text = stringResource(StringKeyAnalysis.BINDU_STRENGTH_ANALYSIS) + " - $chartName",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -264,7 +264,7 @@ private fun AshtakavargaTopBar(
                 IconButton(onClick = onInfoClick) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
-                        contentDescription = "Ashtakavarga info",
+                        contentDescription = stringResource(StringKeyAnalysis.ASHTAKAVARGA_INFO),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -363,14 +363,14 @@ private fun AshtakavargaSummaryCard(
                 Spacer(modifier = Modifier.width(14.dp))
                 Column {
                     Text(
-                        text = "Ashtakavarga Summary",
+                        text = stringResource(StringKeyAnalysis.ASHTAKAVARGA_SUMMARY),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
                         letterSpacing = (-0.3).sp
                     )
                     Text(
-                        text = "Bindu distribution analysis",
+                        text = stringResource(StringKeyAnalysis.BINDU_DIST_ANALYSIS),
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -385,19 +385,19 @@ private fun AshtakavargaSummaryCard(
             ) {
                 AshtakavargaStatItem(
                     value = totalBindus.toString(),
-                    label = "Total Bindus",
+                    label = stringResource(StringKeyAnalysis.LABEL_BINDUS).replaceFirstChar { it.uppercase() },
                     color = AppTheme.SuccessColor,
                     modifier = Modifier.weight(1f)
                 )
                 AshtakavargaStatItem(
                     value = String.format("%.1f", averageBindus),
-                    label = "Avg/House",
+                    label = stringResource(StringKeyAnalysis.AVG_PER_HOUSE),
                     color = AppTheme.AccentPrimary,
                     modifier = Modifier.weight(1f)
                 )
                 AshtakavargaStatItem(
                     value = "${strengthPercent.toInt()}%",
-                    label = "Strength",
+                    label = stringResource(StringKeyMatch.MATCH_COMPATIBILITY),
                     color = getBinduStrengthColor(strengthPercent),
                     modifier = Modifier.weight(1f)
                 )
@@ -418,7 +418,7 @@ private fun AshtakavargaSummaryCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Overall Chart Strength",
+                            text = stringResource(StringKeyAnalysis.OVERALL_CHART_STRENGTH),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextMuted
@@ -501,7 +501,7 @@ private fun HouseStrengthDistribution(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "House Strength Distribution",
+                    text = stringResource(StringKeyAnalysis.HOUSE_STRENGTH_DIST),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -581,9 +581,9 @@ private fun HouseStrengthDistribution(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                LegendItem(color = AppTheme.SuccessColor, label = ">30 Strong")
-                LegendItem(color = AppTheme.AccentGold, label = "25-30 Good")
-                LegendItem(color = AppTheme.WarningColor, label = "<25 Weak")
+                LegendItem(color = AppTheme.SuccessColor, label = stringResource(StringKeyAnalysis.LEGEND_STRONG))
+                LegendItem(color = AppTheme.AccentGold, label = stringResource(StringKeyAnalysis.LEGEND_GOOD))
+                LegendItem(color = AppTheme.WarningColor, label = stringResource(StringKeyAnalysis.LEGEND_WEAK))
             }
         }
     }
@@ -722,7 +722,7 @@ private fun InsightHouseChip(
                 color = AppTheme.TextPrimary
             )
             Text(
-                text = "$bindus bindus",
+                text = "$bindus " + stringResource(StringKeyAnalysis.LABEL_BINDUS),
                 fontSize = 10.sp,
                 color = AppTheme.TextMuted
             )
@@ -1195,7 +1195,7 @@ private fun HouseDetailCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = getHouseSignification(house),
+                            text = getHouseSignification(house, language),
                             fontSize = 11.sp,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
@@ -1379,20 +1379,21 @@ private fun getStrengthLabel(percent: Double, language: Language): String {
     return stringResource(key, language)
 }
 
-private fun getHouseSignification(house: Int): String {
-    return when (house) {
-        1 -> "Self, Body, Personality"
-        2 -> "Wealth, Speech, Family"
-        3 -> "Siblings, Courage"
-        4 -> "Home, Mother, Property"
-        5 -> "Children, Education"
-        6 -> "Health, Enemies"
-        7 -> "Marriage, Partnership"
-        8 -> "Transformation"
-        9 -> "Fortune, Father"
-        10 -> "Career, Fame"
-        11 -> "Gains, Wishes"
-        12 -> "Losses, Liberation"
-        else -> ""
+private fun getHouseSignification(house: Int, language: Language): String {
+    val key = when (house) {
+        1 -> StringKeyAnalysis.HOUSE_MATTERS_1
+        2 -> StringKeyAnalysis.HOUSE_MATTERS_2
+        3 -> StringKeyAnalysis.HOUSE_MATTERS_3
+        4 -> StringKeyAnalysis.HOUSE_MATTERS_4
+        5 -> StringKeyAnalysis.HOUSE_MATTERS_5
+        6 -> StringKeyAnalysis.HOUSE_MATTERS_6
+        7 -> StringKeyAnalysis.HOUSE_MATTERS_7
+        8 -> StringKeyAnalysis.HOUSE_MATTERS_8
+        9 -> StringKeyAnalysis.HOUSE_MATTERS_9
+        10 -> StringKeyAnalysis.HOUSE_MATTERS_10
+        11 -> StringKeyAnalysis.HOUSE_MATTERS_11
+        12 -> StringKeyAnalysis.HOUSE_MATTERS_12
+        else -> null
     }
+    return key?.let { StringResources.get(it, language) } ?: ""
 }

@@ -330,6 +330,16 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     // BS DATE PICKER
     // ============================================
     BS_DATE_PICKER_TITLE("Select BS Date", "वि.सं. मिति छान्नुहोस्"),
+    BS_DATE_PICKER_GO_TODAY("Go to today", "आज मा जानुहोस्"),
+    BS_DATE_PICKER_TODAY("Today", "आज"),
+    BS_DATE_PICKER_PREV_MONTH("Previous month", "अघिल्लो महिना"),
+    BS_DATE_PICKER_NEXT_MONTH("Next month", "अर्को महिना"),
+    BS_DATE_PICKER_YEAR_DESC("Year selector, current: %1$s", "वर्ष छान्नुहोस्, हाल: %1$s"),
+    BS_DATE_PICKER_MONTH_DESC("Month selector, current: %1$s", "महिना छान्नुहोस्, हाल: %1$s"),
+    BS_DATE_PICKER_DATE_DESC("Date selector. Current date: %1$s", "मिति छान्नुहोस्। हालको मिति: %1$s"),
+    BS_DATE_PICKER_SELECTED(", selected", ", चयन गरिएको"),
+    BS_DATE_PICKER_SATURDAY(", Saturday", ", शनिबार"),
+    BS_DATE_PICKER_TODAY_SUFFIX(", today", ", आज"),
     BS_YEAR("Year", "वर्ष"),
     BS_MONTH("Month", "महिना"),
     BS_DAY("Day", "दिन"),

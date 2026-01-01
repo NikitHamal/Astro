@@ -58,7 +58,6 @@ object AshtakavargaCalculator {
         Planet.SATURN, Planet.JUPITER, Planet.MARS, Planet.SUN,
         Planet.VENUS, Planet.MERCURY, Planet.MOON
     )
-    private const val KAKSHA_ASCENDANT = "Ascendant"
     private const val KAKSHA_SIZE_DEGREES = 3.75 // 30° / 8 kakshas = 3.75° per kaksha
 
     /**
@@ -233,39 +232,39 @@ object AshtakavargaCalculator {
         /**
          * Get plain text summary
          */
-        fun toPlainText(): String = buildString {
+        fun toPlainText(language: Language): String = buildString {
             appendLine("═══════════════════════════════════════════════════════════")
-            appendLine("                ASHTAKAVARGA ANALYSIS")
+            appendLine("                " + StringResources.get(StringKeyAnalysis.TRANSIT_TITLE, language))
             appendLine("═══════════════════════════════════════════════════════════")
             appendLine()
-            appendLine("SARVASHTAKAVARGA (Combined Strength)")
+            appendLine(StringResources.get(StringKeyAnalysis.SAV_HEADER, language))
             appendLine("─────────────────────────────────────────────────────────")
             ZodiacSign.entries.forEach { sign ->
                 val bindus = sarvashtakavarga.getBindusForSign(sign)
                 val bar = "█".repeat((bindus * 2).coerceAtMost(40))
                 val strength = when {
-                    bindus >= 30 -> "Strong"
-                    bindus >= 25 -> "Good"
-                    bindus >= 20 -> "Average"
-                    else -> "Weak"
+                    bindus >= 30 -> StringResources.get(StringKeyMatch.MATCH_EXCELLENT, language)
+                    bindus >= 25 -> StringResources.get(StringKeyMatch.MATCH_GOOD, language)
+                    bindus >= 20 -> StringResources.get(StringKeyMatch.MATCH_AVERAGE, language)
+                    else -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_DIFFICULT, language)
                 }
-                appendLine("${sign.displayName.padEnd(12)}: ${bindus.toString().padStart(2)} bindus $bar [$strength]")
+                appendLine("${sign.getLocalizedName(language).padEnd(12)}: ${bindus.toString().padStart(2)} ${StringResources.get(StringKeyAnalysis.LABEL_BINDUS, language)} $bar [$strength]")
             }
             appendLine()
-            appendLine("Total SAV Bindus: ${sarvashtakavarga.totalBindus}")
-            appendLine("Average per Sign: ${String.format("%.1f", sarvashtakavarga.totalBindus / 12.0)}")
+            appendLine(StringResources.get(StringKeyAnalysis.TOTAL_SAV_BINDUS, language) + ": ${sarvashtakavarga.totalBindus}")
+            appendLine(StringResources.get(StringKeyAnalysis.AVG_PER_SIGN, language) + ": ${String.format("%.1f", sarvashtakavarga.totalBindus / 12.0)}")
             appendLine()
-            appendLine("BHINNASHTAKAVARGA (Individual Planet Strengths)")
+            appendLine(StringResources.get(StringKeyAnalysis.BAV_HEADER, language))
             appendLine("─────────────────────────────────────────────────────────")
             bhinnashtakavarga.forEach { (planet, bav) ->
                 appendLine()
-                appendLine("${planet.displayName.uppercase()} Ashtakavarga:")
+                appendLine("${planet.getLocalizedName(language).uppercase()} ${StringResources.get(StringKeyAnalysis.FEATURE_ASHTAKAVARGA, language)}:")
                 ZodiacSign.entries.forEach { sign ->
                     val bindus = bav.getBindusForSign(sign)
                     val bar = "▓".repeat(bindus)
-                    appendLine("  ${sign.abbreviation}: ${bindus.toString().padStart(1)} $bar")
+                    appendLine("  ${sign.getLocalizedName(language).take(3)}: ${bindus.toString().padStart(1)} $bar")
                 }
-                appendLine("  Total: ${bav.totalBindus} bindus")
+                appendLine("  ${StringResources.get(StringKeyAnalysis.STRENGTH_TOTAL, language)}: ${bav.totalBindus} ${StringResources.get(StringKeyAnalysis.LABEL_BINDUS, language)}")
             }
         }
     }
@@ -506,6 +505,7 @@ object AshtakavargaCalculator {
     fun calculateKakshaPosition(
         longitude: Double,
         chart: VedicChart,
+        language: Language,
         preCalculatedAnalysis: AshtakavargaAnalysis? = null
     ): KakshaPosition {
         val normalizedLong = VedicAstrologyUtils.normalizeLongitude(longitude)
@@ -518,9 +518,9 @@ object AshtakavargaCalculator {
         val degreeEnd = kakshaNumber * KAKSHA_SIZE_DEGREES
 
         val kakshaLord = if (kakshaNumber <= 7) {
-            KAKSHA_LORDS[kakshaNumber - 1].displayName
+            KAKSHA_LORDS[kakshaNumber - 1].getLocalizedName(language)
         } else {
-            KAKSHA_ASCENDANT
+            StringResources.get(StringKeyAnalysis.LABEL_ASCENDANT, language)
         }
 
         // Use pre-calculated analysis if available, otherwise calculate (lazy evaluation)
@@ -550,7 +550,8 @@ object AshtakavargaCalculator {
     fun getTransitPrediction(
         transitingPlanet: Planet,
         transitSign: ZodiacSign,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): TransitPrediction {
         if (transitingPlanet !in ASHTAKAVARGA_PLANETS) {
             return TransitPrediction(
@@ -559,7 +560,7 @@ object AshtakavargaCalculator {
                 bavBindus = 0,
                 savBindus = 0,
                 quality = TransitQuality.UNKNOWN,
-                prediction = "Ashtakavarga not applicable for ${transitingPlanet.displayName}"
+                prediction = StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_DIFFICULT, language) + ": " + transitingPlanet.getLocalizedName(language)
             )
         }
 
@@ -586,7 +587,7 @@ object AshtakavargaCalculator {
             else -> TransitQuality.DIFFICULT
         }
 
-        val prediction = generateTransitPrediction(transitingPlanet, transitSign, bavBindus, savBindus, quality)
+        val prediction = generateTransitPrediction(transitingPlanet, transitSign, bavBindus, savBindus, quality, language)
 
         return TransitPrediction(
             planet = transitingPlanet,
@@ -707,51 +708,48 @@ object AshtakavargaCalculator {
         sign: ZodiacSign,
         bavBindus: Int,
         savBindus: Int,
-        quality: TransitQuality
+        quality: TransitQuality,
+        language: Language
     ): String {
         val planetEffects = when (planet) {
-            Planet.SUN -> "authority, father, health, government, career"
-            Planet.MOON -> "mind, emotions, mother, public image"
-            Planet.MARS -> "energy, siblings, property, courage"
-            Planet.MERCURY -> "communication, intellect, business, education"
-            Planet.JUPITER -> "wisdom, children, fortune, spirituality"
-            Planet.VENUS -> "relationships, luxury, arts, vehicles"
-            Planet.SATURN -> "career, longevity, discipline, challenges"
-            else -> "general matters"
+            Planet.SUN -> StringResources.get(StringKeyAnalysis.MATTERS_AUTHORITY, language)
+            Planet.MOON -> StringResources.get(StringKeyAnalysis.MATTERS_MIND, language)
+            Planet.MARS -> StringResources.get(StringKeyAnalysis.MATTERS_ENERGY, language)
+            Planet.MERCURY -> StringResources.get(StringKeyAnalysis.MATTERS_INTELLECT, language)
+            Planet.JUPITER -> StringResources.get(StringKeyAnalysis.MATTERS_WISDOM, language)
+            Planet.VENUS -> StringResources.get(StringKeyAnalysis.MATTERS_RELATIONSHIPS, language)
+            Planet.SATURN -> StringResources.get(StringKeyAnalysis.MATTERS_DISCIPLINE, language)
+            else -> StringResources.get(StringKeyAnalysis.ARGALA_GENERAL_EFFECT, language)
         }
-
+ 
         val signHouse = sign.number
         val houseMatters = when (signHouse) {
-            1 -> "self, personality, health"
-            2 -> "wealth, family, speech"
-            3 -> "courage, siblings, communication"
-            4 -> "home, mother, comfort"
-            5 -> "children, intelligence, romance"
-            6 -> "enemies, health issues, service"
-            7 -> "partnership, marriage, business"
-            8 -> "transformation, inheritance, occult"
-            9 -> "luck, father, higher learning"
-            10 -> "career, status, authority"
-            11 -> "gains, friends, aspirations"
-            12 -> "losses, spirituality, foreign"
-            else -> "general areas"
+            1 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_1, language)
+            2 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_2, language)
+            3 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_3, language)
+            4 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_4, language)
+            5 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_5, language)
+            6 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_6, language)
+            7 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_7, language)
+            8 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_8, language)
+            9 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_9, language)
+            10 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_10, language)
+            11 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_11, language)
+            12 -> StringResources.get(StringKeyAnalysis.HOUSE_MATTERS_12, language)
+            else -> StringResources.get(StringKeyAnalysis.ARGALA_GENERAL_EFFECT, language)
         }
-
-        return when (quality) {
-            TransitQuality.EXCELLENT -> "Transit through ${sign.displayName} with $bavBindus BAV bindus and $savBindus SAV bindus indicates excellent results. " +
-                    "Matters related to $planetEffects will flourish. Areas of $houseMatters receive strong positive influence."
-            TransitQuality.GOOD -> "Transit through ${sign.displayName} brings favorable results with $bavBindus BAV and $savBindus SAV bindus. " +
-                    "Good progress expected in $planetEffects. $houseMatters areas are positively influenced."
-            TransitQuality.AVERAGE -> "Transit through ${sign.displayName} ($bavBindus BAV, $savBindus SAV) brings mixed results. " +
-                    "Some progress in $planetEffects with occasional challenges. Balance needed in $houseMatters."
-            TransitQuality.BELOW_AVERAGE -> "Transit through ${sign.displayName} ($bavBindus BAV, $savBindus SAV) suggests caution needed. " +
-                    "$planetEffects matters may face delays. Extra effort required in $houseMatters areas."
-            TransitQuality.CHALLENGING -> "Challenging transit through ${sign.displayName} with only $bavBindus BAV and $savBindus SAV bindus. " +
-                    "Difficulties possible in $planetEffects. Patience needed for $houseMatters matters."
-            TransitQuality.DIFFICULT -> "Difficult transit period through ${sign.displayName} ($bavBindus BAV, $savBindus SAV). " +
-                    "Significant challenges in $planetEffects areas. Careful handling of $houseMatters required."
-            TransitQuality.UNKNOWN -> "Transit analysis not available for this planet."
+ 
+        val qualityInterp = when (quality) {
+            TransitQuality.EXCELLENT -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_EXCELLENT, language)
+            TransitQuality.GOOD -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_GOOD, language)
+            TransitQuality.AVERAGE -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_AVERAGE, language)
+            TransitQuality.BELOW_AVERAGE -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_BELOW_AVG, language)
+            TransitQuality.CHALLENGING, TransitQuality.DIFFICULT -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_DIFFICULT, language)
+            else -> StringResources.get(StringKeyDosha.LABEL_UNKNOWN, language)
         }
+ 
+        return "$qualityInterp: " + planet.getLocalizedName(language) + " in " + sign.getLocalizedName(language) + ". " +
+                planetEffects + " & " + houseMatters
     }
 
     /**

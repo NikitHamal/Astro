@@ -41,6 +41,7 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.StringKeyMatch
+import com.astro.storm.data.localization.StringKeyComponents
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.*
@@ -1439,70 +1440,125 @@ data class HouseDetails(
 )
 
 // Helper functions for getting interpretations (comprehensive data)
+@Composable
 private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
     return when (planet) {
         Planet.SUN -> PlanetSignifications(
-            nature = "Malefic",
-            element = "Fire",
-            represents = listOf("Soul, Self, Ego", "Father, Authority Figures", "Government, Power", "Health, Vitality", "Fame, Recognition"),
-            bodyParts = "Heart, Spine, Right Eye, Bones",
-            professions = "Government jobs, Politics, Medicine, Administration, Leadership roles"
+            nature = stringResource(StringKeyComponents.SIG_SUN_NATURE),
+            element = stringResource(StringKeyComponents.SIG_SUN_ELEMENT),
+            represents = listOf(
+                stringResource(StringKeyComponents.SIG_SUN_REP_1),
+                stringResource(StringKeyComponents.SIG_SUN_REP_2),
+                stringResource(StringKeyComponents.SIG_SUN_REP_3),
+                stringResource(StringKeyComponents.SIG_SUN_REP_4),
+                stringResource(StringKeyComponents.SIG_SUN_REP_5)
+            ),
+            bodyParts = stringResource(StringKeyComponents.SIG_SUN_BODY),
+            professions = stringResource(StringKeyComponents.SIG_SUN_PROF)
         )
         Planet.MOON -> PlanetSignifications(
-            nature = "Benefic",
-            element = "Water",
-            represents = listOf("Mind, Emotions", "Mother, Nurturing", "Public, Masses", "Comforts, Happiness", "Memory, Imagination"),
-            bodyParts = "Mind, Left Eye, Breast, Blood, Fluids",
-            professions = "Nursing, Hotel industry, Shipping, Agriculture, Psychology"
+            nature = stringResource(StringKeyComponents.SIG_MOON_NATURE),
+            element = stringResource(StringKeyComponents.SIG_MOON_ELEMENT),
+            represents = listOf(
+                stringResource(StringKeyComponents.SIG_MOON_REP_1),
+                stringResource(StringKeyComponents.SIG_MOON_REP_2),
+                stringResource(StringKeyComponents.SIG_MOON_REP_3),
+                stringResource(StringKeyComponents.SIG_MOON_REP_4),
+                stringResource(StringKeyComponents.SIG_MOON_REP_5)
+            ),
+            bodyParts = stringResource(StringKeyComponents.SIG_MOON_BODY),
+            professions = stringResource(StringKeyComponents.SIG_MOON_PROF)
         )
         Planet.MARS -> PlanetSignifications(
-            nature = "Malefic",
-            element = "Fire",
-            represents = listOf("Energy, Action, Courage", "Siblings, Younger Brothers", "Property, Land", "Competition, Sports", "Technical Skills"),
-            bodyParts = "Blood, Muscles, Marrow, Head injuries",
-            professions = "Military, Police, Surgery, Engineering, Sports, Real Estate"
+            nature = stringResource(StringKeyComponents.SIG_MARS_NATURE),
+            element = stringResource(StringKeyComponents.SIG_MARS_ELEMENT),
+            represents = listOf(
+                stringResource(StringKeyComponents.SIG_MARS_REP_1),
+                stringResource(StringKeyComponents.SIG_MARS_REP_2),
+                stringResource(StringKeyComponents.SIG_MARS_REP_3),
+                stringResource(StringKeyComponents.SIG_MARS_REP_4),
+                stringResource(StringKeyComponents.SIG_MARS_REP_5)
+            ),
+            bodyParts = stringResource(StringKeyComponents.SIG_MARS_BODY),
+            professions = stringResource(StringKeyComponents.SIG_MARS_PROF)
         )
         Planet.MERCURY -> PlanetSignifications(
-            nature = "Benefic",
-            element = "Earth",
-            represents = listOf("Intelligence, Communication", "Learning, Education", "Business, Trade", "Writing, Speech", "Siblings, Friends"),
-            bodyParts = "Nervous system, Skin, Speech, Hands",
-            professions = "Writing, Teaching, Accounting, Trading, IT, Media"
+            nature = stringResource(StringKeyComponents.SIG_MERCURY_NATURE),
+            element = stringResource(StringKeyComponents.SIG_MERCURY_ELEMENT),
+            represents = listOf(
+                stringResource(StringKeyComponents.SIG_MERCURY_REP_1),
+                stringResource(StringKeyComponents.SIG_MERCURY_REP_2),
+                stringResource(StringKeyComponents.SIG_MERCURY_REP_3),
+                stringResource(StringKeyComponents.SIG_MERCURY_REP_4),
+                stringResource(StringKeyComponents.SIG_MERCURY_REP_5)
+            ),
+            bodyParts = stringResource(StringKeyComponents.SIG_MERCURY_BODY),
+            professions = stringResource(StringKeyComponents.SIG_MERCURY_PROF)
         )
         Planet.JUPITER -> PlanetSignifications(
-            nature = "Benefic",
-            element = "Ether",
-            represents = listOf("Wisdom, Knowledge", "Teachers, Gurus", "Fortune, Luck", "Children, Dharma", "Expansion, Growth"),
-            bodyParts = "Liver, Fat tissue, Ears, Thighs",
-            professions = "Teaching, Law, Priesthood, Banking, Counseling"
+            nature = stringResource(StringKeyComponents.SIG_JUPITER_NATURE),
+            element = stringResource(StringKeyComponents.SIG_JUPITER_ELEMENT),
+            represents = listOf(
+                stringResource(StringKeyComponents.SIG_JUPITER_REP_1),
+                stringResource(StringKeyComponents.SIG_JUPITER_REP_2),
+                stringResource(StringKeyComponents.SIG_JUPITER_REP_3),
+                stringResource(StringKeyComponents.SIG_JUPITER_REP_4),
+                stringResource(StringKeyComponents.SIG_JUPITER_REP_5)
+            ),
+            bodyParts = stringResource(StringKeyComponents.SIG_JUPITER_BODY),
+            professions = stringResource(StringKeyComponents.SIG_JUPITER_PROF)
         )
         Planet.VENUS -> PlanetSignifications(
-            nature = "Benefic",
-            element = "Water",
-            represents = listOf("Love, Beauty, Art", "Marriage, Relationships", "Luxuries, Comforts", "Vehicles, Pleasures", "Creativity"),
-            bodyParts = "Reproductive system, Face, Skin, Throat",
-            professions = "Entertainment, Fashion, Art, Hospitality, Beauty industry"
+            nature = stringResource(StringKeyComponents.SIG_VENUS_NATURE),
+            element = stringResource(StringKeyComponents.SIG_VENUS_ELEMENT),
+            represents = listOf(
+                stringResource(StringKeyComponents.SIG_VENUS_REP_1),
+                stringResource(StringKeyComponents.SIG_VENUS_REP_2),
+                stringResource(StringKeyComponents.SIG_VENUS_REP_3),
+                stringResource(StringKeyComponents.SIG_VENUS_REP_4),
+                stringResource(StringKeyComponents.SIG_VENUS_REP_5)
+            ),
+            bodyParts = stringResource(StringKeyComponents.SIG_VENUS_BODY),
+            professions = stringResource(StringKeyComponents.SIG_VENUS_PROF)
         )
         Planet.SATURN -> PlanetSignifications(
-            nature = "Malefic",
-            element = "Air",
-            represents = listOf("Discipline, Hard work", "Karma, Delays", "Longevity, Service", "Laborers, Servants", "Chronic issues"),
-            bodyParts = "Bones, Teeth, Knees, Joints, Nerves",
-            professions = "Mining, Agriculture, Labor, Judiciary, Real Estate"
+            nature = stringResource(StringKeyComponents.SIG_SATURN_NATURE),
+            element = stringResource(StringKeyComponents.SIG_SATURN_ELEMENT),
+            represents = listOf(
+                stringResource(StringKeyComponents.SIG_SATURN_REP_1),
+                stringResource(StringKeyComponents.SIG_SATURN_REP_2),
+                stringResource(StringKeyComponents.SIG_SATURN_REP_3),
+                stringResource(StringKeyComponents.SIG_SATURN_REP_4),
+                stringResource(StringKeyComponents.SIG_SATURN_REP_5)
+            ),
+            bodyParts = stringResource(StringKeyComponents.SIG_SATURN_BODY),
+            professions = stringResource(StringKeyComponents.SIG_SATURN_PROF)
         )
         Planet.RAHU -> PlanetSignifications(
-            nature = "Malefic",
-            element = "Air",
-            represents = listOf("Obsession, Illusion", "Foreign lands, Travel", "Technology, Innovation", "Unconventional paths", "Material desires"),
-            bodyParts = "Skin diseases, Nervous disorders",
-            professions = "Technology, Foreign affairs, Aviation, Politics, Research"
+            nature = stringResource(StringKeyComponents.SIG_RAHU_NATURE),
+            element = stringResource(StringKeyComponents.SIG_RAHU_ELEMENT),
+            represents = listOf(
+                stringResource(StringKeyComponents.SIG_RAHU_REP_1),
+                stringResource(StringKeyComponents.SIG_RAHU_REP_2),
+                stringResource(StringKeyComponents.SIG_RAHU_REP_3),
+                stringResource(StringKeyComponents.SIG_RAHU_REP_4),
+                stringResource(StringKeyComponents.SIG_RAHU_REP_5)
+            ),
+            bodyParts = stringResource(StringKeyComponents.SIG_RAHU_BODY),
+            professions = stringResource(StringKeyComponents.SIG_RAHU_PROF)
         )
         Planet.KETU -> PlanetSignifications(
-            nature = "Malefic",
-            element = "Fire",
-            represents = listOf("Spirituality, Liberation", "Past life karma", "Detachment, Isolation", "Occult, Mysticism", "Healing abilities"),
-            bodyParts = "Skin, Spine, Nervous system",
-            professions = "Spirituality, Research, Healing, Astrology, Philosophy"
+            nature = stringResource(StringKeyComponents.SIG_KETU_NATURE),
+            element = stringResource(StringKeyComponents.SIG_KETU_ELEMENT),
+            represents = listOf(
+                stringResource(StringKeyComponents.SIG_KETU_REP_1),
+                stringResource(StringKeyComponents.SIG_KETU_REP_2),
+                stringResource(StringKeyComponents.SIG_KETU_REP_3),
+                stringResource(StringKeyComponents.SIG_KETU_REP_4),
+                stringResource(StringKeyComponents.SIG_KETU_REP_5)
+            ),
+            bodyParts = stringResource(StringKeyComponents.SIG_KETU_BODY),
+            professions = stringResource(StringKeyComponents.SIG_KETU_PROF)
         )
         else -> PlanetSignifications("", "", emptyList(), "", "")
     }
@@ -1515,37 +1571,36 @@ private fun getHousePlacementInterpretation(planet: Planet, house: Int): HousePl
         "Seventh House (Kalatra)", "Eighth House (Ayur)", "Ninth House (Dharma)",
         "Tenth House (Karma)", "Eleventh House (Labha)", "Twelfth House (Vyaya)"
     )
-
-    val houseSignifications = listOf(
-        "", "Self, Body, Personality", "Wealth, Family, Speech", "Siblings, Courage, Communication",
-        "Home, Mother, Happiness", "Children, Intelligence, Romance", "Enemies, Health, Service",
-        "Marriage, Partnerships, Business", "Longevity, Transformation, Occult", "Fortune, Dharma, Father",
-        "Career, Status, Public Image", "Gains, Income, Desires", "Losses, Expenses, Liberation"
-    )
+@Composable
+private fun getHousePlacementInterpretation(planet: Planet, house: Int): HousePlacementInterpretation {
+    val houseDetails = getHouseDetails(house)
 
     val interpretation = when {
-        planet == Planet.SUN && house == 1 -> "Strong personality with natural leadership abilities. You have a prominent presence and strong willpower. May indicate good health and vitality."
-        planet == Planet.SUN && house == 10 -> "Excellent position for career success and recognition. Natural authority in professional life. Government positions or leadership roles favored."
-        planet == Planet.MOON && house == 4 -> "Strong emotional foundation and attachment to home. Good relationship with mother. Domestic happiness and property gains likely."
-        planet == Planet.MOON && house == 1 -> "Emotional and intuitive personality. Strong connection to feelings. Popular with the public and adaptable nature."
-        planet == Planet.MARS && house == 10 -> "Dynamic career with technical or engineering success. Leadership in competitive fields. Achievement through bold actions."
-        planet == Planet.MARS && house == 1 -> "Energetic and courageous personality. Athletic abilities. Can be aggressive or impulsive. Strong drive for success."
-        planet == Planet.MERCURY && house == 1 -> "Intelligent and communicative personality. Good business sense. Quick thinking and versatile nature."
-        planet == Planet.MERCURY && house == 5 -> "Creative intelligence and good with children. Success in speculation and education. Artistic communication skills."
-        planet == Planet.JUPITER && house == 1 -> "Wise and optimistic personality. Natural teacher or advisor. Good fortune and ethical nature. Respected by others."
-        planet == Planet.JUPITER && house == 9 -> "Excellent position for spiritual growth and higher learning. Good fortune with father and long journeys. Success in teaching or law."
-        planet == Planet.VENUS && house == 7 -> "Beautiful spouse and harmonious marriage. Success in partnerships and business. Diplomatic abilities."
-        planet == Planet.VENUS && house == 4 -> "Luxurious home and vehicles. Good relationship with mother. Domestic happiness and artistic home environment."
-        planet == Planet.SATURN && house == 10 -> "Slow but steady rise in career. Success through hard work and persistence. Authority gained through discipline."
-        planet == Planet.SATURN && house == 7 -> "Delayed marriage but stable. Serious approach to partnerships. May marry someone older or more mature."
-        planet == Planet.RAHU && house == 10 -> "Unconventional career path. Success in foreign lands or technology. Ambitious and worldly."
-        planet == Planet.KETU && house == 12 -> "Strong spiritual inclinations. Interest in meditation and liberation. May spend time in foreign lands or ashrams."
-        else -> "The ${planet.displayName} in the ${house}th house influences the areas of ${houseSignifications[house]}. Results depend on the sign placement, aspects, and overall chart strength."
+        planet == Planet.SUN && house == 1 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_1)
+        planet == Planet.SUN && house == 10 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_10)
+        planet == Planet.MOON && house == 4 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_MOON_4)
+        planet == Planet.MOON && house == 1 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_MOON_1)
+        planet == Planet.MARS && house == 10 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_MARS_10)
+        planet == Planet.MARS && house == 1 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_MARS_1)
+        planet == Planet.MERCURY && house == 1 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_MERCURY_1)
+        planet == Planet.MERCURY && house == 5 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_MERCURY_5)
+        planet == Planet.JUPITER && house == 1 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_JUPITER_1)
+        planet == Planet.JUPITER && house == 9 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_JUPITER_9)
+        planet == Planet.VENUS && house == 7 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_VENUS_7)
+        planet == Planet.VENUS && house == 4 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_VENUS_4)
+        planet == Planet.SATURN && house == 10 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_SATURN_10)
+        planet == Planet.SATURN && house == 7 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_SATURN_7)
+        planet == Planet.RAHU && house == 10 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_RAHU_10)
+        planet == Planet.KETU && house == 12 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_KETU_12)
+        else -> {
+            val planetName = planet.localizedName()
+            stringResource(StringKeyComponents.HOUSE_PLACEMENT_DEFAULT, planetName, house, houseDetails.name)
+        }
     }
 
     return HousePlacementInterpretation(
-        houseName = houseNames[house],
-        houseSignification = houseSignifications[house],
+        houseName = houseDetails.name,
+        houseSignification = houseDetails.significations.take(3).joinToString(", "),
         interpretation = interpretation
     )
 }
@@ -1678,51 +1733,53 @@ private fun getPlanetPredictions(
     return predictions
 }
 
+@Composable
 private fun getNakshatraDetails(nakshatra: Nakshatra): NakshatraDetails {
     return when (nakshatra) {
         Nakshatra.ASHWINI -> NakshatraDetails(
-            symbol = "Horse's Head",
-            nature = "Swift (Kshipra)",
-            gender = "Male",
-            gana = "Deva (Divine)",
-            guna = "Rajas",
-            element = "Earth",
-            characteristics = "Ashwini natives are quick, energetic, and pioneering. They have natural healing abilities and are often the first to try new things. Speed and initiative are their hallmarks.",
-            careers = "Medical field, Emergency services, Sports, Transportation, Veterinary science"
+            symbol = stringResource(StringKeyComponents.NAK_ASHWINI_SYMBOL),
+            nature = stringResource(StringKeyComponents.NAK_ASHWINI_NATURE),
+            gender = stringResource(StringKeyComponents.NAK_ASHWINI_GENDER),
+            gana = stringResource(StringKeyComponents.NAK_ASHWINI_GANA),
+            guna = stringResource(StringKeyComponents.NAK_ASHWINI_GUNA),
+            element = stringResource(StringKeyComponents.NAK_ASHWINI_ELEMENT),
+            characteristics = stringResource(StringKeyComponents.NAK_ASHWINI_CHARS),
+            careers = stringResource(StringKeyComponents.NAK_ASHWINI_CAREERS)
         )
         Nakshatra.BHARANI -> NakshatraDetails(
-            symbol = "Yoni (Female reproductive organ)",
-            nature = "Fierce (Ugra)",
-            gender = "Female",
-            gana = "Manushya (Human)",
-            guna = "Rajas",
-            element = "Earth",
-            characteristics = "Bharani natives are creative, responsible, and can bear heavy burdens. They understand life's transformative nature and often work with matters of birth, death, and transformation.",
-            careers = "Midwifery, Funeral services, Entertainment, Creative arts, Psychology"
+            symbol = stringResource(StringKeyComponents.NAK_BHARANI_SYMBOL),
+            nature = stringResource(StringKeyComponents.NAK_BHARANI_NATURE),
+            gender = stringResource(StringKeyComponents.NAK_BHARANI_GENDER),
+            gana = stringResource(StringKeyComponents.NAK_BHARANI_GANA),
+            guna = stringResource(StringKeyComponents.NAK_BHARANI_GUNA),
+            element = stringResource(StringKeyComponents.NAK_BHARANI_ELEMENT),
+            characteristics = stringResource(StringKeyComponents.NAK_BHARANI_CHARS),
+            careers = stringResource(StringKeyComponents.NAK_BHARANI_CAREERS)
         )
         Nakshatra.ROHINI -> NakshatraDetails(
-            symbol = "Ox Cart / Chariot",
-            nature = "Fixed (Dhruva)",
-            gender = "Female",
-            gana = "Manushya (Human)",
-            guna = "Rajas",
-            element = "Earth",
-            characteristics = "Rohini natives are attractive, artistic, and materialistic in a positive way. They appreciate beauty and luxury. Strong creative and productive abilities.",
-            careers = "Fashion, Beauty industry, Agriculture, Music, Hospitality"
+            symbol = stringResource(StringKeyComponents.NAK_ROHINI_SYMBOL),
+            nature = stringResource(StringKeyComponents.NAK_ROHINI_NATURE),
+            gender = stringResource(StringKeyComponents.NAK_ROHINI_GENDER),
+            gana = stringResource(StringKeyComponents.NAK_ROHINI_GANA),
+            guna = stringResource(StringKeyComponents.NAK_ROHINI_GUNA),
+            element = stringResource(StringKeyComponents.NAK_ROHINI_ELEMENT),
+            characteristics = stringResource(StringKeyComponents.NAK_ROHINI_CHARS),
+            careers = stringResource(StringKeyComponents.NAK_ROHINI_CAREERS)
         )
         else -> NakshatraDetails(
             symbol = nakshatra.deity,
-            nature = "Mixed",
-            gender = "Neutral",
-            gana = "Mixed",
-            guna = "Mixed",
-            element = "Mixed",
-            characteristics = "${nakshatra.displayName} is ruled by ${nakshatra.ruler.displayName}. Natives are influenced by the deity ${nakshatra.deity}.",
-            careers = "Various fields depending on overall chart analysis"
+            nature = stringResource(StringKeyComponents.NAK_NATURE_MIXED),
+            gender = stringResource(StringKeyComponents.NAK_GENDER_NEUTRAL),
+            gana = stringResource(StringKeyComponents.NAK_GANA_MIXED),
+            guna = stringResource(StringKeyComponents.NAK_GUNA_MIXED),
+            element = stringResource(StringKeyComponents.NAK_ELEMENT_MIXED),
+            characteristics = stringResource(StringKeyComponents.NAK_CHARS_DEFAULT, nakshatra.localizedName(), nakshatra.ruler.localizedName(), nakshatra.deity),
+            careers = stringResource(StringKeyComponents.NAK_CAREERS_DEFAULT)
         )
     }
 }
 
+@Composable
 private fun getPadaDescription(nakshatra: Nakshatra, pada: Int): String {
     val padaSigns = listOf(
         nakshatra.pada1Sign,
@@ -1732,83 +1789,185 @@ private fun getPadaDescription(nakshatra: Nakshatra, pada: Int): String {
     )
     val padaSign = padaSigns[pada - 1]
 
-    return "Pada $pada falls in ${padaSign.displayName} Navamsa, ruled by ${padaSign.ruler.displayName}. " +
-            "This pada emphasizes the ${padaSign.element} element qualities combined with the main nakshatra characteristics."
+    return stringResource(
+        StringKeyComponents.PADA_DESC_TEMPLATE,
+        pada,
+        padaSign.localizedName(),
+        padaSign.ruler.localizedName(),
+        padaSign.element
+    )
 }
 
+@Composable
 private fun getHouseDetails(house: Int): HouseDetails {
     return when (house) {
         1 -> HouseDetails(
-            name = "Lagna Bhava (Ascendant)",
-            type = "Kendra (Angular) & Trikona (Trine)",
-            significations = listOf("Physical body", "Personality", "Self-identity", "Head and brain", "General health", "Beginning of life", "Appearance"),
-            interpretation = "The First House is the most important house, representing you as a whole. It shows your physical constitution, personality traits, and how you present yourself to the world. A strong 1st house gives good health, confidence, and success in self-started ventures."
+            name = stringResource(StringKeyComponents.HOUSE_1_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_1_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_1_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_1_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_1_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_1_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_1_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_1_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_1_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_1_INTERP)
         )
         2 -> HouseDetails(
-            name = "Dhana Bhava (Wealth)",
-            type = "Maraka (Death-inflicting) & Panapara",
-            significations = listOf("Wealth & Possessions", "Family", "Speech", "Right eye", "Face", "Food intake", "Early childhood"),
-            interpretation = "The Second House governs accumulated wealth, family values, and speech. It shows how you earn and save money, your relationship with family, and your communication style. A strong 2nd house indicates financial stability and sweet speech."
+            name = stringResource(StringKeyComponents.HOUSE_2_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_2_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_2_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_2_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_2_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_2_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_2_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_2_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_2_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_2_INTERP)
         )
         3 -> HouseDetails(
-            name = "Sahaja Bhava (Siblings)",
-            type = "Upachaya (Growth) & Apoklima",
-            significations = listOf("Siblings", "Courage", "Short journeys", "Communication", "Arms and shoulders", "Neighbors", "Hobbies"),
-            interpretation = "The Third House represents courage, initiative, and self-effort. It governs siblings (especially younger), short travels, and all forms of communication. A strong 3rd house gives courage, good relationships with siblings, and success through personal effort."
+            name = stringResource(StringKeyComponents.HOUSE_3_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_3_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_3_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_3_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_3_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_3_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_3_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_3_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_3_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_3_INTERP)
         )
         4 -> HouseDetails(
-            name = "Sukha Bhava (Happiness)",
-            type = "Kendra (Angular)",
-            significations = listOf("Mother", "Home & Property", "Vehicles", "Education", "Chest & Heart", "Inner peace", "Emotional foundation"),
-            interpretation = "The Fourth House is the foundation of your life. It represents your mother, home environment, and emotional security. It also governs formal education and landed property. A strong 4th house gives domestic happiness, property ownership, and mental peace."
+            name = stringResource(StringKeyComponents.HOUSE_4_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_4_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_4_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_4_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_4_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_4_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_4_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_4_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_4_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_4_INTERP)
         )
         5 -> HouseDetails(
-            name = "Putra Bhava (Children)",
-            type = "Trikona (Trine) & Panapara",
-            significations = listOf("Children", "Intelligence", "Creativity", "Romance", "Past life merit", "Speculation", "Higher education"),
-            interpretation = "The Fifth House is the house of creativity and Purva Punya (past life merits). It governs children, intelligence, romance, and speculative gains. A strong 5th house gives intelligent children, creative talents, and success in speculation."
+            name = stringResource(StringKeyComponents.HOUSE_5_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_5_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_5_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_5_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_5_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_5_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_5_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_5_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_5_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_5_INTERP)
         )
         6 -> HouseDetails(
-            name = "Ripu Bhava (Enemies)",
-            type = "Dusthana (Malefic) & Upachaya",
-            significations = listOf("Enemies", "Diseases", "Debts", "Service", "Competition", "Daily work", "Maternal uncle"),
-            interpretation = "The Sixth House governs obstacles, health issues, and service. While considered malefic, it also shows the ability to overcome challenges. A well-placed 6th house gives victory over enemies, good health practices, and success in competitive fields."
+            name = stringResource(StringKeyComponents.HOUSE_6_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_6_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_6_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_6_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_6_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_6_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_6_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_6_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_6_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_6_INTERP)
         )
         7 -> HouseDetails(
-            name = "Kalatra Bhava (Spouse)",
-            type = "Kendra (Angular) & Maraka",
-            significations = listOf("Marriage", "Spouse", "Business partnerships", "Foreign travel", "Public dealing", "Lower abdomen", "Sexual organs"),
-            interpretation = "The Seventh House is the house of partnerships and marriage. It shows your spouse's nature and quality of marriage. It also governs business partnerships and public dealings. A strong 7th house gives a good spouse and success in partnerships."
+            name = stringResource(StringKeyComponents.HOUSE_7_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_7_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_7_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_7_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_7_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_7_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_7_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_7_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_7_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_7_INTERP)
         )
         8 -> HouseDetails(
-            name = "Ayur Bhava (Longevity)",
-            type = "Dusthana (Malefic) & Panapara",
-            significations = listOf("Longevity", "Transformation", "Occult", "Inheritance", "Hidden matters", "Chronic diseases", "In-laws' wealth"),
-            interpretation = "The Eighth House governs transformation, death, and rebirth (metaphorical). It shows hidden matters, inheritance, and occult interests. While considered difficult, a well-placed 8th house gives longevity, research abilities, and unexpected gains."
+            name = stringResource(StringKeyComponents.HOUSE_8_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_8_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_8_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_8_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_8_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_8_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_8_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_8_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_8_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_8_INTERP)
         )
         9 -> HouseDetails(
-            name = "Dharma Bhava (Fortune)",
-            type = "Trikona (Trine) & Apoklima",
-            significations = listOf("Fortune & Luck", "Father", "Higher learning", "Long journeys", "Religion & Philosophy", "Guru/Teacher", "Righteousness"),
-            interpretation = "The Ninth House is the most auspicious house of fortune and dharma. It represents your father, teachers, and higher wisdom. A strong 9th house gives good fortune, philosophical inclinations, and blessings from elders and teachers."
+            name = stringResource(StringKeyComponents.HOUSE_9_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_9_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_9_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_9_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_9_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_9_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_9_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_9_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_9_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_9_INTERP)
         )
         10 -> HouseDetails(
-            name = "Karma Bhava (Career)",
-            type = "Kendra (Angular) & Upachaya",
-            significations = listOf("Career", "Profession", "Status & Fame", "Authority", "Government", "Father", "Knees"),
-            interpretation = "The Tenth House is the house of career and public image. It shows your profession, status in society, and relationship with authority. A strong 10th house gives career success, fame, and high position in society."
+            name = stringResource(StringKeyComponents.HOUSE_10_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_10_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_10_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_10_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_10_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_10_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_10_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_10_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_10_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_10_INTERP)
         )
         11 -> HouseDetails(
-            name = "Labha Bhava (Gains)",
-            type = "Upachaya (Growth) & Panapara",
-            significations = listOf("Income & Gains", "Elder siblings", "Friends", "Hopes & Wishes", "Social network", "Left ear", "Ankles"),
-            interpretation = "The Eleventh House is the house of gains and fulfillment of desires. It governs income, elder siblings, and friendships. A strong 11th house gives multiple sources of income, supportive friends, and fulfillment of hopes."
+            name = stringResource(StringKeyComponents.HOUSE_11_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_11_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_11_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_11_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_11_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_11_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_11_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_11_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_11_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_11_INTERP)
         )
         12 -> HouseDetails(
-            name = "Vyaya Bhava (Loss)",
-            type = "Dusthana (Malefic) & Apoklima",
-            significations = listOf("Losses & Expenses", "Liberation (Moksha)", "Foreign lands", "Isolation", "Feet", "Sleep", "Subconscious"),
-            interpretation = "The Twelfth House governs losses, expenses, and liberation. While it shows material losses, it also represents spiritual gains and final liberation. A strong 12th house gives spiritual inclinations, success abroad, and peaceful sleep."
+            name = stringResource(StringKeyComponents.HOUSE_12_NAME),
+            type = stringResource(StringKeyComponents.HOUSE_12_TYPE),
+            significations = listOf(
+                stringResource(StringKeyComponents.HOUSE_12_SIG_1),
+                stringResource(StringKeyComponents.HOUSE_12_SIG_2),
+                stringResource(StringKeyComponents.HOUSE_12_SIG_3),
+                stringResource(StringKeyComponents.HOUSE_12_SIG_4),
+                stringResource(StringKeyComponents.HOUSE_12_SIG_5),
+                stringResource(StringKeyComponents.HOUSE_12_SIG_6),
+                stringResource(StringKeyComponents.HOUSE_12_SIG_7)
+            ),
+            interpretation = stringResource(StringKeyComponents.HOUSE_12_INTERP)
         )
         else -> HouseDetails("", "", emptyList(), "")
     }

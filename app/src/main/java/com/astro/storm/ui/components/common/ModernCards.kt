@@ -52,6 +52,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.data.localization.StringKeyComponents
+import com.astro.storm.data.localization.stringResource
 
 /**
  * Modern elevated card with subtle shadow and rounded corners
@@ -179,7 +181,7 @@ fun ExpandableCard(
 
                 Icon(
                     imageVector = Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (isExpanded) stringResource(StringKeyComponents.ACTION_COLLAPSE) else stringResource(StringKeyComponents.ACTION_EXPAND),
                     tint = AppTheme.TextMuted,
                     modifier = Modifier
                         .size(24.dp)

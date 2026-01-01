@@ -67,6 +67,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyComponents
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AppTheme
 import java.time.ZoneId
@@ -280,10 +281,7 @@ fun TimezonePickerDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = when (language) {
-                            Language.ENGLISH -> "${filteredTimezones.size} timezones"
-                            Language.NEPALI -> "${filteredTimezones.size} समयक्षेत्रहरू"
-                        },
+                        text = stringResource(StringKeyComponents.TIMEZONE_COUNT_FORMAT, filteredTimezones.size),
                         style = MaterialTheme.typography.bodySmall,
                         color = TimezoneSelectorTheme.TextSecondary
                     )
@@ -293,10 +291,7 @@ fun TimezonePickerDialog(
                             onClick = { searchQuery = "" }
                         ) {
                             Text(
-                                text = when (language) {
-                                    Language.ENGLISH -> "Clear"
-                                    Language.NEPALI -> "हटाउनुहोस्"
-                                },
+                                text = stringResource(StringKeyComponents.TIMEZONE_CLEAR_ACTION),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = TimezoneSelectorTheme.AccentColor
                             )
@@ -316,10 +311,7 @@ fun TimezonePickerDialog(
                     if (searchQuery.isBlank()) {
                         item {
                             Text(
-                                text = when (language) {
-                                    Language.ENGLISH -> "Common"
-                                    Language.NEPALI -> "सामान्य"
-                                },
+                                text = stringResource(StringKeyComponents.TIMEZONE_COMMON),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color = TimezoneSelectorTheme.AccentColor,
@@ -344,12 +336,8 @@ fun TimezonePickerDialog(
                         // Add section header when transitioning from common to all
                         if (searchQuery.isBlank() && timezone.isCommon) {
                             val nextTimezone = filteredTimezones.getOrNull(filteredTimezones.indexOf(timezone) + 1)
-                            if (nextTimezone != null && !nextTimezone.isCommon) {
-                                Text(
-                                    text = when (language) {
-                                        Language.ENGLISH -> "All Timezones"
-                                        Language.NEPALI -> "सबै समयक्षेत्रहरू"
-                                    },
+                            if (nextTimezone != null && !nextTimezone.isCommon)                                    Text(
+                                    text = stringResource(StringKeyComponents.TIMEZONE_ALL),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.SemiBold,
                                     color = TimezoneSelectorTheme.AccentColor,
@@ -379,10 +367,7 @@ fun TimezonePickerDialog(
                                     )
                                     Spacer(modifier = Modifier.height(16.dp))
                                     Text(
-                                        text = when (language) {
-                                            Language.ENGLISH -> "No timezones found"
-                                            Language.NEPALI -> "समयक्षेत्र फेला परेन"
-                                        },
+                                        text = stringResource(StringKeyComponents.TIMEZONE_NONE_FOUND),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = TimezoneSelectorTheme.TextSecondary
                                     )
@@ -419,10 +404,7 @@ private fun TimezoneDialogHeader(
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text = when (language) {
-                    Language.ENGLISH -> "Select Timezone"
-                    Language.NEPALI -> "समयक्षेत्र छान्नुहोस्"
-                },
+                text = stringResource(StringKeyComponents.TIMEZONE_SELECT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = TimezoneSelectorTheme.TextPrimary
@@ -432,10 +414,7 @@ private fun TimezoneDialogHeader(
         IconButton(onClick = onDismiss) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = when (language) {
-                    Language.ENGLISH -> "Close"
-                    Language.NEPALI -> "बन्द गर्नुहोस्"
-                },
+                contentDescription = stringResource(StringKeyComponents.TIMEZONE_CLOSE_DESC),
                 tint = TimezoneSelectorTheme.TextSecondary
             )
         }
@@ -488,10 +467,7 @@ private fun TimezoneSearchField(
                 Box {
                     if (query.isEmpty()) {
                         Text(
-                            text = when (language) {
-                                Language.ENGLISH -> "Search by city, region, or UTC offset..."
-                                Language.NEPALI -> "शहर, क्षेत्र, वा UTC खोज्नुहोस्..."
-                            },
+                            text = stringResource(StringKeyComponents.TIMEZONE_SEARCH_PLACEHOLDER),
                             style = MaterialTheme.typography.bodyMedium,
                             color = TimezoneSelectorTheme.TextSecondary
                         )
@@ -512,10 +488,7 @@ private fun TimezoneSearchField(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = when (language) {
-                        Language.ENGLISH -> "Clear search"
-                        Language.NEPALI -> "खोजी हटाउनुहोस्"
-                    },
+                    contentDescription = stringResource(StringKeyComponents.TIMEZONE_CLEAR_SEARCH_DESC),
                     tint = TimezoneSelectorTheme.TextSecondary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -671,10 +644,7 @@ fun TimezoneSelector(
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        text = when (language) {
-                            Language.ENGLISH -> "Timezone"
-                            Language.NEPALI -> "समयक्षेत्र"
-                        },
+                        text = stringResource(StringKeyComponents.TIMEZONE_LABEL),
                         style = MaterialTheme.typography.labelSmall,
                         color = TimezoneSelectorTheme.TextSecondary
                     )
@@ -691,10 +661,7 @@ fun TimezoneSelector(
 
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = when (language) {
-                    Language.ENGLISH -> "Change timezone"
-                    Language.NEPALI -> "समयक्षेत्र परिवर्तन गर्नुहोस्"
-                },
+                contentDescription = stringResource(StringKeyComponents.TIMEZONE_CHANGE_ACTION),
                 tint = TimezoneSelectorTheme.TextSecondary,
                 modifier = Modifier.size(20.dp)
             )

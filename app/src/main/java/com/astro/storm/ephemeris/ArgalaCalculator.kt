@@ -212,13 +212,13 @@ object ArgalaCalculator {
      * @param chart The VedicChart to analyze
      * @return Complete ArgalaAnalysis with all house and planet Argalas
      */
-    fun analyzeArgala(chart: VedicChart): ArgalaAnalysis {
+    fun analyzeArgala(chart: VedicChart, language: Language): ArgalaAnalysis {
         // Group planets by house
         val planetsByHouse = chart.planetPositions.groupBy { it.house }
 
         // Analyze Argala for each house
         val houseArgalas = (1..12).associateWith { house ->
-            analyzeHouseArgala(house, planetsByHouse, chart)
+            analyzeHouseArgala(house, planetsByHouse, chart, language)
         }
 
         // Analyze Argala received by each planet
@@ -226,15 +226,15 @@ object ArgalaCalculator {
             .filter { it in Planet.MAIN_PLANETS }
             .mapNotNull { planet ->
                 chart.planetPositions.find { it.planet == planet }?.let { pos ->
-                    planet to analyzePlanetArgala(pos, planetsByHouse, chart)
+                    planet to analyzePlanetArgala(pos, planetsByHouse, chart, language)
                 }
             }.toMap()
 
         // Identify significant Argalas
-        val significantArgalas = identifySignificantArgalas(houseArgalas, chart)
+        val significantArgalas = identifySignificantArgalas(houseArgalas, chart, language)
 
         // Generate overall assessment
-        val overallAssessment = generateOverallAssessment(houseArgalas, chart)
+        val overallAssessment = generateOverallAssessment(houseArgalas, chart, language)
 
         return ArgalaAnalysis(
             houseArgalas = houseArgalas,
@@ -250,7 +250,8 @@ object ArgalaCalculator {
     private fun analyzeHouseArgala(
         targetHouse: Int,
         planetsByHouse: Map<Int, List<PlanetPosition>>,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): HouseArgalaResult {
         val primaryArgalas = mutableListOf<ArgalaInfluence>()
         val virodhaArgalas = mutableListOf<VirodhaArgala>()
@@ -265,14 +266,14 @@ object ArgalaCalculator {
 
             if (argalaPlanets.isNotEmpty()) {
                 val argalaInfluence = calculateArgalaInfluence(
-                    targetHouse, argalaHouse, argalaType, argalaPlanets, chart
+                    targetHouse, argalaHouse, argalaType, argalaPlanets, chart, language
                 )
                 primaryArgalas.add(argalaInfluence)
 
                 // Check for Virodha (obstruction)
                 if (virodhaPlanets.isNotEmpty()) {
                     val virodha = calculateVirodhaArgala(
-                        virodhaHouse, argalaHouse, virodhaPlanets, argalaInfluence, argalaType
+                        virodhaHouse, argalaHouse, virodhaPlanets, argalaInfluence, argalaType, language
                     )
                     virodhaArgalas.add(virodha)
                 }
@@ -280,13 +281,13 @@ object ArgalaCalculator {
         }
 
         // Calculate effective Argala
-        val effectiveArgala = calculateEffectiveArgala(primaryArgalas, virodhaArgalas)
+        val effectiveArgala = calculateEffectiveArgala(primaryArgalas, virodhaArgalas, language)
 
         // Calculate net strength
         val netStrength = effectiveArgala.netBeneficStrength - effectiveArgala.netMaleficStrength
 
         // Generate interpretation
-        val interpretation = generateHouseArgalaInterpretation(targetHouse, effectiveArgala, chart)
+        val interpretation = generateHouseArgalaInterpretation(targetHouse, effectiveArgala, chart, language)
 
         return HouseArgalaResult(
             house = targetHouse,
@@ -304,7 +305,8 @@ object ArgalaCalculator {
     private fun analyzePlanetArgala(
         planetPosition: PlanetPosition,
         planetsByHouse: Map<Int, List<PlanetPosition>>,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): PlanetArgalaResult {
         val fromHouse = planetPosition.house
         val argalasReceived = mutableListOf<ArgalaInfluence>()
@@ -320,13 +322,13 @@ object ArgalaCalculator {
 
             if (argalaPlanets.isNotEmpty()) {
                 val argalaInfluence = calculateArgalaInfluence(
-                    fromHouse, argalaHouse, argalaType, argalaPlanets, chart
+                    fromHouse, argalaHouse, argalaType, argalaPlanets, chart, language
                 )
                 argalasReceived.add(argalaInfluence)
 
                 if (virodhaPlanets.isNotEmpty()) {
                     val virodha = calculateVirodhaArgala(
-                        virodhaHouse, argalaHouse, virodhaPlanets, argalaInfluence, argalaType
+                        virodhaHouse, argalaHouse, virodhaPlanets, argalaInfluence, argalaType, language
                     )
                     virodhasReceived.add(virodha)
                 }
@@ -347,7 +349,7 @@ object ArgalaCalculator {
             netStrength *= (1.0 - virodha.obstructionStrength * 0.5)
         }
 
-        val interpretation = generatePlanetArgalaInterpretation(planetPosition.planet, argalasReceived, netStrength)
+        val interpretation = generatePlanetArgalaInterpretation(planetPosition.planet, argalasReceived, netStrength, language)
 
         return PlanetArgalaResult(
             planet = planetPosition.planet,
@@ -366,7 +368,8 @@ object ArgalaCalculator {
         argalaHouse: Int,
         argalaType: ArgalaType,
         planets: List<PlanetPosition>,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): ArgalaInfluence {
         val beneficPlanets = planets.filter { VedicAstrologyUtils.isNaturalBenefic(it.planet) }
         val maleficPlanets = planets.filter { VedicAstrologyUtils.isNaturalMalefic(it.planet) }
@@ -387,11 +390,16 @@ object ArgalaCalculator {
             if (VedicAstrologyUtils.isDebilitated(pos)) strength -= 0.3
         }
 
-        val description = buildString {
-            append("${argalaType.displayName} from house $argalaHouse: ")
-            append(planets.joinToString(", ") { it.planet.displayName })
-            append(" (${nature.name.lowercase()})")
-        }
+        val planetsDesc = planets.joinToString(", ") { it.planet.getLocalizedName(language) }
+        val natureDesc = getLocalizedNature(nature, language)
+        val description = StringResources.get(
+            StringKeyAnalysis.ARGALA_INFLUENCE_DESC,
+            language,
+            getArgalaTypeName(argalaType, language),
+            argalaHouse,
+            planetsDesc,
+            natureDesc
+        )
 
         return ArgalaInfluence(
             sourceType = SourceType.HOUSE,
@@ -414,7 +422,8 @@ object ArgalaCalculator {
         obstructedArgalaHouse: Int,
         virodhaPlanets: List<PlanetPosition>,
         argalaInfluence: ArgalaInfluence,
-        argalaType: ArgalaType
+        argalaType: ArgalaType,
+        language: Language
     ): VirodhaArgala {
         // Virodha is effective when planets in obstruction house >= planets in Argala house
         val virodhaCount = virodhaPlanets.size
@@ -439,16 +448,15 @@ object ArgalaCalculator {
             if (VedicAstrologyUtils.isInOwnSign(pos)) obstructionStrength += 0.1
         }
 
-        val description = buildString {
-            append("House $virodhaHouse ")
-            if (isEffective) {
-                append("effectively obstructs")
-            } else {
-                append("partially obstructs")
-            }
-            append(" Argala from house $obstructedArgalaHouse")
-            append(" (${virodhaPlanets.joinToString(", ") { it.planet.displayName }})")
-        }
+        val planetsDesc = virodhaPlanets.joinToString(", ") { it.planet.getLocalizedName(language) }
+        val key = if (isEffective) StringKeyAnalysis.ARGALA_EFFECTIVE_OBSTRUCTION else StringKeyAnalysis.ARGALA_PARTIAL_OBSTRUCTION
+        val description = StringResources.get(
+            key,
+            language,
+            virodhaHouse,
+            obstructedArgalaHouse,
+            planetsDesc
+        )
 
         return VirodhaArgala(
             obstructingHouse = virodhaHouse,
@@ -465,7 +473,8 @@ object ArgalaCalculator {
      */
     private fun calculateEffectiveArgala(
         primaryArgalas: List<ArgalaInfluence>,
-        virodhaArgalas: List<VirodhaArgala>
+        virodhaArgalas: List<VirodhaArgala>,
+        language: Language
     ): EffectiveArgala {
         var beneficStrength = 0.0
         var maleficStrength = 0.0
@@ -499,12 +508,12 @@ object ArgalaCalculator {
 
         val summary = buildString {
             when {
-                beneficStrength > maleficStrength * 2 -> append("Strong auspicious intervention. ")
-                maleficStrength > beneficStrength * 2 -> append("Challenging intervention requiring remedies. ")
-                isSignificant -> append("Mixed but significant intervention. ")
-                else -> append("Minimal intervention from surrounding houses. ")
+                beneficStrength > maleficStrength * 2 -> append(StringResources.get(StringKeyAnalysis.AVASTHA_STRONG_CONFIG, language))
+                maleficStrength > beneficStrength * 2 -> append(StringResources.get(StringKeyAnalysis.AVASTHA_NEEDS_MEASURES, language))
+                isSignificant -> append(StringResources.get(StringKeyAnalysis.ARGALA_INTERP_MIXED, language))
+                else -> append(StringResources.get(StringKeyAnalysis.ARGALA_INTERP_DEPENDS, language))
             }
-            append("Benefic: ${String.format("%.2f", beneficStrength)}, ")
+            append(" Benefic: ${String.format("%.2f", beneficStrength)}, ")
             append("Malefic: ${String.format("%.2f", maleficStrength)}")
         }
 
@@ -522,7 +531,8 @@ object ArgalaCalculator {
      */
     private fun identifySignificantArgalas(
         houseArgalas: Map<Int, HouseArgalaResult>,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): List<SignificantArgala> {
         val significants = mutableListOf<SignificantArgala>()
 
@@ -543,13 +553,13 @@ object ArgalaCalculator {
                         significants.add(
                             SignificantArgala(
                                 targetHouse = house,
-                                targetDescription = getHouseDescription(house),
+                                targetDescription = getHouseDescription(house, language),
                                 argalaType = argala.argalaType,
                                 nature = argala.nature,
                                 strength = effectiveStrength,
                                 involvedPlanets = argala.planets,
-                                lifeAreaEffect = getLifeAreaEffect(house, argala.nature, argala.argalaType),
-                                recommendation = getArgalaRecommendation(house, argala.nature, argala.planets)
+                                lifeAreaEffect = getLifeAreaEffect(house, argala.nature, argala.argalaType, language),
+                                recommendation = getArgalaRecommendation(house, argala.nature, argala.planets, language)
                             )
                         )
                     }
@@ -573,7 +583,8 @@ object ArgalaCalculator {
      */
     private fun generateOverallAssessment(
         houseArgalas: Map<Int, HouseArgalaResult>,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): OverallArgalaAssessment {
         val strengthDistribution = houseArgalas.mapValues { it.value.netArgalaStrength }
 
@@ -597,8 +608,8 @@ object ArgalaCalculator {
                 entry.value.virodhaArgalas.sumOf { if (it.isEffective) it.obstructionStrength else 0.0 }
             }?.key
 
-        val karmaPatterns = generateKarmaPatterns(houseArgalas, chart)
-        val recommendations = generateGeneralRecommendations(houseArgalas, chart)
+        val karmaPatterns = generateKarmaPatterns(houseArgalas, chart, language)
+        val recommendations = generateGeneralRecommendations(houseArgalas, chart, language)
 
         return OverallArgalaAssessment(
             strongestBeneficArgala = strongestBenefic,
@@ -618,26 +629,31 @@ object ArgalaCalculator {
     private fun generateHouseArgalaInterpretation(
         house: Int,
         effectiveArgala: EffectiveArgala,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): String {
-        val houseTheme = getHouseDescription(house)
+        val houseTheme = getHouseDescription(house, language)
 
         return buildString {
             append("$houseTheme: ")
             when (effectiveArgala.dominantNature) {
                 ArgalaNature.SHUBHA -> {
-                    append("Receives beneficial intervention supporting its significations. ")
-                    append("The matters of this house tend to flourish with external support. ")
+                    append(StringResources.get(StringKeyAnalysis.ARGALA_INTERP_SUPPORT, language))
+                    append(" ")
+                    append(StringResources.get(StringKeyAnalysis.ARGALA_INTERP_FLOURISH, language))
                 }
                 ArgalaNature.ASHUBHA -> {
-                    append("Receives challenging intervention creating obstacles. ")
-                    append("Requires conscious effort to overcome limitations. ")
+                    append(StringResources.get(StringKeyAnalysis.ARGALA_INTERP_CHALLENGE, language))
+                    append(" ")
+                    append(StringResources.get(StringKeyAnalysis.ARGALA_INTERP_OVERCOME, language))
                 }
                 ArgalaNature.MIXED -> {
-                    append("Receives mixed intervention - both support and challenges. ")
-                    append("Results depend on current dasha and transits. ")
+                    append(StringResources.get(StringKeyAnalysis.ARGALA_INTERP_MIXED, language))
+                    append(" ")
+                    append(StringResources.get(StringKeyAnalysis.ARGALA_INTERP_DEPENDS, language))
                 }
             }
+            append(" ")
             append(effectiveArgala.summary)
         }
     }
@@ -645,56 +661,59 @@ object ArgalaCalculator {
     private fun generatePlanetArgalaInterpretation(
         planet: Planet,
         argalas: List<ArgalaInfluence>,
-        netStrength: Double
+        netStrength: Double,
+        language: Language
     ): String {
         return buildString {
-            append("${planet.displayName}: ")
+            append("${planet.getLocalizedName(language)}: ")
             when {
-                netStrength > 1.0 -> append("Strongly supported by beneficial Argala. ")
-                netStrength > 0 -> append("Moderately supported by Argala. ")
-                netStrength > -1.0 -> append("Faces some obstruction through Argala. ")
-                else -> append("Significantly challenged by malefic Argala. ")
+                netStrength > 1.0 -> append(StringResources.get(StringKeyAnalysis.ARGALA_PLANET_SUPPORTED, language))
+                netStrength > 0 -> append(StringResources.get(StringKeyAnalysis.ARGALA_PLANET_MODERATE, language))
+                netStrength > -1.0 -> append(StringResources.get(StringKeyAnalysis.ARGALA_PLANET_OBSTRUCTED, language))
+                else -> append(StringResources.get(StringKeyAnalysis.ARGALA_PLANET_CHALLENGED, language))
             }
             if (argalas.isNotEmpty()) {
-                append("Receives ${argalas.size} Argala influence(s). ")
+                append(" ")
+                append(StringResources.get(StringKeyAnalysis.ARGALA_PLANET_INFLUENCES, language, argalas.size))
             }
         }
     }
 
     private fun generateKarmaPatterns(
         houseArgalas: Map<Int, HouseArgalaResult>,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): List<String> {
         val patterns = mutableListOf<String>()
 
         // Check Dharma houses (1, 5, 9)
         val dharmaStrength = listOf(1, 5, 9).sumOf { houseArgalas[it]?.netArgalaStrength ?: 0.0 }
         if (dharmaStrength > 3.0) {
-            patterns.add("Strong dharmic support through Argala - spiritual growth is favored")
+            patterns.add(StringResources.get(StringKeyAnalysis.ARGALA_KARMA_DHARMA_STRONG, language))
         } else if (dharmaStrength < -1.0) {
-            patterns.add("Dharma houses need strengthening through spiritual practices")
+            patterns.add(StringResources.get(StringKeyAnalysis.ARGALA_KARMA_DHARMA_WEAK, language))
         }
 
         // Check Artha houses (2, 6, 10)
         val arthaStrength = listOf(2, 6, 10).sumOf { houseArgalas[it]?.netArgalaStrength ?: 0.0 }
         if (arthaStrength > 3.0) {
-            patterns.add("Career and wealth houses well supported by Argala")
+            patterns.add(StringResources.get(StringKeyAnalysis.ARGALA_KARMA_ARTHA_STRONG, language))
         } else if (arthaStrength < -1.0) {
-            patterns.add("Material success requires overcoming Argala obstacles")
+            patterns.add(StringResources.get(StringKeyAnalysis.ARGALA_KARMA_ARTHA_WEAK, language))
         }
 
         // Check Kama houses (3, 7, 11)
         val kamaStrength = listOf(3, 7, 11).sumOf { houseArgalas[it]?.netArgalaStrength ?: 0.0 }
         if (kamaStrength > 3.0) {
-            patterns.add("Relationships and desires supported by beneficial Argala")
+            patterns.add(StringResources.get(StringKeyAnalysis.ARGALA_KARMA_KAMA_STRONG, language))
         } else if (kamaStrength < -1.0) {
-            patterns.add("Fulfillment of desires faces Argala-based challenges")
+            patterns.add(StringResources.get(StringKeyAnalysis.ARGALA_KARMA_KAMA_WEAK, language))
         }
 
         // Check Moksha houses (4, 8, 12)
         val mokshaStrength = listOf(4, 8, 12).sumOf { houseArgalas[it]?.netArgalaStrength ?: 0.0 }
         if (mokshaStrength > 3.0) {
-            patterns.add("Liberation and inner peace supported by Argala patterns")
+            patterns.add(StringResources.get(StringKeyAnalysis.ARGALA_KARMA_MOKSHA_STRONG, language))
         }
 
         return patterns
@@ -702,7 +721,8 @@ object ArgalaCalculator {
 
     private fun generateGeneralRecommendations(
         houseArgalas: Map<Int, HouseArgalaResult>,
-        chart: VedicChart
+        chart: VedicChart,
+        language: Language
     ): List<String> {
         val recommendations = mutableListOf<String>()
 
@@ -711,10 +731,10 @@ object ArgalaCalculator {
             if (result.effectiveArgala.dominantNature == ArgalaNature.ASHUBHA &&
                 result.effectiveArgala.netMaleficStrength > 1.5) {
                 val remedy = when (house) {
-                    1 -> "Strengthen Sun and ascendant lord through mantras"
-                    7 -> "Strengthen Venus through white clothing and charity on Fridays"
-                    10 -> "Strengthen Saturn through service and discipline"
-                    else -> "Perform remedies for house $house lord"
+                    1 -> StringResources.get(StringKeyAnalysis.ARGALA_REC_REMEDY_SUN, language)
+                    7 -> StringResources.get(StringKeyAnalysis.ARGALA_REC_REMEDY_VENUS, language)
+                    10 -> StringResources.get(StringKeyAnalysis.ARGALA_REC_REMEDY_SATURN, language)
+                    else -> StringResources.get(StringKeyAnalysis.ARGALA_REC_REMEDY_GENERIC, language, house)
                 }
                 recommendations.add(remedy)
             }
@@ -725,9 +745,9 @@ object ArgalaCalculator {
         val totalMalefic = houseArgalas.values.sumOf { it.effectiveArgala.netMaleficStrength }
 
         if (totalBenefic > totalMalefic * 1.5) {
-            recommendations.add("Overall Argala pattern is favorable - utilize periods when Argala lords are active in dasha")
+            recommendations.add(StringResources.get(StringKeyAnalysis.ARGALA_REC_FAVORABLE, language))
         } else if (totalMalefic > totalBenefic * 1.5) {
-            recommendations.add("Focus on strengthening houses with Virodha Argala for better obstruction of malefic influences")
+            recommendations.add(StringResources.get(StringKeyAnalysis.ARGALA_REC_CHALLENGING, language))
         }
 
         return recommendations
@@ -747,63 +767,83 @@ object ArgalaCalculator {
     /**
      * Get description for a house
      */
-    private fun getHouseDescription(house: Int): String {
-        return when (house) {
-            1 -> "1st House (Self, Personality, Health)"
-            2 -> "2nd House (Wealth, Family, Speech)"
-            3 -> "3rd House (Courage, Siblings, Communication)"
-            4 -> "4th House (Mother, Home, Happiness)"
-            5 -> "5th House (Children, Creativity, Intelligence)"
-            6 -> "6th House (Enemies, Health, Service)"
-            7 -> "7th House (Marriage, Partnership, Business)"
-            8 -> "8th House (Transformation, Inheritance, Longevity)"
-            9 -> "9th House (Fortune, Dharma, Higher Learning)"
-            10 -> "10th House (Career, Status, Authority)"
-            11 -> "11th House (Gains, Friends, Aspirations)"
-            12 -> "12th House (Loss, Liberation, Foreign Lands)"
-            else -> "House $house"
+    private fun getHouseDescription(house: Int, language: Language): String {
+        val key = when (house) {
+            1 -> StringKeyAnalysis.HOUSE_1_NAME
+            2 -> StringKeyAnalysis.HOUSE_2_NAME
+            3 -> StringKeyAnalysis.HOUSE_3_NAME
+            4 -> StringKeyAnalysis.HOUSE_4_NAME
+            5 -> StringKeyAnalysis.HOUSE_5_NAME
+            6 -> StringKeyAnalysis.HOUSE_6_NAME
+            7 -> StringKeyAnalysis.HOUSE_7_NAME
+            8 -> StringKeyAnalysis.HOUSE_8_NAME
+            9 -> StringKeyAnalysis.HOUSE_9_NAME
+            10 -> StringKeyAnalysis.HOUSE_10_NAME
+            11 -> StringKeyAnalysis.HOUSE_11_NAME
+            12 -> StringKeyAnalysis.HOUSE_12_NAME
+            else -> null
         }
+        return if (key != null) StringResources.get(key, language) else "House $house"
     }
 
     /**
      * Get life area effect based on Argala
      */
-    private fun getLifeAreaEffect(house: Int, nature: ArgalaNature, argalaType: ArgalaType): String {
-        val effect = if (nature == ArgalaNature.SHUBHA) "support" else "challenge"
+    private fun getLifeAreaEffect(house: Int, nature: ArgalaNature, argalaType: ArgalaType, language: Language): String {
+        val effect = if (nature == ArgalaNature.SHUBHA) 
+            StringResources.get(StringKeyAnalysis.ARGALA_EFFECT_SUPPORT, language) 
+        else 
+            StringResources.get(StringKeyAnalysis.ARGALA_EFFECT_CHALLENGE, language)
+
         val source = when (argalaType) {
-            ArgalaType.SECONDARY_ARGALA -> "wealth and resources"
-            ArgalaType.PRIMARY_ARGALA -> "happiness and comfort"
-            ArgalaType.GAINS_ARGALA -> "gains and aspirations"
-            ArgalaType.SPECIAL_ARGALA -> "intelligence and creativity"
+            ArgalaType.SECONDARY_ARGALA -> StringResources.get(StringKeyAnalysis.ARGALA_SOURCE_WEALTH, language)
+            ArgalaType.PRIMARY_ARGALA -> StringResources.get(StringKeyAnalysis.ARGALA_SOURCE_HAPPINESS, language)
+            ArgalaType.GAINS_ARGALA -> StringResources.get(StringKeyAnalysis.ARGALA_SOURCE_GAINS, language)
+            ArgalaType.SPECIAL_ARGALA -> StringResources.get(StringKeyAnalysis.ARGALA_SOURCE_INTELLIGENCE, language)
         }
 
         val area = when (house) {
-            1 -> "personality and health"
-            7 -> "relationships and marriage"
-            10 -> "career and public life"
-            4 -> "home and mother"
-            5 -> "children and creativity"
-            else -> "house $house matters"
+            1 -> StringResources.get(StringKeyAnalysis.ARGALA_TARGET_PERSONALITY, language)
+            7 -> StringResources.get(StringKeyAnalysis.ARGALA_TARGET_RELATIONSHIPS, language)
+            10 -> StringResources.get(StringKeyAnalysis.ARGALA_TARGET_CAREER, language)
+            4 -> StringResources.get(StringKeyAnalysis.ARGALA_TARGET_HOME, language)
+            5 -> StringResources.get(StringKeyAnalysis.ARGALA_TARGET_CHILDREN, language)
+            else -> StringResources.get(StringKeyAnalysis.ARGALA_TARGET_GENERIC, language, house)
         }
 
-        return "Through $source, there is $effect for $area"
+        return StringResources.get(StringKeyAnalysis.ARGALA_AREA_EFFECT, language, source, effect, area)
     }
 
     /**
      * Get recommendation for Argala
      */
-    private fun getArgalaRecommendation(house: Int, nature: ArgalaNature, planets: List<Planet>): String {
+    private fun getArgalaRecommendation(house: Int, nature: ArgalaNature, planets: List<Planet>, language: Language): String {
         return if (nature == ArgalaNature.ASHUBHA) {
             val mainPlanet = planets.firstOrNull()
             when (mainPlanet) {
-                Planet.SATURN -> "Perform Saturn remedies: service, blue sapphire (if suitable), Saturday fasting"
-                Planet.MARS -> "Perform Mars remedies: Hanuman Chalisa, coral (if suitable), Tuesday fasting"
-                Planet.RAHU -> "Perform Rahu remedies: Durga worship, hessonite (if suitable), meditation"
-                Planet.KETU -> "Perform Ketu remedies: Ganesha worship, cat's eye (if suitable), spiritual practices"
-                else -> "Strengthen the Argala-causing planet through appropriate remedies"
+                Planet.SATURN -> StringResources.get(StringKeyAnalysis.ARGALA_REC_REMEDY_SATURN, language)
+                // Add more specific remedies if desired, currently using generic
+                else -> StringResources.get(StringKeyAnalysis.ARGALA_REC_REMEDY_GENERIC, language, house)
             }
         } else {
-            "Leverage this supportive Argala during favorable dashas"
+            StringResources.get(StringKeyAnalysis.ARGALA_REC_FAVORABLE, language)
+        }
+    }
+
+    private fun getArgalaTypeName(type: ArgalaType, language: Language): String {
+        return when (type) {
+            ArgalaType.SECONDARY_ARGALA -> StringResources.get(StringKeyAnalysis.ARGALA_SECONDARY_DESC, language)
+            ArgalaType.PRIMARY_ARGALA -> StringResources.get(StringKeyAnalysis.ARGALA_PRIMARY_DESC, language)
+            ArgalaType.GAINS_ARGALA -> StringResources.get(StringKeyAnalysis.ARGALA_GAINS_ARGALA, language)
+            ArgalaType.SPECIAL_ARGALA -> StringResources.get(StringKeyAnalysis.ARGALA_FIFTH_HOUSE_DESC, language)
+        }
+    }
+
+    private fun getLocalizedNature(nature: ArgalaNature, language: Language): String {
+        return when (nature) {
+            ArgalaNature.SHUBHA -> StringResources.get(StringKeyAnalysis.BENEFIC, language)
+            ArgalaNature.ASHUBHA -> StringResources.get(StringKeyAnalysis.MALEFIC, language)
+            ArgalaNature.MIXED -> StringResources.get(StringKeyAnalysis.MIXED, language)
         }
     }
 

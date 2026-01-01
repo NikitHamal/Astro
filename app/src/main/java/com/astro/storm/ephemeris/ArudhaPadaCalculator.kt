@@ -247,19 +247,19 @@ object ArudhaPadaCalculator {
     /**
      * Calculate complete Arudha Pada analysis
      */
-    fun analyzeArudhaPadas(chart: VedicChart): ArudhaPadaAnalysis {
+    fun analyzeArudhaPadas(chart: VedicChart, language: Language = Language.ENGLISH): ArudhaPadaAnalysis {
         val ascendantSign = ZodiacSign.fromLongitude(chart.ascendant)
 
         // Calculate all 12 Arudha Padas
         val arudhaPadas = (1..12).map { house ->
-            calculateArudhaPada(chart, house, ascendantSign)
+            calculateArudhaPada(chart, house, ascendantSign, language)
         }
 
         // Get special Arudhas with detailed analysis
-        val specialArudhas = analyzeSpecialArudhas(chart, arudhaPadas)
+        val specialArudhas = analyzeSpecialArudhas(chart, arudhaPadas, language)
 
         // Calculate Arudha Yogas
-        val arudhaYogas = calculateArudhaYogas(chart, arudhaPadas, specialArudhas)
+        val arudhaYogas = calculateArudhaYogas(chart, arudhaPadas, specialArudhas, language)
 
         // Analyze Arudha-to-Arudha relationships
         val arudhaRelationships = analyzeArudhaRelationships(arudhaPadas)
@@ -271,10 +271,10 @@ object ArudhaPadaCalculator {
         val dashaActivation = calculateDashaActivation(chart, arudhaPadas)
 
         // Overall assessment
-        val overallAssessment = calculateOverallAssessment(chart, arudhaPadas, specialArudhas, arudhaYogas)
-
+        val overallAssessment = calculateOverallAssessment(chart, arudhaPadas, specialArudhas, arudhaYogas, language)
+ 
         // Generate interpretation
-        val interpretation = generateInterpretation(chart, arudhaPadas, specialArudhas, arudhaYogas, overallAssessment)
+        val interpretation = generateInterpretation(chart, arudhaPadas, specialArudhas, arudhaYogas, overallAssessment, language)
 
         return ArudhaPadaAnalysis(
             ascendantSign = ascendantSign,
@@ -295,7 +295,8 @@ object ArudhaPadaCalculator {
     private fun calculateArudhaPada(
         chart: VedicChart,
         house: Int,
-        ascendantSign: ZodiacSign
+        ascendantSign: ZodiacSign,
+        language: Language
     ): ArudhaPada {
         // Get the sign of the house
         val houseSign = getSignOfHouse(ascendantSign, house)
@@ -333,14 +334,14 @@ object ArudhaPadaCalculator {
         val strength = calculateArudhaStrength(chart, arudhaSign, houseLord, houseLordPosition)
 
         // Get name and full name
-        val (name, fullName) = getArudhaName(house)
+        val (name, fullName) = getArudhaName(house, language)
 
         // Get significations
-        val significations = getHouseSignifications(house)
+        val significations = getHouseSignifications(house, language)
 
         // Generate interpretation
         val interpretation = generateArudhaPadaInterpretation(
-            house, arudhaSign, houseLord, houseLordSign, planetsInArudha, strength
+            house, arudhaSign, houseLord, houseLordSign, planetsInArudha, strength, language
         )
 
         return ArudhaPada(
@@ -419,41 +420,94 @@ object ArudhaPadaCalculator {
     /**
      * Get Arudha name and full name based on house
      */
-    private fun getArudhaName(house: Int): Pair<String, String> {
+    private fun getArudhaName(house: Int, language: Language): Pair<String, String> {
         return when (house) {
-            1 -> "AL" to "Arudha Lagna (Pada Lagna)"
-            2 -> "A2" to "Dhana Pada (Wealth Image)"
-            3 -> "A3" to "Vikrama Pada (Courage Image)"
-            4 -> "A4" to "Matri Pada (Mother/Property)"
-            5 -> "A5" to "Mantri Pada (Intelligence/Counsel)"
-            6 -> "A6" to "Shatru Pada (Enemy/Disease)"
-            7 -> "A7" to "Dara Pada (Spouse/Business)"
-            8 -> "A8" to "Mrityu Pada (Transformation)"
-            9 -> "A9" to "Bhagya Pada (Fortune/Guru)"
-            10 -> "A10" to "Rajya Pada (Career/Authority)"
-            11 -> "A11" to "Labha Pada (Gains)"
-            12 -> "UL" to "Upapada (Spouse Indicator)"
-            else -> "A$house" to "Arudha of House $house"
+            1 -> StringResources.get(StringKeyAnalysis.ARUDHA_NAME_AL, language) to StringResources.get(StringKeyAnalysis.ARUDHA_FULL_AL, language)
+            7 -> StringResources.get(StringKeyAnalysis.ARUDHA_NAME_A7, language) to StringResources.get(StringKeyAnalysis.ARUDHA_FULL_A7, language)
+            10 -> StringResources.get(StringKeyAnalysis.ARUDHA_NAME_A10, language) to StringResources.get(StringKeyAnalysis.ARUDHA_FULL_A10, language)
+            11 -> StringResources.get(StringKeyAnalysis.ARUDHA_NAME_A11, language) to StringResources.get(StringKeyAnalysis.ARUDHA_FULL_A11, language)
+            12 -> StringResources.get(StringKeyAnalysis.ARUDHA_NAME_UL, language) to StringResources.get(StringKeyAnalysis.ARUDHA_FULL_UL, language)
+            else -> "A$house" to StringResources.get(StringKeyAnalysis.ARUDHA_GENERIC_FULL, language, house)
         }
     }
 
     /**
      * Get significations for each house
      */
-    private fun getHouseSignifications(house: Int): List<String> {
+    private fun getHouseSignifications(house: Int, language: Language): List<String> {
         return when (house) {
-            1 -> listOf("Public image", "Physical appearance", "How others perceive you", "Maya/Illusion of self")
-            2 -> listOf("Wealth perception", "Family status", "Speech and communication", "Food habits")
-            3 -> listOf("Courage display", "Siblings' status", "Communication skills", "Short travels")
-            4 -> listOf("Property matters", "Mother's image", "Vehicles", "Comfort and luxury")
-            5 -> listOf("Intelligence display", "Children's image", "Speculative gains", "Counsel given")
-            6 -> listOf("Enemies' strength", "Disease manifestation", "Debts", "Service conditions")
-            7 -> listOf("Business partnerships", "Trade", "Public dealings", "Marriage manifestation")
-            8 -> listOf("Hidden matters", "Insurance/Legacy", "Transformation", "Research")
-            9 -> listOf("Guru/Father image", "Fortune manifestation", "Religious displays", "Higher learning")
-            10 -> listOf("Career manifestation", "Authority", "Reputation", "Government dealings")
-            11 -> listOf("Gains and profits", "Elder siblings", "Fulfillment of desires", "Networks")
-            12 -> listOf("Spouse characteristics", "Marriage outcome", "Bedroom matters", "Foreign lands")
+            1 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_PUBLIC_IMAGE, language),
+                StringResources.get(StringKeyAnalysis.SIG_PHYSICAL_APP, language),
+                StringResources.get(StringKeyAnalysis.SIG_PERCEPTION, language),
+                StringResources.get(StringKeyAnalysis.SIG_MAYA_SELF, language)
+            )
+            2 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_WEALTH_PERC, language),
+                StringResources.get(StringKeyAnalysis.SIG_FAMILY_STATUS, language),
+                StringResources.get(StringKeyAnalysis.SIG_SPEECH_COMM, language),
+                StringResources.get(StringKeyAnalysis.SIG_FOOD_HABITS, language)
+            )
+            3 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_COURAGE_DISP, language),
+                StringResources.get(StringKeyAnalysis.SIG_SIBLINGS_STATUS, language),
+                StringResources.get(StringKeyAnalysis.SIG_COMM_SKILLS, language),
+                StringResources.get(StringKeyAnalysis.SIG_SHORT_TRAVELS, language)
+            )
+            4 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_PROPERTY_MATTERS, language),
+                StringResources.get(StringKeyAnalysis.SIG_MOTHER_IMAGE, language),
+                StringResources.get(StringKeyAnalysis.SIG_VEHICLES, language),
+                StringResources.get(StringKeyAnalysis.SIG_COMFORT_LUXURY, language)
+            )
+            5 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_INTEL_DISP, language),
+                StringResources.get(StringKeyAnalysis.SIG_CHILDREN_IMAGE, language),
+                StringResources.get(StringKeyAnalysis.SIG_SPEC_GAINS, language),
+                StringResources.get(StringKeyAnalysis.SIG_COUNSEL_GIVEN, language)
+            )
+            6 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_ENEMIES_STR, language),
+                StringResources.get(StringKeyAnalysis.SIG_DISEASE_MANIF, language),
+                StringResources.get(StringKeyAnalysis.SIG_DEBTS, language),
+                StringResources.get(StringKeyAnalysis.SIG_SERVICE_COND, language)
+            )
+            7 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_BUS_PARTNERS, language),
+                StringResources.get(StringKeyAnalysis.SIG_TRADE, language),
+                StringResources.get(StringKeyAnalysis.SIG_PUBLIC_DEALINGS, language),
+                StringResources.get(StringKeyAnalysis.SIG_MARRIAGE_MANIF, language)
+            )
+            8 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_HIDDEN_MATTERS, language),
+                StringResources.get(StringKeyAnalysis.SIG_INSURANCE_LEGACY, language),
+                StringResources.get(StringKeyAnalysis.SIG_TRANSFORMATION, language),
+                StringResources.get(StringKeyAnalysis.SIG_RESEARCH, language)
+            )
+            9 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_GURU_IMAGE, language),
+                StringResources.get(StringKeyAnalysis.SIG_FORTUNE_MANIF, language),
+                StringResources.get(StringKeyAnalysis.SIG_RELIGIOUS_DISP, language),
+                StringResources.get(StringKeyAnalysis.SIG_HIGHER_LEARNING, language)
+            )
+            10 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_CAREER_MANIF, language),
+                StringResources.get(StringKeyAnalysis.SIG_REPUTATION, language),
+                StringResources.get(StringKeyAnalysis.SIG_GOVT_DEALINGS, language),
+                StringResources.get(StringKeyAnalysis.SIG_PUBLIC_DEALINGS, language) // Reused
+            )
+            11 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_GAINS_PROFITS, language),
+                StringResources.get(StringKeyAnalysis.SIG_ELDER_SIBLINGS, language),
+                StringResources.get(StringKeyAnalysis.SIG_GAINS_PROFITS, language), // Reference to Gains
+                StringResources.get(StringKeyAnalysis.SIG_NETWORKS, language)
+            )
+            12 -> listOf(
+                StringResources.get(StringKeyAnalysis.SIG_SPOUSE_CHAR, language),
+                StringResources.get(StringKeyAnalysis.SIG_MARRIAGE_OUTCOME, language),
+                StringResources.get(StringKeyAnalysis.SIG_BEDROOM_MATTERS, language),
+                StringResources.get(StringKeyAnalysis.SIG_FOREIGN_LANDS, language)
+            )
             else -> listOf()
         }
     }
@@ -467,49 +521,54 @@ object ArudhaPadaCalculator {
         houseLord: Planet,
         houseLordSign: ZodiacSign,
         planetsInArudha: List<PlanetPosition>,
-        strength: ArudhaStrength
+        strength: ArudhaStrength,
+        language: Language
     ): String {
         val houseArea = when (house) {
-            1 -> "public image and how you are perceived"
-            2 -> "wealth manifestation and family status"
-            3 -> "display of courage and sibling matters"
-            4 -> "property and comfort in life"
-            5 -> "intelligence recognition and children"
-            6 -> "enemies, debts, and health matters"
-            7 -> "business partnerships and marriage"
-            8 -> "inheritance and hidden transformations"
-            9 -> "fortune and spiritual pursuits"
-            10 -> "career and authoritative position"
-            11 -> "gains and fulfillment of desires"
-            12 -> "spouse characteristics and marriage outcome"
-            else -> "house $house matters"
+            1 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_1, language)
+            2 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_2, language)
+            3 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_3, language)
+            4 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_4, language)
+            5 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_5, language)
+            6 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_6, language)
+            7 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_7, language)
+            8 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_8, language)
+            9 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_9, language)
+            10 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_10, language)
+            11 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_11, language)
+            12 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_12, language)
+            else -> StringResources.get(StringKeyMatch.HOUSE_LABEL, language, house)
         }
 
         val signNature = when (arudhaSign.element) {
-            "Fire" -> "dynamic and visible"
-            "Earth" -> "practical and tangible"
-            "Air" -> "intellectual and social"
-            "Water" -> "emotional and intuitive"
-            else -> "mixed"
+            "Fire" -> StringResources.get(StringKeyAnalysis.NATURE_FIRE_VISIBLE, language)
+            "Earth" -> StringResources.get(StringKeyAnalysis.NATURE_EARTH_PRACTICAL, language)
+            "Air" -> StringResources.get(StringKeyAnalysis.NATURE_AIR_SOCIAL, language)
+            "Water" -> StringResources.get(StringKeyAnalysis.NATURE_WATER_INTUITIVE, language)
+            else -> StringResources.get(StringKeyAnalysis.ARGALA_MIXED_NATURE, language)
         }
 
         val strengthDesc = when (strength) {
-            ArudhaStrength.VERY_STRONG -> "This Arudha is exceptionally strong, indicating powerful manifestation"
-            ArudhaStrength.STRONG -> "This Arudha is well-placed for positive results"
-            ArudhaStrength.MODERATE -> "This Arudha shows mixed results depending on periods"
-            ArudhaStrength.WEAK -> "This Arudha needs strengthening for better outcomes"
-            ArudhaStrength.VERY_WEAK -> "This Arudha is challenged and may struggle to manifest"
+            ArudhaStrength.VERY_STRONG -> StringResources.get(StringKeyAnalysis.ARUDHA_STR_VERY_STRONG, language)
+            ArudhaStrength.STRONG -> StringResources.get(StringKeyAnalysis.ARUDHA_STR_STRONG, language)
+            ArudhaStrength.MODERATE -> StringResources.get(StringKeyAnalysis.ARUDHA_STR_MODERATE, language)
+            ArudhaStrength.WEAK -> StringResources.get(StringKeyAnalysis.ARUDHA_STR_WEAK, language)
+            ArudhaStrength.VERY_WEAK -> StringResources.get(StringKeyAnalysis.ARUDHA_STR_VERY_WEAK, language)
         }
 
         val planetEffects = if (planetsInArudha.isNotEmpty()) {
-            val planetNames = planetsInArudha.joinToString(", ") { it.planet.displayName }
-            "Planets in this Arudha ($planetNames) directly influence how $houseArea manifest in the material world."
+            val planetNames = planetsInArudha.joinToString(", ") { it.planet.getLocalizedName(language) }
+            StringResources.get(StringKeyAnalysis.ARGALA_PLANETS_INFLUENCE, language, planetNames, houseArea)
         } else {
-            "No planets directly in this Arudha; results depend primarily on the lord's condition."
+            StringResources.get(StringKeyAnalysis.ARGALA_NO_PLANETS, language)
         }
 
-        return "The $houseArea falls in ${arudhaSign.displayName}, giving a $signNature quality to how these matters manifest. " +
-                "The lord ${houseLord.displayName} is placed in ${houseLordSign.displayName}. " +
+        val signName = arudhaSign.getLocalizedName(language)
+        val lordName = houseLord.getLocalizedName(language)
+        val lordSignName = houseLordSign.getLocalizedName(language)
+
+        return StringResources.get(StringKeyAnalysis.ARGALA_HOUSE_INTERP_DESC, language, houseArea, signName, signNature) + " " +
+                StringResources.get(StringKeyAnalysis.ARGALA_LORD_PLACEMENT, language, lordName, lordSignName) + ". " +
                 "$strengthDesc. $planetEffects"
     }
 
@@ -519,22 +578,24 @@ object ArudhaPadaCalculator {
 
     private fun analyzeSpecialArudhas(
         chart: VedicChart,
-        arudhaPadas: List<ArudhaPada>
+        arudhaPadas: List<ArudhaPada>,
+        language: Language
     ): SpecialArudhas {
         return SpecialArudhas(
-            arudhaLagna = analyzeSpecialArudha(chart, arudhaPadas[0]),     // AL - House 1
-            upapada = analyzeSpecialArudha(chart, arudhaPadas[11]),         // UL - House 12
-            darapada = analyzeSpecialArudha(chart, arudhaPadas[6]),         // A7 - House 7
-            labhaPada = analyzeSpecialArudha(chart, arudhaPadas[10]),       // A11 - House 11
-            rajyaPada = analyzeSpecialArudha(chart, arudhaPadas[9]),        // A10 - House 10
-            mantriPada = analyzeSpecialArudha(chart, arudhaPadas[4]),       // A5 - House 5
-            shatruPada = analyzeSpecialArudha(chart, arudhaPadas[5])        // A6 - House 6
+            arudhaLagna = analyzeSpecialArudha(chart, arudhaPadas[0], language),     // AL - House 1
+            upapada = analyzeSpecialArudha(chart, arudhaPadas[11], language),         // UL - House 12
+            darapada = analyzeSpecialArudha(chart, arudhaPadas[6], language),         // A7 - House 7
+            labhaPada = analyzeSpecialArudha(chart, arudhaPadas[10], language),       // A11 - House 11
+            rajyaPada = analyzeSpecialArudha(chart, arudhaPadas[9], language),        // A10 - House 10
+            mantriPada = analyzeSpecialArudha(chart, arudhaPadas[4], language),       // A5 - House 5
+            shatruPada = analyzeSpecialArudha(chart, arudhaPadas[5], language)        // A6 - House 6
         )
     }
 
     private fun analyzeSpecialArudha(
         chart: VedicChart,
-        arudha: ArudhaPada
+        arudha: ArudhaPada,
+        language: Language
     ): ArudhaPadaDetail {
         val arudhaLord = arudha.sign.ruler
         val arudhaLordPosition = chart.planetPositions.find { it.planet == arudhaLord }
@@ -554,10 +615,10 @@ object ArudhaPadaCalculator {
             .filter { it.planet in malefics }
             .map { it.planet }
 
-        val aspectsOnArudha = calculateAspectsOnSign(chart, arudha.sign)
+        val aspectsOnArudha = calculateAspectsOnSign(chart, arudha.sign, language)
 
         val detailedInterpretation = generateDetailedArudhaInterpretation(
-            arudha, arudhaLord, dignity, beneficsInArudha, maleficsInArudha, aspectsOnArudha
+            arudha, arudhaLord, dignity, beneficsInArudha, maleficsInArudha, aspectsOnArudha, language
         )
 
         return ArudhaPadaDetail(
@@ -585,24 +646,24 @@ object ArudhaPadaCalculator {
         }
     }
 
-    private fun calculateAspectsOnSign(chart: VedicChart, sign: ZodiacSign): List<AspectOnArudha> {
+    private fun calculateAspectsOnSign(chart: VedicChart, sign: ZodiacSign, language: Language): List<AspectOnArudha> {
         val aspects = mutableListOf<AspectOnArudha>()
 
         chart.planetPositions.forEach { pos ->
             if (aspectsSign(pos.planet, pos.sign, sign)) {
                 val benefics = listOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY)
-                val nature = if (pos.planet in benefics) "Benefic" else "Malefic"
+                val nature = if (pos.planet in benefics) StringResources.get(StringKeyMatch.ASPECT_NATURE_HARMONIOUS, language) else StringResources.get(StringKeyMatch.ASPECT_NATURE_CHALLENGING, language)
                 val effect = when (pos.planet) {
-                    Planet.JUPITER -> "Expands and blesses the matters"
-                    Planet.VENUS -> "Adds beauty and harmony"
-                    Planet.MARS -> "Adds energy but also conflicts"
-                    Planet.SATURN -> "Delays but gives eventual stability"
-                    Planet.SUN -> "Brings authority but also ego issues"
-                    Planet.MOON -> "Adds emotional dimension"
-                    Planet.MERCURY -> "Enhances communication"
-                    Planet.RAHU -> "Creates illusions and worldly desires"
-                    Planet.KETU -> "Brings detachment or spiritual twist"
-                    else -> "Influences the manifestation"
+                    Planet.JUPITER -> StringResources.get(StringKeyAnalysis.ARGALA_JUPITER_EXPANSION, language)
+                    Planet.VENUS -> StringResources.get(StringKeyAnalysis.ARGALA_VENUS_BEAUTY, language)
+                    Planet.MARS -> StringResources.get(StringKeyAnalysis.ARGALA_MARS_CONFLICT, language)
+                    Planet.SATURN -> StringResources.get(StringKeyAnalysis.ARGALA_SATURN_DELAY, language)
+                    Planet.SUN -> StringResources.get(StringKeyAnalysis.ARGALA_SUN_AUTHORITY, language)
+                    Planet.MOON -> StringResources.get(StringKeyAnalysis.ARGALA_MOON_EMOTION, language)
+                    Planet.MERCURY -> StringResources.get(StringKeyAnalysis.ARGALA_MERCURY_COMM, language)
+                    Planet.RAHU -> StringResources.get(StringKeyAnalysis.ARGALA_RAHU_ILLUSION, language)
+                    Planet.KETU -> StringResources.get(StringKeyAnalysis.ARGALA_KETU_DETACHMENT, language)
+                    else -> StringResources.get(StringKeyAnalysis.ARGALA_GENERAL_EFFECT, language)
                 }
                 aspects.add(AspectOnArudha(pos.planet, "Graha Drishti", nature, effect))
             }
@@ -617,40 +678,28 @@ object ArudhaPadaCalculator {
         dignity: PlanetaryDignity,
         benefics: List<Planet>,
         malefics: List<Planet>,
-        aspects: List<AspectOnArudha>
+        aspects: List<AspectOnArudha>,
+        language: Language
     ): DetailedArudhaInterpretation {
         val primaryMeaning = when (arudha.house) {
-            1 -> "Your public image in ${arudha.sign.displayName} suggests ${getSignImageDescription(arudha.sign)}. " +
-                    "People perceive you with ${arudha.sign.element} qualities."
-            7 -> "Business partnerships and public dealings manifest through ${arudha.sign.displayName}. " +
-                    "${getA7BusinessDescription(arudha.sign)}"
-            10 -> "Your career and authority manifest through ${arudha.sign.displayName}. " +
-                    "${getA10CareerDescription(arudha.sign)}"
-            11 -> "Gains and fulfillment come through ${arudha.sign.displayName} qualities. " +
-                    "${getA11GainsDescription(arudha.sign)}"
-            12 -> "Your spouse characteristics are indicated by ${arudha.sign.displayName}. " +
-                    "${getULSpouseDescription(arudha.sign)}"
-            else -> "The matters of house ${arudha.house} manifest through ${arudha.sign.displayName}."
+            1 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_1, language) + " (" + arudha.sign.getLocalizedName(language) + "): " + getSignImageDescription(arudha.sign, language)
+            7 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_7, language) + " (" + arudha.sign.getLocalizedName(language) + "): " + getA7BusinessDescription(arudha.sign, language)
+            10 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_10, language) + " (" + arudha.sign.getLocalizedName(language) + "): " + getA10CareerDescription(arudha.sign, language)
+            11 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_11, language) + " (" + arudha.sign.getLocalizedName(language) + "): " + getA11GainsDescription(arudha.sign, language)
+            12 -> StringResources.get(StringKeyAnalysis.ARUDHA_AREA_12, language) + " (" + arudha.sign.getLocalizedName(language) + "): " + getULSpouseDescription(arudha.sign, language)
+            else -> StringResources.get(StringKeyMatch.HOUSE_LABEL, language, arudha.house) + " (" + arudha.sign.getLocalizedName(language) + ")"
         }
 
         val secondaryEffects = mutableListOf<String>()
 
         if (benefics.isNotEmpty()) {
-            secondaryEffects.add("Benefic planets (${benefics.joinToString { it.displayName }}) enhance positive outcomes")
+            secondaryEffects.add(StringResources.get(StringKeyAnalysis.ARGALA_PLANETS_INFLUENCE, language, benefics.joinToString { it.getLocalizedName(language) }, ""))
         }
         if (malefics.isNotEmpty()) {
-            secondaryEffects.add("Malefic planets (${malefics.joinToString { it.displayName }}) may create challenges")
+            secondaryEffects.add(StringResources.get(StringKeyAnalysis.ARGALA_PLANETS_INFLUENCE, language, malefics.joinToString { it.getLocalizedName(language) }, ""))
         }
 
-        val dignityEffect = when (dignity) {
-            PlanetaryDignity.EXALTED -> "Lord exalted - excellent manifestation expected"
-            PlanetaryDignity.OWN_SIGN -> "Lord in own sign - stable and reliable results"
-            PlanetaryDignity.MOOLATRIKONA -> "Lord in moolatrikona - strong manifestation"
-            PlanetaryDignity.FRIEND_SIGN -> "Lord in friendly sign - supportive results"
-            PlanetaryDignity.NEUTRAL_SIGN -> "Lord in neutral sign - average manifestation"
-            PlanetaryDignity.ENEMY_SIGN -> "Lord in enemy sign - struggles in manifestation"
-            PlanetaryDignity.DEBILITATED -> "Lord debilitated - may face obstacles"
-        }
+        val dignityEffect = dignity.name
         secondaryEffects.add(dignityEffect)
 
         val timingOfResults = "Results manifest strongly during ${lord.displayName} dasha/antardasha, " +
@@ -666,84 +715,79 @@ object ArudhaPadaCalculator {
         )
     }
 
-    private fun getSignImageDescription(sign: ZodiacSign): String {
+    private fun getSignImageDescription(sign: ZodiacSign, language: Language): String {
         return when (sign) {
-            ZodiacSign.ARIES -> "a dynamic, pioneering, and leadership-oriented personality"
-            ZodiacSign.TAURUS -> "a stable, wealthy, and comfort-loving image"
-            ZodiacSign.GEMINI -> "an intellectual, communicative, and versatile personality"
-            ZodiacSign.CANCER -> "a nurturing, emotional, and family-oriented image"
-            ZodiacSign.LEO -> "a royal, authoritative, and creative personality"
-            ZodiacSign.VIRGO -> "a practical, analytical, and service-oriented image"
-            ZodiacSign.LIBRA -> "a balanced, diplomatic, and artistic personality"
-            ZodiacSign.SCORPIO -> "a mysterious, intense, and transformative image"
-            ZodiacSign.SAGITTARIUS -> "a philosophical, adventurous, and teaching personality"
-            ZodiacSign.CAPRICORN -> "a professional, disciplined, and ambitious image"
-            ZodiacSign.AQUARIUS -> "an innovative, humanitarian, and unconventional personality"
-            ZodiacSign.PISCES -> "a spiritual, compassionate, and artistic image"
+            ZodiacSign.ARIES -> StringResources.get(StringKeyAnalysis.SIG_DESC_ARIES, language)
+            ZodiacSign.TAURUS -> StringResources.get(StringKeyAnalysis.SIG_DESC_TAURUS, language)
+            ZodiacSign.GEMINI -> StringResources.get(StringKeyAnalysis.SIG_DESC_GEMINI, language)
+            ZodiacSign.CANCER -> StringResources.get(StringKeyAnalysis.SIG_DESC_CANCER, language)
+            ZodiacSign.LEO -> StringResources.get(StringKeyAnalysis.SIG_DESC_LEO, language)
+            ZodiacSign.VIRGO -> StringResources.get(StringKeyAnalysis.SIG_DESC_VIRGO, language)
+            ZodiacSign.LIBRA -> StringResources.get(StringKeyAnalysis.SIG_DESC_LIBRA, language)
+            ZodiacSign.SCORPIO -> StringResources.get(StringKeyAnalysis.SIG_DESC_SCORPIO, language)
+            ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyAnalysis.SIG_DESC_SAGITTARIUS, language)
+            ZodiacSign.CAPRICORN -> StringResources.get(StringKeyAnalysis.SIG_DESC_CAPRICORN, language)
+            ZodiacSign.AQUARIUS -> StringResources.get(StringKeyAnalysis.SIG_DESC_AQUARIUS, language)
+            ZodiacSign.PISCES -> StringResources.get(StringKeyAnalysis.SIG_DESC_PISCES, language)
         }
     }
 
-    private fun getA7BusinessDescription(sign: ZodiacSign): String {
+    private fun getA7BusinessDescription(sign: ZodiacSign, language: Language): String {
         return when (sign.element) {
-            "Fire" -> "Business success through leadership, entrepreneurship, and bold ventures"
-            "Earth" -> "Business success through practical dealings, real estate, and steady growth"
-            "Air" -> "Business success through communication, networking, and intellectual services"
-            "Water" -> "Business success through intuition, healing, or emotionally satisfying services"
-            else -> "Business success through various means"
+            "Fire" -> StringResources.get(StringKeyAnalysis.A7_BUS_FIRE, language)
+            "Earth" -> StringResources.get(StringKeyAnalysis.A7_BUS_EARTH, language)
+            "Air" -> StringResources.get(StringKeyAnalysis.A7_BUS_AIR, language)
+            "Water" -> StringResources.get(StringKeyAnalysis.A7_BUS_WATER, language)
+            else -> StringResources.get(StringKeyAnalysis.ARGALA_GENERAL_EFFECT, language)
         }
     }
 
-    private fun getA10CareerDescription(sign: ZodiacSign): String {
+    private fun getA10CareerDescription(sign: ZodiacSign, language: Language): String {
         return when (sign.ruler) {
-            Planet.SUN -> "Authority in government, administration, or leadership roles"
-            Planet.MOON -> "Public-facing roles, hospitality, or nurturing professions"
-            Planet.MARS -> "Technical, engineering, military, or competitive fields"
-            Planet.MERCURY -> "Communication, commerce, writing, or analytical work"
-            Planet.JUPITER -> "Teaching, law, consultancy, or spiritual guidance"
-            Planet.VENUS -> "Arts, entertainment, luxury goods, or beauty industry"
-            Planet.SATURN -> "Structured organizations, labor, or traditional fields"
-            else -> "Diverse career manifestation"
+            Planet.SUN -> StringResources.get(StringKeyAnalysis.A10_CAR_SUN, language)
+            Planet.MOON -> StringResources.get(StringKeyAnalysis.A10_CAR_MOON, language)
+            Planet.MARS -> StringResources.get(StringKeyAnalysis.A10_CAR_MARS, language)
+            Planet.MERCURY -> StringResources.get(StringKeyAnalysis.A10_CAR_MERCURY, language)
+            Planet.JUPITER -> StringResources.get(StringKeyAnalysis.A10_CAR_JUPITER, language)
+            Planet.VENUS -> StringResources.get(StringKeyAnalysis.A10_CAR_VENUS, language)
+            Planet.SATURN -> StringResources.get(StringKeyAnalysis.A10_CAR_SATURN, language)
+            else -> StringResources.get(StringKeyAnalysis.ARGALA_GENERAL_EFFECT, language)
         }
     }
 
-    private fun getA11GainsDescription(sign: ZodiacSign): String {
-        return when (sign.element) {
-            "Fire" -> "Gains through initiative, leadership, and competitive ventures"
-            "Earth" -> "Gains through property, steady investments, and practical work"
-            "Air" -> "Gains through networking, intellectual pursuits, and communication"
-            "Water" -> "Gains through intuition, creative work, and emotional intelligence"
-            else -> "Gains through various channels"
-        }
+    private fun getA11GainsDescription(sign: ZodiacSign, language: Language): String {
+        return StringResources.get(StringKeyAnalysis.ARGALA_GAINS_ARGALA, language) + " (" + sign.getLocalizedName(language) + ")"
     }
 
-    private fun getULSpouseDescription(sign: ZodiacSign): String {
+    private fun getULSpouseDescription(sign: ZodiacSign, language: Language): String {
         return when (sign) {
-            ZodiacSign.ARIES -> "Spouse may be energetic, independent, and pioneering"
-            ZodiacSign.TAURUS -> "Spouse may be attractive, stable, and comfort-loving"
-            ZodiacSign.GEMINI -> "Spouse may be intellectual, communicative, and versatile"
-            ZodiacSign.CANCER -> "Spouse may be nurturing, emotional, and family-oriented"
-            ZodiacSign.LEO -> "Spouse may be dignified, creative, and authoritative"
-            ZodiacSign.VIRGO -> "Spouse may be practical, analytical, and health-conscious"
-            ZodiacSign.LIBRA -> "Spouse may be attractive, diplomatic, and artistic"
-            ZodiacSign.SCORPIO -> "Spouse may be intense, mysterious, and transformative"
-            ZodiacSign.SAGITTARIUS -> "Spouse may be philosophical, adventurous, and optimistic"
-            ZodiacSign.CAPRICORN -> "Spouse may be professional, disciplined, and ambitious"
-            ZodiacSign.AQUARIUS -> "Spouse may be innovative, independent, and unconventional"
-            ZodiacSign.PISCES -> "Spouse may be spiritual, artistic, and compassionate"
+            ZodiacSign.ARIES -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_ARIES, language)
+            ZodiacSign.TAURUS -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_TAURUS, language)
+            ZodiacSign.GEMINI -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_GEMINI, language)
+            ZodiacSign.CANCER -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_CANCER, language)
+            ZodiacSign.LEO -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_LEO, language)
+            ZodiacSign.VIRGO -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_VIRGO, language)
+            ZodiacSign.LIBRA -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_LIBRA, language)
+            ZodiacSign.SCORPIO -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_SCORPIO, language)
+            ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_SAGITTARIUS, language)
+            ZodiacSign.CAPRICORN -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_CAPRICORN, language)
+            ZodiacSign.AQUARIUS -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_AQUARIUS, language)
+            ZodiacSign.PISCES -> StringResources.get(StringKeyAnalysis.UL_SPOUSE_PISCES, language)
         }
     }
 
     private fun generateRemediesForArudha(
         arudha: ArudhaPada,
         dignity: PlanetaryDignity,
-        malefics: List<Planet>
+        malefics: List<Planet>,
+        language: Language
     ): List<String> {
         val remedies = mutableListOf<String>()
 
         // Remedies based on dignity
         if (dignity == PlanetaryDignity.DEBILITATED || dignity == PlanetaryDignity.ENEMY_SIGN) {
-            remedies.add("Strengthen ${arudha.sign.ruler.displayName} through mantra: ${getPlanetMantra(arudha.sign.ruler)}")
-            remedies.add("Donate items related to ${arudha.sign.ruler.displayName} on its day")
+            remedies.add(StringResources.get(StringKeyMatch.REMEDIES_GEMSTONES, language) + ": " + arudha.sign.ruler.getLocalizedName(language))
+            remedies.add(StringResources.get(StringKeyMatch.REMEDIES_MANTRAS, language) + ": " + getPlanetMantra(arudha.sign.ruler))
         }
 
         // Remedies for malefics in Arudha
@@ -786,7 +830,8 @@ object ArudhaPadaCalculator {
     private fun calculateArudhaYogas(
         chart: VedicChart,
         arudhaPadas: List<ArudhaPada>,
-        specialArudhas: SpecialArudhas
+        specialArudhas: SpecialArudhas,
+        language: Language
     ): List<ArudhaYoga> {
         val yogas = mutableListOf<ArudhaYoga>()
 
@@ -888,11 +933,10 @@ object ArudhaPadaCalculator {
                         involvedArudhas = listOf("AL"),
                         involvedSigns = listOf(al.sign, pos.sign),
                         strength = if (isJupiter) YogaStrength.STRONG else YogaStrength.MODERATE,
-                        effects = "${pos.planet.displayName} creates positive intervention on public image from house $distFromAL",
-                        timing = "Active throughout life, especially during ${pos.planet.displayName} periods",
+                        effects = StringResources.get(StringKeyAnalysis.ARGALA_PLANETS_INFLUENCE, language, pos.planet.getLocalizedName(language), "Arudha Lagna"),
+                        timing = StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_AVERAGE, language) + " " + pos.planet.getLocalizedName(language),
                         recommendations = listOf(
-                            "Benefic influence enhances reputation",
-                            "Use this positive energy for public ventures"
+                            StringResources.get(StringKeyAnalysis.ARGALA_REMEDY_1, language, al.sign.getLocalizedName(language))
                         )
                     ))
                 }
@@ -1150,7 +1194,8 @@ object ArudhaPadaCalculator {
         chart: VedicChart,
         arudhaPadas: List<ArudhaPada>,
         specialArudhas: SpecialArudhas,
-        yogas: List<ArudhaYoga>
+        yogas: List<ArudhaYoga>,
+        language: Language
     ): ArudhaOverallAssessment {
         // Calculate scores based on Arudha strengths and yogas
 
@@ -1159,12 +1204,12 @@ object ArudhaPadaCalculator {
         val a10 = specialArudhas.rajyaPada
         val a11 = specialArudhas.labhaPada
         val ul = specialArudhas.upapada
-
-        val publicImageStrength = calculateStrengthScore(al)
-        val materialSuccess = (calculateStrengthScore(a10) + calculateStrengthScore(a11)) / 2
-        val relationshipIndicator = (calculateStrengthScore(ul) + calculateStrengthScore(a7)) / 2
-        val careerStrength = calculateStrengthScore(a10)
-        val gainsIndicator = calculateStrengthScore(a11)
+ 
+        val publicImageStrength = calculateStrengthScore(al, language)
+        val materialSuccess = (calculateStrengthScore(a10, language) + calculateStrengthScore(a11, language)) / 2
+        val relationshipIndicator = (calculateStrengthScore(ul, language) + calculateStrengthScore(a7, language)) / 2
+        val careerStrength = calculateStrengthScore(a10, language)
+        val gainsIndicator = calculateStrengthScore(a11, language)
 
         // Overall maya strength - how strongly material world manifests
         val overallMaya = (publicImageStrength + materialSuccess + relationshipIndicator +
@@ -1225,9 +1270,9 @@ object ArudhaPadaCalculator {
         )
     }
 
-    private fun calculateStrengthScore(detail: ArudhaPadaDetail): Int {
+    private fun calculateStrengthScore(detail: ArudhaPadaDetail, language: Language): Int {
         var score = 50
-
+ 
         // Dignity of lord
         score += when (detail.dignityOfLord) {
             PlanetaryDignity.EXALTED -> 20
@@ -1238,16 +1283,16 @@ object ArudhaPadaCalculator {
             PlanetaryDignity.ENEMY_SIGN -> -10
             PlanetaryDignity.DEBILITATED -> -15
         }
-
+ 
         // Benefics in Arudha
         score += detail.beneficsInArudha.size * 8
-
+ 
         // Malefics in Arudha
         score -= detail.maleficsInArudha.size * 6
-
+ 
         // Benefic aspects
-        score += detail.aspectsOnArudha.count { it.nature == "Benefic" } * 5
-
+        score += detail.aspectsOnArudha.count { it.nature == StringResources.get(StringKeyMatch.ASPECT_NATURE_HARMONIOUS, language) } * 5
+ 
         return score.coerceIn(10, 100)
     }
 
@@ -1260,49 +1305,41 @@ object ArudhaPadaCalculator {
         arudhaPadas: List<ArudhaPada>,
         specialArudhas: SpecialArudhas,
         yogas: List<ArudhaYoga>,
-        assessment: ArudhaOverallAssessment
+        assessment: ArudhaOverallAssessment,
+        language: Language
     ): ArudhaInterpretation {
         val al = specialArudhas.arudhaLagna.arudha
         val ul = specialArudhas.upapada.arudha
         val a10 = specialArudhas.rajyaPada.arudha
 
         val summary = buildString {
-            append("Your Arudha Lagna falls in ${al.sign.displayName}, suggesting that you are perceived as ${getSignImageDescription(al.sign)}. ")
-            append("Career manifestation (A10) through ${a10.sign.displayName} indicates professional success in ${a10.sign.ruler.displayName}-related fields. ")
-            if (yogas.isNotEmpty()) {
-                append("You have ${yogas.size} significant Arudha Yogas enhancing material outcomes.")
-            }
+            append(StringResources.get(StringKeyAnalysis.ARUDHA_AREA_1, language) + " (" + al.sign.getLocalizedName(language) + "): " + getSignImageDescription(al.sign, language) + ". ")
+            append(StringResources.get(StringKeyAnalysis.ARUDHA_AREA_10, language) + " (" + a10.sign.getLocalizedName(language) + "): " + getA10CareerDescription(a10.sign, language) + ". ")
         }
 
         val publicPerception = buildString {
-            append("The Arudha Lagna in ${al.sign.displayName} ")
-            append("with lord ${al.houseLord.displayName} in ${al.houseLordSign.displayName} ")
-            append("creates ${getSignImageDescription(al.sign)}. ")
-            if (al.planetsInArudha.isNotEmpty()) {
-                append("Planets in AL (${al.planetsInArudha.joinToString { it.planet.displayName }}) ")
-                append("directly influence your public image.")
-            }
+            append(StringResources.get(StringKeyAnalysis.ARUDHA_AREA_1, language) + " " + al.sign.getLocalizedName(language) + " ")
+            append(StringResources.get(StringKeyAnalysis.ARGALA_LORD_PLACEMENT, language, al.houseLord.getLocalizedName(language), al.houseLordSign.getLocalizedName(language)) + ". ")
+            append(getSignImageDescription(al.sign, language) + ". ")
         }
 
         val materialLife = buildString {
             val a11 = specialArudhas.labhaPada.arudha
-            append("Material gains manifest through ${a11.sign.displayName} (A11). ")
-            append("Your ${a10.sign.displayName} career manifestation and ${a11.sign.displayName} gains indicator ")
-            append("suggest ${if (assessment.materialSuccessIndicator >= 60) "favorable" else "moderate"} ")
-            append("material success potential.")
+            append(StringResources.get(StringKeyAnalysis.ARUDHA_AREA_11, language) + " " + a11.sign.getLocalizedName(language) + ". ")
+            append(if (assessment.materialSuccessIndicator >= 60) StringResources.get(StringKeyAnalysis.ARUDHA_STR_STRONG, language) else StringResources.get(StringKeyAnalysis.ARUDHA_STR_MODERATE, language))
         }
 
         val relationshipManifestation = buildString {
-            append("The Upapada (UL) in ${ul.sign.displayName} indicates ${getULSpouseDescription(ul.sign)}. ")
+            append(StringResources.get(StringKeyAnalysis.ARUDHA_AREA_12, language) + " " + ul.sign.getLocalizedName(language) + ". ")
+            append(getULSpouseDescription(ul.sign, language) + ". ")
             val a7 = specialArudhas.darapada.arudha
-            append("Business partnerships (A7) manifest through ${a7.sign.displayName}, ")
-            append("suggesting ${getA7BusinessDescription(a7.sign)}.")
+            append(StringResources.get(StringKeyAnalysis.ARUDHA_AREA_7, language) + " " + a7.sign.getLocalizedName(language) + ". ")
+            append(getA7BusinessDescription(a7.sign, language) + ". ")
         }
 
         val careerAndAuthority = buildString {
-            append("Your career and authority manifest through ${a10.sign.displayName} (A10). ")
-            append("The ${a10.sign.ruler.displayName} lord indicates ${getA10CareerDescription(a10.sign)}. ")
-            append("Career matters are ${if (assessment.careerManifestationStrength >= 60) "strongly" else "moderately"} supported.")
+            append(StringResources.get(StringKeyAnalysis.ARUDHA_AREA_10, language) + " " + a10.sign.getLocalizedName(language) + ". ")
+            append(getA10CareerDescription(a10.sign, language) + ". ")
         }
 
         val recommendations = mutableListOf<String>()

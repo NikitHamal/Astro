@@ -83,10 +83,10 @@ fun ArudhaPadaScreen(
     var arudhaAnalysis by remember { mutableStateOf<ArudhaPadaAnalysis?>(null) }
 
     val tabs = listOf(
-        "Overview",
-        "All Arudhas",
-        "Yogas",
-        "Relationships"
+        stringResource(StringKeyMatch.MATCH_OVERVIEW),
+        stringResource(StringKeyAnalysis.TAB_ARUDHAS),
+        stringResource(StringKeyAnalysis.TAB_YOGAS),
+        stringResource(StringKeyAnalysis.TAB_RELATIONSHIPS)
     )
 
     // Calculate Arudha Padas
@@ -95,7 +95,7 @@ fun ArudhaPadaScreen(
         delay(300)
         try {
             arudhaAnalysis = withContext(Dispatchers.Default) {
-                ArudhaPadaCalculator.analyzeArudhaPadas(chart)
+                ArudhaPadaCalculator.analyzeArudhaPadas(chart, language)
             }
         } catch (e: Exception) {
             // Handle error silently

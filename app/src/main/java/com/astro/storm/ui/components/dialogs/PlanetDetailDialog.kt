@@ -239,8 +239,8 @@ private fun SignificationsCard(planet: Planet) {
     DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_SIGNIFICATIONS), icon = Icons.Outlined.Info) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_NATURE), significations.nature, when (significations.nature) {
-                "Benefic" -> DialogColors.AccentGreen
-                "Malefic" -> DialogColors.AccentRose
+                stringResource(StringKeyAnalysis.DIALOG_BENEFIC) -> DialogColors.AccentGreen
+                stringResource(StringKeyAnalysis.DIALOG_MALEFIC) -> DialogColors.AccentRose
                 else -> DialogColors.AccentOrange
             })
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_ELEMENT), significations.element, DialogColors.TextSecondary)

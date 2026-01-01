@@ -91,7 +91,7 @@ fun ArgalaScreen(
         delay(300)
         try {
             argalaAnalysis = withContext(Dispatchers.Default) {
-                ArgalaCalculator.analyzeArgala(chart)
+                ArgalaCalculator.analyzeArgala(chart, language)
             }
         } catch (e: Exception) {
             // Handle error silently
