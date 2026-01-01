@@ -816,28 +816,30 @@ private fun TabSelector(
     ) {
         itemsIndexed(tabs) { index, title ->
             val isSelected = selectedTab == index
-            val animatedColor by animateColorAsState(
-                targetValue = if (isSelected) AppTheme.AccentPrimary else Color.Transparent,
-                animationSpec = tween(200),
-                label = "tab_color"
-            )
-
-            Surface(
+            FilterChip(
+                selected = isSelected,
                 onClick = { onTabSelected(index) },
-                color = animatedColor.copy(alpha = if (isSelected) 0.15f else 0f),
-                shape = RoundedCornerShape(10.dp),
-                border = if (!isSelected) androidx.compose.foundation.BorderStroke(
-                    1.dp, AppTheme.BorderColor
-                ) else null
-            ) {
-                Text(
-                    title,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (isSelected) AppTheme.AccentPrimary else AppTheme.TextMuted,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
-                )
-            }
+                label = {
+                    Text(
+                        title,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
+                    selectedLabelColor = AppTheme.AccentPrimary,
+                    containerColor = AppTheme.ChipBackground,
+                    labelColor = AppTheme.TextSecondary
+                ),
+                border = FilterChipDefaults.filterChipBorder(
+                    enabled = true,
+                    selected = isSelected,
+                    borderColor = Color.Transparent,
+                    selectedBorderColor = AppTheme.AccentPrimary.copy(alpha = 0.2f)
+                ),
+                shape = RoundedCornerShape(12.dp)
+            )
         }
     }
 }

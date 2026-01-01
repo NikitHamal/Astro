@@ -42,6 +42,8 @@ import com.astro.storm.ephemeris.ShodashvargaCalculator.ShodashvargaAnalysis
 import com.astro.storm.ephemeris.ShodashvargaCalculator.StrengthGrade
 import com.astro.storm.ephemeris.ShodashvargaCalculator.VargaDignity
 import com.astro.storm.ephemeris.ShodashvargaCalculator.VargaType
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -247,32 +249,16 @@ private fun ShodashvargaTabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            val isSelected = selectedTab == index
-            FilterChip(
-                selected = isSelected,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tabs[index],
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.ChipBackground,
-                    labelColor = AppTheme.TextSecondary
-                )
-            )
-        }
+    val tabItems = remember {
+        tabs.map { TabItem(title = it, accentColor = AppTheme.AccentPrimary) }
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }
 
 // ============================================

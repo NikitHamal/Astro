@@ -42,6 +42,8 @@ import com.astro.storm.ephemeris.AshtottariDashaResult
 import com.astro.storm.ephemeris.AshtottariMahadasha
 import com.astro.storm.ephemeris.AshtottariAntardasha
 import com.astro.storm.ephemeris.PlanetRelationship
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -249,36 +251,16 @@ private fun TabSelector(
     selectedIndex: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    val language = currentLanguage()
-
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        itemsIndexed(tabs) { index, tab ->
-            val isSelected = index == selectedIndex
-            FilterChip(
-                selected = isSelected,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tab,
-                        fontSize = 13.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                )
-            )
-        }
+    val tabItems = remember {
+        tabs.map { TabItem(title = it, accentColor = AppTheme.AccentPrimary) }
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedIndex,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }
 
 @Composable

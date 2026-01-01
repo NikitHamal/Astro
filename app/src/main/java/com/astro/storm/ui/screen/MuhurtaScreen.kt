@@ -120,6 +120,8 @@ import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.MuhurtaCalculator
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -387,37 +389,16 @@ private fun MuhurtaTabs(
     tabs: List<String>,
     onTabSelected: (Int) -> Unit
 ) {
-    TabRow(
-        selectedTabIndex = selectedTab,
-        containerColor = Color.Transparent,
-        contentColor = AppTheme.AccentPrimary,
-        indicator = { tabPositions ->
-            if (selectedTab < tabPositions.size) {
-                SecondaryIndicator(
-                    modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
-                    height = 3.dp,
-                    color = AppTheme.AccentPrimary
-                )
-            }
-        },
-        divider = {
-            HorizontalDivider(thickness = 1.dp, color = AppTheme.DividerColor.copy(alpha = 0.3f))
-        }
-    ) {
-        tabs.forEachIndexed { index, title ->
-            Tab(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                text = {
-                    Text(
-                        title,
-                        fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal,
-                        color = if (selectedTab == index) AppTheme.AccentPrimary else AppTheme.TextMuted
-                    )
-                }
-            )
-        }
+    val tabItems = remember {
+        tabs.map { TabItem(title = it, accentColor = AppTheme.AccentPrimary) }
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }
 
 @Composable

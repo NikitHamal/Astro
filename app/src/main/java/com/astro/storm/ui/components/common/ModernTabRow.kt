@@ -1,14 +1,13 @@
 package com.astro.storm.ui.components.common
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,14 +20,12 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,208 +55,99 @@ data class TabItem(
 )
 
 /**
- * Modern pill-style tab row with smooth animations
+ * Modern chip-based tab row with smooth animations.
+ * Replaces the old pill-container style with individual chips matching the Shadbala screen style.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModernPillTabRow(
     tabs: List<TabItem>,
     selectedIndex: Int,
     onTabSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = AppTheme.CardBackground,
-    contentPadding: Dp = 4.dp
+    containerColor: Color = Color.Transparent, // Ignored in new style
+    contentPadding: Dp = 0.dp // Ignored in new style
 ) {
     val listState = rememberLazyListState()
 
     LaunchedEffect(selectedIndex) {
-        listState.animateScrollToItem(
-            index = selectedIndex,
-            scrollOffset = -100
-        )
-    }
-
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        color = containerColor,
-        shape = RoundedCornerShape(16.dp),
-        shadowElevation = 2.dp
-    ) {
-        LazyRow(
-            state = listState,
-            modifier = Modifier.padding(contentPadding),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            itemsIndexed(tabs) { index, tab ->
-                PillTab(
-                    tab = tab,
-                    isSelected = index == selectedIndex,
-                    onClick = { onTabSelected(index) }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun PillTab(
-    tab: TabItem,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    val backgroundColor by animateColorAsState(
-        targetValue = if (isSelected) tab.accentColor.copy(alpha = 0.15f)
-        else Color.Transparent,
-        animationSpec = tween(200),
-        label = "tabBackgroundColor"
-    )
-
-    val textColor by animateColorAsState(
-        targetValue = if (isSelected) tab.accentColor else AppTheme.TextMuted,
-        animationSpec = tween(200),
-        label = "tabTextColor"
-    )
-
-    val elevation by animateDpAsState(
-        targetValue = if (isSelected) 2.dp else 0.dp,
-        animationSpec = tween(200),
-        label = "tabElevation"
-    )
-
-    Surface(
-        modifier = Modifier
-            .clip(RoundedCornerShape(12.dp))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(color = tab.accentColor),
-                onClick = onClick
-            ),
-        color = backgroundColor,
-        shape = RoundedCornerShape(12.dp),
-        shadowElevation = elevation
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            tab.icon?.let { icon ->
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = textColor,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-            }
-
-            Text(
-                text = tab.title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
-                color = textColor,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+        if (selectedIndex >= 0 && selectedIndex < tabs.size) {
+            listState.animateScrollToItem(
+                index = selectedIndex,
+                scrollOffset = -100
             )
-
-            tab.badge?.let { badge ->
-                Spacer(modifier = Modifier.width(8.dp))
-                Badge(
-                    text = badge,
-                    color = if (isSelected) tab.accentColor else AppTheme.TextMuted
-                )
-            }
         }
     }
-}
 
-@Composable
-private fun Badge(
-    text: String,
-    color: Color,
-    modifier: Modifier = Modifier
-) {
-    Surface(
-        modifier = modifier,
-        color = color.copy(alpha = 0.2f),
-        shape = RoundedCornerShape(6.dp)
+    LazyRow(
+        state = listState,
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 0.dp)
     ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            color = color,
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-        )
+        itemsIndexed(tabs) { index, tab ->
+            val isSelected = index == selectedIndex
+            FilterChip(
+                selected = isSelected,
+                onClick = { onTabSelected(index) },
+                label = {
+                    Text(
+                        text = tab.title,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+                    )
+                },
+                leadingIcon = tab.icon?.let { icon ->
+                    {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = tab.accentColor.copy(alpha = 0.15f),
+                    selectedLabelColor = tab.accentColor,
+                    selectedLeadingIconColor = tab.accentColor,
+                    containerColor = AppTheme.ChipBackground,
+                    labelColor = AppTheme.TextSecondary,
+                    leadingIconColor = AppTheme.TextMuted
+                ),
+                border = FilterChipDefaults.filterChipBorder(
+                    enabled = true,
+                    selected = isSelected,
+                    borderColor = Color.Transparent,
+                    selectedBorderColor = tab.accentColor.copy(alpha = 0.2f),
+                    borderWidth = 1.dp,
+                    selectedBorderWidth = 1.dp
+                ),
+                shape = RoundedCornerShape(12.dp)
+            )
+        }
     }
 }
 
 /**
- * Modern scrollable tab row with indicator
+ * Modern scrollable tab row using chip style.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModernScrollableTabRow(
     tabs: List<TabItem>,
     selectedIndex: Int,
     onTabSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = AppTheme.CardBackground,
-    indicatorColor: Color = AppTheme.AccentPrimary
+    containerColor: Color = Color.Transparent, // Ignored
+    indicatorColor: Color = AppTheme.AccentPrimary // Ignored
 ) {
-    ScrollableTabRow(
-        selectedTabIndex = selectedIndex,
-        modifier = modifier,
-        containerColor = containerColor,
-        contentColor = AppTheme.TextPrimary,
-        edgePadding = 16.dp,
-        indicator = { tabPositions ->
-            if (selectedIndex < tabPositions.size) {
-                Box(
-                    Modifier
-                        .tabIndicatorOffset(tabPositions[selectedIndex])
-                        .height(3.dp)
-                        .padding(horizontal = 24.dp)
-                        .clip(RoundedCornerShape(topStart = 3.dp, topEnd = 3.dp))
-                        .background(indicatorColor)
-                )
-            }
-        },
-        divider = {}
-    ) {
-        tabs.forEachIndexed { index, tab ->
-            val selected = index == selectedIndex
-            val textColor by animateColorAsState(
-                targetValue = if (selected) indicatorColor else AppTheme.TextMuted,
-                animationSpec = tween(200),
-                label = "tabTextColor"
-            )
-
-            Tab(
-                selected = selected,
-                onClick = { onTabSelected(index) },
-                modifier = Modifier.padding(vertical = 4.dp)
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    tab.icon?.let { icon ->
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = null,
-                            tint = textColor,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                    }
-                    Text(
-                        text = tab.title,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
-                        color = textColor
-                    )
-                }
-            }
-        }
-    }
+    // Use the same implementation as ModernPillTabRow as it's already scrollable
+    ModernPillTabRow(
+        tabs = tabs,
+        selectedIndex = selectedIndex,
+        onTabSelected = onTabSelected,
+        modifier = modifier
+    )
 }
 
 /**

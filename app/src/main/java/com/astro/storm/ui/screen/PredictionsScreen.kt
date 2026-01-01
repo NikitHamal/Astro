@@ -45,6 +45,8 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ephemeris.HoroscopeCalculator
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -154,28 +156,20 @@ fun PredictionsScreen(
                         .padding(paddingValues)
                 ) {
                     // Tab Row
-                    ScrollableTabRow(
-                        selectedTabIndex = selectedTab.ordinal,
-                        containerColor = Color.Transparent,
-                        contentColor = AppTheme.AccentPrimary,
-                        edgePadding = 16.dp,
-                        divider = { HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.5f)) }
-                    ) {
-                        PredictionsTab.entries.forEach { tab ->
-                            Tab(
-                                selected = selectedTab == tab,
-                                onClick = { selectedTab = tab },
-                                text = {
-                                    Text(
-                                        tab.getLocalizedTitle(language),
-                                        fontWeight = if (selectedTab == tab) FontWeight.SemiBold else FontWeight.Normal,
-                                        color = if (selectedTab == tab) AppTheme.AccentPrimary else AppTheme.TextMuted,
-                                        fontSize = 14.sp
-                                    )
-                                }
-                            )
+                    val tabItems = remember(language) {
+                        PredictionsTab.entries.map { tab ->
+                            TabItem(title = tab.getLocalizedTitle(language), accentColor = AppTheme.AccentPrimary)
                         }
                     }
+                    
+                    ModernPillTabRow(
+                        tabs = tabItems,
+                        selectedIndex = selectedTab.ordinal,
+                        onTabSelected = { selectedTab = PredictionsTab.entries[it] },
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                    
+                    HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.5f))
 
                     // Tab Content
                     predictionData?.let { data ->

@@ -282,16 +282,16 @@ private fun AnalysisTabBar(
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    containerColor = AppTheme.CardBackground,
+                    containerColor = AppTheme.ChipBackground,
                     labelColor = AppTheme.TextSecondary,
                     iconColor = AppTheme.TextMuted,
-                    selectedContainerColor = AppTheme.AccentPrimary,
-                    selectedLabelColor = AppTheme.ButtonText,
-                    selectedLeadingIconColor = AppTheme.ButtonText
+                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
+                    selectedLabelColor = AppTheme.AccentPrimary,
+                    selectedLeadingIconColor = AppTheme.AccentPrimary
                 ),
                 border = FilterChipDefaults.filterChipBorder(
-                    borderColor = AppTheme.BorderColor,
-                    selectedBorderColor = AppTheme.AccentPrimary,
+                    borderColor = Color.Transparent,
+                    selectedBorderColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
                     enabled = true,
                     selected = isSelected
                 )
