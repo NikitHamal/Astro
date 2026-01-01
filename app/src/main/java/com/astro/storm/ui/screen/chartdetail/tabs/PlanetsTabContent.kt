@@ -147,7 +147,8 @@ private data class PlanetCardState(
 fun PlanetsTabContent(
     chart: VedicChart,
     onPlanetClick: (PlanetPosition) -> Unit,
-    onNakshatraClick: (Nakshatra, Int) -> Unit = { _, _ -> }
+    onNakshatraClick: (Nakshatra, Int) -> Unit = { _, _ -> },
+    onShadbalaClick: (() -> Unit)? = null
 ) {
     val planetConditions = remember(chart) {
         RetrogradeCombustionCalculator.analyzePlanetaryConditions(chart)
@@ -179,7 +180,10 @@ fun PlanetsTabContent(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item(key = "conditions_summary") {
-            PlanetaryConditionsSummary(conditions = planetConditions)
+            PlanetaryConditionsSummary(
+                conditions = planetConditions,
+                onClick = onShadbalaClick
+            )
         }
 
         items(
@@ -202,19 +206,37 @@ fun PlanetsTabContent(
 
 @Composable
 private fun PlanetaryConditionsSummary(
-    conditions: RetrogradeCombustionCalculator.PlanetaryConditionAnalysis
+    conditions: RetrogradeCombustionCalculator.PlanetaryConditionAnalysis,
+    onClick: (() -> Unit)? = null
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
+        onClick = onClick ?: {},
+        enabled = onClick != null,
         shape = RoundedCornerShape(16.dp),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            SectionHeader(
-                icon = Icons.Outlined.Info,
-                title = stringResource(StringKeyAnalysis.PLANETS_CONDITIONS),
-                iconTint = ChartDetailColors.AccentPurple
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SectionHeader(
+                    icon = Icons.Outlined.Info,
+                    title = stringResource(StringKeyAnalysis.PLANETS_CONDITIONS),
+                    iconTint = ChartDetailColors.AccentPurple
+                )
+                
+                if (onClick != null) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        contentDescription = null,
+                        tint = ChartDetailColors.TextMuted,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.height(12.dp))
 
