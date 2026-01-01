@@ -1017,6 +1017,8 @@ private enum class Quality {
     EXCELLENT, GOOD, NEUTRAL, CHALLENGING, INAUSPICIOUS
 }
 
+
+@Composable
 private fun getQualityColor(quality: Quality): Color {
     return when (quality) {
         Quality.EXCELLENT -> ChartDetailColors.SuccessColor
@@ -1027,6 +1029,7 @@ private fun getQualityColor(quality: Quality): Color {
     }
 }
 
+@Composable
 private fun getGanaColor(gana: String): Color {
     return when (gana) {
         "Deva" -> ChartDetailColors.AccentGold
