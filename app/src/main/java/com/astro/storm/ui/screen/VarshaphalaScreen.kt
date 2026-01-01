@@ -52,6 +52,8 @@ import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.VarshaphalaCalculator
 import com.astro.storm.ephemeris.VarshaphalaCalculator.*
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -182,40 +184,17 @@ fun VarshaphalaScreen(
                 return@Scaffold
             }
 
-            ScrollableTabRow(
-                selectedTabIndex = selectedTab,
-                containerColor = Color.Transparent,
-                contentColor = AppTheme.AccentPrimary,
-                divider = { HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f)) },
-                edgePadding = 8.dp,
-                indicator = @Composable { tabPositions ->
-                    if (selectedTab < tabPositions.size) {
-                        TabRowDefaults.SecondaryIndicator(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentSize(Alignment.BottomStart)
-                                .offset(x = tabPositions[selectedTab].left)
-                                .width(tabPositions[selectedTab].width),
-                            color = AppTheme.AccentPrimary,
-                            height = 3.dp
-                        )
-                    }
-                }
-            ) {
-                tabs.forEachIndexed { index, title ->
-                    Tab(
-                        selected = selectedTab == index,
-                        onClick = { selectedTab = index },
-                        text = {
-                            Text(
-                                title,
-                                fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal,
-                                color = if (selectedTab == index) AppTheme.AccentPrimary else AppTheme.TextMuted
-                            )
-                        }
-                    )
-                }
+            val accentPrimary = AppTheme.AccentPrimary
+            val pillTabs = remember(accentPrimary, tabs) {
+                tabs.map { title -> TabItem(title = title, accentColor = accentPrimary) }
             }
+
+            ModernPillTabRow(
+                tabs = pillTabs,
+                selectedIndex = selectedTab,
+                onTabSelected = { selectedTab = it },
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+            )
 
             varshaphalaResult?.let { result ->
                 AnimatedContent(

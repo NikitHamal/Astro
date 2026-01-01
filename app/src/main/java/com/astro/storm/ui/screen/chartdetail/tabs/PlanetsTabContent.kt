@@ -149,7 +149,7 @@ fun PlanetsTabContent(
     chart: VedicChart,
     onPlanetClick: (PlanetPosition) -> Unit,
     onNakshatraClick: (Nakshatra, Int) -> Unit = { _, _ -> },
-    onShadbalaClick: () -> Unit
+    onShadbalaClick: (() -> Unit)? = null
 ) {
     val planetConditions = remember(chart) {
         RetrogradeCombustionCalculator.analyzePlanetaryConditions(chart)
@@ -184,11 +184,13 @@ fun PlanetsTabContent(
             PlanetaryConditionsSummary(conditions = planetConditions)
         }
 
-        item(key = "shadbala_overview") {
-            ShadbalaOverviewCard(
-                shadbala = shadbala,
-                onClick = onShadbalaClick
-            )
+        if (onShadbalaClick != null) {
+            item(key = "shadbala_overview") {
+                ShadbalaOverviewCard(
+                    shadbala = shadbala,
+                    onClick = onShadbalaClick
+                )
+            }
         }
 
         items(

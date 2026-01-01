@@ -244,7 +244,9 @@ private fun TransitsTopBar(
                         Text(
                             text = stringResource(StringKey.TRANSIT_CURRENT_MOVEMENTS, chartName),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }

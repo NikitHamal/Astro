@@ -234,7 +234,9 @@ private fun YogasTopBar(
                         Text(
                             text = "$totalYogas yogas found - $chartName",
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }

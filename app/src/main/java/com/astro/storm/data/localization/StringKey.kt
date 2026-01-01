@@ -994,6 +994,46 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     // ============================================
     // ERROR STRINGS
     // ============================================
-    ERROR_CALCULATION("Calculation Error", "गणना त्रुटि");
+    ERROR_CALCULATION("Calculation Error", "गणना त्रुटि"),
+
+    // ============================================
+    // HOME TAB CATEGORIES
+    // ============================================
+    HOME_QUICK_ACCESS("Quick Access", "द्रुत पहुँच"),
+
+    CATEGORY_CORE_ANALYSIS("Core Analysis", "मूल विश्लेषण"),
+    CATEGORY_CORE_ANALYSIS_DESC("Charts, planets & fundamental analysis", "चार्ट, ग्रह र आधारभूत विश्लेषण"),
+
+    CATEGORY_YOGAS("Yogas & Combinations", "योग र संयोजन"),
+    CATEGORY_YOGAS_DESC("Planetary yogas and special patterns", "ग्रह योग र विशेष ढाँचाहरू"),
+
+    CATEGORY_DASHAS("Dasha Systems", "दशा प्रणाली"),
+    CATEGORY_DASHAS_DESC("Planetary periods and timing", "ग्रह अवधि र समय"),
+
+    CATEGORY_TRANSITS("Transits & Gochara", "गोचर र पारगमन"),
+    CATEGORY_TRANSITS_DESC("Current planetary movements", "हालको ग्रह गतिविधि"),
+
+    CATEGORY_DIVISIONAL("Divisional & Strength", "वर्ग र बल"),
+    CATEGORY_DIVISIONAL_DESC("Divisional charts and strength analysis", "वर्ग चार्ट र बल विश्लेषण"),
+
+    CATEGORY_PREDICTIONS("Predictions & Timing", "भविष्यवाणी र समय"),
+    CATEGORY_PREDICTIONS_DESC("Forecasts and auspicious timing", "पूर्वानुमान र शुभ समय"),
+
+    CATEGORY_COMPATIBILITY("Compatibility", "अनुकूलता"),
+    CATEGORY_COMPATIBILITY_DESC("Matchmaking and chart comparison", "कुण्डली मिलान र तुलना"),
+
+    CATEGORY_REMEDIES("Remedies & Guidance", "उपाय र मार्गदर्शन"),
+    CATEGORY_REMEDIES_DESC("Remedial measures and advice", "उपचारात्मक उपाय र सल्लाह"),
+
+    // ============================================
+    // DASHA RELATED
+    // ============================================
+    DASHA_CURRENT("Dasha", "दशा"),
+
+    // ============================================
+    // BUTTON ACTIONS
+    // ============================================
+    BTN_COLLAPSE("Collapse", "संक्षिप्त"),
+    BTN_EXPAND("Expand", "विस्तार");
 
 }

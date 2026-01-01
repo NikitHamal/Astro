@@ -251,7 +251,9 @@ private fun PanchangaTopBar(
                     Text(
                         text = stringResource(StringKeyDosha.PANCHANGA_LIMBS_TITLE),
                         style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextMuted
+                        color = AppTheme.TextMuted,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             },

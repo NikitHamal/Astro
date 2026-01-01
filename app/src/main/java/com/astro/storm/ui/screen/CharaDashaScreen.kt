@@ -53,9 +53,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -97,6 +95,8 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.ephemeris.CharaDashaCalculator
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -195,80 +195,28 @@ fun CharaDashaScreen(
                         }
                     )
                     result != null -> {
+                        // Get tab titles outside remember
+                        val currentTabTitle = stringResource(StringKeyDosha.CHARA_DASHA_CURRENT)
+                        val karakasTabTitle = stringResource(StringKeyDosha.KARAKA_TITLE)
+                        val timelineTabTitle = stringResource(StringKeyDosha.CHARA_DASHA_TIMELINE)
+                        val accentPrimary = AppTheme.AccentPrimary
+
+                        val tabs = remember(accentPrimary, currentTabTitle, karakasTabTitle, timelineTabTitle) {
+                            listOf(
+                                TabItem(title = currentTabTitle, accentColor = accentPrimary),
+                                TabItem(title = karakasTabTitle, accentColor = accentPrimary),
+                                TabItem(title = timelineTabTitle, accentColor = accentPrimary)
+                            )
+                        }
+
                         Column(modifier = Modifier.fillMaxSize()) {
                             // Tabs
-                            ScrollableTabRow(
-                                selectedTabIndex = selectedTabIndex,
-                                containerColor = AppTheme.CardBackground,
-                                contentColor = AppTheme.TextPrimary,
-                                edgePadding = 16.dp,
-                                indicator = {},
-                                divider = {}
-                            ) {
-                                Tab(
-                                    selected = selectedTabIndex == 0,
-                                    onClick = { selectedTabIndex = 0 },
-                                    modifier = Modifier
-                                        .padding(horizontal = 4.dp, vertical = 8.dp)
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .background(
-                                            if (selectedTabIndex == 0) AppTheme.AccentPrimary.copy(alpha = 0.15f)
-                                            else Color.Transparent
-                                        )
-                                ) {
-                                    Text(
-                                        text = stringResource(StringKeyDosha.CHARA_DASHA_CURRENT),
-                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                        color = if (selectedTabIndex == 0) AppTheme.AccentPrimary
-                                        else AppTheme.TextMuted,
-                                        fontWeight = if (selectedTabIndex == 0) FontWeight.SemiBold
-                                        else FontWeight.Normal,
-                                        fontSize = 14.sp
-                                    )
-                                }
-                                Tab(
-                                    selected = selectedTabIndex == 1,
-                                    onClick = { selectedTabIndex = 1 },
-                                    modifier = Modifier
-                                        .padding(horizontal = 4.dp, vertical = 8.dp)
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .background(
-                                            if (selectedTabIndex == 1) AppTheme.AccentPrimary.copy(alpha = 0.15f)
-                                            else Color.Transparent
-                                        )
-                                ) {
-                                    Text(
-                                        text = stringResource(StringKeyDosha.KARAKA_TITLE),
-                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                        color = if (selectedTabIndex == 1) AppTheme.AccentPrimary
-                                        else AppTheme.TextMuted,
-                                        fontWeight = if (selectedTabIndex == 1) FontWeight.SemiBold
-                                        else FontWeight.Normal,
-                                        fontSize = 14.sp
-                                    )
-                                }
-                                Tab(
-                                    selected = selectedTabIndex == 2,
-                                    onClick = { selectedTabIndex = 2 },
-                                    modifier = Modifier
-                                        .padding(horizontal = 4.dp, vertical = 8.dp)
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .background(
-                                            if (selectedTabIndex == 2) AppTheme.AccentPrimary.copy(alpha = 0.15f)
-                                            else Color.Transparent
-                                        )
-                                ) {
-                                    Text(
-                                        text = stringResource(StringKeyDosha.CHARA_DASHA_TIMELINE),
-                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                        color = if (selectedTabIndex == 2) AppTheme.AccentPrimary
-                                        else AppTheme.TextMuted,
-                                        fontWeight = if (selectedTabIndex == 2) FontWeight.SemiBold
-                                        else FontWeight.Normal,
-                                        fontSize = 14.sp
-                                    )
-                                }
-                            }
+                            ModernPillTabRow(
+                                tabs = tabs,
+                                selectedIndex = selectedTabIndex,
+                                onTabSelected = { selectedTabIndex = it },
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                            )
 
                             // Tab content
                             when (selectedTabIndex) {

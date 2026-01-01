@@ -50,42 +50,11 @@ import com.astro.storm.ephemeris.PlanetaryShadbala
 import com.astro.storm.ephemeris.RetrogradeCombustionCalculator
 import com.astro.storm.ephemeris.ShadbalaCalculator
 import com.astro.storm.ui.chart.ChartRenderer
+import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
-
-// Color palette for dialogs
-private val DialogBackground = Color(0xFF1A1A1A)
-private val DialogSurface = Color(0xFF252525)
-private val DialogSurfaceElevated = Color(0xFF2D2D2D)
-private val AccentGold = Color(0xFFD4AF37)
-private val AccentTeal = Color(0xFF4DB6AC)
-private val AccentPurple = Color(0xFF9575CD)
-private val AccentRose = Color(0xFFE57373)
-private val AccentBlue = Color(0xFF64B5F6)
-private val AccentGreen = Color(0xFF81C784)
-private val AccentOrange = Color(0xFFFFB74D)
-private val TextPrimary = Color(0xFFF5F5F5)
-private val TextSecondary = Color(0xFFB0B0B0)
-private val TextMuted = Color(0xFF757575)
-private val DividerColor = Color(0xFF333333)
-
-// Planet colors (including outer planets for complete coverage)
-private val planetColors = mapOf(
-    Planet.SUN to Color(0xFFD2691E),
-    Planet.MOON to Color(0xFFDC143C),
-    Planet.MARS to Color(0xFFDC143C),
-    Planet.MERCURY to Color(0xFF228B22),
-    Planet.JUPITER to Color(0xFFDAA520),
-    Planet.VENUS to Color(0xFF9370DB),
-    Planet.SATURN to Color(0xFF4169E1),
-    Planet.RAHU to Color(0xFF8B0000),
-    Planet.KETU to Color(0xFF8B0000),
-    Planet.URANUS to Color(0xFF20B2AA),
-    Planet.NEPTUNE to Color(0xFF4682B4),
-    Planet.PLUTO to Color(0xFF800080)
-)
 
 /**
  * Full-screen chart dialog with zoom, pan, and download functionality
@@ -120,7 +89,7 @@ fun FullScreenChartDialog(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DialogBackground)
+                .background(AppTheme.DialogBackground)
         ) {
             // Chart canvas with zoom/pan
             Box(
@@ -172,7 +141,7 @@ fun FullScreenChartDialog(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(DialogBackground.copy(alpha = 0.9f))
+                    .background(AppTheme.DialogBackground.copy(alpha = 0.9f))
                     .padding(16.dp)
                     .align(Alignment.TopCenter),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -182,13 +151,13 @@ fun FullScreenChartDialog(
                     text = chartTitle,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = AccentGold
+                    color = AppTheme.AccentGold
                 )
                 IconButton(onClick = onDismiss) {
                     Icon(
                         Icons.Default.Close,
                         contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE),
-                        tint = TextPrimary
+                        tint = AppTheme.TextPrimary
                     )
                 }
             }
@@ -197,7 +166,7 @@ fun FullScreenChartDialog(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(DialogBackground.copy(alpha = 0.9f))
+                    .background(AppTheme.DialogBackground.copy(alpha = 0.9f))
                     .padding(16.dp)
                     .align(Alignment.BottomCenter),
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -277,13 +246,13 @@ fun FullScreenChartDialog(
             ) {
                 Surface(
                     shape = RoundedCornerShape(8.dp),
-                    color = DialogSurface.copy(alpha = 0.8f)
+                    color = AppTheme.CardBackground.copy(alpha = 0.8f)
                 ) {
                     Text(
                         text = "${(scale * 100).toInt()}%",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         fontSize = 14.sp,
-                        color = TextSecondary
+                        color = AppTheme.TextSecondary
                     )
                 }
             }
@@ -308,14 +277,14 @@ private fun ActionButton(
         Icon(
             icon,
             contentDescription = label,
-            tint = if (enabled) AccentGold else TextMuted,
+            tint = if (enabled) AppTheme.AccentGold else AppTheme.TextMuted,
             modifier = Modifier.size(28.dp)
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
             fontSize = 12.sp,
-            color = if (enabled) TextSecondary else TextMuted
+            color = if (enabled) AppTheme.TextSecondary else AppTheme.TextMuted
         )
     }
 }
@@ -420,7 +389,7 @@ fun PlanetDetailDialog(
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.9f),
             shape = RoundedCornerShape(20.dp),
-            color = DialogBackground
+            color = AppTheme.DialogBackground
         ) {
             Column {
                 // Header
@@ -475,7 +444,7 @@ private fun PlanetDialogHeader(
     val language = LocalLanguage.current
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = DialogSurface
+        color = AppTheme.CardBackground
     ) {
         Row(
             modifier = Modifier
@@ -489,7 +458,7 @@ private fun PlanetDialogHeader(
                     modifier = Modifier
                         .size(48.dp)
                         .background(
-                            planetColors[planetPosition.planet] ?: AccentGold,
+                            AppTheme.getPlanetColor(planetPosition.planet),
                             CircleShape
                         ),
                     contentAlignment = Alignment.Center
@@ -507,17 +476,17 @@ private fun PlanetDialogHeader(
                         text = planetPosition.planet.getLocalizedName(language),
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary
+                        color = AppTheme.TextPrimary
                     )
                     Text(
                         text = "${planetPosition.sign.getLocalizedName(language)} • ${stringResource(StringKeyAnalysis.HOUSE)} ${planetPosition.house}",
                         fontSize = 14.sp,
-                        color = TextSecondary
+                        color = AppTheme.TextSecondary
                     )
                 }
             }
             IconButton(onClick = onDismiss) {
-                Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = TextPrimary)
+                Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
             }
         }
     }
@@ -528,14 +497,14 @@ private fun PlanetPositionCard(position: PlanetPosition) {
     val language = LocalLanguage.current
     DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_POSITION_DETAILS), icon = Icons.Outlined.LocationOn) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), position.sign.getLocalizedName(language), AccentTeal)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_DEGREE), formatDegree(position.longitude), TextPrimary)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE), "${stringResource(StringKeyAnalysis.HOUSE)} ${position.house}", AccentGold)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(language)} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${position.nakshatraPada})", AccentPurple)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.getLocalizedName(language), TextSecondary)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_DEITY), position.nakshatra.deity, TextSecondary)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), position.sign.getLocalizedName(language), AppTheme.AccentTeal)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_DEGREE), formatDegree(position.longitude), AppTheme.TextPrimary)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE), "${stringResource(StringKeyAnalysis.HOUSE)} ${position.house}", AppTheme.AccentGold)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(language)} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${position.nakshatraPada})", AppTheme.InfoColor)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.getLocalizedName(language), AppTheme.TextSecondary)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_DEITY), position.nakshatra.deity, AppTheme.TextSecondary)
             if (position.isRetrograde) {
-                DetailRow(stringResource(StringKeyAnalysis.DIALOG_MOTION), stringResource(StringKeyAnalysis.DIALOG_RETROGRADE), AccentOrange)
+                DetailRow(stringResource(StringKeyAnalysis.DIALOG_MOTION), stringResource(StringKeyAnalysis.DIALOG_RETROGRADE), AppTheme.WarningColor)
             }
         }
     }
@@ -557,16 +526,16 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
                         text = stringResource(StringKeyAnalysis.DIALOG_OVERALL, String.format("%.2f", shadbala.totalRupas), String.format("%.2f", shadbala.requiredRupas)),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = TextPrimary
+                        color = AppTheme.TextPrimary
                     )
                     Text(
                         text = shadbala.strengthRating.getLocalizedName(language),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = when {
-                            shadbala.percentageOfRequired >= 100 -> AccentGreen
-                            shadbala.percentageOfRequired >= 85 -> AccentOrange
-                            else -> AccentRose
+                            shadbala.percentageOfRequired >= 100 -> AppTheme.SuccessColor
+                            shadbala.percentageOfRequired >= 85 -> AppTheme.WarningColor
+                            else -> AppTheme.ErrorColor
                         }
                     )
                 }
@@ -578,24 +547,24 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
                         .height(8.dp)
                         .clip(RoundedCornerShape(4.dp)),
                     color = when {
-                        shadbala.percentageOfRequired >= 100 -> AccentGreen
-                        shadbala.percentageOfRequired >= 85 -> AccentOrange
-                        else -> AccentRose
+                        shadbala.percentageOfRequired >= 100 -> AppTheme.SuccessColor
+                        shadbala.percentageOfRequired >= 85 -> AppTheme.WarningColor
+                        else -> AppTheme.ErrorColor
                     },
-                    trackColor = DividerColor
+                    trackColor = AppTheme.DividerColor
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = stringResource(StringKeyAnalysis.DIALOG_PERCENT_OF_REQUIRED, String.format("%.1f", shadbala.percentageOfRequired)),
                     fontSize = 12.sp,
-                    color = TextMuted
+                    color = AppTheme.TextMuted
                 )
             }
 
-            HorizontalDivider(color = DividerColor)
+            HorizontalDivider(color = AppTheme.DividerColor)
 
             // Breakdown
-            Text(stringResource(StringKeyAnalysis.DIALOG_STRENGTH_BREAKDOWN), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
+            Text(stringResource(StringKeyAnalysis.DIALOG_STRENGTH_BREAKDOWN), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = AppTheme.TextSecondary)
 
             StrengthRow(stringResource(StringKeyAnalysis.DIALOG_STHANA_BALA), shadbala.sthanaBala.total, 180.0)
             StrengthRow(stringResource(StringKeyAnalysis.DIALOG_DIG_BALA), shadbala.digBala, 60.0)
@@ -614,7 +583,7 @@ private fun StrengthRow(label: String, value: Double, maxValue: Double) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = label, fontSize = 13.sp, color = TextSecondary, modifier = Modifier.weight(1f))
+        Text(text = label, fontSize = 13.sp, color = AppTheme.TextSecondary, modifier = Modifier.weight(1f))
         Row(verticalAlignment = Alignment.CenterVertically) {
             LinearProgressIndicator(
                 progress = { (value / maxValue).coerceIn(0.0, 1.0).toFloat() },
@@ -622,15 +591,15 @@ private fun StrengthRow(label: String, value: Double, maxValue: Double) {
                     .width(60.dp)
                     .height(4.dp)
                     .clip(RoundedCornerShape(2.dp)),
-                color = AccentTeal,
-                trackColor = DividerColor
+                color = AppTheme.AccentTeal,
+                trackColor = AppTheme.DividerColor
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = String.format("%.1f", value),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
-                color = TextPrimary,
+                color = AppTheme.TextPrimary,
                 modifier = Modifier.width(40.dp),
                 textAlign = TextAlign.End
             )
@@ -646,35 +615,35 @@ private fun SignificationsCard(planet: Planet) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             // Nature
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_NATURE), significations.nature, when (significations.nature) {
-                "Benefic" -> AccentGreen
-                "Malefic" -> AccentRose
-                else -> AccentOrange
+                "Benefic" -> AppTheme.SuccessColor
+                "Malefic" -> AppTheme.ErrorColor
+                else -> AppTheme.WarningColor
             })
 
             // Element
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_ELEMENT), significations.element, TextSecondary)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_ELEMENT), significations.element, AppTheme.TextSecondary)
 
             // Represents
-            Text(stringResource(StringKeyAnalysis.DIALOG_REPRESENTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
+            Text(stringResource(StringKeyAnalysis.DIALOG_REPRESENTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = AppTheme.TextSecondary)
             significations.represents.forEach { item ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
                             .size(6.dp)
-                            .background(AccentGold, CircleShape)
+                            .background(AppTheme.AccentGold, CircleShape)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = item, fontSize = 13.sp, color = TextPrimary)
+                    Text(text = item, fontSize = 13.sp, color = AppTheme.TextPrimary)
                 }
             }
 
             // Body Parts
-            Text(stringResource(StringKeyAnalysis.DIALOG_BODY_PARTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
-            Text(text = significations.bodyParts, fontSize = 13.sp, color = TextPrimary)
+            Text(stringResource(StringKeyAnalysis.DIALOG_BODY_PARTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = AppTheme.TextSecondary)
+            Text(text = significations.bodyParts, fontSize = 13.sp, color = AppTheme.TextPrimary)
 
             // Professions
-            Text(stringResource(StringKeyAnalysis.DIALOG_PROFESSIONS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
-            Text(text = significations.professions, fontSize = 13.sp, color = TextPrimary)
+            Text(stringResource(StringKeyAnalysis.DIALOG_PROFESSIONS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = AppTheme.TextSecondary)
+            Text(text = significations.professions, fontSize = 13.sp, color = AppTheme.TextPrimary)
         }
     }
 }
@@ -689,18 +658,18 @@ private fun HousePlacementCard(position: PlanetPosition) {
                 text = interpretation.houseName,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = AccentGold
+                color = AppTheme.AccentGold
             )
             Text(
                 text = interpretation.houseSignification,
                 fontSize = 13.sp,
-                color = TextSecondary
+                color = AppTheme.TextSecondary
             )
-            HorizontalDivider(color = DividerColor)
+            HorizontalDivider(color = AppTheme.DividerColor)
             Text(
                 text = interpretation.interpretation,
                 fontSize = 14.sp,
-                color = TextPrimary,
+                color = AppTheme.TextPrimary,
                 lineHeight = 22.sp
             )
         }
@@ -730,7 +699,7 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
                 StatusChip(
                     label = stringResource(StringKeyAnalysis.DIALOG_MOTION),
                     value = stringResource(StringKeyAnalysis.DIALOG_RETROGRADE),
-                    color = AccentOrange
+                    color = AppTheme.WarningColor
                 )
             }
 
@@ -740,7 +709,7 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
                     StatusChip(
                         label = stringResource(StringKeyAnalysis.DIALOG_COMBUSTION),
                         value = cond.combustionStatus.getLocalizedName(language),
-                        color = AccentRose
+                        color = AppTheme.ErrorColor
                     )
                 }
 
@@ -749,7 +718,7 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
                     StatusChip(
                         label = stringResource(StringKeyAnalysis.DIALOG_PLANETARY_WAR),
                         value = stringResource(StringKeyAnalysis.DIALOG_AT_WAR_WITH, cond.warData?.loser?.getLocalizedName(language) ?: ""),
-                        color = AccentPurple
+                        color = AppTheme.InfoColor
                     )
                 }
             }
@@ -780,9 +749,9 @@ private fun PredictionsCard(
                         },
                         contentDescription = null,
                         tint = when (prediction.type) {
-                            PredictionType.POSITIVE -> AccentGreen
-                            PredictionType.NEGATIVE -> AccentOrange
-                            PredictionType.NEUTRAL -> AccentBlue
+                            PredictionType.POSITIVE -> AppTheme.SuccessColor
+                            PredictionType.NEGATIVE -> AppTheme.WarningColor
+                            PredictionType.NEUTRAL -> AppTheme.InfoColor
                         },
                         modifier = Modifier.size(20.dp)
                     )
@@ -792,12 +761,12 @@ private fun PredictionsCard(
                             text = prediction.title,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = TextPrimary
+                            color = AppTheme.TextPrimary
                         )
                         Text(
                             text = prediction.description,
                             fontSize = 13.sp,
-                            color = TextSecondary,
+                            color = AppTheme.TextSecondary,
                             lineHeight = 20.sp
                         )
                     }
@@ -814,7 +783,7 @@ private fun StatusChip(label: String, value: String, color: Color) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = label, fontSize = 13.sp, color = TextSecondary)
+        Text(text = label, fontSize = 13.sp, color = AppTheme.TextSecondary)
         Surface(
             shape = RoundedCornerShape(6.dp),
             color = color.copy(alpha = 0.15f)
@@ -839,7 +808,7 @@ private fun DialogCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = DialogSurface
+        color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -849,7 +818,7 @@ private fun DialogCard(
                 Icon(
                     icon,
                     contentDescription = null,
-                    tint = AccentGold,
+                    tint = AppTheme.AccentGold,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -857,7 +826,7 @@ private fun DialogCard(
                     text = title,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = TextPrimary
+                    color = AppTheme.TextPrimary
                 )
             }
             content()
@@ -871,7 +840,7 @@ private fun DetailRow(label: String, value: String, valueColor: Color) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = label, fontSize = 13.sp, color = TextMuted)
+        Text(text = label, fontSize = 13.sp, color = AppTheme.TextMuted)
         Text(text = value, fontSize = 13.sp, fontWeight = FontWeight.Medium, color = valueColor)
     }
 }
@@ -897,13 +866,13 @@ fun NakshatraDetailDialog(
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.85f),
             shape = RoundedCornerShape(20.dp),
-            color = DialogBackground
+            color = AppTheme.DialogBackground
         ) {
             Column {
                 // Header
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = DialogSurface
+                    color = AppTheme.CardBackground
                 ) {
                     Row(
                         modifier = Modifier
@@ -917,16 +886,16 @@ fun NakshatraDetailDialog(
                                 text = nakshatra.getLocalizedName(language),
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = TextPrimary
+                                color = AppTheme.TextPrimary
                             )
                             Text(
                                 text = "${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} $pada • ${nakshatra.ruler.getLocalizedName(language)}",
                                 fontSize = 14.sp,
-                                color = TextSecondary
+                                color = AppTheme.TextSecondary
                             )
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = TextPrimary)
+                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
                         }
                     }
                 }
@@ -940,10 +909,10 @@ fun NakshatraDetailDialog(
                     item {
                         DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_BASIC_INFO), icon = Icons.Outlined.Info) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_NUMBER), "${nakshatra.number} / 27", TextPrimary)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_DEGREE_RANGE), "${String.format("%.2f", nakshatra.startDegree)}° - ${String.format("%.2f", nakshatra.endDegree)}°", AccentTeal)
-                                DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_RULING_PLANET), nakshatra.ruler.getLocalizedName(language), AccentGold)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_DEITY), nakshatra.deity, AccentPurple)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_NUMBER), "${nakshatra.number} / 27", AppTheme.TextPrimary)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_DEGREE_RANGE), "${String.format("%.2f", nakshatra.startDegree)}° - ${String.format("%.2f", nakshatra.endDegree)}°", AppTheme.AccentTeal)
+                                DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_RULING_PLANET), nakshatra.ruler.getLocalizedName(language), AppTheme.AccentGold)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_DEITY), nakshatra.deity, AppTheme.InfoColor)
                             }
                         }
                     }
@@ -951,17 +920,17 @@ fun NakshatraDetailDialog(
                     item {
                         DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_NATURE), icon = Icons.Outlined.Psychology) {
                             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                                DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SYMBOL), details.symbol, TextPrimary)
+                                DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SYMBOL), details.symbol, AppTheme.TextPrimary)
                                 DetailRow(stringResource(StringKeyAnalysis.DIALOG_NATURE), details.nature, when(details.nature) {
-                                    "Fixed (Dhruva)" -> AccentBlue
-                                    "Movable (Chara)" -> AccentGreen
-                                    "Sharp (Tikshna)" -> AccentRose
-                                    else -> TextSecondary
+                                    "Fixed (Dhruva)" -> AppTheme.InfoColor
+                                    "Movable (Chara)" -> AppTheme.SuccessColor
+                                    "Sharp (Tikshna)" -> AppTheme.ErrorColor
+                                    else -> AppTheme.TextSecondary
                                 })
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_GENDER), details.gender, TextSecondary)
-                                DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_GANA), details.gana, TextSecondary)
-                                DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_GUNA), details.guna, TextSecondary)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_ELEMENT), details.element, TextSecondary)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_GENDER), details.gender, AppTheme.TextSecondary)
+                                DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_GANA), details.gana, AppTheme.TextSecondary)
+                                DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_GUNA), details.guna, AppTheme.TextSecondary)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_ELEMENT), details.element, AppTheme.TextSecondary)
                             }
                         }
                     }
@@ -976,11 +945,11 @@ fun NakshatraDetailDialog(
                                     4 -> nakshatra.pada4Sign
                                     else -> nakshatra.pada1Sign
                                 }
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAVAMSA_SIGN), padaSign.getLocalizedName(language), AccentTeal)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAVAMSA_SIGN), padaSign.getLocalizedName(language), AppTheme.AccentTeal)
                                 Text(
                                     text = getPadaDescription(nakshatra, pada),
                                     fontSize = 14.sp,
-                                    color = TextPrimary,
+                                    color = AppTheme.TextPrimary,
                                     lineHeight = 22.sp
                                 )
                             }
@@ -992,7 +961,7 @@ fun NakshatraDetailDialog(
                             Text(
                                 text = details.characteristics,
                                 fontSize = 14.sp,
-                                color = TextPrimary,
+                                color = AppTheme.TextPrimary,
                                 lineHeight = 22.sp
                             )
                         }
@@ -1003,7 +972,7 @@ fun NakshatraDetailDialog(
                             Text(
                                 text = details.careers,
                                 fontSize = 14.sp,
-                                color = TextPrimary,
+                                color = AppTheme.TextPrimary,
                                 lineHeight = 22.sp
                             )
                         }
@@ -1038,13 +1007,13 @@ fun HouseDetailDialog(
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.85f),
             shape = RoundedCornerShape(20.dp),
-            color = DialogBackground
+            color = AppTheme.DialogBackground
         ) {
             Column {
                 // Header
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = DialogSurface
+                    color = AppTheme.CardBackground
                 ) {
                     Row(
                         modifier = Modifier
@@ -1058,16 +1027,16 @@ fun HouseDetailDialog(
                                 text = "${stringResource(StringKeyAnalysis.HOUSE)} $houseNumber",
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = TextPrimary
+                                color = AppTheme.TextPrimary
                             )
                             Text(
                                 text = houseDetails.name,
                                 fontSize = 14.sp,
-                                color = AccentGold
+                                color = AppTheme.AccentGold
                             )
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = TextPrimary)
+                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
                         }
                     }
                 }
@@ -1081,10 +1050,10 @@ fun HouseDetailDialog(
                     item {
                         DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_HOUSE_INFO), icon = Icons.Outlined.Home) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), sign.getLocalizedName(language), AccentTeal)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_CUSP_DEGREE), formatDegree(houseCusp), TextPrimary)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_SIGN_LORD), sign.ruler.getLocalizedName(language), AccentGold)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE_TYPE), houseDetails.type, TextSecondary)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), sign.getLocalizedName(language), AppTheme.AccentTeal)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_CUSP_DEGREE), formatDegree(houseCusp), AppTheme.TextPrimary)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_SIGN_LORD), sign.ruler.getLocalizedName(language), AppTheme.AccentGold)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE_TYPE), houseDetails.type, AppTheme.TextSecondary)
                             }
                         }
                     }
@@ -1097,10 +1066,10 @@ fun HouseDetailDialog(
                                         Box(
                                             modifier = Modifier
                                                 .size(6.dp)
-                                                .background(AccentGold, CircleShape)
+                                                .background(AppTheme.AccentGold, CircleShape)
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text(text = signification, fontSize = 13.sp, color = TextPrimary)
+                                        Text(text = signification, fontSize = 13.sp, color = AppTheme.TextPrimary)
                                     }
                                 }
                             }
@@ -1122,7 +1091,7 @@ fun HouseDetailDialog(
                                                     modifier = Modifier
                                                         .size(8.dp)
                                                         .background(
-                                                            planetColors[planet.planet] ?: AccentGold,
+                                                            AppTheme.getPlanetColor(planet.planet),
                                                             CircleShape
                                                         )
                                                 )
@@ -1131,13 +1100,13 @@ fun HouseDetailDialog(
                                                     text = planet.planet.getLocalizedName(language),
                                                     fontSize = 14.sp,
                                                     fontWeight = FontWeight.Medium,
-                                                    color = TextPrimary
+                                                    color = AppTheme.TextPrimary
                                                 )
                                             }
                                             Text(
                                                 text = formatDegreeInSign(planet.longitude),
                                                 fontSize = 13.sp,
-                                                color = TextSecondary
+                                                color = AppTheme.TextSecondary
                                             )
                                         }
                                     }
@@ -1151,7 +1120,7 @@ fun HouseDetailDialog(
                             Text(
                                 text = houseDetails.interpretation,
                                 fontSize = 14.sp,
-                                color = TextPrimary,
+                                color = AppTheme.TextPrimary,
                                 lineHeight = 22.sp
                             )
                         }
@@ -1184,13 +1153,13 @@ fun ShadbalaDialog(
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.9f),
             shape = RoundedCornerShape(20.dp),
-            color = DialogBackground
+            color = AppTheme.DialogBackground
         ) {
             Column {
                 // Header
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = DialogSurface
+                    color = AppTheme.CardBackground
                 ) {
                     Row(
                         modifier = Modifier
@@ -1204,16 +1173,16 @@ fun ShadbalaDialog(
                                 text = stringResource(StringKeyAnalysis.DIALOG_SHADBALA_ANALYSIS),
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = TextPrimary
+                                color = AppTheme.TextPrimary
                             )
                             Text(
                                 text = stringResource(StringKeyAnalysis.DIALOG_SIXFOLD_STRENGTH),
                                 fontSize = 14.sp,
-                                color = TextSecondary
+                                color = AppTheme.TextSecondary
                             )
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = TextPrimary)
+                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
                         }
                     }
                 }
@@ -1236,20 +1205,20 @@ fun ShadbalaDialog(
                                         label = stringResource(StringKeyAnalysis.DIALOG_CHART_STRENGTH),
                                         value = "${String.format("%.1f", shadbalaAnalysis.overallStrengthScore)}%",
                                         color = when {
-                                            shadbalaAnalysis.overallStrengthScore >= 100 -> AccentGreen
-                                            shadbalaAnalysis.overallStrengthScore >= 85 -> AccentOrange
-                                            else -> AccentRose
+                                            shadbalaAnalysis.overallStrengthScore >= 100 -> AppTheme.SuccessColor
+                                            shadbalaAnalysis.overallStrengthScore >= 85 -> AppTheme.WarningColor
+                                            else -> AppTheme.ErrorColor
                                         }
                                     )
                                     SummaryBadge(
                                         label = stringResource(StringKeyAnalysis.DIALOG_STRONGEST),
                                         value = shadbalaAnalysis.strongestPlanet.getLocalizedName(language),
-                                        color = AccentGold
+                                        color = AppTheme.AccentGold
                                     )
                                     SummaryBadge(
                                         label = stringResource(StringKeyAnalysis.DIALOG_WEAKEST),
                                         value = shadbalaAnalysis.weakestPlanet.getLocalizedName(language),
-                                        color = AccentPurple
+                                        color = AppTheme.InfoColor
                                     )
                                 }
                             }
@@ -1278,7 +1247,7 @@ private fun SummaryBadge(label: String, value: String, color: Color) {
         Text(
             text = label,
             fontSize = 12.sp,
-            color = TextMuted
+            color = AppTheme.TextMuted
         )
     }
 }
@@ -1288,7 +1257,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        color = DialogSurface
+        color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1301,7 +1270,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                         modifier = Modifier
                             .size(40.dp)
                             .background(
-                                planetColors[shadbala.planet] ?: AccentGold,
+                                AppTheme.getPlanetColor(shadbala.planet),
                                 CircleShape
                             ),
                         contentAlignment = Alignment.Center
@@ -1319,15 +1288,15 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                             text = shadbala.planet.getLocalizedName(language),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = TextPrimary
+                            color = AppTheme.TextPrimary
                         )
                         Text(
                             text = shadbala.strengthRating.getLocalizedName(language),
                             fontSize = 12.sp,
                             color = when {
-                                shadbala.isStrong -> AccentGreen
-                                shadbala.percentageOfRequired >= 85 -> AccentOrange
-                                else -> AccentRose
+                                shadbala.isStrong -> AppTheme.SuccessColor
+                                shadbala.percentageOfRequired >= 85 -> AppTheme.WarningColor
+                                else -> AppTheme.ErrorColor
                             }
                         )
                     }
@@ -1338,12 +1307,12 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                         text = "${String.format("%.2f", shadbala.totalRupas)} Rupas",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary
+                        color = AppTheme.TextPrimary
                     )
                     Text(
                         text = "Required: ${String.format("%.2f", shadbala.requiredRupas)}",
                         fontSize = 11.sp,
-                        color = TextMuted
+                        color = AppTheme.TextMuted
                     )
                 }
             }
@@ -1359,11 +1328,11 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                     .height(6.dp)
                     .clip(RoundedCornerShape(3.dp)),
                 color = when {
-                    shadbala.isStrong -> AccentGreen
-                    shadbala.percentageOfRequired >= 85 -> AccentOrange
-                    else -> AccentRose
+                    shadbala.isStrong -> AppTheme.SuccessColor
+                    shadbala.percentageOfRequired >= 85 -> AppTheme.WarningColor
+                    else -> AppTheme.ErrorColor
                 },
-                trackColor = DividerColor
+                trackColor = AppTheme.DividerColor
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -1371,7 +1340,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
             Text(
                 text = "${String.format("%.1f", shadbala.percentageOfRequired)}% of required",
                 fontSize = 11.sp,
-                color = TextMuted
+                color = AppTheme.TextMuted
             )
         }
     }
@@ -1564,7 +1533,7 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.SATURN -> sign == ZodiacSign.LIBRA
         else -> false
     }
-    if (exalted) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_EXALTED), AccentGreen)
+    if (exalted) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_EXALTED), AppTheme.SuccessColor)
 
     // Debilitation check
     val debilitated = when (planet) {
@@ -1577,10 +1546,10 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.SATURN -> sign == ZodiacSign.ARIES
         else -> false
     }
-    if (debilitated) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_DEBILITATED), AccentRose)
+    if (debilitated) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_DEBILITATED), AppTheme.ErrorColor)
 
     // Own sign check
-    if (sign.ruler == planet) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_OWN_SIGN), AccentGold)
+    if (sign.ruler == planet) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_OWN_SIGN), AppTheme.AccentGold)
 
     // Moolatrikona check
     val moolatrikona = when (planet) {
@@ -1593,9 +1562,9 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.SATURN -> sign == ZodiacSign.AQUARIUS
         else -> false
     }
-    if (moolatrikona) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_MOOLATRIKONA), AccentTeal)
+    if (moolatrikona) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_MOOLATRIKONA), AppTheme.AccentTeal)
 
-    return Dignity(stringResource(StringKeyMatch.RELATION_NEUTRAL), TextSecondary)
+    return Dignity(stringResource(StringKeyMatch.RELATION_NEUTRAL), AppTheme.TextSecondary)
 }
 
 @Composable
