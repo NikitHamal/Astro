@@ -1973,34 +1973,31 @@ object RemediesCalculator {
         remedies: List<Remedy>,
         analyses: List<PlanetaryAnalysis>,
         language: Language
-    ): Map<com.astro.storm.data.model.LifeArea, List<Remedy>> {
+    ): Map<String, List<Remedy>> {
         return mapOf(
-            com.astro.storm.data.model.LifeArea.CAREER to remedies.filter {
+            StringResources.get(StringKeyRemedy.LIFE_AREA_CAREER, language) to remedies.filter {
                 it.planet in listOf(Planet.SUN, Planet.SATURN, Planet.JUPITER, Planet.MARS)
             },
-            com.astro.storm.data.model.LifeArea.RELATIONSHIPS to remedies.filter {
+            StringResources.get(StringKeyRemedy.LIFE_AREA_RELATIONSHIPS, language) to remedies.filter {
                 it.planet in listOf(Planet.VENUS, Planet.MOON, Planet.JUPITER)
             },
-            com.astro.storm.data.model.LifeArea.HEALTH to remedies.filter {
+            StringResources.get(StringKeyRemedy.LIFE_AREA_HEALTH, language) to remedies.filter {
                 it.planet in listOf(Planet.SUN, Planet.MOON, Planet.MARS, Planet.SATURN)
             },
-            com.astro.storm.data.model.LifeArea.FINANCE to remedies.filter {
+            StringResources.get(StringKeyRemedy.LIFE_AREA_WEALTH, language) to remedies.filter {
                 it.planet in listOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY, Planet.MOON)
             },
-            com.astro.storm.data.model.LifeArea.EDUCATION to remedies.filter {
+            StringResources.get(StringKeyRemedy.LIFE_AREA_EDUCATION, language) to remedies.filter {
                 it.planet in listOf(Planet.MERCURY, Planet.JUPITER)
             },
-            com.astro.storm.data.model.LifeArea.SPIRITUAL to remedies.filter {
+            StringResources.get(StringKeyRemedy.LIFE_AREA_SPIRITUAL, language) to remedies.filter {
                 it.planet in listOf(Planet.KETU, Planet.JUPITER, Planet.MOON, Planet.SUN)
             },
-            com.astro.storm.data.model.LifeArea.PROPERTY to remedies.filter {
+            StringResources.get(StringKeyRemedy.LIFE_AREA_PROPERTY, language) to remedies.filter {
                 it.planet in listOf(Planet.MARS, Planet.SATURN, Planet.MOON)
             },
-            com.astro.storm.data.model.LifeArea.FOREIGN to remedies.filter {
+            StringResources.get(StringKeyRemedy.LIFE_AREA_FOREIGN, language) to remedies.filter {
                 it.planet in listOf(Planet.RAHU, Planet.KETU, Planet.MOON)
-            }
-        ).filter { it.value.isNotEmpty() }
-    }
             }
         ).filterValues { it.isNotEmpty() }
     }
