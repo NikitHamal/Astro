@@ -328,6 +328,9 @@ private fun BSDatePickerHeader(
     colors: BSDatePickerColors,
     onTodayClick: () -> Unit
 ) {
+    val todayText = stringResource(StringKeyMatch.BS_DATE_PICKER_TODAY)
+    val goTodayDesc = stringResource(StringKeyMatch.BS_DATE_PICKER_GO_TODAY)
+    
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -345,7 +348,7 @@ private fun BSDatePickerHeader(
             color = colors.accentColor.copy(alpha = 0.1f),
             modifier = Modifier.semantics {
                 role = Role.Button
-                contentDescription = stringResource(StringKeyMatch.BS_DATE_PICKER_GO_TODAY)
+                contentDescription = goTodayDesc
             }
         ) {
             Row(
@@ -360,7 +363,7 @@ private fun BSDatePickerHeader(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(StringKeyMatch.BS_DATE_PICKER_TODAY),
+                    text = todayText,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     color = colors.accentColor
@@ -502,6 +505,9 @@ private fun MonthYearNavigator(
         }
     }
 
+    val prevMonthDesc = stringResource(StringKeyMatch.BS_DATE_PICKER_PREV_MONTH)
+    val nextMonthDesc = stringResource(StringKeyMatch.BS_DATE_PICKER_NEXT_MONTH)
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -514,7 +520,7 @@ private fun MonthYearNavigator(
                 .size(40.dp)
                 .semantics {
                     role = Role.Button
-                    contentDescription = stringResource(StringKeyMatch.BS_DATE_PICKER_PREV_MONTH)
+                    contentDescription = prevMonthDesc
                 }
         ) {
             Icon(
@@ -560,7 +566,7 @@ private fun MonthYearNavigator(
                 .size(40.dp)
                 .semantics {
                     role = Role.Button
-                    contentDescription = stringResource(StringKeyMatch.BS_DATE_PICKER_NEXT_MONTH)
+                    contentDescription = nextMonthDesc
                 }
         ) {
             Icon(
@@ -1003,17 +1009,21 @@ private fun DayCell(
         else -> colors.textPrimary
     }
 
-    val accessibilityLabel = remember(day, isSelected, isToday, isSaturday, language) {
+    val selectedString = stringResource(StringKeyMatch.BS_DATE_PICKER_SELECTED)
+    val todayString = stringResource(StringKeyMatch.BS_DATE_PICKER_TODAY_SUFFIX)
+    val saturdayString = stringResource(StringKeyMatch.BS_DATE_PICKER_SATURDAY)
+
+    val accessibilityLabel = remember(day, isSelected, isToday, isSaturday, language, selectedString, todayString, saturdayString) {
         buildString {
             append(displayDay)
             if (isSelected) {
-                append(stringResource(StringKeyMatch.BS_DATE_PICKER_SELECTED))
+                append(selectedString)
             }
             if (isToday) {
-                append(stringResource(StringKeyMatch.BS_DATE_PICKER_TODAY_SUFFIX))
+                append(todayString)
             }
             if (isSaturday) {
-                append(stringResource(StringKeyMatch.BS_DATE_PICKER_SATURDAY))
+                append(saturdayString)
             }
         }
     }
@@ -1077,12 +1087,14 @@ fun BSDateSelector(
         selectedDate.weekday?.getName(language)
     }
 
+    val dateDesc = stringResource(StringKeyMatch.BS_DATE_PICKER_DATE_DESC, displayText)
+
     Surface(
         onClick = { if (enabled) showPicker = true },
         enabled = enabled,
         modifier = modifier.semantics {
             role = Role.Button
-            contentDescription = stringResource(StringKeyMatch.BS_DATE_PICKER_DATE_DESC, displayText)
+            contentDescription = dateDesc
         },
         shape = RoundedCornerShape(12.dp),
         color = colors.chipBackground,

@@ -1762,9 +1762,6 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     ARGALA_INFLUENCE_DESC("{0} from house {1}: {2} ({3})", "भाव {१} बाट {०}: {२} ({३})"),
     ARGALA_EFFECTIVE_OBSTRUCTION("House {0} effectively obstructs Argala from house {1} ({2})", "भाव {०} ले भाव {१} बाट आउने अर्गलालाई प्रभावशाली रूपमा रोक्छ ({२})"),
     ARGALA_PARTIAL_OBSTRUCTION("House {0} partially obstructs Argala from house {1} ({2})", "भाव {०} ले भाव {१} बाट आउने अर्गलालाई आंशिक रूपमा रोक्छ ({२})"),
-    BENEFIC("Benefic", "शुभ"),
-    MALEFIC("Malefic", "अशुभ"),
-    MIXED("Mixed", "मिश्रित"),
 
     // Chara Dasha Analysis
     CHARA_DASHA_CALC_ERROR("Unknown error calculating Chara Dasha", "कारा दशा गणना गर्दा अज्ञात त्रुटि"),
@@ -1991,11 +1988,6 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     ASHTAKAVARGA_NOT_APPLICABLE("Ashtakavarga not applicable for %s", "%s को लागि अष्टकवर्ग लागू हुँदैन"),
 
     // Transit Interpretation (simplified for keys)
-    TRANSIT_INTERP_EXCELLENT("Excellent - Highly favorable transit", "उत्कृष्ट - धेरै अनुकूल गोचर"),
-    TRANSIT_INTERP_GOOD("Good - Favorable results expected", "राम्रो - अनुकूल परिणामको अपेक्षा"),
-    TRANSIT_INTERP_AVERAGE("Average - Mixed results", "औसत - मिश्रित परिणाम"),
-    TRANSIT_INTERP_BELOW_AVG("Below Average - Some challenges", "औसत भन्दा कम - केहि चुनौतीहरू"),
-    TRANSIT_INTERP_DIFFICULT("Difficult - Careful navigation needed", "कठिन - सावधानीपूर्वक अघि बढ्न आवश्यक"),
     ARGALA_STRENGTH_VERY_STRONG("Very Strong", "धेरै बलियो"),
     ARGALA_STRENGTH_STRONG("Strong", "बलियो"),
     ARGALA_STRENGTH_MODERATE("Moderate", "मध्यम"),

@@ -275,7 +275,7 @@ enum class StringKeyComponents(override val en: String, override val ne: String)
     HOUSE_PLACEMENT_SATURN_7("Delayed marriage but stable. Serious approach to partnerships. May marry someone older or more mature.", "विवाहमा ढिलाइ तर स्थिर। साझेदारीमा गम्भीर दृष्टिकोण। आफूभन्दा जेठो वा बढी परिपक्व व्यक्तिसँग विवाह गर्न सक्छ।"),
     HOUSE_PLACEMENT_RAHU_10("Unconventional career path. Success in foreign lands or technology. Ambitious and worldly.", "अपरम्परागत क्यारियर मार्ग। विदेश वा प्रविधिमा सफलता। महत्त्वाकांक्षी र सांसारिक।"),
     HOUSE_PLACEMENT_KETU_12("Strong spiritual inclinations. Interest in meditation and liberation. May spend time in foreign lands or ashrams.", "बलियो आध्यात्मिक झुकाव। ध्यान र मुक्तिमा रुचि। विदेश वा आश्रममा समय बिताउन सक्छ।"),
-    HOUSE_PLACEMENT_DEFAULT("The %1$s in the %2$dth house influences the areas of %3$s. Results depend on the sign placement, aspects, and overall chart strength.", "%2$dऔं भावमा %1$sले %3$s का क्षेत्रहरूलाई प्रभाव पार्छ। परिणामहरू राशि स्थिति, दृष्टि, र समग्र कुण्डली बलमा निर्भर हुन्छन्।"),
+    HOUSE_PLACEMENT_DEFAULT("The %1\$s in the %2\$dth house influences the areas of %3\$s. Results depend on the sign placement, aspects, and overall chart strength.", "%2\$dऔं भावमा %1\$sले %3\$s का क्षेत्रहरूलाई प्रभाव पार्छ। परिणामहरू राशि स्थिति, दृष्टि, र समग्र कुण्डली बलमा निर्भर हुन्छन्।"),
 
     // ============================================
     // NAKSHATRA DETAILS
@@ -336,10 +336,10 @@ enum class StringKeyComponents(override val en: String, override val ne: String)
     NAK_GANA_MIXED("Mixed", "मिश्रित"),
     NAK_GUNA_MIXED("Mixed", "मिश्रित"),
     NAK_ELEMENT_MIXED("Mixed", "मिश्रित"),
-    NAK_CHARS_DEFAULT("%1$s is ruled by %2$s. Natives are influenced by the deity %3$s.", "%1$s %2$s द्वारा शासित छ। जातकहरू देवता %3$s द्वारा प्रभावित हुन्छन्।"),
+    NAK_CHARS_DEFAULT("%1\$s is ruled by %2\$s. Natives are influenced by the deity %3\$s.", "%1\$s %2\$s द्वारा शासित छ। जातकहरू देवता %3\$s द्वारा प्रभावित हुन्छन्।"),
     NAK_CAREERS_DEFAULT("Various fields depending on overall chart analysis", "समग्र कुण्डली विश्लेषणमा निर्भर विभिन्न क्षेत्रहरू"),
     
     // Pada Description
-    PADA_DESC_TEMPLATE("Pada %1$d falls in %2$s Navamsa, ruled by %3$s. This pada emphasizes the %4$s element qualities combined with the main nakshatra characteristics.", "पाउ %1$d %2$s नवअंशमा पर्दछ, जसको स्वामी %3$s हो। यो पाउले मुख्य नक्षत्र विशेषताहरूसँग मिलाएर %4$s (तत्व) गुणहरूलाई जोड दिन्छ।");
+    PADA_DESC_TEMPLATE("Pada %1\$d falls in %2\$s Navamsa, ruled by %3\$s. This pada emphasizes the %4\$s element qualities combined with the main nakshatra characteristics.", "पाउ %1\$d %2\$s नवअंशमा पर्दछ, जसको स्वामी %3\$s हो। यो पाउले मुख्य नक्षत्र विशेषताहरूसँग मिलाएर %4\$s (तत्व) गुणहरूलाई जोड दिन्छ।");
 
 }
