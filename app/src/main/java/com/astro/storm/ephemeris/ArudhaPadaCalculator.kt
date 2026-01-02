@@ -709,7 +709,7 @@ object ArudhaPadaCalculator {
         val timingOfResults = "Results manifest strongly during ${lord.displayName} dasha/antardasha, " +
                 "and when transits activate ${arudha.sign.displayName}"
 
-        val remedialMeasures = generateRemediesForArudha(arudha, dignity, malefics)
+        val remedialMeasures = generateRemediesForArudha(arudha, dignity, malefics, language)
 
         return DetailedArudhaInterpretation(
             primaryMeaning = primaryMeaning,

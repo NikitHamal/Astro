@@ -858,8 +858,8 @@ object ArgalaCalculator {
     /**
      * Get Argala summary for a specific house
      */
-    fun getHouseSummary(chart: VedicChart, house: Int): String {
-        val analysis = analyzeArgala(chart)
+    fun getHouseSummary(chart: VedicChart, house: Int, language: Language): String {
+        val analysis = analyzeArgala(chart, language)
         val houseResult = analysis.houseArgalas[house] ?: return "No Argala data available"
         return houseResult.interpretation
     }
@@ -867,8 +867,8 @@ object ArgalaCalculator {
     /**
      * Check if a house has strong Shubha Argala
      */
-    fun hasStrongBeneficArgala(chart: VedicChart, house: Int): Boolean {
-        val analysis = analyzeArgala(chart)
+    fun hasStrongBeneficArgala(chart: VedicChart, house: Int, language: Language): Boolean {
+        val analysis = analyzeArgala(chart, language)
         val result = analysis.houseArgalas[house] ?: return false
         return result.effectiveArgala.dominantNature == ArgalaNature.SHUBHA &&
                result.effectiveArgala.netBeneficStrength >= 1.5
@@ -877,8 +877,8 @@ object ArgalaCalculator {
     /**
      * Get planets causing Argala on a house
      */
-    fun getArgalaCausingPlanets(chart: VedicChart, house: Int): List<Planet> {
-        val analysis = analyzeArgala(chart)
+    fun getArgalaCausingPlanets(chart: VedicChart, house: Int, language: Language): List<Planet> {
+        val analysis = analyzeArgala(chart, language)
         val result = analysis.houseArgalas[house] ?: return emptyList()
         return result.primaryArgalas.flatMap { it.planets }.distinct()
     }

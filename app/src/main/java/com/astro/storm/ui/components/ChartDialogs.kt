@@ -48,8 +48,6 @@ import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringKeyComponents
 import com.astro.storm.data.localization.getLocalizedName
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.*
 import com.astro.storm.ephemeris.DivisionalChartData
 import com.astro.storm.ephemeris.PlanetaryShadbala
 import com.astro.storm.ephemeris.RetrogradeCombustionCalculator

@@ -1312,6 +1312,9 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     TAB_ASPECTS("Aspects", "दृष्टि"),
     TAB_STRENGTH("Strength", "बल"),
     TAB_DIGNITIES("Dignities", "मर्यादाहरू"),
+    TAB_ARUDHAS("Arudhas", "आरूढ"),
+    TAB_YOGAS("Yogas", "योग"),
+    TAB_RELATIONSHIPS("Relationships", "सम्बन्ध"),
 
     // ============================================
     // REMEDIES SCREEN SPECIFIC

@@ -1,10 +1,5 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.PlanetPosition
 import com.astro.storm.data.model.VedicChart
