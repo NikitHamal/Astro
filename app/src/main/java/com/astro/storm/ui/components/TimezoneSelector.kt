@@ -336,7 +336,8 @@ fun TimezonePickerDialog(
                         // Add section header when transitioning from common to all
                         if (searchQuery.isBlank() && timezone.isCommon) {
                             val nextTimezone = filteredTimezones.getOrNull(filteredTimezones.indexOf(timezone) + 1)
-                            if (nextTimezone != null && !nextTimezone.isCommon)                                    Text(
+                            if (nextTimezone != null && !nextTimezone.isCommon) {
+                                Text(
                                     text = stringResource(StringKeyComponents.TIMEZONE_ALL),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.SemiBold,
