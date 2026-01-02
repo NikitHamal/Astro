@@ -2779,7 +2779,7 @@ class ChartExporter(private val context: Context) {
                 appendLine()
 
                 // Ashtakavarga Summary
-                val ashtakavarga = AshtakavargaCalculator.calculateAshtakavarga(chart)
+                val ashtakavarga = AshtakavargaCalculator.calculateAshtakavarga(chart, locManager.language)
                 append(ashtakavarga.toPlainText())
                 appendLine()
 

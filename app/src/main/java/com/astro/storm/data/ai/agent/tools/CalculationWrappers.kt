@@ -770,7 +770,7 @@ class ArgalaCalculatorWrapper {
 
     fun calculate(chart: VedicChart): List<ArgalaResult> {
         return try {
-            val analysis = ArgalaCalculator.analyzeArgala(chart)
+            val analysis = ArgalaCalculator.analyzeArgala(chart, com.astro.storm.data.localization.Language.ENGLISH)
 
             analysis.houseArgalas.flatMap { (targetHouse, houseResult) ->
                 houseResult.primaryArgalas.map { argala ->

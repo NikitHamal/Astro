@@ -7,6 +7,11 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
+import com.astro.storm.data.localization.getLocalizedName
+import com.astro.storm.data.localization.StringKeyComponents
+import com.astro.storm.data.model.Nakshatra
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.Language
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -1587,7 +1592,7 @@ private fun getHousePlacementInterpretation(planet: Planet, house: Int): HousePl
         planet == Planet.RAHU && house == 10 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_RAHU_10)
         planet == Planet.KETU && house == 12 -> stringResource(StringKeyComponents.HOUSE_PLACEMENT_KETU_12)
         else -> {
-            val planetName = planet.localizedName()
+            val planetName = planet.getLocalizedName(LocalLanguage.current)
             stringResource(StringKeyComponents.HOUSE_PLACEMENT_DEFAULT, planetName, house, houseDetails.name)
         }
     }
@@ -1767,7 +1772,7 @@ private fun getNakshatraDetails(nakshatra: Nakshatra): NakshatraDetails {
             gana = stringResource(StringKeyComponents.NAK_GANA_MIXED),
             guna = stringResource(StringKeyComponents.NAK_GUNA_MIXED),
             element = stringResource(StringKeyComponents.NAK_ELEMENT_MIXED),
-            characteristics = stringResource(StringKeyComponents.NAK_CHARS_DEFAULT, nakshatra.localizedName(), nakshatra.ruler.localizedName(), nakshatra.deity),
+            characteristics = stringResource(StringKeyComponents.NAK_CHARS_DEFAULT, nakshatra.getLocalizedName(LocalLanguage.current), nakshatra.ruler.getLocalizedName(LocalLanguage.current), nakshatra.deity),
             careers = stringResource(StringKeyComponents.NAK_CAREERS_DEFAULT)
         )
     }
@@ -1786,8 +1791,8 @@ private fun getPadaDescription(nakshatra: Nakshatra, pada: Int): String {
     return stringResource(
         StringKeyComponents.PADA_DESC_TEMPLATE,
         pada,
-        padaSign.localizedName(),
-        padaSign.ruler.localizedName(),
+        padaSign.getLocalizedName(LocalLanguage.current),
+        padaSign.ruler.getLocalizedName(LocalLanguage.current),
         padaSign.element
     )
 }

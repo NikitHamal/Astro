@@ -283,6 +283,8 @@ enum class StringKeyComponents(override val en: String, override val ne: String)
     // Ashwini
     NAK_ASHWINI_SYMBOL("Horse's Head", "घोडाको टाउको"),
     NAK_ASHWINI_NATURE("Swift (Kshipra)", "क्षिप्रा (तीव्र)"),
+    NAK_ASHWINI_GENDER("Male", "पुरुष"),
+    NAK_ASHWINI_GANA("Deva", "देव"),
 
     // ============================================
     // TIMEZONE SELECTOR

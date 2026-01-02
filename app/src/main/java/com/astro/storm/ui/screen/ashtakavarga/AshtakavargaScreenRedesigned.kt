@@ -1,5 +1,8 @@
 package com.astro.storm.ui.screen.ashtakavarga
 
+import com.astro.storm.data.localization.StringKeyMatch
+import com.astro.storm.data.localization.StringResources
+import com.astro.storm.data.localization.Language
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -48,6 +51,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import com.astro.storm.data.localization.StringKeyMatch
+import com.astro.storm.data.localization.StringResources
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
