@@ -1564,13 +1564,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
     }
 }
 
-private fun getHousePlacementInterpretation(planet: Planet, house: Int): HousePlacementInterpretation {
-    val houseNames = listOf(
-        "", "First House (Lagna)", "Second House (Dhana)", "Third House (Sahaja)",
-        "Fourth House (Sukha)", "Fifth House (Putra)", "Sixth House (Ripu)",
-        "Seventh House (Kalatra)", "Eighth House (Ayur)", "Ninth House (Dharma)",
-        "Tenth House (Karma)", "Eleventh House (Labha)", "Twelfth House (Vyaya)"
-    )
+
 @Composable
 private fun getHousePlacementInterpretation(planet: Planet, house: Int): HousePlacementInterpretation {
     val houseDetails = getHouseDetails(house)
