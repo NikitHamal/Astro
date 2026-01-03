@@ -1932,6 +1932,7 @@ private fun AiInsightCard(result: PrashnaCalculator.PrashnaResult) {
                 when (state) {
                     is AiInsightState.Initial -> {
                         // Show generate button
+                        val languageForAi = LocalLanguage.current
                         Button(
                             onClick = {
                                 scope.launch {
@@ -1959,7 +1960,7 @@ private fun AiInsightCard(result: PrashnaCalculator.PrashnaResult) {
                                                 currentProfile = null,
                                                 allProfiles = emptyList(),
                                                 currentChart = result.chart,
-                                                language = LocalLanguage.current
+                                                language = languageForAi
                                             ).collect { response ->
                                                 when (response) {
                                                     is AgentResponse.ContentChunk -> {

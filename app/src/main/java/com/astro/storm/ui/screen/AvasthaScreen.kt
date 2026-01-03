@@ -1095,6 +1095,7 @@ private fun DeeptadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
 
 @Composable
 private fun DeeptadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
+    val language = LocalLanguage.current
     val color = getDeeptadiColor(avastha.deeptadiAvastha)
 
     Card(
@@ -1203,6 +1204,7 @@ private fun LajjitadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
 
 @Composable
 private fun LajjitadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
+    val language = LocalLanguage.current
     val color = getLajjitadiColor(avastha.lajjitadiAvastha)
 
     Card(

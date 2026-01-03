@@ -91,6 +91,7 @@ import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 @Immutable
@@ -315,7 +316,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
                             startDate = ad.startDate.toLocalDate(),
                             endDate = ad.endDate.toLocalDate(),
                             progress = ad.getProgressPercent().toFloat() / 100f,
-                            remainingText = formatRemainingDays(ChronoUnit.DAYS.between(LocalDateTime.now(), ad.endDate).toInt()),
+                            remainingText = formatRemainingDays(ChronoUnit.DAYS.between(LocalDateTime.now(), ad.endDate)),
                             level = DashaLevel.ANTARDASHA
                         )
                     }
@@ -326,7 +327,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
                             planet = pd.planet,
                             startDate = pd.startDate.toLocalDate(),
                             endDate = pd.endDate.toLocalDate(),
-                            progress = calculateProgress(pd.startDate, pd.endDate),
+                            progress = calculateProgress(pd.startDate.toLocalDate(), pd.endDate.toLocalDate()),
                             remainingText = formatRemainingTime(LocalDate.now(), pd.endDate.toLocalDate()),
                             level = DashaLevel.PRATYANTARDASHA
                         )
@@ -338,7 +339,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
                             planet = sd.planet,
                             startDate = sd.startDate.toLocalDate(),
                             endDate = sd.endDate.toLocalDate(),
-                            progress = calculateProgress(sd.startDate, sd.endDate),
+                            progress = calculateProgress(sd.startDate.toLocalDate(), sd.endDate.toLocalDate()),
                             remainingText = "",
                             level = DashaLevel.SOOKSHMADASHA
                         )
@@ -350,7 +351,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
                             planet = prd.planet,
                             startDate = prd.startDate.toLocalDate(),
                             endDate = prd.endDate.toLocalDate(),
-                            progress = calculateProgress(prd.startDate, prd.endDate),
+                            progress = calculateProgress(prd.startDate.toLocalDate(), prd.endDate.toLocalDate()),
                             remainingText = formatPranadashaDuration(prd.durationSeconds / 60),
                             level = DashaLevel.PRANADASHA
                         )
@@ -362,7 +363,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
                             planet = dd.planet,
                             startDate = dd.startDate.toLocalDate(),
                             endDate = dd.endDate.toLocalDate(),
-                            progress = calculateProgress(dd.startDate, dd.endDate),
+                            progress = calculateProgress(dd.startDate.toLocalDate(), dd.endDate.toLocalDate()),
                             remainingText = formatDehadashaDuration(dd.durationSeconds / 60),
                             level = DashaLevel.DEHADASHA
                         )
@@ -1353,7 +1354,7 @@ private fun AntardashaRow(
                     }
                 }
                 if (isCurrent) {
-                    val remaining = formatRemainingDaysLocalized(ChronoUnit.DAYS.between(LocalDateTime.now(), antardasha.endDate).toInt(), language)
+                    val remaining = formatRemainingDaysLocalized(ChronoUnit.DAYS.between(java.time.LocalDateTime.now(), antardasha.endDate), language)
                     if (remaining.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(

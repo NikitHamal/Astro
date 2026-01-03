@@ -2627,6 +2627,9 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // ASHTAKAVARGA SCREEN
     // ============================================
     ASHTAKAVARGA_KEY_INSIGHTS("Key Insights", "मुख्य अन्तर्दृष्टि"),
+    ASHTAKAVARGA_DESC_FMT("Bindu strength analysis - %s", "विन्दु बल विश्लेषण - %s"),
+    ASHTAKAVARGA_DISTRIBUTION_DESC("Bindu distribution analysis", "विन्दु वितरण विश्लेषण"),
+    ASHTAKAVARGA_INFO_A11Y("Ashtakavarga info", "अष्टकवर्ग जानकारी"),
     ASHTAKAVARGA_STRONGEST("STRONGEST HOUSES", "सबैभन्दा बलियो भावहरू"),
     ASHTAKAVARGA_WEAKEST("WEAKEST HOUSES", "सबैभन्दा कमजोर भावहरू"),
     ASHTAKAVARGA_PLANET_TOTALS("Planet Bindu Totals", "ग्रह बिन्दु योग"),
