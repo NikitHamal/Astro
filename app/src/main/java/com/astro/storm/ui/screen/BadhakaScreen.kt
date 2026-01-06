@@ -376,6 +376,7 @@ private fun BadhakaQuickStats(analysis: BadhakaCalculator.BadhakaAnalysis) {
     }
 }
 
+@Composable
 private fun getSeverityColor(severity: Int): Color {
     return when {
         severity >= 70 -> AppTheme.ErrorColor
@@ -521,11 +522,12 @@ private fun BadhakaPlanetCard(
     val language = LocalLanguage.current
     var expanded by remember { mutableStateOf(false) }
     val severityColor = when (badhaka.severity) {
-        BadhakaCalculator.BadhakaSeverity.EXTREME -> AppTheme.ErrorColor
-        BadhakaCalculator.BadhakaSeverity.HIGH -> AppTheme.WarningColor
+        BadhakaCalculator.BadhakaSeverity.SEVERE -> AppTheme.ErrorColor
+        BadhakaCalculator.BadhakaSeverity.STRONG -> AppTheme.WarningColor
         BadhakaCalculator.BadhakaSeverity.MODERATE -> AppTheme.AccentGold
         BadhakaCalculator.BadhakaSeverity.MILD -> AppTheme.AccentTeal
         BadhakaCalculator.BadhakaSeverity.MINIMAL -> AppTheme.TextMuted
+        BadhakaCalculator.BadhakaSeverity.NONE -> AppTheme.TextMuted
     }
 
     Card(
@@ -568,7 +570,7 @@ private fun BadhakaPlanetCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${badhaka.sign.getLocalizedName(language)} • H${badhaka.house}",
+                            text = "${badhaka.placedInSign.getLocalizedName(language)} • H${badhaka.placedInHouse}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -607,7 +609,7 @@ private fun BadhakaPlanetCard(
                     HorizontalDivider(color = AppTheme.DividerColor)
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    if (badhaka.isBadhakaLord) {
+                    if (isPrimary) {
                         Surface(
                             shape = RoundedCornerShape(6.dp),
                             color = AppTheme.ErrorColor.copy(alpha = 0.15f),
@@ -637,24 +639,6 @@ private fun BadhakaPlanetCard(
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
-//                        Row(
-//                            modifier = Modifier.padding(top = 4.dp),
-//                            horizontalArrangement = Arrangement.spacedBy(6.dp)
-//                        ) {
-//                            badhaka.obstacleTypes.take(3).forEach { type ->
-//                                Surface(
-//                                    shape = RoundedCornerShape(4.dp),
-//                                    color = AppTheme.ChipBackground
-//                                ) {
-//                                    Text(
-//                                        text = type.displayName,
-//                                        style = MaterialTheme.typography.labelSmall,
-//                                        color = AppTheme.TextMuted,
-//                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-//                                    )
-//                                }
-//                            }
-//                        }
                     }
                 }
             }
@@ -755,73 +739,73 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
     }
 }
 
-@Composable
-private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
-    val areaColor = when {
-        area.impactLevel >= 70 -> AppTheme.ErrorColor
-        area.impactLevel >= 50 -> AppTheme.WarningColor
-        area.impactLevel >= 30 -> AppTheme.AccentGold
-        else -> AppTheme.TextMuted
-    }
-
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(8.dp),
-        color = AppTheme.CardBackgroundElevated
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = area.area,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = AppTheme.TextPrimary
-                )
-                Surface(
-                    shape = RoundedCornerShape(6.dp),
-                    color = areaColor.copy(alpha = 0.15f)
-                ) {
-                    Text(
-                        text = "${area.impactLevel}%",
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = areaColor,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            LinearProgressIndicator(
-                progress = { area.impactLevel / 100f },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp)
-                    .clip(RoundedCornerShape(2.dp)),
-                color = areaColor,
-                trackColor = areaColor.copy(alpha = 0.2f),
-                strokeCap = StrokeCap.Round
-            )
-            if (area.description.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = area.description,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AppTheme.TextMuted
-                )
-            }
-        }
-    }
-}
+// @Composable
+// private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
+//     val areaColor = when {
+//         area.impactLevel >= 70 -> AppTheme.ErrorColor
+//         area.impactLevel >= 50 -> AppTheme.WarningColor
+//         area.impactLevel >= 30 -> AppTheme.AccentGold
+//         else -> AppTheme.TextMuted
+//     }
+//
+//     Surface(
+//         modifier = Modifier
+//             .fillMaxWidth()
+//             .padding(vertical = 4.dp),
+//         shape = RoundedCornerShape(8.dp),
+//         color = AppTheme.CardBackgroundElevated
+//     ) {
+//         Column(
+//             modifier = Modifier
+//                 .fillMaxWidth()
+//                 .padding(12.dp)
+//         ) {
+//             Row(
+//                 modifier = Modifier.fillMaxWidth(),
+//                 horizontalArrangement = Arrangement.SpaceBetween,
+//                 verticalAlignment = Alignment.CenterVertically
+//             ) {
+//                 Text(
+//                     text = area.area,
+//                     style = MaterialTheme.typography.bodyMedium,
+//                     fontWeight = FontWeight.Medium,
+//                     color = AppTheme.TextPrimary
+//                 )
+//                 Surface(
+//                     shape = RoundedCornerShape(6.dp),
+//                     color = areaColor.copy(alpha = 0.15f)
+//                 ) {
+//                     Text(
+//                         text = "${area.impactLevel}%",
+//                         style = MaterialTheme.typography.labelSmall,
+//                         fontWeight = FontWeight.SemiBold,
+//                         color = areaColor,
+//                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+//                     )
+//                 }
+//             }
+//             Spacer(modifier = Modifier.height(4.dp))
+//             LinearProgressIndicator(
+//                 progress = { area.impactLevel / 100f },
+//                 modifier = Modifier
+//                     .fillMaxWidth()
+//                     .height(4.dp)
+//                     .clip(RoundedCornerShape(2.dp)),
+//                 color = areaColor,
+//                 trackColor = areaColor.copy(alpha = 0.2f),
+//                 strokeCap = StrokeCap.Round
+//             )
+//             if (area.description.isNotEmpty()) {
+//                 Spacer(modifier = Modifier.height(4.dp))
+//                 Text(
+//                     text = area.description,
+//                     style = MaterialTheme.typography.labelSmall,
+//                     color = AppTheme.TextMuted
+//                 )
+//             }
+//         }
+//     }
+// }
 
 @Composable
 private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
@@ -1026,7 +1010,7 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
                     )
                 }
                 Text(
-                    text = remedy.planet?.displayName ?: stringResource(StringKeyDosha.UI_GENERAL),
+                    text = remedy.planet?.displayName ?: "General",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1039,7 +1023,7 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
                 color = AppTheme.TextPrimary
             )
             Text(
-                text = remedy.mantra.ifEmpty { remedy.charity },
+                text = (remedy.mantra ?: "").ifEmpty { remedy.charity },
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary
             )

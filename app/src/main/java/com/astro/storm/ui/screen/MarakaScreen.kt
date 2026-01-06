@@ -527,11 +527,12 @@ private fun MarakaPlanetCard(
     val language = LocalLanguage.current
     var expanded by remember { mutableStateOf(false) }
     val severityColor = when (maraka.severity) {
-        MarakaCalculator.MarakaSeverity.EXTREME -> AppTheme.ErrorColor
+        MarakaCalculator.MarakaSeverity.VERY_HIGH -> AppTheme.ErrorColor
         MarakaCalculator.MarakaSeverity.HIGH -> AppTheme.WarningColor
         MarakaCalculator.MarakaSeverity.MODERATE -> AppTheme.AccentGold
-        MarakaCalculator.MarakaSeverity.MILD -> AppTheme.AccentTeal
+        MarakaCalculator.MarakaSeverity.LOW -> AppTheme.AccentTeal
         MarakaCalculator.MarakaSeverity.MINIMAL -> AppTheme.TextMuted
+        MarakaCalculator.MarakaSeverity.NONE -> AppTheme.TextMuted
     }
 
     Card(
@@ -574,7 +575,7 @@ private fun MarakaPlanetCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${maraka.sign.getLocalizedName(language)} • H${maraka.house}",
+                            text = "${maraka.placedInSign.getLocalizedName(language)} • H${maraka.placedInHouse}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1039,7 +1040,7 @@ private fun MarakaRemedyCard(remedy: MarakaCalculator.MarakaRemedy) {
                     )
                 }
                 Text(
-                    text = remedy.planet?.displayName ?: stringResource(StringKeyDosha.UI_GENERAL),
+                    text = remedy.planet?.displayName ?: "General",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )

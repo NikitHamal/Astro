@@ -354,6 +354,7 @@ private fun YogaBadge(name: String, color: Color) {
     }
 }
 
+@Composable
 private fun getYogaTypeColor(type: VipareetaRajaYogaCalculator.VipareetaYogaType): Color {
     return when (type) {
         VipareetaRajaYogaCalculator.VipareetaYogaType.HARSHA -> AppTheme.SuccessColor

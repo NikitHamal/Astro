@@ -1146,6 +1146,7 @@ private fun RecommendationsSection(analysis: IshtaKashtaPhalaCalculator.IshtaKas
     }
 }
 
+@Composable
 private fun getPhalaColor(category: IshtaKashtaPhalaCalculator.PhalaCategory): Color {
     return when (category) {
         IshtaKashtaPhalaCalculator.PhalaCategory.HIGHLY_BENEFIC -> AppTheme.SuccessColor
