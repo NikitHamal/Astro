@@ -100,6 +100,15 @@ object BadhakaCalculator {
     )
 
     /**
+     * Data class for affected life area analysis
+     */
+    data class AffectedLifeArea(
+        val area: String,
+        val impactLevel: Int, // 0-100
+        val description: String
+    )
+
+    /**
      * Comprehensive Badhaka analysis result
      */
     data class BadhakaAnalysis(
@@ -112,6 +121,7 @@ object BadhakaCalculator {
         val overallSeverity: BadhakaSeverity,
         val primaryObstacles: List<ObstacleType>,
         val affectedHouses: List<Int>,
+        val affectedLifeAreas: List<AffectedLifeArea>,
         val dashaPeriods: List<BadhakaDashaPeriod>,
         val protectiveFactors: List<String>,
         val remedies: List<BadhakaRemedy>,
@@ -172,6 +182,11 @@ object BadhakaCalculator {
         // Identify affected houses
         val affectedHouses = identifyAffectedHouses(chart, badhakeshAnalysis, planetsInBadhaka)
 
+        // Calculate detailed life area impacts
+        val affectedLifeAreas = calculateLifeAreaImpacts(
+            chart, badhakeshAnalysis, planetsInBadhaka, badhakaHouse, affectedHouses
+        )
+
         // Analyze Dasha periods
         val dashaPeriods = analyzeBadhakaDashas(badhakeshAnalysis, planetsInBadhaka)
 
@@ -198,6 +213,7 @@ object BadhakaCalculator {
             overallSeverity = overallSeverity,
             primaryObstacles = primaryObstacles,
             affectedHouses = affectedHouses,
+            affectedLifeAreas = affectedLifeAreas,
             dashaPeriods = dashaPeriods,
             protectiveFactors = protectiveFactors,
             remedies = remedies,
@@ -496,6 +512,138 @@ object BadhakaCalculator {
         }
 
         return affected.toList().sorted()
+    }
+
+    /**
+     * Calculate detailed impact on specific life areas
+     */
+    private fun calculateLifeAreaImpacts(
+        chart: VedicChart,
+        badhakesh: BadhakaPlanet,
+        planetsInBadhaka: List<BadhakaPlanet>,
+        badhakaHouse: Int,
+        affectedHouses: List<Int>
+    ): List<AffectedLifeArea> {
+        val areas = mutableListOf<AffectedLifeArea>()
+
+        // 1. Career (10th House & Sun)
+        val careerImpact = calculateAreaImpact(
+            chart, listOf(10), Planet.SUN, badhakesh, planetsInBadhaka, affectedHouses
+        )
+        if (careerImpact > 20) {
+            areas.add(AffectedLifeArea(
+                area = "Career & Profession",
+                impactLevel = careerImpact,
+                description = getImpactDescription("Career", careerImpact)
+            ))
+        }
+
+        // 2. Health (1st House & 6th House & Moon)
+        val healthImpact = calculateAreaImpact(
+            chart, listOf(1, 6), Planet.MOON, badhakesh, planetsInBadhaka, affectedHouses
+        )
+        if (healthImpact > 20) {
+            areas.add(AffectedLifeArea(
+                area = "Health & Vitality",
+                impactLevel = healthImpact,
+                description = getImpactDescription("Health", healthImpact)
+            ))
+        }
+
+        // 3. Relationships (7th House & Venus)
+        val relImpact = calculateAreaImpact(
+            chart, listOf(7), Planet.VENUS, badhakesh, planetsInBadhaka, affectedHouses
+        )
+        if (relImpact > 20) {
+            areas.add(AffectedLifeArea(
+                area = "Relationships & Marriage",
+                impactLevel = relImpact,
+                description = getImpactDescription("Relationships", relImpact)
+            ))
+        }
+
+        // 4. Finance (2nd House & 11th House & Jupiter)
+        val financeImpact = calculateAreaImpact(
+            chart, listOf(2, 11), Planet.JUPITER, badhakesh, planetsInBadhaka, affectedHouses
+        )
+        if (financeImpact > 20) {
+            areas.add(AffectedLifeArea(
+                area = "Finance & Wealth",
+                impactLevel = financeImpact,
+                description = getImpactDescription("Finance", financeImpact)
+            ))
+        }
+
+        // 5. Spirituality (9th House & 12th House & Ketu)
+        val spiritualImpact = calculateAreaImpact(
+            chart, listOf(9, 12), Planet.KETU, badhakesh, planetsInBadhaka, affectedHouses
+        )
+        if (spiritualImpact > 20) {
+            areas.add(AffectedLifeArea(
+                area = "Spirituality & Inner Growth",
+                impactLevel = spiritualImpact,
+                description = getImpactDescription("Spirituality", spiritualImpact)
+            ))
+        }
+
+        return areas.sortedByDescending { it.impactLevel }
+    }
+
+    /**
+     * Calculate impact score for a specific area
+     */
+    private fun calculateAreaImpact(
+        chart: VedicChart,
+        houses: List<Int>,
+        karaka: Planet,
+        badhakesh: BadhakaPlanet,
+        planetsInBadhaka: List<BadhakaPlanet>,
+        affectedHouses: List<Int>
+    ): Int {
+        var score = 0.0
+
+        // Check if Badhakesh is in one of the key houses
+        if (badhakesh.position.house in houses) {
+            score += 30.0 + (badhakesh.severity.level * 5)
+        }
+
+        // Check if any planet in Badhaka house owns key houses
+        planetsInBadhaka.forEach { pb ->
+             // Note: In a full impl we'd check owned houses, here we approximate with aspects/position
+             if (pb.position.house in houses) score += 15.0 // unlikely as pb.house is fixed to badhakaHouse, but generic logic holds
+        }
+
+        // Check direct aspect of Badhakesh on key houses
+        badhakesh.aspects.forEach { aspectedHouse ->
+            if (aspectedHouse in houses) {
+                score += 20.0 + (badhakesh.severity.level * 3)
+            }
+        }
+
+        // Check if Karaka itself is the Badhakesh
+        if (badhakesh.planet == karaka) {
+            score += 25.0
+        }
+
+        // Check if Karaka is in Badhaka House
+        if (planetsInBadhaka.any { it.planet == karaka }) {
+            score += 25.0
+        }
+
+        // Overlap with generically affected houses
+        val houseOverlap = houses.intersect(affectedHouses.toSet()).size
+        score += houseOverlap * 10.0
+
+        return score.coerceIn(0.0, 95.0).toInt()
+    }
+
+    private fun getImpactDescription(area: String, score: Int): String {
+        return when {
+            score >= 75 -> "Critical obstruction in $area. Major delays and challenges expected."
+            score >= 50 -> "Significant hurdles in $area. Requires consistent effort and remedies."
+            score >= 30 -> "Moderate resistance in $area. Occasional setbacks likely."
+            else -> "Minor influence on $area."
+        }
     }
 
     /**

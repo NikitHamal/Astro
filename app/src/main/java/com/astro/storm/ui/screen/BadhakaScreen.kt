@@ -680,19 +680,16 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                 }
                 Spacer(modifier = Modifier.height(12.dp))
 
-                if (analysis.affectedHouses.isEmpty()) {
+                if (analysis.affectedLifeAreas.isEmpty()) {
                     Text(
                         text = stringResource(StringKeyDosha.BADHAKA_NO_AREAS),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted
                     )
                 } else {
-                     // TODO: Implement house impact display or removing this section if data insufficient
-                     Text(
-                        text = "Impacts Houses: " + analysis.affectedHouses.joinToString(", "),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = AppTheme.TextPrimary
-                     )
+                    analysis.affectedLifeAreas.forEach { area ->
+                        ObstacleAreaRow(area)
+                    }
                 }
             }
         }
@@ -739,73 +736,73 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
     }
 }
 
-// @Composable
-// private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
-//     val areaColor = when {
-//         area.impactLevel >= 70 -> AppTheme.ErrorColor
-//         area.impactLevel >= 50 -> AppTheme.WarningColor
-//         area.impactLevel >= 30 -> AppTheme.AccentGold
-//         else -> AppTheme.TextMuted
-//     }
-//
-//     Surface(
-//         modifier = Modifier
-//             .fillMaxWidth()
-//             .padding(vertical = 4.dp),
-//         shape = RoundedCornerShape(8.dp),
-//         color = AppTheme.CardBackgroundElevated
-//     ) {
-//         Column(
-//             modifier = Modifier
-//                 .fillMaxWidth()
-//                 .padding(12.dp)
-//         ) {
-//             Row(
-//                 modifier = Modifier.fillMaxWidth(),
-//                 horizontalArrangement = Arrangement.SpaceBetween,
-//                 verticalAlignment = Alignment.CenterVertically
-//             ) {
-//                 Text(
-//                     text = area.area,
-//                     style = MaterialTheme.typography.bodyMedium,
-//                     fontWeight = FontWeight.Medium,
-//                     color = AppTheme.TextPrimary
-//                 )
-//                 Surface(
-//                     shape = RoundedCornerShape(6.dp),
-//                     color = areaColor.copy(alpha = 0.15f)
-//                 ) {
-//                     Text(
-//                         text = "${area.impactLevel}%",
-//                         style = MaterialTheme.typography.labelSmall,
-//                         fontWeight = FontWeight.SemiBold,
-//                         color = areaColor,
-//                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-//                     )
-//                 }
-//             }
-//             Spacer(modifier = Modifier.height(4.dp))
-//             LinearProgressIndicator(
-//                 progress = { area.impactLevel / 100f },
-//                 modifier = Modifier
-//                     .fillMaxWidth()
-//                     .height(4.dp)
-//                     .clip(RoundedCornerShape(2.dp)),
-//                 color = areaColor,
-//                 trackColor = areaColor.copy(alpha = 0.2f),
-//                 strokeCap = StrokeCap.Round
-//             )
-//             if (area.description.isNotEmpty()) {
-//                 Spacer(modifier = Modifier.height(4.dp))
-//                 Text(
-//                     text = area.description,
-//                     style = MaterialTheme.typography.labelSmall,
-//                     color = AppTheme.TextMuted
-//                 )
-//             }
-//         }
-//     }
-// }
+@Composable
+private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
+    val areaColor = when {
+        area.impactLevel >= 70 -> AppTheme.ErrorColor
+        area.impactLevel >= 50 -> AppTheme.WarningColor
+        area.impactLevel >= 30 -> AppTheme.AccentGold
+        else -> AppTheme.TextMuted
+    }
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        shape = RoundedCornerShape(8.dp),
+        color = AppTheme.CardBackgroundElevated
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = area.area,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = AppTheme.TextPrimary
+                )
+                Surface(
+                    shape = RoundedCornerShape(6.dp),
+                    color = areaColor.copy(alpha = 0.15f)
+                ) {
+                    Text(
+                        text = "${area.impactLevel}%",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = areaColor,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            LinearProgressIndicator(
+                progress = { area.impactLevel / 100f },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(2.dp)),
+                color = areaColor,
+                trackColor = areaColor.copy(alpha = 0.2f),
+                strokeCap = StrokeCap.Round
+            )
+            if (area.description.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = area.description,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = AppTheme.TextMuted
+                )
+            }
+        }
+    }
+}
 
 @Composable
 private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
