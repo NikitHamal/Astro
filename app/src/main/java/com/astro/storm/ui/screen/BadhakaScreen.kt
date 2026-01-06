@@ -570,7 +570,7 @@ private fun BadhakaPlanetCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${badhaka.placedInSign.getLocalizedName(language)} • H${badhaka.placedInHouse}",
+                            text = "${badhaka.position.sign.getLocalizedName(language)} • H${badhaka.position.house}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -985,6 +985,7 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
         "Pilgrimage" -> AppTheme.LifeAreaHealth
         "Multi-fold" -> AppTheme.ErrorColor
         "Practice" -> AppTheme.LifeAreaSpiritual
+        "General" -> AppTheme.TextSecondary
         else -> AppTheme.TextSecondary
     }
 
@@ -1023,7 +1024,7 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
                 color = AppTheme.TextPrimary
             )
             Text(
-                text = (remedy.mantra ?: "").ifEmpty { remedy.charity },
+                text = (remedy.mantra ?: "").ifEmpty { remedy.charity ?: "" },
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary
             )

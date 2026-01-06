@@ -575,7 +575,7 @@ private fun MarakaPlanetCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${maraka.placedInSign.getLocalizedName(language)} • H${maraka.placedInHouse}",
+                            text = "${maraka.position.sign.getLocalizedName(language)} • H${maraka.position.house}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
