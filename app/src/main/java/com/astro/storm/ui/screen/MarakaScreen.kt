@@ -251,7 +251,7 @@ private fun MarakaOverviewSection(analysis: MarakaCalculator.MarakaAnalysis) {
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        LongevityStatusCard(analysis.longevity)
+        LongevityStatusCard(analysis.longevityAnalysis)
         MarakaQuickStats(analysis)
         MarakaInterpretationCard(analysis)
     }
@@ -353,7 +353,7 @@ private fun MarakaQuickStats(analysis: MarakaCalculator.MarakaAnalysis) {
         )
         MarakaStatCard(
             title = stringResource(StringKeyDosha.MARAKA_PERIODS),
-            value = "${analysis.criticalPeriods.size}",
+            value = "${analysis.dashaPeriods.size}",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
@@ -613,19 +613,18 @@ private fun MarakaPlanetCard(
                     HorizontalDivider(color = AppTheme.DividerColor)
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    maraka.marakaTypes.forEach { type ->
-                        Surface(
-                            shape = RoundedCornerShape(6.dp),
-                            color = AppTheme.ChipBackground,
-                            modifier = Modifier.padding(vertical = 2.dp)
-                        ) {
-                            Text(
-                                text = type.displayName,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.TextSecondary,
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                            )
-                        }
+                    // maraka.marakaTypes is just maraka.marakaType (single enum)
+                    Surface(
+                        shape = RoundedCornerShape(6.dp),
+                        color = AppTheme.ChipBackground,
+                        modifier = Modifier.padding(vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = maraka.marakaType.displayName,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = AppTheme.TextSecondary,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -636,21 +635,21 @@ private fun MarakaPlanetCard(
                         lineHeight = 20.sp
                     )
 
-                    if (maraka.afflictions.isNotEmpty()) {
+                    if (false) { // maraka.afflictions does not exist in MarakaPlanet
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = stringResource(StringKeyDosha.MARAKA_AFFLICTIONS),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.WarningColor
-                        )
-                        maraka.afflictions.take(3).forEach { affliction ->
-                            Text(
-                                text = "• $affliction",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.TextMuted
-                            )
-                        }
+//                        Text(
+//                            text = stringResource(StringKeyDosha.MARAKA_AFFLICTIONS),
+//                            style = MaterialTheme.typography.labelSmall,
+//                            fontWeight = FontWeight.SemiBold,
+//                            color = AppTheme.WarningColor
+//                        )
+//                        maraka.afflictions.take(3).forEach { affliction ->
+//                            Text(
+//                                text = "• $affliction",
+//                                style = MaterialTheme.typography.labelSmall,
+//                                color = AppTheme.TextMuted
+//                            )
+//                        }
                     }
                 }
             }
@@ -660,7 +659,7 @@ private fun MarakaPlanetCard(
 
 @Composable
 private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
-    val longevity = analysis.longevity
+    val longevity = analysis.longevityAnalysis
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -694,25 +693,24 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 LongevityMethodRow(
-                    method = stringResource(StringKeyDosha.MARAKA_AMSAYURDAYA),
-                    result = longevity.amsayurdayaResult,
-                    score = longevity.amsayurdayaScore
+                    method = stringResource(StringKeyDosha.MARAKA_AMSAYURDAYA), // Generalized title
+                    result = longevity.category.displayName,
+                    score = longevity.overallScore
                 )
-                LongevityMethodRow(
-                    method = stringResource(StringKeyDosha.MARAKA_PINDAYURDAYA),
-                    result = longevity.pindayurdayaResult,
-                    score = longevity.pindayurdayaScore
-                )
-                LongevityMethodRow(
-                    method = stringResource(StringKeyDosha.MARAKA_NISARGAYURDAYA),
-                    result = longevity.nisargayurdayaResult,
-                    score = longevity.nisargayurdayaScore
-                )
+//                LongevityMethodRow(
+//                    method = stringResource(StringKeyDosha.MARAKA_PINDAYURDAYA),
+//                    result = longevity.pindayurdayaResult,
+//                    score = longevity.pindayurdayaScore
+//                )
+//                LongevityMethodRow(
+//                    method = stringResource(StringKeyDosha.MARAKA_NISARGAYURDAYA),
+//                    result = longevity.nisargayurdayaResult,
+//                    score = longevity.nisargayurdayaScore
+//                )
             }
         }
 
-        // Factors Card
-        if (longevity.positiveFactors.isNotEmpty() || longevity.negativeFactors.isNotEmpty()) {
+        if (longevity.supportingFactors.isNotEmpty() || longevity.challengingFactors.isNotEmpty()) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -727,13 +725,13 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                     )
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    if (longevity.positiveFactors.isNotEmpty()) {
+                    if (longevity.supportingFactors.isNotEmpty()) {
                         Text(
                             text = stringResource(StringKeyDosha.MARAKA_POSITIVE),
                             style = MaterialTheme.typography.labelMedium,
                             color = AppTheme.SuccessColor
                         )
-                        longevity.positiveFactors.take(4).forEach { factor ->
+                        longevity.supportingFactors.take(4).forEach { factor ->
                             Row(
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -748,14 +746,14 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                         }
                     }
 
-                    if (longevity.negativeFactors.isNotEmpty()) {
+                    if (longevity.challengingFactors.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = stringResource(StringKeyDosha.MARAKA_NEGATIVE),
                             style = MaterialTheme.typography.labelMedium,
                             color = AppTheme.WarningColor
                         )
-                        longevity.negativeFactors.take(4).forEach { factor ->
+                        longevity.challengingFactors.take(4).forEach { factor ->
                             Row(
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -835,7 +833,7 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        if (analysis.criticalPeriods.isEmpty()) {
+        if (analysis.dashaPeriods.isEmpty()) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
@@ -889,7 +887,7 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
                     }
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    analysis.criticalPeriods.take(8).forEach { period ->
+                    analysis.dashaPeriods.take(8).forEach { period ->
                         MarakaDashaPeriodRow(period)
                     }
                 }
@@ -901,9 +899,9 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
 @Composable
 private fun MarakaDashaPeriodRow(period: MarakaCalculator.MarakaDashaPeriod) {
     val riskColor = when {
-        period.riskLevel >= 80 -> AppTheme.ErrorColor
-        period.riskLevel >= 60 -> AppTheme.WarningColor
-        period.riskLevel >= 40 -> AppTheme.AccentGold
+        period.riskLevel.level >= 4 -> AppTheme.ErrorColor
+        period.riskLevel.level >= 3 -> AppTheme.WarningColor
+        period.riskLevel.level >= 2 -> AppTheme.AccentGold
         else -> AppTheme.TextMuted
     }
 
@@ -923,16 +921,16 @@ private fun MarakaDashaPeriodRow(period: MarakaCalculator.MarakaDashaPeriod) {
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = period.periodName,
+                    text = "${period.planet.displayName} Period",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
-                Text(
-                    text = period.dateRange,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AppTheme.TextMuted
-                )
+//                Text(
+//                    text = period.dateRange,
+//                    style = MaterialTheme.typography.labelSmall,
+//                    color = AppTheme.TextMuted
+//                )
             }
             Surface(
                 shape = RoundedCornerShape(6.dp),
@@ -943,7 +941,7 @@ private fun MarakaDashaPeriodRow(period: MarakaCalculator.MarakaDashaPeriod) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    if (period.riskLevel >= 60) {
+                    if (period.riskLevel.level >= 3) {
                         Icon(
                             imageVector = Icons.Default.Warning,
                             contentDescription = null,
@@ -952,7 +950,7 @@ private fun MarakaDashaPeriodRow(period: MarakaCalculator.MarakaDashaPeriod) {
                         )
                     }
                     Text(
-                        text = "${period.riskLevel}%",
+                        text = "${period.riskLevel.level * 20}%",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = riskColor
@@ -1008,14 +1006,15 @@ private fun MarakaRemediesSection(analysis: MarakaCalculator.MarakaAnalysis) {
 
 @Composable
 private fun MarakaRemedyCard(remedy: MarakaCalculator.MarakaRemedy) {
-    val categoryColor = when (remedy.category) {
-        MarakaCalculator.RemedyCategory.MANTRA -> AppTheme.AccentGold
-        MarakaCalculator.RemedyCategory.GEMSTONE -> AppTheme.AccentPrimary
-        MarakaCalculator.RemedyCategory.CHARITY -> AppTheme.SuccessColor
-        MarakaCalculator.RemedyCategory.FASTING -> AppTheme.AccentTeal
-        MarakaCalculator.RemedyCategory.WORSHIP -> AppTheme.LifeAreaSpiritual
-        MarakaCalculator.RemedyCategory.YANTRA -> AppTheme.WarningColor
-        MarakaCalculator.RemedyCategory.LIFESTYLE -> AppTheme.LifeAreaHealth
+    val categoryColor = when (remedy.remedyType) {
+        "Mantra" -> AppTheme.AccentGold
+        "Gemstone" -> AppTheme.AccentPrimary
+        "Charity" -> AppTheme.SuccessColor
+        "Fasting" -> AppTheme.AccentTeal
+        "Worship" -> AppTheme.LifeAreaSpiritual
+        "Yantra" -> AppTheme.WarningColor
+        "Lifestyle" -> AppTheme.LifeAreaHealth
+        else -> AppTheme.TextSecondary
     }
 
     Card(
@@ -1033,33 +1032,33 @@ private fun MarakaRemedyCard(remedy: MarakaCalculator.MarakaRemedy) {
                     color = categoryColor.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = remedy.category.displayName,
+                        text = remedy.remedyType,
                         style = MaterialTheme.typography.labelSmall,
                         color = categoryColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
                 Text(
-                    text = remedy.forPlanet.displayName,
+                    text = remedy.planet?.displayName ?: stringResource(StringKeyDosha.UI_GENERAL),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = remedy.remedy,
+                text = remedy.description,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Text(
-                text = remedy.benefit,
+                text = remedy.mantra ?: remedy.charity ?: "",
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary
             )
-            if (remedy.timing.isNotEmpty()) {
+            if (!remedy.fasting.isNullOrEmpty()) {
                 Text(
-                    text = "${stringResource(StringKeyDosha.UI_TIMING)}: ${remedy.timing}",
+                    text = "${stringResource(StringKeyDosha.UI_TIMING)}: ${remedy.fasting}",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted,
                     modifier = Modifier.padding(top = 4.dp)

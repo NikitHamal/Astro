@@ -328,7 +328,7 @@ private fun OverallDispositionCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
             }
             Spacer(modifier = Modifier.height(4.dp))
 
-            val ishtaRatio = (analysis.overallIshtaScore / (analysis.overallIshtaScore + analysis.overallKashtaScore)).coerceIn(0f, 1f).toFloat()
+            val ishtaRatio = (analysis.overallIshtaScore / (analysis.overallIshtaScore + analysis.overallKashtaScore)).coerceIn(0.0, 1.0).toFloat()
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -668,7 +668,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                 ) {
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth((phala.ishtaPercentage / 100f).toFloat())
+                            .fillMaxWidth((phala.ishtaPercentage / 100.0).toFloat())
                             .height(6.dp)
                             .clip(RoundedCornerShape(3.dp))
                             .background(AppTheme.SuccessColor)
@@ -888,7 +888,7 @@ private fun LifeAreaImpactRow(impact: IshtaKashtaPhalaCalculator.LifeAreaImpact)
 
             Spacer(modifier = Modifier.height(4.dp))
             LinearProgressIndicator(
-                progress = { ((impact.netScore + 8) / 16f).coerceIn(0f, 1f).toFloat() },
+                progress = { ((impact.netScore + 8) / 16.0).coerceIn(0.0, 1.0).toFloat() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp)
