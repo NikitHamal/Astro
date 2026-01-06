@@ -38,9 +38,11 @@ import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.Stars
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.Timeline
+import androidx.compose.material.icons.outlined.Balance
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.Brightness2
 import androidx.compose.material.icons.outlined.Psychology
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -631,6 +633,34 @@ enum class InsightFeature(
         descriptionKey = StringKey.FEATURE_AVASTHA_DESC,
         icon = Icons.Outlined.Psychology,
         color = DarkAppThemeColors.AccentPrimary,
+        isImplemented = true
+    ),
+    MARAKA(
+        titleKey = StringKey.FEATURE_MARAKA,
+        descriptionKey = StringKey.FEATURE_MARAKA_DESC,
+        icon = Icons.Outlined.Warning,
+        color = DarkAppThemeColors.ErrorColor,
+        isImplemented = true
+    ),
+    BADHAKA(
+        titleKey = StringKey.FEATURE_BADHAKA,
+        descriptionKey = StringKey.FEATURE_BADHAKA_DESC,
+        icon = Icons.Outlined.Block,
+        color = DarkAppThemeColors.WarningColor,
+        isImplemented = true
+    ),
+    VIPAREETA_RAJA_YOGA(
+        titleKey = StringKey.FEATURE_VIPAREETA_RAJA_YOGA,
+        descriptionKey = StringKey.FEATURE_VIPAREETA_RAJA_YOGA_DESC,
+        icon = Icons.Outlined.Stars,
+        color = DarkAppThemeColors.LifeAreaSpiritual,
+        isImplemented = true
+    ),
+    ISHTA_KASHTA_PHALA(
+        titleKey = StringKey.FEATURE_ISHTA_KASHTA_PHALA,
+        descriptionKey = StringKey.FEATURE_ISHTA_KASHTA_PHALA_DESC,
+        icon = Icons.Outlined.Balance,
+        color = DarkAppThemeColors.AccentGold,
         isImplemented = true
     );
 

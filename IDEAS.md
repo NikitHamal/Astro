@@ -652,19 +652,24 @@ Implement detailed Dasha Sandhi analysis - the critical transition periods betwe
 
 ---
 
-## 27. Maraka (Death-Inflicting) Analysis
+## 27. Maraka (Death-Inflicting) Analysis ✅ IMPLEMENTED
 
 ### Description
 Implement comprehensive Maraka analysis - identification of planets and periods that can cause health issues, accidents, or critical life events based on 2nd and 7th house lordship.
 
 ### Implementation Details
-- Primary Maraka identification (2nd and 7th lords)
-- Secondary Maraka analysis (planets in 2nd/7th)
-- Maraka Dasha period calculation
-- Longevity category determination (Alpayu, Madhyayu, Poornayu)
-- Maraka activation transit tracking
-- Protective planet identification (Ayush Karaka)
-- Remedial measures for Maraka periods
+- ✅ Primary Maraka identification (2nd and 7th lords)
+- ✅ Secondary Maraka analysis (planets in 2nd/7th)
+- ✅ Maraka Dasha period calculation
+- ✅ Longevity category determination (Alpayu, Madhyayu, Poornayu)
+- ✅ Maraka activation transit tracking
+- ✅ Protective planet identification (Ayush Karaka)
+- ✅ Remedial measures for Maraka periods
+- ✅ Complete UI with Overview, Analysis, Timing, and Remedies tabs
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/MarakaCalculator.kt`
+`/app/src/main/java/com/astro/storm/ui/screen/MarakaScreen.kt`
 
 ### Vedic References
 - BPHS (Ayurdaya chapter)
@@ -672,21 +677,26 @@ Implement comprehensive Maraka analysis - identification of planets and periods 
 
 ---
 
-## 28. Badhaka (Obstruction) Planet Analysis
+## 28. Badhaka (Obstruction) Planet Analysis ✅ IMPLEMENTED
 
 ### Description
 Implement Badhaka Sthana and Badhakesh analysis - identifying the houses and planets that create obstacles in life based on the type of Lagna (movable, fixed, dual).
 
 ### Implementation Details
-- Badhaka Sthana determination by Lagna type:
-  - Movable signs: 11th house is Badhaka
-  - Fixed signs: 9th house is Badhaka
-  - Dual signs: 7th house is Badhaka
-- Badhakesh strength and affliction analysis
-- Badhaka Dasha effects prediction
-- Obstacle patterns in specific life areas
-- Transit of Badhakesh impact
-- Remedies for Badhaka planet affliction
+- ✅ Badhaka Sthana determination by Lagna type:
+  - ✅ Movable signs: 11th house is Badhaka
+  - ✅ Fixed signs: 9th house is Badhaka
+  - ✅ Dual signs: 7th house is Badhaka
+- ✅ Badhakesh strength and affliction analysis
+- ✅ Badhaka Dasha effects prediction
+- ✅ Obstacle patterns in specific life areas
+- ✅ Transit of Badhakesh impact
+- ✅ Remedies for Badhaka planet affliction
+- ✅ Complete UI with Overview, Analysis, Timing, and Remedies tabs
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/BadhakaCalculator.kt`
+`/app/src/main/java/com/astro/storm/ui/screen/BadhakaScreen.kt`
 
 ### Vedic References
 - Phaladeepika
@@ -694,19 +704,25 @@ Implement Badhaka Sthana and Badhakesh analysis - identifying the houses and pla
 
 ---
 
-## 29. Vipareeta Raja Yoga Analysis
+## 29. Vipareeta Raja Yoga Analysis ✅ IMPLEMENTED
 
 ### Description
 Implement detailed analysis of Vipareeta Raja Yoga - the yoga formed when dusthana lords (6th, 8th, 12th) occupy other dusthanas, converting negative energy into success.
 
 ### Implementation Details
-- Vipareeta Raja Yoga detection in birth chart
-- Three types: Harsha (6L), Sarala (8L), Vimala (12L)
-- Yoga strength calculation based on planet dignity
-- Dasha periods when yoga activates
-- Life areas benefited by specific yoga type
-- Conditions that strengthen or weaken the yoga
-- Transit triggers for yoga activation
+- ✅ Vipareeta Raja Yoga detection in birth chart
+- ✅ Three types: Harsha (6L), Sarala (8L), Vimala (12L)
+- ✅ Yoga strength calculation based on planet dignity
+- ✅ Dasha periods when yoga activates
+- ✅ Life areas benefited by specific yoga type
+- ✅ Conditions that strengthen or weaken the yoga
+- ✅ Transit triggers for yoga activation
+- ✅ Strengthening and weakening factors analysis
+- ✅ Complete UI with Overview, Analysis, and Timing tabs
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/VipareetaRajaYogaCalculator.kt`
+`/app/src/main/java/com/astro/storm/ui/screen/VipareetaRajaYogaScreen.kt`
 
 ### Vedic References
 - BPHS on Vipareeta Raja Yoga
@@ -803,11 +819,11 @@ Implement detection of Kemadruma Yoga (Moon without planetary support) and its v
 | High | Ashtavarga Transit Predictions | Medium | High | Pending |
 | High | Gochara Vedha System | Medium | High | ✅ DONE |
 | High | Dasha Sandhi Analysis | Medium | High | ✅ DONE |
-| High | Panch Mahapurusha Yoga | Low | High | Pending |
+| High | Panch Mahapurusha Yoga | Low | High | ✅ DONE |
 | High | Tarabala/Chandrabala | Low | High | ✅ DONE |
-| Medium | Maraka Analysis | Medium | Medium | Pending |
-| Medium | Badhaka Planet Analysis | Medium | Medium | Pending |
-| Medium | Vipareeta Raja Yoga | Low | Medium | Pending |
+| Medium | Maraka Analysis | Medium | Medium | ✅ DONE |
+| Medium | Badhaka Planet Analysis | Medium | Medium | ✅ DONE |
+| Medium | Vipareeta Raja Yoga | Low | Medium | ✅ DONE |
 | Medium | Kemadruma Yoga Analysis | Low | Medium | ✅ DONE |
 | Medium | Shoola Dasha | High | Medium | Pending |
 | Medium | Kakshya Transit System | Medium | Medium | Pending |
@@ -873,20 +889,26 @@ Implement the nine planetary states (Avasthas) that significantly modify a plane
 
 ---
 
-## 35. Ishta Phala and Kashta Phala (Desirable/Undesirable Results)
+## 35. Ishta Phala and Kashta Phala (Desirable/Undesirable Results) ✅ IMPLEMENTED
 
 ### Description
 Implement the classical calculation of Ishta Phala (beneficial results) and Kashta Phala (malefic results) for each planet - essential for determining actual planet effectiveness.
 
 ### Implementation Details
-- Calculate Uchcha Bala (exaltation strength)
-- Calculate Chestha Bala (motional strength)
-- Ishta Phala = (Uchcha Bala + Chestha Bala) / 2
-- Kashta Phala = 60 - Ishta Phala
-- Net effect determination for each planet
-- House lordship impact assessment
-- Dasha result modification based on Ishta/Kashta
-- Comparative planet ranking by net benefit
+- ✅ Calculate Uchcha Bala (exaltation strength)
+- ✅ Calculate Chestha Bala (motional strength)
+- ✅ Ishta Phala = (Uchcha Bala + Chestha Bala) / 2
+- ✅ Kashta Phala = 60 - Ishta Phala
+- ✅ Net effect determination for each planet
+- ✅ House lordship impact assessment
+- ✅ Dasha result modification based on Ishta/Kashta
+- ✅ Comparative planet ranking by net benefit
+- ✅ Visual comparison bars for Ishta vs Kashta
+- ✅ Complete UI with Overview, By Planet, and Summary tabs
+
+### Implementation Location
+`/app/src/main/java/com/astro/storm/ephemeris/IshtaKashtaPhalaCalculator.kt`
+`/app/src/main/java/com/astro/storm/ui/screen/IshtaKashtaPhalaScreen.kt`
 
 ### Vedic References
 - BPHS Shadbala chapter
@@ -1111,11 +1133,11 @@ Implement the 27 Nitya Yogas formed by Sun-Moon combination, essential for Panch
 
 | Priority | Feature | Complexity | Impact | Status |
 |----------|---------|------------|--------|--------|
-| High | Arudha Pada System | Medium | High | Pending |
-| High | Nitya Yoga Calculator | Low | High | Pending |
-| High | Graha Yuddha Analysis | Medium | High | Pending |
-| High | Avastha Calculator | Medium | High | Pending |
-| Medium | Ishta/Kashta Phala | Medium | Medium | Pending |
+| High | Arudha Pada System | Medium | High | ✅ DONE |
+| High | Nitya Yoga Calculator | Low | High | ✅ DONE |
+| High | Graha Yuddha Analysis | Medium | High | ✅ DONE |
+| High | Avastha Calculator | Medium | High | ✅ DONE |
+| Medium | Ishta/Kashta Phala | Medium | Medium | ✅ DONE |
 | Medium | Drig Bala | Medium | Medium | Pending |
 | Medium | Sthana Bala | Medium | Medium | Pending |
 | Medium | Kala Bala | High | Medium | Pending |

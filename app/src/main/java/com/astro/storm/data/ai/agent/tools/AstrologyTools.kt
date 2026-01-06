@@ -2388,6 +2388,16 @@ class GetBadhakaAnalysisTool : AstrologyTool {
 
                 put("affectedHouses", JSONArray(result.affectedHouses))
 
+                put("affectedLifeAreas", JSONArray().apply {
+                    result.affectedLifeAreas.forEach { area ->
+                        put(JSONObject().apply {
+                            put("area", area.area)
+                            put("impactLevel", area.impactLevel)
+                            put("description", area.description)
+                        })
+                    }
+                })
+
                 put("dashaPeriods", JSONArray().apply {
                     result.dashaPeriods.take(5).forEach { period ->
                         put(JSONObject().apply {
