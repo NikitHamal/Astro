@@ -55,7 +55,21 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build Release APK
-        run: ./gradlew --no-daemon --stacktrace --build-cache assembleRelease
+        run: |
+          # Retry logic for transient network errors (403)
+          count=0
+          max_attempts=3
+          until [ $count -ge $max_attempts ]
+          do
+             ./gradlew --no-daemon --stacktrace --build-cache assembleRelease && break
+             count=$((count+1))
+             echo "Build failed. Retrying in 30 seconds... (Attempt $count/$max_attempts)"
+             sleep 30
+          done
+          if [ $count -ge $max_attempts ]; then
+             echo "Build failed after $max_attempts attempts."
+             exit 1
+          fi
         env:
           GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=true"
 

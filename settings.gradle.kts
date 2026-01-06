@@ -3,13 +3,9 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-    }
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id == "com.google.devtools.ksp") {
-                useModule("com.google.devtools.ksp:symbol-processing-gradle-plugin:${requested.version}")
-            }
-        }
+        // Fallback Maven mirrors for CI stability
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+        maven { url = uri("https://maven.aliyun.com/repository/central") }
     }
 }
 dependencyResolutionManagement {
@@ -17,8 +13,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // Fallback Maven mirrors for CI stability
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+        maven { url = uri("https://maven.aliyun.com/repository/central") }
     }
 }
 
 rootProject.name = "AstroStorm"
 include(":app")
+
