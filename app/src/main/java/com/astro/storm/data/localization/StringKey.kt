@@ -170,6 +170,14 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     FEATURE_NITYA_YOGA_DESC("27 daily yogas", "२७ दैनिक योगहरू"),
     FEATURE_AVASTHA("Avastha", "अवस्था"),
     FEATURE_AVASTHA_DESC("Planetary states analysis", "ग्रह अवस्था विश्लेषण"),
+    FEATURE_MARAKA("Maraka", "मारक"),
+    FEATURE_MARAKA_DESC("Death-inflicting planets", "मृत्यु कारक ग्रहहरू"),
+    FEATURE_BADHAKA("Badhaka", "बाधक"),
+    FEATURE_BADHAKA_DESC("Obstructing planets", "बाधा कारक ग्रहहरू"),
+    FEATURE_VIPAREETA_RAJA_YOGA("Vipareeta Raja Yoga", "विपरीत राजयोग"),
+    FEATURE_VIPAREETA_RAJA_YOGA_DESC("Reverse raja yogas", "विपरीत राजयोग विश्लेषण"),
+    FEATURE_ISHTA_KASHTA_PHALA("Ishta Kashta Phala", "इष्ट कष्ट फल"),
+    FEATURE_ISHTA_KASHTA_PHALA_DESC("Benefic/malefic results", "शुभ/अशुभ फल विश्लेषण"),
 
     // Predictions Screen - Tabs
     PREDICTIONS_TAB_OVERVIEW("Overview", "सारांश"),

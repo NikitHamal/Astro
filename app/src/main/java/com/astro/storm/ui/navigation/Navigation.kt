@@ -50,6 +50,10 @@ import com.astro.storm.ui.screen.KemadrumaYogaScreen
 import com.astro.storm.ui.screen.PanchMahapurushaScreen
 import com.astro.storm.ui.screen.NityaYogaScreen
 import com.astro.storm.ui.screen.AvasthaScreen
+import com.astro.storm.ui.screen.MarakaScreen
+import com.astro.storm.ui.screen.BadhakaScreen
+import com.astro.storm.ui.screen.VipareetaRajaYogaScreen
+import com.astro.storm.ui.screen.IshtaKashtaPhalaScreen
 import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
@@ -204,6 +208,26 @@ sealed class Screen(val route: String) {
     // Avastha (Planetary States) screen
     object Avastha : Screen("avastha/{chartId}") {
         fun createRoute(chartId: Long) = "avastha/$chartId"
+    }
+
+    // Maraka (Death-Inflicting Planets) screen
+    object Maraka : Screen("maraka/{chartId}") {
+        fun createRoute(chartId: Long) = "maraka/$chartId"
+    }
+
+    // Badhaka (Obstructing Planets) screen
+    object Badhaka : Screen("badhaka/{chartId}") {
+        fun createRoute(chartId: Long) = "badhaka/$chartId"
+    }
+
+    // Vipareeta Raja Yoga (Reverse Raja Yogas) screen
+    object VipareetaRajaYoga : Screen("vipareeta_raja_yoga/{chartId}") {
+        fun createRoute(chartId: Long) = "vipareeta_raja_yoga/$chartId"
+    }
+
+    // Ishta Kashta Phala (Benefic/Malefic Results) screen
+    object IshtaKashtaPhala : Screen("ishta_kashta_phala/{chartId}") {
+        fun createRoute(chartId: Long) = "ishta_kashta_phala/$chartId"
     }
 
     // AI Models configuration screen
@@ -447,6 +471,26 @@ fun AstroStormNavigation(
                 onNavigateToAvastha = {
                     selectedChartId?.let { chartId ->
                         navController.navigate(Screen.Avastha.createRoute(chartId))
+                    }
+                },
+                onNavigateToMaraka = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.Maraka.createRoute(chartId))
+                    }
+                },
+                onNavigateToBadhaka = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.Badhaka.createRoute(chartId))
+                    }
+                },
+                onNavigateToVipareetaRajaYoga = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.VipareetaRajaYoga.createRoute(chartId))
+                    }
+                },
+                onNavigateToIshtaKashtaPhala = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.IshtaKashtaPhala.createRoute(chartId))
                     }
                 },
                 onNavigateToAiModels = {
@@ -1219,6 +1263,82 @@ fun AstroStormNavigation(
             }
 
             AvasthaScreen(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Maraka (Death-Inflicting Planets) screen
+        composable(
+            route = Screen.Maraka.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            MarakaScreen(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Badhaka (Obstructing Planets) screen
+        composable(
+            route = Screen.Badhaka.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            BadhakaScreen(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Vipareeta Raja Yoga (Reverse Raja Yogas) screen
+        composable(
+            route = Screen.VipareetaRajaYoga.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            VipareetaRajaYogaScreen(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Ishta Kashta Phala (Benefic/Malefic Results) screen
+        composable(
+            route = Screen.IshtaKashtaPhala.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            IshtaKashtaPhalaScreen(
                 chart = currentChart,
                 onBack = { navController.popBackStack() }
             )
