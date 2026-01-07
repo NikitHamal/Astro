@@ -44,7 +44,9 @@ import com.astro.storm.data.model.CompatibilityRating
 import com.astro.storm.data.model.GunaAnalysis
 import com.astro.storm.data.model.ManglikAnalysis
 import com.astro.storm.data.model.ManglikDosha
+import com.astro.storm.data.model.ManglikCompatibilityLevel
 import com.astro.storm.data.model.MatchmakingResult
+import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import com.astro.storm.ui.theme.AppTheme

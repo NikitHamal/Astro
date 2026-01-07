@@ -1097,7 +1097,7 @@ class CompatibilityDeepDiveWrapper {
                     groomIsManglik = result.groomManglik.effectiveDosha != com.astro.storm.data.model.ManglikDosha.NONE,
                     brideManglikStrength = result.brideManglik.effectiveDosha.displayName,
                     groomManglikStrength = result.groomManglik.effectiveDosha.displayName,
-                    manglikCompatibility = result.manglikCompatibility
+                    manglikCompatibility = result.manglikCompatibilityRecommendation
                 ),
                 additionalFactors = AdditionalFactorsResult(
                     vedhaPresent = result.additionalFactors.vedhaPresent,

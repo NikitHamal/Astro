@@ -1589,47 +1589,7 @@ private fun KeyDatesCard(result: VarshaphalaResult) {
                             )
                         }
                     }
-                    result.keyDateRanges.forEach { dateRange ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 6.dp),
-                            verticalAlignment = Alignment.Top
-                        ) {
-                            val color = when (dateRange.type) {
-                                KeyDateType.FAVORABLE -> AppTheme.SuccessColor
-                                KeyDateType.CHALLENGING -> AppTheme.WarningColor
-                                KeyDateType.IMPORTANT -> AppTheme.AccentPrimary
-                                KeyDateType.TRANSIT -> AppTheme.AccentGold
-                            }
 
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .background(color, CircleShape)
-                                    .align(Alignment.CenterVertically)
-                            )
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    dateRange.event,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Medium,
-                                    color = AppTheme.TextPrimary
-                                )
-                                Text(
-                                    dateRange.description,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = AppTheme.TextSecondary
-                                )
-                            }
-                            Text(
-                                stringResource(StringKeyAnalysis.VARSHAPHALA_YEAR_RANGE, dateRange.start.format(shortDateFormatter), dateRange.end.format(shortDateFormatter)),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.TextMuted
-                            )
-                        }
-                    }
                 }
             }
         }
@@ -2126,7 +2086,7 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                         }
                     }
                     Text(
-                        "${period.startDate.format(dateFormatter)} - ${period.endDate.format(dateFormatter)}",
+                        "${period.startDate.format(shortDateFormatter)} - ${period.endDate.format(shortDateFormatter)}",
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )

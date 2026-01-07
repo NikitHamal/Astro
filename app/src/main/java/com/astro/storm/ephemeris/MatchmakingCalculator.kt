@@ -103,7 +103,7 @@ object MatchmakingCalculator {
             rating = rating,
             brideManglik = brideManglik,
             groomManglik = groomManglik,
-            manglikCompatibilityLevel = manglikCompatibilityAnalysis.compatibilityLevel,
+            manglikCompatibilityLevel = ManglikCompatibilityLevel.valueOf(manglikCompatibilityAnalysis.compatibilityLevel.name),
             manglikCompatibilityRecommendation = manglikCompatibility,
             additionalFactors = additionalFactors,
             specialConsiderations = specialConsiderations,
@@ -476,8 +476,8 @@ object MatchmakingCalculator {
             appendLine("${StringResources.get(StringKeyMatch.SUMMARY_ADDITIONAL, language)}:")
             appendLine("  ${StringResources.get(StringKeyMatch.MATCH_VEDHA_ANALYSIS, language)}: ${if (additionalFactors.vedhaPresent) StringResources.get(StringKeyMatch.PRESENT, language) else StringResources.get(StringKeyMatch.NOT_PRESENT, language)}")
             appendLine("  ${StringResources.get(StringKeyMatch.MATCH_RAJJU_MATCHING, language)}: ${if (additionalFactors.rajjuCompatible) StringResources.get(StringKeyMatch.COMPATIBLE, language) else StringResources.get(StringKeyMatch.SAME_RAJJU, language)}")
-            appendLine("  ${StringResources.get(StringKeyMatch.STREE_DEERGHA, language)}: ${if (additionalFactors.streeDeerghaSatisfied) StringResources.get(StringKeyMatch.SATISFIED, language) else StringResources.get(StringKeyMatch.NOT_SATISFIED, language)}")
-            appendLine("  ${StringResources.get(StringKeyMatch.MAHENDRA, language)}: ${if (additionalFactors.mahendraSatisfied) StringResources.get(StringKeyMatch.FAVORABLE, language) else StringResources.get(StringKeyMatch.NOT_APPLICABLE, language)}")
+            appendLine("  ${StringResources.get(StringKeyMatch.MATCH_STREE_DEERGHA, language)}: ${if (additionalFactors.streeDeerghaSatisfied) StringResources.get(StringKeyMatch.SATISFIED, language) else StringResources.get(StringKeyMatch.NOT_SATISFIED, language)}")
+            appendLine("  ${StringResources.get(StringKeyMatch.MATCH_MAHENDRA, language)}: ${if (additionalFactors.mahendraSatisfied) StringResources.get(StringKeyMatch.FAVORABLE, language) else StringResources.get(StringKeyMatch.NOT_APPLICABLE, language)}")
 
             appendLine()
             appendLine("─────────────────────────────────────────────────────────────")
@@ -555,12 +555,12 @@ object MatchmakingCalculator {
             appendLine("─────────────────────────────────────────────────────────────────────")
             appendLine()
 
-            appendLine("${StringResources.get(StringKeyMatch.VEDHA_ANALYSIS, language).uppercase()} (${StringResources.get(StringKeyMatch.OBSTRUCTION, language)})")
+            appendLine("${StringResources.get(StringKeyMatch.MATCH_VEDHA_ANALYSIS, language).uppercase()} (${StringResources.get(StringKeyMatch.OBSTRUCTION, language)})")
             appendLine("  ${StringResources.get(StringKeyMatch.STATUS, language)}: ${if (additionalFactors.vedhaPresent) StringResources.get(StringKeyMatch.PRESENT, language) else StringResources.get(StringKeyMatch.NOT_PRESENT, language)}")
             appendLine("  ${StringResources.get(StringKeyMatch.DETAILS, language)}: ${additionalFactors.vedhaDetails}")
             appendLine()
 
-            appendLine("${StringResources.get(StringKeyMatch.RAJJU_MATCHING, language).uppercase()} (${StringResources.get(StringKeyMatch.COSMIC_BOND, language)})")
+            appendLine("${StringResources.get(StringKeyMatch.MATCH_RAJJU_MATCHING, language).uppercase()} (${StringResources.get(StringKeyMatch.COSMIC_BOND, language)})")
             appendLine("  ${StringResources.get(StringKeyMatch.BRIDE, language)}: ${additionalFactors.brideRajju.getLocalizedName(language)} (${additionalFactors.brideRajju.getLocalizedBodyPart(language)})")
             appendLine("  ${StringResources.get(StringKeyMatch.GROOM, language)}: ${additionalFactors.groomRajju.getLocalizedName(language)} (${additionalFactors.groomRajju.getLocalizedBodyPart(language)})")
             appendLine("  ${StringResources.get(StringKeyMatch.STATUS, language)}: ${if (additionalFactors.rajjuCompatible) StringResources.get(StringKeyMatch.COMPATIBLE, language) else StringResources.get(StringKeyMatch.SAME_RAJJU, language)}")
@@ -569,12 +569,12 @@ object MatchmakingCalculator {
             }
             appendLine()
 
-            appendLine("${StringResources.get(StringKeyMatch.STREE_DEERGHA, language).uppercase()} (${StringResources.get(StringKeyMatch.WIFE_PROSPERITY, language)})")
+            appendLine("${StringResources.get(StringKeyMatch.MATCH_STREE_DEERGHA, language).uppercase()} (${StringResources.get(StringKeyMatch.WIFE_PROSPERITY, language)})")
             appendLine("  ${StringResources.get(StringKeyMatch.NAKSHATRA_DIFF, language)}: ${additionalFactors.streeDeerghaDiff}")
             appendLine("  ${StringResources.get(StringKeyMatch.STATUS, language)}: ${if (additionalFactors.streeDeerghaSatisfied) StringResources.get(StringKeyMatch.SATISFIED, language) else StringResources.get(StringKeyMatch.NOT_SATISFIED, language)}")
             appendLine()
 
-            appendLine("${StringResources.get(StringKeyMatch.MAHENDRA, language).uppercase()} (${StringResources.get(StringKeyMatch.LONGEVITY_PROSPERITY, language)})")
+            appendLine("${StringResources.get(StringKeyMatch.MATCH_MAHENDRA, language).uppercase()} (${StringResources.get(StringKeyMatch.LONGEVITY_PROSPERITY, language)})")
             appendLine("  ${StringResources.get(StringKeyMatch.STATUS, language)}: ${if (additionalFactors.mahendraSatisfied) StringResources.get(StringKeyMatch.FAVORABLE, language) else StringResources.get(StringKeyMatch.NOT_APPLICABLE, language)}")
             appendLine("  ${StringResources.get(StringKeyMatch.DETAILS, language)}: ${additionalFactors.mahendraDetails}")
             appendLine()

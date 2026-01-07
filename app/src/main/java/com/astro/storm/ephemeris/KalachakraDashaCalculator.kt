@@ -1116,7 +1116,7 @@ object KalachakraDashaCalculator {
         language: Language
     ): String {
         return buildString {
-            append("${antardashaSign.localizedName(language)} ${StringResources.get(StringKeyDosha.SUDARSHANA_FOCUS_GENERAL, language)} ${StringResources.get(StringKeyDosha.FROM_LABEL, language)} ${mahadashaSign.localizedName(language)}: ")
+            append("${antardashaSign.getLocalizedName(language)} ${StringResources.get(StringKeyDosha.SUDARSHANA_FOCUS_GENERAL, language)} ${StringResources.get(StringKeyDosha.FROM_LABEL, language)} ${mahadashaSign.getLocalizedName(language)}: ")
 
             if (isDeha) {
                 append(StringResources.get(StringKeyDosha.KALACHAKRA_DEHA_ANALYSIS, language))
@@ -1127,7 +1127,7 @@ object KalachakraDashaCalculator {
                 append(". ")
             }
             if (!isDeha && !isJeeva) {
-                append("${StringResources.get(StringKeyDosha.SUDARSHANA_FOCUS_GENERAL, language)} ${antardashaSign.localizedName(language)}. ")
+                append("${StringResources.get(StringKeyDosha.SUDARSHANA_FOCUS_GENERAL, language)} ${antardashaSign.getLocalizedName(language)}. ")
             }
 
             append(getSignBriefEffect(antardashaSign, language))

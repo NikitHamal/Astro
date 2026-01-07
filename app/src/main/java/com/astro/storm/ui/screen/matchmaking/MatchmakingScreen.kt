@@ -1156,7 +1156,8 @@ private fun GunaSummaryHeader(result: MatchmakingResult) {
 @Composable
 private fun AnimatedGunaCard(
     guna: GunaAnalysis,
-    index: Int
+    index: Int,
+    language: Language = currentLanguage()
 ) {
     var visible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {

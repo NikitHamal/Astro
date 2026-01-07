@@ -4,8 +4,6 @@ import android.content.Context
 import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.BikramSambatConverter
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyAnalysis
 import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.model.BirthData
 import com.astro.storm.data.model.HouseSystem
@@ -722,7 +720,7 @@ class PrashnaCalculator(context: Context) {
                 COMBUSTION -> StringKeyAnalysis.PRASHNA_OMEN_COMBUSTION
                 RETROGRADE -> StringKeyAnalysis.PRASHNA_OMEN_RETROGRADE
                 GANDANTA -> StringKeyAnalysis.PRASHNA_OMEN_GANDANTA
-                PUSHKARA -> StringKeyAnalysis.PRASHNA_OMEN_PUSHKARA
+                PUSHKARA -> StringKeyAnalysis.PRASHNA_PUSHKARA
             }
             return StringResources.get(key, language)
         }
