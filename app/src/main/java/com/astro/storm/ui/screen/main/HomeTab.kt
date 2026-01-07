@@ -676,6 +676,13 @@ enum class InsightFeature(
         icon = Icons.Outlined.BarChart,
         color = DarkAppThemeColors.AccentTeal,
         isImplemented = true
+    ),
+    KAKSHYA_TRANSIT(
+        titleKey = StringKey.FEATURE_KAKSHYA_TRANSIT,
+        descriptionKey = StringKey.FEATURE_KAKSHYA_TRANSIT_DESC,
+        icon = Icons.Outlined.Speed,
+        color = DarkAppThemeColors.AccentPrimary,
+        isImplemented = true
     );
 
     /**

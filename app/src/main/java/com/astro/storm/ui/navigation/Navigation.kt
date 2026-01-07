@@ -23,6 +23,7 @@ import com.astro.storm.ui.screen.MuhurtaScreen
 import com.astro.storm.ui.screen.NakshatraScreen
 import com.astro.storm.ui.screen.panchanga.PanchangaScreenRedesigned
 import com.astro.storm.ui.screen.PlanetsScreen
+import com.astro.storm.ui.screen.NadiAmshaScreen
 import com.astro.storm.ui.screen.PrashnaScreen
 import com.astro.storm.ui.screen.PredictionsScreen
 import com.astro.storm.ui.screen.RemediesScreen
@@ -56,6 +57,7 @@ import com.astro.storm.ui.screen.VipareetaRajaYogaScreen
 import com.astro.storm.ui.screen.IshtaKashtaPhalaScreen
 import com.astro.storm.ui.screen.ShoolaDashaScreen
 import com.astro.storm.ui.screen.AshtavargaTransitScreen
+import com.astro.storm.ui.screen.KakshaTransitScreen
 import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
@@ -242,6 +244,15 @@ sealed class Screen(val route: String) {
         fun createRoute(chartId: Long) = "ashtavarga_transit/$chartId"
     }
 
+    object NadiAmsha : Screen("nadi_amsha/{chartId}") {
+        fun createRoute(chartId: Long) = "nadi_amsha/$chartId"
+    }
+
+    // Kakshya Transit (8-fold division) screen
+    object KakshaTransit : Screen("kaksha_transit/{chartId}") {
+        fun createRoute(chartId: Long) = "kaksha_transit/$chartId"
+    }
+
     // AI Models configuration screen
     object AiModels : Screen("ai_models")
 
@@ -361,6 +372,16 @@ fun AstroStormNavigation(
                 },
                 onNavigateToProfileEdit = { chartId ->
                     navController.navigate(Screen.ProfileEdit.createRoute(chartId))
+                },
+                onNavigateToKakshaTransit = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.KakshaTransit.createRoute(chartId))
+                    }
+                },
+                onNavigateToNadiAmsha = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.NadiAmsha.createRoute(chartId))
+                    }
                 },
                 onNavigateToSynastry = {
                     navController.navigate(Screen.Synastry.route)
@@ -513,6 +534,11 @@ fun AstroStormNavigation(
                 onNavigateToAshtavargaTransit = {
                     selectedChartId?.let { chartId ->
                         navController.navigate(Screen.AshtavargaTransit.createRoute(chartId))
+                    }
+                },
+                onNavigateToKakshaTransit = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.KakshaTransit.createRoute(chartId))
                     }
                 },
                 onNavigateToAiModels = {
@@ -1402,6 +1428,31 @@ fun AstroStormNavigation(
                 chart = currentChart,
                 onNavigateBack = { navController.popBackStack() }
             )
+        }
+
+        // Kakshya Transit screen
+        composable(
+            route = Screen.KakshaTransit.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            var chart by remember { mutableStateOf<VedicChart?>(null) }
+            LaunchedEffect(chartId) {
+                chart = chartRepository.getChart(chartId)
+            }
+            KakshaTransitScreen(chart = chart, onBack = { navController.popBackStack() })
+        }
+
+        composable(
+            route = Screen.NadiAmsha.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            var chart by remember { mutableStateOf<VedicChart?>(null) }
+            LaunchedEffect(chartId) {
+                chart = chartRepository.getChart(chartId)
+            }
+            NadiAmshaScreen(chart = chart, onBack = { navController.popBackStack() })
         }
 
         // AI Models configuration screen

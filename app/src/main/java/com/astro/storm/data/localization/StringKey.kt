@@ -183,6 +183,9 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     FEATURE_ASHTAVARGA_TRANSIT("Ashtavarga Transit", "अष्टकवर्ग गोचर"),
     FEATURE_ASHTAVARGA_TRANSIT_DESC("Transit predictions by bindu", "बिन्दुद्वारा गोचर भविष्यवाणी"),
 
+    FEATURE_KAKSHYA_TRANSIT("Kakshya Transit", "कक्ष्या गोचर"),
+    FEATURE_KAKSHYA_TRANSIT_DESC("Advanced 8-fold micro-transit analysis", "८-गुणा सूक्ष्म गोचर विश्लेषण"),
+
     // Predictions Screen - Tabs
     PREDICTIONS_TAB_OVERVIEW("Overview", "सारांश"),
     PREDICTIONS_TAB_LIFE_AREAS("Life Areas", "जीवन क्षेत्रहरू"),

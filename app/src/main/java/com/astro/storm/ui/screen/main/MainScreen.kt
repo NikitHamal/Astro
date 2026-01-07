@@ -57,7 +57,7 @@ fun MainScreen(
     onNavigateToMuhurta: () -> Unit = {},
     onNavigateToRemedies: () -> Unit = {},
     onNavigateToVarshaphala: () -> Unit = {},
-    onNavigateToPrashna: () -> Unit = {},
+    onNavigateToPrashna: (Long) -> Unit = {},
     onNavigateToBirthChart: () -> Unit = {},
     onNavigateToPlanets: () -> Unit = {},
     onNavigateToYogas: () -> Unit = {},
@@ -97,6 +97,8 @@ fun MainScreen(
     onNavigateToIshtaKashtaPhala: () -> Unit = {},
     onNavigateToShoolaDasha: () -> Unit = {},
     onNavigateToAshtavargaTransit: () -> Unit = {},
+    onNavigateToKakshaTransit: (Long) -> Unit = {},
+    onNavigateToNadiAmsha: (Long) -> Unit = {},
     onNavigateToAiModels: () -> Unit = {},
     onNavigateToChat: (Long?) -> Unit = {}, // null for new chat, Long for existing
     onExportChart: (ExportFormat) -> Unit
@@ -215,8 +217,10 @@ fun MainScreen(
                                         // Features that don't require a chart
                                         InsightFeature.MATCHMAKING -> onNavigateToMatchmaking()
                                         InsightFeature.MUHURTA -> onNavigateToMuhurta()
-                                        InsightFeature.PRASHNA -> onNavigateToPrashna()
+                                        InsightFeature.PRASHNA -> onNavigateToPrashna(selectedChartId)
                                         InsightFeature.CHART_COMPARISON -> onNavigateToSynastry()
+                                        InsightFeature.KAKSHYA_TRANSIT -> onNavigateToKakshaTransit(selectedChartId)
+                                        InsightFeature.NADI_AMSHA -> onNavigateToNadiAmsha(selectedChartId)
                                         // Features that require a chart - navigate to individual screens
                                         InsightFeature.FULL_CHART -> if (currentChart != null) onNavigateToBirthChart()
                                         InsightFeature.PLANETS -> if (currentChart != null) onNavigateToPlanets()
@@ -257,6 +261,7 @@ fun MainScreen(
                                         InsightFeature.ISHTA_KASHTA_PHALA -> if (currentChart != null) onNavigateToIshtaKashtaPhala()
                                         InsightFeature.SHOOLA_DASHA -> if (currentChart != null) onNavigateToShoolaDasha()
                                         InsightFeature.ASHTAVARGA_TRANSIT -> if (currentChart != null) onNavigateToAshtavargaTransit()
+                                        InsightFeature.KAKSHYA_TRANSIT -> if (currentChart != null) onNavigateToKakshaTransit()
                                         // Fallback to chart analysis for any remaining features
                                         else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
                                     }
