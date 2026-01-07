@@ -1440,6 +1440,7 @@ private fun ShoolaInfoDialog(onDismiss: () -> Unit) {
     )
 }
 
+@Composable
 private fun getSeverityColor(severity: ShoolaDashaCalculator.HealthSeverity): Color {
     return when (severity) {
         ShoolaDashaCalculator.HealthSeverity.CRITICAL -> AppTheme.ErrorColor

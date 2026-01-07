@@ -784,12 +784,12 @@ object ShoolaDashaCalculator {
         val diff = ((point - planetLong + 360) % 360)
 
         return when (planet) {
-            Planet.MARS -> diff in listOf(90.0..120.0, 150.0..180.0, 210.0..240.0)
-                    .any { range -> diff in range }
-            Planet.JUPITER -> diff in listOf(120.0..150.0, 150.0..180.0, 240.0..270.0)
-                    .any { range -> diff in range }
-            Planet.SATURN -> diff in listOf(60.0..90.0, 150.0..180.0, 270.0..300.0)
-                    .any { range -> diff in range }
+            Planet.MARS -> listOf(90.0..120.0, 150.0..180.0, 210.0..240.0)
+                    .any { range -> diff >= range.start && diff <= range.endInclusive }
+            Planet.JUPITER -> listOf(120.0..150.0, 150.0..180.0, 240.0..270.0)
+                    .any { range -> diff >= range.start && diff <= range.endInclusive }
+            Planet.SATURN -> listOf(60.0..90.0, 150.0..180.0, 270.0..300.0)
+                    .any { range -> diff >= range.start && diff <= range.endInclusive }
             else -> abs(diff - 180.0) < 15.0 // Standard opposition aspect
         }
     }
