@@ -111,7 +111,7 @@ fun VarshaphalaScreen(
                 try {
                     varshaphalaResult = calculator.calculateVarshaphala(chart, selectedYear, lang)
                 } catch (e: Exception) {
-                    error = stringResource(StringKeyAnalysis.ERROR_CALCULATION, e.message ?: "Unknown error")
+                    error = StringResources.get(StringKeyAnalysis.ERROR_CALCULATION, lang, e.message ?: "Unknown error")
                 }
             }
             isLoading = false

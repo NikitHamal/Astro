@@ -1156,15 +1156,15 @@ object KalachakraDashaCalculator {
 
         val dehaJeevaSummary = String.format(
             StringResources.get(StringKeyDosha.KALACHAKRA_INTERP_DEHA_JEEVA_SUMMARY, language),
-            dehaRashi.localizedName(language),
-            jeevaRashi.localizedName(language),
+            dehaRashi.getLocalizedName(language),
+            jeevaRashi.getLocalizedName(language),
             dehaJeevaAnalysis.dehaJeevaRelationship.getLocalizedName(language)
         )
 
         val currentPhaseAnalysis = if (currentMahadasha != null) {
             String.format(
                 StringResources.get(StringKeyDosha.KALACHAKRA_INTERP_CURRENT_PHASE, language),
-                currentMahadasha.sign.localizedName(language),
+                currentMahadasha.sign.getLocalizedName(language),
                 currentMahadasha.durationYears,
                 currentMahadasha.healthIndicator.getLocalizedName(language),
                 currentMahadasha.interpretation.generalEffects
@@ -1234,7 +1234,7 @@ object KalachakraDashaCalculator {
         val lordHouse = lordPosition?.house ?: 1
 
         return buildString {
-            append(String.format(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_SIGN_FOCUS, language), sign.localizedName(language)))
+            append(String.format(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_SIGN_FOCUS, language), sign.getLocalizedName(language)))
             append(" ")
             append(String.format(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_LORD_POS, language), getLocalizedPlanetName(signLord, language), lordHouse))
             when (lordHouse) {
