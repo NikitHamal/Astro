@@ -54,6 +54,8 @@ import com.astro.storm.ui.screen.MarakaScreen
 import com.astro.storm.ui.screen.BadhakaScreen
 import com.astro.storm.ui.screen.VipareetaRajaYogaScreen
 import com.astro.storm.ui.screen.IshtaKashtaPhalaScreen
+import com.astro.storm.ui.screen.ShoolaDashaScreen
+import com.astro.storm.ui.screen.AshtavargaTransitScreen
 import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
@@ -228,6 +230,16 @@ sealed class Screen(val route: String) {
     // Ishta Kashta Phala (Benefic/Malefic Results) screen
     object IshtaKashtaPhala : Screen("ishta_kashta_phala/{chartId}") {
         fun createRoute(chartId: Long) = "ishta_kashta_phala/$chartId"
+    }
+
+    // Shoola Dasha (Jaimini Health/Accident Timing) screen
+    object ShoolaDasha : Screen("shoola_dasha/{chartId}") {
+        fun createRoute(chartId: Long) = "shoola_dasha/$chartId"
+    }
+
+    // Ashtavarga Transit Predictions screen
+    object AshtavargaTransit : Screen("ashtavarga_transit/{chartId}") {
+        fun createRoute(chartId: Long) = "ashtavarga_transit/$chartId"
     }
 
     // AI Models configuration screen
@@ -491,6 +503,16 @@ fun AstroStormNavigation(
                 onNavigateToIshtaKashtaPhala = {
                     selectedChartId?.let { chartId ->
                         navController.navigate(Screen.IshtaKashtaPhala.createRoute(chartId))
+                    }
+                },
+                onNavigateToShoolaDasha = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.ShoolaDasha.createRoute(chartId))
+                    }
+                },
+                onNavigateToAshtavargaTransit = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.AshtavargaTransit.createRoute(chartId))
                     }
                 },
                 onNavigateToAiModels = {
@@ -1341,6 +1363,44 @@ fun AstroStormNavigation(
             IshtaKashtaPhalaScreen(
                 chart = currentChart,
                 onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Shoola Dasha (Jaimini Health/Accident Timing) screen
+        composable(
+            route = Screen.ShoolaDasha.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            ShoolaDashaScreen(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Ashtavarga Transit Predictions screen
+        composable(
+            route = Screen.AshtavargaTransit.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            AshtavargaTransitScreen(
+                chart = currentChart,
+                onNavigateBack = { navController.popBackStack() }
             )
         }
 

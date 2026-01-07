@@ -4,6 +4,7 @@ package com.astro.storm.data.model
  * Complete Vedic astrology chart
  */
 data class VedicChart(
+    val id: Long = 0,
     val birthData: BirthData,
     val julianDay: Double,
     val ayanamsa: Double,
