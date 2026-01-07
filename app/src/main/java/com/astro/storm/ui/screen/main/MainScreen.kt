@@ -217,10 +217,10 @@ fun MainScreen(
                                         // Features that don't require a chart
                                         InsightFeature.MATCHMAKING -> onNavigateToMatchmaking()
                                         InsightFeature.MUHURTA -> onNavigateToMuhurta()
-                                        InsightFeature.PRASHNA -> onNavigateToPrashna(selectedChartId)
+                                        InsightFeature.PRASHNA -> selectedChartId?.let { onNavigateToPrashna(it) } ?: onNavigateToPrashna(0L) // Fail safe or handle null
                                         InsightFeature.CHART_COMPARISON -> onNavigateToSynastry()
-                                        InsightFeature.KAKSHYA_TRANSIT -> onNavigateToKakshaTransit(selectedChartId)
-                                        InsightFeature.NADI_AMSHA -> onNavigateToNadiAmsha(selectedChartId)
+                                        InsightFeature.KAKSHYA_TRANSIT -> selectedChartId?.let { onNavigateToKakshaTransit(it) }
+                                        InsightFeature.NADI_AMSHA -> selectedChartId?.let { onNavigateToNadiAmsha(it) }
                                         // Features that require a chart - navigate to individual screens
                                         InsightFeature.FULL_CHART -> if (currentChart != null) onNavigateToBirthChart()
                                         InsightFeature.PLANETS -> if (currentChart != null) onNavigateToPlanets()

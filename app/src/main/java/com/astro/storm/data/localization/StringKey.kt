@@ -251,6 +251,7 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     // ============================================
     // BUTTONS & ACTIONS
     // ============================================
+    BTN_DETAILS("Details", "विवरण"),
     BTN_RETRY("Retry", "पुनः प्रयास"),
     BTN_TRY_AGAIN("Try Again", "फेरि प्रयास गर्नुहोस्"),
     BTN_PREVIEW("Preview", "पूर्वावलोकन"),

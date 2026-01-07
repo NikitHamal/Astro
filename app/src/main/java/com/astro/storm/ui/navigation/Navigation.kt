@@ -541,6 +541,11 @@ fun AstroStormNavigation(
                         navController.navigate(Screen.KakshaTransit.createRoute(chartId))
                     }
                 },
+                onNavigateToNadiAmsha = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.NadiAmsha.createRoute(chartId))
+                    }
+                },
                 onNavigateToAiModels = {
                     navController.navigate(Screen.AiModels.route)
                 },
@@ -1438,9 +1443,11 @@ fun AstroStormNavigation(
             val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
             var chart by remember { mutableStateOf<VedicChart?>(null) }
             LaunchedEffect(chartId) {
-                chart = chartRepository.getChart(chartId)
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
             }
-            KakshaTransitScreen(chart = chart, onBack = { navController.popBackStack() })
+            KakshaTransitScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
         composable(
@@ -1450,9 +1457,11 @@ fun AstroStormNavigation(
             val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
             var chart by remember { mutableStateOf<VedicChart?>(null) }
             LaunchedEffect(chartId) {
-                chart = chartRepository.getChart(chartId)
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
             }
-            NadiAmshaScreen(chart = chart, onBack = { navController.popBackStack() })
+            NadiAmshaScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
         // AI Models configuration screen

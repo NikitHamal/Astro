@@ -131,7 +131,7 @@ object NadiAmshaCalculator {
             nadiSign = nadiSign,
             nadiLord = nadiLord,
             description = "Nadi #$nadiNumber in ${sign.displayName}", // Placeholder for specific Nadi name
-            descriptionNe = "${sign.displayNameNe} मा नाडी #$nadiNumber",
+            descriptionNe = "${sign.getLocalizedName(Language.NEPALI)} मा नाडी #$nadiNumber",
             energyType = energyType
         )
     }
