@@ -536,6 +536,7 @@ enum class GunaType(val displayName: String, val maxPoints: Double) {
                 it.displayName.equals(name, ignoreCase = true) ||
                 it.name.equals(name, ignoreCase = true)
             }
+        }
     }
 }
 
