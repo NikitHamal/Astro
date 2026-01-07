@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyMatch
 import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.Planet
