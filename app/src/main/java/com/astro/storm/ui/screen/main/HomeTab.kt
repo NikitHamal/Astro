@@ -43,6 +43,7 @@ import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.Brightness2
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -73,6 +74,8 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyAdvanced
+import com.astro.storm.data.localization.StringKeyInterface
 import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
@@ -370,8 +373,8 @@ private fun ComingSoonBadge(modifier: Modifier = Modifier) {
 
 @Stable
 enum class InsightFeature(
-    val titleKey: StringKey,
-    val descriptionKey: StringKey,
+    val titleKey: StringKeyInterface,
+    val descriptionKey: StringKeyInterface,
     val icon: ImageVector,
     val color: Color,
     val isImplemented: Boolean
@@ -675,6 +678,20 @@ enum class InsightFeature(
         descriptionKey = StringKey.FEATURE_ASHTAVARGA_TRANSIT_DESC,
         icon = Icons.Outlined.BarChart,
         color = DarkAppThemeColors.AccentTeal,
+        isImplemented = true
+    ),
+    KAKSHYA_TRANSIT(
+        titleKey = StringKey.FEATURE_KAKSHYA_TRANSIT,
+        descriptionKey = StringKey.FEATURE_KAKSHYA_TRANSIT_DESC,
+        icon = Icons.Outlined.Speed,
+        color = DarkAppThemeColors.AccentPrimary,
+        isImplemented = true
+    ),
+    NADI_AMSHA(
+        titleKey = StringKeyAdvanced.NADI_TITLE,
+        descriptionKey = StringKeyAdvanced.NADI_DESC,
+        icon = Icons.Outlined.Timer,
+        color = DarkAppThemeColors.AccentGold,
         isImplemented = true
     );
 

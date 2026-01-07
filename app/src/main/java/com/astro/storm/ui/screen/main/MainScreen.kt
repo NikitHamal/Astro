@@ -57,7 +57,7 @@ fun MainScreen(
     onNavigateToMuhurta: () -> Unit = {},
     onNavigateToRemedies: () -> Unit = {},
     onNavigateToVarshaphala: () -> Unit = {},
-    onNavigateToPrashna: () -> Unit = {},
+    onNavigateToPrashna: (Long) -> Unit = {},
     onNavigateToBirthChart: () -> Unit = {},
     onNavigateToPlanets: () -> Unit = {},
     onNavigateToYogas: () -> Unit = {},
@@ -97,6 +97,8 @@ fun MainScreen(
     onNavigateToIshtaKashtaPhala: () -> Unit = {},
     onNavigateToShoolaDasha: () -> Unit = {},
     onNavigateToAshtavargaTransit: () -> Unit = {},
+    onNavigateToKakshaTransit: (Long) -> Unit = {},
+    onNavigateToNadiAmsha: (Long) -> Unit = {},
     onNavigateToAiModels: () -> Unit = {},
     onNavigateToChat: (Long?) -> Unit = {}, // null for new chat, Long for existing
     onExportChart: (ExportFormat) -> Unit
@@ -215,8 +217,10 @@ fun MainScreen(
                                         // Features that don't require a chart
                                         InsightFeature.MATCHMAKING -> onNavigateToMatchmaking()
                                         InsightFeature.MUHURTA -> onNavigateToMuhurta()
-                                        InsightFeature.PRASHNA -> onNavigateToPrashna()
+                                        InsightFeature.PRASHNA -> selectedChartId?.let { onNavigateToPrashna(it) } ?: onNavigateToPrashna(0L) // Fail safe or handle null
                                         InsightFeature.CHART_COMPARISON -> onNavigateToSynastry()
+                                        InsightFeature.KAKSHYA_TRANSIT -> selectedChartId?.let { onNavigateToKakshaTransit(it) }
+                                        InsightFeature.NADI_AMSHA -> selectedChartId?.let { onNavigateToNadiAmsha(it) }
                                         // Features that require a chart - navigate to individual screens
                                         InsightFeature.FULL_CHART -> if (currentChart != null) onNavigateToBirthChart()
                                         InsightFeature.PLANETS -> if (currentChart != null) onNavigateToPlanets()
