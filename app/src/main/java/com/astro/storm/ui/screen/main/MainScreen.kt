@@ -261,7 +261,6 @@ fun MainScreen(
                                         InsightFeature.ISHTA_KASHTA_PHALA -> if (currentChart != null) onNavigateToIshtaKashtaPhala()
                                         InsightFeature.SHOOLA_DASHA -> if (currentChart != null) onNavigateToShoolaDasha()
                                         InsightFeature.ASHTAVARGA_TRANSIT -> if (currentChart != null) onNavigateToAshtavargaTransit()
-                                        InsightFeature.KAKSHYA_TRANSIT -> if (currentChart != null) onNavigateToKakshaTransit()
                                         // Fallback to chart analysis for any remaining features
                                         else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
                                     }

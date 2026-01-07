@@ -373,15 +373,11 @@ fun AstroStormNavigation(
                 onNavigateToProfileEdit = { chartId ->
                     navController.navigate(Screen.ProfileEdit.createRoute(chartId))
                 },
-                onNavigateToKakshaTransit = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.KakshaTransit.createRoute(chartId))
-                    }
+                onNavigateToKakshaTransit = { chartId ->
+                    navController.navigate(Screen.KakshaTransit.createRoute(chartId))
                 },
-                onNavigateToNadiAmsha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.NadiAmsha.createRoute(chartId))
-                    }
+                onNavigateToNadiAmsha = { chartId ->
+                    navController.navigate(Screen.NadiAmsha.createRoute(chartId))
                 },
                 onNavigateToSynastry = {
                     navController.navigate(Screen.Synastry.route)
@@ -536,16 +532,7 @@ fun AstroStormNavigation(
                         navController.navigate(Screen.AshtavargaTransit.createRoute(chartId))
                     }
                 },
-                onNavigateToKakshaTransit = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.KakshaTransit.createRoute(chartId))
-                    }
-                },
-                onNavigateToNadiAmsha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.NadiAmsha.createRoute(chartId))
-                    }
-                },
+
                 onNavigateToAiModels = {
                     navController.navigate(Screen.AiModels.route)
                 },

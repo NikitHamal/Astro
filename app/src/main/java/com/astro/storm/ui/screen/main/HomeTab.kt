@@ -683,6 +683,13 @@ enum class InsightFeature(
         icon = Icons.Outlined.Speed,
         color = DarkAppThemeColors.AccentPrimary,
         isImplemented = true
+    ),
+    NADI_AMSHA(
+        titleKey = StringKeyAdvanced.NADI_TITLE,
+        descriptionKey = StringKeyAdvanced.NADI_DESC,
+        icon = Icons.Outlined.Timer,
+        color = DarkAppThemeColors.AccentGold,
+        isImplemented = true
     );
 
     /**
