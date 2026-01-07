@@ -1893,6 +1893,27 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_BRIEF_CAPRICORN("Career, discipline, achievement.", "क्यारियर, अनुशासन, उपलब्धि।"),
     KALACHAKRA_BRIEF_AQUARIUS("Innovation, humanity, progress.", "नवप्रवर्तन, मानवता, प्रगति।"),
     KALACHAKRA_BRIEF_PISCES("Spirituality, imagination, liberation.", "आध्यात्मिकता, कल्पना, मुक्ति।"),
+
+    // Component-level spiritual effects (Element based)
+    KALACHAKRA_SPIR_FIRE("Spiritual growth through action and courage. Karma yoga is favored.", "कर्म र साहस मार्फत आध्यात्मिक वृद्धि। कर्म योग अनुकूल छ।"),
+    KALACHAKRA_SPIR_EARTH("Spiritual grounding through service. Seva is emphasized.", "सेवा मार्फत आध्यात्मिक स्थिरता। सेवामा जोड दिइन्छ।"),
+    KALACHAKRA_SPIR_AIR("Spiritual development through knowledge. Jnana yoga is favored.", "ज्ञान मार्फत आध्यात्मिक विकास। ज्ञान योग अनुकूल छ।"),
+    KALACHAKRA_SPIR_WATER("Spiritual awakening through devotion. Bhakti yoga is emphasized.", "भक्ति मार्फत आध्यात्मिक जागरण। भक्ति योगमा जोड दिइन्छ।"),
+    KALACHAKRA_SPIR_GEN("Balanced spiritual development.", "सन्तुलित आध्यात्मिक विकास।"),
+
+    // Material House Effects
+    KALACHAKRA_MAT_H1("focus on self and physical initiatives.", "स्वयं र शारीरिक पहलमा ध्यान।"),
+    KALACHAKRA_MAT_H2("focus on wealth and resources.", "धन र स्रोतहरूमा ध्यान।"),
+    KALACHAKRA_MAT_H3("focus on courage and communication.", "साहस र संचारमा ध्यान।"),
+    KALACHAKRA_MAT_H4("focus on property and home.", "सम्पत्ति र घरमा ध्यान।"),
+    KALACHAKRA_MAT_H5("focus on creativity and children.", "रचनात्मकता र सन्तानमा ध्यान।"),
+    KALACHAKRA_MAT_H6("focus on service and health.", "सेवा र स्वास्थ्यमा ध्यान।"),
+    KALACHAKRA_MAT_H7("focus on partnerships and marriage.", "साझेदारी र विवाहमा ध्यान।"),
+    KALACHAKRA_MAT_H8("focus on transformation and research.", "रूपान्तरण र अनुसन्धानमा ध्यान।"),
+    KALACHAKRA_MAT_H9("focus on fortune and higher learning.", "भाग्य र उच्च शिक्षामा ध्यान।"),
+    KALACHAKRA_MAT_H10("focus on career and status.", "करियर र प्रतिष्ठामा ध्यान।"),
+    KALACHAKRA_MAT_H11("focus on gains and networking.", "लाभ र नेटवर्किङमा ध्यान।"),
+    KALACHAKRA_MAT_H12("focus on spirituality and foreign matters.", "आध्यात्मिकता र वैदेशिक मामिलामा ध्यान।"),
     
     // Planet Strength
     PLANET_STRENGTH_EXALTED("Exalted - Very Strong", "उच्च - धेरै बलियो"),
@@ -2152,6 +2173,62 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_RELATIONSHIP_NEUTRAL("Neutral", "तटस्थ"),
     KALACHAKRA_RELATIONSHIP_CHALLENGING("Challenging", "चुनौतीपूर्ण"),
     KALACHAKRA_RELATIONSHIP_TRANSFORMATIVE("Transformative", "परिवर्तनकारी"),
+
+    // Spiritual Effects
+    KALACHAKRA_SPIRITUAL_FIRE("Spiritual growth through action, courage, and self-assertion. Karma yoga is favored.", "कार्य, साहस र आत्म-दावी मार्फत आध्यात्मिक वृद्धि। कर्म योग अनुकूल छ।"),
+    KALACHAKRA_SPIRITUAL_EARTH("Spiritual grounding through practical service and material detachment. Seva is emphasized.", "व्यावहारिक सेवा र भौतिक अनासक्ति मार्फत आध्यात्मिक स्थिरता। सेवामा जोड दिइन्छ।"),
+    KALACHAKRA_SPIRITUAL_AIR("Spiritual development through knowledge, study, and intellectual understanding. Jnana yoga is favored.", "ज्ञान, अध्ययन र बौद्धिक समझ मार्फत आध्यात्मिक विकास। ज्ञान योग अनुकूल छ।"),
+    KALACHAKRA_SPIRITUAL_WATER("Spiritual awakening through devotion, intuition, and emotional surrender. Bhakti yoga is emphasized.", "भक्ति, अन्तर्ज्ञान र भावनात्मक समर्पण मार्फत आध्यात्मिक जागरण। भक्ति योगमा जोड दिइन्छ।"),
+    KALACHAKRA_SPIRITUAL_GENERAL("Balanced spiritual development across all paths.", "सबै मार्गहरूमा सन्तुलित आध्यात्मिक विकास।"),
+
+    // Material Effects
+    KALACHAKRA_MATERIAL_SIGN_FOCUS("Material focus on %s matters.", "%s मामिलाहरूमा भौतिक ध्यान।"),
+    KALACHAKRA_MATERIAL_LORD_POS("Sign lord %s in House %d indicates ", "राशि स्वामी %s भाव %d मा हुनुले "),
+    KALACHAKRA_MATERIAL_H1("self-focused material gains.", "आत्म-केन्द्रित भौतिक लाभ।"),
+    KALACHAKRA_MATERIAL_H2("wealth and resource accumulation.", "धन र स्रोत संकलन।"),
+    KALACHAKRA_MATERIAL_H3("gains through courage and communication.", "साहस र संचार मार्फत लाभ।"),
+    KALACHAKRA_MATERIAL_H4("property and domestic comfort.", "सम्पत्ति र पारिवारिक सुख।"),
+    KALACHAKRA_MATERIAL_H5("creative and speculative gains.", "रचनात्मक र सट्टा लाभ।"),
+    KALACHAKRA_MATERIAL_H6("gains through service and overcoming obstacles.", "सेवा र अवरोधहरू पार गरेर लाभ।"),
+    KALACHAKRA_MATERIAL_H7("partnership-related material matters.", "साझेदारी सम्बन्धित भौतिक मामिलाहरू।"),
+    KALACHAKRA_MATERIAL_H8("transformation of resources, inheritance.", "स्रोतहरूको रूपान्तरण, पैतृक सम्पत्ति।"),
+    KALACHAKRA_MATERIAL_H9("fortune through dharma and higher pursuits.", "धर्म र उच्च खोज मार्फत भाग्य।"),
+    KALACHAKRA_MATERIAL_H10("career advancement and public recognition.", "करियर उन्नति र सार्वजनिक पहिचान।"),
+    KALACHAKRA_MATERIAL_H11("fulfillment of desires and network gains.", "इच्छा पूर्ति र नेटवर्क लाभ।"),
+    KALACHAKRA_MATERIAL_H12("spiritual investments and foreign connections.", "आध्यात्मिक लगानी र विदेशी सम्बन्ध।"),
+    KALACHAKRA_MATERIAL_GENERAL_PROGRESS("general material progression.", "सामान्य भौतिक प्रगति।"),
+
+    // Caution Areas
+    KALACHAKRA_CAUTION_HEALTH("Physical health requires attention", "शारीरिक स्वास्थ्यमा ध्यान दिनु आवश्यक छ"),
+    KALACHAKRA_CAUTION_ARIES("Head injuries, fevers, impulsive actions", "टाउकोको चोट, ज्वरो, आवेगपूर्ण कार्यहरू"),
+    KALACHAKRA_CAUTION_TAURUS("Throat issues, dietary excess, stubbornness", "घाँटीको समस्या, खानपानमा अधिकता, जिद्दीपन"),
+    KALACHAKRA_CAUTION_GEMINI("Nervous tension, respiratory issues, inconsistency", "स्नायु तनाव, श्वासप्रश्वासको समस्या, अस्थिरता"),
+    KALACHAKRA_CAUTION_CANCER("Emotional sensitivity, digestive issues, attachment", "भावनात्मक संवेदनशीलता, पाचन समस्या, मोह"),
+    KALACHAKRA_CAUTION_LEO("Heart issues, ego conflicts, excessive pride", "मुटुको समस्या, अहंकार विवाद, अत्यधिक गर्व"),
+    KALACHAKRA_CAUTION_VIRGO("Digestive problems, anxiety, over-criticism", "पाचन समस्या, चिन्ता, अत्यधिक आलोचना"),
+    KALACHAKRA_CAUTION_LIBRA("Kidney issues, indecision, relationship dependency", "मृगौलाको समस्या, अनिर्णय, सम्बन्धमा निर्भरता"),
+    KALACHAKRA_CAUTION_SCORPIO("Reproductive issues, intensity, control issues", "प्रजनन समस्या, तीव्रता, नियन्त्रण समस्या"),
+    KALACHAKRA_CAUTION_SAGITTARIUS("Liver issues, over-expansion, dogmatism", "कलेजोको समस्या, अत्यधिक विस्तार, कट्टरता"),
+    KALACHAKRA_CAUTION_CAPRICORN("Joint problems, depression, workaholism", "जोर्नीको समस्या, निराशा, कामको लत"),
+    KALACHAKRA_CAUTION_AQUARIUS("Circulation issues, detachment, rebellion", "रक्तसञ्चार समस्या, वैराग्य, विद्रोह"),
+    KALACHAKRA_CAUTION_PISCES("Foot problems, escapism, boundary issues", "खुट्टाको समस्या, पलायनवाद, सीमा समस्या"),
+
+    // Remedies
+    KALACHAKRA_REMEDY_MANTRA("Chant %s mantra for strengthening this period", "यो अवधिलाई बलियो बनाउन %s मन्त्र जप गर्नुहोस्"),
+    KALACHAKRA_REMEDY_FIRE("Perform Agni-related rituals (Homa, lighting lamp)", "अग्नि सम्बन्धित विधि (होम, दीप बाल्ने) गर्नुहोस्"),
+    KALACHAKRA_REMEDY_EARTH("Service to earth (gardening, feeding, grounding practices)", "पृथ्वीको सेवा (बगैंचा, खुवाउने, ग्राउन्डिङ अभ्यास) गर्नुहोस्"),
+    KALACHAKRA_REMEDY_AIR("Pranayama and breath-related practices", "प्राणायाम र श्वास सम्बन्धी अभ्यासहरू"),
+    KALACHAKRA_REMEDY_WATER("Water offerings, visiting sacred water bodies", "जल अर्पण, पवित्र जलाशयको भ्रमण"),
+    KALACHAKRA_REMEDY_DEITY("Honor the sign deity through appropriate worship", "उपयुक्त पूजा मार्फत राशि देवताको सम्मान गर्नुहोस्"),
+
+    // Interpretation Summary Parts
+    KALACHAKRA_INTERP_GROUP_ANALYSIS("Your Moon falls in %s group. %s This influences the direction and nature of your life's unfoldment.", "तपाईंको चन्द्रमा %s समूहमा पर्दछ। %s यसले तपाईंको जीवनको विकासको दिशा र प्रकृतिलाई प्रभाव पार्छ।"),
+    KALACHAKRA_INTERP_DEHA_JEEVA_SUMMARY("Deha (Body) Rashi: %s, Jeeva (Soul) Rashi: %s. Relationship: %s", "देह (शरीर) राशि: %s, जीव (आत्मा) राशि: %s। सम्बन्ध: %s"),
+    KALACHAKRA_INTERP_CURRENT_PHASE("Currently in %s Mahadasha (%d years). Health outlook: %s. %s", "हाल %s महादशामा (%d वर्ष)। स्वास्थ्य दृष्टिकोण: %s। %s"),
+    KALACHAKRA_INTERP_NO_CURRENT("Current Mahadasha extends beyond calculated range.", "वर्तमान महादशा गणना गरिएको दायरा भन्दा बाहिर छ।"),
+    KALACHAKRA_INTERP_HEALTH_SPIRITUAL("Health & Spiritual Outlook", "स्वास्थ्य र आध्यात्मिक दृष्टिकोण"),
+    KALACHAKRA_INTERP_MATERIAL_GUIDANCE("Material & General Guidance", "भौतिक र सामान्य मार्गदर्शन"),
+    KALACHAKRA_INTERP_CLOSING("Use this period to align with your %s-ruled energies for maximum growth.", "अधिकतम वृद्धिको लागि तपाईंको %s-शासित ऊर्जाहरूसँग पङ्क्तिबद्ध हुन यो अवधि प्रयोग गर्नुहोस्।"),
 
     // ============================================
     // COMMON SCREEN STRINGS

@@ -399,6 +399,11 @@ enum class RajjuArudha(val displayName: String) {
     ASCENDING("Aarohana (Ascending)"),
     DESCENDING("Avarohana (Descending)");
 
+    fun getLocalizedName(language: Language): String = when (this) {
+        ASCENDING -> StringResources.get(StringKeyMatch.RAJJU_ASCENDING, language)
+        DESCENDING -> StringResources.get(StringKeyMatch.RAJJU_DESCENDING, language)
+    }
+
     companion object {
         fun fromNakshatra(nakshatra: Nakshatra): RajjuArudha = when (nakshatra) {
             // Pada Rajju
@@ -531,7 +536,21 @@ enum class GunaType(val displayName: String, val maxPoints: Double) {
                 it.displayName.equals(name, ignoreCase = true) ||
                 it.name.equals(name, ignoreCase = true)
             }
-        }
+    }
+}
+
+/**
+ * Manglik compatibility level for a pair
+ */
+enum class ManglikCompatibilityLevel {
+    EXCELLENT, GOOD, AVERAGE, BELOW_AVERAGE, POOR;
+
+    fun getLocalizedName(language: Language): String = when (this) {
+        EXCELLENT -> StringResources.get(StringKeyDosha.MANGLIK_COMPAT_EXCELLENT, language)
+        GOOD -> StringResources.get(StringKeyDosha.MANGLIK_COMPAT_GOOD, language)
+        AVERAGE -> StringResources.get(StringKeyDosha.MANGLIK_COMPAT_AVERAGE, language)
+        BELOW_AVERAGE -> StringResources.get(StringKeyDosha.MANGLIK_COMPAT_BELOW_AVERAGE, language)
+        POOR -> StringResources.get(StringKeyDosha.MANGLIK_COMPAT_POOR, language)
     }
 }
 
@@ -634,7 +653,8 @@ data class MatchmakingResult(
     val rating: CompatibilityRating,
     val brideManglik: ManglikAnalysis,
     val groomManglik: ManglikAnalysis,
-    val manglikCompatibility: String,
+    val manglikCompatibilityLevel: ManglikCompatibilityLevel,
+    val manglikCompatibilityRecommendation: String,
     val additionalFactors: AdditionalFactors,
     val specialConsiderations: List<String>,
     val remedies: List<String>,
@@ -642,14 +662,14 @@ data class MatchmakingResult(
     val detailedAnalysis: String,
     val timestamp: Long = System.currentTimeMillis()
 ) {
-    val varnaScore: Double get() = gunaAnalyses.find { it.name == "Varna" }?.obtainedPoints ?: 0.0
-    val vashyaScore: Double get() = gunaAnalyses.find { it.name == "Vashya" }?.obtainedPoints ?: 0.0
-    val taraScore: Double get() = gunaAnalyses.find { it.name == "Tara" }?.obtainedPoints ?: 0.0
-    val yoniScore: Double get() = gunaAnalyses.find { it.name == "Yoni" }?.obtainedPoints ?: 0.0
-    val grahaMaitriScore: Double get() = gunaAnalyses.find { it.name == "Graha Maitri" }?.obtainedPoints ?: 0.0
-    val ganaScore: Double get() = gunaAnalyses.find { it.name == "Gana" }?.obtainedPoints ?: 0.0
-    val bhakootScore: Double get() = gunaAnalyses.find { it.name == "Bhakoot" }?.obtainedPoints ?: 0.0
-    val nadiScore: Double get() = gunaAnalyses.find { it.name == "Nadi" }?.obtainedPoints ?: 0.0
+    val varnaScore: Double get() = gunaAnalyses.find { it.gunaType == GunaType.VARNA }?.obtainedPoints ?: 0.0
+    val vashyaScore: Double get() = gunaAnalyses.find { it.gunaType == GunaType.VASHYA }?.obtainedPoints ?: 0.0
+    val taraScore: Double get() = gunaAnalyses.find { it.gunaType == GunaType.TARA }?.obtainedPoints ?: 0.0
+    val yoniScore: Double get() = gunaAnalyses.find { it.gunaType == GunaType.YONI }?.obtainedPoints ?: 0.0
+    val grahaMaitriScore: Double get() = gunaAnalyses.find { it.gunaType == GunaType.GRAHA_MAITRI }?.obtainedPoints ?: 0.0
+    val ganaScore: Double get() = gunaAnalyses.find { it.gunaType == GunaType.GANA }?.obtainedPoints ?: 0.0
+    val bhakootScore: Double get() = gunaAnalyses.find { it.gunaType == GunaType.BHAKOOT }?.obtainedPoints ?: 0.0
+    val nadiScore: Double get() = gunaAnalyses.find { it.gunaType == GunaType.NADI }?.obtainedPoints ?: 0.0
 }
 
 // ============================================

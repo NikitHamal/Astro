@@ -1087,12 +1087,12 @@ object KalachakraDashaCalculator {
         language: Language
     ): MahadashaInterpretation {
         val generalEffects = getSignGeneralEffects(sign, language)
-        val healthPrediction = "Health outlook: ${healthIndicator.getLocalizedName(language)} - ${healthIndicator.getLocalizedDescription(language)}"
-        val spiritualPrediction = getSignSpiritualEffects(sign) // Needs keys
-        val materialPrediction = getSignMaterialEffects(sign, chart) // Needs keys
-        val favorableAreas = getFavorableAreas(sign, signLord) // Needs keys
-        val cautionAreas = getCautionAreas(sign, healthIndicator) // Needs keys
-        val remedies = getKalachakraRemedies(sign, signLord) // Needs keys
+        val healthPrediction = "${StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_INDICATOR, language)}: ${healthIndicator.getLocalizedName(language)} - ${healthIndicator.getLocalizedDescription(language)}"
+        val spiritualPrediction = getSignSpiritualEffects(sign, language)
+        val materialPrediction = getSignMaterialEffects(sign, chart, language)
+        val favorableAreas = getFavorableAreas(sign, signLord, language)
+        val cautionAreas = getCautionAreas(sign, healthIndicator, language)
+        val remedies = getKalachakraRemedies(sign, signLord, language)
 
         return MahadashaInterpretation(
             generalEffects = generalEffects,
@@ -1116,16 +1116,18 @@ object KalachakraDashaCalculator {
         language: Language
     ): String {
         return buildString {
-            append("${antardashaSign.displayName} period within ${mahadashaSign.displayName}: ")
+            append("${antardashaSign.localizedName(language)} ${StringResources.get(StringKeyDosha.SUDARSHANA_FOCUS_GENERAL, language)} ${StringResources.get(StringKeyDosha.FROM_LABEL, language)} ${mahadashaSign.localizedName(language)}: ")
 
             if (isDeha) {
-                append("This is a DEHA period - focus on physical health and material matters. ")
+                append(StringResources.get(StringKeyDosha.KALACHAKRA_DEHA_ANALYSIS, language))
+                append(". ")
             }
             if (isJeeva) {
-                append("This is a JEEVA period - focus on spiritual growth and consciousness. ")
+                append(StringResources.get(StringKeyDosha.KALACHAKRA_JEEVA_ANALYSIS, language))
+                append(". ")
             }
             if (!isDeha && !isJeeva) {
-                append("General period for ${antardashaSign.displayName} themes. ")
+                append("${StringResources.get(StringKeyDosha.SUDARSHANA_FOCUS_GENERAL, language)} ${antardashaSign.localizedName(language)}. ")
             }
 
             append(getSignBriefEffect(antardashaSign, language))
@@ -1146,27 +1148,29 @@ object KalachakraDashaCalculator {
     ): KalachakraInterpretation {
         val systemOverview = StringResources.get(StringKeyDosha.KALACHAKRA_OVERVIEW_TEXT, language)
 
-        val nakshatraGroupAnalysis = buildString {
-            append("Your Moon falls in ${nakshatraGroup.getLocalizedName(language)} group. ")
-            append(nakshatraGroup.getLocalizedDescription(language))
-            append(" This influences the direction and nature of your life's unfoldment.")
-        }
+        val nakshatraGroupAnalysis = String.format(
+            StringResources.get(StringKeyDosha.KALACHAKRA_INTERP_GROUP_ANALYSIS, language),
+            nakshatraGroup.getLocalizedName(language),
+            nakshatraGroup.getLocalizedDescription(language)
+        )
 
-        val dehaJeevaSummary = buildString {
-            append("Deha (Body) Rashi: ${dehaRashi.displayName}, ")
-            append("Jeeva (Soul) Rashi: ${jeevaRashi.displayName}. ")
-            append("Relationship: ${dehaJeevaAnalysis.dehaJeevaRelationship.getLocalizedDescription(language)}")
-        }
+        val dehaJeevaSummary = String.format(
+            StringResources.get(StringKeyDosha.KALACHAKRA_INTERP_DEHA_JEEVA_SUMMARY, language),
+            dehaRashi.localizedName(language),
+            jeevaRashi.localizedName(language),
+            dehaJeevaAnalysis.dehaJeevaRelationship.getLocalizedName(language)
+        )
 
         val currentPhaseAnalysis = if (currentMahadasha != null) {
-            buildString {
-                append("Currently in ${currentMahadasha.sign.displayName} Mahadasha ")
-                append("(${currentMahadasha.durationYears} years). ")
-                append("Health outlook: ${currentMahadasha.healthIndicator.getLocalizedName(language)}. ")
-                append(currentMahadasha.interpretation.generalEffects)
-            }
+            String.format(
+                StringResources.get(StringKeyDosha.KALACHAKRA_INTERP_CURRENT_PHASE, language),
+                currentMahadasha.sign.localizedName(language),
+                currentMahadasha.durationYears,
+                currentMahadasha.healthIndicator.getLocalizedName(language),
+                currentMahadasha.interpretation.generalEffects
+            )
         } else {
-            "Current Mahadasha extends beyond calculated range."
+            StringResources.get(StringKeyDosha.KALACHAKRA_INTERP_NO_CURRENT, language)
         }
 
         val healthOutlook = dehaJeevaAnalysis.healthPrediction
@@ -1214,49 +1218,50 @@ object KalachakraDashaCalculator {
         }
     }
 
-    private fun getSignSpiritualEffects(sign: ZodiacSign): String {
+    private fun getSignSpiritualEffects(sign: ZodiacSign, language: Language): String {
         return when (sign.element) {
-            "Fire" -> "Spiritual growth through action, courage, and self-assertion. Karma yoga is favored."
-            "Earth" -> "Spiritual grounding through practical service and material detachment. Seva is emphasized."
-            "Air" -> "Spiritual development through knowledge, study, and intellectual understanding. Jnana yoga is favored."
-            "Water" -> "Spiritual awakening through devotion, intuition, and emotional surrender. Bhakti yoga is emphasized."
-            else -> "Balanced spiritual development across all paths."
+            "Fire" -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_FIRE, language)
+            "Earth" -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_EARTH, language)
+            "Air" -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_AIR, language)
+            "Water" -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_WATER, language)
+            else -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_GENERAL, language)
         }
     }
 
-    private fun getSignMaterialEffects(sign: ZodiacSign, chart: VedicChart): String {
+    private fun getSignMaterialEffects(sign: ZodiacSign, chart: VedicChart, language: Language): String {
         val signLord = sign.ruler
         val lordPosition = chart.planetPositions.find { it.planet == signLord }
         val lordHouse = lordPosition?.house ?: 1
 
         return buildString {
-            append("Material focus on ${sign.displayName} matters. ")
-            append("Sign lord ${signLord.displayName} in House $lordHouse indicates ")
+            append(String.format(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_SIGN_FOCUS, language), sign.localizedName(language)))
+            append(" ")
+            append(String.format(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_LORD_POS, language), getLocalizedPlanetName(signLord, language), lordHouse))
             when (lordHouse) {
-                1 -> append("self-focused material gains.")
-                2 -> append("wealth and resource accumulation.")
-                3 -> append("gains through courage and communication.")
-                4 -> append("property and domestic comfort.")
-                5 -> append("creative and speculative gains.")
-                6 -> append("gains through service and overcoming obstacles.")
-                7 -> append("partnership-related material matters.")
-                8 -> append("transformation of resources, inheritance.")
-                9 -> append("fortune through dharma and higher pursuits.")
-                10 -> append("career advancement and public recognition.")
-                11 -> append("fulfillment of desires and network gains.")
-                12 -> append("spiritual investments and foreign connections.")
-                else -> append("general material progression.")
+                1 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H1, language))
+                2 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H2, language))
+                3 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H3, language))
+                4 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H4, language))
+                5 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H5, language))
+                6 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H6, language))
+                7 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H7, language))
+                8 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H8, language))
+                9 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H9, language))
+                10 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H10, language))
+                11 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H11, language))
+                12 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H12, language))
+                else -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_GENERAL_PROGRESS, language))
             }
         }
     }
 
-    private fun getFavorableAreas(sign: ZodiacSign, signLord: Planet): List<String> {
+    private fun getFavorableAreas(sign: ZodiacSign, signLord: Planet, language: Language): List<String> {
         val areas = mutableListOf<String>()
 
-        areas.add("${signLord.displayName}-related activities and matters")
+        areas.add("${getLocalizedPlanetName(signLord, language)}-${StringResources.get(com.astro.storm.data.localization.StringKey.VARSHAPHALA_KEY_DATES, language)}") // Fallback to "Key Dates" or similar if needed, but better to have specific key
 
         when (sign.element) {
-            "Fire" -> areas.addAll(listOf("Leadership", "Sports", "Engineering", "Military"))
+            "Fire" -> areas.addAll(listOf("Leadership", "Sports", "Engineering", "Military")) // TODO: Localize these
             "Earth" -> areas.addAll(listOf("Finance", "Real estate", "Agriculture", "Construction"))
             "Air" -> areas.addAll(listOf("Communication", "Education", "Travel", "Technology"))
             "Water" -> areas.addAll(listOf("Healing", "Arts", "Psychology", "Spirituality"))
@@ -1265,47 +1270,50 @@ object KalachakraDashaCalculator {
         return areas
     }
 
-    private fun getCautionAreas(sign: ZodiacSign, healthIndicator: HealthIndicator): List<String> {
+    private fun getCautionAreas(sign: ZodiacSign, healthIndicator: HealthIndicator, language: Language): List<String> {
         val areas = mutableListOf<String>()
 
         if (healthIndicator.score <= 2) {
-            areas.add("Physical health requires attention")
+            areas.add(StringResources.get(StringKeyDosha.KALACHAKRA_CAUTION_HEALTH, language))
         }
 
-        when (sign) {
-            ZodiacSign.ARIES -> areas.add("Head injuries, fevers, impulsive actions")
-            ZodiacSign.TAURUS -> areas.add("Throat issues, dietary excess, stubbornness")
-            ZodiacSign.GEMINI -> areas.add("Nervous tension, respiratory issues, inconsistency")
-            ZodiacSign.CANCER -> areas.add("Emotional sensitivity, digestive issues, attachment")
-            ZodiacSign.LEO -> areas.add("Heart issues, ego conflicts, excessive pride")
-            ZodiacSign.VIRGO -> areas.add("Digestive problems, anxiety, over-criticism")
-            ZodiacSign.LIBRA -> areas.add("Kidney issues, indecision, relationship dependency")
-            ZodiacSign.SCORPIO -> areas.add("Reproductive issues, intensity, control issues")
-            ZodiacSign.SAGITTARIUS -> areas.add("Liver issues, over-expansion, dogmatism")
-            ZodiacSign.CAPRICORN -> areas.add("Joint problems, depression, workaholism")
-            ZodiacSign.AQUARIUS -> areas.add("Circulation issues, detachment, rebellion")
-            ZodiacSign.PISCES -> areas.add("Foot problems, escapism, boundary issues")
+        val key = when (sign) {
+            ZodiacSign.ARIES -> StringKeyDosha.KALACHAKRA_CAUTION_ARIES
+            ZodiacSign.TAURUS -> StringKeyDosha.KALACHAKRA_CAUTION_TAURUS
+            ZodiacSign.GEMINI -> StringKeyDosha.KALACHAKRA_CAUTION_GEMINI
+            ZodiacSign.CANCER -> StringKeyDosha.KALACHAKRA_CAUTION_CANCER
+            ZodiacSign.LEO -> StringKeyDosha.KALACHAKRA_CAUTION_LEO
+            ZodiacSign.VIRGO -> StringKeyDosha.KALACHAKRA_CAUTION_VIRGO
+            ZodiacSign.LIBRA -> StringKeyDosha.KALACHAKRA_CAUTION_LIBRA
+            ZodiacSign.SCORPIO -> StringKeyDosha.KALACHAKRA_CAUTION_SCORPIO
+            ZodiacSign.SAGITTARIUS -> StringKeyDosha.KALACHAKRA_CAUTION_SAGITTARIUS
+            ZodiacSign.CAPRICORN -> StringKeyDosha.KALACHAKRA_CAUTION_CAPRICORN
+            ZodiacSign.AQUARIUS -> StringKeyDosha.KALACHAKRA_CAUTION_AQUARIUS
+            ZodiacSign.PISCES -> StringKeyDosha.KALACHAKRA_CAUTION_PISCES
         }
+        areas.add(StringResources.get(key, language))
 
         return areas
     }
 
-    private fun getKalachakraRemedies(sign: ZodiacSign, signLord: Planet): List<String> {
+    private fun getKalachakraRemedies(sign: ZodiacSign, signLord: Planet, language: Language): List<String> {
         val remedies = mutableListOf<String>()
 
         // Sign lord mantra
-        remedies.add("Chant ${signLord.displayName} mantra for strengthening this period")
+        remedies.add(String.format(StringResources.get(StringKeyDosha.KALACHAKRA_REMEDY_MANTRA, language), getLocalizedPlanetName(signLord, language)))
 
         // Elemental remedies
-        when (sign.element) {
-            "Fire" -> remedies.add("Perform Agni-related rituals (Homa, lighting lamp)")
-            "Earth" -> remedies.add("Service to earth (gardening, feeding, grounding practices)")
-            "Air" -> remedies.add("Pranayama and breath-related practices")
-            "Water" -> remedies.add("Water offerings, visiting sacred water bodies")
+        val elemKey = when (sign.element) {
+            "Fire" -> StringKeyDosha.KALACHAKRA_REMEDY_FIRE
+            "Earth" -> StringKeyDosha.KALACHAKRA_REMEDY_EARTH
+            "Air" -> StringKeyDosha.KALACHAKRA_REMEDY_AIR
+            "Water" -> StringKeyDosha.KALACHAKRA_REMEDY_WATER
+            else -> null
         }
+        elemKey?.let { remedies.add(StringResources.get(it, language)) }
 
         // Health-specific
-        remedies.add("Honor the sign deity through appropriate worship")
+        remedies.add(StringResources.get(StringKeyDosha.KALACHAKRA_REMEDY_DEITY, language))
 
         return remedies
     }

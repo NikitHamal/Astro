@@ -111,7 +111,7 @@ fun VarshaphalaScreen(
                 try {
                     varshaphalaResult = calculator.calculateVarshaphala(chart, selectedYear, lang)
                 } catch (e: Exception) {
-                    error = if (lang == com.astro.storm.data.localization.Language.NEPALI) "गणना त्रुटि: ${e.message ?: "अज्ञात त्रुटि"}" else "Calculation error: ${e.message ?: "Unknown error"}"
+                    error = stringResource(StringKeyAnalysis.ERROR_CALCULATION, e.message ?: "Unknown error")
                 }
             }
             isLoading = false
@@ -302,7 +302,7 @@ private fun YearSelector(
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        "$currentYear - ${currentYear + 1}",
+                        stringResource(StringKeyAnalysis.VARSHAPHALA_YEAR_RANGE, currentYear, currentYear + 1),
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -462,7 +462,7 @@ private fun ErrorState(message: String, onRetry: () -> Unit) {
             ) {
                 Icon(Icons.Filled.Refresh, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(StringKey.VARSHAPHALA_RESET_YEAR))
+                Text(stringResource(StringKeyAnalysis.VARSHA_RESET_YEAR))
             }
         }
     }
@@ -492,8 +492,8 @@ private fun OverviewTab(result: VarshaphalaResult) {
 
 @Composable
 private fun SolarReturnCard(result: VarshaphalaResult) {
-    val dateFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy")
-    val timeFormatter = DateTimeFormatter.ofPattern("h:mm:ss a")
+    val dateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_FULL))
+    val timeFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_TIME_FULL))
 
     Card(
         modifier = Modifier
@@ -586,7 +586,11 @@ private fun SolarReturnCard(result: VarshaphalaResult) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 InfoChip(
                     label = stringResource(StringKey.CHART_ASCENDANT),
-                    value = "${result.solarReturnChart.ascendant.getLocalizedName(currentLanguage())} ${String.format("%.1f", result.solarReturnChart.ascendantDegree)}°",
+                    value = stringResource(
+                        StringKeyAnalysis.VARSHA_SIGN_DEGREE_FORMAT,
+                        result.solarReturnChart.ascendant.getLocalizedName(currentLanguage()),
+                        result.solarReturnChart.ascendantDegree
+                    ),
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -764,7 +768,11 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                                 color = AppTheme.TextPrimary
                             )
                             Text(
-                                "${stringResource(StringKey.VARSHAPHALA_HOUSE)} ${result.muntha.house} • ${String.format("%.1f", result.muntha.degree)}°",
+                                stringResource(
+                                    StringKeyAnalysis.VARSHA_MUNTHA_POS_FORMAT,
+                                    result.muntha.house,
+                                    result.muntha.degree
+                                ),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = AppTheme.TextSecondary
                             )
@@ -1491,6 +1499,7 @@ private fun MonthsCard(result: VarshaphalaResult) {
 private fun KeyDatesCard(result: VarshaphalaResult) {
     var isExpanded by remember { mutableStateOf(false) }
     val dateFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy")
+    val shortDateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_SHORT))
 
     Card(
         modifier = Modifier
@@ -1575,6 +1584,47 @@ private fun KeyDatesCard(result: VarshaphalaResult) {
                             }
                             Text(
                                 keyDate.date.format(dateFormatter),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = AppTheme.TextMuted
+                            )
+                        }
+                    }
+                    result.keyDateRanges.forEach { dateRange ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp),
+                            verticalAlignment = Alignment.Top
+                        ) {
+                            val color = when (dateRange.type) {
+                                KeyDateType.FAVORABLE -> AppTheme.SuccessColor
+                                KeyDateType.CHALLENGING -> AppTheme.WarningColor
+                                KeyDateType.IMPORTANT -> AppTheme.AccentPrimary
+                                KeyDateType.TRANSIT -> AppTheme.AccentGold
+                            }
+
+                            Box(
+                                modifier = Modifier
+                                    .size(8.dp)
+                                    .background(color, CircleShape)
+                                    .align(Alignment.CenterVertically)
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    dateRange.event,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.Medium,
+                                    color = AppTheme.TextPrimary
+                                )
+                                Text(
+                                    dateRange.description,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = AppTheme.TextSecondary
+                                )
+                            }
+                            Text(
+                                stringResource(StringKeyAnalysis.VARSHAPHALA_YEAR_RANGE, dateRange.start.format(shortDateFormatter), dateRange.end.format(shortDateFormatter)),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1776,7 +1826,7 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
                 }
 
                 Text(
-                    "${aspect.aspectAngle}° (${String.format("%.1f", aspect.orb)}°)",
+                    stringResource(StringKeyAnalysis.VARSHA_SIGN_DEGREE_FORMAT, aspect.aspectAngle, aspect.orb),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1923,14 +1973,18 @@ private fun SahamCard(saham: SahamResult) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 InfoChip(
                     label = stringResource(StringKey.VARSHAPHALA_POSITION),
-                    value = "${String.format("%.1f", saham.degree)}° ${saham.sign.displayName}",
+                    value = stringResource(
+                        StringKeyAnalysis.VARSHA_SIGN_DEGREE_FORMAT,
+                        saham.sign.getLocalizedName(currentLanguage()),
+                        saham.degree
+                    ),
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 InfoChip(
                     label = stringResource(StringKey.VARSHAPHALA_HOUSE),
                     value = "${saham.house}",
-                    subValue = stringResource(StringKeyAnalysis.VARSHAPHALA_LORD_PREFIX, saham.lord.displayName),
+                    subValue = stringResource(StringKeyAnalysis.VARSHAPHALA_LORD_PREFIX, saham.lord.getLocalizedName(currentLanguage())),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -2006,7 +2060,7 @@ private fun DashaHeader() {
 
 @Composable
 private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
-    val dateFormatter = DateTimeFormatter.ofPattern("MMM d")
+    val shortDateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_SHORT))
     var isExpanded by remember { mutableStateOf(period.isCurrent) }
 
     Card(
@@ -2335,29 +2389,24 @@ private fun getPlanetColor(planet: Planet): Color {
 private fun getStrengthColor(strength: String, language: com.astro.storm.data.localization.Language): Color {
     val excellent = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_EXCELLENT)
     val strong = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_STRONG)
-    val good = stringResource(StringKeyAnalysis.PANCHA_GOOD)
-    val average = stringResource(StringKeyAnalysis.PANCHA_AVERAGE)
+    val exalted = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_EXALTED)
     val moderate = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_MODERATE)
     val weak = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_WEAK)
     val challenged = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_CHALLENGED)
     val debilitated = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_DEBILITATED)
 
     return when {
-        strength.contains(excellent, ignoreCase = true) -> AppTheme.SuccessColor
-        strength.contains(strong, ignoreCase = true) -> AppTheme.SuccessColor
-        strength.contains(good, ignoreCase = true) -> AppTheme.SuccessColor
-        strength.contains(moderate, ignoreCase = true) -> AppTheme.AccentGold
-        strength.contains(average, ignoreCase = true) -> AppTheme.AccentGold
-        strength.contains(weak, ignoreCase = true) -> AppTheme.WarningColor
-        strength.contains(challenged, ignoreCase = true) -> AppTheme.ErrorColor
-        strength.contains(debilitated, ignoreCase = true) -> AppTheme.ErrorColor
-        // Fallback to English for safety
-        strength.contains("Excellent", ignoreCase = true) -> AppTheme.SuccessColor
+        strength.equals(excellent, ignoreCase = true) || strength.equals(exalted, ignoreCase = true) -> AppTheme.SuccessColor
+        strength.equals(strong, ignoreCase = true) -> AppTheme.SuccessColor
+        strength.equals(moderate, ignoreCase = true) -> AppTheme.AccentGold
+        strength.equals(weak, ignoreCase = true) -> AppTheme.WarningColor
+        strength.equals(challenged, ignoreCase = true) || strength.equals(debilitated, ignoreCase = true) -> AppTheme.ErrorColor
+        // Fallback for English literals if resources not matching exactly
+        strength.contains("Excellent", ignoreCase = true) || strength.contains("Exalted", ignoreCase = true) -> AppTheme.SuccessColor
         strength.contains("Strong", ignoreCase = true) -> AppTheme.SuccessColor
         strength.contains("Moderate", ignoreCase = true) -> AppTheme.AccentGold
         strength.contains("Weak", ignoreCase = true) -> AppTheme.WarningColor
-        strength.contains("Challenged", ignoreCase = true) -> AppTheme.ErrorColor
-        strength.contains("Debilitated", ignoreCase = true) -> AppTheme.ErrorColor
+        strength.contains("Challenged", ignoreCase = true) || strength.contains("Debilitated", ignoreCase = true) -> AppTheme.ErrorColor
         else -> AppTheme.TextMuted
     }
 }

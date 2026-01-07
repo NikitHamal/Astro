@@ -1931,17 +1931,15 @@ class VarshaphalaCalculator(context: Context) {
         val munthaTheme = muntha.themes.firstOrNull() ?: StringResources.get(StringKeyAnalysis.MUNTHA_GENERAL_GROWTH, language)
         val munthaInfluence = StringResources.get(StringKeyAnalysis.VARSHA_MUNTHA_INFLUENCE, language, muntha.house, muntha.sign.getLocalizedName(language), munthaTheme.lowercase())
 
-        return buildString {
-            append(StringResources.get(StringKeyAnalysis.VARSHA_OVERALL_TONE, language, overallTone.lowercase()))
-            append(" ")
-            append(yearLordInfluence)
-            append(" ")
-            append(munthaInfluence)
-            append(" ")
-            append(StringResources.get(StringKeyAnalysis.VARSHA_ASPECT_SUMMARY, language, positiveAspectsCount, challengingAspectsCount))
-            append(" ")
-            append(StringResources.get(StringKeyAnalysis.VARSHA_POTENTIAL_MAXIMIZED, language))
-        }
+        return StringResources.get(
+            StringKeyAnalysis.VARSHA_OVERALL_TEMPLATE,
+            language,
+            overallTone.lowercase(),
+            yearLordInfluence,
+            munthaInfluence,
+            positiveAspectsCount,
+            challengingAspectsCount
+        )
     }
 
     private fun calculateYearRating(

@@ -92,17 +92,30 @@ fun getRatingIcon(rating: CompatibilityRating): ImageVector {
 }
 
 /**
- * Get color based on Manglik status text.
+ * Get color based on Manglik compatibility level.
  */
 @Composable
-fun getManglikStatusColor(status: String): Color {
-    return when {
-        status.contains("No concerns", ignoreCase = true) -> AppTheme.SuccessColor
-        status.contains("cancel", ignoreCase = true) -> AppTheme.SuccessColor
-        status.contains("Both", ignoreCase = true) -> AppTheme.SuccessColor
-        status.contains("Manageable", ignoreCase = true) -> AppTheme.WarningColor
-        status.contains("Partial", ignoreCase = true) -> AppTheme.WarningColor
-        else -> AppTheme.ErrorColor
+fun getManglikStatusColor(level: ManglikCompatibilityLevel): Color {
+    return when (level) {
+        ManglikCompatibilityLevel.EXCELLENT -> AppTheme.SuccessColor
+        ManglikCompatibilityLevel.GOOD -> AppTheme.SuccessColor
+        ManglikCompatibilityLevel.AVERAGE -> AppTheme.WarningColor
+        ManglikCompatibilityLevel.BELOW_AVERAGE -> AppTheme.WarningColor
+        ManglikCompatibilityLevel.POOR -> AppTheme.ErrorColor
+    }
+}
+
+/**
+ * Get icon for Manglik compatibility level.
+ */
+@Composable
+fun getManglikStatusIcon(level: ManglikCompatibilityLevel): ImageVector {
+    return when (level) {
+        ManglikCompatibilityLevel.EXCELLENT -> Icons.Filled.CheckCircle
+        ManglikCompatibilityLevel.GOOD -> Icons.Filled.CheckCircle
+        ManglikCompatibilityLevel.AVERAGE -> Icons.Outlined.Info
+        ManglikCompatibilityLevel.BELOW_AVERAGE -> Icons.Outlined.Info
+        ManglikCompatibilityLevel.POOR -> Icons.Filled.Dangerous
     }
 }
 

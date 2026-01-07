@@ -769,7 +769,7 @@ private fun QuickInsightsRow(result: MatchmakingResult) {
             QuickInsightChip(
                 label = stringResource(StringKeyMatch.MATCH_MANGLIK),
                 value = result.getManglikQuickStatus(language),
-                color = getManglikStatusColor(result.manglikCompatibility)
+                color = getManglikStatusColor(result.manglikCompatibilityLevel)
             )
         }
 
@@ -1205,7 +1205,7 @@ private fun AnimatedGunaCard(
                         Spacer(modifier = Modifier.width(14.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                guna.name,
+                                guna.gunaType.getLocalizedName(language),
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary,
@@ -1213,7 +1213,7 @@ private fun AnimatedGunaCard(
                                 overflow = TextOverflow.Ellipsis
                             )
                             Text(
-                                guna.description,
+                                com.astro.storm.ephemeris.MatchmakingCalculator.getGunaDescription(guna.gunaType.displayName, language),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted,
                                 maxLines = 1,
@@ -1349,7 +1349,7 @@ private fun DoshaSection(result: MatchmakingResult) {
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Surface(
-                    color = getManglikStatusColor(result.manglikCompatibility).copy(alpha = 0.12f),
+                    color = getManglikStatusColor(result.manglikCompatibilityLevel).copy(alpha = 0.12f),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -1359,22 +1359,17 @@ private fun DoshaSection(result: MatchmakingResult) {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Icon(
-                            when {
-                                result.manglikCompatibility.contains("No concerns") -> Icons.Filled.CheckCircle
-                                result.manglikCompatibility.contains("cancel") -> Icons.Filled.CheckCircle
-                                result.manglikCompatibility.contains("Manageable") -> Icons.Outlined.Info
-                                else -> Icons.Filled.Warning
-                            },
+                            getManglikStatusIcon(result.manglikCompatibilityLevel),
                             contentDescription = null,
-                            tint = getManglikStatusColor(result.manglikCompatibility),
+                            tint = getManglikStatusColor(result.manglikCompatibilityLevel),
                             modifier = Modifier.size(24.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            result.manglikCompatibility,
+                            result.manglikCompatibilityRecommendation,
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = getManglikStatusColor(result.manglikCompatibility),
+                            color = getManglikStatusColor(result.manglikCompatibilityLevel),
                             textAlign = TextAlign.Center
                         )
                     }
@@ -1447,7 +1442,7 @@ private fun EnhancedManglikPersonCard(
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        analysis.effectiveDosha.displayName,
+                        analysis.effectiveDosha.getLocalizedName(LocalLanguage.current),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = getManglikSeverityColor(analysis.effectiveDosha),
@@ -2918,7 +2913,7 @@ private fun formatMatchmakingForAi(
         appendLine("## Manglik (Kuja Dosha) Analysis")
         appendLine("- Bride Manglik Status: ${if (result.brideManglik.effectiveDosha != ManglikDosha.NONE) "Yes (Manglik)" else "No"}")
         appendLine("- Groom Manglik Status: ${if (result.groomManglik.effectiveDosha != ManglikDosha.NONE) "Yes (Manglik)" else "No"}")
-        appendLine("- Compatibility: ${result.manglikCompatibility}")
+        appendLine("- Compatibility: ${result.manglikCompatibilityLevel}")
         appendLine()
 
         if (result.specialConsiderations.isNotEmpty()) {

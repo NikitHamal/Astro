@@ -1492,7 +1492,8 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
                         Spacer(modifier = Modifier.width(8.dp))
                         val language = currentLanguage()
                         Text(
-                            "$planetsInLagnaLabel: ${lagnaAnalysis.planetsInLagna.joinToString { it.planet.getLocalizedName(language) }}",
+                            stringResource(StringKeyAnalysis.PRASHNA_PLANETS_IN_LAGNA_TEMPLATE)
+                                .format(lagnaAnalysis.planetsInLagna.joinToString { it.planet.getLocalizedName(language) }),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.InfoColor
                         )
@@ -1834,7 +1835,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Text(
-                                    "${index + 1}",
+                                    (index + 1).localized(),
                                     style = MaterialTheme.typography.labelSmall,
                                     fontWeight = FontWeight.Bold,
                                     color = AppTheme.InfoColor
