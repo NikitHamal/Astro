@@ -178,6 +178,10 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     FEATURE_VIPAREETA_RAJA_YOGA_DESC("Reverse raja yogas", "विपरीत राजयोग विश्लेषण"),
     FEATURE_ISHTA_KASHTA_PHALA("Ishta Kashta Phala", "इष्ट कष्ट फल"),
     FEATURE_ISHTA_KASHTA_PHALA_DESC("Benefic/malefic results", "शुभ/अशुभ फल विश्लेषण"),
+    FEATURE_SHOOLA_DASHA("Shoola Dasha", "शूल दशा"),
+    FEATURE_SHOOLA_DASHA_DESC("Health & critical timing", "स्वास्थ्य र गम्भीर समय"),
+    FEATURE_ASHTAVARGA_TRANSIT("Ashtavarga Transit", "अष्टकवर्ग गोचर"),
+    FEATURE_ASHTAVARGA_TRANSIT_DESC("Transit predictions by bindu", "बिन्दुद्वारा गोचर भविष्यवाणी"),
 
     // Predictions Screen - Tabs
     PREDICTIONS_TAB_OVERVIEW("Overview", "सारांश"),

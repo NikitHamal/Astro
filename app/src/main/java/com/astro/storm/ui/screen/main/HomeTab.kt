@@ -662,6 +662,20 @@ enum class InsightFeature(
         icon = Icons.Outlined.Balance,
         color = DarkAppThemeColors.AccentGold,
         isImplemented = true
+    ),
+    SHOOLA_DASHA(
+        titleKey = StringKey.FEATURE_SHOOLA_DASHA,
+        descriptionKey = StringKey.FEATURE_SHOOLA_DASHA_DESC,
+        icon = Icons.Outlined.HealthAndSafety,
+        color = DarkAppThemeColors.WarningColor,
+        isImplemented = true
+    ),
+    ASHTAVARGA_TRANSIT(
+        titleKey = StringKey.FEATURE_ASHTAVARGA_TRANSIT,
+        descriptionKey = StringKey.FEATURE_ASHTAVARGA_TRANSIT_DESC,
+        icon = Icons.Outlined.BarChart,
+        color = DarkAppThemeColors.AccentTeal,
+        isImplemented = true
     );
 
     /**

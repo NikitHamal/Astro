@@ -1,23 +1,54 @@
 # AstroStorm Overhaul - Continuity Ledger
-> Last updated: 2025-12-31T22:35:00+05:45
+> Last updated: 2026-01-07T12:00:00+05:45
 
-## Goal
-Complete production-grade overhaul: 100% Nepali localization, fix birth chart accuracy, and full refactoring for performance and clarity.
+## Goal (incl. success criteria)
+Implement 5 new Vedic astrology features from IDEAS.md with production-grade quality:
+1. Shoola Dasha Calculator - Jaimini health/accident timing
+2. Ashtavarga Transit Predictions - Transit intensity predictions
+3. Kakshya Transit System - 8-fold micro-transit timing
+4. Prashna Enhancements - Advanced horary features
+5. Nadi Amsha - 150th division precision timing
+
+Success criteria: All 5 features fully functional, localized (EN/NE), following existing patterns, with clean UI/UX.
+
+## Constraints/Assumptions
+- Zero hardcoded text (all localized)
+- 500-1000 lines per file max
+- Follow existing calculator→viewmodel→screen pattern
+- No breaking changes to existing features
+- Vedic accuracy per classical texts
+
+## Key Decisions
+- Features selected based on IDEAS.md "Pending" status and impact value
+- Will integrate with existing navigation system
+- Using established StringKey pattern for localization
 
 ## State
-### Phase 1: Deep Nepali Localization (IN PROGRESS)
-- **Done**: 
-    - Systematic text discovery and audit completed.
-    - `Planet`, `ZodiacSign`, `Nakshatra`, and `StrengthRating` enums refactored with `stringKey`.
-    - `LocalizationProvider.kt` enhanced with `localized()`, `localizedName()`, and `TIME_ONLY` date formatting.
-    - `PlanetsTabContent.kt`, `KalachakraDashaScreen.kt`, and `PrashnaScreen.kt` fully localized.
-- **Now**: Finalizing infrastructure verification (placeholders, plurals).
-- **Next**: Audit and localize remaining priority screens (`DashaSystemsScreen.kt`, `AvasthaScreen.kt`).
 
-## Working Set
-- **Modules**: `com.astro.storm.ui.screen`, `com.astro.storm.data.localization`
-- **Active Files**: `LocalizationProvider.kt`, `PrashnaScreen.kt`, `KalachakraDashaScreen.kt`
+- Done:
+  - Created CLAUDE.md project knowledge base
+  - Explored codebase architecture
+  - Identified 5 features to implement
 
-## Issues Found
-- `PrashnaFormatters` previously relied on `Locale.getDefault()`, introducing date/time localization inconsistencies. Solved by migrating to `LocalDateTime.formatLocalized`.
-- Hardcoded unit concatenations (e.g., "months", " महिना") were scattered. Centralized in `StringKey.UNIT_...`.
+- Now:
+  - Implementing Shoola Dasha Calculator (health/accident timing)
+
+- Next:
+  - Ashtavarga Transit Predictions
+  - Kakshya Transit System
+  - Prashna Enhancements
+  - Nadi Amsha
+
+## Open Questions (UNCONFIRMED if needed)
+- None currently
+
+## Working Set (files/ids/commands)
+- **Modules**: `com.astro.storm.ephemeris`, `com.astro.storm.ui.screen`, `com.astro.storm.data.localization`
+- **Reference Files**: `KalachakraDashaCalculator.kt`, `MarakaCalculator.kt`, `TarabalaCalculator.kt`
+- **Navigation**: `Navigation.kt`
+- **Localization**: `StringKeyDosha.kt`, `StringKeyAnalysis.kt`
+
+## Previous Session Context (2025-12-31)
+- Phase 1 localization completed for key screens
+- LocalizationProvider enhanced
+- Hardcoded strings centralized

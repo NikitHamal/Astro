@@ -95,6 +95,8 @@ fun MainScreen(
     onNavigateToBadhaka: () -> Unit = {},
     onNavigateToVipareetaRajaYoga: () -> Unit = {},
     onNavigateToIshtaKashtaPhala: () -> Unit = {},
+    onNavigateToShoolaDasha: () -> Unit = {},
+    onNavigateToAshtavargaTransit: () -> Unit = {},
     onNavigateToAiModels: () -> Unit = {},
     onNavigateToChat: (Long?) -> Unit = {}, // null for new chat, Long for existing
     onExportChart: (ExportFormat) -> Unit
@@ -253,6 +255,8 @@ fun MainScreen(
                                         InsightFeature.BADHAKA -> if (currentChart != null) onNavigateToBadhaka()
                                         InsightFeature.VIPAREETA_RAJA_YOGA -> if (currentChart != null) onNavigateToVipareetaRajaYoga()
                                         InsightFeature.ISHTA_KASHTA_PHALA -> if (currentChart != null) onNavigateToIshtaKashtaPhala()
+                                        InsightFeature.SHOOLA_DASHA -> if (currentChart != null) onNavigateToShoolaDasha()
+                                        InsightFeature.ASHTAVARGA_TRANSIT -> if (currentChart != null) onNavigateToAshtavargaTransit()
                                         // Fallback to chart analysis for any remaining features
                                         else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
                                     }
