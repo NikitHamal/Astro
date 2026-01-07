@@ -43,6 +43,7 @@ import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.Brightness2
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -73,6 +74,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
+import com.astro.storm.data.localization.StringKeyAdvanced
 import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
