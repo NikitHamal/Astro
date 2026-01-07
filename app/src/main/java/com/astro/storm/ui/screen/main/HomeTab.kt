@@ -75,6 +75,7 @@ import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyAdvanced
+import com.astro.storm.data.localization.StringKeyInterface
 import com.astro.storm.data.localization.StringResources
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
@@ -372,8 +373,8 @@ private fun ComingSoonBadge(modifier: Modifier = Modifier) {
 
 @Stable
 enum class InsightFeature(
-    val titleKey: StringKey,
-    val descriptionKey: StringKey,
+    val titleKey: StringKeyInterface,
+    val descriptionKey: StringKeyInterface,
     val icon: ImageVector,
     val color: Color,
     val isImplemented: Boolean
