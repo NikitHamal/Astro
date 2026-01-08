@@ -267,7 +267,7 @@ object SahamCalculator {
         val sign = ZodiacSign.fromLongitude(normalizedLong)
         val degreeInSign = normalizedLong % DEGREES_PER_SIGN
         val house = calculateWholeSignHouse(normalizedLong, ascLong)
-        val nakshatra = Nakshatra.fromLongitude(normalizedLong)
+        val (nakshatra, _) = Nakshatra.fromLongitude(normalizedLong)
         val nakshatraPada = calculateNakshatraPada(normalizedLong)
         val lord = sign.ruler
         val lordPosition = planetMap[lord]

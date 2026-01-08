@@ -806,6 +806,7 @@ object SarvatobhadraChakraCalculator {
             when {
                 daily.overallScore >= 70 -> insights.add("Today is auspicious for important activities")
                 daily.overallScore <= 30 -> insights.add("Today requires caution in new undertakings")
+                else -> {}
             }
         }
 
