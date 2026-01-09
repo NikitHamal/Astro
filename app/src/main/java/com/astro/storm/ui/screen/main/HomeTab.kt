@@ -734,6 +734,13 @@ enum class InsightFeature(
         icon = Icons.Outlined.Calculate,
         color = DarkAppThemeColors.AccentGold,
         isImplemented = true
+    ),
+    NATIVE_ANALYSIS(
+        titleKey = StringKey.FEATURE_NATIVE_ANALYSIS,
+        descriptionKey = StringKey.FEATURE_NATIVE_ANALYSIS_DESC,
+        icon = Icons.Outlined.Person,
+        color = DarkAppThemeColors.AccentPrimary,
+        isImplemented = true
     );
 
     /**
