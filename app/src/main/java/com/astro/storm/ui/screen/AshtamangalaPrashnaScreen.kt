@@ -35,7 +35,21 @@ import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator
-import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.*
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.AshtamangalaReading
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.QueryCategory
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.CowrieThrowResult
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.PositionResult
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.AshtamangalaPosition
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.IndicationStrength
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.YesNoProbability
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.TimingPrediction
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.ChartValidation
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.Remedy
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.RemedyType
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.SpecialReadings
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.ConfidenceLevel
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.SafetyLevel
+import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.ReadingInterpretation
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
@@ -1209,8 +1223,8 @@ private fun PositionsTab(reading: AshtamangalaReading) {
             )
         }
 
-        items(reading.positionAnalysis) { position ->
-            PositionCard(position, position.position == reading.dominantPosition)
+        items(reading.positionAnalysis) { posResult ->
+            PositionCard(posResult, posResult.position == reading.dominantPosition)
         }
     }
 }
