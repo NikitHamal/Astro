@@ -44,6 +44,11 @@ import androidx.compose.material.icons.outlined.Brightness2
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material.icons.outlined.Timer
+import androidx.compose.material.icons.outlined.Grid4x4
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Timelapse
+import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -77,6 +82,7 @@ import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.StringKeyAdvanced
 import com.astro.storm.data.localization.StringKeyInterface
 import com.astro.storm.data.localization.StringResources
+import com.astro.storm.data.localization.StringKeyShadbala
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ui.theme.AppTheme
@@ -691,6 +697,41 @@ enum class InsightFeature(
         titleKey = StringKeyAdvanced.NADI_TITLE,
         descriptionKey = StringKeyAdvanced.NADI_DESC,
         icon = Icons.Outlined.Timer,
+        color = DarkAppThemeColors.AccentGold,
+        isImplemented = true
+    ),
+    SARVATOBHADRA_CHAKRA(
+        titleKey = StringKeyShadbala.SARVATOBHADRA_TITLE,
+        descriptionKey = StringKeyShadbala.SARVATOBHADRA_DESC,
+        icon = Icons.Outlined.Grid4x4,
+        color = DarkAppThemeColors.AccentTeal,
+        isImplemented = true
+    ),
+    DRIG_BALA(
+        titleKey = StringKeyShadbala.DRIG_TITLE,
+        descriptionKey = StringKeyShadbala.DRIG_DESC,
+        icon = Icons.Outlined.Visibility,
+        color = DarkAppThemeColors.SuccessColor,
+        isImplemented = true
+    ),
+    STHANA_BALA(
+        titleKey = StringKeyShadbala.STHANA_TITLE,
+        descriptionKey = StringKeyShadbala.STHANA_DESC,
+        icon = Icons.Outlined.Home, // Using Home as proxy for position/place
+        color = DarkAppThemeColors.LifeAreaCareer,
+        isImplemented = true
+    ),
+    KALA_BALA(
+        titleKey = StringKeyShadbala.KALA_TITLE,
+        descriptionKey = StringKeyShadbala.KALA_DESC,
+        icon = Icons.Outlined.Timelapse,
+        color = DarkAppThemeColors.LifeAreaSpiritual,
+        isImplemented = true
+    ),
+    SAHAM(
+        titleKey = StringKeyShadbala.SAHAM_TITLE,
+        descriptionKey = StringKeyShadbala.SAHAM_DESC,
+        icon = Icons.Outlined.Calculate,
         color = DarkAppThemeColors.AccentGold,
         isImplemented = true
     );

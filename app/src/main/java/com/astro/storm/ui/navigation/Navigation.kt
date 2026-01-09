@@ -58,6 +58,11 @@ import com.astro.storm.ui.screen.IshtaKashtaPhalaScreen
 import com.astro.storm.ui.screen.ShoolaDashaScreen
 import com.astro.storm.ui.screen.AshtavargaTransitScreen
 import com.astro.storm.ui.screen.KakshaTransitScreen
+import com.astro.storm.ui.screen.SarvatobhadraChakraScreen
+import com.astro.storm.ui.screen.DrigBalaScreen
+import com.astro.storm.ui.screen.SthanaBalaScreen
+import com.astro.storm.ui.screen.KalaBalaScreen
+import com.astro.storm.ui.screen.SahamScreen
 import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
@@ -100,6 +105,23 @@ sealed class Screen(val route: String) {
     }
     object Shadbala : Screen("shadbala/{chartId}") {
         fun createRoute(chartId: Long) = "shadbala/$chartId"
+    }
+    
+    // New Shadbala & Chakra Screens
+    object SarvatobhadraChakra : Screen("sarvatobhadra_chakra/{chartId}") {
+        fun createRoute(chartId: Long) = "sarvatobhadra_chakra/$chartId"
+    }
+    object DrigBala : Screen("drig_bala/{chartId}") {
+        fun createRoute(chartId: Long) = "drig_bala/$chartId"
+    }
+    object SthanaBala : Screen("sthana_bala/{chartId}") {
+        fun createRoute(chartId: Long) = "sthana_bala/$chartId"
+    }
+    object KalaBala : Screen("kala_bala/{chartId}") {
+        fun createRoute(chartId: Long) = "kala_bala/$chartId"
+    }
+    object Saham : Screen("saham/{chartId}") {
+        fun createRoute(chartId: Long) = "saham/$chartId"
     }
 
     // Individual chart analysis screens
@@ -530,6 +552,31 @@ fun AstroStormNavigation(
                 onNavigateToAshtavargaTransit = {
                     selectedChartId?.let { chartId ->
                         navController.navigate(Screen.AshtavargaTransit.createRoute(chartId))
+                    }
+                },
+                onNavigateToSarvatobhadraChakra = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.SarvatobhadraChakra.createRoute(chartId))
+                    }
+                },
+                onNavigateToDrigBala = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.DrigBala.createRoute(chartId))
+                    }
+                },
+                onNavigateToSthanaBala = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.SthanaBala.createRoute(chartId))
+                    }
+                },
+                onNavigateToKalaBala = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.KalaBala.createRoute(chartId))
+                    }
+                },
+                onNavigateToSaham = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.Saham.createRoute(chartId))
                     }
                 },
 
@@ -1449,6 +1496,60 @@ fun AstroStormNavigation(
                 }
             }
             NadiAmshaScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // ===================================
+        // NEW SHADBALA SCREENS
+        // ===================================
+
+        // Sarvatobhadra Chakra screen
+        composable(
+            route = Screen.SarvatobhadraChakra.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            SarvatobhadraChakraScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // Drig Bala screen
+        composable(
+            route = Screen.DrigBala.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            DrigBalaScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // Sthana Bala screen
+        composable(
+            route = Screen.SthanaBala.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            SthanaBalaScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // Kala Bala screen
+        composable(
+            route = Screen.KalaBala.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            KalaBalaScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // Saham (Arabic Parts) screen
+        composable(
+            route = Screen.Saham.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            SahamScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
         // AI Models configuration screen

@@ -97,6 +97,11 @@ fun MainScreen(
     onNavigateToIshtaKashtaPhala: () -> Unit = {},
     onNavigateToShoolaDasha: () -> Unit = {},
     onNavigateToAshtavargaTransit: () -> Unit = {},
+    onNavigateToSarvatobhadraChakra: () -> Unit = {},
+    onNavigateToDrigBala: () -> Unit = {},
+    onNavigateToSthanaBala: () -> Unit = {},
+    onNavigateToKalaBala: () -> Unit = {},
+    onNavigateToSaham: () -> Unit = {},
     onNavigateToKakshaTransit: (Long) -> Unit = {},
     onNavigateToNadiAmsha: (Long) -> Unit = {},
     onNavigateToAiModels: () -> Unit = {},
@@ -261,6 +266,11 @@ fun MainScreen(
                                         InsightFeature.ISHTA_KASHTA_PHALA -> if (currentChart != null) onNavigateToIshtaKashtaPhala()
                                         InsightFeature.SHOOLA_DASHA -> if (currentChart != null) onNavigateToShoolaDasha()
                                         InsightFeature.ASHTAVARGA_TRANSIT -> if (currentChart != null) onNavigateToAshtavargaTransit()
+                                        InsightFeature.SARVATOBHADRA_CHAKRA -> if (currentChart != null) onNavigateToSarvatobhadraChakra()
+                                        InsightFeature.DRIG_BALA -> if (currentChart != null) onNavigateToDrigBala()
+                                        InsightFeature.STHANA_BALA -> if (currentChart != null) onNavigateToSthanaBala()
+                                        InsightFeature.KALA_BALA -> if (currentChart != null) onNavigateToKalaBala()
+                                        InsightFeature.SAHAM -> if (currentChart != null) onNavigateToSaham()
                                         // Fallback to chart analysis for any remaining features
                                         else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
                                     }
