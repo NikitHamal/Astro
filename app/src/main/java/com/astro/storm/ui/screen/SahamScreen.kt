@@ -10,6 +10,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -102,7 +103,7 @@ import kotlinx.coroutines.withContext
  * Saham Screen (Arabic Parts) - Production Grade
  * Advanced analysis of sensitive points with filtering, search, and detailed visualization.
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun SahamScreen(
     chart: VedicChart?,
@@ -458,7 +459,7 @@ private fun SahamFilterBar(
                     label = { Text(filter.label) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = AppTheme.AccentGold,
-                        selectedLabelColor = AppTheme.BackgroundOverDark,
+                        selectedLabelColor = AppTheme.ChipBackgroundSelected,
                         containerColor = AppTheme.CardBackground,
                         labelColor = AppTheme.TextSecondary
                     ),
