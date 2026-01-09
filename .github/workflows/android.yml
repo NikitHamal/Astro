@@ -35,7 +35,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           cache-read-only: false
-          gradle-home-cache-cleanup: true
 
       - name: Download Swiss Ephemeris Library
         run: |
