@@ -102,6 +102,7 @@ fun MainScreen(
     onNavigateToSthanaBala: () -> Unit = {},
     onNavigateToKalaBala: () -> Unit = {},
     onNavigateToSaham: () -> Unit = {},
+    onNavigateToNativeAnalysis: () -> Unit = {},
     onNavigateToKakshaTransit: (Long) -> Unit = {},
     onNavigateToNadiAmsha: (Long) -> Unit = {},
     onNavigateToAiModels: () -> Unit = {},
@@ -271,6 +272,7 @@ fun MainScreen(
                                         InsightFeature.STHANA_BALA -> if (currentChart != null) onNavigateToSthanaBala()
                                         InsightFeature.KALA_BALA -> if (currentChart != null) onNavigateToKalaBala()
                                         InsightFeature.SAHAM -> if (currentChart != null) onNavigateToSaham()
+                                        InsightFeature.NATIVE_ANALYSIS -> if (currentChart != null) onNavigateToNativeAnalysis()
                                         // Fallback to chart analysis for any remaining features
                                         else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
                                     }

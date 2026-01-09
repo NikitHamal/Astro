@@ -186,6 +186,9 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     FEATURE_KAKSHYA_TRANSIT("Kakshya Transit", "कक्ष्या गोचर"),
     FEATURE_KAKSHYA_TRANSIT_DESC("Advanced 8-fold micro-transit analysis", "८-गुणा सूक्ष्म गोचर विश्लेषण"),
 
+    FEATURE_NATIVE_ANALYSIS("Native Analysis", "जातक विश्लेषण"),
+    FEATURE_NATIVE_ANALYSIS_DESC("Complete life profile & personality", "सम्पूर्ण जीवन प्रोफाइल र व्यक्तित्व"),
+
     // Predictions Screen - Tabs
     PREDICTIONS_TAB_OVERVIEW("Overview", "सारांश"),
     PREDICTIONS_TAB_LIFE_AREAS("Life Areas", "जीवन क्षेत्रहरू"),

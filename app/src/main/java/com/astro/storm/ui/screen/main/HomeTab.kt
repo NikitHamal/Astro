@@ -38,6 +38,7 @@ import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.Stars
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.Timeline
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Balance
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.Brightness2
@@ -733,6 +734,13 @@ enum class InsightFeature(
         descriptionKey = StringKeyShadbala.SAHAM_DESC,
         icon = Icons.Outlined.Calculate,
         color = DarkAppThemeColors.AccentGold,
+        isImplemented = true
+    ),
+    NATIVE_ANALYSIS(
+        titleKey = StringKey.FEATURE_NATIVE_ANALYSIS,
+        descriptionKey = StringKey.FEATURE_NATIVE_ANALYSIS_DESC,
+        icon = Icons.Outlined.Person,
+        color = DarkAppThemeColors.AccentPrimary,
         isImplemented = true
     );
 

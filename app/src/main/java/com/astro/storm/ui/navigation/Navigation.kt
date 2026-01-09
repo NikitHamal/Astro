@@ -63,6 +63,7 @@ import com.astro.storm.ui.screen.DrigBalaScreen
 import com.astro.storm.ui.screen.SthanaBalaScreen
 import com.astro.storm.ui.screen.KalaBalaScreen
 import com.astro.storm.ui.screen.SahamScreen
+import com.astro.storm.ui.screen.NativeAnalysisScreen
 import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
@@ -122,6 +123,9 @@ sealed class Screen(val route: String) {
     }
     object Saham : Screen("saham/{chartId}") {
         fun createRoute(chartId: Long) = "saham/$chartId"
+    }
+    object NativeAnalysis : Screen("native_analysis/{chartId}") {
+        fun createRoute(chartId: Long) = "native_analysis/$chartId"
     }
 
     // Individual chart analysis screens
@@ -577,6 +581,11 @@ fun AstroStormNavigation(
                 onNavigateToSaham = {
                     selectedChartId?.let { chartId ->
                         navController.navigate(Screen.Saham.createRoute(chartId))
+                    }
+                },
+                onNavigateToNativeAnalysis = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.NativeAnalysis.createRoute(chartId))
                     }
                 },
 
@@ -1550,6 +1559,16 @@ fun AstroStormNavigation(
             val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
             LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
             SahamScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // Native Analysis (Comprehensive Profile) screen
+        composable(
+            route = Screen.NativeAnalysis.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            NativeAnalysisScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
         // AI Models configuration screen

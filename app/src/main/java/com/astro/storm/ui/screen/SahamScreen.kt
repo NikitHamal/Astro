@@ -1,15 +1,8 @@
 package com.astro.storm.ui.screen
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,7 +13,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,8 +24,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Calculate
@@ -44,6 +34,7 @@ import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.NightlightRound
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -55,16 +46,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -78,32 +64,32 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.data.localization.Language
 import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKeyShadbala
+import com.astro.storm.data.localization.StringKeySaham
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.SahamCalculator
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 /**
- * Saham Screen (Arabic Parts) - Production Grade
- * Advanced analysis of sensitive points with filtering, search, and detailed visualization.
+ * Saham Screen (Arabic Parts) - Production Grade with Full Bilingual Support
+ *
+ * Advanced analysis of sensitive points with:
+ * - Full EN/NE localization
+ * - Search and filtering capabilities
+ * - Detailed visualization
+ * - Info dialog with educational content
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SahamScreen(
     chart: VedicChart?,
@@ -114,36 +100,40 @@ fun SahamScreen(
     var analysis by remember { mutableStateOf<SahamCalculator.SahamAnalysis?>(null) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var activeFilter by rememberSaveable { mutableStateOf(SahamFilter.ALL) }
-    
-    // Derived state for filtered list
+    var showInfoDialog by remember { mutableStateOf(false) }
+
     val filteredSahams by remember(analysis, searchQuery, activeFilter) {
         derivedStateOf {
             if (analysis == null) emptyList()
             else {
                 var list = analysis!!.sahams
-                
-                // Apply Category Filter
+
                 list = when (activeFilter) {
                     SahamFilter.ALL -> list
                     SahamFilter.MAJOR -> list.filter { it.type.category == SahamCalculator.SahamCategory.MAJOR }
                     SahamFilter.MINOR -> list.filter { it.type.category == SahamCalculator.SahamCategory.MINOR }
-                    SahamFilter.STRONG -> list.filter { it.strength == SahamCalculator.SahamStrength.EXCELLENT || it.strength == SahamCalculator.SahamStrength.STRONG }
-                    SahamFilter.WEAK -> list.filter { it.strength == SahamCalculator.SahamStrength.WEAK || it.strength == SahamCalculator.SahamStrength.AFFLICTED }
+                    SahamFilter.STRONG -> list.filter {
+                        it.strength == SahamCalculator.SahamStrength.EXCELLENT ||
+                        it.strength == SahamCalculator.SahamStrength.STRONG
+                    }
+                    SahamFilter.WEAK -> list.filter {
+                        it.strength == SahamCalculator.SahamStrength.WEAK ||
+                        it.strength == SahamCalculator.SahamStrength.AFFLICTED
+                    }
                     SahamFilter.ACTIVATED -> list.filter { it.isActivated }
                 }
 
-                // Apply Search
                 if (searchQuery.isNotEmpty()) {
-                    list = list.filter { 
-                        it.type.displayName.contains(searchQuery, ignoreCase = true) || 
-                        it.type.name.contains(searchQuery, ignoreCase = true) 
+                    list = list.filter {
+                        it.type.displayName.contains(searchQuery, ignoreCase = true) ||
+                        it.type.name.contains(searchQuery, ignoreCase = true)
                     }
                 }
-                
-                // Default sort: Major first, then by strength desc
+
                 list.sortedWith(
-                    compareByDescending<SahamCalculator.SahamResult> { it.type.category == SahamCalculator.SahamCategory.MAJOR }
-                        .thenByDescending { strengthToValue(it.strength) }
+                    compareByDescending<SahamCalculator.SahamResult> {
+                        it.type.category == SahamCalculator.SahamCategory.MAJOR
+                    }.thenByDescending { strengthToValue(it.strength) }
                 )
             }
         }
@@ -152,13 +142,18 @@ fun SahamScreen(
     LaunchedEffect(chart) {
         if (chart == null) return@LaunchedEffect
         isCalculating = true
-        // Simulate slight computation time for smooth transition or actually run heavy calc
         try {
             analysis = withContext(Dispatchers.Default) {
                 SahamCalculator.analyzeSahams(chart)
             }
         } catch (_: Exception) { }
         isCalculating = false
+    }
+
+    if (showInfoDialog) {
+        SahamInfoDialog(
+            onDismiss = { showInfoDialog = false }
+        )
     }
 
     Scaffold(
@@ -168,14 +163,18 @@ fun SahamScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyShadbala.SAHAM_TITLE),
+                            text = stringResource(StringKeySaham.TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         if (analysis != null) {
                             Text(
-                                text = if (analysis!!.isDayBirth) "Day Birth Chart" else "Night Birth Chart",
+                                text = if (analysis!!.isDayBirth) {
+                                    stringResource(StringKeySaham.DAY_BIRTH_CHART)
+                                } else {
+                                    stringResource(StringKeySaham.NIGHT_BIRTH_CHART)
+                                },
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -184,83 +183,167 @@ fun SahamScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = AppTheme.TextPrimary)
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(StringKeySaham.SHOW_INFO),
+                            tint = AppTheme.TextPrimary
+                        )
                     }
                 },
                 actions = {
-                    // Info Button
-                    IconButton(onClick = { /* TODO: Show Info Dialog */ }) {
-                        Icon(Icons.Outlined.Info, "Info", tint = AppTheme.TextSecondary)
+                    IconButton(onClick = { showInfoDialog = true }) {
+                        Icon(
+                            Icons.Outlined.Info,
+                            contentDescription = stringResource(StringKeySaham.SHOW_INFO),
+                            tint = AppTheme.TextSecondary
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = AppTheme.ScreenBackground)
             )
         }
     ) { paddingValues ->
-        if (isCalculating) {
-            Box(Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = AppTheme.AccentGold)
+        when {
+            chart == null -> {
+                SahamEmptyState(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                )
             }
-        } else if (analysis != null) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentPadding = PaddingValues(bottom = 80.dp)
-            ) {
-                // 1. Dashboard Section
-                item {
-                    SahamDashboard(analysis!!)
-                }
-
-                // 2. Search & Filter Sticky Header
-                stickyHeader {
-                    SahamFilterBar(
-                        query = searchQuery,
-                        onQueryChange = { searchQuery = it },
-                        activeFilter = activeFilter,
-                        onFilterChange = { activeFilter = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(AppTheme.ScreenBackground.copy(alpha = 0.95f))
-                            .padding(vertical = 8.dp)
-                    )
-                }
-
-                // 3. Results List
-                if (filteredSahams.isEmpty()) {
-                    item {
-                        Box(Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                            Text("No Sahams found matching criteria", color = AppTheme.TextMuted)
-                        }
-                    }
-                } else {
-                    items(filteredSahams, key = { it.type.name }) { saham ->
-                        SahamDetailCard(saham = saham, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
+            isCalculating -> {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(color = AppTheme.AccentGold)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = stringResource(StringKeySaham.CALCULATING),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = AppTheme.TextMuted
+                        )
                     }
                 }
+            }
+            analysis != null -> {
+                SahamContent(
+                    analysis = analysis!!,
+                    filteredSahams = filteredSahams,
+                    searchQuery = searchQuery,
+                    onSearchQueryChange = { searchQuery = it },
+                    activeFilter = activeFilter,
+                    onFilterChange = { activeFilter = it },
+                    modifier = Modifier.padding(paddingValues)
+                )
             }
         }
     }
 }
 
-// ---------------------------------------------------------------------------
-// DASHBOARD COMPONENTS
-// ---------------------------------------------------------------------------
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun SahamContent(
+    analysis: SahamCalculator.SahamAnalysis,
+    filteredSahams: List<SahamCalculator.SahamResult>,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    activeFilter: SahamFilter,
+    onFilterChange: (SahamFilter) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(bottom = 80.dp)
+    ) {
+        item(key = "dashboard") {
+            SahamDashboard(analysis = analysis)
+        }
+
+        stickyHeader(key = "filter_header") {
+            SahamFilterBar(
+                query = searchQuery,
+                onQueryChange = onSearchQueryChange,
+                activeFilter = activeFilter,
+                onFilterChange = onFilterChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(AppTheme.ScreenBackground.copy(alpha = 0.95f))
+                    .padding(vertical = 8.dp)
+            )
+        }
+
+        if (filteredSahams.isEmpty()) {
+            item(key = "empty_results") {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(StringKeySaham.NO_SAHAMS_FOUND),
+                        color = AppTheme.TextMuted
+                    )
+                }
+            }
+        } else {
+            items(filteredSahams, key = { it.type.name }) { saham ->
+                SahamDetailCard(
+                    saham = saham,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SahamEmptyState(modifier: Modifier = Modifier) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Calculate,
+                contentDescription = null,
+                tint = AppTheme.TextMuted,
+                modifier = Modifier.size(64.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = stringResource(StringKeySaham.NO_CHART_SELECTED),
+                style = MaterialTheme.typography.titleMedium,
+                color = AppTheme.TextPrimary,
+                fontWeight = FontWeight.SemiBold
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(StringKeySaham.SELECT_CHART_MESSAGE),
+                style = MaterialTheme.typography.bodyMedium,
+                color = AppTheme.TextMuted
+            )
+        }
+    }
+}
 
 @Composable
 private fun SahamDashboard(analysis: SahamCalculator.SahamAnalysis) {
+    val language = LocalLanguage.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        // Top Row: Overall Score & Birth Info
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Overall Score Card
             Card(
                 modifier = Modifier
                     .weight(1f)
@@ -291,19 +374,20 @@ private fun SahamDashboard(analysis: SahamCalculator.SahamAnalysis) {
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Chart Strength",
+                        text = stringResource(StringKeySaham.CHART_STRENGTH),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextSecondary
                     )
                 }
             }
 
-            // Birth Type & Summary
             Card(
                 modifier = Modifier
                     .weight(1f)
                     .aspectRatio(1.6f),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.1f)),
+                colors = CardDefaults.cardColors(
+                    containerColor = AppTheme.AccentGold.copy(alpha = 0.1f)
+                ),
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
@@ -315,20 +399,28 @@ private fun SahamDashboard(analysis: SahamCalculator.SahamAnalysis) {
                     verticalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        imageVector = if (analysis.isDayBirth) Icons.Default.LightMode else Icons.Default.NightlightRound,
+                        imageVector = if (analysis.isDayBirth) {
+                            Icons.Default.LightMode
+                        } else {
+                            Icons.Default.NightlightRound
+                        },
                         contentDescription = null,
                         tint = AppTheme.AccentGold,
                         modifier = Modifier.size(28.dp)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = if (analysis.isDayBirth) "Day Birth" else "Night Birth",
+                        text = if (analysis.isDayBirth) {
+                            stringResource(StringKeySaham.DAY_BIRTH)
+                        } else {
+                            stringResource(StringKeySaham.NIGHT_BIRTH)
+                        },
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.AccentGold
                     )
                     Text(
-                        text = "Formula Adjusted",
+                        text = stringResource(StringKeySaham.FORMULA_ADJUSTED),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.AccentGold.copy(alpha = 0.7f),
                         fontSize = 10.sp
@@ -336,17 +428,16 @@ private fun SahamDashboard(analysis: SahamCalculator.SahamAnalysis) {
                 }
             }
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
-        // Category Breakdown
+
         Text(
-            text = "Life Area Balance",
+            text = stringResource(StringKeySaham.LIFE_AREA_BALANCE),
             style = MaterialTheme.typography.titleSmall,
             color = AppTheme.TextSecondary,
             modifier = Modifier.padding(bottom = 8.dp, start = 4.dp)
         )
-        
+
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -354,15 +445,19 @@ private fun SahamDashboard(analysis: SahamCalculator.SahamAnalysis) {
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 analysis.categorySummary.take(2).forEach { cat ->
-                    SahamCategoryBar(cat)
+                    SahamCategoryBar(summary = cat)
                     Spacer(modifier = Modifier.height(12.dp))
                 }
-                // Optional: Show activated count
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Calculate, null, tint = AppTheme.SuccessColor, modifier = Modifier.size(16.dp))
+                    Icon(
+                        Icons.Default.Calculate,
+                        contentDescription = null,
+                        tint = AppTheme.SuccessColor,
+                        modifier = Modifier.size(16.dp)
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "${analysis.sahams.count { it.isActivated }} Active Sahams today",
+                        text = "${analysis.sahams.count { it.isActivated }} ${stringResource(StringKeySaham.ACTIVE_SAHAMS_TODAY)}",
                         style = MaterialTheme.typography.labelMedium,
                         color = AppTheme.TextMuted
                     )
@@ -406,11 +501,7 @@ private fun SahamCategoryBar(summary: SahamCalculator.CategorySummary) {
     }
 }
 
-
-// ---------------------------------------------------------------------------
-// FILTER & SEARCH
-// ---------------------------------------------------------------------------
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SahamFilterBar(
     query: String,
@@ -419,19 +510,31 @@ private fun SahamFilterBar(
     onFilterChange: (SahamFilter) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val language = LocalLanguage.current
+
     Column(modifier = modifier) {
-        // Search
-        OutlinedTextField(
+        TextField(
             value = query,
             onValueChange = onQueryChange,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .height(50.dp),
-            placeholder = { Text("Search Sahams...", fontSize = 14.sp) },
-            leadingIcon = { Icon(Icons.Default.Search, null, tint = AppTheme.TextMuted) },
+            placeholder = {
+                Text(
+                    text = stringResource(StringKeySaham.SEARCH_SAHAMS),
+                    fontSize = 14.sp
+                )
+            },
+            leadingIcon = {
+                Icon(Icons.Default.Search, contentDescription = null, tint = AppTheme.TextMuted)
+            },
             trailingIcon = if (query.isNotEmpty()) {
-                { IconButton(onClick = { onQueryChange("") }) { Icon(Icons.Default.Close, null) } }
+                {
+                    IconButton(onClick = { onQueryChange("") }) {
+                        Icon(Icons.Default.Close, contentDescription = null)
+                    }
+                }
             } else null,
             shape = RoundedCornerShape(25.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -444,10 +547,9 @@ private fun SahamFilterBar(
             singleLine = true,
             textStyle = MaterialTheme.typography.bodyMedium
         )
-        
+
         Spacer(modifier = Modifier.height(12.dp))
-        
-        // Filter Chips
+
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -456,7 +558,7 @@ private fun SahamFilterBar(
                 FilterChip(
                     selected = activeFilter == filter,
                     onClick = { onFilterChange(filter) },
-                    label = { Text(filter.label) },
+                    label = { Text(filter.getLocalizedLabel(language)) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = AppTheme.AccentGold,
                         selectedLabelColor = AppTheme.ChipBackgroundSelected,
@@ -466,7 +568,11 @@ private fun SahamFilterBar(
                     border = FilterChipDefaults.filterChipBorder(
                         enabled = true,
                         selected = activeFilter == filter,
-                        borderColor = if (activeFilter == filter) Color.Transparent else AppTheme.DividerColor
+                        borderColor = if (activeFilter == filter) {
+                            Color.Transparent
+                        } else {
+                            AppTheme.DividerColor
+                        }
                     )
                 )
             }
@@ -474,39 +580,38 @@ private fun SahamFilterBar(
     }
 }
 
-enum class SahamFilter(val label: String) {
-    ALL("All"),
-    MAJOR("Major"),
-    STRONG("Strong"),
-    ACTIVATED("Active"),
-    WEAK("Weak"),
-    MINOR("Minor")
+enum class SahamFilter {
+    ALL, MAJOR, STRONG, ACTIVATED, WEAK, MINOR;
+
+    fun getLocalizedLabel(language: Language): String {
+        return when (this) {
+            ALL -> if (language == Language.NEPALI) "सबै" else "All"
+            MAJOR -> if (language == Language.NEPALI) "मुख्य" else "Major"
+            STRONG -> if (language == Language.NEPALI) "बलियो" else "Strong"
+            ACTIVATED -> if (language == Language.NEPALI) "सक्रिय" else "Active"
+            WEAK -> if (language == Language.NEPALI) "कमजोर" else "Weak"
+            MINOR -> if (language == Language.NEPALI) "सानो" else "Minor"
+        }
+    }
 }
 
-
-// ---------------------------------------------------------------------------
-// DETAIL CARD
-// ---------------------------------------------------------------------------
-
 @Composable
-fun SahamDetailCard(
+private fun SahamDetailCard(
     saham: SahamCalculator.SahamResult,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
     val strengthColor = getStrengthColor(saham.strength)
-    val cardBg = AppTheme.CardBackground
-    
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .animateContentSize(animationSpec = spring(stiffness = Spring.StiffnessMediumLow)),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = cardBg),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
         elevation = CardDefaults.cardElevation(defaultElevation = if (expanded) 4.dp else 1.dp)
     ) {
         Column {
-            // Header Row (Always Visible)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -514,7 +619,6 @@ fun SahamDetailCard(
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Strength Badge / Icon
                 Box(
                     modifier = Modifier
                         .size(48.dp)
@@ -529,10 +633,9 @@ fun SahamDetailCard(
                         color = strengthColor
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.width(16.dp))
-                
-                // Title and Subtitle
+
                 Column(modifier = Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
@@ -549,7 +652,12 @@ fun SahamDetailCard(
                                     .background(AppTheme.SuccessColor.copy(alpha = 0.2f))
                                     .padding(horizontal = 4.dp, vertical = 2.dp)
                             ) {
-                                Text("ACTIVE", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = AppTheme.SuccessColor)
+                                Text(
+                                    text = stringResource(StringKeySaham.ACTIVE_BADGE),
+                                    fontSize = 9.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = AppTheme.SuccessColor
+                                )
                             }
                         }
                     }
@@ -561,8 +669,7 @@ fun SahamDetailCard(
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-                
-                // Expand Icon
+
                 IconButton(onClick = { expanded = !expanded }) {
                     Icon(
                         imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
@@ -571,67 +678,94 @@ fun SahamDetailCard(
                     )
                 }
             }
-            
-            // Expanded Content
+
             if (expanded) {
-                Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
-                    HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.5f))
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    // 1. Vital Stats Grid
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        StatItem("Sign", saham.sign.displayName)
-                        StatItem("House", "${saham.house} (${getHouseType(saham.house)})")
-                        StatItem("Lord", saham.lord.displayName)
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                         StatItem("Degree", "${String.format("%.2f", saham.degreeInSign)}°")
-                         StatItem("Nakshatra", "${saham.nakshatra.displayName} (${saham.nakshatraPada})")
-                         StatItem("Strength", saham.strength.displayName, color = strengthColor)
-                    }
-                    
-                    Spacer(modifier = Modifier.height(20.dp))
-                    
-                    // 2. Formula Visualization
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(AppTheme.ScreenBackground)
-                            .padding(12.dp)
-                    ) {
-                        Column {
-                            Text("Formula", style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = saham.formula,
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
-                                color = AppTheme.TextSecondary
-                            )
-                        }
-                    }
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    // 3. Interpretation
-                    Text(
-                        text = "Analysis",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = AppTheme.AccentGold,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = saham.interpretation,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = AppTheme.TextSecondary,
-                        lineHeight = 20.sp
-                    )
-                }
+                SahamExpandedContent(saham = saham, strengthColor = strengthColor)
             }
         }
+    }
+}
+
+@Composable
+private fun SahamExpandedContent(
+    saham: SahamCalculator.SahamResult,
+    strengthColor: Color
+) {
+    Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
+        HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.5f))
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            StatItem(
+                label = stringResource(StringKeySaham.SIGN_LABEL),
+                value = saham.sign.displayName
+            )
+            StatItem(
+                label = stringResource(StringKeySaham.HOUSE_LABEL),
+                value = "${saham.house} (${getHouseType(saham.house)})"
+            )
+            StatItem(
+                label = stringResource(StringKeySaham.LORD_LABEL),
+                value = saham.lord.displayName
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            StatItem(
+                label = stringResource(StringKeySaham.DEGREE_LABEL),
+                value = "${String.format("%.2f", saham.degreeInSign)}°"
+            )
+            StatItem(
+                label = stringResource(StringKeySaham.NAKSHATRA_LABEL),
+                value = "${saham.nakshatra.displayName} (${saham.nakshatraPada})"
+            )
+            StatItem(
+                label = stringResource(StringKeySaham.STRENGTH_LABEL),
+                value = saham.strength.displayName,
+                color = strengthColor
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(AppTheme.ScreenBackground)
+                .padding(12.dp)
+        ) {
+            Column {
+                Text(
+                    text = stringResource(StringKeySaham.FORMULA_LABEL),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = AppTheme.TextMuted
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = saham.formula,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = FontFamily.Monospace,
+                    color = AppTheme.TextSecondary
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = stringResource(StringKeySaham.ANALYSIS_LABEL),
+            style = MaterialTheme.typography.labelMedium,
+            color = AppTheme.AccentGold,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = saham.interpretation,
+            style = MaterialTheme.typography.bodyMedium,
+            color = AppTheme.TextSecondary,
+            lineHeight = 20.sp
+        )
     }
 }
 
@@ -642,22 +776,78 @@ private fun StatItem(
     color: Color = AppTheme.TextPrimary
 ) {
     Column(horizontalAlignment = Alignment.Start) {
-        Text(text = label, style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, fontSize = 10.sp)
-        Text(text = value, style = MaterialTheme.typography.bodySmall, color = color, fontWeight = FontWeight.Medium)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = AppTheme.TextMuted,
+            fontSize = 10.sp
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodySmall,
+            color = color,
+            fontWeight = FontWeight.Medium
+        )
     }
 }
 
-// ---------------------------------------------------------------------------
-// HELPERS
-// ---------------------------------------------------------------------------
+@Composable
+private fun SahamInfoDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = stringResource(StringKeySaham.INFO_TITLE),
+                fontWeight = FontWeight.Bold,
+                color = AppTheme.TextPrimary
+            )
+        },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(StringKeySaham.INFO_DESCRIPTION),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = AppTheme.TextSecondary
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = stringResource(StringKeySaham.INFO_DAY_NIGHT),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextMuted
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = stringResource(StringKeySaham.INFO_ACTIVATION),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextMuted
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = stringResource(StringKeySaham.INFO_FORMULA),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextMuted
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(
+                    text = stringResource(StringKeySaham.GOT_IT),
+                    color = AppTheme.AccentGold
+                )
+            }
+        },
+        containerColor = AppTheme.CardBackground
+    )
+}
 
 private fun getStrengthColor(score: Double): Color {
     return when {
-        score >= 80 -> Color(0xFF4CAF50) // Green
-        score >= 60 -> Color(0xFF8BC34A) // Light Green
-        score >= 40 -> Color(0xFFFFC107) // Amber
-        score >= 20 -> Color(0xFFFF9800) // Orange
-        else -> Color(0xFFF44336)        // Red
+        score >= 80 -> Color(0xFF4CAF50)
+        score >= 60 -> Color(0xFF8BC34A)
+        score >= 40 -> Color(0xFFFFC107)
+        score >= 20 -> Color(0xFFFF9800)
+        else -> Color(0xFFF44336)
     }
 }
 
@@ -676,7 +866,7 @@ private fun getHouseType(house: Int): String {
         1, 4, 7, 10 -> "Kendra"
         5, 9 -> "Trikona"
         3, 6, 11 -> "Upachaya"
-        2, 8, 12 -> "Dusthana" // 2 is neutral/maraka but often grouped roughly
+        2, 8, 12 -> "Dusthana"
         else -> ""
     }
 }
