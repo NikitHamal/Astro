@@ -906,7 +906,7 @@ private fun NativeMarriageSection(
         SectionHeaderCard(
             title = stringResource(StringKeyNative.SECTION_MARRIAGE),
             icon = Icons.Outlined.Favorite,
-            color = AppTheme.LifeAreaRelationship
+            color = AppTheme.LifeAreaLove
         )
 
         StrengthIndicatorCard(
@@ -933,7 +933,7 @@ private fun NativeMarriageSection(
 
         SummaryCard(
             summary = if (language == Language.NEPALI) marriage.summaryNe else marriage.summaryEn,
-            color = AppTheme.LifeAreaRelationship
+            color = AppTheme.LifeAreaLove
         )
     }
 }
@@ -1264,7 +1264,7 @@ private fun NativeWealthSection(
         SectionHeaderCard(
             title = stringResource(StringKeyNative.SECTION_WEALTH),
             icon = Icons.Outlined.AutoAwesome,
-            color = AppTheme.LifeAreaWealth
+            color = AppTheme.LifeAreaFinance
         )
 
         StrengthIndicatorCard(
@@ -1287,7 +1287,7 @@ private fun NativeWealthSection(
 
         SummaryCard(
             summary = if (language == Language.NEPALI) wealth.summaryNe else wealth.summaryEn,
-            color = AppTheme.LifeAreaWealth
+            color = AppTheme.LifeAreaFinance
         )
     }
 }
@@ -1428,7 +1428,7 @@ private fun WealthSourcesCard(sources: List<String>) {
                     modifier = Modifier.padding(vertical = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("•", color = AppTheme.LifeAreaWealth)
+                    Text("•", color = AppTheme.LifeAreaFinance)
                     Text(
                         text = source,
                         style = MaterialTheme.typography.bodySmall,

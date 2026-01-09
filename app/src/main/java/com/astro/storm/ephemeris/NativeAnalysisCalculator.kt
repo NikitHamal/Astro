@@ -1218,6 +1218,7 @@ object NativeAnalysisCalculator {
                         subjects.add("Spirituality, Occult, Research")
                         subjectsNe.add("आध्यात्मिकता, गुप्त विद्या, अनुसन्धान")
                     }
+                    else -> {} // Handle outer planets if present
                 }
             }
         }

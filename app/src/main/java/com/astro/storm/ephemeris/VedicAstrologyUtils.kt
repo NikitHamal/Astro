@@ -979,13 +979,19 @@ object VedicAstrologyUtils {
     }
 
     /**
+     * Get the sign of a specific house.
+     */
+    fun getHouseSign(chart: VedicChart, house: Int): ZodiacSign {
+        val ascSign = getAscendantSign(chart)
+        val houseSignNumber = ((ascSign.number + house - 2) % 12) + 1
+        return ZodiacSign.entries.find { it.number == houseSignNumber } ?: ZodiacSign.ARIES
+    }
+
+    /**
      * Get the lord of a house.
      */
     fun getHouseLord(chart: VedicChart, house: Int): Planet {
-        val ascSign = getAscendantSign(chart)
-        val houseSignNumber = ((ascSign.number + house - 2) % 12) + 1
-        val houseSign = ZodiacSign.entries.find { it.number == houseSignNumber } ?: ZodiacSign.ARIES
-        return houseSign.ruler
+        return getHouseSign(chart, house).ruler
     }
 
     /**

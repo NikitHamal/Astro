@@ -38,6 +38,7 @@ import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.Stars
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.Timeline
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Balance
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.Brightness2
