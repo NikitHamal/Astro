@@ -98,15 +98,6 @@ val downloadSwissEph = tasks.register("downloadSwissEph") {
     }
 }
 
-// Ensure the JAR is downloaded before compilation
-// Use a more generic way to find KSP tasks if the specific class is hard to reference
-tasks.matching { it.name.startsWith("ksp") }.configureEach {
-    dependsOn(downloadSwissEph)
-}
-tasks.withType<KotlinCompile>().configureEach {
-    dependsOn(downloadSwissEph)
-}
-
 dependencies {
     // Core Android
     implementation("androidx.core:core-ktx:1.12.0")
@@ -135,7 +126,7 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
 
     // Swiss Ephemeris
-    implementation(files("libs/swisseph-2.10.03.jar"))
+    implementation(files(downloadSwissEph))
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
