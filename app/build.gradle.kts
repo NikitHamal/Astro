@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.net.URL
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -96,7 +99,8 @@ val downloadSwissEph = tasks.register("downloadSwissEph") {
 }
 
 // Ensure the JAR is downloaded before compilation
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KspTaskJvm>().configureEach {
+// Use a more generic way to find KSP tasks if the specific class is hard to reference
+tasks.matching { it.name.startsWith("ksp") }.configureEach {
     dependsOn(downloadSwissEph)
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
