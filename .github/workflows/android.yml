@@ -36,18 +36,13 @@ jobs:
         with:
           cache-read-only: false
 
-      - name: Download Swiss Ephemeris Library
-        run: |
-          mkdir -p app/libs
-          wget -q http://www.th-mack.de/download/swisseph-2.00.00-01.jar -O app/libs/swisseph-2.10.03.jar || echo "Swiss Ephemeris download failed, will use bundled version"
-
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease --no-daemon --build-cache --parallel --configuration-cache -x lint -x test
+        run: ./gradlew assembleRelease --build-cache --parallel --configuration-cache -x lint -x test
         env:
-          GRADLE_OPTS: "-Xmx4g -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.workers.max=4 -Dkotlin.incremental=true"
+          GRADLE_OPTS: "-Xmx4g -Dorg.gradle.workers.max=4"
 
       - name: Set short SHA
         id: set_sha

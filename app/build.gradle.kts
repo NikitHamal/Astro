@@ -21,7 +21,7 @@ android {
         }
 
         ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
+            arg("room.schemaLocation", "${projectDir.relativeTo(rootProject.projectDir)}/schemas")
         }
     }
 
@@ -73,6 +73,34 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+// Custom task to download Swiss Ephemeris if missing
+val downloadSwissEph = tasks.register("downloadSwissEph") {
+    val libDir = file("libs")
+    val outputFile = file("libs/swisseph-2.10.03.jar")
+    outputs.file(outputFile)
+    
+    doLast {
+        if (!outputFile.exists()) {
+            libDir.mkdirs()
+            println("Downloading Swiss Ephemeris library...")
+            val url = java.net.URL("http://www.th-mack.de/download/swisseph-2.00.00-01.jar")
+            url.openStream().use { input ->
+                outputFile.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+        }
+    }
+}
+
+// Ensure the JAR is downloaded before compilation
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KspTaskJvm>().configureEach {
+    dependsOn(downloadSwissEph)
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    dependsOn(downloadSwissEph)
 }
 
 dependencies {
