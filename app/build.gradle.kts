@@ -88,8 +88,8 @@ val downloadSwissEph = tasks.register("downloadSwissEph") {
         if (!outputFile.exists()) {
             libDir.mkdirs()
             println("Downloading Swiss Ephemeris library...")
-            val url = java.net.URL("http://www.th-mack.de/download/swisseph-2.00.00-01.jar")
-            url.openStream().use { input ->
+            val url = URL("http://www.th-mack.de/download/swisseph-2.00.00-01.jar")
+            url.openStream().use { input: java.io.InputStream ->
                 outputFile.outputStream().use { output ->
                     input.copyTo(output)
                 }
@@ -103,7 +103,7 @@ val downloadSwissEph = tasks.register("downloadSwissEph") {
 tasks.matching { it.name.startsWith("ksp") }.configureEach {
     dependsOn(downloadSwissEph)
 }
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+tasks.withType<KotlinCompile>().configureEach {
     dependsOn(downloadSwissEph)
 }
 
