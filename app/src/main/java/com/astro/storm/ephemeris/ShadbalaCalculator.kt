@@ -402,7 +402,7 @@ object ShadbalaCalculator {
 
         for (position in chart.planetPositions) {
             if (position.planet in SHADBALA_PLANETS) {
-                strengths[position.planet] = calculatePlanetShadbala(position, context)
+                strengths[position.planet] = calculatePlanetShadbalaInternal(position, context)
             }
         }
 
@@ -424,9 +424,9 @@ object ShadbalaCalculator {
         androidContext: android.content.Context,
         position: PlanetPosition,
         chart: VedicChart
-    ): PlanetaryShadbala = calculatePlanetShadbala(position, ChartContext(androidContext, chart))
+    ): PlanetaryShadbala = calculatePlanetShadbalaInternal(position, ChartContext(androidContext, chart))
 
-    private fun calculatePlanetShadbala(
+    private fun calculatePlanetShadbalaInternal(
         position: PlanetPosition,
         context: ChartContext
     ): PlanetaryShadbala {
