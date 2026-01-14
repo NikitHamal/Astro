@@ -513,7 +513,14 @@ enum class Yoga(val number: Int, val displayName: String, val sanskrit: String, 
     SHUKLA(24, "Shukla", "शुक्ल", YogaNature.AUSPICIOUS),
     BRAHMA(25, "Brahma", "ब्रह्म", YogaNature.AUSPICIOUS),
     INDRA(26, "Indra", "इन्द्र", YogaNature.AUSPICIOUS),
-    VAIDHRITI(27, "Vaidhriti", "वैधृति", YogaNature.INAUSPICIOUS)
+    VAIDHRITI(27, "Vaidhriti", "वैधृति", YogaNature.INAUSPICIOUS);
+
+    fun getLocalizedName(language: Language): String {
+        return when (language) {
+            Language.ENGLISH -> this.displayName
+            Language.NEPALI -> this.sanskrit
+        }
+    }
 }
 
 enum class YogaNature(val displayName: String) {

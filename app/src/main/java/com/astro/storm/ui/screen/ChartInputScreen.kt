@@ -40,6 +40,8 @@ import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.BirthData
 import com.astro.storm.data.model.Gender
+import com.astro.storm.ephemeris.yoga.YogaCategory
+import com.astro.storm.ephemeris.yoga.YogaStrength
 import com.astro.storm.ui.components.BSDatePickerDialog
 import com.astro.storm.ui.components.LocationSearchField
 import com.astro.storm.ui.components.TimezoneSelector

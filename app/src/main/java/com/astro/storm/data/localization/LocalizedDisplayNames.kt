@@ -6,12 +6,11 @@ import com.astro.storm.data.model.Nakshatra
 import com.astro.storm.data.model.Planet
 import com.astro.storm.data.model.ZodiacSign
 import com.astro.storm.data.preferences.ThemeMode
-import com.astro.storm.ephemeris.YogaCalculator
 import com.astro.storm.ephemeris.RemediesCalculator
 import com.astro.storm.data.model.Yoni
 import com.astro.storm.ephemeris.Tithi
 import com.astro.storm.ephemeris.TithiGroup
-import com.astro.storm.ephemeris.Yoga
+import com.astro.storm.ephemeris.Yoga as NityaYoga
 import com.astro.storm.ephemeris.YogaNature
 import com.astro.storm.ephemeris.Karana
 import com.astro.storm.ephemeris.KaranaType
@@ -19,6 +18,8 @@ import com.astro.storm.ephemeris.Vara
 import com.astro.storm.ephemeris.Paksha
 import com.astro.storm.ephemeris.StrengthRating
 import com.astro.storm.ephemeris.RetrogradeCombustionCalculator
+import com.astro.storm.ephemeris.yoga.YogaCategory
+import com.astro.storm.ephemeris.yoga.YogaStrength
 
 /**
  * Extension functions for localized display names of various enums
@@ -146,16 +147,6 @@ fun TithiGroup.getLocalizedNature(language: Language): String {
             TithiGroup.RIKTA -> "रिक्त"
             TithiGroup.PURNA -> "पूर्ण"
         }
-    }
-}
-
-/**
- * Get localized display name for Yoga (Panchanga)
- */
-fun Yoga.getLocalizedName(language: Language): String {
-    return when (language) {
-        Language.ENGLISH -> this.displayName
-        Language.NEPALI -> this.sanskrit
     }
 }
 
@@ -341,50 +332,8 @@ fun formatLocalizedDuration(days: Long, language: Language): String {
 // YOGA CALCULATOR EXTENSIONS
 // ============================================
 
-/**
- * Get localized display name for YogaCategory
- */
-fun YogaCalculator.YogaCategory.getLocalizedName(language: Language): String {
-    return when (this) {
-        YogaCalculator.YogaCategory.RAJA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_RAJA, language)
-        YogaCalculator.YogaCategory.DHANA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_DHANA, language)
-        YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_PANCHA_MAHAPURUSHA, language)
-        YogaCalculator.YogaCategory.NABHASA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_NABHASA, language)
-        YogaCalculator.YogaCategory.CHANDRA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_CHANDRA, language)
-        YogaCalculator.YogaCategory.SOLAR_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_SOLAR, language)
-        YogaCalculator.YogaCategory.NEGATIVE_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_NEGATIVE, language)
-        YogaCalculator.YogaCategory.SPECIAL_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_SPECIAL, language)
-    }
-}
-
-/**
- * Get localized description for YogaCategory
- */
-fun YogaCalculator.YogaCategory.getLocalizedDescription(language: Language): String {
-    return when (this) {
-        YogaCalculator.YogaCategory.RAJA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_RAJA_DESC, language)
-        YogaCalculator.YogaCategory.DHANA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_DHANA_DESC, language)
-        YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_PANCHA_MAHAPURUSHA_DESC, language)
-        YogaCalculator.YogaCategory.NABHASA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_NABHASA_DESC, language)
-        YogaCalculator.YogaCategory.CHANDRA_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_CHANDRA_DESC, language)
-        YogaCalculator.YogaCategory.SOLAR_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_SOLAR_DESC, language)
-        YogaCalculator.YogaCategory.NEGATIVE_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_NEGATIVE_DESC, language)
-        YogaCalculator.YogaCategory.SPECIAL_YOGA -> StringResources.get(StringKeyMatch.YOGA_CAT_SPECIAL_DESC, language)
-    }
-}
-
-/**
- * Get localized display name for YogaStrength
- */
-fun YogaCalculator.YogaStrength.getLocalizedName(language: Language): String {
-    return when (this) {
-        YogaCalculator.YogaStrength.EXTREMELY_STRONG -> StringResources.get(StringKeyMatch.YOGA_STRENGTH_EXTREMELY_STRONG, language)
-        YogaCalculator.YogaStrength.STRONG -> StringResources.get(StringKeyMatch.YOGA_STRENGTH_STRONG, language)
-        YogaCalculator.YogaStrength.MODERATE -> StringResources.get(StringKeyMatch.YOGA_STRENGTH_MODERATE, language)
-        YogaCalculator.YogaStrength.WEAK -> StringResources.get(StringKeyMatch.YOGA_STRENGTH_WEAK, language)
-        YogaCalculator.YogaStrength.VERY_WEAK -> StringResources.get(StringKeyMatch.YOGA_STRENGTH_VERY_WEAK, language)
-    }
-}
+// YogaCategory and YogaStrength localized names are now handled as member functions 
+// in YogaModels.kt. Do not define them here as extensions to avoid ambiguity.
 
 // ============================================
 // REMEDIES CALCULATOR EXTENSIONS

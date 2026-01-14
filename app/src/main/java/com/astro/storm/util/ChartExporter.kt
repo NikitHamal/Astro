@@ -33,6 +33,10 @@ import com.astro.storm.ephemeris.SadeSatiCalculator
 import com.astro.storm.ephemeris.ShadbalaCalculator
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import com.astro.storm.ephemeris.YogaCalculator
+import com.astro.storm.ephemeris.yoga.Yoga
+import com.astro.storm.ephemeris.yoga.YogaAnalysis
+import com.astro.storm.ephemeris.yoga.YogaCategory
+import com.astro.storm.ephemeris.yoga.YogaStrength
 import com.astro.storm.ui.chart.ChartColorConfig
 import com.astro.storm.ui.chart.ChartRenderer
 import kotlinx.coroutines.Dispatchers

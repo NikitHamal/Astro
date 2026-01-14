@@ -1074,8 +1074,285 @@ class ChartRenderer(
         return bitmap
     }
 
+    /**
+     * Create a bitmap of a South Indian chart.
+     */
+    fun createSouthIndianChartBitmap(
+        chart: VedicChart,
+        width: Int,
+        height: Int,
+        density: Density,
+        language: Language = Language.ENGLISH
+    ): Bitmap {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = android.graphics.Canvas(bitmap)
+        val drawScope = CanvasDrawScope()
+
+        drawScope.draw(
+            density,
+            LayoutDirection.Ltr,
+            Canvas(canvas),
+            Size(width.toFloat(), height.toFloat())
+        ) {
+            drawSouthIndianChart(this, chart, min(width, height).toFloat(), language)
+        }
+
+        return bitmap
+    }
+
+    /**
+     * Draw a South Indian style chart (4x4 grid with fixed sign positions).
+     *
+     * In South Indian charts:
+     * - Signs are in FIXED positions (unlike North Indian where houses are fixed)
+     * - The grid is 4x4 with 12 outer cells for the 12 signs
+     * - The 4 center cells are empty or used for chart title
+     * - Pisces (12) starts at top-left inner position, going clockwise
+     *
+     * Standard South Indian layout:
+     * ```
+     *   Pi | Ar | Ta | Ge
+     *   ---|----|----|---
+     *   Aq |    |    | Cn
+     *   ---|----|----|---
+     *   Cp |    |    | Le
+     *   ---|----|----|---
+     *   Sg | Sc | Li | Vi
+     * ```
+     *
+     * The ascendant (1st house) is marked with a diagonal line in its cell.
+     */
     fun drawSouthIndianChart(drawScope: DrawScope, chart: VedicChart, size: Float, language: Language = Language.ENGLISH) {
-        drawNorthIndianChart(drawScope, chart, size, StringResources.get(StringKeyAnalysis.CHART_LAGNA, language), language)
+        with(drawScope) {
+            val padding = size * CHART_PADDING_RATIO
+            val chartSize = size - (padding * 2)
+            val left = padding
+            val top = padding
+            val cellSize = chartSize / 4f
+
+            // Draw background
+            drawRect(color = BACKGROUND_COLOR, size = Size(size, size))
+
+            // Draw chart fill
+            drawRect(
+                color = CHART_FILL_COLOR,
+                topLeft = Offset(left, top),
+                size = Size(chartSize, chartSize)
+            )
+
+            // Draw outer border
+            drawRect(
+                color = BORDER_COLOR,
+                topLeft = Offset(left, top),
+                size = Size(chartSize, chartSize),
+                style = borderStroke
+            )
+
+            // Draw grid lines (4x4 grid)
+            for (i in 1..3) {
+                // Vertical lines
+                drawLine(
+                    color = LINE_COLOR,
+                    start = Offset(left + i * cellSize, top),
+                    end = Offset(left + i * cellSize, top + chartSize),
+                    strokeWidth = lineStroke.width
+                )
+                // Horizontal lines
+                drawLine(
+                    color = LINE_COLOR,
+                    start = Offset(left, top + i * cellSize),
+                    end = Offset(left + chartSize, top + i * cellSize),
+                    strokeWidth = lineStroke.width
+                )
+            }
+
+            // South Indian chart: Signs are in FIXED positions
+            // Map of sign number (1-12) to grid position (row, col)
+            // Layout: Pisces (12) at (0,0), going clockwise
+            val signToGridPosition = mapOf(
+                12 to Pair(0, 0),  // Pisces - top-left
+                1 to Pair(0, 1),   // Aries
+                2 to Pair(0, 2),   // Taurus
+                3 to Pair(0, 3),   // Gemini - top-right
+                4 to Pair(1, 3),   // Cancer
+                5 to Pair(2, 3),   // Leo
+                6 to Pair(3, 3),   // Virgo - bottom-right
+                7 to Pair(3, 2),   // Libra
+                8 to Pair(3, 1),   // Scorpio
+                9 to Pair(3, 0),   // Sagittarius - bottom-left
+                10 to Pair(2, 0),  // Capricorn
+                11 to Pair(1, 0)   // Aquarius
+            )
+
+            val ascendantSign = ZodiacSign.fromLongitude(chart.ascendant)
+            val sunPosition = chart.planetPositions.find { it.planet == Planet.SUN }
+
+            // Group planets by their zodiac sign
+            val planetsBySign = chart.planetPositions.groupBy { it.sign }
+
+            // Draw each sign cell
+            for (signNum in 1..12) {
+                val (row, col) = signToGridPosition[signNum] ?: continue
+                val sign = ZodiacSign.entries.find { it.number == signNum } ?: continue
+
+                val cellLeft = left + col * cellSize
+                val cellTop = top + row * cellSize
+                val cellCenterX = cellLeft + cellSize / 2f
+                val cellCenterY = cellTop + cellSize / 2f
+
+                // Determine house number for this sign
+                val houseNum = ((signNum - ascendantSign.number + 12) % 12) + 1
+
+                // Draw ascendant marker (diagonal line in ascendant sign cell)
+                if (sign == ascendantSign) {
+                    drawLine(
+                        color = LAGNA_COLOR,
+                        start = Offset(cellLeft + cellSize * 0.1f, cellTop + cellSize * 0.1f),
+                        end = Offset(cellLeft + cellSize * 0.35f, cellTop + cellSize * 0.35f),
+                        strokeWidth = borderStroke.width
+                    )
+                }
+
+                // Draw sign abbreviation in top-left corner of cell
+                val signTextSize = size * 0.025f
+                drawTextCentered(
+                    text = sign.abbreviation,
+                    position = Offset(cellLeft + signTextSize * 1.2f, cellTop + signTextSize * 1.2f),
+                    textSize = signTextSize,
+                    color = HOUSE_NUMBER_COLOR,
+                    isBold = false
+                )
+
+                // Get planets in this sign
+                val planets = planetsBySign[sign] ?: emptyList()
+
+                // Build display items for this cell
+                val displayItems = mutableListOf<HouseDisplayItem>()
+
+                // Add Asc marker for 1st house
+                if (houseNum == 1) {
+                    displayItems.add(
+                        HouseDisplayItem(
+                            text = StringResources.get(StringKeyAnalysis.CHART_ASC_ABBR, language),
+                            color = LAGNA_COLOR,
+                            isBold = true,
+                            isLagna = true
+                        )
+                    )
+                }
+
+                // Add planets
+                planets.forEach { planet ->
+                    val abbrev = planet.planet.symbol
+                    val degree = (planet.longitude % 30.0).toInt()
+                    val degreeSuper = toSuperscript(degree)
+                    val dignity = getPlanetaryDignity(planet.planet, planet.sign, planet.longitude)
+
+                    val statusIndicators = buildString {
+                        if (planet.isRetrograde) append(SYMBOL_RETROGRADE)
+                        if (isCombust(planet, sunPosition)) append(SYMBOL_COMBUST)
+                        if (isVargottama(planet)) append(SYMBOL_VARGOTTAMA)
+                    }
+
+                    displayItems.add(
+                        HouseDisplayItem(
+                            text = "$abbrev$degreeSuper$statusIndicators",
+                            color = getPlanetColor(planet.planet),
+                            isBold = true,
+                            dignity = dignity
+                        )
+                    )
+                }
+
+                // Draw planets in cell
+                if (displayItems.isNotEmpty()) {
+                    drawSouthIndianCellContents(
+                        displayItems = displayItems,
+                        cellCenterX = cellCenterX,
+                        cellCenterY = cellCenterY,
+                        cellSize = cellSize,
+                        size = size
+                    )
+                }
+            }
+
+            // Optionally draw chart title in center 4 cells
+            val centerX = left + chartSize / 2f
+            val centerY = top + chartSize / 2f
+            val titleTextSize = size * 0.035f
+            drawTextCentered(
+                text = StringResources.get(StringKeyAnalysis.CHART_LAGNA, language),
+                position = Offset(centerX, centerY),
+                textSize = titleTextSize,
+                color = HOUSE_NUMBER_COLOR,
+                isBold = true
+            )
+        }
+    }
+
+    /**
+     * Draw contents of a South Indian chart cell.
+     */
+    private fun DrawScope.drawSouthIndianCellContents(
+        displayItems: List<HouseDisplayItem>,
+        cellCenterX: Float,
+        cellCenterY: Float,
+        cellSize: Float,
+        size: Float
+    ) {
+        val baseTextSize = size * 0.028f
+        val lineHeight = size * 0.036f
+
+        // Calculate layout - prefer single column for South Indian cells
+        val maxItemsPerColumn = 4
+        val columns = if (displayItems.size > maxItemsPerColumn) 2 else 1
+        val rows = (displayItems.size + columns - 1) / columns
+
+        val totalContentHeight = rows * lineHeight
+        val startY = cellCenterY - totalContentHeight / 2f + lineHeight / 2f
+
+        // Slight offset from center to avoid sign abbreviation
+        val contentCenterX = cellCenterX + cellSize * 0.05f
+        val contentCenterY = cellCenterY + cellSize * 0.08f
+
+        val columnSpacing = cellSize * 0.35f
+
+        displayItems.forEachIndexed { index, item ->
+            val col = index % columns
+            val row = index / columns
+
+            val xOffset = if (columns > 1) {
+                (col - (columns - 1) / 2f) * columnSpacing
+            } else {
+                0f
+            }
+
+            val yOffset = row * lineHeight
+            val position = Offset(contentCenterX + xOffset, contentCenterY - totalContentHeight / 2f + yOffset)
+
+            // Draw the text
+            val typeface = if (item.isBold) TYPEFACE_BOLD else TYPEFACE_NORMAL
+            textPaint.color = item.color.toArgb()
+            textPaint.textSize = baseTextSize
+            textPaint.typeface = typeface
+
+            val textHeight = textPaint.descent() - textPaint.ascent()
+            val textWidth = textPaint.measureText(item.text)
+
+            drawContext.canvas.nativeCanvas.apply {
+                val textOffset = textHeight / 2 - textPaint.descent()
+                drawText(item.text, position.x, position.y + textOffset, textPaint)
+            }
+
+            // Draw dignity indicators
+            when (item.dignity) {
+                PlanetaryDignity.EXALTED -> drawExaltedArrow(position, baseTextSize, textWidth)
+                PlanetaryDignity.DEBILITATED -> drawDebilitatedArrow(position, baseTextSize, textWidth)
+                PlanetaryDignity.OWN_SIGN -> drawOwnSignIndicator(position, baseTextSize, textWidth)
+                PlanetaryDignity.MOOL_TRIKONA -> drawMoolTrikonaIndicator(position, baseTextSize, textWidth)
+                else -> {}
+            }
+        }
     }
 
     fun DrawScope.drawChartLegend(
@@ -1203,6 +1480,44 @@ class ChartRenderer(
             val chartSize = size - legendHeight
 
             drawNorthIndianChart(this, chart, chartSize, chartTitle, language)
+
+            if (showLegend) {
+                val padding = chartSize * CHART_PADDING_RATIO
+                val chartWidth = chartSize - (padding * 2)
+                val textSize = chartSize * 0.030f
+
+                drawRect(
+                    color = BACKGROUND_COLOR,
+                    topLeft = Offset(0f, chartSize),
+                    size = Size(size, legendHeight)
+                )
+
+                drawChartLegend(
+                    chartBottom = chartSize,
+                    chartLeft = padding,
+                    chartWidth = chartWidth,
+                    textSize = textSize,
+                    language = language
+                )
+            }
+        }
+    }
+
+    /**
+     * Draw a South Indian chart with legend.
+     */
+    fun drawSouthIndianChartWithLegend(
+        drawScope: DrawScope,
+        chart: VedicChart,
+        size: Float,
+        showLegend: Boolean = true,
+        language: Language = Language.ENGLISH
+    ) {
+        with(drawScope) {
+            val legendHeight = if (showLegend) size * 0.085f else 0f
+            val chartSize = size - legendHeight
+
+            drawSouthIndianChart(this, chart, chartSize, language)
 
             if (showLegend) {
                 val padding = chartSize * CHART_PADDING_RATIO

@@ -1261,10 +1261,30 @@ object KalachakraDashaCalculator {
         areas.add("${getLocalizedPlanetName(signLord, language)}-${StringResources.get(com.astro.storm.data.localization.StringKey.VARSHAPHALA_KEY_DATES, language)}") // Fallback to "Key Dates" or similar if needed, but better to have specific key
 
         when (sign.element) {
-            "Fire" -> areas.addAll(listOf("Leadership", "Sports", "Engineering", "Military")) // TODO: Localize these
-            "Earth" -> areas.addAll(listOf("Finance", "Real estate", "Agriculture", "Construction"))
-            "Air" -> areas.addAll(listOf("Communication", "Education", "Travel", "Technology"))
-            "Water" -> areas.addAll(listOf("Healing", "Arts", "Psychology", "Spirituality"))
+            "Fire" -> areas.addAll(listOf(
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_LEADERSHIP, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_SPORTS, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_ENGINEERING, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_MILITARY, language)
+            ))
+            "Earth" -> areas.addAll(listOf(
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_FINANCE, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_REAL_ESTATE, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_AGRICULTURE, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_CONSTRUCTION, language)
+            ))
+            "Air" -> areas.addAll(listOf(
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_COMMUNICATION, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_EDUCATION, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_TRAVEL, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_TECHNOLOGY, language)
+            ))
+            "Water" -> areas.addAll(listOf(
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_HEALING, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_ARTS, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_PSYCHOLOGY, language),
+                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_SPIRITUALITY, language)
+            ))
         }
 
         return areas
