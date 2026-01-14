@@ -629,6 +629,9 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     SETTINGS_LANGUAGE("Language", "भाषा"),
     SETTINGS_DATE_SYSTEM("Date System", "मिति प्रणाली"),
     SETTINGS_THEME("Theme", "थिम"),
+    SETTINGS_NODE_CALCULATION("Node Calculation", "राहु-केतु गणना"),
+    SETTINGS_NODE_MEAN("Mean Node", "मध्यम राहु"),
+    SETTINGS_NODE_TRUE("True Node", "स्पष्ट राहु"),
 
     // Theme options
     THEME_LIGHT("Light", "उज्यालो"),

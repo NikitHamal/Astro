@@ -150,12 +150,13 @@ fun PlanetsTabContent(
     onNakshatraClick: (Nakshatra, Int) -> Unit = { _, _ -> },
     onShadbalaClick: (() -> Unit)? = null
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     val planetConditions = remember(chart) {
         RetrogradeCombustionCalculator.analyzePlanetaryConditions(chart)
     }
 
     val shadbala = remember(chart) {
-        ShadbalaCalculator.calculateShadbala(chart)
+        ShadbalaCalculator.calculateShadbala(context, chart)
     }
 
     val planetCardStates by remember(chart, planetConditions, shadbala) {

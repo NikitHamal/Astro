@@ -195,6 +195,8 @@ object KalaBalaCalculator {
      */
     data class BirthContext(
         val isDay: Boolean,
+        val sunriseJD: Double,
+        val sunsetJD: Double,
         val pakshaType: PakshaType,
         val tribhagaPeriod: TribhagaPeriod,
         val yearLord: Planet,
@@ -228,9 +230,9 @@ object KalaBalaCalculator {
     /**
      * Perform complete Kala Bala analysis
      */
-    fun analyzeKalaBala(chart: VedicChart): KalaBalaAnalysis {
+    fun analyzeKalaBala(context: android.content.Context, chart: VedicChart): KalaBalaAnalysis {
         val planetMap = chart.planetPositions.associateBy { it.planet }
-        val birthContext = calculateBirthContext(chart)
+        val birthContext = calculateBirthContext(context, chart)
 
         val planetaryKalaBala = mutableMapOf<Planet, PlanetKalaBala>()
 
@@ -267,10 +269,21 @@ object KalaBalaCalculator {
     /**
      * Calculate birth context
      */
-    private fun calculateBirthContext(chart: VedicChart): BirthContext {
-        val dateTime = chart.birthData.dateTime
-        val hour = dateTime.hour
-        val isDay = hour in 6..17
+    private fun calculateBirthContext(context: android.content.Context, chart: VedicChart): BirthContext {
+        val panchangaCalculator = PanchangaCalculator(context)
+        val panchanga = panchangaCalculator.calculatePanchanga(
+            chart.birthData.dateTime,
+            chart.birthData.latitude,
+            chart.birthData.longitude,
+            chart.birthData.timezone
+        )
+        panchangaCalculator.close()
+
+        val sunriseJD = panchanga.sunriseJD
+        val sunsetJD = panchanga.sunsetJD
+        val birthJD = chart.julianDay
+
+        val isDay = birthJD in sunriseJD..sunsetJD
 
         val sunPos = chart.planetPositions.find { it.planet == Planet.SUN }
         val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
@@ -282,27 +295,69 @@ object KalaBalaCalculator {
         val pakshaType = if (lunarElongation < 180.0) PakshaType.SHUKLA else PakshaType.KRISHNA
         val tithiNumber = ((lunarElongation / 12.0).toInt() % 15) + 1
 
+        val dateTime = chart.birthData.dateTime
         val dayLord = getDayLord(dateTime.dayOfWeek.value)
         val horaLord = calculateHoraLord(dateTime, dayLord)
         val yearLord = calculateYearLord(dateTime.year)
         val monthLord = calculateMonthLord(dateTime.monthValue)
 
         val tribhagaPeriod = if (isDay) {
+            val dayDuration = sunsetJD - sunriseJD
+            val tribhagaSize = dayDuration / 3.0
             when {
-                hour in 6..9 -> TribhagaPeriod.DAY_FIRST
-                hour in 10..13 -> TribhagaPeriod.DAY_SECOND
+                birthJD < sunriseJD + tribhagaSize -> TribhagaPeriod.DAY_FIRST
+                birthJD < sunriseJD + 2.0 * tribhagaSize -> TribhagaPeriod.DAY_SECOND
                 else -> TribhagaPeriod.DAY_THIRD
             }
         } else {
+            // Night can wrap around midnight JD.
+            // If birthJD < sunriseJD, it's before sunrise but after previous sunset.
+            // If birthJD > sunsetJD, it's after sunset but before next sunrise.
+            // For simplicity in Shadbala, we usually use the night span between current day's sunset and NEXT day's sunrise,
+            // or PREVIOUS day's sunset and current day's sunrise.
+            
+            // Calculate next sunrise to get proper night tribhaga
+            val nextDayJD = chart.julianDay + 1.0
+            val pNext = PanchangaCalculator(context).use { 
+                it.calculatePanchanga(
+                    chart.birthData.dateTime.plusDays(1),
+                    chart.birthData.latitude,
+                    chart.birthData.longitude,
+                    chart.birthData.timezone
+                )
+            }
+            val nextSunriseJD = pNext.sunriseJD
+            
+            val prevDayJD = chart.julianDay - 1.0
+            val pPrev = PanchangaCalculator(context).use {
+                it.calculatePanchanga(
+                    chart.birthData.dateTime.minusDays(1),
+                    chart.birthData.latitude,
+                    chart.birthData.longitude,
+                    chart.birthData.timezone
+                )
+            }
+            val prevSunsetJD = pPrev.sunsetJD
+
+            val (nightStart, nightEnd) = if (birthJD < sunriseJD) {
+                Pair(prevSunsetJD, sunriseJD)
+            } else {
+                Pair(sunsetJD, nextSunriseJD)
+            }
+
+            val nightDuration = nightEnd - nightStart
+            val tribhagaSize = nightDuration / 3.0
             when {
-                hour in 18..21 -> TribhagaPeriod.NIGHT_FIRST
-                hour >= 22 || hour in 0..1 -> TribhagaPeriod.NIGHT_SECOND
+                birthJD < nightStart + tribhagaSize -> TribhagaPeriod.NIGHT_FIRST
+                birthJD < nightStart + 2.0 * tribhagaSize -> TribhagaPeriod.NIGHT_SECOND
                 else -> TribhagaPeriod.NIGHT_THIRD
             }
         }
 
         return BirthContext(
             isDay = isDay,
+            sunriseJD = sunriseJD,
+            sunsetJD = sunsetJD,
             pakshaType = pakshaType,
             tribhagaPeriod = tribhagaPeriod,
             yearLord = yearLord,

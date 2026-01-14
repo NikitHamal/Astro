@@ -1178,8 +1178,9 @@ fun ShadbalaDialog(
     onDismiss: () -> Unit
 ) {
     val language = LocalLanguage.current
+    val context = androidx.compose.ui.platform.LocalContext.current
     val shadbalaAnalysis = remember(chart) {
-        ShadbalaCalculator.calculateShadbala(chart)
+        ShadbalaCalculator.calculateShadbala(context, chart)
     }
 
     Dialog(

@@ -89,6 +89,7 @@ fun KalaBalaScreen(
     onBack: () -> Unit
 ) {
     val language = LocalLanguage.current
+    val context = androidx.compose.ui.platform.LocalContext.current
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var isCalculating by remember { mutableStateOf(true) }
     var analysis by remember { mutableStateOf<KalaBalaCalculator.KalaBalaAnalysis?>(null) }
@@ -109,7 +110,7 @@ fun KalaBalaScreen(
         delay(300)
         try {
             analysis = withContext(Dispatchers.Default) {
-                KalaBalaCalculator.analyzeKalaBala(chart)
+                KalaBalaCalculator.analyzeKalaBala(context, chart)
             }
         } catch (_: Exception) { }
         isCalculating = false

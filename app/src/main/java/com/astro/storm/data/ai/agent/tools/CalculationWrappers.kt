@@ -520,9 +520,9 @@ class ShadbalaCalculatorWrapper {
         val drikBala: Double
     )
 
-    fun calculate(chart: VedicChart): List<ShadbalaResult> {
+    fun calculate(context: android.content.Context, chart: VedicChart): List<ShadbalaResult> {
         return try {
-            val analysis = ShadbalaCalculator.calculateShadbala(chart)
+            val analysis = ShadbalaCalculator.calculateShadbala(context, chart)
 
             analysis.planetaryStrengths.map { (planet, planetStrength) ->
                 ShadbalaResult(

@@ -30,6 +30,7 @@ enum class Planet(
     SATURN(6, "Saturn", "Sa", StringKey.PLANET_SATURN),
     RAHU(10, "Rahu", "Ra", StringKey.PLANET_RAHU),  // Mean node (North Node)
     KETU(-1, "Ketu", "Ke", StringKey.PLANET_KETU),  // 180° from Rahu (South Node)
+    TRUE_NODE(11, "True Rahu", "TRa", StringKey.PLANET_RAHU), // True node
     URANUS(7, "Uranus", "Ur", StringKey.PLANET_URANUS),
     NEPTUNE(8, "Neptune", "Ne", StringKey.PLANET_NEPTUNE),
     PLUTO(9, "Pluto", "Pl", StringKey.PLANET_PLUTO);

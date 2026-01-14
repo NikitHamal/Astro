@@ -94,7 +94,9 @@ class PanchangaCalculator(context: Context) : Closeable {
         val vara = calculateVara(julianDay)
         val paksha = determinePaksha(tithi.number)
 
-        val (sunrise, sunset) = calculateSunriseSunset(julianDay, latitude, longitude, zoneId)
+        val (sunriseJD, sunsetJD) = calculateSunriseSunsetJD(julianDay, latitude, longitude)
+        val sunrise = formatJulianDayToLocalTime(sunriseJD, zoneId)
+        val sunset = formatJulianDayToLocalTime(sunsetJD, zoneId)
         val moonPhase = calculateMoonPhase(sunLongitudeTropical, moonLongitudeTropical)
 
         val ayanamsa = swissEph.swe_get_ayanamsa_ut(julianDay)
@@ -108,6 +110,8 @@ class PanchangaCalculator(context: Context) : Closeable {
             paksha = paksha,
             sunrise = sunrise,
             sunset = sunset,
+            sunriseJD = sunriseJD,
+            sunsetJD = sunsetJD,
             moonPhase = moonPhase,
             sunLongitude = sunLongitudeSidereal,
             moonLongitude = moonLongitudeSidereal,
@@ -298,12 +302,11 @@ class PanchangaCalculator(context: Context) : Closeable {
         return if (tithiNumber <= 15) Paksha.SHUKLA else Paksha.KRISHNA
     }
 
-    private fun calculateSunriseSunset(
+    private fun calculateSunriseSunsetJD(
         julianDay: Double,
         latitude: Double,
-        longitude: Double,
-        zoneId: ZoneId
-    ): Pair<String, String> {
+        longitude: Double
+    ): Pair<Double, Double> {
         val geopos = doubleArrayOf(longitude, latitude, 0.0)
         val timeResult = DblObj()
         val errorBuffer = StringBuffer()
@@ -318,17 +321,13 @@ class PanchangaCalculator(context: Context) : Closeable {
             SweConst.SEFLG_SWIEPH,
             sunriseFlags,
             geopos,
-            1013.25,
-            15.0,
+            0.0,
+            0.0,
             timeResult,
             errorBuffer
         )
 
-        val sunriseJD: Double? = if (riseResult >= 0 && timeResult.`val` > jdMidnight) {
-            timeResult.`val`
-        } else {
-            null
-        }
+        val sunriseJD = if (riseResult >= 0) timeResult.`val` else jdMidnight + 0.25 // Default 6 AM
 
         val sunsetFlags = SweConst.SE_CALC_SET or SweConst.SE_BIT_DISC_CENTER
         val setResult = swissEph.swe_rise_trans(
@@ -338,22 +337,15 @@ class PanchangaCalculator(context: Context) : Closeable {
             SweConst.SEFLG_SWIEPH,
             sunsetFlags,
             geopos,
-            1013.25,
-            15.0,
+            0.0,
+            0.0,
             timeResult,
             errorBuffer
         )
 
-        val sunsetJD: Double? = if (setResult >= 0 && timeResult.`val` > jdMidnight) {
-            timeResult.`val`
-        } else {
-            null
-        }
+        val sunsetJD = if (setResult >= 0) timeResult.`val` else jdMidnight + 0.75 // Default 6 PM
 
-        val sunrise = sunriseJD?.let { formatJulianDayToLocalTime(it, zoneId) } ?: "N/A"
-        val sunset = sunsetJD?.let { formatJulianDayToLocalTime(it, zoneId) } ?: "N/A"
-
-        return Pair(sunrise, sunset)
+        return Pair(sunriseJD, sunsetJD)
     }
 
     private fun formatJulianDayToLocalTime(julianDay: Double, zoneId: ZoneId): String {
@@ -639,6 +631,8 @@ data class PanchangaData(
     val paksha: Paksha,
     val sunrise: String,
     val sunset: String,
+    val sunriseJD: Double = 0.0,
+    val sunsetJD: Double = 0.0,
     val moonPhase: Double,
     val sunLongitude: Double,
     val moonLongitude: Double,

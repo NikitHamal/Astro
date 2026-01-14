@@ -315,29 +315,6 @@ object ShadbalaCalculator {
         )
     }
 
-    /**
-     * Saptavarga weights for calculating Saptavargaja Bala per BPHS.
-     *
-     * The classical Saptavarga (7 divisional charts) used in Shadbala are:
-     * D1 (Rashi), D2 (Hora), D3 (Drekkana), D9 (Navamsa), D12 (Dwadasamsa),
-     * D30 (Trimsamsa), and D60 (Shashtyamsa).
-     *
-     * Note: Some texts substitute D7 (Saptamsa) for D60 due to computational complexity
-     * of D60. This implementation follows the variant that uses D7, which is commonly
-     * found in South Indian traditions. For strict BPHS compliance, D60 should be used.
-     *
-     * Total weight = 5.0 + 2.5 + 3.0 + 4.5 + 2.0 + 1.0 + 2.5 = 20.5 (unit: Virupas)
-     */
-    private object SaptavargaWeights {
-        const val D1_RASHI = 5.0        // Primary chart - highest weight
-        const val D2_HORA = 2.5         // Wealth and sustenance
-        const val D3_DREKKANA = 3.0     // Siblings and courage
-        const val D7_SAPTAMSA = 2.5     // Children and progeny (D7 variant)
-        const val D9_NAVAMSA = 4.5      // Spouse and dharma - second highest
-        const val D12_DWADASAMSA = 2.0  // Parents and past life
-        const val D30_TRIMSAMSA = 1.0   // Misfortune and evil - lowest weight
-    }
-
     private object VedicAspects {
         data class AspectInfo(val house: Int, val strength: Double)
 
@@ -365,7 +342,7 @@ object ShadbalaCalculator {
         }
     }
 
-    private class ChartContext(val chart: VedicChart) {
+    private class ChartContext(val context: android.content.Context, val chart: VedicChart) {
         val planetMap: Map<Planet, PlanetPosition> by lazy {
             chart.planetPositions.associateBy { it.planet }
         }
@@ -391,8 +368,24 @@ object ShadbalaCalculator {
 
         val isShuklaPacksha: Boolean by lazy { lunarElongation < 180.0 }
 
+        val panchangaData by lazy {
+            PanchangaCalculator(context).use {
+                it.calculatePanchanga(
+                    chart.birthData.dateTime,
+                    chart.birthData.latitude,
+                    chart.birthData.longitude,
+                    chart.birthData.timezone
+                )
+            }
+        }
+
+        val sunriseJD: Double by lazy { panchangaData.sunriseJD }
+        val sunsetJD: Double by lazy { panchangaData.sunsetJD }
+        val birthJD: Double = chart.julianDay
+
+        val isDay: Boolean by lazy { birthJD in sunriseJD..sunsetJD }
+
         val birthHour: Int = chart.birthData.dateTime.hour
-        val isDay: Boolean = birthHour in 6..17
 
         val dayLord: Planet by lazy {
             getDayLordForWeekday(chart.birthData.dateTime.dayOfWeek.value)
@@ -403,8 +396,8 @@ object ShadbalaCalculator {
         }
     }
 
-    fun calculateShadbala(chart: VedicChart): ShadbalaAnalysis {
-        val context = ChartContext(chart)
+    fun calculateShadbala(androidContext: android.content.Context, chart: VedicChart): ShadbalaAnalysis {
+        val context = ChartContext(androidContext, chart)
         val strengths = mutableMapOf<Planet, PlanetaryShadbala>()
 
         for (position in chart.planetPositions) {
@@ -428,9 +421,10 @@ object ShadbalaCalculator {
     }
 
     fun calculatePlanetShadbala(
+        androidContext: android.content.Context,
         position: PlanetPosition,
         chart: VedicChart
-    ): PlanetaryShadbala = calculatePlanetShadbala(position, ChartContext(chart))
+    ): PlanetaryShadbala = calculatePlanetShadbala(position, ChartContext(androidContext, chart))
 
     private fun calculatePlanetShadbala(
         position: PlanetPosition,
@@ -492,68 +486,56 @@ object ShadbalaCalculator {
         val planet = position.planet
         var totalBala = 0.0
 
-        totalBala += getVargaStrength(planet, position.sign, position.longitude % DEGREES_PER_SIGN) *
-                SaptavargaWeights.D1_RASHI
+        // D1 Rashi
+        totalBala += getVargaStrength(planet, position.sign, position.longitude % DEGREES_PER_SIGN)
 
-        context.divisionalChartMap[DivisionalChartType.D2_HORA]?.let { chart ->
-            chart.planetPositions.find { position: PlanetPosition -> position.planet == planet }?.let { pos ->
-                totalBala += getVargaStrengthBasic(planet, pos.sign) * SaptavargaWeights.D2_HORA
+        // Other Vargas from the map
+        val vargas = listOf(
+            DivisionalChartType.D2_HORA,
+            DivisionalChartType.D3_DREKKANA,
+            DivisionalChartType.D7_SAPTAMSA,
+            DivisionalChartType.D9_NAVAMSA,
+            DivisionalChartType.D12_DWADASAMSA,
+            DivisionalChartType.D30_TRIMSAMSA,
+            DivisionalChartType.D60_SHASHTIAMSA
+        )
+
+        for (vargaType in vargas) {
+            context.divisionalChartMap[vargaType]?.let { chart ->
+                chart.planetPositions.find { it.planet == planet }?.let { pos ->
+                    totalBala += getVargaStrengthBasic(planet, pos.sign)
+                }
             }
         }
 
-        context.divisionalChartMap[DivisionalChartType.D3_DREKKANA]?.let { chart ->
-            chart.planetPositions.find { position: PlanetPosition -> position.planet == planet }?.let { pos ->
-                totalBala += getVargaStrengthBasic(planet, pos.sign) * SaptavargaWeights.D3_DREKKANA
-            }
-        }
-
-        context.divisionalChartMap[DivisionalChartType.D7_SAPTAMSA]?.let { chart ->
-            chart.planetPositions.find { position: PlanetPosition -> position.planet == planet }?.let { pos ->
-                totalBala += getVargaStrengthBasic(planet, pos.sign) * SaptavargaWeights.D7_SAPTAMSA
-            }
-        }
-
-        context.divisionalChartMap[DivisionalChartType.D9_NAVAMSA]?.let { chart ->
-            chart.planetPositions.find { position: PlanetPosition -> position.planet == planet }?.let { pos ->
-                totalBala += getVargaStrengthBasic(planet, pos.sign) * SaptavargaWeights.D9_NAVAMSA
-            }
-        }
-
-        context.divisionalChartMap[DivisionalChartType.D12_DWADASAMSA]?.let { chart ->
-            chart.planetPositions.find { position: PlanetPosition -> position.planet == planet }?.let { pos ->
-                totalBala += getVargaStrengthBasic(planet, pos.sign) * SaptavargaWeights.D12_DWADASAMSA
-            }
-        }
-
-        context.divisionalChartMap[DivisionalChartType.D30_TRIMSAMSA]?.let { chart ->
-            chart.planetPositions.find { position: PlanetPosition -> position.planet == planet }?.let { pos ->
-                totalBala += getVargaStrengthBasic(planet, pos.sign) * SaptavargaWeights.D30_TRIMSAMSA
-            }
-        }
-
-        return totalBala
+        // BPHS standard: Saptavargaja Bala is the sum of virupas divided by 4
+        // (Since we are using 8 vargas here including D60, we follow the tradition
+        // of summing their individual virupa strengths)
+        return totalBala / 4.0
     }
 
     private fun getVargaStrength(planet: Planet, sign: ZodiacSign, degreeInSign: Double): Double {
-        if (isExalted(planet, sign)) return 20.0
-        if (MoolatrikonaData.isInMoolatrikona(planet, sign, degreeInSign)) return 22.5
+        // BPHS Virupa values for planetary relationships in Vargas:
+        // Exaltation: (Used in Uccha Bala, not usually Saptavargaja, 
+        // but some traditions include it. Here we follow BPHS relationship values)
+        
+        if (MoolatrikonaData.isInMoolatrikona(planet, sign, degreeInSign)) return 45.0
         if (isOwnSign(planet, sign)) return 30.0
 
         return when (VedicAstrologyUtils.getNaturalRelationship(planet, sign.ruler)) {
-            PlanetaryRelationship.FRIEND, PlanetaryRelationship.BEST_FRIEND -> 15.0
-            PlanetaryRelationship.NEUTRAL -> 10.0
-            PlanetaryRelationship.ENEMY, PlanetaryRelationship.BITTER_ENEMY -> 7.5
+            PlanetaryRelationship.FRIEND, PlanetaryRelationship.BEST_FRIEND -> 20.0
+            PlanetaryRelationship.NEUTRAL -> 15.0
+            PlanetaryRelationship.ENEMY, PlanetaryRelationship.BITTER_ENEMY -> 10.0
         }
     }
 
     private fun getVargaStrengthBasic(planet: Planet, sign: ZodiacSign): Double {
-        if (isExalted(planet, sign)) return 20.0
         if (isOwnSign(planet, sign)) return 30.0
 
         return when (VedicAstrologyUtils.getNaturalRelationship(planet, sign.ruler)) {
-            PlanetaryRelationship.FRIEND, PlanetaryRelationship.BEST_FRIEND -> 15.0
-            PlanetaryRelationship.NEUTRAL -> 10.0
-            PlanetaryRelationship.ENEMY, PlanetaryRelationship.BITTER_ENEMY -> 7.5
+            PlanetaryRelationship.FRIEND, PlanetaryRelationship.BEST_FRIEND -> 20.0
+            PlanetaryRelationship.NEUTRAL -> 15.0
+            PlanetaryRelationship.ENEMY, PlanetaryRelationship.BITTER_ENEMY -> 10.0
         }
     }
 
@@ -613,10 +595,28 @@ object ShadbalaCalculator {
     }
 
     private fun calculateNathonnathaBala(position: PlanetPosition, context: ChartContext): Double {
-        return when (position.planet) {
-            Planet.MERCURY -> 60.0
-            Planet.SUN, Planet.JUPITER, Planet.VENUS -> if (context.isDay) 60.0 else 0.0
-            Planet.MOON, Planet.MARS, Planet.SATURN -> if (!context.isDay) 60.0 else 0.0
+        val planet = position.planet
+        if (planet == Planet.MERCURY) return 60.0
+
+        val sunHouse = context.sunPosition?.house ?: return 30.0
+        
+        // Midday is House 10, Midnight is House 4
+        // Day planets (Sun, Jupiter, Venus) are strongest at Midday (House 10)
+        // Night planets (Moon, Mars, Saturn) are strongest at Midnight (House 4)
+        
+        return when (planet) {
+            Planet.SUN, Planet.JUPITER, Planet.VENUS -> {
+                // Distance from Midday (House 10)
+                var distance = abs(sunHouse - 10)
+                if (distance > 6) distance = 12 - distance
+                (6 - distance) * 10.0
+            }
+            Planet.MOON, Planet.MARS, Planet.SATURN -> {
+                // Distance from Midnight (House 4)
+                var distance = abs(sunHouse - 4)
+                if (distance > 6) distance = 12 - distance
+                (6 - distance) * 10.0
+            }
             else -> 30.0
         }
     }
@@ -670,26 +670,56 @@ object ShadbalaCalculator {
      * @return Tribhaga Bala in Virupas (0 or 60)
      */
     private fun calculateTribhagaBala(position: PlanetPosition, context: ChartContext): Double {
-        val hour = context.birthHour
+        val birthJD = context.birthJD
 
         // Jupiter gets partial Tribhaga Bala at all times per some traditions
         if (position.planet == Planet.JUPITER) return 30.0
 
         val periodLord = if (context.isDay) {
-            // Day time: 6 AM to 6 PM (hours 6-17)
+            val dayDuration = context.sunsetJD - context.sunriseJD
+            val tribhagaSize = dayDuration / 3.0
+            
             when {
-                hour in 6..9 -> Planet.MERCURY     // First Tribhaga: 6 AM - 10 AM
-                hour in 10..13 -> Planet.SUN       // Second Tribhaga: 10 AM - 2 PM
-                hour in 14..17 -> Planet.SATURN    // Third Tribhaga: 2 PM - 6 PM
-                else -> null
+                birthJD < context.sunriseJD + tribhagaSize -> Planet.MERCURY
+                birthJD < context.sunriseJD + 2.0 * tribhagaSize -> Planet.SUN
+                else -> Planet.SATURN
             }
         } else {
-            // Night time: 6 PM to 6 AM (hours 18-23 and 0-5)
+            // Precise night tribhaga
+            val sunriseJD = context.sunriseJD
+            val sunsetJD = context.sunsetJD
+            
+            val (nightStart, nightEnd) = if (birthJD < sunriseJD) {
+                // Before current sunrise, must be after previous sunset
+                val prevSunsetJD = PanchangaCalculator(context.context).use {
+                    it.calculatePanchanga(
+                        context.chart.birthData.dateTime.minusDays(1),
+                        context.chart.birthData.latitude,
+                        context.chart.birthData.longitude,
+                        context.chart.birthData.timezone
+                    ).sunsetJD
+                }
+                Pair(prevSunsetJD, sunriseJD)
+            } else {
+                // After current sunset, must be before next sunrise
+                val nextSunriseJD = PanchangaCalculator(context.context).use {
+                    it.calculatePanchanga(
+                        context.chart.birthData.dateTime.plusDays(1),
+                        context.chart.birthData.latitude,
+                        context.chart.birthData.longitude,
+                        context.chart.birthData.timezone
+                    ).sunriseJD
+                }
+                Pair(sunsetJD, nextSunriseJD)
+            }
+
+            val nightDuration = nightEnd - nightStart
+            val tribhagaSize = nightDuration / 3.0
+            
             when {
-                hour in 18..21 -> Planet.MOON      // First Tribhaga: 6 PM - 10 PM
-                hour >= 22 || hour in 0..1 -> Planet.VENUS  // Second Tribhaga: 10 PM - 2 AM
-                hour in 2..5 -> Planet.MARS        // Third Tribhaga: 2 AM - 6 AM
-                else -> null
+                birthJD < nightStart + tribhagaSize -> Planet.MOON
+                birthJD < nightStart + 2.0 * tribhagaSize -> Planet.VENUS
+                else -> Planet.MARS
             }
         }
 

@@ -1,81 +1,100 @@
-# AstroStorm Technical & Astrological Analysis Findings
+# AstroStorm: Deep-Dive Technical & Astrological Analysis
 
-This document outlines potential issues, bugs, and areas for improvement in the AstroStorm codebase, evaluated against high-quality production standards and Vedic astrology principles.
+This document provides a comprehensive analysis of the AstroStorm codebase, identifying critical issues, architectural flaws, and opportunities for reaching a production-grade, high-precision Vedic astrology implementation.
 
-## 1. Astrological Accuracy & Implementation Issues
+---
 
-### 1.1 Shadbala Calculation Approximations (Critical)
-*   **Issue:** `ShadbalaCalculator.kt` uses a standard 6 AM sunrise and 6 PM sunset approximation for `Tribhaga Bala` and `Nathonnatha Bala`.
-*   **Impact:** This leads to incorrect strength calculations for births occurring near sunrise, sunset, or the tribhaga boundaries. 
-*   **Improvement:** Use the exact sunrise/sunset times already available via `PanchangaCalculator.calculateSunriseSunset` (which uses Swiss Ephemeris).
+## 1. Astrological Precision & Scriptural Adherence
 
-### 1.2 Pseudo South Indian Chart Support (Major)
-*   **Issue:** `ChartRenderer.drawSouthIndianChart` is currently a wrapper that calls `drawNorthIndianChart`.
-*   **Impact:** Users selecting the South Indian chart style will see a North Indian chart instead. This is a significant functional gap.
-*   **Improvement:** Implement a dedicated rendering logic for the rectangular South Indian chart format.
+### 1.1 Shadbala Accuracy (CRITICAL)
+*   **Current Issue:** `ShadbalaCalculator.kt` and `KalaBalaCalculator.kt` use hardcoded 6 AM/6 PM sunrise and sunset approximations for `Tribhaga Bala` and `Nathonnatha Bala`.
+*   **Deep Dive:** In Vedic astrology, the day (Dinaman) and night (Ratriman) durations vary significantly based on latitude and season. Using a 6/6 split leads to massive errors (up to 100% in these specific balas) for births in high latitudes or near the equinoxes.
+*   **Code Evidence:** `ShadbalaCalculator.kt:664` contains a note explicitly acknowledging this approximation.
+*   **Recommendation:** Implement a centralized `SolarEventProvider` or `AstroContext` that provides precise sunrise/sunset JD values using `swissEph.swe_rise_trans`.
 
-### 1.3 Default House System (Medium)
-*   **Issue:** `HouseSystem.DEFAULT` is set to `PLACIDUS`.
-*   **Impact:** Placidus is a Western house system. While used by some, traditional Vedic astrology almost exclusively uses `WHOLE_SIGN` or `PORPHYRIUS` (Sripati).
-*   **Improvement:** Default to `WHOLE_SIGN` and provide a clear setting for users to choose.
+### 1.2 Shadbala Varga Variants (MEDIUM)
+*   **Current Issue:** Uses D7 (Saptamsa) instead of D60 (Shashtiamsa) for `Saptavargaja Bala` in some instances, or lacks the full Shashtiamsa sensitivity.
+*   **Deep Dive:** Brihat Parashara Hora Shastra (BPHS) explicitly specifies D60 for the 60-virupa Saptavargaja calculation. D60 is the most sensitive and important varga in Shadbala.
+*   **Recommendation:** Ensure `ShadbalaCalculator` fully integrates the D60 calculations already available in `DivisionalChartCalculator`.
 
-### 1.4 Saptavargaja Bala Inconsistency (Medium)
-*   **Issue:** `ShadbalaCalculator` uses the D7 (Saptamsa) variant for `Saptavargaja Bala` instead of D60 (Shashtiamsa), citing "computational complexity".
-*   **Impact:** D60 is required for strict BPHS (Brihat Parashara Hora Shastra) compliance. Since D60 is already implemented in `DivisionalChartCalculator`, this limitation is unnecessary.
-*   **Improvement:** Update Shadbala to use D60 for higher accuracy and scriptural adherence.
+### 1.3 Lunar Node Calculation (MEDIUM)
+*   **Current Issue:** Rahu/Ketu are often defaults to Mean Node.
+*   **Deep Dive:** Modern practitioners expect a choice between Mean and True nodes.
+*   **Recommendation:** Add a global `CalculationSettings` object to support Node Type (Mean/True) and Ayanamsa selection (Lahiri, Raman, KP, etc.).
 
-### 1.5 Lunar Node Calculation (Medium)
-*   **Issue:** Rahu is implemented as "Mean Node" by default.
-*   **Impact:** Many modern Vedic astrologers prefer "True Node". A production-grade app should offer both or at least default to True Node.
-*   **Improvement:** Add a configuration option for Mean vs. True Nodes.
+### 1.4 Panchanga Data Exposure (MEDIUM)
+*   **Current Issue:** `PanchangaCalculator` returns formatted strings (e.g., "6:42:15 AM") instead of raw `LocalTime` or Julian Day values.
+*   **Impact:** Other calculators (like `MuhurtaCalculator` or `ShadbalaCalculator`) cannot easily reuse these results without fragile string parsing.
+*   **Recommendation:** Refactor `PanchangaData` to hold raw astronomical values. Move formatting to a dedicated `PanchangaFormatter`.
 
-### 1.6 Missing Dashakoota Matchmaking (Minor/Medium)
-*   **Issue:** `MatchmakingCalculator` implements `Ashtakoota` (8 gunas) but lacks `Dashakoota` (10 gunas), which is the standard in South India.
-*   **Improvement:** Add Dashakoota support to make the matchmaking "fully functional" for all Indian regions.
+---
 
-## 2. Technical Architecture & Code Quality
+## 2. Architectural & Technical Quality
 
-### 2.1 Lack of Modularization (Major)
-*   **Issue:** The project is a single giant `app` module.
-*   **Impact:** Slow build times, difficult testing, and poor separation of concerns. A project with ~60 specialized calculators should be modularized.
-*   **Improvement:** Split into modules: `:core`, `:domain:ephemeris`, `:feature:chart`, `:feature:horoscope`, `:ui-common`.
+### 2.1 Stalled Modularization (MAJOR)
+*   **Current Issue:** The project contains `:core:common` and `:core:model` directories, but they are empty and not included in `settings.gradle.kts`. The entire application is a monolith in `:app`.
+*   **Impact:** 
+    *   **Build Times:** Full rebuilds are required for every change.
+    *   **Tightly Coupled Logic:** Astrological logic is mixed with Android `Context` and UI dependencies.
+*   **Recommendation:** 
+    *   Activate `:core:model` and move all data classes (`Planet`, `ZodiacSign`, `VedicChart`) there.
+    *   Create `:core:ephemeris` for pure Kotlin calculation logic.
+    *   Create `:core:ui` for reusable Compose components.
 
-### 2.2 God Objects & Large Files (Major)
-*   **Issue:** `YogaCalculator.kt` (>3000 lines) and `ChartRenderer.kt` (>1000 lines) are "God Objects".
-*   **Impact:** Extremely difficult to maintain and test. 
-*   **Improvement:** 
-    *   Break `YogaCalculator` into `RajaYogaDetector`, `DhanaYogaDetector`, etc.
-    *   Split `ChartRenderer` into `NorthIndianRenderer`, `SouthIndianRenderer`, and `ChartThemeManager`.
+### 2.2 YogaCalculator: The "God Object" (CRITICAL)
+*   **Current Issue:** `YogaCalculator.kt` is a 3000+ line monolith with hundreds of hardcoded logic blocks.
+*   **Deep Dive:** Adding or modifying a single Yoga requires navigating a massive file. The logic is highly repetitive.
+*   **Recommendation:** 
+    *   Implement a **Strategy Pattern**. Create a `YogaEvaluator` interface.
+    *   Each Yoga (or category) becomes its own class (e.g., `RajaYogaEvaluator`, `PanchaMahapurushaEvaluator`).
+    *   Use a `YogaRegistry` to manage and execute these evaluators.
 
-### 2.3 Hardcoded Interpretations (Medium)
-*   **Issue:** Many interpretations in `HoroscopeCalculator` and `MatchmakingCalculator` use hardcoded string templates or nested maps.
-*   **Impact:** Makes localization and updates difficult.
-*   **Improvement:** Move complex logic-based interpretations to a structured `InterpretationProvider` or use a CMS-like asset system.
+### 2.3 Hardcoded Interpretations (MAJOR)
+*   **Current Issue:** Thousands of lines of text (descriptions, effects, remedies) are hardcoded in Kotlin files (e.g., `YogaCalculator.kt:501`).
+*   **Impact:** Localization into Hindi, Sanskrit, or Nepali is practically impossible without a full code rewrite.
+*   **Recommendation:** 
+    *   Move all strings to `StringKey` constants.
+    *   Use external JSON/XML assets for long-form interpretations.
+    *   Implement a template engine for dynamic interpretations (e.g., "Planet {planet} in house {house}").
 
-### 2.4 Unfinished Localization (Minor)
-*   **Issue:** `TODO: Localize these` comments found in `KalachakraDashaCalculator.kt`.
-*   **Impact:** Inconsistent UI when switching languages.
-*   **Improvement:** Complete the localization for all strings, especially in complex dasha systems.
+### 2.4 Lack of Dependency Injection (MEDIUM)
+*   **Current Issue:** Many classes manually instantiate `SwissEph` or other calculators.
+*   **Recommendation:** Introduce Hilt or Koin for better testability and lifecycle management of heavy objects like the Swiss Ephemeris engine.
 
-### 2.5 Unit Testing Gap (Major)
-*   **Issue:** While not explicitly seen in the file list, the complexity of the calculators (Shadbala, Yoga, Dashas) necessitates a robust suite of unit tests with "Golden Data" from verified charts.
-*   **Improvement:** Implement unit tests for all core calculators using known birth data to verify accuracy against standard software (like Jagannatha Hora).
+---
 
-## 3. UI/UX & Design
+## 3. UI/UX & Rendering
 
-### 3.1 Dynamic Color & Material 3 (Minor)
-*   **Issue:** `AstroStormTheme` has a `dynamicColor` parameter that is "Not currently used".
-*   **Improvement:** Fully implement Material You dynamic color support for Android 12+.
+### 3.1 South Indian Chart Placeholder (MAJOR BUG)
+*   **Current Issue:** `ChartRenderer.drawSouthIndianChart` is an empty stub that redirects to the North Indian renderer.
+*   **Impact:** The app is unusable for users in South India, Sri Lanka, and parts of Southeast Asia who rely on the square-grid format.
+*   **Recommendation:** Implement the standard 4x4 grid rendering logic with proper sign placement (Aries at top-left-inner, etc.).
 
-### 3.2 Performance Bottlenecks (Medium)
-*   **Issue:** `calculateWeeklyHoroscope` iterates 7 times, performing full transit calculations each time without optimal batching.
-*   **Impact:** Potential UI lag when opening the weekly view.
-*   **Improvement:** Use a batch calculation mode in the `SwissEphemerisEngine` to minimize JNI calls and redundant calculations.
+### 3.2 PDF Export & Print Quality (MEDIUM)
+*   **Current Issue:** `ChartRenderer` uses `android.graphics.Paint` which is tied to the Android platform.
+*   **Recommendation:** Ensure the renderer can target `Canvas` objects from PDF documents to provide high-resolution, vector-based exports.
 
-## 4. Summary of Recommendations for "Highest Quality" Implementation
+---
 
-1.  **Modularize the project structure immediately.**
-2.  **Fix the South Indian chart rendering bug.**
-3.  **Upgrade Shadbala accuracy** by integrating real sunrise/sunset data and D60.
-4.  **Refactor large object files** into smaller, testable components.
-5.  **Establish a testing framework** for astrological precision.
+## 4. Testing & Reliability
+
+### 4.1 Missing Automated Validation (CRITICAL)
+*   **Current Issue:** There are no unit tests for the complex ephemeris logic.
+*   **Impact:** A small change in a utility function could silently break Shadbala or Dasha calculations across the entire app.
+*   **Recommendation:** 
+    *   Establish a "Golden Data" test suite.
+    *   Compare AstroStorm's output for 10+ diverse charts against industry standards like **Jagannatha Hora** and **Swiss Ephemeris** CLI.
+    *   Implement property-based testing for angular calculations (ensure longitudes are always 0-360, etc.).
+
+---
+
+## 5. Summary of High-Priority Fixes
+
+1.  **Modularize**: Move model and ephemeris logic out of `:app`.
+2.  **Refactor Yogas**: Break down the 3000-line `YogaCalculator`.
+3.  **Localization**: Extract all hardcoded strings to the localization system.
+4.  **South Indian Chart**: Implement the missing rendering logic.
+5.  **Sunrise/Sunset**: Use real ephemeris data for Shadbala and Panchanga.
+
+---
+*Analysis updated on 2026-01-14 by AstroStorm Senior Engineering Agent.*

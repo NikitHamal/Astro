@@ -76,6 +76,7 @@ fun ShadbalaScreen(
     }
 
     val language = currentLanguage()
+    val context = androidx.compose.ui.platform.LocalContext.current
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var selectedPlanet by remember { mutableStateOf<Planet?>(null) }
@@ -94,7 +95,7 @@ fun ShadbalaScreen(
         delay(300) // Brief delay for smooth UI
         try {
             shadbalaAnalysis = withContext(Dispatchers.Default) {
-                ShadbalaCalculator.calculateShadbala(chart)
+                ShadbalaCalculator.calculateShadbala(context, chart)
             }
         } catch (e: Exception) {
             // Handle error silently, analysis will be null

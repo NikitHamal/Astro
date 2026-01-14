@@ -159,6 +159,10 @@ fun SettingsTab(
             AyanamsaSetting()
         }
 
+        item {
+            NodeSetting()
+        }
+
         // About Section
         item {
             Spacer(modifier = Modifier.height(8.dp))
@@ -903,6 +907,109 @@ private fun AyanamsaSetting() {
                             text = stringResource(key),
                             style = MaterialTheme.typography.bodyMedium,
                             color = if (key == selectedAyanamsaKey) AppTheme.TextPrimary else AppTheme.TextSecondary
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun NodeSetting() {
+    val context = LocalContext.current
+    val astroSettings = remember { com.astro.storm.data.preferences.AstrologySettingsManager.getInstance(context) }
+    val currentNodeMode by astroSettings.nodeMode.collectAsState()
+    var expanded by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(AppTheme.ChipBackground),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Animation,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(StringKey.SETTINGS_NODE_CALCULATION),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = if (currentNodeMode == com.astro.storm.data.preferences.NodeCalculationMode.TRUE) 
+                            stringResource(StringKey.SETTINGS_NODE_TRUE) 
+                        else stringResource(StringKey.SETTINGS_NODE_MEAN),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.AccentPrimary
+                    )
+                }
+
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted
+                )
+            }
+
+            if (expanded) {
+                HorizontalDivider(color = AppTheme.DividerColor)
+
+                com.astro.storm.data.preferences.NodeCalculationMode.entries.forEach { mode ->
+                    val nameKey = if (mode == com.astro.storm.data.preferences.NodeCalculationMode.TRUE) 
+                        StringKey.SETTINGS_NODE_TRUE else StringKey.SETTINGS_NODE_MEAN
+                    
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                astroSettings.setNodeMode(mode)
+                                expanded = false
+                            }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = mode == currentNodeMode,
+                            onClick = {
+                                astroSettings.setNodeMode(mode)
+                                expanded = false
+                            },
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = AppTheme.AccentPrimary,
+                                unselectedColor = AppTheme.TextMuted
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = stringResource(nameKey),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = if (mode == currentNodeMode) AppTheme.TextPrimary else AppTheme.TextSecondary
                         )
                     }
                 }

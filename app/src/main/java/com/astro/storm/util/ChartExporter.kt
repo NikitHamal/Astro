@@ -958,7 +958,7 @@ class ChartExporter(private val context: Context) {
         drawPageHeader(canvas, paint, pageWidth, yPos, locManager.getString(StringKeyAnalysis.EXPORT_SHADBALA_ANALYSIS))
         yPos += 48f
 
-        val shadbala = ShadbalaCalculator.calculateShadbala(chart)
+        val shadbala = ShadbalaCalculator.calculateShadbala(context, chart)
 
         // Summary Card
         val summaryCardHeight = 70f
@@ -2326,7 +2326,7 @@ class ChartExporter(private val context: Context) {
             json.put("yogas", yogasArray)
 
             // Shadbala
-            val shadbala = ShadbalaCalculator.calculateShadbala(chart)
+            val shadbala = ShadbalaCalculator.calculateShadbala(context, chart)
             val shadbalaJson = JSONObject().apply {
                 put("overallStrengthScore", shadbala.overallStrengthScore)
                 put("strongestPlanet", shadbala.strongestPlanet.name)
@@ -2464,7 +2464,7 @@ class ChartExporter(private val context: Context) {
             csvBuilder.appendLine("SHADBALA")
             csvBuilder.appendLine("Planet,TotalRupas,RequiredRupas,Percentage,SthanaBala,DigBala,KalaBala,ChestaBala,NaisargikaBala,DrikBala")
 
-            val shadbala = ShadbalaCalculator.calculateShadbala(chart)
+            val shadbala = ShadbalaCalculator.calculateShadbala(context, chart)
             shadbala.planetaryStrengths.forEach { (planet, strength) ->
                 csvBuilder.appendLine(
                     "${planet.displayName},${strength.totalRupas},${strength.requiredRupas}," +
@@ -2782,7 +2782,7 @@ class ChartExporter(private val context: Context) {
                 appendLine()
 
                 // Shadbala Summary
-                val shadbala = ShadbalaCalculator.calculateShadbala(chart)
+                val shadbala = ShadbalaCalculator.calculateShadbala(context, chart)
                 append(shadbala.getSummaryInterpretation(locManager.language.value))
                 appendLine()
 

@@ -46,12 +46,14 @@ enum class AyanamsaType(
 }
 
 class SwissEphemerisEngine internal constructor(
+    private val context: Context,
     private val swissEph: SwissEph,
     private val ephemerisPath: String,
     private val ayanamsaType: AyanamsaType,
     private val hasHighPrecisionEphemeris: Boolean
 ) : AutoCloseable {
 
+    private val astroSettings = com.astro.storm.data.preferences.AstrologySettingsManager.getInstance(context)
     private val lock = ReentrantReadWriteLock()
     @Volatile
     private var isClosed = false
@@ -143,6 +145,7 @@ class SwissEphemerisEngine internal constructor(
                 swissEph.swe_set_sid_mode(ayanamsaType.sweConstant, 0.0, 0.0)
 
                 return SwissEphemerisEngine(
+                    context = context,
                     swissEph = swissEph,
                     ephemerisPath = ephemerisDir.absolutePath,
                     ayanamsaType = ayanamsaType,
@@ -377,7 +380,14 @@ class SwissEphemerisEngine internal constructor(
         planetResultBuffer.fill(0.0)
         errorBuffer.setLength(0)
 
-        val sweId = if (planet == Planet.KETU) Planet.RAHU.swissEphId else planet.swissEphId
+        val nodeMode = astroSettings.nodeMode.value
+        val rahuId = if (nodeMode == com.astro.storm.data.preferences.NodeCalculationMode.TRUE) {
+            SweConst.SE_TRUE_NODE
+        } else {
+            SweConst.SE_MEAN_NODE
+        }
+
+        val sweId = if (planet == Planet.KETU || planet == Planet.RAHU) rahuId else planet.swissEphId
 
         val calcResult = swissEph.swe_calc_ut(
             julianDay,
