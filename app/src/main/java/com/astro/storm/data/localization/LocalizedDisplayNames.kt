@@ -151,16 +151,6 @@ fun TithiGroup.getLocalizedNature(language: Language): String {
 }
 
 /**
- * Get localized display name for Yoga (Panchanga)
- */
-fun NityaYoga.getLocalizedName(language: Language): String {
-    return when (language) {
-        Language.ENGLISH -> this.displayName
-        Language.NEPALI -> this.sanskrit
-    }
-}
-
-/**
  * Get localized display name for YogaNature
  */
 fun YogaNature.getLocalizedName(language: Language): String {
@@ -344,16 +334,6 @@ fun formatLocalizedDuration(days: Long, language: Language): String {
 
 // YogaCategory and YogaStrength localized names are now handled as member functions 
 // in YogaModels.kt. Do not define them here as extensions to avoid ambiguity.
-
-/**
- * Get localized display name for Yoga (Panchanga)
- */
-fun NityaYoga.getLocalizedName(language: Language): String {
-    return when (language) {
-        Language.ENGLISH -> this.displayName
-        Language.NEPALI -> this.sanskrit
-    }
-}
 
 // ============================================
 // REMEDIES CALCULATOR EXTENSIONS
