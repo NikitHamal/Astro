@@ -37,7 +37,7 @@ This document provides a comprehensive analysis of the AstroStorm codebase, iden
 ## 2. Architectural & Technical Quality
 
 ### 2.1 Stalled Modularization (MAJOR)
-*   **Current Issue:** The project contains `:core:common` and `:core:model` directories, but they are empty and not included in `settings.gradle.kts`. The entire application is a monolith in `:app`.
+*   **Current Issue:** The project contains/shall contain `:core:common` and `:core:model` directories, but they are empty and not included in `settings.gradle.kts`. The entire application is a monolith in `:app`.
 *   **Impact:** 
     *   **Build Times:** Full rebuilds are required for every change.
     *   **Tightly Coupled Logic:** Astrological logic is mixed with Android `Context` and UI dependencies.
