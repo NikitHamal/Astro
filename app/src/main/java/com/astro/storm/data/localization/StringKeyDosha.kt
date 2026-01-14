@@ -3317,5 +3317,27 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     ISHTA_KASHTA_ANALYZING("Analyzing Ishta Kashta Phala...", "इष्ट कष्ट फल विश्लेषण गर्दै..."),
     ISHTA_KASHTA_NO_CHART_DESC("Please generate a chart to view Ishta Kashta Phala analysis.", "इष्ट कष्ट फल विश्लेषण हेर्न कृपया कुण्डली बनाउनुहोस्।"),
     ISHTA_KASHTA_ABOUT_TITLE("About Ishta Kashta Phala", "इष्ट कष्ट फलको बारेमा"),
-    ISHTA_KASHTA_ABOUT_DESC("Ishta Kashta Phala is derived from Shadbala calculations per BPHS. Ishta Phala (benefic result) is calculated as √(Uccha Bala × Chesta Bala), while Kashta Phala (malefic result) is √((60-Uccha Bala) × (60-Chesta Bala)). A planet with high Ishta and low Kashta delivers excellent results, while the opposite indicates challenges. Net Phala (Ishta minus Kashta) reveals a planet's overall tendency to produce favorable or unfavorable outcomes.", "इष्ट कष्ट फल BPHS अनुसार षडबल गणनाबाट निकालिन्छ। इष्ट फल (शुभ फल) = √(उच्च बल × चेष्टा बल), कष्ट फल (अशुभ फल) = √((60-उच्च बल) × (60-चेष्टा बल))। उच्च इष्ट र कम कष्ट भएको ग्रहले उत्कृष्ट फल दिन्छ, जबकि उल्टोले चुनौतीहरू संकेत गर्दछ। नेट फल (इष्ट माइनस कष्ट) ले ग्रहको अनुकूल वा प्रतिकूल परिणामहरू उत्पादन गर्ने समग्र प्रवृत्ति देखाउँछ।");
+    ISHTA_KASHTA_ABOUT_DESC("Ishta Kashta Phala is derived from Shadbala calculations per BPHS. Ishta Phala (benefic result) is calculated as √(Uccha Bala × Chesta Bala), while Kashta Phala (malefic result) is √((60-Uccha Bala) × (60-Chesta Bala)). A planet with high Ishta and low Kashta delivers excellent results, while the opposite indicates challenges. Net Phala (Ishta minus Kashta) reveals a planet's overall tendency to produce favorable or unfavorable outcomes.", "इष्ट कष्ट फल BPHS अनुसार षडबल गणनाबाट निकालिन्छ। इष्ट फल (शुभ फल) = √(उच्च बल × चेष्टा बल), कष्ट फल (अशुभ फल) = √((60-उच्च बल) × (60-चेष्टा बल))। उच्च इष्ट र कम कष्ट भएको ग्रहले उत्कृष्ट फल दिन्छ, जबकि उल्टोले चुनौतीहरू संकेत गर्दछ। नेट फल (इष्ट माइनस कष्ट) ले ग्रहको अनुकूल वा प्रतिकूल परिणामहरू उत्पादन गर्ने समग्र प्रवृत्ति देखाउँछ।"),
+
+    // Kalachakra Dasha Favorable Areas (Element-based)
+    // Fire Element
+    KALACHAKRA_AREA_LEADERSHIP("Leadership", "नेतृत्व"),
+    KALACHAKRA_AREA_SPORTS("Sports", "खेलकुद"),
+    KALACHAKRA_AREA_ENGINEERING("Engineering", "इन्जिनियरिङ"),
+    KALACHAKRA_AREA_MILITARY("Military", "सैनिक"),
+    // Earth Element
+    KALACHAKRA_AREA_FINANCE("Finance", "वित्त"),
+    KALACHAKRA_AREA_REAL_ESTATE("Real estate", "घरजग्गा"),
+    KALACHAKRA_AREA_AGRICULTURE("Agriculture", "कृषि"),
+    KALACHAKRA_AREA_CONSTRUCTION("Construction", "निर्माण"),
+    // Air Element
+    KALACHAKRA_AREA_COMMUNICATION("Communication", "सञ्चार"),
+    KALACHAKRA_AREA_EDUCATION("Education", "शिक्षा"),
+    KALACHAKRA_AREA_TRAVEL("Travel", "यात्रा"),
+    KALACHAKRA_AREA_TECHNOLOGY("Technology", "प्रविधि"),
+    // Water Element
+    KALACHAKRA_AREA_HEALING("Healing", "उपचार"),
+    KALACHAKRA_AREA_ARTS("Arts", "कला"),
+    KALACHAKRA_AREA_PSYCHOLOGY("Psychology", "मनोविज्ञान"),
+    KALACHAKRA_AREA_SPIRITUALITY("Spirituality", "अध्यात्म");
 }

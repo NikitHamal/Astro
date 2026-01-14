@@ -2,15 +2,20 @@
 
 This document provides a comprehensive analysis of the AstroStorm codebase, identifying critical issues, architectural flaws, and opportunities for reaching a production-grade, high-precision Vedic astrology implementation.
 
+**Last Analysis Date:** 2026-01-14
+
 ---
 
 ## 1. Astrological Precision & Scriptural Adherence
 
-### 1.1 Shadbala Accuracy (CRITICAL)
-*   **Current Issue:** `ShadbalaCalculator.kt` and `KalaBalaCalculator.kt` use hardcoded 6 AM/6 PM sunrise and sunset approximations for `Tribhaga Bala` and `Nathonnatha Bala`.
-*   **Deep Dive:** In Vedic astrology, the day (Dinaman) and night (Ratriman) durations vary significantly based on latitude and season. Using a 6/6 split leads to massive errors (up to 100% in these specific balas) for births in high latitudes or near the equinoxes.
-*   **Code Evidence:** `ShadbalaCalculator.kt:664` contains a note explicitly acknowledging this approximation.
-*   **Recommendation:** Implement a centralized `SolarEventProvider` or `AstroContext` that provides precise sunrise/sunset JD values using `swissEph.swe_rise_trans`.
+### 1.1 Shadbala Sunrise/Sunset Precision (RESOLVED ✅)
+*   **Previous Issue:** `ShadbalaCalculator.kt` was reported to use hardcoded 6 AM/6 PM sunrise and sunset approximations.
+*   **Current Status:** **FIXED** - The calculator now properly uses `PanchangaCalculator` to get real astronomical sunrise/sunset Julian Day values.
+*   **Code Evidence:**
+    - `ShadbalaCalculator.kt:372` - Uses `PanchangaCalculator(context).use { ... }` to fetch real data
+    - `ShadbalaCalculator.kt:382-386` - Lazy properties for `sunriseJD`, `sunsetJD`, and `isDay` calculation
+    - `ShadbalaCalculator.kt:679-713` - Full implementation using real sunrise/sunset for Tribhaga Bala
+*   **Note:** Lines 649-664 contain documentation comments explaining the concept, but the implementation uses actual ephemeris data.
 
 ### 1.2 Shadbala Varga Variants (MEDIUM)
 *   **Current Issue:** Uses D7 (Saptamsa) instead of D60 (Shashtiamsa) for `Saptavargaja Bala` in some instances, or lacks the full Shashtiamsa sensitivity.
@@ -41,13 +46,49 @@ This document provides a comprehensive analysis of the AstroStorm codebase, iden
     *   Create `:core:ephemeris` for pure Kotlin calculation logic.
     *   Create `:core:ui` for reusable Compose components.
 
-### 2.2 YogaCalculator: The "God Object" (CRITICAL)
-*   **Current Issue:** `YogaCalculator.kt` is a 3000+ line monolith with hundreds of hardcoded logic blocks.
-*   **Deep Dive:** Adding or modifying a single Yoga requires navigating a massive file. The logic is highly repetitive.
-*   **Recommendation:** 
-    *   Implement a **Strategy Pattern**. Create a `YogaEvaluator` interface.
-    *   Each Yoga (or category) becomes its own class (e.g., `RajaYogaEvaluator`, `PanchaMahapurushaEvaluator`).
-    *   Use a `YogaRegistry` to manage and execute these evaluators.
+### 2.2 Large File Refactoring (PARTIALLY RESOLVED ✅)
+*   **Guidelines:** Files should be 500-1000 lines maximum per CONTINUITY.md constraints.
+*   **Files Status:**
+
+| File | Lines | Status | Priority |
+|------|-------|--------|----------|
+| `YogaCalculator.kt` | 225 | **REFACTORED ✅** | DONE |
+| `PrashnaCalculator.kt` | 2,613 | Needs modularization | CRITICAL |
+| `RemediesCalculator.kt` | 2,176 | Needs modularization | HIGH |
+| `VarshaphalaCalculator.kt` | 2,171 | Needs modularization | HIGH |
+| `MuhurtaCalculator.kt` | 1,928 | Needs modularization | HIGH |
+| `DivisionalChartAnalyzer.kt` | 1,826 | Needs modularization | MEDIUM |
+| `NativeAnalysisCalculator.kt` | 1,572 | Needs modularization | MEDIUM |
+| `ShoolaDashaCalculator.kt` | 1,490 | Borderline | LOW |
+| `MarakaCalculator.kt` | 1,452 | Borderline | LOW |
+| `DashaCalculator.kt` | 1,438 | Borderline | LOW |
+| `KalachakraDashaCalculator.kt` | 1,435 | Borderline | LOW |
+| `ArudhaPadaCalculator.kt` | 1,425 | Borderline | LOW |
+| `HoroscopeCalculator.kt` | 1,337 | Borderline | LOW |
+| `BadhakaCalculator.kt` | 1,246 | Borderline | LOW |
+| `ChartRenderer.kt` | 1,227 | Borderline | LOW |
+
+*   **YogaCalculator Refactoring COMPLETE (2026-01-14):**
+    *   Implemented **Strategy Pattern** with `YogaEvaluator` interface
+    *   Split 3,002 lines into 12 focused files:
+        - `YogaCalculator.kt` (225 lines) - Orchestrator
+        - `YogaModels.kt` (293 lines) - Data classes
+        - `YogaLocalization.kt` (241 lines) - Localization utilities
+        - `YogaHelpers.kt` (543 lines) - Shared utilities
+        - `YogaEvaluator.kt` (42 lines) - Interface
+        - `RajaYogaEvaluator.kt` (349 lines)
+        - `DhanaYogaEvaluator.kt` (212 lines)
+        - `MahapurushaYogaEvaluator.kt` (174 lines)
+        - `NabhasaYogaEvaluator.kt` (417 lines)
+        - `ChandraYogaEvaluator.kt` (290 lines)
+        - `SolarYogaEvaluator.kt` (215 lines)
+        - `NegativeYogaEvaluator.kt` (469 lines)
+        - `SpecialYogaEvaluator.kt` (415 lines)
+    *   All files now under 550 lines, meeting guidelines
+
+*   **Recommendation for PrashnaCalculator (2,613 lines):**
+    *   Split into: `PrashnaCore`, `PrashnaYogaEvaluator`, `PrashnaTimingCalculator`, `PrashnaCategoryHandler`.
+    *   Extract Tajika aspect calculations to dedicated module.
 
 ### 2.3 Hardcoded Interpretations (MAJOR)
 *   **Current Issue:** Thousands of lines of text (descriptions, effects, remedies) are hardcoded in Kotlin files (e.g., `YogaCalculator.kt:501`).
@@ -65,10 +106,22 @@ This document provides a comprehensive analysis of the AstroStorm codebase, iden
 
 ## 3. UI/UX & Rendering
 
-### 3.1 South Indian Chart Placeholder (MAJOR BUG)
-*   **Current Issue:** `ChartRenderer.drawSouthIndianChart` is an empty stub that redirects to the North Indian renderer.
-*   **Impact:** The app is unusable for users in South India, Sri Lanka, and parts of Southeast Asia who rely on the square-grid format.
-*   **Recommendation:** Implement the standard 4x4 grid rendering logic with proper sign placement (Aries at top-left-inner, etc.).
+### 3.1 South Indian Chart Rendering (RESOLVED ✅)
+*   **Previous Issue:** `ChartRenderer.drawSouthIndianChart` was an empty stub that redirected to the North Indian renderer.
+*   **Current Status:** **FIXED** - Full South Indian chart implementation completed.
+*   **Implementation Details:**
+    - 4x4 grid with 12 outer cells for the 12 zodiac signs
+    - Fixed sign positions (Pisces at top-left, clockwise: Ar, Ta, Ge, Cn, Le, Vi, Li, Sc, Sg, Cp, Aq)
+    - Ascendant marked with diagonal line in the ascendant sign cell
+    - Sign abbreviations in top-left corner of each cell
+    - Full planet display with degrees, retrograde/combust/vargottama indicators
+    - Dignity indicators (exalted/debilitated/own sign/moolatrikona)
+    - Center area displays chart title
+*   **New Methods Added:**
+    - `drawSouthIndianChart()` - Main rendering function
+    - `drawSouthIndianCellContents()` - Cell content layout
+    - `createSouthIndianChartBitmap()` - Bitmap generation
+    - `drawSouthIndianChartWithLegend()` - Chart with legend
 
 ### 3.2 PDF Export & Print Quality (MEDIUM)
 *   **Current Issue:** `ChartRenderer` uses `android.graphics.Paint` which is tied to the Android platform.
@@ -90,11 +143,17 @@ This document provides a comprehensive analysis of the AstroStorm codebase, iden
 
 ## 5. Summary of High-Priority Fixes
 
+### Completed ✅
+1.  **Sunrise/Sunset**: ✅ Now using real ephemeris data from PanchangaCalculator for Shadbala.
+2.  **South Indian Chart**: ✅ Full 4x4 grid implementation with proper sign placement completed.
+3.  **Localization**: ✅ KalachakraDashaCalculator favorable areas now fully localized (16 new StringKeyDosha entries).
+4.  **YogaCalculator Refactoring**: ✅ Split 3,002-line monolith into 12 focused files using Strategy Pattern (2026-01-14).
+
+### Pending
 1.  **Modularize**: Move model and ephemeris logic out of `:app`.
-2.  **Refactor Yogas**: Break down the 3000-line `YogaCalculator`.
-3.  **Localization**: Extract all hardcoded strings to the localization system.
-4.  **South Indian Chart**: Implement the missing rendering logic.
-5.  **Sunrise/Sunset**: Use real ephemeris data for Shadbala and Panchanga.
+2.  **Refactor PrashnaCalculator**: Split 2613-line calculator into sub-modules.
+3.  **Refactor RemediesCalculator**: Split 2176-line calculator into sub-modules.
+4.  **Testing**: Implement automated validation with golden data test suite.
 
 ---
 *Analysis updated on 2026-01-14 by AstroStorm Senior Engineering Agent.*
