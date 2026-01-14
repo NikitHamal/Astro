@@ -64,6 +64,10 @@ import com.astro.storm.data.localization.StringKey
 import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.YogaCalculator
+import com.astro.storm.ephemeris.yoga.Yoga
+import com.astro.storm.ephemeris.yoga.YogaAnalysis
+import com.astro.storm.ephemeris.yoga.YogaCategory
+import com.astro.storm.ephemeris.yoga.YogaStrength
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.components.StatusBadge
 
@@ -76,7 +80,7 @@ fun YogasTabContent(chart: VedicChart) {
         YogaCalculator.calculateYogas(chart)
     }
 
-    var selectedCategory by remember { mutableStateOf<YogaCalculator.YogaCategory?>(null) }
+    var selectedCategory by remember { mutableStateOf<YogaCategory?>(null) }
 
     val filteredYogas = remember(yogaAnalysis, selectedCategory) {
         if (selectedCategory == null) {
@@ -99,7 +103,7 @@ fun YogasTabContent(chart: VedicChart) {
 
         item {
             YogaCategoryFilter(
-                categories = YogaCalculator.YogaCategory.entries,
+                categories = YogaCategory.entries,
                 selectedCategory = selectedCategory,
                 yogaCounts = yogaAnalysis.allYogas.groupingBy { it.category }.eachCount(),
                 onCategorySelected = { selectedCategory = it }
@@ -132,7 +136,7 @@ fun YogasTabContent(chart: VedicChart) {
     }
 }
 
-private fun YogaCalculator.Yoga.stableKey(): String {
+private fun Yoga.stableKey(): String {
     return buildString {
         append(category.name)
         append('|')
@@ -148,7 +152,7 @@ private fun YogaCalculator.Yoga.stableKey(): String {
 
 
 @Composable
-private fun YogaSummaryCard(analysis: YogaCalculator.YogaAnalysis) {
+private fun YogaSummaryCard(analysis: YogaAnalysis) {
     val language = LocalLanguage.current
     val positiveCount = analysis.allYogas.count { it.isAuspicious }
     val negativeCount = analysis.allYogas.count { !it.isAuspicious }
@@ -256,7 +260,7 @@ private fun OverallStrengthBar(strength: Double, language: Language) {
 }
 
 @Composable
-private fun TopYogasSection(topYogas: List<YogaCalculator.Yoga>, language: Language) {
+private fun TopYogasSection(topYogas: List<Yoga>, language: Language) {
     Column {
         Text(
             text = stringResource(StringKey.YOGA_MOST_SIGNIFICANT),
@@ -299,10 +303,10 @@ private fun TopYogasSection(topYogas: List<YogaCalculator.Yoga>, language: Langu
 
 @Composable
 private fun YogaCategoryFilter(
-    categories: List<YogaCalculator.YogaCategory>,
-    selectedCategory: YogaCalculator.YogaCategory?,
-    yogaCounts: Map<YogaCalculator.YogaCategory, Int>,
-    onCategorySelected: (YogaCalculator.YogaCategory?) -> Unit
+    categories: List<YogaCategory>,
+    selectedCategory: YogaCategory?,
+    yogaCounts: Map<YogaCategory, Int>,
+    onCategorySelected: (YogaCategory?) -> Unit
 ) {
     val language = LocalLanguage.current
 
@@ -357,7 +361,7 @@ private fun YogaCategoryFilter(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun YogaCard(
-    yoga: YogaCalculator.Yoga,
+    yoga: Yoga,
     isExpanded: Boolean,
     onToggleExpand: (Boolean) -> Unit
 ) {
@@ -579,7 +583,7 @@ private fun YogaStrengthBadge(strength: Double, language: Language) {
 }
 
 @Composable
-private fun EmptyYogasMessage(category: YogaCalculator.YogaCategory?) {
+private fun EmptyYogasMessage(category: YogaCategory?) {
     val language = LocalLanguage.current
 
     Surface(
@@ -619,30 +623,30 @@ private fun EmptyYogasMessage(category: YogaCalculator.YogaCategory?) {
 // ============================================
 
 @Composable
-private fun getCategoryDisplayName(category: YogaCalculator.YogaCategory, language: Language): String {
+private fun getCategoryDisplayName(category: YogaCategory, language: Language): String {
     val key = when (category) {
-        YogaCalculator.YogaCategory.RAJA_YOGA -> StringKey.YOGA_CAT_RAJA
-        YogaCalculator.YogaCategory.DHANA_YOGA -> StringKey.YOGA_CAT_DHANA
-        YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> StringKey.YOGA_CAT_MAHAPURUSHA
-        YogaCalculator.YogaCategory.NABHASA_YOGA -> StringKey.YOGA_CAT_NABHASA
-        YogaCalculator.YogaCategory.CHANDRA_YOGA -> StringKey.YOGA_CAT_CHANDRA
-        YogaCalculator.YogaCategory.SOLAR_YOGA -> StringKey.YOGA_CAT_SOLAR
-        YogaCalculator.YogaCategory.NEGATIVE_YOGA -> StringKey.YOGA_CAT_NEGATIVE
-        YogaCalculator.YogaCategory.SPECIAL_YOGA -> StringKey.YOGA_CAT_SPECIAL
+        YogaCategory.RAJA_YOGA -> StringKey.YOGA_CAT_RAJA
+        YogaCategory.DHANA_YOGA -> StringKey.YOGA_CAT_DHANA
+        YogaCategory.MAHAPURUSHA_YOGA -> StringKey.YOGA_CAT_MAHAPURUSHA
+        YogaCategory.NABHASA_YOGA -> StringKey.YOGA_CAT_NABHASA
+        YogaCategory.CHANDRA_YOGA -> StringKey.YOGA_CAT_CHANDRA
+        YogaCategory.SOLAR_YOGA -> StringKey.YOGA_CAT_SOLAR
+        YogaCategory.NEGATIVE_YOGA -> StringKey.YOGA_CAT_NEGATIVE
+        YogaCategory.SPECIAL_YOGA -> StringKey.YOGA_CAT_SPECIAL
     }
     return stringResource(key)
 }
 
 @Composable
-private fun getCategoryColor(category: YogaCalculator.YogaCategory): Color = when (category) {
-    YogaCalculator.YogaCategory.RAJA_YOGA -> ChartDetailColors.AccentGold
-    YogaCalculator.YogaCategory.DHANA_YOGA -> ChartDetailColors.SuccessColor
-    YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> ChartDetailColors.AccentPurple
-    YogaCalculator.YogaCategory.NABHASA_YOGA -> ChartDetailColors.AccentTeal
-    YogaCalculator.YogaCategory.CHANDRA_YOGA -> ChartDetailColors.AccentBlue
-    YogaCalculator.YogaCategory.SOLAR_YOGA -> ChartDetailColors.AccentOrange
-    YogaCalculator.YogaCategory.NEGATIVE_YOGA -> ChartDetailColors.ErrorColor
-    YogaCalculator.YogaCategory.SPECIAL_YOGA -> ChartDetailColors.AccentRose
+private fun getCategoryColor(category: YogaCategory): Color = when (category) {
+    YogaCategory.RAJA_YOGA -> ChartDetailColors.AccentGold
+    YogaCategory.DHANA_YOGA -> ChartDetailColors.SuccessColor
+    YogaCategory.MAHAPURUSHA_YOGA -> ChartDetailColors.AccentPurple
+    YogaCategory.NABHASA_YOGA -> ChartDetailColors.AccentTeal
+    YogaCategory.CHANDRA_YOGA -> ChartDetailColors.AccentBlue
+    YogaCategory.SOLAR_YOGA -> ChartDetailColors.AccentOrange
+    YogaCategory.NEGATIVE_YOGA -> ChartDetailColors.ErrorColor
+    YogaCategory.SPECIAL_YOGA -> ChartDetailColors.AccentRose
 }
 
 private fun formatNumber(number: Int, language: Language): String {
@@ -675,13 +679,13 @@ private fun formatPercentage(value: Double, language: Language): String {
 }
 
 @Composable
-private fun getLocalizedStrength(strength: YogaCalculator.YogaStrength, language: Language): String {
+private fun getLocalizedStrength(strength: YogaStrength, language: Language): String {
     val key = when (strength) {
-        YogaCalculator.YogaStrength.EXTREMELY_STRONG -> StringKey.YOGA_STRENGTH_EXTREMELY_STRONG
-        YogaCalculator.YogaStrength.STRONG -> StringKey.YOGA_STRENGTH_STRONG
-        YogaCalculator.YogaStrength.MODERATE -> StringKey.YOGA_STRENGTH_MODERATE
-        YogaCalculator.YogaStrength.WEAK -> StringKey.YOGA_STRENGTH_WEAK
-        YogaCalculator.YogaStrength.VERY_WEAK -> StringKey.YOGA_STRENGTH_VERY_WEAK
+        YogaStrength.EXTREMELY_STRONG -> StringKey.YOGA_STRENGTH_EXTREMELY_STRONG
+        YogaStrength.STRONG -> StringKey.YOGA_STRENGTH_STRONG
+        YogaStrength.MODERATE -> StringKey.YOGA_STRENGTH_MODERATE
+        YogaStrength.WEAK -> StringKey.YOGA_STRENGTH_WEAK
+        YogaStrength.VERY_WEAK -> StringKey.YOGA_STRENGTH_VERY_WEAK
     }
     return stringResource(key)
 }

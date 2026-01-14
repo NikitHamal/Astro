@@ -61,7 +61,7 @@ object YogaCalculator {
      * @param chart The Vedic chart to analyze
      * @return Complete yoga analysis result
      */
-    fun analyzeYogas(chart: VedicChart): YogaAnalysis {
+    fun calculateYogas(chart: VedicChart): YogaAnalysis {
         // Collect yogas from all evaluators
         val allYogas = mutableListOf<Yoga>()
         val yogasByCategory = mutableMapOf<YogaCategory, MutableList<Yoga>>()
@@ -201,7 +201,7 @@ object YogaCalculator {
      * Get count of auspicious vs negative yogas (for summary display)
      */
     fun getYogaSummary(chart: VedicChart): Pair<Int, Int> {
-        val analysis = analyzeYogas(chart)
+        val analysis = calculateYogas(chart)
         val auspicious = analysis.allYogas.count { it.isAuspicious }
         val negative = analysis.allYogas.count { !it.isAuspicious }
         return Pair(auspicious, negative)
@@ -211,7 +211,7 @@ object YogaCalculator {
      * Get the strongest yoga in the chart
      */
     fun getStrongestYoga(chart: VedicChart): Yoga? {
-        val analysis = analyzeYogas(chart)
+        val analysis = calculateYogas(chart)
         return analysis.allYogas.filter { it.isAuspicious }.maxByOrNull { it.strengthPercentage }
     }
 
@@ -219,7 +219,7 @@ object YogaCalculator {
      * Get the most challenging yoga in the chart
      */
     fun getMostChallengingYoga(chart: VedicChart): Yoga? {
-        val analysis = analyzeYogas(chart)
+        val analysis = calculateYogas(chart)
         return analysis.allYogas.filter { !it.isAuspicious }.maxByOrNull { it.strengthPercentage }
     }
 }

@@ -85,6 +85,10 @@ import com.astro.storm.data.localization.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.model.VedicChart
 import com.astro.storm.ephemeris.YogaCalculator
+import com.astro.storm.ephemeris.yoga.Yoga
+import com.astro.storm.ephemeris.yoga.YogaAnalysis
+import com.astro.storm.ephemeris.yoga.YogaCategory
+import com.astro.storm.ephemeris.yoga.YogaStrength
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.theme.AppTheme
 
@@ -105,7 +109,7 @@ fun YogasScreenRedesigned(
     onBack: () -> Unit
 ) {
     val language = LocalLanguage.current
-    var selectedCategory by rememberSaveable { mutableStateOf<YogaCalculator.YogaCategory?>(null) }
+    var selectedCategory by rememberSaveable { mutableStateOf<YogaCategory?>(null) }
     var expandedYogaKeys by rememberSaveable { mutableStateOf(setOf<String>()) }
 
     // Calculate yogas
@@ -257,7 +261,7 @@ private fun YogasTopBar(
 
 @Composable
 private fun YogasSummaryCard(
-    analysis: YogaCalculator.YogaAnalysis
+    analysis: YogaAnalysis
 ) {
     val language = LocalLanguage.current
 
@@ -449,9 +453,9 @@ private fun YogaStatItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun YogaCategoryFilter(
-    selectedCategory: YogaCalculator.YogaCategory?,
-    onCategorySelected: (YogaCalculator.YogaCategory?) -> Unit,
-    categoryStats: Map<YogaCalculator.YogaCategory, Int>
+    selectedCategory: YogaCategory?,
+    onCategorySelected: (YogaCategory?) -> Unit,
+    categoryStats: Map<YogaCategory, Int>
 ) {
     val language = LocalLanguage.current
 
@@ -495,7 +499,7 @@ private fun YogaCategoryFilter(
             }
 
             // Category filters
-            items(YogaCalculator.YogaCategory.entries.filter { categoryStats.containsKey(it) }) { category ->
+            items(YogaCategory.entries.filter { categoryStats.containsKey(it) }) { category ->
                 val isSelected = selectedCategory == category
                 val categoryColor = getCategoryColor(category)
                 val count = categoryStats[category] ?: 0
@@ -523,7 +527,7 @@ private fun YogaCategoryFilter(
 
 @Composable
 private fun CategoryHeader(
-    category: YogaCalculator.YogaCategory,
+    category: YogaCategory,
     count: Int
 ) {
     val language = LocalLanguage.current
@@ -565,7 +569,7 @@ private fun CategoryHeader(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun YogaCard(
-    yoga: YogaCalculator.Yoga,
+    yoga: Yoga,
     isExpanded: Boolean,
     onToggleExpand: (Boolean) -> Unit
 ) {
@@ -932,29 +936,29 @@ private fun EmptyYogasContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun getCategoryColor(category: YogaCalculator.YogaCategory): Color {
+private fun getCategoryColor(category: YogaCategory): Color {
     return when (category) {
-        YogaCalculator.YogaCategory.RAJA_YOGA -> AppTheme.AccentGold
-        YogaCalculator.YogaCategory.DHANA_YOGA -> AppTheme.LifeAreaFinance
-        YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> AppTheme.LifeAreaSpiritual
-        YogaCalculator.YogaCategory.NABHASA_YOGA -> AppTheme.AccentTeal
-        YogaCalculator.YogaCategory.CHANDRA_YOGA -> AppTheme.LifeAreaLove
-        YogaCalculator.YogaCategory.SOLAR_YOGA -> AppTheme.PlanetSun
-        YogaCalculator.YogaCategory.NEGATIVE_YOGA -> AppTheme.ErrorColor
-        YogaCalculator.YogaCategory.SPECIAL_YOGA -> AppTheme.AccentPrimary
+        YogaCategory.RAJA_YOGA -> AppTheme.AccentGold
+        YogaCategory.DHANA_YOGA -> AppTheme.LifeAreaFinance
+        YogaCategory.MAHAPURUSHA_YOGA -> AppTheme.LifeAreaSpiritual
+        YogaCategory.NABHASA_YOGA -> AppTheme.AccentTeal
+        YogaCategory.CHANDRA_YOGA -> AppTheme.LifeAreaLove
+        YogaCategory.SOLAR_YOGA -> AppTheme.PlanetSun
+        YogaCategory.NEGATIVE_YOGA -> AppTheme.ErrorColor
+        YogaCategory.SPECIAL_YOGA -> AppTheme.AccentPrimary
     }
 }
 
-private fun getCategoryIcon(category: YogaCalculator.YogaCategory): ImageVector {
+private fun getCategoryIcon(category: YogaCategory): ImageVector {
     return when (category) {
-        YogaCalculator.YogaCategory.RAJA_YOGA -> Icons.Outlined.WorkspacePremium
-        YogaCalculator.YogaCategory.DHANA_YOGA -> Icons.Outlined.Diamond
-        YogaCalculator.YogaCategory.MAHAPURUSHA_YOGA -> Icons.Outlined.Star
-        YogaCalculator.YogaCategory.NABHASA_YOGA -> Icons.Outlined.AutoAwesome
-        YogaCalculator.YogaCategory.CHANDRA_YOGA -> Icons.Outlined.StarOutline
-        YogaCalculator.YogaCategory.SOLAR_YOGA -> Icons.Outlined.Star
-        YogaCalculator.YogaCategory.NEGATIVE_YOGA -> Icons.Outlined.StarOutline
-        YogaCalculator.YogaCategory.SPECIAL_YOGA -> Icons.Outlined.TipsAndUpdates
+        YogaCategory.RAJA_YOGA -> Icons.Outlined.WorkspacePremium
+        YogaCategory.DHANA_YOGA -> Icons.Outlined.Diamond
+        YogaCategory.MAHAPURUSHA_YOGA -> Icons.Outlined.Star
+        YogaCategory.NABHASA_YOGA -> Icons.Outlined.AutoAwesome
+        YogaCategory.CHANDRA_YOGA -> Icons.Outlined.StarOutline
+        YogaCategory.SOLAR_YOGA -> Icons.Outlined.Star
+        YogaCategory.NEGATIVE_YOGA -> Icons.Outlined.StarOutline
+        YogaCategory.SPECIAL_YOGA -> Icons.Outlined.TipsAndUpdates
     }
 }
 
