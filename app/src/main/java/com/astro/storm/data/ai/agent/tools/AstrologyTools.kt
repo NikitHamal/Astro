@@ -1448,7 +1448,7 @@ class GetStrengthAnalysisTool : AstrologyTool {
 
         try {
             val shadbalaCalculator = ShadbalaCalculatorWrapper()
-            val shadbala = shadbalaCalculator.calculate(chart)
+            val shadbala = shadbalaCalculator.calculate(context.androidContext, chart)
 
             val filteredResults = if (planetFilter.isEmpty()) {
                 shadbala

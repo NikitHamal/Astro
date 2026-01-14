@@ -69,8 +69,9 @@ fun PlanetDetailDialog(
     chart: VedicChart,
     onDismiss: () -> Unit
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     val shadbala = remember(chart) {
-        ShadbalaCalculator.calculatePlanetShadbala(planetPosition, chart)
+        ShadbalaCalculator.calculatePlanetShadbala(context, planetPosition, chart)
     }
 
     Dialog(

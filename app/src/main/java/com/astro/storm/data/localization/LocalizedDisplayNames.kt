@@ -41,6 +41,7 @@ fun Planet.getLocalizedName(language: Language): String {
         Planet.SATURN -> StringResources.get(StringKey.PLANET_SATURN, language)
         Planet.RAHU -> StringResources.get(StringKey.PLANET_RAHU, language)
         Planet.KETU -> StringResources.get(StringKey.PLANET_KETU, language)
+        Planet.TRUE_NODE -> StringResources.get(StringKey.PLANET_RAHU, language) // Reuse Rahu key for now or add TRa
         Planet.URANUS -> StringResources.get(StringKey.PLANET_URANUS, language)
         Planet.NEPTUNE -> StringResources.get(StringKey.PLANET_NEPTUNE, language)
         Planet.PLUTO -> StringResources.get(StringKey.PLANET_PLUTO, language)

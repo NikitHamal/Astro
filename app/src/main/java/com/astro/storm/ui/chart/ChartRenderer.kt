@@ -223,6 +223,7 @@ class ChartRenderer(
         Planet.SATURN -> colorConfig.saturnColor
         Planet.RAHU -> colorConfig.rahuColor
         Planet.KETU -> colorConfig.ketuColor
+        Planet.TRUE_NODE -> colorConfig.rahuColor
         Planet.URANUS -> colorConfig.uranusColor
         Planet.NEPTUNE -> colorConfig.neptuneColor
         Planet.PLUTO -> colorConfig.plutoColor

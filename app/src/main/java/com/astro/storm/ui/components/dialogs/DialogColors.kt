@@ -102,6 +102,7 @@ object DialogColors {
         Planet.SATURN -> LocalAppThemeColors.current.PlanetSaturn
         Planet.RAHU -> LocalAppThemeColors.current.PlanetRahu
         Planet.KETU -> LocalAppThemeColors.current.PlanetKetu
+        Planet.TRUE_NODE -> LocalAppThemeColors.current.PlanetRahu
         Planet.URANUS -> LocalAppThemeColors.current.AccentTeal
         Planet.NEPTUNE -> LocalAppThemeColors.current.InfoColor
         Planet.PLUTO -> LocalAppThemeColors.current.LifeAreaSpiritual
