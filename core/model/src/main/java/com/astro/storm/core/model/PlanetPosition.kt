@@ -42,10 +42,10 @@ data class PlanetPosition(
         val sec = ((((degreeInSign - deg) * 60) - min) * 60).toInt()
         
         val isNepali = language == Language.NEPALI
-        fun formatNum(n: Int) = if (isNepali) com.astro.storm.data.localization.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
+        fun formatNum(n: Int) = if (isNepali) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
         
         val retrograde = if (isRetrograde) {
-            " " + StringResources.get(com.astro.storm.data.localization.StringKey.PLANET_RETROGRADE_SHORT, language)
+            " " + StringResources.get(com.astro.storm.core.common.StringKey.PLANET_RETROGRADE_SHORT, language)
         } else ""
         
         return "${planet.getLocalizedName(language)}: ${sign.abbreviation} ${formatNum(deg)}° ${formatNum(min)}' ${formatNum(sec)}\"$retrograde"
@@ -58,14 +58,14 @@ data class PlanetPosition(
         val sec = ((((degreeInSign - deg) * 60) - min) * 60).toInt()
         
         val isNepali = language == Language.NEPALI
-        fun formatNum(n: Int) = if (isNepali) com.astro.storm.data.localization.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
+        fun formatNum(n: Int) = if (isNepali) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
         
         val retrograde = if (isRetrograde) {
-            " [" + StringResources.get(com.astro.storm.data.localization.StringKey.PLANET_RETROGRADE, language) + "]"
+            " [" + StringResources.get(com.astro.storm.core.common.StringKey.PLANET_RETROGRADE, language) + "]"
         } else ""
         
-        val houseText = StringResources.get(com.astro.storm.data.localization.StringKey.CHART_HOUSE, language)
-        val padaText = StringResources.get(com.astro.storm.data.localization.StringKey.NAKSHATRA_PADA, language)
+        val houseText = StringResources.get(com.astro.storm.core.common.StringKey.CHART_HOUSE, language)
+        val padaText = StringResources.get(com.astro.storm.core.common.StringKey.NAKSHATRA_PADA, language)
         
         return "${planet.getLocalizedName(language).padEnd(10)}: ${sign.getLocalizedName(language).padEnd(12)} ${formatNum(deg)}° ${formatNum(min)}' ${formatNum(sec)}\" | $houseText ${formatNum(house)} | ${nakshatra.getLocalizedName(language)} ($padaText ${formatNum(nakshatraPada)})$retrograde"
     }

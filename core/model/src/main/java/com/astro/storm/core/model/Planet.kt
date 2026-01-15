@@ -19,7 +19,7 @@ enum class Planet(
     @Deprecated("Use stringResource(planet.stringKey) or getLocalizedName(language)")
     val displayName: String,
     val symbol: String,
-    val stringKey: com.astro.storm.data.localization.StringKeyInterface
+    val stringKey: com.astro.storm.core.common.StringKeyInterface
 ) {
     SUN(0, "Sun", "Su", StringKey.PLANET_SUN),
     MOON(1, "Moon", "Mo", StringKey.PLANET_MOON),

@@ -17,7 +17,7 @@ enum class Nakshatra(
     val pada2Sign: ZodiacSign,
     val pada3Sign: ZodiacSign,
     val pada4Sign: ZodiacSign,
-    val stringKey: com.astro.storm.data.localization.StringKeyInterface
+    val stringKey: com.astro.storm.core.common.StringKeyInterface
 ) {
     ASHWINI(1, "Ashwini", Planet.KETU, "Ashwini Kumaras",
         ZodiacSign.ARIES, ZodiacSign.ARIES, ZodiacSign.ARIES, ZodiacSign.ARIES, StringKey.NAKSHATRA_ASHWINI),

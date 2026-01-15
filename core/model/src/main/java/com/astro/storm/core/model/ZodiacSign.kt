@@ -16,7 +16,7 @@ enum class ZodiacSign(
     val ruler: Planet,
     val quality: Quality,
     val symbol: String,
-    val stringKey: com.astro.storm.data.localization.StringKeyInterface
+    val stringKey: com.astro.storm.core.common.StringKeyInterface
 ) {
     ARIES(1, "Aries", "Ar", "Fire", Planet.MARS, Quality.CARDINAL, "♈", StringKey.SIGN_ARIES),
     TAURUS(2, "Taurus", "Ta", "Earth", Planet.VENUS, Quality.FIXED, "♉", StringKey.SIGN_TAURUS),
