@@ -84,6 +84,9 @@ jobs:
               "model": {
                 "maxSessionTurns": 25
               },
+              "request_options": {
+                "timeout": 10000
+              },
               "telemetry": {
                 "enabled": true,
                 "target": "local",
@@ -91,7 +94,7 @@ jobs:
               },
               "tools": {
                 "core": [
-                  "run_shell_command(echo)"
+                  "run_shell_command"
                 ]
               }
             }
