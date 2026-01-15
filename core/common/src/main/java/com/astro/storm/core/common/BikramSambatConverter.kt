@@ -439,6 +439,7 @@ object BikramSambatConverter {
                 DayOfWeek.THURSDAY -> 4
                 DayOfWeek.FRIDAY -> 5
                 DayOfWeek.SATURDAY -> 6
+                else -> 0
             }
         }
     }
