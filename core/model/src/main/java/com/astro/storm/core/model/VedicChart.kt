@@ -22,7 +22,7 @@ data class VedicChart(
         planetPositions.groupBy { it.house }
     }
 
-    fun toPlainText(language: Language = Language.ENGLISH): String {
+    fun toPlainText(language: com.astro.storm.core.common.Language = com.astro.storm.core.common.Language.ENGLISH): String {
         return buildString {
             appendLine("═══════════════════════════════════════════════════════════")
             appendLine("                  VEDIC BIRTH CHART")
