@@ -78,25 +78,6 @@ android {
     }
 }
 
-// Custom task to download Swiss Ephemeris if missing
-val downloadSwissEph = tasks.register("downloadSwissEph") {
-    val libDir = file("libs")
-    val outputFile = file("libs/swisseph-2.10.03.jar")
-    outputs.file(outputFile)
-    
-    doLast {
-        if (!outputFile.exists()) {
-            libDir.mkdirs()
-            println("Downloading Swiss Ephemeris library...")
-            val url = URL("http://www.th-mack.de/download/swisseph-2.00.00-01.jar")
-            url.openStream().use { input: java.io.InputStream ->
-                outputFile.outputStream().use { output ->
-                    input.copyTo(output)
-                }
-            }
-        }
-    }
-}
 
 dependencies {
     implementation(project(":core:common"))
@@ -127,8 +108,6 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 
-    // Swiss Ephemeris
-    implementation(files(downloadSwissEph))
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")

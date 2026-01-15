@@ -95,7 +95,7 @@ fun ArudhaPadaScreen(
         delay(300)
         try {
             arudhaAnalysis = withContext(Dispatchers.Default) {
-                ArudhaPadaCalculator.analyzeArudhaPadas(chart)
+                ArudhaPadaCalculator.analyzeArudhaPadas(chart, language)
             }
         } catch (e: Exception) {
             // Handle error silently

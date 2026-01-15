@@ -623,10 +623,10 @@ class ChartExporter(private val context: Context) {
             }.trim().ifEmpty { "-" }
 
             val data = listOf(
-                position.planet.displayName,
-                position.sign.displayName,
+                position.planet.getLocalizedName(locManager.currentLanguage),
+                position.sign.getLocalizedName(locManager.currentLanguage),
                 "$deg° $min' $sec\"",
-                position.nakshatra.displayName,
+                position.nakshatra.getLocalizedName(locManager.currentLanguage),
                 position.nakshatraPada.toString(),
                 position.house.toString(),
                 status
@@ -693,10 +693,10 @@ class ChartExporter(private val context: Context) {
         // Column 1
         canvas.drawText("${locManager.getString(StringKeyAnalysis.CHART_JULIAN_DAY)}: ${String.format("%.6f", chart.julianDay)}", col1, astroDataY, paint)
         canvas.drawText("${locManager.getString(StringKeyAnalysis.CHART_AYANAMSA)}: ${chart.ayanamsaName} (${formatDegree(chart.ayanamsa)})", col1, astroDataY + 16f, paint)
-        canvas.drawText("${locManager.getString(StringKeyAnalysis.CHART_ASCENDANT_LAGNA)}: ${formatDegree(chart.ascendant)} (${ZodiacSign.fromLongitude(chart.ascendant).displayName})", col1, astroDataY + 32f, paint)
+        canvas.drawText("${locManager.getString(StringKeyAnalysis.CHART_ASCENDANT_LAGNA)}: ${formatDegree(chart.ascendant)} (${ZodiacSign.fromLongitude(chart.ascendant).getLocalizedName(locManager.currentLanguage)})", col1, astroDataY + 32f, paint)
 
         // Column 2
-        canvas.drawText("${locManager.getString(StringKeyAnalysis.CHART_MIDHEAVEN)}: ${formatDegree(chart.midheaven)} (${ZodiacSign.fromLongitude(chart.midheaven).displayName})", col2, astroDataY, paint)
+        canvas.drawText("${locManager.getString(StringKeyAnalysis.CHART_MIDHEAVEN)}: ${formatDegree(chart.midheaven)} (${ZodiacSign.fromLongitude(chart.midheaven).getLocalizedName(locManager.currentLanguage)})", col2, astroDataY, paint)
         canvas.drawText("${locManager.getString(StringKeyAnalysis.CHART_HOUSE_SYSTEM)}: ${chart.houseSystem.displayName}", col2, astroDataY + 16f, paint)
 
         yPos += astroCardHeight + 24f
@@ -822,7 +822,7 @@ class ChartExporter(private val context: Context) {
                 paint.textSize = 9f
 
                 topYogas.forEach { yoga ->
-                    val planets = yoga.planets.joinToString(", ") { it.displayName }
+                    val planets = yoga.planets.joinToString(", ") { it.getLocalizedName(locManager.currentLanguage) }
 
                     // Yoga name with dot indicator
                     paint.color = COLOR_SUCCESS
@@ -911,7 +911,7 @@ class ChartExporter(private val context: Context) {
                 // Planet names in accent color
                 paint.color = COLOR_PRIMARY
                 paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-                canvas.drawText("${aspect.aspectingPlanet.displayName}", PDF_MARGIN.toFloat() + 4f, yPos + 10f, paint)
+                canvas.drawText("${aspect.aspectingPlanet.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 4f, yPos + 10f, paint)
 
                 paint.color = COLOR_TEXT
                 paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
@@ -919,7 +919,7 @@ class ChartExporter(private val context: Context) {
 
                 paint.color = COLOR_PRIMARY
                 paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-                canvas.drawText("${aspect.aspectedPlanet.displayName}", PDF_MARGIN.toFloat() + 145f, yPos + 10f, paint)
+                canvas.drawText("${aspect.aspectedPlanet.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 145f, yPos + 10f, paint)
 
                 paint.color = COLOR_TEXT_MUTED
                 paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
@@ -1016,7 +1016,7 @@ class ChartExporter(private val context: Context) {
         paint.textSize = 14f
         paint.color = COLOR_SUCCESS
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-        canvas.drawText(shadbala.strongestPlanet.displayName, item2X, valueY, paint)
+        canvas.drawText(shadbala.strongestPlanet.getLocalizedName(locManager.currentLanguage), item2X, valueY, paint)
 
         // Item 3: Weakest Planet
         val item3X = PDF_MARGIN.toFloat() + itemWidth * 2.5f
@@ -1027,7 +1027,7 @@ class ChartExporter(private val context: Context) {
         paint.textSize = 14f
         paint.color = COLOR_ERROR
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-        canvas.drawText(shadbala.weakestPlanet.displayName, item3X, valueY, paint)
+        canvas.drawText(shadbala.weakestPlanet.getLocalizedName(locManager.currentLanguage), item3X, valueY, paint)
 
         paint.textAlign = Paint.Align.LEFT
         yPos += summaryCardHeight + 24f
@@ -1083,11 +1083,11 @@ class ChartExporter(private val context: Context) {
             }
 
             val data = listOf(
-                planetShadbala.planet.displayName,
+                planetShadbala.planet.getLocalizedName(locManager.currentLanguage),
                 String.format("%.2f", planetShadbala.totalRupas),
                 String.format("%.2f", planetShadbala.requiredRupas),
                 String.format("%.0f%%", planetShadbala.percentageOfRequired),
-                planetShadbala.strengthRating.displayName
+                planetShadbala.strengthRating.getLocalizedName(locManager.currentLanguage)
             )
 
             data.forEachIndexed { index, value ->
@@ -1126,7 +1126,7 @@ class ChartExporter(private val context: Context) {
             paint.textSize = 11f
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
             paint.color = COLOR_PRIMARY
-            canvas.drawText("${strongest.planet.displayName} ${locManager.getString(StringKeyAnalysis.EXPORT_STRENGTH_BREAKDOWN)}", PDF_MARGIN.toFloat(), yPos + 12f, paint)
+            canvas.drawText("${strongest.planet.getLocalizedName(locManager.currentLanguage)} ${locManager.getString(StringKeyAnalysis.EXPORT_STRENGTH_BREAKDOWN)}", PDF_MARGIN.toFloat(), yPos + 12f, paint)
             yPos += 24f
 
             // Breakdown card
@@ -1483,7 +1483,7 @@ class ChartExporter(private val context: Context) {
             paint.textSize = 12f
             paint.color = COLOR_PRIMARY
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-            canvas.drawText("${locManager.getString(StringKey.DASHA_MAHADASHA)}: ${currentMahadasha.planet.displayName}", PDF_MARGIN.toFloat() + 16f, yPos + 38f, paint)
+            canvas.drawText("${locManager.getString(StringKey.DASHA_MAHADASHA)}: ${currentMahadasha.planet.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 16f, yPos + 38f, paint)
 
             paint.textSize = 10f
             paint.color = COLOR_TEXT
@@ -1494,7 +1494,7 @@ class ChartExporter(private val context: Context) {
             if (currentAntardasha != null) {
                 paint.color = COLOR_SECONDARY
                 paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-                canvas.drawText("${locManager.getString(StringKey.DASHA_ANTARDASHA)}: ${currentAntardasha.planet.displayName}", PDF_MARGIN.toFloat() + 16f, yPos + 56f, paint)
+                canvas.drawText("${locManager.getString(StringKey.DASHA_ANTARDASHA)}: ${currentAntardasha.planet.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 16f, yPos + 56f, paint)
 
                 paint.color = COLOR_TEXT
                 paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
@@ -1503,7 +1503,7 @@ class ChartExporter(private val context: Context) {
 
             if (currentPratyantardasha != null) {
                 paint.color = COLOR_TEXT_MUTED
-                canvas.drawText("${locManager.getString(StringKey.DASHA_PRATYANTARDASHA)}: ${currentPratyantardasha.planet.displayName}", PDF_MARGIN.toFloat() + 16f, yPos + 74f, paint)
+                canvas.drawText("${locManager.getString(StringKey.DASHA_PRATYANTARDASHA)}: ${currentPratyantardasha.planet.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 16f, yPos + 74f, paint)
             }
         }
 
@@ -1544,7 +1544,7 @@ class ChartExporter(private val context: Context) {
             // Planet name
             paint.color = if (dasha.isActive) COLOR_ACCENT else COLOR_PRIMARY
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-            canvas.drawText(dasha.planet.displayName, PDF_MARGIN.toFloat() + 8f, yPos + 14f, paint)
+            canvas.drawText(dasha.planet.getLocalizedName(locManager.currentLanguage), PDF_MARGIN.toFloat() + 8f, yPos + 14f, paint)
 
             // Duration
             paint.color = COLOR_TEXT
@@ -1644,12 +1644,12 @@ class ChartExporter(private val context: Context) {
             paint.textSize = 14f
             paint.color = COLOR_PRIMARY
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-            canvas.drawText(moonPosition.nakshatra.displayName, PDF_MARGIN.toFloat() + 16f, yPos + 40f, paint)
+            canvas.drawText(moonPosition.nakshatra.getLocalizedName(locManager.currentLanguage), PDF_MARGIN.toFloat() + 16f, yPos + 40f, paint)
 
             paint.textSize = 10f
             paint.color = COLOR_TEXT
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
-            canvas.drawText("Pada: ${moonPosition.nakshatraPada + 1} | Ruling Planet: ${moonPosition.nakshatra.ruler.displayName}", PDF_MARGIN.toFloat() + 16f, yPos + 58f, paint)
+            canvas.drawText("Pada: ${moonPosition.nakshatraPada + 1} | Ruling Planet: ${moonPosition.nakshatra.ruler.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 16f, yPos + 58f, paint)
             canvas.drawText("Deity: ${moonPosition.nakshatra.deity}", PDF_MARGIN.toFloat() + 16f, yPos + 72f, paint)
 
             yPos += cardHeight + 20f
@@ -1695,13 +1695,13 @@ class ChartExporter(private val context: Context) {
 
             paint.color = COLOR_PRIMARY
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-            canvas.drawText(position.planet.displayName, PDF_MARGIN.toFloat() + 8f, yPos + 11f, paint)
+            canvas.drawText(position.planet.getLocalizedName(locManager.currentLanguage), PDF_MARGIN.toFloat() + 8f, yPos + 11f, paint)
 
             paint.color = COLOR_TEXT
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
-            canvas.drawText(position.nakshatra.displayName, PDF_MARGIN.toFloat() + 70f, yPos + 11f, paint)
+            canvas.drawText(position.nakshatra.getLocalizedName(locManager.currentLanguage), PDF_MARGIN.toFloat() + 70f, yPos + 11f, paint)
             canvas.drawText("${position.nakshatraPada + 1}", PDF_MARGIN.toFloat() + 180f, yPos + 11f, paint)
-            canvas.drawText(position.nakshatra.ruler.displayName, PDF_MARGIN.toFloat() + 230f, yPos + 11f, paint)
+            canvas.drawText(position.nakshatra.ruler.getLocalizedName(locManager.currentLanguage), PDF_MARGIN.toFloat() + 230f, yPos + 11f, paint)
 
             // Truncate deity name if too long
             val deity = if (position.nakshatra.deity.length > 20) position.nakshatra.deity.substring(0, 17) + "..." else position.nakshatra.deity
@@ -2074,7 +2074,7 @@ class ChartExporter(private val context: Context) {
         if (gemstones.isNotEmpty()) {
             val primary = gemstones.first()
             val naVal = locManager.getString(StringKeyExport.EXPORT_VAL_NA)
-            canvas.drawText("${locManager.getString(StringKeyExport.EXPORT_PRIMARY)}: ${primary.title} (${primary.planet?.displayName ?: naVal})", PDF_MARGIN.toFloat() + 16f, yPos + 40f, paint)
+            canvas.drawText("${locManager.getString(StringKeyExport.EXPORT_PRIMARY)}: ${primary.title} (${primary.planet?.getLocalizedName(locManager.currentLanguage) ?: naVal})", PDF_MARGIN.toFloat() + 16f, yPos + 40f, paint)
             canvas.drawText("${primary.method}", PDF_MARGIN.toFloat() + 16f, yPos + 56f, paint)
             if (gemstones.size > 1) {
                 val secondary = gemstones.drop(1).take(2).map { it.title }.joinToString(", ")
@@ -2114,7 +2114,7 @@ class ChartExporter(private val context: Context) {
                 val mantraText = mantra.mantraText?.let { text ->
                     if (text.length > 60) text.substring(0, 57) + "..." else text
                 } ?: mantra.title
-                canvas.drawText("${mantra.planet?.displayName ?: generalLabel}: $mantraText", PDF_MARGIN.toFloat() + 16f, yPos + 38f + (index * 14f), paint)
+                canvas.drawText("${mantra.planet?.getLocalizedName(locManager.currentLanguage) ?: generalLabel}: $mantraText", PDF_MARGIN.toFloat() + 16f, yPos + 38f + (index * 14f), paint)
             }
         }
 
@@ -2146,7 +2146,7 @@ class ChartExporter(private val context: Context) {
             val generalLabel = locManager.getString(StringKeyExport.EXPORT_GENERAL)
             charities.take(3).forEachIndexed { index, charity ->
                 val charityText = if (charity.description.length > 70) charity.description.substring(0, 67) + "..." else charity.description
-                canvas.drawText("${charity.planet?.displayName ?: generalLabel}: $charityText", PDF_MARGIN.toFloat() + 16f, yPos + 38f + (index * 14f), paint)
+                canvas.drawText("${charity.planet?.getLocalizedName(locManager.currentLanguage) ?: generalLabel}: $charityText", PDF_MARGIN.toFloat() + 16f, yPos + 38f + (index * 14f), paint)
             }
         }
 
@@ -2167,8 +2167,8 @@ class ChartExporter(private val context: Context) {
         paint.color = COLOR_TEXT
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
 
-        canvas.drawText("Ascendant: ${remedies.ascendantSign.name}", PDF_MARGIN.toFloat() + 16f, yPos + 40f, paint)
-        canvas.drawText("Moon Sign: ${remedies.moonSign.name}", PDF_MARGIN.toFloat() + 16f, yPos + 56f, paint)
+        canvas.drawText("Ascendant: ${remedies.ascendantSign.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 16f, yPos + 40f, paint)
+        canvas.drawText("Moon Sign: ${remedies.moonSign.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 16f, yPos + 56f, paint)
         canvas.drawText("Total Remedies: ${remedies.totalRemediesCount}", pageWidth / 2f, yPos + 40f, paint)
         canvas.drawText("Essential: ${remedies.essentialRemediesCount}", pageWidth / 2f, yPos + 56f, paint)
 
@@ -2283,14 +2283,14 @@ class ChartExporter(private val context: Context) {
                     put("longitude", pos.longitude)
                     put("latitude", pos.latitude)
                     put("sign", pos.sign.name)
-                    put("signDisplayName", pos.sign.displayName)
+                    put("signDisplayName", pos.sign.getLocalizedName(locManager.currentLanguage))
                     put("degreeInSign", pos.longitude % 30.0)
                     put("degree", pos.degree)
                     put("minutes", pos.minutes)
                     put("seconds", pos.seconds)
                     put("house", pos.house)
                     put("nakshatra", pos.nakshatra.name)
-                    put("nakshatraDisplayName", pos.nakshatra.displayName)
+                    put("nakshatraDisplayName", pos.nakshatra.getLocalizedName(locManager.currentLanguage))
                     put("nakshatraPada", pos.nakshatraPada)
                     put("isRetrograde", pos.isRetrograde)
                     put("speed", pos.speed)
@@ -2454,8 +2454,8 @@ class ChartExporter(private val context: Context) {
 
             chart.planetPositions.forEach { pos ->
                 csvBuilder.appendLine(
-                    "${pos.planet.displayName},${pos.longitude},${pos.sign.displayName}," +
-                            "${pos.longitude % 30.0},${pos.house},${pos.nakshatra.displayName}," +
+                    "${pos.planet.getLocalizedName(locManager.currentLanguage)},${pos.longitude},${pos.sign.getLocalizedName(locManager.currentLanguage)}," +
+                            "${pos.longitude % 30.0},${pos.house},${pos.nakshatra.getLocalizedName(locManager.currentLanguage)}," +
                             "${pos.nakshatraPada},${pos.isRetrograde},${pos.speed}"
                 )
             }
@@ -2465,7 +2465,7 @@ class ChartExporter(private val context: Context) {
             csvBuilder.appendLine("House,Cusp,Sign")
 
             chart.houseCusps.forEachIndexed { index, cusp ->
-                csvBuilder.appendLine("${index + 1},$cusp,${ZodiacSign.fromLongitude(cusp).displayName}")
+                csvBuilder.appendLine("${index + 1},$cusp,${ZodiacSign.fromLongitude(cusp).getLocalizedName(locManager.currentLanguage)}")
             }
 
             csvBuilder.appendLine()
@@ -2475,7 +2475,7 @@ class ChartExporter(private val context: Context) {
             val shadbala = ShadbalaCalculator.calculateShadbala(context, chart)
             shadbala.planetaryStrengths.forEach { (planet, strength) ->
                 csvBuilder.appendLine(
-                    "${planet.displayName},${strength.totalRupas},${strength.requiredRupas}," +
+                    "${planet.getLocalizedName(locManager.currentLanguage)},${strength.totalRupas},${strength.requiredRupas}," +
                             "${strength.percentageOfRequired},${strength.sthanaBala.total},${strength.digBala}," +
                             "${strength.kalaBala.total},${strength.chestaBala},${strength.naisargikaBala},${strength.drikBala}"
                 )
@@ -2514,7 +2514,7 @@ class ChartExporter(private val context: Context) {
 
             val yogaAnalysis = YogaCalculator.calculateYogas(chart)
             yogaAnalysis.allYogas.forEach { yoga ->
-                val planets = yoga.planets.joinToString(";") { it.displayName }
+                val planets = yoga.planets.joinToString(";") { it.getLocalizedName(locManager.currentLanguage) }
                 csvBuilder.appendLine(
                     "\"${yoga.name}\",${yoga.category.displayName},\"$planets\"," +
                             "${yoga.strength.displayName},${yoga.strengthPercentage},${yoga.isAuspicious}"
@@ -2774,10 +2774,10 @@ class ChartExporter(private val context: Context) {
                 val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
                 val sunPos = chart.planetPositions.find { it.planet == Planet.SUN }
 
-                appendLine("${locManager.getString(StringKeyAnalysis.CHART_ASCENDANT_LAGNA)}: ${ascSign.displayName}")
-                moonPos?.let { appendLine("${locManager.getString(StringKeyAnalysis.EXPORT_MOON_SIGN)}: ${it.sign.displayName}") }
-                sunPos?.let { appendLine("${locManager.getString(StringKeyAnalysis.EXPORT_SUN_SIGN)}: ${it.sign.displayName}") }
-                moonPos?.let { appendLine("${locManager.getString(StringKeyAnalysis.EXPORT_BIRTH_NAKSHATRA)}: ${it.nakshatra.displayName} (${locManager.getString(StringKeyAnalysis.PANCHANGA_PADA)} ${it.nakshatraPada})") }
+                appendLine("${locManager.getString(StringKeyAnalysis.CHART_ASCENDANT_LAGNA)}: ${ascSign.getLocalizedName(locManager.currentLanguage)}")
+                moonPos?.let { appendLine("${locManager.getString(StringKeyAnalysis.EXPORT_MOON_SIGN)}: ${it.sign.getLocalizedName(locManager.currentLanguage)}") }
+                sunPos?.let { appendLine("${locManager.getString(StringKeyAnalysis.EXPORT_SUN_SIGN)}: ${it.sign.getLocalizedName(locManager.currentLanguage)}") }
+                moonPos?.let { appendLine("${locManager.getString(StringKeyAnalysis.EXPORT_BIRTH_NAKSHATRA)}: ${it.nakshatra.getLocalizedName(locManager.currentLanguage)} (${locManager.getString(StringKeyAnalysis.PANCHANGA_PADA)} ${it.nakshatraPada})") }
                 appendLine()
 
                 // Planetary Positions

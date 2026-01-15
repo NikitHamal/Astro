@@ -225,8 +225,8 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
             sb.appendLine("- Profile ID: ${currentProfile.id}")
 
             if (currentChart != null) {
-                sb.appendLine("- Ascendant (Lagna): ${currentChart.planetPositions.find { it.planet.displayName == "Ascendant" }?.sign?.displayName ?: "Available"}")
-                sb.appendLine("- Moon Sign (Rashi): ${currentChart.planetPositions.find { it.planet.displayName == "Moon" }?.sign?.displayName ?: "Available"}")
+                sb.appendLine("- Ascendant (Lagna): ${ZodiacSign.fromLongitude(currentChart.ascendant).getLocalizedName(language)}")
+                sb.appendLine("- Moon Sign (Rashi): ${currentChart.planetPositions.find { it.planet == Planet.MOON }?.sign?.getLocalizedName(language) ?: "Available"}")
             }
         } else {
             sb.appendLine("**No profile is currently selected.** Ask the user to create or select a birth chart profile to provide personalized readings.")
@@ -290,8 +290,8 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
         var totalEmittedReasoning = StringBuilder()
 
         // Track the last emitted content/reasoning lengths for delta calculation
-        var lastEmittedContentLength = 0
-        var lastEmittedReasoningLength = 0
+        // var lastEmittedContentLength = 0
+        // var lastEmittedReasoningLength = 0
 
         while (continueProcessing && iteration < MAX_TOTAL_ITERATIONS && toolIterations < MAX_TOOL_ITERATIONS) {
             iteration++
@@ -299,8 +299,8 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
             var currentReasoning = StringBuilder()
             var pendingToolCalls = mutableListOf<ToolCallRequest>()
             var hasError = false
-            var errorMessage: String? = null
-            var receivedDone = false
+            // var errorMessage: String? = null
+            // var receivedDone = false
 
             // Call the AI model
             provider.chat(
@@ -353,7 +353,7 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                     }
                     is ChatResponse.Error -> {
                         hasError = true
-                        errorMessage = response.message
+                        // errorMessage = response.message
                         emit(AgentResponse.Error(response.message, response.isRetryable))
                     }
                     is ChatResponse.Usage -> {
@@ -364,7 +364,7 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                         ))
                     }
                     is ChatResponse.Done -> {
-                        receivedDone = true
+                        // receivedDone = true
                         // Check for embedded tool calls in content
                         if (pendingToolCalls.isEmpty()) {
                             pendingToolCalls.addAll(parseEmbeddedToolCalls(currentContent.toString()))
@@ -463,19 +463,19 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                             if (resultData != null) {
                                 val question = resultData.optString("question", "")
                                 val optionsArray = resultData.optJSONArray("options")
-                                val allowCustomInput = resultData.optBoolean("allow_custom_input", true)
-                                val context = resultData.optString("context", null)
+                                 val allowCustomInput = resultData.optBoolean("allow_custom_input", true)
+                                 val context = if (resultData.has("context") && !resultData.isNull("context")) resultData.getString("context") else null
 
                                 val options = mutableListOf<AskUserOptionData>()
                                 optionsArray?.let { array ->
                                     for (i in 0 until array.length()) {
                                         val opt = array.optJSONObject(i)
                                         if (opt != null) {
-                                            options.add(AskUserOptionData(
-                                                label = opt.optString("label", "Option ${i + 1}"),
-                                                description = opt.optString("description", null),
-                                                value = opt.optString("value", opt.optString("label", ""))
-                                            ))
+                                             options.add(AskUserOptionData(
+                                                 label = opt.optString("label", "Option ${i + 1}"),
+                                                 description = if (opt.has("description") && !opt.isNull("description")) opt.getString("description") else null,
+                                                 value = opt.optString("value", opt.optString("label", ""))
+                                             ))
                                         }
                                     }
                                 }
@@ -499,7 +499,7 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
 
                 // If ask_user was called, interrupt and wait for user response
                 if (askUserInterrupt != null) {
-                    emit(askUserInterrupt!!)
+                    emit(askUserInterrupt)
                     continueProcessing = false
                     return@flow // Exit the flow - UI will handle resuming with user response
                 }

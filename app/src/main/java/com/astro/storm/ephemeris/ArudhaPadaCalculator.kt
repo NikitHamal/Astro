@@ -247,34 +247,42 @@ object ArudhaPadaCalculator {
     /**
      * Calculate complete Arudha Pada analysis
      */
-    fun analyzeArudhaPadas(chart: VedicChart): ArudhaPadaAnalysis {
+    fun analyzeArudhaPadas(chart: VedicChart, language: Language = Language.ENGLISH): ArudhaPadaAnalysis {
         val ascendantSign = ZodiacSign.fromLongitude(chart.ascendant)
 
         // Calculate all 12 Arudha Padas
         val arudhaPadas = (1..12).map { house ->
-            calculateArudhaPada(chart, house, ascendantSign)
+            calculateArudhaPada(chart, house, ascendantSign, language)
         }
 
         // Get special Arudhas with detailed analysis
-        val specialArudhas = analyzeSpecialArudhas(chart, arudhaPadas)
+        val specialArudhas = SpecialArudhas(
+            arudhaLagna = calculateArudhaDetail(chart, arudhaPadas[0], language),     // AL - House 1
+            upapada = calculateArudhaDetail(chart, arudhaPadas[11], language),         // UL - House 12
+            darapada = calculateArudhaDetail(chart, arudhaPadas[6], language),         // A7 - House 7
+            labhaPada = calculateArudhaDetail(chart, arudhaPadas[10], language),       // A11 - House 11
+            rajyaPada = calculateArudhaDetail(chart, arudhaPadas[9], language),        // A10 - House 10
+            mantriPada = calculateArudhaDetail(chart, arudhaPadas[4], language),       // A5 - House 5
+            shatruPada = calculateArudhaDetail(chart, arudhaPadas[5], language)        // A6 - House 6
+        )
 
         // Calculate Arudha Yogas
-        val arudhaYogas = calculateArudhaYogas(chart, arudhaPadas, specialArudhas)
+        val arudhaYogas = calculateArudhaYogas(chart, arudhaPadas, specialArudhas, language)
 
         // Analyze Arudha-to-Arudha relationships
         val arudhaRelationships = analyzeArudhaRelationships(arudhaPadas)
 
         // Calculate transit effects on Arudhas
-        val transitEffects = calculateTransitEffects(chart, arudhaPadas)
+        val transitEffects = calculateTransitEffects(chart, arudhaPadas, language)
 
         // Calculate Dasha activation
-        val dashaActivation = calculateDashaActivation(chart, arudhaPadas)
+        val dashaActivation = calculateDashaActivation(chart, arudhaPadas, language)
 
         // Overall assessment
         val overallAssessment = calculateOverallAssessment(chart, arudhaPadas, specialArudhas, arudhaYogas)
 
         // Generate interpretation
-        val interpretation = generateInterpretation(chart, arudhaPadas, specialArudhas, arudhaYogas, overallAssessment)
+        val interpretation = generateInterpretation(chart, arudhaPadas, specialArudhas, arudhaYogas, overallAssessment, language)
 
         return ArudhaPadaAnalysis(
             ascendantSign = ascendantSign,
@@ -295,7 +303,8 @@ object ArudhaPadaCalculator {
     private fun calculateArudhaPada(
         chart: VedicChart,
         house: Int,
-        ascendantSign: ZodiacSign
+        ascendantSign: ZodiacSign,
+        language: Language
     ): ArudhaPada {
         // Get the sign of the house
         val houseSign = getSignOfHouse(ascendantSign, house)
@@ -340,7 +349,7 @@ object ArudhaPadaCalculator {
 
         // Generate interpretation
         val interpretation = generateArudhaPadaInterpretation(
-            house, arudhaSign, houseLord, houseLordSign, planetsInArudha, strength
+            house, arudhaSign, houseLord, houseLordSign, planetsInArudha, strength, language
         )
 
         return ArudhaPada(
@@ -467,7 +476,8 @@ object ArudhaPadaCalculator {
         houseLord: Planet,
         houseLordSign: ZodiacSign,
         planetsInArudha: List<PlanetPosition>,
-        strength: ArudhaStrength
+        strength: ArudhaStrength,
+        language: Language
     ): String {
         val houseArea = when (house) {
             1 -> "public image and how you are perceived"
@@ -517,47 +527,25 @@ object ArudhaPadaCalculator {
     // SPECIAL ARUDHAS ANALYSIS
     // ============================================
 
-    private fun analyzeSpecialArudhas(
+    private fun calculateArudhaDetail(
         chart: VedicChart,
-        arudhaPadas: List<ArudhaPada>
-    ): SpecialArudhas {
-        return SpecialArudhas(
-            arudhaLagna = analyzeSpecialArudha(chart, arudhaPadas[0]),     // AL - House 1
-            upapada = analyzeSpecialArudha(chart, arudhaPadas[11]),         // UL - House 12
-            darapada = analyzeSpecialArudha(chart, arudhaPadas[6]),         // A7 - House 7
-            labhaPada = analyzeSpecialArudha(chart, arudhaPadas[10]),       // A11 - House 11
-            rajyaPada = analyzeSpecialArudha(chart, arudhaPadas[9]),        // A10 - House 10
-            mantriPada = analyzeSpecialArudha(chart, arudhaPadas[4]),       // A5 - House 5
-            shatruPada = analyzeSpecialArudha(chart, arudhaPadas[5])        // A6 - House 6
-        )
-    }
-
-    private fun analyzeSpecialArudha(
-        chart: VedicChart,
-        arudha: ArudhaPada
+        arudha: ArudhaPada,
+        language: Language
     ): ArudhaPadaDetail {
-        val arudhaLord = arudha.sign.ruler
+        val arudhaLord = arudha.houseLord
         val arudhaLordPosition = chart.planetPositions.find { it.planet == arudhaLord }
         val arudhaLordSign = arudhaLordPosition?.sign ?: arudha.sign
         val arudhaLordHouse = arudhaLordPosition?.house ?: 1
 
         val dignity = calculatePlanetDignity(arudhaLord, arudhaLordSign)
 
-        val benefics = listOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY, Planet.MOON)
-        val malefics = listOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU, Planet.SUN)
-
-        val beneficsInArudha = arudha.planetsInArudha
-            .filter { it.planet in benefics }
-            .map { it.planet }
-
-        val maleficsInArudha = arudha.planetsInArudha
-            .filter { it.planet in malefics }
-            .map { it.planet }
+        val beneficsInArudha = calculateBeneficsInArudha(chart, arudha.sign)
+        val maleficsInArudha = calculateMaleficsInArudha(chart, arudha.sign)
 
         val aspectsOnArudha = calculateAspectsOnSign(chart, arudha.sign)
 
         val detailedInterpretation = generateDetailedArudhaInterpretation(
-            arudha, arudhaLord, dignity, beneficsInArudha, maleficsInArudha, aspectsOnArudha
+            arudha, arudhaLord, dignity, beneficsInArudha, maleficsInArudha, aspectsOnArudha, language
         )
 
         return ArudhaPadaDetail(
@@ -617,29 +605,30 @@ object ArudhaPadaCalculator {
         dignity: PlanetaryDignity,
         benefics: List<Planet>,
         malefics: List<Planet>,
-        aspects: List<AspectOnArudha>
+        aspects: List<AspectOnArudha>,
+        language: Language
     ): DetailedArudhaInterpretation {
         val primaryMeaning = when (arudha.house) {
-            1 -> "Your public image in ${arudha.sign.displayName} suggests ${getSignImageDescription(arudha.sign)}. " +
+            1 -> "Your public image in ${arudha.sign.getLocalizedName(language)} suggests ${getSignImageDescription(arudha.sign)}. " +
                     "People perceive you with ${arudha.sign.element} qualities."
-            7 -> "Business partnerships and public dealings manifest through ${arudha.sign.displayName}. " +
+            7 -> "Business partnerships and public dealings manifest through ${arudha.sign.getLocalizedName(language)}. " +
                     "${getA7BusinessDescription(arudha.sign)}"
-            10 -> "Your career and authority manifest through ${arudha.sign.displayName}. " +
+            10 -> "Your career and authority manifest through ${arudha.sign.getLocalizedName(language)}. " +
                     "${getA10CareerDescription(arudha.sign)}"
-            11 -> "Gains and fulfillment come through ${arudha.sign.displayName} qualities. " +
+            11 -> "Gains and fulfillment come through ${arudha.sign.getLocalizedName(language)} qualities. " +
                     "${getA11GainsDescription(arudha.sign)}"
-            12 -> "Your spouse characteristics are indicated by ${arudha.sign.displayName}. " +
+            12 -> "Your spouse characteristics are indicated by ${arudha.sign.getLocalizedName(language)}. " +
                     "${getULSpouseDescription(arudha.sign)}"
-            else -> "The matters of house ${arudha.house} manifest through ${arudha.sign.displayName}."
+            else -> "The matters of house ${arudha.house} manifest through ${arudha.sign.getLocalizedName(language)}."
         }
 
         val secondaryEffects = mutableListOf<String>()
 
         if (benefics.isNotEmpty()) {
-            secondaryEffects.add("Benefic planets (${benefics.joinToString { it.displayName }}) enhance positive outcomes")
+            secondaryEffects.add("Benefic planets (${benefics.joinToString { it.getLocalizedName(language) }}) enhance positive outcomes")
         }
         if (malefics.isNotEmpty()) {
-            secondaryEffects.add("Malefic planets (${malefics.joinToString { it.displayName }}) may create challenges")
+            secondaryEffects.add("Malefic planets (${malefics.joinToString { it.getLocalizedName(language) }}) may create challenges")
         }
 
         val dignityEffect = when (dignity) {
@@ -742,8 +731,8 @@ object ArudhaPadaCalculator {
 
         // Remedies based on dignity
         if (dignity == PlanetaryDignity.DEBILITATED || dignity == PlanetaryDignity.ENEMY_SIGN) {
-            remedies.add("Strengthen ${arudha.sign.ruler.displayName} through mantra: ${getPlanetMantra(arudha.sign.ruler)}")
-            remedies.add("Donate items related to ${arudha.sign.ruler.displayName} on its day")
+            remedies.add("Strengthen ${arudha.sign.ruler.getLocalizedName(language)} through mantra: ${getPlanetMantra(arudha.sign.ruler)}")
+            remedies.add("Donate items related to ${arudha.sign.ruler.getLocalizedName(language)} on its day")
         }
 
         // Remedies for malefics in Arudha
@@ -758,7 +747,7 @@ object ArudhaPadaCalculator {
         }
 
         // General remedies
-        remedies.add("Worship the deity associated with ${arudha.sign.displayName}")
+        remedies.add("Worship the deity associated with ${arudha.sign.getLocalizedName(language)}")
         remedies.add("Act with integrity in ${arudha.fullName} matters for better manifestation")
 
         return remedies.distinct()
@@ -786,7 +775,7 @@ object ArudhaPadaCalculator {
     private fun calculateArudhaYogas(
         chart: VedicChart,
         arudhaPadas: List<ArudhaPada>,
-        specialArudhas: SpecialArudhas
+        language: Language
     ): List<ArudhaYoga> {
         val yogas = mutableListOf<ArudhaYoga>()
 
@@ -888,8 +877,8 @@ object ArudhaPadaCalculator {
                         involvedArudhas = listOf("AL"),
                         involvedSigns = listOf(al.sign, pos.sign),
                         strength = if (isJupiter) YogaStrength.STRONG else YogaStrength.MODERATE,
-                        effects = "${pos.planet.displayName} creates positive intervention on public image from house $distFromAL",
-                        timing = "Active throughout life, especially during ${pos.planet.displayName} periods",
+                        effects = "${pos.planet.getLocalizedName(language)} creates positive intervention on public image from house $distFromAL",
+                        timing = "Active throughout life, especially during ${pos.planet.getLocalizedName(language)} periods",
                         recommendations = listOf(
                             "Benefic influence enhances reputation",
                             "Use this positive energy for public ventures"
@@ -945,11 +934,10 @@ object ArudhaPadaCalculator {
     private fun getRelationshipType(distance: Int): RelationshipType {
         return when (distance) {
             1 -> RelationshipType.CONJUNCTION
-            5, 9 -> RelationshipType.TRINE
             4, 7, 10 -> RelationshipType.KENDRA
-            7 -> RelationshipType.OPPOSITION
-            6, 8, 12 -> RelationshipType.DUSTHANA
-            3, 6, 10, 11 -> RelationshipType.UPACHAYA
+            5, 9 -> RelationshipType.TRINE
+            3, 6, 11 -> RelationshipType.UPACHAYA
+            8, 12 -> RelationshipType.DUSTHANA
             else -> RelationshipType.NEUTRAL
         }
     }
@@ -985,8 +973,8 @@ object ArudhaPadaCalculator {
     // ============================================
 
     private fun calculateTransitEffects(
-        chart: VedicChart,
-        arudhaPadas: List<ArudhaPada>
+        arudhaPadas: List<ArudhaPada>,
+        language: Language
     ): List<ArudhaTransitEffect> {
         val effects = mutableListOf<ArudhaTransitEffect>()
 
@@ -1015,7 +1003,7 @@ object ArudhaPadaCalculator {
                     effect = effect,
                     intensity = if (planet == Planet.JUPITER || planet == Planet.SATURN)
                         EffectIntensity.HIGH else EffectIntensity.MODERATE,
-                    approximateTiming = "${planet.displayName} transit through ${arudha.sign.displayName}"
+                    approximateTiming = "${planet.getLocalizedName(language)} transit through ${arudha.sign.getLocalizedName(language)}"
                 ))
             }
         }
@@ -1047,8 +1035,8 @@ object ArudhaPadaCalculator {
     // ============================================
 
     private fun calculateDashaActivation(
-        chart: VedicChart,
-        arudhaPadas: List<ArudhaPada>
+        arudhaPadas: List<ArudhaPada>,
+        language: Language
     ): List<ArudhaDashaActivation> {
         val activations = mutableListOf<ArudhaDashaActivation>()
 
@@ -1067,22 +1055,22 @@ object ArudhaPadaCalculator {
             // Primary activation - Lord's dasha
             activations.add(ArudhaDashaActivation(
                 arudha = arudha.name,
-                activatingPeriod = "${lord.displayName} Mahadasha/Antardasha",
+                activatingPeriod = "${lord.getLocalizedName(language)} Mahadasha/Antardasha",
                 activatingPlanet = lord,
                 activationReason = "Lord of ${arudha.name} sign activates ${arudha.fullName} matters",
                 expectedEffects = getExpectedEffects(arudha),
-                timing = "During ${lord.displayName} periods"
+                timing = "During ${lord.getLocalizedName(language)} periods"
             ))
 
             // Secondary activation - Planets in Arudha
             arudha.planetsInArudha.forEach { planetPos ->
                 activations.add(ArudhaDashaActivation(
                     arudha = arudha.name,
-                    activatingPeriod = "${planetPos.planet.displayName} Dasha",
+                    activatingPeriod = "${planetPos.planet.getLocalizedName(language)} Dasha",
                     activatingPlanet = planetPos.planet,
-                    activationReason = "${planetPos.planet.displayName} placed in ${arudha.name}",
-                    expectedEffects = getExpectedEffectsWithPlanet(arudha, planetPos.planet),
-                    timing = "During ${planetPos.planet.displayName} periods"
+                    activationReason = "${planetPos.planet.getLocalizedName(language)} placed in ${arudha.name}",
+                    expectedEffects = getExpectedEffectsWithPlanet(arudha, planetPos.planet, language),
+                    timing = "During ${planetPos.planet.getLocalizedName(language)} periods"
                 ))
             }
         }
@@ -1137,7 +1125,7 @@ object ArudhaPadaCalculator {
             else -> "influence"
         }
 
-        effects.add("${planet.displayName} brings $planetEffect to ${arudha.fullName} matters")
+        effects.add("${planet.getLocalizedName(language)} brings $planetEffect to ${arudha.fullName} matters")
 
         return effects
     }
@@ -1147,8 +1135,6 @@ object ArudhaPadaCalculator {
     // ============================================
 
     private fun calculateOverallAssessment(
-        chart: VedicChart,
-        arudhaPadas: List<ArudhaPada>,
         specialArudhas: SpecialArudhas,
         yogas: List<ArudhaYoga>
     ): ArudhaOverallAssessment {
@@ -1256,58 +1242,57 @@ object ArudhaPadaCalculator {
     // ============================================
 
     private fun generateInterpretation(
-        chart: VedicChart,
-        arudhaPadas: List<ArudhaPada>,
         specialArudhas: SpecialArudhas,
         yogas: List<ArudhaYoga>,
-        assessment: ArudhaOverallAssessment
+        assessment: ArudhaOverallAssessment,
+        language: Language
     ): ArudhaInterpretation {
         val al = specialArudhas.arudhaLagna.arudha
         val ul = specialArudhas.upapada.arudha
         val a10 = specialArudhas.rajyaPada.arudha
 
         val summary = buildString {
-            append("Your Arudha Lagna falls in ${al.sign.displayName}, suggesting that you are perceived as ${getSignImageDescription(al.sign)}. ")
-            append("Career manifestation (A10) through ${a10.sign.displayName} indicates professional success in ${a10.sign.ruler.displayName}-related fields. ")
+            append("Your Arudha Lagna falls in ${al.sign.getLocalizedName(language)}, suggesting that you are perceived as ${getSignImageDescription(al.sign)}. ")
+            append("Career manifestation (A10) through ${a10.sign.getLocalizedName(language)} indicates professional success in ${a10.sign.ruler.getLocalizedName(language)}-related fields. ")
             if (yogas.isNotEmpty()) {
                 append("You have ${yogas.size} significant Arudha Yogas enhancing material outcomes.")
             }
         }
 
         val publicPerception = buildString {
-            append("The Arudha Lagna in ${al.sign.displayName} ")
-            append("with lord ${al.houseLord.displayName} in ${al.houseLordSign.displayName} ")
+            append("The Arudha Lagna in ${al.sign.getLocalizedName(language)} ")
+            append("with lord ${al.houseLord.getLocalizedName(language)} in ${al.houseLordSign.getLocalizedName(language)} ")
             append("creates ${getSignImageDescription(al.sign)}. ")
             if (al.planetsInArudha.isNotEmpty()) {
-                append("Planets in AL (${al.planetsInArudha.joinToString { it.planet.displayName }}) ")
+                append("Planets in AL (${al.planetsInArudha.joinToString { it.planet.getLocalizedName(language) }}) ")
                 append("directly influence your public image.")
             }
         }
 
         val materialLife = buildString {
             val a11 = specialArudhas.labhaPada.arudha
-            append("Material gains manifest through ${a11.sign.displayName} (A11). ")
-            append("Your ${a10.sign.displayName} career manifestation and ${a11.sign.displayName} gains indicator ")
+            append("Material gains manifest through ${a11.sign.getLocalizedName(language)} (A11). ")
+            append("Your ${a10.sign.getLocalizedName(language)} career manifestation and ${a11.sign.getLocalizedName(language)} gains indicator ")
             append("suggest ${if (assessment.materialSuccessIndicator >= 60) "favorable" else "moderate"} ")
             append("material success potential.")
         }
 
         val relationshipManifestation = buildString {
-            append("The Upapada (UL) in ${ul.sign.displayName} indicates ${getULSpouseDescription(ul.sign)}. ")
+            append("The Upapada (UL) in ${ul.sign.getLocalizedName(language)} indicates ${getULSpouseDescription(ul.sign)}. ")
             val a7 = specialArudhas.darapada.arudha
-            append("Business partnerships (A7) manifest through ${a7.sign.displayName}, ")
+            append("Business partnerships (A7) manifest through ${a7.sign.getLocalizedName(language)}, ")
             append("suggesting ${getA7BusinessDescription(a7.sign)}.")
         }
 
         val careerAndAuthority = buildString {
-            append("Your career and authority manifest through ${a10.sign.displayName} (A10). ")
-            append("The ${a10.sign.ruler.displayName} lord indicates ${getA10CareerDescription(a10.sign)}. ")
+            append("Your career and authority manifest through ${a10.sign.getLocalizedName(language)} (A10). ")
+            append("The ${a10.sign.ruler.getLocalizedName(language)} lord indicates ${getA10CareerDescription(a10.sign)}. ")
             append("Career matters are ${if (assessment.careerManifestationStrength >= 60) "strongly" else "moderately"} supported.")
         }
 
         val recommendations = mutableListOf<String>()
         recommendations.add("Focus on ${al.sign.element.lowercase()} sign activities to enhance public image")
-        recommendations.add("Career advancement favored during ${a10.houseLord.displayName} periods")
+        recommendations.add("Career advancement favored during ${a10.houseLord.getLocalizedName(language)} periods")
         recommendations.add("Business partnerships benefit from ${specialArudhas.darapada.arudha.sign.element.lowercase()} sign qualities")
 
         assessment.challengeAreas.forEach {

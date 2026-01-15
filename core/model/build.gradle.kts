@@ -63,5 +63,5 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
 
     // Swiss Ephemeris
-    implementation(files(downloadSwissEph))
+    api(files(downloadSwissEph))
 }

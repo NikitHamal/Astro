@@ -20,7 +20,7 @@ data class VedicChart(
         planetPositions.groupBy { it.house }
     }
 
-    fun toPlainText(): String {
+    fun toPlainText(language: Language = Language.ENGLISH): String {
         return buildString {
             appendLine("═══════════════════════════════════════════════════════════")
             appendLine("                  VEDIC BIRTH CHART")
@@ -41,15 +41,15 @@ data class VedicChart(
             appendLine("Julian Day    : ${String.format("%.6f", julianDay)}")
             appendLine("Ayanamsa      : $ayanamsaName")
             appendLine("Ayanamsa Value: ${formatDegree(ayanamsa)}")
-            appendLine("Ascendant     : ${formatDegree(ascendant)} (${ZodiacSign.fromLongitude(ascendant).displayName})")
-            appendLine("Midheaven     : ${formatDegree(midheaven)} (${ZodiacSign.fromLongitude(midheaven).displayName})")
+            appendLine("Ascendant     : ${formatDegree(ascendant)} (${ZodiacSign.fromLongitude(ascendant).getLocalizedName(language)})")
+            appendLine("Midheaven     : ${formatDegree(midheaven)} (${ZodiacSign.fromLongitude(midheaven).getLocalizedName(language)})")
             appendLine("House System  : ${houseSystem.displayName}")
             appendLine()
 
             appendLine("PLANETARY POSITIONS (Sidereal)")
             appendLine("─────────────────────────────────────────────────────────")
             planetPositions.forEach { position ->
-                appendLine(position.toLLMString())
+                appendLine(position.toLLMString(language))
             }
             appendLine()
 
@@ -57,14 +57,14 @@ data class VedicChart(
             appendLine("─────────────────────────────────────────────────────────")
             houseCusps.forEachIndexed { index, cusp ->
                 val sign = ZodiacSign.fromLongitude(cusp)
-                appendLine("House ${(index + 1).toString().padStart(2)}: ${formatDegree(cusp)} (${sign.displayName})")
+                appendLine("House ${(index + 1).toString().padStart(2)}: ${formatDegree(cusp)} (${sign.getLocalizedName(language)})")
             }
             appendLine()
 
             appendLine("NAKSHATRA DETAILS")
             appendLine("─────────────────────────────────────────────────────────")
             planetPositions.forEach { position ->
-                appendLine("${position.planet.displayName.padEnd(10)}: ${position.nakshatra.displayName.padEnd(20)} Pada ${position.nakshatraPada} | Ruler: ${position.nakshatra.ruler.displayName}")
+                appendLine("${position.planet.getLocalizedName(language).padEnd(10)}: ${position.nakshatra.getLocalizedName(language).padEnd(20)} Pada ${position.nakshatraPada} | Ruler: ${position.nakshatra.ruler.getLocalizedName(language)}")
             }
             appendLine()
 
