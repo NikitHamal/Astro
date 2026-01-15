@@ -1,5 +1,7 @@
 package com.astro.storm.core.model
 
+import com.astro.storm.core.common.Language
+
 /**
  * Complete Vedic astrology chart
  */
