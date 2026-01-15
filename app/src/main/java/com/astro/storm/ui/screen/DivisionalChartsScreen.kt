@@ -425,7 +425,7 @@ private fun PlanetChipsCard(planets: List<Planet>, description: String, language
 }
 
 @Composable
-private fun WealthIndicatorCard(indicator: com.astro.storm.ephemeris.WealthIndicator, language: Language) {
+private fun WealthIndicatorCard(indicator: WealthIndicator, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -544,7 +544,7 @@ private fun DrekkanaTab(analysis: DrekkanaAnalysis, language: Language) {
 }
 
 @Composable
-private fun CourageAnalysisCard(analysis: com.astro.storm.ephemeris.CourageAnalysis) {
+private fun CourageAnalysisCard(analysis: CourageAnalysis) {
     val language = LocalLanguage.current
     val (color, label) = when (analysis.overallCourageLevel) {
         CourageLevel.EXCEPTIONAL -> AppTheme.SuccessColor to analysis.overallCourageLevel.getLocalizedName(language)
@@ -603,7 +603,7 @@ private fun CourageAnalysisCard(analysis: com.astro.storm.ephemeris.CourageAnaly
 }
 
 @Composable
-private fun SiblingIndicatorsCard(indicators: com.astro.storm.ephemeris.SiblingIndicators, language: Language) {
+private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Language) {
     val relationshipColor = when (indicators.relationshipQuality) {
         RelationshipQuality.EXCELLENT -> AppTheme.SuccessColor
         RelationshipQuality.GOOD -> AppTheme.SuccessColor.copy(alpha = 0.7f)
@@ -678,7 +678,7 @@ private fun SiblingIndicatorsCard(indicators: com.astro.storm.ephemeris.SiblingI
 }
 
 @Composable
-private fun CommunicationCard(analysis: com.astro.storm.ephemeris.CommunicationAnalysis) {
+private fun CommunicationCard(analysis: CommunicationAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -766,7 +766,7 @@ private fun NavamsaTab(analysis: NavamsaMarriageAnalysis, language: Language) {
 
 @Composable
 private fun SpouseCharacteristicsCard(
-    characteristics: com.astro.storm.ephemeris.SpouseCharacteristics,
+    characteristics: SpouseCharacteristics,
     direction: String
 ) {
     Card(
@@ -834,7 +834,7 @@ private fun InfoRow(label: String, value: String) {
 }
 
 @Composable
-private fun MarriageTimingCard(factors: com.astro.storm.ephemeris.MarriageTimingFactors, language: Language) {
+private fun MarriageTimingCard(factors: MarriageTimingFactors, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -934,7 +934,7 @@ private fun PlanetPositionRow(label: String, sign: String, color: Color) {
 }
 
 @Composable
-private fun MultipleMarriageCard(indicators: com.astro.storm.ephemeris.MultipleMarriageIndicators) {
+private fun MultipleMarriageCard(indicators: MultipleMarriageIndicators) {
     if (!indicators.hasStrongIndicators && indicators.riskFactors.isEmpty()) return
 
     Card(
@@ -1041,7 +1041,7 @@ private fun DashamsaTab(analysis: DashamsaAnalysis, language: Language) {
 }
 
 @Composable
-private fun CareerTypesCard(careerTypes: List<com.astro.storm.ephemeris.CareerType>) {
+private fun CareerTypesCard(careerTypes: List<CareerType>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -1089,7 +1089,7 @@ private fun CareerTypesCard(careerTypes: List<com.astro.storm.ephemeris.CareerTy
 }
 
 @Composable
-private fun BusinessVsServiceCard(analysis: com.astro.storm.ephemeris.BusinessVsServiceAnalysis) {
+private fun BusinessVsServiceCard(analysis: BusinessVsServiceAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1137,7 +1137,7 @@ private fun BusinessVsServiceCard(analysis: com.astro.storm.ephemeris.BusinessVs
 }
 
 @Composable
-private fun GovernmentServiceCard(analysis: com.astro.storm.ephemeris.GovernmentServiceAnalysis) {
+private fun GovernmentServiceCard(analysis: GovernmentServiceAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1254,7 +1254,7 @@ private fun DwadasamsaTab(analysis: DwadasamsaAnalysis, language: Language) {
 
 @Composable
 private fun ParentAnalysisCard(
-    analysis: com.astro.storm.ephemeris.ParentAnalysis,
+    analysis: ParentAnalysis,
     title: String,
     icon: ImageVector,
     color: Color
@@ -1289,7 +1289,7 @@ private fun ParentAnalysisCard(
 }
 
 @Composable
-private fun InheritanceCard(analysis: com.astro.storm.ephemeris.InheritanceAnalysis) {
+private fun InheritanceCard(analysis: InheritanceAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1323,7 +1323,7 @@ private fun InheritanceCard(analysis: com.astro.storm.ephemeris.InheritanceAnaly
 }
 
 @Composable
-private fun LongevityCard(indicators: com.astro.storm.ephemeris.ParentalLongevityIndicators) {
+private fun LongevityCard(indicators: ParentalLongevityIndicators) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),

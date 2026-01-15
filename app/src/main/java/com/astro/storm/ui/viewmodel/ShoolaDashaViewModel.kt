@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicReference
  */
 sealed class ShoolaDashaUiState {
     data object Loading : ShoolaDashaUiState()
-    data class Success(val result: ShoolaDashaCalculator.ShoolaDashaResult) : ShoolaDashaUiState()
+    data class Success(val result: ShoolaDashaResult) : ShoolaDashaUiState()
     data class Error(val message: String) : ShoolaDashaUiState()
     data object Idle : ShoolaDashaUiState()
 }
@@ -46,7 +46,7 @@ class ShoolaDashaViewModel : ViewModel() {
 
     private data class CachedShoolaResult(
         val chartKey: String,
-        val result: ShoolaDashaCalculator.ShoolaDashaResult
+        val result: ShoolaDashaResult
     )
 
     /**

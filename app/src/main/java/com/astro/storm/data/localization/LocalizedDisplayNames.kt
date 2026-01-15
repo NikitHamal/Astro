@@ -9,18 +9,19 @@ import com.astro.storm.data.preferences.ThemeMode
 import com.astro.storm.ephemeris.remedy.*
 import com.astro.storm.ephemeris.remedy.RemediesCalculator
 import com.astro.storm.core.model.Yoni
-import com.astro.storm.ephemeris.Tithi
-import com.astro.storm.ephemeris.TithiGroup
-import com.astro.storm.ephemeris.Yoga as NityaYoga
-import com.astro.storm.ephemeris.YogaNature
-import com.astro.storm.ephemeris.Karana
-import com.astro.storm.ephemeris.KaranaType
-import com.astro.storm.ephemeris.Vara
-import com.astro.storm.ephemeris.Paksha
+import com.astro.storm.ephemeris.panchanga.Tithi
+import com.astro.storm.ephemeris.panchanga.TithiGroup
+import com.astro.storm.ephemeris.panchanga.Yoga as NityaYoga
+import com.astro.storm.ephemeris.panchanga.YogaNature
+import com.astro.storm.ephemeris.panchanga.Karana
+import com.astro.storm.ephemeris.panchanga.KaranaType
+import com.astro.storm.ephemeris.panchanga.Vara
+import com.astro.storm.ephemeris.panchanga.Paksha
 import com.astro.storm.ephemeris.StrengthRating
 import com.astro.storm.ephemeris.RetrogradeCombustionCalculator
 import com.astro.storm.ephemeris.yoga.YogaCategory
 import com.astro.storm.ephemeris.yoga.YogaStrength
+import com.astro.storm.ephemeris.remedy.RemedyCategory
 
 /**
  * Extension functions for localized display names of various enums

@@ -11,7 +11,12 @@ import android.graphics.pdf.PdfDocument
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import com.astro.storm.core.common.LocalizationManager
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
@@ -294,12 +299,12 @@ class ChartExporter(private val context: Context) {
             val canvasWrapper = androidx.compose.ui.graphics.Canvas(canvas)
             
             drawScope.draw(density, LayoutDirection.Ltr, canvasWrapper, Size(pageWidth, options.pageSize.height.toFloat())) {
-                androidx.compose.ui.graphics.drawscope.translate(left = startX, top = yPos) {
+                translate(left = startX, top = yPos) {
                     chartRenderer.drawNorthIndianChart(this, chart, CHART_DISPLAY_SIZE.toFloat(), language = locManager.currentLanguage)
                 }
                 
                 val navamsaY = yPos + (CHART_DISPLAY_SIZE - NAVAMSA_DISPLAY_SIZE) / 2f
-                androidx.compose.ui.graphics.drawscope.translate(left = startX + CHART_DISPLAY_SIZE + 24, top = navamsaY) {
+                translate(left = startX + CHART_DISPLAY_SIZE + 24, top = navamsaY) {
                     chartRenderer.drawDivisionalChart(
                         this,
                         navamsaData.planetPositions,
@@ -329,7 +334,7 @@ class ChartExporter(private val context: Context) {
             val canvasWrapper = androidx.compose.ui.graphics.Canvas(canvas)
             
             drawScope.draw(density, LayoutDirection.Ltr, canvasWrapper, Size(pageWidth, options.pageSize.height.toFloat())) {
-                androidx.compose.ui.graphics.drawscope.translate(left = chartX, top = yPos) {
+                translate(left = chartX, top = yPos) {
                     chartRenderer.drawNorthIndianChart(this, chart, CHART_DISPLAY_SIZE.toFloat(), language = locManager.currentLanguage)
                 }
             }

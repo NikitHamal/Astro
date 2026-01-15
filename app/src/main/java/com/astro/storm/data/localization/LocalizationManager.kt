@@ -33,6 +33,11 @@ class LocalizationManager private constructor(context: Context) {
     private val _language = MutableStateFlow(getPersistedLanguage())
     val language: StateFlow<Language> = _language.asStateFlow()
 
+    /**
+     * Get the current language synchronously
+     */
+    val currentLanguage: Language get() = _language.value
+
     // Keep track of the derived date system that updates when language changes
     private val _dateSystem = MutableStateFlow(getDateSystemForLanguage(_language.value))
 
