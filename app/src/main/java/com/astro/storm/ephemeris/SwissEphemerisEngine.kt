@@ -42,7 +42,9 @@ enum class AyanamsaType(
     KRISHNAMURTI(SweConst.SE_SIDM_KRISHNAMURTI, "Krishnamurti"),
     TRUE_CHITRAPAKSHA(SweConst.SE_SIDM_TRUE_CITRA, "True Chitrapaksha"),
     YUKTESHWAR(SweConst.SE_SIDM_YUKTESHWAR, "Yukteshwar"),
-    FAGAN_BRADLEY(SweConst.SE_SIDM_FAGAN_BRADLEY, "Fagan-Bradley");
+    FAGAN_BRADLEY(SweConst.SE_SIDM_FAGAN_BRADLEY, "Fagan-Bradley"),
+    JN_BHASIN(SweConst.SE_SIDM_JN_BHASIN, "J.N. Bhasin"),
+    SAYANA(-1, "Sayana (Tropical)");
 }
 
 class SwissEphemerisEngine internal constructor(
@@ -142,7 +144,9 @@ class SwissEphemerisEngine internal constructor(
 
             try {
                 swissEph.swe_set_ephe_path(ephemerisDir.absolutePath)
-                swissEph.swe_set_sid_mode(ayanamsaType.sweConstant, 0.0, 0.0)
+                if (ayanamsaType.sweConstant != -1) {
+                    swissEph.swe_set_sid_mode(ayanamsaType.sweConstant, 0.0, 0.0)
+                }
 
                 return SwissEphemerisEngine(
                     context = context,
@@ -310,9 +314,14 @@ class SwissEphemerisEngine internal constructor(
 
         // Dynamically set Ayanamsa based on settings
         val currentAyanamsa = astroSettings.ayanamsa.value
-        swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
+        val isSidereal = currentAyanamsa.swissEphId != -1
+        
+        if (isSidereal) {
+            swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
+        }
 
-        val ayanamsa = swissEph.swe_get_ayanamsa_ut(julianDay)
+        val ayanamsa = if (isSidereal) swissEph.swe_get_ayanamsa_ut(julianDay) else 0.0
+        val currentFlags = if (isSidereal) SweConst.SEFLG_SIDEREAL else 0
 
         houseCuspsBuffer.fill(0.0)
         ascMcBuffer.fill(0.0)
@@ -326,7 +335,7 @@ class SwissEphemerisEngine internal constructor(
 
         val houseResult = swissEph.swe_houses(
             julianDay,
-            SweConst.SEFLG_SIDEREAL,
+            currentFlags,
             birthData.latitude.toDouble(),
             birthData.longitude.toDouble(),
             effectiveHouseSystem.code.code,
@@ -369,9 +378,11 @@ class SwissEphemerisEngine internal constructor(
         houseCuspsBuffer.fill(0.0)
         ascMcBuffer.fill(0.0)
 
+        val currentFlags = if (astroSettings.ayanamsa.value.swissEphId != -1) SweConst.SEFLG_SIDEREAL else 0
+        
         swissEph.swe_houses(
             julianDay,
-            SweConst.SEFLG_SIDEREAL,
+            currentFlags,
             latitude,
             longitude,
             'P'.code,
@@ -400,10 +411,17 @@ class SwissEphemerisEngine internal constructor(
 
         val sweId = if (planet == Planet.KETU || planet == Planet.RAHU) rahuId else planet.swissEphId
 
+        val isSidereal = astroSettings.ayanamsa.value.swissEphId != -1
+        val currentCalculationFlags = if (isSidereal) {
+            calculationFlags
+        } else {
+            calculationFlags and SweConst.SEFLG_SIDEREAL.inv()
+        }
+
         val calcResult = swissEph.swe_calc_ut(
             julianDay,
             sweId,
-            calculationFlags,
+            currentCalculationFlags,
             planetResultBuffer,
             errorBuffer
         )
