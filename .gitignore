@@ -81,8 +81,11 @@ lint-results.xml
 
 # Mac
 .DS_Store
+# gemini-cli settings
+.gemini/
 
-# Room
+# GitHub App credentials
+gha-creds-*.json
 schemas/
 
 # Ephemeris files (optional - may want to bundle these)
