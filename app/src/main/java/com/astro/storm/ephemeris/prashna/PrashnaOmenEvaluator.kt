@@ -13,6 +13,7 @@ import com.astro.storm.ephemeris.prashna.PrashnaHelpers.detectPlanetaryWars
 import com.astro.storm.ephemeris.prashna.PrashnaHelpers.getCombustionOrb
 import com.astro.storm.ephemeris.prashna.PrashnaHelpers.getDayLord
 import com.astro.storm.ephemeris.prashna.PrashnaHelpers.isAuspiciousNakshatra
+import com.astro.storm.ephemeris.prashna.PrashnaHelpers.localized
 import java.time.LocalDateTime
 
 object PrashnaOmenEvaluator {
@@ -131,7 +132,7 @@ object PrashnaOmenEvaluator {
     }
 
     private fun getMoonHouseIndication(house: Int, language: Language): String {
-        return StringResources.get(StringKeyAnalysis.PRASHNA_MOON_HOUSE_IND_TEMPLATE, language).format(PrashnaHelpers.localized(house, language))
+        return StringResources.get(StringKeyAnalysis.PRASHNA_MOON_HOUSE_IND_TEMPLATE, language).format(house.localized(language))
     }
 
     private fun getHoraLordIndication(lord: Planet, language: Language): String {

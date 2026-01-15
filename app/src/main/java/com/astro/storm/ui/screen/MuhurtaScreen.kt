@@ -148,7 +148,7 @@ private sealed interface MuhurtaUiState {
 private sealed interface SearchUiState {
     data object Idle : SearchUiState
     data object Searching : SearchUiState
-    data class Results(val results: MuhurtaSearchResult) : SearchUiState
+    data class Results(val results: List<MuhurtaSearchResult>) : SearchUiState
     data class Error(val message: String) : SearchUiState
 }
 
@@ -1744,7 +1744,7 @@ private fun ResultsHeader(count: Int) {
 }
 
 @Composable
-private fun SearchResultCard(result: MuhurtaCalculator.MuhurtaSearchResult) {
+private fun SearchResultCard(result: MuhurtaSearchResult) {
     val scoreColor = remember(result.score) { getScoreColor(result.score) }
 
     Card(

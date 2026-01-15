@@ -2312,6 +2312,20 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     VARSHA_HOUSE_MUNTHA_EMPHASIS("Muntha's presence here significantly increases the priority of %s this year.", "यहाँ मुन्थको उपस्थितिले यस वर्ष %s को प्राथमिकतालाई महत्त्वपूर्ण रूपमा बढाउँछ।"),
     VARSHA_HOUSE_YEARLORD_RULE("Year Lord's rule over this house elevates the importance of %s matters.", "यस भावमा वर्ष स्वामीको शासनले %s मामिलाहरूको महत्त्व बढाउँछ।"),
     VARSHA_HOUSE_PREDICTION_FORMAT("House %d Overview: %s. %s", "भाव %d अवलोकन: %s। %s"),
+    VARSHA_YEARLORD_DIGNITY_FORMAT("%s is in %s (House %d)", "%s भाव %d मा %s राशिमा छ"),
+    HOUSE_1_SIGNIFICANCE("Self, Appearance, Health", "स्वयं, स्वरूप, स्वास्थ्य"),
+    HOUSE_2_SIGNIFICANCE("Wealth, Family, Speech", "धन, परिवार, वाणी"),
+    HOUSE_3_SIGNIFICANCE("Siblings, Courage, Communication", "भाइबहिनी, साहस, सञ्चार"),
+    HOUSE_4_SIGNIFICANCE("Mother, Happiness, Property", "आमा, सुख, सम्पत्ति"),
+    HOUSE_5_SIGNIFICANCE("Children, Intelligence, Creativity", "सन्तान, बुद्धि, सिर्जनात्मकता"),
+    HOUSE_6_SIGNIFICANCE("Health, Debts, Enemies", "स्वास्थ्य, ऋण, शत्रु"),
+    HOUSE_7_SIGNIFICANCE("Marriage, Partnership, Public", "विवाह, साझेदारी, सार्वजनिक"),
+    HOUSE_8_SIGNIFICANCE("Longevity, Transformation, Hidden", "दीर्घायु, रूपान्तरण, लुकेका कुराहरू"),
+    HOUSE_9_SIGNIFICANCE("Fortune, Religion, Father", "भाग्य, धर्म, पिता"),
+    HOUSE_10_SIGNIFICANCE("Career, Status, Authority", "क्यारियर, स्थिति, अधिकार"),
+    HOUSE_11_SIGNIFICANCE("Gains, Income, Friends", "लाभ, आय, मित्रहरू"),
+    HOUSE_12_SIGNIFICANCE("Losses, Expenses, Foreign", "हानि, खर्च, विदेश"),
+    LABEL_UNKNOWN("Unknown", "अज्ञात"),
 
     // ============================================
     // VARSHAPHALA - EVENTS & THEMES
