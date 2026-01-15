@@ -1,11 +1,14 @@
 package com.astro.storm.data.ai.agent.tools
 
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.*
+import com.astro.storm.ephemeris.muhurta.*
+import com.astro.storm.ephemeris.prashna.*
+import com.astro.storm.ephemeris.remedy.*
 import com.astro.storm.ephemeris.yoga.*
 import java.time.LocalDate
 import java.util.Date
@@ -489,10 +492,10 @@ class RemedyCalculatorWrapper {
                         forPlanet = remedy.planet,
                         description = remedy.description,
                         mantra = remedy.mantraText,
-                        gemstone = if (remedy.category == RemediesCalculator.RemedyCategory.GEMSTONE) remedy.title else null,
-                        charity = if (remedy.category == RemediesCalculator.RemedyCategory.CHARITY) remedy.method else null,
-                        fasting = if (remedy.category == RemediesCalculator.RemedyCategory.FASTING) remedy.timing else null,
-                        color = if (remedy.category == RemediesCalculator.RemedyCategory.COLOR) remedy.title else null,
+                        gemstone = if (remedy.category == RemedyCategory.GEMSTONE) remedy.title else null,
+                        charity = if (remedy.category == RemedyCategory.CHARITY) remedy.method else null,
+                        fasting = if (remedy.category == RemedyCategory.FASTING) remedy.timing else null,
+                        color = if (remedy.category == RemedyCategory.COLOR) remedy.title else null,
                         day = remedy.timing
                     )
                 }
@@ -875,21 +878,21 @@ class PrashnaCalculatorWrapper(private val context: android.content.Context) {
         return try {
             val calculator = PrashnaCalculator(context)
             val prashnaCategory = when (category.uppercase()) {
-                "YES_NO" -> PrashnaCalculator.PrashnaCategory.YES_NO
-                "CAREER" -> PrashnaCalculator.PrashnaCategory.CAREER
-                "MARRIAGE" -> PrashnaCalculator.PrashnaCategory.MARRIAGE
-                "CHILDREN" -> PrashnaCalculator.PrashnaCategory.CHILDREN
-                "HEALTH" -> PrashnaCalculator.PrashnaCategory.HEALTH
-                "WEALTH" -> PrashnaCalculator.PrashnaCategory.WEALTH
-                "PROPERTY" -> PrashnaCalculator.PrashnaCategory.PROPERTY
-                "TRAVEL" -> PrashnaCalculator.PrashnaCategory.TRAVEL
-                "EDUCATION" -> PrashnaCalculator.PrashnaCategory.EDUCATION
-                "LEGAL" -> PrashnaCalculator.PrashnaCategory.LEGAL
-                "LOST_OBJECT" -> PrashnaCalculator.PrashnaCategory.LOST_OBJECT
-                "RELATIONSHIP" -> PrashnaCalculator.PrashnaCategory.RELATIONSHIP
-                "BUSINESS" -> PrashnaCalculator.PrashnaCategory.BUSINESS
-                "SPIRITUAL" -> PrashnaCalculator.PrashnaCategory.SPIRITUAL
-                else -> PrashnaCalculator.PrashnaCategory.GENERAL
+                "YES_NO" -> PrashnaCategory.YES_NO
+                "CAREER" -> PrashnaCategory.CAREER
+                "MARRIAGE" -> PrashnaCategory.MARRIAGE
+                "CHILDREN" -> PrashnaCategory.CHILDREN
+                "HEALTH" -> PrashnaCategory.HEALTH
+                "WEALTH" -> PrashnaCategory.WEALTH
+                "PROPERTY" -> PrashnaCategory.PROPERTY
+                "TRAVEL" -> PrashnaCategory.TRAVEL
+                "EDUCATION" -> PrashnaCategory.EDUCATION
+                "LEGAL" -> PrashnaCategory.LEGAL
+                "LOST_OBJECT" -> PrashnaCategory.LOST_OBJECT
+                "RELATIONSHIP" -> PrashnaCategory.RELATIONSHIP
+                "BUSINESS" -> PrashnaCategory.BUSINESS
+                "SPIRITUAL" -> PrashnaCategory.SPIRITUAL
+                else -> PrashnaCategory.GENERAL
             }
 
             val result = calculator.generatePrashnaChart(
@@ -902,14 +905,14 @@ class PrashnaCalculatorWrapper(private val context: android.content.Context) {
 
             // Convert verdict to score
             val verdictScore = when (result.judgment.verdict) {
-                PrashnaCalculator.PrashnaVerdict.STRONGLY_YES -> 95
-                PrashnaCalculator.PrashnaVerdict.YES -> 80
-                PrashnaCalculator.PrashnaVerdict.LIKELY_YES -> 65
-                PrashnaCalculator.PrashnaVerdict.UNCERTAIN -> 50
-                PrashnaCalculator.PrashnaVerdict.LIKELY_NO -> 35
-                PrashnaCalculator.PrashnaVerdict.NO -> 20
-                PrashnaCalculator.PrashnaVerdict.STRONGLY_NO -> 5
-                PrashnaCalculator.PrashnaVerdict.TIMING_DEPENDENT -> 50
+                PrashnaVerdict.STRONGLY_YES -> 95
+                PrashnaVerdict.YES -> 80
+                PrashnaVerdict.LIKELY_YES -> 65
+                PrashnaVerdict.UNCERTAIN -> 50
+                PrashnaVerdict.LIKELY_NO -> 35
+                PrashnaVerdict.NO -> 20
+                PrashnaVerdict.STRONGLY_NO -> 5
+                PrashnaVerdict.TIMING_DEPENDENT -> 50
             }
 
             // Extract relevant house information from the map
@@ -1094,8 +1097,8 @@ class CompatibilityDeepDiveWrapper {
                     )
                 },
                 manglikAnalysis = ManglikAnalysisResult(
-                    brideIsManglik = result.brideManglik.effectiveDosha != com.astro.storm.data.model.ManglikDosha.NONE,
-                    groomIsManglik = result.groomManglik.effectiveDosha != com.astro.storm.data.model.ManglikDosha.NONE,
+                    brideIsManglik = result.brideManglik.effectiveDosha != com.astro.storm.core.model.ManglikDosha.NONE,
+                    groomIsManglik = result.groomManglik.effectiveDosha != com.astro.storm.core.model.ManglikDosha.NONE,
                     brideManglikStrength = result.brideManglik.effectiveDosha.displayName,
                     groomManglikStrength = result.groomManglik.effectiveDosha.displayName,
                     manglikCompatibility = result.manglikCompatibilityRecommendation

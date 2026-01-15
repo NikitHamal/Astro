@@ -1,8 +1,8 @@
 package com.astro.storm.ephemeris.yoga
 
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 
 /**
  * Mahapurusha Yoga Evaluator - Five Great Person Combinations
@@ -72,7 +72,7 @@ class MahapurushaYogaEvaluator : YogaEvaluator {
         return yogas
     }
 
-    private fun createRuchakaYoga(marsPos: com.astro.storm.data.model.PlanetPosition, chart: VedicChart): Yoga {
+    private fun createRuchakaYoga(marsPos: com.astro.storm.core.model.PlanetPosition, chart: VedicChart): Yoga {
         val (strengthPct, cancellationReasons) = YogaHelpers.calculateYogaStrengthWithReasons(chart, listOf(marsPos))
         val dignityType = if (YogaHelpers.isExalted(marsPos)) "exalted" else "own sign"
 
@@ -92,7 +92,7 @@ class MahapurushaYogaEvaluator : YogaEvaluator {
         )
     }
 
-    private fun createBhadraYoga(mercuryPos: com.astro.storm.data.model.PlanetPosition, chart: VedicChart): Yoga {
+    private fun createBhadraYoga(mercuryPos: com.astro.storm.core.model.PlanetPosition, chart: VedicChart): Yoga {
         val (strengthPct, cancellationReasons) = YogaHelpers.calculateYogaStrengthWithReasons(chart, listOf(mercuryPos))
         val dignityType = if (YogaHelpers.isExalted(mercuryPos)) "exalted" else "own sign"
 
@@ -112,7 +112,7 @@ class MahapurushaYogaEvaluator : YogaEvaluator {
         )
     }
 
-    private fun createHamsaYoga(jupiterPos: com.astro.storm.data.model.PlanetPosition, chart: VedicChart): Yoga {
+    private fun createHamsaYoga(jupiterPos: com.astro.storm.core.model.PlanetPosition, chart: VedicChart): Yoga {
         val (strengthPct, cancellationReasons) = YogaHelpers.calculateYogaStrengthWithReasons(chart, listOf(jupiterPos))
         val dignityType = if (YogaHelpers.isExalted(jupiterPos)) "exalted" else "own sign"
 
@@ -132,7 +132,7 @@ class MahapurushaYogaEvaluator : YogaEvaluator {
         )
     }
 
-    private fun createMalavyaYoga(venusPos: com.astro.storm.data.model.PlanetPosition, chart: VedicChart): Yoga {
+    private fun createMalavyaYoga(venusPos: com.astro.storm.core.model.PlanetPosition, chart: VedicChart): Yoga {
         val (strengthPct, cancellationReasons) = YogaHelpers.calculateYogaStrengthWithReasons(chart, listOf(venusPos))
         val dignityType = if (YogaHelpers.isExalted(venusPos)) "exalted" else "own sign"
 
@@ -152,7 +152,7 @@ class MahapurushaYogaEvaluator : YogaEvaluator {
         )
     }
 
-    private fun createSasaYoga(saturnPos: com.astro.storm.data.model.PlanetPosition, chart: VedicChart): Yoga {
+    private fun createSasaYoga(saturnPos: com.astro.storm.core.model.PlanetPosition, chart: VedicChart): Yoga {
         val (strengthPct, cancellationReasons) = YogaHelpers.calculateYogaStrengthWithReasons(chart, listOf(saturnPos))
         val dignityType = if (YogaHelpers.isExalted(saturnPos)) "exalted" else "own sign"
 

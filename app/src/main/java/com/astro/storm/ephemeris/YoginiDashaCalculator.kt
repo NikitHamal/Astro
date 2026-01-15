@@ -1,13 +1,13 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -765,7 +765,7 @@ object YoginiDashaCalculator {
         var score = 0.5 // Base score
 
         // Check gender (if available - traditionally more applicable for females)
-        if (chart.birthData.gender == com.astro.storm.data.model.Gender.FEMALE) {
+        if (chart.birthData.gender == com.astro.storm.core.model.Gender.FEMALE) {
             score += 0.2
             reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_FEMALE, language))
         }

@@ -2,9 +2,9 @@ package com.astro.storm.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.ephemeris.NativeAnalysisCalculator
-import com.astro.storm.ephemeris.NativeAnalysisCalculator.NativeAnalysisResult
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisCalculator
+import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

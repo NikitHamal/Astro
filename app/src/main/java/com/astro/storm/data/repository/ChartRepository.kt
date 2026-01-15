@@ -2,7 +2,7 @@ package com.astro.storm.data.repository
 
 import com.astro.storm.data.local.ChartDao
 import com.astro.storm.data.local.ChartEntity
-import com.astro.storm.data.model.*
+import com.astro.storm.core.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.json.JSONArray

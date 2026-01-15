@@ -72,14 +72,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.getLocalizedName
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.TransitAnalyzer
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
@@ -488,7 +488,7 @@ private fun TransitStatItem(
 @Composable
 private fun TransitPlanetCard(
     transitPosition: PlanetPosition,
-    natalPosition: com.astro.storm.data.model.PlanetPosition?,
+    natalPosition: com.astro.storm.core.model.PlanetPosition?,
     isExpanded: Boolean,
     onToggleExpand: () -> Unit
 ) {

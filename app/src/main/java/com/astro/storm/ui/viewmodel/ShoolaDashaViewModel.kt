@@ -2,9 +2,10 @@ package com.astro.storm.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.ephemeris.ShoolaDashaCalculator
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.ephemeris.shoola.ShoolaDashaCalculator
+import com.astro.storm.ephemeris.shoola.ShoolaDashaResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

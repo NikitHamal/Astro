@@ -1,9 +1,9 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.*
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.VedicAstrologyUtils.PlanetaryRelationship
 
 /**

@@ -33,17 +33,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.localization.StringKeyPrediction
-import com.astro.storm.data.localization.currentLanguage
-import com.astro.storm.data.localization.getLocalizedName
-import com.astro.storm.data.model.LifeArea
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.common.StringKeyPrediction
+import com.astro.storm.core.common.currentLanguage
+import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.model.LifeArea
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ephemeris.HoroscopeCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
@@ -234,7 +234,7 @@ data class TransitHighlight(
 )
 
 data class LifeAreaPrediction(
-    val area: com.astro.storm.data.model.LifeArea,
+    val area: com.astro.storm.core.model.LifeArea,
     val rating: Int,
     val shortTerm: String,
     val mediumTerm: String,

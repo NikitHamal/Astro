@@ -80,15 +80,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.BikramSambatConverter
-import com.astro.storm.data.localization.BikramSambatConverter.BSDate
-import com.astro.storm.data.localization.BikramSambatConverter.BSMonth
-import com.astro.storm.data.localization.BikramSambatConverter.BSWeekday
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.stringResource
+import com.astro.storm.core.common.BikramSambatConverter
+import com.astro.storm.core.common.BikramSambatConverter.BSDate
+import com.astro.storm.core.common.BikramSambatConverter.BSMonth
+import com.astro.storm.core.common.BikramSambatConverter.BSWeekday
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.stringResource
 import com.astro.storm.ui.theme.AppTheme
 import java.time.LocalDate
 

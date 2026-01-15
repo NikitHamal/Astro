@@ -26,8 +26,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyAnalysis
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandMore
@@ -75,11 +75,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.currentLanguage
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.currentLanguage
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.AvasthaCalculator
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
@@ -1355,21 +1355,21 @@ private fun getStrengthColor(strength: Int): Color {
 }
 
 @Composable
-private fun getPlanetColor(planet: com.astro.storm.data.model.Planet): Color {
+private fun getPlanetColor(planet: com.astro.storm.core.model.Planet): Color {
     return when (planet) {
-        com.astro.storm.data.model.Planet.SUN -> AppTheme.PlanetSun
-        com.astro.storm.data.model.Planet.MOON -> AppTheme.PlanetMoon
-        com.astro.storm.data.model.Planet.MARS -> AppTheme.PlanetMars
-        com.astro.storm.data.model.Planet.MERCURY -> AppTheme.PlanetMercury
-        com.astro.storm.data.model.Planet.JUPITER -> AppTheme.PlanetJupiter
-        com.astro.storm.data.model.Planet.VENUS -> AppTheme.PlanetVenus
-        com.astro.storm.data.model.Planet.SATURN -> AppTheme.PlanetSaturn
-        com.astro.storm.data.model.Planet.RAHU -> AppTheme.PlanetRahu
-        com.astro.storm.data.model.Planet.KETU -> AppTheme.PlanetKetu
-        com.astro.storm.data.model.Planet.TRUE_NODE -> AppTheme.PlanetRahu
-        com.astro.storm.data.model.Planet.URANUS -> AppTheme.PlanetSaturn
-        com.astro.storm.data.model.Planet.NEPTUNE -> AppTheme.PlanetMoon
-        com.astro.storm.data.model.Planet.PLUTO -> AppTheme.PlanetRahu
+        com.astro.storm.core.model.Planet.SUN -> AppTheme.PlanetSun
+        com.astro.storm.core.model.Planet.MOON -> AppTheme.PlanetMoon
+        com.astro.storm.core.model.Planet.MARS -> AppTheme.PlanetMars
+        com.astro.storm.core.model.Planet.MERCURY -> AppTheme.PlanetMercury
+        com.astro.storm.core.model.Planet.JUPITER -> AppTheme.PlanetJupiter
+        com.astro.storm.core.model.Planet.VENUS -> AppTheme.PlanetVenus
+        com.astro.storm.core.model.Planet.SATURN -> AppTheme.PlanetSaturn
+        com.astro.storm.core.model.Planet.RAHU -> AppTheme.PlanetRahu
+        com.astro.storm.core.model.Planet.KETU -> AppTheme.PlanetKetu
+        com.astro.storm.core.model.Planet.TRUE_NODE -> AppTheme.PlanetRahu
+        com.astro.storm.core.model.Planet.URANUS -> AppTheme.PlanetSaturn
+        com.astro.storm.core.model.Planet.NEPTUNE -> AppTheme.PlanetMoon
+        com.astro.storm.core.model.Planet.PLUTO -> AppTheme.PlanetRahu
     }
 }
 

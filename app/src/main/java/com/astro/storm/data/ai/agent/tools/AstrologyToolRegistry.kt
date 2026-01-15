@@ -2,7 +2,7 @@ package com.astro.storm.data.ai.agent.tools
 
 import android.content.Context
 import com.astro.storm.data.local.ChartDatabase
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.repository.SavedChart
 import org.json.JSONObject
 

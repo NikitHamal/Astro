@@ -14,10 +14,10 @@ import com.astro.storm.data.ai.provider.MessageRole
 import com.astro.storm.data.local.ChartDatabase
 import com.astro.storm.data.local.chat.ChatConversation
 import com.astro.storm.data.local.chat.ChatMessageModel
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.repository.ChatRepository
 import com.astro.storm.data.repository.SavedChart
-import com.astro.storm.data.localization.Language
+import com.astro.storm.core.common.Language
 import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.agentic.AgentSection
 import com.astro.storm.ui.components.agentic.AskUserOption

@@ -1,10 +1,10 @@
 package com.astro.storm.ephemeris.yoga
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
 
 /**
  * Yoga Models - Data classes for Yoga calculations

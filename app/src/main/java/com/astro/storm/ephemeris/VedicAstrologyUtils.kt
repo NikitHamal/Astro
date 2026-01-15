@@ -1,14 +1,14 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import kotlin.math.abs
 
 /**
@@ -449,7 +449,7 @@ object VedicAstrologyUtils {
      */
     data class YoniInfo(
         val animal: String,
-        val animalKey: com.astro.storm.data.localization.StringKeyInterface,
+        val animalKey: com.astro.storm.core.common.StringKeyInterface,
         val gender: Gender,
         val groupId: Int
     )

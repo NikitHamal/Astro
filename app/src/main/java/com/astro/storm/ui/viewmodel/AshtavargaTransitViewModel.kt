@@ -2,10 +2,10 @@ package com.astro.storm.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.AshtavargaTransitCalculator
 import com.astro.storm.ephemeris.AshtavargaTransitCalculator.AshtavargaTransitResult
 import com.astro.storm.ephemeris.AshtavargaTransitCalculator.CurrentTransitInfo

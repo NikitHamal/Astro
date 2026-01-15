@@ -79,11 +79,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.getLocalizedName
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.YogaCalculator
 import com.astro.storm.ephemeris.yoga.Yoga
 import com.astro.storm.ephemeris.yoga.YogaAnalysis

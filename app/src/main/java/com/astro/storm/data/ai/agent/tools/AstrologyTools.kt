@@ -1,14 +1,14 @@
 package com.astro.storm.data.ai.agent.tools
 
 import com.astro.storm.data.local.ChartEntity
-import com.astro.storm.data.model.BirthData
-import com.astro.storm.data.model.Gender
-import com.astro.storm.data.model.HouseSystem
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.BirthData
+import com.astro.storm.core.model.Gender
+import com.astro.storm.core.model.HouseSystem
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 // Note: Calculation wrappers are defined locally in this package
 import org.json.JSONArray
 import org.json.JSONObject

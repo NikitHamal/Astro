@@ -1,8 +1,8 @@
 package com.astro.storm.ephemeris.yoga
 
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
 
 /**
  * Solar Yoga Evaluator - Sun-Based Combinations
@@ -178,9 +178,9 @@ class SolarYogaEvaluator : YogaEvaluator {
 
             // Strong in Mercury's signs (Gemini, Virgo) or Sun's sign (Leo)
             if (sunPos.sign in listOf(
-                    com.astro.storm.data.model.ZodiacSign.GEMINI,
-                    com.astro.storm.data.model.ZodiacSign.VIRGO,
-                    com.astro.storm.data.model.ZodiacSign.LEO
+                    com.astro.storm.core.model.ZodiacSign.GEMINI,
+                    com.astro.storm.core.model.ZodiacSign.VIRGO,
+                    com.astro.storm.core.model.ZodiacSign.LEO
                 )) {
                 strength *= 1.1
             }

@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.Density
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.astro.storm.data.local.ChartDatabase
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.repository.ChartRepository
 import com.astro.storm.util.ChartExporter
 import com.astro.storm.util.ExportUtils

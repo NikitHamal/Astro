@@ -1,6 +1,6 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.yoga.ChandraYogaEvaluator
 import com.astro.storm.ephemeris.yoga.DhanaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.MahapurushaYogaEvaluator

@@ -33,16 +33,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.currentLanguage
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.currentLanguage
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ephemeris.AspectCalculator
 import com.astro.storm.ui.theme.AppTheme
@@ -124,7 +124,7 @@ fun SynastryScreen(
                     calculateSynastry(chart1!!, chart2!!, language)
                 }
             } catch (e: Exception) {
-                errorMessage = e.message ?: com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_CALC_FAILED, language)
+                errorMessage = e.message ?: com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_CALC_FAILED, language)
             }
             isCalculating = false
         } else {
@@ -332,13 +332,13 @@ enum class SynastryAspectType(
     SEMI_SEXTILE("Semi-Sextile", 30.0, AspectNature.MINOR, "⚺", 3.0);
 
     fun getLocalizedName(language: Language): String = when (this) {
-        CONJUNCTION -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_CONJUNCTION, language)
-        OPPOSITION -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_OPPOSITION, language)
-        TRINE -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_TRINE, language)
-        SQUARE -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_SQUARE, language)
-        SEXTILE -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_SEXTILE, language)
-        QUINCUNX -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_QUINCUNX, language)
-        SEMI_SEXTILE -> com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_SEMI_SEXTILE, language)
+        CONJUNCTION -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_CONJUNCTION, language)
+        OPPOSITION -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_OPPOSITION, language)
+        TRINE -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_TRINE, language)
+        SQUARE -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_SQUARE, language)
+        SEXTILE -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_SEXTILE, language)
+        QUINCUNX -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_QUINCUNX, language)
+        SEMI_SEXTILE -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_SEMI_SEXTILE, language)
     }
 }
 
@@ -600,7 +600,7 @@ private fun getLifeAreaForHouse(house: Int, language: Language): String {
         12 -> StringKeyDosha.HOUSE_SIG_12
         else -> StringKeyDosha.SYNASTRY_LIFE_AREA_GENERAL
     }
-    return com.astro.storm.data.localization.StringResources.get(key, language)
+    return com.astro.storm.core.common.StringResources.get(key, language)
 }
 
 private fun generateAspectInterpretation(
@@ -618,11 +618,11 @@ private fun generateAspectInterpretation(
         AspectNature.MAJOR -> StringKeyDosha.SYNASTRY_INTERPRET_MAJOR
         AspectNature.MINOR -> StringKeyDosha.SYNASTRY_INTERPRET_MINOR
     }
-    return com.astro.storm.data.localization.StringResources.get(key, language, p1Name, p2Name)
+    return com.astro.storm.core.common.StringResources.get(key, language, p1Name, p2Name)
 }
 
 private fun generateAscendantInterpretation(planet: Planet, chartNum: Int, language: Language): String {
-    return com.astro.storm.data.localization.StringResources.get(
+    return com.astro.storm.core.common.StringResources.get(
         StringKeyDosha.SYNASTRY_INTERPRET_ASCENDANT,
         language,
         planet.getLocalizedName(language),
@@ -631,7 +631,7 @@ private fun generateAscendantInterpretation(planet: Planet, chartNum: Int, langu
 }
 
 private fun generateHouseOverlayInterpretation(planet: Planet, house: Int, chartNum: Int, language: Language): String {
-    return com.astro.storm.data.localization.StringResources.get(
+    return com.astro.storm.core.common.StringResources.get(
         StringKeyDosha.SYNASTRY_INTERPRET_OVERLAY,
         language,
         chartNum,
@@ -672,38 +672,38 @@ private fun calculateCompatibilityCategories(
 
     return listOf(
         CompatibilityCategory(
-            name = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_EMOTIONAL_BOND, language),
+            name = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_EMOTIONAL_BOND, language),
             score = emotionalScore,
             maxScore = 10.0,
-            description = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_DESC_EMOTIONAL, language),
+            description = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_EMOTIONAL, language),
             icon = Icons.Filled.Favorite
         ),
         CompatibilityCategory(
-            name = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_ROMANCE, language),
+            name = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_ROMANCE, language),
             score = romanceScore,
             maxScore = 10.0,
-            description = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_DESC_ROMANCE, language),
+            description = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_ROMANCE, language),
             icon = Icons.Filled.FavoriteBorder
         ),
         CompatibilityCategory(
-            name = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_COMMUNICATION, language),
+            name = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_COMMUNICATION, language),
             score = communicationScore,
             maxScore = 10.0,
-            description = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_DESC_COMMUNICATION, language),
+            description = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_COMMUNICATION, language),
             icon = Icons.Filled.ChatBubble
         ),
         CompatibilityCategory(
-            name = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_STABILITY, language),
+            name = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_STABILITY, language),
             score = stabilityScore,
             maxScore = 10.0,
-            description = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_DESC_STABILITY, language),
+            description = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_STABILITY, language),
             icon = Icons.Filled.Shield
         ),
         CompatibilityCategory(
-            name = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_GROWTH, language),
+            name = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_GROWTH, language),
             score = growthScore,
             maxScore = 10.0,
-            description = com.astro.storm.data.localization.StringResources.get(StringKeyDosha.SYNASTRY_DESC_GROWTH, language),
+            description = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_GROWTH, language),
             icon = Icons.Filled.TrendingUp
         )
     )
@@ -720,7 +720,7 @@ private fun generateKeyFindings(
     // Find strongest aspects
     aspects.take(3).forEach { aspect ->
         findings.add(
-            com.astro.storm.data.localization.StringResources.get(
+            com.astro.storm.core.common.StringResources.get(
                 StringKeyDosha.SYNASTRY_FINDING_ASPECT,
                 language,
                 aspect.aspectType.getLocalizedName(language),
@@ -733,7 +733,7 @@ private fun generateKeyFindings(
     // Key house placements
     overlays1In2.filter { it.houseNumber in listOf(1, 5, 7, 10) }.take(2).forEach { overlay ->
         findings.add(
-            com.astro.storm.data.localization.StringResources.get(
+            com.astro.storm.core.common.StringResources.get(
                 StringKeyDosha.SYNASTRY_FINDING_HOUSE,
                 language,
                 overlay.planet.getLocalizedName(language),

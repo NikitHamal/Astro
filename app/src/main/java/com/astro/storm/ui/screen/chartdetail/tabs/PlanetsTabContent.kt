@@ -51,16 +51,16 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.localized
-import com.astro.storm.data.localization.localizedName
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.localized
+import com.astro.storm.core.common.localizedName
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.PlanetaryShadbala
 import com.astro.storm.ephemeris.RetrogradeCombustionCalculator
 import com.astro.storm.ephemeris.ShadbalaCalculator
@@ -70,7 +70,7 @@ import com.astro.storm.ui.screen.chartdetail.components.ConditionChip
 import com.astro.storm.ui.screen.chartdetail.components.StyledDivider
 import java.text.DecimalFormat
 
-enum class DignityStatus(val stringKey: com.astro.storm.data.localization.StringKeyInterface) {
+enum class DignityStatus(val stringKey: com.astro.storm.core.common.StringKeyInterface) {
     EXALTED(StringKey.DIGNITY_EXALTED_STATUS),
     DEBILITATED(StringKey.DIGNITY_DEBILITATED_STATUS),
     OWN_SIGN(StringKey.DIGNITY_OWN_SIGN_STATUS),

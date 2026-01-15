@@ -1,7 +1,7 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.ZodiacSign
 
 /**
  * Centralized Astrological Constants for AstroStorm

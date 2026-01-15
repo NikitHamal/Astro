@@ -2,9 +2,9 @@ package com.astro.storm.data.ai.agent.tools
 
 import com.astro.storm.data.local.ChartDatabase
 import com.astro.storm.data.local.ChartEntity
-import com.astro.storm.data.model.BirthData
-import com.astro.storm.data.model.Gender
-import com.astro.storm.data.model.HouseSystem
+import com.astro.storm.core.model.BirthData
+import com.astro.storm.core.model.Gender
+import com.astro.storm.core.model.HouseSystem
 import com.astro.storm.ephemeris.SwissEphemerisEngine
 import org.json.JSONArray
 import org.json.JSONObject

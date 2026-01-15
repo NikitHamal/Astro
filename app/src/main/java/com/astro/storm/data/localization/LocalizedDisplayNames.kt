@@ -1,13 +1,14 @@
-package com.astro.storm.data.localization
+package com.astro.storm.core.common
 
-import com.astro.storm.data.model.Gender
-import com.astro.storm.data.model.HouseSystem
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.Gender
+import com.astro.storm.core.model.HouseSystem
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.preferences.ThemeMode
-import com.astro.storm.ephemeris.RemediesCalculator
-import com.astro.storm.data.model.Yoni
+import com.astro.storm.ephemeris.remedy.*
+import com.astro.storm.ephemeris.remedy.RemediesCalculator
+import com.astro.storm.core.model.Yoni
 import com.astro.storm.ephemeris.Tithi
 import com.astro.storm.ephemeris.TithiGroup
 import com.astro.storm.ephemeris.Yoga as NityaYoga
@@ -342,14 +343,14 @@ fun formatLocalizedDuration(days: Long, language: Language): String {
 /**
  * Get localized display name for PlanetaryStrength
  */
-fun RemediesCalculator.PlanetaryStrength.getLocalizedName(language: Language): String {
+fun PlanetaryStrength.getLocalizedName(language: Language): String {
     return when (this) {
-        RemediesCalculator.PlanetaryStrength.VERY_STRONG -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_VERY_STRONG, language)
-        RemediesCalculator.PlanetaryStrength.STRONG -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_STRONG, language)
-        RemediesCalculator.PlanetaryStrength.MODERATE -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_MODERATE, language)
-        RemediesCalculator.PlanetaryStrength.WEAK -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_WEAK, language)
-        RemediesCalculator.PlanetaryStrength.VERY_WEAK -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_VERY_WEAK, language)
-        RemediesCalculator.PlanetaryStrength.AFFLICTED -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_AFFLICTED, language)
+        PlanetaryStrength.VERY_STRONG -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_VERY_STRONG, language)
+        PlanetaryStrength.STRONG -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_STRONG, language)
+        PlanetaryStrength.MODERATE -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_MODERATE, language)
+        PlanetaryStrength.WEAK -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_WEAK, language)
+        PlanetaryStrength.VERY_WEAK -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_VERY_WEAK, language)
+        PlanetaryStrength.AFFLICTED -> StringResources.get(StringKeyMatch.PLANETARY_STRENGTH_AFFLICTED, language)
     }
 }
 
@@ -386,30 +387,30 @@ fun RetrogradeCombustionCalculator.CombustionStatus.getLocalizedName(language: L
 /**
  * Get localized display name for RemedyCategory
  */
-fun RemediesCalculator.RemedyCategory.getLocalizedName(language: Language): String {
+fun RemedyCategory.getLocalizedName(language: Language): String {
     return when (this) {
-        RemediesCalculator.RemedyCategory.GEMSTONE -> StringResources.get(StringKeyMatch.REMEDY_CAT_GEMSTONE, language)
-        RemediesCalculator.RemedyCategory.MANTRA -> StringResources.get(StringKeyMatch.REMEDY_CAT_MANTRA, language)
-        RemediesCalculator.RemedyCategory.YANTRA -> StringResources.get(StringKeyMatch.REMEDY_CAT_YANTRA, language)
-        RemediesCalculator.RemedyCategory.CHARITY -> StringResources.get(StringKeyMatch.REMEDY_CAT_CHARITY, language)
-        RemediesCalculator.RemedyCategory.FASTING -> StringResources.get(StringKeyMatch.REMEDY_CAT_FASTING, language)
-        RemediesCalculator.RemedyCategory.COLOR -> StringResources.get(StringKeyMatch.REMEDY_CAT_COLOR, language)
-        RemediesCalculator.RemedyCategory.METAL -> StringResources.get(StringKeyMatch.REMEDY_CAT_METAL, language)
-        RemediesCalculator.RemedyCategory.RUDRAKSHA -> StringResources.get(StringKeyMatch.REMEDY_CAT_RUDRAKSHA, language)
-        RemediesCalculator.RemedyCategory.DEITY -> StringResources.get(StringKeyMatch.REMEDY_CAT_DEITY, language)
-        RemediesCalculator.RemedyCategory.LIFESTYLE -> StringResources.get(StringKeyMatch.REMEDY_CAT_LIFESTYLE, language)
+        RemedyCategory.GEMSTONE -> StringResources.get(StringKeyMatch.REMEDY_CAT_GEMSTONE, language)
+        RemedyCategory.MANTRA -> StringResources.get(StringKeyMatch.REMEDY_CAT_MANTRA, language)
+        RemedyCategory.YANTRA -> StringResources.get(StringKeyMatch.REMEDY_CAT_YANTRA, language)
+        RemedyCategory.CHARITY -> StringResources.get(StringKeyMatch.REMEDY_CAT_CHARITY, language)
+        RemedyCategory.FASTING -> StringResources.get(StringKeyMatch.REMEDY_CAT_FASTING, language)
+        RemedyCategory.COLOR -> StringResources.get(StringKeyMatch.REMEDY_CAT_COLOR, language)
+        RemedyCategory.METAL -> StringResources.get(StringKeyMatch.REMEDY_CAT_METAL, language)
+        RemedyCategory.RUDRAKSHA -> StringResources.get(StringKeyMatch.REMEDY_CAT_RUDRAKSHA, language)
+        RemedyCategory.DEITY -> StringResources.get(StringKeyMatch.REMEDY_CAT_DEITY, language)
+        RemedyCategory.LIFESTYLE -> StringResources.get(StringKeyMatch.REMEDY_CAT_LIFESTYLE, language)
     }
 }
 
 /**
  * Get localized display name for RemedyPriority
  */
-fun RemediesCalculator.RemedyPriority.getLocalizedName(language: Language): String {
+fun RemedyPriority.getLocalizedName(language: Language): String {
     return when (this) {
-        RemediesCalculator.RemedyPriority.ESSENTIAL -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_ESSENTIAL, language)
-        RemediesCalculator.RemedyPriority.HIGHLY_RECOMMENDED -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_HIGHLY_RECOMMENDED, language)
-        RemediesCalculator.RemedyPriority.RECOMMENDED -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_RECOMMENDED, language)
-        RemediesCalculator.RemedyPriority.OPTIONAL -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_OPTIONAL, language)
+        RemedyPriority.ESSENTIAL -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_ESSENTIAL, language)
+        RemedyPriority.HIGHLY_RECOMMENDED -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_HIGHLY_RECOMMENDED, language)
+        RemedyPriority.RECOMMENDED -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_RECOMMENDED, language)
+        RemedyPriority.OPTIONAL -> StringResources.get(StringKeyMatch.REMEDY_PRIORITY_OPTIONAL, language)
     }
 }
 

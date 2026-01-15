@@ -80,14 +80,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKeyNative
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.ephemeris.NativeAnalysisCalculator
-import com.astro.storm.ephemeris.NativeAnalysisCalculator.NativeAnalysisResult
-import com.astro.storm.ephemeris.NativeAnalysisCalculator.StrengthLevel
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.StringKeyNative
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.ephemeris.nativeanalysis.*
+import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisCalculator
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.NativeAnalysisUiState
 import com.astro.storm.ui.viewmodel.NativeAnalysisViewModel
@@ -350,7 +349,7 @@ private fun getScoreDescription(score: Double): String {
 }
 
 @Composable
-private fun KeySignsCard(character: NativeAnalysisCalculator.CharacterAnalysis, language: Language) {
+private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -474,7 +473,7 @@ private fun SignBadge(label: String, sign: String, color: Color) {
 
 @Composable
 private fun KeyStrengthsCard(
-    strengths: List<NativeAnalysisCalculator.TraitInfo>,
+    strengths: List<TraitInfo>,
     language: Language
 ) {
     if (strengths.isEmpty()) return
@@ -544,7 +543,7 @@ private fun KeyStrengthsCard(
 
 @Composable
 private fun KeyChallengesCard(
-    challenges: List<NativeAnalysisCalculator.TraitInfo>,
+    challenges: List<TraitInfo>,
     language: Language
 ) {
     if (challenges.isEmpty()) return
@@ -681,7 +680,7 @@ private fun QuickInsightCard(
 
 @Composable
 private fun NativeCharacterSection(
-    character: NativeAnalysisCalculator.CharacterAnalysis,
+    character: CharacterAnalysis,
     language: Language
 ) {
     Column(
@@ -771,7 +770,7 @@ private fun PersonalityStrengthCard(strength: StrengthLevel, language: Language)
 
 @Composable
 private fun NativeCareerSection(
-    career: NativeAnalysisCalculator.CareerAnalysis,
+    career: CareerAnalysis,
     language: Language
 ) {
     Column(
@@ -894,7 +893,7 @@ private fun CareerIndicatorsCard(
 
 @Composable
 private fun NativeMarriageSection(
-    marriage: NativeAnalysisCalculator.MarriageAnalysis,
+    marriage: MarriageAnalysis,
     language: Language
 ) {
     Column(
@@ -940,13 +939,13 @@ private fun NativeMarriageSection(
 
 @Composable
 private fun MarriageTimingCard(
-    timing: NativeAnalysisCalculator.MarriageTiming,
+    timing: MarriageTiming,
     language: Language
 ) {
     val color = when (timing) {
-        NativeAnalysisCalculator.MarriageTiming.EARLY -> AppTheme.SuccessColor
-        NativeAnalysisCalculator.MarriageTiming.NORMAL -> AppTheme.AccentGold
-        NativeAnalysisCalculator.MarriageTiming.DELAYED -> AppTheme.WarningColor
+        MarriageTiming.EARLY -> AppTheme.SuccessColor
+        MarriageTiming.NORMAL -> AppTheme.AccentGold
+        MarriageTiming.DELAYED -> AppTheme.WarningColor
     }
 
     Card(
@@ -1058,7 +1057,7 @@ private fun SpouseNatureCard(nature: String) {
 
 @Composable
 private fun NativeHealthSection(
-    health: NativeAnalysisCalculator.HealthAnalysis,
+    health: HealthAnalysis,
     language: Language
 ) {
     Column(
@@ -1094,13 +1093,13 @@ private fun NativeHealthSection(
 
 @Composable
 private fun ConstitutionCard(
-    constitution: NativeAnalysisCalculator.ConstitutionType,
+    constitution: ConstitutionType,
     language: Language
 ) {
     val color = when (constitution) {
-        NativeAnalysisCalculator.ConstitutionType.STRONG -> AppTheme.SuccessColor
-        NativeAnalysisCalculator.ConstitutionType.MODERATE -> AppTheme.AccentGold
-        NativeAnalysisCalculator.ConstitutionType.SENSITIVE -> AppTheme.WarningColor
+        ConstitutionType.STRONG -> AppTheme.SuccessColor
+        ConstitutionType.MODERATE -> AppTheme.AccentGold
+        ConstitutionType.SENSITIVE -> AppTheme.WarningColor
     }
 
     Card(
@@ -1140,13 +1139,13 @@ private fun ConstitutionCard(
 
 @Composable
 private fun LongevityCard(
-    longevity: NativeAnalysisCalculator.LongevityIndicator,
+    longevity: LongevityIndicator,
     language: Language
 ) {
     val color = when (longevity) {
-        NativeAnalysisCalculator.LongevityIndicator.LONG -> AppTheme.SuccessColor
-        NativeAnalysisCalculator.LongevityIndicator.MEDIUM -> AppTheme.AccentGold
-        NativeAnalysisCalculator.LongevityIndicator.REQUIRES_CARE -> AppTheme.WarningColor
+        LongevityIndicator.LONG -> AppTheme.SuccessColor
+        LongevityIndicator.MEDIUM -> AppTheme.AccentGold
+        LongevityIndicator.REQUIRES_CARE -> AppTheme.WarningColor
     }
 
     Card(
@@ -1252,7 +1251,7 @@ private fun HealthConcernsCard(concerns: List<String>) {
 
 @Composable
 private fun NativeWealthSection(
-    wealth: NativeAnalysisCalculator.WealthAnalysis,
+    wealth: WealthAnalysis,
     language: Language
 ) {
     Column(
@@ -1330,7 +1329,7 @@ private fun DhanaYogaCard() {
 }
 
 @Composable
-private fun WealthLordsCard(wealth: NativeAnalysisCalculator.WealthAnalysis, language: Language) {
+private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1446,7 +1445,7 @@ private fun WealthSourcesCard(sources: List<String>) {
 
 @Composable
 private fun NativeEducationSection(
-    education: NativeAnalysisCalculator.EducationAnalysis,
+    education: EducationAnalysis,
     language: Language
 ) {
     Column(
@@ -1603,7 +1602,7 @@ private fun FavorableSubjectsCard(subjects: List<String>) {
 
 @Composable
 private fun NativeSpiritualSection(
-    spiritual: NativeAnalysisCalculator.SpiritualAnalysis,
+    spiritual: SpiritualAnalysis,
     language: Language
 ) {
     Column(
@@ -1641,7 +1640,7 @@ private fun NativeSpiritualSection(
 
 @Composable
 private fun SpiritualLordsCard(
-    spiritual: NativeAnalysisCalculator.SpiritualAnalysis,
+    spiritual: SpiritualAnalysis,
     language: Language
 ) {
     Card(
@@ -1834,17 +1833,17 @@ private fun HouseLordCard(
     houseNumber: Int,
     lord: String,
     house: Int,
-    dignity: NativeAnalysisCalculator.PlanetaryDignity,
+    dignity: PlanetaryDignity,
     language: Language
 ) {
     val dignityColor = when (dignity) {
-        NativeAnalysisCalculator.PlanetaryDignity.EXALTED -> AppTheme.SuccessColor
-        NativeAnalysisCalculator.PlanetaryDignity.MOOLATRIKONA,
-        NativeAnalysisCalculator.PlanetaryDignity.OWN_SIGN -> AppTheme.AccentTeal
-        NativeAnalysisCalculator.PlanetaryDignity.FRIEND_SIGN -> AppTheme.AccentGold
-        NativeAnalysisCalculator.PlanetaryDignity.NEUTRAL_SIGN -> AppTheme.TextSecondary
-        NativeAnalysisCalculator.PlanetaryDignity.ENEMY_SIGN -> AppTheme.WarningColor
-        NativeAnalysisCalculator.PlanetaryDignity.DEBILITATED -> AppTheme.ErrorColor
+        PlanetaryDignity.EXALTED -> AppTheme.SuccessColor
+        PlanetaryDignity.MOOLATRIKONA,
+        PlanetaryDignity.OWN_SIGN -> AppTheme.AccentTeal
+        PlanetaryDignity.FRIEND_SIGN -> AppTheme.AccentGold
+        PlanetaryDignity.NEUTRAL_SIGN -> AppTheme.TextSecondary
+        PlanetaryDignity.ENEMY_SIGN -> AppTheme.WarningColor
+        PlanetaryDignity.DEBILITATED -> AppTheme.ErrorColor
     }
 
     Card(

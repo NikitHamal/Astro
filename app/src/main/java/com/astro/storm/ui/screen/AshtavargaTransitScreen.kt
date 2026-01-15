@@ -84,11 +84,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.AshtavargaTransitCalculator.AshtavargaTransitResult
 import com.astro.storm.ephemeris.AshtavargaTransitCalculator.CurrentTransitInfo
 import com.astro.storm.ephemeris.AshtavargaTransitCalculator.LifeArea

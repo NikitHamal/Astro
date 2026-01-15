@@ -1,9 +1,9 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 
 /**
  * VipareetaRajaYogaCalculator - Vipareeta (Reverse) Raja Yoga Analysis
@@ -362,7 +362,7 @@ object VipareetaRajaYogaCalculator {
                 minutes = 0.0,
                 seconds = 0.0,
                 isRetrograde = false,
-                nakshatra = com.astro.storm.data.model.Nakshatra.ASHWINI,
+                nakshatra = com.astro.storm.core.model.Nakshatra.ASHWINI,
                 nakshatraPada = 1,
                 house = 1
             ),

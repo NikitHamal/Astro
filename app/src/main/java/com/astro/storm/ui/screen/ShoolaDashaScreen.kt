@@ -74,13 +74,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKeyAdvanced
-import com.astro.storm.data.localization.getLocalizedName
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.ephemeris.ShoolaDashaCalculator
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.StringKeyAdvanced
+import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.ephemeris.shoola.*
+import com.astro.storm.ephemeris.shoola.ShoolaDashaCalculator
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.ShoolaDashaUiState
 import com.astro.storm.ui.viewmodel.ShoolaDashaViewModel
@@ -241,7 +242,7 @@ private fun ShoolaTabSelector(
 
 @Composable
 private fun ShoolaOverviewSection(
-    result: ShoolaDashaCalculator.ShoolaDashaResult,
+    result: ShoolaDashaResult,
     language: Language
 ) {
     Column(
@@ -268,15 +269,15 @@ private fun ShoolaOverviewSection(
 
 @Composable
 private fun LongevityStatusCard(
-    longevity: ShoolaDashaCalculator.LongevityAssessment,
+    longevity: LongevityAssessment,
     language: Language
 ) {
     val statusColor = when (longevity.category) {
-        ShoolaDashaCalculator.LongevityCategory.POORNAYU,
-        ShoolaDashaCalculator.LongevityCategory.AMITAYU -> AppTheme.SuccessColor
-        ShoolaDashaCalculator.LongevityCategory.MADHYAYU -> AppTheme.AccentGold
-        ShoolaDashaCalculator.LongevityCategory.ALPAYU -> AppTheme.WarningColor
-        ShoolaDashaCalculator.LongevityCategory.BALARISHTA -> AppTheme.ErrorColor
+        LongevityCategory.POORNAYU,
+        LongevityCategory.AMITAYU -> AppTheme.SuccessColor
+        LongevityCategory.MADHYAYU -> AppTheme.AccentGold
+        LongevityCategory.ALPAYU -> AppTheme.WarningColor
+        LongevityCategory.BALARISHTA -> AppTheme.ErrorColor
     }
 
     val displayName = if (language == Language.NEPALI)
@@ -339,7 +340,7 @@ private fun LongevityStatusCard(
 
 @Composable
 private fun TriMurtiCard(
-    triMurti: ShoolaDashaCalculator.TriMurtiAnalysis,
+    triMurti: TriMurtiAnalysis,
     language: Language
 ) {
     Card(
@@ -473,15 +474,15 @@ private fun TriMurtiRow(
 
 @Composable
 private fun CurrentPeriodCard(
-    period: ShoolaDashaCalculator.ShoolaDashaPeriod,
+    period: ShoolaDashaPeriod,
     language: Language
 ) {
     val natureColor = when (period.nature) {
-        ShoolaDashaCalculator.PeriodNature.FAVORABLE -> AppTheme.SuccessColor
-        ShoolaDashaCalculator.PeriodNature.SUPPORTIVE -> AppTheme.AccentTeal
-        ShoolaDashaCalculator.PeriodNature.MIXED -> AppTheme.AccentGold
-        ShoolaDashaCalculator.PeriodNature.CHALLENGING -> AppTheme.WarningColor
-        ShoolaDashaCalculator.PeriodNature.VERY_CHALLENGING -> AppTheme.ErrorColor
+        PeriodNature.FAVORABLE -> AppTheme.SuccessColor
+        PeriodNature.SUPPORTIVE -> AppTheme.AccentTeal
+        PeriodNature.MIXED -> AppTheme.AccentGold
+        PeriodNature.CHALLENGING -> AppTheme.WarningColor
+        PeriodNature.VERY_CHALLENGING -> AppTheme.ErrorColor
     }
 
     val dateFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
@@ -602,14 +603,14 @@ private fun CurrentPeriodCard(
 }
 
 @Composable
-private fun ShoolaQuickStats(result: ShoolaDashaCalculator.ShoolaDashaResult) {
+private fun ShoolaQuickStats(result: ShoolaDashaResult) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         ShoolaStatCard(
             title = stringResource(StringKeyAdvanced.SHOOLA_DIRECTION),
-            value = if (result.dashaDirection == ShoolaDashaCalculator.DashaDirection.DIRECT) "↻" else "↺",
+            value = if (result.dashaDirection == DashaDirection.DIRECT) "↻" else "↺",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
@@ -666,7 +667,7 @@ private fun ShoolaStatCard(
 
 @Composable
 private fun ShoolaPeriodsSection(
-    result: ShoolaDashaCalculator.ShoolaDashaResult,
+    result: ShoolaDashaResult,
     language: Language
 ) {
     Column(
@@ -690,18 +691,18 @@ private fun ShoolaPeriodsSection(
 
 @Composable
 private fun ShoolaPeriodCard(
-    period: ShoolaDashaCalculator.ShoolaDashaPeriod,
+    period: ShoolaDashaPeriod,
     language: Language
 ) {
     var expanded by remember { mutableStateOf(period.isCurrent) }
     val dateFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
 
     val natureColor = when (period.nature) {
-        ShoolaDashaCalculator.PeriodNature.FAVORABLE -> AppTheme.SuccessColor
-        ShoolaDashaCalculator.PeriodNature.SUPPORTIVE -> AppTheme.AccentTeal
-        ShoolaDashaCalculator.PeriodNature.MIXED -> AppTheme.AccentGold
-        ShoolaDashaCalculator.PeriodNature.CHALLENGING -> AppTheme.WarningColor
-        ShoolaDashaCalculator.PeriodNature.VERY_CHALLENGING -> AppTheme.ErrorColor
+        PeriodNature.FAVORABLE -> AppTheme.SuccessColor
+        PeriodNature.SUPPORTIVE -> AppTheme.AccentTeal
+        PeriodNature.MIXED -> AppTheme.AccentGold
+        PeriodNature.CHALLENGING -> AppTheme.WarningColor
+        PeriodNature.VERY_CHALLENGING -> AppTheme.ErrorColor
     }
 
     val statusLabel = when {
@@ -887,7 +888,7 @@ private fun ShoolaPeriodCard(
 
 @Composable
 private fun ShoolaHealthSection(
-    result: ShoolaDashaCalculator.ShoolaDashaResult,
+    result: ShoolaDashaResult,
     language: Language
 ) {
     Column(
@@ -951,7 +952,7 @@ private fun ShoolaHealthSection(
 
 @Composable
 private fun HealthConcernsCard(
-    period: ShoolaDashaCalculator.ShoolaDashaPeriod,
+    period: ShoolaDashaPeriod,
     language: Language
 ) {
     Card(
@@ -1023,7 +1024,7 @@ private fun HealthConcernsCard(
 
 @Composable
 private fun VulnerabilityCard(
-    vulnerability: ShoolaDashaCalculator.HealthVulnerabilityPeriod,
+    vulnerability: HealthVulnerabilityPeriod,
     language: Language
 ) {
     val dateFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
@@ -1097,7 +1098,7 @@ private fun VulnerabilityCard(
 
 @Composable
 private fun LongevityFactorsCard(
-    longevity: ShoolaDashaCalculator.LongevityAssessment,
+    longevity: LongevityAssessment,
     language: Language
 ) {
     Card(
@@ -1164,7 +1165,7 @@ private fun LongevityFactorsCard(
 
 @Composable
 private fun ShoolaRemediesSection(
-    result: ShoolaDashaCalculator.ShoolaDashaResult,
+    result: ShoolaDashaResult,
     language: Language
 ) {
     Column(
@@ -1210,17 +1211,17 @@ private fun ShoolaRemediesSection(
 
 @Composable
 private fun ShoolaRemedyCard(
-    remedy: ShoolaDashaCalculator.ShoolaRemedy,
+    remedy: ShoolaRemedy,
     language: Language
 ) {
     val typeColor = when (remedy.remedyType) {
-        ShoolaDashaCalculator.RemedyType.MANTRA -> AppTheme.AccentGold
-        ShoolaDashaCalculator.RemedyType.PUJA -> AppTheme.LifeAreaSpiritual
-        ShoolaDashaCalculator.RemedyType.DONATION -> AppTheme.SuccessColor
-        ShoolaDashaCalculator.RemedyType.FASTING -> AppTheme.AccentTeal
-        ShoolaDashaCalculator.RemedyType.GEMSTONE -> AppTheme.AccentPrimary
-        ShoolaDashaCalculator.RemedyType.YANTRA -> AppTheme.WarningColor
-        ShoolaDashaCalculator.RemedyType.LIFESTYLE -> AppTheme.LifeAreaHealth
+        RemedyType.MANTRA -> AppTheme.AccentGold
+        RemedyType.PUJA -> AppTheme.LifeAreaSpiritual
+        RemedyType.DONATION -> AppTheme.SuccessColor
+        RemedyType.FASTING -> AppTheme.AccentTeal
+        RemedyType.GEMSTONE -> AppTheme.AccentPrimary
+        RemedyType.YANTRA -> AppTheme.WarningColor
+        RemedyType.LIFESTYLE -> AppTheme.LifeAreaHealth
     }
 
     Card(
@@ -1441,13 +1442,13 @@ private fun ShoolaInfoDialog(onDismiss: () -> Unit) {
 }
 
 @Composable
-private fun getSeverityColor(severity: ShoolaDashaCalculator.HealthSeverity): Color {
+private fun getSeverityColor(severity: HealthSeverity): Color {
     return when (severity) {
-        ShoolaDashaCalculator.HealthSeverity.CRITICAL -> AppTheme.ErrorColor
-        ShoolaDashaCalculator.HealthSeverity.HIGH -> AppTheme.WarningColor
-        ShoolaDashaCalculator.HealthSeverity.MODERATE -> AppTheme.AccentGold
-        ShoolaDashaCalculator.HealthSeverity.LOW -> AppTheme.AccentTeal
-        ShoolaDashaCalculator.HealthSeverity.MINIMAL -> AppTheme.TextMuted
-        ShoolaDashaCalculator.HealthSeverity.NONE -> AppTheme.TextMuted
+        HealthSeverity.CRITICAL -> AppTheme.ErrorColor
+        HealthSeverity.HIGH -> AppTheme.WarningColor
+        HealthSeverity.MODERATE -> AppTheme.AccentGold
+        HealthSeverity.LOW -> AppTheme.AccentTeal
+        HealthSeverity.MINIMAL -> AppTheme.TextMuted
+        HealthSeverity.NONE -> AppTheme.TextMuted
     }
 }

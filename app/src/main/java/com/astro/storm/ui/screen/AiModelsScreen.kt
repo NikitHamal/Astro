@@ -22,8 +22,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.astro.storm.data.ai.provider.AiModel
 import com.astro.storm.data.ai.provider.AiProviderRegistry
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.stringResource
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.stringResource
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 

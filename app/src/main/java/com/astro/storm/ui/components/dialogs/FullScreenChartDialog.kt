@@ -58,10 +58,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.DivisionalChartData
 import com.astro.storm.ui.chart.ChartRenderer
 import kotlinx.coroutines.Dispatchers

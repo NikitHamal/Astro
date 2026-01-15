@@ -3,7 +3,7 @@ package com.astro.storm.ui.components.dialogs
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
-import com.astro.storm.data.model.Planet
+import com.astro.storm.core.model.Planet
 import com.astro.storm.ui.theme.LocalAppThemeColors
 
 /**

@@ -1,7 +1,7 @@
 package com.astro.storm.ephemeris.yoga
 
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
 import kotlin.math.abs
 
 /**
@@ -332,26 +332,26 @@ class NabhasaYogaEvaluator : YogaEvaluator {
 
         // Movable signs: Aries, Cancer, Libra, Capricorn
         val movable = listOf(
-            com.astro.storm.data.model.ZodiacSign.ARIES,
-            com.astro.storm.data.model.ZodiacSign.CANCER,
-            com.astro.storm.data.model.ZodiacSign.LIBRA,
-            com.astro.storm.data.model.ZodiacSign.CAPRICORN
+            com.astro.storm.core.model.ZodiacSign.ARIES,
+            com.astro.storm.core.model.ZodiacSign.CANCER,
+            com.astro.storm.core.model.ZodiacSign.LIBRA,
+            com.astro.storm.core.model.ZodiacSign.CAPRICORN
         )
 
         // Fixed signs: Taurus, Leo, Scorpio, Aquarius
         val fixed = listOf(
-            com.astro.storm.data.model.ZodiacSign.TAURUS,
-            com.astro.storm.data.model.ZodiacSign.LEO,
-            com.astro.storm.data.model.ZodiacSign.SCORPIO,
-            com.astro.storm.data.model.ZodiacSign.AQUARIUS
+            com.astro.storm.core.model.ZodiacSign.TAURUS,
+            com.astro.storm.core.model.ZodiacSign.LEO,
+            com.astro.storm.core.model.ZodiacSign.SCORPIO,
+            com.astro.storm.core.model.ZodiacSign.AQUARIUS
         )
 
         // Dual signs: Gemini, Virgo, Sagittarius, Pisces
         val dual = listOf(
-            com.astro.storm.data.model.ZodiacSign.GEMINI,
-            com.astro.storm.data.model.ZodiacSign.VIRGO,
-            com.astro.storm.data.model.ZodiacSign.SAGITTARIUS,
-            com.astro.storm.data.model.ZodiacSign.PISCES
+            com.astro.storm.core.model.ZodiacSign.GEMINI,
+            com.astro.storm.core.model.ZodiacSign.VIRGO,
+            com.astro.storm.core.model.ZodiacSign.SAGITTARIUS,
+            com.astro.storm.core.model.ZodiacSign.PISCES
         )
 
         val movableCount = positions.count { it.sign in movable }

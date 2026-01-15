@@ -1,13 +1,13 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.DivisionalChartData
 import com.astro.storm.ephemeris.DivisionalChartType
 import com.astro.storm.ephemeris.VedicAstrologyUtils.PlanetaryRelationship
@@ -25,7 +25,7 @@ enum class StrengthRating(
     @Deprecated("Use localized interpretation")
     val description: String,
     val minPercentage: Double,
-    val stringKey: com.astro.storm.data.localization.StringKeyInterface
+    val stringKey: com.astro.storm.core.common.StringKeyInterface
 ) {
     EXTREMELY_WEAK(
         "Extremely Weak",
@@ -487,13 +487,13 @@ object ShadbalaCalculator {
         var totalBala = 0.0
 
         // D1 Rashi
-        totalBala += getVargaStrength(planet, position.sign, position.longitude % DEGREES_PER_SIGN)
+        totalBala += getVargaStrength(planet, position.sign, position.longitude % DEGREES_PER_SIGN, context.chart.planetPositions)
 
-        // Other Vargas from the map
+        // Tradition B Seven Vargas (Saptavarga): D1, D2, D3, D9, D12, D30, D60
+        // D1 is already added above. We add the remaining 6.
         val vargas = listOf(
             DivisionalChartType.D2_HORA,
             DivisionalChartType.D3_DREKKANA,
-            DivisionalChartType.D7_SAPTAMSA,
             DivisionalChartType.D9_NAVAMSA,
             DivisionalChartType.D12_DWADASAMSA,
             DivisionalChartType.D30_TRIMSAMSA,
@@ -503,39 +503,67 @@ object ShadbalaCalculator {
         for (vargaType in vargas) {
             context.divisionalChartMap[vargaType]?.let { chart ->
                 chart.planetPositions.find { it.planet == planet }?.let { pos ->
-                    totalBala += getVargaStrengthBasic(planet, pos.sign)
+                    totalBala += getVargaStrength(planet, pos.sign, pos.longitude % DEGREES_PER_SIGN, chart.planetPositions)
                 }
             }
         }
 
-        // BPHS standard: Saptavargaja Bala is the sum of virupas divided by 4
-        // (Since we are using 8 vargas here including D60, we follow the tradition
-        // of summing their individual virupa strengths)
-        return totalBala / 4.0
+        // BPHS standard: Saptavargaja Bala is the sum of virupas
+        return totalBala
     }
 
-    private fun getVargaStrength(planet: Planet, sign: ZodiacSign, degreeInSign: Double): Double {
-        // BPHS Virupa values for planetary relationships in Vargas:
-        // Exaltation: (Used in Uccha Bala, not usually Saptavargaja, 
-        // but some traditions include it. Here we follow BPHS relationship values)
-        
+    private fun getVargaStrength(
+        planet: Planet,
+        sign: ZodiacSign,
+        degreeInSign: Double,
+        allPositions: List<PlanetPosition>
+    ): Double {
         if (MoolatrikonaData.isInMoolatrikona(planet, sign, degreeInSign)) return 45.0
         if (isOwnSign(planet, sign)) return 30.0
 
-        return when (VedicAstrologyUtils.getNaturalRelationship(planet, sign.ruler)) {
-            PlanetaryRelationship.FRIEND, PlanetaryRelationship.BEST_FRIEND -> 20.0
-            PlanetaryRelationship.NEUTRAL -> 15.0
-            PlanetaryRelationship.ENEMY, PlanetaryRelationship.BITTER_ENEMY -> 10.0
+        val signLord = sign.ruler
+        val relationship = getCompoundRelationship(planet, signLord, allPositions)
+
+        // BPHS Virupa values for Saptavargaja relationships:
+        // Adhimitra (Great Friend): 22.5
+        // Mitra (Friend): 15.0
+        // Sama (Neutral): 7.5
+        // Shatru (Enemy): 3.75
+        // Adhishatru (Bitter Enemy): 1.875
+        return when (relationship) {
+            PlanetaryRelationship.BEST_FRIEND -> 22.5
+            PlanetaryRelationship.FRIEND -> 15.0
+            PlanetaryRelationship.NEUTRAL -> 7.5
+            PlanetaryRelationship.ENEMY -> 3.75
+            PlanetaryRelationship.BITTER_ENEMY -> 1.875
         }
     }
 
-    private fun getVargaStrengthBasic(planet: Planet, sign: ZodiacSign): Double {
-        if (isOwnSign(planet, sign)) return 30.0
+    /**
+     * Calculate compound (Panchada) relationship for a specific varga chart.
+     */
+    private fun getCompoundRelationship(
+        p1: Planet,
+        p2: Planet,
+        positions: List<PlanetPosition>
+    ): PlanetaryRelationship {
+        if (p1 == p2) return PlanetaryRelationship.BEST_FRIEND
 
-        return when (VedicAstrologyUtils.getNaturalRelationship(planet, sign.ruler)) {
-            PlanetaryRelationship.FRIEND, PlanetaryRelationship.BEST_FRIEND -> 20.0
-            PlanetaryRelationship.NEUTRAL -> 15.0
-            PlanetaryRelationship.ENEMY, PlanetaryRelationship.BITTER_ENEMY -> 10.0
+        val pos1 = positions.find { it.planet == p1 }
+        val pos2 = positions.find { it.planet == p2 }
+
+        val naturalRel = VedicAstrologyUtils.getNaturalRelationship(p1, p2)
+        if (pos1 == null || pos2 == null) return naturalRel
+
+        val houseDistance = ((pos2.house - pos1.house + 12) % 12) + 1
+        val isTempFriend = houseDistance in listOf(1, 2, 3, 4, 10, 11, 12)
+        val isTempEnemy = houseDistance in listOf(5, 6, 7, 8, 9)
+
+        return when (naturalRel) {
+            PlanetaryRelationship.FRIEND -> if (isTempFriend) PlanetaryRelationship.BEST_FRIEND else PlanetaryRelationship.NEUTRAL
+            PlanetaryRelationship.ENEMY -> if (isTempFriend) PlanetaryRelationship.NEUTRAL else PlanetaryRelationship.BITTER_ENEMY
+            PlanetaryRelationship.NEUTRAL -> if (isTempFriend) PlanetaryRelationship.FRIEND else PlanetaryRelationship.ENEMY
+            else -> naturalRel
         }
     }
 

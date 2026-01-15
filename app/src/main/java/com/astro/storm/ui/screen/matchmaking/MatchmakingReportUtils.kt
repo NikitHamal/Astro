@@ -1,13 +1,13 @@
 package com.astro.storm.ui.screen.matchmaking
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.CompatibilityRating
-import com.astro.storm.data.model.ManglikDosha
-import com.astro.storm.data.model.MatchmakingResult
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.CompatibilityRating
+import com.astro.storm.core.model.ManglikDosha
+import com.astro.storm.core.model.MatchmakingResult
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
 
 /**
  * Utility functions for generating matchmaking reports.

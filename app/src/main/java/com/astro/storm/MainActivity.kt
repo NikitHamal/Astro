@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.astro.storm.data.localization.LocalizationProvider
+import com.astro.storm.core.common.LocalizationProvider
 import com.astro.storm.data.preferences.OnboardingManager
 import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.data.preferences.ThemeMode

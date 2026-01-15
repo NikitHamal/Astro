@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "AstroStorm"
 include(":app")
+include(":core:model")
+include(":core:common")
 

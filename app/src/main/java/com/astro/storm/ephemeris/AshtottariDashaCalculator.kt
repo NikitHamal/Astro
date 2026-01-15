@@ -1,9 +1,9 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import com.astro.storm.ephemeris.DashaCalculator.Mahadasha
@@ -349,7 +349,7 @@ object AshtottariDashaCalculator {
         )
     }
 
-    private fun getMahadashaEffects(planet: Planet, position: com.astro.storm.data.model.PlanetPosition?): List<String> {
+    private fun getMahadashaEffects(planet: Planet, position: com.astro.storm.core.model.PlanetPosition?): List<String> {
         val baseEffects = when (planet) {
             Planet.SUN -> listOf(
                 "Focus on authority, career advancement, and self-expression",
@@ -411,7 +411,7 @@ object AshtottariDashaCalculator {
 
     private fun getAntardashaEffects(
         planet: Planet,
-        position: com.astro.storm.data.model.PlanetPosition?,
+        position: com.astro.storm.core.model.PlanetPosition?,
         relationship: PlanetRelationship
     ): List<String> {
         val baseEffects = when (planet) {

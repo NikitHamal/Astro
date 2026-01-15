@@ -5,8 +5,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.ZodiacSign
 
 /**
  * Unified App Theme Colors with Dark/Light Mode Support

@@ -1,4 +1,4 @@
-package com.astro.storm.data.localization
+package com.astro.storm.core.common
 
 import android.content.Context
 import android.content.SharedPreferences

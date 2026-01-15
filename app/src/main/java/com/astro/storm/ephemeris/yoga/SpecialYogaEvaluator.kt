@@ -1,9 +1,9 @@
 package com.astro.storm.ephemeris.yoga
 
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 
 /**
  * Special Yoga Evaluator - Miscellaneous Significant Combinations

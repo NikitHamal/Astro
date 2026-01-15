@@ -3,13 +3,13 @@ package com.astro.storm.ephemeris
 import android.content.Context
 import android.util.LruCache
 import android.util.Log
-import com.astro.storm.data.model.BirthData
-import com.astro.storm.data.model.HouseSystem
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.BirthData
+import com.astro.storm.core.model.HouseSystem
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import swisseph.SweConst
 import swisseph.SweDate
@@ -308,17 +308,28 @@ class SwissEphemerisEngine internal constructor(
         val utcDateTime = convertToUtc(birthData.dateTime, birthData.timezone)
         val julianDay = calculateJulianDay(utcDateTime)
 
+        // Dynamically set Ayanamsa based on settings
+        val currentAyanamsa = astroSettings.ayanamsa.value
+        swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
+
         val ayanamsa = swissEph.swe_get_ayanamsa_ut(julianDay)
 
         houseCuspsBuffer.fill(0.0)
         ascMcBuffer.fill(0.0)
+
+        // Use preferred house system if DEFAULT is passed
+        val effectiveHouseSystem = if (houseSystem == HouseSystem.DEFAULT) {
+            astroSettings.houseSystem.value
+        } else {
+            houseSystem
+        }
 
         val houseResult = swissEph.swe_houses(
             julianDay,
             SweConst.SEFLG_SIDEREAL,
             birthData.latitude.toDouble(),
             birthData.longitude.toDouble(),
-            houseSystem.code.code,
+            effectiveHouseSystem.code.code,
             houseCuspsBuffer,
             ascMcBuffer
         )
@@ -340,12 +351,12 @@ class SwissEphemerisEngine internal constructor(
             birthData = birthData,
             julianDay = julianDay,
             ayanamsa = ayanamsa,
-            ayanamsaName = ayanamsaType.displayName,
+            ayanamsaName = currentAyanamsa.name,
             ascendant = ascendant,
             midheaven = midheaven,
             planetPositions = planetPositions,
             houseCusps = houseCuspsCopy,
-            houseSystem = houseSystem
+            houseSystem = effectiveHouseSystem
         )
     }
 

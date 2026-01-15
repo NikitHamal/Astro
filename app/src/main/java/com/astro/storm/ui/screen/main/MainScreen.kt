@@ -18,10 +18,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.components.ProfileHeaderRow
 import com.astro.storm.ui.components.ProfileSwitcherBottomSheet
@@ -461,7 +461,7 @@ enum class MainTab(
     /**
      * Get localized title for the tab
      */
-    fun getLocalizedTitle(language: com.astro.storm.data.localization.Language): String {
+    fun getLocalizedTitle(language: com.astro.storm.core.common.Language): String {
         return StringResources.get(titleKey, language)
     }
 }

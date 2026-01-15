@@ -1,6 +1,6 @@
 package com.astro.storm.util
 
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.VedicChart
 import java.time.ZoneOffset
 
 /**

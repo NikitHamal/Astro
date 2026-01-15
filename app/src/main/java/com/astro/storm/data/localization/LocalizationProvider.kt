@@ -1,4 +1,4 @@
-package com.astro.storm.data.localization
+package com.astro.storm.core.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -131,21 +131,21 @@ fun StringKeyInterface.localized(vararg args: Any): String = stringResource(this
  */
 @Composable
 @ReadOnlyComposable
-fun com.astro.storm.data.model.Planet.localizedName(): String = stringResource(this.stringKey)
+fun com.astro.storm.core.model.Planet.localizedName(): String = stringResource(this.stringKey)
 
 /**
  * Extension function for ZodiacSign to get localized name in Compose
  */
 @Composable
 @ReadOnlyComposable
-fun com.astro.storm.data.model.ZodiacSign.localizedName(): String = stringResource(this.stringKey)
+fun com.astro.storm.core.model.ZodiacSign.localizedName(): String = stringResource(this.stringKey)
 
 /**
  * Extension function for Nakshatra to get localized name in Compose
  */
 @Composable
 @ReadOnlyComposable
-fun com.astro.storm.data.model.Nakshatra.localizedName(): String = stringResource(this.stringKey)
+fun com.astro.storm.core.model.Nakshatra.localizedName(): String = stringResource(this.stringKey)
 
 /**
  * Extension function for StrengthRating to get localized name in Compose

@@ -44,14 +44,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.VedicChart
 import java.time.LocalDateTime
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
 import com.astro.storm.ephemeris.AshtottariDashaCalculator
 import com.astro.storm.ephemeris.AshtottariTimeline
 import com.astro.storm.ephemeris.SudarshanaChakraDashaCalculator
@@ -111,8 +111,8 @@ enum class DashaSystemType(
         descriptionKey = StringKeyDosha.DASHA_CHARA_DESC
     );
 
-    fun getShortName(language: com.astro.storm.data.localization.Language): String =
-        com.astro.storm.data.localization.StringResources.get(shortNameKey, language)
+    fun getShortName(language: com.astro.storm.core.common.Language): String =
+        com.astro.storm.core.common.StringResources.get(shortNameKey, language)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

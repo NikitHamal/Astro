@@ -42,17 +42,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.localization.currentLanguage
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
-import com.astro.storm.ephemeris.VarshaphalaCalculator
-import com.astro.storm.ephemeris.VarshaphalaCalculator.*
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.common.currentLanguage
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.ephemeris.varshaphala.*
+import com.astro.storm.ephemeris.varshaphala.VarshaphalaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
@@ -827,7 +827,7 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
 }
 
 @Composable
-private fun StrengthBadge(strength: String, language: com.astro.storm.data.localization.Language) {
+private fun StrengthBadge(strength: String, language: com.astro.storm.core.common.Language) {
     Surface(
         color = getStrengthColor(strength, language).copy(alpha = 0.15f),
         shape = RoundedCornerShape(6.dp)
@@ -2347,7 +2347,7 @@ private fun getPlanetColor(planet: Planet): Color {
 }
 
 @Composable
-private fun getStrengthColor(strength: String, language: com.astro.storm.data.localization.Language): Color {
+private fun getStrengthColor(strength: String, language: com.astro.storm.core.common.Language): Color {
     val excellent = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_EXCELLENT)
     val strong = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_STRONG)
     val exalted = stringResource(StringKeyAnalysis.VARSHA_STRENGTH_EXALTED)

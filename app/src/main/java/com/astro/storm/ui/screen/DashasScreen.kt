@@ -2,7 +2,7 @@ package com.astro.storm.ui.screen
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ui.screen.dasha.DashaSystemsScreen
 import com.astro.storm.ui.viewmodel.DashaViewModel
 

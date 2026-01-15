@@ -1,9 +1,9 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -627,7 +627,7 @@ object BhriguBinduCalculator {
     private fun assessPlanetStrength(
         chart: VedicChart,
         planet: Planet,
-        position: com.astro.storm.data.model.PlanetPosition?
+        position: com.astro.storm.core.model.PlanetPosition?
     ): LordStrength {
         if (position == null) return LordStrength.MODERATE
 

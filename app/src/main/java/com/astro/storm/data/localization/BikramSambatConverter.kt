@@ -1,4 +1,4 @@
-package com.astro.storm.data.localization
+package com.astro.storm.core.common
 
 import java.time.DayOfWeek
 import java.time.LocalDate

@@ -2,7 +2,7 @@ package com.astro.storm.ephemeris
 
 import android.content.Context
 import android.util.Log
-import com.astro.storm.data.model.*
+import com.astro.storm.core.model.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime

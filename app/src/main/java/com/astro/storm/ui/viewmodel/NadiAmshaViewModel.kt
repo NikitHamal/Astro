@@ -2,7 +2,7 @@ package com.astro.storm.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.NadiAmshaCalculator
 import com.astro.storm.ephemeris.NadiAmshaCalculator.NadiAmshaResult
 import com.astro.storm.ephemeris.NadiAmshaCalculator.RectificationCandidate

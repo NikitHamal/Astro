@@ -58,15 +58,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.localization.getLocalizedName
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
 import com.astro.storm.ephemeris.AshtottariAntardasha
 import com.astro.storm.ephemeris.AshtottariMahadasha
 import com.astro.storm.ephemeris.AshtottariTimeline
@@ -992,7 +992,7 @@ private fun formatShortDate(date: LocalDateTime): String {
     return date.format(DateTimeFormatter.ofPattern("MMM yyyy"))
 }
 
-private fun getAshtottariInterpretation(mahadashaPlanet: Planet, antardashaPlanet: Planet?, language: com.astro.storm.data.localization.Language): String {
+private fun getAshtottariInterpretation(mahadashaPlanet: Planet, antardashaPlanet: Planet?, language: com.astro.storm.core.common.Language): String {
     val baseInterpretation = when (mahadashaPlanet) {
         Planet.SUN -> StringResources.get(StringKeyAnalysis.DASHA_INTERP_MAHADASHA_SUN, language)
         Planet.MOON -> StringResources.get(StringKeyAnalysis.DASHA_INTERP_MAHADASHA_MOON, language)

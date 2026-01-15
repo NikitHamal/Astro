@@ -2,7 +2,7 @@ package com.astro.storm.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.util.ChartUtils
 import kotlinx.coroutines.CancellationException

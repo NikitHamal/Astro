@@ -26,14 +26,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.DivisionalChartCalculator
 import com.astro.storm.ephemeris.DivisionalChartData
 import com.astro.storm.ephemeris.DivisionalChartType
@@ -305,7 +305,7 @@ private fun AnalysisTabBar(
  * Analysis tabs available in the chart analysis screen
  */
 enum class AnalysisTab(
-    val stringKey: com.astro.storm.data.localization.StringKeyInterface,
+    val stringKey: com.astro.storm.core.common.StringKeyInterface,
     val icon: ImageVector
 ) {
     CHART(StringKeyAnalysis.ANALYSIS_TAB_CHART, Icons.Outlined.GridView),

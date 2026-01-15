@@ -41,18 +41,19 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.StringKeyRemedy
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.LifeArea
-import com.astro.storm.ephemeris.RemediesCalculator
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyRemedy
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.LifeArea
+import com.astro.storm.ephemeris.remedy.*
+import com.astro.storm.ephemeris.remedy.RemediesCalculator
 import com.astro.storm.ui.theme.AppTheme
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.Language
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.Language
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -67,11 +68,11 @@ fun RemediesScreen(
     val haptic = LocalHapticFeedback.current
     val language = LocalLanguage.current
 
-    var remediesResult by remember { mutableStateOf<RemediesCalculator.RemediesResult?>(null) }
+    var remediesResult by remember { mutableStateOf<RemediesResult?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
-    var selectedCategory by remember { mutableStateOf<RemediesCalculator.RemedyCategory?>(null) }
+    var selectedCategory by remember { mutableStateOf<RemedyCategory?>(null) }
     var expandedRemedyId by remember { mutableStateOf<String?>(null) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var isSearchVisible by rememberSaveable { mutableStateOf(false) }
@@ -323,7 +324,7 @@ private fun SearchTextField(
 
 @Composable
 private fun OverviewTab(
-    result: RemediesCalculator.RemediesResult,
+    result: RemediesResult,
     listState: LazyListState
 ) {
     LazyColumn(
@@ -364,7 +365,7 @@ private fun OverviewTab(
 }
 
 @Composable
-private fun SummaryCard(result: RemediesCalculator.RemediesResult) {
+private fun SummaryCard(result: RemediesResult) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -428,11 +429,11 @@ private fun SummaryCard(result: RemediesCalculator.RemediesResult) {
 }
 
 @Composable
-private fun OverallChartHealthIndicator(result: RemediesCalculator.RemediesResult) {
+private fun OverallChartHealthIndicator(result: RemediesResult) {
     val totalPlanets = result.planetaryAnalyses.size
     val strongPlanets = result.planetaryAnalyses.count {
-        it.strength == RemediesCalculator.PlanetaryStrength.STRONG ||
-                it.strength == RemediesCalculator.PlanetaryStrength.VERY_STRONG
+        it.strength == PlanetaryStrength.STRONG ||
+                it.strength == PlanetaryStrength.VERY_STRONG
     }
     val healthPercentage = if (totalPlanets > 0) (strongPlanets.toFloat() / totalPlanets) * 100 else 0f
 
@@ -598,10 +599,10 @@ private fun PlanetChip(planet: Planet) {
 }
 
 @Composable
-private fun EssentialRemediesPreview(result: RemediesCalculator.RemediesResult) {
+private fun EssentialRemediesPreview(result: RemediesResult) {
     val essentialRemedies = remember(result) {
         result.prioritizedRemedies
-            .filter { it.priority == RemediesCalculator.RemedyPriority.ESSENTIAL }
+            .filter { it.priority == RemedyPriority.ESSENTIAL }
             .take(3)
     }
 
@@ -641,7 +642,7 @@ private fun EssentialRemediesPreview(result: RemediesCalculator.RemediesResult) 
 }
 
 @Composable
-private fun EssentialRemedyRow(remedy: RemediesCalculator.Remedy) {
+private fun EssentialRemedyRow(remedy: Remedy) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -690,7 +691,7 @@ private fun EssentialRemedyRow(remedy: RemediesCalculator.Remedy) {
 }
 
 @Composable
-private fun WeeklyRemedyScheduleCard(result: RemediesCalculator.RemediesResult) {
+private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
     val weekDays = listOf(
         Triple(Planet.SUN, "Sunday", stringResource(StringKeyMatch.DAY_SUNDAY)),
         Triple(Planet.MOON, "Monday", stringResource(StringKeyMatch.DAY_MONDAY)),
@@ -804,7 +805,7 @@ private fun WeekDayChip(
 }
 
 @Composable
-private fun LifeAreaFocusCard(lifeAreaFocus: Map<LifeArea, List<RemediesCalculator.Remedy>>) {
+private fun LifeAreaFocusCard(lifeAreaFocus: Map<LifeArea, List<Remedy>>) {
     val language = LocalLanguage.current
     Card(
         modifier = Modifier
@@ -918,9 +919,9 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
 
 @Composable
 private fun RemediesTab(
-    result: RemediesCalculator.RemediesResult,
-    selectedCategory: RemediesCalculator.RemedyCategory?,
-    onCategoryChange: (RemediesCalculator.RemedyCategory?) -> Unit,
+    result: RemediesResult,
+    selectedCategory: RemedyCategory?,
+    onCategoryChange: (RemedyCategory?) -> Unit,
     expandedId: String?,
     onExpandChange: (String) -> Unit,
     searchQuery: String,
@@ -1009,9 +1010,9 @@ private fun NoResultsState(searchQuery: String) {
 
 @Composable
 private fun CategoryFilter(
-    selectedCategory: RemediesCalculator.RemedyCategory?,
-    onCategoryChange: (RemediesCalculator.RemedyCategory?) -> Unit,
-    categoryCounts: Map<RemediesCalculator.RemedyCategory, Int>
+    selectedCategory: RemedyCategory?,
+    onCategoryChange: (RemedyCategory?) -> Unit,
+    categoryCounts: Map<RemedyCategory, Int>
 ) {
     LazyRow(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -1032,7 +1033,7 @@ private fun CategoryFilter(
         }
 
         items(
-            items = RemediesCalculator.RemedyCategory.entries.toList(),
+            items = RemedyCategory.entries.toList(),
             key = { it.name }
         ) { category ->
             val count = categoryCounts[category] ?: 0
@@ -1082,7 +1083,7 @@ private fun CategoryFilter(
 
 @Composable
 private fun RemedyCard(
-    remedy: RemediesCalculator.Remedy,
+    remedy: Remedy,
     isExpanded: Boolean,
     onExpand: () -> Unit
 ) {
@@ -1234,7 +1235,7 @@ private fun RemedyCard(
                         }
                     }
 
-                    if (remedy.category == RemediesCalculator.RemedyCategory.MANTRA && remedy.mantraText != null) {
+                    if (remedy.category == RemedyCategory.MANTRA && remedy.mantraText != null) {
                         Spacer(modifier = Modifier.height(12.dp))
                         MantraSection(
                             mantraText = remedy.mantraText,
@@ -1426,7 +1427,7 @@ private fun DetailSection(
 
 @Composable
 private fun PlanetsTab(
-    result: RemediesCalculator.RemediesResult,
+    result: RemediesResult,
     listState: LazyListState
 ) {
     LazyColumn(
@@ -1444,7 +1445,7 @@ private fun PlanetsTab(
 }
 
 @Composable
-private fun PlanetAnalysisCard(analysis: RemediesCalculator.PlanetaryAnalysis) {
+private fun PlanetAnalysisCard(analysis: PlanetaryAnalysis) {
     val planetColor = getPlanetColor(analysis.planet)
 
     val animatedStrength by animateFloatAsState(
@@ -1580,7 +1581,7 @@ private fun PlanetAnalysisCard(analysis: RemediesCalculator.PlanetaryAnalysis) {
 @Composable
 private fun StrengthIndicator(
     score: Int,
-    strength: RemediesCalculator.PlanetaryStrength,
+    strength: PlanetaryStrength,
     animatedProgress: Float
 ) {
     val strengthColor = getStrengthColor(strength)
@@ -1841,62 +1842,62 @@ private fun getPlanetColor(planet: Planet): Color {
     }
 }
 
-private fun getCategoryIcon(category: RemediesCalculator.RemedyCategory): ImageVector {
+private fun getCategoryIcon(category: RemedyCategory): ImageVector {
     return when (category) {
-        RemediesCalculator.RemedyCategory.GEMSTONE -> Icons.Outlined.Diamond
-        RemediesCalculator.RemedyCategory.MANTRA -> Icons.Outlined.MusicNote
-        RemediesCalculator.RemedyCategory.YANTRA -> Icons.Outlined.GridView
-        RemediesCalculator.RemedyCategory.CHARITY -> Icons.Outlined.VolunteerActivism
-        RemediesCalculator.RemedyCategory.FASTING -> Icons.Outlined.Restaurant
-        RemediesCalculator.RemedyCategory.COLOR -> Icons.Outlined.Palette
-        RemediesCalculator.RemedyCategory.METAL -> Icons.Outlined.Circle
-        RemediesCalculator.RemedyCategory.RUDRAKSHA -> Icons.Outlined.Spa
-        RemediesCalculator.RemedyCategory.DEITY -> Icons.Outlined.TempleHindu
-        RemediesCalculator.RemedyCategory.LIFESTYLE -> Icons.Outlined.FavoriteBorder
+        RemedyCategory.GEMSTONE -> Icons.Outlined.Diamond
+        RemedyCategory.MANTRA -> Icons.Outlined.MusicNote
+        RemedyCategory.YANTRA -> Icons.Outlined.GridView
+        RemedyCategory.CHARITY -> Icons.Outlined.VolunteerActivism
+        RemedyCategory.FASTING -> Icons.Outlined.Restaurant
+        RemedyCategory.COLOR -> Icons.Outlined.Palette
+        RemedyCategory.METAL -> Icons.Outlined.Circle
+        RemedyCategory.RUDRAKSHA -> Icons.Outlined.Spa
+        RemedyCategory.DEITY -> Icons.Outlined.TempleHindu
+        RemedyCategory.LIFESTYLE -> Icons.Outlined.FavoriteBorder
     }
 }
 
-private fun getCategoryColor(category: RemediesCalculator.RemedyCategory): Color {
+private fun getCategoryColor(category: RemedyCategory): Color {
     return when (category) {
-        RemediesCalculator.RemedyCategory.GEMSTONE -> Color(0xFF9C27B0)
-        RemediesCalculator.RemedyCategory.MANTRA -> Color(0xFFFF9800)
-        RemediesCalculator.RemedyCategory.YANTRA -> Color(0xFF2196F3)
-        RemediesCalculator.RemedyCategory.CHARITY -> Color(0xFF4CAF50)
-        RemediesCalculator.RemedyCategory.FASTING -> Color(0xFFE91E63)
-        RemediesCalculator.RemedyCategory.COLOR -> Color(0xFF00BCD4)
-        RemediesCalculator.RemedyCategory.METAL -> Color(0xFF607D8B)
-        RemediesCalculator.RemedyCategory.RUDRAKSHA -> Color(0xFF795548)
-        RemediesCalculator.RemedyCategory.DEITY -> Color(0xFFFF5722)
-        RemediesCalculator.RemedyCategory.LIFESTYLE -> Color(0xFF8BC34A)
+        RemedyCategory.GEMSTONE -> Color(0xFF9C27B0)
+        RemedyCategory.MANTRA -> Color(0xFFFF9800)
+        RemedyCategory.YANTRA -> Color(0xFF2196F3)
+        RemedyCategory.CHARITY -> Color(0xFF4CAF50)
+        RemedyCategory.FASTING -> Color(0xFFE91E63)
+        RemedyCategory.COLOR -> Color(0xFF00BCD4)
+        RemedyCategory.METAL -> Color(0xFF607D8B)
+        RemedyCategory.RUDRAKSHA -> Color(0xFF795548)
+        RemedyCategory.DEITY -> Color(0xFFFF5722)
+        RemedyCategory.LIFESTYLE -> Color(0xFF8BC34A)
     }
 }
 
-private fun getPriorityColor(priority: RemediesCalculator.RemedyPriority): Color {
+private fun getPriorityColor(priority: RemedyPriority): Color {
     return when (priority) {
-        RemediesCalculator.RemedyPriority.ESSENTIAL -> Color(0xFFF44336)
-        RemediesCalculator.RemedyPriority.HIGHLY_RECOMMENDED -> Color(0xFFFF9800)
-        RemediesCalculator.RemedyPriority.RECOMMENDED -> Color(0xFF4CAF50)
-        RemediesCalculator.RemedyPriority.OPTIONAL -> Color(0xFF9E9E9E)
+        RemedyPriority.ESSENTIAL -> Color(0xFFF44336)
+        RemedyPriority.HIGHLY_RECOMMENDED -> Color(0xFFFF9800)
+        RemedyPriority.RECOMMENDED -> Color(0xFF4CAF50)
+        RemedyPriority.OPTIONAL -> Color(0xFF9E9E9E)
     }
 }
 
-private fun getPriorityIcon(priority: RemediesCalculator.RemedyPriority): ImageVector {
+private fun getPriorityIcon(priority: RemedyPriority): ImageVector {
     return when (priority) {
-        RemediesCalculator.RemedyPriority.ESSENTIAL -> Icons.Filled.PriorityHigh
-        RemediesCalculator.RemedyPriority.HIGHLY_RECOMMENDED -> Icons.Filled.Star
-        RemediesCalculator.RemedyPriority.RECOMMENDED -> Icons.Filled.ThumbUp
-        RemediesCalculator.RemedyPriority.OPTIONAL -> Icons.Outlined.Info
+        RemedyPriority.ESSENTIAL -> Icons.Filled.PriorityHigh
+        RemedyPriority.HIGHLY_RECOMMENDED -> Icons.Filled.Star
+        RemedyPriority.RECOMMENDED -> Icons.Filled.ThumbUp
+        RemedyPriority.OPTIONAL -> Icons.Outlined.Info
     }
 }
 
-private fun getStrengthColor(strength: RemediesCalculator.PlanetaryStrength): Color {
+private fun getStrengthColor(strength: PlanetaryStrength): Color {
     return when (strength) {
-        RemediesCalculator.PlanetaryStrength.VERY_STRONG -> Color(0xFF4CAF50)
-        RemediesCalculator.PlanetaryStrength.STRONG -> Color(0xFF8BC34A)
-        RemediesCalculator.PlanetaryStrength.MODERATE -> Color(0xFFFFC107)
-        RemediesCalculator.PlanetaryStrength.WEAK -> Color(0xFFFF9800)
-        RemediesCalculator.PlanetaryStrength.VERY_WEAK -> Color(0xFFF44336)
-        RemediesCalculator.PlanetaryStrength.AFFLICTED -> Color(0xFF9C27B0)
+        PlanetaryStrength.VERY_STRONG -> Color(0xFF4CAF50)
+        PlanetaryStrength.STRONG -> Color(0xFF8BC34A)
+        PlanetaryStrength.MODERATE -> Color(0xFFFFC107)
+        PlanetaryStrength.WEAK -> Color(0xFFFF9800)
+        PlanetaryStrength.VERY_WEAK -> Color(0xFFF44336)
+        PlanetaryStrength.AFFLICTED -> Color(0xFF9C27B0)
     }
 }
 
@@ -1911,15 +1912,15 @@ private fun getEnergyColor(energy: Int): Color = when {
 @Composable
 private fun getWeekdayForPlanet(planet: Planet): String {
     return when (planet) {
-        Planet.SUN -> stringResource(com.astro.storm.data.localization.StringKeyRemedy.WEEKDAY_SUNDAY)
-        Planet.MOON -> stringResource(com.astro.storm.data.localization.StringKeyRemedy.WEEKDAY_MONDAY)
-        Planet.MARS -> stringResource(com.astro.storm.data.localization.StringKeyRemedy.WEEKDAY_TUESDAY)
-        Planet.MERCURY -> stringResource(com.astro.storm.data.localization.StringKeyRemedy.WEEKDAY_WEDNESDAY)
-        Planet.JUPITER -> stringResource(com.astro.storm.data.localization.StringKeyRemedy.WEEKDAY_THURSDAY)
-        Planet.VENUS -> stringResource(com.astro.storm.data.localization.StringKeyRemedy.WEEKDAY_FRIDAY)
-        Planet.SATURN -> stringResource(com.astro.storm.data.localization.StringKeyRemedy.WEEKDAY_SATURDAY)
-        Planet.RAHU -> stringResource(com.astro.storm.data.localization.StringKeyRemedy.WEEKDAY_SATURDAY)
-        Planet.KETU -> stringResource(com.astro.storm.data.localization.StringKeyRemedy.WEEKDAY_TUESDAY)
+        Planet.SUN -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_SUNDAY)
+        Planet.MOON -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_MONDAY)
+        Planet.MARS -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_TUESDAY)
+        Planet.MERCURY -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_WEDNESDAY)
+        Planet.JUPITER -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_THURSDAY)
+        Planet.VENUS -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_FRIDAY)
+        Planet.SATURN -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_SATURDAY)
+        Planet.RAHU -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_SATURDAY)
+        Planet.KETU -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_TUESDAY)
         else -> ""
     }
 }

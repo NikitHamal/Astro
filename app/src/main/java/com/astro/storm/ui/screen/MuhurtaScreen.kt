@@ -27,8 +27,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import com.astro.storm.data.localization.currentLanguage
-import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.core.common.currentLanguage
+import com.astro.storm.core.common.LocalLanguage
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -114,12 +114,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.ephemeris.MuhurtaCalculator
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.ephemeris.muhurta.*
+import com.astro.storm.ephemeris.muhurta.MuhurtaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
@@ -138,8 +139,8 @@ import java.util.Locale
 private sealed interface MuhurtaUiState {
     data object Loading : MuhurtaUiState
     data class Success(
-        val muhurta: MuhurtaCalculator.MuhurtaDetails,
-        val choghadiyaList: List<MuhurtaCalculator.ChoghadiyaInfo>
+        val muhurta: MuhurtaDetails,
+        val choghadiyaList: List<ChoghadiyaInfo>
     ) : MuhurtaUiState
     data class Error(val message: String) : MuhurtaUiState
 }
@@ -147,7 +148,7 @@ private sealed interface MuhurtaUiState {
 private sealed interface SearchUiState {
     data object Idle : SearchUiState
     data object Searching : SearchUiState
-    data class Results(val results: List<MuhurtaCalculator.MuhurtaSearchResult>) : SearchUiState
+    data class Results(val results: MuhurtaSearchResult) : SearchUiState
     data class Error(val message: String) : SearchUiState
 }
 
@@ -171,7 +172,7 @@ fun MuhurtaScreen(
     val haptic = LocalHapticFeedback.current
 
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
-    var selectedActivity by remember { mutableStateOf(MuhurtaCalculator.ActivityType.GENERAL) }
+    var selectedActivity by remember { mutableStateOf(ActivityType.GENERAL) }
     var uiState by remember { mutableStateOf<MuhurtaUiState>(MuhurtaUiState.Loading) }
     var searchState by remember { mutableStateOf<SearchUiState>(SearchUiState.Idle) }
     var showDatePicker by remember { mutableStateOf(false) }
@@ -566,8 +567,8 @@ private fun ErrorContent(
 
 @Composable
 private fun TodayTabList(
-    muhurta: MuhurtaCalculator.MuhurtaDetails,
-    choghadiyaList: List<MuhurtaCalculator.ChoghadiyaInfo>
+    muhurta: MuhurtaDetails,
+    choghadiyaList: List<ChoghadiyaInfo>
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -595,7 +596,7 @@ private fun TodayTabList(
 }
 
 @Composable
-private fun CurrentMuhurtaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
+private fun CurrentMuhurtaCard(muhurta: MuhurtaDetails) {
     val scoreColor = remember(muhurta.overallScore) { getScoreColor(muhurta.overallScore) }
     val choghadiyaColor = remember(muhurta.choghadiya.choghadiya) { getChoghadiyaColor(muhurta.choghadiya.choghadiya) }
 
@@ -673,7 +674,7 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
 }
 
 @Composable
-private fun PanchangaCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
+private fun PanchangaCard(muhurta: MuhurtaDetails) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -771,7 +772,7 @@ private fun PanchangaItem(
 }
 
 @Composable
-private fun InauspiciousPeriodsCard(muhurta: MuhurtaCalculator.MuhurtaDetails) {
+private fun InauspiciousPeriodsCard(muhurta: MuhurtaDetails) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -930,8 +931,8 @@ private fun InauspiciousPeriodRow(
 
 @Composable
 private fun ChoghadiyaCard(
-    choghadiyaList: List<MuhurtaCalculator.ChoghadiyaInfo>,
-    currentChoghadiya: MuhurtaCalculator.ChoghadiyaInfo
+    choghadiyaList: List<ChoghadiyaInfo>,
+    currentChoghadiya: ChoghadiyaInfo
 ) {
     Card(
         modifier = Modifier
@@ -978,7 +979,7 @@ private fun ChoghadiyaCard(
 
 @Composable
 private fun ChoghadiyaRow(
-    choghadiya: MuhurtaCalculator.ChoghadiyaInfo,
+    choghadiya: ChoghadiyaInfo,
     isCurrent: Boolean
 ) {
     val choghadiyaColor = remember(choghadiya.choghadiya) { getChoghadiyaColor(choghadiya.choghadiya) }
@@ -1064,7 +1065,7 @@ private fun ChoghadiyaRow(
 @Composable
 private fun ActivitiesCard(
     title: String,
-    activities: List<MuhurtaCalculator.ActivityType>,
+    activities: List<ActivityType>,
     isPositive: Boolean
 ) {
     val containerColor = if (isPositive)
@@ -1116,7 +1117,7 @@ private fun ActivitiesCard(
 
 @Composable
 private fun ActivityChip(
-    activity: MuhurtaCalculator.ActivityType,
+    activity: ActivityType,
     isPositive: Boolean
 ) {
     val chipColor = if (isPositive)
@@ -1214,10 +1215,10 @@ private fun RecommendationsCard(recommendations: List<String>) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun FindMuhurtaTabContent(
-    selectedActivity: MuhurtaCalculator.ActivityType,
-    onActivityChange: (MuhurtaCalculator.ActivityType) -> Unit,
+    selectedActivity: ActivityType,
+    onActivityChange: (ActivityType) -> Unit,
     searchState: SearchUiState,
-    onSearch: (LocalDate, LocalDate, MuhurtaCalculator.ActivityType) -> Unit
+    onSearch: (LocalDate, LocalDate, ActivityType) -> Unit
 ) {
     val haptic = LocalHapticFeedback.current
     var startDate by remember { mutableStateOf(LocalDate.now()) }
@@ -1289,10 +1290,10 @@ private fun FindMuhurtaTabContent(
 
 @Composable
 private fun ActivitySelectorCard(
-    selectedActivity: MuhurtaCalculator.ActivityType,
-    onActivityChange: (MuhurtaCalculator.ActivityType) -> Unit
+    selectedActivity: ActivityType,
+    onActivityChange: (ActivityType) -> Unit
 ) {
-    val activities = remember { MuhurtaCalculator.ActivityType.entries.toList() }
+    val activities = remember { ActivityType.entries.toList() }
 
     Card(
         modifier = Modifier
@@ -1363,7 +1364,7 @@ private fun ActivitySelectorCard(
 }
 
 @Composable
-private fun ActivityInfoCard(selectedActivity: MuhurtaCalculator.ActivityType) {
+private fun ActivityInfoCard(selectedActivity: ActivityType) {
     val icon = remember(selectedActivity) { getActivityIcon(selectedActivity) }
 
     Card(
@@ -1929,28 +1930,28 @@ private fun getScoreColor(score: Int): Color {
     }
 }
 
-private fun getChoghadiyaColor(choghadiya: MuhurtaCalculator.Choghadiya): Color {
+private fun getChoghadiyaColor(choghadiya: Choghadiya): Color {
     return when (choghadiya.nature) {
-        MuhurtaCalculator.ChoghadiyaNature.EXCELLENT -> Color(0xFF2E7D32)
-        MuhurtaCalculator.ChoghadiyaNature.VERY_GOOD -> Color(0xFF4CAF50)
-        MuhurtaCalculator.ChoghadiyaNature.GOOD -> Color(0xFF8BC34A)
-        MuhurtaCalculator.ChoghadiyaNature.NEUTRAL -> Color(0xFF9E9E9E)
-        MuhurtaCalculator.ChoghadiyaNature.INAUSPICIOUS -> Color(0xFFE53935)
+        ChoghadiyaNature.EXCELLENT -> Color(0xFF2E7D32)
+        ChoghadiyaNature.VERY_GOOD -> Color(0xFF4CAF50)
+        ChoghadiyaNature.GOOD -> Color(0xFF8BC34A)
+        ChoghadiyaNature.NEUTRAL -> Color(0xFF9E9E9E)
+        ChoghadiyaNature.INAUSPICIOUS -> Color(0xFFE53935)
     }
 }
 
-private fun getActivityIcon(activity: MuhurtaCalculator.ActivityType): ImageVector {
+private fun getActivityIcon(activity: ActivityType): ImageVector {
     return when (activity) {
-        MuhurtaCalculator.ActivityType.MARRIAGE -> Icons.Outlined.Favorite
-        MuhurtaCalculator.ActivityType.TRAVEL -> Icons.Outlined.Flight
-        MuhurtaCalculator.ActivityType.BUSINESS -> Icons.Outlined.Business
-        MuhurtaCalculator.ActivityType.PROPERTY -> Icons.Outlined.Home
-        MuhurtaCalculator.ActivityType.EDUCATION -> Icons.Outlined.School
-        MuhurtaCalculator.ActivityType.MEDICAL -> Icons.Outlined.LocalHospital
-        MuhurtaCalculator.ActivityType.VEHICLE -> Icons.Outlined.DirectionsCar
-        MuhurtaCalculator.ActivityType.SPIRITUAL -> Icons.Outlined.SelfImprovement
-        MuhurtaCalculator.ActivityType.GENERAL -> Icons.Outlined.Star
-        MuhurtaCalculator.ActivityType.GRIHA_PRAVESHA -> Icons.Outlined.Home
-        MuhurtaCalculator.ActivityType.NAMING_CEREMONY -> Icons.Outlined.ChildCare
+        ActivityType.MARRIAGE -> Icons.Outlined.Favorite
+        ActivityType.TRAVEL -> Icons.Outlined.Flight
+        ActivityType.BUSINESS -> Icons.Outlined.Business
+        ActivityType.PROPERTY -> Icons.Outlined.Home
+        ActivityType.EDUCATION -> Icons.Outlined.School
+        ActivityType.MEDICAL -> Icons.Outlined.LocalHospital
+        ActivityType.VEHICLE -> Icons.Outlined.DirectionsCar
+        ActivityType.SPIRITUAL -> Icons.Outlined.SelfImprovement
+        ActivityType.GENERAL -> Icons.Outlined.Star
+        ActivityType.GRIHA_PRAVESHA -> Icons.Outlined.Home
+        ActivityType.NAMING_CEREMONY -> Icons.Outlined.ChildCare
     }
 }

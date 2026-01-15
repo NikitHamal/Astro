@@ -1,12 +1,12 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -157,8 +157,8 @@ object SadeSatiCalculator {
      */
     data class Remedy(
         val type: RemedyType,
-        val titleKey: com.astro.storm.data.localization.StringKeyInterface,
-        val descriptionKey: com.astro.storm.data.localization.StringKeyInterface,
+        val titleKey: com.astro.storm.core.common.StringKeyInterface,
+        val descriptionKey: com.astro.storm.core.common.StringKeyInterface,
         val timing: String?,
         val mantra: String?
     ) {

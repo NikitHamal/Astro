@@ -1,8 +1,8 @@
 package com.astro.storm.ephemeris.yoga
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.StringResources
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringResources
 
 /**
  * Yoga Localization - Localization utilities for Yoga names and effects

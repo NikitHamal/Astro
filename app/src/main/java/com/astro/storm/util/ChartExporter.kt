@@ -12,15 +12,15 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.compose.ui.unit.Density
-import com.astro.storm.data.localization.LocalizationManager
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.StringKeyExport
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.PlanetPosition
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.LocalizationManager
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyExport
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.AshtakavargaCalculator
 import com.astro.storm.ephemeris.AspectCalculator
 import com.astro.storm.ephemeris.DashaCalculator
@@ -28,7 +28,8 @@ import com.astro.storm.ephemeris.DivisionalChartCalculator
 import com.astro.storm.ephemeris.HoroscopeCalculator
 import com.astro.storm.ephemeris.ManglikDoshaCalculator
 import com.astro.storm.ephemeris.PitraDoshaCalculator
-import com.astro.storm.ephemeris.RemediesCalculator
+import com.astro.storm.ephemeris.remedy.*
+import com.astro.storm.ephemeris.remedy.RemediesCalculator
 import com.astro.storm.ephemeris.SadeSatiCalculator
 import com.astro.storm.ephemeris.ShadbalaCalculator
 import com.astro.storm.ephemeris.VedicAstrologyUtils
@@ -272,24 +273,8 @@ class ChartExporter(private val context: Context) {
 
         // Charts side by side if both are included
         if (options.includeChart && options.includeNavamsa) {
-            // Render charts at high resolution for crisp quality
-            val chartBitmapHiRes = chartRenderer.createChartBitmap(chart, CHART_RENDER_SIZE, CHART_RENDER_SIZE, density)
             val navamsaData = DivisionalChartCalculator.calculateNavamsa(chart)
-            val navamsaBitmapHiRes = chartRenderer.createDivisionalChartBitmap(
-                navamsaData.planetPositions,
-                navamsaData.ascendantLongitude,
-                locManager.getString(StringKeyAnalysis.CHART_NAVAMSA),
-                NAVAMSA_RENDER_SIZE, NAVAMSA_RENDER_SIZE, density
-            )
-
-            // Scale down to display size with high quality filtering
-            val chartBitmap = Bitmap.createScaledBitmap(chartBitmapHiRes, CHART_DISPLAY_SIZE, CHART_DISPLAY_SIZE, true)
-            val navamsaBitmap = Bitmap.createScaledBitmap(navamsaBitmapHiRes, NAVAMSA_DISPLAY_SIZE, NAVAMSA_DISPLAY_SIZE, true)
-
-            // Clean up high-res bitmaps
-            chartBitmapHiRes.recycle()
-            navamsaBitmapHiRes.recycle()
-
+            
             // Position charts side by side
             val totalChartsWidth = CHART_DISPLAY_SIZE + NAVAMSA_DISPLAY_SIZE + 24
             val startX = (pageWidth - totalChartsWidth) / 2f
@@ -304,22 +289,31 @@ class ChartExporter(private val context: Context) {
             paint.textAlign = Paint.Align.LEFT
             yPos += 12f
 
-            // Draw charts with high quality rendering
-            val chartPaint = Paint().apply {
-                isFilterBitmap = true
-                isAntiAlias = true
+            // Direct vector-based rendering to PDF canvas
+            val drawScope = CanvasDrawScope()
+            val canvasWrapper = androidx.compose.ui.graphics.Canvas(canvas)
+            
+            drawScope.draw(density, LayoutDirection.Ltr, canvasWrapper, Size(pageWidth, options.pageSize.height.toFloat())) {
+                androidx.compose.ui.graphics.drawscope.translate(left = startX, top = yPos) {
+                    chartRenderer.drawNorthIndianChart(this, chart, CHART_DISPLAY_SIZE.toFloat(), language = locManager.currentLanguage)
+                }
+                
+                val navamsaY = yPos + (CHART_DISPLAY_SIZE - NAVAMSA_DISPLAY_SIZE) / 2f
+                androidx.compose.ui.graphics.drawscope.translate(left = startX + CHART_DISPLAY_SIZE + 24, top = navamsaY) {
+                    chartRenderer.drawDivisionalChart(
+                        this,
+                        navamsaData.planetPositions,
+                        navamsaData.ascendantLongitude,
+                        NAVAMSA_DISPLAY_SIZE.toFloat(),
+                        locManager.getString(StringKeyAnalysis.CHART_NAVAMSA),
+                        chart,
+                        language = locManager.currentLanguage
+                    )
+                }
             }
-            canvas.drawBitmap(chartBitmap, startX, yPos, chartPaint)
-            val navamsaY = yPos + (CHART_DISPLAY_SIZE - NAVAMSA_DISPLAY_SIZE) / 2f
-            canvas.drawBitmap(navamsaBitmap, startX + CHART_DISPLAY_SIZE + 24, navamsaY, chartPaint)
 
             yPos += CHART_DISPLAY_SIZE + 20f
         } else if (options.includeChart) {
-            // Render at high resolution, then scale down
-            val chartBitmapHiRes = chartRenderer.createChartBitmap(chart, CHART_RENDER_SIZE, CHART_RENDER_SIZE, density)
-            val chartBitmap = Bitmap.createScaledBitmap(chartBitmapHiRes, CHART_DISPLAY_SIZE, CHART_DISPLAY_SIZE, true)
-            chartBitmapHiRes.recycle()
-
             val chartX = (pageWidth - CHART_DISPLAY_SIZE) / 2f
 
             paint.textSize = 11f
@@ -330,11 +324,16 @@ class ChartExporter(private val context: Context) {
             paint.textAlign = Paint.Align.LEFT
             yPos += 12f
 
-            val chartPaint = Paint().apply {
-                isFilterBitmap = true
-                isAntiAlias = true
+            // Direct vector-based rendering to PDF canvas
+            val drawScope = CanvasDrawScope()
+            val canvasWrapper = androidx.compose.ui.graphics.Canvas(canvas)
+            
+            drawScope.draw(density, LayoutDirection.Ltr, canvasWrapper, Size(pageWidth, options.pageSize.height.toFloat())) {
+                androidx.compose.ui.graphics.drawscope.translate(left = chartX, top = yPos) {
+                    chartRenderer.drawNorthIndianChart(this, chart, CHART_DISPLAY_SIZE.toFloat(), language = locManager.currentLanguage)
+                }
             }
-            canvas.drawBitmap(chartBitmap, chartX, yPos, chartPaint)
+            
             yPos += CHART_DISPLAY_SIZE + 20f
         }
 
@@ -2052,7 +2051,7 @@ class ChartExporter(private val context: Context) {
 
         // Gemstone Recommendations
         val gemstoneCardHeight = 90f
-        val gemstones = remedies.prioritizedRemedies.filter { it.category == RemediesCalculator.RemedyCategory.GEMSTONE }
+        val gemstones = remedies.prioritizedRemedies.filter { it.category == RemedyCategory.GEMSTONE }
 
         canvas.drawRect(PDF_MARGIN.toFloat(), yPos, (pageWidth - PDF_MARGIN), yPos + gemstoneCardHeight, cardPaint)
         canvas.drawRect(PDF_MARGIN.toFloat(), yPos, (pageWidth - PDF_MARGIN), yPos + gemstoneCardHeight, borderPaint)
@@ -2084,7 +2083,7 @@ class ChartExporter(private val context: Context) {
 
         // Mantras
         val mantraCardHeight = 80f
-        val mantras = remedies.prioritizedRemedies.filter { it.category == RemediesCalculator.RemedyCategory.MANTRA }
+        val mantras = remedies.prioritizedRemedies.filter { it.category == RemedyCategory.MANTRA }
 
         canvas.drawRect(PDF_MARGIN.toFloat(), yPos, (pageWidth - PDF_MARGIN), yPos + mantraCardHeight, cardPaint)
         canvas.drawRect(PDF_MARGIN.toFloat(), yPos, (pageWidth - PDF_MARGIN), yPos + mantraCardHeight, borderPaint)
@@ -2118,7 +2117,7 @@ class ChartExporter(private val context: Context) {
 
         // Charitable Activities
         val charityCardHeight = 80f
-        val charities = remedies.prioritizedRemedies.filter { it.category == RemediesCalculator.RemedyCategory.CHARITY }
+        val charities = remedies.prioritizedRemedies.filter { it.category == RemedyCategory.CHARITY }
 
         canvas.drawRect(PDF_MARGIN.toFloat(), yPos, (pageWidth - PDF_MARGIN), yPos + charityCardHeight, cardPaint)
         canvas.drawRect(PDF_MARGIN.toFloat(), yPos, (pageWidth - PDF_MARGIN), yPos + charityCardHeight, borderPaint)

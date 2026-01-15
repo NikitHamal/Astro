@@ -22,19 +22,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.BikramSambatConverter
-import com.astro.storm.data.localization.DateSystem
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.LocalDateSystem
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.LocalLocalizationManager
-import com.astro.storm.data.localization.LocalizationManager
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.localization.getLocalizedName
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.HouseSystem
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.common.BikramSambatConverter
+import com.astro.storm.core.common.DateSystem
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.LocalDateSystem
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.common.LocalLocalizationManager
+import com.astro.storm.core.common.LocalizationManager
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.HouseSystem
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.data.preferences.ThemeMode
 import com.astro.storm.data.repository.SavedChart
@@ -291,7 +291,7 @@ private fun CurrentProfileCard(
 
                     // Display date based on selected date system
                     val dateDisplay = if (dateSystem == DateSystem.BS) {
-                        com.astro.storm.data.localization.BikramSambatConverter.toBS(chart.birthData.dateTime.toLocalDate())
+                        com.astro.storm.core.common.BikramSambatConverter.toBS(chart.birthData.dateTime.toLocalDate())
                             ?.format(language) ?: chart.birthData.dateTime.toLocalDate().toString()
                     } else {
                         chart.birthData.dateTime.toLocalDate().toString()
@@ -326,17 +326,17 @@ private fun CurrentProfileCard(
             ) {
                 ChartDetailItem(
                     labelKey = StringKey.CHART_ASCENDANT,
-                    value = chart.planetPositions.find { it.planet == com.astro.storm.data.model.Planet.SUN }?.sign?.getLocalizedName(language)
-                        ?: com.astro.storm.data.model.ZodiacSign.fromLongitude(chart.ascendant).getLocalizedName(language)
+                    value = chart.planetPositions.find { it.planet == com.astro.storm.core.model.Planet.SUN }?.sign?.getLocalizedName(language)
+                        ?: com.astro.storm.core.model.ZodiacSign.fromLongitude(chart.ascendant).getLocalizedName(language)
                 )
                 ChartDetailItem(
                     labelKey = StringKey.CHART_MOON_SIGN,
-                    value = chart.planetPositions.find { it.planet == com.astro.storm.data.model.Planet.MOON }?.sign?.getLocalizedName(language)
+                    value = chart.planetPositions.find { it.planet == com.astro.storm.core.model.Planet.MOON }?.sign?.getLocalizedName(language)
                         ?: stringResource(StringKey.LABEL_DASH)
                 )
                 ChartDetailItem(
                     labelKey = StringKey.CHART_NAKSHATRA,
-                    value = chart.planetPositions.find { it.planet == com.astro.storm.data.model.Planet.MOON }?.nakshatra?.getLocalizedName(language)?.take(8)
+                    value = chart.planetPositions.find { it.planet == com.astro.storm.core.model.Planet.MOON }?.nakshatra?.getLocalizedName(language)?.take(8)
                         ?: stringResource(StringKey.LABEL_DASH)
                 )
             }

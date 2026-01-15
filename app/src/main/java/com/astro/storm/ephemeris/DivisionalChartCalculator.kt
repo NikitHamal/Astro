@@ -1,10 +1,10 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.*
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.VedicAstrologyUtils.normalizeLongitude
 import kotlin.math.floor
 

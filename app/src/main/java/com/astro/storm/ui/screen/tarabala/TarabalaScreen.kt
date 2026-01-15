@@ -31,12 +31,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.currentLanguage
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.currentLanguage
+import com.astro.storm.core.common.stringResource
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.TarabalaCalculator
 import com.astro.storm.ui.screen.EmptyChartScreen
 import com.astro.storm.ui.theme.AppTheme
@@ -375,7 +375,7 @@ private fun DailyStrengthScoreCard(
 @Composable
 private fun TarabalaDetailCard(
     tarabala: TarabalaCalculator.TarabalaResult,
-    birthNakshatra: com.astro.storm.data.model.Nakshatra,
+    birthNakshatra: com.astro.storm.core.model.Nakshatra,
     language: Language
 ) {
     val taraColor = if (tarabala.isFavorable) AppTheme.SuccessColor else AppTheme.WarningColor

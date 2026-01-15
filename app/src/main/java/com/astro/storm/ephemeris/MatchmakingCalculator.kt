@@ -1,9 +1,9 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.*
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.VedicAstrologyUtils.PlanetaryRelationship
 
 /**
@@ -660,7 +660,7 @@ object MatchmakingCalculator {
         ephemerisAnalysis: ManglikDoshaCalculator.ManglikAnalysis,
         person: String,
         language: Language = Language.ENGLISH
-    ): com.astro.storm.data.model.ManglikAnalysis {
+    ): com.astro.storm.core.model.ManglikAnalysis {
         val dosha = when (ephemerisAnalysis.effectiveLevel) {
             ManglikDoshaCalculator.ManglikLevel.NONE -> ManglikDosha.NONE
             ManglikDoshaCalculator.ManglikLevel.MILD -> ManglikDosha.PARTIAL
@@ -687,7 +687,7 @@ object MatchmakingCalculator {
             factor.getTitle(language)
         }
 
-        return com.astro.storm.data.model.ManglikAnalysis(
+        return com.astro.storm.core.model.ManglikAnalysis(
             person = person,
             dosha = dosha,
             marsHouse = ephemerisAnalysis.analysisFromLagna.marsHouse,

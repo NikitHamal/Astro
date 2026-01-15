@@ -9,7 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ui.screen.ArgalaScreen
 import com.astro.storm.ui.screen.ashtakavarga.AshtakavargaScreenRedesigned
 import com.astro.storm.ui.screen.BhriguBinduScreen

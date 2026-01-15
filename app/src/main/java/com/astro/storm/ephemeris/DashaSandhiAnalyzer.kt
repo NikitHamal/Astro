@@ -1,11 +1,11 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.StringResources
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs

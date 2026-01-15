@@ -1,14 +1,14 @@
 package com.astro.storm.ephemeris
 
-import com.astro.storm.data.model.Nakshatra
-import com.astro.storm.data.model.Planet
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.model.ZodiacSign
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import com.astro.storm.data.localization.Language
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.StringResources
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringResources
 
 /**
  * Kalachakra Dasha Calculator - Production-grade Implementation
@@ -894,7 +894,7 @@ object KalachakraDashaCalculator {
      */
     private fun assessPlanetStrength(
         planet: Planet,
-        position: com.astro.storm.data.model.PlanetPosition?,
+        position: com.astro.storm.core.model.PlanetPosition?,
         chart: VedicChart,
         language: Language
     ): String {
@@ -1258,7 +1258,7 @@ object KalachakraDashaCalculator {
     private fun getFavorableAreas(sign: ZodiacSign, signLord: Planet, language: Language): List<String> {
         val areas = mutableListOf<String>()
 
-        areas.add("${getLocalizedPlanetName(signLord, language)}-${StringResources.get(com.astro.storm.data.localization.StringKey.VARSHAPHALA_KEY_DATES, language)}") // Fallback to "Key Dates" or similar if needed, but better to have specific key
+        areas.add("${getLocalizedPlanetName(signLord, language)}-${StringResources.get(com.astro.storm.core.common.StringKey.VARSHAPHALA_KEY_DATES, language)}") // Fallback to "Key Dates" or similar if needed, but better to have specific key
 
         when (sign.element) {
             "Fire" -> areas.addAll(listOf(
@@ -1409,15 +1409,15 @@ object KalachakraDashaCalculator {
 
     private fun getLocalizedPlanetName(planet: Planet, language: Language): String {
         val key = when (planet) {
-            Planet.SUN -> com.astro.storm.data.localization.StringKey.PLANET_SUN
-            Planet.MOON -> com.astro.storm.data.localization.StringKey.PLANET_MOON
-            Planet.MARS -> com.astro.storm.data.localization.StringKey.PLANET_MARS
-            Planet.MERCURY -> com.astro.storm.data.localization.StringKey.PLANET_MERCURY
-            Planet.JUPITER -> com.astro.storm.data.localization.StringKey.PLANET_JUPITER
-            Planet.VENUS -> com.astro.storm.data.localization.StringKey.PLANET_VENUS
-            Planet.SATURN -> com.astro.storm.data.localization.StringKey.PLANET_SATURN
-            Planet.RAHU -> com.astro.storm.data.localization.StringKey.PLANET_RAHU
-            Planet.KETU -> com.astro.storm.data.localization.StringKey.PLANET_KETU
+            Planet.SUN -> com.astro.storm.core.common.StringKey.PLANET_SUN
+            Planet.MOON -> com.astro.storm.core.common.StringKey.PLANET_MOON
+            Planet.MARS -> com.astro.storm.core.common.StringKey.PLANET_MARS
+            Planet.MERCURY -> com.astro.storm.core.common.StringKey.PLANET_MERCURY
+            Planet.JUPITER -> com.astro.storm.core.common.StringKey.PLANET_JUPITER
+            Planet.VENUS -> com.astro.storm.core.common.StringKey.PLANET_VENUS
+            Planet.SATURN -> com.astro.storm.core.common.StringKey.PLANET_SATURN
+            Planet.RAHU -> com.astro.storm.core.common.StringKey.PLANET_RAHU
+            Planet.KETU -> com.astro.storm.core.common.StringKey.PLANET_KETU
             else -> return planet.displayName
         }
         return StringResources.get(key, language)

@@ -117,14 +117,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.data.localization.currentLanguage
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.model.VedicChart
-import com.astro.storm.data.localization.StringKey
-import com.astro.storm.data.localization.StringKeyAnalysis
-import com.astro.storm.data.localization.StringKeyDosha
-import com.astro.storm.data.localization.StringKeyMatch
-import com.astro.storm.data.localization.stringResource
+import com.astro.storm.core.common.currentLanguage
+import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.stringResource
 import com.astro.storm.data.ai.agent.AgentResponse
 import com.astro.storm.data.ai.agent.StormyAgent
 import com.astro.storm.data.ai.provider.AiModel
@@ -132,7 +132,8 @@ import com.astro.storm.data.ai.provider.AiProviderRegistry
 import com.astro.storm.data.ai.provider.ChatMessage
 import com.astro.storm.data.ai.provider.MessageRole
 import com.astro.storm.data.repository.SavedChart
-import com.astro.storm.ephemeris.PrashnaCalculator
+import com.astro.storm.ephemeris.prashna.*
+import com.astro.storm.ephemeris.prashna.PrashnaCalculator
 import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.MarkdownText
 import com.astro.storm.ui.theme.AppTheme
@@ -143,10 +144,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.util.Locale
-import com.astro.storm.data.localization.DateFormat
-import com.astro.storm.data.localization.formatLocalized
-import com.astro.storm.data.localization.localized
-import com.astro.storm.data.localization.localizedName
+import com.astro.storm.core.common.DateFormat
+import com.astro.storm.core.common.formatLocalized
+import com.astro.storm.core.common.localized
+import com.astro.storm.core.common.localizedName
 
 /**
  * UI State for Prashna Screen
@@ -154,7 +155,7 @@ import com.astro.storm.data.localization.localizedName
 private sealed interface PrashnaUiState {
     data object Initial : PrashnaUiState
     data object Loading : PrashnaUiState
-    data class Success(val result: PrashnaCalculator.PrashnaResult) : PrashnaUiState
+    data class Success(val result: PrashnaResult) : PrashnaUiState
     data class Error(val message: String) : PrashnaUiState
 }
 
@@ -173,7 +174,7 @@ fun PrashnaScreen(
     val currentLang = currentLanguage()
 
     var question by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf(PrashnaCalculator.PrashnaCategory.YES_NO) }
+    var selectedCategory by remember { mutableStateOf(PrashnaCategory.YES_NO) }
     var uiState by remember { mutableStateOf<PrashnaUiState>(PrashnaUiState.Initial) }
 
     // Location from chart or defaults
@@ -313,8 +314,8 @@ fun PrashnaScreen(
 private fun PrashnaInputContent(
     question: String,
     onQuestionChange: (String) -> Unit,
-    selectedCategory: PrashnaCalculator.PrashnaCategory,
-    onCategoryChange: (PrashnaCalculator.PrashnaCategory) -> Unit,
+    selectedCategory: PrashnaCategory,
+    onCategoryChange: (PrashnaCategory) -> Unit,
     locationName: String,
     onAnalyze: () -> Unit
 ) {
@@ -502,10 +503,10 @@ private fun QuestionInputCard(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun CategorySelectorCard(
-    selectedCategory: PrashnaCalculator.PrashnaCategory,
-    onCategoryChange: (PrashnaCalculator.PrashnaCategory) -> Unit
+    selectedCategory: PrashnaCategory,
+    onCategoryChange: (PrashnaCategory) -> Unit
 ) {
-    val categories = remember { PrashnaCalculator.PrashnaCategory.entries.toList() }
+    val categories = remember { PrashnaCategory.entries.toList() }
 
     Card(
         modifier = Modifier
@@ -897,7 +898,7 @@ private fun PrashnaErrorContent(
 }
 
 @Composable
-private fun PrashnaResultContent(result: PrashnaCalculator.PrashnaResult) {
+private fun PrashnaResultContent(result: PrashnaResult) {
     val context = LocalContext.current
 
     LazyColumn(
@@ -951,7 +952,7 @@ private fun PrashnaResultContent(result: PrashnaCalculator.PrashnaResult) {
 }
 
 @Composable
-private fun VerdictCard(result: PrashnaCalculator.PrashnaResult) {
+private fun VerdictCard(result: PrashnaResult) {
     val verdictColor = getVerdictColor(result.judgment.verdict)
     val verdictIcon = getVerdictIcon(result.judgment.verdict)
 
@@ -1056,7 +1057,7 @@ private fun ConfidenceBadge(confidence: Int) {
 }
 
 @Composable
-private fun CertaintyBadge(certainty: PrashnaCalculator.CertaintyLevel) {
+private fun CertaintyBadge(certainty: CertaintyLevel) {
     Surface(
         color = AppTheme.InfoColor.copy(alpha = 0.15f),
         shape = RoundedCornerShape(6.dp)
@@ -1133,7 +1134,7 @@ private fun ScoreIndicator(score: Int) {
 }
 
 @Composable
-private fun QuestionSummaryCard(result: PrashnaCalculator.PrashnaResult) {
+private fun QuestionSummaryCard(result: PrashnaResult) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -1230,7 +1231,7 @@ private fun InfoChip(
 }
 
 @Composable
-private fun MoonAnalysisCard(moonAnalysis: PrashnaCalculator.MoonAnalysis) {
+private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
     val strengthColor = getMoonStrengthColor(moonAnalysis.moonStrength)
 
     Card(
@@ -1402,7 +1403,7 @@ private fun MoonDetailItem(
 }
 
 @Composable
-private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
+private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
     // Hoist language call to Composable scope
     val language = currentLanguage()
     val risingSignLabel = stringResource(StringKeyAnalysis.PRASHNA_RISING_SIGN)
@@ -1513,7 +1514,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: PrashnaCalculator.LagnaAnalysis) {
 }
 
 @Composable
-private fun TimingPredictionCard(timing: PrashnaCalculator.TimingPrediction) {
+private fun TimingPredictionCard(timing: TimingPrediction) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -1596,7 +1597,7 @@ private fun TimingPredictionCard(timing: PrashnaCalculator.TimingPrediction) {
 }
 
 @Composable
-private fun SpecialYogasCard(yogas: List<PrashnaCalculator.PrashnaYoga>) {
+private fun SpecialYogasCard(yogas: List<PrashnaYoga>) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -1633,7 +1634,7 @@ private fun SpecialYogasCard(yogas: List<PrashnaCalculator.PrashnaYoga>) {
 }
 
 @Composable
-private fun YogaItem(yoga: PrashnaCalculator.PrashnaYoga) {
+private fun YogaItem(yoga: PrashnaYoga) {
     val color = if (yoga.isPositive) AppTheme.SuccessColor else AppTheme.ErrorColor
     val icon = if (yoga.isPositive) Icons.Filled.CheckCircle else Icons.Filled.Warning
 
@@ -1691,7 +1692,7 @@ private fun YogaItem(yoga: PrashnaCalculator.PrashnaYoga) {
 }
 
 @Composable
-private fun FactorsCard(judgment: PrashnaCalculator.PrashnaJudgment) {
+private fun FactorsCard(judgment: PrashnaJudgment) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -1860,7 +1861,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
  * AI Insight Card - Allows users to get AI-powered interpretation of Prashna results
  */
 @Composable
-private fun AiInsightCard(result: PrashnaCalculator.PrashnaResult) {
+private fun AiInsightCard(result: PrashnaResult) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val languageForAi = LocalLanguage.current
@@ -2200,7 +2201,7 @@ private sealed interface AiInsightState {
 /**
  * Format Prashna result as context for AI interpretation
  */
-private fun formatPrashnaForAi(result: PrashnaCalculator.PrashnaResult): String {
+private fun formatPrashnaForAi(result: PrashnaResult): String {
     return buildString {
         appendLine("Please provide a deeper Vedic astrology interpretation of this Prashna (horary) chart analysis. Be insightful, practical, and compassionate in your guidance.")
         appendLine()
@@ -2264,61 +2265,61 @@ private fun formatPrashnaForAi(result: PrashnaCalculator.PrashnaResult): String 
 }
 
 // Helper functions
-private fun getCategoryIcon(category: PrashnaCalculator.PrashnaCategory): ImageVector {
+private fun getCategoryIcon(category: PrashnaCategory): ImageVector {
     return when (category) {
-        PrashnaCalculator.PrashnaCategory.YES_NO -> Icons.Outlined.HelpOutline
-        PrashnaCalculator.PrashnaCategory.CAREER -> Icons.Outlined.Work
-        PrashnaCalculator.PrashnaCategory.MARRIAGE -> Icons.Outlined.Favorite
-        PrashnaCalculator.PrashnaCategory.CHILDREN -> Icons.Outlined.ChildFriendly
-        PrashnaCalculator.PrashnaCategory.HEALTH -> Icons.Outlined.LocalHospital
-        PrashnaCalculator.PrashnaCategory.WEALTH -> Icons.Outlined.MonetizationOn
-        PrashnaCalculator.PrashnaCategory.PROPERTY -> Icons.Outlined.Home
-        PrashnaCalculator.PrashnaCategory.TRAVEL -> Icons.Outlined.Flight
-        PrashnaCalculator.PrashnaCategory.EDUCATION -> Icons.Outlined.School
-        PrashnaCalculator.PrashnaCategory.LEGAL -> Icons.Outlined.Gavel
-        PrashnaCalculator.PrashnaCategory.LOST_OBJECT -> Icons.Outlined.Search
-        PrashnaCalculator.PrashnaCategory.RELATIONSHIP -> Icons.Outlined.Favorite
-        PrashnaCalculator.PrashnaCategory.BUSINESS -> Icons.Outlined.Business
-        PrashnaCalculator.PrashnaCategory.SPIRITUAL -> Icons.Outlined.SelfImprovement
-        PrashnaCalculator.PrashnaCategory.GENERAL -> Icons.Outlined.Star
+        PrashnaCategory.YES_NO -> Icons.Outlined.HelpOutline
+        PrashnaCategory.CAREER -> Icons.Outlined.Work
+        PrashnaCategory.MARRIAGE -> Icons.Outlined.Favorite
+        PrashnaCategory.CHILDREN -> Icons.Outlined.ChildFriendly
+        PrashnaCategory.HEALTH -> Icons.Outlined.LocalHospital
+        PrashnaCategory.WEALTH -> Icons.Outlined.MonetizationOn
+        PrashnaCategory.PROPERTY -> Icons.Outlined.Home
+        PrashnaCategory.TRAVEL -> Icons.Outlined.Flight
+        PrashnaCategory.EDUCATION -> Icons.Outlined.School
+        PrashnaCategory.LEGAL -> Icons.Outlined.Gavel
+        PrashnaCategory.LOST_OBJECT -> Icons.Outlined.Search
+        PrashnaCategory.RELATIONSHIP -> Icons.Outlined.Favorite
+        PrashnaCategory.BUSINESS -> Icons.Outlined.Business
+        PrashnaCategory.SPIRITUAL -> Icons.Outlined.SelfImprovement
+        PrashnaCategory.GENERAL -> Icons.Outlined.Star
     }
 }
 
-private fun getVerdictColor(verdict: PrashnaCalculator.PrashnaVerdict): Color {
+private fun getVerdictColor(verdict: PrashnaVerdict): Color {
     return when (verdict) {
-        PrashnaCalculator.PrashnaVerdict.STRONGLY_YES -> Color(0xFF2E7D32)
-        PrashnaCalculator.PrashnaVerdict.YES -> Color(0xFF4CAF50)
-        PrashnaCalculator.PrashnaVerdict.LIKELY_YES -> Color(0xFF8BC34A)
-        PrashnaCalculator.PrashnaVerdict.UNCERTAIN -> Color(0xFFFFC107)
-        PrashnaCalculator.PrashnaVerdict.TIMING_DEPENDENT -> Color(0xFFFF9800)
-        PrashnaCalculator.PrashnaVerdict.LIKELY_NO -> Color(0xFFFF9800)
-        PrashnaCalculator.PrashnaVerdict.NO -> Color(0xFFFF5722)
-        PrashnaCalculator.PrashnaVerdict.STRONGLY_NO -> Color(0xFFE53935)
+        PrashnaVerdict.STRONGLY_YES -> Color(0xFF2E7D32)
+        PrashnaVerdict.YES -> Color(0xFF4CAF50)
+        PrashnaVerdict.LIKELY_YES -> Color(0xFF8BC34A)
+        PrashnaVerdict.UNCERTAIN -> Color(0xFFFFC107)
+        PrashnaVerdict.TIMING_DEPENDENT -> Color(0xFFFF9800)
+        PrashnaVerdict.LIKELY_NO -> Color(0xFFFF9800)
+        PrashnaVerdict.NO -> Color(0xFFFF5722)
+        PrashnaVerdict.STRONGLY_NO -> Color(0xFFE53935)
     }
 }
 
-private fun getVerdictIcon(verdict: PrashnaCalculator.PrashnaVerdict): ImageVector {
+private fun getVerdictIcon(verdict: PrashnaVerdict): ImageVector {
     return when (verdict) {
-        PrashnaCalculator.PrashnaVerdict.STRONGLY_YES,
-        PrashnaCalculator.PrashnaVerdict.YES,
-        PrashnaCalculator.PrashnaVerdict.LIKELY_YES -> Icons.Outlined.ThumbUp
+        PrashnaVerdict.STRONGLY_YES,
+        PrashnaVerdict.YES,
+        PrashnaVerdict.LIKELY_YES -> Icons.Outlined.ThumbUp
 
-        PrashnaCalculator.PrashnaVerdict.UNCERTAIN,
-        PrashnaCalculator.PrashnaVerdict.TIMING_DEPENDENT -> Icons.Outlined.HelpOutline
+        PrashnaVerdict.UNCERTAIN,
+        PrashnaVerdict.TIMING_DEPENDENT -> Icons.Outlined.HelpOutline
 
-        PrashnaCalculator.PrashnaVerdict.LIKELY_NO,
-        PrashnaCalculator.PrashnaVerdict.NO,
-        PrashnaCalculator.PrashnaVerdict.STRONGLY_NO -> Icons.Outlined.ThumbDown
+        PrashnaVerdict.LIKELY_NO,
+        PrashnaVerdict.NO,
+        PrashnaVerdict.STRONGLY_NO -> Icons.Outlined.ThumbDown
     }
 }
 
-private fun getMoonStrengthColor(strength: PrashnaCalculator.MoonStrength): Color {
+private fun getMoonStrengthColor(strength: MoonStrength): Color {
     return when (strength) {
-        PrashnaCalculator.MoonStrength.EXCELLENT -> Color(0xFF2E7D32)
-        PrashnaCalculator.MoonStrength.GOOD -> Color(0xFF4CAF50)
-        PrashnaCalculator.MoonStrength.AVERAGE -> Color(0xFFFFC107)
-        PrashnaCalculator.MoonStrength.WEAK -> Color(0xFFFF9800)
-        PrashnaCalculator.MoonStrength.VERY_WEAK -> Color(0xFFFF5722)
-        PrashnaCalculator.MoonStrength.AFFLICTED -> Color(0xFFE53935)
+        MoonStrength.EXCELLENT -> Color(0xFF2E7D32)
+        MoonStrength.GOOD -> Color(0xFF4CAF50)
+        MoonStrength.AVERAGE -> Color(0xFFFFC107)
+        MoonStrength.WEAK -> Color(0xFFFF9800)
+        MoonStrength.VERY_WEAK -> Color(0xFFFF5722)
+        MoonStrength.AFFLICTED -> Color(0xFFE53935)
     }
 }

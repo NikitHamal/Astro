@@ -2,7 +2,7 @@ package com.astro.storm.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.astro.storm.data.model.VedicChart
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.KalachakraDashaCalculator
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +47,7 @@ class KalachakraDashaViewModel : ViewModel() {
     /**
      * Load Kalachakra Dasha for the given chart
      */
-    fun loadKalachakraDasha(chart: VedicChart?, language: com.astro.storm.data.localization.Language = com.astro.storm.data.localization.Language.ENGLISH) {
+    fun loadKalachakraDasha(chart: VedicChart?, language: com.astro.storm.core.common.Language = com.astro.storm.core.common.Language.ENGLISH) {
         if (chart == null) {
             _uiState.value = KalachakraDashaUiState.Idle
             return
@@ -115,7 +115,7 @@ class KalachakraDashaViewModel : ViewModel() {
     /**
      * Generate a unique key for the chart to use for caching
      */
-    private fun generateChartKey(chart: VedicChart, language: com.astro.storm.data.localization.Language): String {
+    private fun generateChartKey(chart: VedicChart, language: com.astro.storm.core.common.Language): String {
         val birthData = chart.birthData
         return buildString {
             append(birthData.dateTime.toEpochSecond(java.time.ZoneOffset.UTC))
