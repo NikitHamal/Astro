@@ -135,8 +135,8 @@ class RajaYogaEvaluator : YogaEvaluator {
         val moonOdd = YogaHelpers.isOddSign(moonPos.sign.number)
         val ascOdd = YogaHelpers.isOddSign(ascSign.number)
         
-        val isMale = chart.birthData.gender.equals("male", true)
-        val isFemale = chart.birthData.gender.equals("female", true)
+        val isMale = chart.birthData.gender == com.astro.storm.core.model.Gender.MALE
+        val isFemale = chart.birthData.gender == com.astro.storm.core.model.Gender.FEMALE
         
         val formed = when {
             isMale && isDayBirth && sunOdd && moonOdd && ascOdd -> true
