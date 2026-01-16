@@ -624,17 +624,7 @@ private fun EmptyYogasMessage(category: YogaCategory?) {
 
 @Composable
 private fun getCategoryDisplayName(category: YogaCategory, language: Language): String {
-    val key = when (category) {
-        YogaCategory.RAJA_YOGA -> StringKey.YOGA_CAT_RAJA
-        YogaCategory.DHANA_YOGA -> StringKey.YOGA_CAT_DHANA
-        YogaCategory.MAHAPURUSHA_YOGA -> StringKey.YOGA_CAT_MAHAPURUSHA
-        YogaCategory.NABHASA_YOGA -> StringKey.YOGA_CAT_NABHASA
-        YogaCategory.CHANDRA_YOGA -> StringKey.YOGA_CAT_CHANDRA
-        YogaCategory.SOLAR_YOGA -> StringKey.YOGA_CAT_SOLAR
-        YogaCategory.NEGATIVE_YOGA -> StringKey.YOGA_CAT_NEGATIVE
-        YogaCategory.SPECIAL_YOGA -> StringKey.YOGA_CAT_SPECIAL
-    }
-    return stringResource(key)
+    return category.getLocalizedName(language)
 }
 
 @Composable
@@ -647,6 +637,8 @@ private fun getCategoryColor(category: YogaCategory): Color = when (category) {
     YogaCategory.SOLAR_YOGA -> ChartDetailColors.AccentOrange
     YogaCategory.NEGATIVE_YOGA -> ChartDetailColors.ErrorColor
     YogaCategory.SPECIAL_YOGA -> ChartDetailColors.AccentRose
+    YogaCategory.BHAVA_YOGA -> ChartDetailColors.AccentPrimary
+    YogaCategory.CONJUNCTION_YOGA -> ChartDetailColors.AccentTeal
 }
 
 private fun formatNumber(number: Int, language: Language): String {

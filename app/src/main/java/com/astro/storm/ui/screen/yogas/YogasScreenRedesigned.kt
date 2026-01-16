@@ -40,6 +40,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Diamond
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.JoinInner
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material.icons.outlined.TipsAndUpdates
@@ -946,6 +948,8 @@ private fun getCategoryColor(category: YogaCategory): Color {
         YogaCategory.SOLAR_YOGA -> AppTheme.PlanetSun
         YogaCategory.NEGATIVE_YOGA -> AppTheme.ErrorColor
         YogaCategory.SPECIAL_YOGA -> AppTheme.AccentPrimary
+        YogaCategory.BHAVA_YOGA -> AppTheme.AccentPrimary
+        YogaCategory.CONJUNCTION_YOGA -> AppTheme.AccentTeal
     }
 }
 
@@ -959,6 +963,8 @@ private fun getCategoryIcon(category: YogaCategory): ImageVector {
         YogaCategory.SOLAR_YOGA -> Icons.Outlined.Star
         YogaCategory.NEGATIVE_YOGA -> Icons.Outlined.StarOutline
         YogaCategory.SPECIAL_YOGA -> Icons.Outlined.TipsAndUpdates
+        YogaCategory.BHAVA_YOGA -> Icons.Outlined.Home
+        YogaCategory.CONJUNCTION_YOGA -> Icons.Outlined.JoinInner
     }
 }
 
