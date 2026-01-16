@@ -1,7 +1,9 @@
 package com.astro.storm.ephemeris
 
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.ephemeris.yoga.BhavaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.ChandraYogaEvaluator
+import com.astro.storm.ephemeris.yoga.ConjunctionYogaEvaluator
 import com.astro.storm.ephemeris.yoga.DhanaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.MahapurushaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.NabhasaYogaEvaluator
@@ -52,6 +54,8 @@ object YogaCalculator {
         ChandraYogaEvaluator(),
         SolarYogaEvaluator(),
         NegativeYogaEvaluator(),
+        BhavaYogaEvaluator(),
+        ConjunctionYogaEvaluator(),
         SpecialYogaEvaluator()
     )
 
@@ -100,6 +104,8 @@ object YogaCalculator {
             solarYogas = yogasByCategory[YogaCategory.SOLAR_YOGA] ?: emptyList(),
             negativeYogas = yogasByCategory[YogaCategory.NEGATIVE_YOGA] ?: emptyList(),
             specialYogas = yogasByCategory[YogaCategory.SPECIAL_YOGA] ?: emptyList(),
+            bhavaYogas = yogasByCategory[YogaCategory.BHAVA_YOGA] ?: emptyList(),
+            conjunctionYogas = yogasByCategory[YogaCategory.CONJUNCTION_YOGA] ?: emptyList(),
             dominantYogaCategory = dominantCategory,
             overallYogaStrength = overallStrength
         )

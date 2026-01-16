@@ -1,7 +1,9 @@
 package com.astro.storm.ephemeris.yoga
 
 import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyYogaExpanded
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
@@ -35,13 +37,15 @@ enum class YogaCategory(val displayName: String, val description: String) {
     CHANDRA_YOGA("Chandra Yoga", "Moon-based combinations"),
     SOLAR_YOGA("Solar Yoga", "Sun-based combinations"),
     NEGATIVE_YOGA("Negative Yoga", "Challenging combinations"),
-    SPECIAL_YOGA("Special Yoga", "Other significant combinations");
+    SPECIAL_YOGA("Special Yoga", "Other significant combinations"),
+    BHAVA_YOGA("Bhava Yoga", "House Lord Placements"),
+    CONJUNCTION_YOGA("Conjunction Yoga", "Planetary Conjunctions");
 
     /**
      * Get localized display name
      */
     fun getLocalizedName(language: Language): String {
-        val key = when (this) {
+        val key: StringKeyInterface = when (this) {
             RAJA_YOGA -> StringKeyMatch.YOGA_CAT_RAJA
             DHANA_YOGA -> StringKeyMatch.YOGA_CAT_DHANA
             MAHAPURUSHA_YOGA -> StringKeyMatch.YOGA_CAT_PANCHA_MAHAPURUSHA
@@ -50,6 +54,8 @@ enum class YogaCategory(val displayName: String, val description: String) {
             SOLAR_YOGA -> StringKeyMatch.YOGA_CAT_SOLAR
             NEGATIVE_YOGA -> StringKeyMatch.YOGA_CAT_NEGATIVE
             SPECIAL_YOGA -> StringKeyMatch.YOGA_CAT_SPECIAL
+            BHAVA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_BHAVA
+            CONJUNCTION_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CONJUNCTION
         }
         return StringResources.get(key, language)
     }
@@ -58,7 +64,7 @@ enum class YogaCategory(val displayName: String, val description: String) {
      * Get localized description
      */
     fun getLocalizedDescription(language: Language): String {
-        val key = when (this) {
+        val key: StringKeyInterface = when (this) {
             RAJA_YOGA -> StringKeyMatch.YOGA_CAT_RAJA_DESC
             DHANA_YOGA -> StringKeyMatch.YOGA_CAT_DHANA_DESC
             MAHAPURUSHA_YOGA -> StringKeyMatch.YOGA_CAT_PANCHA_MAHAPURUSHA_DESC
@@ -67,6 +73,8 @@ enum class YogaCategory(val displayName: String, val description: String) {
             SOLAR_YOGA -> StringKeyMatch.YOGA_CAT_SOLAR_DESC
             NEGATIVE_YOGA -> StringKeyMatch.YOGA_CAT_NEGATIVE_DESC
             SPECIAL_YOGA -> StringKeyMatch.YOGA_CAT_SPECIAL_DESC
+            BHAVA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_BHAVA_DESC
+            CONJUNCTION_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CONJUNCTION_DESC
         }
         return StringResources.get(key, language)
     }
@@ -144,6 +152,8 @@ data class YogaAnalysis(
     val solarYogas: List<Yoga>,
     val negativeYogas: List<Yoga>,
     val specialYogas: List<Yoga>,
+    val bhavaYogas: List<Yoga> = emptyList(), // Default for compatibility
+    val conjunctionYogas: List<Yoga> = emptyList(), // Default for compatibility
     val dominantYogaCategory: YogaCategory,
     val overallYogaStrength: Double,
     val timestamp: Long = System.currentTimeMillis()
@@ -274,6 +284,32 @@ data class YogaAnalysis(
                 if (yoga.cancellationFactors.isNotEmpty()) {
                     appendLine("  $cancellationLabel: ${yoga.cancellationFactors.joinToString("; ")}")
                 }
+                appendLine()
+            }
+        }
+        
+        // New Conjunction Yogas section
+        if (conjunctionYogas.isNotEmpty()) {
+            appendLine(YogaCategory.CONJUNCTION_YOGA.getLocalizedName(language).uppercase())
+            appendLine("─────────────────────────────────────────────────────────")
+            conjunctionYogas.forEach { yoga ->
+                // Basic localization or fallback
+                val localizedName = yoga.name // Already somewhat localized or generic
+                appendLine("★ $localizedName")
+                appendLine("  $planetsLabel: ${yoga.planets.joinToString { it.getLocalizedName(language) }}")
+                appendLine("  $effectsLabel: ${yoga.effects}")
+                appendLine()
+            }
+        }
+        
+        // New Bhava Yogas section
+        if (bhavaYogas.isNotEmpty()) {
+            appendLine(YogaCategory.BHAVA_YOGA.getLocalizedName(language).uppercase())
+            appendLine("─────────────────────────────────────────────────────────")
+            bhavaYogas.forEach { yoga ->
+                // Bhava yogas are numerous, keep concise
+                appendLine("★ ${yoga.name}")
+                appendLine("  $effectsLabel: ${yoga.effects}")
                 appendLine()
             }
         }

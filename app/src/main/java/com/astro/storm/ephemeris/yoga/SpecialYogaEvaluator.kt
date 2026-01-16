@@ -67,7 +67,177 @@ class SpecialYogaEvaluator : YogaEvaluator {
         // 10. Kusuma Yoga
         evaluateKusumaYoga(chart)?.let { yogas.add(it) }
 
+        // 11. Bheri Yoga
+        evaluateBheriYoga(chart, houseLords)?.let { yogas.add(it) }
+
+        // 12. Sreenatha Yoga
+        evaluateSreenathaYoga(chart, houseLords)?.let { yogas.add(it) }
+
+        // 13. Khadga Yoga
+        evaluateKhadgaYoga(chart, houseLords)?.let { yogas.add(it) }
+
+        // 14. Kalanidhi Yoga
+        evaluateKalanidhiYoga(chart)?.let { yogas.add(it) }
+
         return yogas
+    }
+
+    /**
+     * Bheri Yoga - Wealth and family happiness
+     * Definition: Lagna lord, Venus, Jupiter in mutual Kendras and 9th lord strong
+     */
+    private fun evaluateBheriYoga(chart: VedicChart, houseLords: Map<Int, Planet>): Yoga? {
+        val lagnaLord = houseLords[1] ?: return null
+        val lord9 = houseLords[9] ?: return null
+        
+        val lagnaLordPos = chart.planetPositions.find { it.planet == lagnaLord } ?: return null
+        val venusPos = chart.planetPositions.find { it.planet == Planet.VENUS } ?: return null
+        val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER } ?: return null
+        val lord9Pos = chart.planetPositions.find { it.planet == lord9 } ?: return null
+        
+        // Check mutual Kendras
+        val l_v = YogaHelpers.isInKendraFrom(lagnaLordPos, venusPos)
+        val l_j = YogaHelpers.isInKendraFrom(lagnaLordPos, jupiterPos)
+        val v_j = YogaHelpers.isInKendraFrom(venusPos, jupiterPos)
+        
+        // 9th lord strong
+        val lord9Strong = YogaHelpers.isExalted(lord9Pos) || YogaHelpers.isInOwnSign(lord9Pos) || YogaHelpers.isInFriendSign(lord9Pos)
+        
+        if (l_v && l_j && v_j && lord9Strong) {
+            val strength = YogaHelpers.calculateYogaStrength(chart, listOf(lagnaLordPos, venusPos, jupiterPos, lord9Pos))
+            return Yoga(
+                name = "Bheri Yoga",
+                sanskritName = "Bheri Yoga",
+                category = YogaCategory.SPECIAL_YOGA,
+                planets = listOf(lagnaLord, Planet.VENUS, Planet.JUPITER),
+                houses = listOf(lagnaLordPos.house, venusPos.house, jupiterPos.house),
+                description = "Lagna lord, Venus, Jupiter in mutual Kendras and 9th lord strong",
+                effects = "Wealthy, good health, happy family, religious, long life",
+                strength = YogaHelpers.strengthFromPercentage(strength),
+                strengthPercentage = strength,
+                isAuspicious = true,
+                activationPeriod = "Venus, Jupiter, or Lagna lord periods",
+                cancellationFactors = emptyList()
+            )
+        }
+        return null
+    }
+
+    /**
+     * Sreenatha Yoga - Wealth and Eloquence
+     * Definition: 7th lord exalted in 10th house, and 9th/10th lords conjunct/connected
+     */
+    private fun evaluateSreenathaYoga(chart: VedicChart, houseLords: Map<Int, Planet>): Yoga? {
+        val lord7 = houseLords[7] ?: return null
+        val lord9 = houseLords[9] ?: return null
+        val lord10 = houseLords[10] ?: return null
+        
+        val lord7Pos = chart.planetPositions.find { it.planet == lord7 } ?: return null
+        val lord9Pos = chart.planetPositions.find { it.planet == lord9 } ?: return null
+        val lord10Pos = chart.planetPositions.find { it.planet == lord10 } ?: return null
+        
+        // 7th lord exalted in 10th house
+        if (lord7Pos.house != 10 || !YogaHelpers.isExalted(lord7Pos)) return null
+        
+        // 9th and 10th lords connected
+        val connected = YogaHelpers.areConjunct(lord9Pos, lord10Pos)
+        
+        if (connected) {
+            val strength = YogaHelpers.calculateYogaStrength(chart, listOf(lord7Pos, lord9Pos, lord10Pos))
+            return Yoga(
+                name = "Sreenatha Yoga",
+                sanskritName = "Sreenatha Yoga",
+                category = YogaCategory.SPECIAL_YOGA,
+                planets = listOf(lord7, lord9, lord10),
+                houses = listOf(10),
+                description = "7th lord exalted in 10th, 9th and 10th lords connected",
+                effects = "Wealthy, lordly, religious, eloquent, favored by Goddess Lakshmi",
+                strength = YogaHelpers.strengthFromPercentage(strength),
+                strengthPercentage = strength,
+                isAuspicious = true,
+                activationPeriod = "Dasha of 7th, 9th, or 10th lord",
+                cancellationFactors = emptyList()
+            )
+        }
+        return null
+    }
+
+    /**
+     * Khadga Yoga - Knowledge and Success
+     * Definition: Exchange of 2nd and 9th lords, and Lagna lord in Kendra/Trikona
+     */
+    private fun evaluateKhadgaYoga(chart: VedicChart, houseLords: Map<Int, Planet>): Yoga? {
+        val lord2 = houseLords[2] ?: return null
+        val lord9 = houseLords[9] ?: return null
+        val lagnaLord = houseLords[1] ?: return null
+        
+        val lord2Pos = chart.planetPositions.find { it.planet == lord2 } ?: return null
+        val lord9Pos = chart.planetPositions.find { it.planet == lord9 } ?: return null
+        val lagnaLordPos = chart.planetPositions.find { it.planet == lagnaLord } ?: return null
+        
+        // Exchange of 2 and 9
+        val exchange = YogaHelpers.areInExchange(lord2Pos, lord9Pos)
+        
+        // Lagna lord in Kendra/Trikona
+        val lagnaStrong = lagnaLordPos.house in listOf(1, 4, 7, 10, 5, 9)
+        
+        if (exchange && lagnaStrong) {
+            val strength = YogaHelpers.calculateYogaStrength(chart, listOf(lord2Pos, lord9Pos, lagnaLordPos))
+            return Yoga(
+                name = "Khadga Yoga",
+                sanskritName = "Khadga Yoga",
+                category = YogaCategory.SPECIAL_YOGA,
+                planets = listOf(lord2, lord9, lagnaLord),
+                houses = listOf(lord2Pos.house, lord9Pos.house),
+                description = "Exchange of 2nd and 9th lords, Lagna lord in Kendra/Trikona",
+                effects = "Learned, skilled, wealthy, successful, influential speaker",
+                strength = YogaHelpers.strengthFromPercentage(strength),
+                strengthPercentage = strength,
+                isAuspicious = true,
+                activationPeriod = "2nd or 9th lord periods",
+                cancellationFactors = emptyList()
+            )
+        }
+        return null
+    }
+
+    /**
+     * Kalanidhi Yoga - Artistic skill and wealth
+     * Definition: Jupiter in 2nd or 5th in own/exalted sign, aspected by Mercury and Venus
+     */
+    private fun evaluateKalanidhiYoga(chart: VedicChart): Yoga? {
+        val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER } ?: return null
+        val mercuryPos = chart.planetPositions.find { it.planet == Planet.MERCURY } ?: return null
+        val venusPos = chart.planetPositions.find { it.planet == Planet.VENUS } ?: return null
+        
+        // Jupiter in 2 or 5
+        if (jupiterPos.house !in listOf(2, 5)) return null
+        
+        // Jupiter in Own or Exalted sign
+        if (!YogaHelpers.isInOwnSign(jupiterPos) && !YogaHelpers.isExalted(jupiterPos)) return null
+        
+        // Aspected by Mercury AND Venus
+        val mercuryAspect = YogaHelpers.isAspecting(mercuryPos, jupiterPos) || YogaHelpers.areConjunct(mercuryPos, jupiterPos) // Conjunction often counts as aspect in broad sense, but yoga says aspect. Usually conjunction is stronger.
+        val venusAspect = YogaHelpers.isAspecting(venusPos, jupiterPos) || YogaHelpers.areConjunct(venusPos, jupiterPos)
+        
+        if (mercuryAspect && venusAspect) {
+            val strength = YogaHelpers.calculateYogaStrength(chart, listOf(jupiterPos, mercuryPos, venusPos))
+            return Yoga(
+                name = "Kalanidhi Yoga",
+                sanskritName = "Kalanidhi Yoga",
+                category = YogaCategory.SPECIAL_YOGA,
+                planets = listOf(Planet.JUPITER, Planet.MERCURY, Planet.VENUS),
+                houses = listOf(jupiterPos.house),
+                description = "Jupiter in 2nd/5th in strength, influenced by Mercury and Venus",
+                effects = "Respected, healthy, wealthy, learned, skilled in arts",
+                strength = YogaHelpers.strengthFromPercentage(strength),
+                strengthPercentage = strength,
+                isAuspicious = true,
+                activationPeriod = "Jupiter period",
+                cancellationFactors = emptyList()
+            )
+        }
+        return null
     }
 
     /**
