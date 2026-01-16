@@ -518,6 +518,25 @@ object YogaHelpers {
         return YogaStrength.fromPercentage(percentage)
     }
 
+    // ==================== ASTRONOMICAL UTILITIES ====================
+
+    /**
+     * Check if birth was during the day
+     */
+    fun isDayBirth(chart: VedicChart): Boolean {
+        val sunPos = chart.planetPositions.find { it.planet == Planet.SUN } ?: return true
+        // Sun in houses 7-12 is generally above horizon (day) in some systems, 
+        // but better to check if house is 7, 8, 9, 10, 11, 12
+        return sunPos.house in 7..12
+    }
+
+    /**
+     * Check if sign number is odd (1, 3, 5, 7, 9, 11)
+     */
+    fun isOddSign(signNumber: Int): Boolean {
+        return signNumber % 2 != 0
+    }
+
     // ==================== HOUSE SIGNIFICATIONS ====================
 
     /**

@@ -54,7 +54,139 @@ class DhanaYogaEvaluator : YogaEvaluator {
         // 5. Labha Yoga
         evaluateLabhaYoga(chart, houseLords)?.let { yogas.add(it) }
 
+        // 6. Vasumathi Yoga
+        evaluateVasumathiYoga(chart)?.let { yogas.add(it) }
+
+        // 7. Mahalaxmi Yoga
+        evaluateMahalaxmiYoga(chart, houseLords)?.let { yogas.add(it) }
+
+        // 8. Indu Lagna Dhana Yoga
+        evaluateInduLagnaYoga(chart, houseLords)?.let { yogas.add(it) }
+
         return yogas
+    }
+
+    /**
+     * Evaluate Vasumathi Yoga - Benefics in all Upachayas (3, 6, 10, 11) from Lagna or Moon
+     */
+    private fun evaluateVasumathiYoga(chart: VedicChart): Yoga? {
+        val benefics = listOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY)
+        val upachayas = listOf(3, 6, 10, 11)
+        
+        val beneficsInUpachayaFromLagna = chart.planetPositions.filter { 
+            it.planet in benefics && it.house in upachayas 
+        }
+        
+        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
+        val beneficsInUpachayaFromMoon = if (moonPos != null) {
+            chart.planetPositions.filter { 
+                it.planet in benefics && YogaHelpers.getHouseFrom(it.sign, moonPos.sign) in upachayas
+            }
+        } else emptyList()
+        
+        val isFormed = beneficsInUpachayaFromLagna.size >= 3 || beneficsInUpachayaFromMoon.size >= 3
+        
+        if (isFormed) {
+            val strength = 75.0
+            return Yoga(
+                name = "Vasumathi Yoga",
+                sanskritName = "Vasumathi Yoga",
+                category = YogaCategory.DHANA_YOGA,
+                planets = benefics,
+                houses = upachayas,
+                description = "All benefics in Upachaya houses from Lagna or Moon",
+                effects = "Continuous accumulation of wealth, prosperity increasing with age, financial independence",
+                strength = YogaStrength.STRONG,
+                strengthPercentage = strength,
+                isAuspicious = true,
+                activationPeriod = "Benefic planet periods",
+                cancellationFactors = emptyList()
+            )
+        }
+        
+        return null
+    }
+
+    /**
+     * Evaluate Mahalaxmi Yoga - 9th lord in Kendra and Venus strong
+     */
+    private fun evaluateMahalaxmiYoga(chart: VedicChart, houseLords: Map<Int, Planet>): Yoga? {
+        val lord9 = houseLords[9] ?: return null
+        val lord9Pos = chart.planetPositions.find { it.planet == lord9 } ?: return null
+        val venusPos = chart.planetPositions.find { it.planet == Planet.VENUS } ?: return null
+        
+        val isLord9InKendra = lord9Pos.house in listOf(1, 4, 7, 10)
+        val isVenusStrong = YogaHelpers.isExalted(venusPos) || YogaHelpers.isInOwnSign(venusPos)
+        
+        if (isLord9InKendra && isVenusStrong) {
+            val strength = YogaHelpers.calculateYogaStrength(chart, listOf(lord9Pos, venusPos))
+            return Yoga(
+                name = "Mahalaxmi Yoga",
+                sanskritName = "Mahalaxmi Yoga",
+                category = YogaCategory.DHANA_YOGA,
+                planets = listOf(lord9, Planet.VENUS),
+                houses = listOf(lord9Pos.house, venusPos.house),
+                description = "9th lord in Kendra and Venus strong",
+                effects = "Divine grace of Goddess Lakshmi, immense wealth, religious nature, respected and virtuous",
+                strength = YogaHelpers.strengthFromPercentage(strength),
+                strengthPercentage = strength,
+                isAuspicious = true,
+                activationPeriod = "9th lord or Venus periods",
+                cancellationFactors = emptyList()
+            )
+        }
+        
+        return null
+    }
+
+    /**
+     * Evaluate Indu Lagna Dhana Yoga
+     */
+    private fun evaluateInduLagnaYoga(chart: VedicChart, houseLords: Map<Int, Planet>): Yoga? {
+        // Ray values: Sun: 30, Moon: 16, Mars: 6, Merc: 8, Jup: 10, Ven: 12, Sat: 1
+        val rayValues = mapOf(
+            Planet.SUN to 30, Planet.MOON to 16, Planet.MARS to 6,
+            Planet.MERCURY to 8, Planet.JUPITER to 10, Planet.VENUS to 12, Planet.SATURN to 1
+        )
+        
+        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON } ?: return null
+        val moonSign = moonPos.sign
+        
+        // 9th lord from Lagna
+        val lord9Lagna = houseLords[9] ?: return null
+        
+        // 9th lord from Moon
+        val sign9Moon = ZodiacSign.entries[(moonSign.ordinal + 8) % 12]
+        val lord9Moon = sign9Moon.ruler
+        
+        val totalRays = (rayValues[lord9Lagna] ?: 0) + (rayValues[lord9Moon] ?: 0)
+        val housesFromMoon = totalRays % 12
+        val induLagnaSign = ZodiacSign.entries[(moonSign.ordinal + (if (housesFromMoon == 0) 11 else housesFromMoon - 1)) % 12]
+        
+        // Check for planets in Indu Lagna
+        val planetsInInduLagna = chart.planetPositions.filter { it.sign == induLagnaSign }
+        
+        if (planetsInInduLagna.isNotEmpty()) {
+            val beneficsCount = planetsInInduLagna.count { YogaHelpers.isNaturalBenefic(it.planet) }
+            val strength = 50.0 + (beneficsCount * 15.0)
+            
+            return Yoga(
+                name = "Indu Lagna Dhana Yoga",
+                sanskritName = "Indu Lagna Dhana Yoga",
+                category = YogaCategory.DHANA_YOGA,
+                planets = planetsInInduLagna.map { it.planet },
+                houses = planetsInInduLagna.map { it.house },
+                description = "Planets placed in Indu Lagna (${induLagnaSign.displayName})",
+                effects = "Special financial potential revealed through lunar rays, prosperity through specific life paths",
+                strength = YogaHelpers.strengthFromPercentage(strength.coerceAtMost(100.0)),
+                strengthPercentage = strength.coerceAtMost(100.0),
+                isAuspicious = true,
+                activationPeriod = "Throughout life, activated in Indu Lagna planet periods",
+                cancellationFactors = emptyList()
+            )
+        }
+        
+        return null
     }
 
     /**

@@ -101,6 +101,23 @@ object YogaLocalization {
             englishName.contains("Sanyasa") -> StringKeyMatch.YOGA_SANYASA
             englishName.contains("Chamara") -> StringKeyMatch.YOGA_CHAMARA
             englishName.contains("Dharma-Karmadhipati") -> StringKeyMatch.YOGA_DHARMA_KARMADHIPATI
+            englishName.contains("Maha Bhagya") -> StringKeyMatch.YOGA_MAHA_BHAGYA
+            englishName.contains("Pushkala") -> StringKeyMatch.YOGA_PUSHAKALA
+            englishName.contains("Akhanda Samrajya") -> StringKeyMatch.YOGA_AKHANDA_SAMRAJYA
+            englishName.contains("Vasumathi") -> StringKeyMatch.YOGA_VASUMATHI
+            englishName.contains("Mahalaxmi") -> StringKeyMatch.YOGA_MAHALAXMI
+            englishName.contains("Parijata") -> StringKeyMatch.YOGA_PARIJATA
+            englishName.contains("Kusuma") -> StringKeyMatch.YOGA_KUSUMA
+            englishName.contains("Indu Lagna") -> StringKeyMatch.YOGA_INDU_LAGNA
+            englishName.contains("Sakata") -> StringKeyMatch.YOGA_SAKATA
+            englishName.contains("Kemadruma Bhanga") -> StringKeyMatch.YOGA_KEMADRUMA_BHANGA
+            englishName.contains("Vallaki") -> StringKeyMatch.YOGA_SANKHYA_VALLAKI
+            englishName.contains("Damini") -> StringKeyMatch.YOGA_SANKHYA_DAMINI
+            englishName.contains("Pasa") -> StringKeyMatch.YOGA_SANKHYA_PASA
+            englishName.contains("Kedara") -> StringKeyMatch.YOGA_SANKHYA_KEDARA
+            englishName.contains("Shoola") && englishName.contains("Sankhya") -> StringKeyMatch.YOGA_SANKHYA_SHOOLA
+            englishName.contains("Yuga") && englishName.contains("Sankhya") -> StringKeyMatch.YOGA_SANKHYA_YUGA
+            englishName.contains("Gola") && englishName.contains("Sankhya") -> StringKeyMatch.YOGA_SANKHYA_GOLA
             else -> return englishName // Fallback to English name
         }
         return StringResources.get(key, language)
@@ -166,6 +183,23 @@ object YogaLocalization {
             yogaName.contains("Sanyasa") -> StringKeyMatch.YOGA_EFFECT_SANYASA
             yogaName.contains("Chamara") -> StringKeyMatch.YOGA_EFFECT_CHAMARA
             yogaName.contains("Dharma-Karmadhipati") -> StringKeyMatch.YOGA_EFFECT_DHARMA_KARMADHIPATI
+            yogaName.contains("Maha Bhagya") -> StringKeyMatch.YOGA_EFFECT_MAHA_BHAGYA
+            yogaName.contains("Pushkala") -> StringKeyMatch.YOGA_EFFECT_PUSHAKALA
+            yogaName.contains("Akhanda Samrajya") -> StringKeyMatch.YOGA_EFFECT_AKHANDA_SAMRAJYA
+            yogaName.contains("Vasumathi") -> StringKeyMatch.YOGA_EFFECT_VASUMATHI
+            yogaName.contains("Mahalaxmi") -> StringKeyMatch.YOGA_EFFECT_MAHALAXMI
+            yogaName.contains("Parijata") -> StringKeyMatch.YOGA_EFFECT_PARIJATA
+            yogaName.contains("Kusuma") -> StringKeyMatch.YOGA_EFFECT_KUSUMA
+            yogaName.contains("Indu Lagna") -> StringKeyMatch.YOGA_EFFECT_INDU_LAGNA
+            yogaName.contains("Sakata") -> StringKeyMatch.YOGA_EFFECT_SAKATA
+            yogaName.contains("Kemadruma Bhanga") -> StringKeyMatch.YOGA_EFFECT_KEMADRUMA_BHANGA
+            yogaName.contains("Vallaki") -> StringKeyMatch.YOGA_EFFECT_SANKHYA_VALLAKI
+            yogaName.contains("Damini") -> StringKeyMatch.YOGA_EFFECT_SANKHYA_DAMINI
+            yogaName.contains("Pasa") -> StringKeyMatch.YOGA_EFFECT_SANKHYA_PASA
+            yogaName.contains("Kedara") -> StringKeyMatch.YOGA_EFFECT_SANKHYA_KEDARA
+            yogaName.contains("Shoola") && yogaName.contains("Sankhya") -> StringKeyMatch.YOGA_EFFECT_SANKHYA_SHOOLA
+            yogaName.contains("Yuga") && yogaName.contains("Sankhya") -> StringKeyMatch.YOGA_EFFECT_SANKHYA_YUGA
+            yogaName.contains("Gola") && yogaName.contains("Sankhya") -> StringKeyMatch.YOGA_EFFECT_SANKHYA_GOLA
             else -> return "" // Return empty for unknown yogas, caller should use original
         }
         return StringResources.get(key, language)
@@ -235,6 +269,23 @@ object YogaLocalization {
             englishName.contains("Sanyasa") -> "सन्यास योग"
             englishName.contains("Chamara") -> "चामर योग"
             englishName.contains("Dharma-Karmadhipati") -> "धर्म-कर्माधिपति योग"
+            englishName.contains("Maha Bhagya") -> "महा भाग्य योग"
+            englishName.contains("Pushkala") -> "पुष्कल योग"
+            englishName.contains("Akhanda Samrajya") -> "अखण्ड साम्राज्य योग"
+            englishName.contains("Vasumathi") -> "वसुमथि योग"
+            englishName.contains("Mahalaxmi") -> "महालक्ष्मी योग"
+            englishName.contains("Parijata") -> "पारिजात योग"
+            englishName.contains("Kusuma") -> "कुसुम योग"
+            englishName.contains("Indu Lagna") -> "इन्दु लग्न धन योग"
+            englishName.contains("Sakata") -> "शकट योग"
+            englishName.contains("Kemadruma Bhanga") -> "केमद्रुम भंग"
+            englishName.contains("Vallaki") -> "वल्लकी साङ्ख्य योग"
+            englishName.contains("Damini") -> "दामिनी साङ्ख्य योग"
+            englishName.contains("Pasa") -> "पास साङ्ख्य योग"
+            englishName.contains("Kedara") -> "केदार साङ्ख्य योग"
+            englishName.contains("Shoola") && englishName.contains("Sankhya") -> "शूल साङ्ख्य योग"
+            englishName.contains("Yuga") && englishName.contains("Sankhya") -> "युग साङ्ख्य योग"
+            englishName.contains("Gola") && englishName.contains("Sankhya") -> "गोल साङ्ख्य योग"
             else -> englishName
         }
     }

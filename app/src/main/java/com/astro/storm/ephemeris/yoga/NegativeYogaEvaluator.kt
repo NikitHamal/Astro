@@ -56,7 +56,63 @@ class NegativeYogaEvaluator : YogaEvaluator {
         // 7. Papakartari Yoga
         yogas.addAll(evaluatePapakartariYogas(chart))
 
+        // 8. Sakata Yoga
+        evaluateSakataYoga(chart)?.let { yogas.add(it) }
+
         return yogas
+    }
+
+    /**
+     * Sakata Yoga - Moon in 6, 8, 12 from Jupiter
+     * Sakata Bhanga occurs if Moon is in a Kendra from Lagna.
+     */
+    private fun evaluateSakataYoga(chart: VedicChart): Yoga? {
+        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON } ?: return null
+        val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER } ?: return null
+        
+        val houseFromJupiter = YogaHelpers.getHouseFrom(moonPos.sign, jupiterPos.sign)
+        
+        if (houseFromJupiter in listOf(6, 8, 12)) {
+            // Check for Sakata Bhanga (Cancellation)
+            // If Moon is in Kendra from Lagna, Sakata is cancelled
+            val isCancelled = moonPos.house in listOf(1, 4, 7, 10)
+            
+            if (isCancelled) {
+                val strength = 55.0
+                return Yoga(
+                    name = "Kemadruma Bhanga (Sakata Cancellation)",
+                    sanskritName = "Sakata Bhanga",
+                    category = YogaCategory.SPECIAL_YOGA,
+                    planets = listOf(Planet.MOON, Planet.JUPITER),
+                    houses = listOf(moonPos.house, jupiterPos.house),
+                    description = "Moon in Kendra from Lagna cancels Sakata Yoga",
+                    effects = "Overcoming initial struggles, internal strength to face life's ups and downs",
+                    strength = YogaHelpers.strengthFromPercentage(strength),
+                    strengthPercentage = strength,
+                    isAuspicious = true,
+                    activationPeriod = "Moon and Jupiter periods",
+                    cancellationFactors = emptyList()
+                )
+            }
+            
+            val severity = 60.0
+            return Yoga(
+                name = "Sakata Yoga",
+                sanskritName = "Sakata Yoga",
+                category = YogaCategory.NEGATIVE_YOGA,
+                planets = listOf(Planet.MOON, Planet.JUPITER),
+                houses = listOf(moonPos.house, jupiterPos.house),
+                description = "Moon in $houseFromJupiter house from Jupiter",
+                effects = "Fluctuating fortunes, periods of struggle followed by recovery, lessons in resilience",
+                strength = YogaHelpers.strengthFromPercentage(severity),
+                strengthPercentage = severity,
+                isAuspicious = false,
+                activationPeriod = "Moon and Jupiter periods",
+                cancellationFactors = listOf("Cancelled if Moon is in Kendra from Lagna")
+            )
+        }
+        
+        return null
     }
 
     /**

@@ -67,21 +67,23 @@ class NabhasaYogaEvaluator : YogaEvaluator {
     }
 
     /**
-     * Sankhya Yogas based on number of occupied houses
+     * Sankhya Yogas based on number of occupied houses (1 to 7)
      */
     private fun evaluateSankhyaYoga(chart: VedicChart, occupiedHouses: List<Int>): Yoga? {
         val count = occupiedHouses.size
+        if (count < 1 || count > 7) return null
+        
         val baseStrength = 50.0 + (12 - count) * 3.0
 
         return when (count) {
             1 -> Yoga(
-                name = "Gola Yoga",
+                name = "Gola Sankhya Yoga",
                 sanskritName = "Gola Yoga",
                 category = YogaCategory.NABHASA_YOGA,
                 planets = emptyList(),
                 houses = occupiedHouses,
                 description = "All 7 planets in one house",
-                effects = "Concentrated energy, poverty or extreme wealth depending on house, focused life",
+                effects = "Struggles in early life, need for persistence, unconventional path",
                 strength = YogaHelpers.strengthFromPercentage(baseStrength),
                 strengthPercentage = baseStrength,
                 isAuspicious = occupiedHouses.first() in listOf(1, 2, 5, 9, 10, 11),
@@ -89,13 +91,27 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 cancellationFactors = emptyList()
             )
             2 -> Yoga(
-                name = "Yuga Yoga",
+                name = "Yuga Sankhya Yoga",
                 sanskritName = "Yuga Yoga",
                 category = YogaCategory.NABHASA_YOGA,
                 planets = emptyList(),
                 houses = occupiedHouses,
                 description = "All planets in two houses",
-                effects = "Dual focus in life, success in two domains, partnerships important",
+                effects = "Unconventional lifestyle, may face social challenges, religious or philosophical",
+                strength = YogaHelpers.strengthFromPercentage(baseStrength),
+                strengthPercentage = baseStrength,
+                isAuspicious = true,
+                activationPeriod = "Throughout life",
+                cancellationFactors = emptyList()
+            )
+            3 -> Yoga(
+                name = "Shoola Sankhya Yoga",
+                sanskritName = "Shoola Yoga",
+                category = YogaCategory.NABHASA_YOGA,
+                planets = emptyList(),
+                houses = occupiedHouses,
+                description = "All planets in three houses",
+                effects = "Brave but potentially aggressive, success through competition",
                 strength = YogaHelpers.strengthFromPercentage(baseStrength),
                 strengthPercentage = baseStrength,
                 isAuspicious = true,
@@ -103,13 +119,55 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 cancellationFactors = emptyList()
             )
             4 -> Yoga(
-                name = "Kedara Yoga",
+                name = "Kedara Sankhya Yoga",
                 sanskritName = "Kedara Yoga",
                 category = YogaCategory.NABHASA_YOGA,
                 planets = emptyList(),
                 houses = occupiedHouses,
-                description = "Planets occupy 4 houses like a field",
-                effects = "Gains through agriculture, real estate, steady accumulation of resources",
+                description = "All planets in four houses",
+                effects = "Agricultural wealth, helpful, truthful, steady progress",
+                strength = YogaHelpers.strengthFromPercentage(baseStrength),
+                strengthPercentage = baseStrength,
+                isAuspicious = true,
+                activationPeriod = "Throughout life",
+                cancellationFactors = emptyList()
+            )
+            5 -> Yoga(
+                name = "Pasa Sankhya Yoga",
+                sanskritName = "Pasa Yoga",
+                category = YogaCategory.NABHASA_YOGA,
+                planets = emptyList(),
+                houses = occupiedHouses,
+                description = "All planets in five houses",
+                effects = "Surrounded by friends and relatives, earns through proper means",
+                strength = YogaHelpers.strengthFromPercentage(baseStrength),
+                strengthPercentage = baseStrength,
+                isAuspicious = true,
+                activationPeriod = "Throughout life",
+                cancellationFactors = emptyList()
+            )
+            6 -> Yoga(
+                name = "Damini Sankhya Yoga",
+                sanskritName = "Damini Yoga",
+                category = YogaCategory.NABHASA_YOGA,
+                planets = emptyList(),
+                houses = occupiedHouses,
+                description = "All planets in six houses",
+                effects = "Charitable, famous, helpful to others, intelligent",
+                strength = YogaHelpers.strengthFromPercentage(baseStrength),
+                strengthPercentage = baseStrength,
+                isAuspicious = true,
+                activationPeriod = "Throughout life",
+                cancellationFactors = emptyList()
+            )
+            7 -> Yoga(
+                name = "Vallaki Sankhya Yoga",
+                sanskritName = "Vallaki Yoga",
+                category = YogaCategory.NABHASA_YOGA,
+                planets = emptyList(),
+                houses = occupiedHouses,
+                description = "All planets in seven houses",
+                effects = "Artistic talents, fond of music and dance, happy disposition",
                 strength = YogaHelpers.strengthFromPercentage(baseStrength),
                 strengthPercentage = baseStrength,
                 isAuspicious = true,

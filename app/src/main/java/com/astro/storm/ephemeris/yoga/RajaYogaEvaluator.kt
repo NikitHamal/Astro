@@ -53,7 +53,160 @@ class RajaYogaEvaluator : YogaEvaluator {
         // 4. Maha Raja Yoga
         yogas.addAll(evaluateMahaRajaYoga(chart))
 
+        // 5. Maha Bhagya Yoga
+        evaluateMahaBhagyaYoga(chart)?.let { yogas.add(it) }
+
+        // 6. Pushkala Yoga
+        evaluatePushkalaYoga(chart, houseLords)?.let { yogas.add(it) }
+
+        // 7. Akhanda Samrajya Yoga
+        evaluateAkhandaSamrajyaYoga(chart, houseLords)?.let { yogas.add(it) }
+
         return yogas
+    }
+
+    /**
+     * Akhanda Samrajya Yoga - Powerful leadership and wealth
+     */
+    private fun evaluateAkhandaSamrajyaYoga(chart: VedicChart, houseLords: Map<Int, Planet>): Yoga? {
+        val ascSign = ZodiacSign.fromLongitude(chart.ascendant)
+        
+        // 1. Must be a fixed sign Lagna (Taurus, Leo, Scorpio, Aquarius)
+        if (ascSign !in listOf(ZodiacSign.TAURUS, ZodiacSign.LEO, ZodiacSign.SCORPIO, ZodiacSign.AQUARIUS)) return null
+        
+        // 2. Jupiter must rule 2nd, 5th, or 11th
+        val jupiterRulesWealth = when (ascSign) {
+            ZodiacSign.SCORPIO -> true // Rules 2nd (Sagittarius) and 5th (Pisces)
+            ZodiacSign.AQUARIUS -> true // Rules 2nd (Pisces) and 11th (Sagittarius)
+            ZodiacSign.LEO -> true // Rules 5th (Sagittarius)
+            ZodiacSign.TAURUS -> true // Rules 11th (Pisces)
+            else -> false
+        }
+        
+        if (!jupiterRulesWealth) return null
+        
+        // 3. One of the lords of 2, 9, 11 in Kendra from Moon
+        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON } ?: return null
+        val lord2 = houseLords[2]
+        val lord9 = houseLords[9]
+        val lord11 = houseLords[11]
+        
+        val wealthLords = listOfNotNull(lord2, lord9, lord11)
+        val wealthPositions = chart.planetPositions.filter { it.planet in wealthLords }
+        
+        val formed = wealthPositions.any { pos ->
+            YogaHelpers.isInKendraFrom(pos, moonPos)
+        }
+        
+        if (formed) {
+            val strength = 80.0
+            return Yoga(
+                name = "Akhanda Samrajya Yoga",
+                sanskritName = "Akhanda Samrajya Yoga",
+                category = YogaCategory.RAJA_YOGA,
+                planets = listOf(Planet.JUPITER, Planet.MOON),
+                houses = wealthPositions.map { it.house },
+                description = "Fixed sign Lagna with wealth house lords in Kendra from Moon",
+                effects = "Undisputed leadership, wide-ranging influence, vast wealth and authority",
+                strength = YogaStrength.EXTREMELY_STRONG,
+                strengthPercentage = strength,
+                isAuspicious = true,
+                activationPeriod = "Jupiter or Moon periods",
+                cancellationFactors = emptyList()
+            )
+        }
+        
+        return null
+    }
+
+    /**
+     * Evaluate Maha Bhagya Yoga
+     * Male: Day birth, Sun/Moon/Asc in odd signs
+     * Female: Night birth, Sun/Moon/Asc in even signs
+     */
+    private fun evaluateMahaBhagyaYoga(chart: VedicChart): Yoga? {
+        val isDayBirth = YogaHelpers.isDayBirth(chart)
+        
+        val sunPos = chart.planetPositions.find { it.planet == Planet.SUN } ?: return null
+        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON } ?: return null
+        val ascSign = ZodiacSign.fromLongitude(chart.ascendant)
+        
+        val sunOdd = YogaHelpers.isOddSign(sunPos.sign.number)
+        val moonOdd = YogaHelpers.isOddSign(moonPos.sign.number)
+        val ascOdd = YogaHelpers.isOddSign(ascSign.number)
+        
+        val isMale = chart.birthData.gender.equals("male", ignoreCase = true)
+        val isFemale = chart.birthData.gender.equals("female", ignoreCase = true)
+        
+        val formed = when {
+            isMale && isDayBirth && sunOdd && moonOdd && ascOdd -> true
+            isFemale && !isDayBirth && !sunOdd && !moonOdd && !ascOdd -> true
+            else -> false
+        }
+        
+        if (formed) {
+            val strength = 85.0 // Maha Bhagya is very powerful
+            return Yoga(
+                name = "Maha Bhagya Yoga",
+                sanskritName = "Maha Bhagya Yoga",
+                category = YogaCategory.RAJA_YOGA,
+                planets = listOf(Planet.SUN, Planet.MOON),
+                houses = listOf(sunPos.house, moonPos.house, 1),
+                description = if (isMale) "Male born during day with Sun, Moon, and Ascendant in odd signs" 
+                             else "Female born during night with Sun, Moon, and Ascendant in even signs",
+                effects = "Exceptional fortune, leadership, magnetic personality, success from birth",
+                strength = YogaStrength.EXTREMELY_STRONG,
+                strengthPercentage = strength,
+                isAuspicious = true,
+                activationPeriod = "Sun or Moon periods",
+                cancellationFactors = emptyList()
+            )
+        }
+        
+        return null
+    }
+
+    /**
+     * Pushkala Yoga - Lagna lord with Moon, Moon in Kendra, Moon's dispositor in Kendra strong
+     */
+    private fun evaluatePushkalaYoga(chart: VedicChart, houseLords: Map<Int, Planet>): Yoga? {
+        val lagnaLord = houseLords[1] ?: return null
+        val lagnaLordPos = chart.planetPositions.find { it.planet == lagnaLord } ?: return null
+        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON } ?: return null
+        
+        // Moon in Kendra from Lagna
+        if (moonPos.house !in listOf(1, 4, 7, 10)) return null
+        
+        // Lagna lord with Moon
+        if (!YogaHelpers.areConjunct(lagnaLordPos, moonPos, 12.0)) return null
+        
+        // Moon's dispositor
+        val moonDispositor = moonPos.sign.ruler
+        val dispositorPos = chart.planetPositions.find { it.planet == moonDispositor } ?: return null
+        
+        // Dispositor in Kendra from Lagna
+        if (dispositorPos.house !in listOf(1, 4, 7, 10)) return null
+        
+        // Dispositor strong
+        if (YogaHelpers.isExalted(dispositorPos) || YogaHelpers.isInOwnSign(dispositorPos)) {
+            val strength = YogaHelpers.calculateYogaStrength(chart, listOf(moonPos, lagnaLordPos, dispositorPos))
+            return Yoga(
+                name = "Pushkala Yoga",
+                sanskritName = "Pushkala Yoga",
+                category = YogaCategory.RAJA_YOGA,
+                planets = listOf(Planet.MOON, lagnaLord, moonDispositor),
+                houses = listOf(moonPos.house, dispositorPos.house),
+                description = "Lagna lord conjunct Moon in Kendra, Moon's dispositor in Kendra and strong",
+                effects = "Wealthy, honored by rulers, famous, eloquent, good conduct",
+                strength = YogaHelpers.strengthFromPercentage(strength),
+                strengthPercentage = strength,
+                isAuspicious = true,
+                activationPeriod = "Moon or Lagna lord periods",
+                cancellationFactors = emptyList()
+            )
+        }
+        
+        return null
     }
 
     /**

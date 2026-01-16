@@ -1189,6 +1189,48 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     YOGA_DASA_MULA("Dasa-Mula Yoga", "दश-मूल योग"),
     YOGA_VARGOTTAMA_STRENGTH("Vargottama Strength", "वर्गोत्तम बल"),
 
+    // Expanded Yogas - Raja & Dhana
+    YOGA_MAHA_BHAGYA("Maha Bhagya Yoga", "महा भाग्य योग"),
+    YOGA_PUSHAKALA("Pushkala Yoga", "पुष्कल योग"),
+    YOGA_AKHANDA_SAMRAJYA("Akhanda Samrajya Yoga", "अखण्ड साम्राज्य योग"),
+    YOGA_VASUMATHI("Vasumathi Yoga", "वसुमथि योग"),
+    YOGA_MAHALAXMI("Mahalaxmi Yoga", "महालक्ष्मी योग"),
+    YOGA_PARIJATA("Parijata Yoga", "पारिजात योग"),
+    YOGA_KUSUMA("Kusuma Yoga", "कुसुम योग"),
+    YOGA_INDU_LAGNA("Indu Lagna Dhana Yoga", "इन्दु लग्न धन योग"),
+    YOGA_SAKATA("Sakata Yoga", "शकट योग"),
+    YOGA_KEMADRUMA_BHANGA("Kemadruma Bhanga", "केमद्रुम भंग"),
+
+    // Expanded Yogas - Nabhasa Sankhya
+    YOGA_SANKHYA_VALLAKI("Vallaki Sankhya Yoga", "वल्लकी साङ्ख्य योग"),
+    YOGA_SANKHYA_DAMINI("Damini Sankhya Yoga", "दामिनी साङ्ख्य योग"),
+    YOGA_SANKHYA_PASA("Pasa Sankhya Yoga", "पास साङ्ख्य योग"),
+    YOGA_SANKHYA_KEDARA("Kedara Sankhya Yoga", "केदार साङ्ख्य योग"),
+    YOGA_SANKHYA_SHOOLA("Shoola Sankhya Yoga", "शूल साङ्ख्य योग"),
+    YOGA_SANKHYA_YUGA("Yuga Sankhya Yoga", "युग साङ्ख्य योग"),
+    YOGA_SANKHYA_GOLA("Gola Sankhya Yoga", "गोल साङ्ख्य योग"),
+
+    // Expanded Yoga Effects
+    YOGA_EFFECT_MAHA_BHAGYA("Exceptional fortune, leadership, magnetic personality, success from birth", "असाधारण भाग्य, नेतृत्व, आकर्षक व्यक्तित्व, जन्मदेखि नै सफलता"),
+    YOGA_EFFECT_PUSHAKALA("Wealthy, honored by rulers, famous, eloquent, good conduct", "धनी, शासकहरूद्वारा सम्मानित, प्रसिद्ध, वाक्पटु, राम्रो आचरण"),
+    YOGA_EFFECT_AKHANDA_SAMRAJYA("Undisputed leadership, wide-ranging influence, vast wealth and authority", "अविवादित नेतृत्व, व्यापक प्रभाव, विशाल धन र अधिकार"),
+    YOGA_EFFECT_VASUMATHI("Continuous accumulation of wealth, prosperity increasing with age, financial independence", "धनको निरन्तर सञ्चय, उमेरसँगै बढ्दो समृद्धि, आर्थिक स्वतन्त्रता"),
+    YOGA_EFFECT_MAHALAXMI("Divine grace of Goddess Lakshmi, immense wealth, religious nature, respected and virtuous", "देवी लक्ष्मीको दैवी कृपा, अपार धन, धार्मिक स्वभाव, सम्मानित र सद्गुणी"),
+    YOGA_EFFECT_PARIJATA("Success in middle and later life, steady rise to prominence, respected authority", "मध्य र पछिल्लो जीवनमा सफलता, प्रमुखतामा स्थिर उदय, सम्मानित अधिकार"),
+    YOGA_EFFECT_KUSUMA("Kingly status, famous, wealthy, enjoys life's pleasures, born in a good family", "राजकीय स्थिति, प्रसिद्ध, धनी, जीवनको आनन्द लिने, राम्रो परिवारमा जन्मिएको"),
+    YOGA_EFFECT_INDU_LAGNA("Special financial potential revealed through lunar rays, prosperity through specific life paths", "चन्द्र किरणहरू मार्फत प्रकट भएको विशेष आर्थिक सम्भावना, विशिष्ट जीवन मार्गहरू मार्फत समृद्धि"),
+    YOGA_EFFECT_SAKATA("Fluctuating fortunes, periods of struggle followed by recovery, lessons in resilience", "उतारचढावपूर्ण भाग्य, संघर्षको अवधि पछि सुधार, लचिलोपनमा पाठ"),
+    YOGA_EFFECT_KEMADRUMA_BHANGA("Protection from loneliness and poverty, internal strength to overcome initial lack", "एक्लोपन र गरिबीबाट सुरक्षा, प्रारम्भिक अभावलाई जित्न आन्तरिक शक्ति"),
+
+    // Sankhya Effects
+    YOGA_EFFECT_SANKHYA_VALLAKI("Artistic talents, fond of music and dance, happy disposition", "कलात्मक प्रतिभा, संगीत र नृत्यको शौकीन, खुसी स्वभाव"),
+    YOGA_EFFECT_SANKHYA_DAMINI("Charitable, famous, helpful to others, intelligent", "दानशील, प्रसिद्ध, अरूलाई मद्दत गर्ने, बुद्धिमान"),
+    YOGA_EFFECT_SANKHYA_PASA("Surrounded by friends and relatives, earns through proper means", "साथीभाइ र आफन्तहरूले घेरिएको, उचित माध्यमबाट कमाउने"),
+    YOGA_EFFECT_SANKHYA_KEDARA("Agricultural wealth, helpful, truthful, steady progress", "कृषि धन, सहयोगी, सत्यवादी, स्थिर प्रगति"),
+    YOGA_EFFECT_SANKHYA_SHOOLA("Brave but potentially aggressive, success through competition", "बहादुर तर सम्भावित आक्रामक, प्रतिस्पर्धा मार्फत सफलता"),
+    YOGA_EFFECT_SANKHYA_YUGA("Unconventional lifestyle, may face social challenges, religious or philosophical", "अपरम्परागत जीवनशैली, सामाजिक चुनौतीहरू सामना गर्न सक्ने, धार्मिक वा दार्शनिक"),
+    YOGA_EFFECT_SANKHYA_GOLA("Struggles in early life, need for persistence, unconventional path", "प्रारम्भिक जीवनमा संघर्ष, दृढताको आवश्यकता, अपरम्परागत मार्ग"),
+
     // New Yogas - Grahan and Nodal Combinations
     YOGA_SURYA_GRAHAN("Surya Grahan Yoga", "सूर्य ग्रहण योग"),
     YOGA_SURYA_KETU_GRAHAN("Surya-Ketu Grahan Yoga", "सूर्य-केतु ग्रहण योग"),

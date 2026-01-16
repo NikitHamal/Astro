@@ -61,7 +61,91 @@ class SpecialYogaEvaluator : YogaEvaluator {
         // 8. Dharma-Karmadhipati Yoga
         evaluateDharmaKarmadhipatiYoga(chart, houseLords)?.let { yogas.add(it) }
 
+        // 9. Parijata Yoga
+        evaluateParijataYoga(chart, houseLords)?.let { yogas.add(it) }
+
+        // 10. Kusuma Yoga
+        evaluateKusumaYoga(chart)?.let { yogas.add(it) }
+
         return yogas
+    }
+
+    /**
+     * Parijata Yoga - Success in later life
+     */
+    private fun evaluateParijataYoga(chart: VedicChart, houseLords: Map<Int, Planet>): Yoga? {
+        val lagnaLord = houseLords[1] ?: return null
+        val lagnaLordPos = chart.planetPositions.find { it.planet == lagnaLord } ?: return null
+        
+        // 1. Lord of the sign occupied by Lagna Lord (Dispositor 1)
+        val dispositor1 = lagnaLordPos.sign.ruler
+        val disp1Pos = chart.planetPositions.find { it.planet == dispositor1 } ?: return null
+        
+        // 2. Lord of the sign occupied by Dispositor 1 (Dispositor 2)
+        val dispositor2 = disp1Pos.sign.ruler
+        val disp2Pos = chart.planetPositions.find { it.planet == dispositor2 } ?: return null
+        
+        // 3. Both dispositors must be in Kendra or Trikona
+        val isDisp1Good = disp1Pos.house in listOf(1, 4, 7, 10, 5, 9)
+        val isDisp2Good = disp2Pos.house in listOf(1, 4, 7, 10, 5, 9)
+        
+        if (isDisp1Good && isDisp2Good) {
+            val strength = YogaHelpers.calculateYogaStrength(chart, listOf(lagnaLordPos, disp1Pos, disp2Pos))
+            return Yoga(
+                name = "Parijata Yoga",
+                sanskritName = "Parijata Yoga",
+                category = YogaCategory.SPECIAL_YOGA,
+                planets = listOf(lagnaLord, dispositor1, dispositor2),
+                houses = listOf(disp1Pos.house, disp2Pos.house),
+                description = "Lagna lord's dispositor and its dispositor in Kendra/Trikona",
+                effects = "Success in middle and later life, steady rise to prominence, respected authority",
+                strength = YogaHelpers.strengthFromPercentage(strength),
+                strengthPercentage = strength,
+                isAuspicious = true,
+                activationPeriod = "Dispositor planets periods",
+                cancellationFactors = emptyList()
+            )
+        }
+        
+        return null
+    }
+
+    /**
+     * Kusuma Yoga - Kingly status
+     */
+    private fun evaluateKusumaYoga(chart: VedicChart): Yoga? {
+        val ascSign = ZodiacSign.fromLongitude(chart.ascendant)
+        
+        // 1. Fixed sign Lagna
+        if (ascSign !in listOf(ZodiacSign.TAURUS, ZodiacSign.LEO, ZodiacSign.SCORPIO, ZodiacSign.AQUARIUS)) return null
+        
+        // 2. Venus in Kendra
+        val venusPos = chart.planetPositions.find { it.planet == Planet.VENUS } ?: return null
+        if (venusPos.house !in listOf(1, 4, 7, 10)) return null
+        
+        // 3. Sun in 10th house
+        val sunPos = chart.planetPositions.find { it.planet == Planet.SUN } ?: return null
+        if (sunPos.house != 10) return null
+        
+        // 4. Moon in a Trikona (5, 9)
+        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON } ?: return null
+        if (moonPos.house !in listOf(5, 9)) return null
+        
+        val strength = YogaHelpers.calculateYogaStrength(chart, listOf(venusPos, sunPos, moonPos))
+        return Yoga(
+            name = "Kusuma Yoga",
+            sanskritName = "Kusuma Yoga",
+            category = YogaCategory.SPECIAL_YOGA,
+            planets = listOf(Planet.VENUS, Planet.SUN, Planet.MOON),
+            houses = listOf(venusPos.house, sunPos.house, moonPos.house),
+            description = "Fixed sign Lagna with Venus in Kendra, Sun in 10th and Moon in Trikona",
+            effects = "Kingly status, famous, wealthy, enjoys life's pleasures, born in a good family",
+            strength = YogaHelpers.strengthFromPercentage(strength),
+            strengthPercentage = strength,
+            isAuspicious = true,
+            activationPeriod = "Venus or Sun periods",
+            cancellationFactors = emptyList()
+        )
     }
 
     /**
