@@ -39,21 +39,20 @@ object SudarshanaChakraDashaCalculator {
      */
     fun calculateSudarshanaChakra(chart: VedicChart, targetAge: Int = 0, language: Language = Language.ENGLISH): SudarshanaChakraResult {
         val birthDateTime = chart.birthData.dateTime
-        val currentAge = if (targetAge == 0) {
-            java.time.Period.between(birthDateTime.toLocalDate(), LocalDateTime.now().toLocalDate()).years
+        val ageAtCalculation = if (targetAge <= 0) {
+            val years = java.time.Period.between(birthDateTime.toLocalDate(), java.time.LocalDate.now()).years
+            years + 1 // Vedic age: 1st year of life is age 1
         } else {
             targetAge
         }
 
+        val currentAge = ageAtCalculation.coerceAtLeast(1)
+
         val lagnaSign = ZodiacSign.fromLongitude(chart.ascendant)
         val moonSign = chart.planetPositions.find { it.planet == Planet.MOON }?.sign
-            ?: throw IllegalArgumentException("Moon position required")
+            ?: lagnaSign // Fallback if moon not found
         val sunSign = chart.planetPositions.find { it.planet == Planet.SUN }?.sign
-            ?: throw IllegalArgumentException("Sun position required")
-
-        val houseFromLagna = ((currentAge - 1) % FULL_CYCLE_YEARS) + 1
-        val houseFromMoon = ((currentAge - 1) % FULL_CYCLE_YEARS) + 1
-        val houseFromSun = ((currentAge - 1) % FULL_CYCLE_YEARS) + 1
+            ?: lagnaSign // Fallback if sun not found
 
         val lagnaChakra = calculateChakraFromReference(
             chart, lagnaSign, currentAge, SudarshanaReference.LAGNA, language
@@ -629,17 +628,18 @@ object SudarshanaChakraDashaCalculator {
     }
 
     private fun calculateSudarshanaChakraInternal(chart: VedicChart, age: Int): InternalChakraData {
+        val safeAge = age.coerceAtLeast(1)
         val lagnaSign = ZodiacSign.fromLongitude(chart.ascendant)
         val moonSign = chart.planetPositions.find { it.planet == Planet.MOON }?.sign ?: lagnaSign
         val sunSign = chart.planetPositions.find { it.planet == Planet.SUN }?.sign ?: lagnaSign
 
-        val houseFromLagna = ((age - 1) % FULL_CYCLE_YEARS) + 1
+        val houseFromLagna = ((safeAge - 1) % FULL_CYCLE_YEARS) + 1
         val activeLagnaSign = ZodiacSign.entries[(lagnaSign.ordinal + houseFromLagna - 1) % 12]
         val activeMoonSign = ZodiacSign.entries[(moonSign.ordinal + houseFromLagna - 1) % 12]
         val activeSunSign = ZodiacSign.entries[(sunSign.ordinal + houseFromLagna - 1) % 12]
 
         return InternalChakraData(
-            age = age,
+            age = safeAge,
             lagnaHouse = houseFromLagna,
             lagnaSign = activeLagnaSign,
             moonHouse = houseFromLagna,

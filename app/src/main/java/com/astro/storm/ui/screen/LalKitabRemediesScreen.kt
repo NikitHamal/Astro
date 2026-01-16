@@ -157,7 +157,7 @@ fun LalKitabRemediesScreen(
             isCalculating -> LoadingContent(paddingValues)
             analysisResult == null -> ErrorContent(
                 paddingValues = paddingValues,
-                message = stringResource(StringKeyDosha.SCREEN_ERROR_CALCULATION)
+                message = errorMessage ?: stringResource(StringKeyDosha.SCREEN_ERROR_CALCULATION)
             )
             else -> {
                 Column(

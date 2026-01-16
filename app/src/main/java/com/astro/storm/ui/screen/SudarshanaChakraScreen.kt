@@ -88,9 +88,9 @@ fun SudarshanaChakraScreen(
         Period.between(chart.birthData.dateTime.toLocalDate(), LocalDate.now()).years
     }
 
-    // Initialize selectedAge with current age
+    // Initialize selectedAge with current year of life (age + 1)
     LaunchedEffect(currentAge) {
-        selectedAge = currentAge
+        selectedAge = currentAge + 1
     }
 
     val tabs = listOf(
@@ -101,6 +101,7 @@ fun SudarshanaChakraScreen(
 
     // Calculate Sudarshana Chakra
     LaunchedEffect(chart, selectedAge) {
+        if (selectedAge < 1) return@LaunchedEffect
         isCalculating = true
         delay(200)
         try {
@@ -258,16 +259,24 @@ private fun AgeSelector(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    stringResource(StringKeyDosha.SUDARSHANA_AGE),
-                    color = AppTheme.TextMuted,
-                    fontSize = 12.sp
-                )
+                Column {
+                    Text(
+                        stringResource(StringKeyDosha.SUDARSHANA_AGE),
+                        color = AppTheme.TextMuted,
+                        fontSize = 12.sp
+                    )
+                    Text(
+                        "${stringResource(StringKeyDosha.CURRENT_LABEL)}: $currentAge ${stringResource(StringKey.YEARS)}",
+                        color = AppTheme.AccentPrimary,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
                 Text(
                     String.format(stringResource(StringKeyDosha.SUDARSHANA_YEAR_ANALYSIS), selectedAge),
                     color = AppTheme.TextPrimary,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp
+                    fontSize = 15.sp
                 )
             }
 
@@ -284,13 +293,13 @@ private fun AgeSelector(
                     Icon(
                         Icons.Filled.Remove,
                         contentDescription = null,
-                        tint = AppTheme.TextSecondary
+                        tint = AppTheme.AccentPrimary
                     )
                 }
 
                 Slider(
-                    value = selectedAge.toFloat(),
-                    onValueChange = { onAgeSelected(it.toInt()) },
+                    value = selectedAge.toFloat().coerceIn(1f, 100f),
+                    onValueChange = { onAgeSelected(it.toInt().coerceAtLeast(1)) },
                     valueRange = 1f..100f,
                     modifier = Modifier.weight(1f),
                     colors = SliderDefaults.colors(
@@ -307,21 +316,34 @@ private fun AgeSelector(
                     Icon(
                         Icons.Filled.Add,
                         contentDescription = null,
-                        tint = AppTheme.TextSecondary
+                        tint = AppTheme.AccentPrimary
                     )
                 }
             }
 
-            // Current age quick button
-            if (selectedAge != currentAge) {
-                Spacer(modifier = Modifier.height(8.dp))
+            // Quick jump buttons
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
                 TextButton(
-                    onClick = { onAgeSelected(currentAge) },
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    onClick = { onAgeSelected(currentAge + 1) },
+                    enabled = selectedAge != (currentAge + 1)
                 ) {
                     Text(
-                        "${stringResource(StringKeyDosha.CURRENT_LABEL)}: ${currentAge} ${stringResource(StringKey.YEARS)}",
-                        color = AppTheme.AccentPrimary,
+                        stringResource(StringKeyDosha.CURRENT_LABEL),
+                        fontSize = 12.sp
+                    )
+                }
+                
+                Spacer(modifier = Modifier.width(16.dp))
+                
+                TextButton(
+                    onClick = { onAgeSelected(1) },
+                    enabled = selectedAge != 1
+                ) {
+                    Text(
+                        "Birth (1st Yr)",
                         fontSize = 12.sp
                     )
                 }

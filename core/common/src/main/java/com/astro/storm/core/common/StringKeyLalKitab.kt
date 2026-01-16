@@ -169,6 +169,26 @@ enum class StringKeyLalKitab(override val en: String, override val ne: String) :
     COLOR_APP_RAHU("Prefer subdued colors, avoid flashy dressing", "हल्का रंगहरू रोज्नुहोस्, चम्किलो लुगाबाट बच्नुहोस्"),
     COLOR_APP_KETU("Two-toned clothes work well, avoid bright single colors", "दुई रंगका लुगाहरू राम्रो हुन्छन्, चम्किलो एकनाश रंगबाट बच्नुहोस्"),
 
+    // Color Therapy Detail Keys
+    COLOR_SUN_USE("Red, Saffron, Golden", "रातो, केशरी, सुनौलो"),
+    COLOR_SUN_AVOID("Blue, Black, Dark Grey", "नीलो, कालो, गाढा खैरो"),
+    COLOR_MOON_USE("White, Silver, Milky White", "सेतो, चाँदी, दूधालु सेतो"),
+    COLOR_MOON_AVOID("Black, Deep Blue, Red", "कालो, गाढा नीलो, रातो"),
+    COLOR_MARS_USE("Bright Red, Coral, Crimson", "चम्किलो रातो, मुगा, गाढा रातो"),
+    COLOR_MARS_AVOID("Green, Blue, Black", "हरियो, नीलो, कालो"),
+    COLOR_MERCURY_USE("Green, Emerald Green, Light Green", "हरियो, पन्ना हरियो, हल्का हरियो"),
+    COLOR_MERCURY_AVOID("Red, Orange", "रातो, सुन्तला"),
+    COLOR_JUPITER_USE("Yellow, Gold, Saffron", "पहेंलो, सुनौलो, केशरी"),
+    COLOR_JUPITER_AVOID("White, Silver, Black", "सेतो, चाँदी, कालो"),
+    COLOR_VENUS_USE("White, Pink, Multi-colors", "सेतो, गुलाबी, बहुरंगी"),
+    COLOR_VENUS_AVOID("Yellow, Gold", "पहेंलो, सुनौलो"),
+    COLOR_SATURN_USE("Blue, Black, Dark Blue", "नीलो, कालो, गाढा नीलो"),
+    COLOR_SATURN_AVOID("Red, Orange, Bright Yellow", "रातो, सुन्तला, चम्किलो पहेंलो"),
+    COLOR_RAHU_USE("Blue, Black, Brown", "नीलो, कालो, खैरो"),
+    COLOR_RAHU_AVOID("Red, Saffron, Yellow", "रातो, केशरी, पहेंलो"),
+    COLOR_KETU_USE("Black and White, Grey", "कालो र सेतो, खैरो"),
+    COLOR_KETU_AVOID("Bright Red, Bright Yellow", "चम्किलो रातो, चम्किलो पहेंलो"),
+
     // Direction Applications
     DIR_APP_SUN("Face east during Sun remedies, keep important items in east", "सूर्यको उपाय गर्दा पूर्व फर्किनुहोस्, महत्त्वपूर्ण कुरा पूर्वमा राख्नुहोस्"),
     DIR_APP_MOON("Sleep with head towards northwest for mental peace", "मानसिक शान्तिको लागि उत्तर-पश्चिम तर्फ शिर राखेर सुत्नुहोस्"),

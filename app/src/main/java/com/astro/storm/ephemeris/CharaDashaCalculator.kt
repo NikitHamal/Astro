@@ -287,15 +287,16 @@ object CharaDashaCalculator {
      * and so on in descending order.
      */
     fun calculateCharaKarakas(chart: VedicChart): CharaKarakas {
-        // Get only the 7 classical planets (Rahu is excluded in traditional Jaimini)
-        // Some schools include Rahu - we'll use the 8-planet system
+        // Get only the 7 classical planets + Rahu
         val karakaPlanets = chart.planetPositions
             .filter { it.planet in listOf(
                 Planet.SUN, Planet.MOON, Planet.MARS, Planet.MERCURY,
                 Planet.JUPITER, Planet.VENUS, Planet.SATURN, Planet.RAHU
             )}
             .map { pos ->
-                val degreeInSign = pos.longitude % 30.0
+                // In Jaimini, Rahu's degree is often calculated as 30 - degree because it's retrograde
+                val rawDegree = pos.longitude % 30.0
+                val degreeInSign = if (pos.planet == Planet.RAHU) 30.0 - rawDegree else rawDegree
                 Triple(pos.planet, degreeInSign, pos)
             }
             .sortedByDescending { it.second }
@@ -390,7 +391,7 @@ object CharaDashaCalculator {
                 sign, countDirection, currentDate, endDate, chart
             )
 
-            val signLord = getSignLord(sign)
+            val signLord = getStrongerLord(sign, chart)
             val specialSignificance = getSpecialSignificance(sign, chart)
             val interpretation = generateMahadashaInterpretation(sign, signLord, chart)
 
@@ -411,6 +412,31 @@ object CharaDashaCalculator {
         }
 
         return mahadashas
+    }
+
+    /**
+     * Get the stronger lord for signs with dual lordship (Scorpio and Aquarius)
+     */
+    private fun getStrongerLord(sign: ZodiacSign, chart: VedicChart): Planet {
+        return when (sign) {
+            ZodiacSign.SCORPIO -> {
+                val marsPos = chart.planetPositions.find { it.planet == Planet.MARS }
+                val ketuPos = chart.planetPositions.find { it.planet == Planet.KETU }
+                
+                if (marsPos?.sign == ZodiacSign.SCORPIO && ketuPos?.sign != ZodiacSign.SCORPIO) Planet.MARS
+                else if (ketuPos?.sign == ZodiacSign.SCORPIO && marsPos?.sign != ZodiacSign.SCORPIO) Planet.KETU
+                else Planet.MARS // Simplified: default to Mars if both or neither are in Scorpio
+            }
+            ZodiacSign.AQUARIUS -> {
+                val saturnPos = chart.planetPositions.find { it.planet == Planet.SATURN }
+                val rahuPos = chart.planetPositions.find { it.planet == Planet.RAHU }
+                
+                if (saturnPos?.sign == ZodiacSign.AQUARIUS && rahuPos?.sign != ZodiacSign.AQUARIUS) Planet.SATURN
+                else if (rahuPos?.sign == ZodiacSign.AQUARIUS && saturnPos?.sign != ZodiacSign.AQUARIUS) Planet.RAHU
+                else Planet.SATURN // Simplified: default to Saturn
+            }
+            else -> sign.ruler
+        }
     }
 
     /**
@@ -445,7 +471,7 @@ object CharaDashaCalculator {
      * - Maximum: 12 years, Minimum: 1 year
      */
     private fun calculateSignDashaPeriod(sign: ZodiacSign, chart: VedicChart): Int {
-        val signLord = getSignLord(sign)
+        val signLord = getStrongerLord(sign, chart)
         val lordPosition = chart.planetPositions.find { it.planet == signLord }
             ?: return 12 // Default if lord not found
 
@@ -520,7 +546,7 @@ object CharaDashaCalculator {
                     startDate = currentDate,
                     endDate = endDate,
                     durationDays = ChronoUnit.DAYS.between(currentDate, endDate).coerceAtLeast(1L),
-                    signLord = getSignLord(antarSign),
+                    signLord = getStrongerLord(antarSign, chart),
                     interpretation = interpretation
                 )
             )
@@ -564,7 +590,7 @@ object CharaDashaCalculator {
         chart: VedicChart
     ): String {
         val houseFrom = getHouseFromSign(antarSign, mahaSign)
-        val antarLord = getSignLord(antarSign)
+        val antarLord = getStrongerLord(antarSign, chart)
 
         return buildString {
             append("${mahaSign.displayName}-${antarSign.displayName}: ")
@@ -647,13 +673,6 @@ object CharaDashaCalculator {
             ZodiacSign.ARIES, ZodiacSign.GEMINI, ZodiacSign.LEO,
             ZodiacSign.LIBRA, ZodiacSign.SAGITTARIUS, ZodiacSign.AQUARIUS
         )
-    }
-
-    /**
-     * Get the lord of a sign (considering dual lordship for Scorpio and Aquarius)
-     */
-    private fun getSignLord(sign: ZodiacSign): Planet {
-        return sign.ruler
     }
 
     /**

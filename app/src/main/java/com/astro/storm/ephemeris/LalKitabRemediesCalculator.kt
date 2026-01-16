@@ -644,15 +644,19 @@ object LalKitabRemediesCalculator {
     }
 
     private fun getPlanetColor(planet: Planet, language: Language): ColorData {
-        val colorsKey = StringKeyLalKitab.valueOf("COLOR_${planet.name}_USE")
-        val avoidKey = StringKeyLalKitab.valueOf("COLOR_${planet.name}_AVOID")
-        val appKey = StringKeyLalKitab.valueOf("COLOR_APP_${planet.name}")
-        
-        return ColorData(
-            favorable = StringResources.get(colorsKey, language).split(",").map { it.trim() },
-            avoid = StringResources.get(avoidKey, language).split(",").map { it.trim() },
-            application = StringResources.get(appKey, language)
-        )
+        return try {
+            val colorsKey = StringKeyLalKitab.valueOf("COLOR_${planet.name}_USE")
+            val avoidKey = StringKeyLalKitab.valueOf("COLOR_${planet.name}_AVOID")
+            val appKey = StringKeyLalKitab.valueOf("COLOR_APP_${planet.name}")
+            
+            ColorData(
+                favorable = StringResources.get(colorsKey, language).split(",").map { it.trim() },
+                avoid = StringResources.get(avoidKey, language).split(",").map { it.trim() },
+                application = StringResources.get(appKey, language)
+            )
+        } catch (e: Exception) {
+            ColorData(listOf("General"), listOf("None"), "Follow general color guidelines")
+        }
     }
 
     /**
@@ -677,32 +681,30 @@ object LalKitabRemediesCalculator {
     }
 
     private fun getPlanetDirection(planet: Planet, language: Language): DirectionData {
-        val favKey = StringKeyLalKitab.valueOf("PRASHNA_DIR_${planet.name}") // Reusing Prashna DIR keys if possible? No, I added them to StringKeyAnalysis.
-        // Wait, I should check where I put directions. 
-        // In StringKeyLalKitab I have DIR_APP_SUN etc. but not the directions themselves.
-        // Directions are in StringKeyAnalysis.
-        
-        // I'll manually map for now to ensure correctness.
-        val (favKeyAnal, avoidKeyAnal) = when(planet) {
-            Planet.SUN -> StringKeyAnalysis.PRASHNA_DIR_EAST to StringKeyAnalysis.PRASHNA_DIR_WEST
-            Planet.MOON -> StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST to StringKeyAnalysis.PRASHNA_DIR_SOUTH
-            Planet.MARS -> StringKeyAnalysis.PRASHNA_DIR_SOUTH to StringKeyAnalysis.PRASHNA_DIR_NORTH
-            Planet.MERCURY -> StringKeyAnalysis.PRASHNA_DIR_NORTH to StringKeyAnalysis.PRASHNA_DIR_SOUTH
-            Planet.JUPITER -> StringKeyAnalysis.PRASHNA_DIR_NORTH_EAST to StringKeyAnalysis.PRASHNA_DIR_SOUTH_WEST
-            Planet.VENUS -> StringKeyAnalysis.PRASHNA_DIR_SOUTH_EAST to StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST
-            Planet.SATURN -> StringKeyAnalysis.PRASHNA_DIR_WEST to StringKeyAnalysis.PRASHNA_DIR_EAST
-            Planet.RAHU -> StringKeyAnalysis.PRASHNA_DIR_SOUTH_WEST to StringKeyAnalysis.PRASHNA_DIR_NORTH_EAST
-            Planet.KETU -> StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST to StringKeyAnalysis.PRASHNA_DIR_SOUTH_EAST
-            else -> StringKeyAnalysis.PRASHNA_DIR_EAST to StringKeyAnalysis.PRASHNA_DIR_WEST
-        }
-        
-        val appKey = StringKeyLalKitab.valueOf("DIR_APP_${planet.name}")
+        return try {
+            val (favKeyAnal, avoidKeyAnal) = when(planet) {
+                Planet.SUN -> StringKeyAnalysis.PRASHNA_DIR_EAST to StringKeyAnalysis.PRASHNA_DIR_WEST
+                Planet.MOON -> StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST to StringKeyAnalysis.PRASHNA_DIR_SOUTH
+                Planet.MARS -> StringKeyAnalysis.PRASHNA_DIR_SOUTH to StringKeyAnalysis.PRASHNA_DIR_NORTH
+                Planet.MERCURY -> StringKeyAnalysis.PRASHNA_DIR_NORTH to StringKeyAnalysis.PRASHNA_DIR_SOUTH
+                Planet.JUPITER -> StringKeyAnalysis.PRASHNA_DIR_NORTH_EAST to StringKeyAnalysis.PRASHNA_DIR_SOUTH_WEST
+                Planet.VENUS -> StringKeyAnalysis.PRASHNA_DIR_SOUTH_EAST to StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST
+                Planet.SATURN -> StringKeyAnalysis.PRASHNA_DIR_WEST to StringKeyAnalysis.PRASHNA_DIR_EAST
+                Planet.RAHU -> StringKeyAnalysis.PRASHNA_DIR_SOUTH_WEST to StringKeyAnalysis.PRASHNA_DIR_NORTH_EAST
+                Planet.KETU -> StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST to StringKeyAnalysis.PRASHNA_DIR_SOUTH_EAST
+                else -> StringKeyAnalysis.PRASHNA_DIR_EAST to StringKeyAnalysis.PRASHNA_DIR_WEST
+            }
+            
+            val appKey = StringKeyLalKitab.valueOf("DIR_APP_${planet.name}")
 
-        return DirectionData(
-            favorable = StringResources.get(favKeyAnal, language),
-            avoid = StringResources.get(avoidKeyAnal, language),
-            application = StringResources.get(appKey, language)
-        )
+            DirectionData(
+                favorable = StringResources.get(favKeyAnal, language),
+                avoid = StringResources.get(avoidKeyAnal, language),
+                application = StringResources.get(appKey, language)
+            )
+        } catch (e: Exception) {
+            DirectionData("General", "None", "Follow general direction guidelines")
+        }
     }
 
     /**
