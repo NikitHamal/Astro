@@ -537,6 +537,18 @@ object YogaHelpers {
         return signNumber % 2 != 0
     }
 
+    // ==================== BENEFIC/MALEFIC CLASSIFICATION ====================
+
+    /** Natural benefics */
+    val NATURAL_BENEFICS = setOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY, Planet.MOON)
+
+    /**
+     * Check if a planet is naturally benefic.
+     */
+    fun isNaturalBenefic(planet: Planet): Boolean {
+        return planet in NATURAL_BENEFICS
+    }
+
     // ==================== HOUSE SIGNIFICATIONS ====================
 
     /**
