@@ -40,7 +40,7 @@ object PrashnaOmenEvaluator {
         omens.add(
             PrashnaOmen(
                 type = OmenType.MOON_PLACEMENT,
-                description = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_MOON_PLACEMENT_DESC, language, moonAnalysis.moonHouse, moonHouseSignification?.getLocalizedName(language) ?: ""),
+                description = StringResources.get(StringKeyAnalysis.PRASHNA_OMEN_MOON_PLACEMENT_DESC, language, moonAnalysis.moonHouse.localized(language), moonHouseSignification?.getLocalizedName(language) ?: ""),
                 indication = getMoonHouseIndication(moonAnalysis.moonHouse, language),
                 isPositive = moonAnalysis.moonHouse in listOf(1, 4, 5, 7, 9, 10, 11)
             )

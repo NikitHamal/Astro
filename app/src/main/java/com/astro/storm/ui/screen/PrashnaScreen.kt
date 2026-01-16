@@ -1047,7 +1047,7 @@ private fun ConfidenceBadge(confidence: Int) {
         shape = RoundedCornerShape(6.dp)
     ) {
         Text(
-            stringResource(StringKeyAnalysis.PRASHNA_CONFIDENCE, confidence),
+            stringResource(StringKeyAnalysis.PRASHNA_CONFIDENCE, confidence.localized()),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium,
             color = color,
