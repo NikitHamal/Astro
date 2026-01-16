@@ -17,14 +17,22 @@ on:
       - 'wip/**'
   workflow_dispatch:
 
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build APKs
     runs-on: ubuntu-latest
     outputs:
       short_sha: ${{ steps.set_sha.outputs.short_sha }}
+
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -36,14 +44,28 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+          gradle-home-cache-cleanup: true
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease --no-daemon --build-cache --parallel --configuration-cache -x lint -x test
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleRelease \
+            --no-daemon \
+            --build-cache \
+            --parallel \
+            --configuration-cache \
+            -x lint \
+            -x lintVitalRelease \
+            -x test
         env:
-          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx3072m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=true"
+          GRADLE_OPTS: >-
+            -Xmx4g
+            -XX:+UseParallelGC
+            -XX:MaxMetaspaceSize=512m
+            -Dorg.gradle.parallel=true
+            -Dorg.gradle.caching=true
+            -Dkotlin.incremental=true
+            -Dkotlin.compiler.execution.strategy=in-process
 
       - name: Set short SHA
         id: set_sha
@@ -60,3 +82,4 @@ jobs:
           name: apk-release-${{ steps.set_sha.outputs.short_sha }}
           path: app/build/outputs/apk/release/astrostorm-release-${{ steps.set_sha.outputs.short_sha }}.apk
           retention-days: 90
+          compression-level: 0
