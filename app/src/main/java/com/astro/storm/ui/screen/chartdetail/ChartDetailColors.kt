@@ -40,6 +40,11 @@ object ChartDetailColors {
         get() = LocalAppThemeColors.current.ChartBackground
 
     // Accent colors - theme-aware
+    val AccentPrimary: Color
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalAppThemeColors.current.AccentPrimary
+
     val AccentGold: Color
         @Composable
         @ReadOnlyComposable
