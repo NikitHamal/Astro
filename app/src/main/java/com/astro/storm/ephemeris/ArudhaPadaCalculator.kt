@@ -646,7 +646,7 @@ object ArudhaPadaCalculator {
         val timingOfResults = "Results manifest strongly during ${lord.displayName} dasha/antardasha, " +
                 "and when transits activate ${arudha.sign.displayName}"
 
-        val remedialMeasures = generateRemediesForArudha(arudha, dignity, malefics)
+        val remedialMeasures = generateRemediesForArudha(arudha, dignity, malefics, language)
 
         return DetailedArudhaInterpretation(
             primaryMeaning = primaryMeaning,
@@ -726,7 +726,8 @@ object ArudhaPadaCalculator {
     private fun generateRemediesForArudha(
         arudha: ArudhaPada,
         dignity: PlanetaryDignity,
-        malefics: List<Planet>
+        malefics: List<Planet>,
+        language: Language
     ): List<String> {
         val remedies = mutableListOf<String>()
 
@@ -1110,7 +1111,7 @@ object ArudhaPadaCalculator {
         }
     }
 
-    private fun getExpectedEffectsWithPlanet(arudha: ArudhaPada, planet: Planet): List<String> {
+    private fun getExpectedEffectsWithPlanet(arudha: ArudhaPada, planet: Planet, language: Language): List<String> {
         val effects = mutableListOf<String>()
 
         val planetEffect = when (planet) {
