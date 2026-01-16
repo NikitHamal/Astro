@@ -13,6 +13,8 @@ import com.astro.storm.data.ai.agent.tools.AstrologyToolRegistry
 import com.astro.storm.data.ai.agent.tools.ToolExecutionResult
 import com.astro.storm.data.local.ChartDatabase
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.core.common.Language
 import kotlinx.coroutines.flow.Flow
@@ -80,7 +82,7 @@ class StormyAgent private constructor(
         currentChart: VedicChart?,
         language: Language = Language.ENGLISH
     ): String {
-        val profileContext = buildProfileContext(currentProfile, allProfiles, currentChart)
+        val profileContext = buildProfileContext(currentProfile, allProfiles, currentChart, language)
         val toolsDescription = toolRegistry.getToolsDescription()
 
         val languageInstruction = if (language == Language.NEPALI) {
@@ -212,7 +214,8 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
     private fun buildProfileContext(
         currentProfile: SavedChart?,
         allProfiles: List<SavedChart>,
-        currentChart: VedicChart?
+        currentChart: VedicChart?,
+        language: Language
     ): String {
         val sb = StringBuilder()
         sb.appendLine("## Current Context")

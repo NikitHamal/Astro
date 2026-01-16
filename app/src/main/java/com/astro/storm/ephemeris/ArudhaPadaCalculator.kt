@@ -1,5 +1,6 @@
 package com.astro.storm.ephemeris
 
+import com.astro.storm.core.common.Language
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
@@ -267,22 +268,22 @@ object ArudhaPadaCalculator {
         )
 
         // Calculate Arudha Yogas
-        val arudhaYogas = calculateArudhaYogas(chart, arudhaPadas, specialArudhas, language)
+        val arudhaYogas = calculateArudhaYogas(chart, arudhaPadas, language)
 
         // Analyze Arudha-to-Arudha relationships
         val arudhaRelationships = analyzeArudhaRelationships(arudhaPadas)
 
         // Calculate transit effects on Arudhas
-        val transitEffects = calculateTransitEffects(chart, arudhaPadas, language)
+        val transitEffects = calculateTransitEffects(arudhaPadas, language)
 
         // Calculate Dasha activation
-        val dashaActivation = calculateDashaActivation(chart, arudhaPadas, language)
+        val dashaActivation = calculateDashaActivation(arudhaPadas, language)
 
         // Overall assessment
-        val overallAssessment = calculateOverallAssessment(chart, arudhaPadas, specialArudhas, arudhaYogas)
+        val overallAssessment = calculateOverallAssessment(specialArudhas, arudhaYogas)
 
         // Generate interpretation
-        val interpretation = generateInterpretation(chart, arudhaPadas, specialArudhas, arudhaYogas, overallAssessment, language)
+        val interpretation = generateInterpretation(specialArudhas, arudhaYogas, overallAssessment, language)
 
         return ArudhaPadaAnalysis(
             ascendantSign = ascendantSign,
@@ -1406,5 +1407,19 @@ object ArudhaPadaCalculator {
             Planet.RAHU, Planet.KETU -> distance in listOf(5, 9) // Like Jupiter
             else -> false
         }
+    }
+
+    private fun calculateBeneficsInArudha(chart: VedicChart, sign: ZodiacSign): List<Planet> {
+        val benefics = listOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY, Planet.MOON)
+        return chart.planetPositions
+            .filter { it.sign == sign && it.planet in benefics }
+            .map { it.planet }
+    }
+
+    private fun calculateMaleficsInArudha(chart: VedicChart, sign: ZodiacSign): List<Planet> {
+        val malefics = listOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU, Planet.SUN)
+        return chart.planetPositions
+            .filter { it.sign == sign && it.planet in malefics }
+            .map { it.planet }
     }
 }
