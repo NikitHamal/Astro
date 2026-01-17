@@ -333,6 +333,21 @@ class AstrologyToolRegistry @Inject constructor(
 
         return null
     }
+
+    companion object {
+        @Volatile
+        private var instance: AstrologyToolRegistry? = null
+
+        fun getInstance(context: Context): AstrologyToolRegistry =
+            instance ?: synchronized(this) {
+                instance ?: AstrologyToolRegistry(
+                    context.applicationContext,
+                    AstrologySettingsManager.getInstance(context)
+                ).also {
+                    instance = it
+                }
+            }
+    }
 }
 
 /**
