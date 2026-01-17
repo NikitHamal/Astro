@@ -7,6 +7,7 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.KakshaTransitCalculator
 import com.astro.storm.ephemeris.KakshaTransitCalculator.KakshaQuality
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicReference
+import javax.inject.Inject
 
 /**
  * ViewModel for Kakshya Transit Analysis Screen
@@ -21,7 +23,8 @@ import java.util.concurrent.atomic.AtomicReference
  * Manages the UI state for displaying Kakshya (8-fold division) transit analysis,
  * including current positions, upcoming changes, favorable periods, and critical transits.
  */
-class KakshaTransitViewModel : ViewModel() {
+@HiltViewModel
+class KakshaTransitViewModel @Inject constructor() : ViewModel() {
 
     // UI State
     private val _uiState = MutableStateFlow<KakshaTransitUiState>(KakshaTransitUiState.Loading)

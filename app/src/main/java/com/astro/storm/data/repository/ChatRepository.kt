@@ -19,6 +19,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
 /**
  * Repository for chat-related data operations.
  *
@@ -27,7 +30,8 @@ import org.json.JSONArray
  * - Message management
  * - Integration with AI providers
  */
-class ChatRepository private constructor(
+@Singleton
+class ChatRepository @Inject constructor(
     private val chatDao: ChatDao,
     private val providerRegistry: AiProviderRegistry
 ) {
@@ -332,38 +336,54 @@ class ChatRepository private constructor(
 
     /**
      * Convert conversation messages to ChatMessage format for API
+     * Implements a sliding window strategy to keep context within limits
      */
     suspend fun getConversationMessagesForApi(
         conversationId: Long,
-        systemPrompt: String
+        systemPrompt: String,
+        maxContextTokens: Int = 4000
     ): List<ChatMessage> {
-        val messages = mutableListOf<ChatMessage>()
-
-        // Add system prompt
-        messages.add(ChatMessage(role = MessageRole.SYSTEM, content = systemPrompt))
-
-        // Add conversation history
+        val historyMessages = mutableListOf<ChatMessage>()
         val conversationMessages = getMessagesForConversationSync(conversationId)
-        conversationMessages.forEach { msg ->
-            messages.add(
-                ChatMessage(
-                    role = msg.role,
-                    content = msg.content,
-                    toolCallId = msg.toolCallId,
-                    toolCalls = msg.toolCalls?.map { call ->
-                        com.astro.storm.data.ai.provider.ToolCall(
-                            id = call.id,
-                            function = com.astro.storm.data.ai.provider.FunctionCall(
-                                name = call.name,
-                                arguments = call.arguments
-                            )
+        
+        // Estimate system prompt tokens (rough estimate: 1 token ~= 4 chars)
+        var currentTokens = estimateTokens(systemPrompt)
+        
+        // Iterate backwards from the most recent message
+        // Keep adding messages until we hit the limit
+        for (msg in conversationMessages.reversed()) {
+            val messageTokens = estimateTokens(msg.content)
+            
+            // Check if adding this message would exceed limit (reserving 500 tokens for response)
+            if (currentTokens + messageTokens > maxContextTokens - 500) {
+                break
+            }
+            
+            val chatMessage = ChatMessage(
+                role = msg.role,
+                content = msg.content,
+                toolCallId = msg.toolCallId,
+                toolCalls = msg.toolCalls?.map { call ->
+                    com.astro.storm.data.ai.provider.ToolCall(
+                        id = call.id,
+                        function = com.astro.storm.data.ai.provider.FunctionCall(
+                            name = call.name,
+                            arguments = call.arguments
                         )
-                    }
-                )
+                    )
+                }
             )
+            
+            historyMessages.add(chatMessage)
+            currentTokens += messageTokens
         }
-
-        return messages
+        
+        // Reverse back to chronological order and prepend system prompt
+        return listOf(ChatMessage(role = MessageRole.SYSTEM, content = systemPrompt)) + historyMessages.reversed()
+    }
+    
+    private fun estimateTokens(text: String): Int {
+        return text.length / 4
     }
 
     /**
@@ -386,21 +406,6 @@ class ChatRepository private constructor(
                     "${truncated.substring(0, lastSpace)}..."
                 } else {
                     "${truncated}..."
-                }
-            }
-        }
-    }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: ChatRepository? = null
-
-        fun getInstance(context: Context): ChatRepository {
-            return INSTANCE ?: synchronized(this) {
-                val database = ChartDatabase.getInstance(context)
-                val registry = AiProviderRegistry.getInstance(context)
-                ChatRepository(database.chatDao(), registry).also {
-                    INSTANCE = it
                 }
             }
         }

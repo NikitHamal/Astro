@@ -2,7 +2,6 @@ package com.astro.storm.data.ai.agent
 
 import android.content.Context
 import com.astro.storm.data.ai.provider.AiModel
-import com.astro.storm.data.ai.provider.AiProvider
 import com.astro.storm.data.ai.provider.AiProviderRegistry
 import com.astro.storm.data.ai.provider.ChatMessage
 import com.astro.storm.data.ai.provider.ChatResponse
@@ -17,14 +16,14 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.core.common.Language
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.json.JSONArray
 import org.json.JSONObject
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Stormy - The Vedic Astrology AI Assistant
@@ -35,10 +34,12 @@ import java.util.UUID
  * - Supporting multiple AI models (model-agnostic)
  * - Handling tool calls through JSON parsing (works even with models without native tool support)
  */
-class StormyAgent private constructor(
-    private val context: Context,
+@Singleton
+class StormyAgent @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val providerRegistry: AiProviderRegistry,
-    private val toolRegistry: AstrologyToolRegistry
+    private val toolRegistry: AstrologyToolRegistry,
+    private val promptManager: PromptManager
 ) {
 
     companion object {
@@ -57,20 +58,6 @@ class StormyAgent private constructor(
          * to prevent infinite loops in edge cases
          */
         private const val MAX_TOTAL_ITERATIONS = 20
-
-        @Volatile
-        private var INSTANCE: StormyAgent? = null
-
-        fun getInstance(context: Context): StormyAgent {
-            return INSTANCE ?: synchronized(this) {
-                val appContext = context.applicationContext
-                val registry = AiProviderRegistry.getInstance(appContext)
-                val toolRegistry = AstrologyToolRegistry.getInstance(appContext)
-                StormyAgent(appContext, registry, toolRegistry).also {
-                    INSTANCE = it
-                }
-            }
-        }
     }
 
     /**
@@ -82,178 +69,7 @@ class StormyAgent private constructor(
         currentChart: VedicChart?,
         language: Language = Language.ENGLISH
     ): String {
-        val profileContext = buildProfileContext(currentProfile, allProfiles, currentChart, language)
-        val toolsDescription = toolRegistry.getToolsDescription()
-
-        val languageInstruction = if (language == Language.NEPALI) {
-            """
-## Language Instruction
-**IMPORTANT:** The user's preferred language is **Nepali**. You MUST provide your response in Nepali language.
-However, you can use English for technical astrological terms in parentheses if needed for clarity, e.g., "सूर्य (Sun)".
-            """.trimIndent()
-        } else {
-            ""
-        }
-
-        return """
-You are Stormy, an expert Vedic astrologer and autonomous AI assistant in the AstroStorm app. You are a master of Jyotish Shastra who works autonomously to provide accurate, insightful, and comprehensive astrological guidance.
-
-$languageInstruction
-
-## Your Expertise
-- Deep mastery of Vedic astrology including Parashari, Jaimini, and Nadi systems
-- Advanced planetary analysis (Grahas), houses (Bhavas), signs (Rashis), and constellations (Nakshatras)
-- All major Dasha systems (Vimshottari, Yogini, Chara, Kalachakra, Ashtottari)
-- Comprehensive Yoga analysis (Raj Yogas, Dhana Yogas, Viparita Raja Yogas, and more)
-- Transit analysis (Gochar) including Sade Sati, Ashtama Shani, and planetary returns
-- All 16 Divisional charts (Shodashvarga) with proper interpretation
-- Muhurta (electional astrology) for auspicious timing
-- Authentic remedial measures (Upayas) - mantras, gemstones, rituals, donations
-- Matchmaking (Kundli Milan) with Ashtakoota and compatibility analysis
-- Advanced techniques: Ashtakavarga, Bhrigu Bindu, Argala, Maraka analysis
-
-## Communication Style
-- Be warm, professional, and compassionate like a trusted family astrologer
-- Provide practical, actionable insights grounded in classical texts
-- Explain complex Vedic concepts in accessible terms
-- Use proper Sanskrit terminology with explanations
-- Be honest about limitations and uncertainties in predictions
-- Respect users' beliefs while maintaining astrological accuracy
-- NEVER use italics in your responses
-
-## Important Guidelines
-1. Always base analysis on classical Vedic astrology texts (Brihat Parashara Hora Shastra, Phaladeepika, Jataka Parijata)
-2. When discussing predictions, emphasize free will and the indicative nature of astrology
-3. Avoid absolute statements about health, death, or severe negative events
-4. Recommend professional consultation for serious life decisions
-5. Be culturally sensitive when discussing remedies
-6. Consider the user's location and cultural context when suggesting remedies
-
-$profileContext
-
-## Available Tools
-You can call the following tools to get information from the app. To call a tool, respond with a JSON block in this exact format:
-
-```tool_call
-{
-  "tool": "tool_name",
-  "arguments": {
-    "arg1": "value1",
-    "arg2": "value2"
-  }
-}
-```
-
-$toolsDescription
-
-## Agentic Workflow Tools
-
-### Task Management
-Use these tools to structure complex analyses and show your work:
-
-- **start_task**: Signal the beginning of a complex analysis. Use when starting multi-step work.
-  Example: "Complete Birth Chart Analysis", "Dasha Period Interpretation", "Marriage Compatibility Assessment"
-
-- **finish_task**: Signal the completion of a task with a summary.
-
-- **update_todo**: Create and manage a todo list for tracking analysis steps.
-  Operations: "add" (add items), "complete" (mark done), "set_in_progress" (current step), "replace" (new list)
-  Example: Add items like "Analyze Lagna and Lagna Lord", "Examine Moon placement", "Check Yogas"
-
-### User Interaction
-- **ask_user**: Ask clarifying questions when you need more information.
-  Use this BEFORE proceeding when:
-  - Birth time is unknown or uncertain
-  - Multiple interpretation approaches are possible
-  - You need to confirm before creating/editing a profile
-  - The question is ambiguous
-  You can provide options for the user to choose from.
-
-### Profile Management
-- **create_profile**: Create a new birth chart profile. Requires name, birth date/time, location coordinates, timezone.
-  Always use ask_user first to gather complete birth details if not provided.
-
-- **update_profile**: Update an existing profile. Can update any field (name, date, time, location, etc.)
-  The chart will be recalculated automatically.
-
-- **delete_profile**: Delete a profile (requires confirmation).
-
-- **set_active_profile**: Switch to a different profile for analysis.
-
-## Autonomous Behavior Guidelines
-1. **Work AUTONOMOUSLY** - Complete requests without waiting for unnecessary input
-2. **Use tools proactively** - Gather all needed data before synthesizing your response
-3. **Be thorough** - For complex requests, use start_task and update_todo to show your process
-4. **Ask when needed** - Use ask_user ONLY when you truly need clarification (missing birth data, ambiguous requests)
-5. **Think step-by-step** - What data do I need? Call tools. What patterns emerge? Explain thoroughly.
-6. **Complete the task** - Never stop midway with incomplete analysis
-7. **Synthesize insights** - After gathering data, provide meaningful astrological interpretation
-
-## Profile Creation Workflow
-When a user wants to create a new profile:
-1. Use ask_user to gather: Name, Birth Date, Birth Time, Birth Place
-2. Determine coordinates and timezone for the location
-3. Use create_profile with complete data
-4. Confirm success and offer to analyze the new chart
-
-## Analysis Workflow
-For comprehensive chart analysis:
-1. Use start_task to signal the beginning
-2. Use update_todo to outline your analysis steps
-3. Call necessary tools to gather planetary data, dashas, yogas, etc.
-4. Synthesize findings into a coherent interpretation
-5. Use finish_task with a summary
-
-Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Help users understand their charts, make informed decisions, and find guidance through the timeless wisdom of Jyotish. Always provide COMPLETE, actionable insights with proper Vedic foundation.
-        """.trimIndent()
-    }
-
-    /**
-     * Build context about available profiles and current chart
-     */
-    private fun buildProfileContext(
-        currentProfile: SavedChart?,
-        allProfiles: List<SavedChart>,
-        currentChart: VedicChart?,
-        language: Language
-    ): String {
-        val sb = StringBuilder()
-        sb.appendLine("## Current Context")
-        sb.appendLine()
-
-        if (currentProfile != null) {
-            sb.appendLine("**Active Profile:** ${currentProfile.name}")
-            sb.appendLine("- Birth Location: ${currentProfile.location}")
-            sb.appendLine("- Birth Date/Time: ${currentProfile.dateTime}")
-            sb.appendLine("- Profile ID: ${currentProfile.id}")
-
-            if (currentChart != null) {
-                sb.appendLine("- Ascendant (Lagna): ${ZodiacSign.fromLongitude(currentChart.ascendant).getLocalizedName(language)}")
-                sb.appendLine("- Moon Sign (Rashi): ${currentChart.planetPositions.find { it.planet == Planet.MOON }?.sign?.getLocalizedName(language) ?: "Available"}")
-            }
-        } else {
-            sb.appendLine("**No profile is currently selected.** Ask the user to create or select a birth chart profile to provide personalized readings.")
-        }
-
-        sb.appendLine()
-
-        if (allProfiles.isNotEmpty()) {
-            sb.appendLine("**Available Profiles:** (${allProfiles.size} total)")
-            allProfiles.take(5).forEach { profile ->
-                val marker = if (profile.id == currentProfile?.id) " [ACTIVE]" else ""
-                sb.appendLine("- ${profile.name}$marker (ID: ${profile.id})")
-            }
-            if (allProfiles.size > 5) {
-                sb.appendLine("- ... and ${allProfiles.size - 5} more")
-            }
-        } else {
-            sb.appendLine("**No profiles available.** Encourage the user to create their first birth chart.")
-        }
-
-        sb.appendLine()
-        sb.appendLine("**Current Date:** ${SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(Date())}")
-
-        return sb.toString()
+        return promptManager.generateSystemPrompt(currentProfile, allProfiles, currentChart, language)
     }
 
     /**
@@ -292,18 +108,12 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
         var totalEmittedContent = StringBuilder()
         var totalEmittedReasoning = StringBuilder()
 
-        // Track the last emitted content/reasoning lengths for delta calculation
-        // var lastEmittedContentLength = 0
-        // var lastEmittedReasoningLength = 0
-
         while (continueProcessing && iteration < MAX_TOTAL_ITERATIONS && toolIterations < MAX_TOOL_ITERATIONS) {
             iteration++
             var currentContent = StringBuilder()
             var currentReasoning = StringBuilder()
             var pendingToolCalls = mutableListOf<ToolCallRequest>()
             var hasError = false
-            // var errorMessage: String? = null
-            // var receivedDone = false
 
             // Call the AI model
             provider.chat(
@@ -317,7 +127,6 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                     is ChatResponse.Content -> {
                         currentContent.append(response.text)
                         // Only emit if this content hasn't already been emitted
-                        // This handles cases where models repeat content in subsequent iterations
                         val newContent = response.text
                         if (newContent.isNotEmpty()) {
                             // Check if this chunk is already in our total emitted content
@@ -356,7 +165,6 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                     }
                     is ChatResponse.Error -> {
                         hasError = true
-                        // errorMessage = response.message
                         emit(AgentResponse.Error(response.message, response.isRetryable))
                     }
                     is ChatResponse.Usage -> {
@@ -367,7 +175,6 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                         ))
                     }
                     is ChatResponse.Done -> {
-                        // receivedDone = true
                         // Check for embedded tool calls in content
                         if (pendingToolCalls.isEmpty()) {
                             pendingToolCalls.addAll(parseEmbeddedToolCalls(currentContent.toString()))
@@ -392,11 +199,8 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
             val cleanedCurrentContent = currentContent.toString().cleanToolCallBlocks().trim()
 
             // Only add this iteration's content if it's not a duplicate of previous content
-            // This prevents the model from repeating the same response multiple times
             if (cleanedCurrentContent.isNotEmpty()) {
                 val isDuplicate = contentByIteration.any { previousContent ->
-                    // Check if this content is substantially similar to any previous iteration
-                    // Either identical, or one contains the other (common in multi-turn)
                     previousContent.trim() == cleanedCurrentContent ||
                     previousContent.contains(cleanedCurrentContent) ||
                     cleanedCurrentContent.contains(previousContent.trim())
@@ -508,14 +312,9 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                 }
 
                 // Continue processing to let AI respond to tool results
-                // The agent will autonomously continue until it has enough info
             } else {
                 // No tool calls - combine unique content from all iterations
-                // Use only the last (most complete) response if there are multiple iterations with content
-                // This handles the case where models repeat content after tool calls
                 val finalContent = if (contentByIteration.isNotEmpty()) {
-                    // Take the last non-empty content as it's typically the most complete response
-                    // after all tool results have been processed
                     contentByIteration.last()
                 } else {
                     ""
@@ -523,13 +322,10 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                 val finalReasoning = allReasoning.toString().trim()
 
                 // Check if we only have reasoning but no content
-                // This can happen with thinking models like Kimi K2, DeepSeek R1, QwQ
-                // They sometimes emit only reasoning_content without content field
                 if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
                     // For reasoning-only responses, check if we used tools and might need continuation
                     if (toolsUsed.isNotEmpty() && iteration < MAX_TOTAL_ITERATIONS - 1) {
                         // We used tools but got no final answer - prompt for continuation
-                        // Add a hint message to encourage the model to provide the final answer
                         fullMessages.add(ChatMessage(
                             role = MessageRole.ASSISTANT,
                             content = finalReasoning
@@ -547,23 +343,14 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
                         // Continue for one more iteration
                         continue
                     }
-                    // If no tools were used, or we've exhausted iterations,
-                    // treat reasoning as the content (some models only output in reasoning_content)
-                    // This ensures the user sees something
                 }
 
-                // We're done - emit the complete response
-                // If we have no content but have reasoning, use reasoning as a fallback
-                // This handles cases where models emit only in reasoning_content
                 val contentToEmit = if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
-                    // Use reasoning as the actual response when there's no content
-                    // Clear reasoning since we're using it as content
                     finalReasoning
                 } else {
                     finalContent
                 }
 
-                // Only keep reasoning separate if we have both content AND reasoning
                 val reasoningToEmit = if (finalContent.isNotEmpty() && finalReasoning.isNotEmpty()) {
                     finalReasoning
                 } else {
@@ -589,14 +376,12 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
             val finalReasoning = allReasoning.toString().trim()
 
             if (finalContent.isNotEmpty() || finalReasoning.isNotEmpty()) {
-                // If we have no content but have reasoning, use reasoning as content
                 val contentToEmit = if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
                     finalReasoning
                 } else {
                     finalContent.ifEmpty { "I apologize, but I wasn't able to complete my analysis within the allowed iterations. Here's what I was able to determine..." }
                 }
 
-                // Only include reasoning separately if we have both
                 val reasoningToEmit = if (finalContent.isNotEmpty() && finalReasoning.isNotEmpty()) {
                     finalReasoning
                 } else {
@@ -611,7 +396,7 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
             }
 
             emit(AgentResponse.Error(
-                "Maximum iterations reached ($iteration total, $toolIterations tool calls). The analysis may be incomplete.",
+                "Maximum iterations reached (${iteration} total, ${toolIterations} tool calls). The analysis may be incomplete.",
                 isRetryable = false
             ))
         }
@@ -619,18 +404,6 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
 
     /**
      * Parse embedded tool calls from AI response content
-     *
-     * Supports multiple formats to maximize compatibility across different AI models:
-     * 1. Code block format: ```tool_call { "tool": "name", "arguments": {...} } ```
-     * 2. JSON code block: ```json { "tool": "name", "arguments": {...} } ```
-     * 3. Inline JSON format: {"tool": "name", "arguments": {...}}
-     * 4. Function call format: tool_name(arg1=val1, arg2=val2)
-     * 5. Name-first format: { "name": "tool_name", "parameters": {...} }
-     *
-     * This robust parsing handles edge cases where models may:
-     * - Use different JSON formatting (minified, pretty-printed)
-     * - Include extra whitespace or newlines
-     * - Use nested arguments with complex values
      */
     private fun parseEmbeddedToolCalls(content: String): List<ToolCallRequest> {
         val toolCalls = mutableListOf<ToolCallRequest>()
@@ -665,7 +438,7 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
 
         // Pattern 4: Inline JSON with tool key (handles nested arguments)
         val inlinePattern = Regex(
-            """\{\s*"tool"\s*:\s*"([^"]+)"\s*,\s*"arguments"\s*:\s*(\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\})\s*\}"""
+            """\{\s*"tool"\s*:\s*"([^"]+)"\s*,\s*"arguments"\s*:\s*(\{[^}]*(?:\{[^}]*\}[^}]*)*\})\s*\}"""
         )
         inlinePattern.findAll(content).forEach { match ->
             val toolName = match.groupValues[1]
@@ -675,7 +448,7 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
 
         // Pattern 5: Name-first format (some models use this)
         val nameFirstPattern = Regex(
-            """\{\s*"name"\s*:\s*"([^"]+)"\s*,\s*"parameters"\s*:\s*(\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\})\s*\}"""
+            """\{\s*"name"\s*:\s*"([^"]+)"\s*,\s*"parameters"\s*:\s*(\{[^}]*(?:\{[^}]*\}[^}]*)*\})\s*\}"""
         )
         nameFirstPattern.findAll(content).forEach { match ->
             val toolName = match.groupValues[1]
@@ -685,7 +458,7 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
 
         // Pattern 6: Function call format (tool_name(args))
         val functionPattern = Regex(
-            """(get_\w+|calculate_\w+)\s*\(\s*([^)]*)\s*\)"""
+            "(get_\w+|calculate_\w+)\s*\(\s*([^)]*)\s*\)"
         )
         functionPattern.findAll(content).forEach { match ->
             val toolName = match.groupValues[1]
@@ -745,8 +518,8 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
             val toolName = toolNameMatch.groupValues[1]
 
             // Try to extract arguments
-            val argsMatch = Regex(""""arguments"\s*:\s*(\{[^{}]*\})""").find(jsonStr)
-                ?: Regex(""""parameters"\s*:\s*(\{[^{}]*\})""").find(jsonStr)
+            val argsMatch = Regex(""""arguments"\s*:\s*(\{[^}]*\})"""").find(jsonStr)
+                ?: Regex(""""parameters"\s*:\s*(\{[^}]*\})"""").find(jsonStr)
 
             val arguments = argsMatch?.groupValues?.get(1) ?: "{}"
             addToolCallIfNotExists(toolName, arguments, toolCalls, processedIds)
@@ -783,7 +556,7 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
         val argsJson = JSONObject()
 
         // Split by comma, handling quoted strings
-        val argPairs = argsStr.split(Regex(""",(?=(?:[^"]*"[^"]*")*[^"]*$)"""))
+        val argPairs = argsStr.split(Regex(",(?=(?:[^"'*`]*"[^"'*`]*")*[^"'*`]*$)"))
 
         for (pair in argPairs) {
             val parts = pair.split("=", limit = 2)
@@ -842,7 +615,7 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
     private fun String.cleanToolCallBlocks(): String {
         return this
             .replace(Regex("""```tool_call\s*\n?\s*\{[\s\S]*?\}\s*\n?```"""), "")
-            .replace(Regex("""\{"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[^}]*\}\s*\}"""), "")
+            .replace(Regex("""\{\"tool\"\s*:\s*\"[^\"]+\"\s*,\s*\"arguments\"\s*:\s*\{[^}]*\}\s*\}"""), "")
             .trim()
     }
 }

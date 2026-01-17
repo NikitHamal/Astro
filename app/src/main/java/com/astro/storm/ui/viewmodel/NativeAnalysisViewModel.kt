@@ -5,12 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisCalculator
 import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 /**
  * ViewModel for Native Analysis - Comprehensive personality and life profile
@@ -24,7 +26,8 @@ import kotlinx.coroutines.withContext
  * - Education & Knowledge
  * - Spiritual Path
  */
-class NativeAnalysisViewModel : ViewModel() {
+@HiltViewModel
+class NativeAnalysisViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow<NativeAnalysisUiState>(NativeAnalysisUiState.Idle)
     val uiState: StateFlow<NativeAnalysisUiState> = _uiState.asStateFlow()

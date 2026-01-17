@@ -1,9 +1,11 @@
 package com.astro.storm.data.local
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.astro.storm.core.model.PlanetPosition
 
 /**
  * Room entity for persisting chart data
@@ -36,8 +38,13 @@ data class ChartEntity(
     val ayanamsaName: String,
     val ascendant: Double,
     val midheaven: Double,
-    val planetPositionsJson: String,
-    val houseCuspsJson: String,
+    
+    @ColumnInfo(name = "planetPositionsJson")
+    val planetPositions: List<PlanetPosition>,
+    
+    @ColumnInfo(name = "houseCuspsJson")
+    val houseCusps: List<Double>,
+    
     val houseSystem: String,
     val gender: String = "PREFER_NOT_TO_SAY",
     val createdAt: Long = System.currentTimeMillis()

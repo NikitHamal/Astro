@@ -8,6 +8,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ephemeris.HoroscopeCalculator
 import com.astro.storm.util.ChartUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,6 +22,7 @@ import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.concurrent.ConcurrentLinkedQueue
+import javax.inject.Inject
 
 data class InsightsData(
     val chart: VedicChart,
@@ -52,14 +54,14 @@ sealed class InsightsUiState {
     data object Idle : InsightsUiState()
 }
 
-class InsightsViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class InsightsViewModel @Inject constructor(
+    application: Application,
+    private val horoscopeCalculator: HoroscopeCalculator
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow<InsightsUiState>(InsightsUiState.Idle)
     val uiState = _uiState.asStateFlow()
-
-    private val horoscopeCalculator: HoroscopeCalculator by lazy {
-        HoroscopeCalculator(getApplication())
-    }
 
     private var currentLoadJob: Job? = null
     private var cachedData: InsightsData? = null
@@ -215,17 +217,13 @@ class InsightsViewModel(application: Application) : AndroidViewModel(application
         cachedData = null
         cachedChartId = null
         cachedDate = null
-        horoscopeCalculator.clearCache()
+        // horoscopeCalculator is injected singleton, caching is handled internally or should be managed differently if needed per-VM
     }
 
     override fun onCleared() {
         super.onCleared()
         currentLoadJob?.cancel()
-        try {
-            horoscopeCalculator.close()
-        } catch (e: Exception) {
-            Log.w(TAG, "Error closing horoscope calculator", e)
-        }
+        // Don't close injected singleton
     }
 
     companion object {

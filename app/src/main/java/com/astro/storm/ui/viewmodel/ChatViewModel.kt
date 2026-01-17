@@ -29,12 +29,12 @@ import com.astro.storm.ui.components.agentic.TodoItem
 import com.astro.storm.ui.components.agentic.ToolDisplayUtils
 import com.astro.storm.ui.components.agentic.ToolExecution
 import com.astro.storm.ui.components.agentic.ToolExecutionStatus
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.json.JSONArray
 import org.json.JSONObject
+import javax.inject.Inject
 
 /**
  * AI processing status for detailed UI feedback
@@ -89,14 +89,13 @@ data class StreamingMessageState(
  * - Message streaming
  * - Agent tool calling
  */
-class ChatViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val chatRepository = ChatRepository.getInstance(application)
-    private val providerRegistry = AiProviderRegistry.getInstance(application)
-    private val database = ChartDatabase.getInstance(application)
-
-    // Agent instance (lazy init per conversation)
-    private var stormyAgent: StormyAgent? = null
+@HiltViewModel
+class ChatViewModel @Inject constructor(
+    application: Application,
+    private val chatRepository: ChatRepository,
+    private val providerRegistry: AiProviderRegistry,
+    private val stormyAgent: StormyAgent
+) : AndroidViewModel(application) {
 
     // ============================================
     // UI STATE
@@ -319,7 +318,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         cancelStreaming()
         _currentConversationId.value = null
         pendingConversationContext = null
-        stormyAgent = null
+        // No need to clear stormyAgent as it's now injected as a singleton
     }
 
     /**
@@ -480,17 +479,6 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                     )
                 }
 
-                // Ensure agent is initialized
-                if (stormyAgent == null) {
-                    initializeAgent(currentChart, savedCharts, selectedChartId)
-                }
-
-                val agent = stormyAgent ?: run {
-                    _uiState.value = ChatUiState.Error("Failed to initialize AI agent")
-                    _aiStatus.value = AiStatus.Idle
-                    return@launch
-                }
-
                 // Get conversation history and convert to ChatMessage format
                 val dbMessages = chatRepository.getMessagesForConversationSync(conversationId)
                     .dropLast(1) // Exclude the placeholder
@@ -513,7 +501,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 var hasReceivedContent = false
 
                 streamingJob = launch {
-                    agent.processMessage(
+                    stormyAgent.processMessage(
                         messages = chatMessages,
                         model = model,
                         currentProfile = currentProfile,
@@ -1535,12 +1523,6 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
         viewModelScope.launch {
             try {
-                val agent = stormyAgent ?: run {
-                    _uiState.value = ChatUiState.Error("Failed to resume AI agent")
-                    _aiStatus.value = AiStatus.Idle
-                    return@launch
-                }
-
                 // Add the user's response as a user message in the conversation
                 val updatedHistory = conversationHistory.toMutableList()
                 updatedHistory.add(AgentChatMessage(
@@ -1558,7 +1540,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 var hasReceivedContent = false
 
                 streamingJob = launch {
-                    agent.processMessage(
+                    stormyAgent.processMessage(
                         messages = updatedHistory,
                         model = model,
                         currentProfile = currentProfile,
@@ -1999,103 +1981,33 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // ============================================
-    // AGENT INITIALIZATION
-    // ============================================
-
     private fun initializeAgent(
         currentChart: VedicChart?,
         savedCharts: List<SavedChart>,
         selectedChartId: Long?
     ) {
-        stormyAgent = StormyAgent.getInstance(getApplication())
-        // Context data (currentChart, savedCharts, selectedChartId) is passed
-        // directly to processMessage() when sending messages
-    }
-
-    /**
-     * Update agent context when profile changes
-     */
-    fun updateAgentContext(
-        currentChart: VedicChart?,
-        savedCharts: List<SavedChart>,
-        selectedChartId: Long?
-    ) {
-        if (stormyAgent != null) {
-            initializeAgent(currentChart, savedCharts, selectedChartId)
-        }
-    }
-
-    // ============================================
-    // ERROR HANDLING
-    // ============================================
-
-    fun clearError() {
-        if (_uiState.value is ChatUiState.Error) {
-            _uiState.value = ChatUiState.Idle
-        }
-    }
-
-    // ============================================
-    // LIFECYCLE CLEANUP
-    // ============================================
-
-    /**
-     * Cleanup resources when ViewModel is destroyed.
-     * This prevents memory leaks from coroutines, streaming jobs, and agent instances.
-     */
-    override fun onCleared() {
-        super.onCleared()
-
-        // Cancel any active streaming job
-        streamingJob?.cancel()
-        streamingJob = null
-
-        // Clear streaming state
-        _isStreaming.value = false
-        _streamingContent.value = ""
-        _streamingReasoning.value = ""
-        _toolsInProgress.value = emptyList()
-        _aiStatus.value = AiStatus.Idle
-        _streamingMessageId.value = null
-        _streamingMessageState.value = null
-        _sectionedMessageState.value = null
-
-        // Clear accumulators to free memory
-        rawContentAccumulator.clear()
-        rawReasoningAccumulator.clear()
-        currentToolSteps.clear()
-
-        // Clear section tracking
-        clearSectionTracking()
-
-        // Release agent instance
-        stormyAgent = null
-
-        // Clear message tracking
-        currentMessageId = null
-        pendingConversationContext = null
+        // No-op for now as StormyAgent is injected
     }
 }
 
 /**
- * Chat UI State
+ * UI states for chat
  */
 sealed class ChatUiState {
     object Idle : ChatUiState()
     object Sending : ChatUiState()
     object Streaming : ChatUiState()
-    object WaitingForUserInput : ChatUiState() // Agent is paused waiting for user response
+    object WaitingForUserInput : ChatUiState()
     data class Error(val message: String) : ChatUiState()
 }
 
 /**
- * State for ask_user interrupts - when agent needs user input before continuing
+ * State for Ask User interruption
  */
 data class AskUserInterruptState(
     val question: String,
     val options: List<AskUserOptionData>,
     val allowCustomInput: Boolean,
     val context: String?,
-    val sectionId: String // ID of the AskUser section in the UI
+    val sectionId: String
 )

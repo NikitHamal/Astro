@@ -3,8 +3,12 @@ package com.astro.storm.data.ai.agent.tools
 import android.content.Context
 import com.astro.storm.data.local.ChartDatabase
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.data.preferences.AstrologySettingsManager
 import com.astro.storm.data.repository.SavedChart
+import dagger.hilt.android.qualifiers.ApplicationContext
 import org.json.JSONObject
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Registry for all astrology tools available to the Stormy agent.
@@ -12,8 +16,10 @@ import org.json.JSONObject
  * Manages tool registration, discovery, and execution.
  * Tools provide access to chart data, calculations, and app features.
  */
-class AstrologyToolRegistry private constructor(
-    private val context: Context
+@Singleton
+class AstrologyToolRegistry @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val astrologySettingsManager: AstrologySettingsManager
 ) {
     private val tools = mutableMapOf<String, AstrologyTool>()
 
@@ -176,7 +182,8 @@ class AstrologyToolRegistry private constructor(
                 currentProfile = currentProfile,
                 allProfiles = allProfiles,
                 currentChart = currentChart,
-                database = ChartDatabase.getInstance(context)
+                database = ChartDatabase.getInstance(context),
+                astrologySettingsManager = astrologySettingsManager
             )
 
             // Execute with timeout protection (30 seconds max)
@@ -311,19 +318,6 @@ class AstrologyToolRegistry private constructor(
 
         return null
     }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: AstrologyToolRegistry? = null
-
-        fun getInstance(context: Context): AstrologyToolRegistry {
-            return INSTANCE ?: synchronized(this) {
-                AstrologyToolRegistry(context.applicationContext).also {
-                    INSTANCE = it
-                }
-            }
-        }
-    }
 }
 
 /**
@@ -381,7 +375,8 @@ data class ToolContext(
     val currentProfile: SavedChart?,
     val allProfiles: List<SavedChart>,
     val currentChart: VedicChart?,
-    val database: ChartDatabase
+    val database: ChartDatabase,
+    val astrologySettingsManager: AstrologySettingsManager
 )
 
 /**

@@ -7,6 +7,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.ephemeris.YoginiDashaCalculator
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicReference
+import javax.inject.Inject
 
 sealed class YoginiDashaUiState {
     data object Loading : YoginiDashaUiState()
@@ -24,7 +26,8 @@ sealed class YoginiDashaUiState {
     data object Idle : YoginiDashaUiState()
 }
 
-class YoginiDashaViewModel : ViewModel() {
+@HiltViewModel
+class YoginiDashaViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow<YoginiDashaUiState>(YoginiDashaUiState.Idle)
     val uiState: StateFlow<YoginiDashaUiState> = _uiState.asStateFlow()

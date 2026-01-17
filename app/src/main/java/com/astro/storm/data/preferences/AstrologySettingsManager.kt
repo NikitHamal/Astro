@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.astro.storm.core.model.Ayanamsa
 import com.astro.storm.core.model.HouseSystem
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Node calculation mode
@@ -19,7 +22,10 @@ enum class NodeCalculationMode {
 /**
  * Astrology Settings Manager for persisting calculation preferences
  */
-class AstrologySettingsManager private constructor(context: Context) {
+@Singleton
+class AstrologySettingsManager @Inject constructor(
+    @ApplicationContext context: Context
+) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(
         PREFS_NAME,
@@ -94,16 +100,5 @@ class AstrologySettingsManager private constructor(context: Context) {
         private const val KEY_NODE_MODE = "node_mode"
         private const val KEY_AYANAMSA = "ayanamsa"
         private const val KEY_HOUSE_SYSTEM = "house_system"
-
-        @Volatile
-        private var INSTANCE: AstrologySettingsManager? = null
-
-        fun getInstance(context: Context): AstrologySettingsManager {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: AstrologySettingsManager(context.applicationContext).also {
-                    INSTANCE = it
-                }
-            }
-        }
     }
 }

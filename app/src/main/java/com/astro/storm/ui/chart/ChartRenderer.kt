@@ -1,7 +1,9 @@
 package com.astro.storm.ui.chart
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Typeface
+import android.util.TypedValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
@@ -10,6 +12,8 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.core.content.res.ResourcesCompat
+import com.astro.storm.R
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
@@ -26,8 +30,6 @@ import kotlin.math.sqrt
 
 /**
  * Color configuration for chart rendering.
- * Allows charts to be rendered with different color schemes for dark/light themes
- * or print-friendly PDF output.
  */
 data class ChartColorConfig(
     val backgroundColor: Color,
@@ -54,9 +56,6 @@ data class ChartColorConfig(
     val debilitatedColor: Color
 ) {
     companion object {
-        /**
-         * Light theme colors - cream/beige tones optimized for light mode and PDF printing
-         */
         val Light = ChartColorConfig(
             backgroundColor = Color(0xFFFAF8F5),
             chartFillColor = Color(0xFFF5F2ED),
@@ -82,9 +81,6 @@ data class ChartColorConfig(
             debilitatedColor = Color(0xFFC0392B)
         )
 
-        /**
-         * Dark theme colors - warm brown tones optimized for dark mode
-         */
         val Dark = ChartColorConfig(
             backgroundColor = Color(0xFF1A1512),
             chartFillColor = Color(0xFF2A201A),
@@ -109,21 +105,26 @@ data class ChartColorConfig(
             moolTrikonaColor = Color(0xFFBA68C8),
             debilitatedColor = Color(0xFFCF6679)
         )
-
-        /**
-         * PDF-optimized colors - high contrast for print quality
-         */
-        val Print = Light.copy(
-            borderColor = Color(0xFF4A3F30),
-            lineColor = Color(0xFF6B5D4D),
-            houseNumberColor = Color(0xFF3D3228)
-        )
     }
 }
 
 class ChartRenderer(
+    context: Context,
     private val colorConfig: ChartColorConfig = ChartColorConfig.Light
 ) {
+
+    private val resources = context.resources
+    private val displayMetrics = resources.displayMetrics
+
+    // Load dimensions from resources
+    private val borderStrokeWidth = resources.getDimension(R.dimen.chart_border_stroke_width)
+    private val lineStrokeWidth = resources.getDimension(R.dimen.chart_line_stroke_width)
+    
+    // Load ratios
+    private val textSizeRatio = resources.getFloat(R.dimen.chart_text_size_ratio)
+    private val lineHeightRatio = resources.getFloat(R.dimen.chart_line_height_ratio)
+    private val paddingRatio = resources.getFloat(R.dimen.chart_padding_ratio)
+    private val arrowSizeRatio = resources.getFloat(R.dimen.chart_arrow_size_ratio)
 
     private val textPaint = android.graphics.Paint().apply {
         textAlign = android.graphics.Paint.Align.CENTER
@@ -132,8 +133,8 @@ class ChartRenderer(
         hinting = android.graphics.Paint.HINTING_ON
     }
 
-    private val borderStroke = Stroke(width = 2.5f, cap = StrokeCap.Round, join = StrokeJoin.Round)
-    private val lineStroke = Stroke(width = 1.8f, cap = StrokeCap.Round, join = StrokeJoin.Round)
+    private val borderStroke = Stroke(width = borderStrokeWidth, cap = StrokeCap.Round, join = StrokeJoin.Round)
+    private val lineStroke = Stroke(width = lineStrokeWidth, cap = StrokeCap.Round, join = StrokeJoin.Round)
     private val frameLinesPath = Path()
 
     private enum class HouseType {
@@ -193,12 +194,8 @@ class ChartRenderer(
         const val SYMBOL_COMBUST = "^"
         const val SYMBOL_VARGOTTAMA = "\u00A4"
 
-        private const val BASE_TEXT_SIZE_RATIO = 0.032f
-        private const val BASE_LINE_HEIGHT_RATIO = 0.042f
         private const val MIN_SCALE_FACTOR = 0.65f
         private const val MAX_SCALE_FACTOR = 1.0f
-        private const val ARROW_SIZE_RATIO = 0.38f
-        private const val CHART_PADDING_RATIO = 0.025f
     }
 
     // Theme-aware color accessors
@@ -320,7 +317,7 @@ class ChartRenderer(
     }
 
     private fun DrawScope.drawNorthIndianFrame(size: Float): ChartFrame {
-        val padding = size * CHART_PADDING_RATIO
+        val padding = size * paddingRatio
         val chartSize = size - (padding * 2)
         val left = padding
         val top = padding
@@ -749,8 +746,8 @@ class ChartRenderer(
         houseBounds: HouseBounds,
         size: Float
     ): GridLayout {
-        val baseTextSize = size * BASE_TEXT_SIZE_RATIO
-        val baseLineHeight = size * BASE_LINE_HEIGHT_RATIO
+        val baseTextSize = size * textSizeRatio
+        val baseLineHeight = size * lineHeightRatio
         val avgItemWidth = baseTextSize * 2.8f
 
         val maxColsByWidth = (houseBounds.effectiveWidth / avgItemWidth).toInt().coerceIn(1, 3)
@@ -836,7 +833,7 @@ class ChartRenderer(
             val position = Offset(contentCenter.x + xOffset, startY + yOffset)
 
             val arrowWidth = when (item.dignity) {
-                PlanetaryDignity.EXALTED, PlanetaryDignity.DEBILITATED -> layout.textSize * ARROW_SIZE_RATIO * 1.3f
+                PlanetaryDignity.EXALTED, PlanetaryDignity.DEBILITATED -> layout.textSize * arrowSizeRatio * 1.3f
                 else -> 0f
             }
 
@@ -888,7 +885,7 @@ class ChartRenderer(
         textSize: Float,
         textWidth: Float
     ) {
-        val arrowSize = textSize * ARROW_SIZE_RATIO
+        val arrowSize = textSize * arrowSizeRatio
         val arrowCenterX = textPosition.x + textWidth / 2 + arrowSize * 0.9f
         val arrowCenterY = textPosition.y
 
@@ -911,7 +908,7 @@ class ChartRenderer(
         textSize: Float,
         textWidth: Float
     ) {
-        val arrowSize = textSize * ARROW_SIZE_RATIO
+        val arrowSize = textSize * arrowSizeRatio
         val arrowCenterX = textPosition.x + textWidth / 2 + arrowSize * 0.9f
         val arrowCenterY = textPosition.y
 
@@ -969,390 +966,6 @@ class ChartRenderer(
         }
 
         drawPath(path = path, color = MOOL_TRIKONA_COLOR)
-    }
-
-    private fun polygonCentroid(points: List<Offset>): Offset {
-        if (points.isEmpty()) return Offset.Zero
-        if (points.size == 1) return points[0]
-        if (points.size == 2) {
-            return Offset((points[0].x + points[1].x) / 2f, (points[0].y + points[1].y) / 2f)
-        }
-
-        var signedArea = 0.0
-        var cx = 0.0
-        var cy = 0.0
-
-        for (i in points.indices) {
-            val j = (i + 1) % points.size
-            val xi = points[i].x.toDouble()
-            val yi = points[i].y.toDouble()
-            val xj = points[j].x.toDouble()
-            val yj = points[j].y.toDouble()
-
-            val cross = xi * yj - xj * yi
-            signedArea += cross
-            cx += (xi + xj) * cross
-            cy += (yi + yj) * cross
-        }
-
-        if (abs(signedArea) < 1e-10) {
-            val avgX = points.sumOf { it.x.toDouble() } / points.size
-            val avgY = points.sumOf { it.y.toDouble() } / points.size
-            return Offset(avgX.toFloat(), avgY.toFloat())
-        }
-
-        signedArea *= 0.5
-        val factor = 1.0 / (6.0 * signedArea)
-        return Offset((cx * factor).toFloat(), (cy * factor).toFloat())
-    }
-
-    private fun DrawScope.drawTextCentered(
-        text: String,
-        position: Offset,
-        textSize: Float,
-        color: Color,
-        isBold: Boolean = false
-    ) {
-        val typeface = if (isBold) TYPEFACE_BOLD else TYPEFACE_NORMAL
-        textPaint.color = color.toArgb()
-        textPaint.textSize = textSize
-        textPaint.typeface = typeface
-
-        drawContext.canvas.nativeCanvas.apply {
-            val textHeight = textPaint.descent() - textPaint.ascent()
-            val textOffset = textHeight / 2 - textPaint.descent()
-            drawText(text, position.x, position.y + textOffset, textPaint)
-        }
-    }
-
-    fun createChartBitmap(chart: VedicChart, width: Int, height: Int, density: Density): Bitmap {
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = android.graphics.Canvas(bitmap)
-        val drawScope = CanvasDrawScope()
-
-        drawScope.draw(
-            density,
-            LayoutDirection.Ltr,
-            Canvas(canvas),
-            Size(width.toFloat(), height.toFloat())
-        ) {
-            drawNorthIndianChart(this, chart, min(width, height).toFloat())
-        }
-
-        return bitmap
-    }
-
-    fun createDivisionalChartBitmap(
-        planetPositions: List<PlanetPosition>,
-        ascendantLongitude: Double,
-        chartTitle: String,
-        width: Int,
-        height: Int,
-        density: Density,
-        originalChart: VedicChart? = null
-    ): Bitmap {
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = android.graphics.Canvas(bitmap)
-        val drawScope = CanvasDrawScope()
-
-        drawScope.draw(
-            density,
-            LayoutDirection.Ltr,
-            Canvas(canvas),
-            Size(width.toFloat(), height.toFloat())
-        ) {
-            drawDivisionalChart(
-                this,
-                planetPositions,
-                ascendantLongitude,
-                min(width, height).toFloat(),
-                chartTitle,
-                originalChart
-            )
-        }
-
-        return bitmap
-    }
-
-    /**
-     * Create a bitmap of a South Indian chart.
-     */
-    fun createSouthIndianChartBitmap(
-        chart: VedicChart,
-        width: Int,
-        height: Int,
-        density: Density,
-        language: Language = Language.ENGLISH
-    ): Bitmap {
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = android.graphics.Canvas(bitmap)
-        val drawScope = CanvasDrawScope()
-
-        drawScope.draw(
-            density,
-            LayoutDirection.Ltr,
-            Canvas(canvas),
-            Size(width.toFloat(), height.toFloat())
-        ) {
-            drawSouthIndianChart(this, chart, min(width, height).toFloat(), language)
-        }
-
-        return bitmap
-    }
-
-    /**
-     * Draw a South Indian style chart (4x4 grid with fixed sign positions).
-     *
-     * In South Indian charts:
-     * - Signs are in FIXED positions (unlike North Indian where houses are fixed)
-     * - The grid is 4x4 with 12 outer cells for the 12 signs
-     * - The 4 center cells are empty or used for chart title
-     * - Pisces (12) starts at top-left inner position, going clockwise
-     *
-     * Standard South Indian layout:
-     * ```
-     *   Pi | Ar | Ta | Ge
-     *   ---|----|----|---
-     *   Aq |    |    | Cn
-     *   ---|----|----|---
-     *   Cp |    |    | Le
-     *   ---|----|----|---
-     *   Sg | Sc | Li | Vi
-     * ```
-     *
-     * The ascendant (1st house) is marked with a diagonal line in its cell.
-     */
-    fun drawSouthIndianChart(drawScope: DrawScope, chart: VedicChart, size: Float, language: Language = Language.ENGLISH) {
-        with(drawScope) {
-            val padding = size * CHART_PADDING_RATIO
-            val chartSize = size - (padding * 2)
-            val left = padding
-            val top = padding
-            val cellSize = chartSize / 4f
-
-            // Draw background
-            drawRect(color = BACKGROUND_COLOR, size = Size(size, size))
-
-            // Draw chart fill
-            drawRect(
-                color = CHART_FILL_COLOR,
-                topLeft = Offset(left, top),
-                size = Size(chartSize, chartSize)
-            )
-
-            // Draw outer border
-            drawRect(
-                color = BORDER_COLOR,
-                topLeft = Offset(left, top),
-                size = Size(chartSize, chartSize),
-                style = borderStroke
-            )
-
-            // Draw grid lines (4x4 grid)
-            for (i in 1..3) {
-                // Vertical lines
-                drawLine(
-                    color = LINE_COLOR,
-                    start = Offset(left + i * cellSize, top),
-                    end = Offset(left + i * cellSize, top + chartSize),
-                    strokeWidth = lineStroke.width
-                )
-                // Horizontal lines
-                drawLine(
-                    color = LINE_COLOR,
-                    start = Offset(left, top + i * cellSize),
-                    end = Offset(left + chartSize, top + i * cellSize),
-                    strokeWidth = lineStroke.width
-                )
-            }
-
-            // South Indian chart: Signs are in FIXED positions
-            // Map of sign number (1-12) to grid position (row, col)
-            // Layout: Pisces (12) at (0,0), going clockwise
-            val signToGridPosition = mapOf(
-                12 to Pair(0, 0),  // Pisces - top-left
-                1 to Pair(0, 1),   // Aries
-                2 to Pair(0, 2),   // Taurus
-                3 to Pair(0, 3),   // Gemini - top-right
-                4 to Pair(1, 3),   // Cancer
-                5 to Pair(2, 3),   // Leo
-                6 to Pair(3, 3),   // Virgo - bottom-right
-                7 to Pair(3, 2),   // Libra
-                8 to Pair(3, 1),   // Scorpio
-                9 to Pair(3, 0),   // Sagittarius - bottom-left
-                10 to Pair(2, 0),  // Capricorn
-                11 to Pair(1, 0)   // Aquarius
-            )
-
-            val ascendantSign = ZodiacSign.fromLongitude(chart.ascendant)
-            val sunPosition = chart.planetPositions.find { it.planet == Planet.SUN }
-
-            // Group planets by their zodiac sign
-            val planetsBySign = chart.planetPositions.groupBy { it.sign }
-
-            // Draw each sign cell
-            for (signNum in 1..12) {
-                val (row, col) = signToGridPosition[signNum] ?: continue
-                val sign = ZodiacSign.entries.find { it.number == signNum } ?: continue
-
-                val cellLeft = left + col * cellSize
-                val cellTop = top + row * cellSize
-                val cellCenterX = cellLeft + cellSize / 2f
-                val cellCenterY = cellTop + cellSize / 2f
-
-                // Determine house number for this sign
-                val houseNum = ((signNum - ascendantSign.number + 12) % 12) + 1
-
-                // Draw ascendant marker (diagonal line in ascendant sign cell)
-                if (sign == ascendantSign) {
-                    drawLine(
-                        color = LAGNA_COLOR,
-                        start = Offset(cellLeft + cellSize * 0.1f, cellTop + cellSize * 0.1f),
-                        end = Offset(cellLeft + cellSize * 0.35f, cellTop + cellSize * 0.35f),
-                        strokeWidth = borderStroke.width
-                    )
-                }
-
-                // Draw sign abbreviation in top-left corner of cell
-                val signTextSize = size * 0.025f
-                drawTextCentered(
-                    text = sign.abbreviation,
-                    position = Offset(cellLeft + signTextSize * 1.2f, cellTop + signTextSize * 1.2f),
-                    textSize = signTextSize,
-                    color = HOUSE_NUMBER_COLOR,
-                    isBold = false
-                )
-
-                // Get planets in this sign
-                val planets = planetsBySign[sign] ?: emptyList()
-
-                // Build display items for this cell
-                val displayItems = mutableListOf<HouseDisplayItem>()
-
-                // Add Asc marker for 1st house
-                if (houseNum == 1) {
-                    displayItems.add(
-                        HouseDisplayItem(
-                            text = StringResources.get(StringKeyAnalysis.CHART_ASC_ABBR, language),
-                            color = LAGNA_COLOR,
-                            isBold = true,
-                            isLagna = true
-                        )
-                    )
-                }
-
-                // Add planets
-                planets.forEach { planet ->
-                    val abbrev = planet.planet.symbol
-                    val degree = (planet.longitude % 30.0).toInt()
-                    val degreeSuper = toSuperscript(degree)
-                    val dignity = getPlanetaryDignity(planet.planet, planet.sign, planet.longitude)
-
-                    val statusIndicators = buildString {
-                        if (planet.isRetrograde) append(SYMBOL_RETROGRADE)
-                        if (isCombust(planet, sunPosition)) append(SYMBOL_COMBUST)
-                        if (isVargottama(planet)) append(SYMBOL_VARGOTTAMA)
-                    }
-
-                    displayItems.add(
-                        HouseDisplayItem(
-                            text = "$abbrev$degreeSuper$statusIndicators",
-                            color = getPlanetColor(planet.planet),
-                            isBold = true,
-                            dignity = dignity
-                        )
-                    )
-                }
-
-                // Draw planets in cell
-                if (displayItems.isNotEmpty()) {
-                    drawSouthIndianCellContents(
-                        displayItems = displayItems,
-                        cellCenterX = cellCenterX,
-                        cellCenterY = cellCenterY,
-                        cellSize = cellSize,
-                        size = size
-                    )
-                }
-            }
-
-            // Optionally draw chart title in center 4 cells
-            val centerX = left + chartSize / 2f
-            val centerY = top + chartSize / 2f
-            val titleTextSize = size * 0.035f
-            drawTextCentered(
-                text = StringResources.get(StringKeyAnalysis.CHART_LAGNA, language),
-                position = Offset(centerX, centerY),
-                textSize = titleTextSize,
-                color = HOUSE_NUMBER_COLOR,
-                isBold = true
-            )
-        }
-    }
-
-    /**
-     * Draw contents of a South Indian chart cell.
-     */
-    private fun DrawScope.drawSouthIndianCellContents(
-        displayItems: List<HouseDisplayItem>,
-        cellCenterX: Float,
-        cellCenterY: Float,
-        cellSize: Float,
-        size: Float
-    ) {
-        val baseTextSize = size * 0.028f
-        val lineHeight = size * 0.036f
-
-        // Calculate layout - prefer single column for South Indian cells
-        val maxItemsPerColumn = 4
-        val columns = if (displayItems.size > maxItemsPerColumn) 2 else 1
-        val rows = (displayItems.size + columns - 1) / columns
-
-        val totalContentHeight = rows * lineHeight
-        val startY = cellCenterY - totalContentHeight / 2f + lineHeight / 2f
-
-        // Slight offset from center to avoid sign abbreviation
-        val contentCenterX = cellCenterX + cellSize * 0.05f
-        val contentCenterY = cellCenterY + cellSize * 0.08f
-
-        val columnSpacing = cellSize * 0.35f
-
-        displayItems.forEachIndexed { index, item ->
-            val col = index % columns
-            val row = index / columns
-
-            val xOffset = if (columns > 1) {
-                (col - (columns - 1) / 2f) * columnSpacing
-            } else {
-                0f
-            }
-
-            val yOffset = row * lineHeight
-            val position = Offset(contentCenterX + xOffset, contentCenterY - totalContentHeight / 2f + yOffset)
-
-            // Draw the text
-            val typeface = if (item.isBold) TYPEFACE_BOLD else TYPEFACE_NORMAL
-            textPaint.color = item.color.toArgb()
-            textPaint.textSize = baseTextSize
-            textPaint.typeface = typeface
-
-            val textHeight = textPaint.descent() - textPaint.ascent()
-            val textWidth = textPaint.measureText(item.text)
-
-            drawContext.canvas.nativeCanvas.apply {
-                val textOffset = textHeight / 2 - textPaint.descent()
-                drawText(item.text, position.x, position.y + textOffset, textPaint)
-            }
-
-            // Draw dignity indicators
-            when (item.dignity) {
-                PlanetaryDignity.EXALTED -> drawExaltedArrow(position, baseTextSize, textWidth)
-                PlanetaryDignity.DEBILITATED -> drawDebilitatedArrow(position, baseTextSize, textWidth)
-                PlanetaryDignity.OWN_SIGN -> drawOwnSignIndicator(position, baseTextSize, textWidth)
-                PlanetaryDignity.MOOL_TRIKONA -> drawMoolTrikonaIndicator(position, baseTextSize, textWidth)
-                else -> {}
-            }
-        }
     }
 
     fun DrawScope.drawChartLegend(
@@ -1482,7 +1095,7 @@ class ChartRenderer(
             drawNorthIndianChart(this, chart, chartSize, chartTitle, language)
 
             if (showLegend) {
-                val padding = chartSize * CHART_PADDING_RATIO
+                val padding = chartSize * paddingRatio
                 val chartWidth = chartSize - (padding * 2)
                 val textSize = chartSize * 0.030f
 
@@ -1520,7 +1133,7 @@ class ChartRenderer(
             drawSouthIndianChart(this, chart, chartSize, language)
 
             if (showLegend) {
-                val padding = chartSize * CHART_PADDING_RATIO
+                val padding = chartSize * paddingRatio
                 val chartWidth = chartSize - (padding * 2)
                 val textSize = chartSize * 0.030f
 

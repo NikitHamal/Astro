@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -15,9 +14,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.astro.storm.core.common.LocalizationProvider
+import com.astro.storm.data.preferences.AstrologySettingsManager
 import com.astro.storm.data.preferences.OnboardingManager
 import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.data.preferences.ThemeMode
@@ -26,16 +26,25 @@ import com.astro.storm.ui.screen.OnboardingScreen
 import com.astro.storm.ui.theme.AstroStormTheme
 import com.astro.storm.ui.theme.LocalAppThemeColors
 import com.astro.storm.ui.viewmodel.ChartViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var themeManager: ThemeManager
+
+    @Inject
+    lateinit var onboardingManager: OnboardingManager
+
+    @Inject
+    lateinit var astrologySettingsManager: AstrologySettingsManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            // Get managers
-            val themeManager = remember { ThemeManager.getInstance(this) }
-            val onboardingManager = remember { OnboardingManager.getInstance(this) }
-
             // Observe theme mode
             val themeMode by themeManager.themeMode.collectAsState()
             val isSystemDarkTheme = isSystemInDarkTheme()
@@ -66,11 +75,12 @@ class MainActivity : ComponentActivity() {
                                 onComplete = { shouldNavigateToChartInput ->
                                     navigateToChartInputAfterOnboarding = shouldNavigateToChartInput
                                     showOnboarding = false
+                                    onboardingManager.completeOnboarding() // Mark as complete
                                 }
                             )
                         } else {
                             val navController = rememberNavController()
-                            val viewModel: ChartViewModel = viewModel()
+                            val viewModel: ChartViewModel = hiltViewModel()
 
                             // Navigate to chart input if coming from onboarding
                             LaunchedEffect(navigateToChartInputAfterOnboarding) {

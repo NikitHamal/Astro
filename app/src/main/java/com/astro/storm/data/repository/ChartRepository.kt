@@ -5,15 +5,16 @@ import com.astro.storm.data.local.ChartEntity
 import com.astro.storm.core.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.json.JSONArray
-import org.json.JSONObject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Repository for chart data operations
  */
-class ChartRepository(private val chartDao: ChartDao) {
+@Singleton
+class ChartRepository @Inject constructor(private val chartDao: ChartDao) {
 
     fun getAllCharts(): Flow<List<SavedChart>> {
         return chartDao.getAllCharts().map { entities ->
@@ -48,30 +49,6 @@ class ChartRepository(private val chartDao: ChartDao) {
     }
 
     private fun VedicChart.toEntity(): ChartEntity {
-        val planetPositionsJson = JSONArray().apply {
-            planetPositions.forEach { position ->
-                put(JSONObject().apply {
-                    put("planet", position.planet.name)
-                    put("longitude", position.longitude)
-                    put("latitude", position.latitude)
-                    put("distance", position.distance)
-                    put("speed", position.speed)
-                    put("sign", position.sign.name)
-                    put("degree", position.degree)
-                    put("minutes", position.minutes)
-                    put("seconds", position.seconds)
-                    put("isRetrograde", position.isRetrograde)
-                    put("nakshatra", position.nakshatra.name)
-                    put("nakshatraPada", position.nakshatraPada)
-                    put("house", position.house)
-                })
-            }
-        }.toString()
-
-        val houseCuspsJson = JSONArray().apply {
-            houseCusps.forEach { put(it) }
-        }.toString()
-
         return ChartEntity(
             name = birthData.name,
             dateTime = birthData.dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
@@ -84,65 +61,34 @@ class ChartRepository(private val chartDao: ChartDao) {
             ayanamsaName = ayanamsaName,
             ascendant = ascendant,
             midheaven = midheaven,
-            planetPositionsJson = planetPositionsJson,
-            houseCuspsJson = houseCuspsJson,
+            planetPositions = planetPositions,
+            houseCusps = houseCusps,
             houseSystem = houseSystem.name,
             gender = birthData.gender.name
         )
     }
 
     private fun ChartEntity.toVedicChart(): VedicChart {
-        try {
-            val planetPositions = JSONArray(planetPositionsJson).let { array ->
-                (0 until array.length()).map { i ->
-                    val obj = array.getJSONObject(i)
-                    PlanetPosition(
-                        planet = Planet.valueOf(obj.getString("planet")),
-                        longitude = obj.getDouble("longitude"),
-                        latitude = obj.getDouble("latitude"),
-                        distance = obj.getDouble("distance"),
-                        speed = obj.getDouble("speed"),
-                        sign = ZodiacSign.valueOf(obj.getString("sign")),
-                        degree = obj.getDouble("degree"),
-                        minutes = obj.getDouble("minutes"),
-                        seconds = obj.getDouble("seconds"),
-                        isRetrograde = obj.getBoolean("isRetrograde"),
-                        nakshatra = Nakshatra.valueOf(obj.getString("nakshatra")),
-                        nakshatraPada = obj.getInt("nakshatraPada"),
-                        house = obj.getInt("house")
-                    )
-                }
-            }
-
-            val houseCusps = JSONArray(houseCuspsJson).let { array ->
-                (0 until array.length()).map { i ->
-                    array.getDouble(i)
-                }
-            }
-            return VedicChart(
-                birthData = BirthData(
-                    name = name,
-                    dateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                    latitude = latitude,
-                    longitude = longitude,
-                    timezone = timezone,
-                    location = location,
-                    gender = Gender.fromString(gender)
-                ),
-                julianDay = julianDay,
-                ayanamsa = ayanamsa,
-                ayanamsaName = ayanamsaName,
-                ascendant = ascendant,
-                midheaven = midheaven,
-                planetPositions = planetPositions,
-                houseCusps = houseCusps,
-                houseSystem = HouseSystem.valueOf(houseSystem),
-                calculationTime = createdAt
-            )
-        } catch (e: Exception) {
-            android.util.Log.e("ChartRepository", "Failed to parse chart entity", e)
-            throw IllegalStateException("Failed to parse chart data from database", e)
-        }
+        return VedicChart(
+            birthData = BirthData(
+                name = name,
+                dateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                latitude = latitude,
+                longitude = longitude,
+                timezone = timezone,
+                location = location,
+                gender = Gender.fromString(gender)
+            ),
+            julianDay = julianDay,
+            ayanamsa = ayanamsa,
+            ayanamsaName = ayanamsaName,
+            ascendant = ascendant,
+            midheaven = midheaven,
+            planetPositions = planetPositions,
+            houseCusps = houseCusps,
+            houseSystem = HouseSystem.valueOf(houseSystem),
+            calculationTime = createdAt
+        )
     }
 
     private fun ChartEntity.toSavedChart(): SavedChart {

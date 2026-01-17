@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Chart Rendering Dimensions -->
+    <dimen name="chart_border_stroke_width">1.5dp</dimen>
+    <dimen name="chart_line_stroke_width">1.0dp</dimen>
+    
+    <!-- Ratios (stored as floats) -->
+    <item name="chart_text_size_ratio" format="float" type="dimen">0.032</item>
+    <item name="chart_line_height_ratio" format="float" type="dimen">0.042</item>
+    <item name="chart_padding_ratio" format="float" type="dimen">0.025</item>
+    <item name="chart_arrow_size_ratio" format="float" type="dimen">0.38</item>
+</resources>

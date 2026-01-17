@@ -6,6 +6,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.shoola.ShoolaDashaCalculator
 import com.astro.storm.ephemeris.shoola.ShoolaDashaResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicReference
+import javax.inject.Inject
 
 /**
  * UI State for Shoola Dasha Screen
@@ -35,7 +37,8 @@ sealed class ShoolaDashaUiState {
  * Shoola Dasha is a Jaimini sign-based dasha system used specifically for
  * timing health issues, accidents, and critical life events.
  */
-class ShoolaDashaViewModel : ViewModel() {
+@HiltViewModel
+class ShoolaDashaViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow<ShoolaDashaUiState>(ShoolaDashaUiState.Idle)
     val uiState: StateFlow<ShoolaDashaUiState> = _uiState.asStateFlow()

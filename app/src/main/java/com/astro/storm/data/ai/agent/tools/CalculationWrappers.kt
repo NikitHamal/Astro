@@ -12,6 +12,7 @@ import com.astro.storm.ephemeris.prashna.*
 import com.astro.storm.ephemeris.remedy.*
 import com.astro.storm.ephemeris.remedy.RemedyCategory
 import com.astro.storm.ephemeris.yoga.*
+import com.astro.storm.data.preferences.AstrologySettingsManager
 import java.time.LocalDate
 import java.util.Date
 
@@ -805,7 +806,10 @@ class ArgalaCalculatorWrapper {
 // PRASHNA (HORARY) WRAPPER
 // ============================================
 
-class PrashnaCalculatorWrapper(private val context: android.content.Context) {
+class PrashnaCalculatorWrapper(
+    private val context: android.content.Context,
+    private val settingsManager: AstrologySettingsManager
+) {
 
     data class PrashnaAnalysisResult(
         val question: String,
@@ -897,12 +901,19 @@ class PrashnaCalculatorWrapper(private val context: android.content.Context) {
                 else -> PrashnaCategory.GENERAL
             }
 
+            val houseSystem = try {
+                settingsManager.houseSystem.value
+            } catch (e: Exception) {
+                com.astro.storm.core.model.HouseSystem.PLACIDUS
+            }
+
             val result = calculator.generatePrashnaChart(
                 question = question,
                 category = prashnaCategory,
                 latitude = latitude,
                 longitude = longitude,
-                timezone = timezone
+                timezone = timezone,
+                houseSystem = houseSystem
             )
 
             // Convert verdict to score

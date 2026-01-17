@@ -4,11 +4,13 @@ import android.app.Application
 import android.util.Log
 import com.astro.storm.ephemeris.SwissEphemerisEngine
 import com.astro.storm.util.GlobalExceptionHandler
+import dagger.hilt.android.HiltAndroidApp
 import java.io.IOException
 
 /**
  * Application class for AstroStorm
  */
+@HiltAndroidApp
 class AstroStormApplication : Application() {
     override fun onCreate() {
         super.onCreate()

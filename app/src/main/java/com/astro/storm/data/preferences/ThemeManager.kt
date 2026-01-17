@@ -2,9 +2,12 @@ package com.astro.storm.data.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Theme Manager for persisting and managing theme preferences
@@ -17,7 +20,10 @@ import kotlinx.coroutines.flow.asStateFlow
  * Theme preference is persisted using SharedPreferences for
  * instant access on app startup without database overhead.
  */
-class ThemeManager private constructor(context: Context) {
+@Singleton
+class ThemeManager @Inject constructor(
+    @ApplicationContext context: Context
+) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(
         PREFS_NAME,
@@ -61,17 +67,6 @@ class ThemeManager private constructor(context: Context) {
     companion object {
         private const val PREFS_NAME = "astro_storm_theme_prefs"
         private const val KEY_THEME_MODE = "theme_mode"
-
-        @Volatile
-        private var INSTANCE: ThemeManager? = null
-
-        fun getInstance(context: Context): ThemeManager {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: ThemeManager(context.applicationContext).also {
-                    INSTANCE = it
-                }
-            }
-        }
     }
 }
 

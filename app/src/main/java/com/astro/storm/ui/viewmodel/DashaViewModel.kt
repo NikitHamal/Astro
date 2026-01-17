@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.util.ChartUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicReference
+import javax.inject.Inject
 
 sealed class DashaUiState {
     data object Loading : DashaUiState()
@@ -25,7 +27,8 @@ sealed class DashaUiState {
     data object Idle : DashaUiState()
 }
 
-class DashaViewModel : ViewModel() {
+@HiltViewModel
+class DashaViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow<DashaUiState>(DashaUiState.Idle)
     val uiState: StateFlow<DashaUiState> = _uiState.asStateFlow()

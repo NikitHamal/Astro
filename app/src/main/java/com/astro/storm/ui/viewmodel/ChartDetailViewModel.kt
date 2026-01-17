@@ -5,17 +5,18 @@ import android.content.Context
 import androidx.compose.ui.unit.Density
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.astro.storm.data.local.ChartDatabase
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.repository.ChartRepository
 import com.astro.storm.util.ChartExporter
 import com.astro.storm.util.ExportUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 /**
  * ViewModel for Chart Detail screen operations.
@@ -25,22 +26,19 @@ import kotlinx.coroutines.withContext
  * - Deleting charts
  * - Exporting chart data
  */
-class ChartDetailViewModel(application: Application) : AndroidViewModel(application) {
-
+@HiltViewModel
+class ChartDetailViewModel @Inject constructor(
+    application: Application,
     private val repository: ChartRepository
-    private val chartExporter: ChartExporter
+) : AndroidViewModel(application) {
+
+    private val chartExporter: ChartExporter = ChartExporter(application)
 
     private val _chart = MutableStateFlow<VedicChart?>(null)
     val chart: StateFlow<VedicChart?> = _chart.asStateFlow()
 
     private val _exportState = MutableStateFlow<ExportState>(ExportState.Idle)
     val exportState: StateFlow<ExportState> = _exportState.asStateFlow()
-
-    init {
-        val database = ChartDatabase.getInstance(application)
-        repository = ChartRepository(database.chartDao())
-        chartExporter = ChartExporter(application)
-    }
 
     /**
      * Load a chart by its ID

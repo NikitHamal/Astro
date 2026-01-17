@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.KalachakraDashaCalculator
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicReference
+import javax.inject.Inject
 
 /**
  * UI State for Kalachakra Dasha Screen
@@ -30,7 +32,8 @@ sealed class KalachakraDashaUiState {
  * Manages the calculation of Kalachakra Dasha from birth chart data
  * with caching for performance optimization.
  */
-class KalachakraDashaViewModel : ViewModel() {
+@HiltViewModel
+class KalachakraDashaViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow<KalachakraDashaUiState>(KalachakraDashaUiState.Idle)
     val uiState: StateFlow<KalachakraDashaUiState> = _uiState.asStateFlow()

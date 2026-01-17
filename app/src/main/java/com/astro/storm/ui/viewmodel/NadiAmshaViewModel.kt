@@ -6,17 +6,20 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.NadiAmshaCalculator
 import com.astro.storm.ephemeris.NadiAmshaCalculator.NadiAmshaResult
 import com.astro.storm.ephemeris.NadiAmshaCalculator.RectificationCandidate
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 /**
  * ViewModel for Nadi Amsha (D-150) Analysis Screen
  */
-class NadiAmshaViewModel : ViewModel() {
+@HiltViewModel
+class NadiAmshaViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow<NadiAmshaUiState>(NadiAmshaUiState.Loading)
     val uiState: StateFlow<NadiAmshaUiState> = _uiState.asStateFlow()

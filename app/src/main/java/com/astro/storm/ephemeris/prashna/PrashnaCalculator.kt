@@ -45,10 +45,11 @@ class PrashnaCalculator(context: Context) {
         latitude: Double,
         longitude: Double,
         timezone: String,
-        language: Language = Language.ENGLISH
+        language: Language = Language.ENGLISH,
+        houseSystem: HouseSystem = HouseSystem.PLACIDUS
     ): PrashnaResult {
         val questionTime = LocalDateTime.now()
-        return analyzePrashna(question, category, questionTime, latitude, longitude, timezone, language)
+        return analyzePrashna(question, category, questionTime, latitude, longitude, timezone, language, houseSystem)
     }
 
     /**
@@ -61,7 +62,8 @@ class PrashnaCalculator(context: Context) {
         latitude: Double,
         longitude: Double,
         timezone: String,
-        language: Language = Language.ENGLISH
+        language: Language = Language.ENGLISH,
+        houseSystem: HouseSystem = HouseSystem.PLACIDUS
     ): PrashnaResult {
         val prashnaData = BirthData(
             name = StringResources.get(StringKeyAnalysis.PRASHNA_CHART_LABEL, language),
@@ -72,7 +74,7 @@ class PrashnaCalculator(context: Context) {
             location = StringResources.get(StringKeyAnalysis.PRASHNA_QUESTION_LOCATION, language)
         )
 
-        val chart = calculatePrashnaChart(prashnaData)
+        val chart = calculatePrashnaChart(prashnaData, houseSystem)
 
         val moonAnalysis = PrashnaMoonAnalyzer.analyzeMoon(chart, questionTime, language)
         val lagnaAnalysis = PrashnaLagnaAnalyzer.analyzeLagna(chart, language)
@@ -119,7 +121,7 @@ class PrashnaCalculator(context: Context) {
         )
     }
 
-    private fun calculatePrashnaChart(birthData: BirthData): VedicChart {
+    private fun calculatePrashnaChart(birthData: BirthData, houseSystem: HouseSystem): VedicChart {
         val zoneId = ZoneId.of(birthData.timezone)
         val zonedDateTime = ZonedDateTime.of(birthData.dateTime, zoneId)
         val utcDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime()
@@ -134,7 +136,7 @@ class PrashnaCalculator(context: Context) {
             SEFLG_SIDEREAL,
             birthData.latitude,
             birthData.longitude,
-            'P'.code,
+            houseSystem.code.code,
             houseCuspsArr,
             ascMcArr
         )
@@ -154,7 +156,7 @@ class PrashnaCalculator(context: Context) {
             midheaven = ascMcArr[1],
             planetPositions = planetPositions,
             houseCusps = houseCuspsList,
-            houseSystem = HouseSystem.PLACIDUS
+            houseSystem = houseSystem
         )
     }
 

@@ -2,9 +2,12 @@ package com.astro.storm.data.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Onboarding Manager for persisting onboarding completion state
@@ -16,7 +19,10 @@ import kotlinx.coroutines.flow.asStateFlow
  * This uses SharedPreferences for instant access on app startup
  * without database overhead.
  */
-class OnboardingManager private constructor(context: Context) {
+@Singleton
+class OnboardingManager @Inject constructor(
+    @ApplicationContext context: Context
+) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(
         PREFS_NAME,
@@ -57,16 +63,5 @@ class OnboardingManager private constructor(context: Context) {
     companion object {
         private const val PREFS_NAME = "astro_storm_onboarding_prefs"
         private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
-
-        @Volatile
-        private var INSTANCE: OnboardingManager? = null
-
-        fun getInstance(context: Context): OnboardingManager {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: OnboardingManager(context.applicationContext).also {
-                    INSTANCE = it
-                }
-            }
-        }
     }
 }

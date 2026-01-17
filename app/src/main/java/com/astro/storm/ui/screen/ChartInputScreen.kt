@@ -208,6 +208,7 @@ fun ChartInputScreen(
                     latitude = String.format(java.util.Locale.US, "%.6f", lat)
                     longitude = String.format(java.util.Locale.US, "%.6f", lon)
                 },
+                onSearch = viewModel::searchLocation,
                 label = stringResource(StringKey.INPUT_LOCATION),
                 placeholder = stringResource(StringKey.INPUT_SEARCH_LOCATION)
             )

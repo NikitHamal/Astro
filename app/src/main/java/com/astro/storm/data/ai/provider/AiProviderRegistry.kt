@@ -2,6 +2,7 @@ package com.astro.storm.data.ai.provider
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +13,8 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Registry and manager for all AI providers.
@@ -22,10 +25,12 @@ import org.json.JSONObject
  * - Configuration persistence
  * - Model refresh operations
  */
-class AiProviderRegistry private constructor(context: Context) {
+@Singleton
+class AiProviderRegistry @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
-    private val appContext = context.applicationContext
-    private val prefs: SharedPreferences = appContext.getSharedPreferences(
+    private val prefs: SharedPreferences = context.getSharedPreferences(
         PREFS_NAME, Context.MODE_PRIVATE
     )
 
@@ -432,17 +437,6 @@ class AiProviderRegistry private constructor(context: Context) {
         private const val PREFS_NAME = "astrostorm_ai_models"
         private const val KEY_MODEL_CONFIGS = "model_configs"
         private const val KEY_CUSTOM_MODELS = "custom_models"
-
-        @Volatile
-        private var INSTANCE: AiProviderRegistry? = null
-
-        fun getInstance(context: Context): AiProviderRegistry {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: AiProviderRegistry(context.applicationContext).also {
-                    INSTANCE = it
-                }
-            }
-        }
     }
 }
 

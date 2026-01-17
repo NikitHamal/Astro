@@ -3,7 +3,7 @@ package com.astro.storm.ui.navigation
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -300,8 +300,8 @@ sealed class Screen(val route: String) {
 @Composable
 fun AstroStormNavigation(
     navController: NavHostController,
-    viewModel: ChartViewModel = viewModel(),
-    chatViewModel: ChatViewModel = viewModel()
+    viewModel: ChartViewModel = hiltViewModel(),
+    chatViewModel: ChatViewModel = hiltViewModel()
 ) {
     val savedCharts by viewModel.savedCharts.collectAsState()
     val uiState by viewModel.uiState.collectAsState()

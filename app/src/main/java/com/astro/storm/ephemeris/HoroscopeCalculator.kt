@@ -3,14 +3,20 @@ package com.astro.storm.ephemeris
 import android.content.Context
 import android.util.Log
 import com.astro.storm.core.model.*
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.math.roundToInt
 
-class HoroscopeCalculator(private val context: Context) : AutoCloseable {
+@Singleton
+class HoroscopeCalculator @Inject constructor(
+    @ApplicationContext private val context: Context
+) : AutoCloseable {
 
     private val ephemerisEngine: SwissEphemerisEngine by lazy {
         SwissEphemerisEngine.getInstance(context)

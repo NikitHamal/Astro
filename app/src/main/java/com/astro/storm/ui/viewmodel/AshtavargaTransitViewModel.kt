@@ -15,6 +15,7 @@ import com.astro.storm.ephemeris.AshtavargaTransitCalculator.TransitQuality
 import com.astro.storm.ephemeris.AshtavargaTransitCalculator.TransitStrength
 import com.astro.storm.ephemeris.AshtavargaTransitCalculator.UnfavorableSign
 import com.astro.storm.ephemeris.AshtavargaTransitCalculator.UpcomingTransit
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicReference
+import javax.inject.Inject
 
 /**
  * ViewModel for Ashtavarga Transit Predictions Screen
@@ -40,7 +42,8 @@ import java.util.concurrent.atomic.AtomicReference
  *
  * Uses atomic caching to prevent redundant calculations when the chart hasn't changed.
  */
-class AshtavargaTransitViewModel : ViewModel() {
+@HiltViewModel
+class AshtavargaTransitViewModel @Inject constructor() : ViewModel() {
 
     /**
      * UI State for Ashtavarga Transit Screen

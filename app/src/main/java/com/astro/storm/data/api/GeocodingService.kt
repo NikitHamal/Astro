@@ -1,6 +1,8 @@
 package com.astro.storm.data.api
 
+import android.content.Context
 import android.util.Log
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
@@ -13,16 +15,23 @@ import java.net.URL
 import java.net.URLEncoder
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object GeocodingService {
-    private const val TAG = "GeocodingService"
-    private const val BASE_URL = "https://nominatim.openstreetmap.org"
-    private const val USER_AGENT = "AstroStorm/1.0 (Vedic Astrology App; contact@astrostorm.app)"
-    private const val CONNECT_TIMEOUT_MS = 15000
-    private const val READ_TIMEOUT_MS = 15000
-    private const val RATE_LIMIT_DELAY_MS = 1100L
-    private const val MAX_RETRIES = 2
-    private const val CACHE_MAX_SIZE = 100
+@Singleton
+class GeocodingService @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
+    private val userAgent: String by lazy {
+        try {
+            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            val versionName = packageInfo.versionName ?: "1.0"
+            val appName = context.applicationInfo.loadLabel(context.packageManager).toString()
+            "$appName/$versionName (${context.packageName}; contact@astrostorm.app)"
+        } catch (e: Exception) {
+            "AstroStorm/1.0 (Vedic Astrology App; contact@astrostorm.app)"
+        }
+    }
 
     private val rateLimitMutex = Mutex()
     private var lastRequestTime = 0L
@@ -205,7 +214,7 @@ object GeocodingService {
 
             connection = (url.openConnection() as HttpURLConnection).apply {
                 requestMethod = "GET"
-                setRequestProperty("User-Agent", USER_AGENT)
+                setRequestProperty("User-Agent", userAgent)
                 setRequestProperty("Accept", "application/json")
                 setRequestProperty("Accept-Language", "en")
                 connectTimeout = CONNECT_TIMEOUT_MS
@@ -251,7 +260,7 @@ object GeocodingService {
 
             connection = (url.openConnection() as HttpURLConnection).apply {
                 requestMethod = "GET"
-                setRequestProperty("User-Agent", USER_AGENT)
+                setRequestProperty("User-Agent", userAgent)
                 setRequestProperty("Accept", "application/json")
                 setRequestProperty("Accept-Language", "en")
                 connectTimeout = CONNECT_TIMEOUT_MS
@@ -333,5 +342,15 @@ object GeocodingService {
             Log.e(TAG, "Failed to parse reverse result", e)
             null
         }
+    }
+
+    companion object {
+        private const val TAG = "GeocodingService"
+        private const val BASE_URL = "https://nominatim.openstreetmap.org"
+        private const val CONNECT_TIMEOUT_MS = 15000
+        private const val READ_TIMEOUT_MS = 15000
+        private const val RATE_LIMIT_DELAY_MS = 1100L
+        private const val MAX_RETRIES = 2
+        private const val CACHE_MAX_SIZE = 100
     }
 }

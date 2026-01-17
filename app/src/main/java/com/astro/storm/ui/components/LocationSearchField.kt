@@ -42,7 +42,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import java.util.Locale
 
 /**
@@ -61,6 +60,7 @@ fun LocationSearchField(
     value: String,
     onValueChange: (String) -> Unit,
     onLocationSelected: (location: String, latitude: Double, longitude: Double) -> Unit,
+    onSearch: suspend (String) -> Result<List<GeocodingService.GeocodingResult>>,
     modifier: Modifier = Modifier,
     label: String = stringResource(StringKey.LOCATION_SEARCH),
     placeholder: String = stringResource(StringKey.LOCATION_PLACEHOLDER),
@@ -82,9 +82,6 @@ fun LocationSearchField(
         SearchErrorType.GENERIC -> searchFailedText
     }
 
-    // Use rememberUpdatedState to capture the latest value in the coroutine
-    val currentValue by rememberUpdatedState(value)
-
     // MutableStateFlow to track search queries with proper debouncing
     val searchQueryFlow = remember { MutableStateFlow("") }
 
@@ -100,7 +97,7 @@ fun LocationSearchField(
             .distinctUntilChanged()
             .collectLatest { query ->
                 if (query.length >= 3) {
-                    searchState.search(query)
+                    searchState.search(query, onSearch)
                 } else {
                     searchState.clear()
                 }
@@ -319,7 +316,10 @@ class LocationSearchState {
     var networkErrorMessage by mutableStateOf<String?>(null)
         private set
 
-    suspend fun search(query: String, limit: Int = 5) {
+    suspend fun search(
+        query: String,
+        searcher: suspend (String) -> Result<List<GeocodingService.GeocodingResult>>
+    ) {
         if (query.length < 3) {
             results = emptyList()
             return
@@ -329,7 +329,7 @@ class LocationSearchState {
         errorType = SearchErrorType.NONE
         networkErrorMessage = null
 
-        val result = GeocodingService.searchLocation(query, limit)
+        val result = searcher(query)
         result.onSuccess { searchResults ->
             results = searchResults
         }.onFailure { e ->
