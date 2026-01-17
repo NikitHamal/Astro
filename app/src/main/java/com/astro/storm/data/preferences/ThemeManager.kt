@@ -67,6 +67,16 @@ class ThemeManager @Inject constructor(
     companion object {
         private const val PREFS_NAME = "astro_storm_theme_prefs"
         private const val KEY_THEME_MODE = "theme_mode"
+
+        @Volatile
+        private var instance: ThemeManager? = null
+
+        fun getInstance(context: Context): ThemeManager =
+            instance ?: synchronized(this) {
+                instance ?: ThemeManager(context.applicationContext).also {
+                    instance = it
+                }
+            }
     }
 }
 

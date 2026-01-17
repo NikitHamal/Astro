@@ -63,5 +63,15 @@ class OnboardingManager @Inject constructor(
     companion object {
         private const val PREFS_NAME = "astro_storm_onboarding_prefs"
         private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
+
+        @Volatile
+        private var instance: OnboardingManager? = null
+
+        fun getInstance(context: Context): OnboardingManager =
+            instance ?: synchronized(this) {
+                instance ?: OnboardingManager(context.applicationContext).also {
+                    instance = it
+                }
+            }
     }
 }

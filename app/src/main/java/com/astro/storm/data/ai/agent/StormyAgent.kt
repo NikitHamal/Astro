@@ -58,6 +58,21 @@ class StormyAgent @Inject constructor(
          * to prevent infinite loops in edge cases
          */
         private const val MAX_TOTAL_ITERATIONS = 20
+
+        @Volatile
+        private var instance: StormyAgent? = null
+
+        fun getInstance(context: Context): StormyAgent =
+            instance ?: synchronized(this) {
+                instance ?: StormyAgent(
+                    context.applicationContext,
+                    AiProviderRegistry.getInstance(context),
+                    AstrologyToolRegistry.getInstance(context),
+                    PromptManager.getInstance(context)
+                ).also {
+                    instance = it
+                }
+            }
     }
 
     /**
@@ -458,7 +473,7 @@ class StormyAgent @Inject constructor(
 
         // Pattern 6: Function call format (tool_name(args))
         val functionPattern = Regex(
-            "(get_\w+|calculate_\w+)\s*\(\s*([^)]*)\s*\)"
+            """(get_\w+|calculate_\w+)\s*\(\s*([^)]*)\s*\)"""
         )
         functionPattern.findAll(content).forEach { match ->
             val toolName = match.groupValues[1]

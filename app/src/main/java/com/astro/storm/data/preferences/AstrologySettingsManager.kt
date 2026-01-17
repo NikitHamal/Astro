@@ -100,5 +100,15 @@ class AstrologySettingsManager @Inject constructor(
         private const val KEY_NODE_MODE = "node_mode"
         private const val KEY_AYANAMSA = "ayanamsa"
         private const val KEY_HOUSE_SYSTEM = "house_system"
+
+        @Volatile
+        private var instance: AstrologySettingsManager? = null
+
+        fun getInstance(context: Context): AstrologySettingsManager =
+            instance ?: synchronized(this) {
+                instance ?: AstrologySettingsManager(context.applicationContext).also {
+                    instance = it
+                }
+            }
     }
 }

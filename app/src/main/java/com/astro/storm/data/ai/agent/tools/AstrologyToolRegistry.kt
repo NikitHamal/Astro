@@ -81,6 +81,21 @@ class AstrologyToolRegistry @Inject constructor(
         registerTool(GetRemediesTool())
     }
 
+    companion object {
+        @Volatile
+        private var instance: AstrologyToolRegistry? = null
+
+        fun getInstance(context: Context): AstrologyToolRegistry =
+            instance ?: synchronized(this) {
+                instance ?: AstrologyToolRegistry(
+                    context.applicationContext,
+                    AstrologySettingsManager.getInstance(context)
+                ).also {
+                    instance = it
+                }
+            }
+    }
+
     /**
      * Register a tool
      */

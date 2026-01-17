@@ -105,6 +105,31 @@ data class ChartColorConfig(
             moolTrikonaColor = Color(0xFFBA68C8),
             debilitatedColor = Color(0xFFCF6679)
         )
+
+        val Print = ChartColorConfig(
+            backgroundColor = Color.White,
+            chartFillColor = Color.White,
+            borderColor = Color.Black,
+            lineColor = Color.Black,
+            houseNumberColor = Color.DarkGray,
+            lagnaColor = Color.Black,
+            sunColor = Color.Black,
+            moonColor = Color.Black,
+            marsColor = Color.Black,
+            mercuryColor = Color.Black,
+            jupiterColor = Color.Black,
+            venusColor = Color.Black,
+            saturnColor = Color.Black,
+            rahuColor = Color.Black,
+            ketuColor = Color.Black,
+            uranusColor = Color.Black,
+            neptuneColor = Color.Black,
+            plutoColor = Color.Black,
+            exaltedColor = Color.Black,
+            ownSignColor = Color.Black,
+            moolTrikonaColor = Color.Black,
+            debilitatedColor = Color.Black
+        )
     }
 }
 
@@ -1152,5 +1177,168 @@ class ChartRenderer(
                 )
             }
         }
+    }
+
+    private fun polygonCentroid(points: List<Offset>): Offset {
+        if (points.isEmpty()) return Offset.Zero
+        var x = 0f
+        var y = 0f
+        points.forEach {
+            x += it.x
+            y += it.y
+        }
+        return Offset(x / points.size, y / points.size)
+    }
+
+    private fun DrawScope.drawTextCentered(
+        text: String,
+        position: Offset,
+        textSize: Float,
+        color: Color,
+        isBold: Boolean
+    ) {
+        val typeface = if (isBold) TYPEFACE_BOLD else TYPEFACE_NORMAL
+        textPaint.color = color.toArgb()
+        textPaint.textSize = textSize
+        textPaint.typeface = typeface
+
+        val textHeight = textPaint.descent() - textPaint.ascent()
+        val textOffset = textHeight / 2 - textPaint.descent()
+
+        drawContext.canvas.nativeCanvas.drawText(
+            text,
+            position.x,
+            position.y + textOffset,
+            textPaint
+        )
+    }
+
+    fun drawSouthIndianChart(
+        drawScope: DrawScope,
+        chart: VedicChart,
+        size: Float,
+        language: Language = Language.ENGLISH
+    ) {
+        with(drawScope) {
+            val padding = size * paddingRatio
+            val chartSize = size - (padding * 2)
+            val left = padding
+            val top = padding
+            val cellSize = chartSize / 4
+
+            drawRect(color = BACKGROUND_COLOR, size = Size(size, size))
+            drawRect(color = CHART_FILL_COLOR, topLeft = Offset(left, top), size = Size(chartSize, chartSize))
+            drawRect(color = BORDER_COLOR, topLeft = Offset(left, top), size = Size(chartSize, chartSize), style = borderStroke)
+
+            for (i in 1..3) {
+                drawLine(BORDER_COLOR, Offset(left + i * cellSize, top), Offset(left + i * cellSize, top + chartSize), lineStrokeWidth)
+                drawLine(BORDER_COLOR, Offset(left, top + i * cellSize), Offset(left + chartSize, top + i * cellSize), lineStrokeWidth)
+            }
+            
+            drawRect(BACKGROUND_COLOR, Offset(left + cellSize, top + cellSize), Size(cellSize * 2, cellSize * 2))
+            drawRect(BORDER_COLOR, Offset(left + cellSize, top + cellSize), Size(cellSize * 2, cellSize * 2), style = borderStroke)
+
+            val signs = listOf(
+                ZodiacSign.PISCES, ZodiacSign.ARIES, ZodiacSign.TAURUS, ZodiacSign.GEMINI,
+                ZodiacSign.CANCER, ZodiacSign.LEO, ZodiacSign.VIRGO, ZodiacSign.LIBRA,
+                ZodiacSign.SCORPIO, ZodiacSign.SAGITTARIUS, ZodiacSign.CAPRICORN, ZodiacSign.AQUARIUS
+            )
+            
+            val cellMapping = mapOf(
+                ZodiacSign.ARIES to Offset(left + cellSize, top),
+                ZodiacSign.TAURUS to Offset(left + cellSize * 2, top),
+                ZodiacSign.GEMINI to Offset(left + cellSize * 3, top),
+                ZodiacSign.CANCER to Offset(left + cellSize * 3, top + cellSize),
+                ZodiacSign.LEO to Offset(left + cellSize * 3, top + cellSize * 2),
+                ZodiacSign.VIRGO to Offset(left + cellSize * 3, top + cellSize * 3),
+                ZodiacSign.LIBRA to Offset(left + cellSize * 2, top + cellSize * 3),
+                ZodiacSign.SCORPIO to Offset(left + cellSize, top + cellSize * 3),
+                ZodiacSign.SAGITTARIUS to Offset(left, top + cellSize * 3),
+                ZodiacSign.CAPRICORN to Offset(left, top + cellSize * 2),
+                ZodiacSign.AQUARIUS to Offset(left, top + cellSize),
+                ZodiacSign.PISCES to Offset(left, top)
+            )
+
+            val sunPosition = chart.planetPositions.find { it.planet == Planet.SUN }
+            val planetsBySign = chart.planetPositions.groupBy { it.sign }
+            val lagnaSign = ZodiacSign.fromLongitude(chart.ascendant)
+
+            signs.forEach { sign ->
+                val cellTopLeft = cellMapping[sign] ?: return@forEach
+                val cellCenter = Offset(cellTopLeft.x + cellSize / 2, cellTopLeft.y + cellSize / 2)
+                
+                if (sign == lagnaSign) {
+                    drawLine(LAGNA_COLOR, cellTopLeft, Offset(cellTopLeft.x + cellSize, cellTopLeft.y + cellSize), lineStrokeWidth)
+                }
+
+                val planets = planetsBySign[sign] ?: emptyList()
+                val signItems = mutableListOf<HouseDisplayItem>()
+                planets.forEach { planet ->
+                    val abbrev = planet.planet.symbol
+                    val degree = (planet.longitude % 30.0).toInt()
+                    val degreeSuper = toSuperscript(degree)
+                    val statusIndicators = buildString {
+                        if (planet.isRetrograde) append(SYMBOL_RETROGRADE)
+                        if (isCombust(planet, sunPosition)) append(SYMBOL_COMBUST)
+                        if (isVargottama(planet)) append(SYMBOL_VARGOTTAMA)
+                    }
+                    signItems.add(HouseDisplayItem(
+                        text = "$abbrev$degreeSuper$statusIndicators",
+                        color = getPlanetColor(planet.planet),
+                        isBold = true,
+                        dignity = getPlanetaryDignity(planet.planet, planet.sign, planet.longitude)
+                    ))
+                }
+
+                if (signItems.isNotEmpty()) {
+                    val bounds = HouseBounds(cellTopLeft.x, cellTopLeft.x + cellSize, cellTopLeft.y, cellTopLeft.y + cellSize, cellSize, cellSize, cellSize * 0.8f, cellSize * 0.8f)
+                    drawHouseContents(signItems, cellCenter, bounds, HouseType.DIAMOND, 0, size)
+                }
+            }
+        }
+    }
+
+    fun createChartBitmap(
+        chart: VedicChart,
+        width: Int,
+        height: Int,
+        density: Density,
+        language: Language = Language.ENGLISH
+    ): Bitmap {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = androidx.compose.ui.graphics.Canvas(bitmap.asImageBitmap())
+        val drawScope = CanvasDrawScope()
+        drawScope.draw(
+            density = density,
+            layoutDirection = LayoutDirection.Ltr,
+            canvas = canvas,
+            size = Size(width.toFloat(), height.toFloat())
+        ) {
+            drawChartWithLegend(this, chart, size.minDimension, language = language)
+        }
+        return bitmap
+    }
+
+    fun createDivisionalChartBitmap(
+        planetPositions: List<PlanetPosition>,
+        ascendantLongitude: Double,
+        chartTitle: String,
+        width: Int,
+        height: Int,
+        density: Density,
+        language: Language = Language.ENGLISH
+    ): Bitmap {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = androidx.compose.ui.graphics.Canvas(bitmap.asImageBitmap())
+        val drawScope = CanvasDrawScope()
+        drawScope.draw(
+            density = density,
+            layoutDirection = LayoutDirection.Ltr,
+            canvas = canvas,
+            size = Size(width.toFloat(), height.toFloat())
+        ) {
+            drawDivisionalChart(this, planetPositions, ascendantLongitude, size.minDimension, chartTitle, language = language)
+        }
+        return bitmap
     }
 }

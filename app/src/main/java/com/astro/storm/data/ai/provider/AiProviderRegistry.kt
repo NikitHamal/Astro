@@ -437,6 +437,16 @@ class AiProviderRegistry @Inject constructor(
         private const val PREFS_NAME = "astrostorm_ai_models"
         private const val KEY_MODEL_CONFIGS = "model_configs"
         private const val KEY_CUSTOM_MODELS = "custom_models"
+
+        @Volatile
+        private var instance: AiProviderRegistry? = null
+
+        fun getInstance(context: Context): AiProviderRegistry =
+            instance ?: synchronized(this) {
+                instance ?: AiProviderRegistry(context.applicationContext).also {
+                    instance = it
+                }
+            }
     }
 }
 

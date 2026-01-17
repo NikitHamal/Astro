@@ -73,7 +73,7 @@ import java.util.Locale
 class ChartExporter(private val context: Context) {
 
     // Use Print-optimized color configuration for high-quality PDF output
-    private val chartRenderer = ChartRenderer(ChartColorConfig.Print)
+    private val chartRenderer = ChartRenderer(context, ChartColorConfig.Print)
     private val locManager = LocalizationManager.getInstance(context)
 
     companion object {

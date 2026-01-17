@@ -1980,3 +1980,199 @@ class GetPrashnaAnalysisTool : AstrologyTool {
         }
     }
 }
+
+/**
+ * Tool to get Vipareeta Raja Yoga analysis
+ */
+class GetVipareetaRajaYogaTool : AstrologyTool {
+    override val name = "get_vipareeta_raja_yoga"
+    override val description = "Analyze Vipareeta Raja Yogas (Harsha, Sarala, Vimala) in the chart"
+    override val parameters = listOf(
+        ToolParameter(
+            name = "profile_id",
+            description = "ID of the profile. Use 'current' for active profile.",
+            type = ParameterType.STRING,
+            required = false,
+            defaultValue = "current"
+        )
+    )
+
+    override suspend fun execute(arguments: JSONObject, context: ToolContext): ToolExecutionResult {
+        val profileId = arguments.optString("profile_id", "current")
+        val (chart, error) = getChartForProfile(profileId, context)
+
+        if (chart == null) {
+            return ToolExecutionResult(
+                success = false,
+                data = null,
+                error = error ?: "No chart loaded",
+                summary = error ?: "Please select a profile first"
+            )
+        }
+
+        try {
+            val result = com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.analyzeVipareetaRajaYogas(chart)
+                ?: return ToolExecutionResult(success = false, data = null, summary = "No analysis available")
+
+            val data = JSONObject().apply {
+                put("hasYoga", result.totalYogasFormed > 0)
+                put("yogas", JSONArray().apply {
+                    listOf(result.harshaYoga, result.saralaYoga, result.vimalaYoga).filter { it.isFormed }.forEach { yoga ->
+                        put(JSONObject().apply {
+                            put("name", yoga.yogaType.displayName)
+                            put("type", yoga.yogaType.name)
+                            put("description", yoga.yogaType.description)
+                            put("isEffective", yoga.activationStatus == com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.ActivationStatus.FULLY_ACTIVE)
+                            put("strength", yoga.strength.displayName)
+                        })
+                    }
+                })
+            }
+
+            return ToolExecutionResult(
+                success = true,
+                data = data,
+                summary = if (result.totalYogasFormed > 0) "Found ${result.totalYogasFormed} Vipareeta Raja Yogas" else "No Vipareeta Raja Yogas found"
+            )
+        } catch (e: Exception) {
+            return ToolExecutionResult(success = false, data = null, error = e.message, summary = "Calculation failed")
+        }
+    }
+}
+
+/**
+ * Tool to get deep compatibility analysis
+ */
+class GetCompatibilityDeepDiveTool : AstrologyTool {
+    override val name = "get_compatibility_deep_dive"
+    override val description = "Comprehensive relationship analysis including Guna Milan, Manglik Dosha, and additional factors"
+    override val parameters = listOf(
+        ToolParameter(
+            name = "partner_profile_id",
+            description = "Profile ID of the partner",
+            type = ParameterType.STRING,
+            required = true
+        )
+    )
+
+    override suspend fun execute(arguments: JSONObject, context: ToolContext): ToolExecutionResult {
+        val chart1 = context.currentChart
+            ?: return ToolExecutionResult(success = false, data = null, error = "No chart loaded", summary = "Select profile first")
+
+        val partnerId = arguments.getString("partner_profile_id")
+        val partnerProfile = context.allProfiles.find { it.id.toString() == partnerId }
+            ?: return ToolExecutionResult(success = false, data = null, error = "Partner not found", summary = "Invalid partner ID")
+
+        try {
+            val chartRepository = com.astro.storm.data.repository.ChartRepository(context.database.chartDao())
+            val partnerChart = chartRepository.getChartById(partnerProfile.id)
+                ?: return ToolExecutionResult(success = false, data = null, error = "Partner chart not found", summary = "Load failed")
+
+            val deepDiveWrapper = CompatibilityDeepDiveWrapper()
+            val result = deepDiveWrapper.analyzeDeepCompatibility(chart1, partnerChart)
+
+            val data = JSONObject().apply {
+                put("totalScore", result.totalScore)
+                put("maxScore", result.maxScore)
+                put("rating", result.rating)
+                put("summary", result.summary)
+                put("manglikAnalysis", JSONObject().apply {
+                    put("brideIsManglik", result.manglikAnalysis.brideIsManglik)
+                    put("groomIsManglik", result.manglikAnalysis.groomIsManglik)
+                    put("compatibility", result.manglikAnalysis.manglikCompatibility)
+                })
+                put("remedies", JSONArray(result.remedies))
+            }
+
+            return ToolExecutionResult(success = true, data = data, summary = "Deep compatibility: ${result.rating}")
+        } catch (e: Exception) {
+            return ToolExecutionResult(success = false, data = null, error = e.message, summary = "Analysis failed")
+        }
+    }
+}
+
+/**
+ * Tool to get Maraka (killer planets) analysis
+ */
+class GetMarakaAnalysisTool : AstrologyTool {
+    override val name = "get_maraka_analysis"
+    override val description = "Identify Maraka (killer) planets and their potential impact"
+    override val parameters = listOf(
+        ToolParameter(
+            name = "profile_id",
+            description = "ID of the profile. Use 'current' for active profile.",
+            type = ParameterType.STRING,
+            required = false,
+            defaultValue = "current"
+        )
+    )
+
+    override suspend fun execute(arguments: JSONObject, context: ToolContext): ToolExecutionResult {
+        val profileId = arguments.optString("profile_id", "current")
+        val (chart, error) = getChartForProfile(profileId, context)
+
+        if (chart == null) return ToolExecutionResult(success = false, data = null, error = error, summary = "Load failed")
+
+        try {
+            val result = com.astro.storm.ephemeris.MarakaCalculator.analyzeMaraka(chart)
+                ?: return ToolExecutionResult(success = false, data = null, summary = "No analysis available")
+
+            val data = JSONObject().apply {
+                put("marakaPlanets", JSONArray().apply {
+                    (result.primaryMarakas + result.secondaryMarakas).forEach { planet ->
+                        put(JSONObject().apply {
+                            put("planet", planet.planet.displayName)
+                            put("reason", planet.marakaType.displayName)
+                            put("severity", planet.severity.displayName)
+                        })
+                    }
+                })
+                put("summary", result.summary)
+            }
+
+            return ToolExecutionResult(success = true, data = data, summary = "Identified ${result.primaryMarakas.size + result.secondaryMarakas.size} Maraka planets")
+        } catch (e: Exception) {
+            return ToolExecutionResult(success = false, data = null, error = e.message, summary = "Analysis failed")
+        }
+    }
+}
+
+/**
+ * Tool to get Badhaka (obstructing planets) analysis
+ */
+class GetBadhakaAnalysisTool : AstrologyTool {
+    override val name = "get_badhaka_analysis"
+    override val description = "Identify Badhaka (obstructing) planets and signs"
+    override val parameters = listOf(
+        ToolParameter(
+            name = "profile_id",
+            description = "ID of the profile. Use 'current' for active profile.",
+            type = ParameterType.STRING,
+            required = false,
+            defaultValue = "current"
+        )
+    )
+
+    override suspend fun execute(arguments: JSONObject, context: ToolContext): ToolExecutionResult {
+        val profileId = arguments.optString("profile_id", "current")
+        val (chart, error) = getChartForProfile(profileId, context)
+
+        if (chart == null) return ToolExecutionResult(success = false, data = null, error = error, summary = "Load failed")
+
+        try {
+            val result = com.astro.storm.ephemeris.BadhakaCalculator.analyzeBadhaka(chart)
+                ?: return ToolExecutionResult(success = false, data = null, summary = "No analysis available")
+
+            val data = JSONObject().apply {
+                put("badhakaPlanet", result.badhakeshPlanet.displayName)
+                put("badhakaSign", result.ascendantSign.displayName)
+                put("badhakaHouse", result.badhakaHouse)
+                put("interpretation", result.detailedInterpretation)
+            }
+
+            return ToolExecutionResult(success = true, data = data, summary = "Badhaka: ${result.badhakeshPlanet.displayName}")
+        } catch (e: Exception) {
+            return ToolExecutionResult(success = false, data = null, error = e.message, summary = "Analysis failed")
+        }
+    }
+}

@@ -76,7 +76,7 @@ fun ChartAnalysisScreen(
     // Use theme-aware chart colors - dark theme uses light-on-dark, light theme uses dark-on-light
     val isDarkTheme = AppTheme.current.isDark
     val chartRenderer = remember(isDarkTheme) {
-        ChartRenderer(if (isDarkTheme) ChartColorConfig.Dark else ChartColorConfig.Light)
+        ChartRenderer(context, if (isDarkTheme) ChartColorConfig.Dark else ChartColorConfig.Light)
     }
 
     val defaultTitle = stringResource(StringKeyAnalysis.CHART_LAGNA)
