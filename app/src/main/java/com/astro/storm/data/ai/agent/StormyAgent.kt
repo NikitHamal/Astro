@@ -556,7 +556,7 @@ class StormyAgent @Inject constructor(
         val argsJson = JSONObject()
 
         // Split by comma, handling quoted strings
-        val argPairs = argsStr.split(Regex(",(?=(?:[^"'*`]*"[^"'*`]*")*[^"'*`]*$)"))
+        val argPairs = argsStr.split(Regex(""",(?=(?:[^"'*`]*"[^"'*`]*")*[^"'*`]*$)"""))
 
         for (pair in argPairs) {
             val parts = pair.split("=", limit = 2)
