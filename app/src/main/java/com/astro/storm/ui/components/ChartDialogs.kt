@@ -44,6 +44,8 @@ import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyPrediction
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.LocalizationManagerEntryPoint
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.DivisionalChartData
@@ -51,6 +53,7 @@ import com.astro.storm.ephemeris.PlanetaryShadbala
 import com.astro.storm.ephemeris.RetrogradeCombustionCalculator
 import com.astro.storm.ephemeris.ShadbalaCalculator
 import com.astro.storm.ui.chart.ChartRenderer
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -252,27 +255,19 @@ fun FullScreenChartDialog(
                                 isDownloading = false
 
                                 withContext(Dispatchers.Main) {
-    val entryPoint = remember(context) {
-        EntryPointAccessors.fromApplication(
-            context.applicationContext,
-            com.astro.storm.ui.navigation.NavigationEntryPoint::class.java
-        )
-    }
-    val locManager = entryPoint.aiProviderRegistry().let { 
-        // We need LocalizationManager, but aiProviderRegistry is what's in NavigationEntryPoint right now.
-        // Let's check LocalizationProvider for its entry point.
-        EntryPointAccessors.fromApplication(
-            context.applicationContext,
-            com.astro.storm.data.localization.LocalizationManagerEntryPoint::class.java
-        ).localizationManager()
-    }
+                                    val locManager = EntryPointAccessors.fromApplication(
+                                        context.applicationContext,
+                                        LocalizationManagerEntryPoint::class.java
+                                    ).localizationManager()
+                                    
                                     val message = if (success)
                                         locManager.getString(StringKeyAnalysis.DIALOG_CHART_SAVED)
                                     else
                                         locManager.getString(StringKeyAnalysis.DIALOG_SAVE_FAILED)
+                                        
                                     Toast.makeText(
                                         context,
-                                        message,
+                                        message as CharSequence,
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }

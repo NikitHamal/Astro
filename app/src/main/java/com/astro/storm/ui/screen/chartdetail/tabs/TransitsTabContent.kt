@@ -64,6 +64,8 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.TransitAnalyzer
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.ChartDetailUtils
+import com.astro.storm.di.CoreEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 
 /**
  * Transits tab content displaying current planetary transits and their effects.
@@ -73,7 +75,15 @@ fun TransitsTabContent(chart: VedicChart) {
     val context = LocalContext.current
     val language = LocalLanguage.current
     val transitAnalysis = remember(chart, language) {
-        val analyzer = TransitAnalyzer(context)
+        val entryPoint = EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            CoreEntryPoint::class.java
+        )
+        val analyzer = TransitAnalyzer(
+            context = context,
+            localizationManager = entryPoint.localizationManager(),
+            ephemerisEngine = entryPoint.ephemerisEngine()
+        )
         try {
             analyzer.analyzeTransits(chart, language = language)
         } finally {

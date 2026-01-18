@@ -75,7 +75,8 @@ import java.util.Locale
 @Singleton
 class ChartExporter @Inject constructor(
     @dagger.hilt.android.qualifiers.ApplicationContext private val context: Context,
-    private val locManager: LocalizationManager
+    private val locManager: LocalizationManager,
+    private val ephemerisEngine: com.astro.storm.ephemeris.SwissEphemerisEngine
 ) {
 
     // Use Print-optimized color configuration for high-quality PDF output
@@ -1922,7 +1923,7 @@ class ChartExporter @Inject constructor(
         yPos += 48f
 
         // Calculate horoscope data
-        val horoscopeCalculator = HoroscopeCalculator(context)
+        val horoscopeCalculator = HoroscopeCalculator(context, ephemerisEngine)
         val horoscope = horoscopeCalculator.calculateDailyHoroscope(chart, java.time.LocalDate.now())
 
         val cardPaint = Paint().apply {

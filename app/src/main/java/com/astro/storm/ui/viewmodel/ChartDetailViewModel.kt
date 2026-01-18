@@ -29,10 +29,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ChartDetailViewModel @Inject constructor(
     application: Application,
-    private val repository: ChartRepository
+    private val repository: ChartRepository,
+    private val chartExporter: ChartExporter
 ) : AndroidViewModel(application) {
-
-    private val chartExporter: ChartExporter = ChartExporter(application)
 
     private val _chart = MutableStateFlow<VedicChart?>(null)
     val chart: StateFlow<VedicChart?> = _chart.asStateFlow()

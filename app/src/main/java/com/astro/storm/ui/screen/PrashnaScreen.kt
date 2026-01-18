@@ -146,10 +146,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.util.Locale
-import com.astro.storm.core.common.DateFormat
-import com.astro.storm.core.common.formatLocalized
-import com.astro.storm.core.common.localized
-import com.astro.storm.core.common.localizedName
+import com.astro.storm.data.localization.DateFormat
+import com.astro.storm.data.localization.formatLocalized
+import com.astro.storm.data.localization.localized
+import com.astro.storm.data.localization.localizedName
 
 /**
  * Entry point for getting dependencies in PrashnaScreen

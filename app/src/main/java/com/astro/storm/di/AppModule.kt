@@ -68,3 +68,16 @@ object AppModule {
     @DefaultDispatcher
     fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 }
+
+/**
+ * Entry point for common core dependencies
+ */
+@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+@dagger.hilt.EntryPoint
+interface CoreEntryPoint {
+    fun ephemerisEngine(): SwissEphemerisEngine
+    fun localizationManager(): LocalizationManager
+    fun astrologySettingsManager(): AstrologySettingsManager
+    fun themeManager(): ThemeManager
+    fun onboardingManager(): OnboardingManager
+}

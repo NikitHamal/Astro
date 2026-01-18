@@ -53,8 +53,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.localized
-import com.astro.storm.core.common.localizedName
+import com.astro.storm.data.localization.localized
+import com.astro.storm.data.localization.localizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet

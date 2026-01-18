@@ -23,6 +23,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.repository.SavedChart
+import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.ui.components.ProfileHeaderRow
 import com.astro.storm.ui.components.ProfileSwitcherBottomSheet
 import com.astro.storm.ui.theme.AppTheme
