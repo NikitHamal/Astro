@@ -63,6 +63,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
 import androidx.compose.ui.platform.LocalContext
+import dagger.hilt.android.EntryPointAccessors
 import com.astro.storm.data.ai.agent.AgentResponse
 import com.astro.storm.data.ai.agent.StormyAgent
 import com.astro.storm.data.ai.provider.AiProviderRegistry
@@ -70,6 +71,16 @@ import com.astro.storm.data.ai.provider.ChatMessage
 import com.astro.storm.data.ai.provider.MessageRole
 import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.MarkdownText
+
+/**
+ * Entry point for getting dependencies in MatchmakingScreen
+ */
+@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+@dagger.hilt.EntryPoint
+interface MatchmakingScreenEntryPoint {
+    fun aiProviderRegistry(): com.astro.storm.data.ai.provider.AiProviderRegistry
+    fun stormyAgent(): com.astro.storm.data.ai.agent.StormyAgent
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -2543,9 +2554,15 @@ private fun MatchmakingAiInsightCard(
     var streamingJob by remember { mutableStateOf<Job?>(null) }
     var lastUpdateTime by remember { mutableStateOf(0L) }
 
-    // Get AI dependencies
-    val agent = remember(context) { StormyAgent.getInstance(context) }
-    val providerRegistry = remember(context) { AiProviderRegistry.getInstance(context) }
+    // Get AI dependencies using EntryPoint
+    val entryPoint = remember(context) {
+        EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            MatchmakingScreenEntryPoint::class.java
+        )
+    }
+    val agent = remember(entryPoint) { entryPoint.stormyAgent() }
+    val providerRegistry = remember(entryPoint) { entryPoint.aiProviderRegistry() }
 
     // Generate matchmaking context for the AI
     val matchmakingContext = remember(result, brideChart, groomChart) {

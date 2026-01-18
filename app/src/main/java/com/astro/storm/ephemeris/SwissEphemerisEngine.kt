@@ -20,6 +20,8 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.concurrent.locks.ReentrantReadWriteLock
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
@@ -47,15 +49,16 @@ enum class AyanamsaType(
     SAYANA(-1, "Sayana (Tropical)");
 }
 
+@Singleton
 class SwissEphemerisEngine internal constructor(
     private val context: Context,
     private val swissEph: SwissEph,
     private val ephemerisPath: String,
     private val ayanamsaType: AyanamsaType,
-    private val hasHighPrecisionEphemeris: Boolean
+    private val hasHighPrecisionEphemeris: Boolean,
+    private val astroSettings: com.astro.storm.data.preferences.AstrologySettingsManager
 ) : AutoCloseable {
 
-    private val astroSettings = com.astro.storm.data.preferences.AstrologySettingsManager.getInstance(context)
     private val lock = ReentrantReadWriteLock()
     @Volatile
     private var isClosed = false
@@ -108,20 +111,22 @@ class SwissEphemerisEngine internal constructor(
         private var instance: SwissEphemerisEngine? = null
 
         @JvmStatic
-        @JvmOverloads
         fun getInstance(
             context: Context,
-            ayanamsaType: AyanamsaType = AyanamsaType.LAHIRI
+            ayanamsaType: AyanamsaType = AyanamsaType.LAHIRI,
+            astroSettings: com.astro.storm.data.preferences.AstrologySettingsManager = 
+                com.astro.storm.data.preferences.AstrologySettingsManager.getInstance(context)
         ): SwissEphemerisEngine =
             instance ?: synchronized(this) {
-                instance ?: create(context.applicationContext, ayanamsaType).also {
+                instance ?: create(context.applicationContext, ayanamsaType, astroSettings).also {
                     instance = it
                 }
             }
 
         private fun create(
             context: Context,
-            ayanamsaType: AyanamsaType = AyanamsaType.LAHIRI
+            ayanamsaType: AyanamsaType = AyanamsaType.LAHIRI,
+            astroSettings: com.astro.storm.data.preferences.AstrologySettingsManager
         ): SwissEphemerisEngine {
             val ephemerisDir = File(context.filesDir, EPHEMERIS_SUBDIR)
 
@@ -153,7 +158,8 @@ class SwissEphemerisEngine internal constructor(
                     swissEph = swissEph,
                     ephemerisPath = ephemerisDir.absolutePath,
                     ayanamsaType = ayanamsaType,
-                    hasHighPrecisionEphemeris = hasHighPrecision
+                    hasHighPrecisionEphemeris = hasHighPrecision,
+                    astroSettings = astroSettings
                 )
             } catch (e: Exception) {
                 try {

@@ -57,8 +57,8 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TarabalaScreen(
-    context: Context,
     chart: VedicChart?,
+    tarabalaCalculator: TarabalaCalculator,
     onBack: () -> Unit
 ) {
     if (chart == null) {
@@ -83,7 +83,7 @@ fun TarabalaScreen(
 
     // Calculate Tarabala analysis
     val tarabalaAnalysis = remember(chart) {
-        TarabalaCalculator.calculateAnalysis(context, chart, LocalDateTime.now())
+        tarabalaCalculator.calculateAnalysis(chart, LocalDateTime.now())
     }
 
     if (showInfoDialog) {

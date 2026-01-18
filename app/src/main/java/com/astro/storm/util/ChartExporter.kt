@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
-import com.astro.storm.core.common.LocalizationManager
+import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
@@ -49,6 +49,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
+import javax.inject.Inject
+import javax.inject.Singleton
 import java.io.File
 import java.io.FileOutputStream
 import java.io.FileWriter
@@ -70,11 +72,14 @@ import java.util.Locale
  *
  * @author AstroStorm - Ultra-Precision Vedic Astrology
  */
-class ChartExporter(private val context: Context) {
+@Singleton
+class ChartExporter @Inject constructor(
+    @dagger.hilt.android.qualifiers.ApplicationContext private val context: Context,
+    private val locManager: LocalizationManager
+) {
 
     // Use Print-optimized color configuration for high-quality PDF output
     private val chartRenderer = ChartRenderer(context, ChartColorConfig.Print)
-    private val locManager = LocalizationManager.getInstance(context)
 
     companion object {
         private const val PDF_PAGE_WIDTH = 595 // A4 width in points (72 dpi)

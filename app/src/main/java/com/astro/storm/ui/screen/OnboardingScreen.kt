@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalizationManager
+import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.stringResource
 import com.astro.storm.data.preferences.OnboardingManager
@@ -61,13 +61,13 @@ private enum class OnboardingPage {
  */
 @Composable
 fun OnboardingScreen(
+    themeManager: ThemeManager,
+    localizationManager: LocalizationManager,
+    onboardingManager: OnboardingManager,
     onComplete: (navigateToChartInput: Boolean) -> Unit = { _ -> }
 ) {
     val context = LocalContext.current
-    val themeManager = remember { ThemeManager.getInstance(context) }
-    val localizationManager = remember { LocalizationManager.getInstance(context) }
-    val onboardingManager = remember { OnboardingManager.getInstance(context) }
-
+    
     val colors = LocalAppThemeColors.current
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp

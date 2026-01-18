@@ -13,12 +13,14 @@ import com.astro.storm.core.common.StringKeyTransit
 import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.LocalizationManager
+import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringResources
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.math.abs
 
 /**
@@ -36,10 +38,12 @@ import kotlin.math.abs
  *
  * @author AstroStorm - Ultra-Precision Vedic Astrology
  */
-class TransitAnalyzer(private val context: Context) {
-
-    private val ephemerisEngine = SwissEphemerisEngine.getInstance(context)
-    private val localizationManager = LocalizationManager.getInstance(context)
+@Singleton
+class TransitAnalyzer @Inject constructor(
+    @dagger.hilt.android.qualifiers.ApplicationContext private val context: Context,
+    private val localizationManager: LocalizationManager,
+    private val ephemerisEngine: SwissEphemerisEngine
+) {
 
     private fun getString(key: StringKeyInterface): String = localizationManager.getString(key)
     private fun getString(key: StringKeyInterface, vararg args: Any): String = localizationManager.getString(key, *args)

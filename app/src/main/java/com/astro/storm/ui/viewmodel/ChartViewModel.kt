@@ -12,7 +12,9 @@ import com.astro.storm.data.api.GeocodingService
 import com.astro.storm.data.repository.ChartRepository
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.di.IoDispatcher
+import com.astro.storm.ephemeris.HoroscopeCalculator
 import com.astro.storm.ephemeris.SwissEphemerisEngine
+import com.astro.storm.ephemeris.TransitAnalyzer
 import com.astro.storm.ui.chart.ChartColorConfig
 import com.astro.storm.ui.chart.ChartRenderer
 import com.astro.storm.util.ChartExporter
@@ -36,13 +38,15 @@ class ChartViewModel @Inject constructor(
     private val repository: ChartRepository,
     private val ephemerisEngine: SwissEphemerisEngine,
     private val geocodingService: GeocodingService,
+    private val chartExporter: ChartExporter,
+    private val transitAnalyzer: TransitAnalyzer,
+    private val horoscopeCalculator: HoroscopeCalculator,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AndroidViewModel(application) {
 
     // Default chart renderer for light theme - for theme-aware rendering, use getChartRenderer(isDark)
     val chartRenderer = ChartRenderer(application, ChartColorConfig.Light)
     private val prefs = application.getSharedPreferences("chart_prefs", Context.MODE_PRIVATE)
-    private val chartExporter: ChartExporter = ChartExporter(application)
 
     // Theme-aware chart renderer cache
     private var darkChartRenderer: ChartRenderer? = null

@@ -5,6 +5,7 @@ import com.astro.storm.data.local.ChartDatabase
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.preferences.AstrologySettingsManager
 import com.astro.storm.data.repository.SavedChart
+import com.astro.storm.ephemeris.SwissEphemerisEngine
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.json.JSONObject
 import javax.inject.Inject
@@ -19,7 +20,8 @@ import javax.inject.Singleton
 @Singleton
 class AstrologyToolRegistry @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val astrologySettingsManager: AstrologySettingsManager
+    private val astrologySettingsManager: AstrologySettingsManager,
+    private val ephemerisEngine: SwissEphemerisEngine
 ) {
     private val tools = mutableMapOf<String, AstrologyTool>()
 
@@ -79,21 +81,6 @@ class AstrologyToolRegistry @Inject constructor(
 
         // === REMEDIES ===
         registerTool(GetRemediesTool())
-    }
-
-    companion object {
-        @Volatile
-        private var instance: AstrologyToolRegistry? = null
-
-        fun getInstance(context: Context): AstrologyToolRegistry =
-            instance ?: synchronized(this) {
-                instance ?: AstrologyToolRegistry(
-                    context.applicationContext,
-                    AstrologySettingsManager.getInstance(context)
-                ).also {
-                    instance = it
-                }
-            }
     }
 
     /**
@@ -198,7 +185,8 @@ class AstrologyToolRegistry @Inject constructor(
                 allProfiles = allProfiles,
                 currentChart = currentChart,
                 database = ChartDatabase.getInstance(context),
-                astrologySettingsManager = astrologySettingsManager
+                astrologySettingsManager = astrologySettingsManager,
+                ephemerisEngine = ephemerisEngine
             )
 
             // Execute with timeout protection (30 seconds max)
@@ -391,7 +379,8 @@ data class ToolContext(
     val allProfiles: List<SavedChart>,
     val currentChart: VedicChart?,
     val database: ChartDatabase,
-    val astrologySettingsManager: AstrologySettingsManager
+    val astrologySettingsManager: AstrologySettingsManager,
+    val ephemerisEngine: SwissEphemerisEngine
 )
 
 /**

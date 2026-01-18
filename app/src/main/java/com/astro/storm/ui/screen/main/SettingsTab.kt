@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.BikramSambatConverter
 import com.astro.storm.core.common.DateSystem
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalDateSystem
-import com.astro.storm.core.common.LocalLanguage
-import com.astro.storm.core.common.LocalLocalizationManager
-import com.astro.storm.core.common.LocalizationManager
+import com.astro.storm.data.localization.LocalDateSystem
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.LocalLocalizationManager
+import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
@@ -54,6 +54,7 @@ fun SettingsTab(
     currentChart: VedicChart?,
     savedCharts: List<SavedChart>,
     selectedChartId: Long?,
+    themeManager: ThemeManager,
     onEditProfile: (Long) -> Unit,
     onDeleteProfile: (Long) -> Unit,
     onExportChart: (ExportFormat) -> Unit,
@@ -145,7 +146,7 @@ fun SettingsTab(
         }
 
         item {
-            ThemeSetting()
+            ThemeSetting(themeManager = themeManager)
         }
 
         // Note: Date system selector removed - it now automatically follows language
@@ -688,9 +689,7 @@ private fun LanguageSetting(localizationManager: LocalizationManager?) {
  * Theme Selection Setting
  */
 @Composable
-private fun ThemeSetting() {
-    val context = LocalContext.current
-    val themeManager = remember { ThemeManager.getInstance(context) }
+private fun ThemeSetting(themeManager: ThemeManager) {
     val currentTheme by themeManager.themeMode.collectAsState()
     var expanded by remember { mutableStateOf(false) }
 

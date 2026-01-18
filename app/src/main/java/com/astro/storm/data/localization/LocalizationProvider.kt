@@ -1,4 +1,4 @@
-package com.astro.storm.core.common
+package com.astro.storm.data.localization
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -8,6 +8,13 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import com.astro.storm.core.common.BikramSambatConverter
+import com.astro.storm.core.common.DateSystem
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyInterface
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringResources
+import dagger.hilt.android.EntryPointAccessors
 
 /**
  * Composition Local for accessing current language
@@ -26,21 +33,20 @@ val LocalLocalizationManager = compositionLocalOf<LocalizationManager?> { null }
 
 /**
  * Provider composable that supplies localization context to the app
- *
- * Usage:
- * ```kotlin
- * LocalizationProvider {
- *     // Your app content
- *     Text(text = stringResource(StringKey.HOME_TAB))
- * }
- * ```
  */
 @Composable
 fun LocalizationProvider(
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
-    val localizationManager = remember { LocalizationManager.getInstance(context) }
+    
+    // Use EntryPointAccessors to get the Hilt-managed LocalizationManager in a Composable
+    val localizationManager = remember(context) {
+        EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            LocalizationManagerEntryPoint::class.java
+        ).localizationManager()
+    }
 
     val language by localizationManager.language.collectAsState()
     val dateSystem by localizationManager.dateSystem.collectAsState()
@@ -52,6 +58,15 @@ fun LocalizationProvider(
     ) {
         content()
     }
+}
+
+/**
+ * Entry point for getting LocalizationManager
+ */
+@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+@dagger.hilt.EntryPoint
+interface LocalizationManagerEntryPoint {
+    fun localizationManager(): LocalizationManager
 }
 
 /**

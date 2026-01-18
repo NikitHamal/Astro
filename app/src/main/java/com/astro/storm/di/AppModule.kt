@@ -5,7 +5,16 @@ import androidx.room.Room
 import com.astro.storm.data.local.ChartDao
 import com.astro.storm.data.local.ChartDatabase
 import com.astro.storm.data.local.chat.ChatDao
+import com.astro.storm.data.localization.LocalizationManager
+import com.astro.storm.data.preferences.AstrologySettingsManager
+import com.astro.storm.data.preferences.OnboardingManager
+import com.astro.storm.data.preferences.ThemeManager
+import com.astro.storm.ephemeris.GocharaVedhaCalculator
+import com.astro.storm.ephemeris.HoroscopeCalculator
 import com.astro.storm.ephemeris.SwissEphemerisEngine
+import com.astro.storm.ephemeris.TarabalaCalculator
+import com.astro.storm.ephemeris.TransitAnalyzer
+import com.astro.storm.util.ChartExporter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,10 +51,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideSwissEphemerisEngine(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
+        astrologySettingsManager: AstrologySettingsManager
     ): SwissEphemerisEngine {
         // Initialize the singleton instance
-        return SwissEphemerisEngine.getInstance(context)
+        return SwissEphemerisEngine.getInstance(context, astroSettings = astrologySettingsManager)
     }
 
     @Provides

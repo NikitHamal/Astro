@@ -15,12 +15,9 @@ import kotlin.math.roundToInt
 
 @Singleton
 class HoroscopeCalculator @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val ephemerisEngine: SwissEphemerisEngine
 ) : AutoCloseable {
-
-    private val ephemerisEngine: SwissEphemerisEngine by lazy {
-        SwissEphemerisEngine.getInstance(context)
-    }
 
     private val transitCache = LRUCache<TransitCacheKey, VedicChart>(MAX_TRANSIT_CACHE_SIZE)
     private val dailyHoroscopeCache = LRUCache<DailyHoroscopeCacheKey, DailyHoroscope>(MAX_HOROSCOPE_CACHE_SIZE)

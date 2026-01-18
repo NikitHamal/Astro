@@ -1,11 +1,18 @@
-package com.astro.storm.core.common
+package com.astro.storm.data.localization
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.astro.storm.core.common.DateSystem
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyInterface
+import com.astro.storm.core.common.StringResources
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Localization Manager for AstroStorm
@@ -23,7 +30,10 @@ import kotlinx.coroutines.flow.map
  * This provides a more intuitive user experience where language and cultural context
  * (including calendar system) are unified.
  */
-class LocalizationManager private constructor(context: Context) {
+@Singleton
+class LocalizationManager @Inject constructor(
+    @ApplicationContext context: Context
+) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(
         PREFS_NAME,

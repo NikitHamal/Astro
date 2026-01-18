@@ -425,8 +425,8 @@ class CreateProfileTool : AstrologyTool {
             )
 
             // Calculate the chart using Swiss Ephemeris
-            val ephemerisEngine = SwissEphemerisEngine.getInstance(context.context)
-            val chart = ephemerisEngine.calculateVedicChart(birthData, HouseSystem.DEFAULT)
+            // Calculate the chart using Swiss Ephemeris
+            val chart = context.ephemerisEngine.calculateVedicChart(birthData, HouseSystem.DEFAULT)
 
             // Save to database
             val repository = com.astro.storm.data.repository.ChartRepository(context.database.chartDao())
@@ -667,8 +667,8 @@ class UpdateProfileTool : AstrologyTool {
             )
 
             // Re-calculate the chart
-            val ephemerisEngine = SwissEphemerisEngine.getInstance(context.context)
-            val chart = ephemerisEngine.calculateVedicChart(birthData, HouseSystem.DEFAULT)
+            // Calculate the chart using Swiss Ephemeris
+            val chart = context.ephemerisEngine.calculateVedicChart(birthData, HouseSystem.DEFAULT)
 
             // Update in database
             val repository = com.astro.storm.data.repository.ChartRepository(context.database.chartDao())

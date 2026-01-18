@@ -36,8 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalizationManager
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch

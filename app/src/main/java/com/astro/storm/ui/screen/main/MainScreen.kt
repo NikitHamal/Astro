@@ -47,6 +47,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(
     viewModel: ChartViewModel,
     chatViewModel: ChatViewModel,
+    themeManager: ThemeManager,
     savedCharts: List<SavedChart>,
     currentChart: VedicChart?,
     selectedChartId: Long?,
@@ -302,6 +303,7 @@ fun MainScreen(
                             currentChart = currentChart,
                             savedCharts = savedCharts,
                             selectedChartId = selectedChartId,
+                            themeManager = themeManager,
                             onEditProfile = onNavigateToProfileEdit,
                             onDeleteProfile = { chartId ->
                                 viewModel.deleteChart(chartId)

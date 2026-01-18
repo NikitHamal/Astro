@@ -112,9 +112,9 @@ enum class TransitViewType(val titleKey: StringKey) {
 @Composable
 fun TransitsScreenRedesigned(
     chart: VedicChart?,
+    transitAnalyzer: TransitAnalyzer,
     onBack: () -> Unit
 ) {
-    val context = LocalContext.current
     val language = LocalLanguage.current
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     var expandedPlanets by rememberSaveable { mutableStateOf(setOf<String>()) }
@@ -123,8 +123,7 @@ fun TransitsScreenRedesigned(
     val transitAnalysis = remember(chart) {
         chart?.let {
             try {
-                val analyzer = TransitAnalyzer(context)
-                analyzer.analyzeTransits(it, LocalDateTime.now())
+                transitAnalyzer.analyzeTransits(it, LocalDateTime.now())
             } catch (e: Exception) {
                 null
             }

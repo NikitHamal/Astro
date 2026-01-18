@@ -101,6 +101,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun GocharaVedhaScreen(
     chart: VedicChart?,
+    vedhaCalculator: GocharaVedhaCalculator,
     onBack: () -> Unit
 ) {
     val language = LocalLanguage.current
@@ -116,8 +117,6 @@ fun GocharaVedhaScreen(
         stringResource(StringKeyDosha.GOCHARA_FORECAST)
     )
 
-    val context = LocalContext.current
-
     // Calculate Vedha analysis
     LaunchedEffect(chart) {
         if (chart == null) {
@@ -128,7 +127,7 @@ fun GocharaVedhaScreen(
         delay(300)
         try {
             vedhaAnalysis = withContext(Dispatchers.Default) {
-                GocharaVedhaCalculator.calculateCurrentVedha(context, chart, LocalDateTime.now())
+                vedhaCalculator.calculateCurrentVedha(chart, LocalDateTime.now())
             }
         } catch (e: Exception) {
             // Handle calculation error

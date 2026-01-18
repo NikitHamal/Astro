@@ -70,12 +70,17 @@ import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.screen.main.MainScreen
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.AiStatus
+import dagger.hilt.android.EntryPointAccessors
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import com.astro.storm.ui.viewmodel.ChatViewModel
 import com.astro.storm.ui.viewmodel.StreamingMessageState
 import com.astro.storm.ui.components.agentic.AskUserOption
 import com.astro.storm.ui.components.agentic.SectionedMessageState
 import com.astro.storm.data.ai.provider.AiProviderRegistry
+import com.astro.storm.data.preferences.ThemeManager
+import com.astro.storm.ephemeris.GocharaVedhaCalculator
+import com.astro.storm.ephemeris.TarabalaCalculator
+import com.astro.storm.ephemeris.TransitAnalyzer
 
 /**
  * Navigation routes
@@ -300,6 +305,10 @@ sealed class Screen(val route: String) {
 @Composable
 fun AstroStormNavigation(
     navController: NavHostController,
+    themeManager: ThemeManager,
+    transitAnalyzer: TransitAnalyzer,
+    vedhaCalculator: GocharaVedhaCalculator,
+    tarabalaCalculator: TarabalaCalculator,
     viewModel: ChartViewModel = hiltViewModel(),
     chatViewModel: ChatViewModel = hiltViewModel()
 ) {
@@ -310,7 +319,12 @@ fun AstroStormNavigation(
     val selectedChartId by viewModel.selectedChartId.collectAsState()
 
     // Get AI Provider Registry for AI Models screen
-    val providerRegistry = remember { AiProviderRegistry.getInstance(context) }
+    val providerRegistry = remember(context) {
+        EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            NavigationEntryPoint::class.java
+        ).aiProviderRegistry()
+    }
 
     var currentChart by remember { mutableStateOf<VedicChart?>(null) }
 
@@ -330,6 +344,7 @@ fun AstroStormNavigation(
             MainScreen(
                 viewModel = viewModel,
                 chatViewModel = chatViewModel,
+                themeManager = themeManager,
                 savedCharts = savedCharts,
                 currentChart = currentChart,
                 selectedChartId = selectedChartId,
@@ -834,6 +849,7 @@ fun AstroStormNavigation(
 
             TransitsScreenRedesigned(
                 chart = currentChart,
+                transitAnalyzer = transitAnalyzer,
                 onBack = { navController.popBackStack() }
             )
         }
@@ -1206,8 +1222,8 @@ fun AstroStormNavigation(
             }
 
             TarabalaScreen(
-                context = context,
                 chart = currentChart,
+                tarabalaCalculator = tarabalaCalculator,
                 onBack = { navController.popBackStack() }
             )
         }
@@ -1284,6 +1300,7 @@ fun AstroStormNavigation(
 
             GocharaVedhaScreen(
                 chart = currentChart,
+                vedhaCalculator = vedhaCalculator,
                 onBack = { navController.popBackStack() }
             )
         }
@@ -1671,4 +1688,14 @@ fun AstroStormNavigation(
             )
         }
     }
+}
+
+/**
+ * Entry point for getting dependencies in Navigation
+ */
+@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+@dagger.hilt.EntryPoint
+interface NavigationEntryPoint {
+    fun aiProviderRegistry(): AiProviderRegistry
+    fun stormyAgent(): com.astro.storm.data.ai.agent.StormyAgent
 }

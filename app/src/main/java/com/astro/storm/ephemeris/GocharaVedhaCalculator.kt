@@ -10,47 +10,18 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import java.time.LocalDate
 import java.time.LocalDateTime
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Comprehensive Gochara Vedha (Transit Obstruction) Calculator
- *
- * Vedha is a critical concept in Vedic transit analysis where the beneficial effects
- * of a planet transiting a favorable house are obstructed (nullified) by another planet
- * positioned in a specific "Vedha point".
- *
- * Key Principles:
- *
- * 1. **VEDHA MECHANISM**
- *    - Only applies when a planet is in a normally favorable transit house
- *    - Specific pairs of houses create mutual obstruction
- *    - The obstructing planet "punctures" or nullifies the good effects
- *
- * 2. **CLASSICAL VEDHA PAIRS (from Moon)**
- *    House 1 ↔ 5 (except Sun-Saturn)
- *    House 2 ↔ 12
- *    House 3 ↔ 9
- *    House 4 ↔ 10
- *    House 6 ↔ 12
- *    House 7 ↔ 11
- *
- * 3. **EXCEPTIONS**
- *    - Sun and Saturn do NOT cause Vedha to each other
- *    - Some traditions exclude Moon's Vedha effects
- *    - Rahu-Ketu Vedha is debated among authorities
- *
- * 4. **PRACTICAL APPLICATION**
- *    - Used to refine transit predictions
- *    - Essential for accurate Gochara Phala (transit results)
- *    - Helps identify why expected transits may not deliver results
- *
- * Classical References:
- * - Phaladeepika (Chapter on Gochara)
- * - Saravali (Transit sections)
- * - Brihat Samhita (Gochara rules)
- *
+...
  * @author AstroStorm - Ultra-Precision Vedic Astrology
  */
-object GocharaVedhaCalculator {
+@Singleton
+class GocharaVedhaCalculator @Inject constructor(
+    private val ephemerisEngine: SwissEphemerisEngine
+) {
 
     // ============================================================================
     // VEDHA PAIR DEFINITIONS
@@ -873,13 +844,9 @@ object GocharaVedhaCalculator {
      * Calculate Vedha for current moment using Swiss Ephemeris
      */
     fun calculateCurrentVedha(
-        context: Context,
         chart: VedicChart,
         dateTime: LocalDateTime = LocalDateTime.now()
     ): CompleteVedhaAnalysis? {
-        // Calculate current transit positions
-        val engineInstance = SwissEphemerisEngine.getInstance(context) ?: return null
-
         val transitPositions = mutableListOf<PlanetPosition>()
         val gocharaPlanets = listOf(
             Planet.SUN, Planet.MOON, Planet.MARS, Planet.MERCURY,
@@ -888,7 +855,7 @@ object GocharaVedhaCalculator {
 
         for (planet in gocharaPlanets) {
             try {
-                val planetPos = engineInstance.calculatePlanetPosition(
+                val planetPos = ephemerisEngine.calculatePlanetPosition(
                     planet, dateTime, chart.birthData.timezone,
                     chart.birthData.latitude, chart.birthData.longitude
                 )

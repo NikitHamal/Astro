@@ -117,6 +117,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dagger.hilt.android.EntryPointAccessors
+import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.currentLanguage
 import com.astro.storm.core.common.LocalLanguage
 import com.astro.storm.core.model.VedicChart
@@ -148,6 +150,16 @@ import com.astro.storm.core.common.DateFormat
 import com.astro.storm.core.common.formatLocalized
 import com.astro.storm.core.common.localized
 import com.astro.storm.core.common.localizedName
+
+/**
+ * Entry point for getting dependencies in PrashnaScreen
+ */
+@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+@dagger.hilt.EntryPoint
+interface PrashnaScreenEntryPoint {
+    fun aiProviderRegistry(): com.astro.storm.data.ai.provider.AiProviderRegistry
+    fun stormyAgent(): com.astro.storm.data.ai.agent.StormyAgent
+}
 
 /**
  * UI State for Prashna Screen
@@ -1873,9 +1885,15 @@ private fun AiInsightCard(result: PrashnaResult) {
     var streamingJob by remember { mutableStateOf<Job?>(null) }
     var lastUpdateTime by remember { mutableStateOf(0L) }
 
-    // Get AI dependencies
-    val agent = remember(context) { StormyAgent.getInstance(context) }
-    val providerRegistry = remember(context) { AiProviderRegistry.getInstance(context) }
+    // Get AI dependencies using EntryPoint
+    val entryPoint = remember(context) {
+        EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            PrashnaScreenEntryPoint::class.java
+        )
+    }
+    val agent = remember(entryPoint) { entryPoint.stormyAgent() }
+    val providerRegistry = remember(entryPoint) { entryPoint.aiProviderRegistry() }
 
     // Generate Prashna context for the AI
     val prashnaContext = remember(result) { formatPrashnaForAi(result) }

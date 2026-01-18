@@ -16,7 +16,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.astro.storm.core.common.LocalizationProvider
+import com.astro.storm.data.localization.LocalizationManager
+import com.astro.storm.data.localization.LocalizationProvider
 import com.astro.storm.data.preferences.AstrologySettingsManager
 import com.astro.storm.data.preferences.OnboardingManager
 import com.astro.storm.data.preferences.ThemeManager
@@ -39,6 +40,18 @@ class MainActivity : ComponentActivity() {
     lateinit var onboardingManager: OnboardingManager
 
     @Inject
+    lateinit var localizationManager: LocalizationManager
+
+    @Inject
+    lateinit var transitAnalyzer: TransitAnalyzer
+
+    @Inject
+    lateinit var vedhaCalculator: GocharaVedhaCalculator
+
+    @Inject
+    lateinit var tarabalaCalculator: TarabalaCalculator
+
+    @Inject
     lateinit var astrologySettingsManager: AstrologySettingsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,13 +60,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             // Observe theme mode
             val themeMode by themeManager.themeMode.collectAsState()
-            val isSystemDarkTheme = isSystemInDarkTheme()
+            val isSystemInDarkTheme = isSystemInDarkTheme()
 
             // Determine if dark theme should be used
             val useDarkTheme = when (themeMode) {
                 ThemeMode.LIGHT -> false
                 ThemeMode.DARK -> true
-                ThemeMode.SYSTEM -> isSystemDarkTheme
+                ThemeMode.SYSTEM -> isSystemInDarkTheme
             }
 
             // Observe onboarding completion
@@ -72,10 +85,13 @@ class MainActivity : ComponentActivity() {
                     ) {
                         if (showOnboarding) {
                             OnboardingScreen(
+                                themeManager = themeManager,
+                                localizationManager = localizationManager,
+                                onboardingManager = onboardingManager,
                                 onComplete = { shouldNavigateToChartInput ->
+                                    onboardingManager.completeOnboarding()
                                     navigateToChartInputAfterOnboarding = shouldNavigateToChartInput
                                     showOnboarding = false
-                                    onboardingManager.completeOnboarding() // Mark as complete
                                 }
                             )
                         } else {
@@ -94,6 +110,10 @@ class MainActivity : ComponentActivity() {
 
                             AstroStormNavigation(
                                 navController = navController,
+                                themeManager = themeManager,
+                                transitAnalyzer = transitAnalyzer,
+                                vedhaCalculator = vedhaCalculator,
+                                tarabalaCalculator = tarabalaCalculator,
                                 viewModel = viewModel
                             )
                         }

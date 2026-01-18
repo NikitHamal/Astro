@@ -45,11 +45,11 @@ class ThemeManager @Inject constructor(
      * Get the persisted theme from SharedPreferences
      */
     private fun getPersistedTheme(): ThemeMode {
-        val savedTheme = prefs.getString(KEY_THEME_MODE, ThemeMode.DARK.name)
+        val savedTheme = prefs.getString(KEY_THEME_MODE, ThemeMode.SYSTEM.name)
         return try {
-            ThemeMode.valueOf(savedTheme ?: ThemeMode.DARK.name)
+            ThemeMode.valueOf(savedTheme ?: ThemeMode.SYSTEM.name)
         } catch (e: IllegalArgumentException) {
-            ThemeMode.DARK // Default to dark mode for astrology app
+            ThemeMode.SYSTEM // Default to system mode
         }
     }
 
@@ -67,16 +67,6 @@ class ThemeManager @Inject constructor(
     companion object {
         private const val PREFS_NAME = "astro_storm_theme_prefs"
         private const val KEY_THEME_MODE = "theme_mode"
-
-        @Volatile
-        private var instance: ThemeManager? = null
-
-        fun getInstance(context: Context): ThemeManager =
-            instance ?: synchronized(this) {
-                instance ?: ThemeManager(context.applicationContext).also {
-                    instance = it
-                }
-            }
     }
 }
 
