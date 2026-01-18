@@ -213,7 +213,8 @@ object ShoolaDashaCalculator {
         } else {
             DashaDirection.REVERSE
         }
-
+            // Check if this period is currently active
+            val isCurrent = !currentTime.isBefore(periodStart) && currentTime.isBefore(periodEnd)
         return startingSign to direction
     }
 
