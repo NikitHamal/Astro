@@ -59,9 +59,38 @@ A comprehensive audit of the "Astro Storm" Vedic astrology application has been 
 
 - **Missing Unit Tests:** (Deferred per instruction).
 
----
+## 7. AI Provider Blueprints (Reverse Engineered)
 
-## Conclusion
+Deep dive into `gpt4free` has revealed high-value blueprints for implementing additional free providers.
+
+### GLM (ChatZ)
+- **Mechanism**: Dynamic token acquisition followed by request signing.
+- **Workflow**:
+  1. GET `https://chat.z.ai/api/v1/auths/` -> Extract `token`.
+  2. Generate HMAC-SHA256 `x-signature` using current 5-min timestamp window and salt "junjie".
+  3. POST to `/api/chat/completions` with Bearer token and signature.
+
+### Qwen (Alibaba)
+- **Mechanism**: Tokenized web-UI API.
+- **Requirements**: 
+  - `bx-umidtoken`: Extract via regex from `https://sg-wum.alibaba.com/w/wu.json`.
+  - Headers: `X-Source: web`, `X-Requested-With: XMLHttpRequest`.
+  - Cookies: Must simulate `ssxmod_itna` tracking cookies.
+
+### Lambda Chat
+- **Mechanism**: Multi-step stateful session.
+- **Workflow**:
+  1. POST `/conversation` -> Get `conversationId`.
+  2. GET `/conversation/{id}/__data.json` -> Parse for hidden message UUID.
+  3. POST user message as `FormData` where `data` field contains the JSON payload.
+
+### PollinationsAI
+- **Mechanism**: Simple unauthenticated GET/POST.
+- **Text Endpoint**: `https://text.pollinations.ai/{prompt}`.
+- **Image Endpoint**: `https://image.pollinations.ai/prompt/{prompt}?model=flux`.
+- **Note**: Best reliability for image generation tasks.
+
+---
 
 The core application architecture has been significantly modernized. 
 - **Hilt** handles dependency injection globally.

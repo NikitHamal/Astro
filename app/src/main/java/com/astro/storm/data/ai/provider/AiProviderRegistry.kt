@@ -78,6 +78,7 @@ class AiProviderRegistry @Inject constructor(
         // Note: Qwen, Blackbox, DDG, Pollinations, ChatAI, and TeachAnything providers have been removed due to reliability issues
         // DeepInfra is the primary provider - works reliably with multiple models
         registerProvider(DeepInfraProvider())
+        registerProvider(GlmProvider())
 
         // Free providers based on gpt4free implementations - no API key required
         registerProvider(YqcloudProvider())

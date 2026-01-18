@@ -114,18 +114,47 @@ class DeepInfraProvider : BaseOpenAiCompatibleProvider() {
 
     override suspend fun fetchModels(): List<AiModel> = withContext(Dispatchers.IO) {
         try {
-            val url = java.net.URL("https://api.deepinfra.com/models/featured")
+            // Try the more comprehensive models/list endpoint first with cache busting
+            val url = java.net.URL("https://api.deepinfra.com/models/list?t=${System.currentTimeMillis()}")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             connection.connectTimeout = 15000
             connection.readTimeout = 15000
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
 
             if (connection.responseCode == HttpURLConnection.HTTP_OK) {
                 val response = connection.inputStream.bufferedReader().readText()
-                parseDeepInfraModels(response)
-            } else {
-                getDefaultModels()
+                val models = parseDeepInfraModels(response)
+                if (models.isNotEmpty()) return@withContext models
             }
+
+            // Fallback to featured models if list fails
+            val featuredUrl = java.net.URL("https://api.deepinfra.com/models/featured?t=${System.currentTimeMillis()}")
+            val featuredConnection = featuredUrl.openConnection() as HttpURLConnection
+            featuredConnection.requestMethod = "GET"
+            featuredConnection.connectTimeout = 10000
+            featuredConnection.readTimeout = 10000
+
+            if (featuredConnection.responseCode == HttpURLConnection.HTTP_OK) {
+                val response = featuredConnection.inputStream.bufferedReader().readText()
+                val models = parseDeepInfraModels(response)
+                if (models.isNotEmpty()) return@withContext models
+            }
+
+            // Finally fallback to OpenAI compatible models endpoint
+            val openAiModelsUrl = java.net.URL("$apiBase/models")
+            val openAiConnection = openAiModelsUrl.openConnection() as HttpURLConnection
+            openAiConnection.requestMethod = "GET"
+            openAiConnection.connectTimeout = 10000
+            openAiConnection.readTimeout = 10000
+
+            if (openAiConnection.responseCode == HttpURLConnection.HTTP_OK) {
+                val response = openAiConnection.inputStream.bufferedReader().readText()
+                val models = parseDeepInfraModels(response)
+                if (models.isNotEmpty()) return@withContext models
+            }
+
+            getDefaultModels()
         } catch (e: Exception) {
             getDefaultModels()
         }
@@ -134,31 +163,72 @@ class DeepInfraProvider : BaseOpenAiCompatibleProvider() {
     private fun parseDeepInfraModels(response: String): List<AiModel> {
         val models = mutableListOf<AiModel>()
         try {
-            val jsonArray = org.json.JSONArray(response)
+            // Handle both array and object formats
+            val jsonArray = try {
+                org.json.JSONArray(response)
+            } catch (e: Exception) {
+                val jsonObject = org.json.JSONObject(response)
+                jsonObject.optJSONArray("data") 
+                    ?: jsonObject.optJSONArray("models") 
+                    ?: jsonObject.optJSONArray("data")
+                    ?: return emptyList()
+            }
+
             for (i in 0 until jsonArray.length()) {
                 val modelJson = jsonArray.getJSONObject(i)
-                val modelName = modelJson.optString("model_name", "")
-                val modelType = modelJson.optString("type", "")
+                
+                // Handle different keys for model ID/name
+                val modelId = modelJson.optString("model_name", 
+                             modelJson.optString("model_id", 
+                             modelJson.optString("id", "")))
+                
+                val modelType = modelJson.optString("type", "").lowercase()
+                
+                // Include text-generation, chat, and other LLM types
+                // If type is missing (common in OpenAI format), assume it's a text model if ID looks like one
+                val isTextModel = modelType.isEmpty() || 
+                                 modelType.contains("text") || 
+                                 modelType.contains("generation") || 
+                                 modelType.contains("chat") || 
+                                 modelType.contains("llm")
 
-                // Only include text-generation models
-                if (modelType == "text-generation" && modelName.isNotEmpty()) {
+                if (modelId.isNotEmpty() && isTextModel) {
                     models.add(
                         AiModel(
-                            id = modelName,
-                            name = modelName,
+                            id = modelId,
+                            name = modelId,
                             providerId = providerId,
-                            displayName = formatModelDisplayName(modelName),
-                            supportsVision = modelName in visionModels,
-                            supportsReasoning = modelName in reasoningModels,
+                            displayName = formatModelDisplayName(modelId),
+                            supportsVision = isVisionModel(modelId),
+                            supportsReasoning = isReasoningModel(modelId),
                             supportsTools = true
                         )
                     )
                 }
             }
         } catch (e: Exception) {
-            // Fall back to defaults
+            // Log error or ignore
         }
-        return models.ifEmpty { getDefaultModels() }
+        return models
+    }
+
+    private fun isVisionModel(modelId: String): Boolean {
+        val lowerId = modelId.lowercase()
+        return modelId in visionModels || 
+               lowerId.contains("vision") || 
+               lowerId.contains("-vl-") || 
+               lowerId.contains("multimodal")
+    }
+
+    private fun isReasoningModel(modelId: String): Boolean {
+        val lowerId = modelId.lowercase()
+        return modelId in reasoningModels || 
+               lowerId.contains("reasoning") || 
+               lowerId.contains("-r1-") || 
+               lowerId.contains("thought") ||
+               lowerId.contains("thinking") ||
+               lowerId.endsWith("-r1") ||
+               lowerId.contains("qwq")
     }
 
     override fun getDefaultModels(): List<AiModel> = listOf(
