@@ -673,6 +673,11 @@ private fun getProviderInfo(providerId: String): ProviderInfo {
             icon = Icons.Outlined.Shield,
             color = androidx.compose.ui.graphics.Color(0xFFDE5833)
         )
+        "glm" -> ProviderInfo(
+            displayName = stringResource(StringKeyDosha.AI_PROVIDER_GLM),
+            icon = Icons.Outlined.SmartToy,
+            color = androidx.compose.ui.graphics.Color(0xFF00BFFF) // Deep Sky Blue
+        )
         else -> ProviderInfo(
             displayName = providerId.replaceFirstChar { it.uppercase() },
             icon = Icons.Outlined.AutoAwesome,

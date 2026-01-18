@@ -90,6 +90,20 @@ Deep dive into `gpt4free` has revealed high-value blueprints for implementing ad
 - **Image Endpoint**: `https://image.pollinations.ai/prompt/{prompt}?model=flux`.
 - **Note**: Best reliability for image generation tasks.
 
+## 8. Chat UI/UX Revamp ("Flashy" Architecture)
+
+A complete overhaul of the chat system has been implemented to match the professional "Flashy" coding agent experience.
+
+### Architecture Changes
+- **Stateful Streaming**: Moved from string-based deduplication to a robust `FlashyPart` state machine. This eliminates streaming lag and character-by-character jitter.
+- **Agent Stream State**: The agent now emits typed events (`Content`, `Thought`, `ToolCall`, `ToolResult`) instead of raw text chunks.
+- **Chronological Layout**: Messages are rendered as a linear sequence of parts (Thought -> Tool -> Result -> Text) rather than monolithic blocks.
+
+### UI Improvements
+- **FlashyAiMessage**: New Compose component that renders "Thought Process" blocks (collapsible), "Tool Pills" (interactive status indicators), and Markdown text cleanly.
+- **Performance**: `LazyColumn` now efficiently updates only the active streaming part without expensive recompositions of the entire message history.
+- **Visuals**: Adopted a clean, IDE-like aesthetic with clear separation between reasoning, execution, and final output.
+
 ---
 
 The core application architecture has been significantly modernized. 

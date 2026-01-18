@@ -2602,30 +2602,31 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // AI MODELS SCREEN
     // ============================================
     AI_MODELS_TITLE("AI Models", "AI मोडेलहरू"),
-    AI_MODELS_ENABLED_COUNT("%d models enabled", "%d मोडेलहरू सक्षम"),
-    AI_MODELS_BACK("Back", "पछाडि"),
-    AI_MODELS_REFRESH("Refresh models", "मोडेलहरू रिफ्रेस गर्नुहोस्"),
-    AI_MODELS_FREE_TITLE("Free AI Models", "निःशुल्क AI मोडेलहरू"),
-    AI_MODELS_FREE_DESC("These models are provided by free API providers and don't require any API keys. Model availability may vary.", "यी मोडेलहरू निःशुल्क API प्रदायकहरूबाट प्रदान गरिएका हुन् र कुनै API कुञ्जी आवश्यक पर्दैन। मोडेल उपलब्धता फरक हुन सक्छ।"),
+    AI_MODELS_BACK("Back", "फिर्ता"),
+    AI_MODELS_REFRESH("Refresh Models", "मोडेलहरू रिफ्रेस गर्नुहोस्"),
+    AI_MODELS_ENABLED_COUNT("%d Enabled", "%d सक्षम"),
+    AI_MODELS_FREE_TITLE("Free AI Access", "नि:शुल्क AI पहुँच"),
+    AI_MODELS_FREE_DESC("Access powerful AI models for free via reverse-engineered providers. No API keys required.", "रिभर्स-इन्जिनियर गरिएका प्रदायकहरू मार्फत शक्तिशाली AI मोडेलहरू नि:शुल्क पहुँच गर्नुहोस्। कुनै API कुञ्जी आवश्यक पर्दैन।"),
     AI_MODELS_DEFAULT("Default Model", "पूर्वनिर्धारित मोडेल"),
-    AI_MODELS_NOT_SET("Not set", "सेट गरिएको छैन"),
+    AI_MODELS_NOT_SET("Not Set", "सेट गरिएको छैन"),
     AI_MODELS_SELECT_DEFAULT("Select Default Model", "पूर्वनिर्धारित मोडेल छान्नुहोस्"),
     AI_MODELS_CANCEL("Cancel", "रद्द गर्नुहोस्"),
-    AI_MODELS_MODELS_ENABLED("%d/%d models enabled", "%d/%d मोडेलहरू सक्षम"),
+    AI_MODELS_MODELS_ENABLED("%d / %d Enabled", "%d / %d सक्षम"),
     AI_MODELS_ENABLE_ALL("Enable All", "सबै सक्षम गर्नुहोस्"),
     AI_MODELS_DISABLE_ALL("Disable All", "सबै असक्षम गर्नुहोस्"),
     AI_MODELS_TOOLS("Tools", "उपकरणहरू"),
     AI_MODELS_REASONING("Reasoning", "तर्क"),
     AI_MODELS_VISION("Vision", "दृष्टि"),
-    AI_MODELS_NONE("No Models Available", "कुनै मोडेल उपलब्ध छैन"),
-    AI_MODELS_NONE_DESC("Unable to fetch AI models. Check your internet connection and try again.", "AI मोडेलहरू प्राप्त गर्न असमर्थ। आफ्नो इन्टरनेट जडान जाँच गर्नुहोस् र पुन: प्रयास गर्नुहोस्।"),
-    AI_MODELS_RETRY("Retry", "पुन: प्रयास गर्नुहोस्"),
+    AI_MODELS_NONE("No Models Found", "कुनै मोडेल फेला परेन"),
+    AI_MODELS_NONE_DESC("Could not fetch models. Please check your connection and try refreshing.", "मोडेलहरू प्राप्त गर्न सकिएन। कृपया आफ्नो जडान जाँच गर्नुहोस् र रिफ्रेस गर्ने प्रयास गर्नुहोस्।"),
+    AI_MODELS_RETRY("Retry", "पुनः प्रयास गर्नुहोस्"),
     
-    // AI Providers
+    // Providers
     AI_PROVIDER_DEEPINFRA("DeepInfra", "डीपइन्फ्रा"),
     AI_PROVIDER_QWEN("Qwen", "क्वेन"),
-    AI_PROVIDER_BLACKBOX("Blackbox AI", "ब्ल्याकबक्स AI"),
-    AI_PROVIDER_DDG("DuckDuckGo AI", "डकडकगो AI"),
+    AI_PROVIDER_BLACKBOX("Blackbox", "ब्ल्याकबक्स"),
+    AI_PROVIDER_DDG("DuckDuckGo", "डकडकगो"),
+    AI_PROVIDER_GLM("GLM (ChatZ)", "GLM (च्याट जेड)"),
 
     // ============================================
     // COMMON UI STRINGS
