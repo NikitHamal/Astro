@@ -2,7 +2,7 @@ package com.astro.storm.ephemeris.varshaphala
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.ZodiacSign
@@ -102,3 +102,4 @@ object MuddaDashaCalculator {
         return (keys.map { StringResources.get(it, language) }).take(5)
     }
 }
+

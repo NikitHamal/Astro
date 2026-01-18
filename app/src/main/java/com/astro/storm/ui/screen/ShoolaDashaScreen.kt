@@ -75,10 +75,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKeyAdvanced
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.shoola.*
 import com.astro.storm.ephemeris.shoola.ShoolaDashaCalculator
@@ -1452,3 +1452,4 @@ private fun getSeverityColor(severity: HealthSeverity): Color {
         HealthSeverity.NONE -> AppTheme.TextMuted
     }
 }
+

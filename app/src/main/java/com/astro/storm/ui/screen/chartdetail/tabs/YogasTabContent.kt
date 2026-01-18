@@ -59,10 +59,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.YogaCalculator
 import com.astro.storm.ephemeris.yoga.Yoga
 import com.astro.storm.ephemeris.yoga.YogaAnalysis
@@ -681,3 +681,4 @@ private fun getLocalizedStrength(strength: YogaStrength, language: Language): St
     }
     return stringResource(key)
 }
+

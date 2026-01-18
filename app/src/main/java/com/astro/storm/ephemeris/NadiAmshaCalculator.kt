@@ -2,7 +2,7 @@ package com.astro.storm.ephemeris
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAdvanced
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
@@ -186,3 +186,4 @@ object NadiAmshaCalculator {
     // Reference data for Nadi names could be added here in future
     // private val NADI_NAMES = listOf(...)
 }
+

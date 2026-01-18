@@ -81,9 +81,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKeyNative
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.nativeanalysis.*
 import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisCalculator
@@ -2149,3 +2149,4 @@ private fun NativeInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+

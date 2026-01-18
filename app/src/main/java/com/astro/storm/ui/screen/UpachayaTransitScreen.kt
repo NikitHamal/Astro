@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.currentLanguage
+import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
@@ -1294,3 +1294,4 @@ private fun getHouseName(house: Int, language: Language): String {
         }
     }
 }
+

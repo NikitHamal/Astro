@@ -8,7 +8,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyLalKitab
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyRemedy
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 
 /**
  * Lal Kitab Remedies Calculator
@@ -856,3 +856,4 @@ data class AnnualRemedyEntry(
     val planet: Planet,
     val remedies: List<String>
 )
+

@@ -6,7 +6,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 
 /**
  * Matchmaking (Kundli Milan) Data Models
@@ -743,3 +743,4 @@ object MatchmakingConstants {
     /** Mahendra favorable positions */
     val MAHENDRA_POSITIONS = listOf(4, 7, 10, 13, 16, 19, 22, 25)
 }
+

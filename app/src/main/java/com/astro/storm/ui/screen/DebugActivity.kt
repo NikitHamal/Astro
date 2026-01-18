@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.MainActivity
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AstroStormTheme
 import com.astro.storm.ui.theme.AppTheme
 
@@ -129,3 +129,4 @@ fun DebugScreen(
         }
     }
 }
+

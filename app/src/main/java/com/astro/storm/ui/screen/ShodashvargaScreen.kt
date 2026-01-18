@@ -28,12 +28,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.ShodashvargaCalculator
@@ -1521,3 +1521,4 @@ private fun getLocalizedDignity(dignity: VargaDignity, language: Language): Stri
         VargaDignity.DEBILITATED -> StringResources.get(StringKeyDosha.DIGNITY_DEBILITATED, language)
     }
 }
+

@@ -3,7 +3,7 @@ package com.astro.storm.ephemeris.varga
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyDivisional
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.model.*
 
 // Data classes for analysis results
@@ -229,3 +229,4 @@ data class ParentalLongevityIndicators(
     val motherLongevity: String,
     val healthConcerns: List<String>
 )
+

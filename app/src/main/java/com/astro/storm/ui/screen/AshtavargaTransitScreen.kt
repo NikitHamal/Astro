@@ -85,7 +85,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
@@ -1858,3 +1858,4 @@ private fun getQualityColor(quality: TransitQuality, colors: com.astro.storm.ui.
         TransitQuality.DIFFICULT -> colors.ErrorColor
     }
 }
+

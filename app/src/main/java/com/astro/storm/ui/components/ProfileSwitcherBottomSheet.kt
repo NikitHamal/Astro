@@ -77,7 +77,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.theme.AppTheme
 import java.time.format.DateTimeFormatter
@@ -706,3 +706,4 @@ private fun formatChartDetails(chart: SavedChart, fallback: String): String {
         else -> fallback
     }
 }
+

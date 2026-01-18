@@ -46,11 +46,11 @@ import com.astro.storm.data.ai.provider.AiModel
 import com.astro.storm.data.ai.provider.MessageRole
 import com.astro.storm.data.local.chat.ChatConversation
 import com.astro.storm.data.local.chat.ChatMessageModel
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.StringResources
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResources
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.components.ContentCleaner
@@ -1447,3 +1447,4 @@ private fun formatTimestamp(timestamp: Long): String {
         else -> SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(timestamp))
     }
 }
+

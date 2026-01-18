@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import com.astro.storm.core.common.DateSystem
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyInterface
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -148,3 +148,4 @@ class LocalizationManager @Inject constructor(
         }
     }
 }
+

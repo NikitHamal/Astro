@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.currentLanguage
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.currentLanguage
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.TarabalaCalculator
 import com.astro.storm.ui.screen.EmptyChartScreen
@@ -1228,3 +1228,4 @@ private fun TarabalaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+

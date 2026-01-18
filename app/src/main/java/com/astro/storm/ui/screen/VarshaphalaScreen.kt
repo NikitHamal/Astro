@@ -45,9 +45,9 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.StringResources
-import com.astro.storm.core.common.currentLanguage
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResources
+import com.astro.storm.data.localization.currentLanguage
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
@@ -2418,4 +2418,5 @@ private fun getMonthName(month: Int): String {
         else -> ""
     }
 }
+
 

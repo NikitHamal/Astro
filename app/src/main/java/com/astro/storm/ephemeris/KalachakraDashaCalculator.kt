@@ -8,7 +8,7 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 
 /**
  * Kalachakra Dasha Calculator - Production-grade Implementation
@@ -1453,3 +1453,4 @@ private val Planet.debilitationSign: ZodiacSign?
         Planet.SATURN -> ZodiacSign.ARIES
         else -> null
     }
+

@@ -203,4 +203,18 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
 
         return sb.toString()
     }
+
+    companion object {
+        @Volatile
+        private var instance: PromptManager? = null
+
+        fun getInstance(context: android.content.Context): PromptManager =
+            instance ?: synchronized(this) {
+                instance ?: PromptManager(
+                    AstrologyToolRegistry.getInstance(context)
+                ).also {
+                    instance = it
+                }
+            }
+    }
 }

@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.ui.components.MarkdownText
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 
 /**
  * Sectioned UI Components for Dynamic Agentic Message Layout
@@ -1428,3 +1428,4 @@ fun ProfileOperationSection(
         }
     }
 }
+

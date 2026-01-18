@@ -2,7 +2,7 @@ package com.astro.storm.core.model
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 
 /**
  * Represents planets used in Vedic astrology
@@ -62,3 +62,4 @@ enum class Planet(
         val OUTER_PLANETS = listOf(URANUS, NEPTUNE, PLUTO)
     }
 }
+

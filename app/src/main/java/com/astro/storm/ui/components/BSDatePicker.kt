@@ -85,10 +85,10 @@ import com.astro.storm.core.common.BikramSambatConverter.BSDate
 import com.astro.storm.core.common.BikramSambatConverter.BSMonth
 import com.astro.storm.core.common.BikramSambatConverter.BSWeekday
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AppTheme
 import java.time.LocalDate
 
@@ -1103,6 +1103,7 @@ fun BSDateSelector(
             contentDescription = when (language) {
                 Language.ENGLISH -> "Date selector. Current date: $displayText"
                 Language.NEPALI -> "मिति छान्नुहोस्। हालको मिति: $displayText"
+                else -> "Date selector. Current date: $displayText"
             }
         },
         shape = RoundedCornerShape(12.dp),
@@ -1158,3 +1159,4 @@ fun BSDateSelector(
 fun LocalDate.toBSDate(): BSDate? = BikramSambatConverter.toBS(this)
 
 fun BSDate.toLocalDate(): LocalDate? = BikramSambatConverter.toAD(this)
+

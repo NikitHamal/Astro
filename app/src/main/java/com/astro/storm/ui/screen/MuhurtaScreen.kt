@@ -27,8 +27,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import com.astro.storm.core.common.currentLanguage
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.currentLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -118,7 +118,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.muhurta.*
 import com.astro.storm.ephemeris.muhurta.MuhurtaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
@@ -1955,3 +1955,4 @@ private fun getActivityIcon(activity: ActivityType): ImageVector {
         ActivityType.NAMING_CEREMONY -> Icons.Outlined.ChildCare
     }
 }
+

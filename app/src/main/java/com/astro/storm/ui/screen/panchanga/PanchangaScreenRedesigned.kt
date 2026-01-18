@@ -70,13 +70,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.PanchangaCalculator
 import com.astro.storm.ephemeris.panchanga.*
@@ -1425,3 +1425,4 @@ private fun getBirthDayInterpretation(panchanga: PanchangaData, language: Langua
         ))
     }
 }
+

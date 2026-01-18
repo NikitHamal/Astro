@@ -2,7 +2,7 @@ package com.astro.storm.ephemeris.varshaphala
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaConstants.CONJUNCTION_ORB
@@ -91,3 +91,4 @@ object TajikaAspectAnalyzer {
         return StringResources.get(StringKeyAnalysis.TAJIKA_PREDICTION_X_FOR_Y, language, type.getDisplayName(language), p1.getLocalizedName(language), p2.getLocalizedName(language), if (type.isPositive) StringResources.get(StringKeyAnalysis.VARSHA_TONE_FAVORABLE, language) else StringResources.get(StringKeyAnalysis.VARSHA_TONE_CHALLENGING, language), houseStr)
     }
 }
+

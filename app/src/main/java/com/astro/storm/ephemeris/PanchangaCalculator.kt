@@ -3,7 +3,7 @@ package com.astro.storm.ephemeris
 import android.content.Context
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import com.astro.storm.ephemeris.panchanga.*
@@ -130,3 +130,4 @@ class PanchangaCalculator(context: Context) : Closeable {
 
     override fun close() { if (!isClosed) { swissEph.swe_close(); isClosed = true } }
 }
+

@@ -32,12 +32,12 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.BikramSambatConverter
 import com.astro.storm.core.common.DateSystem
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalDateSystem
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalDateSystem
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.BirthData
 import com.astro.storm.core.model.Gender
 import com.astro.storm.ephemeris.yoga.YogaCategory
@@ -1021,3 +1021,4 @@ private fun GenderChip(
         }
     }
 }
+

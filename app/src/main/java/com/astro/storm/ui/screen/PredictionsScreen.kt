@@ -34,11 +34,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.common.StringKeyPrediction
-import com.astro.storm.core.common.currentLanguage
+import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.LifeArea
 import com.astro.storm.core.model.Planet
@@ -2023,3 +2023,4 @@ private fun getEnergyColor(energy: Int): Color = when {
 
 @Composable
 private fun getPlanetColor(planet: Planet): Color = AppTheme.getPlanetColor(planet)
+

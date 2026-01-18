@@ -77,9 +77,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.NityaYogaCalculator
 import com.astro.storm.ui.theme.AppTheme
@@ -1144,3 +1144,4 @@ private fun getAuspiciousnessColor(auspiciousness: NityaYogaCalculator.Auspiciou
         NityaYogaCalculator.Auspiciousness.HIGHLY_INAUSPICIOUS -> AppTheme.ErrorColor
     }
 }
+

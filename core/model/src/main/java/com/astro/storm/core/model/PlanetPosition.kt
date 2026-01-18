@@ -1,7 +1,7 @@
 package com.astro.storm.core.model
 
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 
 /**
  * Position of a planet in the chart
@@ -70,3 +70,4 @@ data class PlanetPosition(
         return "${planet.getLocalizedName(language).padEnd(10)}: ${sign.getLocalizedName(language).padEnd(12)} ${formatNum(deg)}° ${formatNum(min)}' ${formatNum(sec)}\" | $houseText ${formatNum(house)} | ${nakshatra.getLocalizedName(language)} ($padaText ${formatNum(nakshatraPada)})$retrograde"
     }
 }
+

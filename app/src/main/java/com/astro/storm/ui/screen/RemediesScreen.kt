@@ -45,14 +45,14 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyRemedy
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.LifeArea
 import com.astro.storm.ephemeris.remedy.*
 import com.astro.storm.ephemeris.remedy.RemediesCalculator
 import com.astro.storm.ui.theme.AppTheme
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.Language
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -1924,3 +1924,4 @@ private fun getWeekdayForPlanet(planet: Planet): String {
         else -> ""
     }
 }
+

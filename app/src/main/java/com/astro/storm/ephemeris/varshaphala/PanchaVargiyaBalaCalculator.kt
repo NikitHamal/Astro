@@ -2,7 +2,7 @@ package com.astro.storm.ephemeris.varshaphala
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaConstants.EXALTATION_DEGREES
@@ -65,3 +65,4 @@ object PanchaVargiyaBalaCalculator {
         return when { lord == planet -> 3.0; areFriends(planet, lord) -> 2.5; areNeutral(planet, lord) -> 1.5; else -> 1.0 }
     }
 }
+

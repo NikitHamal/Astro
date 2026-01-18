@@ -3,7 +3,7 @@ package com.astro.storm.ephemeris
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.VedicAstrologyUtils.normalizeLongitude
 import kotlin.math.floor
@@ -886,3 +886,4 @@ data class DivisionalChartData(
         return "$deg° $min' $sec\""
     }
 }
+

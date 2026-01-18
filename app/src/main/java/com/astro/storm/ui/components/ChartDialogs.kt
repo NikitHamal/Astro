@@ -42,9 +42,9 @@ import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyPrediction
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.DivisionalChartData
 import com.astro.storm.ephemeris.PlanetaryShadbala
@@ -252,7 +252,20 @@ fun FullScreenChartDialog(
                                 isDownloading = false
 
                                 withContext(Dispatchers.Main) {
-                                    val locManager = LocalizationManager.getInstance(context)
+    val entryPoint = remember(context) {
+        EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            com.astro.storm.ui.navigation.NavigationEntryPoint::class.java
+        )
+    }
+    val locManager = entryPoint.aiProviderRegistry().let { 
+        // We need LocalizationManager, but aiProviderRegistry is what's in NavigationEntryPoint right now.
+        // Let's check LocalizationProvider for its entry point.
+        EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            com.astro.storm.data.localization.LocalizationManagerEntryPoint::class.java
+        ).localizationManager()
+    }
                                     val message = if (success)
                                         locManager.getString(StringKeyAnalysis.DIALOG_CHART_SAVED)
                                     else
@@ -1850,3 +1863,4 @@ private fun getHouseDetails(house: Int, language: Language): HouseDetails {
         interpretation = StringResources.get(interpKey, language)
     )
 }
+

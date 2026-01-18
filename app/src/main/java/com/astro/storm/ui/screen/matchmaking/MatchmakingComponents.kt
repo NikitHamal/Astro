@@ -37,9 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.core.common.LocalLanguage
-import com.astro.storm.core.common.currentLanguage
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.currentLanguage
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.CompatibilityRating
 import com.astro.storm.core.model.GunaAnalysis
 import com.astro.storm.core.model.ManglikAnalysis
@@ -898,3 +898,4 @@ fun RemedyItem(number: Int, remedy: String) {
         )
     }
 }
+

@@ -1,7 +1,7 @@
 package com.astro.storm.ephemeris.muhurta
 
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.model.Nakshatra
 import java.time.LocalTime
 
@@ -76,3 +76,4 @@ object MuhurtaEvaluator {
 
     data class Quadruple<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
 }
+

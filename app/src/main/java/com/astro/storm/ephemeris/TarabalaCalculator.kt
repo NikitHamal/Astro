@@ -3,7 +3,7 @@ package com.astro.storm.ephemeris
 import android.content.Context
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
@@ -299,14 +299,20 @@ class TarabalaCalculator @Inject constructor(
 
         val weeklyForecast = calculateWeeklyForecast(chart, dateTime.toLocalDate())
 
+        // Calculate all 27 nakshatras for the "All Nakshatras" tab
+        val allTaras = Nakshatra.entries.map { nak ->
+            calculateTarabala(birthNakshatra, nak)
+        }
+
         return TarabalaChandrabalaAnalysis(
-            natalMoonSign = natalMoonSign,
             birthNakshatra = birthNakshatra,
-            analysisDateTime = dateTime,
+            natalMoonSign = natalMoonSign,
+            currentDate = dateTime.toLocalDate(),
             currentTarabala = currentTarabala,
             currentChandrabala = currentChandrabala,
             todayStrength = todayStrength,
-            weeklyForecast = weeklyForecast
+            weeklyForecast = weeklyForecast,
+            allTaras = allTaras
         )
     }
 
@@ -837,3 +843,4 @@ class TarabalaCalculator @Inject constructor(
         }
     }
 }
+

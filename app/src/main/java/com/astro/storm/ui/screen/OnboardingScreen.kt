@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.preferences.OnboardingManager
 import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.data.preferences.ThemeMode
@@ -926,3 +926,4 @@ private fun NavigationButtons(
         }
     }
 }
+

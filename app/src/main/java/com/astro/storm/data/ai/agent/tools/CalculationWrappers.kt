@@ -311,23 +311,17 @@ class PanchangaCalculatorWrapper(private val context: android.content.Context) {
 // TRANSIT WRAPPER
 // ============================================
 
-class TransitCalculatorWrapper(private val context: android.content.Context) {
+class TransitCalculatorWrapper(
+    private val context: android.content.Context,
+    private val localizationManager: com.astro.storm.data.localization.LocalizationManager,
+    private val ephemerisEngine: com.astro.storm.ephemeris.SwissEphemerisEngine
+) {
 
     data class TransitResult(
-        val planet: Planet,
-        val transitSign: ZodiacSign,
-        val transitHouse: Int,
-        val natalSign: ZodiacSign,
-        val natalHouse: Int,
-        val aspect: String,
-        val isRetrograde: Boolean,
-        val effect: String,
-        val intensity: Int
-    )
-
+...
     fun calculateCurrentTransits(chart: VedicChart): List<TransitResult> {
         return try {
-            val analyzer = TransitAnalyzer(context)
+            val analyzer = com.astro.storm.ephemeris.TransitAnalyzer(context, localizationManager, ephemerisEngine)
             val analysis = analyzer.analyzeTransits(chart)
 
             analysis.gocharaResults.map { gochara ->

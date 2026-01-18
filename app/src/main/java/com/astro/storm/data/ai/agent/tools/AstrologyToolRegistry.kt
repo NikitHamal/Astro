@@ -3,6 +3,7 @@ package com.astro.storm.data.ai.agent.tools
 import android.content.Context
 import com.astro.storm.data.local.ChartDatabase
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.data.preferences.AstrologySettingsManager
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ephemeris.SwissEphemerisEngine
@@ -21,6 +22,7 @@ import javax.inject.Singleton
 class AstrologyToolRegistry @Inject constructor(
     @ApplicationContext private val context: Context,
     private val astrologySettingsManager: AstrologySettingsManager,
+    private val localizationManager: LocalizationManager,
     private val ephemerisEngine: SwissEphemerisEngine
 ) {
     private val tools = mutableMapOf<String, AstrologyTool>()
@@ -186,6 +188,7 @@ class AstrologyToolRegistry @Inject constructor(
                 currentChart = currentChart,
                 database = ChartDatabase.getInstance(context),
                 astrologySettingsManager = astrologySettingsManager,
+                localizationManager = localizationManager,
                 ephemerisEngine = ephemerisEngine
             )
 
@@ -380,6 +383,7 @@ data class ToolContext(
     val currentChart: VedicChart?,
     val database: ChartDatabase,
     val astrologySettingsManager: AstrologySettingsManager,
+    val localizationManager: LocalizationManager,
     val ephemerisEngine: SwissEphemerisEngine
 )
 

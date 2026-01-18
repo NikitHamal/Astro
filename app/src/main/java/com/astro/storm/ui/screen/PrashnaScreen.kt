@@ -119,14 +119,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dagger.hilt.android.EntryPointAccessors
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.currentLanguage
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.currentLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.ai.agent.AgentResponse
 import com.astro.storm.data.ai.agent.StormyAgent
 import com.astro.storm.data.ai.provider.AiModel
@@ -2341,3 +2341,4 @@ private fun getMoonStrengthColor(strength: MoonStrength): Color {
         MoonStrength.AFFLICTED -> Color(0xFFE53935)
     }
 }
+

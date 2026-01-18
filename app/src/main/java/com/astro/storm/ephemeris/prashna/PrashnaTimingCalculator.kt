@@ -3,7 +3,7 @@ package com.astro.storm.ephemeris.prashna
 import com.astro.storm.core.common.BikramSambatConverter
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.model.Quality
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
@@ -146,3 +146,4 @@ object PrashnaTimingCalculator {
         return StringResources.get(StringKeyAnalysis.PRASHNA_TIMING_EXPLANATION, language).format(methodLabel, timeframe, moonSpeed)
     }
 }
+

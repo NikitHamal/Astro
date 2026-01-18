@@ -3,7 +3,7 @@ package com.astro.storm.ephemeris.yoga
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyYogaExpanded
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 
 /**
  * Yoga Localization - Localization utilities for Yoga names and effects
@@ -309,3 +309,4 @@ object YogaLocalization {
         }
     }
 }
+

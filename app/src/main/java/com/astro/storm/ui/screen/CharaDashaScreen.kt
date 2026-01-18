@@ -81,8 +81,8 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.DateFormat
 import com.astro.storm.core.common.DateSystem
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalDateSystem
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalDateSystem
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
@@ -92,7 +92,7 @@ import com.astro.storm.core.common.formatDateRange
 import com.astro.storm.core.common.formatDurationYearsMonths
 import com.astro.storm.core.common.formatRemainingDuration
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.CharaDashaCalculator
@@ -1452,3 +1452,4 @@ private fun CharaDashaEmptyContent(onBack: () -> Unit) {
         }
     }
 }
+

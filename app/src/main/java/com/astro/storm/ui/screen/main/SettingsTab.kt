@@ -30,9 +30,9 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.LocalLocalizationManager
 import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.HouseSystem
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.preferences.ThemeManager
@@ -1107,3 +1107,4 @@ enum class ExportFormat(
     fun getLocalizedTitle(language: Language): String = StringResources.get(titleKey, language)
     fun getLocalizedDescription(language: Language): String = StringResources.get(descriptionKey, language)
 }
+

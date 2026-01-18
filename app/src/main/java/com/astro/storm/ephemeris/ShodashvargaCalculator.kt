@@ -6,7 +6,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 
 /**
  * Shodashvarga (16 Divisional Charts) Strength Calculator
@@ -727,3 +727,4 @@ object ShodashvargaCalculator {
         }
     }
 }
+

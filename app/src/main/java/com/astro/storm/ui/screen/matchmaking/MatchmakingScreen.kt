@@ -43,13 +43,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.core.common.StringResources
-import com.astro.storm.core.common.currentLanguage
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResources
+import com.astro.storm.data.localization.currentLanguage
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.MatchmakingCalculator
 import com.astro.storm.ephemeris.VedicAstrologyUtils
@@ -2959,3 +2959,4 @@ private fun formatMatchmakingForAi(
         appendLine("6. If there are any doshas, explain their impact and effective remedies")
     }
 }
+

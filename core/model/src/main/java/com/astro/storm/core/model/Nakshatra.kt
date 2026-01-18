@@ -2,7 +2,7 @@ package com.astro.storm.core.model
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 
 /**
  * 27 Nakshatras in Vedic astrology
@@ -104,3 +104,4 @@ enum class Nakshatra(
         }
     }
 }
+

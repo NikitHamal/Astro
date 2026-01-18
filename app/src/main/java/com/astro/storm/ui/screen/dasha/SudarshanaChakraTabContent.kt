@@ -60,13 +60,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.SudarshanaTimeline
 import com.astro.storm.ephemeris.YearlyAnalysis
@@ -933,3 +933,4 @@ private fun getStrengthLabel(strength: Double, language: com.astro.storm.core.co
     }
     return StringResources.get(key, language)
 }
+

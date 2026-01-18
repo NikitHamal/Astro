@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.core.common.currentLanguage
+import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.AshtottariDashaCalculator
@@ -1159,3 +1159,4 @@ private fun getPlanetColor(planet: Planet): Color {
         else -> AppTheme.AccentPrimary
     }
 }
+

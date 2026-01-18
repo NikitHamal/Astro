@@ -74,8 +74,8 @@ import com.astro.storm.core.common.BikramSambatConverter
 import com.astro.storm.core.common.DateFormat
 import com.astro.storm.core.common.DateSystem
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.LocalDateSystem
-import com.astro.storm.core.common.LocalLanguage
+import com.astro.storm.data.localization.LocalDateSystem
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.formatDate
@@ -84,7 +84,7 @@ import com.astro.storm.core.common.formatDurationYearsMonths
 import com.astro.storm.core.common.formatLocalized
 import com.astro.storm.core.common.formatRemainingDuration
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
@@ -1913,3 +1913,4 @@ private fun formatDehadashaDurationLocalized(durationMinutes: Long, language: La
         }
     }
 }
+

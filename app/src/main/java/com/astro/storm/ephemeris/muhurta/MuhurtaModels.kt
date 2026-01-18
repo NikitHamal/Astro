@@ -3,7 +3,7 @@ package com.astro.storm.ephemeris.muhurta
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResources
 import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import java.time.LocalDate
@@ -210,3 +210,4 @@ data class PanchangaData(
     val sunrise: LocalTime, val sunset: LocalTime, val rahukala: TimePeriod, val yamaghanta: TimePeriod,
     val gulikaKala: TimePeriod, val abhijitMuhurta: AbhijitMuhurta, val specialYogas: List<SpecialYoga>
 )
+

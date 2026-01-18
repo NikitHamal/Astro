@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.stringResource
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.MarkdownText
 import com.astro.storm.ui.theme.AppTheme
@@ -576,3 +576,4 @@ private fun CompletedAgentHeader() {
         )
     }
 }
+
