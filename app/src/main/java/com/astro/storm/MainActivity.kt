@@ -22,6 +22,9 @@ import com.astro.storm.data.preferences.AstrologySettingsManager
 import com.astro.storm.data.preferences.OnboardingManager
 import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.data.preferences.ThemeMode
+import com.astro.storm.ephemeris.GocharaVedhaCalculator
+import com.astro.storm.ephemeris.TarabalaCalculator
+import com.astro.storm.ephemeris.TransitAnalyzer
 import com.astro.storm.ui.navigation.AstroStormNavigation
 import com.astro.storm.ui.screen.OnboardingScreen
 import com.astro.storm.ui.theme.AstroStormTheme
