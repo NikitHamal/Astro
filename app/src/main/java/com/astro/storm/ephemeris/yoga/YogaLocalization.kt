@@ -107,6 +107,8 @@ object YogaLocalization {
             englishName.contains("Akhanda Samrajya") -> StringKeyMatch.YOGA_AKHANDA_SAMRAJYA
             englishName.contains("Vasumathi") -> StringKeyMatch.YOGA_VASUMATHI
             englishName.contains("Mahalaxmi") -> StringKeyMatch.YOGA_MAHALAXMI
+            englishName.contains("Gouri") -> StringKeyYogaExpanded.YOGA_GOURI
+            englishName.contains("Bharathi") -> StringKeyYogaExpanded.YOGA_BHARATHI
             englishName.contains("Parijata") -> StringKeyMatch.YOGA_PARIJATA
             englishName.contains("Kusuma") -> StringKeyMatch.YOGA_KUSUMA
             englishName.contains("Indu Lagna") -> StringKeyMatch.YOGA_INDU_LAGNA

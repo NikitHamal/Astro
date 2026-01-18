@@ -112,6 +112,12 @@ enum class StringKeyYogaExpanded(override val en: String, override val ne: Strin
     YOGA_HARIHARA_BRAHMA("Harihara Brahma Yoga", "हरिहर ब्रह्म योग"),
     EFFECT_HARIHARA_BRAHMA("Scholar, truthful, happy, helpful.", "विद्वान, सत्यवादी, खुसी, सहयोगी।"),
 
+    YOGA_GOURI("Gouri Yoga", "गौरी योग"),
+    EFFECT_GOURI("Beautiful, religious, wealthy, famous, blessed with a good family.", "सुन्दर, धार्मिक, धनी, प्रसिद्ध, राम्रो परिवारको साथ आशिष्।"),
+    
+    YOGA_BHARATHI("Bharathi Yoga", "भारती योग"),
+    EFFECT_BHARATHI("Exceptional intelligence, scholarship, fame, wealth, religious nature.", "असाधारण बुद्धि, विद्वता, प्रसिद्धि, धन, धार्मिक स्वभाव।"),
+
     // Categories
     YOGA_CAT_BHAVA("Bhava Yoga", "भाव योग"),
     YOGA_CAT_BHAVA_DESC("House Lord Placements", "भाव अधिपति स्थितिहरू"),
