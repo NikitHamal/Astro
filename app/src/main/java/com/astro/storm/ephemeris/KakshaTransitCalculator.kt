@@ -294,7 +294,7 @@ object KakshaTransitCalculator {
                 // Next Kakshya lord
                 val nextKakshaNum = if (kakshaDetails.kakshaNumber >= 8) 1 else kakshaDetails.kakshaNumber + 1
                 val nextKakshaLord = getKakshaLordName(nextKakshaNum)
-
+                    position.planet, kakshaDetails.kakshaLord, hasBindu, quality, language
                 val (interpretation, interpretationNe) = getKakshaInterpretation(
                     position.planet, kakshaDetails.kakshaLord, hasBinbu, quality, language
                 )
