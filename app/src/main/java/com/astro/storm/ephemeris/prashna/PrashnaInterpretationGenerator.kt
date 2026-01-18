@@ -2,7 +2,7 @@ package com.astro.storm.ephemeris.prashna
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.ephemeris.prashna.PrashnaConstants.PRASHNA_HOUSE_SIGNIFICATIONS
 import com.astro.storm.ephemeris.prashna.PrashnaHelpers.localized
 
@@ -161,4 +161,5 @@ object PrashnaInterpretationGenerator {
         }
     }
 }
+
 

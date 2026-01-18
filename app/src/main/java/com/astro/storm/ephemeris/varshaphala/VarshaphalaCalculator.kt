@@ -3,7 +3,7 @@ package com.astro.storm.ephemeris.varshaphala
 import android.content.Context
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.varshaphala.SolarReturnCalculator.calculateSolarReturnChart
 import com.astro.storm.ephemeris.varshaphala.SolarReturnCalculator.calculateSolarReturnTime
@@ -82,4 +82,5 @@ class VarshaphalaCalculator(context: Context) {
 
     fun close() { swissEph.swe_close() }
 }
+
 

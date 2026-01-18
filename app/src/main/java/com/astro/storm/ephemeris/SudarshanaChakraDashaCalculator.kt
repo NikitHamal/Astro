@@ -7,7 +7,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import java.time.LocalDateTime
 
@@ -849,4 +849,5 @@ data class YearlyAnalysis(
     val combinedStrength: Double,
     val combinedEffects: List<String>
 )
+
 

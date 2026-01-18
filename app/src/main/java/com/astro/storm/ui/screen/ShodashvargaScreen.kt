@@ -31,7 +31,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
@@ -1521,4 +1521,5 @@ private fun getLocalizedDignity(dignity: VargaDignity, language: Language): Stri
         VargaDignity.DEBILITATED -> StringResources.get(StringKeyDosha.DIGNITY_DEBILITATED, language)
     }
 }
+
 

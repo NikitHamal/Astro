@@ -3,7 +3,7 @@ package com.astro.storm.ephemeris.prashna
 import android.content.Context
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.BirthData
 import com.astro.storm.core.model.HouseSystem
 import com.astro.storm.core.model.Planet
@@ -220,3 +220,4 @@ class PrashnaCalculator(context: Context) {
         swissEph.swe_close()
     }
 }
+

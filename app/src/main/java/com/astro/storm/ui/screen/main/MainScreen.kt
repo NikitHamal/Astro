@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.components.ProfileHeaderRow
@@ -467,4 +467,5 @@ enum class MainTab(
         return StringResources.get(titleKey, language)
     }
 }
+
 

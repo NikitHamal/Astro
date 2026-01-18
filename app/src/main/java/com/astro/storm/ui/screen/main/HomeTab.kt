@@ -82,7 +82,7 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAdvanced
 import com.astro.storm.core.common.StringKeyInterface
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyShadbala
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -868,4 +868,5 @@ private fun EmptyHomeState(
         }
     }
 }
+
 

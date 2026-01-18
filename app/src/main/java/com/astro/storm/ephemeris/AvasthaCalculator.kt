@@ -6,7 +6,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import kotlin.math.abs
 
 /**
@@ -747,8 +747,8 @@ object AvasthaCalculator {
         VRIDDHA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_VRIDDHA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_VRIDDHA_DESC, 30),
         MRITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_MRITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_MRITA_DESC, 10);
 
-        fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.data.localization.StringResources.get(nameKey, language)
-        fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.data.localization.StringResources.get(descKey, language)
+        fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(nameKey, language)
+        fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(descKey, language)
     }
 
     enum class JagradadiAvastha(
@@ -760,8 +760,8 @@ object AvasthaCalculator {
         SWAPNA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SWAPNA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SWAPNA_DESC, 50),
         SUSHUPTI(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SUSHUPTI_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SUSHUPTI_DESC, 25);
 
-        fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.data.localization.StringResources.get(nameKey, language)
-        fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.data.localization.StringResources.get(descKey, language)
+        fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(nameKey, language)
+        fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(descKey, language)
     }
 
     enum class DeeptadiAvastha(
@@ -778,8 +778,8 @@ object AvasthaCalculator {
         KOPA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KOPA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KOPA_DESC),
         BHITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_BHITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_BHITA_DESC);
 
-        fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.data.localization.StringResources.get(nameKey, language)
-        fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.data.localization.StringResources.get(descKey, language)
+        fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(nameKey, language)
+        fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(descKey, language)
     }
 
     enum class LajjitadiAvastha(
@@ -793,8 +793,8 @@ object AvasthaCalculator {
         MUDITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_MUDITA_LAJ_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_MUDITA_LAJ_DESC),
         KSHOBHITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KSHOBHITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KSHOBHITA_DESC);
 
-        fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.data.localization.StringResources.get(nameKey, language)
-        fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.data.localization.StringResources.get(descKey, language)
+        fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(nameKey, language)
+        fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(descKey, language)
     }
 
     enum class PlanetaryRelationship {
@@ -810,8 +810,9 @@ object AvasthaCalculator {
         MEDIUM(com.astro.storm.core.common.StringKeyAnalysis.PRIORITY_MEDIUM),
         LOW(com.astro.storm.core.common.StringKeyAnalysis.PRIORITY_LOW);
 
-        fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.data.localization.StringResources.get(displayNameKey, language)
+        fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(displayNameKey, language)
     }
 }
+
 
 

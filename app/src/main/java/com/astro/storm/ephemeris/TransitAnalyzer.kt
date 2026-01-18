@@ -15,7 +15,7 @@ import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.Language
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -959,4 +959,5 @@ class TransitAnalyzer @Inject constructor(
         ephemerisEngine.close()
     }
 }
+
 

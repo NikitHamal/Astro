@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyRemedy
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 
 /**
  * Common Life Areas for Astrological Analysis
@@ -49,4 +49,5 @@ enum class LifeArea(val stringKey: com.astro.storm.core.common.StringKeyInterfac
         FOREIGN -> Color(0xFF607D8B)
     }
 }
+
 

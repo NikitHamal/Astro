@@ -73,7 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
@@ -1401,4 +1401,5 @@ private fun getHouseSignification(house: Int, language: Language): String {
     }
     return key?.let { StringResources.get(it, language) } ?: ""
 }
+
 

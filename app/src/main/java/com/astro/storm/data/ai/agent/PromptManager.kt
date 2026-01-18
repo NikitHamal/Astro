@@ -21,6 +21,20 @@ class PromptManager @Inject constructor(
     private val toolRegistry: AstrologyToolRegistry
 ) {
 
+    companion object {
+        @Volatile
+        private var instance: PromptManager? = null
+
+        fun getInstance(context: android.content.Context): PromptManager =
+            instance ?: synchronized(this) {
+                instance ?: PromptManager(
+                    AstrologyToolRegistry.getInstance(context)
+                ).also {
+                    instance = it
+                }
+            }
+    }
+
     /**
      * Generate the system prompt for Stormy
      */
@@ -202,19 +216,5 @@ Remember: You are Stormy, a masterful Vedic astrologer and caring assistant. Hel
         sb.appendLine("**Current Date:** ${SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(Date())}")
 
         return sb.toString()
-    }
-
-    companion object {
-        @Volatile
-        private var instance: PromptManager? = null
-
-        fun getInstance(context: android.content.Context): PromptManager =
-            instance ?: synchronized(this) {
-                instance ?: PromptManager(
-                    AstrologyToolRegistry.getInstance(context)
-                ).also {
-                    instance = it
-                }
-            }
     }
 }

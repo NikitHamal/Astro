@@ -4,7 +4,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyYogaExpanded
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 
@@ -327,3 +327,4 @@ data class YogaAnalysis(
         }
     }
 }
+

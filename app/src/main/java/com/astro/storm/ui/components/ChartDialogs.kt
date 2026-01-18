@@ -42,7 +42,7 @@ import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyPrediction
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.*
@@ -1863,4 +1863,5 @@ private fun getHouseDetails(house: Int, language: Language): HouseDetails {
         interpretation = StringResources.get(interpKey, language)
     )
 }
+
 

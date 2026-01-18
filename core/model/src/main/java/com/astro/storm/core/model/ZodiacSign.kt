@@ -2,7 +2,7 @@ package com.astro.storm.core.model
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 
 /**
  * Vedic zodiac signs (Rashis)
@@ -58,4 +58,5 @@ enum class Quality {
     FIXED,
     MUTABLE
 }
+
 

@@ -36,7 +36,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Nakshatra
@@ -1481,4 +1481,5 @@ private fun NakshatraInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 

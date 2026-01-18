@@ -91,7 +91,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.formatLocalized
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.localized
 import com.astro.storm.core.common.localizedName
 import com.astro.storm.data.localization.stringResource
@@ -2195,4 +2195,5 @@ private fun formatRemainingDaysLocalized(days: Long, language: Language): String
         }
     }
 }
+
 

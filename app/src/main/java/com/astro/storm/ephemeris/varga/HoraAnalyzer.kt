@@ -3,7 +3,7 @@ package com.astro.storm.ephemeris.varga
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyDivisional
 import com.astro.storm.core.common.StringKeyPrediction
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
@@ -88,4 +88,5 @@ object HoraAnalyzer {
         else -> emptyList()
     }.map { StringResources.get(it, lang) }
 }
+
 

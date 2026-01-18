@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.ephemeris.YoginiDashaCalculator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
@@ -123,4 +123,5 @@ class YoginiDashaViewModel @Inject constructor() : ViewModel() {
         calculationJob?.cancel()
     }
 }
+
 

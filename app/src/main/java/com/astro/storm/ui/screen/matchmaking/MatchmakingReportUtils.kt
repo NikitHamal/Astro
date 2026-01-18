@@ -2,7 +2,7 @@ package com.astro.storm.ui.screen.matchmaking
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.CompatibilityRating
 import com.astro.storm.core.model.ManglikDosha
 import com.astro.storm.core.model.MatchmakingResult
@@ -241,4 +241,5 @@ fun MatchmakingResult.getManglikQuickStatus(language: Language = Language.ENGLIS
         else -> StringResources.get(StringKeyMatch.DETAILS, language)
     }
 }
+
 

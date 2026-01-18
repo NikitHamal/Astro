@@ -321,7 +321,11 @@ class TransitCalculatorWrapper(
 ...
     fun calculateCurrentTransits(chart: VedicChart): List<TransitResult> {
         return try {
-            val analyzer = com.astro.storm.ephemeris.TransitAnalyzer(context, localizationManager, ephemerisEngine)
+            val analyzer = com.astro.storm.ephemeris.TransitAnalyzer(
+                context = context,
+                localizationManager = localizationManager,
+                ephemerisEngine = ephemerisEngine
+            )
             val analysis = analyzer.analyzeTransits(chart)
 
             analysis.gocharaResults.map { gochara ->

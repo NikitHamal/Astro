@@ -112,7 +112,7 @@ enum class DashaSystemType(
     );
 
     fun getShortName(language: com.astro.storm.core.common.Language): String =
-        com.astro.storm.data.localization.StringResources.get(shortNameKey, language)
+        com.astro.storm.core.common.StringResources.get(shortNameKey, language)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -581,5 +581,6 @@ private fun DashaSystemInfoDialog(
         shape = RoundedCornerShape(16.dp)
     )
 }
+
 
 

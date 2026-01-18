@@ -29,7 +29,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyFinder
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -1219,4 +1219,5 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         }
     }
 }
+
 

@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyPrediction
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.core.common.getLocalizedName
@@ -2023,4 +2023,5 @@ private fun getEnergyColor(energy: Int): Color = when {
 
 @Composable
 private fun getPlanetColor(planet: Planet): Color = AppTheme.getPlanetColor(planet)
+
 

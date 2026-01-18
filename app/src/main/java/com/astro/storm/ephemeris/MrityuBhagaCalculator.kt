@@ -6,7 +6,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyFinder
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyDosha
 import kotlin.math.abs
 
@@ -801,4 +801,5 @@ data class OverallSensitiveDegreesAssessment(
 enum class AssessmentLevel {
     NEEDS_ATTENTION, MODERATE_CONCERN, BALANCED, GENERALLY_POSITIVE, HIGHLY_AUSPICIOUS
 }
+
 

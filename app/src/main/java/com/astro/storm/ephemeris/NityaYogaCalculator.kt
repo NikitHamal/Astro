@@ -2,7 +2,7 @@ package com.astro.storm.ephemeris
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
@@ -819,4 +819,5 @@ object NityaYogaCalculator {
         }
     }
 }
+
 

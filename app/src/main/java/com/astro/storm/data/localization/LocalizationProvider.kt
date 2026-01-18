@@ -13,7 +13,7 @@ import com.astro.storm.core.common.DateSystem
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import dagger.hilt.android.EntryPointAccessors
 
 /**
@@ -518,4 +518,5 @@ object DateFormatter {
         }
     }
 }
+
 

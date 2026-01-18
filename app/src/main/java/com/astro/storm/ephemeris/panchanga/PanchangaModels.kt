@@ -2,7 +2,7 @@ package com.astro.storm.ephemeris.panchanga
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.data.localization.stringResources
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import java.time.LocalDate
@@ -240,4 +240,5 @@ data class PanchangaData(
     val tithiInPaksha: Int
         get() = if (tithi.number <= 15) tithi.number else tithi.number - 15
 }
+
 
