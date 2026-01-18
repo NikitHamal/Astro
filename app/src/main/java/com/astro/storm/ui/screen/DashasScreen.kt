@@ -1,7 +1,7 @@
 package com.astro.storm.ui.screen
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ui.screen.dasha.DashaSystemsScreen
 import com.astro.storm.ui.viewmodel.DashaViewModel
@@ -26,7 +26,7 @@ fun DashasScreen(
     onBack: () -> Unit,
     onNavigateToYoginiDasha: () -> Unit = {},
     onNavigateToCharaDasha: () -> Unit = {},
-    viewModel: DashaViewModel = viewModel()
+    viewModel: DashaViewModel = hiltViewModel()
 ) {
     DashaSystemsScreen(
         chart = chart,

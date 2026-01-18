@@ -27,8 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.astro.storm.core.common.Language
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKeyAdvanced
 import com.astro.storm.data.localization.stringResource
@@ -53,7 +52,7 @@ import java.time.format.DateTimeFormatter
 fun KakshaTransitScreen(
     chart: VedicChart?,
     onBack: () -> Unit,
-    viewModel: KakshaTransitViewModel = viewModel()
+    viewModel: KakshaTransitViewModel = hiltViewModel()
 ) {
     val language = LocalLanguage.current
     val uiState by viewModel.uiState.collectAsState()

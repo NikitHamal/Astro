@@ -79,7 +79,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.BikramSambatConverter
 import com.astro.storm.core.common.DateSystem
 import com.astro.storm.core.common.Language
@@ -107,7 +107,7 @@ import java.time.temporal.ChronoUnit
 fun YoginiDashaScreen(
     chart: VedicChart?,
     onBack: () -> Unit,
-    viewModel: YoginiDashaViewModel = viewModel()
+    viewModel: YoginiDashaViewModel = hiltViewModel()
 ) {
     val language = LocalLanguage.current
 

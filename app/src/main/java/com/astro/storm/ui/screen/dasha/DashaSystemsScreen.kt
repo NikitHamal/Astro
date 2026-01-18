@@ -43,7 +43,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
@@ -122,7 +122,7 @@ fun DashaSystemsScreen(
     onBack: () -> Unit,
     onNavigateToYoginiDasha: () -> Unit,
     onNavigateToCharaDasha: () -> Unit,
-    viewModel: DashaViewModel = viewModel()
+    viewModel: DashaViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }

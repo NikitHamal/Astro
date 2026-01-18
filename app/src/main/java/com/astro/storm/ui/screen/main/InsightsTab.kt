@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
@@ -115,7 +115,7 @@ private data class ChartIdentity(
 fun InsightsTab(
     chart: VedicChart?,
     onCreateChart: () -> Unit = {},
-    viewModel: InsightsViewModel = viewModel()
+    viewModel: InsightsViewModel = hiltViewModel()
 ) {
     val chartIdentity = remember(chart) { ChartIdentity.from(chart) }
 

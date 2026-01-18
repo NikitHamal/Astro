@@ -83,7 +83,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.model.Planet
@@ -122,7 +122,7 @@ import java.time.temporal.ChronoUnit
 fun AshtavargaTransitScreen(
     chart: VedicChart?,
     onNavigateBack: () -> Unit,
-    viewModel: AshtavargaTransitViewModel = viewModel()
+    viewModel: AshtavargaTransitViewModel = hiltViewModel()
 ) {
     val language = LocalLanguage.current
     val colors = AppTheme.current

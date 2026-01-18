@@ -16,10 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAdvanced
@@ -41,7 +41,7 @@ import java.time.format.DateTimeFormatter
 fun NadiAmshaScreen(
     chart: VedicChart?,
     onBack: () -> Unit,
-    viewModel: NadiAmshaViewModel = viewModel()
+    viewModel: NadiAmshaViewModel = hiltViewModel()
 ) {
     if (chart == null) {
         EmptyChartScreen(

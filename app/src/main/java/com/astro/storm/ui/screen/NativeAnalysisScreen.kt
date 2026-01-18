@@ -79,7 +79,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKeyNative
@@ -109,7 +109,7 @@ import com.astro.storm.ui.viewmodel.NativeSection
 fun NativeAnalysisScreen(
     chart: VedicChart?,
     onBack: () -> Unit,
-    viewModel: NativeAnalysisViewModel = viewModel()
+    viewModel: NativeAnalysisViewModel = hiltViewModel()
 ) {
     val language = LocalLanguage.current
     val uiState by viewModel.uiState.collectAsState()

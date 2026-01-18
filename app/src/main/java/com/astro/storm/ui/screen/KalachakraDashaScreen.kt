@@ -82,7 +82,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.BikramSambatConverter
 import com.astro.storm.core.common.DateSystem
 import com.astro.storm.core.common.Language
@@ -121,7 +121,7 @@ import java.time.LocalDate
 fun KalachakraDashaScreen(
     chart: VedicChart?,
     onBack: () -> Unit,
-    viewModel: KalachakraDashaViewModel = viewModel()
+    viewModel: KalachakraDashaViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val language = LocalLanguage.current
