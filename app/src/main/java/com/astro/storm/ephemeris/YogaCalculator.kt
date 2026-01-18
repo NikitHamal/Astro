@@ -56,6 +56,7 @@ object YogaCalculator {
         NegativeYogaEvaluator(),
         BhavaYogaEvaluator(),
         ConjunctionYogaEvaluator(),
+        AdvancedYogaEvaluator(),
         SpecialYogaEvaluator()
     )
 

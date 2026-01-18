@@ -19,8 +19,7 @@ import kotlin.math.min
  *
  * Based on classical texts:
  * - Brihat Parasara Hora Shastra (BPHS)
- * - Phaladeepika
- * - Saravali
+ * - Phaladeepika, Saravali
  *
  * @author AstroStorm
  */
@@ -119,17 +118,6 @@ object YogaHelpers {
         }
 
         return false
-    }
-
-    private fun isWithinAspectOrb(
-        long1: Double,
-        long2: Double,
-        expectedAngle: Double,
-        orb: Double
-    ): Boolean {
-        val actualAngle = abs(long1 - long2)
-        val normalizedAngle = if (actualAngle > 180) 360 - actualAngle else actualAngle
-        return abs(normalizedAngle - expectedAngle) <= orb
     }
 
     // ==================== DIGNITY UTILITIES ====================
@@ -444,6 +432,11 @@ object YogaHelpers {
         // Blend base strength with Shadbala performance
         return (baseStrength * 0.6 + avgPercentage * 0.4).coerceIn(10.0, 100.0)
     }
+
+    /**
+     * Calculate yoga strength with comprehensive factors applied
+     */
+    fun calculateYogaStrength(chart: VedicChart, positions: List<PlanetPosition>): Double {
         var baseStrength = 50.0
 
         positions.forEach { pos ->

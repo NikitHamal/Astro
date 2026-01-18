@@ -228,7 +228,7 @@ class RajaYogaEvaluator : YogaEvaluator {
                     if (kendraPos != null && trikonaPos != null) {
                         // Check for conjunction
                         if (YogaHelpers.areConjunct(kendraPos, trikonaPos)) {
-                            val strength = YogaHelpers.calculateYogaStrength(chart, listOf(kendraPos, trikonaPos))
+                            val strength = YogaHelpers.calculateDynamicYogaStrength(chart, listOf(kendraPos, trikonaPos))
                             yogas.add(createKendraTrikonaRajaYoga(
                                 kendraLord, trikonaLord, "conjunction", strength, chart
                             ))
@@ -236,7 +236,7 @@ class RajaYogaEvaluator : YogaEvaluator {
 
                         // Check for mutual aspect
                         if (YogaHelpers.areMutuallyAspecting(kendraPos, trikonaPos)) {
-                            val strength = YogaHelpers.calculateYogaStrength(chart, listOf(kendraPos, trikonaPos)) * 0.8
+                            val strength = YogaHelpers.calculateDynamicYogaStrength(chart, listOf(kendraPos, trikonaPos)) * 0.8
                             yogas.add(createKendraTrikonaRajaYoga(
                                 kendraLord, trikonaLord, "aspect", strength, chart
                             ))
@@ -244,7 +244,7 @@ class RajaYogaEvaluator : YogaEvaluator {
 
                         // Check for exchange (Parivartana)
                         if (YogaHelpers.areInExchange(kendraPos, trikonaPos)) {
-                            val strength = YogaHelpers.calculateYogaStrength(chart, listOf(kendraPos, trikonaPos)) * 1.2
+                            val strength = YogaHelpers.calculateDynamicYogaStrength(chart, listOf(kendraPos, trikonaPos)) * 1.2
                             yogas.add(createParivartanaRajaYoga(kendraLord, trikonaLord, strength, chart))
                         }
                     }

@@ -26,7 +26,14 @@ object ShoolaDashaCalculator {
         val vulnerabilities = identifyHealthVulnerabilities(chart, mahadashas, tm)
         val longevity = calculateLongevityAssessment(chart, tm, asc)
         val applicability = calculateApplicability(chart, tm)
-        return ShoolaDashaResult(tm, sSign, dir, mahadashas, currM, antardashas.find { it.isCurrent }, antardashas, vulnerabilities, vulnerabilities.filter { it.startDate.isAfter(LocalDateTime.now()) }.take(5), longevity, generateRemedies(tm, currM), "Overall assessment summary.", "समग्र मूल्याङ्कन सारांश।", applicability)
+        return ShoolaDashaResult(
+            tm, sSign, dir, mahadashas, currM, antardashas.find { it.isCurrent }, 
+            antardashas, vulnerabilities, vulnerabilities.filter { it.startDate.isAfter(LocalDateTime.now()) }.take(5), 
+            longevity, generateRemedies(tm, currM), 
+            StringResources.get(StringKeyDosha.SHOOLA_SUMMARY_EN, Language.ENGLISH), 
+            StringResources.get(StringKeyDosha.SHOOLA_SUMMARY_NE, Language.NEPALI), 
+            applicability
+        )
     }
 
     private fun determineStart(chart: VedicChart, asc: ZodiacSign, tm: TriMurtiAnalysis): Pair<ZodiacSign, DashaDirection> {

@@ -60,6 +60,10 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     VARGA_D144_DESC("Minute Details, Ultimate Micro-analysis", "अति सूक्ष्म विवरण"),
     VARGA_PLANETARY_POSITIONS("PLANETARY POSITIONS", "ग्रह स्थितिहरू"),
 
+    // Shoola Dasha
+    SHOOLA_SUMMARY_EN("Overall health and longevity assessment based on Rudra and Tri Murti analysis.", "समग्र स्वास्थ्य र दीर्घायु मूल्याङ्कन।"),
+    SHOOLA_SUMMARY_NE("Overall health and longevity assessment based on Rudra and Tri Murti analysis.", "समग्र स्वास्थ्य र दीर्घायु मूल्याङ्कन।"),
+
     // ============================================
     // HOROSCOPE CALCULATOR (Life Areas & Themes)
     // ============================================
