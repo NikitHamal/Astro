@@ -1,74 +1,81 @@
-# Astro Storm - Codebase Audit & Findings
+# Astro Storm - Codebase Audit Findings
 
-## Overview
-A comprehensive audit of the "Astro Storm" Vedic astrology application has been conducted. The application features a robust Vedic calculation engine based on Swiss Ephemeris, a custom canvas-based chart renderer, and a sophisticated AI agent ("Stormy") with tool-calling capabilities.
+## Executive Summary
+The **Astro Storm** codebase is a high-quality, professional-grade Vedic astrology application utilizing the Swiss Ephemeris (`SwissEph`) for astronomical precision. It features a robust, model-agnostic AI agent framework ("Stormy") and well-implemented core modules for Dashas, Yogas, and Matchmaking. 
 
-## 1. Architecture & Best Practices
-
-### Critical Issues
-- **[RESOLVED] Threading in ViewModel:** `ChartViewModel` previously used `Executors.newSingleThreadExecutor()`.
-  - **Action Taken:** Refactored all ViewModels to use Hilt-injected `IoDispatcher` (Kotlin Coroutines).
-- **[RESOLVED] Dependency Injection:** The project lacked a DI framework.
-  - **Action Taken:** Implemented **Hilt**. Added `AppModule` for singletons (`SwissEphemerisEngine`, `ChartDatabase`, `PromptManager`) and annotated all ViewModels, Repositories, and Managers with `@Inject` and `@HiltViewModel`.
-
-### Database Design
-- **[RESOLVED] JSON Storage:** `ChartEntity` stored `planetPositions` and `houseCusps` as raw JSON strings.
-  - **Action Taken:** Refactored `ChartEntity` to use `List<PlanetPosition>` and `List<Double>` with Room `@TypeConverter`. Mapped new typed fields to existing JSON columns using `@ColumnInfo` to maintain schema compatibility. Simplified `ChartRepository` by removing manual JSON parsing.
-
-## 2. Vedic Astrology Logic & Calculations
-
-### Strengths
-- **Swiss Ephemeris Integration:** Correctly uses `SwissEph` for high-precision calculations.
-- **Parashari Principles:** `VedicAstrologyUtils` correctly implements core concepts like Dignity and Yogas.
-
-### Areas for Improvement
-- **[RESOLVED] House System Handling:** The engine defaulted to settings but didn't expose configuration for all calculators.
-  - **Action Taken:** Updated `PrashnaCalculator` to accept a `HouseSystem` parameter.
-- **[RESOLVED] Prashna Logic:** `PrashnaCalculatorWrapper` relied on profile defaults for context.
-  - **Action Taken:** Refactored `PrashnaCalculatorWrapper` to use the injected `AstrologySettingsManager` for preferences and verified `PrashnaCalculator` uses `LocalDateTime.now()` for accurate timing. Updated `AstrologyToolRegistry` to provide settings access.
-
-## 3. UI/UX & Rendering
-
-### Strengths
-- **Canvas Rendering:** Efficient custom views for North/South Indian charts.
-
-### Areas for Improvement
-- **[RESOLVED] Hardcoded Sizes:** `ChartRenderer` relied on magic numbers (e.g., `BASE_TEXT_SIZE_RATIO`).
-  - **Action Taken:** Created `dimens.xml` with resource-backed dimensions. Refactored `ChartRenderer` to accept `Context` and load density-aware dimensions and ratios from resources.
-- **State Management:** Manual hash-based deduplication in `ChartViewModel` is brittle.
-
-## 4. AI & Agent System
-
-### Strengths
-- **Robust Tool Parsing:** Resilient parser for various LLM output formats.
-
-### Improvements
-- **[RESOLVED] Prompt Engineering:** System prompt generation was hardcoded in the Agent.
-  - **Action Taken:** Extracted logic into a dedicated `@Singleton` `PromptManager`.
-- **[RESOLVED] Context Limit Management:** No explicit handling of token limits for long chats.
-  - **Action Taken:** Implemented sliding window logic in `ChatRepository.getConversationMessagesForApi` to keep input tokens within limits (default 4000) by trimming older messages while preserving the system prompt.
-
-## 5. Security & Stability
-
-- **[RESOLVED] Geocoding:** `GeocodingService` used a hardcoded User-Agent.
-  - **Action Taken:** Refactored `GeocodingService` from `object` to `@Singleton` class. Injected `Context` to generate dynamic User-Agent (`AppName/Version (PackageName; Contact)`). Updated `ChartViewModel` and `LocationSearchField` to use the injected service.
-- **Error Handling:** Generic exceptions in `ChartRepository`.
-  - **Recommendation:** Granular error handling.
-
-## 6. Testing
-
-- **Missing Unit Tests:** (Deferred per instruction).
+However, several critical technical issues, architectural limitations, and astrological compliance gaps were identified that must be addressed to reach "Highest Quality - Production Grade" status.
 
 ---
 
+## 1. Technical & Astrological Accuracy Issues
+
+### 1.1. Ayana Bala Precision (Critical)
+*   **Location:** `ShadbalaCalculator.kt` -> `calculateAyanaBala`
+*   **Issue:** The current implementation uses **Sidereal Longitude** to calculate planetary declination for Ayana Bala. 
+*   **Impact:** Ayana Bala (Solstice Strength) is based on a planet's distance from the celestial equator. Since the celestial equator is a tropical construct, this MUST be calculated using **Tropical Longitude**. Using sidereal longitude introduces an error equal to the Ayanamsa (approx. 24° currently), leading to incorrect strength values.
+*   **Recommendation:** Convert planetary positions to Sayana (Tropical) before calculating declination for Ayana Bala.
+
+### 1.2. House System Hardcoding (High)
+*   **Location:** `VedicAstrologyUtils.kt` -> `getHouseSign`, `getHouseLord`, `calculateWholeSignHouse`
+*   **Issue:** Several utility functions assume a **Whole Sign** house system by default. 
+*   **Impact:** If a user selects Placidus, Porphyry, or Koch in the settings, these utility functions will still return signs/lords based on sign boundaries, creating logical inconsistencies in Yoga detection and house-based analysis.
+*   **Recommendation:** Pass the `HouseSystem` or the calculated `houseCusps` from the `VedicChart` to these utilities to ensure they respect the user's selected system.
+
+### 1.3. Simplified Aspect Logic (Medium)
+*   **Location:** `YogaHelpers.kt` -> `isAspecting`
+*   **Issue:** Uses a degree-based orb (5°) for Vedic aspects.
+*   **Impact:** Traditional Parashari astrology uses **Sign-to-Sign** aspects (Drishti). A planet in Aries aspects all planets in Libra, regardless of degree. The current implementation might miss a Yoga if the planets are at 1° and 29° of their respective signs.
+*   **Recommendation:** Implement sign-based Drishti for standard Yoga detection, using degree-based orbs only for western-style precision analysis or specific Tajika/Varshaphala yogas.
+
+### 1.4. Yuddha Bala (Planetary War) Simplification
+*   **Location:** `ShadbalaCalculator.kt` -> `calculateYuddhaBala`
+*   **Issue:** Uses a static `PlanetaryWarBrightness` order to determine the winner.
+*   **Impact:** Classical texts state the planet with the **greater northern latitude** (higher declination) usually wins the war. The current simplified "brightness order" is a heuristic fallback.
+*   **Recommendation:** Use `SwissEph` to get the latitude of both planets and determine the winner based on latitudinal superiority.
+
+---
+
+## 2. Architectural & Modularization Gaps
+
+### 2.1. Missing Higher Vargas (D1-D144)
+*   **Issue:** The codebase currently supports 16 primary vargas (Shodashvarga). The user requested D1-D144.
+*   **Impact:** Professional researchers often use higher vargas (D81, D108, D144) for micro-analysis.
+*   **Recommendation:** Extend `DivisionalChartCalculator.kt` or `DivisionalChartType` to include the remaining 7 divisional charts required to reach the 23 mentioned in the objective (specifically up to D144).
+
+### 2.2. Heuristic Strength Values
+*   **Location:** `YogaCalculator.kt`, `RajaYogaEvaluator.kt`
+*   **Issue:** Many Yoga strengths are assigned hardcoded values (e.g., `strength = 80.0`).
+*   **Impact:** Reduces the "production-grade" feel. True strength should be derived from the forming planets' Shadbala and their relationship to the Lagna.
+*   **Recommendation:** Link Yoga strength directly to the participating planets' `PlanetaryShadbala` results.
+
+---
+
+## 3. Performance & Efficiency
+
+### 3.1. Muhurta Search Efficiency
+*   **Location:** `MuhurtaCalculator.kt` -> `findEndTime`
+*   **Issue:** Uses a brute-force binary search with a 2000-iteration limit to find Tithi/Nakshatra end times.
+*   **Impact:** Unnecessary CPU overhead and slower UI response when generating Muhurta calendars.
+*   **Recommendation:** Implement direct calculation of end-times using `SwissEph` by searching for the exact longitude crossing (e.g., Moon-Sun distance for Tithi).
+
+---
+
+## 4. UI/UX & AI Feedback
+
+### 4.1. Placeholder Logic
+*   **Location:** `StormyAgent.kt`
+*   **Issue:** Some complex tool interactions (like `update_todo`) are implemented in the VM but lack full integration in all agent tools.
+*   **Impact:** The AI agent might fail to show progress for extremely long calculations.
+
+### 4.2. Localized Text Gaps
+*   **Location:** `ShoolaDashaCalculator.kt`
+*   **Issue:** Hardcoded strings like `"Overall assessment summary."` and `"समग्र मूल्याङ्कन सारांश।"` exist within the logic.
+*   **Recommendation:** Move all user-facing strings to `StringKeyDosha.kt` or `StringResources` to maintain the app's excellent localization architecture.
+
+---
+
+## 5. Security & Safety (Minor)
+*   No hardcoded API keys or sensitive leaks were found during the investigation. The ephemeris file handling is safe and uses the internal assets directory correctly.
+
 ## Conclusion
-
-The core application architecture has been significantly modernized. 
-- **Hilt** handles dependency injection globally.
-- **Coroutines** manage threading efficiently.
-- **Database** interactions are type-safe.
-- **AI** is more resilient with context management and modular prompts.
-- **UI** rendering is density-aware and configurable.
-- **Security** compliance for OSM/Nominatim is established.
-
-The codebase is now in a much stronger state for future feature development and maintenance.
+Astro Storm is 90% ready for production. Fixing the **Ayana Bala** logic and removing **House System hardcoding** are the most critical steps to ensure it meets the highest standards of Vedic Astrological accuracy.
