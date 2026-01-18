@@ -1,40 +1,28 @@
-# AstroStorm Overhaul - Continuity Ledger
-> Last updated: 2026-01-15T12:00:00+05:45
+## Goal (incl. success criteria):
+- Produce production-grade Astro Storm by auditing codebase, writing `FINDINGS.md`, and implementing 12+ high-impact improvements grounded in Vedic astrology and sound engineering.
 
-## Goal (incl. success criteria)
-Implement advanced Vedic astrology features and refactor codebase for production-grade quality.
-1. Modularize core logic into :core:common and :core:model ✅
-2. Refactor all 1000+ line monoliths into maintainable packages ✅
-3. Improve Shadbala precision (D60, BPHS values) ✅
-4. Implement persistent calculation settings (Node, Ayanamsa) ✅
-5. Enhance PDF export quality with vector rendering ✅
+## Constraints/Assumptions:
+- No questions to user; proceed with expert judgment.
+- Use best practices, precise Vedic math/logic, and modularization.
+- Maintain `CONTINUITY.md` every turn with concise bullets.
+- No TODOs or placeholder implementations.
 
-## Constraints/Assumptions
-- Follow existing patterns
-- Zero hardcoded text where possible
-- Vedic accuracy per classical texts
+## Key Decisions:
+- Start with repo-wide audit to identify issues before changes.
 
-## State
-
+## State:
 - Done:
-  - Created :core:common and :core:model modules ✅
-  - Moved all core models and localization keys to core modules ✅
-  - Refactored Prashna, Remedies, Varshaphala, Muhurta, Varga, NativeAnalysis, and Shoola calculators ✅
-  - Updated Shadbala to Tradition B (D60) with precise BPHS values ✅
-  - Implemented persistent Ayanamsa and Node settings in AstrologySettingsManager ✅
-  - Updated SwissEphemerisEngine to use dynamic settings ✅
-  - Enhanced ChartExporter to use vector-based rendering for charts ✅
-  - Established unit test foundation for Panchanga logic ✅
+  - Read existing `CONTINUITY.md` and reset ledger for this task.
 
 - Now:
-  - All critical findings from FINDINGS.md have been addressed.
+  - Inspect repo structure, locate core calculation modules and performance hotspots.
 
 - Next:
-  - Further localization of remaining hardcoded strings in minor components.
-  - Expansion of unit tests to cover all 16 divisional charts.
-  - Implementation of Transit Alert background service (from AI.md).
+  - Draft `FINDINGS.md` with prioritized issues and fixes.
+  - Implement 12+ high-impact fixes/refactors.
 
-## Working Set (files/ids/commands)
-- **New Modules**: `:core:common`, `:core:model`
-- **Refactored Packages**: `ephemeris/prashna`, `ephemeris/remedy`, `ephemeris/varshaphala`, `ephemeris/muhurta`, `ephemeris/varga`, `ephemeris/nativeanalysis`, `ephemeris/shoola`
-- **Core Engine**: `ephemeris/SwissEphemerisEngine.kt`, `data/preferences/AstrologySettingsManager.kt`
+## Open Questions (UNCONFIRMED if needed):
+- None.
+
+## Working Set (files/ids/commands):
+- `CONTINUITY.md`
