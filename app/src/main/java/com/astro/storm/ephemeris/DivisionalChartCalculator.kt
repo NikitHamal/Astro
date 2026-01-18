@@ -572,6 +572,106 @@ object DivisionalChartCalculator {
         return calculateScaledLongitude(degreeInSign, shashtiamsaSize, shashtiamsaSignIndex)
     }
 
+    fun calculatePanchamsa(chart: VedicChart): DivisionalChartData {
+        val asc = calculatePanchamsaLongitude(chart.ascendant)
+        val ascSign = ZodiacSign.fromLongitude(asc)
+        val positions = chart.planetPositions.map { calculateDivisionalPosition(it, ascSign.number) { l -> calculatePanchamsaLongitude(it.longitude) } }
+        return DivisionalChartData(DivisionalChartType.D5_PANCHAMSA, positions, asc, "Panchamsa (D5)")
+    }
+
+    private fun calculatePanchamsaLongitude(longitude: Double): Double {
+        val norm = normalizeLongitude(longitude); val sign = getSignNumber(norm); val deg = getDegreeInSign(norm)
+        val part = getDivisionPart(deg, 6.0, 5)
+        val start = if (isOddSign(sign)) sign else (sign + 6) % 12
+        return calculateScaledLongitude(deg, 6.0, (start + part) % 12)
+    }
+
+    fun calculateShasthamsa(chart: VedicChart): DivisionalChartData {
+        val asc = calculateShasthamsaLongitude(chart.ascendant)
+        val ascSign = ZodiacSign.fromLongitude(asc)
+        val positions = chart.planetPositions.map { calculateDivisionalPosition(it, ascSign.number) { l -> calculateShasthamsaLongitude(it.longitude) } }
+        return DivisionalChartData(DivisionalChartType.D6_SHASTHAMSA, positions, asc, "Shasthamsa (D6)")
+    }
+
+    private fun calculateShasthamsaLongitude(longitude: Double): Double {
+        val norm = normalizeLongitude(longitude); val sign = getSignNumber(norm); val deg = getDegreeInSign(norm)
+        val part = getDivisionPart(deg, 5.0, 6)
+        val start = if (isOddSign(sign)) 0 else 6 // Odd starts from Aries, Even from Libra
+        return calculateScaledLongitude(deg, 5.0, (start + part) % 12)
+    }
+
+    fun calculateAshtamsa(chart: VedicChart): DivisionalChartData {
+        val asc = calculateAshtamsaLongitude(chart.ascendant)
+        val ascSign = ZodiacSign.fromLongitude(asc)
+        val positions = chart.planetPositions.map { calculateDivisionalPosition(it, ascSign.number) { l -> calculateAshtamsaLongitude(it.longitude) } }
+        return DivisionalChartData(DivisionalChartType.D8_ASHTAMSA, positions, asc, "Ashtamsa (D8)")
+    }
+
+    private fun calculateAshtamsaLongitude(longitude: Double): Double {
+        val norm = normalizeLongitude(longitude); val sign = getSignNumber(norm); val deg = getDegreeInSign(norm)
+        val part = getDivisionPart(deg, 3.75, 8)
+        val start = when (getModality(sign)) {
+            Modality.MOVABLE -> sign
+            Modality.FIXED -> (sign + 8) % 12
+            Modality.DUAL -> (sign + 4) % 12
+        }
+        return calculateScaledLongitude(deg, 3.75, (start + part) % 12)
+    }
+
+    fun calculateRudramsa(chart: VedicChart): DivisionalChartData {
+        val asc = calculateRudramsaLongitude(chart.ascendant)
+        val ascSign = ZodiacSign.fromLongitude(asc)
+        val positions = chart.planetPositions.map { calculateDivisionalPosition(it, ascSign.number) { l -> calculateRudramsaLongitude(it.longitude) } }
+        return DivisionalChartData(DivisionalChartType.D11_RUDRAMSA, positions, asc, "Rudramsa (D11)")
+    }
+
+    private fun calculateRudramsaLongitude(longitude: Double): Double {
+        val norm = normalizeLongitude(longitude); val sign = getSignNumber(norm); val deg = getDegreeInSign(norm)
+        val part = getDivisionPart(deg, 30.0 / 11.0, 11)
+        val targetSign = (11 - sign + part) % 12 // Reverse counting for D11
+        return calculateScaledLongitude(deg, 30.0 / 11.0, targetSign)
+    }
+
+    fun calculateNavnavamsa(chart: VedicChart): DivisionalChartData {
+        val asc = calculateNavnavamsaLongitude(chart.ascendant)
+        val ascSign = ZodiacSign.fromLongitude(asc)
+        val positions = chart.planetPositions.map { calculateDivisionalPosition(it, ascSign.number) { l -> calculateNavnavamsaLongitude(it.longitude) } }
+        return DivisionalChartData(DivisionalChartType.D81_NAVNAVAMSA, positions, asc, "Navnavamsa (D81)")
+    }
+
+    private fun calculateNavnavamsaLongitude(longitude: Double): Double {
+        // Navnavamsa is 9th division of 9th division (81 parts)
+        val norm = normalizeLongitude(longitude); val deg = getDegreeInSign(norm)
+        val part = getDivisionPart(deg, 30.0 / 81.0, 81)
+        return calculateScaledLongitude(deg, 30.0 / 81.0, part % 12)
+    }
+
+    fun calculateAshtottarshamsa(chart: VedicChart): DivisionalChartData {
+        val asc = calculateAshtottarshamsaLongitude(chart.ascendant)
+        val ascSign = ZodiacSign.fromLongitude(asc)
+        val positions = chart.planetPositions.map { calculateDivisionalPosition(it, ascSign.number) { l -> calculateAshtottarshamsaLongitude(it.longitude) } }
+        return DivisionalChartData(DivisionalChartType.D108_ASHTOTTARSHAMSA, positions, asc, "Ashtottarshamsa (D108)")
+    }
+
+    private fun calculateAshtottarshamsaLongitude(longitude: Double): Double {
+        val norm = normalizeLongitude(longitude); val deg = getDegreeInSign(norm)
+        val part = getDivisionPart(deg, 30.0 / 108.0, 108)
+        return calculateScaledLongitude(deg, 30.0 / 108.0, part % 12)
+    }
+
+    fun calculateDwadashDwadashamsa(chart: VedicChart): DivisionalChartData {
+        val asc = calculateDwadashDwadashamsaLongitude(chart.ascendant)
+        val ascSign = ZodiacSign.fromLongitude(asc)
+        val positions = chart.planetPositions.map { calculateDivisionalPosition(it, ascSign.number) { l -> calculateDwadashDwadashamsaLongitude(it.longitude) } }
+        return DivisionalChartData(DivisionalChartType.D144_DWADASH_DWADASHAMSA, positions, asc, "Dwadash-Dwadashamsa (D144)")
+    }
+
+    private fun calculateDwadashDwadashamsaLongitude(longitude: Double): Double {
+        val norm = normalizeLongitude(longitude); val deg = getDegreeInSign(norm)
+        val part = getDivisionPart(deg, 30.0 / 144.0, 144)
+        return calculateScaledLongitude(deg, 30.0 / 144.0, part % 12)
+    }
+
     private fun getSignNumber(longitude: Double): Int {
         return floor(longitude / DEGREES_IN_SIGN).toInt() % 12
     }
@@ -652,6 +752,34 @@ object DivisionalChartCalculator {
             calculateHora(chart),
             calculateDrekkana(chart),
             calculateChaturthamsa(chart),
+            calculatePanchamsa(chart),
+            calculateShasthamsa(chart),
+            calculateSaptamsa(chart),
+            calculateAshtamsa(chart),
+            calculateNavamsa(chart),
+            calculateDasamsa(chart),
+            calculateRudramsa(chart),
+            calculateDwadasamsa(chart),
+            calculateShodasamsa(chart),
+            calculateVimsamsa(chart),
+            calculateChaturvimsamsa(chart),
+            calculateSaptavimsamsa(chart),
+            calculateTrimsamsa(chart),
+            calculateKhavedamsa(chart),
+            calculateAkshavedamsa(chart),
+            calculateShashtiamsa(chart),
+            calculateNavnavamsa(chart),
+            calculateAshtottarshamsa(chart),
+            calculateDwadashDwadashamsa(chart)
+        )
+    }
+
+    fun calculateShodashaVarga(chart: VedicChart): List<DivisionalChartData> {
+        return listOf(
+            calculateRashi(chart),
+            calculateHora(chart),
+            calculateDrekkana(chart),
+            calculateChaturthamsa(chart),
             calculateSaptamsa(chart),
             calculateNavamsa(chart),
             calculateDasamsa(chart),
@@ -665,10 +793,6 @@ object DivisionalChartCalculator {
             calculateAkshavedamsa(chart),
             calculateShashtiamsa(chart)
         )
-    }
-
-    fun calculateShodashaVarga(chart: VedicChart): List<DivisionalChartData> {
-        return calculateAllDivisionalCharts(chart)
     }
 
     fun calculateSaptaVarga(chart: VedicChart): List<DivisionalChartData> {
@@ -711,9 +835,13 @@ object DivisionalChartCalculator {
             DivisionalChartType.D2_HORA -> calculateHora(chart)
             DivisionalChartType.D3_DREKKANA -> calculateDrekkana(chart)
             DivisionalChartType.D4_CHATURTHAMSA -> calculateChaturthamsa(chart)
+            DivisionalChartType.D5_PANCHAMSA -> calculatePanchamsa(chart)
+            DivisionalChartType.D6_SHASTHAMSA -> calculateShasthamsa(chart)
             DivisionalChartType.D7_SAPTAMSA -> calculateSaptamsa(chart)
+            DivisionalChartType.D8_ASHTAMSA -> calculateAshtamsa(chart)
             DivisionalChartType.D9_NAVAMSA -> calculateNavamsa(chart)
             DivisionalChartType.D10_DASAMSA -> calculateDasamsa(chart)
+            DivisionalChartType.D11_RUDRAMSA -> calculateRudramsa(chart)
             DivisionalChartType.D12_DWADASAMSA -> calculateDwadasamsa(chart)
             DivisionalChartType.D16_SHODASAMSA -> calculateShodasamsa(chart)
             DivisionalChartType.D20_VIMSAMSA -> calculateVimsamsa(chart)
@@ -723,6 +851,9 @@ object DivisionalChartCalculator {
             DivisionalChartType.D40_KHAVEDAMSA -> calculateKhavedamsa(chart)
             DivisionalChartType.D45_AKSHAVEDAMSA -> calculateAkshavedamsa(chart)
             DivisionalChartType.D60_SHASHTIAMSA -> calculateShashtiamsa(chart)
+            DivisionalChartType.D81_NAVNAVAMSA -> calculateNavnavamsa(chart)
+            DivisionalChartType.D108_ASHTOTTARSHAMSA -> calculateAshtottarshamsa(chart)
+            DivisionalChartType.D144_DWADASH_DWADASHAMSA -> calculateDwadashDwadashamsa(chart)
         }
     }
 
@@ -740,9 +871,13 @@ enum class DivisionalChartType(
     D2_HORA(2, "Hora", "D2", "Wealth, Prosperity"),
     D3_DREKKANA(3, "Drekkana", "D3", "Siblings, Courage"),
     D4_CHATURTHAMSA(4, "Chaturthamsa", "D4", "Fortune, Property"),
+    D5_PANCHAMSA(5, "Panchamsa", "D5", "Fame, Power, Authority"),
+    D6_SHASTHAMSA(6, "Shasthamsa", "D6", "Health, Debts, Enemies"),
     D7_SAPTAMSA(7, "Saptamsa", "D7", "Children, Progeny"),
+    D8_ASHTAMSA(8, "Ashtamsa", "D8", "Longevity, Transformation"),
     D9_NAVAMSA(9, "Navamsa", "D9", "Marriage, Dharma"),
     D10_DASAMSA(10, "Dasamsa", "D10", "Career, Profession"),
+    D11_RUDRAMSA(11, "Rudramsa", "D11", "Victory, Defeat, Ups and Downs"),
     D12_DWADASAMSA(12, "Dwadasamsa", "D12", "Parents, Ancestry"),
     D16_SHODASAMSA(16, "Shodasamsa", "D16", "Vehicles, Pleasures"),
     D20_VIMSAMSA(20, "Vimsamsa", "D20", "Spiritual Life"),
@@ -751,16 +886,23 @@ enum class DivisionalChartType(
     D30_TRIMSAMSA(30, "Trimsamsa", "D30", "Evils, Misfortunes"),
     D40_KHAVEDAMSA(40, "Khavedamsa", "D40", "Auspicious/Inauspicious Effects"),
     D45_AKSHAVEDAMSA(45, "Akshavedamsa", "D45", "General Indications"),
-    D60_SHASHTIAMSA(60, "Shashtiamsa", "D60", "Past Life Karma");
+    D60_SHASHTIAMSA(60, "Shashtiamsa", "D60", "Past Life Karma"),
+    D81_NAVNAVAMSA(81, "Navnavamsa", "D81", "Hidden Potentials, Deep Navamsa"),
+    D108_ASHTOTTARSHAMSA(108, "Ashtottarshamsa", "D108", "Blessings, Divine Protection"),
+    D144_DWADASH_DWADASHAMSA(144, "Dwadash-Dwadashamsa", "D144", "Minute Details, Ultimate Micro-analysis");
 
     fun getLocalizedDisplayName(language: Language): String = when (this) {
         D1_RASHI -> StringResources.get(StringKeyDosha.VARGA_D1_TITLE, language)
         D2_HORA -> StringResources.get(StringKeyDosha.VARGA_D2_TITLE, language)
         D3_DREKKANA -> StringResources.get(StringKeyDosha.VARGA_D3_TITLE, language)
         D4_CHATURTHAMSA -> StringResources.get(StringKeyDosha.VARGA_D4_TITLE, language)
+        D5_PANCHAMSA -> StringResources.get(StringKeyDosha.VARGA_D5_TITLE, language)
+        D6_SHASTHAMSA -> StringResources.get(StringKeyDosha.VARGA_D6_TITLE, language)
         D7_SAPTAMSA -> StringResources.get(StringKeyDosha.VARGA_D7_TITLE, language)
+        D8_ASHTAMSA -> StringResources.get(StringKeyDosha.VARGA_D8_TITLE, language)
         D9_NAVAMSA -> StringResources.get(StringKeyDosha.VARGA_D9_TITLE, language)
         D10_DASAMSA -> StringResources.get(StringKeyDosha.VARGA_D10_TITLE, language)
+        D11_RUDRAMSA -> StringResources.get(StringKeyDosha.VARGA_D11_TITLE, language)
         D12_DWADASAMSA -> StringResources.get(StringKeyDosha.VARGA_D12_TITLE, language)
         D16_SHODASAMSA -> StringResources.get(StringKeyDosha.VARGA_D16_TITLE, language)
         D20_VIMSAMSA -> StringResources.get(StringKeyDosha.VARGA_D20_TITLE, language)
@@ -770,6 +912,9 @@ enum class DivisionalChartType(
         D40_KHAVEDAMSA -> StringResources.get(StringKeyDosha.VARGA_D40_TITLE, language)
         D45_AKSHAVEDAMSA -> StringResources.get(StringKeyDosha.VARGA_D45_TITLE, language)
         D60_SHASHTIAMSA -> StringResources.get(StringKeyDosha.VARGA_D60_TITLE, language)
+        D81_NAVNAVAMSA -> StringResources.get(StringKeyDosha.VARGA_D81_TITLE, language)
+        D108_ASHTOTTARSHAMSA -> StringResources.get(StringKeyDosha.VARGA_D108_TITLE, language)
+        D144_DWADASH_DWADASHAMSA -> StringResources.get(StringKeyDosha.VARGA_D144_TITLE, language)
     }
 
     fun getLocalizedDescription(language: Language): String = when (this) {
@@ -777,9 +922,13 @@ enum class DivisionalChartType(
         D2_HORA -> StringResources.get(StringKeyDosha.VARGA_D2_DESC, language)
         D3_DREKKANA -> StringResources.get(StringKeyDosha.VARGA_D3_DESC, language)
         D4_CHATURTHAMSA -> StringResources.get(StringKeyDosha.VARGA_D4_DESC, language)
+        D5_PANCHAMSA -> StringResources.get(StringKeyDosha.VARGA_D5_DESC, language)
+        D6_SHASTHAMSA -> StringResources.get(StringKeyDosha.VARGA_D6_DESC, language)
         D7_SAPTAMSA -> StringResources.get(StringKeyDosha.VARGA_D7_DESC, language)
+        D8_ASHTAMSA -> StringResources.get(StringKeyDosha.VARGA_D8_DESC, language)
         D9_NAVAMSA -> StringResources.get(StringKeyDosha.VARGA_D9_DESC, language)
         D10_DASAMSA -> StringResources.get(StringKeyDosha.VARGA_D10_DESC, language)
+        D11_RUDRAMSA -> StringResources.get(StringKeyDosha.VARGA_D11_DESC, language)
         D12_DWADASAMSA -> StringResources.get(StringKeyDosha.VARGA_D12_DESC, language)
         D16_SHODASAMSA -> StringResources.get(StringKeyDosha.VARGA_D16_DESC, language)
         D20_VIMSAMSA -> StringResources.get(StringKeyDosha.VARGA_D20_DESC, language)
@@ -789,6 +938,9 @@ enum class DivisionalChartType(
         D40_KHAVEDAMSA -> StringResources.get(StringKeyDosha.VARGA_D40_DESC, language)
         D45_AKSHAVEDAMSA -> StringResources.get(StringKeyDosha.VARGA_D45_DESC, language)
         D60_SHASHTIAMSA -> StringResources.get(StringKeyDosha.VARGA_D60_DESC, language)
+        D81_NAVNAVAMSA -> StringResources.get(StringKeyDosha.VARGA_D81_DESC, language)
+        D108_ASHTOTTARSHAMSA -> StringResources.get(StringKeyDosha.VARGA_D108_DESC, language)
+        D144_DWADASH_DWADASHAMSA -> StringResources.get(StringKeyDosha.VARGA_D144_DESC, language)
     }
 
     fun getLocalizedChartTitle(language: Language): String {

@@ -20,6 +20,13 @@ object MuhurtaAstronomicalCalculator {
         return normalizeDegrees(xx[0])
     }
 
+    fun getPlanetSpeed(planetId: Int, julianDay: Double, swissEph: SwissEph): Double {
+        val xx = DoubleArray(6)
+        val serr = StringBuffer()
+        swissEph.swe_calc_ut(julianDay, planetId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        return xx[3]
+    }
+
     fun calculateSunriseSunsetJD(julianDay: Double, latitude: Double, longitude: Double, swissEph: SwissEph): Pair<Double, Double> {
         val geopos = doubleArrayOf(longitude, latitude, 0.0)
         val tret = DblObj()

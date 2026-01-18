@@ -792,28 +792,27 @@ object VedicAstrologyUtils {
     }
 
     /**
-     * Check functional benefic status based on ascendant.
-     * A planet ruling Kendra or Trikona becomes benefic for that ascendant.
+     * Check functional benefic status based on chart.
+     * A planet ruling Kendra or Trikona becomes benefic for that chart.
      */
-    fun isFunctionalBenefic(planet: Planet, ascendantSign: ZodiacSign): Boolean {
-        val ruledSigns = ownSigns[planet] ?: emptyList()
-
-        return ruledSigns.any { sign ->
-            val houseFromAsc = getHouseFromSigns(sign, ascendantSign)
-            houseFromAsc in KENDRA_HOUSES || houseFromAsc in TRIKONA_HOUSES
+    fun isFunctionalBenefic(planet: Planet, chart: VedicChart): Boolean {
+        // Standard Parashari functional benefic determination
+        val kendraTrikona = KENDRA_HOUSES + TRIKONA_HOUSES
+        
+        return (1..12).any { house ->
+            val sign = getHouseSign(chart, house)
+            sign.ruler == planet && house in kendraTrikona
         }
     }
 
     /**
-     * Check functional malefic status based on ascendant.
-     * A planet ruling Dusthana becomes malefic for that ascendant.
+     * Check functional malefic status based on chart.
+     * A planet ruling Dusthana becomes malefic for that chart.
      */
-    fun isFunctionalMalefic(planet: Planet, ascendantSign: ZodiacSign): Boolean {
-        val ruledSigns = ownSigns[planet] ?: emptyList()
-
-        return ruledSigns.any { sign ->
-            val houseFromAsc = getHouseFromSigns(sign, ascendantSign)
-            houseFromAsc in DUSTHANA_HOUSES
+    fun isFunctionalMalefic(planet: Planet, chart: VedicChart): Boolean {
+        return (1..12).any { house ->
+            val sign = getHouseSign(chart, house)
+            sign.ruler == planet && house in DUSTHANA_HOUSES
         }
     }
 
@@ -980,11 +979,21 @@ object VedicAstrologyUtils {
 
     /**
      * Get the sign of a specific house.
+     * Respects the chart's house system by using actual house cusps.
      */
     fun getHouseSign(chart: VedicChart, house: Int): ZodiacSign {
-        val ascSign = getAscendantSign(chart)
-        val houseSignNumber = ((ascSign.number + house - 2) % 12) + 1
-        return ZodiacSign.entries.find { it.number == houseSignNumber } ?: ZodiacSign.ARIES
+        if (house < 1 || house > 12) return ZodiacSign.ARIES
+        
+        // In Whole Sign, the sign of the house is simply the nth sign from Ascendant sign
+        if (chart.houseSystem == com.astro.storm.core.model.HouseSystem.WHOLE_SIGN) {
+            val ascSign = getAscendantSign(chart)
+            val houseSignNumber = ((ascSign.number + house - 2) % 12) + 1
+            return ZodiacSign.entries.find { it.number == houseSignNumber } ?: ZodiacSign.ARIES
+        }
+        
+        // For other systems, the sign of the house is the sign at the cusp of that house
+        val cuspLongitude = chart.houseCusps.getOrNull(house - 1) ?: chart.ascendant
+        return ZodiacSign.fromLongitude(cuspLongitude)
     }
 
     /**

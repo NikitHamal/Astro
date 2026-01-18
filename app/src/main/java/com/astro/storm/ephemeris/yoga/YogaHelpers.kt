@@ -88,53 +88,34 @@ object YogaHelpers {
     }
 
     /**
-     * Check if aspectingPlanet aspects targetPlanet using Vedic aspect rules
-     * Uses 5° orb for aspect calculations
+     * Check if aspectingPlanet aspects targetPlanet using traditional Vedic sign-to-sign aspect rules.
+     * In Parashari astrology, aspects are sign-based (Drishti).
      */
     fun isAspecting(aspectingPlanet: PlanetPosition, targetPlanet: PlanetPosition): Boolean {
-        val aspectOrb = 5.0
+        // House distance from aspecting planet sign to target planet sign (1-indexed)
         val houseDistance = getHouseFrom(targetPlanet.sign, aspectingPlanet.sign)
 
-        // All planets have 7th house (opposition) aspect
-        if (houseDistance == 7) {
-            return isWithinAspectOrb(aspectingPlanet.longitude, targetPlanet.longitude, 180.0, aspectOrb)
-        }
+        // All planets have 7th house (opposition) sign aspect
+        if (houseDistance == 7) return true
 
         // Mars special aspects: 4th and 8th houses
         if (aspectingPlanet.planet == Planet.MARS) {
-            if (houseDistance == 4) {
-                return isWithinAspectOrb(aspectingPlanet.longitude, targetPlanet.longitude, 90.0, aspectOrb)
-            }
-            if (houseDistance == 8) {
-                return isWithinAspectOrb(aspectingPlanet.longitude, targetPlanet.longitude, 210.0, aspectOrb)
-            }
+            if (houseDistance == 4 || houseDistance == 8) return true
         }
 
         // Jupiter special aspects: 5th and 9th houses
         if (aspectingPlanet.planet == Planet.JUPITER) {
-            if (houseDistance == 5) {
-                return isWithinAspectOrb(aspectingPlanet.longitude, targetPlanet.longitude, 120.0, aspectOrb)
-            }
-            if (houseDistance == 9) {
-                return isWithinAspectOrb(aspectingPlanet.longitude, targetPlanet.longitude, 240.0, aspectOrb)
-            }
+            if (houseDistance == 5 || houseDistance == 9) return true
         }
 
         // Saturn special aspects: 3rd and 10th houses
         if (aspectingPlanet.planet == Planet.SATURN) {
-            if (houseDistance == 3) {
-                return isWithinAspectOrb(aspectingPlanet.longitude, targetPlanet.longitude, 60.0, aspectOrb)
-            }
-            if (houseDistance == 10) {
-                return isWithinAspectOrb(aspectingPlanet.longitude, targetPlanet.longitude, 270.0, aspectOrb)
-            }
+            if (houseDistance == 3 || houseDistance == 10) return true
         }
 
-        // Rahu/Ketu aspects like Saturn (some traditions)
+        // Rahu/Ketu aspects like Jupiter (5th and 9th) in many traditions
         if (aspectingPlanet.planet in listOf(Planet.RAHU, Planet.KETU)) {
-            if (houseDistance == 3 || houseDistance == 10) {
-                return true
-            }
+            if (houseDistance == 5 || houseDistance == 9) return true
         }
 
         return false
@@ -443,9 +424,26 @@ object YogaHelpers {
     }
 
     /**
-     * Calculate yoga strength with comprehensive factors applied
+     * Calculate yoga strength based on Shadbala of participating planets.
+     * If Shadbala analysis is provided, uses it for higher precision.
      */
-    fun calculateYogaStrength(chart: VedicChart, positions: List<PlanetPosition>): Double {
+    fun calculateDynamicYogaStrength(
+        chart: VedicChart,
+        positions: List<PlanetPosition>,
+        shadbalaAnalysis: com.astro.storm.ephemeris.ShadbalaAnalysis? = null
+    ): Double {
+        val baseStrength = calculateYogaStrength(chart, positions)
+        
+        if (shadbalaAnalysis == null) return baseStrength
+        
+        // Adjust based on average Shadbala percentage of required
+        val avgPercentage = positions.map { pos ->
+            shadbalaAnalysis.planetaryStrengths[pos.planet]?.percentageOfRequired ?: 100.0
+        }.average()
+        
+        // Blend base strength with Shadbala performance
+        return (baseStrength * 0.6 + avgPercentage * 0.4).coerceIn(10.0, 100.0)
+    }
         var baseStrength = 50.0
 
         positions.forEach { pos ->

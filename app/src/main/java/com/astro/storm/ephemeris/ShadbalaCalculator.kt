@@ -617,7 +617,7 @@ object ShadbalaCalculator {
             pakshaBala = calculatePakshaBala(position, context),
             tribhagaBala = calculateTribhagaBala(position, context),
             horaAdiBala = calculateHoraAdiBala(position, context),
-            ayanaBala = calculateAyanaBala(position),
+            ayanaBala = calculateAyanaBala(position, context.chart.ayanamsa),
             yuddhaBala = calculateYuddhaBala(position, context)
         )
     }
@@ -777,34 +777,34 @@ object ShadbalaCalculator {
      * - Northern declination planets (Sun, Mars, Jupiter) are stronger when in northern hemisphere
      * - Southern declination planets (Moon, Venus, Saturn) are stronger when in southern hemisphere
      *
-     * The declination is calculated from the sidereal longitude using:
-     * declination = arcsin(sin(longitude) × sin(obliquity))
-     *
-     * For Vedic astrology, we use the sidereal longitude, and the obliquity of the ecliptic
-     * is approximately 23.45°. The formula accounts for the Sun's apparent path.
+     * IMPORTANT: This must be calculated using TROPICAL (Sayana) longitude.
+     * declination = arcsin(sin(tropical_longitude) × sin(obliquity))
      *
      * Per BPHS: Maximum Ayana Bala = 60 Virupas
      *
      * @param position The planet position to calculate Ayana Bala for
+     * @param ayanamsa The Ayanamsa value to convert sidereal to tropical longitude
      * @return Ayana Bala in Virupas (0-60)
      */
-    private fun calculateAyanaBala(position: PlanetPosition): Double {
-        // Obliquity of the ecliptic (Earth's axial tilt)
-        val obliquity = 23.45
+    private fun calculateAyanaBala(position: PlanetPosition, ayanamsa: Double): Double {
+        // Obliquity of the ecliptic (Earth's axial tilt) - approx 23.44° for modern era
+        val obliquity = 23.44
+
+        // Convert sidereal longitude to tropical (Sayana)
+        val tropicalLongitude = normalizeDegree(position.longitude + ayanamsa)
 
         // Calculate declination using proper spherical astronomy formula
         // declination = arcsin(sin(longitude) × sin(obliquity))
-        // Simplified for computational efficiency: use sine of longitude relative to vernal point
-        val longitudeRadians = position.longitude * PI / 180.0
-        val obliquityRadians = obliquity * PI / 180.0
+        val longitudeRadians = Math.toRadians(tropicalLongitude)
+        val obliquityRadians = Math.toRadians(obliquity)
 
-        // Declination ranges from -23.45° to +23.45°
+        // Declination ranges from -23.44° to +23.44°
         val declination = Math.toDegrees(
             kotlin.math.asin(sin(longitudeRadians) * sin(obliquityRadians))
         )
 
         // Normalize declination to a 0-60 Virupa scale
-        // declination ranges from -23.45 to +23.45, so we scale it
+        // declination ranges from -23.44 to +23.44, so we scale it
         val normalizedDeclination = (declination / obliquity) * 30.0  // -30 to +30
 
         return when (position.planet) {
@@ -825,18 +825,12 @@ object ShadbalaCalculator {
      *
      * Planetary War (Graha Yuddha) occurs when two planets are in close conjunction.
      * Per classical texts, war occurs when planets are within 1 degree of each other.
-     * Some texts extend this to 5 degrees for a "war zone" with diminishing effects.
      *
      * The winner is determined by:
-     * 1. Northern latitude (higher declination) wins
-     * 2. If equal, brighter planet wins (Venus > Jupiter > Mercury > Mars > Saturn)
-     * 3. The winner gains strength, loser loses strength
+     * 1. Northern latitude (greater northern/lesser southern latitude) wins
+     * 2. The winner gains strength, loser loses strength
      *
-     * Sun and Moon do not participate in planetary war.
-     * Rahu and Ketu, being shadow planets, also don't participate.
-     *
-     * Per BPHS: Maximum Yuddha Bala = ±30 Virupas (winner gets +30, loser gets -30)
-     * For near-war (1-5 degrees), partial strength is calculated.
+     * Per BPHS: Maximum Yuddha Bala = ±30 Virupas
      *
      * @param position The planet position to calculate Yuddha Bala for
      * @param context The chart context containing all planet positions
@@ -853,32 +847,36 @@ object ShadbalaCalculator {
 
             val distance = angularDistance(position.longitude, otherPos.longitude)
 
-            // Full war within 1 degree
+            // War within 1 degree
             if (distance <= 1.0) {
-                val winner = PlanetaryWarBrightness.getWinner(position.planet, planet)
-                totalYuddhaBala += if (winner == position.planet) 30.0 else -30.0
-            }
-            // Partial war effect between 1-5 degrees (war zone)
-            else if (distance <= 5.0) {
-                val warStrength = ((5.0 - distance) / 4.0) * 15.0  // Max 15 virupas for near-war
-                val winner = PlanetaryWarBrightness.getWinner(position.planet, planet)
-                totalYuddhaBala += if (winner == position.planet) warStrength else -warStrength
+                // Determine winner by latitude (higher latitude wins)
+                val isWinner = position.latitude > otherPos.latitude
+                totalYuddhaBala += if (isWinner) 30.0 else -30.0
             }
         }
 
-        // Clamp total to valid range (a planet might be in war with multiple planets)
         return totalYuddhaBala.coerceIn(-30.0, 30.0)
     }
 
+    /**
+     * Calculate Chesta Bala (Mototional Strength) per BPHS.
+     * 
+     * Chesta Bala is based on the planet's speed and direction.
+     * Retrograde planets (Vakra) and slow moving planets gain more strength.
+     * 
+     * Formula: (Distance from Mean Planet / Total Range) * 60
+     * Threshold-based simplification for production-grade robustness.
+     */
     private fun calculateChestaBala(position: PlanetPosition): Double {
         if (position.planet in setOf(Planet.SUN, Planet.MOON)) return 0.0
 
         return when {
             position.isRetrograde -> 60.0
-            position.speed < 0.01 -> 50.0
-            position.speed < 0.5 -> 40.0
-            position.speed < 1.0 -> 30.0
-            else -> 20.0
+            position.speed < 0.05 -> 50.0 // Very slow
+            position.speed < 0.5 -> 40.0  // Slow
+            position.speed < 0.8 -> 30.0  // Average
+            position.speed < 1.2 -> 20.0  // Fast
+            else -> 10.0                  // Very Fast
         }
     }
 
