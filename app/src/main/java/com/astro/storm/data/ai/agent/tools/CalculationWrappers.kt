@@ -318,7 +318,17 @@ class TransitCalculatorWrapper(
 ) {
 
     data class TransitResult(
-...
+        val planet: Planet,
+        val transitSign: ZodiacSign,
+        val transitHouse: Int,
+        val natalSign: ZodiacSign,
+        val natalHouse: Int,
+        val aspect: String,
+        val isRetrograde: Boolean,
+        val effect: String,
+        val intensity: Int
+    )
+
     fun calculateCurrentTransits(chart: VedicChart): List<TransitResult> {
         return try {
             val analyzer = com.astro.storm.ephemeris.TransitAnalyzer(

@@ -1139,12 +1139,25 @@ class GetTransitsTool : AstrologyTool {
     )
 
     override suspend fun execute(arguments: JSONObject, context: ToolContext): ToolExecutionResult {
-        val profileId = arguments.optString("profile_id", "current")
-                                val (chart, error) = getChartForProfile(profileId, context)
-                                if (chart == null) return ToolExecutionResult(success = false, data = null, error = error, summary = "Chart not found")
-                    
-                                val transitCalculator = TransitCalculatorWrapper(context.context, context.localizationManager, context.ephemerisEngine)
-                                val transits = transitCalculator.calculateCurrentTransits(chart)            val data = JSONObject().apply {
+        try {
+            val profileId = arguments.optString("profile_id", "current")
+            val (chart, error) = getChartForProfile(profileId, context)
+            if (chart == null) {
+                return ToolExecutionResult(
+                    success = false,
+                    data = null,
+                    error = error,
+                    summary = "Chart not found"
+                )
+            }
+
+            val transitCalculator = TransitCalculatorWrapper(
+                context.context,
+                context.localizationManager,
+                context.ephemerisEngine
+            )
+            val transits = transitCalculator.calculateCurrentTransits(chart)
+            val data = JSONObject().apply {
                 put("date", SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Date()))
                 put("transits", JSONArray().apply {
                     transits.forEach { transit ->
