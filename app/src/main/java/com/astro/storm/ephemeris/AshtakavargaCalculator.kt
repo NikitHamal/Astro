@@ -100,13 +100,16 @@ object AshtakavargaCalculator {
      * Generate a unique cache key for a VedicChart.
      *
      * The key is based on:
-     * - Ascendant longitude (rounded to 4 decimal places for floating-point stability)
-     * - All planet positions (longitude rounded to 4 decimal places)
-     *
-     * This ensures charts with identical planetary positions share cached results.
-     */
     private fun generateChartCacheKey(chart: VedicChart): String {
-        val ascendantKey = "%.4f".format(chart.ascendant)
+        val locale = java.util.Locale.US
+        val ascendantKey = "%.4f".format(locale, chart.ascendant)
+        val planetKeys = chart.planetPositions
+            .sortedBy { it.planet.ordinal }
+            .joinToString("|") { pos ->
+                "${pos.planet.name}:${"%.4f".format(locale, pos.longitude)}"
+            }
+        return "$ascendantKey|$planetKeys"
+    }
         val planetKeys = chart.planetPositions
             .sortedBy { it.planet.ordinal }
             .joinToString("|") { pos ->
