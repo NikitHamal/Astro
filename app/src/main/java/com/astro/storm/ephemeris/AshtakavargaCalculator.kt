@@ -9,6 +9,8 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * Complete Ashtakavarga Calculator
@@ -60,6 +62,126 @@ object AshtakavargaCalculator {
     )
     private const val KAKSHA_ASCENDANT = "Ascendant"
     private const val KAKSHA_SIZE_DEGREES = 3.75 // 30° / 8 kakshas = 3.75° per kaksha
+
+    // ==================== CACHING INFRASTRUCTURE ====================
+
+    /**
+     * LRU Cache for Ashtakavarga analysis results.
+     *
+     * Ashtakavarga calculations are deterministic and CPU-intensive.
+     * Caching prevents redundant recalculation for the same chart.
+     *
+     * Key: Unique chart hash based on ascendant + all planet positions
+     * Value: Cached analysis result with access timestamp
+     */
+    private data class CachedAnalysis(
+        val analysis: AshtakavargaAnalysis,
+        val lastAccessTime: AtomicLong = AtomicLong(System.currentTimeMillis())
+    ) {
+        fun touch() {
+            lastAccessTime.set(System.currentTimeMillis())
+        }
+    }
+
+    /** Maximum number of cached analyses to retain */
+    private const val MAX_CACHE_SIZE = 50
+
+    /** Cache expiration time in milliseconds (30 minutes) */
+    private const val CACHE_EXPIRATION_MS = 30 * 60 * 1000L
+
+    /** Thread-safe LRU cache for Ashtakavarga analyses */
+    private val analysisCache = ConcurrentHashMap<String, CachedAnalysis>()
+
+    /** Cache hit counter for monitoring (useful for debugging/optimization) */
+    private val cacheHits = AtomicLong(0)
+    private val cacheMisses = AtomicLong(0)
+
+    /**
+     * Generate a unique cache key for a VedicChart.
+     *
+     * The key is based on:
+     * - Ascendant longitude (rounded to 4 decimal places for floating-point stability)
+     * - All planet positions (longitude rounded to 4 decimal places)
+     *
+     * This ensures charts with identical planetary positions share cached results.
+     */
+    private fun generateChartCacheKey(chart: VedicChart): String {
+        val ascendantKey = "%.4f".format(chart.ascendant)
+        val planetKeys = chart.planetPositions
+            .sortedBy { it.planet.ordinal }
+            .joinToString("|") { pos ->
+                "${pos.planet.name}:${"%.4f".format(pos.longitude)}"
+            }
+        return "$ascendantKey|$planetKeys"
+    }
+
+    /**
+     * Evict stale entries from the cache.
+     *
+     * Called automatically when cache exceeds MAX_CACHE_SIZE.
+     * Removes entries that are either:
+     * - Older than CACHE_EXPIRATION_MS
+     * - Least recently accessed (if still over capacity)
+     */
+    private fun evictStaleEntries() {
+        val currentTime = System.currentTimeMillis()
+        val expirationThreshold = currentTime - CACHE_EXPIRATION_MS
+
+        // First pass: remove expired entries
+        analysisCache.entries.removeIf { (_, cached) ->
+            cached.lastAccessTime.get() < expirationThreshold
+        }
+
+        // Second pass: if still over capacity, remove least recently used
+        while (analysisCache.size > MAX_CACHE_SIZE) {
+            val lruEntry = analysisCache.entries
+                .minByOrNull { it.value.lastAccessTime.get() }
+            lruEntry?.let { analysisCache.remove(it.key) }
+        }
+    }
+
+    /**
+     * Clear all cached analyses.
+     *
+     * Call this when charts may have been modified externally,
+     * or to free memory during low-memory conditions.
+     */
+    fun clearCache() {
+        analysisCache.clear()
+        cacheHits.set(0)
+        cacheMisses.set(0)
+    }
+
+    /**
+     * Get cache statistics for monitoring/debugging.
+     *
+     * @return CacheStats with hit rate and size information
+     */
+    fun getCacheStats(): CacheStats {
+        val hits = cacheHits.get()
+        val misses = cacheMisses.get()
+        val total = hits + misses
+        val hitRate = if (total > 0) hits.toDouble() / total else 0.0
+
+        return CacheStats(
+            cacheSize = analysisCache.size,
+            cacheHits = hits,
+            cacheMisses = misses,
+            hitRate = hitRate
+        )
+    }
+
+    /**
+     * Cache statistics data class
+     */
+    data class CacheStats(
+        val cacheSize: Int,
+        val cacheHits: Long,
+        val cacheMisses: Long,
+        val hitRate: Double
+    )
+
+    // ==================== END CACHING INFRASTRUCTURE ====================
 
     /**
      * Bindu allocation rules from BPHS
@@ -345,9 +467,33 @@ object AshtakavargaCalculator {
     )
 
     /**
-     * Calculate complete Ashtakavarga for a chart
+     * Calculate complete Ashtakavarga for a chart.
+     *
+     * This method uses an LRU cache to avoid redundant calculations.
+     * For the same chart (same ascendant and planet positions), the cached
+     * result is returned, significantly improving performance for repeated
+     * queries (e.g., transit calculations, UI refreshes).
+     *
+     * @param chart The VedicChart to analyze
+     * @param bypassCache If true, forces recalculation even if cached result exists.
+     *                    Use this when you suspect cached data may be stale.
+     * @return Complete AshtakavargaAnalysis for the chart
      */
-    fun calculateAshtakavarga(chart: VedicChart): AshtakavargaAnalysis {
+    fun calculateAshtakavarga(chart: VedicChart, bypassCache: Boolean = false): AshtakavargaAnalysis {
+        val cacheKey = generateChartCacheKey(chart)
+
+        // Check cache first (unless bypassing)
+        if (!bypassCache) {
+            analysisCache[cacheKey]?.let { cached ->
+                cached.touch() // Update last access time for LRU
+                cacheHits.incrementAndGet()
+                return cached.analysis
+            }
+        }
+
+        // Cache miss - calculate fresh
+        cacheMisses.incrementAndGet()
+
         val bhinnashtakavarga = mutableMapOf<Planet, Bhinnashtakavarga>()
         val prastarashtakavarga = mutableMapOf<Planet, Prastarashtakavarga>()
 
@@ -361,12 +507,22 @@ object AshtakavargaCalculator {
         // Calculate Sarvashtakavarga
         val sarvashtakavarga = calculateSarvashtakavarga(bhinnashtakavarga)
 
-        return AshtakavargaAnalysis(
+        val analysis = AshtakavargaAnalysis(
             chart = chart,
             bhinnashtakavarga = bhinnashtakavarga,
             sarvashtakavarga = sarvashtakavarga,
             prastarashtakavarga = prastarashtakavarga
         )
+
+        // Store in cache
+        analysisCache[cacheKey] = CachedAnalysis(analysis)
+
+        // Evict stale entries if cache is getting large
+        if (analysisCache.size > MAX_CACHE_SIZE) {
+            evictStaleEntries()
+        }
+
+        return analysis
     }
 
     /**

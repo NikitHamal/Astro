@@ -51,12 +51,62 @@ object KakshaTransitCalculator {
         Planet.KETU to -0.0530
     )
 
-    /** Kakshya lords in traditional sequence */
+    /**
+     * Kakshya lords in traditional sequence (1-7).
+     * The 8th Kakshya (26°15' - 30°00') is ruled by Lagna (Ascendant),
+     * which is handled specially since it's chart-dependent.
+     *
+     * Traditional sequence per classical texts:
+     * 1. Saturn (0°00' - 3°45')    - 1st Kakshya
+     * 2. Jupiter (3°45' - 7°30')   - 2nd Kakshya
+     * 3. Mars (7°30' - 11°15')     - 3rd Kakshya
+     * 4. Sun (11°15' - 15°00')     - 4th Kakshya
+     * 5. Venus (15°00' - 18°45')   - 5th Kakshya
+     * 6. Mercury (18°45' - 22°30') - 6th Kakshya
+     * 7. Moon (22°30' - 26°15')    - 7th Kakshya
+     * 8. Lagna (26°15' - 30°00')   - 8th Kakshya (Ascendant-dependent)
+     */
     private val KAKSHYA_LORDS = listOf(
         Planet.SATURN, Planet.JUPITER, Planet.MARS, Planet.SUN,
         Planet.VENUS, Planet.MERCURY, Planet.MOON
     )
+
+    /**
+     * The 8th Kakshya is ruled by Lagna (Ascendant).
+     * This is a special case as Lagna is not a Planet but a calculated point.
+     * In Ashtakavarga, Lagna contributes bindus just like planets.
+     */
     private const val KAKSHYA_LAGNA = "Lagna"
+
+    /**
+     * Returns the Kakshya lord for a given Kakshya number (1-8).
+     * For Kakshya 1-7, returns the corresponding planet's display name.
+     * For Kakshya 8, returns "Lagna".
+     *
+     * @param kakshaNumber The Kakshya number (1-8)
+     * @return The lord's display name
+     */
+    private fun getKakshaLordName(kakshaNumber: Int): String {
+        return when {
+            kakshaNumber in 1..7 -> KAKSHYA_LORDS[kakshaNumber - 1].displayName
+            kakshaNumber == 8 -> KAKSHYA_LAGNA
+            else -> throw IllegalArgumentException("Kakshya number must be 1-8, got: $kakshaNumber")
+        }
+    }
+
+    /**
+     * Returns the Kakshya lord Planet for Kakshya 1-7, or null for Kakshya 8 (Lagna).
+     *
+     * @param kakshaNumber The Kakshya number (1-8)
+     * @return The Planet ruling this Kakshya, or null for Lagna (8th Kakshya)
+     */
+    private fun getKakshaLordPlanet(kakshaNumber: Int): Planet? {
+        return when {
+            kakshaNumber in 1..7 -> KAKSHYA_LORDS[kakshaNumber - 1]
+            kakshaNumber == 8 -> null // Lagna is not a Planet
+            else -> throw IllegalArgumentException("Kakshya number must be 1-8, got: $kakshaNumber")
+        }
+    }
 
     /**
      * Result of Kakshya transit analysis
@@ -243,11 +293,7 @@ object KakshaTransitCalculator {
 
                 // Next Kakshya lord
                 val nextKakshaNum = if (kakshaDetails.kakshaNumber >= 8) 1 else kakshaDetails.kakshaNumber + 1
-                val nextKakshaLord = if (nextKakshaNum <= 7) {
-                    KAKSHYA_LORDS[nextKakshaNum - 1].displayName
-                } else {
-                    KAKSHYA_LAGNA
-                }
+                val nextKakshaLord = getKakshaLordName(nextKakshaNum)
 
                 val (interpretation, interpretationNe) = getKakshaInterpretation(
                     position.planet, kakshaDetails.kakshaLord, hasBinbu, quality, language
@@ -295,11 +341,7 @@ object KakshaTransitCalculator {
         val degreeStart = (kakshaNumber - 1) * KAKSHYA_SIZE_DEGREES
         val degreeEnd = kakshaNumber * KAKSHYA_SIZE_DEGREES
 
-        val kakshaLord = if (kakshaNumber <= 7) {
-            KAKSHYA_LORDS[kakshaNumber - 1].displayName
-        } else {
-            KAKSHYA_LAGNA
-        }
+        val kakshaLord = getKakshaLordName(kakshaNumber)
 
         return KakshaDetails(
             sign = sign,
@@ -378,11 +420,7 @@ object KakshaTransitCalculator {
 
                     // Only include changes within 7 days
                     if (accumulatedHours <= 7 * 24) {
-                        val nextKakshaLord = if (nextKaksha <= 7) {
-                            KAKSHYA_LORDS[nextKaksha - 1].displayName
-                        } else {
-                            KAKSHYA_LAGNA
-                        }
+                        val nextKakshaLord = getKakshaLordName(nextKaksha)
 
                         // Check if next Kakshya will have bindu
                         val nextSign = if (currentKaksha >= 8) {
@@ -449,11 +487,7 @@ object KakshaTransitCalculator {
                 val bavScore = getBavScoreForKaksha(planet, kakshaDetails.sign, kaksha, analysis)
 
                 if (bavScore >= 5) { // Good BAV score
-                    val kakshaLord = if (kaksha <= 7) {
-                        KAKSHYA_LORDS[kaksha - 1].displayName
-                    } else {
-                        KAKSHYA_LAGNA
-                    }
+                    val kakshaLord = getKakshaLordName(kaksha)
 
                     // Calculate timing
                     val hoursToStart = if (scanDegree < kakshaStart) {
@@ -509,11 +543,7 @@ object KakshaTransitCalculator {
 
             // Low BAV score in malefic planet's Kakshya is critical
             if (bavScore <= 2) {
-                val kakshaLord = if (kakshaDetails.kakshaNumber <= 7) {
-                    KAKSHYA_LORDS[kakshaDetails.kakshaNumber - 1].displayName
-                } else {
-                    KAKSHYA_LAGNA
-                }
+                val kakshaLord = getKakshaLordName(kakshaDetails.kakshaNumber)
 
                 val severity = when {
                     bavScore == 0 && (planet == Planet.SATURN || planet == Planet.MARS) -> CriticalSeverity.HIGH

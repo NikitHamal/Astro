@@ -116,7 +116,10 @@ object YoginiDashaCalculator {
 
         companion object {
             /**
-             * Get Yogini by index (0-7)
+             * Get Yogini by 0-based index (0-7)
+             *
+             * @param index 0-based index (0=Mangala, 7=Sankata)
+             * @return The Yogini at that index position
              */
             fun fromIndex(index: Int): Yogini {
                 val normalizedIndex = ((index % 8) + 8) % 8
@@ -124,13 +127,36 @@ object YoginiDashaCalculator {
             }
 
             /**
-             * Get starting Yogini for a nakshatra
-             * Formula: (Nakshatra number + 3) mod 8
+             * Get starting Yogini for a nakshatra per classical Jataka Parijata formula.
+             *
+             * Classical Formula:
+             * 1. Take nakshatra number (1-27)
+             * 2. Add 3
+             * 3. Divide by 8
+             * 4. Remainder (1-8) gives Yogini number
+             *    - Remainder 0 is treated as 8 (Sankata)
+             *
+             * Mapping (1-based Yogini number to Yogini):
+             * 1 = Mangala, 2 = Pingala, 3 = Dhanya, 4 = Bhramari,
+             * 5 = Bhadrika, 6 = Ulka, 7 = Siddha, 8 = Sankata
+             *
+             * Examples:
+             * - Ashwini (1): (1+3) = 4, 4 % 8 = 4 → Bhramari
+             * - Bharani (2): (2+3) = 5, 5 % 8 = 5 → Bhadrika
+             * - Pushya (8): (8+3) = 11, 11 % 8 = 3 → Dhanya
+             * - Ashlesha (9): (9+3) = 12, 12 % 8 = 4 → Bhramari
+             *
+             * @param nakshatra The birth nakshatra
+             * @return The starting Yogini for this nakshatra
              */
             fun getStartingYogini(nakshatra: Nakshatra): Yogini {
-                val nakshatraIndex = nakshatra.ordinal + 1 // 1-based index
-                val yoginiIndex = (nakshatraIndex + 3) % 8
-                return fromIndex(yoginiIndex)
+                val nakshatraNumber = nakshatra.ordinal + 1 // 1-based nakshatra number (1-27)
+                val sum = nakshatraNumber + 3
+                val remainder = sum % 8
+                // Classical: remainder 1-7 maps directly; remainder 0 means 8 (Sankata)
+                val yoginiNumber = if (remainder == 0) 8 else remainder
+                // Convert 1-based Yogini number to 0-based index for array access
+                return fromIndex(yoginiNumber - 1)
             }
         }
     }

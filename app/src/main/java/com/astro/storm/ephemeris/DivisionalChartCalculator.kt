@@ -681,7 +681,23 @@ object DivisionalChartCalculator {
         return if (degree < 0) degree + DEGREES_IN_SIGN else degree
     }
 
+    /**
+     * Determines if a sign is odd (Aries, Gemini, Leo, Libra, Sagittarius, Aquarius).
+     *
+     * In Vedic astrology, odd signs are: Aries(1), Gemini(3), Leo(5), Libra(7), Sagittarius(9), Aquarius(11)
+     * Even signs are: Taurus(2), Cancer(4), Virgo(6), Scorpio(8), Capricorn(10), Pisces(12)
+     *
+     * This function uses 0-indexed sign numbers (0=Aries, 1=Taurus, etc.) as used internally
+     * by the calculator. With 0-indexing:
+     * - Odd signs have EVEN indices: Aries=0, Gemini=2, Leo=4, etc.
+     * - Even signs have ODD indices: Taurus=1, Cancer=3, Virgo=5, etc.
+     *
+     * @param signNumber 0-indexed sign number (0=Aries through 11=Pisces)
+     * @return true if the sign is an odd sign in Vedic astrology
+     */
     private fun isOddSign(signNumber: Int): Boolean {
+        // 0-indexed: Aries=0, Taurus=1, etc.
+        // Odd signs (1,3,5,7,9,11 in 1-indexed) have even indices (0,2,4,6,8,10)
         return signNumber % 2 == 0
     }
 

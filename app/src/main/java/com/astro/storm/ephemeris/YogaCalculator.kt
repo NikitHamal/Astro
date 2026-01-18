@@ -9,6 +9,7 @@ import com.astro.storm.ephemeris.yoga.DhanaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.MahapurushaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.NabhasaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.NegativeYogaEvaluator
+import com.astro.storm.ephemeris.yoga.ParivartanaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.RajaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.SolarYogaEvaluator
 import com.astro.storm.ephemeris.yoga.SpecialYogaEvaluator
@@ -46,6 +47,9 @@ object YogaCalculator {
 
     /**
      * Registry of yoga evaluators
+     *
+     * Evaluators are executed in order. ParivartanaYogaEvaluator handles
+     * mutual sign exchanges per BPHS Chapter 32 (Maha, Khala, Dainya types).
      */
     private val evaluators: List<YogaEvaluator> = listOf(
         RajaYogaEvaluator(),
@@ -57,6 +61,7 @@ object YogaCalculator {
         NegativeYogaEvaluator(),
         BhavaYogaEvaluator(),
         ConjunctionYogaEvaluator(),
+        ParivartanaYogaEvaluator(),
         AdvancedYogaEvaluator(),
         SpecialYogaEvaluator()
     )
