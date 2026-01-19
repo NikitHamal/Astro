@@ -164,11 +164,12 @@ data class AscendantDeepAnalysis(
     val navamshaAscendantCorrelation: LocalizedParagraph,
     val physicalAppearance: LocalizedParagraph,
     val firstImpressionGiven: LocalizedParagraph,
-    val firstImpression: LocalizedParagraph get() = firstImpressionGiven
     val lifeApproach: LocalizedParagraph,
     val overallAscendantInterpretation: LocalizedParagraph,
     val overallAscendantStrength: StrengthLevel = StrengthLevel.MODERATE
-)
+) {
+    val firstImpression: LocalizedParagraph get() = firstImpressionGiven
+}
 
 /**
  * Ascendant lord position analysis (144 combinations)
@@ -187,13 +188,11 @@ data class AscendantLordAnalysis(
  */
 data class MoonDeepAnalysis(
     val sign: ZodiacSign,
-    val moonSign: ZodiacSign get() = sign
     val housePosition: Int,
     val nakshatra: Nakshatra,
     val nakshatraPada: Int,
     val nakshatraPadaAnalysis: LocalizedParagraph,
     val moonStrengthLevel: StrengthLevel,
-    val overallEmotionalStrength: StrengthLevel get() = moonStrengthLevel
     val emotionalNature: LocalizedParagraph,
     val mindsetAnalysis: LocalizedParagraph,
     val innerNeeds: LocalizedParagraph,
@@ -203,18 +202,19 @@ data class MoonDeepAnalysis(
     val kemadrumaYogaPresent: Boolean,
     val nakshatraCharacteristics: LocalizedParagraph = LocalizedParagraph("", ""),
     val overallMoonInterpretation: LocalizedParagraph
-)
+) {
+    val moonSign: ZodiacSign get() = sign
+    val overallEmotionalStrength: StrengthLevel get() = moonStrengthLevel
+}
 
 /**
  * Deep Sun analysis - core identity and ego
  */
 data class SunDeepAnalysis(
     val sign: ZodiacSign,
-    val sunSign: ZodiacSign get() = sign
     val housePosition: Int,
     val nakshatra: Nakshatra,
     val sunStrengthLevel: StrengthLevel,
-    val sunStrength: StrengthLevel get() = sunStrengthLevel
     val coreIdentity: LocalizedParagraph,
     val egoExpression: LocalizedParagraph,
     val authorityRelationship: LocalizedParagraph,
@@ -222,7 +222,10 @@ data class SunDeepAnalysis(
     val leadershipStyle: LocalizedParagraph,
     val vitalityLevel: LocalizedParagraph,
     val overallSunInterpretation: LocalizedParagraph
-)
+) {
+    val sunSign: ZodiacSign get() = sign
+    val sunStrength: StrengthLevel get() = sunStrengthLevel
+}
 
 /**
  * Atmakaraka (soul significator) analysis
@@ -471,27 +474,27 @@ data class ProfessionMatch(
 /**
  * Profession categories
  */
-enum class ProfessionCategory {
-    GOVERNMENT_ADMINISTRATION,
-    MILITARY_POLICE,
-    MEDICINE_HEALTHCARE,
-    LAW_JUDICIARY,
-    EDUCATION_TEACHING,
-    FINANCE_BANKING,
-    TECHNOLOGY_IT,
-    ARTS_ENTERTAINMENT,
-    MEDIA_JOURNALISM,
-    BUSINESS_COMMERCE,
-    ENGINEERING_TECHNICAL,
-    SCIENCE_RESEARCH,
-    HOSPITALITY_SERVICE,
-    REAL_ESTATE_CONSTRUCTION,
-    AGRICULTURE_FARMING,
-    SPIRITUALITY_RELIGIOUS,
-    SPORTS_FITNESS,
-    TRANSPORTATION_LOGISTICS,
-    FOREIGN_SERVICES,
-    FREELANCE_CONSULTING
+enum class ProfessionCategory(val displayName: String) {
+    GOVERNMENT_ADMINISTRATION("Government & Administration"),
+    MILITARY_POLICE("Military & Police"),
+    MEDICINE_HEALTHCARE("Medicine & Healthcare"),
+    LAW_JUDICIARY("Law & Judiciary"),
+    EDUCATION_TEACHING("Education & Teaching"),
+    FINANCE_BANKING("Finance & Banking"),
+    TECHNOLOGY_IT("Technology & IT"),
+    ARTS_ENTERTAINMENT("Arts & Entertainment"),
+    MEDIA_JOURNALISM("Media & Journalism"),
+    BUSINESS_COMMERCE("Business & Commerce"),
+    ENGINEERING_TECHNICAL("Engineering & Technical"),
+    SCIENCE_RESEARCH("Science & Research"),
+    HOSPITALITY_SERVICE("Hospitality & Service"),
+    REAL_ESTATE_CONSTRUCTION("Real Estate & Construction"),
+    AGRICULTURE_FARMING("Agriculture & Farming"),
+    SPIRITUALITY_RELIGIOUS("Spirituality & Religious"),
+    SPORTS_FITNESS("Sports & Fitness"),
+    TRANSPORTATION_LOGISTICS("Transportation & Logistics"),
+    FOREIGN_SERVICES("Foreign Services"),
+    FREELANCE_CONSULTING("Freelance & Consulting")
 }
 
 /**
