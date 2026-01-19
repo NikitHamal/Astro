@@ -345,7 +345,7 @@ private fun calculateNakshatraDetails(nakshatra: Nakshatra, pada: Int, longitude
         animal = getNakshatraAnimal(nakshatra, language),
         element = getNakshatraElement(nakshatra),
         caste = getNakshatraCaste(nakshatra),
-        direction = getNakshatraDirection(nakshatra),
+        direction = getNakshatraDirection(nakshatra, language),
         bodyPart = getNakshatraBodyPart(nakshatra, language),
         gender = getNakshatraGender(nakshatra),
         dosha = getNakshatraDosha(nakshatra),

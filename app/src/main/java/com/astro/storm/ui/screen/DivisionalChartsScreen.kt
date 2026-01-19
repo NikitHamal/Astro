@@ -258,7 +258,7 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
                     
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(stringResource(StringKeyAnalysis.CHART_ASCENDANT), fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text(stringResource(StringKeyAnalysis.CHART_ASCENDANT_LAGNA), fontSize = 11.sp, color = AppTheme.TextMuted)
                             Text(analysis.ascendantSign.getLocalizedName(language), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {

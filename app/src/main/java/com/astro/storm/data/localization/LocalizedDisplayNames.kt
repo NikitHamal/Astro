@@ -18,6 +18,12 @@ import com.astro.storm.ephemeris.panchanga.KaranaType
 import com.astro.storm.ephemeris.panchanga.Vara
 import com.astro.storm.ephemeris.panchanga.Paksha
 import com.astro.storm.ephemeris.StrengthRating
+import com.astro.storm.ephemeris.KakshaTransitCalculator
+import com.astro.storm.ephemeris.UpachayaLevel
+import com.astro.storm.ephemeris.TransitQuality as UpachayaTransitQuality
+import com.astro.storm.ephemeris.TransitReference
+import com.astro.storm.ephemeris.HouseStrength
+import com.astro.storm.core.common.StringKeyAdvanced
 import com.astro.storm.ephemeris.RetrogradeCombustionCalculator
 import com.astro.storm.ephemeris.yoga.YogaCategory
 import com.astro.storm.ephemeris.yoga.YogaStrength
@@ -623,3 +629,64 @@ fun com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.getLocalizedRecommend
         com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.SPIRITUALITY -> StringResources.get(StringKey.AREA_REC_SPIRITUALITY, language)
     }
 }
+
+/**
+ * Get localized name for Kaksha Transit quality
+ */
+fun KakshaTransitCalculator.KakshaQuality.getLocalizedName(language: Language): String {
+    return when (this) {
+        KakshaTransitCalculator.KakshaQuality.EXCELLENT -> StringResources.get(StringKeyAdvanced.KAKSHYA_QUALITY_EXCELLENT, language)
+        KakshaTransitCalculator.KakshaQuality.GOOD -> StringResources.get(StringKeyAdvanced.KAKSHYA_QUALITY_GOOD, language)
+        KakshaTransitCalculator.KakshaQuality.MODERATE -> StringResources.get(StringKeyAdvanced.KAKSHYA_QUALITY_MODERATE, language)
+        KakshaTransitCalculator.KakshaQuality.POOR -> StringResources.get(StringKeyAdvanced.KAKSHYA_QUALITY_POOR, language)
+    }
+}
+
+/**
+ * Get localized name for Upachaya Transit level
+ */
+fun UpachayaLevel.getLocalizedName(language: Language): String {
+    return when (this) {
+        UpachayaLevel.EXCEPTIONAL -> StringResources.get(StringKeyDosha.STRENGTH_EXCEPTIONAL, language)
+        UpachayaLevel.HIGH -> StringResources.get(StringKeyDosha.STRENGTH_HIGH, language)
+        UpachayaLevel.MODERATE -> StringResources.get(StringKeyDosha.STRENGTH_MODERATE, language)
+        UpachayaLevel.LOW -> StringResources.get(StringKeyDosha.STRENGTH_LOW, language)
+    }
+}
+
+/**
+ * Get localized name for Upachaya Transit quality
+ */
+fun UpachayaTransitQuality.getLocalizedName(language: Language): String {
+    return when (this) {
+        UpachayaTransitQuality.EXCELLENT -> StringResources.get(StringKeyDosha.QUALITY_EXCELLENT, language)
+        UpachayaTransitQuality.GOOD -> StringResources.get(StringKeyDosha.QUALITY_GOOD, language)
+        UpachayaTransitQuality.FAVORABLE -> StringResources.get(StringKeyDosha.QUALITY_FAVORABLE, language)
+        UpachayaTransitQuality.NEUTRAL -> StringResources.get(StringKeyDosha.QUALITY_NEUTRAL, language)
+    }
+}
+
+/**
+ * Get localized name for Transit Reference
+ */
+fun TransitReference.getLocalizedName(language: Language): String {
+    return when (this) {
+        TransitReference.MOON -> StringResources.get(StringKeyDosha.MOON_LABEL, language)
+        TransitReference.LAGNA -> StringResources.get(StringKeyDosha.LAGNA_LABEL, language)
+    }
+}
+
+/**
+ * Get localized name for House Strength
+ */
+fun HouseStrength.getLocalizedName(language: Language): String {
+    return when (this) {
+        HouseStrength.VERY_STRONG -> StringResources.get(StringKeyDosha.STRENGTH_VERY_STRONG, language)
+        HouseStrength.STRONG -> StringResources.get(StringKeyDosha.STRENGTH_STRONG, language)
+        HouseStrength.MODERATE -> StringResources.get(StringKeyDosha.STRENGTH_MODERATE, language)
+        HouseStrength.MILD -> StringResources.get(StringKeyDosha.STRENGTH_MILD, language)
+        HouseStrength.INACTIVE -> StringResources.get(StringKeyDosha.STRENGTH_INACTIVE, language)
+    }
+}
+
+

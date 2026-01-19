@@ -1163,9 +1163,15 @@ fun AstroStormNavigation(
                 }
             }
 
+            // Use theme-aware chart renderer
+            val isDarkTheme = AppTheme.current.isDark
+            val themeAwareChartRenderer = remember(isDarkTheme) {
+                viewModel.getChartRenderer(isDarkTheme)
+            }
+
             DivisionalChartsScreen(
                 chart = currentChart,
-                chartRenderer = chartRenderer,
+                chartRenderer = themeAwareChartRenderer,
                 onBack = { navController.popBackStack() }
             )
         }

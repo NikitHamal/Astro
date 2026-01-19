@@ -1586,18 +1586,18 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
 
 private fun getHouseName(house: Int, language: Language): String {
     val key = when (house) {
-        1 -> StringKeyAnalysis.HOUSE_1
-        2 -> StringKeyAnalysis.HOUSE_2
-        3 -> StringKeyAnalysis.HOUSE_3
-        4 -> StringKeyAnalysis.HOUSE_4
-        5 -> StringKeyAnalysis.HOUSE_5
-        6 -> StringKeyAnalysis.HOUSE_6
-        7 -> StringKeyAnalysis.HOUSE_7
-        8 -> StringKeyAnalysis.HOUSE_8
-        9 -> StringKeyAnalysis.HOUSE_9
-        10 -> StringKeyAnalysis.HOUSE_10
-        11 -> StringKeyAnalysis.HOUSE_11
-        12 -> StringKeyAnalysis.HOUSE_12
+        1 -> StringKeyAnalysis.HOUSE_1_NAME
+        2 -> StringKeyAnalysis.HOUSE_2_NAME
+        3 -> StringKeyAnalysis.HOUSE_3_NAME
+        4 -> StringKeyAnalysis.HOUSE_4_NAME
+        5 -> StringKeyAnalysis.HOUSE_5_NAME
+        6 -> StringKeyAnalysis.HOUSE_6_NAME
+        7 -> StringKeyAnalysis.HOUSE_7_NAME
+        8 -> StringKeyAnalysis.HOUSE_8_NAME
+        9 -> StringKeyAnalysis.HOUSE_9_NAME
+        10 -> StringKeyAnalysis.HOUSE_10_NAME
+        11 -> StringKeyAnalysis.HOUSE_11_NAME
+        12 -> StringKeyAnalysis.HOUSE_12_NAME
         else -> null
     }
     return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: ""

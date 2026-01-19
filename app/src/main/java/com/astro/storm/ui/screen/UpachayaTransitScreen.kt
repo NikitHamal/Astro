@@ -332,7 +332,7 @@ private fun OverviewTab(analysis: UpachayaTransitAnalysis, language: Language) {
     ) {
         // Overall Assessment Card
         item {
-            OverallAssessmentCard(analysis)
+            OverallAssessmentCard(analysis, language)
         }
 
         // Reference Points
@@ -378,7 +378,8 @@ private fun OverviewTab(analysis: UpachayaTransitAnalysis, language: Language) {
 }
 
 @Composable
-private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis) {
+@Composable
+private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: Language) {
     val assessment = analysis.overallAssessment
 
     val (backgroundColor, iconColor, icon) = when (assessment.level) {
