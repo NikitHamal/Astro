@@ -1,40 +1,37 @@
 # AstroStorm Overhaul - Continuity Ledger
-> Last updated: 2026-01-15T12:00:00+05:45
+> Last updated: 2026-01-19T19:20:00+05:45
 
 ## Goal (incl. success criteria)
-Implement advanced Vedic astrology features and refactor codebase for production-grade quality.
-1. Modularize core logic into :core:common and :core:model ✅
-2. Refactor all 1000+ line monoliths into maintainable packages ✅
-3. Improve Shadbala precision (D60, BPHS values) ✅
-4. Implement persistent calculation settings (Node, Ayanamsa) ✅
-5. Enhance PDF export quality with vector rendering ✅
+Deliver a production-grade, deeply integrated Native Analysis and Predictions system:
+- Deep, deterministic Vedic analysis across all calculators/features
+- Long, highly descriptive outputs assembled from localization resources (no hardcoded text)
+- Modular, performant implementation (500–800 LOC per file max)
+- No AI usage in analysis/predictions flows
 
 ## Constraints/Assumptions
-- Follow existing patterns
-- Zero hardcoded text where possible
+- Follow existing patterns and MVVM/Compose architecture
+- Zero hardcoded text; use StringKey + StringResources
+- No builds/tests; verify mentally
 - Vedic accuracy per classical texts
+- Modularization and performance focus
 
 ## State
 
 - Done:
-  - Created :core:common and :core:model modules ✅
-  - Moved all core models and localization keys to core modules ✅
-  - Refactored Prashna, Remedies, Varshaphala, Muhurta, Varga, NativeAnalysis, and Shoola calculators ✅
-  - Updated Shadbala to Tradition B (D60) with precise BPHS values ✅
-  - Implemented persistent Ayanamsa and Node settings in AstrologySettingsManager ✅
-  - Updated SwissEphemerisEngine to use dynamic settings ✅
-  - Enhanced ChartExporter to use vector-based rendering for charts ✅
-  - Established unit test foundation for Panchanga logic ✅
+  - Existing refactors and core module work from prior ledger ✅
+  - Added prediction engine + models with deterministic scoring and narrative templates ✅
+  - Expanded Native Analysis calculator with deeper logic and localized narratives ✅
+  - Introduced StringKeyPredictionNarrative/StringKeyNativeNarrative with new templates ✅
 
 - Now:
-  - All critical findings from FINDINGS.md have been addressed.
+  - Cleaning remaining localization gaps in NativeAnalysis/Predictions UI and keys.
 
 - Next:
-  - Further localization of remaining hardcoded strings in minor components.
-  - Expansion of unit tests to cover all 16 divisional charts.
-  - Implementation of Transit Alert background service (from AI.md).
+  - Finish UI wiring for new prediction/remedy models and remove any remaining hardcoded text.
+  - Verify new StringKey entries are used consistently.
 
 ## Working Set (files/ids/commands)
-- **New Modules**: `:core:common`, `:core:model`
-- **Refactored Packages**: `ephemeris/prashna`, `ephemeris/remedy`, `ephemeris/varshaphala`, `ephemeris/muhurta`, `ephemeris/varga`, `ephemeris/nativeanalysis`, `ephemeris/shoola`
-- **Core Engine**: `ephemeris/SwissEphemerisEngine.kt`, `data/preferences/AstrologySettingsManager.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/nativeanalysis/NativeAnalysisCalculator.kt`
+- `app/src/main/java/com/astro/storm/ui/screen/PredictionsScreen.kt`
+- `app/src/main/java/com/astro/storm/ui/viewmodel/NativeAnalysisViewModel.kt`
+- `core/common/src/main/java/com/astro/storm/core/common/StringKeyPrediction.kt`

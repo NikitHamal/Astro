@@ -1,6 +1,8 @@
 package com.astro.storm.ephemeris.nativeanalysis
 
+import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyNative
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.ZodiacSign
@@ -117,51 +119,65 @@ data class TraitInfo(
     val planet: Planet?
 )
 
-enum class StrengthLevel(val value: Int, val displayName: String, val displayNameNe: String) {
-    EXCELLENT(5, "Excellent", "उत्कृष्ट"),
-    STRONG(4, "Strong", "बलियो"),
-    MODERATE(3, "Moderate", "मध्यम"),
-    WEAK(2, "Weak", "कमजोर"),
-    AFFLICTED(1, "Afflicted", "पीडित")
+enum class StrengthLevel(val value: Int, val stringKey: StringKeyNative) {
+    EXCELLENT(5, StringKeyNative.STRENGTH_EXCELLENT),
+    STRONG(4, StringKeyNative.STRENGTH_STRONG),
+    MODERATE(3, StringKeyNative.STRENGTH_MODERATE),
+    WEAK(2, StringKeyNative.STRENGTH_WEAK),
+    AFFLICTED(1, StringKeyNative.STRENGTH_AFFLICTED);
+
+    fun getLocalizedName(language: Language): String = StringResources.get(stringKey, language)
 }
 
-enum class Element(val displayName: String, val displayNameNe: String) {
-    FIRE("Fire", "अग्नि"),
-    EARTH("Earth", "पृथ्वी"),
-    AIR("Air", "वायु"),
-    WATER("Water", "जल")
+enum class Element(val stringKey: StringKeyNative) {
+    FIRE(StringKeyNative.ELEMENT_FIRE),
+    EARTH(StringKeyNative.ELEMENT_EARTH),
+    AIR(StringKeyNative.ELEMENT_AIR),
+    WATER(StringKeyNative.ELEMENT_WATER);
+
+    fun getLocalizedName(language: Language): String = StringResources.get(stringKey, language)
 }
 
-enum class Modality(val displayName: String, val displayNameNe: String) {
-    CARDINAL("Cardinal (Chara)", "चर"),
-    FIXED("Fixed (Sthira)", "स्थिर"),
-    MUTABLE("Mutable (Dwiswabhava)", "द्विस्वभाव")
+enum class Modality(val stringKey: StringKeyNative) {
+    CARDINAL(StringKeyNative.MODALITY_CARDINAL),
+    FIXED(StringKeyNative.MODALITY_FIXED),
+    MUTABLE(StringKeyNative.MODALITY_MUTABLE);
+
+    fun getLocalizedName(language: Language): String = StringResources.get(stringKey, language)
 }
 
-enum class MarriageTiming(val displayName: String, val displayNameNe: String) {
-    EARLY("Early (before 27)", "प्रारम्भिक (२७ अघि)"),
-    NORMAL("Normal (27-32)", "सामान्य (२७-३२)"),
-    DELAYED("Delayed (after 32)", "ढिलो (३२ पछि)")
+enum class MarriageTiming(val stringKey: StringKeyNative) {
+    EARLY(StringKeyNative.MARRIAGE_TIMING_LABEL_EARLY),
+    NORMAL(StringKeyNative.MARRIAGE_TIMING_LABEL_NORMAL),
+    DELAYED(StringKeyNative.MARRIAGE_TIMING_LABEL_DELAYED);
+
+    fun getLocalizedName(language: Language): String = StringResources.get(stringKey, language)
 }
 
-enum class ConstitutionType(val displayName: String, val displayNameNe: String) {
-    STRONG("Strong", "बलियो"),
-    MODERATE("Moderate", "मध्यम"),
-    SENSITIVE("Sensitive", "संवेदनशील")
+enum class ConstitutionType(val stringKey: StringKeyNative) {
+    STRONG(StringKeyNative.CONSTITUTION_LABEL_STRONG),
+    MODERATE(StringKeyNative.CONSTITUTION_LABEL_MODERATE),
+    SENSITIVE(StringKeyNative.CONSTITUTION_LABEL_SENSITIVE);
+
+    fun getLocalizedName(language: Language): String = StringResources.get(stringKey, language)
 }
 
-enum class LongevityIndicator(val displayName: String, val displayNameNe: String) {
-    LONG("Long Life", "दीर्घ आयु"),
-    MEDIUM("Medium Life", "मध्यम आयु"),
-    REQUIRES_CARE("Requires Care", "हेरचाह आवश्यक")
+enum class LongevityIndicator(val stringKey: StringKeyNative) {
+    LONG(StringKeyNative.LONGEVITY_LABEL_LONG),
+    MEDIUM(StringKeyNative.LONGEVITY_LABEL_MEDIUM),
+    REQUIRES_CARE(StringKeyNative.LONGEVITY_LABEL_REQUIRES_CARE);
+
+    fun getLocalizedName(language: Language): String = StringResources.get(stringKey, language)
 }
 
-enum class PlanetaryDignity(val displayName: String, val displayNameNe: String) {
-    EXALTED("Exalted", "उच्च"),
-    MOOLATRIKONA("Moolatrikona", "मूलत्रिकोण"),
-    OWN_SIGN("Own Sign", "स्वगृह"),
-    FRIEND_SIGN("Friend's Sign", "मित्र राशि"),
-    NEUTRAL_SIGN("Neutral Sign", "सम राशि"),
-    ENEMY_SIGN("Enemy's Sign", "शत्रु राशि"),
-    DEBILITATED("Debilitated", "नीच")
+enum class PlanetaryDignity(val stringKey: StringKeyNative) {
+    EXALTED(StringKeyNative.DIGNITY_EXALTED),
+    MOOLATRIKONA(StringKeyNative.DIGNITY_MOOLATRIKONA),
+    OWN_SIGN(StringKeyNative.DIGNITY_OWN_SIGN),
+    FRIEND_SIGN(StringKeyNative.DIGNITY_FRIEND_SIGN),
+    NEUTRAL_SIGN(StringKeyNative.DIGNITY_NEUTRAL_SIGN),
+    ENEMY_SIGN(StringKeyNative.DIGNITY_ENEMY_SIGN),
+    DEBILITATED(StringKeyNative.DIGNITY_DEBILITATED);
+
+    fun getLocalizedName(language: Language): String = StringResources.get(stringKey, language)
 }

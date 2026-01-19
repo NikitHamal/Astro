@@ -29,6 +29,15 @@ enum class StringKeyNative(override val en: String, override val ne: String) : S
     LABEL_PLANETARY_INFLUENCE("Planetary Influence", "ग्रह प्रभाव"),
     LABEL_HOUSE_ANALYSIS("House Analysis", "भाव विश्लेषण"),
     LABEL_PREDICTIONS("Predictions", "भविष्यवाणी"),
+    LABEL_SUMMARY("Summary", "सारांश"),
+    LABEL_ELEMENT("Element", "तत्व"),
+    LABEL_MODALITY("Modality", "मोडालिटी"),
+    LABEL_CONSTITUTION("Constitution", "शरीर प्रकृति"),
+    LABEL_LORD("Lord", "स्वामी"),
+    LABEL_DIGNITY("Dignity", "गरिमा"),
+    LABEL_HOUSE_LORD("House Lord", "भावका स्वामी"),
+    LABEL_HOUSE_LORD_NUMBERED("%dth House Lord", "%dऔं भावका स्वामी"),
+    LABEL_HOUSE_NUMBER("%dth", "%dऔं"),
 
     // Native Analysis UI Specific Titles
     TITLE_ASCENDANT_TRAITS("Ascendant Traits", "लग्नका विशेषताहरू"),
@@ -63,12 +72,42 @@ enum class StringKeyNative(override val en: String, override val ne: String) : S
     LABEL_NO_CHART_SELECTED("No Chart Selected", "कुनै कुण्डली छानिएको छैन"),
     LABEL_SELECT_CHART_DESC("Please select a birth chart to view native analysis", "जातक विश्लेषण हेर्न कृपया जन्म कुण्डली छान्नुहोस्"),
     LABEL_COMPREHENSIVE_DESC("This comprehensive analysis examines your birth chart to provide insights into various life areas including personality, career, relationships, health, wealth, education, and spiritual path.", "यो व्यापक विश्लेषणले व्यक्तित्व, क्यारियर, सम्बन्ध, स्वास्थ्य, धन, शिक्षा, र आध्यात्मिक मार्ग सहित विभिन्न जीवन क्षेत्रहरूमा अन्तर्दृष्टि प्रदान गर्न तपाईंको जन्म कुण्डलीको परीक्षण गर्दछ।"),
+    LABEL_UNKNOWN("Unknown", "अज्ञात"),
 
     STRENGTH_EXCELLENT("Excellent", "उत्कृष्ट"),
     STRENGTH_STRONG("Strong", "बलियो"),
     STRENGTH_MODERATE("Moderate", "मध्यम"),
     STRENGTH_WEAK("Weak", "कमजोर"),
     STRENGTH_AFFLICTED("Afflicted", "पीडित"),
+
+    ELEMENT_FIRE("Fire", "अग्नि"),
+    ELEMENT_EARTH("Earth", "पृथ्वी"),
+    ELEMENT_AIR("Air", "वायु"),
+    ELEMENT_WATER("Water", "जल"),
+
+    MODALITY_CARDINAL("Cardinal (Chara)", "चर"),
+    MODALITY_FIXED("Fixed (Sthira)", "स्थिर"),
+    MODALITY_MUTABLE("Mutable (Dwiswabhava)", "द्विस्वभाव"),
+
+    MARRIAGE_TIMING_LABEL_EARLY("Early", "प्रारम्भिक"),
+    MARRIAGE_TIMING_LABEL_NORMAL("Normal", "सामान्य"),
+    MARRIAGE_TIMING_LABEL_DELAYED("Delayed", "ढिलो"),
+
+    CONSTITUTION_LABEL_STRONG("Strong", "बलियो"),
+    CONSTITUTION_LABEL_MODERATE("Moderate", "मध्यम"),
+    CONSTITUTION_LABEL_SENSITIVE("Sensitive", "संवेदनशील"),
+
+    LONGEVITY_LABEL_LONG("Long Life", "दीर्घ आयु"),
+    LONGEVITY_LABEL_MEDIUM("Medium Life", "मध्यम आयु"),
+    LONGEVITY_LABEL_REQUIRES_CARE("Requires Care", "हेरचाह आवश्यक"),
+
+    DIGNITY_EXALTED("Exalted", "उच्च"),
+    DIGNITY_MOOLATRIKONA("Moolatrikona", "मूलत्रिकोण"),
+    DIGNITY_OWN_SIGN("Own Sign", "स्वगृह"),
+    DIGNITY_FRIEND_SIGN("Friend's Sign", "मित्र राशि"),
+    DIGNITY_NEUTRAL_SIGN("Neutral Sign", "सम राशि"),
+    DIGNITY_ENEMY_SIGN("Enemy's Sign", "शत्रु राशि"),
+    DIGNITY_DEBILITATED("Debilitated", "नीच"),
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: CHARACTER & PERSONALITY TRAITS
@@ -138,6 +177,16 @@ enum class StringKeyNative(override val en: String, override val ne: String) : S
 
     CAREER_OVERVIEW_TEMPLATE("Based on your 10th house lord %s in %s, and the position of Sun and Saturn, your career path shows strong potential in %s.",
         "तपाईंको १०औं भावको स्वामी %s %s मा, र सूर्य र शनिको स्थितिको आधारमा, तपाईंको पेशागत मार्गले %s मा बलियो क्षमता देखाउँछ।"),
+    CAREER_10TH_LORD_FOCUS("The 10th lord holds steady influence, showing a focused professional trajectory.",
+        "१०औं स्वामीको स्थिर प्रभावले स्पष्ट पेशागत दिशालाई देखाउँछ।"),
+    CAREER_FIELD_GENERAL("General leadership and responsibility roles", "सामान्य नेतृत्व र जिम्मेवारी भूमिकाहरू"),
+    CAREER_FIELD_LEADERSHIP("Leadership and governance", "नेतृत्व र शासन"),
+    CAREER_FIELD_COMMUNICATION("Communication, trade, and networking", "सञ्चार, व्यापार, र नेटवर्किङ"),
+    CAREER_FIELD_ADVISORY("Advisory, teaching, and guidance", "परामर्श, शिक्षण, र मार्गदर्शन"),
+    CAREER_FIELD_CREATIVE("Creative arts, design, and aesthetics", "रचनात्मक कला, डिजाइन, र सौन्दर्य"),
+    CAREER_FIELD_ENGINEERING("Engineering, construction, and structured systems", "इन्जिनियरिङ, निर्माण, र संरचित प्रणालीहरू"),
+    CAREER_FIELD_ACTION("Action-oriented roles and competitive fields", "कार्य-केन्द्रित भूमिका र प्रतिस्पर्धी क्षेत्रहरू"),
+    CAREER_FIELD_PUBLIC("Public-facing and community work", "सार्वजनिक र समुदायिक कार्य"),
 
     CAREER_SUN_STRONG("Strong Sun indicates success in government, administration, politics, or leadership positions. You naturally command respect.",
         "बलियो सूर्यले सरकार, प्रशासन, राजनीति, वा नेतृत्व पदहरूमा सफलता संकेत गर्छ। तपाईंले स्वाभाविक रूपमा सम्मान आदेश गर्नुहुन्छ।"),
@@ -256,6 +305,10 @@ enum class StringKeyNative(override val en: String, override val ne: String) : S
 
     WEALTH_SOURCE_TEMPLATE("Primary wealth sources indicated: %s. Secondary sources: %s.",
         "संकेतित प्राथमिक धन स्रोतहरू: %s। माध्यमिक स्रोतहरू: %s।"),
+    WEALTH_SOURCE_BUSINESS("Business and commerce", "व्यापार र वाणिज्य"),
+    WEALTH_SOURCE_ADVISORY("Advisory and knowledge-driven income", "परामर्श र ज्ञान-आधारित आय"),
+    WEALTH_SOURCE_LUXURY("Luxury, design, and lifestyle fields", "विलासिता, डिजाइन, र जीवनशैली क्षेत्रहरू"),
+    WEALTH_SOURCE_MULTIPLE("Multiple income streams", "बहु आय स्रोतहरू"),
 
     WEALTH_CAUTION_RAHU("Rahu's influence suggests caution with speculative investments and get-rich-quick schemes.",
         "राहुको प्रभावले सट्टेबाजी लगानी र छिटो धनी बन्ने योजनाहरूमा सावधानी सुझाव गर्छ।"),
@@ -278,6 +331,11 @@ enum class StringKeyNative(override val en: String, override val ne: String) : S
 
     EDUCATION_FIELDS_TEMPLATE("Favorable fields of study: %s. These align with your natural intellectual strengths.",
         "अनुकूल अध्ययन क्षेत्रहरू: %s। यी तपाईंको प्राकृतिक बौद्धिक शक्तिहरूसँग मिल्दछन्।"),
+    EDU_SUBJECT_COMMERCE("Commerce and finance", "वाणिज्य र वित्त"),
+    EDU_SUBJECT_PHILOSOPHY("Philosophy and higher wisdom", "दर्शन र उच्च ज्ञान"),
+    EDU_SUBJECT_TECHNICAL("Technical and applied sciences", "प्राविधिक र अनुप्रयुक्त विज्ञान"),
+    EDU_SUBJECT_ARTS("Arts and aesthetics", "कला र सौन्दर्य"),
+    EDU_SUBJECT_GENERAL("General multidisciplinary studies", "सामान्य बहुविषय अध्ययन"),
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: SPIRITUAL PATH
@@ -297,6 +355,10 @@ enum class StringKeyNative(override val en: String, override val ne: String) : S
 
     SPIRITUAL_PATH_TEMPLATE("Your spiritual path aligns with %s. Practices like %s would be particularly beneficial.",
         "तपाईंको आध्यात्मिक मार्ग %s सँग मिल्दछ। %s जस्ता अभ्यासहरू विशेष रूपमा लाभदायक हुनेछन्।"),
+    SPIRITUAL_PRACTICE_MEDITATION("Meditation and breath disciplines", "ध्यान र श्वास अभ्यास"),
+    SPIRITUAL_PRACTICE_STUDY("Scriptural study and reflection", "शास्त्र अध्ययन र मनन"),
+    SPIRITUAL_PRACTICE_DEVOTION("Devotional prayer and mantra", "भक्ति प्रार्थना र मन्त्र"),
+    SPIRITUAL_PRACTICE_REFLECTION("Quiet contemplation and self-inquiry", "शान्त चिन्तन र आत्म-अन्वेषण"),
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: GENERAL PREDICTIONS & TEMPLATES
@@ -321,6 +383,7 @@ enum class StringKeyNative(override val en: String, override val ne: String) : S
     TRAIT_COMMUNICATION("Communication skills", "सञ्चार कौशल"),
     TRAIT_CREATIVITY("Creative expression", "रचनात्मक अभिव्यक्ति"),
     TRAIT_ANALYTICAL("Analytical thinking", "विश्लेषणात्मक सोच"),
+    TRAIT_WISDOM("Wisdom and guidance", "ज्ञान र मार्गदर्शन"),
     TRAIT_INTUITION("Strong intuition", "बलियो अन्तर्ज्ञान"),
     TRAIT_DETERMINATION("Determination", "दृढता"),
     TRAIT_COMPASSION("Compassion", "करुणा"),

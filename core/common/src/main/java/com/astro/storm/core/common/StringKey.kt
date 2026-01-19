@@ -201,6 +201,7 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     PREDICTIONS_SPIRITUAL_PATH("Spiritual Path", "आध्यात्मिक मार्ग"),
     PREDICTIONS_CURRENT_PERIOD("Current Period", "वर्तमान अवधि"),
     PREDICTIONS_ACTIVE_TRANSITS("Active Transits", "सक्रिय गोचर"),
+    PREDICTIONS_FOCUS_AREAS("Focus Areas", "केन्द्रित क्षेत्रहरू"),
     PREDICTIONS_ACTIVE_YOGAS("Active Yogas", "सक्रिय योगहरू"),
     PREDICTIONS_OPPORTUNITIES("Opportunities", "अवसरहरू"),
     PREDICTIONS_CURRENT_CHALLENGES("Current Challenges", "वर्तमान चुनौतीहरू"),

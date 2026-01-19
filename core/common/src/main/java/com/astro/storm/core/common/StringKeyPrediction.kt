@@ -217,6 +217,7 @@ enum class StringKeyPrediction(override val en: String, override val ne: String)
     // UI Labels
     PRED_LABEL_KEY_FACTORS("Key Factors", "मुख्य कारकहरू"),
     PRED_LABEL_ADVICE("Advice", "सल्लाह"),
+    PRED_LABEL_SUPPORTING_PLANETS("Supporting Planets", "समर्थन गर्ने ग्रहहरू"),
     PRED_REMEDY_FOR_PERIOD("For your current %s period:", "तपाईंको वर्तमान %s अवधिको लागि:"),
 
     // ============================================
