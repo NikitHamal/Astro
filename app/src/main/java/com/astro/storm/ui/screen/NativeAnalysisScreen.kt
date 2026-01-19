@@ -413,7 +413,11 @@ private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(Planet.JUPITER.stringKey),
+                    Text(
+                        text = stringResource(StringKeyNativeTraits.LABEL_ELEMENT),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AppTheme.TextMuted
+                    )
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
