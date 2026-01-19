@@ -46,6 +46,10 @@ object CareerTextGenerator {
             en = "Ketu in 10th house indicates spiritual career, detachment from fame, or research-based work.",
             ne = "दशौं भावमा केतुले आध्यात्मिक क्यारियर, प्रसिद्धिबाट विरक्ति, वा अनुसन्धान-आधारित कार्य संकेत गर्छ।"
         )
+        else -> LocalizedParagraph(
+            en = "${planet.displayName} in 10th house shapes your public role and career expression in a unique way.",
+            ne = "दशौं भावमा ${planet.displayName}ले तपाईंको सार्वजनिक भूमिका र क्यारियर अभिव्यक्तिलाई अद्वितीय तरिकाले आकार दिन्छ।"
+        )
     }
     
     fun getPublicImage(sign: ZodiacSign, strength: StrengthLevel): LocalizedParagraph {
@@ -321,6 +325,7 @@ object CareerTextGenerator {
         Planet.SATURN -> LocalizedParagraph(en = "Slow but steady progress, discipline, and long-term career building.", ne = "ढिलो तर स्थिर प्रगति, अनुशासन र दीर्घकालीन क्यारियर निर्माण।")
         Planet.RAHU -> LocalizedParagraph(en = "Unconventional opportunities, foreign connections, and rapid rises.", ne = "अपरम्परागत अवसरहरू, विदेशी सम्बन्धहरू र द्रुत वृद्धि।")
         Planet.KETU -> LocalizedParagraph(en = "Spiritual career direction, research, or detachment from material success.", ne = "आध्यात्मिक क्यारियर दिशा, अनुसन्धान, वा भौतिक सफलताबाट विरक्ति।")
+        else -> LocalizedParagraph(en = "Focus on aligning your career with ${planet.displayName}'s energy during this period.", ne = "यस अवधिमा ${planet.displayName}को ऊर्जासँग आफ्नो क्यारियर मिलाउनुहोस्।")
     }
     
     fun getDashaOpportunities(planet: Planet): List<LocalizedTrait> = when (planet) {

@@ -150,7 +150,7 @@ object DeepAnalysisEngine {
      */
     private fun generateChartId(chart: VedicChart): String {
         val birthData = chart.birthData
-        return "${birthData.date}_${birthData.time}_${birthData.latitude}_${birthData.longitude}"
+        return "${birthData.dateTime}_${birthData.latitude}_${birthData.longitude}"
     }
     
     /**

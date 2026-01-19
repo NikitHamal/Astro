@@ -242,7 +242,7 @@ object CareerDeepAnalyzer {
                     en = "${yoga.name} enhances your professional success and brings recognition.",
                     ne = "${yoga.name}ले तपाईंको व्यावसायिक सफलता बढाउँछ र मान्यता ल्याउँछ।"
                 ),
-                involvedPlanets = yoga.involvedPlanets
+                involvedPlanets = yoga.planets
             ))
         }
         
@@ -496,7 +496,7 @@ object CareerDeepAnalyzer {
     }
     
     private fun com.astro.storm.ephemeris.yoga.YogaStrength.toStrengthLevel(): StrengthLevel = when (this) {
-        com.astro.storm.ephemeris.yoga.YogaStrength.VERY_STRONG -> StrengthLevel.EXCELLENT
+        com.astro.storm.ephemeris.yoga.YogaStrength.EXTREMELY_STRONG -> StrengthLevel.EXCELLENT
         com.astro.storm.ephemeris.yoga.YogaStrength.STRONG -> StrengthLevel.STRONG
         com.astro.storm.ephemeris.yoga.YogaStrength.MODERATE -> StrengthLevel.MODERATE
         com.astro.storm.ephemeris.yoga.YogaStrength.WEAK -> StrengthLevel.WEAK
