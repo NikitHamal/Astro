@@ -109,7 +109,7 @@ fun ChartTabContent(
     // efficient O(1) lookups.
     // Use produceState to offload the heavy calculation of 20+ charts to a background thread.
     // This prevents blocking the main thread during composition.
-    val divisionalChartsMap by produceState(initialValue = emptyMap(), key1 = chart) {
+    val divisionalChartsMap by produceState<Map<String, DivisionalChartData>>(initialValue = emptyMap(), key1 = chart) {
         val result = withContext(Dispatchers.Default) {
             DivisionalChartCalculator.calculateAllDivisionalCharts(chart)
                 .associateBy { it.chartType.shortName }

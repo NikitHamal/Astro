@@ -110,6 +110,14 @@ class StormyAgent @Inject constructor(
         fullMessages.add(ChatMessage(role = MessageRole.SYSTEM, content = systemPrompt))
         fullMessages.addAll(messages)
 
+        // Track emitted content/reasoning to prevent duplicate chunks in the flow
+        val totalEmittedContent = StringBuilder()
+        val totalEmittedReasoning = StringBuilder()
+        
+        // Track unique content across tool iterations to avoid repetition
+        val contentByIteration = mutableListOf<String>()
+        val allReasoning = StringBuilder()
+
         var iteration = 0
         var toolIterations = 0
         var continueProcessing = true
