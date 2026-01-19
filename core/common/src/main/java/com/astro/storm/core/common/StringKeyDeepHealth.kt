@@ -4,7 +4,7 @@ package com.astro.storm.core.common
  * Deep Analysis Localization Keys - Health & Longevity
  * 350+ localization keys for comprehensive health analysis
  */
-enum class StringKeyDeepHealth(val en: String, val ne: String) {
+enum class StringKeyDeepHealth(override val en: String, override val ne: String) : StringKeyInterface {
     // Section Headers
     SECTION_HEALTH("Health Analysis", "स्वास्थ्य विश्लेषण"),
     SECTION_CONSTITUTION("Constitution Analysis", "संविधान विश्लेषण"),
@@ -113,8 +113,4 @@ enum class StringKeyDeepHealth(val en: String, val ne: String) {
     
     // Advice
     HEALTH_ADVICE("Health Advice", "स्वास्थ्य सल्लाह"),
-    CURRENT_PERIOD_RECS("Current Period Recommendations", "वर्तमान अवधि सिफारिसहरू");
-    
-    fun get(): String = en
-    fun getNe(): String = ne
 }

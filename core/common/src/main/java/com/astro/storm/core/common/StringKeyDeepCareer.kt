@@ -4,7 +4,7 @@ package com.astro.storm.core.common
  * Deep Analysis Localization Keys - Career & Profession
  * 400+ localization keys for comprehensive career analysis
  */
-enum class StringKeyDeepCareer(val en: String, val ne: String) {
+enum class StringKeyDeepCareer(override val en: String, override val ne: String) : StringKeyInterface {
     // Section Headers
     SECTION_CAREER_ANALYSIS("Career Analysis", "क्यारियर विश्लेषण"),
     SECTION_10TH_HOUSE("10th House Analysis", "दशम भाव विश्लेषण"),
@@ -121,8 +121,4 @@ enum class StringKeyDeepCareer(val en: String, val ne: String) {
     
     // Advice
     CAREER_ADVICE("Career Advice", "क्यारियर सल्लाह"),
-    CURRENT_PERIOD_ADVICE("Current Period Advice", "वर्तमान अवधि सल्लाह");
-    
-    fun get(): String = en
-    fun getNe(): String = ne
 }

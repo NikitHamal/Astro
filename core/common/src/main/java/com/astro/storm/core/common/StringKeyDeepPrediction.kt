@@ -4,7 +4,7 @@ package com.astro.storm.core.common
  * Deep Analysis Localization Keys - Predictions
  * 600+ localization keys for comprehensive predictions
  */
-enum class StringKeyDeepPrediction(val en: String, val ne: String) {
+enum class StringKeyDeepPrediction(override val en: String, override val ne: String) : StringKeyInterface {
     // Section Headers
     SECTION_PREDICTIONS("Deep Predictions", "गहन भविष्यवाणीहरू"),
     SECTION_DASHA("Dasha Analysis", "दशा विश्लेषण"),
@@ -179,8 +179,4 @@ enum class StringKeyDeepPrediction(val en: String, val ne: String) {
     NEUTRAL("Neutral", "तटस्थ"),
     CHALLENGING("Challenging", "चुनौतीपूर्ण"),
     VERY_FAVORABLE("Very Favorable", "धेरै अनुकूल"),
-    VERY_CHALLENGING("Very Challenging", "धेरै चुनौतीपूर्ण");
-    
-    fun get(): String = en
-    fun getNe(): String = ne
 }

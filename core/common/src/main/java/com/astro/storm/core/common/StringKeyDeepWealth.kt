@@ -4,7 +4,7 @@ package com.astro.storm.core.common
  * Deep Analysis Localization Keys - Wealth & Finance
  * 350+ localization keys for comprehensive wealth analysis
  */
-enum class StringKeyDeepWealth(val en: String, val ne: String) {
+enum class StringKeyDeepWealth(override val en: String, override val ne: String) : StringKeyInterface {
     // Section Headers
     SECTION_WEALTH("Wealth Analysis", "धन विश्लेषण"),
     SECTION_2ND_HOUSE("2nd House Analysis", "द्वितीय भाव विश्लेषण"),
@@ -88,17 +88,13 @@ enum class StringKeyDeepWealth(val en: String, val ne: String) {
     
     // Advice
     WEALTH_ADVICE("Wealth Advice", "धन सल्लाह"),
-    FINANCIAL_GUIDANCE("Financial Guidance", "आर्थिक मार्गदर्शन");
-    
-    fun get(): String = en
-    fun getNe(): String = ne
 }
 
 /**
  * Deep Analysis Localization Keys - Education & Knowledge
  * 250+ localization keys for education analysis
  */
-enum class StringKeyDeepEducation(val en: String, val ne: String) {
+enum class StringKeyDeepEducation(override val en: String, override val ne: String) : StringKeyInterface {
     // Section Headers
     SECTION_EDUCATION("Education Analysis", "शिक्षा विश्लेषण"),
     SECTION_4TH_HOUSE("4th House (Basic Education)", "चतुर्थ भाव (आधारभूत शिक्षा)"),
@@ -185,17 +181,13 @@ enum class StringKeyDeepEducation(val en: String, val ne: String) {
     
     // Summary
     EDU_SUMMARY("Education Summary", "शिक्षा सारांश"),
-    EDU_SCORE("Education Strength Score", "शिक्षा शक्ति स्कोर");
-    
-    fun get(): String = en
-    fun getNe(): String = ne
 }
 
 /**
  * Deep Analysis Localization Keys - Spiritual Path
  * 250+ localization keys for spiritual analysis
  */
-enum class StringKeyDeepSpiritual(val en: String, val ne: String) {
+enum class StringKeyDeepSpiritual(override val en: String, override val ne: String) : StringKeyInterface {
     // Section Headers
     SECTION_SPIRITUAL("Spiritual Path Analysis", "आध्यात्मिक मार्ग विश्लेषण"),
     SECTION_9TH_DHARMA("9th House (Dharma)", "नवम भाव (धर्म)"),
@@ -269,8 +261,4 @@ enum class StringKeyDeepSpiritual(val en: String, val ne: String) {
     
     // Summary
     SPIRITUAL_SUMMARY("Spiritual Path Summary", "आध्यात्मिक मार्ग सारांश"),
-    SPIRITUAL_SCORE("Spiritual Strength Score", "आध्यात्मिक शक्ति स्कोर");
-    
-    fun get(): String = en
-    fun getNe(): String = ne
 }

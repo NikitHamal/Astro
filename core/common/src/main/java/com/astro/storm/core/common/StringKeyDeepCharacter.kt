@@ -4,7 +4,7 @@ package com.astro.storm.core.common
  * Deep Analysis Localization Keys - Character & Personality
  * 500+ localization keys for comprehensive character analysis
  */
-enum class StringKeyDeepCharacter(val en: String, val ne: String) {
+enum class StringKeyDeepCharacter(override val en: String, override val ne: String) : StringKeyInterface {
     // Section Headers
     SECTION_CHARACTER_ANALYSIS("Character Analysis", "चरित्र विश्लेषण"),
     SECTION_PERSONALITY_PROFILE("Personality Profile", "व्यक्तित्व प्रोफाइल"),
@@ -176,8 +176,4 @@ enum class StringKeyDeepCharacter(val en: String, val ne: String) {
     STRENGTH_STRONG("Strong", "बलियो"),
     STRENGTH_MODERATE("Moderate", "मध्यम"),
     STRENGTH_WEAK("Weak", "कमजोर"),
-    STRENGTH_AFFLICTED("Afflicted", "पीडित");
-    
-    fun get(): String = en
-    fun getNe(): String = ne
 }

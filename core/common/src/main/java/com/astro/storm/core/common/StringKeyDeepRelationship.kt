@@ -4,7 +4,7 @@ package com.astro.storm.core.common
  * Deep Analysis Localization Keys - Relationship & Marriage
  * 400+ localization keys for comprehensive relationship analysis
  */
-enum class StringKeyDeepRelationship(val en: String, val ne: String) {
+enum class StringKeyDeepRelationship(override val en: String, override val ne: String) : StringKeyInterface {
     // Section Headers
     SECTION_RELATIONSHIP("Relationship Analysis", "सम्बन्ध विश्लेषण"),
     SECTION_MARRIAGE("Marriage Analysis", "विवाह विश्लेषण"),
@@ -117,8 +117,4 @@ enum class StringKeyDeepRelationship(val en: String, val ne: String) {
     
     // Advice
     REL_ADVICE("Relationship Advice", "सम्बन्ध सल्लाह"),
-    MARRIAGE_ADVICE("Marriage Advice", "विवाह सल्लाह");
-    
-    fun get(): String = en
-    fun getNe(): String = ne
 }
