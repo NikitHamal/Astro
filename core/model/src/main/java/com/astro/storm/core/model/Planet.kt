@@ -42,6 +42,12 @@ enum class Planet(
         return StringResources.get(stringKey, language)
     }
 
+    /**
+     * Check if the planet is a shadow planet (Rahu or Ketu)
+     */
+    val isShadowPlanet: Boolean
+        get() = this == RAHU || this == KETU || this == TRUE_NODE
+
     companion object {
         /**
          * Traditional 9 Vedic planets (grahas)

@@ -7,6 +7,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.*
 import com.astro.storm.ephemeris.yoga.*
+import com.astro.storm.core.common.Language
 
 /**
  * Analysis Context - Centralized calculator integration for deep analysis
@@ -42,17 +43,17 @@ class AnalysisContext private constructor(
     
     // Yoga Analysis Cache
     val yogaAnalysis: YogaAnalysis by lazy {
-        YogaCalculator.analyzeAllYogas(chart)
+        YogaCalculator.calculateYogas(chart)
     }
     
     // Raja Yoga Analysis
     val rajaYogas: List<Yoga> by lazy {
-        RajaYogaEvaluator.evaluate(chart)
+        RajaYogaEvaluator().evaluate(chart)
     }
     
     // Dhana Yoga Analysis
     val dhanaYogas: List<Yoga> by lazy {
-        DhanaYogaEvaluator.evaluate(chart)
+        DhanaYogaEvaluator().evaluate(chart)
     }
     
     // Dasha Timeline
@@ -75,13 +76,12 @@ class AnalysisContext private constructor(
     }
     
     // Divisional Charts Cache
-    private val divisionalChartsCache = mutableMapOf<Int, VedicChart>()
+    private val divisionalChartsCache = mutableMapOf<DivisionalChartType, DivisionalChartData>()
     
     // Avastha Analysis
     val avasthaAnalysis: Map<Planet, AvasthaCalculator.PlanetaryAvastha> by lazy {
-        chart.planetPositions
-            .filter { !it.planet.isShadowPlanet }
-            .associate { it.planet to AvasthaCalculator.calculateAvastha(it, chart) }
+        AvasthaCalculator.analyzeAvasthas(chart, Language.ENGLISH)
+            .planetaryAvasthas.associateBy { it.planet }
     }
     
     // Ascendant Information
@@ -197,7 +197,9 @@ class AnalysisContext private constructor(
      * Check if planet is combust
      */
     fun isCombust(planet: Planet): Boolean {
-        return getPlanetPosition(planet)?.isCombust == true
+        val sunPos = getPlanetPosition(Planet.SUN) ?: return false
+        val planetPos = getPlanetPosition(planet) ?: return false
+        return VedicAstrologyUtils.isCombust(planetPos, sunPos)
     }
     
     /**
@@ -220,14 +222,14 @@ class AnalysisContext private constructor(
      * Get Shadbala strength level for a planet
      */
     fun getPlanetStrengthLevel(planet: Planet): StrengthLevel {
-        val shadbala = shadbalaAnalysis.planetaryBala[planet]
+        val shadbala = shadbalaAnalysis.planetaryStrengths[planet]
             ?: return StrengthLevel.MODERATE
         
         return when {
-            shadbala.percentageStrength >= 120 -> StrengthLevel.EXCELLENT
-            shadbala.percentageStrength >= 100 -> StrengthLevel.STRONG
-            shadbala.percentageStrength >= 80 -> StrengthLevel.MODERATE
-            shadbala.percentageStrength >= 60 -> StrengthLevel.WEAK
+            shadbala.percentageOfRequired >= 120 -> StrengthLevel.EXCELLENT
+            shadbala.percentageOfRequired >= 100 -> StrengthLevel.STRONG
+            shadbala.percentageOfRequired >= 80 -> StrengthLevel.MODERATE
+            shadbala.percentageOfRequired >= 60 -> StrengthLevel.WEAK
             else -> StrengthLevel.AFFLICTED
         }
     }
@@ -260,25 +262,25 @@ class AnalysisContext private constructor(
     /**
      * Get Navamsha (D9) chart
      */
-    fun getNavamshaChart(): VedicChart {
-        return divisionalChartsCache.getOrPut(9) {
-            DivisionalChartCalculator.calculateDivisionalChart(chart, 9)
+    fun getNavamshaChart(): DivisionalChartData {
+        return divisionalChartsCache.getOrPut(DivisionalChartType.D9_NAVAMSA) {
+            DivisionalChartCalculator.calculateDivisionalChart(chart, DivisionalChartType.D9_NAVAMSA)
         }
     }
     
     /**
      * Get Dashamsha (D10) chart
      */
-    fun getDashamsha(): VedicChart {
-        return divisionalChartsCache.getOrPut(10) {
-            DivisionalChartCalculator.calculateDivisionalChart(chart, 10)
+    fun getDashamsha(): DivisionalChartData {
+        return divisionalChartsCache.getOrPut(DivisionalChartType.D10_DASAMSA) {
+            DivisionalChartCalculator.calculateDivisionalChart(chart, DivisionalChartType.D10_DASAMSA)
         }
     }
     
     /**
      * Get any divisional chart
      */
-    fun getDivisionalChart(division: Int): VedicChart {
+    fun getDivisionalChart(division: DivisionalChartType): DivisionalChartData {
         return divisionalChartsCache.getOrPut(division) {
             DivisionalChartCalculator.calculateDivisionalChart(chart, division)
         }
