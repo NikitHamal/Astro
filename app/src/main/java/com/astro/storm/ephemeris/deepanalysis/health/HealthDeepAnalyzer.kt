@@ -233,15 +233,15 @@ object HealthDeepAnalyzer {
     
     private fun generateHealthTimeline(context: AnalysisContext): List<HealthTimingPeriod> {
         return context.dashaTimeline.mahadashas.take(2).map { dasha ->
-            HealthTimingPeriod(
-                startDate = dasha.startDate.toLocalDate(),
-                endDate = dasha.endDate.toLocalDate(),
-                dasha = "${dasha.planet.displayName} Mahadasha",
-                healthFocus = LocalizedParagraph("${dasha.planet.displayName} period health focus.",
-                    "${dasha.planet.displayName} अवधि स्वास्थ्य फोकस।"),
-                concernAreas = emptyList(),
-                favorability = context.getPlanetStrengthLevel(dasha.planet)
-            )
+                HealthTimingPeriod(
+                    startDate = dasha.startDate.toLocalDate(),
+                    endDate = dasha.endDate.toLocalDate(),
+                    dasha = "${dasha.planet.displayName} Mahadasha",
+                    healthFocus = LocalizedParagraph("${dasha.planet.displayName} period health focus.",
+                        "${dasha.planet.displayName} अवधि स्वास्थ्य फोकस।"),
+                    vulnerabilities = emptyList(),
+                    favorability = context.getPlanetStrengthLevel(dasha.planet)
+                )
         }
     }
     
@@ -263,9 +263,9 @@ object HealthDeepAnalyzer {
         val eighthStrength = context.getHouseStrength(8)
         
         val category = when {
-            ascLordStrength >= StrengthLevel.STRONG && eighthStrength >= StrengthLevel.MODERATE -> LongevityCategory.LONG
-            ascLordStrength >= StrengthLevel.MODERATE -> LongevityCategory.MEDIUM
-            else -> LongevityCategory.MEDIUM
+            ascLordStrength >= StrengthLevel.STRONG && eighthStrength >= StrengthLevel.MODERATE -> LongevityCategory.POORNAYU
+            ascLordStrength >= StrengthLevel.MODERATE -> LongevityCategory.MADHYAYU
+            else -> LongevityCategory.MADHYAYU
         }
         
         return LongevityProfile(

@@ -121,15 +121,15 @@ object DeepPredictionEngine {
     
     private fun getActivatedYogas(mahadasha: Planet, antardasha: Planet, context: AnalysisContext): List<ActivatedYoga> {
         return context.yogaAnalysis.allYogas
-            .filter { it.involvedPlanets.contains(mahadasha) || it.involvedPlanets.contains(antardasha) }
+            .filter { it.planets.contains(mahadasha) || it.planets.contains(antardasha) }
             .map { yoga ->
                 ActivatedYoga(
                     yogaName = yoga.name,
                     strength = yoga.strength.toStrengthLevel(),
                     activationLevel = when {
-                        yoga.involvedPlanets.contains(mahadasha) && yoga.involvedPlanets.contains(antardasha) -> 
+                        yoga.planets.contains(mahadasha) && yoga.planets.contains(antardasha) -> 
                             StrengthLevel.EXCELLENT
-                        yoga.involvedPlanets.contains(mahadasha) -> StrengthLevel.STRONG
+                        yoga.planets.contains(mahadasha) -> StrengthLevel.STRONG
                         else -> StrengthLevel.MODERATE
                     },
                     expectedResults = LocalizedParagraph(
@@ -653,8 +653,8 @@ object DeepPredictionEngine {
     }
     
     private fun com.astro.storm.ephemeris.yoga.YogaStrength.toStrengthLevel(): StrengthLevel = when (this) {
-        com.astro.storm.ephemeris.yoga.YogaStrength.EXTREMELY_STRONG,
-        com.astro.storm.ephemeris.yoga.YogaStrength.VERY_STRONG -> StrengthLevel.EXCELLENT
+        com.astro.storm.ephemeris.yoga.YogaStrength.EXTREMELY_STRONG -> StrengthLevel.EXTREMELY_STRONG
+        com.astro.storm.ephemeris.yoga.YogaStrength.VERY_STRONG -> StrengthLevel.VERY_STRONG
         com.astro.storm.ephemeris.yoga.YogaStrength.STRONG -> StrengthLevel.STRONG
         com.astro.storm.ephemeris.yoga.YogaStrength.MODERATE -> StrengthLevel.MODERATE
         com.astro.storm.ephemeris.yoga.YogaStrength.WEAK -> StrengthLevel.WEAK

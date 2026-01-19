@@ -96,12 +96,12 @@ enum class YogaStrength(val displayName: String, val value: Int) {
      */
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            EXTREMELY_STRONG -> StringKeyMatch.YOGA_STRENGTH_EXTREMELY_STRONG
-            VERY_STRONG -> StringKeyMatch.YOGA_STRENGTH_VERY_STRONG
-            STRONG -> StringKeyMatch.YOGA_STRENGTH_STRONG
-            MODERATE -> StringKeyMatch.YOGA_STRENGTH_MODERATE
-            WEAK -> StringKeyMatch.YOGA_STRENGTH_WEAK
-            VERY_WEAK -> StringKeyMatch.YOGA_STRENGTH_VERY_WEAK
+            EXTREMELY_STRONG -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_EXTREMELY_STRONG
+            VERY_STRONG -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_VERY_STRONG
+            STRONG -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_STRONG
+            MODERATE -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_MODERATE
+            WEAK -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_WEAK
+            VERY_WEAK -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_VERY_WEAK
         }
         return StringResources.get(key, language)
     }

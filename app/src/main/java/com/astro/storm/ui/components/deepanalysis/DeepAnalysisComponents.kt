@@ -31,6 +31,8 @@ import com.astro.storm.ephemeris.deepanalysis.*
 
 // Strength level colors
 object DeepAnalysisColors {
+    val extremelyStrong = Color(0xFF1B5E20)
+    val veryStrong = Color(0xFF2E7D32)
     val excellent = Color(0xFF4CAF50)
     val strong = Color(0xFF8BC34A)
     val moderate = Color(0xFFFFEB3B)
@@ -38,6 +40,8 @@ object DeepAnalysisColors {
     val afflicted = Color(0xFFF44336)
     
     fun forStrength(level: StrengthLevel): Color = when (level) {
+        StrengthLevel.EXTREMELY_STRONG -> extremelyStrong
+        StrengthLevel.VERY_STRONG -> veryStrong
         StrengthLevel.EXCELLENT -> excellent
         StrengthLevel.STRONG -> strong
         StrengthLevel.MODERATE -> moderate

@@ -877,6 +877,7 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
 
     // Yoga Strength Levels
     YOGA_STRENGTH_EXTREMELY_STRONG("Extremely Strong", "अत्यन्त बलियो"),
+    YOGA_STRENGTH_VERY_STRONG("Very Strong", "धेरै बलियो"),
     YOGA_STRENGTH_STRONG("Strong", "बलियो"),
     YOGA_STRENGTH_MODERATE("Moderate", "मध्यम"),
     YOGA_STRENGTH_WEAK("Weak", "कमजोर"),

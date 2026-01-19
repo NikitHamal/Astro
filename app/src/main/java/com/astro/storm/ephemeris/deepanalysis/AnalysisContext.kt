@@ -21,7 +21,7 @@ import com.astro.storm.core.common.Language
  * 
  * @author AstroStorm Deep Analysis Engine
  */
-class AnalysisContext private constructor(
+class AnalysisContext(
     val chart: VedicChart,
     private val androidContext: Context
 ) {
@@ -139,6 +139,29 @@ class AnalysisContext private constructor(
         }
     }
     
+    /**
+     * Get Atmakaraka Analysis
+     */
+    fun getAtmakarakaAnalysis(): AtmakarakaAnalysis {
+        val ak = atmakaraka
+        val pos = chart.planetPositions.find { it.planet == ak }
+        return AtmakarakaAnalysis(
+            planet = ak,
+            sign = pos?.sign ?: ascendantSign,
+            house = pos?.house ?: 1,
+            dignity = getDignity(ak),
+            soulPurpose = LocalizedParagraph(
+                "Your Atmakaraka ${ak.displayName} indicates a soul purpose related to ${ak.displayName}'s energy.",
+                "तपाईंको आत्मकारक ${ak.displayName} ले ${ak.displayName} को ऊर्जासँग सम्बन्धित आत्माको उद्देश्य संकेत गर्दछ।"
+            ),
+            lessons = LocalizedParagraph(
+                "Current life lessons involve mastering ${ak.displayName}'s qualities.",
+                "वर्तमान जीवनका पाठहरूमा ${ak.displayName} का गुणहरूमा निपुणता हासिल गर्ने समावेश छ।"
+            ),
+            strength = getPlanetStrengthLevel(ak)
+        )
+    }
+
     /**
      * Get all planets in a specific house
      */

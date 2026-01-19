@@ -455,7 +455,8 @@ object CareerDeepAnalyzer {
     }
     
     private fun com.astro.storm.ephemeris.yoga.YogaStrength.toStrengthLevel(): StrengthLevel = when (this) {
-        com.astro.storm.ephemeris.yoga.YogaStrength.EXTREMELY_STRONG -> StrengthLevel.EXCELLENT
+        com.astro.storm.ephemeris.yoga.YogaStrength.EXTREMELY_STRONG -> StrengthLevel.EXTREMELY_STRONG
+        com.astro.storm.ephemeris.yoga.YogaStrength.VERY_STRONG -> StrengthLevel.VERY_STRONG
         com.astro.storm.ephemeris.yoga.YogaStrength.STRONG -> StrengthLevel.STRONG
         com.astro.storm.ephemeris.yoga.YogaStrength.MODERATE -> StrengthLevel.MODERATE
         com.astro.storm.ephemeris.yoga.YogaStrength.WEAK -> StrengthLevel.WEAK

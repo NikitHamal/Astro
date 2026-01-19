@@ -29,11 +29,11 @@ import java.time.LocalDate
 data class LocalizedTrait(
     val en: String,
     val ne: String,
-    val strengthLevel: StrengthLevel? = null
+    val strengthLevel: StrengthLevel = StrengthLevel.MODERATE
 ) {
     val name: String get() = en
     val nameNe: String get() = ne
-    val strength: StrengthLevel? get() = strengthLevel
+    val strength: StrengthLevel get() = strengthLevel
 
     fun get(language: Language): String = when (language) {
         Language.ENGLISH -> en
@@ -364,6 +364,8 @@ data class CareerDeepResult(
     // Aliases
     val dashamshaAnalysis get() = d10Analysis
     val careerYogaEffects get() = careerYogas
+    val suitableProfessions get() = bestCareerPaths
+    val workStyle get() = LocalizedParagraph("Calculated work style", "गणना गरिएको काम गर्ने शैली")
 }
 
 /**
@@ -733,7 +735,11 @@ data class CurrentHealthPhase(
     val overallVitality: StrengthLevel,
     val currentFocus: LocalizedParagraph,
     val watchAreas: List<LocalizedTrait>,
-    val recommendations: LocalizedParagraph
+    val recommendations: LocalizedParagraph,
+    val vitalityLevel: StrengthLevel = overallVitality,
+    val healthFocus: LocalizedParagraph = currentFocus,
+    val vulnerabilities: List<LocalizedTrait> = watchAreas,
+    val protectivePeriod: Boolean = false
 )
 
 data class CurrentCareerPhase(
@@ -790,14 +796,7 @@ data class HealthDeepResult(
     val dietaryRecommendationsList get() = dietaryRecommendations
 }
 
-data class CurrentHealthPhase(
-    val currentDasha: String,
-    val vitalityLevel: StrengthLevel,
-    val healthFocus: LocalizedParagraph,
-    val recommendations: LocalizedParagraph,
-    val vulnerabilities: List<LocalizedTrait> = emptyList(),
-    val protectivePeriod: Boolean = false
-)
+
 
 /**
  * Ayurvedic constitution analysis based on chart
@@ -930,7 +929,11 @@ data class PlanetaryHealthInfluence(
     val planet: Planet,
     val influenceType: HealthInfluenceType,
     val affectedAreas: List<String>,
-    val description: LocalizedParagraph
+    val description: LocalizedParagraph,
+    val healthArea: String = affectedAreas.firstOrNull() ?: "",
+    val remedialMeasures: LocalizedParagraph = LocalizedParagraph("", ""),
+    val strengthLevel: StrengthLevel = StrengthLevel.MODERATE,
+    val influence: LocalizedParagraph = description
 )
 
 enum class HealthInfluenceType {
@@ -964,7 +967,9 @@ data class HealthTimingPeriod(
     val dasha: String,
     val healthFocus: LocalizedParagraph,
     val vulnerabilities: List<LocalizedTrait>,
-    val protectivePeriod: Boolean
+    val protectivePeriod: Boolean = false,
+    val concernAreas: List<LocalizedTrait> = vulnerabilities,
+    val favorability: StrengthLevel = StrengthLevel.MODERATE
 )
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1052,7 +1057,8 @@ data class InduLagnaAnalysis(
     val induLagnaSign: ZodiacSign,
     val induLagnaStrength: StrengthLevel,
     val wealthFromInduLagna: LocalizedParagraph,
-    val significantPlanets: List<Planet>
+    @get:JvmName("getWealthFocus") val wealthFocus: LocalizedParagraph = wealthFromInduLagna,
+    val significantPlanets: List<Planet> = emptyList()
 )
 
 data class SecondHouseWealthAnalysis(
@@ -1084,7 +1090,9 @@ data class CurrentWealthPhase(
     val overallFinancialOutlook: StrengthLevel,
     val currentOpportunities: List<LocalizedTrait>,
     val currentCautions: List<LocalizedTrait>,
-    val financialAdvice: LocalizedParagraph
+    val financialAdvice: LocalizedParagraph,
+    @get:JvmName("getFinancialFocus") val financialFocus: LocalizedParagraph = financialAdvice,
+    @get:JvmName("getGuidance") val guidance: LocalizedParagraph = financialAdvice
 )
 
 data class InvestmentProfile(
@@ -1111,9 +1119,10 @@ data class WealthTimingPeriod(
     val endDate: LocalDate,
     val dasha: String,
     val financialFocus: LocalizedParagraph,
-    val opportunities: List<LocalizedTrait>,
-    val cautions: List<LocalizedTrait>,
-    val favorability: StrengthLevel
+    @get:JvmName("getWealthFocus") val wealthFocus: LocalizedParagraph = financialFocus,
+    val opportunities: List<LocalizedTrait> = emptyList(),
+    val cautions: List<LocalizedTrait> = emptyList(),
+    val favorability: StrengthLevel = StrengthLevel.MODERATE
 )
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1141,7 +1150,7 @@ data class EducationDeepResult(
     val memoryStrength: StrengthLevel,
     
     // Specialization
-    val favorableSubjects: List<SubjectMatch>,
+    val suitableSubjects: List<SubjectMatch>,
     val researchAptitude: StrengthLevel,
     
     // Education Yogas
@@ -1162,6 +1171,7 @@ data class EducationDeepResult(
 ) {
     val jupiterAnalysis get() = jupiterEducationAnalysis
     val learningStyle get() = learningStyleProfile
+    val suitableSubjects get() = favorableSubjects
     val suitableSubjects get() = favorableSubjects
     val higherEducationIndicators get() = higherEducationAnalysis
 }
@@ -1268,7 +1278,8 @@ data class SubjectMatch(
     val specificSubjects: List<String>,
     val aptitudeScore: Double,
     val reasonForMatch: LocalizedParagraph,
-    val affinity: StrengthLevel = StrengthLevel.fromDouble(aptitudeScore)
+    val affinity: StrengthLevel = StrengthLevel.fromDouble(aptitudeScore),
+    val subjectName: String = subjectCategory.name.replace("_", " ").lowercase().capitalize()
 )
 
 typealias SubjectAffinity = SubjectMatch
@@ -1293,7 +1304,8 @@ enum class SubjectCategory {
 data class EducationYoga(
     val name: String,
     val strength: StrengthLevel,
-    val academicEffect: LocalizedParagraph
+    val academicEffect: LocalizedParagraph,
+    val involvedPlanets: List<Planet> = emptyList()
 )
 
 /**
@@ -1304,7 +1316,9 @@ data class EducationTimingPeriod(
     val endDate: LocalDate,
     val dasha: String,
     val educationFocus: LocalizedParagraph,
-    val favorability: StrengthLevel
+    val favorability: StrengthLevel,
+    val opportunities: List<LocalizedTrait> = emptyList(),
+    val challenges: List<LocalizedTrait> = emptyList()
 )
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1320,6 +1334,7 @@ data class SpiritualDeepResult(
     val twelfthHouseMoksha: TwelfthHouseMokshaAnalysis,
     
     // Key Planet Analysis
+    val atmakarakaAnalysis: AtmakarakaAnalysis,
     val jupiterAnalysis: JupiterSpiritualAnalysis,
     val ketuAnalysis: KetuSpiritualAnalysis,
     
@@ -1371,13 +1386,13 @@ data class JupiterSpiritualAnalysis(
     val sign: ZodiacSign,
     val house: Int,
     val dignity: PlanetaryDignityLevel,
-    val wisdomPath: LocalizedParagraph,
-    val spiritualTeachings: LocalizedParagraph,
+    val wisdomDevelopment: LocalizedParagraph,
+    val faithAndBelief: LocalizedParagraph,
     val strengthLevel: StrengthLevel = StrengthLevel.MODERATE,
-    val wisdomDevelopment: LocalizedParagraph = wisdomPath,
-    val faithAndBelief: LocalizedParagraph = spiritualTeachings,
-    val spiritualGrowthPattern: LocalizedParagraph = wisdomPath,
-    val blessingsReceived: LocalizedParagraph = spiritualTeachings
+    val spiritualGrowthPattern: LocalizedParagraph = wisdomDevelopment,
+    val blessingsReceived: LocalizedParagraph = faithAndBelief,
+    val wisdomPath: LocalizedParagraph = wisdomDevelopment,
+    val spiritualTeachings: LocalizedParagraph = faithAndBelief
 )
 
 /**

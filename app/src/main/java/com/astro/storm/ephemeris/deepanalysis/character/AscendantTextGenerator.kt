@@ -231,7 +231,9 @@ object AscendantTextGenerator {
     fun getOverallInterpretation(sign: ZodiacSign, lord: Planet, context: AnalysisContext): LocalizedParagraph {
         val lordStrength = context.getPlanetStrengthLevel(lord)
         val strengthDesc = when (lordStrength) {
+            StrengthLevel.EXTREMELY_STRONG -> "exceptionally powerful"
             StrengthLevel.EXCELLENT -> "exceptionally strong"
+            StrengthLevel.VERY_STRONG -> "very strong"
             StrengthLevel.STRONG -> "well-placed"
             StrengthLevel.MODERATE -> "moderately positioned"
             StrengthLevel.WEAK -> "challenged"
