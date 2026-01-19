@@ -17,8 +17,6 @@ object CareerDeepAnalyzer {
         val tenthHouseAnalysis = analyzeTenthHouse(context)
         val tenthLordAnalysis = analyzeTenthLord(context)
         val dashamshAnalysis = analyzeDashamsha(context)
-        val primaryIndicators = getPrimaryCareerIndicators(context)
-        val secondaryIndicators = getSecondaryCareerIndicators(context)
         val careerYogas = getCareerYogas(context)
         val suitableProfessions = matchProfessions(context)
         val careerStrengths = getCareerStrengths(context)
@@ -362,6 +360,8 @@ object CareerDeepAnalyzer {
                 endDate = mahadasha.endDate.toLocalDate(),
                 dasha = "${mahadasha.planet.displayName} Mahadasha",
                 careerFocus = CareerTextGenerator.getDashaCareerFocus(mahadasha.planet),
+                opportunities = emptyList(),
+                challenges = emptyList(),
                 favorability = context.getPlanetStrengthLevel(mahadasha.planet)
             ))
         }

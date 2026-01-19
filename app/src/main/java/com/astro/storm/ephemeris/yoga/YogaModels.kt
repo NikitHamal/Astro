@@ -84,7 +84,8 @@ enum class YogaCategory(val displayName: String, val description: String) {
  * Yoga strength level
  */
 enum class YogaStrength(val displayName: String, val value: Int) {
-    EXTREMELY_STRONG("Extremely Strong", 5),
+    EXTREMELY_STRONG("Extremely Strong", 6),
+    VERY_STRONG("Very Strong", 5),
     STRONG("Strong", 4),
     MODERATE("Moderate", 3),
     WEAK("Weak", 2),
@@ -96,6 +97,7 @@ enum class YogaStrength(val displayName: String, val value: Int) {
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
             EXTREMELY_STRONG -> StringKeyMatch.YOGA_STRENGTH_EXTREMELY_STRONG
+            VERY_STRONG -> StringKeyMatch.YOGA_STRENGTH_VERY_STRONG
             STRONG -> StringKeyMatch.YOGA_STRENGTH_STRONG
             MODERATE -> StringKeyMatch.YOGA_STRENGTH_MODERATE
             WEAK -> StringKeyMatch.YOGA_STRENGTH_WEAK
@@ -111,7 +113,8 @@ enum class YogaStrength(val displayName: String, val value: Int) {
         fun fromPercentage(percentage: Double): YogaStrength {
             return when {
                 percentage >= 85 -> EXTREMELY_STRONG
-                percentage >= 70 -> STRONG
+                percentage >= 75 -> VERY_STRONG
+                percentage >= 60 -> STRONG
                 percentage >= 50 -> MODERATE
                 percentage >= 30 -> WEAK
                 else -> VERY_WEAK

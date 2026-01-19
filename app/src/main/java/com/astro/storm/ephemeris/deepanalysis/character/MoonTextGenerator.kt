@@ -20,6 +20,8 @@ object MoonTextGenerator {
         )
     }
     
+    fun getNakshatraCharacteristics(nakshatra: Nakshatra): LocalizedParagraph = getNakshatraBase(nakshatra)
+    
     private fun getNakshatraBase(nakshatra: Nakshatra): LocalizedParagraph = when (nakshatra) {
         Nakshatra.ASHWINI -> LocalizedParagraph(
             en = "Your Ashwini nakshatra gives you healing abilities, speed, and pioneering spirit. " +

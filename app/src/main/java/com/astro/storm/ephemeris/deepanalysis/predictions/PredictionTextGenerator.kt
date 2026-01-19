@@ -54,6 +54,11 @@ object PredictionTextGenerator {
                 "occult studies, and inner transformation are highlighted. Material focus may reduce.",
             ne = "यो अवधिले आध्यात्मिकता, विरक्ति र पूर्व-जीवन कर्मामा जोड दिन्छ।"
         )
+        else -> LocalizedParagraph(
+            en = "This period brings unique and unconventional developments related to ${planet.displayName}'s energy. " +
+                "Expect the unexpected and stay open to new perspectives.",
+            ne = "यो अवधिले ${planet.displayName}को ऊर्जासँग सम्बन्धित अद्वितीय र अपरम्परागत विकासहरू ल्याउँछ।"
+        )
     }
     
     fun getAntardashaTheme(mahadasha: Planet, antardasha: Planet): LocalizedParagraph {
@@ -75,6 +80,7 @@ object PredictionTextGenerator {
         Planet.SATURN -> "discipline and karmic lessons"
         Planet.RAHU -> "unconventional experiences and ambition"
         Planet.KETU -> "spiritual depth and detachment"
+        else -> "${planet.displayName.lowercase()} influences"
     }
     
     private fun getAntardashaFlavorNe(planet: Planet): String = when (planet) {
@@ -87,6 +93,7 @@ object PredictionTextGenerator {
         Planet.SATURN -> "अनुशासन र कार्मिक पाठहरू"
         Planet.RAHU -> "अपरम्परागत अनुभवहरू र महत्वाकांक्षा"
         Planet.KETU -> "आध्यात्मिक गहिराइ र विरक्ति"
+        else -> "${planet.displayNameNe}को प्रभावहरू"
     }
     
     fun getDashaAdvice(planet: Planet, context: AnalysisContext): LocalizedParagraph = when (planet) {
@@ -131,6 +138,7 @@ object PredictionTextGenerator {
         Planet.SATURN -> "discipline and lessons"
         Planet.RAHU -> "ambition and change"
         Planet.KETU -> "spirituality and detachment"
+        else -> "${planet.displayName.lowercase()} themes"
     }
     
     fun getLifeAreaEffect(planet: Planet, area: LifeArea, context: AnalysisContext): LocalizedParagraph {

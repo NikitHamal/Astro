@@ -90,6 +90,10 @@ object PlanetPersonalityGenerator {
                 "You have natural detachment in certain areas and deep intuition.",
             ne = "केतुको प्रभावले आध्यात्मिक अन्तर्दृष्टि र पूर्व-जीवन ज्ञान ल्याउँछ।"
         )
+        else -> LocalizedParagraph(
+            en = "${planet.displayName}'s unconventional influence shapes your personality in unique, less traditional ways.",
+            ne = "${planet.displayName}को अपरम्परागत प्रभावले तपाईंको व्यक्तित्वलाई अद्वितीय तरिकाले आकार दिन्छ।"
+        )
     }
     
     fun getTraits(planet: Planet, isStrong: Boolean): List<LocalizedTrait> = when (planet) {
@@ -156,7 +160,7 @@ object PlanetPersonalityGenerator {
             LocalizedTrait("Structure learning", "संरचना सिक्ने", StrengthLevel.MODERATE)
         )
         
-        else -> listOf(LocalizedTrait("Unique influence", "अद्वितीय प्रभाव", StrengthLevel.MODERATE))
+        else -> listOf(LocalizedTrait("${planet.displayName} influence", "${planet.displayName} प्रभाव", StrengthLevel.MODERATE))
     }
 }
 

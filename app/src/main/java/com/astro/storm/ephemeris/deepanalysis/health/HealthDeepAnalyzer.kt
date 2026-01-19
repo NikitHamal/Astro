@@ -16,14 +16,19 @@ object HealthDeepAnalyzer {
             sixthHouseAnalysis = analyzeSixthHouse(context),
             eighthHouseAnalysis = analyzeEighthHouse(context),
             ascendantHealthProfile = analyzeAscendantHealth(context),
-            planetaryHealthInfluences = analyzePlanetaryHealthInfluences(context),
             bodyPartMapping = generateBodyPartMapping(context),
             potentialVulnerabilities = getVulnerabilities(context),
             healthStrengths = getHealthStrengths(context),
             preventiveFocus = generatePreventiveFocus(context),
+            bodySystemMapping = emptyList(),
+            vulnerableAreas = emptyList(),
+            planetaryHealthInfluences = analyzePlanetaryHealthInfluences(context),
+            longevityIndicators = analyzeLongevity(context),
             healthTimeline = generateHealthTimeline(context),
             currentHealthPhase = analyzeCurrentHealthPhase(context),
-            longevityIndicators = analyzeLongevity(context),
+            lifestyleRecommendations = emptyList(),
+            dietaryRecommendations = emptyList(),
+            preventiveMeasures = emptyList(),
             healthSummary = generateSummary(context),
             healthStrengthScore = calculateScore(context)
         )
@@ -49,12 +54,11 @@ object HealthDeepAnalyzer {
             constitutionDescription = LocalizedParagraph(
                 "Your ${doshaType.name.lowercase().replaceFirstChar { it.uppercase() }}-dominant constitution shapes your health patterns.",
                 "तपाईंको ${doshaType.name}-प्रधान संविधानले तपाईंको स्वास्थ्य ढाँचाहरू आकार दिन्छ।"),
-            dietaryRecommendations = LocalizedParagraph("Diet should balance ${doshaType.name} tendencies.",
-                "आहारले ${doshaType.name} प्रवृत्तिहरूलाई सन्तुलित गर्नुपर्छ।"),
-            lifestyleRecommendations = LocalizedParagraph("Lifestyle practices for ${doshaType.name} balance.",
-                "${doshaType.name} सन्तुलनको लागि जीवनशैली अभ्यासहरू।"),
-            exerciseRecommendations = LocalizedParagraph("Exercise suited to ${doshaType.name} constitution.",
-                "${doshaType.name} संविधानको लागि उपयुक्त व्यायाम।")
+            naturalStrengths = emptyList(),
+            naturalWeaknesses = emptyList(),
+            balancingAdvice = LocalizedParagraph("Diet and lifestyle should balance ${doshaType.name} tendencies.",
+                "आहार र जीवनशैलीले ${doshaType.name} प्रवृत्तिहरूलाई सन्तुलित गर्नुपर्छ।")
+        )
         )
     }
     

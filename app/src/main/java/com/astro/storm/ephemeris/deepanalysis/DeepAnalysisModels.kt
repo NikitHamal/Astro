@@ -56,10 +56,12 @@ data class TimingPeriod(
  */
 enum class StrengthLevel(val value: Int, val displayName: String, val displayNameNe: String) {
     EXCELLENT(5, "Excellent", "उत्कृष्ट"),
-    STRONG(4, "Strong", "बलियो"),
-    MODERATE(3, "Moderate", "मध्यम"),
-    WEAK(2, "Weak", "कमजोर"),
-    AFFLICTED(1, "Afflicted", "पीडित");
+    VERY_STRONG(4, "Very Strong", "धेरै बलियो"),
+    STRONG(3, "Strong", "बलियो"),
+    MODERATE(2, "Moderate", "मध्यम"),
+    WEAK(1, "Weak", "कमजोर"),
+    EXTREMELY_STRONG(6, "Extremely Strong", "अत्यधिक बलियो"),
+    AFFLICTED(0, "Afflicted", "पीडित");
 
     companion object {
         fun fromInt(value: Int): StrengthLevel = entries.find { it.value == value } ?: MODERATE
@@ -456,7 +458,7 @@ data class CareerYoga(
     val name: String,
     val strength: StrengthLevel,
     val careerEffect: LocalizedParagraph,
-    val involvedPlanets: List<Planet>
+    val involvedPlanets: List<Planet> = emptyList()
 )
 
 /**
@@ -526,8 +528,8 @@ data class CareerTimingPeriod(
     val endDate: LocalDate,
     val dasha: String,
     val careerFocus: LocalizedParagraph,
-    val opportunities: List<LocalizedTrait>,
-    val challenges: List<LocalizedTrait>,
+    val opportunities: List<LocalizedTrait> = emptyList(),
+    val challenges: List<LocalizedTrait> = emptyList(),
     val favorability: StrengthLevel
 )
 
@@ -741,13 +743,6 @@ data class CurrentCareerPhase(
     val advice: LocalizedParagraph
 )
 
-data class CareerTimingPeriod(
-    val startDate: LocalDate,
-    val endDate: LocalDate,
-    val dasha: String,
-    val careerFocus: LocalizedParagraph,
-    val favorability: StrengthLevel
-)
 
 /**
  * Deep health analysis result
@@ -781,7 +776,7 @@ data class HealthDeepResult(
     
     // Health Timing
     val healthTimeline: List<HealthTimingPeriod>,
-    val currentHealthPhase: LocalizedParagraph,
+    val currentHealthPhase: CurrentHealthPhase,
     
     // Recommendations
     val lifestyleRecommendations: List<LocalizedTrait>,
@@ -791,6 +786,17 @@ data class HealthDeepResult(
     // Summary
     val healthSummary: LocalizedParagraph,
     val healthStrengthScore: Double
+) {
+    val dietaryRecommendationsList get() = dietaryRecommendations
+}
+
+data class CurrentHealthPhase(
+    val currentDasha: String,
+    val vitalityLevel: StrengthLevel,
+    val healthFocus: LocalizedParagraph,
+    val recommendations: LocalizedParagraph,
+    val vulnerabilities: List<LocalizedTrait> = emptyList(),
+    val protectivePeriod: Boolean = false
 )
 
 /**
@@ -1128,7 +1134,7 @@ data class EducationDeepResult(
     val jupiterEducationAnalysis: JupiterEducationAnalysis,
     
     // Academic Profile
-    val learningStyle: LocalizedParagraph,
+    val learningStyleProfile: LearningStyleProfile,
     val academicStrengths: List<LocalizedTrait>,
     val academicChallenges: List<LocalizedTrait>,
     val concentrationAbility: StrengthLevel,
@@ -1142,15 +1148,49 @@ data class EducationDeepResult(
     val educationYogas: List<EducationYoga>,
     
     // Higher Education
-    val higherEducationPotential: StrengthLevel,
-    val foreignEducationPotential: StrengthLevel,
+    val higherEducationAnalysis: HigherEducationAnalysis,
+    val higherEducationPotential: StrengthLevel = higherEducationAnalysis.overallPotential,
+    val foreignEducationPotential: StrengthLevel = StrengthLevel.MODERATE,
     
     // Timing
     val educationTimeline: List<EducationTimingPeriod>,
+    val currentEducationPhase: CurrentEducationPhase,
     
     // Summary
     val educationSummary: LocalizedParagraph,
     val educationStrengthScore: Double
+) {
+    val jupiterAnalysis get() = jupiterEducationAnalysis
+    val learningStyle get() = learningStyleProfile
+    val suitableSubjects get() = favorableSubjects
+    val higherEducationIndicators get() = higherEducationAnalysis
+}
+
+data class LearningStyleProfile(
+    val dominantStyle: LearningStyleType,
+    val preferredMethods: List<LocalizedTrait>,
+    val studyEnvironment: LocalizedParagraph,
+    val concentrationAbility: StrengthLevel,
+    val retentionCapacity: LocalizedParagraph
+)
+
+enum class LearningStyleType {
+    ANALYTICAL, EXPERIENTIAL, INTUITIVE, VISUAL, AUDITORY, KINAESTHETIC
+}
+
+data class HigherEducationAnalysis(
+    val overallPotential: StrengthLevel,
+    val academicDegreeSuccess: LocalizedParagraph,
+    val researchAbility: LocalizedParagraph,
+    val foreignEducationProspects: LocalizedParagraph,
+    val professionalCertifications: LocalizedParagraph
+)
+
+data class CurrentEducationPhase(
+    val currentDasha: String,
+    val learningFavorability: StrengthLevel,
+    val currentFocus: LocalizedParagraph,
+    val studyAdvice: LocalizedParagraph
 )
 
 /**
@@ -1199,7 +1239,9 @@ data class MercuryEducationAnalysis(
     val communicationSkill: LocalizedParagraph = communicationInLearning,
     val mathematicalAptitude: LocalizedParagraph = LocalizedParagraph("", ""),
     val languageAbility: LocalizedParagraph = LocalizedParagraph("", "")
-)
+) {
+    val intellectualAbility get() = intellectualCapacity
+}
 
 /**
  * Jupiter analysis for education
@@ -1212,6 +1254,7 @@ data class JupiterEducationAnalysis(
     val wisdomAcquisition: LocalizedParagraph,
     val wisdomDevelopment: LocalizedParagraph = wisdomAcquisition,
     val higherLearningAbility: LocalizedParagraph = LocalizedParagraph("", ""),
+    val higherEducationAptitude: LocalizedParagraph = higherLearningAbility, // For analyzer typo
     val spiritualKnowledge: LocalizedParagraph = LocalizedParagraph("", ""),
     val teachingAbility: LocalizedParagraph = LocalizedParagraph("", ""),
     val teacherBlessings: LocalizedParagraph
@@ -1224,8 +1267,11 @@ data class SubjectMatch(
     val subjectCategory: SubjectCategory,
     val specificSubjects: List<String>,
     val aptitudeScore: Double,
-    val reasonForMatch: LocalizedParagraph
+    val reasonForMatch: LocalizedParagraph,
+    val affinity: StrengthLevel = StrengthLevel.fromDouble(aptitudeScore)
 )
+
+typealias SubjectAffinity = SubjectMatch
 
 enum class SubjectCategory {
     SCIENCE_TECHNOLOGY,
@@ -1326,7 +1372,12 @@ data class JupiterSpiritualAnalysis(
     val house: Int,
     val dignity: PlanetaryDignityLevel,
     val wisdomPath: LocalizedParagraph,
-    val spiritualTeachings: LocalizedParagraph
+    val spiritualTeachings: LocalizedParagraph,
+    val strengthLevel: StrengthLevel = StrengthLevel.MODERATE,
+    val wisdomDevelopment: LocalizedParagraph = wisdomPath,
+    val faithAndBelief: LocalizedParagraph = spiritualTeachings,
+    val spiritualGrowthPattern: LocalizedParagraph = wisdomPath,
+    val blessingsReceived: LocalizedParagraph = spiritualTeachings
 )
 
 /**
@@ -1335,10 +1386,14 @@ data class JupiterSpiritualAnalysis(
 data class KetuSpiritualAnalysis(
     val sign: ZodiacSign,
     val house: Int,
+    val dignity: PlanetaryDignityLevel = PlanetaryDignityLevel.NEUTRAL,
     val nakshatra: Nakshatra,
     val pastLifeKarma: LocalizedParagraph,
     val detachmentArea: LocalizedParagraph,
-    val spiritualGifts: LocalizedParagraph
+    val spiritualGifts: LocalizedParagraph,
+    val detachmentAreas: LocalizedParagraph = detachmentArea,
+    val spiritualTalents: LocalizedParagraph = spiritualGifts,
+    val liberationIndicators: LocalizedParagraph = pastLifeKarma
 )
 
 /**

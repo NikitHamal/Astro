@@ -14,6 +14,7 @@ object SpiritualDeepAnalyzer {
         return SpiritualDeepResult(
             ninthHouseDharma = analyzeNinthHouse(context),
             twelfthHouseMoksha = analyzeTwelfthHouse(context),
+            atmaKarakaAnalysis = context.getAtmakarakaAnalysis(),
             jupiterAnalysis = analyzeJupiterSpiritual(context),
             ketuAnalysis = analyzeKetu(context),
             spiritualYogas = getSpiritualYogas(context),

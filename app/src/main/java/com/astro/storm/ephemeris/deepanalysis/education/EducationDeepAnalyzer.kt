@@ -16,12 +16,16 @@ object EducationDeepAnalyzer {
             fifthHouseAnalysis = analyzeFifthHouse(context),
             ninthHouseAnalysis = analyzeNinthHouse(context),
             mercuryAnalysis = analyzeMercury(context),
-            jupiterAnalysis = analyzeJupiter(context),
-            learningStyle = analyzeLearningStyle(context),
+            jupiterEducationAnalysis = analyzeJupiter(context),
+            learningStyleProfile = analyzeLearningStyle(context),
             academicStrengths = getAcademicStrengths(context),
             academicChallenges = getAcademicChallenges(context),
-            suitableSubjects = getSuitableSubjects(context),
-            higherEducationIndicators = analyzeHigherEducation(context),
+            concentrationAbility = context.getPlanetStrengthLevel(Planet.MERCURY),
+            memoryStrength = context.getPlanetStrengthLevel(Planet.MOON),
+            favorableSubjects = getSuitableSubjects(context),
+            researchAptitude = context.getHouseStrength(8),
+            educationYogas = emptyList(),
+            higherEducationAnalysis = analyzeHigherEducation(context),
             educationTimeline = generateTimeline(context),
             currentEducationPhase = analyzeCurrentPhase(context),
             educationSummary = generateSummary(context),
@@ -115,12 +119,14 @@ object EducationDeepAnalyzer {
             strengthLevel = context.getPlanetStrengthLevel(Planet.JUPITER),
             wisdomDevelopment = LocalizedParagraph("Jupiter develops wisdom and knowledge.",
                 "बृहस्पतिले ज्ञान र ज्ञान विकास गर्छ।"),
-            highterLearningAbility = LocalizedParagraph("Higher learning from Jupiter's blessing.",
+            higherLearningAbility = LocalizedParagraph("Higher learning from Jupiter's blessing.",
                 "बृहस्पतिको आशीर्वादबाट उच्च शिक्षा।"),
             spiritualKnowledge = LocalizedParagraph("Spiritual and philosophical knowledge.",
                 "आध्यात्मिक र दार्शनिक ज्ञान।"),
             teachingAbility = LocalizedParagraph("Teaching ability from Jupiter.",
-                "बृहस्पतिबाट शिक्षण क्षमता।")
+                "बृहस्पतिबाट शिक्षण क्षमता।"),
+            teacherBlessings = LocalizedParagraph("Blessings from teachers and elders.",
+                "गुरु र मान्यवरहरूबाट आशीर्वाद।")
         )
     }
     
