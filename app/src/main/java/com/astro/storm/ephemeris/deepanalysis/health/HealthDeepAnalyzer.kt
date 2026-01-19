@@ -59,7 +59,6 @@ object HealthDeepAnalyzer {
             balancingAdvice = LocalizedParagraph("Diet and lifestyle should balance ${doshaType.name} tendencies.",
                 "आहार र जीवनशैलीले ${doshaType.name} प्रवृत्तिहरूलाई सन्तुलित गर्नुपर्छ।")
         )
-        )
     }
     
     private fun analyzeSixthHouse(context: AnalysisContext): SixthHouseHealthAnalysis {
