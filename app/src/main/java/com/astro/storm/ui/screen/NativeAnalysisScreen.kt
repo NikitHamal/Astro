@@ -1223,7 +1223,9 @@ private fun LongevityCard(
         }
     }
 }
-
+                Text(
+                    text = stringResource(longevity.labelKey),
+                    style = MaterialTheme.typography.bodyMedium,
 @Composable
 private fun VulnerableAreasCard(areas: StringKeyInterface) {
     Card(
