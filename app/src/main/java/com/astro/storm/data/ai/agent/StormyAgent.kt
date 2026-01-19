@@ -115,19 +115,17 @@ class StormyAgent @Inject constructor(
         var continueProcessing = true
         val toolsUsed = mutableListOf<String>()
 
-        // Track content from each iteration separately to detect duplicates
-        val contentByIteration = mutableListOf<String>()
-        val allReasoning = StringBuilder()
-
-        // Keep track of what we've already emitted to avoid duplicates
-        var totalEmittedContent = StringBuilder()
-        var totalEmittedReasoning = StringBuilder()
+        // Track executed tool calls to prevent duplicates/loops across iterations
+        val executedToolCalls = mutableSetOf<String>()
 
         while (continueProcessing && iteration < MAX_TOTAL_ITERATIONS && toolIterations < MAX_TOOL_ITERATIONS) {
             iteration++
             var currentContent = StringBuilder()
             var currentReasoning = StringBuilder()
+            // Track tool calls for THIS iteration
             var pendingToolCalls = mutableListOf<ToolCallRequest>()
+            // Track IDs processed in THIS iteration to prevent duplicates from multiple parse passes
+            var processedToolIdsInIteration = mutableSetOf<String>() 
             var hasError = false
 
             // Call the AI model
@@ -145,9 +143,9 @@ class StormyAgent @Inject constructor(
                         val newContent = response.text
                         if (newContent.isNotEmpty()) {
                             // Check if this chunk is already in our total emitted content
+                            // (Simple heuristic: check endsWith or strict contains for small chunks)
                             val currentTotal = totalEmittedContent.toString()
-                            if (!currentTotal.endsWith(newContent) &&
-                                !currentTotal.contains(newContent.take(50))) {
+                            if (!currentTotal.endsWith(newContent)) {
                                 totalEmittedContent.append(newContent)
                                 emit(AgentResponse.ContentChunk(newContent))
                             }
@@ -157,11 +155,9 @@ class StormyAgent @Inject constructor(
                         // Skip empty reasoning markers
                         if (response.text.isNotEmpty()) {
                             currentReasoning.append(response.text)
-                            // Check for duplicate reasoning chunks
                             val newReasoning = response.text
                             val currentTotalReasoning = totalEmittedReasoning.toString()
-                            if (!currentTotalReasoning.endsWith(newReasoning) &&
-                                !currentTotalReasoning.contains(newReasoning.take(50))) {
+                            if (!currentTotalReasoning.endsWith(newReasoning)) {
                                 totalEmittedReasoning.append(newReasoning)
                                 emit(AgentResponse.ReasoningChunk(newReasoning))
                             }
@@ -169,13 +165,17 @@ class StormyAgent @Inject constructor(
                     }
                     is ChatResponse.ToolCallRequest -> {
                         response.toolCalls.forEach { call ->
-                            pendingToolCalls.add(
-                                ToolCallRequest(
-                                    id = call.id.ifEmpty { "tool_${UUID.randomUUID().toString().take(8)}" },
-                                    name = call.function.name,
-                                    arguments = call.function.arguments
+                            val toolKey = "${call.function.name}:${call.function.arguments.hashCode()}"
+                            if (toolKey !in executedToolCalls && toolKey !in processedToolIdsInIteration) {
+                                processedToolIdsInIteration.add(toolKey)
+                                pendingToolCalls.add(
+                                    ToolCallRequest(
+                                        id = call.id.ifEmpty { "tool_${UUID.randomUUID().toString().take(8)}" },
+                                        name = call.function.name,
+                                        arguments = call.function.arguments
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                     is ChatResponse.Error -> {
@@ -190,9 +190,16 @@ class StormyAgent @Inject constructor(
                         ))
                     }
                     is ChatResponse.Done -> {
-                        // Check for embedded tool calls in content
+                        // Check for embedded tool calls in content if native ones weren't found
                         if (pendingToolCalls.isEmpty()) {
-                            pendingToolCalls.addAll(parseEmbeddedToolCalls(currentContent.toString()))
+                            val embeddedCalls = parseEmbeddedToolCalls(currentContent.toString())
+                            embeddedCalls.forEach { call ->
+                                val toolKey = "${call.name}:${call.arguments.hashCode()}"
+                                if (toolKey !in executedToolCalls && toolKey !in processedToolIdsInIteration) {
+                                    processedToolIdsInIteration.add(toolKey)
+                                    pendingToolCalls.add(call)
+                                }
+                            }
                         }
                     }
                     is ChatResponse.ProviderInfo -> {
@@ -265,6 +272,9 @@ class StormyAgent @Inject constructor(
                     if (!toolsUsed.contains(toolCall.name)) {
                         toolsUsed.add(toolCall.name)
                     }
+                    
+                    // Mark as executed to prevent re-execution in future iterations
+                    executedToolCalls.add("${toolCall.name}:${toolCall.arguments.hashCode()}")
 
                     val result = executeToolCall(toolCall, currentProfile, allProfiles, currentChart)
 

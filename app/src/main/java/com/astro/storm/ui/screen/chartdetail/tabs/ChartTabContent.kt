@@ -47,6 +47,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -79,6 +80,8 @@ import com.astro.storm.ephemeris.DivisionalChartType
 import com.astro.storm.ui.chart.ChartRenderer
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.ChartDetailUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -103,11 +106,15 @@ fun ChartTabContent(
     val language = LocalLanguage.current
     
     // Performance Optimization: Convert the list of divisional charts to a map for
-    // efficient O(1) lookups. This avoids repeated, slow O(n) searches when the
-    // user selects different chart types.
-    val divisionalChartsMap = remember(chart) {
-        DivisionalChartCalculator.calculateAllDivisionalCharts(chart)
-            .associateBy { it.chartType.shortName }
+    // efficient O(1) lookups.
+    // Use produceState to offload the heavy calculation of 20+ charts to a background thread.
+    // This prevents blocking the main thread during composition.
+    val divisionalChartsMap by produceState(initialValue = emptyMap(), key1 = chart) {
+        val result = withContext(Dispatchers.Default) {
+            DivisionalChartCalculator.calculateAllDivisionalCharts(chart)
+                .associateBy { it.chartType.shortName }
+        }
+        value = result
     }
 
     var selectedChartType by rememberSaveable { mutableStateOf("D1") }

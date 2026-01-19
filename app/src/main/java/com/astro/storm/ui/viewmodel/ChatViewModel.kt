@@ -180,7 +180,7 @@ class ChatViewModel @Inject constructor(
 
     // Throttle intervals (in milliseconds)
     private companion object {
-        const val UI_UPDATE_THROTTLE_MS = 50L  // ~20 FPS for smooth typing
+        const val UI_UPDATE_THROTTLE_MS = 100L // ~10 FPS, smoother for heavy text
         const val DB_UPDATE_THROTTLE_MS = 500L // Reduced DB writes
         const val MIN_CONTENT_CHANGE_LENGTH = 5 // Min chars to trigger update
     }
@@ -616,12 +616,18 @@ class ChatViewModel @Inject constructor(
 
                                 // Add tool steps to streaming state for agentic UI
                                 response.toolNames.forEach { toolName ->
-                                    val step = ToolExecutionStep(
-                                        toolName = toolName,
-                                        displayName = ToolDisplayUtils.formatToolName(toolName),
-                                        status = ToolStepStatus.PENDING
-                                    )
-                                    if (currentToolSteps.none { it.toolName == toolName }) {
+                                    // Check if this specific tool step (name + status=PENDING) already exists
+                                    // This prevents duplicate pending steps if the stream re-emits tool calls
+                                    val alreadyExists = currentToolSteps.any { 
+                                        it.toolName == toolName && it.status == ToolStepStatus.PENDING 
+                                    }
+                                    
+                                    if (!alreadyExists) {
+                                        val step = ToolExecutionStep(
+                                            toolName = toolName,
+                                            displayName = ToolDisplayUtils.formatToolName(toolName),
+                                            status = ToolStepStatus.PENDING
+                                        )
                                         currentToolSteps.add(step)
                                     }
                                 }

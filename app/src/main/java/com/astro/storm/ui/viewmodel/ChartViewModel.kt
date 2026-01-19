@@ -250,7 +250,10 @@ class ChartViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             try {
                 val bitmap = withContext(Dispatchers.Default) {
-                    chartRenderer.createChartBitmap(chart, 2048, 2048, density)
+                    // Create a dedicated renderer for export to avoid thread safety issues
+                    // with the shared UI renderer which is not thread-safe
+                    val exportRenderer = ChartRenderer(application, ChartColorConfig.Light)
+                    exportRenderer.createChartBitmap(chart, 2048, 2048, density)
                 }
 
                 val result = ExportUtils.saveChartImage(getApplication(), bitmap, fileName)
