@@ -1168,7 +1168,9 @@ private fun ConstitutionCard(
                 Text(
                     text = stringResource(longevity.labelKey),
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
+                Text(
+                    text = stringResource(constitution.labelKey),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = color
                 )
 
