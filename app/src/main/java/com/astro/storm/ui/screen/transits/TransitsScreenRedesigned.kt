@@ -935,25 +935,6 @@ private fun UpcomingTransitCard(
                     fontSize = 11.sp,
                     color = AppTheme.TextMuted
                 )
----
-private fun getHouseSignification(house: Int, language: com.astro.storm.core.common.Language): String {
-    val key = when (house) {
-        1 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_1
-        2 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_2
-        3 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_3
-        4 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_4
-        5 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_5
-        6 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_6
-        7 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_7
-        8 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_8
-        9 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_9
-        10 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_10
-        11 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_11
-        12 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_12
-        else -> null
-    }
-    return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: ""
-}
             }
         }
     }
@@ -1147,22 +1128,23 @@ private fun EmptyTransitsContent(modifier: Modifier = Modifier) {
     }
 }
 
-private fun getHouseSignification(house: Int): String {
-    return when (house) {
-        1 -> "Self, Body, Personality"
-        2 -> "Wealth, Speech, Family"
-        3 -> "Siblings, Courage, Communication"
-        4 -> "Home, Mother, Property"
-        5 -> "Children, Creativity, Education"
-        6 -> "Health, Enemies, Service"
-        7 -> "Marriage, Partnerships, Business"
-        8 -> "Transformation, Inheritance"
-        9 -> "Fortune, Higher Learning, Father"
-        10 -> "Career, Fame, Authority"
-        11 -> "Gains, Friends, Wishes"
-        12 -> "Losses, Spirituality, Liberation"
-        else -> ""
+private fun getHouseSignification(house: Int, language: com.astro.storm.core.common.Language): String {
+    val key = when (house) {
+        1 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_1
+        2 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_2
+        3 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_3
+        4 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_4
+        5 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_5
+        6 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_6
+        7 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_7
+        8 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_8
+        9 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_9
+        10 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_10
+        11 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_11
+        12 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_12
+        else -> null
     }
+    return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: ""
 }
 
 @Composable

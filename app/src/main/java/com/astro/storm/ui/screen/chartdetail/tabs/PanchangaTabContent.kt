@@ -63,6 +63,8 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyPanchanga
+import com.astro.storm.core.common.StringKeyNakshatra
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -1043,9 +1045,6 @@ private data class TithiData(
     val activities: List<String>,
     val avoid: List<String>
 )
-
-import com.astro.storm.core.common.StringKeyPanchanga
-import com.astro.storm.core.common.StringKeyNakshatra
 
 private fun getTithiData(tithiNumber: Int, language: Language): TithiData {
     return when (tithiNumber) {
