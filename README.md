@@ -1,174 +1,365 @@
-# AstroStorm Codebase Onboarding Guide
+# AstroStorm Onboarding Guide
 
 
 ## Overview
 
 
-**AstroStorm** is a comprehensive Android application for Vedic astrology, combining traditional astrological calculations with modern AI-powered insights. The application serves users interested in birth chart analysis, astrological predictions, compatibility matching, and personalized consultations.
+**AstroStorm** is a comprehensive Android application for Vedic astrology analysis, built with Kotlin and Jetpack Compose. The application serves astrology enthusiasts, practitioners, and students by providing professional-grade astrological calculations, interpretations, and insights.
 
 
-### Purpose and Target Users
+### Purpose and User Value
 
 
-The application enables users to:
-- **Generate and manage birth charts** with precise astronomical calculations using Swiss Ephemeris
-- **Access 30+ specialized astrological analyses** including planetary periods (Dashas), yogas (planetary combinations), strength assessments (Ashtakavarga, Shadbala), and predictive tools (Varshaphala, Prashna)
-- **Receive AI-powered astrological consultations** through an intelligent agent that can execute specialized calculation tools and provide contextual interpretations
-- **Perform compatibility analysis** for relationships using traditional Vedic matchmaking techniques
-- **Export detailed reports** in multiple formats (PDF, JSON, CSV, images) for personal records or sharing
+AstroStorm enables users to:
 
 
-### Key Capabilities
+- **Generate and analyze Vedic birth charts** with detailed planetary positions, house cusps, and Nakshatra placements
+- **Calculate complex astrological metrics** including Shadbala (planetary strength), Ashtakavarga (point-based strength), and Divisional Charts (D1-D60)
+- **Access predictive systems** such as Vimshottari Dasha (planetary periods), Transits, Varshaphala (annual predictions), and Prashna (horary astrology)
+- **Perform compatibility analysis** through Guna Milan (Kundli matching) with detailed Dosha analysis
+- **Receive personalized remedies** based on planetary afflictions and chart weaknesses
+- **Interact with an AI assistant** (Stormy) that can answer astrological questions and perform calculations conversationally
+- **Export professional reports** as PDFs, images, JSON, or CSV files
 
 
-1. **Multi-language Support**: Full internationalization with English and Nepali, including support for both Anno Domini (AD) and Bikram Sambat (BS) calendar systems
-2. **AI Integration**: Conversational AI assistant with access to 20+ astrological calculation tools, enabling dynamic analysis and personalized guidance
-3. **Professional Visualization**: High-quality chart rendering in North and South Indian styles with multiple color themes
-4. **Comprehensive Calculations**: 15+ specialized calculators covering basic (Dashas, Yogas), advanced (Ashtakavarga, Divisional Charts), predictive (Varshaphala, Muhurta), and specialized (Jaimini techniques, Graha Yuddha) astrological methods
-5. **Persistent Storage**: Room database for chart management and chat history with efficient caching strategies
+### Architecture at a Glance
+
+
+The application follows a clean, layered architecture:
+
+
+1. **UI Layer** (Jetpack Compose) - Navigation, screens, and visual components
+2. **AI Layer** - Conversational interface with multi-model support and 30+ specialized tools
+3. **Calculation Engine** (Ephemeris) - Core Vedic astrology computation logic
+4. **Data Layer** - Room database for chart persistence, SharedPreferences for settings
+5. **Visualization Layer** - Chart rendering and export capabilities
+6. **Localization** - Multi-language support (English, Nepali, Hindi)
+
+
+The codebase leverages modern Android development practices including:
+- Kotlin coroutines for asynchronous operations
+- Hilt for dependency injection
+- StateFlow for reactive state management
+- Room for database persistence
+- Jetpack Compose for declarative UI
+- Swiss Ephemeris for astronomical calculations
+
+
+---
 
 
 ## Project Organization
 
 
-### Directory Structure
+### Repository Structure
 
 
 ```
-app/src/main/java/com/astro/storm/
-├── ui/                          # User Interface Layer
-│   ├── screen/                  # Feature screens (30+ specialized analysis screens)
-│   │   ├── main/               # Main screens (HomeTab, InsightsTab, ChatTab, SettingsTab)
-│   │   ├── chartdetail/        # Chart detail and tabbed analysis views
-│   │   ├── matchmaking/        # Compatibility analysis
-│   │   ├── ashtakavarga/       # Ashtakavarga bindu system
-│   │   ├── panchanga/          # Vedic calendar calculations
-│   │   └── transits/           # Current planetary movements
-│   ├── viewmodel/              # ViewModels for state management
-│   ├── components/             # Reusable UI components
-│   │   ├── agentic/           # AI message display components
-│   │   └── dialogs/           # Dialog components
-│   ├── navigation/             # Navigation graph and routing
-│   └── chart/                  # Chart rendering components
-│
-├── data/                        # Data Layer
-│   ├── model/                  # Core data models (VedicChart, BirthData, etc.)
-│   ├── repository/             # Data repositories
-│   ├── local/                  # Local persistence (Room database)
-│   │   ├── chart/             # Chart database entities and DAOs
-│   │   └── chat/              # Chat database entities and DAOs
-│   ├── api/                    # External API services (Geocoding)
-│   ├── ai/                     # AI integration
-│   │   ├── agent/             # StormyAgent orchestration
-│   │   │   └── tools/         # Astrology tools for AI (20+ tools)
-│   │   └── provider/          # AI provider implementations
-│   ├── localization/           # Internationalization resources
-│   └── preferences/            # App preferences (theme, language)
-│
-├── ephemeris/                   # Astrological Calculation Layer
-│   ├── DashaCalculator.kt      # Vimshottari dasha system
-│   ├── YogaCalculator.kt       # Planetary combinations
-│   ├── AshtakavargaCalculator.kt  # Bindu strength system
-│   ├── VarshaphalaCalculator.kt   # Annual horoscope (Tajika)
-│   ├── MatchmakingCalculator.kt   # Compatibility analysis
-│   ├── PanchangaCalculator.kt     # Vedic calendar elements
-│   ├── TransitAnalyzer.kt         # Current planetary effects
-│   ├── VedicAstrologyUtils.kt     # Common astrological functions
-│   └── [15+ more calculators]     # Specialized calculations
-│
-└── util/                        # Utility Layer
-    ├── ChartUtils.kt           # Chart-related utilities
-    ├── ChartExporter.kt        # Export functionality (PDF, JSON, CSV)
-    └── ContentCleaner.kt       # Content formatting utilities
+astro/
+├── .github/
+│   └── workflows/
+│       └── android.yml              # CI/CD pipeline for automated builds
+├── app/
+│   ├── build.gradle.kts             # App-level build configuration
+│   └── src/main/java/com/astro/storm/
+│       ├── data/
+│       │   ├── ai/                  # AI agent and provider abstractions
+│       │   │   ├── agent/           # Stormy AI agent implementation
+│       │   │   │   ├── StormyAgent.kt            # Main AI orchestrator
+│       │   │   │   ├── PromptManager.kt          # System prompt generation
+│       │   │   │   └── tools/                    # 30+ astrology tools
+│       │   │   │       ├── AstrologyTools.kt     # Tool implementations
+│       │   │   │       ├── AstrologyToolRegistry.kt
+│       │   │   │       └── CalculationWrappers.kt
+│       │   │   └── provider/        # AI model providers
+│       │   │       └── AiProviderRegistry.kt
+│       │   ├── database/            # Room database entities and DAOs
+│       │   ├── localization/        # String resource management
+│       │   │   ├── StringResources.kt
+│       │   │   ├── StringKeyMatch.kt
+│       │   │   ├── StringKeyAnalysis.kt
+│       │   │   └── StringKeyDosha.kt
+│       │   ├── model/               # Core data models
+│       │   └── preferences/         # Settings managers
+│       │       ├── OnboardingManager.kt
+│       │       ├── ThemeManager.kt
+│       │       ├── AstrologySettingsManager.kt
+│       │       └── LocalizationManager.kt
+│       ├── ephemeris/               # Calculation engine (Core importance: 30.54)
+│       │   ├── ShadbalaCalculator.kt           # Six-fold planetary strength
+│       │   ├── DashaCalculator.kt              # Vimshottari dasha periods
+│       │   ├── DivisionalChartCalculator.kt    # D1-D60 varga charts
+│       │   ├── AshtakavargaCalculator.kt       # Bindu point system
+│       │   ├── VedicAstrologyUtils.kt          # Common utility functions
+│       │   ├── YoginiDashaCalculator.kt
+│       │   ├── KalachakraDashaCalculator.kt
+│       │   ├── CharaDashaCalculator.kt
+│       │   ├── VarshaphalaCalculator.kt
+│       │   ├── PrashnaCalculator.kt
+│       │   ├── TransitAnalyzer.kt
+│       │   └── muhurta/
+│       │       ├── MuhurtaCalculator.kt
+│       │       └── MuhurtaAstronomicalCalculator.kt
+│       ├── ui/
+│       │   ├── navigation/
+│       │   │   └── Navigation.kt               # App-wide navigation graph
+│       │   ├── screen/
+│       │   │   ├── main/
+│       │   │   │   ├── MainScreen.kt          # Bottom navigation hub
+│       │   │   │   ├── HomeTab.kt             # Feature discovery
+│       │   │   │   └── SettingsTab.kt
+│       │   │   ├── chartdetail/
+│       │   │   │   └── tabs/                   # Chart analysis tabs
+│       │   │   │       ├── ChartTabContent.kt
+│       │   │   │       ├── PlanetsTabContent.kt
+│       │   │   │       ├── YogasTabContent.kt
+│       │   │   │       ├── DashasTabContent.kt
+│       │   │   │       └── AshtakavargaTabContent.kt
+│       │   │   ├── ChartAnalysisScreen.kt
+│       │   │   ├── MuhurtaScreen.kt
+│       │   │   ├── RemediesScreen.kt
+│       │   │   ├── VarshaphalaScreen.kt
+│       │   │   ├── PrashnaScreen.kt
+│       │   │   ├── matchmaking/
+│       │   │   │   ├── MatchmakingScreen.kt
+│       │   │   │   └── MatchmakingComponents.kt
+│       │   │   ├── YoginiDashaScreen.kt
+│       │   │   ├── KalachakraDashaScreen.kt
+│       │   │   └── CharaDashaScreen.kt
+│       │   ├── chart/
+│       │   │   └── ChartRenderer.kt           # Visual chart generation
+│       │   └── components/
+│       │       ├── ChartDialogs.kt
+│       │       └── dialogs/
+│       └── util/
+│           └── ChartExporter.kt               # PDF/JSON/CSV/Image export
+├── core/
+│   ├── model/                       # Shared data models (VedicChart, Planet, etc.)
+│   └── common/                      # Common utilities
+├── build.gradle.kts                 # Root build configuration
+├── settings.gradle.kts              # Module declarations
+└── gradle.properties                # Gradle configuration
 ```
 
 
 ### Core Systems
 
 
-#### 1. Navigation System (`ui/navigation/`)
-- **`AstroStormNavigation`**: Defines the navigation graph with 30+ routes
-- **`Screen` sealed class**: Type-safe route definitions with parameter handling
-- **`MainScreen`**: Primary container with bottom navigation (Home, Insights, Chat, Settings)
+#### 1. Navigation System (Importance: 81.60)
 
 
-#### 2. UI State Management (`ui/viewmodel/`)
-- **`ChartViewModel`**: Manages chart calculation, persistence, and export
-- **`ChatViewModel`**: Orchestrates AI conversations with tool execution and streaming
-- **`InsightsViewModel`**: Concurrent calculation of Dashas, horoscopes, and planetary influences
-- **`DashaViewModel`**: Specialized Dasha timeline management with caching
+**Entry Point:** `app/src/main/java/com/astro/storm/ui/navigation/Navigation.kt`
 
 
-#### 3. AI Agent System (`data/ai/`)
-- **`StormyAgent`**: Core AI orchestration with streaming support
-- **`AstrologyTool` interface**: Contract for AI-invokable tools (20+ implementations)
-- **`CalculationWrappers`**: Standardizes calculator outputs for AI consumption
-- **`AiProviderRegistry`**: Abstraction over multiple LLM backends (OpenAI, Anthropic, custom)
+The `AstroStormNavigation` composable defines the complete navigation graph with 40+ screens. The `Screen` sealed class provides type-safe route definitions with helper functions for parameter passing.
 
 
-#### 4. Calculation Engine (`ephemeris/`)
-- **Swiss Ephemeris Integration**: Astronomical calculations via SwissEph library
-- **Specialized Calculators**: 15+ modules for different astrological techniques
-- **`VedicAstrologyUtils`**: Centralized utility functions (dignity checks, house classifications, nakshatra attributes)
-- **`AstrologicalConstants`**: Single source of truth for astrological parameters
+**Main Screen:** `app/src/main/java/com/astro/storm/ui/screen/main/MainScreen.kt`
 
 
-#### 5. Data Persistence (`data/local/`)
-- **Room Database**: Stores charts, chat conversations, and messages
-- **`ChartRepository`**: Chart CRUD operations with caching
-- **`ChatDao`**: Comprehensive chat persistence with Flow-based reactivity
+The bottom navigation hub with four tabs:
+- **HomeTab** - Feature discovery grid showing available analyses
+- **InsightsTab** - Aggregated chart insights
+- **ChatTab** - AI assistant (Stormy) interface
+- **SettingsTab** - User preferences and profile management
 
 
-#### 6. Localization System (`data/localization/`)
-- **`StringResources`**: Central translation hub supporting English and Nepali
-- **`StringKey` hierarchy**: Type-safe string keys organized by feature domain
-- **Date system support**: Both Anno Domini (AD) and Bikram Sambat (BS) calendars
+#### 2. Ephemeris Calculation Engine (Importance: 30.54)
 
 
-### Main Entry Points
+**Location:** `app/src/main/java/com/astro/storm/ephemeris/`
 
 
-1. **`MainActivity.kt`**: Application entry point, sets up theme and navigation
-2. **`AstroStormNavigation`** (`ui/navigation/Navigation.kt`): Routing configuration
-3. **`MainScreen`** (`ui/screen/main/MainScreen.kt`): Primary UI container with tab navigation
-4. **`HomeTab`** (`ui/screen/main/HomeTab.kt`): Feature discovery interface displaying 30+ analyses
-5. **`ChatTab`** (`ui/screen/main/ChatTab.kt`): AI assistant interface
-6. **`ChartInputScreen`** (`ui/screen/ChartInputScreen.kt`): Birth data entry with location search
+The calculation engine contains 20+ specialized calculators organized by function:
 
 
-### Key Classes and Functions
+**Foundation:**
+- `VedicAstrologyUtils.kt` - Common functions (dignities, relationships, aspects, combustion)
+- `DivisionalChartCalculator.kt` - Generates D1-D60 varga charts
 
 
-#### UI Layer
-- **`InsightFeature` enum** (`HomeTab.kt`): Defines all 30+ features with metadata (title, description, icon, color, implementation status)
-- **`AgenticMessageCard`** (`components/agentic/`): Modern IDE-style message display for AI responses
-- **`ChartRenderer`** (`ui/chart/ChartRenderer.kt`): Draws Vedic charts in North/South Indian styles with theme support
-- **`ProfileSwitcherBottomSheet`** (`components/ProfileSwitcherBottomSheet.kt`): Chart selection and management UI
+**Strength Analysis:**
+- `ShadbalaCalculator.kt` - Six-fold planetary strength (Sthana, Dig, Kala, Chesta, Naisargika, Drik)
+- `AshtakavargaCalculator.kt` - Bindu point system with Shodhana reduction
 
 
-#### ViewModel Layer
-- **`ChatViewModel.sendMessage()`**: Handles message streaming with section management and tool execution
-- **`ChartViewModel.calculateChart()`**: Orchestrates chart calculation with validation and persistence
-- **`InsightsViewModel.loadInsights()`**: Concurrent calculation of multiple insight types with graceful error handling
+**Time Period Systems:**
+- `DashaCalculator.kt` - Vimshottari dasha (6-level hierarchical periods)
+- `YoginiDashaCalculator.kt` - Yogini dasha system
+- `KalachakraDashaCalculator.kt` - Nakshatra-based Kalachakra system
+- `CharaDashaCalculator.kt` - Jaimini Chara dasha
 
 
-#### Calculation Layer
-- **`DashaCalculator.calculateDashaTimeline()`**: Generates complete Vimshottari dasha periods (6 nested levels)
-- **`VarshaphalaCalculator.calculateVarshaphala()`**: Comprehensive annual horoscope using Tajika system
-- **`MatchmakingCalculator.calculateMatchmaking()`**: Ashtakoota Guna compatibility with dosha analysis
-- **`AshtakavargaCalculator.calculateAshtakavarga()`**: Bindu strength calculation for all planets and houses
+**Predictive Tools:**
+- `TransitAnalyzer.kt` - Gochara analysis
+- `VarshaphalaCalculator.kt` - Annual solar return predictions
+- `PrashnaCalculator.kt` - Horary question analysis
+- `MuhurtaCalculator.kt` - Electional astrology
 
 
-#### AI Integration
-- **`StormyAgent.processMessage()`**: Main agent loop with reasoning, tool calls, and content generation
-- **`AstrologyTool.execute()`**: Interface method for tool execution with `JSONObject` arguments and `ToolContext`
-- **`CalculationWrappers`**: Static wrapper methods providing standardized data formats for 15+ calculators
+**Compatibility:**
+- `MatchmakingCalculator.kt` - Guna Milan with Dosha analysis
 
 
-#### Utilities
-- **`ChartUtils.generateChartKey()`**: Deterministic cache key generation from birth data
-- **`ChartExporter.exportToPdf()`**: Multi-page PDF report generation with chart images and analyses
-- **`ContentCleaner.cleanForDisplay()`**: Removes tool call artifacts from AI responses
+**Remedies:**
+- `RemediesCalculator.kt` - Personalized corrective measures
+
+
+All calculators accept `VedicChart` as input and return structured result objects.
+
+
+#### 3. AI Assistant System (Importance: 27.72 + 28.29)
+
+
+**Core Components:**
+
+
+- `StormyAgent.kt` - Main AI orchestrator with iterative tool-calling loop
+- `AstrologyToolRegistry.kt` - Manages 30+ specialized tools
+- `AiProviderRegistry.kt` - Multi-provider abstraction (DeepInfra, Yqcloud, WeWordle)
+- `PromptManager.kt` - Context-aware system prompt generation
+
+
+**Tool Categories:**
+
+
+1. **Profile Management** - get_profile_info, get_all_profiles, create_profile
+2. **Chart Data Access** - get_planet_positions, get_house_positions, get_nakshatra_info
+3. **Dasha & Timing** - get_dasha_info, get_current_dasha, calculate_muhurta
+4. **Yoga & Strength** - get_yogas, get_ashtakavarga, get_strength_analysis
+5. **Compatibility** - get_compatibility, get_deep_compatibility
+6. **Advanced Analysis** - get_divisional_chart, get_bhrigu_bindu, get_argala
+
+
+The agent supports autonomous multi-step reasoning with up to 15 tool iterations.
+
+
+#### 4. Chart Visualization (Importance: 40.26 + 24.09)
+
+
+**Chart Rendering:** `app/src/main/java/com/astro/storm/ui/chart/ChartRenderer.kt`
+
+
+Draws North Indian and South Indian style charts with:
+- Planetary positions with degree precision
+- Dignity indicators (exaltation arrows, debilitation arrows)
+- Retrograde/Combust/Vargottama symbols
+- House numbers and chart legends
+- Three color schemes (Light, Dark, Print)
+
+
+**Chart Export:** `app/src/main/java/com/astro/storm/util/ChartExporter.kt`
+
+
+Generates professional reports in multiple formats:
+- **PDF** - Multi-page reports with charts, positions, analysis, predictions
+- **JSON** - Structured data export
+- **CSV** - Tabular data export
+- **Image** - High-resolution chart bitmaps
+
+
+#### 5. Data Persistence
+
+
+**Room Database:** Chart and profile entities with DAOs
+**SharedPreferences:** Lightweight config via specialized managers:
+- `OnboardingManager` - First-time setup status
+- `ThemeManager` - UI theme (Light/Dark/System)
+- `AstrologySettingsManager` - Ayanamsa, house system, node mode
+- `LocalizationManager` - Language and date system
+
+
+All managers expose reactive `StateFlow` objects for UI observation.
+
+
+#### 6. Localization System (Importance: 81.60 + 28.13)
+
+
+**Location:** `app/src/main/java/com/astro/storm/data/localization/`
+
+
+String resources are organized by domain:
+- `StringKeyMatch.kt` - UI navigation and matching
+- `StringKeyAnalysis.kt` - Analysis and formatting strings
+- `StringKeyDosha.kt` - Dosha/transit analysis
+- `StringKeyRemedy.kt` - Remedy descriptions
+
+
+`StringResources.kt` provides the lookup mechanism with multi-language support (English, Nepali, Hindi).
+
+
+### Key Screens and Their Functions
+
+
+| Screen | Purpose | Importance |
+|--------|---------|-----------|
+| `MainScreen.kt` | Bottom navigation hub | 81.60 |
+| `ChartAnalysisScreen.kt` | Comprehensive chart view with 7 tabs | 24.75 |
+| `MuhurtaScreen.kt` | Auspicious timing selection | 24.75 |
+| `MatchmakingScreen.kt` | Compatibility analysis | 32.62 |
+| `VarshaphalaScreen.kt` | Annual horoscope predictions | 31.31 |
+| `PrashnaScreen.kt` | Horary question analysis | 32.62 |
+| `RemediesScreen.kt` | Personalized corrective measures | 24.75 |
+| `YoginiDashaScreen.kt` | Yogini dasha periods | 35.89 |
+| `KalachakraDashaScreen.kt` | Kalachakra dasha analysis | 35.89 |
+| `CharaDashaScreen.kt` | Chara dasha (Jaimini) | 35.89 |
+
+
+### Build System (Importance: 38.99)
+
+
+**Gradle Configuration:**
+- `build.gradle.kts` (root) - Plugin versions
+- `app/build.gradle.kts` - App dependencies and build types
+- `settings.gradle.kts` - Module structure
+- `gradle.properties` - Build optimizations
+
+
+**Key Dependencies:**
+- Jetpack Compose BOM 2024.02.00
+- Hilt 2.51 (Dependency Injection)
+- Room 2.6.1 (Database)
+- Navigation Compose 2.7.7
+- Coroutines 1.7.3
+- Markwon 4.6.2 (Markdown rendering)
+
+
+**CI/CD:** `.github/workflows/android.yml`
+- Triggers on push to main paths (excludes `wip/**` branches)
+- Builds release APK with ProGuard
+- Renames with commit hash
+- Uploads artifact (90-day retention)
+
+
+### Development Practices
+
+
+**Code Style:**
+- Kotlin with JVM target 17
+- Annotation processing via KSP (not KAPT)
+- Compose-first UI (no XML layouts)
+- Singleton pattern for managers and calculators
+
+
+**State Management:**
+- `StateFlow` for reactive state
+- `rememberSaveable` for UI state persistence
+- ViewModels with Hilt injection
+
+
+**Threading:**
+- `Dispatchers.IO` for calculations and database
+- `Dispatchers.Default` for CPU-intensive work
+- Structured concurrency with coroutine scopes
+
+
+**Error Handling:**
+- Sealed classes for state (Loading/Success/Error)
+- Try-catch blocks with user-friendly messages
+- Timeout protection for long calculations (30s)
+
+
+---
 
 
 ## Glossary of Codebase-Specific Terms
@@ -178,292 +369,338 @@ app/src/main/java/com/astro/storm/
 
 
 **VedicChart**
-- Complete birth chart data model containing `BirthData`, planet positions, house cusps, ayanamsa
-- Primary input for all astrological calculations
-- Location: `data/model/VedicChart.kt`
-- Used by: All calculators, ChartViewModel, AI tools
-
-
-**BirthData**
-- User input data: name, date/time, location coordinates, timezone, gender
-- Converted to `VedicChart` via SwissEph calculations
-- Location: `data/model/BirthData.kt`
-- Created by: ChartInputScreen, validated before calculation
+- `data class` representing a complete Vedic birth chart
+- Fields: `birthData`, `planetPositions`, `houseCusps`, `ayanamsa`, `julianDay`
+- Used as input to all calculation functions
+- Location: `core/model/`
 
 
 **PlanetPosition**
-- Detailed planetary data: longitude, sign, nakshatra, house, retrograde status, degree
-- Contained within `VedicChart`
-- Location: `data/model/PlanetPosition.kt`
-- Used by: All strength and dignity calculations
+- `data class` with planet's zodiacal position
+- Fields: `planet`, `sign`, `longitude`, `nakshatra`, `pada`, `house`, `isRetrograde`, `isCombust`
+- Location: `core/model/`
 
 
-**SavedChart**
-- Persistent chart entity with ID for database storage and profile management
-- Maps to `ChartEntity` for Room database
-- Location: `data/model/SavedChart.kt`
-- Used by: ChartRepository, ProfileSwitcherBottomSheet
-
-
-### UI Architecture
+**SavedChart** / **ChartEntity**
+- Room database entity for persisting charts
+- Convertible to/from `VedicChart` via extension functions
+- Location: `app/src/main/java/com/astro/storm/data/database/`
 
 
 **InsightFeature**
-- Enum defining all 30+ astrological analyses with UI metadata (title, description, icon, color)
-- Method: `getLocalizedTitle(language)`, `getLocalizedDescription(language)`
-- Location: `ui/screen/main/HomeTab.kt`
-- Powers: Feature grid display, navigation routing
+- `enum class` defining available analysis types
+- Values: `FULL_CHART`, `PLANETS`, `YOGAS`, `DASHAS`, `TRANSITS`, `ASHTAKAVARGA`, `PANCHANGA`
+- Used for navigation and feature flags
+- Location: `HomeTab.kt:454-586`
 
 
-**MainTab**
-- Enum for bottom navigation: HOME, INSIGHTS, CHAT, SETTINGS
+### Navigation & UI
+
+
+**AstroStormNavigation**
+- Main `@Composable` navigation graph setup
+- Defines 40+ screen routes with parameters
+- Location: `ui/navigation/Navigation.kt:284-1087`
+
+
+**Screen** (sealed class)
+- Type-safe route definitions
+- Each route has a `createRoute()` helper for parameter passing
+- Examples: `Screen.Main`, `Screen.ChartAnalysis`, `Screen.Matchmaking`
+- Location: `ui/navigation/Navigation.kt:76-272`
+
+
+**MainScreen**
+- Bottom navigation hub with 4 tabs
+- Entry point after onboarding
+- Uses `rememberSaveable` for tab persistence
+- Location: `ui/screen/main/MainScreen.kt:70-333`
+
+
+**HomeTab**
+- Feature discovery interface with grid layout
+- Shows implemented vs. coming-soon features
+- Location: `ui/screen/main/HomeTab.kt:48-663`
+
+
+**ProfileSwitcher**
+- UI component for switching between saved charts
+- Displayed as bottom sheet from MainTopBar
 - Location: `ui/screen/main/MainScreen.kt`
-- Determines: Tab content rendering in MainScreen
 
 
-**AgenticMessageCard**
-- Modern IDE-inspired UI component for displaying AI messages with reasoning, tools, and content sections
-- Location: `ui/components/agentic/AgenticMessageComponents.kt`
-- Used by: ChatScreen for real-time streaming messages
+### Calculation Engine Terms
 
 
-**SectionedMessageCard**
-- Advanced message UI using dynamic `AgentSection` types for structured AI responses
-- Supports: Reasoning, ToolGroups, Content, AskUser interactions, TodoLists, TaskBoundaries
-- Location: `ui/components/agentic/SectionedMessageCard.kt`
-- Used by: ChatScreen for both streaming and completed messages
-
-
-**ChartRenderer**
-- Draws Vedic charts in North/South Indian diamond/square formats with theme-aware colors
-- Method: `drawNorthIndianChart(drawScope, chart, size)`
-- Location: `ui/chart/ChartRenderer.kt`
-- Used by: Chart screens, ChartExporter for PDF generation
-
-
-### State Management
-
-
-**ChartUiState**
-- Sealed class: Initial, Loading, Calculating, Success(VedicChart), Error(String), Saved, Exporting, Exported
-- Location: `ui/viewmodel/ChartViewModel.kt`
-- Drives: UI rendering in ChartInputScreen and other chart-related screens
-
-
-**StreamingMessageState**
-- Real-time AI message state with `content`, `reasoning`, `toolSteps` for live updates
-- Location: `ui/viewmodel/ChatViewModel.kt`
-- Used by: AgenticMessageCard during message streaming
-
-
-**SectionedMessageState**
-- Structured message state with chronologically-ordered `AgentSection` list
-- Enables: IDE-style message display with collapsible sections
-- Location: `ui/viewmodel/ChatViewModel.kt`
-- Used by: SectionedMessageCard for advanced message rendering
-
-
-**InsightsUiState**
-- Sealed class: Idle, Loading, Success(InsightsData), Error(String)
-- Contains: DashaTimeline, horoscopes (today/tomorrow/weekly), planetary influences, error list
-- Location: `ui/viewmodel/InsightsViewModel.kt`
-- Drives: InsightsTab display with graceful degradation on partial failures
-
-
-### AI System
-
-
-**StormyAgent**
-- Core AI orchestration class handling conversations, tool calls, and streaming responses
-- Method: `processMessage(messages, model): Flow<AgentResponse>`
-- Location: `data/ai/agent/StormyAgent.kt`
-- Integrates: AiProviderRegistry, AstrologyTools, ToolContext
-
-
-**AstrologyTool**
-- Interface for AI-invokable functions with `name`, `description`, `parameters`, `execute()` method
-- 20+ implementations: get_profile_info, get_planet_positions, get_dashas, get_yogas, etc.
-- Location: `data/ai/agent/tools/AstrologyTools.kt`
-- Pattern: Each tool receives `JSONObject` arguments and `ToolContext` with chart access
-
-
-**ToolContext**
-- Dependency injection container providing AI tools with: currentChart, allProfiles, database access
-- Location: `data/ai/agent/tools/AstrologyTools.kt`
-- Purpose: Enables tools to access user data and perform contextual analyses
-
-
-**CalculationWrappers**
-- Static wrapper functions standardizing calculator outputs for AI consumption
-- Wraps: 15+ calculators into consistent data class outputs
-- Location: `data/ai/agent/tools/CalculationWrappers.kt`
-- Purpose: Bridge between raw calculators and AI tool system
-
-
-**AgentResponse**
-- Sealed class for streaming AI output: ReasoningChunk, ContentChunk, ToolCallsStarted, ToolResult, Complete, Error
-- Location: `data/ai/agent/StormyAgent.kt`
-- Used by: ChatViewModel to build StreamingMessageState and SectionedMessageState
-
-
-**AgentSection**
-- Sealed interface for message sections: Reasoning, ToolGroup, Content, AskUser, TodoList, TaskBoundary, ProfileOperation
-- Location: `ui/viewmodel/ChatViewModel.kt`
-- Enables: Chronological message construction with heterogeneous content types
-
-
-### Astrological Calculations
-
-
-**DashaCalculator**
-- Calculates Vimshottari planetary period system (120-year cycle, 6 nested levels)
-- Method: `calculateDashaTimeline(chart): DashaTimeline`
-- Location: `ephemeris/DashaCalculator.kt`
-- Output: Complete timeline from Mahadasha through Dehadasha with dates and durations
-
-
-**YogaCalculator**
-- Identifies auspicious and inauspicious planetary combinations (Raja Yoga, Dhana Yoga, Parivartana, etc.)
-- Method: `calculateYogas(chart): YogaAnalysis`
-- Location: `ephemeris/YogaCalculator.kt`
-- Categories: Wealth, power, spirituality, health, obstacles
-
-
-**AshtakavargaCalculator**
-- Calculates bindu (strength points) system for planets and signs
-- Method: `calculateAshtakavarga(chart): AshtakavargaAnalysis`
-- Location: `ephemeris/AshtakavargaCalculator.kt`
-- Output: Sarvashtakavarga (total), Bhinnashtakavarga (per planet)
-
-
-**VarshaphalaCalculator**
-- Annual horoscope calculation using Tajika system with solar return chart
-- Method: `calculateVarshaphala(natalChart, year): VarshaphalaResult`
-- Location: `ephemeris/VarshaphalaCalculator.kt`
-- Includes: Solar return, Muntha, Sahams, Tajika aspects, Mudda Dasha, house predictions
-
-
-**MatchmakingCalculator**
-- Traditional Vedic compatibility analysis using Ashtakoota Guna system
-- Method: `calculateMatchmaking(chart1, chart2): MatchmakingResult`
-- Location: `ephemeris/MatchmakingCalculator.kt`
-- Analyzes: 8 Gunas, Manglik dosha, Nadi dosha, nakshatra compatibility
-
-
-**VedicAstrologyUtils**
-- Centralized utility object for common astrological calculations
-- Functions: `isExalted()`, `isDebilitated()`, `isInOwnSign()`, `isKendra()`, `getGana()`, `aspectsHouse()`
-- Location: `ephemeris/VedicAstrologyUtils.kt`
-- Used by: All calculators for atomic operations and dignity checks
-
-
-**AstrologicalConstants**
-- Single source of truth for astrological parameters: exaltation/debilitation signs, house categories
-- Location: Referenced by VedicAstrologyUtils
-- Purpose: Ensures consistency across all calculations
-
-
-### Specialized Terms
-
-
-**Dasha**
-- Planetary period system in Vedic astrology; Vimshottari uses 9 planets in 120-year cycle
-- Levels: Mahadasha (years), Antardasha (months), Pratyantardasha (days), Sookshmadasha (hours), Pranadasha (minutes), Dehadasha
-- Location: `ephemeris/DashaCalculator.kt`, `ui/screen/chartdetail/tabs/DashasTabContent.kt`
-
-
-**DashaSandhi**
-- Transition period between two Dasha periods, considered sensitive time
-- Method: `getUpcomingSandhisWithin(days)` returns upcoming transitions
-- Location: `ephemeris/DashaCalculator.kt`
-- UI: Displayed in SandhiAlertsCard with color-coded urgency
-
-
-**Nakshatra**
-- One of 27 lunar mansions dividing the zodiac; each planet's nakshatra influences characteristics
-- Attributes: Gana (temperament), Yoni (animal symbol), Nadi (pulse), Varna (caste), Rajju (rope type)
-- Location: `data/model/Nakshatra.kt`, `ephemeris/VedicAstrologyUtils.kt`
+**Shadbala**
+- Six-fold planetary strength system from BPHS
+- Components: Sthana, Dig, Kala, Chesta, Naisargika, Drik
+- Output: `PlanetaryShadbala` with total Rupas and strength rating
+- Location: `ephemeris/ShadbalaCalculator.kt:249-264`
 
 
 **Ashtakavarga**
-- Point-based strength system using "bindus" (dots) for each planet in each sign
-- Sarvashtakavarga: Combined strength (total bindus); Bhinnashtakavarga: Individual planet strength
-- Location: `ephemeris/AshtakavargaCalculator.kt`, `ui/screen/ashtakavarga/`
-- Range: 0-56 bindus per sign for Sarvashtakavarga
+- Point-based (bindu) strength system
+- Three types: Bhinnashtakavarga (per planet), Sarvashtakavarga (total), Prastarashtakavarga (detailed)
+- Includes Shodhana (reduction) process
+- Location: `ephemeris/AshtakavargaCalculator.kt:237-264`
 
 
-**Yoga**
-- Planetary combination producing specific effects (e.g., Raja Yoga for power, Dhana Yoga for wealth)
-- Special yogas: Pancha Mahapurusha, Viparita Raja, Neecha Bhanga
-- Location: `ephemeris/YogaCalculator.kt`, `ui/screen/chartdetail/tabs/YogasTabContent.kt`
+**Vimshottari Dasha**
+- 120-year planetary period system
+- Six levels: Mahadasha → Antardasha → Pratyantardasha → Sookshmadasha → Pranadasha → Dehadasha
+- Starting point based on Moon's Nakshatra
+- Location: `ephemeris/DashaCalculator.kt:309-370`
+
+
+**DashaTimeline**
+- `data class` containing complete dasha sequence
+- Fields: list of Mahadashas, current periods at all 6 levels, upcoming Sandhis
+- Location: `ephemeris/DashaCalculator.kt:199-299`
+
+
+**Divisional Chart** (Varga)
+- Micro-charts calculated by dividing zodiac signs
+- Types: D1 (Rashi), D2 (Hora), D9 (Navamsa), D12, D30, D60, etc.
+- Used for specialized analysis (marriage, career, etc.)
+- Location: `ephemeris/DivisionalChartCalculator.kt`
+
+
+**Vargottama**
+- Planet occupying same sign in D1 and D9 charts
+- Indicates strength and consistency
+- Symbol: ¤ in chart rendering
+- Calculated in: `DivisionalChartCalculator`
+
+
+**Nakshatra**
+- 27 lunar mansions (13°20' each)
+- Determines dasha starting point and compatibility
+- Each divided into 4 padas (quarters)
+- Used throughout calculation engine
 
 
 **Ayanamsa**
-- Precession correction applied to convert tropical to sidereal zodiac
-- Systems: Lahiri (most common), Raman, Krishnamurti, etc.
-- Location: Chart calculation parameters, affects all planetary positions
+- Precession correction for zodiac alignment
+- Options: Lahiri, Raman, KP, etc.
+- User-configurable via `AstrologySettingsManager`
+- Affects all planetary calculations
 
 
-**Panchanga**
-- Five limbs of Vedic calendar: Tithi (lunar day), Vara (weekday), Nakshatra, Yoga, Karana
-- Method: `calculatePanchanga(dateTime, lat, lon, timezone): PanchangaData`
-- Location: `ephemeris/PanchangaCalculator.kt`, `ui/screen/panchanga/`
+**Deha-Jeeva**
+- Body (Deha) and Soul (Jeeva) rashis in Kalachakra Dasha
+- Deha = Navamsa sign, Jeeva = 5th from Deha
+- Relationship determines health/spiritual predictions
+- Location: `ephemeris/KalachakraDashaCalculator.kt:427-444`
+
+
+**Guna Milan**
+- Compatibility scoring for matchmaking
+- Eight Kutas: Varna, Vashya, Tara, Yoni, Graha, Gana, Bhakoot, Nadi
+- Maximum: 36 points
+- Location: `matchmaking/MatchmakingScreen.kt`
+
+
+**Dosha**
+- Astrological affliction (e.g., Manglik, Nadi, Bhakoot)
+- Analyzed in matchmaking and remedies
+- Requires specific remedial measures
+- String keys: `StringKeyDosha.kt`
+
+
+**Yoga**
+- Planetary combination with specific effects
+- Categories: Raj Yoga (auspicious), Dosha Yoga (affliction)
+- Calculated from planetary positions and relationships
+- Location: `ephemeris/YogaCalculator.kt`
+
+
+**Varshaphala**
+- Annual solar return chart and predictions
+- Includes Muntha, Tajika aspects, Mudda Dasha
+- Calculated for specific age/year
+- Location: `ephemeris/VarshaphalaCalculator.kt`
+
+
+**Prashna**
+- Horary astrology for specific questions
+- Chart generated for question time, not birth
+- Analyzes Moon and Lagna for answers
+- Location: `ephemeris/PrashnaCalculator.kt`
 
 
 **Muhurta**
-- Electional astrology for finding auspicious timing for activities
-- Method: `calculateMuhurta(activity, location, daysAhead): List<MuhurtaTime>`
-- Location: `ephemeris/MuhurtaCalculator.kt`, `ui/screen/MuhurtaScreen.kt`
+- Electional astrology for auspicious timing
+- Considers Panchanga, Choghadiya, Rahu Kala
+- Activity-specific recommendations
+- Location: `ephemeris/muhurta/MuhurtaCalculator.kt`
 
 
-**Maraka**
-- Death-inflicting planets (typically 2nd and 7th house lords); used in longevity analysis
-- Severity: VERY_HIGH, HIGH, MODERATE, LOW, MINIMAL, NONE
-- Location: `ephemeris/MarakaCalculator.kt`
+**Panchanga**
+- Five limbs: Vara (weekday), Tithi (lunar day), Nakshatra, Yoga, Karana
+- Daily Vedic calendar elements
+- Used in Muhurta and general analysis
+- Calculated via Swiss Ephemeris
 
 
-**Badhaka**
-- Obstruction-causing planets based on ascendant type (movable/fixed/dual)
-- Analyzes: Career, health, relationship, financial obstacles
-- Location: `ephemeris/BadhakaCalculator.kt`
+**Choghadiya**
+- Eight time periods in day/night
+- Types: Amrit (excellent), Shubh (good), Labh (gain), Chal (moving), Udveg (anxiety), Roga (illness), Kaal (death), Rog (affliction)
+- Location: `MuhurtaScreen.kt`
 
 
-### Localization
+### AI System Terms
+
+
+**Stormy / StormyAgent**
+- AI assistant name and main orchestrator class
+- Processes messages with iterative tool-calling loop
+- Supports up to 15 tool iterations per query
+- Location: `data/ai/agent/StormyAgent.kt:20-285`
+
+
+**AstrologyToolRegistry**
+- Manages 30+ specialized astrology tools
+- Provides `executeTool()` with fuzzy matching
+- Generates tool descriptions for AI system prompt
+- Location: `data/ai/agent/tools/AstrologyToolRegistry.kt:22-298`
+
+
+**AstrologyTool**
+- Interface for AI-callable functions
+- Methods: `execute(arguments, context)`, parameter definitions
+- Examples: GetProfileInfoTool, GetDashaInfoTool, GetCompatibilityTool
+- Location: `data/ai/agent/tools/AstrologyTools.kt`
+
+
+**ToolContext**
+- `data class` passed to tool execution
+- Fields: `currentProfile`, `currentChart`, `allProfiles`, `database`, `context`
+- Provides all dependencies tools need
+- Location: `AstrologyToolRegistry.kt:269-282`
+
+
+**AiProviderRegistry**
+- Multi-provider abstraction for AI models
+- Manages model configuration (enabled, aliases, custom models)
+- Providers: DeepInfra, Yqcloud, WeWordle
+- Location: `data/ai/provider/AiProviderRegistry.kt:20-296`
+
+
+**AgentResponse** (sealed class)
+- Streaming response types from Stormy
+- Variants: `ContentChunk`, `ReasoningChunk`, `ToolExecuting`, `ToolResult`, `Complete`, `Error`
+- Enables real-time UI updates
+- Location: `StormyAgent.kt:448-515`
+
+
+**CalculationWrappers**
+- Adapter layer between AI tools and ephemeris calculators
+- Formats calculation results as JSON-serializable objects
+- Examples: `VimshottariDashaCalculator`, `YogaCalculatorWrapper`
+- Location: `data/ai/agent/tools/CalculationWrappers.kt`
+
+
+### Rendering & Export
+
+
+**ChartRenderer**
+- `class` for drawing Vedic charts on Canvas
+- Supports North Indian and South Indian styles
+- Methods: `drawNorthIndianChart()`, `drawSouthIndianChart()`, `createChartBitmap()`
+- Location: `ui/chart/ChartRenderer.kt:81-850`
+
+
+**ChartColorConfig**
+- `data class` defining chart color scheme
+- Predefined: `Light`, `Dark`, `Print`
+- Fields: `frameColor`, `planetColor`, `exaltedColor`, etc.
+- Location: `ui/chart/ChartRenderer.kt:19-79`
+
+
+**ChartExporter**
+- Generates export artifacts (PDF, JSON, CSV, images)
+- PDF: Multi-page reports with charts and analysis
+- Methods: `exportToPdf()`, `exportToJson()`, `exportToCsv()`, `exportToImage()`
+- Location: `util/ChartExporter.kt:67-398`
+
+
+**PlanetaryDignity** (enum)
+- Visual dignity indicators in charts
+- Values: `EXALTED` (↑), `DEBILITATED` (↓), `MOOL_TRIKONA` (△), `OWN_SIGN` (⬠), `NEUTRAL`
+- Calculated via `VedicAstrologyUtils`
+- Location: `ui/chart/ChartRenderer.kt:114-120`
+
+
+### Settings & Preferences
+
+
+**ThemeManager**
+- Singleton managing app theme
+- Modes: `LIGHT`, `DARK`, `SYSTEM`
+- Exposes `StateFlow<ThemeMode>`
+- Location: `data/preferences/ThemeManager.kt:19-85`
+
+
+**AstrologySettingsManager**
+- Singleton managing calculation parameters
+- Settings: `nodeMode` (MEAN/TRUE), `ayanamsa`, `houseSystem`
+- Influences all ephemeris calculations
+- Location: `data/preferences/AstrologySettingsManager.kt:20-105`
+
+
+**LocalizationManager**
+- Singleton managing language and date system
+- Languages: English, Nepali, Hindi
+- Date systems: AD (Gregorian), BS (Bikram Sambat)
+- Location: `data/preferences/LocalizationManager.kt`
 
 
 **StringResources**
-- Central localization hub with `get(key: StringKeyInterface, language: Language): String`
-- Supports: English, Nepali with parameter interpolation
+- Central localization lookup
+- Method: `get(key: StringKey, language: Language, ...args)`
+- Domain-specific key enums: StringKeyMatch, StringKeyAnalysis, StringKeyDosha, StringKeyRemedy
 - Location: `data/localization/StringResources.kt`
-- Used by: All UI components via `stringResource()` Composable
 
 
-**StringKey**
-- Enum implementing `StringKeyInterface` with `en` and `ne` properties for each string
-- Split into: StringKey (core UI), StringKeyMatch (matchmaking), StringKeyAnalysis (calculations)
-- Location: `data/localization/StringResources.kt`
-- Pattern: Type-safe string access prevents missing translations
+### Database Terms
 
 
-**DateSystem**
-- Enum: AD (Anno Domini), BS (Bikram Sambat - Nepali calendar)
-- Conversion: `BikramSambatConverter.toBS()` and `toAD()`
-- Location: Date input screens, preference settings
-- Note: Internal storage always uses AD; BS is display/input convenience
+**ChartViewModel**
+- ViewModel managing chart state with Hilt injection
+- Methods: `saveChart()`, `deleteChart()`, `getChartById()`
+- Exposes: `savedCharts`, `uiState`, `selectedChartId` StateFlows
+- Location: Inferred from usage
 
 
-### Performance and Caching
+**ChartDao**
+- Room DAO for chart database operations
+- CRUD methods for `ChartEntity`
+- Location: `data/database/`
 
 
-**ChartUtils.generateChartKey()**
-- Deterministic cache key from birth timestamp, coordinates (6 decimals), ayanamsa, timezone
-- Pattern: `epochSeconds|latInt|lonInt|ayanamsa|timezone`
-- Location: `util/ChartUtils.kt`
-- Used by: ChartViewModel, DashaViewModel, InsightsViewModel for cache management
+**OnboardingManager**
+- Singleton tracking first-time setup status
+- Exposes `StateFlow<Boolean>` for completion status
+- Methods: `completeOnboarding()`, `resetOnboarding()`
+- Location: `data/preferences/OnboardingManager.kt:16-66`
 
 
-**Throttling**
-- Performance optimization: 50ms for UI updates (~20 FPS), 500ms for DB writes
-- Implementation: Timestamp checking in streaming message updates
-- Location: `ui/viewmodel/ChatViewModel.kt`
-- Purpose: Balance smooth UX with resource efficiency
+### Utility Terms
+
+
+**VedicAstrologyUtils**
+- Static utility object with common astrology functions
+- Functions: `isExalted()`, `getDignity()`, `areNaturalFriends()`, `aspectsHouse()`
+- Delegates to `AstrologicalConstants` for data
+- Location: `ephemeris/VedicAstrologyUtils.kt`
+
+
+**SwissEphemeris** / **SwissEph**
+- Third-party astronomical calculation library
+- Used for precise planetary positions
+- Wrapped in `MuhurtaAstronomicalCalculator`
+- Not directly exposed in main codebase
+
+
+This glossary covers the essential domain-specific terminology needed to navigate the AstroStorm codebase effectively. Engineers should familiarize themselves with these terms when starting work on the project, as they form the common vocabulary used throughout discussions, code reviews, and documentation.
