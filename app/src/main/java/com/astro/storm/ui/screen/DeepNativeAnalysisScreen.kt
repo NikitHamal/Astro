@@ -331,9 +331,10 @@ private fun CareerSection(
         onToggle = { onToggleCard("career_style") }
     ) {
         Column {
-            LocalizedParagraphText(paragraph = career.workStyle.preferredEnvironment)
-            Spacer(modifier = Modifier.height(8.dp))
-            LocalizedParagraphText(paragraph = career.workStyle.leadershipStyle)
+            LocalizedParagraphText(paragraph = career.workStyle)
+            // LocalizedParagraphText(paragraph = career.workStyle.preferredEnvironment)
+            // Spacer(modifier = Modifier.height(8.dp))
+            // LocalizedParagraphText(paragraph = career.workStyle.leadershipStyle)
         }
     }
     
@@ -436,8 +437,8 @@ private fun HealthSection(
         Column {
             LocalizedParagraphText(paragraph = health.constitutionAnalysis.constitutionDescription)
             Spacer(modifier = Modifier.height(8.dp))
-            Text("Dietary Recommendations", fontWeight = FontWeight.Medium)
-            LocalizedParagraphText(paragraph = health.constitutionAnalysis.dietaryRecommendations)
+            // Text("Dietary Recommendations", fontWeight = FontWeight.Medium)
+            // LocalizedParagraphText(paragraph = health.constitutionAnalysis.dietaryRecommendations)
         }
     }
     

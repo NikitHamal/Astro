@@ -77,7 +77,7 @@ object WealthDeepAnalyzer {
                     "${yoga.name}ले धन संचयमा योगदान गर्छ।"),
                 activationPeriods = LocalizedParagraph("Activates during favorable dasha periods.",
                     "अनुकूल दशा अवधिहरूमा सक्रिय हुन्छ।"),
-                involvedPlanets = yoga.involvedPlanets
+                involvedPlanets = yoga.planets
             )
         }
         

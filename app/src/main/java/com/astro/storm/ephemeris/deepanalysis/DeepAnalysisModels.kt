@@ -232,17 +232,6 @@ data class SunDeepAnalysis(
 /**
  * Atmakaraka (soul significator) analysis
  */
-data class AtmakarakaAnalysis(
-    val planet: Planet,
-    val karakaName: String = planet.displayName,
-    val signPosition: ZodiacSign,
-    val soulDesire: LocalizedParagraph,
-    val karmicLesson: LocalizedParagraph,
-    val spiritualPath: LocalizedParagraph,
-    val atmakarakaLessons: LocalizedParagraph = spiritualPath,
-    val karmicTask: LocalizedParagraph = spiritualPath,
-    val overallAtmakarakaInterpretation: LocalizedParagraph
-)
 
 /**
  * Temperament profile based on element/modality dominance
@@ -1171,8 +1160,7 @@ data class EducationDeepResult(
 ) {
     val jupiterAnalysis get() = jupiterEducationAnalysis
     val learningStyle get() = learningStyleProfile
-    val suitableSubjects get() = favorableSubjects
-    val suitableSubjects get() = favorableSubjects
+    val favorableSubjects get() = suitableSubjects // Alias for UI
     val higherEducationIndicators get() = higherEducationAnalysis
 }
 
@@ -1411,9 +1399,37 @@ data class KetuSpiritualAnalysis(
     val liberationIndicators: LocalizedParagraph = pastLifeKarma
 )
 
+data class KetuSpiritualAnalysis(
+    val sign: ZodiacSign,
+    val house: Int,
+    val dignity: PlanetaryDignityLevel = PlanetaryDignityLevel.NEUTRAL,
+    val nakshatra: Nakshatra,
+    val pastLifeKarma: LocalizedParagraph,
+    val detachmentArea: LocalizedParagraph,
+    val spiritualGifts: LocalizedParagraph,
+    @get:JvmName("getDetachmentAreas") val detachmentAreas: LocalizedParagraph = detachmentArea,
+    @get:JvmName("getSpiritualTalents") val spiritualTalents: LocalizedParagraph = spiritualGifts,
+    @get:JvmName("getLiberationIndicators") val liberationIndicators: LocalizedParagraph = pastLifeKarma
+)
+
 /**
- * Spiritual yoga
+ * Atmakaraka Analysis (Soul Planet)
  */
+data class AtmakarakaAnalysis(
+    val planet: Planet,
+    val sign: ZodiacSign,
+    val house: Int,
+    val dignity: PlanetaryDignityLevel,
+    val soulPurpose: LocalizedParagraph,
+    val lessons: LocalizedParagraph,
+    val strength: StrengthLevel,
+    // Legacy support / Aliases
+    val signPosition: ZodiacSign = sign,
+    val soulDesire: LocalizedParagraph = soulPurpose,
+    val karmicLesson: LocalizedParagraph = lessons,
+    val spiritualPath: LocalizedParagraph = soulPurpose,
+    val overallAtmakarakaInterpretation: LocalizedParagraph = soulPurpose
+)
 data class SpiritualYoga(
     val name: String,
     val strength: StrengthLevel,

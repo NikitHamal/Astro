@@ -139,12 +139,16 @@ object HealthDeepAnalyzer {
     
     private fun analyzePlanetaryHealthInfluences(context: AnalysisContext): List<PlanetaryHealthInfluence> {
         return listOf(Planet.SUN, Planet.MOON, Planet.MARS).map { planet ->
+            val area = getHealthArea(planet)
             PlanetaryHealthInfluence(
                 planet = planet,
+                influenceType = HealthInfluenceType.NEUTRAL,
+                affectedAreas = listOf(area.en),
+                description = LocalizedParagraph("${planet.displayName} influences ${area.en}.", "${planet.displayName}ले ${area.ne}लाई प्रभाव पार्छ।"),
                 strengthLevel = context.getPlanetStrengthLevel(planet),
-                healthArea = getHealthArea(planet),
-                influence = LocalizedParagraph("${planet.displayName} influences ${getHealthArea(planet).en}.",
-                    "${planet.displayName}ले ${getHealthArea(planet).ne}लाई प्रभाव पार्छ।"),
+                healthArea = area.en,
+                influence = LocalizedParagraph("${planet.displayName} influences ${area.en}.",
+                    "${planet.displayName}ले ${area.ne}लाई प्रभाव पार्छ।"),
                 remedialMeasures = LocalizedParagraph("${planet.displayName} remedies support related health.",
                     "${planet.displayName} उपायहरूले सम्बन्धित स्वास्थ्यलाई समर्थन गर्छ।")
             )

@@ -184,20 +184,35 @@ object EducationDeepAnalyzer {
         
         val mercuryStrength = context.getPlanetStrengthLevel(Planet.MERCURY)
         if (mercuryStrength >= StrengthLevel.MODERATE) {
-            subjects.add(SubjectAffinity("Mathematics & Commerce", "गणित र वाणिज्य", mercuryStrength,
-                LocalizedParagraph("Mercury supports analytical subjects.", "बुधले विश्लेषणात्मक विषयहरूलाई समर्थन गर्छ।")))
+            subjects.add(SubjectMatch(
+                subjectCategory = SubjectCategory.COMMERCE_FINANCE,
+                specificSubjects = listOf("Mathematics", "Commerce"),
+                aptitudeScore = 7.5,
+                reasonForMatch = LocalizedParagraph("Mercury supports analytical subjects.", "बुधले विश्लेषणात्मक विषयहरूलाई समर्थन गर्छ।"),
+                affinity = mercuryStrength
+            ))
         }
         
         val jupiterStrength = context.getPlanetStrengthLevel(Planet.JUPITER)
         if (jupiterStrength >= StrengthLevel.MODERATE) {
-            subjects.add(SubjectAffinity("Philosophy & Law", "दर्शन र कानुन", jupiterStrength,
-                LocalizedParagraph("Jupiter supports wisdom subjects.", "बृहस्पतिले ज्ञान विषयहरूलाई समर्थन गर्छ।")))
+            subjects.add(SubjectMatch(
+                subjectCategory = SubjectCategory.PHILOSOPHY_RELIGION,
+                specificSubjects = listOf("Philosophy", "Law"),
+                aptitudeScore = 7.5,
+                reasonForMatch = LocalizedParagraph("Jupiter supports wisdom subjects.", "बृहस्पतिले ज्ञान विषयहरूलाई समर्थन गर्छ।"),
+                affinity = jupiterStrength
+            ))
         }
         
         val marsStrength = context.getPlanetStrengthLevel(Planet.MARS)
         if (marsStrength >= StrengthLevel.MODERATE) {
-            subjects.add(SubjectAffinity("Engineering & Science", "इन्जिनियरिङ र विज्ञान", marsStrength,
-                LocalizedParagraph("Mars supports technical subjects.", "मंगलले प्राविधिक विषयहरूलाई समर्थन गर्छ।")))
+            subjects.add(SubjectMatch(
+                subjectCategory = SubjectCategory.ENGINEERING,
+                specificSubjects = listOf("Engineering", "Science"),
+                aptitudeScore = 7.5,
+                reasonForMatch = LocalizedParagraph("Mars supports technical subjects.", "मंगलले प्राविधिक विषयहरूलाई समर्थन गर्छ।"),
+                affinity = marsStrength
+            ))
         }
         
         return subjects.sortedByDescending { it.affinity.value }.take(5)

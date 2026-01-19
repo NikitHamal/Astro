@@ -384,8 +384,8 @@ object DeepPredictionEngine {
             YogaActivationEvent(
                 yogaName = yoga.name,
                 activationPeriod = LocalizedParagraph(
-                    "During ${yoga.involvedPlanets.firstOrNull()?.displayName ?: "planetary"} dasha periods.",
-                    "${yoga.involvedPlanets.firstOrNull()?.displayName ?: "ग्रहीय"} दशा अवधिहरूमा।"
+                    "During ${yoga.planets.firstOrNull()?.displayName ?: "planetary"} dasha periods.",
+                    "${yoga.planets.firstOrNull()?.displayName ?: "ग्रहीय"} दशा अवधिहरूमा।"
                 ),
                 expectedResults = LocalizedParagraph(
                     "${yoga.name} brings ${yoga.category.name.lowercase().replace("_", " ")} results.",

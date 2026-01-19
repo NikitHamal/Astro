@@ -14,7 +14,7 @@ object SpiritualDeepAnalyzer {
         return SpiritualDeepResult(
             ninthHouseDharma = analyzeNinthHouse(context),
             twelfthHouseMoksha = analyzeTwelfthHouse(context),
-            atmaKarakaAnalysis = context.getAtmakarakaAnalysis(),
+            atmakarakaAnalysis = context.getAtmakarakaAnalysis(),
             jupiterAnalysis = analyzeJupiterSpiritual(context),
             ketuAnalysis = analyzeKetu(context),
             spiritualYogas = getSpiritualYogas(context),
@@ -91,16 +91,20 @@ object SpiritualDeepAnalyzer {
     
     private fun analyzeKetu(context: AnalysisContext): KetuSpiritualAnalysis {
         val ketu = context.ketuPosition
+        val detachPara = LocalizedParagraph("Detachment areas from Ketu placement.",
+                                            "केतु स्थानबाट विरक्ति क्षेत्रहरू।")
+        val giftsPara = LocalizedParagraph("Natural spiritual talents from Ketu.",
+                                            "केतुबाट प्राकृतिक आध्यात्मिक प्रतिभाहरू।")
         return KetuSpiritualAnalysis(
             sign = ketu?.sign ?: context.ascendantSign,
             house = ketu?.house ?: 1,
             nakshatra = ketu?.nakshatra ?: context.moonPosition?.nakshatra!!,
             pastLifeKarma = LocalizedParagraph("Past life patterns indicated by Ketu.",
                 "केतुले संकेत गर्ने पूर्व जीवन ढाँचाहरू।"),
-            detachmentAreas = LocalizedParagraph("Detachment areas from Ketu placement.",
-                "केतु स्थानबाट विरक्ति क्षेत्रहरू।"),
-            spiritualTalents = LocalizedParagraph("Natural spiritual talents from Ketu.",
-                "केतुबाट प्राकृतिक आध्यात्मिक प्रतिभाहरू।"),
+            detachmentArea = detachPara,
+            spiritualGifts = giftsPara,
+            detachmentAreas = detachPara,
+            spiritualTalents = giftsPara,
             liberationIndicators = LocalizedParagraph("Moksha indicators from Ketu.",
                 "केतुबाट मोक्ष सूचकहरू।")
         )

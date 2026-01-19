@@ -674,6 +674,7 @@ private fun formatPercentage(value: Double, language: Language): String {
 private fun getLocalizedStrength(strength: YogaStrength, language: Language): String {
     val key = when (strength) {
         YogaStrength.EXTREMELY_STRONG -> StringKey.YOGA_STRENGTH_EXTREMELY_STRONG
+        YogaStrength.VERY_STRONG -> StringKey.YOGA_STRENGTH_VERY_STRONG
         YogaStrength.STRONG -> StringKey.YOGA_STRENGTH_STRONG
         YogaStrength.MODERATE -> StringKey.YOGA_STRENGTH_MODERATE
         YogaStrength.WEAK -> StringKey.YOGA_STRENGTH_WEAK
