@@ -70,6 +70,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.core.common.StringKeySaham
+import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyShadbala
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -148,7 +150,7 @@ fun SahamScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(com.astro.storm.core.common.StringKey.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -157,7 +159,7 @@ fun SahamScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKeySaham.SHOW_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -343,7 +345,7 @@ private fun SahamScoreCard(analysis: SahamCalculator.SahamAnalysis) {
                     analysis.weakestSaham?.let { weakest ->
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "Needs Focus",
+                                text = stringResource(StringKeySaham.NEEDS_FOCUS),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -382,7 +384,7 @@ private fun SahamQuickStats(analysis: SahamCalculator.SahamAnalysis) {
             modifier = Modifier.weight(1f)
         )
         SahamStatCard(
-            title = "Activated",
+            title = stringResource(StringKeySaham.ACTIVATED),
             value = "$activatedCount",
             color = AppTheme.SuccessColor,
             modifier = Modifier.weight(1f)
@@ -455,13 +457,13 @@ private fun SahamBirthTypeCard(isDayBirth: Boolean) {
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = if (isDayBirth) "Day Birth" else "Night Birth",
+                    text = if (isDayBirth) stringResource(StringKeySaham.DAY_BIRTH) else stringResource(StringKeySaham.NIGHT_BIRTH),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = "Formulas adjusted per Tajika tradition",
+                    text = stringResource(StringKeySaham.FORMULA_ADJUSTED_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -489,7 +491,7 @@ private fun SahamInsightsCard(insights: List<String>) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Key Insights",
+                    text = stringResource(StringKeyAnalysis.UI_KEY_INSIGHTS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary

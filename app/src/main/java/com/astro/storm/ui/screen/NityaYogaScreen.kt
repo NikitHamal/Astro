@@ -105,7 +105,13 @@ fun NityaYogaScreen(
     var analysis by remember { mutableStateOf<NityaYogaCalculator.NityaYogaAnalysis?>(null) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    val tabs = listOf("Overview", "Effects", "Activities", "Timing", "All Yogas")
+    val tabs = listOf(
+        stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_OVERVIEW),
+        stringResource(com.astro.storm.core.common.StringKeyAnalysis.PANCHANGA_EFFECTS),
+        stringResource(com.astro.storm.core.common.StringKeyAnalysis.PANCHANGA_ACTIVITIES),
+        stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_TIMING),
+        stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_YOGAS)
+    )
 
     // Calculate analysis
     LaunchedEffect(chart) {
@@ -540,10 +546,10 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // General Nature Card
+        // General Nature
         EffectCard(
             icon = Icons.Outlined.AutoAwesome,
-            title = "General Nature",
+            title = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_GENERAL_NATURE),
             content = effects.generalNature,
             color = getAuspiciousnessColor(effects.auspiciousness)
         )
@@ -551,7 +557,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // Health Effects
         EffectCard(
             icon = Icons.Outlined.SelfImprovement,
-            title = "Health Indications",
+            title = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_HEALTH_INDICATIONS),
             content = effects.healthIndications,
             color = AppTheme.AccentTeal
         )
@@ -559,7 +565,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // Financial Effects
         EffectCard(
             icon = Icons.Outlined.TrendingUp,
-            title = "Financial Indications",
+            title = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_FINANCIAL_INDICATIONS),
             content = effects.financialIndications,
             color = AppTheme.AccentGold
         )
@@ -567,7 +573,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // Relationship Effects
         EffectCard(
             icon = Icons.Outlined.Star,
-            title = "Relationship Indications",
+            title = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_RELATIONSHIP_INDICATIONS),
             content = effects.relationshipIndications,
             color = AppTheme.PlanetVenus
         )
@@ -811,7 +817,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "Timing Guidance",
+                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_TIMING_GUIDANCE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -845,7 +851,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "Best Hours",
+                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_BEST_HOURS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -890,7 +896,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "Hours to Avoid",
+                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_HOURS_TO_AVOID),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary

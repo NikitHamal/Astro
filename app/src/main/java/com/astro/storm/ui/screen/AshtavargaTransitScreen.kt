@@ -140,7 +140,7 @@ fun AshtavargaTransitScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = if (language == Language.NEPALI) "अष्टकवर्ग गोचर" else "Ashtavarga Transits",
+                        text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_TITLE),
                         fontWeight = FontWeight.SemiBold
                     )
                 },
@@ -148,7 +148,7 @@ fun AshtavargaTransitScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(StringKey.BTN_BACK)
                         )
                     }
                 },
@@ -156,7 +156,7 @@ fun AshtavargaTransitScreen(
                     IconButton(onClick = { viewModel.refresh(chart, language) }) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Refresh"
+                            contentDescription = stringResource(StringKey.BTN_RETRY)
                         )
                     }
                 },
@@ -348,7 +348,7 @@ private fun OverviewTab(
         // Current Transit Highlights
         item {
             SectionHeader(
-                title = if (language == Language.NEPALI) "हालको गोचर हाइलाइटहरू" else "Current Transit Highlights",
+                title = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_HIGHLIGHTS, language),
                 language = language
             )
         }
@@ -380,7 +380,7 @@ private fun OverallScoreCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = if (language == Language.NEPALI) "समग्र गोचर स्कोर" else "Overall Transit Score",
+                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_SCORE, language),
                 style = MaterialTheme.typography.titleMedium,
                 color = colors.TextSecondary
             )
@@ -476,7 +476,7 @@ private fun SummaryStatisticsCard(
                 .padding(16.dp)
         ) {
             Text(
-                text = if (language == Language.NEPALI) "गोचर सारांश" else "Transit Summary",
+                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_SUMMARY, language),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.TextPrimary
@@ -491,17 +491,17 @@ private fun SummaryStatisticsCard(
             ) {
                 StatItem(
                     value = summary.favorableCount.toString(),
-                    label = if (language == Language.NEPALI) "अनुकूल" else "Favorable",
+                    label = StringResources.get(StringKeyAnalysis.TRANSIT_FAVORABLE, language),
                     color = colors.SuccessColor
                 )
                 StatItem(
                     value = summary.averageCount.toString(),
-                    label = if (language == Language.NEPALI) "औसत" else "Average",
+                    label = StringResources.get(com.astro.storm.core.common.StringKeyMatch.MATCH_AVERAGE, language),
                     color = colors.WarningColor
                 )
                 StatItem(
                     value = summary.challengingCount.toString(),
-                    label = if (language == Language.NEPALI) "चुनौतीपूर्ण" else "Challenging",
+                    label = StringResources.get(StringKeyAnalysis.TRANSIT_CHALLENGING, language),
                     color = colors.ErrorColor
                 )
             }
@@ -511,7 +511,7 @@ private fun SummaryStatisticsCard(
             // Dominant Life Areas
             if (summary.dominantLifeAreas.isNotEmpty()) {
                 Text(
-                    text = if (language == Language.NEPALI) "प्रभावित क्षेत्रहरू" else "Affected Areas",
+                    text = StringResources.get(StringKeyAnalysis.UI_AFFECTED_AREAS, language),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = colors.TextSecondary
@@ -553,7 +553,7 @@ private fun SummaryStatisticsCard(
                         Spacer(modifier = Modifier.width(8.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = if (language == Language.NEPALI) "अर्को महत्त्वपूर्ण गोचर" else "Next Significant Transit",
+                                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_NEXT, language),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = colors.TextMuted
                             )
@@ -762,7 +762,7 @@ private fun SortOptionsRow(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = if (language == Language.NEPALI) "क्रमबद्ध गर्नुहोस्" else "Sort by",
+                text = StringResources.get(StringKeyAnalysis.UI_SORT_BY, language),
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.TextMuted
             )
@@ -775,10 +775,10 @@ private fun SortOptionsRow(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             val options = listOf(
-                TransitSortCriteria.BY_QUALITY_DESC to (if (language == Language.NEPALI) "गुणस्तर" else "Quality"),
+                TransitSortCriteria.BY_QUALITY_DESC to StringResources.get(StringKeyAnalysis.TRANSIT_QUALITY_LABEL, language),
                 TransitSortCriteria.BY_BAV_DESC to "BAV",
                 TransitSortCriteria.BY_SAV_DESC to "SAV",
-                TransitSortCriteria.BY_EXIT_DATE to (if (language == Language.NEPALI) "निस्कने" else "Exit Date")
+                TransitSortCriteria.BY_EXIT_DATE to StringResources.get(StringKeyAnalysis.UI_EXIT_DATE, language)
             )
 
             options.forEach { (criteria, label) ->
@@ -931,11 +931,11 @@ private fun CurrentTransitCard(
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         InfoItem(
-                            label = if (language == Language.NEPALI) "चन्द्रबाट भाव" else "From Moon",
+                            label = StringResources.get(StringKeyAnalysis.UI_FROM_MOON, language),
                             value = "${transit.houseFromMoon}"
                         )
                         InfoItem(
-                            label = if (language == Language.NEPALI) "लग्नबाट भाव" else "From Lagna",
+                            label = StringResources.get(StringKeyAnalysis.UI_FROM_LAGNA, language),
                             value = "${transit.houseFromAsc}"
                         )
                     }
@@ -1068,7 +1068,7 @@ private fun UpcomingTransitsTab(
                     onClick = { showOnlySignificant = !showOnlySignificant },
                     label = {
                         Text(
-                            text = if (language == Language.NEPALI) "महत्त्वपूर्ण मात्र" else "Significant only",
+                            text = StringResources.get(StringKeyAnalysis.UI_SIGNIFICANT_ONLY, language),
                             fontSize = 12.sp
                         )
                     },
@@ -1330,7 +1330,7 @@ private fun PlanetDetailCard(
                 details.bestSign?.let { sign ->
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = if (language == Language.NEPALI) "उत्तम राशि" else "Best Sign",
+                            text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_BEST_SIGN, language),
                             style = MaterialTheme.typography.labelSmall,
                             color = colors.TextMuted
                         )
@@ -1450,7 +1450,7 @@ private fun PlanetDetailCard(
                     if (details.upcomingTransits.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = if (language == Language.NEPALI) "आगामी गोचरहरू" else "Upcoming Transits",
+                            text = StringResources.get(StringKeyAnalysis.UI_UPCOMING_TRANSITS, language),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Medium,
                             color = colors.AccentPrimary
@@ -1531,7 +1531,7 @@ private fun AnalysisTab(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = if (language == Language.NEPALI) "शोधन (न्यूनीकरण) परिणामहरू" else "Shodhana (Reduction) Results",
+                        text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_REDUCTION, language),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.TextPrimary
@@ -1546,7 +1546,7 @@ private fun AnalysisTab(
                     ) {
                         Column {
                             Text(
-                                text = if (language == Language.NEPALI) "त्रिकोण शोधन" else "Trikona Shodhana",
+                                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_TRIKONA, language),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = colors.TextSecondary
                             )
@@ -1572,7 +1572,7 @@ private fun AnalysisTab(
                     ) {
                         Column {
                             Text(
-                                text = if (language == Language.NEPALI) "एकाधिपत्य शोधन" else "Ekadhipatya Shodhana",
+                                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_EKADHIPATYA, language),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = colors.TextSecondary
                             )
@@ -1605,7 +1605,7 @@ private fun AnalysisTab(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = if (language == Language.NEPALI) "जीवन क्षेत्र प्रभाव" else "Life Area Impact",
+                        text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_LIFE_AREA, language),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.TextPrimary
@@ -1645,13 +1645,12 @@ private fun AnalysisTab(
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = if (language == Language.NEPALI) "अष्टकवर्ग गोचर बारेमा" else "About Ashtavarga Transits",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = colors.TextPrimary
-                        )
-                    }
+                                            Text(
+                                                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_ABOUT, language),
+                                                style = MaterialTheme.typography.titleMedium,
+                                                fontWeight = FontWeight.SemiBold,
+                                                color = colors.TextPrimary
+                                            )                    }
 
                     Spacer(modifier = Modifier.height(12.dp))
 

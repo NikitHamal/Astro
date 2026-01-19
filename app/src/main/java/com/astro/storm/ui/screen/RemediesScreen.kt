@@ -1042,7 +1042,7 @@ private fun CategoryFilter(
                 onClick = { onCategoryChange(category) },
                 label = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(category.displayName)
+                        Text(category.getLocalizedName(LocalLanguage.current))
                         if (count > 0) {
                             Spacer(modifier = Modifier.width(4.dp))
                             Surface(
@@ -1146,7 +1146,7 @@ private fun RemedyCard(
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                remedy.category.displayName,
+                                remedy.category.getLocalizedName(LocalLanguage.current),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1180,7 +1180,7 @@ private fun RemedyCard(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            remedy.priority.displayName,
+                            remedy.priority.getLocalizedName(LocalLanguage.current),
                             style = MaterialTheme.typography.labelSmall,
                             color = getPriorityColor(remedy.priority)
                         )
@@ -1615,7 +1615,7 @@ private fun StrengthIndicator(
             }
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                strength.displayName,
+                strength.getLocalizedName(LocalLanguage.current),
                 style = MaterialTheme.typography.labelSmall,
                 color = strengthColor
             )

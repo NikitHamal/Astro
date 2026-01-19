@@ -725,7 +725,7 @@ private fun TransitsByHouseContent(
             HouseTransitCard(
                 house = house,
                 transits = transits,
-                houseSignification = getHouseSignification(house)
+                houseSignification = getHouseSignification(house, language)
             )
         }
 
@@ -927,10 +927,33 @@ private fun UpcomingTransitCard(
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = if (daysUntil == 0) "Today" else if (daysUntil == 1) "Tomorrow" else "In $daysUntil days",
+                    text = when (daysUntil) {
+                        0 -> stringResource(StringKey.PERIOD_TODAY)
+                        1 -> stringResource(StringKey.PERIOD_TOMORROW)
+                        else -> String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_IN_DAYS_FMT), daysUntil)
+                    },
                     fontSize = 11.sp,
                     color = AppTheme.TextMuted
                 )
+---
+private fun getHouseSignification(house: Int, language: com.astro.storm.core.common.Language): String {
+    val key = when (house) {
+        1 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_1
+        2 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_2
+        3 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_3
+        4 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_4
+        5 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_5
+        6 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_6
+        7 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_7
+        8 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_8
+        9 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_9
+        10 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_10
+        11 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_11
+        12 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_12
+        else -> null
+    }
+    return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: ""
+}
             }
         }
     }

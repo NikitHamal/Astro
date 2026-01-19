@@ -879,7 +879,7 @@ private fun HouseArgalaDetailCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            getHouseName(house),
+                            getHouseName(house, language),
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextMuted
                         )
@@ -921,7 +921,7 @@ private fun HouseArgalaDetailCard(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            "Argala Influences",
+                            stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_ARGALA_INFLUENCES),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary

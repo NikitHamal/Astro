@@ -626,10 +626,10 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                             ) {
                                 Text(
                                     text = when {
-                                        yoga.isExalted -> "Exalted"
-                                        yoga.isDebilitated -> "Debilitated"
-                                        yoga.isRetrograde -> "Retrograde"
-                                        else -> "Normal"
+                                        yoga.isExalted -> stringResource(StringKey.DIGNITY_EXALTED_STATUS)
+                                        yoga.isDebilitated -> stringResource(StringKey.DIGNITY_DEBILITATED_STATUS)
+                                        yoga.isRetrograde -> stringResource(StringKey.PLANET_RETROGRADE)
+                                        else -> stringResource(StringKey.DIGNITY_NEUTRAL_STATUS)
                                     },
                                     style = MaterialTheme.typography.labelSmall,
                                     color = when {
@@ -908,7 +908,7 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
                         color = yogaColor
                     )
                     Text(
-                        text = "${period.planet.displayName} Dasha",
+                        text = StringResources.get(com.astro.storm.core.common.StringKeyMatch.DASHA_LEVEL_MAHADASHA, language) + " - ${period.planet.getLocalizedName(language)}",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary

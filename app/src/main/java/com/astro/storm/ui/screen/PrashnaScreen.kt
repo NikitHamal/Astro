@@ -1323,7 +1323,7 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
                 )
                 MoonDetailItem(
                     label = phaseLabel,
-                    value = if (moonAnalysis.isWaxing) waxingLabel else waningLabel,
+                    value = if (moonAnalysis.isWaxing) stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_WAXING) else stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_WANING),
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -1475,7 +1475,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
             ) {
                 MoonDetailItem(
                     label = lordPositionLabel,
-                    value = "${stringResource(StringKey.CHART_HOUSE)} ${lagnaAnalysis.lagnaLordPosition.house.localized()}",
+                    value = String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_IN_HOUSE_FMT), lagnaAnalysis.lagnaLordPosition.house),
                     modifier = Modifier.weight(1f)
                 )
                 MoonDetailItem(
@@ -1958,7 +1958,7 @@ private fun AiInsightCard(result: PrashnaResult) {
                                 scope.launch {
                                     val model = providerRegistry.getDefaultModel()
                                     if (model == null) {
-                                        aiState = AiInsightState.Error("No AI model configured. Please set up an AI provider in settings.")
+                                        aiState = AiInsightState.Error(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_NO_AI_MODEL, languageForAi))
                                         return@launch
                                     }
 
@@ -2010,7 +2010,7 @@ private fun AiInsightCard(result: PrashnaResult) {
                                         } catch (e: CancellationException) {
                                             throw e
                                         } catch (e: Exception) {
-                                            aiState = AiInsightState.Error(e.message ?: "Failed to generate insight")
+                                            aiState = AiInsightState.Error(e.message ?: com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_FAILED_GENERATE_INSIGHT, languageForAi))
                                         }
                                     }
                                 }
@@ -2234,12 +2234,12 @@ private fun formatPrashnaForAi(result: PrashnaResult): String {
         appendLine("Certainty: ${result.judgment.certaintyLevel.displayName}")
         appendLine()
         appendLine("## Moon Analysis")
-        appendLine("Moon Sign: ${result.moonAnalysis.moonSign.displayName}")
-        appendLine("Moon House: ${result.moonAnalysis.moonHouse}")
-        appendLine("Nakshatra: ${result.moonAnalysis.nakshatra.displayName} (Pada ${result.moonAnalysis.nakshatraPada})")
-        appendLine("Moon Strength: ${result.moonAnalysis.moonStrength.displayName}")
-        appendLine("Phase: ${if (result.moonAnalysis.isWaxing) "Waxing" else "Waning"}")
-        appendLine("Void of Course: ${if (result.moonAnalysis.isVoidOfCourse) "Yes" else "No"}")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.PRASHNA_SIGN, Language.ENGLISH)}: ${result.moonAnalysis.moonSign.displayName}")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKey.VARSHAPHALA_HOUSE, Language.ENGLISH)}: ${result.moonAnalysis.moonHouse}")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKey.CHART_NAKSHATRA, Language.ENGLISH)}: ${result.moonAnalysis.nakshatra.displayName} (Pada ${result.moonAnalysis.nakshatraPada})")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.PRASHNA_REPORT_STRENGTH, Language.ENGLISH)}: ${result.moonAnalysis.moonStrength.displayName}")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.PRASHNA_PHASE, Language.ENGLISH)}: ${if (result.moonAnalysis.isWaxing) com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_WAXING, Language.ENGLISH) else com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_WANING, Language.ENGLISH)}")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.PRASHNA_MOON_VOID, Language.ENGLISH)}: ${if (result.moonAnalysis.isVoidOfCourse) com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_YES, Language.ENGLISH) else com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_NO, Language.ENGLISH)}")
         appendLine()
         appendLine("## Lagna Analysis")
         appendLine("Rising Sign: ${result.lagnaAnalysis.lagnaSign.displayName}")

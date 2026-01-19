@@ -698,19 +698,19 @@ private fun NativeCharacterSection(
         PersonalityStrengthCard(character.personalityStrength, language)
 
         TraitCard(
-            title = "Ascendant Traits",
+            title = stringResource(StringKeyNative.TITLE_ASCENDANT_TRAITS),
             content = if (language == Language.NEPALI) character.ascendantTrait.ne else character.ascendantTrait.en,
             color = AppTheme.AccentPrimary
         )
 
         TraitCard(
-            title = "Moon Sign Influence",
+            title = stringResource(StringKeyNative.TITLE_MOON_SIGN_INFLUENCE),
             content = if (language == Language.NEPALI) character.moonTrait.ne else character.moonTrait.en,
             color = AppTheme.AccentTeal
         )
 
         TraitCard(
-            title = "Nakshatra Influence",
+            title = stringResource(StringKeyNative.TITLE_NAKSHATRA_INFLUENCE),
             content = if (language == Language.NEPALI) character.nakshatraInfluenceNe else character.nakshatraInfluence,
             color = AppTheme.AccentGold
         )
@@ -739,7 +739,7 @@ private fun PersonalityStrengthCard(strength: StrengthLevel, language: Language)
         ) {
             Column {
                 Text(
-                    text = "Personality Foundation",
+                    text = stringResource(StringKeyNative.LABEL_PERSONALITY_FOUNDATION),
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.TextMuted
                 )
@@ -786,7 +786,7 @@ private fun NativeCareerSection(
         )
 
         StrengthIndicatorCard(
-            title = "Career Strength",
+            title = stringResource(StringKeyNative.TITLE_CAREER_STRENGTH),
             strength = career.careerStrength,
             language = language
         )
@@ -834,7 +834,7 @@ private fun FavorableFieldsCard(fields: List<String>, color: Color) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Favorable Career Fields",
+                text = stringResource(StringKeyNative.LABEL_FAVORABLE_CAREER_FIELDS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -869,7 +869,7 @@ private fun CareerIndicatorsCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Career Indicators",
+                text = stringResource(StringKeyNative.LABEL_CAREER_INDICATORS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -909,7 +909,7 @@ private fun NativeMarriageSection(
         )
 
         StrengthIndicatorCard(
-            title = "Relationship Strength",
+            title = stringResource(StringKeyNative.TITLE_RELATIONSHIP_STRENGTH),
             strength = marriage.relationshipStrength,
             language = language
         )
@@ -962,7 +962,7 @@ private fun MarriageTimingCard(
         ) {
             Column {
                 Text(
-                    text = "Marriage Timing",
+                    text = stringResource(StringKeyNative.LABEL_MARRIAGE_TIMING),
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.TextMuted
                 )
@@ -1000,7 +1000,7 @@ private fun VenusStrengthCard(strength: StrengthLevel, language: Language) {
         ) {
             Column {
                 Text(
-                    text = "Venus Strength",
+                    text = stringResource(StringKeyNative.LABEL_VENUS_STRENGTH),
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.TextMuted
                 )
@@ -1036,7 +1036,7 @@ private fun SpouseNatureCard(nature: String) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Spouse Nature",
+                text = stringResource(StringKeyNative.LABEL_SPOUSE_NATURE),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1162,7 +1162,7 @@ private fun LongevityCard(
         ) {
             Column {
                 Text(
-                    text = "Longevity Indicator",
+                    text = stringResource(StringKeyNative.LABEL_LONGEVITY_INDICATOR),
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.TextMuted
                 )
@@ -1186,7 +1186,7 @@ private fun VulnerableAreasCard(areas: StringKeyNative, language: Language) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Vulnerable Areas",
+                text = stringResource(StringKeyNative.LABEL_VULNERABLE_AREAS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1221,7 +1221,7 @@ private fun HealthConcernsCard(concerns: List<String>) {
                     modifier = Modifier.size(18.dp)
                 )
                 Text(
-                    text = "Health Concerns",
+                    text = stringResource(StringKeyNative.LABEL_HEALTH_CONCERNS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.WarningColor
@@ -1267,7 +1267,7 @@ private fun NativeWealthSection(
         )
 
         StrengthIndicatorCard(
-            title = "Wealth Potential",
+            title = stringResource(StringKeyNative.TITLE_WEALTH_POTENTIAL),
             strength = wealth.wealthPotential,
             language = language
         )
@@ -1313,7 +1313,7 @@ private fun DhanaYogaCard() {
             )
             Column {
                 Text(
-                    text = "Dhana Yoga Present",
+                    text = stringResource(StringKeyNative.LABEL_DHANA_YOGA_PRESENT),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.SuccessColor
@@ -1337,7 +1337,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Wealth Lords",
+                text = stringResource(StringKeyNative.LABEL_WEALTH_LORDS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1350,7 +1350,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "2nd Lord",
+                        text = stringResource(StringKeyAnalysis.HOUSE_LORD_2),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1368,7 +1368,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "11th Lord",
+                        text = stringResource(StringKeyAnalysis.HOUSE_LORD_11),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1386,7 +1386,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Jupiter",
+                        text = Planet.JUPITER.getLocalizedName(language),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1416,7 +1416,7 @@ private fun WealthSourcesCard(sources: List<String>) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Primary Wealth Sources",
+                text = stringResource(StringKeyNative.LABEL_PRIMARY_WEALTH_SOURCES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1461,7 +1461,7 @@ private fun NativeEducationSection(
         )
 
         StrengthIndicatorCard(
-            title = "Academic Potential",
+            title = stringResource(StringKeyNative.TITLE_ACADEMIC_POTENTIAL),
             strength = education.academicPotential,
             language = language
         )
@@ -1502,7 +1502,7 @@ private fun MercuryStrengthCard(strength: StrengthLevel, language: Language) {
         ) {
             Column {
                 Text(
-                    text = "Mercury Strength",
+                    text = stringResource(StringKeyNative.LABEL_MERCURY_STRENGTH),
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.TextMuted
                 )
@@ -1549,7 +1549,7 @@ private fun JupiterBlessingCard() {
             )
             Column {
                 Text(
-                    text = "Jupiter's Blessing",
+                    text = stringResource(StringKeyNative.LABEL_JUPITER_BLESSING),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.SuccessColor
@@ -1573,7 +1573,7 @@ private fun FavorableSubjectsCard(subjects: List<String>) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Favorable Subjects",
+                text = stringResource(StringKeyNative.LABEL_FAVORABLE_SUBJECTS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1618,7 +1618,7 @@ private fun NativeSpiritualSection(
         )
 
         StrengthIndicatorCard(
-            title = "Spiritual Inclination",
+            title = stringResource(StringKeyNative.TITLE_SPIRITUAL_INCLINATION),
             strength = spiritual.spiritualInclination,
             language = language
         )
@@ -1650,7 +1650,7 @@ private fun SpiritualLordsCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Spiritual Indicators",
+                text = stringResource(StringKeyNative.LABEL_SPIRITUAL_INDICATORS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1663,7 +1663,7 @@ private fun SpiritualLordsCard(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "9th Lord",
+                        text = stringResource(StringKeyAnalysis.HOUSE_LORD_9),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1676,7 +1676,7 @@ private fun SpiritualLordsCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "12th Lord",
+                        text = stringResource(StringKeyAnalysis.HOUSE_LORD_12),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1689,7 +1689,7 @@ private fun SpiritualLordsCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Jupiter",
+                        text = Planet.JUPITER.getLocalizedName(language),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1710,7 +1710,7 @@ private fun SpiritualLordsCard(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Ketu in ${ketu.house}th house (${ketu.sign.displayName})",
+                        text = String.format(stringResource(StringKeyNative.LABEL_PLANETS_IN_HOUSE), ketu.house) + " (${ketu.sign.displayName})",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.LifeAreaSpiritual
                     )
@@ -1729,7 +1729,7 @@ private fun RecommendedPracticesCard(practices: List<String>) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Recommended Practices",
+                text = stringResource(StringKeyNative.LABEL_RECOMMENDED_PRACTICES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.LifeAreaSpiritual

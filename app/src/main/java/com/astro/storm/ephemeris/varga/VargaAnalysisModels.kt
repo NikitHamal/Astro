@@ -230,4 +230,25 @@ data class ParentalLongevityIndicators(
     val healthConcerns: List<String>
 )
 
+data class GenericVargaAnalysis(
+    val vargaType: DivisionalChartType,
+    val planetPositions: List<PlanetPosition>,
+    val ascendantSign: ZodiacSign,
+    val ascendantLongitude: Double,
+    val dominantPlanet: Planet?,
+    val vargottamaPlanets: List<Planet>,
+    val houseAnalysis: List<HouseAnalysisSummary>,
+    val keySignifications: List<String>,
+    val overallStrengthScore: Int,
+    val description: String,
+    val recommendations: List<String>
+)
+
+data class HouseAnalysisSummary(
+    val houseNumber: Int,
+    val planetsInHouse: List<Planet>,
+    val status: String,
+    val houseLord: Planet
+)
+
 

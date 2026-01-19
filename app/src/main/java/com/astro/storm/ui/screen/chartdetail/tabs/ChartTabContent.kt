@@ -231,16 +231,25 @@ private fun getChartInfoKeys(type: String): Triple<StringKeyInterface?, StringKe
         "D2" -> Triple(StringKeyAnalysis.VARGA_D2_NAME, StringKeyDosha.VARGA_D2_DESC, "D2")
         "D3" -> Triple(StringKeyAnalysis.VARGA_D3_NAME, StringKeyAnalysis.VARGA_D3_DESC_FULL, "D3")
         "D4" -> Triple(StringKeyAnalysis.VARGA_D4_NAME, StringKeyDosha.VARGA_D4_DESC, "D4")
+        "D5" -> Triple(StringKeyDosha.VARGA_D5_TITLE, StringKeyDosha.VARGA_D5_DESC, "D5")
+        "D6" -> Triple(StringKeyDosha.VARGA_D6_TITLE, StringKeyDosha.VARGA_D6_DESC, "D6")
         "D7" -> Triple(StringKeyAnalysis.VARGA_D7_NAME, StringKeyDosha.VARGA_D7_DESC, "D7")
+        "D8" -> Triple(StringKeyDosha.VARGA_D8_TITLE, StringKeyDosha.VARGA_D8_DESC, "D8")
         "D9" -> Triple(StringKeyAnalysis.VARGA_D9_NAME, StringKeyAnalysis.VARGA_D9_DESC_FULL, "D9")
         "D10" -> Triple(StringKeyAnalysis.VARGA_D10_NAME, StringKeyAnalysis.VARGA_D10_DESC_FULL, "D10")
+        "D11" -> Triple(StringKeyDosha.VARGA_D11_TITLE, StringKeyDosha.VARGA_D11_DESC, "D11")
         "D12" -> Triple(StringKeyAnalysis.VARGA_D12_NAME, StringKeyAnalysis.VARGA_D12_DESC_FULL, "D12")
         "D16" -> Triple(StringKeyAnalysis.VARGA_D16_NAME, StringKeyAnalysis.VARGA_D16_DESC_FULL, "D16")
         "D20" -> Triple(StringKeyAnalysis.VARGA_D20_NAME, StringKeyAnalysis.VARGA_D20_DESC_FULL, "D20")
         "D24" -> Triple(StringKeyAnalysis.VARGA_D24_NAME, StringKeyAnalysis.VARGA_D24_DESC_FULL, "D24")
         "D27" -> Triple(StringKeyAnalysis.VARGA_D27_NAME, StringKeyAnalysis.VARGA_D27_DESC_FULL, "D27")
         "D30" -> Triple(StringKeyAnalysis.VARGA_D30_NAME, StringKeyAnalysis.VARGA_D30_DESC_FULL, "D30")
+        "D40" -> Triple(StringKeyDosha.VARGA_D40_TITLE, StringKeyDosha.VARGA_D40_DESC, "D40")
+        "D45" -> Triple(StringKeyDosha.VARGA_D45_TITLE, StringKeyDosha.VARGA_D45_DESC, "D45")
         "D60" -> Triple(StringKeyAnalysis.VARGA_D60_NAME, StringKeyAnalysis.VARGA_D60_DESC_FULL, "D60")
+        "D81" -> Triple(StringKeyDosha.VARGA_D81_TITLE, StringKeyDosha.VARGA_D81_DESC, "D81")
+        "D108" -> Triple(StringKeyDosha.VARGA_D108_TITLE, StringKeyDosha.VARGA_D108_DESC, "D108")
+        "D144" -> Triple(StringKeyDosha.VARGA_D144_TITLE, StringKeyDosha.VARGA_D144_DESC, "D144")
         else -> Triple(null, null, type)
     }
 }
@@ -269,16 +278,25 @@ private val chartTypeChips = listOf(
     ChartTypeChip("D2", StringKeyAnalysis.VARGA_HORA),
     ChartTypeChip("D3", StringKeyAnalysis.VARGA_DREKKANA),
     ChartTypeChip("D4", StringKeyAnalysis.VARGA_D4_NAME),
+    ChartTypeChip("D5", StringKeyDosha.VARGA_D5_TITLE),
+    ChartTypeChip("D6", StringKeyDosha.VARGA_D6_TITLE),
     ChartTypeChip("D7", StringKeyAnalysis.VARGA_SAPTAMSA),
+    ChartTypeChip("D8", StringKeyDosha.VARGA_D8_TITLE),
     ChartTypeChip("D9", StringKeyAnalysis.VARGA_NAVAMSA),
     ChartTypeChip("D10", StringKeyAnalysis.VARGA_DASAMSA),
+    ChartTypeChip("D11", StringKeyDosha.VARGA_D11_TITLE),
     ChartTypeChip("D12", StringKeyAnalysis.VARGA_D12_NAME),
     ChartTypeChip("D16", StringKeyAnalysis.VARGA_D16_NAME),
     ChartTypeChip("D20", StringKeyAnalysis.VARGA_D20_NAME),
     ChartTypeChip("D24", StringKeyAnalysis.VARGA_D24_NAME),
     ChartTypeChip("D27", StringKeyAnalysis.VARGA_BHAMSA),
     ChartTypeChip("D30", StringKeyAnalysis.VARGA_D30_NAME),
-    ChartTypeChip("D60", StringKeyAnalysis.VARGA_D60_NAME)
+    ChartTypeChip("D40", StringKeyDosha.VARGA_D40_TITLE),
+    ChartTypeChip("D45", StringKeyDosha.VARGA_D45_TITLE),
+    ChartTypeChip("D60", StringKeyAnalysis.VARGA_D60_NAME),
+    ChartTypeChip("D81", StringKeyDosha.VARGA_D81_TITLE),
+    ChartTypeChip("D108", StringKeyDosha.VARGA_D108_TITLE),
+    ChartTypeChip("D144", StringKeyDosha.VARGA_D144_TITLE)
 )
 
 @Composable

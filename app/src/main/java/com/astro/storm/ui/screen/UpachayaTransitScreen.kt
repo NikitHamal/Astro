@@ -432,7 +432,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis) {
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        "${stringResource(StringKeyDosha.QUALITY_LABEL)}: ${assessment.level.name}",
+                        "${stringResource(StringKeyDosha.QUALITY_LABEL)}: ${assessment.level.getLocalizedName(language)}",
                         fontSize = 14.sp,
                         color = iconColor,
                         fontWeight = FontWeight.Medium
@@ -662,7 +662,7 @@ private fun AlertCard(alert: UpachayaAlert, language: Language) {
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
-                        "HIGH",
+                        stringResource(com.astro.storm.core.common.StringKeySaham.UI_STATE_ACTIVATED),
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
@@ -725,7 +725,7 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
-                            transit.transitQuality.name,
+                            transit.transitQuality.getLocalizedName(language),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Medium,
@@ -734,12 +734,12 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
                     }
                 }
                 Text(
-                    "${transit.transitSign.getLocalizedName(language)} • ${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyDosha.FROM_LABEL)} ${transit.reference.name}",
+                    "${transit.transitSign.getLocalizedName(language)} • ${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyDosha.FROM_LABEL)} ${transit.reference.getLocalizedName(language)}",
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    "Significance: ${transit.significance.toInt()}%",
+                    "${stringResource(StringKeyDosha.UPACHAYA_SIGNIFICANCE)}: ${transit.significance.toInt()}%",
                     fontSize = 12.sp,
                     color = qualityColor,
                     fontWeight = FontWeight.Medium
@@ -903,7 +903,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        analysis.strength.name.replace("_", " "),
+                        analysis.strength.getLocalizedName(language),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Medium,
@@ -1084,7 +1084,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                     )
                     if (transit.isInUpachaya) {
                         Text(
-                            "UPACHAYA",
+                            stringResource(StringKeyDosha.UPACHAYA_SCREEN_TITLE).uppercase(),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.SuccessColor
@@ -1284,14 +1284,21 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
 
 // Helper function
 private fun getHouseName(house: Int, language: Language): String {
-    return when (language) {
-        Language.NEPALI -> "$house भाव"
-        else -> when (house) {
-            1 -> "1st"
-            2 -> "2nd"
-            3 -> "3rd"
-            else -> "${house}th"
-        }
+    val key = when (house) {
+        1 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_1
+        2 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_2
+        3 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_3
+        4 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_4
+        5 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_5
+        6 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_6
+        7 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_7
+        8 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_8
+        9 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_9
+        10 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_10
+        11 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_11
+        12 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_12
+        else -> null
     }
+    return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: "House $house"
 }
 

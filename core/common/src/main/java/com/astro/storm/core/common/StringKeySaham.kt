@@ -134,5 +134,9 @@ enum class StringKeySaham(override val en: String, override val ne: String) : St
     SHOW_INFO("Show information", "जानकारी देखाउनुहोस्"),
     GOT_IT("Got it", "बुझें"),
     HOUSE_FORMAT("House %d", "भाव %d"),
-    DEGREE_FORMAT("%s° %s'", "%s° %s'");
+    DEGREE_FORMAT("%s° %s'", "%s° %s'"),
+    NEEDS_FOCUS("Needs Focus", "ध्यान दिनुपर्ने"),
+    ACTIVATED("Activated", "सक्रिय"),
+    FORMULA_ADJUSTED_DESC("Formulas adjusted per Tajika tradition", "ताजिक परम्परा अनुसार सूत्रहरू समायोजित"),
+;
 }

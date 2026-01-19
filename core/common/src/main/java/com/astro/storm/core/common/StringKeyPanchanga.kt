@@ -127,5 +127,67 @@ enum class StringKeyPanchanga(override val en: String, override val ne: String) 
     VARA_UNFAV_WEDNESDAY("Agriculture, Building construction (according to some traditions)", "कृषि, भवन निर्माण (केही परम्परा अनुसार)"),
     VARA_UNFAV_THURSDAY("Hair cutting (for some traditions), Lending money", "कपाल काट्न (केही परम्परा अनुसार), पैसा ऋण दिन"),
     VARA_UNFAV_FRIDAY("Surgery, Aggressive activities, Conflicts", "शल्यक्रिया, आक्रामक गतिविधिहरू, द्वन्द्वहरू"),
-    VARA_UNFAV_SATURDAY("New beginnings, Travel, Auspicious ceremonies, Hair cutting", "नयाँ सुरुवात, यात्रा, शुभ समारोहहरू, कपाल काट्न");
+    VARA_UNFAV_SATURDAY("New beginnings, Travel, Auspicious ceremonies, Hair cutting", "नयाँ सुरुवात, यात्रा, शुभ समारोहहरू, कपाल काट्न"),
+
+    // ============================================
+    // TITHI DETAILS
+    // ============================================
+    TITHI_DEITY_AGNI("Agni (Fire God)", "अग्नि (आगोका देवता)"),
+    TITHI_DEITY_BRAHMA("Brahma (Creator)", "ब्रह्मा (सृष्टिकर्ता)"),
+    TITHI_DEITY_GAURI("Gauri (Parvati)", "गौरी (पार्वती)"),
+    TITHI_DEITY_GANESHA_YAMA("Ganesha/Yama", "गणेश/यम"),
+    TITHI_DEITY_NAGAS("Nagas (Serpent deities)", "नाग (सर्प देवता)"),
+    TITHI_DEITY_KARTIKEYA("Kartikeya (Skanda)", "कार्तिकेय (स्कन्द)"),
+    TITHI_DEITY_SURYA("Surya (Sun God)", "सूर्य (सूर्य देवता)"),
+    TITHI_DEITY_SHIVA_RUDRA("Shiva/Rudra", "शिव/रुद्र"),
+    TITHI_DEITY_DURGA("Durga (Mother Goddess)", "दुर्गा (भवानी)"),
+    TITHI_DEITY_YAMA("Yama (God of Death)", "यम (मृत्युका देवता)"),
+    TITHI_DEITY_VISHNU("Vishnu (Preserver)", "विष्णु (संरक्षक)"),
+    TITHI_DEITY_KAMADEVA("Kamadeva (God of Love)", "कामदेव (प्रेमका देवता)"),
+    TITHI_DEITY_SHIVA_KALI("Shiva/Kali", "शिव/काली"),
+    TITHI_DEITY_CHANDRA("Chandra (Moon God)", "चन्द्र (चन्द्र देवता)"),
+    TITHI_DEITY_PITRIS("Pitris (Ancestors)", "पितृ (पुर्खाहरू)"),
+
+    TITHI_NATURE_NANDA("Nanda (Joyful)", "नन्दा (आनन्ददायी)"),
+    TITHI_NATURE_BHADRA("Bhadra (Auspicious)", "भद्रा (शुभ)"),
+    TITHI_NATURE_JAYA("Jaya (Victory)", "जया (विजयी)"),
+    TITHI_NATURE_RIKTA("Rikta (Empty)", "रिक्ता (खाली)"),
+    TITHI_NATURE_PURNA("Purna (Complete)", "पूर्णा (पूर्ण)"),
+
+    // ============================================
+    // YOGA MEANINGS
+    // ============================================
+    YOGA_MEANING_SUPPORTING("Supporting", "सहयोगी"),
+    YOGA_MEANING_LOVE("Love", "प्रेम"),
+    YOGA_MEANING_LONG_LIVED("Long-lived", "दीर्घायु"),
+    YOGA_MEANING_GOOD_FORTUNE("Good Fortune", "सौभाग्य"),
+    YOGA_MEANING_SPLENDOR("Splendor", "वैभव"),
+    YOGA_MEANING_GREAT_OBSTACLE("Great Obstacle", "अतिगण्ड"),
+    YOGA_MEANING_GOOD_DEEDS("Good Deeds", "सुकर्म"),
+    YOGA_MEANING_STEADINESS("Steadiness", "धृति"),
+    YOGA_MEANING_SPEAR("Spear", "शूल"),
+    YOGA_MEANING_OBSTACLE("Obstacle", "गण्ड"),
+    YOGA_MEANING_GROWTH("Growth", "वृद्धि"),
+    YOGA_MEANING_FIXED("Fixed", "ध्रुव"),
+    YOGA_MEANING_DESTRUCTION("Destruction", "व्याघात"),
+    YOGA_MEANING_JOY("Joy", "हर्षण"),
+    YOGA_MEANING_THUNDERBOLT("Thunderbolt", "वज्र"),
+    YOGA_MEANING_ACCOMPLISHMENT("Accomplishment", "सिद्धि"),
+    YOGA_MEANING_CALAMITY("Calamity", "व्यतीपात"),
+    YOGA_MEANING_EXCELLENT("Excellent", "वरीयान"),
+    YOGA_MEANING_OBSTRUCTION("Obstruction", "परिघ"),
+    YOGA_MEANING_AUSPICIOUS("Auspicious", "शुभ"),
+    YOGA_MEANING_ACCOMPLISHED("Accomplished", "सिद्ध"),
+    YOGA_MEANING_ACHIEVABLE("Achievable", "साध्य"),
+    YOGA_MEANING_BRIGHT("Bright", "शुक्ल"),
+    YOGA_MEANING_CREATOR("Creator", "ब्रह्मा"),
+    YOGA_MEANING_KING_OF_GODS("King of Gods", "इन्द्र"),
+    YOGA_MEANING_DISCORD("Discord", "वैधृति"),
+
+    // ============================================
+    // KARANA TYPES
+    // ============================================
+    KARANA_TYPE_MOVABLE("Chara (Movable)", "चर (चलायमान)"),
+    KARANA_TYPE_FIXED("Sthira (Fixed)", "स्थिर"),
+;
 }

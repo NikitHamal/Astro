@@ -41,22 +41,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
+import com.astro.storm.ephemeris.DivisionalChartType
+import com.astro.storm.ui.chart.ChartRenderer
+import com.astro.storm.ui.components.FullScreenChartDialog
+
 /**
- * Divisional Charts Analysis Screen (D-2, D-3, D-9, D-10, D-12)
+ * Divisional Charts Analysis Screen (All 23 Vargas D-1 to D-144)
  *
- * Comprehensive analysis of the key divisional charts:
- * - D-2 Hora: Wealth and Financial Prospects
- * - D-3 Drekkana: Siblings, Courage, Communication
- * - D-9 Navamsa: Marriage and Spouse
- * - D-10 Dashamsa: Career and Professional Life
- * - D-12 Dwadasamsa: Parents and Ancestry
- *
- * Based on: BPHS (Brihat Parashara Hora Shastra), Phaladeepika
+ * Comprehensive analysis of all implemented divisional charts.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DivisionalChartsScreen(
     chart: VedicChart?,
+    chartRenderer: ChartRenderer,
     onBack: () -> Unit
 ) {
     if (chart == null) {
@@ -72,32 +70,35 @@ fun DivisionalChartsScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var isCalculating by remember { mutableStateOf(true) }
+    var showFullScreenChart by remember { mutableStateOf(false) }
 
-    // Analysis results for each chart
+    // Analysis results
     var horaAnalysis by remember { mutableStateOf<HoraAnalysis?>(null) }
     var drekkanaAnalysis by remember { mutableStateOf<DrekkanaAnalysis?>(null) }
     var navamsaAnalysis by remember { mutableStateOf<NavamsaMarriageAnalysis?>(null) }
     var dashamsaAnalysis by remember { mutableStateOf<DashamsaAnalysis?>(null) }
     var dwadasamsaAnalysis by remember { mutableStateOf<DwadasamsaAnalysis?>(null) }
+    
+    // Generic analysis for others
+    var genericAnalysis by remember { mutableStateOf<GenericVargaAnalysis?>(null) }
 
-    val tabs = listOf(
-        stringResource(StringKeyDosha.DIVISIONAL_HORA_TAB),
-        stringResource(StringKeyDosha.DIVISIONAL_DREKKANA_TAB),
-        stringResource(StringKeyDosha.DIVISIONAL_NAVAMSA_TAB),
-        stringResource(StringKeyDosha.DIVISIONAL_DASHAMSA_TAB),
-        stringResource(StringKeyDosha.DIVISIONAL_DWADASAMSA_TAB)
-    )
+    val vargaTypes = DivisionalChartType.entries.toList()
+    val tabs = vargaTypes.map { it.shortName }
 
-    // Calculate all analyses
-    LaunchedEffect(chart) {
+    // Calculate analysis for selected tab
+    LaunchedEffect(chart, selectedTab) {
         isCalculating = true
-        delay(300)
+        delay(200)
+        val type = vargaTypes[selectedTab]
         withContext(Dispatchers.Default) {
-            horaAnalysis = DivisionalChartAnalyzer.analyzeHora(chart, language)
-            drekkanaAnalysis = DivisionalChartAnalyzer.analyzeDrekkana(chart, language)
-            navamsaAnalysis = DivisionalChartAnalyzer.analyzeNavamsaForMarriage(chart, language)
-            dashamsaAnalysis = DivisionalChartAnalyzer.analyzeDashamsa(chart, language)
-            dwadasamsaAnalysis = DivisionalChartAnalyzer.analyzeDwadasamsa(chart, language)
+            when (type) {
+                DivisionalChartType.D2_HORA -> horaAnalysis = DivisionalChartAnalyzer.analyzeHora(chart, language)
+                DivisionalChartType.D3_DREKKANA -> drekkanaAnalysis = DivisionalChartAnalyzer.analyzeDrekkana(chart, language)
+                DivisionalChartType.D9_NAVAMSA -> navamsaAnalysis = DivisionalChartAnalyzer.analyzeNavamsaForMarriage(chart, language)
+                DivisionalChartType.D10_DASAMSA -> dashamsaAnalysis = DivisionalChartAnalyzer.analyzeDashamsa(chart, language)
+                DivisionalChartType.D12_DWADASAMSA -> dwadasamsaAnalysis = DivisionalChartAnalyzer.analyzeDwadasamsa(chart, language)
+                else -> genericAnalysis = DivisionalChartAnalyzer.analyzeGenericVarga(chart, type, language)
+            }
         }
         isCalculating = false
     }
@@ -112,7 +113,7 @@ fun DivisionalChartsScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            stringResource(StringKeyDosha.DIVISIONAL_CHARTS_SUBTITLE),
+                            vargaTypes[selectedTab].getLocalizedDisplayName(language),
                             fontSize = 12.sp,
                             color = AppTheme.TextMuted
                         )
@@ -128,6 +129,13 @@ fun DivisionalChartsScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = { showFullScreenChart = true }) {
+                        Icon(
+                            Icons.Default.Fullscreen,
+                            contentDescription = "View Full Chart",
+                            tint = AppTheme.TextPrimary
+                        )
+                    }
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
@@ -144,32 +152,42 @@ fun DivisionalChartsScreen(
         },
         containerColor = AppTheme.ScreenBackground
     ) { paddingValues ->
-        when {
-            isCalculating -> LoadingContent(paddingValues)
-            else -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                ) {
-                    // Tab Row
-                    TabSelector(
-                        tabs = tabs,
-                        selectedIndex = selectedTab,
-                        onTabSelected = { selectedTab = it }
-                    )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            TabSelector(
+                tabs = tabs,
+                selectedIndex = selectedTab,
+                onTabSelected = { selectedTab = it }
+            )
 
-                    // Content based on selected tab
-                    when (selectedTab) {
-                        0 -> horaAnalysis?.let { HoraTab(it, language) }
-                        1 -> drekkanaAnalysis?.let { DrekkanaTab(it, language) }
-                        2 -> navamsaAnalysis?.let { NavamsaTab(it, language) }
-                        3 -> dashamsaAnalysis?.let { DashamsaTab(it, language) }
-                        4 -> dwadasamsaAnalysis?.let { DwadasamsaTab(it, language) }
-                    }
+            if (isCalculating) {
+                LoadingContent(PaddingValues(0.dp))
+            } else {
+                val currentType = vargaTypes[selectedTab]
+                when (currentType) {
+                    DivisionalChartType.D2_HORA -> horaAnalysis?.let { HoraTab(it, language) }
+                    DivisionalChartType.D3_DREKKANA -> drekkanaAnalysis?.let { DrekkanaTab(it, language) }
+                    DivisionalChartType.D9_NAVAMSA -> navamsaAnalysis?.let { NavamsaTab(it, language) }
+                    DivisionalChartType.D10_DASAMSA -> dashamsaAnalysis?.let { DashamsaTab(it, language) }
+                    DivisionalChartType.D12_DWADASAMSA -> dwadasamsaAnalysis?.let { DwadasamsaTab(it, language) }
+                    else -> genericAnalysis?.let { GenericVargaTab(it, language) }
                 }
             }
         }
+    }
+
+    if (showFullScreenChart) {
+        val currentType = vargaTypes[selectedTab]
+        FullScreenChartDialog(
+            chart = chart,
+            chartRenderer = chartRenderer,
+            chartTitle = currentType.getLocalizedDisplayName(language),
+            divisionalChartData = com.astro.storm.ephemeris.DivisionalChartCalculator.calculateDivisionalChart(chart, currentType),
+            onDismiss = { showFullScreenChart = false }
+        )
     }
 
     // Info Dialog
@@ -203,6 +221,121 @@ fun DivisionalChartsScreen(
         )
     }
 }
+
+@Composable
+private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(CircleShape)
+                                .background(AppTheme.AccentPrimary.copy(alpha = 0.1f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.AutoGraph, contentDescription = null, tint = AppTheme.AccentPrimary)
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column {
+                            Text(analysis.vargaType.getLocalizedDisplayName(language), fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            Text(analysis.description, fontSize = 12.sp, color = AppTheme.TextMuted)
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.height(20.dp))
+                    
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(stringResource(StringKeyAnalysis.CHART_ASCENDANT), fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text(analysis.ascendantSign.getLocalizedName(language), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(stringResource(StringKeyAnalysis.DIVISIONAL_OVERALL_STRENGTH), fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text("${analysis.overallStrengthScore}%", fontWeight = FontWeight.SemiBold, color = AppTheme.AccentGold)
+                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(stringResource(StringKeyAnalysis.DIVISIONAL_DOMINANT_PLANET), fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text(analysis.dominantPlanet?.getLocalizedName(language) ?: stringResource(StringKey.NONE), fontWeight = FontWeight.SemiBold, color = AppTheme.AccentTeal)
+                        }
+                    }
+                }
+            }
+        }
+
+        if (analysis.vargottamaPlanets.isNotEmpty()) {
+            item {
+                SectionHeader(stringResource(StringKeyAnalysis.DIVISIONAL_VARGOTTAMA_PLANETS), Icons.Default.Star, AppTheme.AccentGold)
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(stringResource(StringKeyAnalysis.DIVISIONAL_PLANETS_SAME_SIGN_DESC), fontSize = 12.sp, color = AppTheme.TextMuted)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            items(analysis.vargottamaPlanets) { planet ->
+                                Surface(color = AppTheme.getPlanetColor(planet).copy(alpha = 0.15f), shape = RoundedCornerShape(16.dp)) {
+                                    Text(planet.getLocalizedName(language), modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = 12.sp, fontWeight = FontWeight.Medium, color = AppTheme.getPlanetColor(planet))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        item {
+            SectionHeader(stringResource(StringKeyAnalysis.DIVISIONAL_HOUSE_PLACEMENTS), Icons.Default.Home, AppTheme.AccentPrimary)
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    analysis.houseAnalysis.chunked(2).forEach { row ->
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            row.forEach { house ->
+                                Surface(
+                                    modifier = Modifier.weight(1f).padding(vertical = 4.dp),
+                                    color = AppTheme.CardBackgroundElevated,
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    Column(modifier = Modifier.padding(12.dp)) {
+                                        Text("${stringResource(StringKeyAnalysis.HOUSE)} ${house.houseNumber}", fontSize = 11.sp, color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
+                                        if (house.planetsInHouse.isEmpty()) {
+                                            Text(stringResource(StringKeyAnalysis.DIVISIONAL_HOUSE_EMPTY), fontSize = 13.sp, color = AppTheme.TextMuted)
+                                        } else {
+                                            Text(house.planetsInHouse.joinToString { it.getLocalizedName(language) }, fontSize = 13.sp, color = AppTheme.TextPrimary, fontWeight = FontWeight.Medium)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (analysis.recommendations.isNotEmpty()) {
+            item {
+                RecommendationsCard(analysis.recommendations)
+            }
+        }
+    }
+}
+
 
 @Composable
 private fun LoadingContent(paddingValues: PaddingValues) {

@@ -985,7 +985,7 @@ private fun ImpactsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis) 
     ) {
         // Emotional Impact
         ImpactCard(
-            title = "Emotional Impact",
+            title = stringResource(StringKeyDosha.KEMADRUMA_EMOTIONAL),
             icon = Icons.Outlined.Psychology,
             impact = analysis.emotionalImpact,
             color = AppTheme.LifeAreaLove
@@ -993,7 +993,7 @@ private fun ImpactsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis) 
 
         // Financial Impact
         ImpactCard(
-            title = "Financial Impact",
+            title = stringResource(StringKeyDosha.KEMADRUMA_FINANCIAL),
             icon = Icons.Outlined.TipsAndUpdates,
             impact = analysis.financialImpact,
             color = AppTheme.LifeAreaFinance
@@ -1001,7 +1001,7 @@ private fun ImpactsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis) 
 
         // Social Impact
         ImpactCard(
-            title = "Social Impact",
+            title = stringResource(StringKeyDosha.KEMADRUMA_SOCIAL),
             icon = Icons.Outlined.Brightness2,
             impact = analysis.socialImpact,
             color = AppTheme.AccentTeal
@@ -1168,7 +1168,7 @@ private fun ActivationPeriodsCard(periods: List<KemadrumaYogaCalculator.Activati
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Activation Periods",
+                    text = stringResource(StringKeyDosha.KEMADRUMA_ACTIVATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1258,7 +1258,7 @@ private fun RemediesSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Kemadruma Yoga is either not formed or fully cancelled in your chart.",
+                        text = stringResource(StringKeyDosha.KEMADRUMA_FULLY_CANCELLED),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -1267,7 +1267,7 @@ private fun RemediesSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis)
             }
         } else {
             Text(
-                text = "Recommended Remedies",
+                text = stringResource(StringKeyDosha.KEMADRUMA_REMEDIES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,

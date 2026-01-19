@@ -36,6 +36,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyNakshatra
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
@@ -85,7 +86,7 @@ fun NakshatraScreen(
     )
 
     // Calculate nakshatra analysis
-    val nakshatraAnalysis = remember(chart) {
+    val nakshatraAnalysis = remember(chart, language) {
         calculateNakshatraAnalysis(chart, language)
     }
 
@@ -305,14 +306,14 @@ private fun calculateNakshatraAnalysis(chart: VedicChart, language: Language): N
     val moonPosition = chart.planetPositions.find { it.planet == Planet.MOON }
         ?: throw IllegalStateException("Moon position not found in chart")
 
-    val birthNakshatra = calculateNakshatraDetails(moonPosition.nakshatra, moonPosition.nakshatraPada, moonPosition.longitude)
+    val birthNakshatra = calculateNakshatraDetails(moonPosition.nakshatra, moonPosition.nakshatraPada, moonPosition.longitude, language)
     val moonNakshatra = birthNakshatra // Same as birth nakshatra for moon
 
     val planetaryNakshatras = chart.planetPositions.map { pos ->
         PlanetaryNakshatra(
             planet = pos.planet,
             position = pos,
-            details = calculateNakshatraDetails(pos.nakshatra, pos.nakshatraPada, pos.longitude)
+            details = calculateNakshatraDetails(pos.nakshatra, pos.nakshatraPada, pos.longitude, language)
         )
     }
 
@@ -328,7 +329,7 @@ private fun calculateNakshatraAnalysis(chart: VedicChart, language: Language): N
     )
 }
 
-private fun calculateNakshatraDetails(nakshatra: Nakshatra, pada: Int, longitude: Double): NakshatraDetails {
+private fun calculateNakshatraDetails(nakshatra: Nakshatra, pada: Int, longitude: Double, language: Language): NakshatraDetails {
     val nakshatraSpan = 360.0 / 27.0
     val normalizedLong = ((longitude % 360.0) + 360.0) % 360.0
     val degreeInNakshatra = (normalizedLong % nakshatraSpan)
@@ -337,83 +338,83 @@ private fun calculateNakshatraDetails(nakshatra: Nakshatra, pada: Int, longitude
         nakshatra = nakshatra,
         pada = pada,
         degreeInNakshatra = degreeInNakshatra,
-        deity = getNakshatraDeity(nakshatra),
-        symbol = getNakshatraSymbol(nakshatra),
+        deity = getNakshatraDeity(nakshatra, language),
+        symbol = getNakshatraSymbol(nakshatra, language),
         nature = getNakshatraNature(nakshatra),
         gana = getNakshatraGana(nakshatra),
-        animal = getNakshatraAnimal(nakshatra),
+        animal = getNakshatraAnimal(nakshatra, language),
         element = getNakshatraElement(nakshatra),
         caste = getNakshatraCaste(nakshatra),
         direction = getNakshatraDirection(nakshatra),
-        bodyPart = getNakshatraBodyPart(nakshatra),
+        bodyPart = getNakshatraBodyPart(nakshatra, language),
         gender = getNakshatraGender(nakshatra),
         dosha = getNakshatraDosha(nakshatra),
-        qualities = getNakshatraQualities(nakshatra),
-        strengths = getNakshatraStrengths(nakshatra),
-        weaknesses = getNakshatraWeaknesses(nakshatra),
-        careerAptitudes = getNakshatraCareerAptitudes(nakshatra),
-        mantra = getNakshatraMantra(nakshatra)
+        qualities = getNakshatraQualities(nakshatra, language),
+        strengths = getNakshatraStrengths(nakshatra, language),
+        weaknesses = getNakshatraWeaknesses(nakshatra, language),
+        careerAptitudes = getNakshatraCareerAptitudes(nakshatra, language),
+        mantra = getNakshatraMantra(nakshatra, language)
     )
 }
 
-private fun getNakshatraDeity(nakshatra: Nakshatra): String = when (nakshatra) {
-    Nakshatra.ASHWINI -> "Ashwini Kumaras (Divine Physicians)"
-    Nakshatra.BHARANI -> "Yama (God of Death)"
-    Nakshatra.KRITTIKA -> "Agni (Fire God)"
-    Nakshatra.ROHINI -> "Brahma (Creator)"
-    Nakshatra.MRIGASHIRA -> "Soma (Moon God)"
-    Nakshatra.ARDRA -> "Rudra (Storm God)"
-    Nakshatra.PUNARVASU -> "Aditi (Mother of Gods)"
-    Nakshatra.PUSHYA -> "Brihaspati (Jupiter)"
-    Nakshatra.ASHLESHA -> "Naga (Serpent)"
-    Nakshatra.MAGHA -> "Pitris (Ancestors)"
-    Nakshatra.PURVA_PHALGUNI -> "Bhaga (God of Fortune)"
-    Nakshatra.UTTARA_PHALGUNI -> "Aryaman (God of Contracts)"
-    Nakshatra.HASTA -> "Savitar (Sun God)"
-    Nakshatra.CHITRA -> "Tvashtar (Divine Architect)"
-    Nakshatra.SWATI -> "Vayu (Wind God)"
-    Nakshatra.VISHAKHA -> "Indra-Agni"
-    Nakshatra.ANURADHA -> "Mitra (God of Friendship)"
-    Nakshatra.JYESHTHA -> "Indra (King of Gods)"
-    Nakshatra.MULA -> "Nirriti (Goddess of Destruction)"
-    Nakshatra.PURVA_ASHADHA -> "Apas (Water Deity)"
-    Nakshatra.UTTARA_ASHADHA -> "Vishwadevas (Universal Gods)"
-    Nakshatra.SHRAVANA -> "Vishnu (Preserver)"
-    Nakshatra.DHANISHTHA -> "Vasus (Eight Gods)"
-    Nakshatra.SHATABHISHA -> "Varuna (God of Cosmic Waters)"
-    Nakshatra.PURVA_BHADRAPADA -> "Aja Ekapada (One-footed Goat)"
-    Nakshatra.UTTARA_BHADRAPADA -> "Ahir Budhnya (Serpent of the Deep)"
-    Nakshatra.REVATI -> "Pushan (God of Nourishment)"
+private fun getNakshatraDeity(nakshatra: Nakshatra, language: Language): String = when (nakshatra) {
+    Nakshatra.ASHWINI -> StringResources.get(StringKeyNakshatra.DEITY_ASHWINI, language)
+    Nakshatra.BHARANI -> StringResources.get(StringKeyNakshatra.DEITY_BHARANI, language)
+    Nakshatra.KRITTIKA -> StringResources.get(StringKeyNakshatra.DEITY_KRITTIKA, language)
+    Nakshatra.ROHINI -> StringResources.get(StringKeyNakshatra.DEITY_ROHINI, language)
+    Nakshatra.MRIGASHIRA -> StringResources.get(StringKeyNakshatra.DEITY_MRIGASHIRA, language)
+    Nakshatra.ARDRA -> StringResources.get(StringKeyNakshatra.DEITY_ARDRA, language)
+    Nakshatra.PUNARVASU -> StringResources.get(StringKeyNakshatra.DEITY_PUNARVASU, language)
+    Nakshatra.PUSHYA -> StringResources.get(StringKeyNakshatra.DEITY_PUSHYA, language)
+    Nakshatra.ASHLESHA -> StringResources.get(StringKeyNakshatra.DEITY_ASHLESHA, language)
+    Nakshatra.MAGHA -> StringResources.get(StringKeyNakshatra.DEITY_MAGHA, language)
+    Nakshatra.PURVA_PHALGUNI -> StringResources.get(StringKeyNakshatra.DEITY_PURVA_PHALGUNI, language)
+    Nakshatra.UTTARA_PHALGUNI -> StringResources.get(StringKeyNakshatra.DEITY_UTTARA_PHALGUNI, language)
+    Nakshatra.HASTA -> StringResources.get(StringKeyNakshatra.DEITY_HASTA, language)
+    Nakshatra.CHITRA -> StringResources.get(StringKeyNakshatra.DEITY_CHITRA, language)
+    Nakshatra.SWATI -> StringResources.get(StringKeyNakshatra.DEITY_SWATI, language)
+    Nakshatra.VISHAKHA -> StringResources.get(StringKeyNakshatra.DEITY_VISHAKHA, language)
+    Nakshatra.ANURADHA -> StringResources.get(StringKeyNakshatra.DEITY_ANURADHA, language)
+    Nakshatra.JYESHTHA -> StringResources.get(StringKeyNakshatra.DEITY_JYESHTHA, language)
+    Nakshatra.MULA -> StringResources.get(StringKeyNakshatra.DEITY_MULA, language)
+    Nakshatra.PURVA_ASHADHA -> StringResources.get(StringKeyNakshatra.DEITY_PURVA_ASHADHA, language)
+    Nakshatra.UTTARA_ASHADHA -> StringResources.get(StringKeyNakshatra.DEITY_UTTARA_ASHADHA, language)
+    Nakshatra.SHRAVANA -> StringResources.get(StringKeyNakshatra.DEITY_SHRAVANA, language)
+    Nakshatra.DHANISHTHA -> StringResources.get(StringKeyNakshatra.DEITY_DHANISHTHA, language)
+    Nakshatra.SHATABHISHA -> StringResources.get(StringKeyNakshatra.DEITY_SHATABHISHA, language)
+    Nakshatra.PURVA_BHADRAPADA -> StringResources.get(StringKeyNakshatra.DEITY_PURVA_BHADRAPADA, language)
+    Nakshatra.UTTARA_BHADRAPADA -> StringResources.get(StringKeyNakshatra.DEITY_UTTARA_BHADRAPADA, language)
+    Nakshatra.REVATI -> StringResources.get(StringKeyNakshatra.DEITY_REVATI, language)
 }
 
-private fun getNakshatraSymbol(nakshatra: Nakshatra): String = when (nakshatra) {
-    Nakshatra.ASHWINI -> "Horse's Head"
-    Nakshatra.BHARANI -> "Yoni (Female Organ)"
-    Nakshatra.KRITTIKA -> "Razor/Flame"
-    Nakshatra.ROHINI -> "Cart/Chariot"
-    Nakshatra.MRIGASHIRA -> "Deer's Head"
-    Nakshatra.ARDRA -> "Teardrop/Diamond"
-    Nakshatra.PUNARVASU -> "Bow/House"
-    Nakshatra.PUSHYA -> "Cow's Udder/Flower"
-    Nakshatra.ASHLESHA -> "Coiled Serpent"
-    Nakshatra.MAGHA -> "Royal Throne"
-    Nakshatra.PURVA_PHALGUNI -> "Swinging Hammock"
-    Nakshatra.UTTARA_PHALGUNI -> "Bed/Legs of Cot"
-    Nakshatra.HASTA -> "Hand/Palm"
-    Nakshatra.CHITRA -> "Bright Pearl/Gem"
-    Nakshatra.SWATI -> "Coral/Sword"
-    Nakshatra.VISHAKHA -> "Triumphal Arch"
-    Nakshatra.ANURADHA -> "Lotus"
-    Nakshatra.JYESHTHA -> "Earring/Talisman"
-    Nakshatra.MULA -> "Tied Roots"
-    Nakshatra.PURVA_ASHADHA -> "Elephant Tusk/Fan"
-    Nakshatra.UTTARA_ASHADHA -> "Elephant Tusk/Bed"
-    Nakshatra.SHRAVANA -> "Ear/Arrow"
-    Nakshatra.DHANISHTHA -> "Drum/Flute"
-    Nakshatra.SHATABHISHA -> "Empty Circle"
-    Nakshatra.PURVA_BHADRAPADA -> "Sword/Two Front Legs"
-    Nakshatra.UTTARA_BHADRAPADA -> "Twin/Back Legs"
-    Nakshatra.REVATI -> "Fish/Drum"
+private fun getNakshatraSymbol(nakshatra: Nakshatra, language: Language): String = when (nakshatra) {
+    Nakshatra.ASHWINI -> StringResources.get(StringKeyNakshatra.SYMBOL_ASHWINI, language)
+    Nakshatra.BHARANI -> StringResources.get(StringKeyNakshatra.SYMBOL_BHARANI, language)
+    Nakshatra.KRITTIKA -> StringResources.get(StringKeyNakshatra.SYMBOL_KRITTIKA, language)
+    Nakshatra.ROHINI -> StringResources.get(StringKeyNakshatra.SYMBOL_ROHINI, language)
+    Nakshatra.MRIGASHIRA -> StringResources.get(StringKeyNakshatra.SYMBOL_MRIGASHIRA, language)
+    Nakshatra.ARDRA -> StringResources.get(StringKeyNakshatra.SYMBOL_ARDRA, language)
+    Nakshatra.PUNARVASU -> StringResources.get(StringKeyNakshatra.SYMBOL_PUNARVASU, language)
+    Nakshatra.PUSHYA -> StringResources.get(StringKeyNakshatra.SYMBOL_PUSHYA, language)
+    Nakshatra.ASHLESHA -> StringResources.get(StringKeyNakshatra.SYMBOL_ASHLESHA, language)
+    Nakshatra.MAGHA -> StringResources.get(StringKeyNakshatra.SYMBOL_MAGHA, language)
+    Nakshatra.PURVA_PHALGUNI -> StringResources.get(StringKeyNakshatra.SYMBOL_PURVA_PHALGUNI, language)
+    Nakshatra.UTTARA_PHALGUNI -> StringResources.get(StringKeyNakshatra.SYMBOL_UTTARA_PHALGUNI, language)
+    Nakshatra.HASTA -> StringResources.get(StringKeyNakshatra.SYMBOL_HASTA, language)
+    Nakshatra.CHITRA -> StringResources.get(StringKeyNakshatra.SYMBOL_CHITRA, language)
+    Nakshatra.SWATI -> StringResources.get(StringKeyNakshatra.SYMBOL_SWATI, language)
+    Nakshatra.VISHAKHA -> StringResources.get(StringKeyNakshatra.SYMBOL_VISHAKHA, language)
+    Nakshatra.ANURADHA -> StringResources.get(StringKeyNakshatra.SYMBOL_ANURADHA, language)
+    Nakshatra.JYESHTHA -> StringResources.get(StringKeyNakshatra.SYMBOL_JYESHTHA, language)
+    Nakshatra.MULA -> StringResources.get(StringKeyNakshatra.SYMBOL_MULA, language)
+    Nakshatra.PURVA_ASHADHA -> StringResources.get(StringKeyNakshatra.SYMBOL_PURVA_ASHADHA, language)
+    Nakshatra.UTTARA_ASHADHA -> StringResources.get(StringKeyNakshatra.SYMBOL_UTTARA_ASHADHA, language)
+    Nakshatra.SHRAVANA -> StringResources.get(StringKeyNakshatra.SYMBOL_SHRAVANA, language)
+    Nakshatra.DHANISHTHA -> StringResources.get(StringKeyNakshatra.SYMBOL_DHANISHTHA, language)
+    Nakshatra.SHATABHISHA -> StringResources.get(StringKeyNakshatra.SYMBOL_SHATABHISHA, language)
+    Nakshatra.PURVA_BHADRAPADA -> StringResources.get(StringKeyNakshatra.SYMBOL_PURVA_BHADRAPADA, language)
+    Nakshatra.UTTARA_BHADRAPADA -> StringResources.get(StringKeyNakshatra.SYMBOL_UTTARA_BHADRAPADA, language)
+    Nakshatra.REVATI -> StringResources.get(StringKeyNakshatra.SYMBOL_REVATI, language)
 }
 
 private fun getNakshatraNature(nakshatra: Nakshatra): NakshatraNature = when (nakshatra) {
@@ -436,21 +437,21 @@ private fun getNakshatraGana(nakshatra: Nakshatra): NakshatraGana = when (naksha
     Nakshatra.VISHAKHA, Nakshatra.JYESHTHA, Nakshatra.MULA, Nakshatra.DHANISHTHA, Nakshatra.SHATABHISHA -> NakshatraGana.RAKSHASA
 }
 
-private fun getNakshatraAnimal(nakshatra: Nakshatra): String = when (nakshatra) {
-    Nakshatra.ASHWINI, Nakshatra.SHATABHISHA -> "Horse"
-    Nakshatra.BHARANI, Nakshatra.REVATI -> "Elephant"
-    Nakshatra.KRITTIKA, Nakshatra.PUSHYA -> "Sheep/Goat"
-    Nakshatra.ROHINI, Nakshatra.MRIGASHIRA -> "Serpent"
-    Nakshatra.ARDRA, Nakshatra.MULA -> "Dog"
-    Nakshatra.PUNARVASU, Nakshatra.ASHLESHA -> "Cat"
-    Nakshatra.MAGHA, Nakshatra.PURVA_PHALGUNI -> "Rat"
-    Nakshatra.UTTARA_PHALGUNI, Nakshatra.UTTARA_BHADRAPADA -> "Cow"
-    Nakshatra.HASTA, Nakshatra.SWATI -> "Buffalo"
-    Nakshatra.CHITRA, Nakshatra.VISHAKHA -> "Tiger"
-    Nakshatra.ANURADHA, Nakshatra.JYESHTHA -> "Deer"
-    Nakshatra.PURVA_ASHADHA, Nakshatra.SHRAVANA -> "Monkey"
-    Nakshatra.UTTARA_ASHADHA, Nakshatra.PURVA_BHADRAPADA -> "Mongoose"
-    Nakshatra.DHANISHTHA -> "Lion"
+private fun getNakshatraAnimal(nakshatra: Nakshatra, language: Language): String = when (nakshatra) {
+    Nakshatra.ASHWINI, Nakshatra.SHATABHISHA -> StringResources.get(StringKeyNakshatra.ANIMAL_HORSE, language)
+    Nakshatra.BHARANI, Nakshatra.REVATI -> StringResources.get(StringKeyNakshatra.ANIMAL_ELEPHANT, language)
+    Nakshatra.KRITTIKA, Nakshatra.PUSHYA -> StringResources.get(StringKeyNakshatra.ANIMAL_SHEEP, language)
+    Nakshatra.ROHINI, Nakshatra.MRIGASHIRA -> StringResources.get(StringKeyNakshatra.ANIMAL_SERPENT, language)
+    Nakshatra.ARDRA, Nakshatra.MULA -> StringResources.get(StringKeyNakshatra.ANIMAL_DOG, language)
+    Nakshatra.PUNARVASU, Nakshatra.ASHLESHA -> StringResources.get(StringKeyNakshatra.ANIMAL_CAT, language)
+    Nakshatra.MAGHA, Nakshatra.PURVA_PHALGUNI -> StringResources.get(StringKeyNakshatra.ANIMAL_RAT, language)
+    Nakshatra.UTTARA_PHALGUNI, Nakshatra.UTTARA_BHADRAPADA -> StringResources.get(StringKeyNakshatra.ANIMAL_COW, language)
+    Nakshatra.HASTA, Nakshatra.SWATI -> StringResources.get(StringKeyNakshatra.ANIMAL_BUFFALO, language)
+    Nakshatra.CHITRA, Nakshatra.VISHAKHA -> StringResources.get(StringKeyNakshatra.ANIMAL_TIGER, language)
+    Nakshatra.ANURADHA, Nakshatra.JYESHTHA -> StringResources.get(StringKeyNakshatra.ANIMAL_DEER, language)
+    Nakshatra.PURVA_ASHADHA, Nakshatra.SHRAVANA -> StringResources.get(StringKeyNakshatra.ANIMAL_MONKEY, language)
+    Nakshatra.UTTARA_ASHADHA, Nakshatra.PURVA_BHADRAPADA -> StringResources.get(StringKeyNakshatra.ANIMAL_MONGOOSE, language)
+    Nakshatra.DHANISHTHA -> StringResources.get(StringKeyNakshatra.ANIMAL_LION, language)
 }
 
 private fun getNakshatraElement(nakshatra: Nakshatra): NakshatraElement = when (nakshatra) {
@@ -468,24 +469,24 @@ private fun getNakshatraCaste(nakshatra: Nakshatra): NakshatraCaste = when (naks
     else -> NakshatraCaste.SHUDRA
 }
 
-private fun getNakshatraDirection(nakshatra: Nakshatra): String = when (nakshatra.number % 4) {
-    1 -> "East"
-    2 -> "South"
-    3 -> "West"
-    0 -> "North"
-    else -> "Center"
+private fun getNakshatraDirection(nakshatra: Nakshatra, language: Language): String = when (nakshatra.number % 4) {
+    1 -> StringResources.get(StringKeyAnalysis.PRASHNA_DIR_EAST, language)
+    2 -> StringResources.get(StringKeyAnalysis.PRASHNA_DIR_SOUTH, language)
+    3 -> StringResources.get(StringKeyAnalysis.PRASHNA_DIR_WEST, language)
+    0 -> StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH, language)
+    else -> StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH, language)
 }
 
-private fun getNakshatraBodyPart(nakshatra: Nakshatra): String = when (nakshatra) {
-    Nakshatra.ASHWINI, Nakshatra.BHARANI, Nakshatra.KRITTIKA -> "Head"
-    Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.ARDRA -> "Face/Eyes"
-    Nakshatra.PUNARVASU, Nakshatra.PUSHYA, Nakshatra.ASHLESHA -> "Neck/Shoulders"
-    Nakshatra.MAGHA, Nakshatra.PURVA_PHALGUNI, Nakshatra.UTTARA_PHALGUNI -> "Heart/Back"
-    Nakshatra.HASTA, Nakshatra.CHITRA, Nakshatra.SWATI -> "Hands/Stomach"
-    Nakshatra.VISHAKHA, Nakshatra.ANURADHA, Nakshatra.JYESHTHA -> "Lower Abdomen"
-    Nakshatra.MULA, Nakshatra.PURVA_ASHADHA, Nakshatra.UTTARA_ASHADHA -> "Thighs"
-    Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.SHATABHISHA -> "Knees/Legs"
-    Nakshatra.PURVA_BHADRAPADA, Nakshatra.UTTARA_BHADRAPADA, Nakshatra.REVATI -> "Feet/Ankles"
+private fun getNakshatraBodyPart(nakshatra: Nakshatra, language: Language): String = when (nakshatra) {
+    Nakshatra.ASHWINI, Nakshatra.BHARANI, Nakshatra.KRITTIKA -> StringResources.get(StringKeyNakshatra.BODY_PART_HEAD, language)
+    Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.ARDRA -> StringResources.get(StringKeyNakshatra.BODY_PART_FACE_EYES, language)
+    Nakshatra.PUNARVASU, Nakshatra.PUSHYA, Nakshatra.ASHLESHA -> StringResources.get(StringKeyNakshatra.BODY_PART_NECK_SHOULDERS, language)
+    Nakshatra.MAGHA, Nakshatra.PURVA_PHALGUNI, Nakshatra.UTTARA_PHALGUNI -> StringResources.get(StringKeyNakshatra.BODY_PART_HEART_BACK, language)
+    Nakshatra.HASTA, Nakshatra.CHITRA, Nakshatra.SWATI -> StringResources.get(StringKeyNakshatra.BODY_PART_HANDS_STOMACH, language)
+    Nakshatra.VISHAKHA, Nakshatra.ANURADHA, Nakshatra.JYESHTHA -> StringResources.get(StringKeyNakshatra.BODY_PART_LOWER_ABDOMEN, language)
+    Nakshatra.MULA, Nakshatra.PURVA_ASHADHA, Nakshatra.UTTARA_ASHADHA -> StringResources.get(StringKeyNakshatra.BODY_PART_THIGHS, language)
+    Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.SHATABHISHA -> StringResources.get(StringKeyNakshatra.BODY_PART_KNEES_LEGS, language)
+    Nakshatra.PURVA_BHADRAPADA, Nakshatra.UTTARA_BHADRAPADA, Nakshatra.REVATI -> StringResources.get(StringKeyNakshatra.BODY_PART_FEET_ANKLES, language)
 }
 
 private fun getNakshatraGender(nakshatra: Nakshatra): NakshatraGender = when (nakshatra.number % 2) {
@@ -501,87 +502,87 @@ private fun getNakshatraDosha(nakshatra: Nakshatra): NakshatraDosha = when (naks
     else -> NakshatraDosha.KAPHA
 }
 
-private fun getNakshatraQualities(nakshatra: Nakshatra): List<String> = when (nakshatra) {
-    Nakshatra.ASHWINI -> listOf("Quick-thinking", "Healing abilities", "Pioneering spirit", "Youthful energy")
-    Nakshatra.BHARANI -> listOf("Transformative", "Creative", "Strong willpower", "Bearing responsibility")
-    Nakshatra.KRITTIKA -> listOf("Fiery determination", "Sharp intellect", "Purifying nature", "Leadership")
-    Nakshatra.ROHINI -> listOf("Creative", "Artistic", "Magnetic personality", "Material abundance")
-    Nakshatra.MRIGASHIRA -> listOf("Curious mind", "Searching nature", "Gentle demeanor", "Adaptable")
-    Nakshatra.ARDRA -> listOf("Transformative", "Intense emotions", "Destructive-creative", "Research-oriented")
-    Nakshatra.PUNARVASU -> listOf("Renewal", "Prosperity", "Spiritual wisdom", "Return to roots")
-    Nakshatra.PUSHYA -> listOf("Nourishing", "Protective", "Spiritual growth", "Teaching ability")
-    Nakshatra.ASHLESHA -> listOf("Mystical wisdom", "Psychic abilities", "Secretive nature", "Hypnotic charm")
-    Nakshatra.MAGHA -> listOf("Royal bearing", "Ancestral pride", "Leadership", "Traditionalist")
-    Nakshatra.PURVA_PHALGUNI -> listOf("Creative", "Pleasure-seeking", "Affectionate", "Artistic talent")
-    Nakshatra.UTTARA_PHALGUNI -> listOf("Service-oriented", "Helpful nature", "Good organizer", "Contract-keeper")
-    Nakshatra.HASTA -> listOf("Skilled hands", "Clever", "Resourceful", "Healing touch")
-    Nakshatra.CHITRA -> listOf("Brilliant", "Creative genius", "Magnetic", "Artistic mastery")
-    Nakshatra.SWATI -> listOf("Independent", "Adaptable", "Business acumen", "Diplomatic")
-    Nakshatra.VISHAKHA -> listOf("Goal-oriented", "Determined", "Ambitious", "Single-minded focus")
-    Nakshatra.ANURADHA -> listOf("Devoted", "Friendly", "Organizational ability", "Travel-loving")
-    Nakshatra.JYESHTHA -> listOf("Protective", "Elder brother energy", "Leadership", "Responsibility")
-    Nakshatra.MULA -> listOf("Investigative", "Root-seeking", "Spiritual depth", "Transformation")
-    Nakshatra.PURVA_ASHADHA -> listOf("Invincible spirit", "Philosophical", "Optimistic", "Purifying")
-    Nakshatra.UTTARA_ASHADHA -> listOf("Final victory", "Leadership", "Integrity", "Universal values")
-    Nakshatra.SHRAVANA -> listOf("Good listener", "Learning ability", "Connection to truth", "Preservation")
-    Nakshatra.DHANISHTHA -> listOf("Musical talent", "Wealth-giving", "Marching forward", "Group activities")
-    Nakshatra.SHATABHISHA -> listOf("Healing powers", "Secretive wisdom", "Research ability", "Self-sufficient")
-    Nakshatra.PURVA_BHADRAPADA -> listOf("Fiery passion", "Spiritual warrior", "Transformation", "Asceticism")
-    Nakshatra.UTTARA_BHADRAPADA -> listOf("Deep meditation", "Kundalini energy", "Wisdom", "Control over desires")
-    Nakshatra.REVATI -> listOf("Nourishing", "Protective of others", "Journey completion", "Wealth-giving")
+private fun getNakshatraQualities(nakshatra: Nakshatra, language: Language): List<String> = when (nakshatra) {
+    Nakshatra.ASHWINI -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_QUICK_THINKING, language), StringResources.get(StringKeyNakshatra.TRAIT_HEALING_ABILITIES, language), StringResources.get(StringKeyNakshatra.TRAIT_PIONEERING_SPIRIT, language), StringResources.get(StringKeyNakshatra.TRAIT_YOUTHFUL_ENERGY, language))
+    Nakshatra.BHARANI -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_TRANSFORMATIVE, language), StringResources.get(StringKeyNakshatra.TRAIT_CREATIVE, language), StringResources.get(StringKeyNakshatra.TRAIT_STRONG_WILLPOWER, language), StringResources.get(StringKeyNakshatra.TRAIT_BEARING_RESPONSIBILITY, language))
+    Nakshatra.KRITTIKA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_FIERY_DETERMINATION, language), StringResources.get(StringKeyNakshatra.TRAIT_SHARP_INTELLECT, language), StringResources.get(StringKeyNakshatra.TRAIT_PURIFYING_NATURE, language), StringResources.get(StringKeyNakshatra.TRAIT_LEADERSHIP, language))
+    Nakshatra.ROHINI -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_CREATIVE, language), StringResources.get(StringKeyNakshatra.TRAIT_ARTISTIC, language), StringResources.get(StringKeyNakshatra.TRAIT_MAGNETIC_PERSONALITY, language), StringResources.get(StringKeyNakshatra.TRAIT_MATERIAL_ABUNDANCE, language))
+    Nakshatra.MRIGASHIRA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_CURIOUS_MIND, language), StringResources.get(StringKeyNakshatra.TRAIT_SEARCHING_NATURE, language), StringResources.get(StringKeyNakshatra.TRAIT_GENTLE_DEMEANOR, language), StringResources.get(StringKeyNakshatra.TRAIT_ADAPTABLE, language))
+    Nakshatra.ARDRA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_TRANSFORMATIVE, language), StringResources.get(StringKeyNakshatra.TRAIT_INTENSE_EMOTIONS, language), StringResources.get(StringKeyNakshatra.TRAIT_DESTRUCTIVE_CREATIVE, language), StringResources.get(StringKeyNakshatra.TRAIT_RESEARCH_ORIENTED, language))
+    Nakshatra.PUNARVASU -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_RENEWAL, language), StringResources.get(StringKeyNakshatra.TRAIT_PROSPERITY, language), StringResources.get(StringKeyNakshatra.TRAIT_SPIRITUAL_WISDOM, language), StringResources.get(StringKeyNakshatra.TRAIT_RETURN_TO_ROOTS, language))
+    Nakshatra.PUSHYA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_NOURISHING, language), StringResources.get(StringKeyNakshatra.TRAIT_PROTECTIVE, language), StringResources.get(StringKeyNakshatra.TRAIT_SPIRITUAL_GROWTH, language), StringResources.get(StringKeyNakshatra.TRAIT_TEACHING_ABILITY, language))
+    Nakshatra.ASHLESHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_MYSTICAL_WISDOM, language), StringResources.get(StringKeyNakshatra.TRAIT_PSYCHIC_ABILITIES, language), StringResources.get(StringKeyNakshatra.TRAIT_SECRETIVE_NATURE, language), StringResources.get(StringKeyNakshatra.TRAIT_HYPNOTIC_CHARM, language))
+    Nakshatra.MAGHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_ROYAL_BEARING, language), StringResources.get(StringKeyNakshatra.TRAIT_ANCESTRAL_PRIDE, language), StringResources.get(StringKeyNakshatra.TRAIT_LEADERSHIP, language), StringResources.get(StringKeyNakshatra.TRAIT_TRADITIONALIST, language))
+    Nakshatra.PURVA_PHALGUNI -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_CREATIVE, language), StringResources.get(StringKeyNakshatra.TRAIT_PLEASURE_SEEKING, language), StringResources.get(StringKeyNakshatra.TRAIT_AFFECTIONATE, language), StringResources.get(StringKeyNakshatra.TRAIT_ARTISTIC_TALENT, language))
+    Nakshatra.UTTARA_PHALGUNI -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_SERVICE_ORIENTED, language), StringResources.get(StringKeyNakshatra.TRAIT_HELPFUL_NATURE, language), StringResources.get(StringKeyNakshatra.TRAIT_GOOD_ORGANIZER, language), StringResources.get(StringKeyNakshatra.TRAIT_CONTRACT_KEEPER, language))
+    Nakshatra.HASTA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_SKILLED_HANDS, language), StringResources.get(StringKeyNakshatra.TRAIT_CLEVER, language), StringResources.get(StringKeyNakshatra.TRAIT_RESOURCEFUL, language), StringResources.get(StringKeyNakshatra.TRAIT_HEALING_TOUCH, language))
+    Nakshatra.CHITRA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_BRILLIANT, language), StringResources.get(StringKeyNakshatra.TRAIT_CREATIVE_GENIUS, language), StringResources.get(StringKeyNakshatra.TRAIT_MAGNETIC, language), StringResources.get(StringKeyNakshatra.TRAIT_ARTISTIC_MASTERY, language))
+    Nakshatra.SWATI -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_INDEPENDENT, language), StringResources.get(StringKeyNakshatra.TRAIT_ADAPTABLE, language), StringResources.get(StringKeyNakshatra.TRAIT_BUSINESS_ACUMEN, language), StringResources.get(StringKeyNakshatra.TRAIT_DIPLOMATIC, language))
+    Nakshatra.VISHAKHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_GOAL_ORIENTED, language), StringResources.get(StringKeyNakshatra.TRAIT_DETERMINED, language), StringResources.get(StringKeyNakshatra.TRAIT_AMBITIOUS, language), StringResources.get(StringKeyNakshatra.TRAIT_SINGLE_MINDED_FOCUS, language))
+    Nakshatra.ANURADHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_DEVOTED, language), StringResources.get(StringKeyNakshatra.TRAIT_FRIENDLY, language), StringResources.get(StringKeyNakshatra.TRAIT_ORGANIZATIONAL_ABILITY, language), StringResources.get(StringKeyNakshatra.TRAIT_TRAVEL_LOVING, language))
+    Nakshatra.JYESHTHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_PROTECTIVE, language), StringResources.get(StringKeyNakshatra.TRAIT_ELDER_BROTHER_ENERGY, language), StringResources.get(StringKeyNakshatra.TRAIT_LEADERSHIP, language), StringResources.get(StringKeyNakshatra.TRAIT_RESPONSIBILITY, language))
+    Nakshatra.MULA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_INVESTIGATIVE, language), StringResources.get(StringKeyNakshatra.TRAIT_ROOT_SEEKING, language), StringResources.get(StringKeyNakshatra.TRAIT_SPIRITUAL_DEPTH, language), StringResources.get(StringKeyNakshatra.TRAIT_TRANSFORMATION, language))
+    Nakshatra.PURVA_ASHADHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_INVINCIBLE_SPIRIT, language), StringResources.get(StringKeyNakshatra.TRAIT_PHILOSOPHICAL, language), StringResources.get(StringKeyNakshatra.TRAIT_OPTIMISTIC, language), StringResources.get(StringKeyNakshatra.TRAIT_PURIFYING, language))
+    Nakshatra.UTTARA_ASHADHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_FINAL_VICTORY, language), StringResources.get(StringKeyNakshatra.TRAIT_LEADERSHIP, language), StringResources.get(StringKeyNakshatra.TRAIT_INTEGRITY, language), StringResources.get(StringKeyNakshatra.TRAIT_UNIVERSAL_VALUES, language))
+    Nakshatra.SHRAVANA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_GOOD_LISTENER, language), StringResources.get(StringKeyNakshatra.TRAIT_LEARNING_ABILITY, language), StringResources.get(StringKeyNakshatra.TRAIT_CONNECTION_TO_TRUTH, language), StringResources.get(StringKeyNakshatra.TRAIT_PRESERVATION, language))
+    Nakshatra.DHANISHTHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_MUSICAL_TALENT, language), StringResources.get(StringKeyNakshatra.TRAIT_WEALTH_GIVING, language), StringResources.get(StringKeyNakshatra.TRAIT_MARCHING_FORWARD, language), StringResources.get(StringKeyNakshatra.TRAIT_GROUP_ACTIVITIES, language))
+    Nakshatra.SHATABHISHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_HEALING_POWERS, language), StringResources.get(StringKeyNakshatra.TRAIT_SECRETIVE_WISDOM, language), StringResources.get(StringKeyNakshatra.TRAIT_RESEARCH_ABILITY, language), StringResources.get(StringKeyNakshatra.TRAIT_SELF_SUFFICIENT, language))
+    Nakshatra.PURVA_BHADRAPADA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_FIERY_PASSION, language), StringResources.get(StringKeyNakshatra.TRAIT_SPIRITUAL_WARRIOR, language), StringResources.get(StringKeyNakshatra.TRAIT_TRANSFORMATION, language), StringResources.get(StringKeyNakshatra.TRAIT_ASCETICISM, language))
+    Nakshatra.UTTARA_BHADRAPADA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_DEEP_MEDITATION, language), StringResources.get(StringKeyNakshatra.TRAIT_KUNDALINI_ENERGY, language), StringResources.get(StringKeyNakshatra.TRAIT_WISDOM, language), StringResources.get(StringKeyNakshatra.TRAIT_CONTROL_OVER_DESIRES, language))
+    Nakshatra.REVATI -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_NOURISHING, language), StringResources.get(StringKeyNakshatra.TRAIT_PROTECTIVE_OF_OTHERS, language), StringResources.get(StringKeyNakshatra.TRAIT_JOURNEY_COMPLETION, language), StringResources.get(StringKeyNakshatra.TRAIT_WEALTH_GIVING, language))
 }
 
-private fun getNakshatraStrengths(nakshatra: Nakshatra): List<String> = when (nakshatra) {
-    Nakshatra.ASHWINI -> listOf("Quick healer", "Initiative", "Courage", "Rejuvenation ability")
-    Nakshatra.BHARANI -> listOf("Strong will", "Creativity", "Self-discipline", "Endurance")
-    Nakshatra.KRITTIKA -> listOf("Sharp mind", "Purifying influence", "Courage", "Fame potential")
-    else -> listOf("Determination", "Intuition", "Adaptability", "Inner strength")
+private fun getNakshatraStrengths(nakshatra: Nakshatra, language: Language): List<String> = when (nakshatra) {
+    Nakshatra.ASHWINI -> listOf(StringResources.get(StringKeyNakshatra.STRENGTH_QUICK_HEALER, language), StringResources.get(StringKeyNakshatra.STRENGTH_INITIATIVE, language), StringResources.get(StringKeyNakshatra.STRENGTH_COURAGE, language), StringResources.get(StringKeyNakshatra.STRENGTH_REJUVENATION, language))
+    Nakshatra.BHARANI -> listOf(StringResources.get(StringKeyNakshatra.STRENGTH_STRONG_WILL, language), StringResources.get(StringKeyNakshatra.TRAIT_CREATIVE, language), StringResources.get(StringKeyNakshatra.STRENGTH_SELF_DISCIPLINE, language), StringResources.get(StringKeyNakshatra.STRENGTH_ENDURANCE, language))
+    Nakshatra.KRITTIKA -> listOf(StringResources.get(StringKeyNakshatra.STRENGTH_SHARP_MIND, language), StringResources.get(StringKeyNakshatra.STRENGTH_PURIFYING_INFLUENCE, language), StringResources.get(StringKeyNakshatra.STRENGTH_COURAGE, language), StringResources.get(StringKeyNakshatra.STRENGTH_FAME_POTENTIAL, language))
+    else -> listOf(StringResources.get(StringKeyNakshatra.STRENGTH_DETERMINATION, language), StringResources.get(StringKeyNakshatra.STRENGTH_INTUITION, language), StringResources.get(StringKeyNakshatra.TRAIT_ADAPTABLE, language), StringResources.get(StringKeyNakshatra.STRENGTH_INNER_STRENGTH, language))
 }
 
-private fun getNakshatraWeaknesses(nakshatra: Nakshatra): List<String> = when (nakshatra) {
-    Nakshatra.ASHWINI -> listOf("Impatience", "Recklessness", "Overconfidence", "Restlessness")
-    Nakshatra.BHARANI -> listOf("Stubbornness", "Possessiveness", "Jealousy", "Extremism")
-    Nakshatra.KRITTIKA -> listOf("Harsh speech", "Anger issues", "Critical nature", "Dominating")
-    else -> listOf("Overthinking", "Anxiety", "Sensitivity", "Perfectionism")
+private fun getNakshatraWeaknesses(nakshatra: Nakshatra, language: Language): List<String> = when (nakshatra) {
+    Nakshatra.ASHWINI -> listOf(StringResources.get(StringKeyNakshatra.WEAKNESS_IMPATIENCE, language), StringResources.get(StringKeyNakshatra.WEAKNESS_RECKLESSNESS, language), StringResources.get(StringKeyNakshatra.WEAKNESS_OVERCONFIDENCE, language), StringResources.get(StringKeyNakshatra.WEAKNESS_RESTLESSNESS, language))
+    Nakshatra.BHARANI -> listOf(StringResources.get(StringKeyNakshatra.WEAKNESS_STUBBORNNESS, language), StringResources.get(StringKeyNakshatra.WEAKNESS_POSSESSIVENESS, language), StringResources.get(StringKeyNakshatra.WEAKNESS_JEALOUSY, language), StringResources.get(StringKeyNakshatra.WEAKNESS_EXTREMISM, language))
+    Nakshatra.KRITTIKA -> listOf(StringResources.get(StringKeyNakshatra.WEAKNESS_HARSH_SPEECH, language), StringResources.get(StringKeyNakshatra.WEAKNESS_ANGER_ISSUES, language), StringResources.get(StringKeyNakshatra.WEAKNESS_CRITICAL_NATURE, language), StringResources.get(StringKeyNakshatra.WEAKNESS_DOMINATING, language))
+    else -> listOf(StringResources.get(StringKeyNakshatra.WEAKNESS_OVERTHINKING, language), StringResources.get(StringKeyNakshatra.WEAKNESS_ANXIETY, language), StringResources.get(StringKeyNakshatra.WEAKNESS_SENSITIVITY, language), StringResources.get(StringKeyNakshatra.WEAKNESS_PERFECTIONISM, language))
 }
 
-private fun getNakshatraCareerAptitudes(nakshatra: Nakshatra): List<String> = when (nakshatra) {
-    Nakshatra.ASHWINI -> listOf("Medicine", "Sports", "Emergency services", "Transport")
-    Nakshatra.BHARANI -> listOf("Arts", "Entertainment", "Legal profession", "Publishing")
-    Nakshatra.KRITTIKA -> listOf("Military", "Cooking", "Engineering", "Surgery")
-    Nakshatra.ROHINI -> listOf("Agriculture", "Fashion", "Beauty industry", "Real estate")
-    Nakshatra.PUSHYA -> listOf("Teaching", "Counseling", "Clergy", "Food industry")
-    else -> listOf("Management", "Consulting", "Technology", "Research")
+private fun getNakshatraCareerAptitudes(nakshatra: Nakshatra, language: Language): List<String> = when (nakshatra) {
+    Nakshatra.ASHWINI -> listOf(StringResources.get(StringKeyNakshatra.CAREER_MEDICINE, language), StringResources.get(StringKeyNakshatra.CAREER_SPORTS, language), StringResources.get(StringKeyNakshatra.CAREER_EMERGENCY_SERVICES, language), StringResources.get(StringKeyNakshatra.CAREER_TRANSPORT, language))
+    Nakshatra.BHARANI -> listOf(StringResources.get(StringKeyNakshatra.CAREER_ARTS, language), StringResources.get(StringKeyNakshatra.CAREER_ENTERTAINMENT, language), StringResources.get(StringKeyNakshatra.CAREER_LEGAL_PROFESSION, language), StringResources.get(StringKeyNakshatra.CAREER_PUBLISHING, language))
+    Nakshatra.KRITTIKA -> listOf(StringResources.get(StringKeyNakshatra.CAREER_MILITARY, language), StringResources.get(StringKeyNakshatra.CAREER_COOKING, language), StringResources.get(StringKeyNakshatra.CAREER_ENGINEERING, language), StringResources.get(StringKeyNakshatra.CAREER_SURGERY, language))
+    Nakshatra.ROHINI -> listOf(StringResources.get(StringKeyNakshatra.CAREER_AGRICULTURE, language), StringResources.get(StringKeyNakshatra.CAREER_FASHION, language), StringResources.get(StringKeyNakshatra.CAREER_BEAUTY_INDUSTRY, language), StringResources.get(StringKeyNakshatra.CAREER_REAL_ESTATE, language))
+    Nakshatra.PUSHYA -> listOf(StringResources.get(StringKeyNakshatra.CAREER_TEACHING, language), StringResources.get(StringKeyNakshatra.CAREER_COUNSELING, language), StringResources.get(StringKeyNakshatra.CAREER_CLERGY, language), StringResources.get(StringKeyNakshatra.CAREER_FOOD_INDUSTRY, language))
+    else -> listOf(StringResources.get(StringKeyNakshatra.CAREER_MANAGEMENT, language), StringResources.get(StringKeyNakshatra.CAREER_CONSULTING, language), StringResources.get(StringKeyNakshatra.CAREER_TECHNOLOGY, language), StringResources.get(StringKeyNakshatra.CAREER_RESEARCH, language))
 }
 
-private fun getNakshatraMantra(nakshatra: Nakshatra): String = when (nakshatra) {
-    Nakshatra.ASHWINI -> "ॐ अश्विनीकुमाराभ्यां नमः। Om Ashwini Kumarabhyam Namah"
-    Nakshatra.BHARANI -> "ॐ यमाय नमः। Om Yamaya Namah"
-    Nakshatra.KRITTIKA -> "ॐ अग्नये नमः। Om Agnaye Namah"
-    Nakshatra.ROHINI -> "ॐ ब्रह्मणे नमः। Om Brahmane Namah"
-    Nakshatra.MRIGASHIRA -> "ॐ सोमाय नमः। Om Somaya Namah"
-    Nakshatra.ARDRA -> "ॐ रुद्राय नमः। Om Rudraya Namah"
-    Nakshatra.PUNARVASU -> "ॐ अदित्यै नमः। Om Adityai Namah"
-    Nakshatra.PUSHYA -> "ॐ बृहस्पतये नमः। Om Brihaspataye Namah"
-    Nakshatra.ASHLESHA -> "ॐ नागाय नमः। Om Nagaya Namah"
-    Nakshatra.MAGHA -> "ॐ पितृभ्यो नमः। Om Pitribhyo Namah"
-    Nakshatra.PURVA_PHALGUNI -> "ॐ भगाय नमः। Om Bhagaya Namah"
-    Nakshatra.UTTARA_PHALGUNI -> "ॐ अर्यम्णे नमः। Om Aryamne Namah"
-    Nakshatra.HASTA -> "ॐ सवित्रे नमः। Om Savitre Namah"
-    Nakshatra.CHITRA -> "ॐ त्वष्ट्रे नमः। Om Tvashtre Namah"
-    Nakshatra.SWATI -> "ॐ वायवे नमः। Om Vayave Namah"
-    Nakshatra.VISHAKHA -> "ॐ इन्द्राग्निभ्यां नमः। Om Indragnibhyam Namah"
-    Nakshatra.ANURADHA -> "ॐ मित्राय नमः। Om Mitraya Namah"
-    Nakshatra.JYESHTHA -> "ॐ इन्द्राय नमः। Om Indraya Namah"
-    Nakshatra.MULA -> "ॐ निर्ऋत्यै नमः। Om Nirrutyai Namah"
-    Nakshatra.PURVA_ASHADHA -> "ॐ अपां नमः। Om Apam Namah"
-    Nakshatra.UTTARA_ASHADHA -> "ॐ विश्वेभ्यो देवेभ्यो नमः। Om Vishvebhyo Devebhyo Namah"
-    Nakshatra.SHRAVANA -> "ॐ विष्णवे नमः। Om Vishnave Namah"
-    Nakshatra.DHANISHTHA -> "ॐ वसुभ्यो नमः। Om Vasubhyo Namah"
-    Nakshatra.SHATABHISHA -> "ॐ वरुणाय नमः। Om Varunaya Namah"
-    Nakshatra.PURVA_BHADRAPADA -> "ॐ अजैकपदाय नमः। Om Ajaikapadaya Namah"
-    Nakshatra.UTTARA_BHADRAPADA -> "ॐ अहिर्बुध्न्याय नमः। Om Ahirbudhnyaya Namah"
-    Nakshatra.REVATI -> "ॐ पूष्णे नमः। Om Pushne Namah"
+private fun getNakshatraMantra(nakshatra: Nakshatra, language: Language): String = when (nakshatra) {
+    Nakshatra.ASHWINI -> StringResources.get(StringKeyNakshatra.MANTRA_ASHWINI, language)
+    Nakshatra.BHARANI -> StringResources.get(StringKeyNakshatra.MANTRA_BHARANI, language)
+    Nakshatra.KRITTIKA -> StringResources.get(StringKeyNakshatra.MANTRA_KRITTIKA, language)
+    Nakshatra.ROHINI -> StringResources.get(StringKeyNakshatra.MANTRA_ROHINI, language)
+    Nakshatra.MRIGASHIRA -> StringResources.get(StringKeyNakshatra.MANTRA_MRIGASHIRA, language)
+    Nakshatra.ARDRA -> StringResources.get(StringKeyNakshatra.MANTRA_ARDRA, language)
+    Nakshatra.PUNARVASU -> StringResources.get(StringKeyNakshatra.MANTRA_PUNARVASU, language)
+    Nakshatra.PUSHYA -> StringResources.get(StringKeyNakshatra.MANTRA_PUSHYA, language)
+    Nakshatra.ASHLESHA -> StringResources.get(StringKeyNakshatra.MANTRA_ASHLESHA, language)
+    Nakshatra.MAGHA -> StringResources.get(StringKeyNakshatra.MANTRA_MAGHA, language)
+    Nakshatra.PURVA_PHALGUNI -> StringResources.get(StringKeyNakshatra.MANTRA_PURVA_PHALGUNI, language)
+    Nakshatra.UTTARA_PHALGUNI -> StringResources.get(StringKeyNakshatra.MANTRA_UTTARA_PHALGUNI, language)
+    Nakshatra.HASTA -> StringResources.get(StringKeyNakshatra.MANTRA_HASTA, language)
+    Nakshatra.CHITRA -> StringResources.get(StringKeyNakshatra.MANTRA_CHITRA, language)
+    Nakshatra.SWATI -> StringResources.get(StringKeyNakshatra.MANTRA_SWATI, language)
+    Nakshatra.VISHAKHA -> StringResources.get(StringKeyNakshatra.MANTRA_VISHAKHA, language)
+    Nakshatra.ANURADHA -> StringResources.get(StringKeyNakshatra.MANTRA_ANURADHA, language)
+    Nakshatra.JYESHTHA -> StringResources.get(StringKeyNakshatra.MANTRA_JYESHTHA, language)
+    Nakshatra.MULA -> StringResources.get(StringKeyNakshatra.MANTRA_MULA, language)
+    Nakshatra.PURVA_ASHADHA -> StringResources.get(StringKeyNakshatra.MANTRA_PURVA_ASHADHA, language)
+    Nakshatra.UTTARA_ASHADHA -> StringResources.get(StringKeyNakshatra.MANTRA_UTTARA_ASHADHA, language)
+    Nakshatra.SHRAVANA -> StringResources.get(StringKeyNakshatra.MANTRA_SHRAVANA, language)
+    Nakshatra.DHANISHTHA -> StringResources.get(StringKeyNakshatra.MANTRA_DHANISHTHA, language)
+    Nakshatra.SHATABHISHA -> StringResources.get(StringKeyNakshatra.MANTRA_SHATABHISHA, language)
+    Nakshatra.PURVA_BHADRAPADA -> StringResources.get(StringKeyNakshatra.MANTRA_PURVA_BHADRAPADA, language)
+    Nakshatra.UTTARA_BHADRAPADA -> StringResources.get(StringKeyNakshatra.MANTRA_UTTARA_BHADRAPADA, language)
+    Nakshatra.REVATI -> StringResources.get(StringKeyNakshatra.MANTRA_REVATI, language)
 }
 
 private fun calculateNakshatraCompatibility(nakshatra: Nakshatra, language: Language): NakshatraCompatibility {

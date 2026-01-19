@@ -22,4 +22,7 @@ object DivisionalChartAnalyzer {
 
     fun analyzeDwadasamsa(chart: VedicChart, language: Language): DwadasamsaAnalysis = 
         DwadasamsaAnalyzer.analyzeDwadasamsa(chart, language)
+
+    fun analyzeGenericVarga(chart: VedicChart, type: DivisionalChartType, language: Language): GenericVargaAnalysis =
+        GenericVargaAnalyzer.analyzeVarga(chart, type, language)
 }

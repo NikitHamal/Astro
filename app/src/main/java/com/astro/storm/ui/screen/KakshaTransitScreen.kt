@@ -183,12 +183,13 @@ private fun KakshaTabSelector(
 }
 
 private fun getTabTitle(tab: KakshaTab, language: Language): String {
-    return when (tab) {
-        KakshaTab.CURRENT -> if (language == Language.NEPALI) "वर्तमान" else "Current"
-        KakshaTab.PLANETS -> if (language == Language.NEPALI) "ग्रहहरू" else "Planets"
-        KakshaTab.TIMELINE -> if (language == Language.NEPALI) "समयरेखा" else "Timeline"
-        KakshaTab.FAVORABLE -> if (language == Language.NEPALI) "अनुकूल" else "Favorable"
+    val key = when (tab) {
+        KakshaTab.CURRENT -> StringKeyAdvanced.KAKSHYA_TAB_CURRENT
+        KakshaTab.PLANETS -> StringKeyAdvanced.KAKSHYA_TAB_PLANETS
+        KakshaTab.TIMELINE -> StringKeyAdvanced.KAKSHYA_TAB_TIMELINE
+        KakshaTab.FAVORABLE -> StringKeyAdvanced.KAKSHYA_TAB_FAVORABLE
     }
+    return com.astro.storm.core.common.StringResources.get(key, language)
 }
 
 @Composable
@@ -211,7 +212,7 @@ private fun CurrentKakshaTab(
 
         item {
             Text(
-                text = if (language == Language.NEPALI) "ग्रहहरूको स्थिति" else "Planet Positions",
+                text = stringResource(StringKeyAdvanced.KAKSHYA_PLANET_POSITIONS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = colors.TextPrimary
@@ -243,12 +244,12 @@ private fun KakshaSummaryCard(summary: com.astro.storm.ui.viewmodel.KakshaSummar
             ) {
                 Column {
                     Text(
-                        text = if (language == Language.NEPALI) "समग्र गुणस्तर" else "Overall Quality",
+                        text = stringResource(StringKeyAdvanced.KAKSHYA_OVERALL_QUALITY),
                         style = MaterialTheme.typography.labelMedium,
                         color = colors.TextMuted
                     )
                     Text(
-                        text = if (language == Language.NEPALI) summary.overallQuality.name else summary.overallQuality.name,
+                        text = summary.overallQuality.getLocalizedName(language),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = qualityColor
@@ -282,22 +283,22 @@ private fun KakshaSummaryCard(summary: com.astro.storm.ui.viewmodel.KakshaSummar
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 SummaryStat(
-                    label = if (language == Language.NEPALI) "अत्युत्तम" else "Excellent",
+                    label = stringResource(StringKeyAdvanced.KAKSHYA_QUALITY_EXCELLENT),
                     value = summary.excellentCount.toString(),
                     color = colors.SuccessColor
                 )
                 SummaryStat(
-                    label = if (language == Language.NEPALI) "राम्रो" else "Good",
+                    label = stringResource(StringKeyAdvanced.KAKSHYA_QUALITY_GOOD),
                     value = summary.goodCount.toString(),
                     color = colors.AccentTeal
                 )
                 SummaryStat(
-                    label = if (language == Language.NEPALI) "मध्यम" else "Moderate",
+                    label = stringResource(StringKeyAdvanced.KAKSHYA_QUALITY_MODERATE),
                     value = summary.moderateCount.toString(),
                     color = colors.AccentGold
                 )
                 SummaryStat(
-                    label = if (language == Language.NEPALI) "कमजोर" else "Poor",
+                    label = stringResource(StringKeyAdvanced.KAKSHYA_QUALITY_POOR),
                     value = summary.poorCount.toString(),
                     color = colors.ErrorColor
                 )
@@ -376,7 +377,7 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
                     color = qualityColor.copy(alpha = 0.1f)
                 ) {
                     Text(
-                        text = if (language == Language.NEPALI) position.quality.name else position.quality.name,
+                        text = position.quality.getLocalizedName(language),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         color = qualityColor,
@@ -394,7 +395,7 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
             ) {
                 Column {
                     Text(
-                        text = if (language == Language.NEPALI) "कक्ष्या स्वामी" else "Kakshya Lord",
+                        text = stringResource(StringKeyAdvanced.KAKSHYA_LORD),
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.TextMuted
                     )
@@ -422,7 +423,7 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = if (language == Language.NEPALI) "अर्को कक्ष्या" else "Next Kakshya",
+                        text = stringResource(StringKeyAdvanced.KAKSHYA_NEXT),
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.TextMuted
                     )
@@ -502,7 +503,7 @@ private fun PlanetsKakshaTab(
                 if (favorable.isNotEmpty()) {
                     item {
                         Text(
-                            text = if (language == Language.NEPALI) "आगामी अनुकूल अवधिहरू" else "Upcoming Favorable Periods",
+                            text = stringResource(StringKeyAdvanced.KAKSHYA_UPCOMING_FAVORABLE),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
                             color = colors.TextPrimary
@@ -516,7 +517,7 @@ private fun PlanetsKakshaTab(
                 if (changes.isNotEmpty()) {
                     item {
                         Text(
-                            text = if (language == Language.NEPALI) "आगामी कक्ष्या परिवर्तन" else "Next Kakshya Changes",
+                            text = stringResource(StringKeyAdvanced.KAKSHYA_UPCOMING_CHANGES),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
                             color = colors.TextPrimary
@@ -538,7 +539,7 @@ private fun PlanetsKakshaTab(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = if (language == Language.NEPALI) "विवरण हेर्न ग्रह छान्नुहोस्" else "Select a planet to see details",
+                        text = stringResource(StringKeyAdvanced.KAKSHYA_SELECT_PLANET),
                         style = MaterialTheme.typography.bodyMedium,
                         color = colors.TextMuted
                     )
@@ -695,7 +696,7 @@ private fun TimelineKakshaTab(
     if (result.upcomingChanges.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
-                text = if (language == Language.NEPALI) "आगामी परिवर्तनहरू छैनन्" else "No upcoming changes in next 7 days",
+                text = stringResource(StringKeyAdvanced.KAKSHYA_NO_CHANGES),
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.TextMuted
             )
@@ -762,7 +763,7 @@ private fun FavorableKakshaTab(
     if (result.favorablePeriods.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
-                text = if (language == Language.NEPALI) "अनुकूल समय फेला परेन" else "No favorable micro-transits found for the next 30 days",
+                text = stringResource(StringKeyAdvanced.KAKSHYA_NO_FAVORABLE),
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.TextMuted
             )
@@ -843,7 +844,7 @@ private fun KakshaErrorContent(message: String, modifier: Modifier = Modifier, o
             Text(text = message, color = colors.TextPrimary, textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = onRetry) {
-                Text(text = "Retry")
+                Text(text = stringResource(StringKey.BTN_RETRY))
             }
         }
     }

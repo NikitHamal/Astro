@@ -408,7 +408,7 @@ private fun TithiCard(
     onToggleExpand: (Boolean) -> Unit
 ) {
     val language = LocalLanguage.current
-    val tithiData = getTithiData(panchanga.tithi.tithi.number)
+    val tithiData = getTithiData(panchanga.tithi.tithi.number, language)
 
     ExpandableDetailCard(
         title = stringResource(StringKeyMatch.PANCHANGA_TITHI),
@@ -451,7 +451,7 @@ private fun NakshatraCard(
     onToggleExpand: (Boolean) -> Unit
 ) {
     val language = LocalLanguage.current
-    val nakshatraData = getNakshatraData(panchanga.nakshatra.nakshatra)
+    val nakshatraData = getNakshatraData(panchanga.nakshatra.nakshatra, language)
 
     ExpandableDetailCard(
         title = stringResource(StringKeyMatch.PANCHANGA_NAKSHATRA_LABEL),
@@ -490,7 +490,7 @@ private fun YogaCard(
     onToggleExpand: (Boolean) -> Unit
 ) {
     val language = LocalLanguage.current
-    val yogaData = getYogaData(panchanga.yoga.yoga)
+    val yogaData = getYogaData(panchanga.yoga.yoga, language)
 
     ExpandableDetailCard(
         title = stringResource(StringKeyMatch.PANCHANGA_YOGA),
@@ -524,7 +524,7 @@ private fun KaranaCard(
     onToggleExpand: (Boolean) -> Unit
 ) {
     val language = LocalLanguage.current
-    val karanaData = getKaranaData(panchanga.karana.karana)
+    val karanaData = getKaranaData(panchanga.karana.karana, language)
 
     ExpandableDetailCard(
         title = stringResource(StringKeyMatch.PANCHANGA_KARANA),
@@ -558,7 +558,7 @@ private fun VaraCard(
     onToggleExpand: (Boolean) -> Unit
 ) {
     val language = LocalLanguage.current
-    val varaData = getVaraData(panchanga.vara)
+    val varaData = getVaraData(panchanga.vara, language)
 
     ExpandableDetailCard(
         title = stringResource(StringKeyMatch.PANCHANGA_VARA),
@@ -1044,133 +1044,136 @@ private data class TithiData(
     val avoid: List<String>
 )
 
-private fun getTithiData(tithiNumber: Int): TithiData {
+import com.astro.storm.core.common.StringKeyPanchanga
+import com.astro.storm.core.common.StringKeyNakshatra
+
+private fun getTithiData(tithiNumber: Int, language: Language): TithiData {
     return when (tithiNumber) {
         1, 16 -> TithiData(
-            deity = "Agni (Fire God)",
-            nature = "Nanda (Joyful)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_AGNI, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_NANDA, language),
             quality = Quality.GOOD,
-            description = "Pratipada marks new beginnings. The first tithi after New Moon or Full Moon carries the energy of initiation and fresh starts. It is auspicious for beginning new ventures, laying foundations, and starting journeys.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_1, language),
             activities = listOf("New beginnings", "Starting ventures", "Foundation laying", "Travel"),
             avoid = listOf("Completing projects", "Endings")
         )
         2, 17 -> TithiData(
-            deity = "Brahma (Creator)",
-            nature = "Bhadra (Auspicious)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_BRAHMA, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_BHADRA, language),
             quality = Quality.EXCELLENT,
-            description = "Dwitiya is ruled by Brahma, the creator. This tithi is excellent for creative endeavors, naming ceremonies, and constructive activities. It supports growth and expansion of new initiatives.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_2, language),
             activities = listOf("Creative work", "Naming ceremonies", "Marriage", "House warming"),
             avoid = listOf("Conflict", "Aggressive actions")
         )
         3, 18 -> TithiData(
-            deity = "Gauri (Parvati)",
-            nature = "Jaya (Victory)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_GAURI, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_JAYA, language),
             quality = Quality.EXCELLENT,
-            description = "Tritiya is associated with victory and success. Ruled by Gauri, it is highly auspicious for celebrations, religious ceremonies, and activities requiring divine grace and feminine energy.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_3, language),
             activities = listOf("Religious ceremonies", "Celebrations", "Victory rituals", "Arts"),
             avoid = listOf("Conflicts", "Harsh activities")
         )
         4, 19 -> TithiData(
-            deity = "Ganesha/Yama",
-            nature = "Rikta (Empty)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_GANESHA_YAMA, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_RIKTA, language),
             quality = Quality.CHALLENGING,
-            description = "Chaturthi is ruled by Ganesha (4th) and Yama (19th). While the 4th is for Ganesha worship, these tithis are generally considered inauspicious for beginning new work due to their 'empty' nature.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_4, language),
             activities = listOf("Ganesha worship", "Removing obstacles", "Spiritual practices"),
             avoid = listOf("New beginnings", "Travel", "Important decisions")
         )
         5, 20 -> TithiData(
-            deity = "Nagas (Serpent deities)",
-            nature = "Nanda (Joyful)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_NAGAS, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_NANDA, language),
             quality = Quality.EXCELLENT,
-            description = "Panchami is excellent for education, learning, and wisdom pursuits. Ruled by the Nagas, it supports activities requiring knowledge, skill development, and intellectual growth.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_5, language),
             activities = listOf("Education", "Learning", "Writing", "Medicine", "Healing"),
             avoid = listOf("Destructive activities")
         )
         6, 21 -> TithiData(
-            deity = "Kartikeya (Skanda)",
-            nature = "Bhadra (Auspicious)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_KARTIKEYA, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_BHADRA, language),
             quality = Quality.GOOD,
-            description = "Shashthi is dedicated to Kartikeya (Skanda), the god of war and victory. It is favorable for activities requiring courage, medical treatments, and overcoming enemies or diseases.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_6, language),
             activities = listOf("Medical treatments", "Surgery", "Overcoming obstacles", "Courage"),
             avoid = listOf("Timid actions", "Postponements")
         )
         7, 22 -> TithiData(
-            deity = "Surya (Sun God)",
-            nature = "Jaya (Victory)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_SURYA, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_JAYA, language),
             quality = Quality.EXCELLENT,
-            description = "Saptami is ruled by the Sun and brings victory and success. Excellent for travel, especially pilgrimages, vehicle purchases, and activities requiring solar energy and vitality.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_7, language),
             activities = listOf("Travel", "Pilgrimages", "Vehicle purchase", "Government work"),
             avoid = listOf("Night activities", "Moon-related work")
         )
         8, 23 -> TithiData(
-            deity = "Shiva/Rudra",
-            nature = "Rikta (Empty)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_SHIVA_RUDRA, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_RIKTA, language),
             quality = Quality.NEUTRAL,
-            description = "Ashtami is sacred to Lord Shiva and considered powerful for spiritual practices. While classified as Rikta, it is excellent for worship, fasting, and tantric practices. Mixed for worldly activities.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_8, language),
             activities = listOf("Shiva worship", "Fasting", "Spiritual practices", "Meditation"),
             avoid = listOf("New ventures", "Material pursuits", "Celebrations")
         )
         9, 24 -> TithiData(
-            deity = "Durga (Mother Goddess)",
-            nature = "Nanda (Joyful)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_DURGA, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_NANDA, language),
             quality = Quality.GOOD,
-            description = "Navami is sacred to Durga and other fierce forms of the Divine Mother. Excellent for worship of the goddess, overcoming enemies, and activities requiring aggressive energy and protection.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_9, language),
             activities = listOf("Durga worship", "Protection rituals", "Overcoming enemies", "Strength"),
             avoid = listOf("Peaceful negotiations", "Gentle activities")
         )
         10, 25 -> TithiData(
-            deity = "Yama (God of Death)",
-            nature = "Bhadra (Auspicious)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_YAMA, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_BHADRA, language),
             quality = Quality.EXCELLENT,
-            description = "Dashami represents victory and completion. Ruled by Yama, it is excellent for completing tasks, achieving goals, and celebrating success. Highly auspicious for important undertakings.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_10, language),
             activities = listOf("Completing projects", "Victory celebrations", "Important tasks", "Success"),
             avoid = listOf("Beginning long-term projects")
         )
         11, 26 -> TithiData(
-            deity = "Vishnu (Preserver)",
-            nature = "Jaya (Victory)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_VISHNU, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_JAYA, language),
             quality = Quality.EXCELLENT,
-            description = "Ekadashi is the most spiritually significant tithi, sacred to Lord Vishnu. Fasting on this day is considered highly meritorious. Excellent for spiritual practices, but material activities should be minimized.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_11, language),
             activities = listOf("Fasting", "Vishnu worship", "Spiritual practices", "Meditation", "Charity"),
             avoid = listOf("Material pursuits", "Eating grains", "Worldly pleasures")
         )
         12, 27 -> TithiData(
-            deity = "Vishnu (Preserver)",
-            nature = "Bhadra (Auspicious)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_VISHNU, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_BHADRA, language),
             quality = Quality.GOOD,
-            description = "Dwadashi follows Ekadashi and is auspicious for breaking the fast and religious ceremonies. Good for charitable activities, feeding Brahmins, and continuing spiritual practices.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_12, language),
             activities = listOf("Breaking fast", "Religious ceremonies", "Charity", "Feeding others"),
             avoid = listOf("Fasting continuation", "Heavy foods")
         )
         13, 28 -> TithiData(
-            deity = "Kamadeva (God of Love)",
-            nature = "Jaya (Victory)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_KAMADEVA, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_JAYA, language),
             quality = Quality.GOOD,
-            description = "Trayodashi is favorable for Shiva worship, especially on Maha Shivaratri. Good for love-related matters, arts, and activities bringing joy. The 13th tithi is associated with auspiciousness.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_13, language),
             activities = listOf("Shiva worship", "Romance", "Arts", "Music", "Celebrations"),
             avoid = listOf("Aggressive activities", "Conflicts")
         )
         14, 29 -> TithiData(
-            deity = "Shiva/Kali",
-            nature = "Rikta (Empty)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_SHIVA_KALI, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_RIKTA, language),
             quality = Quality.CHALLENGING,
-            description = "Chaturdashi is ruled by Shiva and Kali. While powerful for tantric practices and worship, it is considered challenging for worldly activities. Excellent for spiritual disciplines and removing negative energies.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_14, language),
             activities = listOf("Tantric practices", "Shiva/Kali worship", "Removing negativity", "Spiritual austerities"),
             avoid = listOf("New beginnings", "Auspicious ceremonies", "Travel")
         )
         15 -> TithiData(
-            deity = "Chandra (Moon God)",
-            nature = "Purna (Complete)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_CHANDRA, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_PURNA, language),
             quality = Quality.EXCELLENT,
-            description = "Purnima (Full Moon) is the most auspicious tithi, representing completion and fullness. The Moon is at peak strength, making it excellent for all auspicious activities, spiritual practices, and celebrations.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_15, language),
             activities = listOf("All auspicious activities", "Celebrations", "Spiritual practices", "Charity", "Worship"),
             avoid = listOf("Surgery", "Activities requiring darkness")
         )
         30 -> TithiData(
-            deity = "Pitris (Ancestors)",
-            nature = "Purna (Complete)",
+            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_PITRIS, language),
+            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_PURNA, language),
             quality = Quality.NEUTRAL,
-            description = "Amavasya (New Moon) is sacred to the ancestors. While considered inauspicious for new beginnings, it is excellent for ancestral rites (Shraddha), Kali worship, and tantric practices. A time for introspection.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_30, language),
             activities = listOf("Ancestral rites", "Kali worship", "Tantric practices", "Introspection", "Shadow work"),
             avoid = listOf("New beginnings", "Auspicious ceremonies", "Travel", "Important decisions")
         )
@@ -1178,7 +1181,7 @@ private fun getTithiData(tithiNumber: Int): TithiData {
             deity = "Various",
             nature = "Mixed",
             quality = Quality.NEUTRAL,
-            description = "This tithi carries mixed influences based on various planetary factors at the time.",
+            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_MIXED, language),
             activities = listOf("General activities"),
             avoid = emptyList()
         )
@@ -1196,277 +1199,277 @@ private data class NakshatraData(
     val description: String
 )
 
-private fun getNakshatraData(nakshatra: Nakshatra): NakshatraData {
+private fun getNakshatraData(nakshatra: Nakshatra, language: Language): NakshatraData {
     return when (nakshatra) {
         Nakshatra.ASHWINI -> NakshatraData(
             sanskrit = "अश्विनी",
-            deity = "Ashwini Kumaras (Divine Physicians)",
-            symbol = "Horse's head",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_ASHWINI, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_ASHWINI, language),
             gana = "Deva",
             guna = "Rajas",
-            animal = "Male Horse",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_HORSE, language),
             quality = Quality.EXCELLENT,
-            description = "Ashwini is the first nakshatra, ruled by Ketu. Those born under this star possess quick healing abilities, spontaneity, and pioneering spirit. They are energetic, courageous, and drawn to helping others. Associated with speed, initiative, and new beginnings."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_ASHWINI, language)
         )
         Nakshatra.BHARANI -> NakshatraData(
             sanskrit = "भरणी",
-            deity = "Yama (God of Death)",
-            symbol = "Yoni (Female reproductive organ)",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_BHARANI, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_BHARANI, language),
             gana = "Manushya",
             guna = "Rajas",
-            animal = "Male Elephant",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_ELEPHANT, language),
             quality = Quality.NEUTRAL,
-            description = "Bharani is ruled by Venus and represents the power of transformation. Those born here possess strong will, creativity, and the ability to bear great responsibilities. Associated with birth, death, and transformation cycles."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_BHARANI, language)
         )
         Nakshatra.KRITTIKA -> NakshatraData(
             sanskrit = "कृत्तिका",
-            deity = "Agni (Fire God)",
-            symbol = "Razor/Flame",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_KRITTIKA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_KRITTIKA, language),
             gana = "Rakshasa",
             guna = "Rajas",
-            animal = "Female Sheep",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_SHEEP, language),
             quality = Quality.GOOD,
-            description = "Krittika is ruled by the Sun and represents purifying fire. Those born here possess sharp intellect, determination, and the ability to cut through illusions. They are often leaders with strong principles and purifying influence."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_KRITTIKA, language)
         )
         Nakshatra.ROHINI -> NakshatraData(
             sanskrit = "रोहिणी",
-            deity = "Brahma (Creator)",
-            symbol = "Ox cart/Chariot",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_ROHINI, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_ROHINI, language),
             gana = "Manushya",
             guna = "Rajas",
-            animal = "Male Serpent",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_SERPENT, language),
             quality = Quality.EXCELLENT,
-            description = "Rohini is the most fertile nakshatra, ruled by the Moon. Those born here possess beauty, creativity, and material abundance. They are charming, artistic, and have strong desires. The Moon is exalted in this nakshatra."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_ROHINI, language)
         )
         Nakshatra.MRIGASHIRA -> NakshatraData(
             sanskrit = "मृगशिरा",
-            deity = "Soma (Moon God)",
-            symbol = "Deer's head",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_MRIGASHIRA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_MRIGASHIRA, language),
             gana = "Deva",
             guna = "Tamas",
-            animal = "Female Serpent",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_SERPENT, language),
             quality = Quality.GOOD,
-            description = "Mrigashira is ruled by Mars and represents the searching nature. Those born here are curious, gentle, and always seeking. They possess artistic sensibilities and are drawn to exploration and research."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_MRIGASHIRA, language)
         )
         Nakshatra.ARDRA -> NakshatraData(
             sanskrit = "आर्द्रा",
-            deity = "Rudra (Storm God)",
-            symbol = "Teardrop/Diamond",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_ARDRA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_ARDRA, language),
             gana = "Manushya",
             guna = "Tamas",
-            animal = "Female Dog",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_DOG, language),
             quality = Quality.CHALLENGING,
-            description = "Ardra is ruled by Rahu and represents transformation through storms. Those born here experience intense emotions and transformative life events. They possess sharp intellect and the ability to destroy old patterns for renewal."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_ARDRA, language)
         )
         Nakshatra.PUNARVASU -> NakshatraData(
             sanskrit = "पुनर्वसु",
-            deity = "Aditi (Mother of Gods)",
-            symbol = "Bow and quiver",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_PUNARVASU, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_PUNARVASU, language),
             gana = "Deva",
             guna = "Sattva",
-            animal = "Female Cat",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_CAT, language),
             quality = Quality.EXCELLENT,
-            description = "Punarvasu is ruled by Jupiter and represents renewal and return to light. Those born here possess optimism, philosophical nature, and the ability to bounce back from difficulties. Associated with safety, home, and nurturing."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_PUNARVASU, language)
         )
         Nakshatra.PUSHYA -> NakshatraData(
             sanskrit = "पुष्य",
-            deity = "Brihaspati (Jupiter)",
-            symbol = "Cow's udder/Flower",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_PUSHYA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_PUSHYA, language),
             gana = "Deva",
             guna = "Sattva",
-            animal = "Male Sheep",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_SHEEP, language),
             quality = Quality.EXCELLENT,
-            description = "Pushya is considered the most auspicious nakshatra for most activities, ruled by Saturn. Those born here are nurturing, wise, and spiritually inclined. They possess the ability to nourish and support others' growth."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_PUSHYA, language)
         )
         Nakshatra.ASHLESHA -> NakshatraData(
             sanskrit = "आश्लेषा",
-            deity = "Nagas (Serpent Gods)",
-            symbol = "Coiled serpent",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_ASHLESHA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_ASHLESHA, language),
             gana = "Rakshasa",
             guna = "Sattva",
-            animal = "Male Cat",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_CAT, language),
             quality = Quality.CHALLENGING,
-            description = "Ashlesha is ruled by Mercury and represents serpentine wisdom. Those born here possess deep intuition, hypnotic abilities, and kundalini energy. They can be secretive and possess transformative mystical powers."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_ASHLESHA, language)
         )
         Nakshatra.MAGHA -> NakshatraData(
             sanskrit = "मघा",
-            deity = "Pitris (Ancestors)",
-            symbol = "Royal throne/Palanquin",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_MAGHA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_MAGHA, language),
             gana = "Rakshasa",
             guna = "Tamas",
-            animal = "Male Rat",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_RAT, language),
             quality = Quality.GOOD,
-            description = "Magha is ruled by Ketu and represents ancestral power and royal heritage. Those born here possess natural authority, connection to lineage, and leadership qualities. They honor traditions and carry ancestral blessings."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_MAGHA, language)
         )
         Nakshatra.PURVA_PHALGUNI -> NakshatraData(
             sanskrit = "पूर्वा फाल्गुनी",
-            deity = "Bhaga (God of Fortune)",
-            symbol = "Front legs of bed/Hammock",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_PURVA_PHALGUNI, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_PURVA_PHALGUNI, language),
             gana = "Manushya",
             guna = "Tamas",
-            animal = "Female Rat",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_RAT, language),
             quality = Quality.GOOD,
-            description = "Purva Phalguni is ruled by Venus and represents creative pleasure and luxury. Those born here enjoy life's pleasures, are artistic, and possess natural charm. Associated with love, creativity, and enjoyment."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_PURVA_PHALGUNI, language)
         )
         Nakshatra.UTTARA_PHALGUNI -> NakshatraData(
             sanskrit = "उत्तरा फाल्गुनी",
-            deity = "Aryaman (God of Contracts)",
-            symbol = "Back legs of bed",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_UTTARA_PHALGUNI, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_UTTARA_PHALGUNI, language),
             gana = "Manushya",
             guna = "Rajas",
-            animal = "Male Cow",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_COW, language),
             quality = Quality.EXCELLENT,
-            description = "Uttara Phalguni is ruled by the Sun and represents lasting prosperity. Those born here are generous, friendly, and establish lasting partnerships. They excel in leadership and creating stable foundations."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_UTTARA_PHALGUNI, language)
         )
         Nakshatra.HASTA -> NakshatraData(
             sanskrit = "हस्त",
-            deity = "Savitar (Sun God)",
-            symbol = "Hand/Palm",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_HASTA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_HASTA, language),
             gana = "Deva",
             guna = "Rajas",
-            animal = "Female Buffalo",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_BUFFALO, language),
             quality = Quality.EXCELLENT,
-            description = "Hasta is ruled by the Moon and represents skill and dexterity. Those born here are clever, resourceful, and possess healing hands. They excel in crafts, arts, and activities requiring manual dexterity."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_HASTA, language)
         )
         Nakshatra.CHITRA -> NakshatraData(
             sanskrit = "चित्रा",
-            deity = "Vishwakarma (Divine Architect)",
-            symbol = "Bright jewel/Pearl",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_CHITRA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_CHITRA, language),
             gana = "Rakshasa",
             guna = "Rajas",
-            animal = "Female Tiger",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_TIGER, language),
             quality = Quality.GOOD,
-            description = "Chitra is ruled by Mars and represents brilliant creativity. Those born here possess artistic talent, attention to detail, and the ability to create beautiful things. Associated with architecture, design, and craftsmanship."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_CHITRA, language)
         )
         Nakshatra.SWATI -> NakshatraData(
             sanskrit = "स्वाति",
-            deity = "Vayu (Wind God)",
-            symbol = "Young plant/Coral",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_SWATI, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_SWATI, language),
             gana = "Deva",
             guna = "Tamas",
-            animal = "Male Buffalo",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_BUFFALO, language),
             quality = Quality.GOOD,
-            description = "Swati is ruled by Rahu and represents independence and flexibility. Those born here are adaptable, diplomatic, and value freedom. Like the wind, they can navigate various situations with grace."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_SWATI, language)
         )
         Nakshatra.VISHAKHA -> NakshatraData(
             sanskrit = "विशाखा",
-            deity = "Indra-Agni",
-            symbol = "Triumphal archway/Potter's wheel",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_VISHAKHA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_VISHAKHA, language),
             gana = "Rakshasa",
             guna = "Sattva",
-            animal = "Male Tiger",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_TIGER, language),
             quality = Quality.GOOD,
-            description = "Vishakha is ruled by Jupiter and represents determined pursuit of goals. Those born here possess single-pointed focus, ambition, and the ability to achieve their objectives. Associated with transformation and success."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_VISHAKHA, language)
         )
         Nakshatra.ANURADHA -> NakshatraData(
             sanskrit = "अनुराधा",
-            deity = "Mitra (God of Friendship)",
-            symbol = "Lotus flower/Archway",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_ANURADHA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_ANURADHA, language),
             gana = "Deva",
             guna = "Sattva",
-            animal = "Female Deer",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_DEER, language),
             quality = Quality.EXCELLENT,
-            description = "Anuradha is ruled by Saturn and represents devotion and friendship. Those born here are loyal, cooperative, and succeed in foreign lands. They possess the ability to create harmony and meaningful connections."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_ANURADHA, language)
         )
         Nakshatra.JYESHTHA -> NakshatraData(
             sanskrit = "ज्येष्ठा",
-            deity = "Indra (King of Gods)",
-            symbol = "Circular amulet/Umbrella",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_JYESHTHA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_JYESHTHA, language),
             gana = "Rakshasa",
             guna = "Sattva",
-            animal = "Male Deer",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_DEER, language),
             quality = Quality.NEUTRAL,
-            description = "Jyeshtha is ruled by Mercury and represents seniority and protection. Those born here possess leadership qualities, protective nature, and may face karmic challenges. They often rise to positions of authority and responsibility."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_JYESHTHA, language)
         )
         Nakshatra.MULA -> NakshatraData(
             sanskrit = "मूल",
-            deity = "Nirriti (Goddess of Dissolution)",
-            symbol = "Bundle of roots/Lion's tail",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_MULA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_MULA, language),
             gana = "Rakshasa",
             guna = "Tamas",
-            animal = "Male Dog",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_DOG, language),
             quality = Quality.CHALLENGING,
-            description = "Mula is ruled by Ketu and represents getting to the root of things. Those born here experience transformative life events that lead to spiritual awakening. Associated with investigation, research, and uprooting the old."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_MULA, language)
         )
         Nakshatra.PURVA_ASHADHA -> NakshatraData(
             sanskrit = "पूर्वाषाढ़ा",
-            deity = "Apas (Water Goddess)",
-            symbol = "Elephant tusk/Fan",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_PURVA_ASHADHA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_PURVA_ASHADHA, language),
             gana = "Manushya",
             guna = "Rajas",
-            animal = "Male Monkey",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_MONKEY, language),
             quality = Quality.GOOD,
-            description = "Purva Ashadha is ruled by Venus and represents invincible victory. Those born here possess charisma, philosophical nature, and the ability to influence others. They are optimistic and believe in ultimate success."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_PURVA_ASHADHA, language)
         )
         Nakshatra.UTTARA_ASHADHA -> NakshatraData(
             sanskrit = "उत्तराषाढ़ा",
-            deity = "Vishwadevas (Universal Gods)",
-            symbol = "Elephant tusk/Small bed",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_UTTARA_ASHADHA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_UTTARA_ASHADHA, language),
             gana = "Manushya",
             guna = "Rajas",
-            animal = "Female Mongoose",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_MONGOOSE, language),
             quality = Quality.EXCELLENT,
-            description = "Uttara Ashadha is ruled by the Sun and represents final victory. Those born here achieve lasting success through righteousness and perseverance. They are principled, responsible, and earn respect through merit."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_UTTARA_ASHADHA, language)
         )
         Nakshatra.SHRAVANA -> NakshatraData(
             sanskrit = "श्रवण",
-            deity = "Vishnu (Preserver)",
-            symbol = "Three footprints/Ear",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_SHRAVANA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_SHRAVANA, language),
             gana = "Deva",
             guna = "Rajas",
-            animal = "Female Monkey",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_MONKEY, language),
             quality = Quality.EXCELLENT,
-            description = "Shravana is ruled by the Moon and represents learning through listening. Those born here are wise, knowledgeable, and possess excellent communication skills. Associated with preservation of knowledge and teaching."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_SHRAVANA, language)
         )
         Nakshatra.DHANISHTHA -> NakshatraData(
             sanskrit = "धनिष्ठा",
-            deity = "Vasus (Eight Elemental Gods)",
-            symbol = "Drum/Flute",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_DHANISHTHA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_DHANISHTHA, language),
             gana = "Rakshasa",
             guna = "Tamas",
-            animal = "Female Lion",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_LION, language),
             quality = Quality.GOOD,
-            description = "Dhanishtha is ruled by Mars and represents wealth and musical talent. Those born here possess rhythm, prosperity consciousness, and adaptability. Associated with fame, wealth, and artistic expression."
+            description = StringResources.get(StringKeyPanchanga.NA_DESC_DHANISHTHA, language)
         )
         Nakshatra.SHATABHISHA -> NakshatraData(
             sanskrit = "शतभिषा",
-            deity = "Varuna (God of Waters)",
-            symbol = "Empty circle/100 flowers",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_SHATABHISHA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_SHATABHISHA, language),
             gana = "Rakshasa",
             guna = "Tamas",
-            animal = "Female Horse",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_HORSE, language),
             quality = Quality.NEUTRAL,
-            description = "Shatabhisha is ruled by Rahu and represents healing and veiling. Those born here possess healing abilities, secretive nature, and interest in mysteries. Associated with alternative healing and unconventional approaches."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_SHATABHISHA, language)
         )
         Nakshatra.PURVA_BHADRAPADA -> NakshatraData(
             sanskrit = "पूर्वा भाद्रपद",
-            deity = "Aja Ekapada (One-footed Goat)",
-            symbol = "Front of funeral cot/Sword",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_PURVA_BHADRAPADA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_PURVA_BHADRAPADA, language),
             gana = "Manushya",
             guna = "Sattva",
-            animal = "Male Lion",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_LION, language),
             quality = Quality.CHALLENGING,
-            description = "Purva Bhadrapada is ruled by Jupiter and represents spiritual fire. Those born here possess intensity, occult interests, and transformative abilities. Associated with purification through spiritual heat and sacrifice."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_PURVA_BHADRAPADA, language)
         )
         Nakshatra.UTTARA_BHADRAPADA -> NakshatraData(
             sanskrit = "उत्तरा भाद्रपद",
-            deity = "Ahir Budhnya (Serpent of the Deep)",
-            symbol = "Back of funeral cot/Twins",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_UTTARA_BHADRAPADA, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_UTTARA_BHADRAPADA, language),
             gana = "Manushya",
             guna = "Sattva",
-            animal = "Female Cow",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_COW, language),
             quality = Quality.EXCELLENT,
-            description = "Uttara Bhadrapada is ruled by Saturn and represents spiritual depth. Those born here possess wisdom, self-control, and compassionate nature. Associated with enlightenment, renunciation, and spiritual attainment."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_UTTARA_BHADRAPADA, language)
         )
         Nakshatra.REVATI -> NakshatraData(
             sanskrit = "रेवती",
-            deity = "Pushan (Nourisher/Protector)",
-            symbol = "Fish/Drum",
+            deity = StringResources.get(StringKeyNakshatra.DEITY_REVATI, language),
+            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_REVATI, language),
             gana = "Deva",
             guna = "Sattva",
-            animal = "Female Elephant",
+            animal = StringResources.get(StringKeyNakshatra.ANIMAL_ELEPHANT, language),
             quality = Quality.EXCELLENT,
-            description = "Revati is the final nakshatra, ruled by Mercury. Those born here are nurturing, wealthy, and possess safe travel. Associated with protection, guidance, and completion of cycles. Represents the journey's end and new beginnings."
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_REVATI, language)
         )
     }
 }
@@ -1478,35 +1481,35 @@ private data class YogaData(
     val description: String
 )
 
-private fun getYogaData(yoga: Yoga): YogaData {
+private fun getYogaData(yoga: Yoga, language: Language): YogaData {
     return when (yoga) {
-        Yoga.VISHKUMBHA -> YogaData("विष्कुम्भ", "Supporting", Quality.CHALLENGING, "Vishkumbha yoga indicates obstacles and difficulties. Those born under this yoga may face initial struggles but develop resilience. Not favorable for beginning new ventures.")
-        Yoga.PRITI -> YogaData("प्रीति", "Love", Quality.EXCELLENT, "Priti yoga brings love, affection, and pleasant relationships. Those born under this yoga are charming and attract positive connections. Excellent for romance and partnerships.")
-        Yoga.AYUSHMAN -> YogaData("आयुष्मान", "Long-lived", Quality.EXCELLENT, "Ayushman yoga bestows longevity and good health. Those born under this yoga enjoy vitality and well-being. Auspicious for health-related matters and new beginnings.")
-        Yoga.SAUBHAGYA -> YogaData("सौभाग्य", "Good Fortune", Quality.EXCELLENT, "Saubhagya yoga brings luck and prosperity. Those born under this yoga are fortunate in material matters. Highly auspicious for wealth-related activities.")
-        Yoga.SHOBHANA -> YogaData("शोभन", "Splendor", Quality.EXCELLENT, "Shobhana yoga bestows beauty, grace, and splendor. Those born under this yoga possess attractive qualities. Favorable for arts, aesthetics, and public appearances.")
-        Yoga.ATIGANDA -> YogaData("अतिगण्ड", "Great Obstacle", Quality.INAUSPICIOUS, "Atiganda yoga indicates significant obstacles and dangers. Those born under this yoga face karmic challenges. Avoid important activities during this period.")
-        Yoga.SUKARMA -> YogaData("सुकर्म", "Good Deeds", Quality.EXCELLENT, "Sukarma yoga favors righteous actions and good deeds. Those born under this yoga are inclined toward virtuous acts. Excellent for charitable activities and spiritual practices.")
-        Yoga.DHRITI -> YogaData("धृति", "Steadiness", Quality.GOOD, "Dhriti yoga bestows determination and stability. Those born under this yoga possess mental strength and perseverance. Good for activities requiring patience and commitment.")
-        Yoga.SHULA -> YogaData("शूल", "Spear", Quality.CHALLENGING, "Shula yoga indicates sharp experiences and potential conflicts. Those born under this yoga may face sudden challenges. Caution advised in risky activities.")
-        Yoga.GANDA -> YogaData("गण्ड", "Obstacle", Quality.CHALLENGING, "Ganda yoga brings obstacles and difficulties. Those born under this yoga develop problem-solving abilities through challenges. Not ideal for new beginnings.")
-        Yoga.VRIDDHI -> YogaData("वृद्धि", "Growth", Quality.EXCELLENT, "Vriddhi yoga promotes growth and expansion in all areas. Those born under this yoga experience progressive development. Excellent for investments and long-term projects.")
-        Yoga.DHRUVA -> YogaData("ध्रुव", "Fixed", Quality.GOOD, "Dhruva yoga provides stability and permanence. Those born under this yoga create lasting foundations. Good for activities meant to endure, like property purchases.")
-        Yoga.VYAGHATA -> YogaData("व्याघात", "Destruction", Quality.INAUSPICIOUS, "Vyaghata yoga indicates destruction and loss. Those born under this yoga may experience significant transformations. Avoid major decisions and beginnings.")
-        Yoga.HARSHANA -> YogaData("हर्षण", "Joy", Quality.EXCELLENT, "Harshana yoga brings joy and happiness. Those born under this yoga spread positivity and attract good fortune. Excellent for celebrations and social activities.")
-        Yoga.VAJRA -> YogaData("वज्र", "Thunderbolt", Quality.NEUTRAL, "Vajra yoga provides strength like a thunderbolt but can be harsh. Those born under this yoga are powerful and determined. Mixed results for activities.")
-        Yoga.SIDDHI -> YogaData("सिद्धि", "Accomplishment", Quality.EXCELLENT, "Siddhi yoga bestows success and accomplishment. Those born under this yoga achieve their goals. Highly auspicious for completing important tasks.")
-        Yoga.VYATIPATA -> YogaData("व्यतीपात", "Calamity", Quality.INAUSPICIOUS, "Vyatipata yoga is considered highly inauspicious. Those born under this yoga face significant karmic challenges. Avoid all important activities.")
-        Yoga.VARIYAN -> YogaData("वरीयान", "Excellent", Quality.EXCELLENT, "Variyan yoga is one of the most auspicious yogas. Those born under this yoga enjoy success and recognition. Favorable for all important undertakings.")
-        Yoga.PARIGHA -> YogaData("परिघ", "Obstruction", Quality.CHALLENGING, "Parigha yoga indicates barriers and restrictions. Those born under this yoga develop strength through overcoming obstacles. Caution in new ventures.")
-        Yoga.SHIVA -> YogaData("शिव", "Auspicious", Quality.EXCELLENT, "Shiva yoga is highly auspicious and brings divine blessings. Those born under this yoga possess spiritual inclinations. Excellent for all auspicious activities.")
-        Yoga.SIDDHA -> YogaData("सिद्ध", "Accomplished", Quality.EXCELLENT, "Siddha yoga bestows accomplishment and success. Those born under this yoga are naturally talented. Very favorable for achieving goals.")
-        Yoga.SADHYA -> YogaData("साध्य", "Achievable", Quality.GOOD, "Sadhya yoga makes goals achievable with effort. Those born under this yoga succeed through determination. Good for pursuing challenging objectives.")
-        Yoga.SHUBHA -> YogaData("शुभ", "Auspicious", Quality.EXCELLENT, "Shubha yoga is highly auspicious for all activities. Those born under this yoga attract good fortune. Excellent for ceremonies and celebrations.")
-        Yoga.SHUKLA -> YogaData("शुक्ल", "Bright", Quality.EXCELLENT, "Shukla yoga brings brightness and clarity. Those born under this yoga have clear minds and pure intentions. Favorable for education and spiritual practices.")
-        Yoga.BRAHMA -> YogaData("ब्रह्म", "Creator", Quality.EXCELLENT, "Brahma yoga bestows creative powers and wisdom. Those born under this yoga are natural creators. Excellent for beginning creative projects.")
-        Yoga.INDRA -> YogaData("इन्द्र", "King of Gods", Quality.EXCELLENT, "Indra yoga bestows power, authority, and success. Those born under this yoga are natural leaders. Favorable for leadership and governmental matters.")
-        Yoga.VAIDHRITI -> YogaData("वैधृति", "Discord", Quality.INAUSPICIOUS, "Vaidhriti yoga is the final yoga and indicates discord. Those born under this yoga face endings and transitions. Avoid important beginnings; good for conclusions.")
+        Yoga.VISHKUMBHA -> YogaData("विष्कुम्भ", StringResources.get(StringKeyPanchanga.YOGA_MEANING_SUPPORTING, language), Quality.CHALLENGING, StringResources.get(StringKeyPanchanga.YOGA_DESC_VISHKUMBHA, language))
+        Yoga.PRITI -> YogaData("प्रीति", StringResources.get(StringKeyPanchanga.YOGA_MEANING_LOVE, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_PRITI, language))
+        Yoga.AYUSHMAN -> YogaData("आयुष्मान", StringResources.get(StringKeyPanchanga.YOGA_MEANING_LONG_LIVED, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_AYUSHMAN, language))
+        Yoga.SAUBHAGYA -> YogaData("सौभाग्य", StringResources.get(StringKeyPanchanga.YOGA_MEANING_GOOD_FORTUNE, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SAUBHAGYA, language))
+        Yoga.SHOBHANA -> YogaData("शोभन", StringResources.get(StringKeyPanchanga.YOGA_MEANING_SPLENDOR, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SHOBHANA, language))
+        Yoga.ATIGANDA -> YogaData("अतिगण्ड", StringResources.get(StringKeyPanchanga.YOGA_MEANING_GREAT_OBSTACLE, language), Quality.INAUSPICIOUS, StringResources.get(StringKeyPanchanga.YOGA_DESC_ATIGANDA, language))
+        Yoga.SUKARMA -> YogaData("सुकर्म", StringResources.get(StringKeyPanchanga.YOGA_MEANING_GOOD_DEEDS, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SUKARMA, language))
+        Yoga.DHRITI -> YogaData("धृति", StringResources.get(StringKeyPanchanga.YOGA_MEANING_STEADINESS, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.YOGA_DESC_DHRITI, language))
+        Yoga.SHULA -> YogaData("शूल", StringResources.get(StringKeyPanchanga.YOGA_MEANING_SPEAR, language), Quality.CHALLENGING, StringResources.get(StringKeyPanchanga.YOGA_DESC_SHULA, language))
+        Yoga.GANDA -> YogaData("गण्ड", StringResources.get(StringKeyPanchanga.YOGA_MEANING_OBSTACLE, language), Quality.CHALLENGING, StringResources.get(StringKeyPanchanga.YOGA_DESC_GANDA, language))
+        Yoga.VRIDDHI -> YogaData("वृद्धि", StringResources.get(StringKeyPanchanga.YOGA_MEANING_GROWTH, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_VRIDDHI, language))
+        Yoga.DHRUVA -> YogaData("ध्रुव", StringResources.get(StringKeyPanchanga.YOGA_MEANING_FIXED, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.YOGA_DESC_DHRUVA, language))
+        Yoga.VYAGHATA -> YogaData("व्याघात", StringResources.get(StringKeyPanchanga.YOGA_MEANING_DESTRUCTION, language), Quality.INAUSPICIOUS, StringResources.get(StringKeyPanchanga.YOGA_DESC_VYAGHATA, language))
+        Yoga.HARSHANA -> YogaData("हर्षण", StringResources.get(StringKeyPanchanga.YOGA_MEANING_JOY, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_HARSHANA, language))
+        Yoga.VAJRA -> YogaData("वज्र", StringResources.get(StringKeyPanchanga.YOGA_MEANING_THUNDERBOLT, language), Quality.NEUTRAL, StringResources.get(StringKeyPanchanga.YOGA_DESC_VAJRA, language))
+        Yoga.SIDDHI -> YogaData("सिद्धि", StringResources.get(StringKeyPanchanga.YOGA_MEANING_ACCOMPLISHMENT, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SIDDHI, language))
+        Yoga.VYATIPATA -> YogaData("व्यतीपात", StringResources.get(StringKeyPanchanga.YOGA_MEANING_CALAMITY, language), Quality.INAUSPICIOUS, StringResources.get(StringKeyPanchanga.YOGA_DESC_VYATIPATA, language))
+        Yoga.VARIYAN -> YogaData("वरीयान", StringResources.get(StringKeyPanchanga.YOGA_MEANING_EXCELLENT, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_VARIYAN, language))
+        Yoga.PARIGHA -> YogaData("परिघ", StringResources.get(StringKeyPanchanga.YOGA_MEANING_OBSTRUCTION, language), Quality.CHALLENGING, StringResources.get(StringKeyPanchanga.YOGA_DESC_PARIGHA, language))
+        Yoga.SHIVA -> YogaData("शिव", StringResources.get(StringKeyPanchanga.YOGA_MEANING_AUSPICIOUS, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SHIVA, language))
+        Yoga.SIDDHA -> YogaData("सिद्ध", StringResources.get(StringKeyPanchanga.YOGA_MEANING_ACCOMPLISHED, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SIDDHA, language))
+        Yoga.SADHYA -> YogaData("साध्य", StringResources.get(StringKeyPanchanga.YOGA_MEANING_ACHIEVABLE, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.YOGA_DESC_SADHYA, language))
+        Yoga.SHUBHA -> YogaData("शुभ", StringResources.get(StringKeyPanchanga.YOGA_MEANING_AUSPICIOUS, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SHUBHA, language))
+        Yoga.SHUKLA -> YogaData("शुक्ल", StringResources.get(StringKeyPanchanga.YOGA_MEANING_BRIGHT, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SHUKLA, language))
+        Yoga.BRAHMA -> YogaData("ब्रह्म", StringResources.get(StringKeyPanchanga.YOGA_MEANING_CREATOR, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_BRAHMA, language))
+        Yoga.INDRA -> YogaData("इन्द्र", StringResources.get(StringKeyPanchanga.YOGA_MEANING_KING_OF_GODS, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_INDRA, language))
+        Yoga.VAIDHRITI -> YogaData("वैधृति", StringResources.get(StringKeyPanchanga.YOGA_MEANING_DISCORD, language), Quality.INAUSPICIOUS, StringResources.get(StringKeyPanchanga.YOGA_DESC_VAIDHRITI, language))
     }
 }
 
@@ -1517,19 +1520,19 @@ private data class KaranaData(
     val description: String
 )
 
-private fun getKaranaData(karana: Karana): KaranaData {
+private fun getKaranaData(karana: Karana, language: Language): KaranaData {
     return when (karana) {
-        Karana.BAVA -> KaranaData("बव", "Chara (Movable)", Quality.GOOD, "Bava karana is favorable for travel, beginning new ventures, and activities requiring movement. It supports progress and forward motion in all endeavors.")
-        Karana.BALAVA -> KaranaData("बालव", "Chara (Movable)", Quality.GOOD, "Balava karana brings youthful energy and is good for learning, education, and activities involving young people. Favorable for new learning experiences.")
-        Karana.KAULAVA -> KaranaData("कौलव", "Chara (Movable)", Quality.GOOD, "Kaulava karana is excellent for family matters, social gatherings, and community activities. It supports harmony in relationships and group endeavors.")
-        Karana.TAITILA -> KaranaData("तैतिल", "Chara (Movable)", Quality.EXCELLENT, "Taitila karana is highly favorable for business, commerce, and material gain. Excellent for financial transactions and wealth-building activities.")
-        Karana.GARA -> KaranaData("गर", "Chara (Movable)", Quality.GOOD, "Gara karana is good for agriculture, construction, and activities involving the earth. Favorable for property matters and physical labor.")
-        Karana.VANIJA -> KaranaData("वणिज", "Chara (Movable)", Quality.EXCELLENT, "Vanija karana is excellent for trade, business deals, and commercial success. Highly favorable for merchants and those in business.")
-        Karana.VISHTI -> KaranaData("विष्टि", "Chara (Movable)", Quality.INAUSPICIOUS, "Vishti (Bhadra) karana is inauspicious and should be avoided for important activities. Only suitable for fierce activities or confronting enemies.")
-        Karana.SHAKUNI -> KaranaData("शकुनि", "Sthira (Fixed)", Quality.NEUTRAL, "Shakuni is a fixed karana appearing only once per lunar month. It supports activities requiring cleverness and strategy but can bring mixed results.")
-        Karana.CHATUSHPADA -> KaranaData("चतुष्पद", "Sthira (Fixed)", Quality.GOOD, "Chatushpada is a fixed karana favorable for activities involving four-legged animals and agriculture. Good for animal husbandry and farming.")
-        Karana.NAGA -> KaranaData("नाग", "Sthira (Fixed)", Quality.NEUTRAL, "Naga is a fixed karana associated with serpent energies. Favorable for activities involving hidden matters, underground work, and protective rituals.")
-        Karana.KIMSTUGHNA -> KaranaData("किंस्तुघ्न", "Sthira (Fixed)", Quality.GOOD, "Kimstughna is a fixed karana that destroys negativity. Favorable for removing obstacles, protection rituals, and overcoming enemies.")
+        Karana.BAVA -> KaranaData("बव", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_BAVA, language))
+        Karana.BALAVA -> KaranaData("बालव", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_BALAVA, language))
+        Karana.KAULAVA -> KaranaData("कौलव", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_KAULAVA, language))
+        Karana.TAITILA -> KaranaData("तैतिल", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.KARANA_DESC_TAITILA, language))
+        Karana.GARA -> KaranaData("गर", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_GARA, language))
+        Karana.VANIJA -> KaranaData("वणिज", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.KARANA_DESC_VANIJA, language))
+        Karana.VISHTI -> KaranaData("विष्टि", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.INAUSPICIOUS, StringResources.get(StringKeyPanchanga.KARANA_DESC_VISHTI, language))
+        Karana.SHAKUNI -> KaranaData("शकुनि", StringResources.get(StringKeyPanchanga.KARANA_TYPE_FIXED, language), Quality.NEUTRAL, StringResources.get(StringKeyPanchanga.KARANA_DESC_SHAKUNI, language))
+        Karana.CHATUSHPADA -> KaranaData("चतुष्पद", StringResources.get(StringKeyPanchanga.KARANA_TYPE_FIXED, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_CHATUSHPADA, language))
+        Karana.NAGA -> KaranaData("नाग", StringResources.get(StringKeyPanchanga.KARANA_TYPE_FIXED, language), Quality.NEUTRAL, StringResources.get(StringKeyPanchanga.KARANA_DESC_NAGA, language))
+        Karana.KIMSTUGHNA -> KaranaData("किंस्तुघ्न", StringResources.get(StringKeyPanchanga.KARANA_TYPE_FIXED, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_KIMSTUGHNA, language))
     }
 }
 
@@ -1542,63 +1545,63 @@ private data class VaraData(
     val unfavorable: List<String>
 )
 
-private fun getVaraData(vara: Vara): VaraData {
+private fun getVaraData(vara: Vara, language: Language): VaraData {
     return when (vara) {
         Vara.SUNDAY -> VaraData(
             sanskrit = "रविवार",
-            element = "Fire",
-            direction = "East",
-            description = "Sunday is ruled by the Sun (Surya), representing the soul, authority, and vitality. The Sun's energy brings power, leadership, and illumination. This day is sacred to Lord Vishnu and Surya Deva.",
-            favorable = listOf("Government work", "Authority matters", "Health initiatives", "Father-related activities", "Leadership", "Spiritual practices", "Worship of Surya"),
-            unfavorable = listOf("Beginning journeys to the East", "Starting new businesses (according to some traditions)")
+            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_FIRE, language),
+            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_EAST, language),
+            description = StringResources.get(StringKeyPanchanga.VARA_DESC_SUNDAY, language),
+            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_SUNDAY, language).split(", "),
+            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_SUNDAY, language).split(", ")
         )
         Vara.MONDAY -> VaraData(
             sanskrit = "सोमवार",
-            element = "Water",
-            direction = "Northwest",
-            description = "Monday is ruled by the Moon (Chandra), representing the mind, emotions, and nurturing. The Moon's energy brings sensitivity, intuition, and public connection. This day is sacred to Lord Shiva.",
-            favorable = listOf("Travel", "Public dealings", "Emotional matters", "Starting ventures", "Agriculture", "Dealing with women", "Shiva worship"),
-            unfavorable = listOf("Surgery", "Cutting activities")
+            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_WATER, language),
+            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTHWEST, language),
+            description = StringResources.get(StringKeyPanchanga.VARA_DESC_MONDAY, language),
+            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_MONDAY, language).split(", "),
+            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_MONDAY, language).split(", ")
         )
         Vara.TUESDAY -> VaraData(
             sanskrit = "मंगलवार",
-            element = "Fire",
-            direction = "South",
-            description = "Tuesday is ruled by Mars (Mangal), representing courage, energy, and action. Mars brings warrior energy, determination, and physical strength. This day is sacred to Lord Hanuman and Kartikeya.",
-            favorable = listOf("Property matters", "Surgery", "Competitive activities", "Physical training", "Dealing with enemies", "Hanuman worship", "Military activities"),
-            unfavorable = listOf("Marriage", "Peaceful negotiations", "Beginning gentle activities")
+            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_FIRE, language),
+            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_SOUTH, language),
+            description = StringResources.get(StringKeyPanchanga.VARA_DESC_TUESDAY, language),
+            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_TUESDAY, language).split(", "),
+            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_TUESDAY, language).split(", ")
         )
         Vara.WEDNESDAY -> VaraData(
             sanskrit = "बुधवार",
-            element = "Earth",
-            direction = "North",
-            description = "Wednesday is ruled by Mercury (Budha), representing intellect, communication, and commerce. Mercury brings mental agility, business acumen, and learning ability. This day is sacred to Lord Vishnu.",
-            favorable = listOf("Education", "Communication", "Business", "Writing", "Trade", "Intellectual pursuits", "Travel", "Vishnu worship"),
-            unfavorable = listOf("Agriculture", "Building construction (according to some traditions)")
+            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_EARTH, language),
+            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH, language),
+            description = StringResources.get(StringKeyPanchanga.VARA_DESC_WEDNESDAY, language),
+            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_WEDNESDAY, language).split(", "),
+            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_WEDNESDAY, language).split(", ")
         )
         Vara.THURSDAY -> VaraData(
             sanskrit = "गुरुवार",
-            element = "Ether",
-            direction = "Northeast",
-            description = "Thursday is ruled by Jupiter (Guru), representing wisdom, expansion, and divine grace. Jupiter brings blessings, prosperity, and spiritual growth. This day is sacred to Lord Brihaspati and Vishnu.",
-            favorable = listOf("Religious ceremonies", "Marriage", "Education", "Financial matters", "Legal matters", "Guru worship", "Charity", "Beginning important ventures"),
-            unfavorable = listOf("Hair cutting (for some traditions)", "Lending money")
+            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_ETHER, language),
+            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTHEAST, language),
+            description = StringResources.get(StringKeyPanchanga.VARA_DESC_THURSDAY, language),
+            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_THURSDAY, language).split(", "),
+            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_THURSDAY, language).split(", ")
         )
         Vara.FRIDAY -> VaraData(
             sanskrit = "शुक्रवार",
-            element = "Water",
-            direction = "Southeast",
-            description = "Friday is ruled by Venus (Shukra), representing love, beauty, and pleasure. Venus brings artistic sensibility, romance, and material enjoyment. This day is sacred to Goddess Lakshmi and Santoshi Ma.",
-            favorable = listOf("Romance", "Marriage", "Arts", "Music", "Luxury purchases", "Beauty treatments", "Entertainment", "Lakshmi worship"),
-            unfavorable = listOf("Surgery", "Aggressive activities", "Conflicts")
+            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_WATER, language),
+            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_SOUTHEAST, language),
+            description = StringResources.get(StringKeyPanchanga.VARA_DESC_FRIDAY, language),
+            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_FRIDAY, language).split(", "),
+            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_FRIDAY, language).split(", ")
         )
         Vara.SATURDAY -> VaraData(
             sanskrit = "शनिवार",
-            element = "Air",
-            direction = "West",
-            description = "Saturday is ruled by Saturn (Shani), representing discipline, karma, and endurance. Saturn brings lessons, structure, and spiritual growth through challenges. This day is sacred to Lord Shani and Hanuman.",
-            favorable = listOf("Property matters", "Agriculture", "Labor work", "Iron/oil business", "Spiritual discipline", "Shani worship", "Hanuman worship"),
-            unfavorable = listOf("New beginnings", "Travel", "Auspicious ceremonies", "Hair cutting")
+            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_AIR, language),
+            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_WEST, language),
+            description = StringResources.get(StringKeyPanchanga.VARA_DESC_SATURDAY, language),
+            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_SATURDAY, language).split(", "),
+            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_SATURDAY, language).split(", ")
         )
     }
 }

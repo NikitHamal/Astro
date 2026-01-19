@@ -833,7 +833,7 @@ private fun TabSelector(
                 onClick = { onTabSelected(index) },
                 label = {
                     Text(
-                        title,
+                        tabs[index],
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                     )
@@ -1454,7 +1454,7 @@ private fun EnhancedManglikPersonCard(
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        analysis.effectiveDosha.getLocalizedName(LocalLanguage.current),
+                        analysis.effectiveDosha.getLocalizedName(language),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = getManglikSeverityColor(analysis.effectiveDosha),
@@ -2629,7 +2629,7 @@ private fun MatchmakingAiInsightCard(
                                 scope.launch {
                                     val model = providerRegistry.getDefaultModel()
                                     if (model == null) {
-                                        aiState = MatchmakingAiInsightState.Error("No AI model configured. Please set up an AI provider in settings.")
+                                        aiState = MatchmakingAiInsightState.Error(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_NO_AI_MODEL, languageForAi))
                                         return@launch
                                     }
 
@@ -2681,7 +2681,7 @@ private fun MatchmakingAiInsightCard(
                                         } catch (e: CancellationException) {
                                             throw e
                                         } catch (e: Exception) {
-                                            aiState = MatchmakingAiInsightState.Error(e.message ?: "Failed to generate insight")
+                                            aiState = MatchmakingAiInsightState.Error(e.message ?: com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_FAILED_GENERATE_INSIGHT, languageForAi))
                                         }
                                     }
                                 }
@@ -2887,31 +2887,31 @@ private fun formatMatchmakingForAi(
     return buildString {
         appendLine("Please provide a deeper Vedic astrology interpretation of this Kundli Milan (matchmaking/compatibility) analysis. Be insightful, practical, and compassionate in your guidance. Focus on helping the couple understand their compatibility and how to strengthen their relationship.")
         appendLine()
-        appendLine("## Overall Compatibility Score")
-        appendLine("Total Points: ${result.totalPoints} out of ${result.maxPoints} (${String.format("%.1f", (result.totalPoints / result.maxPoints) * 100)}%)")
-        appendLine("Rating: ${result.rating}")
+        appendLine("## ${StringResources.get(com.astro.storm.core.common.StringKeyMatch.REPORT_MATCHMAKING_TITLE, Language.ENGLISH)}")
+        appendLine("${StringResources.get(com.astro.storm.core.common.StringKeyMatch.SUMMARY_TOTAL_SCORE, Language.ENGLISH)}: ${result.totalPoints} / ${result.maxPoints}")
+        appendLine("${StringResources.get(com.astro.storm.core.common.StringKeyMatch.SUMMARY_RATING, Language.ENGLISH)}: ${result.rating.getLocalizedName(Language.ENGLISH)}")
         appendLine()
 
         // Bride's details
         brideChart?.let { chart ->
-            appendLine("## Bride's Chart Details")
+            appendLine("## ${StringResources.get(StringKeyMatch.MATCH_BRIDE, Language.ENGLISH)}'s ${StringResources.get(StringKeyMatch.DETAILED_TITLE, Language.ENGLISH)}")
             val brideMoon = chart.planetPositions.find { it.planet == Planet.MOON }
             brideMoon?.let { moon ->
-                appendLine("- Moon Sign (Rashi): ${moon.sign.displayName}")
-                appendLine("- Nakshatra: ${moon.nakshatra.displayName} (Pada ${moon.nakshatraPada})")
-                appendLine("- Nakshatra Lord: ${moon.nakshatra.ruler.displayName}")
+                appendLine("- ${StringResources.get(StringKeyMatch.MOON_SIGN, Language.ENGLISH)} (Rashi): ${moon.sign.displayName}")
+                appendLine("- ${StringResources.get(StringKeyMatch.NAKSHATRA_LABEL, Language.ENGLISH)}: ${moon.nakshatra.displayName} (Pada ${moon.nakshatraPada})")
+                appendLine("- ${StringResources.get(StringKeyMatch.MATCH_NAKSHATRA_LORD, Language.ENGLISH)}: ${moon.nakshatra.ruler.displayName}")
             }
             appendLine()
         }
 
         // Groom's details
         groomChart?.let { chart ->
-            appendLine("## Groom's Chart Details")
+            appendLine("## ${StringResources.get(StringKeyMatch.MATCH_GROOM, Language.ENGLISH)}'s ${StringResources.get(StringKeyMatch.DETAILED_TITLE, Language.ENGLISH)}")
             val groomMoon = chart.planetPositions.find { it.planet == Planet.MOON }
             groomMoon?.let { moon ->
-                appendLine("- Moon Sign (Rashi): ${moon.sign.displayName}")
-                appendLine("- Nakshatra: ${moon.nakshatra.displayName} (Pada ${moon.nakshatraPada})")
-                appendLine("- Nakshatra Lord: ${moon.nakshatra.ruler.displayName}")
+                appendLine("- ${StringResources.get(StringKeyMatch.MOON_SIGN, Language.ENGLISH)} (Rashi): ${moon.sign.displayName}")
+                appendLine("- ${StringResources.get(StringKeyMatch.NAKSHATRA_LABEL, Language.ENGLISH)}: ${moon.nakshatra.displayName} (Pada ${moon.nakshatraPada})")
+                appendLine("- ${StringResources.get(StringKeyMatch.MATCH_NAKSHATRA_LORD, Language.ENGLISH)}: ${moon.nakshatra.ruler.displayName}")
             }
             appendLine()
         }

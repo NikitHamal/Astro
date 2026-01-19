@@ -238,7 +238,7 @@ private fun YogasTopBar(
                     if (chartName.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "$totalYogas yogas found - $chartName",
+                            text = String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_YOGAS_FOUND_FMT), totalYogas, chartName),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -491,7 +491,7 @@ private fun YogaCategoryFilter(
                     border = if (isSelected) null else androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor)
                 ) {
                     Text(
-                        text = "All (${categoryStats.values.sum()})",
+                        text = String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_ALL_COUNT_FMT), categoryStats.values.sum()),
                         fontSize = 13.sp,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                         color = if (isSelected) AppTheme.AccentPrimary else AppTheme.TextSecondary,
@@ -646,7 +646,7 @@ private fun YogaCard(
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Icon(
                                     imageVector = Icons.Outlined.Star,
-                                    contentDescription = "Auspicious",
+                                    contentDescription = stringResource(StringKey.YOGA_AUSPICIOUS),
                                     tint = AppTheme.SuccessColor,
                                     modifier = Modifier.size(14.dp)
                                 )
