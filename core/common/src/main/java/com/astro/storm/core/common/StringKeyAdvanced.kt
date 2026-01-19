@@ -134,9 +134,6 @@ enum class StringKeyAdvanced(override val en: String, override val ne: String) :
     KAKSHYA_QUALITY_MODERATE("Moderate", "मध्यम"),
     KAKSHYA_QUALITY_POOR("Poor", "कमजोर"),
     KAKSHYA_DESC("Precise micro-transit timing using 8 divisions per sign (3°45' each)", "प्रत्येक राशिमा ८ विभाजन (३°४५' प्रत्येक) प्रयोग गरी सूक्ष्म गोचर समय"),
-    KAKSHYA_TAB_CURRENT("Current", "वर्तमान"),
-    KAKSHYA_TAB_PLANETS("By Planet", "ग्रहानुसार"),
-    KAKSHYA_TAB_TIMELINE("Timeline", "समयरेखा"),
 
     // Kakshya Lords (in order)
     KAKSHYA_LORD_SATURN("Saturn Kakshya", "शनि कक्ष्या"),
@@ -167,7 +164,6 @@ enum class StringKeyAdvanced(override val en: String, override val ne: String) :
     KAKSHYA_EXIT_TIME("Exit Time", "निकास समय"),
     KAKSHYA_DURATION("Duration", "अवधि"),
     KAKSHYA_NEXT_CHANGE("Next Kakshya Change", "अर्को कक्ष्या परिवर्तन"),
-    KAKSHYA_UPCOMING_CHANGES("Upcoming Kakshya Changes", "आउँदा कक्ष्या परिवर्तनहरू"),
     KAKSHYA_FAVORABLE_PERIODS("Favorable Kakshya Periods", "अनुकूल कक्ष्या अवधिहरू"),
     KAKSHYA_CRITICAL_TRANSITS("Critical Kakshya Transits", "गम्भीर कक्ष्या गोचरहरू"),
 
