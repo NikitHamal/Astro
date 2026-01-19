@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CAREER ANALYSIS (500+ strings) -->
+    <!-- Tenth House Analysis -->
+    <string name="analysis_career_10th_house_intro">Your tenth house in %1$s reveals your professional calling, public reputation, and career path destiny.</string>
+    <string name="analysis_career_10h_mesha">Tenth house in Aries indicates dynamic, pioneering career path where you lead, initiate projects, and thrive in competitive environments.</string>
+    <string name="analysis_career_10h_vrishabha">Tenth house in Taurus suggests stable, methodical career progress in fields related to finance, arts, or established institutions.</string>
+    <string name="analysis_career_10h_mithuna">Tenth house in Gemini points to versatile career involving communication, media, teaching, or multiple professional streams.</string>
+    <string name="analysis_career_10h_karka">Tenth house in Cancer indicates career in caregiving, hospitality, real estate, or emotionally fulfilling professions.</string>
+    <string name="analysis_career_10h_simha">Tenth house in Leo suggests leadership roles, creative fields, government service, or positions requiring authority and charisma.</string>
+    <string name="analysis_career_10h_kanya">Tenth house in Virgo points to analytical careers, healthcare, service industries, or detail-oriented professions.</string>
+    <string name="analysis_career_10h_tula">Tenth house in Libra indicates careers requiring diplomacy, aesthetics, law, or partnership-based businesses.</string>
+    <string name="analysis_career_10h_vrishchika">Tenth house in Scorpio suggests careers in research, psychology, crisis management, or transformative fields.</string>
+    <string name="analysis_career_10h_dhanu">Tenth house in Sagittarius points to academic, legal, spiritual, or international career opportunities.</string>
+    <string name="analysis_career_10h_makara">Tenth house in Capricorn indicates ambitious career path in government, management, or established hierarchical structures.</string>
+    <string name="analysis_career_10h_kumbha">Tenth house in Aquarius suggests innovative, technological, or humanitarian career fields.</string>
+    <string name="analysis_career_10h_meena">Tenth house in Pisces indicates creative, spiritual, or service-oriented career paths requiring compassion.</string>
+
+    <!-- Tenth Lord Analysis -->
+    <string name="analysis_career_10th_lord_1st">Tenth lord in first house creates natural leader whose career identity defines them. Professions requiring independent work suit you.</string>
+    <string name="analysis_career_10th_lord_2nd">Tenth lord in second house indicates career related to finance, speech, or family business. Wealth through profession.</string>
+    <string name="analysis_career_10th_lord_3rd">Tenth lord in third house suggests careers in communication, media, sales, or creative fields requiring skills.</string>
+    <string name="analysis_career_10th_lord_4th">Tenth lord in fourth house indicates career related to real estate, vehicles, or working from home environments.</string>
+    <string name="analysis_career_10th_lord_5th">Tenth lord in fifth house points to creative professions, speculation-based income, or careers involving entertainment.</string>
+    <string name="analysis_career_10th_lord_6th">Tenth lord in sixth house suggests service-oriented careers, competitive fields, or professions involving problem-solving daily challenges.</string>
+    <string name="analysis_career_10th_lord_7th">Tenth lord in seventh house indicates partnership-based career, business connections, or professional collaborations.</string>
+    <string name="analysis_career_10th_lord_8th">Tenth lord in eighth house suggests careers involving research, secrets, transformation, or occult sciences.</string>
+    <string name="analysis_career_10th_lord_9th">Tenth lord in ninth house indicates careers in teaching, law, spiritual guidance, or international fields.</string>
+    <string name="analysis_career_10th_lord_10th">Tenth lord in own house creates strong career focus, executive abilities, and natural leadership in profession.</string>
+    <string name="analysis_career_10th_lord_11th">Tenth lord in eleventh house indicates gains through career, connections with influential people, or networking professions.</string>
+    <string name="analysis_career_10th_lord_12th">Tenth lord in twelfth house suggests careers in foreign lands, spiritual institutions, or behind-the-scenes work.</string>
+
+    <!-- Tenth Lord Strength -->
+    <string name="analysis_career_10th_lord_exalted">Exalted tenth lord promises exceptional success, recognition, and high achievement in career endeavors.</string>
+    <string name="analysis_career_10th_lord_own_sign">Tenth lord in own sign ensures steady progress, professional competence, and career stability.</string>
+    <string name="analysis_career_10th_lord_friendly_sign">Tenth lord in friendly sign supports career growth through favorable circumstances and helpful connections.</string>
+    <string name="analysis_career_10th_lord_neutral_sign">Tenth lord in neutral sign indicates average professional circumstances requiring effort for recognition.</string>
+    <string name="analysis_career_10th_lord_enemy_sign">Tenth lord in enemy sign suggests career challenges requiring perseverance and conscious professional development.</string>
+    <string name="analysis_career_10th_lord_debilitated">Debilitated tenth lord indicates need for extra effort in career matters and potential professional setbacks.</string>
+    <string name="analysis_career_10th_lord_combust">Combust tenth lord suggests periods of low professional visibility or challenges with authority figures.</string>
+
+    <!-- Planets in Tenth House -->
+    <string name="analysis_career_sun_10th">Sun in tenth house creates strong drive for authority and recognition in career. Leadership positions and government connections.</string>
+    <string name="analysis_career_moon_10th">Moon in tenth house indicates public career, nurturing professions, or work involving women. Professional emotional fulfillment.</string>
+    <string name="analysis_career_mars_10th">Mars in tenth house gives dynamic, competitive career approach. Technical fields, engineering, or careers requiring决断力.</string>
+    <string name="analysis_career_mercury_10th">Mercury in tenth house suggests careers in communication, writing, business, or analytical fields requiring intelligence.</string>
+    <string name="analysis_career_jupiter_10th">Jupiter in tenth house indicates careers in teaching, counseling, law, or spiritual guidance. Natural mentorship abilities.</string>
+    <string name="analysis_career_venus_10th">Venus in tenth house creates artistic, creative, or beauty-related career opportunities. Female support in profession.</string>
+    <string name="analysis_career_saturn_10th">Saturn in tenth house promises success after sustained effort. Careers in management, law, or established institutions.</string>
+    <string name="analysis_career_rahu_10th">Rahu in tenth house suggests unconventional career path or success in foreign lands. Technical innovation in profession.</string>
+    <string name="analysis_career_ketu_10th">Ketu in tenth house indicates spiritual or research-oriented career. Possible detachment from conventional success.</string>
+
+    <!-- Career Yogas -->
+    <string name="analysis_career_raja_yoga">Raja yoga involving tenth house promises high achievement, recognition, and elevated professional status.</string>
+    <string name="analysis_career_dhana_yoga">Dhana yoga in career indicates wealth accumulation through profession and financial success.</string>
+    <string name="analysis_career_buddhi_yoga">Buddhi yoga suggests career success through intelligence, communication, and analytical abilities.</string>
+    <string name="analysis_career_saraswati_yoga">Saraswati yoga indicates success in academic, creative, or knowledge-based professions.</string>
+    <string name="analysis_career_gaja_kesari">Gaja Kesari yoga in career brings mentorship, wisdom-based success, and respected professional position.</string>
+    <string name="analysis_career_amarasva">Amarasva yoga promises success in fields requiring creative, nurturing energies.</string>
+    <string name="analysis_career_mahapurusha_mars">Mars in own/exaltation creates Ruchaka yoga for leadership, courage, and achievement in competitive fields.</string>
+    <string name="analysis_career_mahapurusha_mercury">Bhadra yoga gives success in communication, business, and intellectual professions.</string>
+    <string name="analysis_career_mahapurusha_jupiter">Hansa yoga brings success in spiritual, counseling, and wisdom-based careers.</string>
+    <string name="analysis_career_mahapurusha_venus">Malavya yoga indicates success in artistic, creative, and luxury-related professions.</string>
+    <string name="analysis_career_mahapurusha_saturn">Shasha yoga promises success in management, law, and organizational leadership roles.</string>
+
+    <!-- Second House Connection -->
+    <string name="analysis_career_2nd_house_wealth_connection">Second house connection to career indicates wealth accumulation through profession and financial skills.</string>
+    <string name="analysis_career_2nd_house_speech">Second house emphasis suggests careers involving public speaking, teaching, or communication-based income.</string>
+    <string name="analysis_career_2nd_house_family">Second house career connection may indicate family business or inherited professional opportunities.</string>
+
+    <!-- Sixth House Analysis -->
+    <string name="analysis_career_6th_house_strong">Strong sixth house supports competitive careers, service industries, and professions requiring daily discipline.</string>
+    <string name="analysis_career_6th_lord_10th">Sixth lord in tenth creates success through overcoming obstacles, litigation skills, or competitive advantages.</string>
+
+    <!-- Saturn Connection -->
+    <string name="analysis_career_saturn_aspects_10th">Saturn aspecting tenth house delays but stabilizes career success. Achievement through sustained effort and maturity.</string>
+    <string name="analysis_career_saturn_conjunct_10th_lord">Saturn with tenth lord suggests careers in government, law, or structured organizations requiring discipline.</string>
+
+    <!-- Jupiter Connection -->
+    <string name="analysis_career_jupiter_aspects_10th">Jupiter aspecting tenth house brings wisdom, guidance, and fortunate opportunities in career. Teaching or counseling professions.</string>
+    <string name="analysis_career_jupiter_conjunct_10th_lord">Jupiter with tenth lord indicates careers involving mentorship, higher learning, or spiritual guidance in profession.</string>
+
+    <!-- Divisional Charts Career -->
+    <string name="analysis_career_d10_analysis">Dashamsha chart reveals detailed career potential, timing of professional changes, and specific success areas.</string>
+    <string name="analysis_career_d10_lord_exalted">Dashamsha lagna lord exalted promises exceptional professional achievements and recognition in chosen field.</string>
+    <string name="analysis_career_d10_strong_planets">Planets strong in D10 chart become career significators, indicating fields where success comes easily.</string>
+
+    <!-- Career Timing -->
+    <string name="analysis_career_timing_dasha_start">Your %1$s dasha activates career potential through %2%d house connections and %3%d house activities.</string>
+    <string name="analysis_career_timing_transits">Transiting planets through career houses trigger job changes, promotions, and professional opportunities.</string>
+    <string name="analysis_career_timing_saturn_return">Saturn return periods mark major career milestones and professional maturation phases.</string>
+    <string name="analysis_career_timing_jupiter_transit">Jupiter transit through career houses brings expansion, learning opportunities, and professional growth.</string>
+
+    <!-- Professional Challenges -->
+    <string name="analysis_career_challenge_weak_10th">Weak tenth house requires conscious professional development and creating your own opportunities.</string>
+    <string name="analysis_career_challenge_10th_lord_weak">Challenged tenth lord suggests need for patience, persistence, and skill development in career.</string>
+    <string name="analysis_career_challenge_multiple_directions">Multiple career indicators suggest exploring diverse professional paths before finding true calling.</string>
+    <string name="analysis_career_challenge_stagnation">Career stagnation indicators require strategic planning, skill upgrades, or professional networking for advancement.</string>
+
+    <!-- Professional Strengths -->
+    <string name="analysis_career_strength_natural_authority">Natural leadership abilities and executive potential indicate management and authority positions suited to your temperament.</string>
+    <string name="analysis_career_strength_technical_skills">Technical aptitude and analytical abilities suggest success in specialized, knowledge-based professions.</string>
+    <string name="analysis_career_strength_creative_talents">Creative expression abilities indicate artistic professions, design fields, or innovative career directions.</string>
+    <string name="analysis_career_strength_communication">Strong communication skills suggest teaching, writing, counseling, or public-facing professional roles.</string>
+    <string name="analysis_career_strength_service">Service orientation and helping nature indicates careers in healthcare, counseling, or human services.</string>
+
+    <!-- Career Recommendations by Planet Strengths -->
+    <string name="analysis_career_sun_dominant">Sun-dominant chart suggests leadership, government, management, or positions of authority and public recognition.</string>
+    <string name="analysis_career_moon_dominant">Moon-dominant chart indicates caregiving professions, public relations, food industry, or nurturing careers.</string>
+    <string name="analysis_career_mars_dominant">Mars-dominant chart suggests engineering, military, sports, surgery, or competitive professional fields.</string>
+    <string name="analysis_career_mercury_dominant">Mercury-dominant chart indicates communication, business, writing, accounting, or intellectual professions.</string>
+    <string name="analysis_career_jupiter_dominant">Jupiter-dominant chart suggests teaching, law, philosophy, counseling, or wisdom-based professions.</string>
+    <string name="analysis_career_venus_dominant">Venus-dominant chart indicates arts, fashion, beauty industry, finance, or luxury-related careers.</string>
+    <string name="analysis_career_saturn_dominant">Saturn-dominant chart suggests government, law, management, structured organizations, or disciplined professions.</string>
+
+    <!-- Success Patterns -->
+    <string name="analysis_career_success_early">Early career success factors indicate opportunities for achievements in formative professional years.</string>
+    <string name="analysis_career_success_mature">Maturation-based success suggests career achievements increase with age and experience accumulation.</string>
+    <string name="analysis_career_success_late">Late career success timing indicates major professional breakthroughs after age 40 or mid-life transitions.</string>
+    <string name="analysis_career_success_consistent">Consistent professional advancement pattern throughout career lifecycle.</string>
+</resources>

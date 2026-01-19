@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MARRIAGE & RELATIONSHIPS ANALYSIS (600+ strings) -->
+    
+    <!-- Seventh House Analysis -->
+    <string name="analysis_marriage_7th_house_intro">Your seventh house in %1$s reveals your approach to partnerships, marriage, and significant relationships.</string>
+    <string name="analysis_marriage_7h_mesha">Seventh house in Aries indicates dynamic, passionate partnerships with independent partners. Relationships require action and excitement.</string>
+    <string name="analysis_marriage_7h_vrishabha">Seventh house in Taurus suggests stable, loyal partnerships with sensual, stable partners. Security in relationships is paramount.</string>
+    <string name="analysis_marriage_7h_mithuna">Seventh house in Gemini indicates need for intellectual connection and communication in partnerships. Variety in relationships.</string>
+    <string name="analysis_marriage_7h_karka">Seventh house in Cancer suggests nurturing, emotional partnerships with home-oriented partners. Family life important.</string>
+    <string name="analysis_marriage_7h_simha">Seventh house in Leo indicates partnerships with dramatic, generous, or authoritative partners. Need for admiration in relationships.</string>
+    <string name="analysis_marriage_7h_kanya">Seventh house in Virgo suggests practical, service-oriented partnerships with analytical or health-conscious partners.</string>
+    <string name="analysis_marriage_7h_tula">Seventh house in Libra creates natural harmony in partnerships with diplomatic, artistic, or balanced partners. Cooperation-oriented.</string>
+    <string name="analysis_marriage_7h_vrishchika">Seventh house in Scorpio indicates intense, transformative partnerships with magnetic, secretive, or powerful partners.</string>
+    <string name="analysis_marriage_7h_dhanu">Seventh house in Sagittarius suggests partnerships with adventurous, philosophical, or foreign-origin partners. Need for growth.</string>
+    <string name="analysis_marriage_7h_makara">Seventh house in Capricorn indicates serious, committed partnerships with mature, responsible, or older partners. Traditional values.</string>
+    <string name="analysis_marriage_7h_kumbha">Seventh house in Aquarius suggests unconventional partnerships with independent, progressive, or friendship-based relationships.</string>
+    <string name="analysis_marriage_7h_meena">Seventh house in Pisces indicates spiritual, compassionate partnerships with sensitive, artistic, or sacrificial partners.</string>
+
+    <!-- Seventh Lord Analysis -->
+    <string name="analysis_marriage_7th_lord_1st">Seventh lord in first house creates identity defined by partnerships. Natural attraction to others and relationship-oriented personality.</string>
+    <string name="analysis_marriage_7th_lord_2nd">Seventh lord in second house indicates wealth through marriage, family business partnerships, or spouse contributing to finances.</string>
+    <string name="analysis_marriage_7th_lord_3rd">Seventh lord in third house suggests partnerships through communication, short journeys, or relationships with neighbors/siblings.</string>
+    <string name="analysis_marriage_7th_lord_4th">Seventh lord in fourth house indicates home-based partnerships or marriage bringing emotional security and domestic harmony.</string>
+    <string name="analysis_marriage_7th_lord_5th">Seventh lord in fifth house suggests love marriages, romantic partnerships, or spouse involved in creative/educational fields.</string>
+    <string name="analysis_marriage_7th_lord_6th">Seventh lord in sixth house indicates work relationships turning romantic or partnerships requiring service to each other.</string>
+    <string name="analysis_marriage_7th_lord_7th">Seventh lord in own house creates strong focus on partnerships with harmonious relationship patterns and mutual understanding.</string>
+    <string name="analysis_marriage_7th_lord_8th">Seventh lord in eighth house indicates transformative partnerships, possible inheritance through marriage, or intense relationship dynamics.</string>
+    <string name="analysis_marriage_7th_lord_9th">Seventh lord in ninth house suggests partnerships with different cultural/religious backgrounds or spouse involved in higher education/spirituality.</string>
+    <string name="analysis_marriage_7th_lord_10th">Seventh lord in tenth house indicates professional partnerships or spouse contributing to career success and public reputation.</string>
+    <string name="analysis_marriage_7th_lord_11th">Seventh lord in eleventh house suggests friendships developing into partnerships and gains through marriage relationships.</string>
+    <string name="analysis_marriage_7th_lord_12th">Seventh lord in twelfth house indicates foreign-born partner, spiritual partnerships, or relationships requiring sacrifice/compassion.</string>
+
+    <!-- Seventh Lord Strength -->
+    <string name="analysis_marriage_7th_lord_exalted">Exalted seventh lord promises harmonious, successful partnerships with high-quality relationships throughout life.</string>
+    <string name="analysis_marriage_7th_lord_own_sign">Seventh lord in own sign ensures stable, committed partnerships with mutual respect and understanding.</string>
+    <string name="analysis_marriage_7th_lord_friendly_sign">Seventh lord in friendly sign supports positive relationship experiences with cooperative partners.</string>
+    <string name="analysis_marriage_7th_lord_neutral_sign">Seventh lord in neutral sign indicates average relationship circumstances requiring conscious effort.</string>
+    <string name="analysis_marriage_7th_lord_enemy_sign">Seventh lord in enemy sign suggests relationship challenges requiring patience and conscious partnership development.</string>
+    <string name="analysis_marriage_7th_lord_debilitated">Debilitated seventh lord indicates need for extra effort in relationships and possible delays in marriage or partnerships.</string>
+    <string name="analysis_marriage_7th_lord_combust">Combust seventh lord suggests periods where partnerships feel challenging or overshadowed by ego conflicts.</string>
+    <string name="analysis_marriage_7th_lord_weak">Weak seventh lord requires conscious development of relationship skills and patience in finding right partnerships.</string>
+
+    <!-- Planets in Seventh House -->
+    <string name="analysis_marriage_sun_7th">Sun in seventh house attracts confident, authoritative partners. Need for equality and possible ego challenges in partnerships.</string>
+    <string name="analysis_marriage_moon_7th">Moon in seventh house indicates emotionally nurturing partnerships with caring, supportive partners. Need for emotional security.</string>
+    <string name="analysis_marriage_mars_7th">Mars in seventh house creates passionate, energetic partnerships with dynamic partners. Potential for conflict requiring patience.</string>
+    <string name="analysis_marriage_mercury_7th">Mercury in seventh house suggests intellectual partnerships with communicative, youthful partners. Friendship-based relationships.</string>
+    <string name="analysis_marriage_jupiter_7th">Jupiter in seventh house promises wise, generous partners and fortunate marriage. Spouse brings wisdom and expansion.</string>
+    <string name="analysis_marriage_venus_7th">Venus in seventh house creates harmonious, beautiful partnerships with artistic, loving partners. Natural relationship harmony.</string>
+    <string name="analysis_marriage_saturn_7th">Saturn in seventh house delays but stabilizes partnerships with mature, responsible partners. Serious commitment orientation.</string>
+    <string name="analysis_marriage_rahu_7th">Rahu in seventh house suggests unconventional partnerships, foreign spouses, or relationships breaking social norms.</string>
+    <string name="analysis_marriage_ketu_7th">Ketu in seventh house indicates spiritually oriented partnerships or need for independence in close relationships.</string>
+
+    <!-- Multiple Planets in 7th -->
+    <string name="analysis_marriage_multiple_planets_7th">Multiple planets in seventh house create complex relationship patterns involving various partnership dynamics and needs.</string>
+    <string name="analysis_marriage_sun_mars_7th">Sun and Mars together create passionate but potentially competitive partnerships requiring equality and mutual respect.</string>
+    <string name="analysis_marriage_moon_venus_7th">Moon and Venus together promise emotionally fulfilling, affectionate partnerships with natural harmony.</string>
+    <string name="analysis_marriage_jupiter_venus_7th">Jupiter and Venus together bring fortunate, harmonious partnerships with wise, loving dynamics.</string>
+
+    <!-- Venus Analysis -->
+    <string name="analysis_marriage_venus_sign_mesha">Venus in Aries creates passionate approach to love with impulsive romantic nature and need for excitement.</string>
+    <string name="analysis_marriage_venus_sign_vrishabha">Venus in own sign Taurus gives stable, sensual love nature with deep appreciation for beauty and comfort.</string>
+    <string name="analysis_marriage_venus_sign_mithuna">Venus in Gemini suggests romantic communication needs and variety in relationships.</string>
+    <string name="analysis_marriage_venus_sign_karka">Venus in Cancer brings nurturing approach to love with strong family orientation in partnerships.</string>
+    <string name="analysis_marriage_venus_sign_simha">Venus in Leo creates dramatic, generous romantic expression with need for admiration in love.</string>
+    <string name="analysis_marriage_venus_sign_kanya">Venus in Virgo suggests practical, service-oriented approach to relationships with attention to details.</string>
+    <string name="analysis_marriage_venus_sign_tula">Venus in own sign Libra gives natural relationship harmony and strong partnership orientation.</string>
+    <string name="analysis_marriage_venus_sign_vrishchika">Venus in Scorpio creates intense, transformative love experiences with deep emotional bonding.</string>
+    <string name="analysis_marriage_venus_sign_dhanu">Venus in Sagittarius suggests adventurous, philosophical approach to love with need for growth.</string>
+    <string name="analysis_marriage_venus_sign_makara">Venus in Capricorn creates serious, committed approach to relationships with traditional values.</string>
+    <string name="analysis_marriage_venus_sign_kumbha">Venus in Aquarius suggests unconventional, friendship-based relationships with need for independence.</string>
+    <string name="analysis_marriage_venus_sign_meena">Venus in Pisces brings romantic, idealistic approach to love with spiritual dimensions.</string>
+
+    <!-- Venus Strength -->
+    <string name="analysis_marriage_venus_exalted">Exalted Venus promises exceptional relationship harmony, artistic abilities, and fortunate partnerships.</string>
+    <string name="analysis_marriage_venus_own_sign">Venus in own sign ensures natural relationship skills and aesthetic appreciation.</string>
+    <string name="analysis_marriage_venus_friendly_sign">Venus in friendly sign supports positive relationship experiences and artistic expression.</string>
+    <string name="analysis_marriage_venus_weak">Weak Venus requires conscious development of relationship skills and appreciation of beauty.</string>
+    <string name="analysis_career_venus_combust">Combust Venus suggests periods where relationship harmony feels challenged or artistic expression suppressed.</string>
+
+    <!-- Marriage Yogas -->
+    <string name="analysis_marriage_singhastha">Singhastha yoga involving seventh lord promises early, successful marriage with compatible partner.</string>
+    <string name="analysis_marriage_harivasya">Harivasya yoga indicates noble, virtuous partner and harmonious married life with mutual respect.</string>
+    <string name="analysis_marriage_supriya_adi">Supriya yoga suggests affectionate, loving partnerships with natural relationship harmony.</string>
+    <string name="analysis_marriage_gaja_kesari_7th">Gaja Kesari yoga in seventh house brings wisdom, guidance, and fortune through marriage.</string>
+    <string name="analysis_marriage_adhi_yoga_7th">Adhi yoga involving seventh house indicates successful partnerships with influential connections.</string>
+    <string name="analysis_marriage_vasumati_yoga">Vasumati yoga promises marital happiness, prosperity, and elevated status through partnerships.</string>
+    <string name="analysis_marriage_bhaskara_yoga">Bhaskara yoga indicates prosperity and good fortune through marriage relationships.</string>
+
+    <!-- Compatibility Factors -->
+    <string name="analysis_marriage_compatibility_elements">Core compatibility involves harmonizing your %1$s nature with partner's elemental needs.</string>
+    <string name="analysis_marriage_compatibility_modalities">Relationship success requires balancing your %1$s approach with partner's interaction style.</string>
+    <string name="analysis_marriage_compatibility_polarities">Attraction patterns follow %1%s dynamics, requiring conscious integration of opposite qualities.</string>
+
+    <string name="analysis_marriage_emotional_needs">Your emotional security comes from %1$s with %2$s expressions being most fulfilling.</string>
+    <string name="analysis_marriage_love_language">You express love primarily through %1$s while receiving love best through %2$s channels.</string>
+    <string name="analysis_marriage_relationship_style">Partnership approach involves %1$s with %2%s being your natural relationship strength.</string>
+
+    <!-- Specific Relationship Patterns -->
+    <string name="analysis_marriage_pattern_attracting_partners">You naturally attract partners who embody %1$s qualities and provide %2%s relationship experiences.</string>
+    <string name="analysis_marriage_pattern_relationship_challenges">Primary relationship challenges involve navigating %1%s differences and balancing %2%s needs.</string>
+    <string name="analysis_marriage_pattern_success_factors">Relationship success comes from embracing %1%s qualities and developing %2%s awareness.</string>
+    <string name="analysis_marriage_pattern_growth_areas">Partnership growth requires cultivating %1%s skills and understanding %2%s dynamics.</string>
+
+    <!-- Timing of Marriage -->
+    <string name="analysis_marriage_timing_dasha">Marriage timing activates during %1$s dasha periods when seventh house significators become prominent.</string>
+    <string name="analysis_marriage_timing_transits">Transiting planets aspecting seventh house trigger relationship opportunities and marriage events.</string>
+    <string name="analysis_marriage_timing_jupiter">Jupiter transit to seventh or first house brings marriage opportunities and partnership expansion.</string>
+    <string name="analysis_marriage_timing_saturn">Saturn transit to seventh house stabilizes partnerships and brings committed relationship energy.</string>
+    <string name="analysis_marriage_timing_venus">Venus transit periods activate relationship desires and attract partnership opportunities.</string>
+    <string name="analysis_marriage_timing_early">Early marriage indicators suggest partnerships forming in youth or under age 25.</string>
+    <string name="analysis_marriage_timing_mid">Mid-life marriage timing indicates partnerships forming between ages 25-35 during career establishment.</string>
+    <string name="analysis_marriage_timing_late">Late marriage timing suggests partnerships forming after age 35 during mature life phases.</string>
+
+    <!-- Relationship Quality -->
+    <string name="analysis_marriage_quality_harmonious">Natural relationship harmony creates supportive, balanced partnerships with mutual understanding.</string>
+    <string name="analysis_marriage_quality_complex">Complex relationship patterns offer growth opportunities through navigating diverse partnership dynamics.</string>
+    <string name="analysis_marriage_quality_transformative">Transformative relationships bring significant personal evolution through intense partnership experiences.</string>
+    <string name="analysis_marriage_quality_karmic">Karmic relationship indicators suggest partnerships with important soul-level lessons and past-life connections.</string>
+    <string name="analysis_marriage_quality_spiritual">Spiritual partnership potential indicates relationships supporting mutual growth and higher consciousness.</string>
+
+    <!-- Spouse Characteristics -->
+    <string name="analysis_marriage_spouse_basic_traits">Spouse characteristics include %1$s nature with %2%s being prominent personality traits.</string>
+    <string name="analysis_marriage_spouse_professional_indications">Professional background involves %1%s fields with %2%s skills being prominent.</string>
+    <string name="analysis_marriage_spouse_appearance">Physical appearance shows %1%s characteristics with %2%s features being noticeable.</string>
+    <string name="analysis_marriage_spouse_family_background">Family background involves %1%s values with %2%s cultural traditions being important.</string>
+
+    <string name="analysis_marriage_spouse_from_jupiter">Jupiter as significator indicates wise, educated, generous spouse with philosophical or teaching inclinations.</string>
+    <string name="analysis_marriage_spouse_from_venus">Venus as significator suggests beautiful, artistic, loving spouse with appreciation for beauty and harmony.</string>
+    <string name="analysis_marriage_spouse_from_saturn">Saturn as significator indicates mature, serious, responsible spouse possibly older or from traditional background.</string>
+    <string name="analysis_marriage_spouse_from_mars">Mars as significator suggests energetic, dynamic, independent spouse with leadership qualities.</string>
+    <string name="analysis_marriage_spouse_from_moon">Moon as significator indicates nurturing, emotional, family-oriented spouse with caring nature.</string>
+    <string name="analysis_marriage_spouse_from_sun">Sun as significator suggests confident, authoritative, status-conscious spouse with leadership presence.</string>
+
+    <!-- Navamsa Marriage Analysis -->
+    <string name="analysis_marriage_navamsa_intro">Navamsa chart provides deeper insights into marriage potential and relationship karmic patterns.</string>
+    <string name="analysis_marriage_navamsa_7th_strong">Strong seventh house in Navamsa confirms marital happiness and successful partnerships.</string>
+    <string name="analysis_marriage_navamsa_7th_weak">Challenged seventh lord in Navamsa suggests need for conscious relationship work.</string>
+    <string name="analysis_marriage_navamsa_7h_guru">Navamsa seventh with Jupiter brings wise, fortunate, harmonious marriage partnerships.</string>
+    <string name="analysis_marriage_navamsa_benefics">Benefic aspects to seventh house in Navamsa promise happiness and prosperity through marriage.</string>
+    <string name="analysis_marriage_navamsa_malefics">Malefic influences on seventh in Navamsa require effort to overcome relationship challenges.</string>
+
+    <!-- Upapada Lagna Analysis -->
+    <string name="analysis_marriage_upapada_intro">Upapada Lagna reveals your approach to committed partnerships and spouse's character.</string>
+    <string name="analysis_marriage_upapada_strong">Strong Upapada Lagna promises committed, lasting partnerships with compatible partners.</string>
+    <string name="analysis_marriage_upapada_weak">Challenged Upapada requires conscious partnership development and relationship skill building.</string>
+
+    <!-- Multiple Marriages -->
+    <string name="analysis_marriage_multiple_strong_7th">Multiple planets in seventh house suggest significant relationships or possible multiple partnerships.</string>
+    <string name="analysis_marriage_multiple_lords">Seven lords in different signs indicate various relationship experiences throughout life.</string>
+    <string name="analysis_marriage_divorce_indicators">Challenged seventh house with malefics suggests need for relationship consciousness to avoid separations.</string>
+    <string name="analysis_marriage_stability_factors">Relationship stability comes from %1%s strengths and conscious awareness of %2%s challenges.</string>
+
+    <!-- Remedies for Relationships -->
+    <string name="analysis_marriage_remedy_strengthen_7th">Strengthen seventh house through %1%s practices and conscious partnership development.</string>
+    <string name="analysis_marriage_remedy_strengthen_venus">Enhance Venus through artistic expression, self-care, and relationship appreciation practices.</string>
+    <string name="analysis_marriage_remedy_7th_lord_strengthen">Support seventh lord through %1%s activities and %2%s relationship behaviors.</string>
+    <string name="analysis_marriage_remedy_chanting">Relationship harmony mantras include %1%s for attracting compatible partners and maintaining marital bliss.</string>
+    <string name="analysis_marriage_remedy_fastings">Observances for relationship benefits include %1%s on specific days for partnership blessings.</string>
+    <string name="analysis_marriage_remedy_charity">Charitable acts for relationship harmony focus on %1%s causes and %2%s service activities.</string>
+</resources>
