@@ -378,7 +378,6 @@ private fun OverviewTab(analysis: UpachayaTransitAnalysis, language: Language) {
 }
 
 @Composable
-@Composable
 private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: Language) {
     val assessment = analysis.overallAssessment
 

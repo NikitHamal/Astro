@@ -647,10 +647,10 @@ fun KakshaTransitCalculator.KakshaQuality.getLocalizedName(language: Language): 
  */
 fun UpachayaLevel.getLocalizedName(language: Language): String {
     return when (this) {
-        UpachayaLevel.EXCEPTIONAL -> StringResources.get(StringKeyDosha.STRENGTH_EXCEPTIONAL, language)
-        UpachayaLevel.HIGH -> StringResources.get(StringKeyDosha.STRENGTH_HIGH, language)
-        UpachayaLevel.MODERATE -> StringResources.get(StringKeyDosha.STRENGTH_MODERATE, language)
-        UpachayaLevel.LOW -> StringResources.get(StringKeyDosha.STRENGTH_LOW, language)
+        UpachayaLevel.EXCEPTIONAL -> StringResources.get(StringKeyAnalysis.STRENGTH_EXCELLENT, language)
+        UpachayaLevel.HIGH -> StringResources.get(StringKeyAnalysis.STRENGTH_STRONG, language)
+        UpachayaLevel.MODERATE -> StringResources.get(StringKeyAnalysis.STRENGTH_AVERAGE, language)
+        UpachayaLevel.LOW -> StringResources.get(StringKeyAnalysis.STRENGTH_WEAK, language)
     }
 }
 
@@ -659,10 +659,10 @@ fun UpachayaLevel.getLocalizedName(language: Language): String {
  */
 fun UpachayaTransitQuality.getLocalizedName(language: Language): String {
     return when (this) {
-        UpachayaTransitQuality.EXCELLENT -> StringResources.get(StringKeyDosha.QUALITY_EXCELLENT, language)
-        UpachayaTransitQuality.GOOD -> StringResources.get(StringKeyDosha.QUALITY_GOOD, language)
-        UpachayaTransitQuality.FAVORABLE -> StringResources.get(StringKeyDosha.QUALITY_FAVORABLE, language)
-        UpachayaTransitQuality.NEUTRAL -> StringResources.get(StringKeyDosha.QUALITY_NEUTRAL, language)
+        UpachayaTransitQuality.EXCELLENT -> StringResources.get(StringKeyAnalysis.QUALITY_EXCELLENT, language)
+        UpachayaTransitQuality.GOOD -> StringResources.get(StringKeyAnalysis.QUALITY_GOOD, language)
+        UpachayaTransitQuality.FAVORABLE -> StringResources.get(StringKeyAnalysis.UI_FAVORABLE_PERIOD, language)
+        UpachayaTransitQuality.NEUTRAL -> StringResources.get(StringKeyAnalysis.QUALITY_NEUTRAL, language)
     }
 }
 
@@ -671,8 +671,8 @@ fun UpachayaTransitQuality.getLocalizedName(language: Language): String {
  */
 fun TransitReference.getLocalizedName(language: Language): String {
     return when (this) {
-        TransitReference.MOON -> StringResources.get(StringKeyDosha.MOON_LABEL, language)
-        TransitReference.LAGNA -> StringResources.get(StringKeyDosha.LAGNA_LABEL, language)
+        TransitReference.MOON -> StringResources.get(StringKeyAnalysis.UI_FROM_MOON, language)
+        TransitReference.LAGNA -> StringResources.get(StringKeyAnalysis.UI_FROM_LAGNA, language)
     }
 }
 
@@ -681,11 +681,11 @@ fun TransitReference.getLocalizedName(language: Language): String {
  */
 fun HouseStrength.getLocalizedName(language: Language): String {
     return when (this) {
-        HouseStrength.VERY_STRONG -> StringResources.get(StringKeyDosha.STRENGTH_VERY_STRONG, language)
-        HouseStrength.STRONG -> StringResources.get(StringKeyDosha.STRENGTH_STRONG, language)
-        HouseStrength.MODERATE -> StringResources.get(StringKeyDosha.STRENGTH_MODERATE, language)
-        HouseStrength.MILD -> StringResources.get(StringKeyDosha.STRENGTH_MILD, language)
-        HouseStrength.INACTIVE -> StringResources.get(StringKeyDosha.STRENGTH_INACTIVE, language)
+        HouseStrength.VERY_STRONG -> StringResources.get(StringKeyAnalysis.STRENGTH_VERY_STRONG, language)
+        HouseStrength.STRONG -> StringResources.get(StringKeyAnalysis.STRENGTH_STRONG, language)
+        HouseStrength.MODERATE -> StringResources.get(StringKeyAnalysis.STRENGTH_AVERAGE, language)
+        HouseStrength.MILD -> StringResources.get(StringKeyAnalysis.STRENGTH_BELOW_AVERAGE, language)
+        HouseStrength.INACTIVE -> StringResources.get(StringKeyAnalysis.UI_NONE, language)
     }
 }
 
