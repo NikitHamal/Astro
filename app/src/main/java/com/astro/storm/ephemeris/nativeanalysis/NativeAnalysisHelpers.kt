@@ -1,6 +1,7 @@
 package com.astro.storm.ephemeris.nativeanalysis
 
 import com.astro.storm.core.model.*
+import com.astro.storm.ephemeris.AspectUtils
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 
 object NativeAnalysisHelpers {
@@ -28,16 +29,7 @@ object NativeAnalysisHelpers {
     }
 
     fun aspectsHouse(planetPos: PlanetPosition, targetHouse: Int, chart: VedicChart): Boolean {
-        val planetHouse = planetPos.house
-        val diff = ((targetHouse - planetHouse + 12) % 12)
-        if (diff == 6) return true
-        return when (planetPos.planet) {
-            Planet.MARS -> diff in listOf(3, 7)
-            Planet.JUPITER -> diff in listOf(4, 8)
-            Planet.SATURN -> diff in listOf(2, 9)
-            Planet.RAHU, Planet.KETU -> diff in listOf(4, 8)
-            else -> false
-        }
+        return AspectUtils.aspectsHouse(planetPos, targetHouse)
     }
 
     fun getSignElement(sign: ZodiacSign): Element {

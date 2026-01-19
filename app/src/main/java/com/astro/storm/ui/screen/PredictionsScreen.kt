@@ -34,18 +34,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
-import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyPrediction
+import com.astro.storm.core.common.StringKeyPredictionNarrative
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.LifeArea
 import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.ephemeris.AspectUtils
 import com.astro.storm.ephemeris.DashaCalculator
-import com.astro.storm.ephemeris.HoroscopeCalculator
+import com.astro.storm.ephemeris.VedicAstrologyUtils
+import com.astro.storm.ephemeris.YogaCalculator
+import com.astro.storm.ephemeris.yoga.YogaLocalization
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
@@ -53,8 +57,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import kotlin.math.roundToInt
 
 enum class PredictionsTab(val stringKey: StringKey) {
     OVERVIEW(StringKey.PREDICTIONS_TAB_OVERVIEW),
@@ -1627,12 +1633,7 @@ private fun calculateLifeOverview(chart: VedicChart, dashaTimeline: DashaCalcula
         )
     }
 
-    val keyStrengths = listOf(
-        StringResources.get(StringKeyPrediction.PRED_STRENGTH_DETERMINATION, language),
-        StringResources.get(StringKeyPrediction.PRED_STRENGTH_SPIRITUAL, language),
-        StringResources.get(StringKeyPrediction.PRED_STRENGTH_EMOTIONAL, language),
-        StringResources.get(StringKeyPrediction.PRED_STRENGTH_PRACTICAL, language)
-    )
+    val keyStrengths = deriveKeyStrengths(chart, language)
 
     val lifeTheme = StringResources.get(StringKeyPrediction.PRED_LIFE_THEME_TEMPLATE, language, getLifeTheme(ascendant, language))
 
@@ -1667,7 +1668,7 @@ private fun calculateCurrentPeriod(chart: VedicChart, dashaTimeline: DashaCalcul
         val mdName = md.planet.getLocalizedName(language)
         val effect = getDashaEffect(md.planet, language)
         val baseText = StringResources.get(StringKeyPrediction.PRED_DASHA_EFFECT_TEMPLATE, language, mdName, effect, "")
-        
+
         if (currentAntardasha != null) {
             val adName = currentAntardasha.planet.getLocalizedName(language)
             val adEffect = getAntardashaEffect(currentAntardasha.planet, language)
@@ -1678,15 +1679,20 @@ private fun calculateCurrentPeriod(chart: VedicChart, dashaTimeline: DashaCalcul
         }
     } ?: StringResources.get(StringKeyPrediction.PRED_CALC_PROGRESS, language)
 
-    val transitHighlights = chart.planetPositions.take(5).map { pos ->
+    val planetScores = chart.planetPositions.associateWith { calculatePlanetStrengthScore(it, chart) }
+    val topPlanets = planetScores.entries.sortedByDescending { it.value }.take(5)
+    val transitHighlights = topPlanets.map { entry ->
+        val impact = scoreToImpact(entry.value)
+        val isPositive = VedicAstrologyUtils.isNaturalBenefic(entry.key.planet) || entry.value >= 4.0
         TransitHighlight(
-            planet = pos.planet,
-            description = getTransitDescription(pos.planet, language),
-            impact = (5..9).random(),
-            isPositive = (0..1).random() == 1
+            planet = entry.key.planet,
+            description = getTransitDescription(entry.key.planet, language),
+            impact = impact,
+            isPositive = isPositive
         )
     }
 
+    val overallEnergy = if (planetScores.isEmpty()) 5 else scoreToImpact(planetScores.values.average())
     val period = currentMahadasha?.let { md ->
         val remainingYears = md.getRemainingYears()
         StringResources.get(StringKeyPrediction.PRED_YEARS_REMAINING, language, remainingYears)
@@ -1696,61 +1702,73 @@ private fun calculateCurrentPeriod(chart: VedicChart, dashaTimeline: DashaCalcul
         dashaInfo = dashaInfo,
         dashaEffect = dashaEffect,
         transitHighlights = transitHighlights,
-        overallEnergy = (5..9).random(),
+        overallEnergy = overallEnergy,
         period = period
     )
 }
 
 private fun calculateLifeAreasPredictions(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): List<LifeAreaPrediction> {
+    val currentPlanet = dashaTimeline.currentMahadasha?.planet
     return LifeArea.entries.map { area ->
+        val rating = calculateLifeAreaRating(chart, area, currentPlanet)
+        val factors = getKeyFactors(area, language)
         LifeAreaPrediction(
             area = area,
-            rating = (2..5).random(),
+            rating = rating,
             shortTerm = getShortTermPrediction(area, language),
             mediumTerm = getMediumTermPrediction(area, language),
             longTerm = getLongTermPrediction(area, language),
-            keyFactors = getKeyFactors(area, language),
+            keyFactors = factors,
             advice = getAdvice(area, language)
         )
     }
 }
 
 private fun calculateActiveYogas(chart: VedicChart, language: Language): List<ActiveYoga> {
-    return listOf(
+    val analysis = YogaCalculator.calculateYogas(chart)
+    return analysis.allYogas.take(6).map { yoga ->
+        val localizedName = YogaLocalization.getLocalizedYogaName(yoga.name, language)
+        val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
         ActiveYoga(
-            name = StringResources.get(StringKeyPrediction.PRED_YOGA_DHANA_NAME, language),
-            description = StringResources.get(StringKeyPrediction.PRED_YOGA_DHANA_DESC, language),
-            strength = 4,
-            effects = StringResources.get(StringKeyPrediction.PRED_YOGA_DHANA_EFFECT, language),
-            planets = listOf(Planet.JUPITER, Planet.VENUS)
-        ),
-        ActiveYoga(
-            name = StringResources.get(StringKeyPrediction.PRED_YOGA_RAJA_NAME, language),
-            description = StringResources.get(StringKeyPrediction.PRED_YOGA_RAJA_DESC, language),
-            strength = 3,
-            effects = StringResources.get(StringKeyPrediction.PRED_YOGA_RAJA_EFFECT, language),
-            planets = listOf(Planet.SUN, Planet.JUPITER)
+            name = localizedName,
+            description = yoga.category.getLocalizedDescription(language),
+            strength = (yoga.strengthPercentage / 20.0).toInt().coerceIn(1, 5),
+            effects = localizedEffects,
+            planets = yoga.planets
         )
-    )
+    }
 }
 
 private fun calculateChallengesOpportunities(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): ChallengesOpportunities {
-    val challenges = listOf(
-        Challenge(
-            area = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_NAME, language),
-            description = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_DESC, language),
-            severity = 3,
-            mitigation = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_MIT, language)
-        )
-    )
+    val challenges = mutableListOf<Challenge>()
+    val opportunities = mutableListOf<Opportunity>()
+    val currentPlanet = dashaTimeline.currentMahadasha?.planet
 
-    val opportunities = listOf(
-        Opportunity(
-            area = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_NAME, language),
-            description = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_DESC, language),
-            timing = StringResources.get(StringKeyPrediction.PRED_OPP_TIMING_6M, language),
-            howToLeverage = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_LEV, language)
-        ),
+    val careerPressure = VedicAstrologyUtils.getPlanetsInHouse(chart, 10).any { VedicAstrologyUtils.isNaturalMalefic(it.planet) }
+    if (careerPressure || currentPlanet == Planet.SATURN || currentPlanet == Planet.RAHU) {
+        challenges.add(
+            Challenge(
+                area = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_NAME, language),
+                description = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_DESC, language),
+                severity = if (careerPressure) 4 else 3,
+                mitigation = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_MIT, language)
+            )
+        )
+    }
+
+    val financeBoost = chart.planetPositions.any { it.planet == Planet.JUPITER && VedicAstrologyUtils.isNaturalBenefic(it.planet) }
+    if (financeBoost || currentPlanet == Planet.JUPITER || currentPlanet == Planet.VENUS) {
+        opportunities.add(
+            Opportunity(
+                area = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_NAME, language),
+                description = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_DESC, language),
+                timing = StringResources.get(StringKeyPrediction.PRED_OPP_TIMING_6M, language),
+                howToLeverage = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_LEV, language)
+            )
+        )
+    }
+
+    opportunities.add(
         Opportunity(
             area = StringResources.get(StringKeyPrediction.PRED_OPP_PERSONAL_NAME, language),
             description = StringResources.get(StringKeyPrediction.PRED_OPP_PERSONAL_DESC, language),
@@ -1766,42 +1784,65 @@ private fun calculateChallengesOpportunities(chart: VedicChart, dashaTimeline: D
 }
 
 private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): TimingAnalysis {
-    val today = LocalDate.now()
+    val now = LocalDateTime.now()
+    val upcomingMahadashas = dashaTimeline.mahadashas.filter { it.endDate.isAfter(now) }.take(3)
 
-    val favorablePeriods = listOf(
-        FavorablePeriod(
-            startDate = today.plusDays(30),
-            endDate = today.plusDays(90),
-            reason = StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_REASON, language),
-            bestFor = listOf(
-                StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_1, language),
-                StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_2, language),
-                StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_3, language)
+    val favorablePeriods = mutableListOf<FavorablePeriod>()
+    val unfavorablePeriods = mutableListOf<UnfavorablePeriod>()
+
+    upcomingMahadashas.forEach { md ->
+        val startDate = md.startDate.toLocalDate()
+        val endDate = md.endDate.toLocalDate()
+        if (VedicAstrologyUtils.isNaturalBenefic(md.planet)) {
+            favorablePeriods.add(
+                FavorablePeriod(
+                    startDate = startDate,
+                    endDate = endDate,
+                    reason = StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_REASON, language),
+                    bestFor = listOf(
+                        StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_1, language),
+                        StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_2, language),
+                        StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_3, language)
+                    )
+                )
             )
-        )
-    )
-
-    val unfavorablePeriods = listOf(
-        UnfavorablePeriod(
-            startDate = today.plusDays(120),
-            endDate = today.plusDays(150),
-            reason = StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_REASON, language),
-            avoid = listOf(
-                StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_1, language),
-                StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_2, language),
-                StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_3, language)
+        } else {
+            unfavorablePeriods.add(
+                UnfavorablePeriod(
+                    startDate = startDate,
+                    endDate = endDate,
+                    reason = StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_REASON, language),
+                    avoid = listOf(
+                        StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_1, language),
+                        StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_2, language),
+                        StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_3, language)
+                    )
+                )
             )
-        )
-    )
+        }
+    }
 
-    val keyDates = listOf(
+    val keyDates = dashaTimeline.upcomingSandhis.take(3).map { sandhi ->
+        val levelName = sandhi.level.getLocalizedName(language)
+        val eventText = StringResources.get(
+            StringKeyPredictionNarrative.PRED_SANDHI_EVENT_TEMPLATE,
+            language,
+            sandhi.fromPlanet.getLocalizedName(language),
+            sandhi.toPlanet.getLocalizedName(language),
+            levelName
+        )
+        val significanceText = StringResources.get(
+            StringKeyPredictionNarrative.PRED_SANDHI_SIGNIFICANCE_TEMPLATE,
+            language,
+            levelName
+        )
         KeyDate(
-            date = today.plusDays(45),
-            event = StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_ASPECT_EVENT, language),
-            significance = StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_ASPECT_SIG, language),
-            isPositive = true
+            date = sandhi.transitionDate.toLocalDate(),
+            event = eventText,
+            significance = significanceText,
+            isPositive = VedicAstrologyUtils.isNaturalBenefic(sandhi.toPlanet)
         )
-    )
+    }
 
     return TimingAnalysis(
         favorablePeriods = favorablePeriods,
@@ -1812,8 +1853,8 @@ private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.Da
 
 private fun calculateRemedies(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): List<String> {
     val currentPlanet = dashaTimeline.currentMahadasha?.planet
-    val planetName = currentPlanet?.getLocalizedName(language) ?: "planetary"
-    val planetNameOrChart = currentPlanet?.getLocalizedName(language) ?: "your chart"
+    val planetName = currentPlanet?.getLocalizedName(language) ?: StringResources.get(StringKeyPrediction.PRED_CURRENT, language)
+    val planetNameOrChart = currentPlanet?.getLocalizedName(language) ?: StringResources.get(StringKeyPrediction.PRED_DASHA_PERIOD_DEFAULT, language)
 
     return listOf(
         StringResources.get(StringKeyPrediction.PRED_REMEDY_MANTRA, language, planetName),
@@ -2012,6 +2053,93 @@ private fun getAdvice(area: LifeArea, language: Language): String = when (area) 
     LifeArea.SPIRITUAL -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_ADVICE, language)
     else -> StringResources.get(StringKeyPrediction.PRED_CAREER_ADVICE, language)
 }
+
+private fun deriveKeyStrengths(chart: VedicChart, language: Language): List<String> {
+    val strengths = mutableListOf<StringKeyPrediction>()
+    val sunPos = chart.planetPositions.find { it.planet == Planet.SUN }
+    val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
+    val mercuryPos = chart.planetPositions.find { it.planet == Planet.MERCURY }
+    val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
+
+    if (sunPos != null && calculatePlanetStrengthScore(sunPos, chart) >= 4.0) {
+        strengths.add(StringKeyPrediction.PRED_STRENGTH_DETERMINATION)
+    }
+    if (moonPos != null && calculatePlanetStrengthScore(moonPos, chart) >= 3.8) {
+        strengths.add(StringKeyPrediction.PRED_STRENGTH_EMOTIONAL)
+    }
+    if (mercuryPos != null && calculatePlanetStrengthScore(mercuryPos, chart) >= 3.8) {
+        strengths.add(StringKeyPrediction.PRED_STRENGTH_PRACTICAL)
+    }
+    if (jupiterPos != null && calculatePlanetStrengthScore(jupiterPos, chart) >= 3.8) {
+        strengths.add(StringKeyPrediction.PRED_STRENGTH_SPIRITUAL)
+    }
+
+    if (strengths.isEmpty()) {
+        strengths.add(StringKeyPrediction.PRED_STRENGTH_DETERMINATION)
+    }
+
+    return strengths.distinct().map { StringResources.get(it, language) }
+}
+
+private fun calculateLifeAreaRating(chart: VedicChart, area: LifeArea, dashaPlanet: Planet?): Int {
+    val houses = getLifeAreaHouses(area)
+    val baseScore = houses.map { calculateHouseScore(chart, it) }.average()
+    val dashaBoost = dashaPlanet?.let { planet ->
+        chart.planetPositions.find { it.planet == planet }?.house?.let { house ->
+            if (houses.contains(house)) 0.4 else 0.0
+        }
+    } ?: 0.0
+    return scoreToRating(baseScore + dashaBoost)
+}
+
+private fun getLifeAreaHouses(area: LifeArea): List<Int> = when (area) {
+    LifeArea.CAREER -> listOf(10, 6, 2)
+    LifeArea.FINANCE -> listOf(2, 11, 5)
+    LifeArea.RELATIONSHIPS -> listOf(7, 5, 11)
+    LifeArea.HEALTH -> listOf(1, 6, 8)
+    LifeArea.EDUCATION -> listOf(4, 5, 9)
+    LifeArea.FAMILY -> listOf(2, 4, 11)
+    LifeArea.SPIRITUAL -> listOf(9, 12, 5)
+    LifeArea.PROPERTY -> listOf(4, 2, 11)
+    LifeArea.FOREIGN -> listOf(9, 12)
+    else -> listOf(10, 2, 6)
+}
+
+private fun calculateHouseScore(chart: VedicChart, house: Int): Double {
+    val lord = VedicAstrologyUtils.getHouseLord(chart, house)
+    val lordPos = chart.planetPositions.find { it.planet == lord }
+    val lordScore = lordPos?.let { calculatePlanetStrengthScore(it, chart) } ?: 3.0
+    val occupancy = VedicAstrologyUtils.getPlanetsInHouse(chart, house).sumOf {
+        if (VedicAstrologyUtils.isNaturalBenefic(it.planet)) 0.3 else -0.3
+    }
+    val aspects = chart.planetPositions.sumOf {
+        if (AspectUtils.aspectsHouse(it, house)) {
+            if (VedicAstrologyUtils.isNaturalBenefic(it.planet)) 0.2 else -0.2
+        } else 0.0
+    }
+    return (lordScore + occupancy + aspects).coerceIn(1.0, 5.0)
+}
+
+private fun calculatePlanetStrengthScore(position: PlanetPosition, chart: VedicChart): Double {
+    val dignity = VedicAstrologyUtils.getDignity(position)
+    var score = when (dignity) {
+        VedicAstrologyUtils.PlanetaryDignity.EXALTED -> 5.0
+        VedicAstrologyUtils.PlanetaryDignity.MOOLATRIKONA -> 4.5
+        VedicAstrologyUtils.PlanetaryDignity.OWN_SIGN -> 4.2
+        VedicAstrologyUtils.PlanetaryDignity.FRIEND_SIGN -> 3.7
+        VedicAstrologyUtils.PlanetaryDignity.NEUTRAL_SIGN -> 3.2
+        VedicAstrologyUtils.PlanetaryDignity.ENEMY_SIGN -> 2.6
+        VedicAstrologyUtils.PlanetaryDignity.DEBILITATED -> 1.8
+    }
+    if (position.house in VedicAstrologyUtils.KENDRA_HOUSES + VedicAstrologyUtils.TRIKONA_HOUSES) score += 0.3
+    if (position.house in VedicAstrologyUtils.DUSTHANA_HOUSES) score -= 0.3
+    if (VedicAstrologyUtils.isNaturalBenefic(position.planet)) score += 0.2 else score -= 0.2
+    return score.coerceIn(1.0, 5.0)
+}
+
+private fun scoreToRating(score: Double): Int = score.roundToInt().coerceIn(1, 5)
+
+private fun scoreToImpact(score: Double): Int = (score * 2).roundToInt().coerceIn(1, 10)
 
 @Composable
 private fun getEnergyColor(energy: Int): Color = when {

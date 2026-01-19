@@ -83,9 +83,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.InsightSection
+import com.astro.storm.core.common.LocalizedText
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringKeyNative
-import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.common.StringKeyNativeTraits
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
@@ -158,7 +161,7 @@ fun NativeAnalysisScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -167,7 +170,7 @@ fun NativeAnalysisScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKey.A11Y_SHOW_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -183,7 +186,8 @@ fun NativeAnalysisScreen(
                 modifier = Modifier.padding(paddingValues)
             )
             is NativeAnalysisUiState.Error -> NativeErrorContent(
-                message = state.message,
+                messageKey = state.messageKey,
+                args = state.args,
                 modifier = Modifier.padding(paddingValues)
             )
             is NativeAnalysisUiState.Idle -> NativeEmptyContent(
@@ -240,13 +244,12 @@ private fun NativeTabSelector(
     ) {
         items(tabs.size) { index ->
             val section = tabs[index]
-            val displayName = if (language == Language.NEPALI) section.displayNameNe else section.displayName
             FilterChip(
                 selected = selectedTab == index,
                 onClick = { onTabSelected(index) },
                 label = {
                     Text(
-                        text = displayName,
+                        text = stringResource(section.displayNameKey),
                         fontSize = 13.sp,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
@@ -384,18 +387,18 @@ private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 SignBadge(
-                    label = "Lagna",
-                    sign = character.ascendantSign.displayName,
+                    label = stringResource(StringKey.CHART_ASCENDANT),
+                    sign = stringResource(character.ascendantSign.stringKey),
                     color = AppTheme.AccentPrimary
                 )
                 SignBadge(
-                    label = "Moon",
-                    sign = character.moonSign.displayName,
+                    label = stringResource(StringKey.CHART_MOON_SIGN),
+                    sign = stringResource(character.moonSign.stringKey),
                     color = AppTheme.AccentTeal
                 )
                 SignBadge(
-                    label = "Sun",
-                    sign = character.sunSign.displayName,
+                    label = stringResource(StringKey.PLANET_SUN),
+                    sign = stringResource(character.sunSign.stringKey),
                     color = AppTheme.AccentGold
                 )
             }
@@ -410,14 +413,15 @@ private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Element",
+                        text = stringResource(Planet.JUPITER.stringKey),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
+
+
+
                     Text(
-                        text = if (language == Language.NEPALI)
-                            character.dominantElement.displayNameNe
-                        else character.dominantElement.displayName,
+                        text = stringResource(character.dominantElement.labelKey),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -425,14 +429,12 @@ private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Modality",
+                        text = stringResource(StringKeyNativeTraits.LABEL_MODALITY),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = if (language == Language.NEPALI)
-                            character.dominantModality.displayNameNe
-                        else character.dominantModality.displayName,
+                        text = stringResource(character.dominantModality.labelKey),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -521,7 +523,7 @@ private fun KeyStrengthsCard(
                     ) {
                         Text("✓", color = AppTheme.SuccessColor)
                         Text(
-                            text = if (language == Language.NEPALI) trait.trait.ne else trait.trait.en,
+                            text = stringResource(trait.trait),
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextPrimary
                         )
@@ -532,7 +534,7 @@ private fun KeyStrengthsCard(
                             color = AppTheme.ChipBackground
                         ) {
                             Text(
-                                text = planet.displayName,
+                                text = stringResource(planet.stringKey),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -591,7 +593,7 @@ private fun KeyChallengesCard(
                     ) {
                         Text("⚠", color = AppTheme.WarningColor)
                         Text(
-                            text = if (language == Language.NEPALI) trait.trait.ne else trait.trait.en,
+                            text = stringResource(trait.trait),
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextPrimary
                         )
@@ -602,7 +604,7 @@ private fun KeyChallengesCard(
                             color = AppTheme.ChipBackground
                         ) {
                             Text(
-                                text = planet.displayName,
+                                text = stringResource(planet.stringKey),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -703,24 +705,30 @@ private fun NativeCharacterSection(
 
         TraitCard(
             title = stringResource(StringKeyNative.TITLE_ASCENDANT_TRAITS),
-            content = if (language == Language.NEPALI) character.ascendantTrait.ne else character.ascendantTrait.en,
+            content = stringResource(character.ascendantTrait),
             color = AppTheme.AccentPrimary
         )
 
         TraitCard(
             title = stringResource(StringKeyNative.TITLE_MOON_SIGN_INFLUENCE),
-            content = if (language == Language.NEPALI) character.moonTrait.ne else character.moonTrait.en,
+            content = stringResource(character.moonTrait),
             color = AppTheme.AccentTeal
         )
 
         TraitCard(
             title = stringResource(StringKeyNative.TITLE_NAKSHATRA_INFLUENCE),
-            content = if (language == Language.NEPALI) character.nakshatraInfluenceNe else character.nakshatraInfluence,
+            content = character.nakshatraInfluence.resolve(language),
             color = AppTheme.AccentGold
         )
 
         SummaryCard(
-            summary = if (language == Language.NEPALI) character.summaryNe else character.summaryEn,
+            summary = character.summary.resolve(language),
+            color = AppTheme.AccentPrimary
+        )
+
+        InsightSectionsCard(
+            insights = character.insights,
+            language = language,
             color = AppTheme.AccentPrimary
         )
     }
@@ -797,7 +805,7 @@ private fun NativeCareerSection(
 
         HouseLordCard(
             houseNumber = 10,
-            lord = career.tenthLord.displayName,
+            lord = stringResource(career.tenthLord.stringKey),
             house = career.tenthLordHouse,
             dignity = career.tenthLordDignity,
             language = language
@@ -806,13 +814,13 @@ private fun NativeCareerSection(
         if (career.tenthHousePlanets.isNotEmpty()) {
             PlanetsInHouseCard(
                 houseNumber = 10,
-                planets = career.tenthHousePlanets.map { it.displayName },
+                planets = career.tenthHousePlanets,
                 color = AppTheme.LifeAreaCareer
             )
         }
 
         FavorableFieldsCard(
-            fields = if (language == Language.NEPALI) career.favorableFieldsNe else career.favorableFields,
+            fields = career.favorableFields,
             color = AppTheme.LifeAreaCareer
         )
 
@@ -821,14 +829,20 @@ private fun NativeCareerSection(
         }
 
         SummaryCard(
-            summary = if (language == Language.NEPALI) career.summaryNe else career.summaryEn,
+            summary = career.summary.resolve(language),
+            color = AppTheme.LifeAreaCareer
+        )
+
+        InsightSectionsCard(
+            insights = career.insights,
+            language = language,
             color = AppTheme.LifeAreaCareer
         )
     }
 }
 
 @Composable
-private fun FavorableFieldsCard(fields: List<String>, color: Color) {
+private fun FavorableFieldsCard(fields: List<StringKeyInterface>, color: Color) {
     if (fields.isEmpty()) return
 
     Card(
@@ -844,26 +858,27 @@ private fun FavorableFieldsCard(fields: List<String>, color: Color) {
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(12.dp))
-            fields.forEach { field ->
-                Row(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text("•", color = color)
-                    Text(
-                        text = field,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = AppTheme.TextSecondary
-                    )
+                fields.forEach { field ->
+                    Row(
+                        modifier = Modifier.padding(vertical = 4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text("•", color = color)
+                        Text(
+                            text = stringResource(field),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = AppTheme.TextSecondary
+                        )
+                    }
                 }
-            }
+
         }
     }
 }
 
 @Composable
 private fun CareerIndicatorsCard(
-    indicators: List<StringKeyNative>,
+    indicators: List<StringKeyInterface>,
     language: Language
 ) {
     Card(
@@ -881,7 +896,7 @@ private fun CareerIndicatorsCard(
             Spacer(modifier = Modifier.height(12.dp))
             indicators.forEach { indicator ->
                 Text(
-                    text = if (language == Language.NEPALI) indicator.ne else indicator.en,
+                    text = stringResource(indicator),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary,
                     modifier = Modifier.padding(vertical = 4.dp)
@@ -920,7 +935,7 @@ private fun NativeMarriageSection(
 
         HouseLordCard(
             houseNumber = 7,
-            lord = marriage.seventhLord.displayName,
+            lord = stringResource(marriage.seventhLord.stringKey),
             house = marriage.seventhLordHouse,
             dignity = marriage.seventhLordDignity,
             language = language
@@ -931,11 +946,17 @@ private fun NativeMarriageSection(
         VenusStrengthCard(marriage.venusStrength, language)
 
         SpouseNatureCard(
-            nature = if (language == Language.NEPALI) marriage.spouseNatureNe else marriage.spouseNature
+            traits = marriage.spouseNatureTraits
         )
 
         SummaryCard(
-            summary = if (language == Language.NEPALI) marriage.summaryNe else marriage.summaryEn,
+            summary = marriage.summary.resolve(language),
+            color = AppTheme.LifeAreaLove
+        )
+
+        InsightSectionsCard(
+            insights = marriage.insights,
+            language = language,
             color = AppTheme.LifeAreaLove
         )
     }
@@ -971,7 +992,7 @@ private fun MarriageTimingCard(
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    text = if (language == Language.NEPALI) timing.displayNameNe else timing.displayName,
+                    text = stringResource(timing.labelKey),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = color
@@ -1030,8 +1051,8 @@ private fun VenusStrengthCard(strength: StrengthLevel, language: Language) {
 }
 
 @Composable
-private fun SpouseNatureCard(nature: String) {
-    if (nature.isBlank()) return
+private fun SpouseNatureCard(traits: List<StringKeyInterface>) {
+    if (traits.isEmpty()) return
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -1046,11 +1067,19 @@ private fun SpouseNatureCard(nature: String) {
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = nature,
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextSecondary
-            )
+            traits.forEach { trait ->
+                Row(
+                    modifier = Modifier.padding(vertical = 4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text("•", color = AppTheme.AccentPrimary)
+                    Text(
+                        text = stringResource(trait),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = AppTheme.TextSecondary
+                    )
+                }
+            }
         }
     }
 }
@@ -1080,16 +1109,23 @@ private fun NativeHealthSection(
 
         LongevityCard(health.longevityIndicator, language)
 
-        VulnerableAreasCard(health.vulnerableAreas, language)
+        VulnerableAreasCard(health.vulnerableAreas)
 
         if (health.healthConcerns.isNotEmpty()) {
             HealthConcernsCard(
-                concerns = if (language == Language.NEPALI) health.healthConcernsNe else health.healthConcerns
+                concerns = health.healthConcerns,
+                language = language
             )
         }
 
         SummaryCard(
-            summary = if (language == Language.NEPALI) health.summaryNe else health.summaryEn,
+            summary = health.summary.resolve(language),
+            color = AppTheme.LifeAreaHealth
+        )
+
+        InsightSectionsCard(
+            insights = health.insights,
+            language = language,
             color = AppTheme.LifeAreaHealth
         )
     }
@@ -1119,17 +1155,19 @@ private fun ConstitutionCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
+                    Text(
+                        text = stringResource(StringKeyNativeTraits.LABEL_CONSTITUTION),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AppTheme.TextMuted
+                    )
+
                 Text(
-                    text = "Constitution",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = AppTheme.TextMuted
-                )
-                Text(
-                    text = if (language == Language.NEPALI) constitution.displayNameNe else constitution.displayName,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
+                    text = stringResource(longevity.labelKey),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
                     color = color
                 )
+
             }
             Icon(
                 imageVector = Icons.Outlined.HealthAndSafety,
@@ -1171,18 +1209,19 @@ private fun LongevityCard(
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    text = if (language == Language.NEPALI) longevity.displayNameNe else longevity.displayName,
+                    text = stringResource(constitution.labelKey),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = color
                 )
+
             }
         }
     }
 }
 
 @Composable
-private fun VulnerableAreasCard(areas: StringKeyNative, language: Language) {
+private fun VulnerableAreasCard(areas: StringKeyInterface) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1197,7 +1236,7 @@ private fun VulnerableAreasCard(areas: StringKeyNative, language: Language) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = if (language == Language.NEPALI) areas.ne else areas.en,
+                text = stringResource(areas),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
@@ -1207,7 +1246,7 @@ private fun VulnerableAreasCard(areas: StringKeyNative, language: Language) {
 }
 
 @Composable
-private fun HealthConcernsCard(concerns: List<String>) {
+private fun HealthConcernsCard(concerns: List<LocalizedText>, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.WarningColor.copy(alpha = 0.08f)),
@@ -1239,7 +1278,7 @@ private fun HealthConcernsCard(concerns: List<String>) {
                 ) {
                     Text("•", color = AppTheme.WarningColor)
                     Text(
-                        text = concern,
+                        text = concern.resolve(language),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )
@@ -1284,12 +1323,18 @@ private fun NativeWealthSection(
 
         if (wealth.primarySources.isNotEmpty()) {
             WealthSourcesCard(
-                sources = if (language == Language.NEPALI) wealth.primarySourcesNe else wealth.primarySources
+                sources = wealth.primarySources
             )
         }
 
         SummaryCard(
-            summary = if (language == Language.NEPALI) wealth.summaryNe else wealth.summaryEn,
+            summary = wealth.summary.resolve(language),
+            color = AppTheme.LifeAreaFinance
+        )
+
+        InsightSectionsCard(
+            insights = wealth.insights,
+            language = language,
             color = AppTheme.LifeAreaFinance
         )
     }
@@ -1359,7 +1404,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = wealth.secondLord.displayName,
+                        text = stringResource(wealth.secondLord.stringKey),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -1377,7 +1422,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = wealth.eleventhLord.displayName,
+                        text = stringResource(wealth.eleventhLord.stringKey),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -1390,7 +1435,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = Planet.JUPITER.getLocalizedName(language),
+                        text = stringResource(Planet.JUPITER.stringKey),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1412,7 +1457,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
 }
 
 @Composable
-private fun WealthSourcesCard(sources: List<String>) {
+private fun WealthSourcesCard(sources: List<StringKeyInterface>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1433,7 +1478,7 @@ private fun WealthSourcesCard(sources: List<String>) {
                 ) {
                     Text("•", color = AppTheme.LifeAreaFinance)
                     Text(
-                        text = source,
+                        text = stringResource(source),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )
@@ -1478,12 +1523,18 @@ private fun NativeEducationSection(
 
         if (education.favorableSubjects.isNotEmpty()) {
             FavorableSubjectsCard(
-                subjects = if (language == Language.NEPALI) education.favorableSubjectsNe else education.favorableSubjects
+                subjects = education.favorableSubjects
             )
         }
 
         SummaryCard(
-            summary = if (language == Language.NEPALI) education.summaryNe else education.summaryEn,
+            summary = education.summary.resolve(language),
+            color = AppTheme.AccentTeal
+        )
+
+        InsightSectionsCard(
+            insights = education.insights,
+            language = language,
             color = AppTheme.AccentTeal
         )
     }
@@ -1569,7 +1620,7 @@ private fun JupiterBlessingCard() {
 }
 
 @Composable
-private fun FavorableSubjectsCard(subjects: List<String>) {
+private fun FavorableSubjectsCard(subjects: List<StringKeyInterface>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1590,7 +1641,7 @@ private fun FavorableSubjectsCard(subjects: List<String>) {
                 ) {
                     Text("•", color = AppTheme.AccentTeal)
                     Text(
-                        text = subject,
+                        text = stringResource(subject),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )
@@ -1631,12 +1682,18 @@ private fun NativeSpiritualSection(
 
         if (spiritual.recommendedPractices.isNotEmpty()) {
             RecommendedPracticesCard(
-                practices = if (language == Language.NEPALI) spiritual.recommendedPracticesNe else spiritual.recommendedPractices
+                practices = spiritual.recommendedPractices
             )
         }
 
         SummaryCard(
-            summary = if (language == Language.NEPALI) spiritual.summaryNe else spiritual.summaryEn,
+            summary = spiritual.summary.resolve(language),
+            color = AppTheme.LifeAreaSpiritual
+        )
+
+        InsightSectionsCard(
+            insights = spiritual.insights,
+            language = language,
             color = AppTheme.LifeAreaSpiritual
         )
     }
@@ -1672,7 +1729,7 @@ private fun SpiritualLordsCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = spiritual.ninthLord.displayName,
+                        text = stringResource(spiritual.ninthLord.stringKey),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -1685,7 +1742,7 @@ private fun SpiritualLordsCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = spiritual.twelfthLord.displayName,
+                        text = stringResource(spiritual.twelfthLord.stringKey),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -1693,7 +1750,7 @@ private fun SpiritualLordsCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = Planet.JUPITER.getLocalizedName(language),
+                        text = stringResource(Planet.JUPITER.stringKey),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1714,7 +1771,7 @@ private fun SpiritualLordsCard(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = String.format(stringResource(StringKeyNative.LABEL_PLANETS_IN_HOUSE), ketu.house) + " (${ketu.sign.displayName})",
+                        text = stringResource(StringKeyNative.LABEL_PLANETS_IN_HOUSE, ketu.house) + " (${stringResource(ketu.sign.stringKey)})",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.LifeAreaSpiritual
                     )
@@ -1725,7 +1782,7 @@ private fun SpiritualLordsCard(
 }
 
 @Composable
-private fun RecommendedPracticesCard(practices: List<String>) {
+private fun RecommendedPracticesCard(practices: List<StringKeyInterface>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.LifeAreaSpiritual.copy(alpha = 0.08f)),
@@ -1741,16 +1798,18 @@ private fun RecommendedPracticesCard(practices: List<String>) {
             Spacer(modifier = Modifier.height(8.dp))
             practices.forEach { practice ->
                 Row(
-                    modifier = Modifier.padding(vertical = 2.dp),
+                    modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("🙏", fontSize = 12.sp)
+                    Text("•", color = AppTheme.LifeAreaSpiritual)
                     Text(
-                        text = practice,
+                        text = stringResource(practice),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )
                 }
+            }
+
             }
         }
     }
@@ -1857,7 +1916,7 @@ private fun HouseLordCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "${houseNumber}th House Lord",
+                text = stringResource(getHouseLordLabelKey(houseNumber)),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1869,7 +1928,7 @@ private fun HouseLordCard(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Lord",
+                        text = stringResource(StringKeyNativeTraits.LABEL_LORD),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1882,12 +1941,12 @@ private fun HouseLordCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "In House",
+                        text = stringResource(StringKeyNative.LABEL_IN_HOUSE),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = "${house}th",
+                        text = stringResource(StringKeyNativeTraits.LABEL_HOUSE_NUMBER_FMT, house),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -1895,12 +1954,12 @@ private fun HouseLordCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Dignity",
+                        text = stringResource(StringKeyNativeTraits.LABEL_DIGNITY),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = if (language == Language.NEPALI) dignity.displayNameNe else dignity.displayName,
+                        text = stringResource(dignity.labelKey),
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Medium,
                         color = dignityColor
@@ -1912,7 +1971,7 @@ private fun HouseLordCard(
 }
 
 @Composable
-private fun PlanetsInHouseCard(houseNumber: Int, planets: List<String>, color: Color) {
+private fun PlanetsInHouseCard(houseNumber: Int, planets: List<Planet>, color: Color) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1920,7 +1979,7 @@ private fun PlanetsInHouseCard(houseNumber: Int, planets: List<String>, color: C
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Planets in ${houseNumber}th House",
+                text = stringResource(StringKeyNative.LABEL_PLANETS_IN_HOUSE, houseNumber),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1933,7 +1992,7 @@ private fun PlanetsInHouseCard(houseNumber: Int, planets: List<String>, color: C
                         color = color.copy(alpha = 0.15f)
                     ) {
                         Text(
-                            text = planet,
+                            text = stringResource(planet.stringKey),
                             style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Medium,
                             color = color,
@@ -1975,7 +2034,7 @@ private fun TraitCard(title: String, content: String, color: Color) {
 private fun SummaryCard(summary: String, color: Color) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.08f)),
+        colors = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.1f)),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1984,18 +2043,70 @@ private fun SummaryCard(summary: String, color: Color) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Psychology,
+                    imageVector = Icons.Outlined.Lightbulb,
                     contentDescription = null,
                     tint = color,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Summary",
+                    text = stringResource(StringKeyNative.LABEL_OVERVIEW),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = color
                 )
             }
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = summary,
+                style = MaterialTheme.typography.bodyMedium,
+                color = AppTheme.TextSecondary,
+                lineHeight = 22.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun InsightSectionsCard(
+    insights: List<InsightSection>,
+    language: Language,
+    color: Color
+) {
+    if (insights.isEmpty()) return
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            insights.forEachIndexed { index, section ->
+                if (index > 0) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.5f))
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+                Text(
+                    text = stringResource(section.titleKey),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = color
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                section.items.forEach { item ->
+                    Text(
+                        text = item.resolve(language),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextSecondary,
+                        lineHeight = 20.sp,
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = summary,
@@ -2024,7 +2135,23 @@ private fun getStrengthColor(strength: StrengthLevel): Color {
 
 @Composable
 private fun getStrengthLabel(strength: StrengthLevel, language: Language): String {
-    return if (language == Language.NEPALI) strength.displayNameNe else strength.displayName
+    return stringResource(strength.labelKey)
+}
+
+private fun getHouseLordLabelKey(houseNumber: Int): StringKeyInterface = when (houseNumber) {
+    1 -> StringKeyAnalysis.HOUSE_LORD_1
+    2 -> StringKeyAnalysis.HOUSE_LORD_2
+    3 -> StringKeyAnalysis.HOUSE_LORD_3
+    4 -> StringKeyAnalysis.HOUSE_LORD_4
+    5 -> StringKeyAnalysis.HOUSE_LORD_5
+    6 -> StringKeyAnalysis.HOUSE_LORD_6
+    7 -> StringKeyAnalysis.HOUSE_LORD_7
+    8 -> StringKeyAnalysis.HOUSE_LORD_8
+    9 -> StringKeyAnalysis.HOUSE_LORD_9
+    10 -> StringKeyAnalysis.HOUSE_LORD_10
+    11 -> StringKeyAnalysis.HOUSE_LORD_11
+    12 -> StringKeyAnalysis.HOUSE_LORD_12
+    else -> StringKeyAnalysis.HOUSE_LORD_1
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -2041,7 +2168,7 @@ private fun NativeLoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Analyzing chart...",
+                text = stringResource(StringKeyNative.LABEL_ANALYZING_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -2050,7 +2177,11 @@ private fun NativeLoadingContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun NativeErrorContent(message: String, modifier: Modifier = Modifier) {
+private fun NativeErrorContent(
+    messageKey: StringKeyInterface,
+    args: List<Any>,
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -2067,18 +2198,19 @@ private fun NativeErrorContent(message: String, modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Analysis Error",
+                text = stringResource(StringKeyNative.LABEL_ANALYSIS_ERROR),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = message,
+                text = stringResource(StringKeyNative.LABEL_COMPREHENSIVE_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
+
         }
     }
 }
@@ -2101,14 +2233,14 @@ private fun NativeEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "No Chart Selected",
+                text = stringResource(StringKeyNative.LABEL_NO_CHART_SELECTED),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Please select a birth chart to view native analysis",
+                text = stringResource(StringKeyNative.LABEL_SELECT_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -2131,7 +2263,7 @@ private fun NativeInfoDialog(onDismiss: () -> Unit) {
         text = {
             Column {
                 Text(
-                    text = "This comprehensive analysis examines your birth chart to provide insights into various life areas including personality, career, relationships, health, wealth, education, and spiritual path.",
+                    text = stringResource(StringKeyNative.LABEL_COMPREHENSIVE_DESC),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
@@ -2147,7 +2279,7 @@ private fun NativeInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("OK", color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKey.BTN_OK), color = AppTheme.AccentPrimary)
             }
         },
         containerColor = AppTheme.CardBackground

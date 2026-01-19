@@ -1,15 +1,18 @@
 package com.astro.storm.ephemeris.nativeanalysis
 
+import com.astro.storm.core.common.InsightSection
+import com.astro.storm.core.common.LocalizedText
+import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringKeyNative
+import com.astro.storm.core.common.StringKeyNativeNarrative
+import com.astro.storm.core.common.StringKeyNativeTraits
 import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.ephemeris.AspectUtils
 import com.astro.storm.ephemeris.VedicAstrologyUtils
-import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisHelpers.aspectsHouse
-import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisHelpers.dignityToStrength
-import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisHelpers.getDignity
-import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisHelpers.getSignElement
-import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisHelpers.getSignModality
+import com.astro.storm.ephemeris.YogaCalculator
 
 object NativeAnalysisCalculator {
 
@@ -21,102 +24,687 @@ object NativeAnalysisCalculator {
         val wealth = analyzeWealth(chart)
         val education = analyzeEducation(chart)
         val spiritual = analyzeSpirituality(chart)
-        val keyStrengths = identifyKeyStrengths(chart)
-        val keyChallenges = identifyKeyChallenges(chart)
-        val scores = listOf(character.personalityStrength.value, career.careerStrength.value, marriage.relationshipStrength.value, health.ascendantStrength.value, wealth.wealthPotential.value, education.academicPotential.value)
-        return NativeAnalysisResult(character, career, marriage, health, wealth, education, spiritual, keyStrengths, keyChallenges, (scores.average() * 20).coerceIn(0.0, 100.0))
+        val keyStrengths = identifyKeyStrengths(chart, character)
+        val keyChallenges = identifyKeyChallenges(chart, character)
+        val scores = listOf(
+            character.personalityStrength.value,
+            career.careerStrength.value,
+            marriage.relationshipStrength.value,
+            health.ascendantStrength.value,
+            wealth.wealthPotential.value,
+            education.academicPotential.value,
+            spiritual.spiritualInclination.value
+        )
+        return NativeAnalysisResult(
+            characterAnalysis = character,
+            careerAnalysis = career,
+            marriageAnalysis = marriage,
+            healthAnalysis = health,
+            wealthAnalysis = wealth,
+            educationAnalysis = education,
+            spiritualAnalysis = spiritual,
+            keyStrengths = keyStrengths,
+            keyChallenges = keyChallenges,
+            overallScore = (scores.average() * 20).coerceIn(0.0, 100.0)
+        )
     }
 
     private fun analyzeCharacter(chart: VedicChart): CharacterAnalysis {
         val asc = VedicAstrologyUtils.getAscendantSign(chart)
-        val moon = chart.planetPositions.find { it.planet == Planet.MOON }
-        val ms = moon?.sign ?: asc
-        val d = moon?.let { getDignity(chart.planetPositions.find { it.planet == asc.ruler } ?: it) } ?: PlanetaryDignity.NEUTRAL_SIGN
-        val s = when { d == PlanetaryDignity.EXALTED -> StrengthLevel.EXCELLENT; d == PlanetaryDignity.OWN_SIGN || d == PlanetaryDignity.MOOLATRIKONA -> StrengthLevel.STRONG; d == PlanetaryDignity.DEBILITATED -> StrengthLevel.AFFLICTED; else -> StrengthLevel.MODERATE }
-        val el = calculateDominantElement(chart)
-        val nakName = moon?.nakshatra?.displayName ?: "Unknown"
-        return CharacterAnalysis(asc, ms, chart.planetPositions.find { it.planet == Planet.SUN }?.sign ?: asc, getAscendantTrait(asc), getMoonSignTrait(ms), "Your birth nakshatra $nakName shapes your deeper personality traits.", "तपाईंको जन्म नक्षत्र $nakName ले तपाईंको गहिरो व्यक्तित्व विशेषता आकार दिन्छ।", s, el, calculateDominantModality(chart), buildCharacterSummaryEn(asc, ms, s, el), buildCharacterSummaryNe(asc, ms, s, el))
-    }
+        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
+        val sunPos = chart.planetPositions.find { it.planet == Planet.SUN }
+        val moonSign = moonPos?.sign ?: asc
+        val sunSign = sunPos?.sign ?: asc
+        val ascLordPos = chart.planetPositions.find { it.planet == asc.ruler }
+        val dignity = ascLordPos?.let { NativeAnalysisHelpers.getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN
+        val personalityStrength = dignityToStrength(dignity)
+        val element = calculateDominantElement(chart)
+        val modality = calculateDominantModality(chart)
+        val nakshatraKey = moonPos?.nakshatra?.stringKey ?: StringKeyNativeTraits.LABEL_UNKNOWN
 
-    private fun getAscendantTrait(sign: ZodiacSign): StringKeyNative = when (sign) { ZodiacSign.ARIES -> StringKeyNative.CHAR_ARIES_ASC; ZodiacSign.TAURUS -> StringKeyNative.CHAR_TAURUS_ASC; ZodiacSign.GEMINI -> StringKeyNative.CHAR_GEMINI_ASC; ZodiacSign.CANCER -> StringKeyNative.CHAR_CANCER_ASC; ZodiacSign.LEO -> StringKeyNative.CHAR_LEO_ASC; ZodiacSign.VIRGO -> StringKeyNative.CHAR_VIRGO_ASC; ZodiacSign.LIBRA -> StringKeyNative.CHAR_LIBRA_ASC; ZodiacSign.SCORPIO -> StringKeyNative.CHAR_SCORPIO_ASC; ZodiacSign.SAGITTARIUS -> StringKeyNative.CHAR_SAGITTARIUS_ASC; ZodiacSign.CAPRICORN -> StringKeyNative.CHAR_CAPRICORN_ASC; ZodiacSign.AQUARIUS -> StringKeyNative.CHAR_AQUARIUS_ASC; ZodiacSign.PISCES -> StringKeyNative.CHAR_PISCES_ASC }
-    private fun getMoonSignTrait(sign: ZodiacSign): StringKeyNative = when (sign) { ZodiacSign.ARIES -> StringKeyNative.MOON_ARIES; ZodiacSign.TAURUS -> StringKeyNative.MOON_TAURUS; ZodiacSign.GEMINI -> StringKeyNative.MOON_GEMINI; ZodiacSign.CANCER -> StringKeyNative.MOON_CANCER; ZodiacSign.LEO -> StringKeyNative.MOON_LEO; ZodiacSign.VIRGO -> StringKeyNative.MOON_VIRGO; ZodiacSign.LIBRA -> StringKeyNative.MOON_LIBRA; ZodiacSign.SCORPIO -> StringKeyNative.MOON_SCORPIO; ZodiacSign.SAGITTARIUS -> StringKeyNative.MOON_SAGITTARIUS; ZodiacSign.CAPRICORN -> StringKeyNative.MOON_CAPRICORN; ZodiacSign.AQUARIUS -> StringKeyNative.MOON_AQUARIUS; ZodiacSign.PISCES -> StringKeyNative.MOON_PISCES }
-    private fun calculateDominantElement(chart: VedicChart): Element = chart.planetPositions.groupBy { getSignElement(it.sign) }.maxByOrNull { it.value.size }?.key ?: Element.FIRE
-    private fun calculateDominantModality(chart: VedicChart): Modality = chart.planetPositions.groupBy { getSignModality(it.sign) }.maxByOrNull { it.value.size }?.key ?: Modality.CARDINAL
-    private fun buildCharacterSummaryEn(a: ZodiacSign, m: ZodiacSign, s: StrengthLevel, e: Element): String = "With ${a.displayName} Ascendant and Moon in ${m.displayName}, you have a ${e.displayName} dominant nature. Personality is ${s.displayName.lowercase()}."
-    private fun buildCharacterSummaryNe(a: ZodiacSign, m: ZodiacSign, s: StrengthLevel, e: Element): String = "${a.displayName} लग्न र ${m.displayName} मा चन्द्रमाको साथ, तपाईंको स्वभाव ${e.displayNameNe} प्रधान र आधार ${s.displayNameNe} छ।"
+        val summary = LocalizedText(
+            StringKeyNativeNarrative.CHAR_SUMMARY_TEMPLATE,
+            listOf(asc.stringKey, moonSign.stringKey, element.labelKey, modality.labelKey)
+        )
+        val insights = listOf(
+            InsightSection(
+                StringKeyNative.TITLE_ASCENDANT_TRAITS,
+                listOf(LocalizedText(getAscendantTrait(asc)))
+            ),
+            InsightSection(
+                StringKeyNative.TITLE_MOON_SIGN_INFLUENCE,
+                listOf(LocalizedText(getMoonSignTrait(moonSign)))
+            ),
+            InsightSection(
+                StringKeyNative.TITLE_NAKSHATRA_INFLUENCE,
+                listOf(
+                    LocalizedText(StringKeyNativeNarrative.CHAR_NAKSHATRA_INFLUENCE_TEMPLATE, listOf(nakshatraKey)),
+                    LocalizedText(StringKeyNative.NAKSHATRA_BIRTH_STAR)
+                )
+            ),
+            InsightSection(
+                StringKeyNative.LABEL_PERSONALITY_FOUNDATION,
+                listOf(
+                    LocalizedText(StringKeyNativeNarrative.CHAR_ELEMENT_INFLUENCE_TEMPLATE, listOf(element.labelKey)),
+                    LocalizedText(StringKeyNativeNarrative.CHAR_MODALITY_INFLUENCE_TEMPLATE, listOf(modality.labelKey)),
+                    LocalizedText(StringKeyNativeNarrative.CHAR_SUN_INFLUENCE_TEMPLATE, listOf(sunSign.stringKey)),
+                    LocalizedText(StringKeyNativeNarrative.CHAR_STRENGTH_TEMPLATE, listOf(personalityStrength.labelKey))
+                )
+            )
+        )
+
+        return CharacterAnalysis(
+            ascendantSign = asc,
+            moonSign = moonSign,
+            sunSign = sunSign,
+            ascendantTrait = getAscendantTrait(asc),
+            moonTrait = getMoonSignTrait(moonSign),
+            nakshatraInfluence = LocalizedText(StringKeyNativeNarrative.CHAR_NAKSHATRA_INFLUENCE_TEMPLATE, listOf(nakshatraKey)),
+            personalityStrength = personalityStrength,
+            dominantElement = element,
+            dominantModality = modality,
+            summary = summary,
+            insights = insights
+        )
+    }
 
     private fun analyzeCareer(chart: VedicChart): CareerAnalysis {
-        val lord = VedicAstrologyUtils.getHouseLord(chart, 10); val pos = chart.planetPositions.find { it.planet == lord }
-        val d = pos?.let { getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN
+        val lord = VedicAstrologyUtils.getHouseLord(chart, 10)
+        val pos = chart.planetPositions.find { it.planet == lord }
+        val dignity = pos?.let { NativeAnalysisHelpers.getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN
         val tenthPlanets = VedicAstrologyUtils.getPlanetsInHouse(chart, 10).map { it.planet }
-        val indicators = mutableListOf<StringKeyNative>()
-        val fields = mutableListOf<String>(); val fieldsNe = mutableListOf<String>()
-        chart.planetPositions.find { it.planet == Planet.SUN }?.let { if (getDignity(it).ordinal <= 2) { indicators.add(StringKeyNative.CAREER_SUN_STRONG); fields.add("Government, Leadership"); fieldsNe.add("सरकार, नेतृत्व") } }
-        tenthPlanets.forEach { when (it) { Planet.JUPITER -> { indicators.add(StringKeyNative.CAREER_JUPITER_STRONG); fields.add("Teaching, Law"); fieldsNe.add("शिक्षण, कानून") }; Planet.MERCURY -> { indicators.add(StringKeyNative.CAREER_MERCURY_STRONG); fields.add("Business, Comm"); fieldsNe.add("व्यापार, सञ्चार") }; else -> {} } }
-        val s = calculateCareerStrength(d, pos?.house ?: 10, tenthPlanets)
-        return CareerAnalysis(lord, pos?.house ?: 10, d, tenthPlanets, indicators, fields.distinct(), fieldsNe.distinct(), s, "10th lord ${lord.displayName} in ${d.displayName} dignity. Potential is ${s.displayName.lowercase()}.", "${lord.displayName} १०औं भावको स्वामी ${d.displayNameNe} छ। क्षमता ${s.displayNameNe} छ।")
-    }
+        val indicators = buildCareerIndicators(chart)
+        val fields = determineCareerFields(chart, dignity)
+        val careerStrength = calculateHouseStrength(chart, 10, dignity)
+        val statusKey = when (careerStrength) {
+            StrengthLevel.EXCELLENT -> StringKeyNative.CAREER_10TH_STATUS_EXCELLENT
+            StrengthLevel.STRONG -> StringKeyNative.CAREER_10TH_STATUS_GOOD
+            else -> StringKeyNative.CAREER_10TH_STATUS_CHALLENGING
+        }
 
-    private fun calculateCareerStrength(d: PlanetaryDignity, h: Int, p: List<Planet>): StrengthLevel {
-        var s = 3.0 + (if (d == PlanetaryDignity.EXALTED) 2.0 else if (d.ordinal <= 2) 1.5 else if (d == PlanetaryDignity.DEBILITATED) -1.5 else 0.0)
-        if (h in listOf(1, 4, 7, 10, 5, 9)) s += 0.5; p.forEach { if (VedicAstrologyUtils.isNaturalBenefic(it)) s += 0.3 }
-        return when { s >= 5.0 -> StrengthLevel.EXCELLENT; s >= 4.0 -> StrengthLevel.STRONG; s >= 3.0 -> StrengthLevel.MODERATE; else -> StrengthLevel.WEAK }
+        val summary = LocalizedText(
+            StringKeyNative.CAREER_10TH_LORD_STATUS,
+            listOf(lord.stringKey, pos?.house ?: 10, statusKey)
+        )
+        val insights = listOf(
+            InsightSection(
+                StringKeyNative.SECTION_CAREER,
+                listOf(
+                    LocalizedText(StringKeyNative.CAREER_OVERVIEW_TEMPLATE, listOf(lord.stringKey, pos?.sign?.stringKey ?: StringKeyNativeTraits.LABEL_UNKNOWN, fields.firstOrNull() ?: StringKeyNativeTraits.CAREER_FIELD_LEADERSHIP)),
+                    LocalizedText(StringKeyNativeNarrative.CAREER_STRENGTH_TEMPLATE, listOf(careerStrength.labelKey))
+                )
+            ),
+            InsightSection(
+                StringKeyNative.LABEL_CAREER_INDICATORS,
+                indicators.map { LocalizedText(it) }
+            ),
+            InsightSection(
+                StringKeyNative.LABEL_FAVORABLE_CAREER_FIELDS,
+                fields.map { LocalizedText(it) }
+            )
+        )
+
+        return CareerAnalysis(
+            tenthLord = lord,
+            tenthLordHouse = pos?.house ?: 10,
+            tenthLordDignity = dignity,
+            tenthHousePlanets = tenthPlanets,
+            careerIndicators = indicators,
+            favorableFields = fields,
+            careerStrength = careerStrength,
+            summary = summary,
+            insights = insights
+        )
     }
 
     private fun analyzeMarriage(chart: VedicChart): MarriageAnalysis {
-        val lord = VedicAstrologyUtils.getHouseLord(chart, 7); val lp = chart.planetPositions.find { it.planet == lord }
-        val d = lp?.let { getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN
-        val vp = chart.planetPositions.find { it.planet == Planet.VENUS }; val vs = dignityToStrength(vp?.let { getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
-        val timing = if (lp?.house in listOf(1, 2, 4, 7, 11)) MarriageTiming.EARLY else if (lp?.house in listOf(6, 8, 12)) MarriageTiming.DELAYED else MarriageTiming.NORMAL
-        val (sn, snNe) = determineSpouseNature(VedicAstrologyUtils.getHouseSign(chart, 7), VedicAstrologyUtils.getPlanetsInHouse(chart, 7))
-        val s = calculateRelationshipStrength(d, vs, VedicAstrologyUtils.getPlanetsInHouse(chart, 7), chart)
-        return MarriageAnalysis(lord, lp?.house ?: 7, d, vp, vs, timing, sn, snNe, s, "Marriage prospects are ${vs.displayName.lowercase()}.", "विवाह सम्भावना ${vs.displayNameNe} छ।")
-    }
+        val lord = VedicAstrologyUtils.getHouseLord(chart, 7)
+        val lp = chart.planetPositions.find { it.planet == lord }
+        val dignity = lp?.let { NativeAnalysisHelpers.getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN
+        val venusPos = chart.planetPositions.find { it.planet == Planet.VENUS }
+        val venusStrength = dignityToStrength(venusPos?.let { NativeAnalysisHelpers.getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
+        val timing = determineMarriageTiming(lp?.house ?: 7)
+        val spouseTraits = determineSpouseTraits(VedicAstrologyUtils.getHouseSign(chart, 7), VedicAstrologyUtils.getPlanetsInHouse(chart, 7))
+        val relationshipStrength = calculateHouseStrength(chart, 7, dignity)
 
-    private fun determineSpouseNature(s: ZodiacSign, p: List<com.astro.storm.core.model.PlanetPosition>): Pair<String, String> {
-        val t = mutableListOf<String>(); val tn = mutableListOf<String>()
-        when (NativeAnalysisHelpers.getSignElement(s)) { Element.FIRE -> { t.add("dynamic"); tn.add("गतिशील") }; Element.EARTH -> { t.add("practical"); tn.add("व्यावहारिक") }; else -> {} }
-        return t.joinToString(", ") to tn.joinToString(", ")
-    }
+        val summary = LocalizedText(
+            StringKeyNativeNarrative.MARRIAGE_SUMMARY_TEMPLATE,
+            listOf(lord.stringKey, lp?.house ?: 7, dignity.labelKey, venusStrength.labelKey)
+        )
+        val insights = listOf(
+            InsightSection(
+                StringKeyNative.SECTION_MARRIAGE,
+                listOf(
+                    LocalizedText(StringKeyNative.MARRIAGE_OVERVIEW),
+                    LocalizedText(StringKeyNativeNarrative.MARRIAGE_STRENGTH_TEMPLATE, listOf(relationshipStrength.labelKey))
+                )
+            ),
+            InsightSection(
+                StringKeyNative.LABEL_MARRIAGE_TIMING,
+                listOf(LocalizedText(timing.labelKey))
+            ),
+            InsightSection(
+                StringKeyNative.LABEL_SPOUSE_NATURE,
+                spouseTraits.map { LocalizedText(it) }
+            )
+        )
 
-    private fun calculateRelationshipStrength(d: PlanetaryDignity, vs: StrengthLevel, p: List<com.astro.storm.core.model.PlanetPosition>, c: VedicChart): StrengthLevel {
-        var s = 3.0 + (vs.value - 3) * 0.3; if (d == PlanetaryDignity.EXALTED) s += 1.5; p.forEach { if (VedicAstrologyUtils.isNaturalBenefic(it.planet)) s += 0.3 }
-        return when { s >= 4.5 -> StrengthLevel.EXCELLENT; s >= 3.5 -> StrengthLevel.STRONG; else -> StrengthLevel.MODERATE }
+        return MarriageAnalysis(
+            seventhLord = lord,
+            seventhLordHouse = lp?.house ?: 7,
+            seventhLordDignity = dignity,
+            venusPosition = venusPos,
+            venusStrength = venusStrength,
+            marriageTiming = timing,
+            spouseNatureTraits = spouseTraits,
+            relationshipStrength = relationshipStrength,
+            summary = summary,
+            insights = insights
+        )
     }
 
     private fun analyzeHealth(chart: VedicChart): HealthAnalysis {
-        val asc = VedicAstrologyUtils.getAscendantSign(chart); val lord = asc.ruler; val lp = chart.planetPositions.find { it.planet == lord }
-        val d = lp?.let { getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN
-        val s = if (d == PlanetaryDignity.EXALTED) StrengthLevel.EXCELLENT else if (d.ordinal <= 2) StrengthLevel.STRONG else StrengthLevel.MODERATE
-        val (c, cn) = identifyHealthConcerns(chart, asc)
-        return HealthAnalysis(s, VedicAstrologyUtils.getHouseLord(chart, 6), VedicAstrologyUtils.getHouseLord(chart, 8), if (s.value >= 4) ConstitutionType.STRONG else ConstitutionType.MODERATE, getHealthAreasForSign(asc), if (s.value >= 4) LongevityIndicator.LONG else LongevityIndicator.MEDIUM, c, cn, "Health is ${s.displayName.lowercase()}.", "स्वास्थ्य ${s.displayNameNe} छ।")
-    }
+        val asc = VedicAstrologyUtils.getAscendantSign(chart)
+        val ascLord = asc.ruler
+        val ascLordPos = chart.planetPositions.find { it.planet == ascLord }
+        val dignity = ascLordPos?.let { NativeAnalysisHelpers.getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN
+        val ascStrength = dignityToStrength(dignity)
+        val sixthLord = VedicAstrologyUtils.getHouseLord(chart, 6)
+        val eighthLord = VedicAstrologyUtils.getHouseLord(chart, 8)
+        val constitution = determineConstitution(ascStrength, chart)
+        val longevity = determineLongevityIndicator(chart, ascStrength)
+        val concerns = determineHealthConcerns(chart, asc)
 
-    private fun identifyHealthConcerns(c: VedicChart, a: ZodiacSign): Pair<List<String>, List<String>> = listOf("General health awareness") to listOf("सामान्य स्वास्थ्य सचेतना")
-    private fun getHealthAreasForSign(s: ZodiacSign): StringKeyNative = StringKeyNative.HEALTH_ARIES_AREAS // Simplification
+        val summary = LocalizedText(
+            StringKeyNativeNarrative.HEALTH_SUMMARY_TEMPLATE,
+            listOf(ascStrength.labelKey, sixthLord.stringKey, eighthLord.stringKey)
+        )
+        val insights = listOf(
+            InsightSection(
+                StringKeyNative.SECTION_HEALTH,
+                listOf(
+                    LocalizedText(StringKeyNative.HEALTH_OVERVIEW),
+                    LocalizedText(getConstitutionInsight(constitution)),
+                    LocalizedText(StringKeyNativeNarrative.HEALTH_SUMMARY_TEMPLATE, listOf(ascStrength.labelKey, sixthLord.stringKey, eighthLord.stringKey))
+                )
+            ),
+            InsightSection(
+                StringKeyNative.LABEL_VULNERABLE_AREAS,
+                listOf(LocalizedText(getHealthAreasForSign(asc)))
+            ),
+            InsightSection(
+                StringKeyNative.LABEL_HEALTH_CONCERNS,
+                concerns
+            )
+        )
+
+        return HealthAnalysis(
+            ascendantStrength = ascStrength,
+            sixthLord = sixthLord,
+            eighthLord = eighthLord,
+            constitution = constitution,
+            vulnerableAreas = getHealthAreasForSign(asc),
+            longevityIndicator = longevity,
+            healthConcerns = concerns,
+            summary = summary,
+            insights = insights
+        )
+    }
 
     private fun analyzeWealth(chart: VedicChart): WealthAnalysis {
-        val l2 = VedicAstrologyUtils.getHouseLord(chart, 2); val l11 = VedicAstrologyUtils.getHouseLord(chart, 11)
-        val s2 = dignityToStrength(chart.planetPositions.find { it.planet == l2 }?.let { getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
-        val s11 = dignityToStrength(chart.planetPositions.find { it.planet == l11 }?.let { getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
-        val dy = checkDhanaYoga(chart); val p = calculateWealthPotential(s2, s11, dy)
-        return WealthAnalysis(l2, s2, l11, s11, StrengthLevel.MODERATE, dy, listOf("Multiple sources"), listOf("विविध स्रोत"), p, "Wealth potential is ${p.displayName.lowercase()}.", "धन क्षमता ${p.displayNameNe} छ।")
+        val l2 = VedicAstrologyUtils.getHouseLord(chart, 2)
+        val l11 = VedicAstrologyUtils.getHouseLord(chart, 11)
+        val s2 = dignityToStrength(chart.planetPositions.find { it.planet == l2 }?.let { NativeAnalysisHelpers.getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
+        val s11 = dignityToStrength(chart.planetPositions.find { it.planet == l11 }?.let { NativeAnalysisHelpers.getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
+        val jupiterStrength = dignityToStrength(chart.planetPositions.find { it.planet == Planet.JUPITER }?.let { NativeAnalysisHelpers.getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
+        val dhanaYoga = YogaCalculator.hasDhanaYoga(chart)
+        val wealthPotential = calculateWealthPotential(s2, s11, jupiterStrength, dhanaYoga)
+        val sources = determineWealthSources(chart)
+
+        val summary = LocalizedText(
+            StringKeyNativeNarrative.WEALTH_SUMMARY_TEMPLATE,
+            listOf(l2.stringKey, s2.labelKey, l11.stringKey, s11.labelKey, jupiterStrength.labelKey)
+        )
+        val insights = listOf(
+            InsightSection(
+                StringKeyNative.SECTION_WEALTH,
+                listOf(
+                    LocalizedText(StringKeyNative.WEALTH_OVERVIEW),
+                    LocalizedText(StringKeyNativeNarrative.WEALTH_POTENTIAL_TEMPLATE, listOf(wealthPotential.labelKey)),
+                    LocalizedText(if (dhanaYoga) StringKeyNative.WEALTH_DHANA_YOGA else StringKeyNative.WEALTH_CAUTION_SATURN)
+                )
+            ),
+            InsightSection(
+                StringKeyNative.LABEL_PRIMARY_WEALTH_SOURCES,
+                sources.map { LocalizedText(it) }
+            )
+        )
+
+        return WealthAnalysis(
+            secondLord = l2,
+            secondLordStrength = s2,
+            eleventhLord = l11,
+            eleventhLordStrength = s11,
+            jupiterStrength = jupiterStrength,
+            dhanaYogaPresent = dhanaYoga,
+            primarySources = sources,
+            wealthPotential = wealthPotential,
+            summary = summary,
+            insights = insights
+        )
     }
 
-    private fun checkDhanaYoga(c: VedicChart): Boolean = true // Simplified
-    private fun calculateWealthPotential(s2: StrengthLevel, s11: StrengthLevel, dy: Boolean): StrengthLevel = if (dy && s2.value >= 4) StrengthLevel.STRONG else StrengthLevel.MODERATE
-
     private fun analyzeEducation(chart: VedicChart): EducationAnalysis {
-        val l4 = VedicAstrologyUtils.getHouseLord(chart, 4); val l5 = VedicAstrologyUtils.getHouseLord(chart, 5)
-        val ms = dignityToStrength(chart.planetPositions.find { it.planet == Planet.MERCURY }?.let { getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
-        return EducationAnalysis(l4, l5, ms, true, listOf("Knowledge"), listOf("ज्ञान"), StrengthLevel.STRONG, "Education is favorable.", "शिक्षा अनुकूल छ।")
+        val l4 = VedicAstrologyUtils.getHouseLord(chart, 4)
+        val l5 = VedicAstrologyUtils.getHouseLord(chart, 5)
+        val mercuryStrength = dignityToStrength(chart.planetPositions.find { it.planet == Planet.MERCURY }?.let { NativeAnalysisHelpers.getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
+        val jupiterAspect = chart.planetPositions.any { it.planet == Planet.JUPITER && AspectUtils.aspectsHouse(it, 4) }
+        val academicPotential = calculateHouseStrength(chart, 5, NativeAnalysisHelpers.getDignity(chart.planetPositions.find { it.planet == l5 } ?: chart.planetPositions.first()))
+        val subjects = determineEducationSubjects(chart)
+
+        val summary = LocalizedText(
+            StringKeyNativeNarrative.EDUCATION_SUMMARY_TEMPLATE,
+            listOf(l4.stringKey, l5.stringKey, mercuryStrength.labelKey)
+        )
+        val insights = listOf(
+            InsightSection(
+                StringKeyNative.SECTION_EDUCATION,
+                listOf(
+                    LocalizedText(StringKeyNative.EDUCATION_OVERVIEW),
+                    LocalizedText(StringKeyNativeNarrative.EDUCATION_SUMMARY_TEMPLATE, listOf(l4.stringKey, l5.stringKey, mercuryStrength.labelKey)),
+                    LocalizedText(if (jupiterAspect) StringKeyNative.EDUCATION_JUPITER_ASPECT else StringKeyNative.EDUCATION_5TH_STRONG)
+                )
+            ),
+            InsightSection(
+                StringKeyNative.LABEL_FAVORABLE_SUBJECTS,
+                subjects.map { LocalizedText(it) }
+            )
+        )
+
+        return EducationAnalysis(
+            fourthLord = l4,
+            fifthLord = l5,
+            mercuryStrength = mercuryStrength,
+            jupiterAspectOnEducation = jupiterAspect,
+            favorableSubjects = subjects,
+            academicPotential = academicPotential,
+            summary = summary,
+            insights = insights
+        )
     }
 
     private fun analyzeSpirituality(chart: VedicChart): SpiritualAnalysis {
-        val l9 = VedicAstrologyUtils.getHouseLord(chart, 9); val l12 = VedicAstrologyUtils.getHouseLord(chart, 12)
-        return SpiritualAnalysis(l9, l12, chart.planetPositions.find { it.planet == Planet.KETU }, StrengthLevel.MODERATE, StrengthLevel.STRONG, listOf("Meditation"), listOf("ध्यान"), "Spiritual growth indicated.", "आध्यात्मिक प्रगति संकेत गरिएको छ।")
+        val l9 = VedicAstrologyUtils.getHouseLord(chart, 9)
+        val l12 = VedicAstrologyUtils.getHouseLord(chart, 12)
+        val ketuPos = chart.planetPositions.find { it.planet == Planet.KETU }
+        val jupiterStrength = dignityToStrength(chart.planetPositions.find { it.planet == Planet.JUPITER }?.let { NativeAnalysisHelpers.getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
+        val spiritualInclination = calculateHouseStrength(chart, 12, NativeAnalysisHelpers.getDignity(chart.planetPositions.find { it.planet == l12 } ?: chart.planetPositions.first()))
+        val practices = determineSpiritualPractices(chart)
+
+        val summary = LocalizedText(
+            StringKeyNativeNarrative.SPIRITUAL_SUMMARY_TEMPLATE,
+            listOf(l9.stringKey, l12.stringKey)
+        )
+        val insights = listOf(
+            InsightSection(
+                StringKeyNative.SECTION_SPIRITUAL,
+                listOf(
+                    LocalizedText(StringKeyNative.SPIRITUAL_OVERVIEW),
+                    LocalizedText(StringKeyNativeNarrative.SPIRITUAL_SUMMARY_TEMPLATE, listOf(l9.stringKey, l12.stringKey)),
+                    LocalizedText(if (jupiterStrength.value >= StrengthLevel.STRONG.value) StringKeyNative.SPIRITUAL_JUPITER_STRONG else StringKeyNative.SPIRITUAL_9TH_STRONG),
+                    LocalizedText(StringKeyNative.SPIRITUAL_KETU_INFLUENCE)
+                )
+            ),
+            InsightSection(
+                StringKeyNative.LABEL_RECOMMENDED_PRACTICES,
+                practices.map { LocalizedText(it) }
+            )
+        )
+
+        return SpiritualAnalysis(
+            ninthLord = l9,
+            twelfthLord = l12,
+            ketuPosition = ketuPos,
+            jupiterStrength = jupiterStrength,
+            spiritualInclination = spiritualInclination,
+            recommendedPractices = practices,
+            summary = summary,
+            insights = insights
+        )
     }
 
-    private fun identifyKeyStrengths(c: VedicChart): List<TraitInfo> = listOf(TraitInfo(StringKeyNative.TRAIT_DETERMINATION, StrengthLevel.STRONG, null))
-    private fun identifyKeyChallenges(c: VedicChart): List<TraitInfo> = listOf(TraitInfo(StringKeyNative.CHALLENGE_IMPULSIVENESS, StrengthLevel.MODERATE, null))
+    private fun identifyKeyStrengths(chart: VedicChart, character: CharacterAnalysis): List<TraitInfo> {
+        val traits = mutableListOf<TraitInfo>()
+        when (character.dominantElement) {
+            Element.FIRE -> traits.add(TraitInfo(StringKeyNative.TRAIT_LEADERSHIP, StrengthLevel.STRONG, null))
+            Element.EARTH -> traits.add(TraitInfo(StringKeyNative.TRAIT_PRACTICALITY, StrengthLevel.STRONG, null))
+            Element.AIR -> traits.add(TraitInfo(StringKeyNative.TRAIT_COMMUNICATION, StrengthLevel.STRONG, null))
+            Element.WATER -> traits.add(TraitInfo(StringKeyNative.TRAIT_INTUITION, StrengthLevel.STRONG, null))
+        }
+        if (chart.planetPositions.any { it.planet == Planet.JUPITER && NativeAnalysisHelpers.getDignity(it) == PlanetaryDignity.EXALTED }) {
+            traits.add(TraitInfo(StringKeyNative.TRAIT_COMPASSION, StrengthLevel.STRONG, Planet.JUPITER))
+        }
+        if (chart.planetPositions.any { it.planet == Planet.SUN && NativeAnalysisHelpers.getDignity(it) == PlanetaryDignity.EXALTED }) {
+            traits.add(TraitInfo(StringKeyNative.TRAIT_DETERMINATION, StrengthLevel.STRONG, Planet.SUN))
+        }
+        return traits.distinctBy { it.trait }
+    }
+
+    private fun identifyKeyChallenges(chart: VedicChart, character: CharacterAnalysis): List<TraitInfo> {
+        val challenges = mutableListOf<TraitInfo>()
+        when (character.dominantModality) {
+            Modality.CARDINAL -> challenges.add(TraitInfo(StringKeyNative.CHALLENGE_IMPULSIVENESS, StrengthLevel.MODERATE, null))
+            Modality.FIXED -> challenges.add(TraitInfo(StringKeyNative.CHALLENGE_RIGIDITY, StrengthLevel.MODERATE, null))
+            Modality.MUTABLE -> challenges.add(TraitInfo(StringKeyNative.CHALLENGE_RESTLESSNESS, StrengthLevel.MODERATE, null))
+        }
+        if (chart.planetPositions.any { it.planet == Planet.SATURN && NativeAnalysisHelpers.getDignity(it) == PlanetaryDignity.DEBILITATED }) {
+            challenges.add(TraitInfo(StringKeyNative.CHALLENGE_ANXIETY, StrengthLevel.MODERATE, Planet.SATURN))
+        }
+        return challenges.distinctBy { it.trait }
+    }
+
+    private fun getAscendantTrait(sign: ZodiacSign): StringKeyInterface = when (sign) {
+        ZodiacSign.ARIES -> StringKeyNative.CHAR_ARIES_ASC
+        ZodiacSign.TAURUS -> StringKeyNative.CHAR_TAURUS_ASC
+        ZodiacSign.GEMINI -> StringKeyNative.CHAR_GEMINI_ASC
+        ZodiacSign.CANCER -> StringKeyNative.CHAR_CANCER_ASC
+        ZodiacSign.LEO -> StringKeyNative.CHAR_LEO_ASC
+        ZodiacSign.VIRGO -> StringKeyNative.CHAR_VIRGO_ASC
+        ZodiacSign.LIBRA -> StringKeyNative.CHAR_LIBRA_ASC
+        ZodiacSign.SCORPIO -> StringKeyNative.CHAR_SCORPIO_ASC
+        ZodiacSign.SAGITTARIUS -> StringKeyNative.CHAR_SAGITTARIUS_ASC
+        ZodiacSign.CAPRICORN -> StringKeyNative.CHAR_CAPRICORN_ASC
+        ZodiacSign.AQUARIUS -> StringKeyNative.CHAR_AQUARIUS_ASC
+        ZodiacSign.PISCES -> StringKeyNative.CHAR_PISCES_ASC
+    }
+
+    private fun getMoonSignTrait(sign: ZodiacSign): StringKeyInterface = when (sign) {
+        ZodiacSign.ARIES -> StringKeyNative.MOON_ARIES
+        ZodiacSign.TAURUS -> StringKeyNative.MOON_TAURUS
+        ZodiacSign.GEMINI -> StringKeyNative.MOON_GEMINI
+        ZodiacSign.CANCER -> StringKeyNative.MOON_CANCER
+        ZodiacSign.LEO -> StringKeyNative.MOON_LEO
+        ZodiacSign.VIRGO -> StringKeyNative.MOON_VIRGO
+        ZodiacSign.LIBRA -> StringKeyNative.MOON_LIBRA
+        ZodiacSign.SCORPIO -> StringKeyNative.MOON_SCORPIO
+        ZodiacSign.SAGITTARIUS -> StringKeyNative.MOON_SAGITTARIUS
+        ZodiacSign.CAPRICORN -> StringKeyNative.MOON_CAPRICORN
+        ZodiacSign.AQUARIUS -> StringKeyNative.MOON_AQUARIUS
+        ZodiacSign.PISCES -> StringKeyNative.MOON_PISCES
+    }
+
+    private fun calculateDominantElement(chart: VedicChart): Element =
+        chart.planetPositions.groupBy { NativeAnalysisHelpers.getSignElement(it.sign) }
+            .maxByOrNull { it.value.size }
+            ?.key ?: Element.FIRE
+
+    private fun calculateDominantModality(chart: VedicChart): Modality =
+        chart.planetPositions.groupBy { NativeAnalysisHelpers.getSignModality(it.sign) }
+            .maxByOrNull { it.value.size }
+            ?.key ?: Modality.CARDINAL
+
+    private fun determineMarriageTiming(seventhHouse: Int): MarriageTiming = when (seventhHouse) {
+        in listOf(1, 2, 4, 7, 11) -> MarriageTiming.EARLY
+        in listOf(6, 8, 12) -> MarriageTiming.DELAYED
+        else -> MarriageTiming.NORMAL
+    }
+
+    private fun determineSpouseTraits(sign: ZodiacSign, planets: List<PlanetPosition>): List<StringKeyInterface> {
+        val traits = mutableListOf<StringKeyInterface>()
+        when (NativeAnalysisHelpers.getSignElement(sign)) {
+            Element.FIRE -> traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_DYNAMIC)
+            Element.EARTH -> traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_PRACTICAL)
+            Element.AIR -> traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_INTELLECTUAL)
+            Element.WATER -> traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_CARING)
+        }
+        when (NativeAnalysisHelpers.getSignModality(sign)) {
+            Modality.CARDINAL -> traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_AMBITIOUS)
+            Modality.FIXED -> traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_DISCIPLINED)
+            Modality.MUTABLE -> traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_ADAPTABILITY)
+        }
+        if (planets.any { it.planet == Planet.VENUS }) traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_ARTISTIC)
+        if (planets.any { it.planet == Planet.JUPITER }) traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_SPIRITUAL)
+        if (planets.any { it.planet == Planet.SATURN }) traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_DISCIPLINED)
+        if (planets.any { it.planet == Planet.RAHU }) traits.add(StringKeyNativeTraits.SPOUSE_TRAIT_INDEPENDENT)
+        return traits.distinct()
+    }
+
+    private fun determineConstitution(strength: StrengthLevel, chart: VedicChart): ConstitutionType {
+        val maleficsInLagna = VedicAstrologyUtils.getPlanetsInHouse(chart, 1).count { VedicAstrologyUtils.isNaturalMalefic(it.planet) }
+        return when {
+            strength.value >= StrengthLevel.STRONG.value && maleficsInLagna == 0 -> ConstitutionType.STRONG
+            strength.value <= StrengthLevel.MODERATE.value && maleficsInLagna >= 2 -> ConstitutionType.SENSITIVE
+            else -> ConstitutionType.MODERATE
+        }
+    }
+
+    private fun determineLongevityIndicator(chart: VedicChart, strength: StrengthLevel): LongevityIndicator {
+        val eighthHouseStrength = calculateHouseStrength(chart, 8, PlanetaryDignity.NEUTRAL_SIGN)
+        return when {
+            strength.value >= StrengthLevel.STRONG.value && eighthHouseStrength.value >= StrengthLevel.STRONG.value -> LongevityIndicator.LONG
+            strength.value <= StrengthLevel.WEAK.value -> LongevityIndicator.REQUIRES_CARE
+            else -> LongevityIndicator.MEDIUM
+        }
+    }
+
+    private fun determineHealthConcerns(chart: VedicChart, ascendant: ZodiacSign): List<LocalizedText> {
+        val concerns = mutableListOf<LocalizedText>()
+        val sixthHousePlanets = VedicAstrologyUtils.getPlanetsInHouse(chart, 6)
+        if (sixthHousePlanets.any { VedicAstrologyUtils.isNaturalMalefic(it.planet) }) {
+            concerns.add(LocalizedText(StringKeyNativeNarrative.HEALTH_CONCERN_TEMPLATE, listOf(StringKeyNativeTraits.HEALTH_CONCERN_STRESS)))
+        }
+        if (ascendant == ZodiacSign.VIRGO || ascendant == ZodiacSign.CAPRICORN) {
+            concerns.add(LocalizedText(StringKeyNativeNarrative.HEALTH_CONCERN_TEMPLATE, listOf(StringKeyNativeTraits.HEALTH_CONCERN_DIGESTION)))
+        }
+        if (ascendant == ZodiacSign.LEO || ascendant == ZodiacSign.SCORPIO) {
+            concerns.add(LocalizedText(StringKeyNativeNarrative.HEALTH_CONCERN_TEMPLATE, listOf(StringKeyNativeTraits.HEALTH_CONCERN_HEART)))
+        }
+        if (concerns.isEmpty()) {
+            concerns.add(LocalizedText(StringKeyNativeTraits.HEALTH_GENERAL_CARE))
+        }
+        return concerns
+    }
+
+    private fun determineCareerFields(chart: VedicChart, dignity: PlanetaryDignity): List<StringKeyInterface> {
+        val fields = mutableListOf<StringKeyInterface>()
+        chart.planetPositions.find { it.planet == Planet.SUN }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                fields.add(StringKeyNativeTraits.CAREER_FIELD_GOVERNMENT)
+                fields.add(StringKeyNativeTraits.CAREER_FIELD_LEADERSHIP)
+            }
+        }
+        chart.planetPositions.find { it.planet == Planet.MERCURY }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                fields.add(StringKeyNativeTraits.CAREER_FIELD_TECHNOLOGY)
+                fields.add(StringKeyNativeTraits.CAREER_FIELD_COMMERCE)
+            }
+        }
+        chart.planetPositions.find { it.planet == Planet.JUPITER }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                fields.add(StringKeyNativeTraits.CAREER_FIELD_EDUCATION)
+                fields.add(StringKeyNativeTraits.CAREER_FIELD_LAW)
+            }
+        }
+        chart.planetPositions.find { it.planet == Planet.VENUS }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                fields.add(StringKeyNativeTraits.CAREER_FIELD_CREATIVE)
+                fields.add(StringKeyNativeTraits.CAREER_FIELD_HOSPITALITY)
+            }
+        }
+        if (dignity == PlanetaryDignity.DEBILITATED) {
+            fields.add(StringKeyNativeTraits.CAREER_FIELD_PUBLIC_SERVICE)
+        }
+        if (fields.isEmpty()) {
+            fields.add(StringKeyNativeTraits.CAREER_FIELD_LEADERSHIP)
+        }
+        return fields.distinct()
+    }
+
+    private fun determineWealthSources(chart: VedicChart): List<StringKeyInterface> {
+        val sources = mutableListOf<StringKeyInterface>()
+        val secondHousePlanets = VedicAstrologyUtils.getPlanetsInHouse(chart, 2)
+        if (secondHousePlanets.any { it.planet == Planet.JUPITER || it.planet == Planet.VENUS }) {
+            sources.add(StringKeyNativeTraits.WEALTH_SOURCE_SALARY)
+            sources.add(StringKeyNativeTraits.WEALTH_SOURCE_INVESTMENT)
+        }
+        if (secondHousePlanets.any { it.planet == Planet.MERCURY }) {
+            sources.add(StringKeyNativeTraits.WEALTH_SOURCE_BUSINESS)
+        }
+        if (chart.planetPositions.any { it.planet == Planet.SATURN && it.house == 4 }) {
+            sources.add(StringKeyNativeTraits.WEALTH_SOURCE_PROPERTY)
+        }
+        if (chart.planetPositions.any { it.planet == Planet.RAHU && it.house == 12 }) {
+            sources.add(StringKeyNativeTraits.WEALTH_SOURCE_FOREIGN)
+        }
+        if (sources.isEmpty()) {
+            sources.add(StringKeyNativeTraits.WEALTH_SOURCE_SALARY)
+            sources.add(StringKeyNativeTraits.WEALTH_SOURCE_BUSINESS)
+        }
+        return sources.distinct()
+    }
+
+    private fun determineEducationSubjects(chart: VedicChart): List<StringKeyInterface> {
+        val subjects = mutableListOf<StringKeyInterface>()
+        val mercuryPos = chart.planetPositions.find { it.planet == Planet.MERCURY }
+        if (mercuryPos != null && NativeAnalysisHelpers.getDignity(mercuryPos).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+            subjects.add(StringKeyNativeTraits.EDUCATION_SUBJECT_COMMERCE)
+            subjects.add(StringKeyNativeTraits.EDUCATION_SUBJECT_MATHEMATICS)
+        }
+        val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
+        if (jupiterPos != null && NativeAnalysisHelpers.getDignity(jupiterPos).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+            subjects.add(StringKeyNativeTraits.EDUCATION_SUBJECT_LAW)
+            subjects.add(StringKeyNativeTraits.EDUCATION_SUBJECT_SPIRITUAL)
+        }
+        if (subjects.isEmpty()) {
+            subjects.add(StringKeyNativeTraits.EDUCATION_SUBJECT_SCIENCE)
+            subjects.add(StringKeyNativeTraits.EDUCATION_SUBJECT_MANAGEMENT)
+        }
+        return subjects.distinct()
+    }
+
+    private fun determineSpiritualPractices(chart: VedicChart): List<StringKeyInterface> {
+        val practices = mutableListOf<StringKeyInterface>()
+        val ketuPos = chart.planetPositions.find { it.planet == Planet.KETU }
+        if (ketuPos != null) practices.add(StringKeyNativeTraits.SPIRITUAL_PRACTICE_MEDITATION)
+        if (chart.planetPositions.any { it.planet == Planet.JUPITER }) practices.add(StringKeyNativeTraits.SPIRITUAL_PRACTICE_STUDY)
+        if (chart.planetPositions.any { it.planet == Planet.SUN && it.house == 9 }) practices.add(StringKeyNativeTraits.SPIRITUAL_PRACTICE_PILGRIMAGE)
+        if (practices.isEmpty()) {
+            practices.add(StringKeyNativeTraits.SPIRITUAL_PRACTICE_MANTRA)
+            practices.add(StringKeyNativeTraits.SPIRITUAL_PRACTICE_YOGA)
+        }
+        return practices.distinct()
+    }
+
+    private fun getHealthAreasForSign(sign: ZodiacSign): StringKeyInterface = when (sign) {
+        ZodiacSign.ARIES -> StringKeyNative.HEALTH_ARIES_AREAS
+        ZodiacSign.TAURUS -> StringKeyNative.HEALTH_TAURUS_AREAS
+        ZodiacSign.GEMINI -> StringKeyNative.HEALTH_GEMINI_AREAS
+        ZodiacSign.CANCER -> StringKeyNative.HEALTH_CANCER_AREAS
+        ZodiacSign.LEO -> StringKeyNative.HEALTH_LEO_AREAS
+        ZodiacSign.VIRGO -> StringKeyNative.HEALTH_VIRGO_AREAS
+        ZodiacSign.LIBRA -> StringKeyNative.HEALTH_LIBRA_AREAS
+        ZodiacSign.SCORPIO -> StringKeyNative.HEALTH_SCORPIO_AREAS
+        ZodiacSign.SAGITTARIUS -> StringKeyNative.HEALTH_SAGITTARIUS_AREAS
+        ZodiacSign.CAPRICORN -> StringKeyNative.HEALTH_CAPRICORN_AREAS
+        ZodiacSign.AQUARIUS -> StringKeyNative.HEALTH_AQUARIUS_AREAS
+        ZodiacSign.PISCES -> StringKeyNative.HEALTH_PISCES_AREAS
+    }
+
+    private fun getConstitutionInsight(constitution: ConstitutionType): StringKeyInterface = when (constitution) {
+        ConstitutionType.STRONG -> StringKeyNative.HEALTH_CONSTITUTION_STRONG
+        ConstitutionType.MODERATE -> StringKeyNative.HEALTH_CONSTITUTION_MODERATE
+        ConstitutionType.SENSITIVE -> StringKeyNative.HEALTH_CONSTITUTION_SENSITIVE
+    }
+
+    private fun buildCareerIndicators(chart: VedicChart): List<StringKeyInterface> {
+        val indicators = mutableListOf<StringKeyInterface>()
+        chart.planetPositions.find { it.planet == Planet.SUN }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                indicators.add(StringKeyNative.CAREER_SUN_STRONG)
+            }
+        }
+        chart.planetPositions.find { it.planet == Planet.MOON }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                indicators.add(StringKeyNative.CAREER_MOON_STRONG)
+            }
+        }
+        chart.planetPositions.find { it.planet == Planet.MARS }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                indicators.add(StringKeyNative.CAREER_MARS_STRONG)
+            }
+        }
+        chart.planetPositions.find { it.planet == Planet.MERCURY }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                indicators.add(StringKeyNative.CAREER_MERCURY_STRONG)
+            }
+        }
+        chart.planetPositions.find { it.planet == Planet.JUPITER }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                indicators.add(StringKeyNative.CAREER_JUPITER_STRONG)
+            }
+        }
+        chart.planetPositions.find { it.planet == Planet.VENUS }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                indicators.add(StringKeyNative.CAREER_VENUS_STRONG)
+            }
+        }
+        chart.planetPositions.find { it.planet == Planet.SATURN }?.let {
+            if (NativeAnalysisHelpers.getDignity(it).ordinal <= PlanetaryDignity.OWN_SIGN.ordinal) {
+                indicators.add(StringKeyNative.CAREER_SATURN_STRONG)
+            }
+        }
+        if (chart.planetPositions.any { it.planet == Planet.RAHU }) indicators.add(StringKeyNative.CAREER_RAHU_INFLUENCE)
+        if (chart.planetPositions.any { it.planet == Planet.KETU }) indicators.add(StringKeyNative.CAREER_KETU_INFLUENCE)
+        return indicators.ifEmpty { listOf(StringKeyNative.CAREER_10TH_STATUS_GOOD) }
+    }
+
+    private fun calculateHouseStrength(chart: VedicChart, house: Int, lordDignity: PlanetaryDignity): StrengthLevel {
+        val lord = VedicAstrologyUtils.getHouseLord(chart, house)
+        val lordPos = chart.planetPositions.find { it.planet == lord }
+        var score = 3.0
+        score += when (lordDignity) {
+            PlanetaryDignity.EXALTED -> 1.5
+            PlanetaryDignity.MOOLATRIKONA, PlanetaryDignity.OWN_SIGN -> 1.0
+            PlanetaryDignity.FRIEND_SIGN -> 0.5
+            PlanetaryDignity.ENEMY_SIGN -> -0.5
+            PlanetaryDignity.DEBILITATED -> -1.5
+            else -> 0.0
+        }
+        if (lordPos?.house in VedicAstrologyUtils.KENDRA_HOUSES + VedicAstrologyUtils.TRIKONA_HOUSES) score += 0.5
+        VedicAstrologyUtils.getPlanetsInHouse(chart, house).forEach {
+            score += if (VedicAstrologyUtils.isNaturalBenefic(it.planet)) 0.3 else -0.2
+        }
+        chart.planetPositions.forEach {
+            if (AspectUtils.aspectsHouse(it, house)) {
+                score += if (VedicAstrologyUtils.isNaturalBenefic(it.planet)) 0.2 else -0.2
+            }
+        }
+        return strengthFromScore(score)
+    }
+
+    private fun strengthFromScore(score: Double): StrengthLevel = when {
+        score >= 4.6 -> StrengthLevel.EXCELLENT
+        score >= 3.8 -> StrengthLevel.STRONG
+        score >= 3.0 -> StrengthLevel.MODERATE
+        score >= 2.2 -> StrengthLevel.WEAK
+        else -> StrengthLevel.AFFLICTED
+    }
+
+    private fun dignityToStrength(dignity: PlanetaryDignity): StrengthLevel = when (dignity) {
+        PlanetaryDignity.EXALTED -> StrengthLevel.EXCELLENT
+        PlanetaryDignity.MOOLATRIKONA, PlanetaryDignity.OWN_SIGN -> StrengthLevel.STRONG
+        PlanetaryDignity.FRIEND_SIGN, PlanetaryDignity.NEUTRAL_SIGN -> StrengthLevel.MODERATE
+        PlanetaryDignity.ENEMY_SIGN -> StrengthLevel.WEAK
+        PlanetaryDignity.DEBILITATED -> StrengthLevel.AFFLICTED
+    }
+
+    private fun calculateWealthPotential(
+        secondStrength: StrengthLevel,
+        eleventhStrength: StrengthLevel,
+        jupiterStrength: StrengthLevel,
+        hasDhanaYoga: Boolean
+    ): StrengthLevel {
+        val score = secondStrength.value + eleventhStrength.value + jupiterStrength.value + if (hasDhanaYoga) 2 else 0
+        return strengthFromScore(score / 2.5)
+    }
 }

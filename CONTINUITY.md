@@ -1,40 +1,48 @@
 # AstroStorm Overhaul - Continuity Ledger
-> Last updated: 2026-01-15T12:00:00+05:45
+> Last updated: 2026-01-19T21:30:00Z
 
-## Goal (incl. success criteria)
-Implement advanced Vedic astrology features and refactor codebase for production-grade quality.
-1. Modularize core logic into :core:common and :core:model ✅
-2. Refactor all 1000+ line monoliths into maintainable packages ✅
-3. Improve Shadbala precision (D60, BPHS values) ✅
-4. Implement persistent calculation settings (Node, Ayanamsa) ✅
-5. Enhance PDF export quality with vector rendering ✅
+## Goal (incl. success criteria):
+- Deliver deeply integrated, production-grade native analysis and predictions engines.
+- Expand descriptive, personalized output using modular, data-driven text (no hardcoded strings, no AI).
+- Maintain performance and file size limits (500–800 lines per file).
 
-## Constraints/Assumptions
-- Follow existing patterns
-- Zero hardcoded text where possible
-- Vedic accuracy per classical texts
+## Constraints/Assumptions:
+- No AI-assisted text generation at runtime.
+- No hardcoded texts; use localization/data resources.
+- Vedic astrology accuracy per classical sources.
+- No TODOs or placeholder implementations.
 
-## State
+## Key Decisions:
+- Introduced `LocalizedText` and `InsightSection` to drive narrative output.
+- Added `StringKeyNativeTraits`, `StringKeyNativeNarrative`, `StringKeyPredictionNarrative` for new localized templates.
+- Rewrote native analysis to be rule-based with detailed insight sections.
+- Reworked prediction scoring to be deterministic (no random), integrating dasha and yoga data.
 
+## State:
 - Done:
-  - Created :core:common and :core:model modules ✅
-  - Moved all core models and localization keys to core modules ✅
-  - Refactored Prashna, Remedies, Varshaphala, Muhurta, Varga, NativeAnalysis, and Shoola calculators ✅
-  - Updated Shadbala to Tradition B (D60) with precise BPHS values ✅
-  - Implemented persistent Ayanamsa and Node settings in AstrologySettingsManager ✅
-  - Updated SwissEphemerisEngine to use dynamic settings ✅
-  - Enhanced ChartExporter to use vector-based rendering for charts ✅
-  - Established unit test foundation for Panchanga logic ✅
-
+  - Added `core/common/LocalizedText.kt` for localized templates.
+  - Added narrative/trait string key enums for native analysis and prediction timing.
+  - Rebuilt `NativeAnalysisCalculator` with deeper, structured insights.
+  - Updated `NativeAnalysisViewModel` and `NativeAnalysisScreen` to use localized keys and insight sections.
+  - Added `AspectUtils` for shared aspect logic.
+  - Updated prediction calculations to deterministic scoring and yoga integration.
 - Now:
-  - All critical findings from FINDINGS.md have been addressed.
-
+  - Audit remaining UI for modularization and any lingering hardcoded text.
 - Next:
-  - Further localization of remaining hardcoded strings in minor components.
-  - Expansion of unit tests to cover all 16 divisional charts.
-  - Implementation of Transit Alert background service (from AI.md).
+  - Split oversized UI files (`NativeAnalysisScreen.kt`, `PredictionsScreen.kt`) into modular files under 800 lines.
+  - Verify predictions UI still aligns with new calculation outputs.
 
-## Working Set (files/ids/commands)
-- **New Modules**: `:core:common`, `:core:model`
-- **Refactored Packages**: `ephemeris/prashna`, `ephemeris/remedy`, `ephemeris/varshaphala`, `ephemeris/muhurta`, `ephemeris/varga`, `ephemeris/nativeanalysis`, `ephemeris/shoola`
-- **Core Engine**: `ephemeris/SwissEphemerisEngine.kt`, `data/preferences/AstrologySettingsManager.kt`
+## Open Questions (UNCONFIRMED if needed):
+- None.
+
+## Working Set (files/ids/commands):
+- `core/common/LocalizedText.kt`
+- `core/common/StringKeyNativeTraits.kt`
+- `core/common/StringKeyNativeNarrative.kt`
+- `core/common/StringKeyPredictionNarrative.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/AspectUtils.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/nativeanalysis/NativeAnalysisCalculator.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/nativeanalysis/NativeModels.kt`
+- `app/src/main/java/com/astro/storm/ui/viewmodel/NativeAnalysisViewModel.kt`
+- `app/src/main/java/com/astro/storm/ui/screen/NativeAnalysisScreen.kt`
+- `app/src/main/java/com/astro/storm/ui/screen/PredictionsScreen.kt`

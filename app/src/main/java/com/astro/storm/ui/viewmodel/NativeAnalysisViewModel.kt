@@ -2,6 +2,8 @@ package com.astro.storm.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.astro.storm.core.common.StringKeyInterface
+import com.astro.storm.core.common.StringKeyNative
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisCalculator
 import com.astro.storm.ephemeris.nativeanalysis.NativeAnalysisResult
@@ -70,7 +72,7 @@ class NativeAnalysisViewModel @Inject constructor() : ViewModel() {
                 cachedResult = result
                 _uiState.value = NativeAnalysisUiState.Success(result)
             } catch (e: Exception) {
-                _uiState.value = NativeAnalysisUiState.Error(e.message ?: "Analysis failed")
+                _uiState.value = NativeAnalysisUiState.Error(StringKeyNative.LABEL_ANALYSIS_ERROR)
             }
         }
     }
@@ -101,19 +103,19 @@ sealed class NativeAnalysisUiState {
     data object Idle : NativeAnalysisUiState()
     data object Loading : NativeAnalysisUiState()
     data class Success(val result: NativeAnalysisResult) : NativeAnalysisUiState()
-    data class Error(val message: String) : NativeAnalysisUiState()
+    data class Error(val messageKey: StringKeyInterface, val args: List<Any> = emptyList()) : NativeAnalysisUiState()
 }
 
 /**
  * Sections available in Native Analysis
  */
-enum class NativeSection(val displayName: String, val displayNameNe: String) {
-    OVERVIEW("Overview", "सारांश"),
-    CHARACTER("Character", "चरित्र"),
-    CAREER("Career", "पेशा"),
-    MARRIAGE("Marriage", "विवाह"),
-    HEALTH("Health", "स्वास्थ्य"),
-    WEALTH("Wealth", "धन"),
-    EDUCATION("Education", "शिक्षा"),
-    SPIRITUAL("Spiritual", "आध्यात्मिक")
+enum class NativeSection(val displayNameKey: StringKeyInterface) {
+    OVERVIEW(StringKeyNative.LABEL_OVERVIEW),
+    CHARACTER(StringKeyNative.SECTION_CHARACTER),
+    CAREER(StringKeyNative.SECTION_CAREER),
+    MARRIAGE(StringKeyNative.SECTION_MARRIAGE),
+    HEALTH(StringKeyNative.SECTION_HEALTH),
+    WEALTH(StringKeyNative.SECTION_WEALTH),
+    EDUCATION(StringKeyNative.SECTION_EDUCATION),
+    SPIRITUAL(StringKeyNative.SECTION_SPIRITUAL)
 }
