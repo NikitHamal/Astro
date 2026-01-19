@@ -35,25 +35,21 @@ object CareerDeepAnalyzer {
         return CareerDeepResult(
             tenthHouseAnalysis = tenthHouseAnalysis,
             tenthLordAnalysis = tenthLordAnalysis,
-            dashamshAnalysis = dashamshAnalysis,
-            primaryCareerIndicators = primaryIndicators,
-            secondaryCareerIndicators = secondaryIndicators,
-            careerYogas = careerYogas,
-            suitableProfessions = suitableProfessions,
+            sixthHouseAnalysis = analyzeSixthHouse(context),
+            d10Analysis = dashamshAnalysis,
+            primaryCareerSignificators = getPrimaryCareerSignificators(context),
+            bestCareerPaths = suitableProfessions,
             careerStrengths = careerStrengths,
             careerChallenges = careerChallenges,
-            workStyle = workStyle,
-            employmentType = employmentType,
+            careerYogas = careerYogas,
             careerTimeline = careerTimeline,
             currentCareerPhase = currentPhase,
-            earningPotential = earningPotential,
-            earningPatterns = earningPatterns,
             careerSummary = summary,
             careerStrengthScore = score
         )
     }
     
-    private fun analyzeTenthHouse(context: AnalysisContext): TenthHouseDeepAnalysis {
+    private fun analyzeTenthHouse(context: AnalysisContext): TenthHouseCareerAnalysis {
         val tenthSign = getTenthHouseSign(context)
         val planetsIn10th = context.getPlanetsInHouse(10).map { pos ->
             PlanetInHouseAnalysis(
@@ -63,17 +59,36 @@ object CareerDeepAnalyzer {
             )
         }
         
-        val aspects = getAspectsToHouse(10, context)
         val strength = context.getHouseStrength(10)
         
-        return TenthHouseDeepAnalysis(
+        return TenthHouseCareerAnalysis(
             sign = tenthSign,
             planetsInHouse = planetsIn10th,
-            aspectsReceived = aspects,
             houseStrength = strength,
             publicImage = CareerTextGenerator.getPublicImage(tenthSign, strength),
             careerEnvironment = CareerTextGenerator.getCareerEnvironment(tenthSign),
             authorityDynamics = CareerTextGenerator.getAuthorityDynamics(tenthSign, planetsIn10th)
+        )
+    }
+
+    private fun analyzeSixthHouse(context: AnalysisContext): SixthHouseCareerAnalysis {
+        val sixthSign = ZodiacSign.entries[(context.ascendantSign.ordinal + 5) % 12]
+        val planetsIn6th = context.getPlanetsInHouse(6).map { pos ->
+            PlanetInHouseAnalysis(pos.planet, context.getDignity(pos.planet),
+                LocalizedParagraph("${pos.planet.displayName} in 6th affects work and service.",
+                    "${pos.planet.displayName} छैठौंमा काम र सेवालाई प्रभाव पार्छ।"))
+        }
+        
+        return SixthHouseCareerAnalysis(
+            sign = sixthSign,
+            planetsInHouse = planetsIn6th,
+            houseStrength = context.getHouseStrength(6),
+            serviceQuotient = if (context.getPlanetStrengthLevel(Planet.SATURN) >= StrengthLevel.MODERATE)
+                StrengthLevel.STRONG else StrengthLevel.MODERATE,
+            workEnvironment = LocalizedParagraph("Daily work environment follows ${sixthSign.displayName}.",
+                "दैनिक कार्य वातावरण ${sixthSign.displayName} पछ्याउँछ।"),
+            competitionHandling = LocalizedParagraph("How you handle professional competition and obstacles.",
+                "तपाईं कसरी व्यावसायिक प्रतिस्पर्धा र अवरोधहरू सामना गर्नुहुन्छ।")
         )
     }
     
@@ -98,31 +113,20 @@ object CareerDeepAnalyzer {
         )
     }
     
-    private fun analyzeDashamsha(context: AnalysisContext): DashamshAnalysis {
+    private fun analyzeDashamsha(context: AnalysisContext): DashamshaAnalysis {
         val d10 = context.getDashamsha()
         val d10Asc = d10.ascendantSign
-        val d10TenthSign = ZodiacSign.entries[(d10Asc.ordinal + 9) % 12]
+        val tenthLord = context.getHouseLord(10)
         
-        val sunPos = d10.planetPositions.find { it.planet == Planet.SUN }
-        val moonPos = d10.planetPositions.find { it.planet == Planet.MOON }
-        
-        return DashamshAnalysis(
-            d10Ascendant = d10Asc,
-            d10TenthSign = d10TenthSign,
-            d10SunPosition = D10PlanetPosition(
-                planet = Planet.SUN,
-                sign = sunPos?.sign ?: d10Asc,
-                house = sunPos?.house ?: 1,
-                interpretation = CareerTextGenerator.getD10SunInterpretation(sunPos?.sign, sunPos?.house ?: 1)
-            ),
-            d10MoonPosition = D10PlanetPosition(
-                planet = Planet.MOON,
-                sign = moonPos?.sign ?: d10Asc,
-                house = moonPos?.house ?: 1,
-                interpretation = CareerTextGenerator.getD10MoonInterpretation(moonPos?.sign, moonPos?.house ?: 1)
-            ),
-            careerRefinement = CareerTextGenerator.getD10CareerRefinement(d10Asc),
-            professionalGrowthPattern = CareerTextGenerator.getD10GrowthPattern(d10Asc, d10TenthSign)
+        return DashamshaAnalysis(
+            d10AscendantSign = d10Asc,
+            d10AscendantLord = context.getPlanetPosition(tenthLord)?.planet ?: Planet.SUN,
+            planetsInD10Houses = emptyList(), // Not fully implemented in core yet
+            statusAndAuthority = CareerTextGenerator.getD10CareerRefinement(d10Asc),
+            professionalSuccess = CareerTextGenerator.getD10GrowthPattern(d10Asc, ZodiacSign.entries[(d10Asc.ordinal + 9) % 12]),
+            karmicDirectionInCareer = LocalizedParagraph("D10 chart indicates your soul's professional path.",
+                "D10 कुण्डलीले तपाईंको आत्माको व्यावसायिक मार्ग संकेत गर्छ।"),
+            overallD10Strength = context.getHouseStrength(10)
         )
     }
     
@@ -167,68 +171,26 @@ object CareerDeepAnalyzer {
         return houses
     }
     
-    private fun getPrimaryCareerIndicators(context: AnalysisContext): List<CareerIndicator> {
-        val indicators = mutableListOf<CareerIndicator>()
+    private fun getPrimaryCareerSignificators(context: AnalysisContext): List<PlanetaryCareerInfluence> {
+        val influencers = mutableListOf<PlanetaryCareerInfluence>()
         
-        // Sun strength indicator
-        val sunStrength = context.getPlanetStrengthLevel(Planet.SUN)
-        if (sunStrength >= StrengthLevel.STRONG) {
-            indicators.add(CareerIndicator(
-                indicatorName = "Strong Sun - Authority",
-                sourcePlanet = Planet.SUN,
-                sourceHouse = context.getPlanetHouse(Planet.SUN),
-                strength = sunStrength,
-                description = LocalizedParagraph(
-                    en = "Strong Sun indicates success in government, administration, or leadership positions.",
-                    ne = "बलियो सूर्यले सरकार, प्रशासन, वा नेतृत्व पदहरूमा सफलता संकेत गर्छ।"
-                )
-            ))
-        }
-        
-        // 10th lord indicator
         val tenthLord = context.getHouseLord(10)
-        val tenthLordStrength = context.getPlanetStrengthLevel(tenthLord)
-        indicators.add(CareerIndicator(
-            indicatorName = "${tenthLord.displayName} as 10th Lord",
-            sourcePlanet = tenthLord,
-            sourceHouse = 10,
-            strength = tenthLordStrength,
-            description = CareerTextGenerator.getTenthLordIndicator(tenthLord, tenthLordStrength)
+        influencers.add(PlanetaryCareerInfluence(
+            planet = tenthLord,
+            strengthLevel = context.getPlanetStrengthLevel(tenthLord),
+            contribution = CareerTextGenerator.getTenthLordIndicator(tenthLord, context.getPlanetStrengthLevel(tenthLord)).en.let { LocalizedParagraph(it, "") },
+            favorableRoles = listOf("Professional leadership in related fields")
         ))
         
-        // Saturn placement
-        val saturnStrength = context.getPlanetStrengthLevel(Planet.SATURN)
-        indicators.add(CareerIndicator(
-            indicatorName = "Saturn - Work Ethic",
-            sourcePlanet = Planet.SATURN,
-            sourceHouse = context.getPlanetHouse(Planet.SATURN),
-            strength = saturnStrength,
-            description = LocalizedParagraph(
-                en = "Saturn's placement shows how you approach hard work and long-term career building.",
-                ne = "शनिको स्थितिले तपाईं कठिन परिश्रम र दीर्घकालीन क्यारियर निर्माणमा कसरी दृष्टिकोण राख्नुहुन्छ भनेर देखाउँछ।"
-            )
+        val sun = Planet.SUN
+        influencers.add(PlanetaryCareerInfluence(
+            planet = sun,
+            strengthLevel = context.getPlanetStrengthLevel(sun),
+            contribution = LocalizedParagraph("Sun provides authority and administrative capacity.", "सूर्यले अधिकार र प्रशासनिक क्षमता प्रदान गर्दछ।"),
+            favorableRoles = listOf("Government", "Administration", "Management")
         ))
         
-        return indicators
-    }
-    
-    private fun getSecondaryCareerIndicators(context: AnalysisContext): List<CareerIndicator> {
-        val indicators = mutableListOf<CareerIndicator>()
-        
-        listOf(Planet.MERCURY, Planet.VENUS, Planet.MARS, Planet.JUPITER).forEach { planet ->
-            val strength = context.getPlanetStrengthLevel(planet)
-            if (strength >= StrengthLevel.MODERATE) {
-                indicators.add(CareerIndicator(
-                    indicatorName = "${planet.displayName} Career Influence",
-                    sourcePlanet = planet,
-                    sourceHouse = context.getPlanetHouse(planet),
-                    strength = strength,
-                    description = CareerTextGenerator.getPlanetCareerInfluence(planet, strength)
-                ))
-            }
-        }
-        
-        return indicators.take(3)
+        return influencers
     }
     
     private fun getCareerYogas(context: AnalysisContext): List<CareerYoga> {
@@ -400,8 +362,6 @@ object CareerDeepAnalyzer {
                 endDate = mahadasha.endDate.toLocalDate(),
                 dasha = "${mahadasha.planet.displayName} Mahadasha",
                 careerFocus = CareerTextGenerator.getDashaCareerFocus(mahadasha.planet),
-                opportunities = CareerTextGenerator.getDashaOpportunities(mahadasha.planet),
-                challenges = CareerTextGenerator.getDashaChallenges(mahadasha.planet),
                 favorability = context.getPlanetStrengthLevel(mahadasha.planet)
             ))
         }
@@ -409,15 +369,14 @@ object CareerDeepAnalyzer {
         return timeline
     }
     
-    private fun analyzeCurrentCareerPhase(context: AnalysisContext): CareerPhaseAnalysis {
+    private fun analyzeCurrentCareerPhase(context: AnalysisContext): CurrentCareerPhase {
         val currentDasha = context.currentMahadasha
         val planet = currentDasha?.planet ?: Planet.SUN
         
-        return CareerPhaseAnalysis(
+        return CurrentCareerPhase(
             currentDasha = "${planet.displayName} Mahadasha",
-            phaseDescription = CareerTextGenerator.getCurrentPhaseDescription(planet, context),
-            currentOpportunities = CareerTextGenerator.getDashaOpportunities(planet),
-            currentChallenges = CareerTextGenerator.getDashaChallenges(planet),
+            careerOutlook = context.getPlanetStrengthLevel(planet),
+            currentFocus = CareerTextGenerator.getDashaCareerFocus(planet),
             advice = CareerTextGenerator.getCareerAdvice(planet)
         )
     }

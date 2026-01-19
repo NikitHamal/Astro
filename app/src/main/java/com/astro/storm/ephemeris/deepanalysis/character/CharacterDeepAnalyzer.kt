@@ -40,6 +40,7 @@ object CharacterDeepAnalyzer {
             weakPlanetChallenges = weakPlanets,
             retrogradeEffects = retrogradeEffects,
             personalityYogas = personalityYogas,
+            keyTraits = temperament.naturalTendencies,
             personalitySummary = summary,
             personalityStrengthScore = score
         )
@@ -49,7 +50,7 @@ object CharacterDeepAnalyzer {
         val ascSign = context.ascendantSign
         val ascLord = context.ascendantLord
         val ascLordPos = context.ascendantLordPosition
-        val degree = context.chart.ascendantDegree
+        val degree = context.chart.ascendant
         val nakshatra = context.chart.planetPositions.firstOrNull()?.nakshatra 
             ?: context.moonPosition?.nakshatra!!
         
@@ -64,7 +65,8 @@ object CharacterDeepAnalyzer {
             physicalAppearance = AscendantTextGenerator.getPhysicalAppearance(ascSign),
             firstImpressionGiven = AscendantTextGenerator.getFirstImpression(ascSign),
             lifeApproach = AscendantTextGenerator.getLifeApproach(ascSign),
-            overallAscendantInterpretation = AscendantTextGenerator.getOverallInterpretation(ascSign, ascLord, context)
+            overallAscendantInterpretation = AscendantTextGenerator.getOverallInterpretation(ascSign, ascLord, context),
+            overallAscendantStrength = context.getHouseStrength(1)
         )
     }
     
@@ -97,6 +99,7 @@ object CharacterDeepAnalyzer {
             motherRelationship = MoonTextGenerator.getMotherRelationship(moon.house, strength),
             comfortSeeking = MoonTextGenerator.getComfortSeeking(moon.sign),
             kemadrumaYogaPresent = context.hasKemadrumaYoga(),
+            nakshatraCharacteristics = MoonTextGenerator.getNakshatraCharacteristics(moon.nakshatra),
             overallMoonInterpretation = MoonTextGenerator.getOverallInterpretation(moon, strength, context)
         )
     }
@@ -371,7 +374,7 @@ object CharacterDeepAnalyzer {
     }
     
     private fun com.astro.storm.ephemeris.yoga.YogaStrength.toStrengthLevel(): StrengthLevel = when (this) {
-        com.astro.storm.ephemeris.yoga.YogaStrength.VERY_STRONG -> StrengthLevel.EXCELLENT
+        com.astro.storm.ephemeris.yoga.YogaStrength.EXTREMELY_STRONG -> StrengthLevel.EXCELLENT
         com.astro.storm.ephemeris.yoga.YogaStrength.STRONG -> StrengthLevel.STRONG
         com.astro.storm.ephemeris.yoga.YogaStrength.MODERATE -> StrengthLevel.MODERATE
         com.astro.storm.ephemeris.yoga.YogaStrength.WEAK -> StrengthLevel.WEAK

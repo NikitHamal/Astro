@@ -24,20 +24,79 @@ import java.time.LocalDate
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
+ * Localized trait (short string)
+ */
+data class LocalizedTrait(
+    val en: String,
+    val ne: String,
+    val strengthLevel: StrengthLevel? = null
+) {
+    val name: String get() = en
+    val nameNe: String get() = ne
+    val strength: StrengthLevel? get() = strengthLevel
+
+    fun get(language: Language): String = when (language) {
+        Language.ENGLISH -> en
+        Language.NEPALI -> ne
+    }
+}
+
+/**
+ * Timing period for predictions
+ */
+data class TimingPeriod(
+    val startDate: LocalDate,
+    val endDate: LocalDate,
+    val description: LocalizedParagraph,
+    val favorability: StrengthLevel
+)
+
+/**
+ * Strength level enumeration
+ */
+enum class StrengthLevel(val value: Int, val displayName: String, val displayNameNe: String) {
+    EXCELLENT(5, "Excellent", "उत्कृष्ट"),
+    STRONG(4, "Strong", "बलियो"),
+    MODERATE(3, "Moderate", "मध्यम"),
+    WEAK(2, "Weak", "कमजोर"),
+    AFFLICTED(1, "Afflicted", "पीडित");
+
+    companion object {
+        fun fromInt(value: Int): StrengthLevel = entries.find { it.value == value } ?: MODERATE
+        fun fromDouble(score: Double): StrengthLevel = when {
+            score >= 80 -> EXCELLENT
+            score >= 60 -> STRONG
+            score >= 40 -> MODERATE
+            score >= 20 -> WEAK
+            else -> AFFLICTED
+        }
+    }
+}
+
+/**
  * Complete deep native analysis result containing all life area analyses
  */
 data class DeepNativeAnalysis(
-    val characterAnalysis: CharacterDeepResult,
-    val careerAnalysis: CareerDeepResult,
-    val relationshipAnalysis: RelationshipDeepResult,
-    val healthAnalysis: HealthDeepResult,
-    val wealthAnalysis: WealthDeepResult,
-    val educationAnalysis: EducationDeepResult,
-    val spiritualAnalysis: SpiritualDeepResult,
+    val character: CharacterDeepResult,
+    val career: CareerDeepResult,
+    val relationship: RelationshipDeepResult,
+    val health: HealthDeepResult,
+    val wealth: WealthDeepResult,
+    val education: EducationDeepResult,
+    val spiritual: SpiritualDeepResult,
     val synthesisReport: SynthesisReport,
     val overallScore: Double,
     val analysisTimestamp: Long = System.currentTimeMillis()
-)
+) {
+    // Aliases for compatibility with older code
+    val characterAnalysis get() = character
+    val careerAnalysis get() = career
+    val relationshipAnalysis get() = relationship
+    val healthAnalysis get() = health
+    val wealthAnalysis get() = wealth
+    val educationAnalysis get() = education
+    val spiritualAnalysis get() = spiritual
+}
 
 /**
  * Synthesis report combining insights from all life areas
@@ -79,10 +138,18 @@ data class CharacterDeepResult(
     // Yogas Affecting Personality
     val personalityYogas: List<YogaPersonalityEffect>,
     
-    // Summary
+    // Traits
+    val keyTraits: List<LocalizedTrait>,
+    
     val personalitySummary: LocalizedParagraph,
     val personalityStrengthScore: Double
-)
+) {
+    // Aliases for compatibility
+    val planetaryPersonalityImpacts get() = strongPlanetInfluences + weakPlanetChallenges
+    val retrogradeAnalysis get() = retrogradeEffects
+    val personalityYogaEffects get() = personalityYogas
+    val personalityYogasPresent get() = personalityYogas
+}
 
 /**
  * Deep ascendant (Lagna) analysis
@@ -97,8 +164,10 @@ data class AscendantDeepAnalysis(
     val navamshaAscendantCorrelation: LocalizedParagraph,
     val physicalAppearance: LocalizedParagraph,
     val firstImpressionGiven: LocalizedParagraph,
+    val firstImpression: LocalizedParagraph get() = firstImpressionGiven
     val lifeApproach: LocalizedParagraph,
-    val overallAscendantInterpretation: LocalizedParagraph
+    val overallAscendantInterpretation: LocalizedParagraph,
+    val overallAscendantStrength: StrengthLevel = StrengthLevel.MODERATE
 )
 
 /**
@@ -118,11 +187,13 @@ data class AscendantLordAnalysis(
  */
 data class MoonDeepAnalysis(
     val sign: ZodiacSign,
+    val moonSign: ZodiacSign get() = sign
     val housePosition: Int,
     val nakshatra: Nakshatra,
     val nakshatraPada: Int,
     val nakshatraPadaAnalysis: LocalizedParagraph,
     val moonStrengthLevel: StrengthLevel,
+    val overallEmotionalStrength: StrengthLevel get() = moonStrengthLevel
     val emotionalNature: LocalizedParagraph,
     val mindsetAnalysis: LocalizedParagraph,
     val innerNeeds: LocalizedParagraph,
@@ -130,6 +201,7 @@ data class MoonDeepAnalysis(
     val motherRelationship: LocalizedParagraph,
     val comfortSeeking: LocalizedParagraph,
     val kemadrumaYogaPresent: Boolean,
+    val nakshatraCharacteristics: LocalizedParagraph = LocalizedParagraph("", ""),
     val overallMoonInterpretation: LocalizedParagraph
 )
 
@@ -138,9 +210,11 @@ data class MoonDeepAnalysis(
  */
 data class SunDeepAnalysis(
     val sign: ZodiacSign,
+    val sunSign: ZodiacSign get() = sign
     val housePosition: Int,
     val nakshatra: Nakshatra,
     val sunStrengthLevel: StrengthLevel,
+    val sunStrength: StrengthLevel get() = sunStrengthLevel
     val coreIdentity: LocalizedParagraph,
     val egoExpression: LocalizedParagraph,
     val authorityRelationship: LocalizedParagraph,
@@ -155,10 +229,13 @@ data class SunDeepAnalysis(
  */
 data class AtmakarakaAnalysis(
     val planet: Planet,
+    val karakaName: String = planet.displayName,
     val signPosition: ZodiacSign,
     val soulDesire: LocalizedParagraph,
     val karmicLesson: LocalizedParagraph,
     val spiritualPath: LocalizedParagraph,
+    val atmakarakaLessons: LocalizedParagraph = spiritualPath,
+    val karmicTask: LocalizedParagraph = spiritualPath,
     val overallAtmakarakaInterpretation: LocalizedParagraph
 )
 
@@ -171,6 +248,9 @@ data class TemperamentProfile(
     val dominantModality: Modality,
     val elementBalance: Map<Element, Double>,
     val modalityBalance: Map<Modality, Double>,
+    val modalBalance: Map<Modality, Double> = modalityBalance,
+    val elementBalanceMap: Map<Element, Double> = elementBalance,
+    val gunaSummary: LocalizedParagraph = LocalizedParagraph("Guna balance provides psychological depth.", "गुण सन्तुलनले मनोवैज्ञानिक गहिराई प्रदान गर्दछ।"),
     val temperamentDescription: LocalizedParagraph,
     val naturalTendencies: List<LocalizedTrait>
 )
@@ -251,51 +331,55 @@ data class YogaPersonalityEffect(
  * Deep career analysis result
  */
 data class CareerDeepResult(
-    // 10th House Analysis
-    val tenthHouseAnalysis: TenthHouseDeepAnalysis,
+    // House Analysis
+    val tenthHouseAnalysis: TenthHouseCareerAnalysis,
     val tenthLordAnalysis: HouseLordDeepAnalysis,
+    val sixthHouseAnalysis: SixthHouseCareerAnalysis,
     
-    // Divisional Chart Integration
-    val dashamshAnalysis: DashamshAnalysis,
+    // Divisional Chart
+    val d10Analysis: DashamshaAnalysis,
     
     // Career Indicators
-    val primaryCareerIndicators: List<CareerIndicator>,
-    val secondaryCareerIndicators: List<CareerIndicator>,
-    val careerYogas: List<CareerYoga>,
-    
-    // Profession Matching
-    val suitableProfessions: List<ProfessionMatch>,
+    val primaryCareerSignificators: List<PlanetaryCareerInfluence>,
+    val bestCareerPaths: List<ProfessionMatch>,
     val careerStrengths: List<LocalizedTrait>,
     val careerChallenges: List<LocalizedTrait>,
     
-    // Work Style
-    val workStyle: WorkStyleProfile,
-    val employmentType: EmploymentTypeAnalysis,
+    // Yogas
+    val careerYogas: List<CareerYoga>,
     
     // Timing
     val careerTimeline: List<CareerTimingPeriod>,
-    val currentCareerPhase: CareerPhaseAnalysis,
-    
-    // Financial Aspect
-    val earningPotential: StrengthLevel,
-    val earningPatterns: LocalizedParagraph,
+    val currentCareerPhase: CurrentCareerPhase,
     
     // Summary
     val careerSummary: LocalizedParagraph,
     val careerStrengthScore: Double
-)
+) {
+    // Aliases
+    val dashamshaAnalysis get() = d10Analysis
+    val careerYogaEffects get() = careerYogas
+}
 
 /**
  * Deep 10th house analysis
  */
-data class TenthHouseDeepAnalysis(
+data class TenthHouseCareerAnalysis(
     val sign: ZodiacSign,
     val planetsInHouse: List<PlanetInHouseAnalysis>,
-    val aspectsReceived: List<AspectAnalysis>,
     val houseStrength: StrengthLevel,
     val publicImage: LocalizedParagraph,
     val careerEnvironment: LocalizedParagraph,
     val authorityDynamics: LocalizedParagraph
+)
+
+data class SixthHouseCareerAnalysis(
+    val sign: ZodiacSign,
+    val planetsInHouse: List<PlanetInHouseAnalysis>,
+    val houseStrength: StrengthLevel,
+    val serviceQuotient: StrengthLevel,
+    val workEnvironment: LocalizedParagraph,
+    val competitionHandling: LocalizedParagraph
 )
 
 /**
@@ -333,23 +417,22 @@ data class AspectAnalysis(
 /**
  * Dashamsha (D10) chart analysis
  */
-data class DashamshAnalysis(
-    val d10Ascendant: ZodiacSign,
-    val d10TenthSign: ZodiacSign,
-    val d10SunPosition: D10PlanetPosition,
-    val d10MoonPosition: D10PlanetPosition,
-    val careerRefinement: LocalizedParagraph,
-    val professionalGrowthPattern: LocalizedParagraph
+data class DashamshaAnalysis(
+    val d10AscendantSign: ZodiacSign,
+    val d10AscendantLord: Planet,
+    val planetsInD10Houses: List<PlanetInHouseAnalysis>,
+    val statusAndAuthority: LocalizedParagraph,
+    val careerSignificance: LocalizedParagraph = statusAndAuthority,
+    val professionalSuccess: LocalizedParagraph,
+    val karmicDirectionInCareer: LocalizedParagraph,
+    val overallD10Strength: StrengthLevel
 )
 
-/**
- * D10 planet position
- */
-data class D10PlanetPosition(
+data class PlanetaryCareerInfluence(
     val planet: Planet,
-    val sign: ZodiacSign,
-    val house: Int,
-    val interpretation: LocalizedParagraph
+    val strengthLevel: StrengthLevel,
+    val contribution: LocalizedParagraph,
+    val favorableRoles: List<String>
 )
 
 /**
@@ -380,6 +463,8 @@ data class ProfessionMatch(
     val professionCategory: ProfessionCategory,
     val specificRoles: List<String>,
     val suitabilityScore: Double,
+    val suitability: StrengthLevel = StrengthLevel.fromDouble(suitabilityScore),
+    val professionName: String = professionCategory.displayName,
     val reasonForMatch: LocalizedParagraph
 )
 
@@ -638,6 +723,29 @@ data class MarriageQualityProfile(
 // HEALTH & LONGEVITY MODELS
 // ═══════════════════════════════════════════════════════════════════════════════
 
+data class CurrentHealthPhase(
+    val currentDasha: String,
+    val overallVitality: StrengthLevel,
+    val currentFocus: LocalizedParagraph,
+    val watchAreas: List<LocalizedTrait>,
+    val recommendations: LocalizedParagraph
+)
+
+data class CurrentCareerPhase(
+    val currentDasha: String,
+    val careerOutlook: StrengthLevel,
+    val currentFocus: LocalizedParagraph,
+    val advice: LocalizedParagraph
+)
+
+data class CareerTimingPeriod(
+    val startDate: LocalDate,
+    val endDate: LocalDate,
+    val dasha: String,
+    val careerFocus: LocalizedParagraph,
+    val favorability: StrengthLevel
+)
+
 /**
  * Deep health analysis result
  */
@@ -646,8 +754,17 @@ data class HealthDeepResult(
     val constitutionAnalysis: ConstitutionAnalysis,
     
     // House Analysis
-    val sixthHouseAnalysis: SixthHouseDeepAnalysis,
-    val eighthHouseAnalysis: EighthHouseDeepAnalysis,
+    val sixthHouseAnalysis: SixthHouseHealthAnalysis,
+    val eighthHouseAnalysis: EighthHouseHealthAnalysis,
+    
+    // Ascendant Health
+    val ascendantHealthProfile: AscendantHealthProfile,
+    
+    // Body Mapping
+    val bodyPartMapping: BodyPartMapping,
+    val potentialVulnerabilities: List<HealthVulnerability>,
+    val healthStrengths: List<LocalizedTrait>,
+    val preventiveFocus: PreventiveFocus,
     
     // Body Mapping
     val bodySystemMapping: List<BodySystemAnalysis>,
@@ -657,7 +774,7 @@ data class HealthDeepResult(
     val planetaryHealthInfluences: List<PlanetaryHealthInfluence>,
     
     // Longevity
-    val longevityAnalysis: LongevityAnalysis,
+    val longevityIndicators: LongevityProfile,
     
     // Health Timing
     val healthTimeline: List<HealthTimingPeriod>,
@@ -690,28 +807,76 @@ enum class AyurvedicDosha {
     VATA, PITTA, KAPHA
 }
 
-/**
- * Deep 6th house analysis
- */
-data class SixthHouseDeepAnalysis(
-    val sign: ZodiacSign,
-    val sixthLord: HouseLordDeepAnalysis,
-    val planetsInHouse: List<PlanetInHouseAnalysis>,
-    val diseaseTerritory: LocalizedParagraph,
-    val immunityStrength: StrengthLevel,
-    val enemiesAndObstacles: LocalizedParagraph
+typealias DoshaType = AyurvedicDosha
+
+data class AscendantHealthProfile(
+    val generalVitality: StrengthLevel,
+    val physicalConstitutionType: LocalizedParagraph,
+    val innateProwess: LocalizedParagraph,
+    val bodyFrame: LocalizedParagraph,
+    val metabolicType: LocalizedParagraph
 )
 
-/**
- * Deep 8th house analysis
- */
-data class EighthHouseDeepAnalysis(
+data class BodyPartHealth(
+    val strengthLevel: StrengthLevel,
+    val observations: LocalizedParagraph,
+    val recommendations: LocalizedParagraph
+)
+
+data class BodyPartMapping(
+    val headAndFace: BodyPartHealth,
+    val throatAndNeck: BodyPartHealth,
+    val armsAndShoulders: BodyPartHealth,
+    val chest: BodyPartHealth,
+    val stomach: BodyPartHealth,
+    val intestines: BodyPartHealth,
+    val lowerAbdomen: BodyPartHealth,
+    val reproductiveOrgans: BodyPartHealth,
+    val thighs: BodyPartHealth,
+    val knees: BodyPartHealth,
+    val ankles: BodyPartHealth,
+    val feet: BodyPartHealth
+)
+
+data class HealthVulnerability(
+    val area: String,
+    val severity: StrengthLevel,
+    val description: LocalizedParagraph,
+    val preventiveMeasures: LocalizedParagraph
+)
+
+data class PreventiveFocus(
+    val priorityAreas: List<LocalizedTrait>,
+    val seasonalGuidelines: LocalizedParagraph,
+    val yogaPractices: LocalizedParagraph,
+    val ayurvedicRecommendations: LocalizedParagraph
+)
+
+data class LongevityProfile(
+    val category: LongevityCategory,
+    val primaryIndicators: List<LocalizedTrait>,
+    val supportingFactors: List<LocalizedTrait>,
+    val challengingFactors: List<LocalizedTrait>,
+    val longevitySummary: LocalizedParagraph
+)
+
+data class SixthHouseHealthAnalysis(
     val sign: ZodiacSign,
-    val eighthLord: HouseLordDeepAnalysis,
     val planetsInHouse: List<PlanetInHouseAnalysis>,
-    val chronicConditionRisk: StrengthLevel,
-    val transformativeHealth: LocalizedParagraph,
-    val hiddenHealthIssues: LocalizedParagraph
+    val houseStrength: StrengthLevel,
+    val diseaseResistance: StrengthLevel,
+    val immuneSystemProfile: LocalizedParagraph,
+    val potentialAilments: List<LocalizedTrait>,
+    val healingCapacity: LocalizedParagraph
+)
+
+data class EighthHouseHealthAnalysis(
+    val sign: ZodiacSign,
+    val planetsInHouse: List<PlanetInHouseAnalysis>,
+    val houseStrength: StrengthLevel,
+    val chronicHealthPatterns: LocalizedParagraph,
+    val regenerativeCapacity: LocalizedParagraph,
+    val criticalPeriodIndicators: LocalizedParagraph
 )
 
 /**
@@ -802,33 +967,28 @@ data class HealthTimingPeriod(
  */
 data class WealthDeepResult(
     // House Analysis
-    val secondHouseAnalysis: HouseLordDeepAnalysis,
-    val eleventhHouseAnalysis: HouseLordDeepAnalysis,
+    val secondHouseAnalysis: SecondHouseWealthAnalysis,
+    val eleventhHouseAnalysis: EleventhHouseWealthAnalysis,
     
     // Wealth Yogas
-    val dhanaYogas: List<DhanaYogaAnalysis>,
+    val dhanaYogaAnalysis: DhanaYogaAnalysis,
     
     // Wealth Sources
-    val primaryWealthSources: List<WealthSource>,
-    val secondaryWealthSources: List<WealthSource>,
+    val wealthSourceAnalysis: WealthSourceAnalysis,
     
-    // Financial Patterns
-    val earningPattern: LocalizedParagraph,
-    val savingPattern: LocalizedParagraph,
-    val spendingPattern: LocalizedParagraph,
-    val investmentTendency: LocalizedParagraph,
+    // Financial Strengths
+    val financialStrengths: List<LocalizedTrait>,
+    val financialChallenges: List<LocalizedTrait>,
     
     // Special Calculations
     val induLagnaAnalysis: InduLagnaAnalysis,
-    val sriLagnaAnalysis: SriLagnaAnalysis,
     
     // Timing
     val wealthTimeline: List<WealthTimingPeriod>,
-    val currentWealthPhase: LocalizedParagraph,
+    val currentWealthPhase: CurrentWealthPhase,
     
-    // Potential
-    val wealthPotentialLevel: StrengthLevel,
-    val wealthAccumulationPattern: LocalizedParagraph,
+    // Investment
+    val investmentIndicators: InvestmentProfile,
     
     // Summary
     val wealthSummary: LocalizedParagraph,
@@ -838,23 +998,28 @@ data class WealthDeepResult(
 /**
  * Dhana Yoga analysis
  */
-data class DhanaYogaAnalysis(
-    val yogaName: String,
-    val yogaStrength: StrengthLevel,
+data class DhanaYogaDetail(
+    val name: String,
+    val strength: StrengthLevel,
     val involvedPlanets: List<Planet>,
     val wealthEffect: LocalizedParagraph,
-    val manifestationTiming: LocalizedParagraph
+    val activationPeriods: LocalizedParagraph
+)
+
+data class DhanaYogaAnalysis(
+    val presentYogas: List<DhanaYogaDetail>,
+    val overallDhanaStrength: StrengthLevel,
+    val wealthPotentialSummary: LocalizedParagraph
 )
 
 /**
  * Wealth source from chart
  */
 data class WealthSource(
-    val sourceType: WealthSourceType,
-    val sourceDescription: LocalizedParagraph,
-    val potentialLevel: StrengthLevel,
-    val relatedHouse: Int,
-    val relatedPlanet: Planet?
+    val source: String,
+    val sourceNe: String,
+    val strength: StrengthLevel,
+    val description: LocalizedParagraph
 )
 
 enum class WealthSourceType {
@@ -876,8 +1041,49 @@ enum class WealthSourceType {
  */
 data class InduLagnaAnalysis(
     val induLagnaSign: ZodiacSign,
-    val induLagnaLord: Planet,
-    val wealthIndicator: LocalizedParagraph
+    val induLagnaStrength: StrengthLevel,
+    val wealthFromInduLagna: LocalizedParagraph,
+    val significantPlanets: List<Planet>
+)
+
+data class SecondHouseWealthAnalysis(
+    val sign: ZodiacSign,
+    val planetsInHouse: List<PlanetInHouseAnalysis>,
+    val houseStrength: StrengthLevel,
+    val accumulationPattern: LocalizedParagraph,
+    val speechAndFamily: LocalizedParagraph,
+    val savingsAbility: StrengthLevel
+)
+
+data class EleventhHouseWealthAnalysis(
+    val sign: ZodiacSign,
+    val planetsInHouse: List<PlanetInHouseAnalysis>,
+    val houseStrength: StrengthLevel,
+    val gainsPattern: LocalizedParagraph,
+    val incomeStreams: LocalizedParagraph,
+    val networkWealth: LocalizedParagraph
+)
+
+data class WealthSourceAnalysis(
+    val primarySources: List<WealthSource>,
+    val secondarySources: List<WealthSource>,
+    val passiveIncomeIndicators: LocalizedParagraph
+)
+
+data class CurrentWealthPhase(
+    val currentDasha: String,
+    val overallFinancialOutlook: StrengthLevel,
+    val currentOpportunities: List<LocalizedTrait>,
+    val currentCautions: List<LocalizedTrait>,
+    val financialAdvice: LocalizedParagraph
+)
+
+data class InvestmentProfile(
+    val riskTolerance: StrengthLevel,
+    val investmentStyle: LocalizedParagraph,
+    val favorableInvestments: List<LocalizedTrait>,
+    val cautionaryInvestments: List<LocalizedTrait>,
+    val timingAdvice: LocalizedParagraph
 )
 
 /**
@@ -910,9 +1116,9 @@ data class WealthTimingPeriod(
  */
 data class EducationDeepResult(
     // House Analysis
-    val fourthHouseAnalysis: HouseLordDeepAnalysis,
-    val fifthHouseAnalysis: HouseLordDeepAnalysis,
-    val ninthHouseAnalysis: HouseLordDeepAnalysis,
+    val fourthHouseAnalysis: FourthHouseEducationAnalysis,
+    val fifthHouseAnalysis: FifthHouseEducationAnalysis,
+    val ninthHouseAnalysis: NinthHouseEducationAnalysis,
     
     // Key Planet Analysis
     val mercuryAnalysis: MercuryEducationAnalysis,
@@ -945,14 +1151,51 @@ data class EducationDeepResult(
 )
 
 /**
+ * Specialized house analysis for education
+ */
+data class FourthHouseEducationAnalysis(
+    val sign: ZodiacSign,
+    val planetsInHouse: List<PlanetInHouseAnalysis>,
+    val houseStrength: StrengthLevel,
+    val primaryEducationPattern: LocalizedParagraph,
+    val educationalEnvironment: LocalizedParagraph,
+    val motherInfluenceOnEducation: LocalizedParagraph
+)
+
+data class FifthHouseEducationAnalysis(
+    val sign: ZodiacSign,
+    val planetsInHouse: List<PlanetInHouseAnalysis>,
+    val houseStrength: StrengthLevel,
+    val intellectualAbility: StrengthLevel,
+    val creativeIntelligence: LocalizedParagraph,
+    val memoryAndGrasp: LocalizedParagraph,
+    val competitiveExamPotential: LocalizedParagraph
+)
+
+data class NinthHouseEducationAnalysis(
+    val sign: ZodiacSign,
+    val planetsInHouse: List<PlanetInHouseAnalysis>,
+    val houseStrength: StrengthLevel,
+    val higherEducationPotential: StrengthLevel,
+    val philosophicalLearning: LocalizedParagraph,
+    val foreignEducationPotential: LocalizedParagraph,
+    val guruBlessings: LocalizedParagraph
+)
+
+/**
  * Mercury analysis for education
  */
 data class MercuryEducationAnalysis(
     val sign: ZodiacSign,
     val house: Int,
     val dignity: PlanetaryDignityLevel,
+    val strengthLevel: StrengthLevel = StrengthLevel.MODERATE,
     val intellectualCapacity: LocalizedParagraph,
-    val communicationInLearning: LocalizedParagraph
+    val analyticalAbility: LocalizedParagraph = intellectualCapacity,
+    val communicationInLearning: LocalizedParagraph,
+    val communicationSkill: LocalizedParagraph = communicationInLearning,
+    val mathematicalAptitude: LocalizedParagraph = LocalizedParagraph("", ""),
+    val languageAbility: LocalizedParagraph = LocalizedParagraph("", "")
 )
 
 /**
@@ -962,7 +1205,12 @@ data class JupiterEducationAnalysis(
     val sign: ZodiacSign,
     val house: Int,
     val dignity: PlanetaryDignityLevel,
+    val strengthLevel: StrengthLevel = StrengthLevel.MODERATE,
     val wisdomAcquisition: LocalizedParagraph,
+    val wisdomDevelopment: LocalizedParagraph = wisdomAcquisition,
+    val higherLearningAbility: LocalizedParagraph = LocalizedParagraph("", ""),
+    val spiritualKnowledge: LocalizedParagraph = LocalizedParagraph("", ""),
+    val teachingAbility: LocalizedParagraph = LocalizedParagraph("", ""),
     val teacherBlessings: LocalizedParagraph
 )
 
@@ -1019,30 +1267,25 @@ data class EducationTimingPeriod(
  */
 data class SpiritualDeepResult(
     // House Analysis
-    val ninthHouseDharma: NinthHouseDeepAnalysis,
-    val twelfthHouseMoksha: TwelfthHouseDeepAnalysis,
+    val ninthHouseDharma: NinthHouseDharmaAnalysis,
+    val twelfthHouseMoksha: TwelfthHouseMokshaAnalysis,
     
     // Key Planet Analysis
-    val jupiterSpiritualAnalysis: JupiterSpiritualAnalysis,
+    val jupiterAnalysis: JupiterSpiritualAnalysis,
     val ketuAnalysis: KetuSpiritualAnalysis,
     
     // Spiritual Profile
-    val spiritualInclination: StrengthLevel,
-    val faithOrientation: LocalizedParagraph,
-    val philosophicalBent: LocalizedParagraph,
-    val meditativeCapacity: StrengthLevel,
-    
-    // Spiritual Yogas
     val spiritualYogas: List<SpiritualYoga>,
-    
-    // Path Recommendations
-    val suitablePaths: List<SpiritualPathMatch>,
-    val recommendedPractices: List<LocalizedTrait>,
-    val suitableDeities: List<LocalizedTrait>,
-    val favorableMantras: List<LocalizedTrait>,
-    
-    // Karmic Indicators
     val karmicPatterns: List<KarmicPattern>,
+    val spiritualStrengths: List<LocalizedTrait>,
+    val spiritualChallenges: List<LocalizedTrait>,
+    
+    // Practices
+    val meditationPractices: MeditationProfile,
+    
+    // Timing
+    val spiritualTimeline: List<SpiritualTimingPeriod>,
+    val currentSpiritualPhase: CurrentSpiritualPhase,
     
     // Summary
     val spiritualSummary: LocalizedParagraph,
@@ -1052,25 +1295,24 @@ data class SpiritualDeepResult(
 /**
  * Deep 9th house analysis
  */
-data class NinthHouseDeepAnalysis(
+data class NinthHouseDharmaAnalysis(
     val sign: ZodiacSign,
-    val ninthLord: HouseLordDeepAnalysis,
     val planetsInHouse: List<PlanetInHouseAnalysis>,
+    val houseStrength: StrengthLevel,
     val dharmaPath: LocalizedParagraph,
-    val guruBlessings: LocalizedParagraph,
-    val fortuneIndicators: LocalizedParagraph
+    val religiousInclination: LocalizedParagraph,
+    val guruConnection: LocalizedParagraph,
+    val higherPhilosophy: LocalizedParagraph
 )
 
-/**
- * Deep 12th house analysis
- */
-data class TwelfthHouseDeepAnalysis(
+data class TwelfthHouseMokshaAnalysis(
     val sign: ZodiacSign,
-    val twelfthLord: HouseLordDeepAnalysis,
     val planetsInHouse: List<PlanetInHouseAnalysis>,
+    val houseStrength: StrengthLevel,
     val liberationPath: LocalizedParagraph,
-    val spiritualExperiences: LocalizedParagraph,
-    val lossesForGrowth: LocalizedParagraph
+    val meditationInclination: LocalizedParagraph,
+    val asceticTendencies: LocalizedParagraph,
+    val dreamLife: LocalizedParagraph
 )
 
 /**
@@ -1103,7 +1345,7 @@ data class SpiritualYoga(
     val name: String,
     val strength: StrengthLevel,
     val spiritualEffect: LocalizedParagraph,
-    val manifestationType: String
+    val involvedPlanets: List<Planet>
 )
 
 /**
@@ -1129,8 +1371,34 @@ enum class SpiritualPathType {
  */
 data class KarmicPattern(
     val patternName: String,
-    val description: LocalizedParagraph,
-    val lessonToLearn: LocalizedParagraph
+    val areaAffected: LocalizedParagraph,
+    val karmicLesson: LocalizedParagraph,
+    val lessonToLearn: LocalizedParagraph,
+    val growthOpportunities: LocalizedParagraph
+)
+
+data class MeditationProfile(
+    val suitablePractices: List<LocalizedTrait>,
+    val bestTimes: LocalizedParagraph,
+    val mantras: LocalizedParagraph,
+    val deities: LocalizedParagraph
+)
+
+data class SpiritualTimingPeriod(
+    val startDate: LocalDate,
+    val endDate: LocalDate,
+    val dasha: String,
+    val spiritualFocus: LocalizedParagraph,
+    val opportunities: List<LocalizedTrait>,
+    val challenges: List<LocalizedTrait>,
+    val favorability: StrengthLevel
+)
+
+data class CurrentSpiritualPhase(
+    val currentDasha: String,
+    val spiritualGrowthPotential: StrengthLevel,
+    val currentFocus: LocalizedParagraph,
+    val practiceAdvice: LocalizedParagraph
 )
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1150,40 +1418,6 @@ data class LocalizedParagraph(
     }
 }
 
-/**
- * Localized trait (short string)
- */
-data class LocalizedTrait(
-    val en: String,
-    val ne: String,
-    val strengthLevel: StrengthLevel? = null
-) {
-    fun get(language: Language): String = when (language) {
-        Language.ENGLISH -> en
-        Language.NEPALI -> ne
-    }
-}
-
-/**
- * Timing period for predictions
- */
-data class TimingPeriod(
-    val startDate: LocalDate,
-    val endDate: LocalDate,
-    val description: LocalizedParagraph,
-    val favorability: StrengthLevel
-)
-
-/**
- * Strength level enumeration
- */
-enum class StrengthLevel(val value: Int, val displayName: String, val displayNameNe: String) {
-    EXCELLENT(5, "Excellent", "उत्कृष्ट"),
-    STRONG(4, "Strong", "बलियो"),
-    MODERATE(3, "Moderate", "मध्यम"),
-    WEAK(2, "Weak", "कमजोर"),
-    AFFLICTED(1, "Afflicted", "पीडित")
-}
 
 /**
  * Planetary dignity level

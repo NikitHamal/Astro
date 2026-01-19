@@ -492,6 +492,8 @@ object DeepPredictionEngine {
         Planet.JUPITER -> "Yellow Sapphire (Pukhraj)"
         Planet.VENUS -> "Diamond (Heera)"
         Planet.SATURN -> "Blue Sapphire (Neelam)"
+        Planet.RAHU, Planet.TRUE_NODE -> "Hessonite (Gomed)"
+        Planet.KETU -> "Cat's Eye (Lehsunia)"
         else -> "Consult astrologer"
     }
     
@@ -514,6 +516,8 @@ object DeepPredictionEngine {
         Planet.JUPITER -> "Thursday"
         Planet.VENUS -> "Friday"
         Planet.SATURN -> "Saturday"
+        Planet.RAHU, Planet.TRUE_NODE -> "Saturday"
+        Planet.KETU -> "Tuesday"
         else -> "auspicious day"
     }
     
@@ -525,13 +529,21 @@ object DeepPredictionEngine {
         Planet.JUPITER -> "Om Gram Greem Graum Sah Gurave Namah"
         Planet.VENUS -> "Om Dram Dreem Draum Sah Shukraya Namah"
         Planet.SATURN -> "Om Pram Preem Praum Sah Shanaye Namah"
-        else -> "Om Namah"
+        Planet.RAHU, Planet.TRUE_NODE -> "Om Bhram Bhreem Bhraum Sah Rahave Namah"
+        Planet.KETU -> "Om Sram Sreem Sraum Sah Ketave Namah"
+        else -> "Om Namah Shivaya"
     }
     
     private fun getFullMantra(planet: Planet): String = when (planet) {
         Planet.SUN -> "Om Hram Hreem Hroum Sah Suryaya Namah"
         Planet.MOON -> "Om Som Somaya Namah"
+        Planet.MARS -> "Om Ang Angarkaya Namah"
+        Planet.MERCURY -> "Om Bum Budhaya Namah"
         Planet.JUPITER -> "Om Brim Brihaspataye Namah"
+        Planet.VENUS -> "Om Shum Shukraya Namah"
+        Planet.SATURN -> "Om Sham Shanaishcharaya Namah"
+        Planet.RAHU, Planet.TRUE_NODE -> "Om Ram Rahave Namah"
+        Planet.KETU -> "Om Kem Ketave Namah"
         else -> getBeejaMantra(planet)
     }
     
@@ -543,6 +555,8 @@ object DeepPredictionEngine {
         Planet.JUPITER -> 19000
         Planet.VENUS -> 16000
         Planet.SATURN -> 23000
+        Planet.RAHU, Planet.TRUE_NODE -> 18000
+        Planet.KETU -> 17000
         else -> 108
     }
     
@@ -550,6 +564,7 @@ object DeepPredictionEngine {
         Planet.SUN -> "sunrise"
         Planet.MOON -> "evening"
         Planet.JUPITER -> "morning"
+        Planet.SATURN, Planet.RAHU, Planet.KETU -> "night"
         else -> "dawn or dusk"
     }
     
@@ -573,6 +588,8 @@ object DeepPredictionEngine {
         Planet.JUPITER -> "Yellow cloth, turmeric, bananas"
         Planet.VENUS -> "White items, perfume, sweets"
         Planet.SATURN -> "Black sesame, iron, mustard oil"
+        Planet.RAHU, Planet.TRUE_NODE -> "Blankets, lead, black pulses"
+        Planet.KETU -> "Seven types of grains, multi-colored cloth"
         else -> "Food to needy"
     }
     
@@ -636,6 +653,7 @@ object DeepPredictionEngine {
     }
     
     private fun com.astro.storm.ephemeris.yoga.YogaStrength.toStrengthLevel(): StrengthLevel = when (this) {
+        com.astro.storm.ephemeris.yoga.YogaStrength.EXTREMELY_STRONG,
         com.astro.storm.ephemeris.yoga.YogaStrength.VERY_STRONG -> StrengthLevel.EXCELLENT
         com.astro.storm.ephemeris.yoga.YogaStrength.STRONG -> StrengthLevel.STRONG
         com.astro.storm.ephemeris.yoga.YogaStrength.MODERATE -> StrengthLevel.MODERATE

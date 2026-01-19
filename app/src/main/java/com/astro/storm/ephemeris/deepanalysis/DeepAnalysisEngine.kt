@@ -125,13 +125,13 @@ object DeepAnalysisEngine {
         )
         
         DeepNativeAnalysis(
-            characterAnalysis = characterAnalysis,
-            careerAnalysis = careerAnalysis,
-            relationshipAnalysis = relationshipAnalysis,
-            healthAnalysis = healthAnalysis,
-            wealthAnalysis = wealthAnalysis,
-            educationAnalysis = educationAnalysis,
-            spiritualAnalysis = spiritualAnalysis,
+            character = characterAnalysis,
+            career = careerAnalysis,
+            relationship = relationshipAnalysis,
+            health = healthAnalysis,
+            wealth = wealthAnalysis,
+            education = educationAnalysis,
+            spiritual = spiritualAnalysis,
             synthesisReport = synthesisReport,
             overallScore = overallScore
         )
@@ -219,8 +219,8 @@ internal object SynthesisGenerator {
         
         return SynthesisReport(
             lifePurposeStatement = lifePurposeStatement,
-            coreStrengths = coreStrengths.distinctBy { it.en }.take(5),
-            coreChallenges = coreChallenges.distinctBy { it.en }.take(5),
+            coreStrengths = coreStrengths.distinctBy { it.name }.take(5),
+            coreChallenges = coreChallenges.distinctBy { it.name }.take(5),
             keyLifeThemes = keyLifeThemes,
             karmaIndicators = karmaIndicators,
             lifePathSummary = lifePathSummary
