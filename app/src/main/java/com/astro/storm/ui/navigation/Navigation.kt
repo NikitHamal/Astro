@@ -1165,6 +1165,7 @@ fun AstroStormNavigation(
 
             DivisionalChartsScreen(
                 chart = currentChart,
+                chartRenderer = chartRenderer,
                 onBack = { navController.popBackStack() }
             )
         }

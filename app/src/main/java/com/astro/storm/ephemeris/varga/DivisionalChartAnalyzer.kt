@@ -2,6 +2,7 @@ package com.astro.storm.ephemeris.varga
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.ephemeris.DivisionalChartType
 
 /**
  * DivisionalChartAnalyzer - Orchestrator for refactored Divisional Chart analysis

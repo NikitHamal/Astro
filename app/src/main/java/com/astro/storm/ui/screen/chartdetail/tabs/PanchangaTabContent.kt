@@ -63,9 +63,11 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyPanchanga
 import com.astro.storm.core.common.StringKeyNakshatra
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Nakshatra
@@ -1428,7 +1430,7 @@ private fun getNakshatraData(nakshatra: Nakshatra, language: Language): Nakshatr
             guna = "Tamas",
             animal = StringResources.get(StringKeyNakshatra.ANIMAL_LION, language),
             quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.NA_DESC_DHANISHTHA, language)
+            description = StringResources.get(StringKeyPanchanga.NAK_DESC_DHANISHTHA, language)
         )
         Nakshatra.SHATABHISHA -> NakshatraData(
             sanskrit = "शतभिषा",
@@ -1548,7 +1550,7 @@ private fun getVaraData(vara: Vara, language: Language): VaraData {
     return when (vara) {
         Vara.SUNDAY -> VaraData(
             sanskrit = "रविवार",
-            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_FIRE, language),
+            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_FIRE, language),
             direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_EAST, language),
             description = StringResources.get(StringKeyPanchanga.VARA_DESC_SUNDAY, language),
             favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_SUNDAY, language).split(", "),
@@ -1556,15 +1558,15 @@ private fun getVaraData(vara: Vara, language: Language): VaraData {
         )
         Vara.MONDAY -> VaraData(
             sanskrit = "सोमवार",
-            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_WATER, language),
-            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTHWEST, language),
+            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_WATER, language),
+            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST, language),
             description = StringResources.get(StringKeyPanchanga.VARA_DESC_MONDAY, language),
             favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_MONDAY, language).split(", "),
             unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_MONDAY, language).split(", ")
         )
         Vara.TUESDAY -> VaraData(
             sanskrit = "मंगलवार",
-            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_FIRE, language),
+            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_FIRE, language),
             direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_SOUTH, language),
             description = StringResources.get(StringKeyPanchanga.VARA_DESC_TUESDAY, language),
             favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_TUESDAY, language).split(", "),
@@ -1572,7 +1574,7 @@ private fun getVaraData(vara: Vara, language: Language): VaraData {
         )
         Vara.WEDNESDAY -> VaraData(
             sanskrit = "बुधवार",
-            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_EARTH, language),
+            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_EARTH, language),
             direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH, language),
             description = StringResources.get(StringKeyPanchanga.VARA_DESC_WEDNESDAY, language),
             favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_WEDNESDAY, language).split(", "),
@@ -1580,23 +1582,23 @@ private fun getVaraData(vara: Vara, language: Language): VaraData {
         )
         Vara.THURSDAY -> VaraData(
             sanskrit = "गुरुवार",
-            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_ETHER, language),
-            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTHEAST, language),
+            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_ETHER, language),
+            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH_EAST, language),
             description = StringResources.get(StringKeyPanchanga.VARA_DESC_THURSDAY, language),
             favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_THURSDAY, language).split(", "),
             unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_THURSDAY, language).split(", ")
         )
         Vara.FRIDAY -> VaraData(
             sanskrit = "शुक्रवार",
-            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_WATER, language),
-            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_SOUTHEAST, language),
+            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_WATER, language),
+            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_SOUTH_EAST, language),
             description = StringResources.get(StringKeyPanchanga.VARA_DESC_FRIDAY, language),
             favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_FRIDAY, language).split(", "),
             unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_FRIDAY, language).split(", ")
         )
         Vara.SATURDAY -> VaraData(
             sanskrit = "शनिवार",
-            element = StringResources.get(StringKeyDosha.NAKSHATRA_ELEMENT_AIR, language),
+            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_AIR, language),
             direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_WEST, language),
             description = StringResources.get(StringKeyPanchanga.VARA_DESC_SATURDAY, language),
             favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_SATURDAY, language).split(", "),

@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
@@ -266,7 +267,7 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(stringResource(StringKeyAnalysis.DIVISIONAL_DOMINANT_PLANET), fontSize = 11.sp, color = AppTheme.TextMuted)
-                            Text(analysis.dominantPlanet?.getLocalizedName(language) ?: stringResource(StringKey.NONE), fontWeight = FontWeight.SemiBold, color = AppTheme.AccentTeal)
+                            Text(analysis.dominantPlanet?.getLocalizedName(language) ?: stringResource(StringKeyAnalysis.UI_NONE), fontWeight = FontWeight.SemiBold, color = AppTheme.AccentTeal)
                         }
                     }
                 }

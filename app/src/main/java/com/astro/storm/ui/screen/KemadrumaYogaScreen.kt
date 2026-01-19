@@ -1267,7 +1267,7 @@ private fun RemediesSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis)
             }
         } else {
             Text(
-                text = stringResource(StringKeyDosha.KEMADRUMA_REMEDIES),
+                text = stringResource(StringKeyDosha.DOSHA_REMEDIES_SECTION),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,

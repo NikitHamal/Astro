@@ -271,7 +271,7 @@ private fun PanchangaTopBar(
                 IconButton(onClick = onInfoClick) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
-                        contentDescription = stringResource(StringKeyAnalysis.PANCHANGA_INFO_A11Y),
+                        contentDescription = stringResource(StringKeyAnalysis.PANCHANGA_ABOUT),
                         tint = AppTheme.TextPrimary
                     )
                 }

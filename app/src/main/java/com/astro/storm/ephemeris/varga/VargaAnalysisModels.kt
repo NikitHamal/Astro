@@ -5,6 +5,7 @@ import com.astro.storm.core.common.StringKeyDivisional
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.*
+import com.astro.storm.ephemeris.DivisionalChartType
 
 // Data classes for analysis results
 data class HoraAnalysis(

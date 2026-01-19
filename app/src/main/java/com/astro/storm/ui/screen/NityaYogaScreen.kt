@@ -106,11 +106,10 @@ fun NityaYogaScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_OVERVIEW),
-        stringResource(com.astro.storm.core.common.StringKeyAnalysis.PANCHANGA_EFFECTS),
-        stringResource(com.astro.storm.core.common.StringKeyAnalysis.PANCHANGA_ACTIVITIES),
-        stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_TIMING),
-        stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_YOGAS)
+        stringResource(StringKeyAnalysis.PANCHANGA_BIRTH_INSIGHT),
+        stringResource(StringKeyAnalysis.PANCHANGA_FAVORABLE_ACTIVITIES),
+        stringResource(StringKeyAnalysis.UI_TIMING_GUIDANCE),
+        stringResource(StringKeyAnalysis.ANALYSIS_TAB_YOGAS)
     )
 
     // Calculate analysis

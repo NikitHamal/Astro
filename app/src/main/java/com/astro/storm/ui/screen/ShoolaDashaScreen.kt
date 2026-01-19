@@ -1194,12 +1194,12 @@ private fun ShoolaRemediesSection(
                         modifier = Modifier.size(48.dp)
                     )
                     Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = stringResource(com.astro.storm.core.common.StringKeySaham.UI_NO_REMEDIES_NEEDED),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = AppTheme.TextMuted,
-                        textAlign = TextAlign.Center
-                    )
+                        Text(
+                            text = stringResource(StringKeyDosha.KEMA_NO_REMEDIES),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = AppTheme.TextMuted,
+                            textAlign = TextAlign.Center
+                        )
                 }
             }
         } else {
@@ -1396,7 +1396,7 @@ private fun ShoolaEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyAdvanced.SHOOLA_SELECT_CHART),
+                text = stringResource(StringKeyAnalysis.TRANSIT_SELECT_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center

@@ -526,7 +526,7 @@ private fun getNakshatraQualities(nakshatra: Nakshatra, language: Language): Lis
     Nakshatra.UTTARA_ASHADHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_FINAL_VICTORY, language), StringResources.get(StringKeyNakshatra.TRAIT_LEADERSHIP, language), StringResources.get(StringKeyNakshatra.TRAIT_INTEGRITY, language), StringResources.get(StringKeyNakshatra.TRAIT_UNIVERSAL_VALUES, language))
     Nakshatra.SHRAVANA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_GOOD_LISTENER, language), StringResources.get(StringKeyNakshatra.TRAIT_LEARNING_ABILITY, language), StringResources.get(StringKeyNakshatra.TRAIT_CONNECTION_TO_TRUTH, language), StringResources.get(StringKeyNakshatra.TRAIT_PRESERVATION, language))
     Nakshatra.DHANISHTHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_MUSICAL_TALENT, language), StringResources.get(StringKeyNakshatra.TRAIT_WEALTH_GIVING, language), StringResources.get(StringKeyNakshatra.TRAIT_MARCHING_FORWARD, language), StringResources.get(StringKeyNakshatra.TRAIT_GROUP_ACTIVITIES, language))
-    Nakshatra.SHATABHISHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_HEALING_POWERS, language), StringResources.get(StringKeyNakshatra.TRAIT_SECRETIVE_WISDOM, language), StringResources.get(StringKeyNakshatra.TRAIT_RESEARCH_ABILITY, language), StringResources.get(StringKeyNakshatra.TRAIT_SELF_SUFFICIENT, language))
+    Nakshatra.SHATABHISHA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_HEALING_POWERS, language), StringResources.get(StringKeyNakshatra.TRAIT_SECRETIVE_WISDOM, language), StringResources.get(StringKeyNakshatra.TRAIT_RESEARCH_ORIENTED, language), StringResources.get(StringKeyNakshatra.TRAIT_SELF_SUFFICIENT, language))
     Nakshatra.PURVA_BHADRAPADA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_FIERY_PASSION, language), StringResources.get(StringKeyNakshatra.TRAIT_SPIRITUAL_WARRIOR, language), StringResources.get(StringKeyNakshatra.TRAIT_TRANSFORMATION, language), StringResources.get(StringKeyNakshatra.TRAIT_ASCETICISM, language))
     Nakshatra.UTTARA_BHADRAPADA -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_DEEP_MEDITATION, language), StringResources.get(StringKeyNakshatra.TRAIT_KUNDALINI_ENERGY, language), StringResources.get(StringKeyNakshatra.TRAIT_WISDOM, language), StringResources.get(StringKeyNakshatra.TRAIT_CONTROL_OVER_DESIRES, language))
     Nakshatra.REVATI -> listOf(StringResources.get(StringKeyNakshatra.TRAIT_NOURISHING, language), StringResources.get(StringKeyNakshatra.TRAIT_PROTECTIVE_OF_OTHERS, language), StringResources.get(StringKeyNakshatra.TRAIT_JOURNEY_COMPLETION, language), StringResources.get(StringKeyNakshatra.TRAIT_WEALTH_GIVING, language))
@@ -853,7 +853,7 @@ private fun NakshatraOverviewTab(
                     )
                     NakshatraInfoChip(
                         label = stringResource(StringKeyAnalysis.NAKSHATRA_GANA),
-                        value = analysis.birthNakshatra.gana.getLocalizedName(language),
+                        value = stringResource(analysis.birthNakshatra.gana.key),
                         icon = Icons.Filled.Groups
                     )
                     NakshatraInfoChip(

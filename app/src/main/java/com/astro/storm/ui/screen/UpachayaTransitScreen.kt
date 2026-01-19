@@ -25,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -662,7 +664,7 @@ private fun AlertCard(alert: UpachayaAlert, language: Language) {
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
-                        stringResource(com.astro.storm.core.common.StringKeySaham.UI_STATE_ACTIVATED),
+                        stringResource(com.astro.storm.core.common.StringKeySaham.ACTIVATED),
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,

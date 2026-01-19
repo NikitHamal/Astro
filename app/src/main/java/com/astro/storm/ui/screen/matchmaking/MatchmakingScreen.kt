@@ -1403,6 +1403,7 @@ private fun EnhancedManglikPersonCard(
     label: String,
     accentColor: Color
 ) {
+    val language = LocalLanguage.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -2888,7 +2889,7 @@ private fun formatMatchmakingForAi(
         appendLine("Please provide a deeper Vedic astrology interpretation of this Kundli Milan (matchmaking/compatibility) analysis. Be insightful, practical, and compassionate in your guidance. Focus on helping the couple understand their compatibility and how to strengthen their relationship.")
         appendLine()
         appendLine("## ${StringResources.get(com.astro.storm.core.common.StringKeyMatch.REPORT_MATCHMAKING_TITLE, Language.ENGLISH)}")
-        appendLine("${StringResources.get(com.astro.storm.core.common.StringKeyMatch.SUMMARY_TOTAL_SCORE, Language.ENGLISH)}: ${result.totalPoints} / ${result.maxPoints}")
+        appendLine("${StringResources.get(com.astro.storm.core.common.StringKeyMatch.MATCH_TOTAL_SCORE, Language.ENGLISH)}: ${result.totalPoints} / ${result.maxPoints}")
         appendLine("${StringResources.get(com.astro.storm.core.common.StringKeyMatch.SUMMARY_RATING, Language.ENGLISH)}: ${result.rating.getLocalizedName(Language.ENGLISH)}")
         appendLine()
 
