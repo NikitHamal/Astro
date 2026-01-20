@@ -179,7 +179,7 @@ object WealthDeepAnalyzer {
                 startDate = dasha.startDate.toLocalDate(),
                 endDate = dasha.endDate.toLocalDate(),
                 dasha = "${dasha.planet.displayName} Mahadasha",
-                wealthFocus = LocalizedParagraph("${dasha.planet.displayName} period wealth focus.",
+                financialFocus = LocalizedParagraph("${dasha.planet.displayName} period wealth focus.",
                     "${dasha.planet.displayName} अवधि धन फोकस।"),
                 opportunities = emptyList(),
                 cautions = emptyList(),

@@ -1399,18 +1399,6 @@ data class KetuSpiritualAnalysis(
     val liberationIndicators: LocalizedParagraph = pastLifeKarma
 )
 
-data class KetuSpiritualAnalysis(
-    val sign: ZodiacSign,
-    val house: Int,
-    val dignity: PlanetaryDignityLevel = PlanetaryDignityLevel.NEUTRAL,
-    val nakshatra: Nakshatra,
-    val pastLifeKarma: LocalizedParagraph,
-    val detachmentArea: LocalizedParagraph,
-    val spiritualGifts: LocalizedParagraph,
-    @get:JvmName("getDetachmentAreas") val detachmentAreas: LocalizedParagraph = detachmentArea,
-    @get:JvmName("getSpiritualTalents") val spiritualTalents: LocalizedParagraph = spiritualGifts,
-    @get:JvmName("getLiberationIndicators") val liberationIndicators: LocalizedParagraph = pastLifeKarma
-)
 
 /**
  * Atmakaraka Analysis (Soul Planet)

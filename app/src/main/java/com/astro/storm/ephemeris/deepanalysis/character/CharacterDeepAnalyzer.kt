@@ -163,6 +163,12 @@ object CharacterDeepAnalyzer {
         
         return AtmakarakaAnalysis(
             planet = ak,
+            sign = akPos?.sign ?: context.ascendantSign,
+            house = akPos?.house ?: 1,
+            dignity = context.getDignity(ak),
+            soulPurpose = AtmakarakaTextGenerator.getSoulDesire(ak),
+            lessons = AtmakarakaTextGenerator.getKarmicLesson(ak),
+            strength = context.getPlanetStrengthLevel(ak),
             signPosition = akPos?.sign ?: context.ascendantSign,
             soulDesire = AtmakarakaTextGenerator.getSoulDesire(ak),
             karmicLesson = AtmakarakaTextGenerator.getKarmicLesson(ak),

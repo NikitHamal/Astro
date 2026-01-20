@@ -22,7 +22,7 @@ object EducationDeepAnalyzer {
             academicChallenges = getAcademicChallenges(context),
             concentrationAbility = context.getPlanetStrengthLevel(Planet.MERCURY),
             memoryStrength = context.getPlanetStrengthLevel(Planet.MOON),
-            favorableSubjects = getSuitableSubjects(context),
+            suitableSubjects = getSuitableSubjects(context),
             researchAptitude = context.getHouseStrength(8),
             educationYogas = emptyList(),
             higherEducationAnalysis = analyzeHigherEducation(context),

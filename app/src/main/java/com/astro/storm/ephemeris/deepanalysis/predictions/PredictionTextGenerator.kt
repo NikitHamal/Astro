@@ -93,7 +93,7 @@ object PredictionTextGenerator {
         Planet.SATURN -> "अनुशासन र कार्मिक पाठहरू"
         Planet.RAHU -> "अपरम्परागत अनुभवहरू र महत्वाकांक्षा"
         Planet.KETU -> "आध्यात्मिक गहिराइ र विरक्ति"
-        else -> "${planet.displayNameNe}को प्रभावहरू"
+        else -> "${planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)}को प्रभावहरू"
     }
     
     fun getDashaAdvice(planet: Planet, context: AnalysisContext): LocalizedParagraph = when (planet) {
