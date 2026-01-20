@@ -1068,8 +1068,9 @@ fun AstroStormNavigation(
                 }
             }
 
+            val chart = currentChart ?: return@composable
             DeepPredictionsScreen(
-                chart = currentChart,
+                chart = chart,
                 onBack = { navController.popBackStack() }
             )
         }
@@ -1592,7 +1593,8 @@ fun AstroStormNavigation(
         ) { backStackEntry ->
             val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
             LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
-            DeepNativeAnalysisScreen(chart = currentChart, onBack = { navController.popBackStack() })
+            val chart = currentChart ?: return@composable
+            DeepNativeAnalysisScreen(chart = chart, onBack = { navController.popBackStack() })
         }
 
         // AI Models configuration screen
