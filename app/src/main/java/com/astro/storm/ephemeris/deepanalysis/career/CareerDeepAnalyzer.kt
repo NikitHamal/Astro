@@ -43,7 +43,8 @@ object CareerDeepAnalyzer {
             careerTimeline = careerTimeline,
             currentCareerPhase = currentPhase,
             careerSummary = summary,
-            careerStrengthScore = score
+            careerStrengthScore = score,
+            workStyle = workStyle
         )
     }
     

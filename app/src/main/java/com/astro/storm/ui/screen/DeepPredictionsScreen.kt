@@ -33,20 +33,6 @@ fun DeepPredictionsScreen(
     onBack: () -> Unit,
     viewModel: DeepPredictionsViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    val selectedTab by viewModel.selectedTab.collectAsState()
-    
-    LaunchedEffect(chart) {
-        viewModel.calculatePredictions(chart)
-    }
-    
-    val tabs = listOf(
-        "Dasha" to Icons.Default.Timeline,
-        "Transit" to Icons.Default.Public,
-        "Yearly" to Icons.Default.CalendarMonth,
-        "Remedies" to Icons.Default.Healing
-    )
-    
     Scaffold(
         topBar = {
             TopAppBar(
@@ -61,37 +47,62 @@ fun DeepPredictionsScreen(
             )
         }
     ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-            // Tab row
-            SectionTabRow(
-                sections = tabs,
-                selectedIndex = selectedTab,
-                onSelect = viewModel::selectTab,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-            
-            when (val state = uiState) {
-                is DeepPredictionsUiState.Initial,
-                is DeepPredictionsUiState.Loading -> {
-                    DeepAnalysisLoading()
-                }
-                is DeepPredictionsUiState.Error -> {
-                    DeepAnalysisError(
-                        message = state.message,
-                        onRetry = { viewModel.calculatePredictions(chart) }
-                    )
-                }
-                is DeepPredictionsUiState.Success -> {
-                    when (selectedTab) {
-                        0 -> DashaTab(state.predictions.dashaAnalysis)
-                        1 -> TransitTab(state.predictions.transitAnalysis)
-                        2 -> YearlyTab(state.predictions)
-                        3 -> RemediesTab(state.predictions.remedialMeasures)
-                    }
+        DeepPredictionsBody(
+            chart = chart,
+            viewModel = viewModel,
+            modifier = Modifier.padding(padding)
+        )
+    }
+}
+
+@Composable
+fun DeepPredictionsBody(
+    chart: VedicChart,
+    viewModel: DeepPredictionsViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    val selectedTab by viewModel.selectedTab.collectAsState()
+    
+    LaunchedEffect(chart) {
+        viewModel.calculatePredictions(chart)
+    }
+    
+    val tabs = listOf(
+        "Dasha" to Icons.Default.Timeline,
+        "Transit" to Icons.Default.Public,
+        "Yearly" to Icons.Default.CalendarMonth,
+        "Remedies" to Icons.Default.Healing
+    )
+
+    Column(
+        modifier = modifier.fillMaxSize()
+    ) {
+        // Tab row
+        SectionTabRow(
+            sections = tabs,
+            selectedIndex = selectedTab,
+            onSelect = viewModel::selectTab,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+        
+        when (val state = uiState) {
+            is DeepPredictionsUiState.Initial,
+            is DeepPredictionsUiState.Loading -> {
+                DeepAnalysisLoading()
+            }
+            is DeepPredictionsUiState.Error -> {
+                DeepAnalysisError(
+                    message = state.message,
+                    onRetry = { viewModel.calculatePredictions(chart) }
+                )
+            }
+            is DeepPredictionsUiState.Success -> {
+                when (selectedTab) {
+                    0 -> DashaTab(state.predictions.dashaAnalysis)
+                    1 -> TransitTab(state.predictions.transitAnalysis)
+                    2 -> YearlyTab(state.predictions)
+                    3 -> RemediesTab(state.predictions.remedialMeasures)
                 }
             }
         }

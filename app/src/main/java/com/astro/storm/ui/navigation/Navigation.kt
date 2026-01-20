@@ -25,7 +25,7 @@ import com.astro.storm.ui.screen.panchanga.PanchangaScreenRedesigned
 import com.astro.storm.ui.screen.PlanetsScreen
 import com.astro.storm.ui.screen.NadiAmshaScreen
 import com.astro.storm.ui.screen.PrashnaScreen
-import com.astro.storm.ui.screen.PredictionsScreen
+import com.astro.storm.ui.screen.DeepPredictionsScreen
 import com.astro.storm.ui.screen.RemediesScreen
 import com.astro.storm.ui.screen.ShadbalaScreen
 import com.astro.storm.ui.screen.ShodashvargaScreen
@@ -63,7 +63,7 @@ import com.astro.storm.ui.screen.DrigBalaScreen
 import com.astro.storm.ui.screen.SthanaBalaScreen
 import com.astro.storm.ui.screen.KalaBalaScreen
 import com.astro.storm.ui.screen.SahamScreen
-import com.astro.storm.ui.screen.NativeAnalysisScreen
+import com.astro.storm.ui.screen.DeepNativeAnalysisScreen
 import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
@@ -1068,7 +1068,7 @@ fun AstroStormNavigation(
                 }
             }
 
-            PredictionsScreen(
+            DeepPredictionsScreen(
                 chart = currentChart,
                 onBack = { navController.popBackStack() }
             )
@@ -1592,7 +1592,7 @@ fun AstroStormNavigation(
         ) { backStackEntry ->
             val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
             LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
-            NativeAnalysisScreen(chart = currentChart, onBack = { navController.popBackStack() })
+            DeepNativeAnalysisScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
         // AI Models configuration screen

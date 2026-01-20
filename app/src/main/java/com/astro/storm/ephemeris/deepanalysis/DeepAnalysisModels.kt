@@ -347,14 +347,17 @@ data class CareerDeepResult(
     val currentCareerPhase: CurrentCareerPhase,
     
     // Summary
+    // Summary
     val careerSummary: LocalizedParagraph,
-    val careerStrengthScore: Double
+    val careerStrengthScore: Double,
+    
+    // Work Style
+    val workStyle: WorkStyleProfile
 ) {
     // Aliases
     val dashamshaAnalysis get() = d10Analysis
     val careerYogaEffects get() = careerYogas
     val suitableProfessions get() = bestCareerPaths
-    val workStyle get() = LocalizedParagraph("Calculated work style", "गणना गरिएको काम गर्ने शैली")
 }
 
 /**

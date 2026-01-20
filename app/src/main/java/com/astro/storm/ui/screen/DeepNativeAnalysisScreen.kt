@@ -17,6 +17,7 @@ import com.astro.storm.ui.components.deepanalysis.*
 import com.astro.storm.ui.viewmodel.DeepAnalysisSection
 import com.astro.storm.ui.viewmodel.DeepAnalysisUiState
 import com.astro.storm.ui.viewmodel.DeepAnalysisViewModel
+import com.astro.storm.ui.theme.AppTheme
 
 /**
  * Deep Native Analysis Screen
@@ -30,6 +31,37 @@ fun DeepNativeAnalysisScreen(
     chart: VedicChart,
     onBack: () -> Unit,
     viewModel: DeepAnalysisViewModel = hiltViewModel()
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { 
+                    Text(
+                        "Deep Analysis",
+                        fontWeight = FontWeight.Bold
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        DeepNativeAnalysisBody(
+            chart = chart,
+            viewModel = viewModel,
+            modifier = Modifier.padding(padding)
+        )
+    }
+}
+
+@Composable
+fun DeepNativeAnalysisBody(
+    chart: VedicChart,
+    viewModel: DeepAnalysisViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val selectedSection by viewModel.selectedSection.collectAsState()
@@ -50,66 +82,46 @@ fun DeepNativeAnalysisScreen(
         DeepAnalysisSection.EDUCATION to ("Education" to Icons.Default.School),
         DeepAnalysisSection.SPIRITUAL to ("Spiritual" to Icons.Default.SelfImprovement)
     )
-    
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { 
-                    Text(
-                        "Deep Analysis",
-                        fontWeight = FontWeight.Bold
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
-                    }
-                }
-            )
-        }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-            // Section tabs
-            SectionTabRow(
-                sections = sections.map { it.second },
-                selectedIndex = sections.indexOfFirst { it.first == selectedSection },
-                onSelect = { index ->
-                    viewModel.selectSection(sections[index].first)
-                },
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-            
-            // Content based on state
-            when (val state = uiState) {
-                is DeepAnalysisUiState.Initial,
-                is DeepAnalysisUiState.Loading -> {
-                    DeepAnalysisLoading()
-                }
-                is DeepAnalysisUiState.Error -> {
-                    DeepAnalysisError(
-                        message = state.message,
-                        onRetry = { viewModel.calculateDeepAnalysis(chart) }
-                    )
-                }
-                is DeepAnalysisUiState.Success -> {
-                    DeepAnalysisContent(
-                        analysis = state.analysis,
-                        section = selectedSection,
-                        expandedCards = expandedCards,
-                        onToggleCard = viewModel::toggleCardExpansion
-                    )
-                }
+
+    Column(
+        modifier = modifier.fillMaxSize()
+    ) {
+        // Section tabs
+        SectionTabRow(
+            sections = sections.map { it.second },
+            selectedIndex = sections.indexOfFirst { it.first == selectedSection },
+            onSelect = { index ->
+                viewModel.selectSection(sections[index].first)
+            },
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+        
+        // Content based on state
+        when (val state = uiState) {
+            is DeepAnalysisUiState.Initial,
+            is DeepAnalysisUiState.Loading -> {
+                DeepAnalysisLoading()
+            }
+            is DeepAnalysisUiState.Error -> {
+                DeepAnalysisError(
+                    message = state.message,
+                    onRetry = { viewModel.calculateDeepAnalysis(chart) }
+                )
+            }
+            is DeepAnalysisUiState.Success -> {
+                DeepAnalysisContent(
+                    analysis = state.analysis,
+                    section = selectedSection,
+                    expandedCards = expandedCards,
+                    onToggleCard = viewModel::toggleCardExpansion
+                )
             }
         }
     }
 }
 
 @Composable
-private fun DeepAnalysisContent(
+fun DeepAnalysisContent(
     analysis: DeepNativeAnalysis,
     section: DeepAnalysisSection,
     expandedCards: Set<String>,
@@ -331,10 +343,17 @@ private fun CareerSection(
         onToggle = { onToggleCard("career_style") }
     ) {
         Column {
-            LocalizedParagraphText(paragraph = career.workStyle)
-            // LocalizedParagraphText(paragraph = career.workStyle.preferredEnvironment)
-            // Spacer(modifier = Modifier.height(8.dp))
-            // LocalizedParagraphText(paragraph = career.workStyle.leadershipStyle)
+            RecommendationItem(
+                label = "Preferred Environment",
+                text = career.workStyle.preferredEnvironment,
+                icon = Icons.Default.BusinessCenter
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            RecommendationItem(
+                label = "Leadership Style",
+                text = career.workStyle.leadershipStyle,
+                icon = Icons.Default.Engineering
+            )
         }
     }
     
@@ -437,8 +456,22 @@ private fun HealthSection(
         Column {
             LocalizedParagraphText(paragraph = health.constitutionAnalysis.constitutionDescription)
             Spacer(modifier = Modifier.height(8.dp))
-            // Text("Dietary Recommendations", fontWeight = FontWeight.Medium)
-            // LocalizedParagraphText(paragraph = health.constitutionAnalysis.dietaryRecommendations)
+            Text("Dietary Recommendations", fontWeight = FontWeight.Medium)
+            health.dietaryRecommendations.forEach { item ->
+                 Row(
+                     modifier = Modifier.padding(vertical = 4.dp),
+                     verticalAlignment = Alignment.CenterVertically
+                 ) {
+                     Icon(
+                         Icons.Default.Restaurant,
+                         contentDescription = null,
+                         modifier = Modifier.size(16.dp),
+                         tint = AppTheme.AccentPrimary
+                     )
+                     Spacer(modifier = Modifier.width(8.dp))
+                     LocalizedTraitText(trait = item)
+                 }
+            }
         }
     }
     
@@ -655,4 +688,47 @@ private fun SpiritualSection(
     
     Spacer(modifier = Modifier.height(8.dp))
     LocalizedParagraphText(paragraph = spiritual.spiritualSummary)
+}
+
+@Composable
+private fun RecommendationItem(
+    label: String,
+    text: LocalizedParagraph,
+    icon: ImageVector
+) {
+    Column {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = AppTheme.AccentPrimary
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        LocalizedParagraphText(
+            paragraph = text,
+            modifier = Modifier.padding(start = 28.dp)
+        )
+    }
+}
+
+@Composable
+private fun LocalizedTraitText(
+    trait: LocalizedTrait,
+    useNepali: Boolean = false,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = if (useNepali) trait.nameNe else trait.name,
+        modifier = modifier,
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
 }

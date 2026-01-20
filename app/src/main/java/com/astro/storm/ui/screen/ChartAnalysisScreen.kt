@@ -46,6 +46,8 @@ import com.astro.storm.ui.components.NakshatraDetailDialog
 import com.astro.storm.ui.components.dialogs.PlanetDetailDialog
 import com.astro.storm.ui.components.ShadbalaDialog
 import com.astro.storm.ui.screen.chartdetail.tabs.*
+import com.astro.storm.ui.screen.DeepNativeAnalysisBody
+import com.astro.storm.ui.screen.DeepPredictionsBody
 import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.ChartViewModel
@@ -191,6 +193,8 @@ fun ChartAnalysisScreen(
                         AnalysisTab.TRANSITS -> TransitsTabContentWrapper(chart)
                         AnalysisTab.ASHTAKAVARGA -> AshtakavargaTabContentWrapper(chart)
                         AnalysisTab.PANCHANGA -> PanchangaTabContentWrapper(chart)
+                        AnalysisTab.DEEP_ANALYSIS -> DeepAnalysisTabContentWrapper(chart = chart)
+                        AnalysisTab.PREDICTIONS -> DeepPredictionsTabContentWrapper(chart = chart)
                     }
                 }
             }
@@ -314,7 +318,9 @@ enum class AnalysisTab(
     DASHAS(StringKeyAnalysis.ANALYSIS_TAB_DASHAS, Icons.Outlined.Timeline),
     TRANSITS(StringKeyAnalysis.ANALYSIS_TAB_TRANSITS, Icons.Outlined.Sync),
     ASHTAKAVARGA(StringKeyAnalysis.ANALYSIS_TAB_ASHTAKAVARGA, Icons.Outlined.BarChart),
-    PANCHANGA(StringKeyAnalysis.ANALYSIS_TAB_PANCHANGA, Icons.Outlined.CalendarMonth)
+    PANCHANGA(StringKeyAnalysis.ANALYSIS_TAB_PANCHANGA, Icons.Outlined.CalendarMonth),
+    DEEP_ANALYSIS(StringKey.FEATURE_NATIVE_ANALYSIS, Icons.Outlined.Person),
+    PREDICTIONS(StringKey.FEATURE_PREDICTIONS, Icons.Outlined.AutoAwesome)
 }
 
 /**
@@ -332,6 +338,8 @@ private fun mapFeatureToTab(feature: InsightFeature): AnalysisTab {
         InsightFeature.TRANSITS -> AnalysisTab.TRANSITS
         InsightFeature.ASHTAKAVARGA -> AnalysisTab.ASHTAKAVARGA
         InsightFeature.PANCHANGA -> AnalysisTab.PANCHANGA
+        InsightFeature.NATIVE_ANALYSIS -> AnalysisTab.DEEP_ANALYSIS
+        InsightFeature.PREDICTIONS -> AnalysisTab.PREDICTIONS
         else -> AnalysisTab.CHART
     }
 }
@@ -435,6 +443,34 @@ private fun PanchangaTabContentWrapper(chart: VedicChart) {
             .background(AppTheme.ScreenBackground)
     ) {
         PanchangaTabContent(chart = chart)
+    }
+}
+
+@Composable
+private fun DeepAnalysisTabContentWrapper(chart: VedicChart) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppTheme.ScreenBackground)
+    ) {
+        DeepNativeAnalysisBody(
+            chart = chart,
+             modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+@Composable
+private fun DeepPredictionsTabContentWrapper(chart: VedicChart) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppTheme.ScreenBackground)
+    ) {
+        DeepPredictionsBody(
+            chart = chart,
+             modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
