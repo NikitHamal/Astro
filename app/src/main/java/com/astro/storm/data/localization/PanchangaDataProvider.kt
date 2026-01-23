@@ -497,7 +497,7 @@ object PanchangaDataProvider {
             )
             // Add more entries as needed or default case for all 27
             else -> LocalizedNakshatraData(
-                sanskrit = nakshatra.nameSa,
+                sanskrit = nakshatra.displayName,
                 deityEn = "Vedic Deity",
                 deityNe = "वैदिक देवता",
                 symbolEn = "Sacred Symbol",
