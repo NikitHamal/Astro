@@ -852,6 +852,5 @@ class TarabalaCalculator @Inject constructor(
         }
     }
 }
-}
 
 

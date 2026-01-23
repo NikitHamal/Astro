@@ -2006,14 +2006,6 @@ private fun SummaryCard(summary: String, color: Color) {
         }
     }
 }
-                text = summary,
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextSecondary,
-                lineHeight = 22.sp
-            )
-        }
-    }
-}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // UTILITY FUNCTIONS
@@ -2049,7 +2041,7 @@ private fun NativeLoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Analyzing chart...",
+                text = stringResource(StringKeyNative.LABEL_ANALYZING_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -2075,7 +2067,7 @@ private fun NativeErrorContent(message: String, modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Analysis Error",
+                text = stringResource(StringKeyNative.LABEL_ANALYSIS_ERROR),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -2109,14 +2101,14 @@ private fun NativeEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "No Chart Selected",
+                text = stringResource(StringKeyNative.LABEL_NO_CHART_SELECTED),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Please select a birth chart to view native analysis",
+                text = stringResource(StringKeyNative.LABEL_SELECT_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -2139,7 +2131,7 @@ private fun NativeInfoDialog(onDismiss: () -> Unit) {
         text = {
             Column {
                 Text(
-                    text = "This comprehensive analysis examines your birth chart to provide insights into various life areas including personality, career, relationships, health, wealth, education, and spiritual path.",
+                    text = stringResource(StringKeyNative.LABEL_COMPREHENSIVE_DESC),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
@@ -2155,7 +2147,7 @@ private fun NativeInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("OK", color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKey.BTN_OK), color = AppTheme.AccentPrimary)
             }
         },
         containerColor = AppTheme.CardBackground
