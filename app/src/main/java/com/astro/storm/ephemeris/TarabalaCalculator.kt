@@ -2,6 +2,8 @@ package com.astro.storm.ephemeris
 
 import android.content.Context
 import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyTarabala
 import com.astro.storm.core.common.StringKeyNative
 import com.astro.storm.core.common.getLocalizedName

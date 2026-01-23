@@ -75,6 +75,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyNative
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.stringResource
 import androidx.compose.ui.Modifier

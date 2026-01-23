@@ -13,6 +13,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyNative
+import com.astro.storm.core.common.StringKeyDeepCharacter
+import com.astro.storm.core.common.StringKeyDeepCareer
+import com.astro.storm.core.common.StringKeyDeepRelationship
+import com.astro.storm.core.common.StringKeyDeepHealth
+import com.astro.storm.core.common.StringKeyDeepWealth
+import com.astro.storm.core.common.StringKeyDeepSpiritual
+import com.astro.storm.core.common.StringKeyDeepEducation
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.deepanalysis.*
 import com.astro.storm.ui.components.deepanalysis.*

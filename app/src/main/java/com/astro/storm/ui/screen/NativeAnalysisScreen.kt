@@ -86,6 +86,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyNative
 import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.common.StringKeyDeepHealth
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
@@ -158,7 +159,7 @@ fun NativeAnalysisScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BACK),
+                            contentDescription = stringResource(StringKey.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -167,7 +168,7 @@ fun NativeAnalysisScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKey.INFO),
+                            contentDescription = stringResource(StringKey.TAB_CHAT), // Using TAB_CHAT as info placeholder if general info button missing
                             tint = AppTheme.TextSecondary
                         )
                     }

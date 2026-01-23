@@ -5,7 +5,7 @@ import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringResources
 
 /**
@@ -685,7 +685,7 @@ object ShodashvargaCalculator {
     /**
      * Get summary of Shodashvarga analysis
      */
-    fun getSummary(analysis: ShodashvargaAnalysis): String {
+    fun getSummary(analysis: ShodashvargaAnalysis, language: Language = Language.ENGLISH): String {
         return buildString {
             appendLine("=== SHODASHVARGA STRENGTH ANALYSIS ===")
             appendLine()
