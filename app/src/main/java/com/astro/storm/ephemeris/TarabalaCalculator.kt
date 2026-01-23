@@ -2,8 +2,9 @@ package com.astro.storm.ephemeris
 
 import android.content.Context
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.common.StringKeyTarabala
+import com.astro.storm.core.common.StringKeyNative
+import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
@@ -283,7 +284,8 @@ class TarabalaCalculator @Inject constructor(
      */
     fun calculateAnalysis(
         chart: VedicChart,
-        dateTime: LocalDateTime = LocalDateTime.now()
+        dateTime: LocalDateTime = LocalDateTime.now(),
+        language: Language = Language.ENGLISH
     ): TarabalaChandrabalaAnalysis? {
         val moonPosition = chart.planetPositions.find { it.planet == Planet.MOON } ?: return null
         val birthNakshatra = moonPosition.nakshatra
@@ -293,15 +295,15 @@ class TarabalaCalculator @Inject constructor(
         val transitMoonSign = calculateTransitMoonSign(dateTime, chart) ?: natalMoonSign
         val transitNakshatra = calculateTransitNakshatra(dateTime, chart) ?: birthNakshatra
 
-        val currentTarabala = calculateTarabala(birthNakshatra, transitNakshatra)
-        val currentChandrabala = calculateChandrabala(natalMoonSign, transitMoonSign)
-        val todayStrength = calculateDailyStrength(dateTime.toLocalDate(), currentTarabala, currentChandrabala)
+        val currentTarabala = calculateTarabala(birthNakshatra, transitNakshatra, language)
+        val currentChandrabala = calculateChandrabala(natalMoonSign, transitMoonSign, language)
+        val todayStrength = calculateDailyStrength(dateTime.toLocalDate(), currentTarabala, currentChandrabala, language)
 
-        val weeklyForecast = calculateWeeklyForecast(chart, dateTime.toLocalDate())
+        val weeklyForecast = calculateWeeklyForecast(chart, dateTime.toLocalDate(), language)
 
         // Calculate all 27 nakshatras for the "All Nakshatras" tab
         val allTaras = Nakshatra.entries.map { nak ->
-            calculateTarabala(birthNakshatra, nak)
+            calculateTarabala(birthNakshatra, nak, language)
         }
 
         return TarabalaChandrabalaAnalysis(
@@ -319,7 +321,7 @@ class TarabalaCalculator @Inject constructor(
     /**
      * Calculate Tarabala for a specific nakshatra from birth nakshatra
      */
-    fun calculateTarabala(birthNakshatra: Nakshatra, targetNakshatra: Nakshatra): TarabalaResult {
+    fun calculateTarabala(birthNakshatra: Nakshatra, targetNakshatra: Nakshatra, language: Language = Language.ENGLISH): TarabalaResult {
         val birthNum = birthNakshatra.number
         val targetNum = targetNakshatra.number
 
@@ -345,7 +347,7 @@ class TarabalaCalculator @Inject constructor(
 
         val overallStrength = (tara.strength * cycleModifier * 20).toInt()
 
-        val recommendations = generateTarabalaRecommendations(tara)
+        val recommendations = generateTarabalaRecommendations(tara, language)
 
         return TarabalaResult(
             targetNakshatra = targetNakshatra,
@@ -359,15 +361,15 @@ class TarabalaCalculator @Inject constructor(
     /**
      * Calculate Chandrabala based on transit Moon position from natal Moon
      */
-    fun calculateChandrabala(natalMoonSign: ZodiacSign, transitMoonSign: ZodiacSign): ChandrabalaResult {
+    fun calculateChandrabala(natalMoonSign: ZodiacSign, transitMoonSign: ZodiacSign, language: Language = Language.ENGLISH): ChandrabalaResult {
         // Calculate house position of transit Moon from natal Moon
         var houseFromMoon = transitMoonSign.number - natalMoonSign.number + 1
         if (houseFromMoon <= 0) houseFromMoon += 12
 
         val strength = CHANDRABALA_HOUSE_STRENGTH[houseFromMoon] ?: ChandrabalaStrength.NEUTRAL
 
-        val significations = getHouseSignifications(houseFromMoon)
-        val recommendations = generateChandrabalaRecommendations(houseFromMoon, strength)
+        val significations = getHouseSignifications(houseFromMoon, language)
+        val recommendations = generateChandrabalaRecommendations(houseFromMoon, language)
 
         return ChandrabalaResult(
             transitMoonSign = transitMoonSign,
@@ -385,7 +387,8 @@ class TarabalaCalculator @Inject constructor(
     fun calculateDailyStrength(
         date: LocalDate,
         tarabala: TarabalaResult,
-        chandrabala: ChandrabalaResult
+        chandrabala: ChandrabalaResult,
+        language: Language = Language.ENGLISH
     ): DailyStrengthResult {
         // Calculate combined strength
         val taraScore = tarabala.overallStrength
@@ -404,10 +407,11 @@ class TarabalaCalculator @Inject constructor(
         val (favorableActivities, avoidActivities) = generateActivityRecommendations(
             tarabala,
             chandrabala,
-            combinedStrength
+            combinedStrength,
+            language
         )
 
-        val generalAdvice = generateGeneralAdvice(tarabala, chandrabala, combinedStrength)
+        val generalAdvice = generateGeneralAdvice(tarabala, chandrabala, combinedStrength, language)
 
         return DailyStrengthResult(
             date = date,
@@ -426,7 +430,8 @@ class TarabalaCalculator @Inject constructor(
      */
     fun calculateWeeklyForecast(
         chart: VedicChart,
-        startDate: LocalDate
+        startDate: LocalDate,
+        language: Language = Language.ENGLISH
     ): WeeklyForecast {
         val moonPosition = chart.planetPositions.find { it.planet == Planet.MOON }
         if (moonPosition == null) {
@@ -452,16 +457,16 @@ class TarabalaCalculator @Inject constructor(
             val transitMoonSign = calculateTransitMoonSignForDate(date, chart) ?: natalMoonSign
             val transitNakshatra = calculateTransitNakshatraForDate(date, chart) ?: birthNakshatra
 
-            val tarabala = calculateTarabala(birthNakshatra, transitNakshatra)
-            val chandrabala = calculateChandrabala(natalMoonSign, transitMoonSign)
+            val tarabala = calculateTarabala(birthNakshatra, transitNakshatra, language)
+            val chandrabala = calculateChandrabala(natalMoonSign, transitMoonSign, language)
 
-            calculateDailyStrength(date, tarabala, chandrabala)
+            calculateDailyStrength(date, tarabala, chandrabala, language)
         }
 
         val bestDay = dailyStrengths.maxByOrNull { it.overallScore } ?: dailyStrengths.first()
         val worstDay = dailyStrengths.minByOrNull { it.overallScore } ?: dailyStrengths.first()
 
-        val weeklyAdvice = generateWeeklyAdvice(dailyStrengths, bestDay, worstDay)
+        val weeklyAdvice = generateWeeklyAdvice(dailyStrengths, bestDay, worstDay, language)
 
         return WeeklyForecast(
             startDate = startDate,
@@ -529,87 +534,88 @@ class TarabalaCalculator @Inject constructor(
     // RECOMMENDATION GENERATORS
     // ============================================================================
 
-    private fun generateTarabalaRecommendations(tara: Tara): List<String> {
+    private fun generateTarabalaRecommendations(tara: Tara, language: Language): List<String> {
         return when (tara) {
             Tara.JANMA -> listOf(
-                "Birth star day - rest and introspection recommended",
-                "Avoid starting new ventures",
-                "Good for spiritual practices and meditation",
-                "Health requires extra attention"
+                StringResources.get(StringKeyTarabala.TARA_JANMA_REC_1, language),
+                StringResources.get(StringKeyTarabala.TARA_JANMA_REC_2, language),
+                StringResources.get(StringKeyTarabala.TARA_JANMA_REC_3, language),
+                StringResources.get(StringKeyTarabala.TARA_JANMA_REC_4, language)
             )
             Tara.SAMPAT -> listOf(
-                "Excellent for financial matters",
-                "Start wealth-generating activities",
-                "Good for investments and purchases",
-                "Favorable for business negotiations"
+                StringResources.get(StringKeyTarabala.TARA_SAMPAT_REC_1, language),
+                StringResources.get(StringKeyTarabala.TARA_SAMPAT_REC_2, language),
+                StringResources.get(StringKeyTarabala.TARA_SAMPAT_REC_3, language),
+                StringResources.get(StringKeyTarabala.TARA_SAMPAT_REC_4, language)
             )
             Tara.VIPAT -> listOf(
-                "Avoid important decisions",
-                "Be cautious in travels",
-                "Not suitable for new beginnings",
-                "Focus on routine activities only"
+                StringResources.get(StringKeyTarabala.TARA_VIPAT_REC_1, language),
+                StringResources.get(StringKeyTarabala.TARA_VIPAT_REC_2, language),
+                StringResources.get(StringKeyTarabala.TARA_VIPAT_REC_3, language),
+                StringResources.get(StringKeyTarabala.TARA_VIPAT_REC_4, language)
             )
             Tara.KSHEMA -> listOf(
-                "Good for health-related activities",
-                "Favorable for medical treatments",
-                "Support well-being initiatives",
-                "Safe for moderate new undertakings"
+                StringResources.get(StringKeyTarabala.TARA_KSHEMA_REC_1, language),
+                StringResources.get(StringKeyTarabala.TARA_KSHEMA_REC_2, language),
+                StringResources.get(StringKeyTarabala.TARA_KSHEMA_REC_3, language),
+                StringResources.get(StringKeyTarabala.TARA_KSHEMA_REC_4, language)
             )
             Tara.PRATYARI -> listOf(
-                "Expect minor obstacles",
-                "Stay patient with challenges",
-                "Avoid confrontations",
-                "Not ideal for important meetings"
+                StringResources.get(StringKeyTarabala.TARA_PRATYARI_REC_1, language),
+                StringResources.get(StringKeyTarabala.TARA_PRATYARI_REC_2, language),
+                StringResources.get(StringKeyTarabala.TARA_PRATYARI_REC_3, language),
+                StringResources.get(StringKeyTarabala.TARA_PRATYARI_REC_4, language)
             )
             Tara.SADHAKA -> listOf(
-                "Good for achieving goals",
-                "Favorable for completing tasks",
-                "Support ongoing projects",
-                "Moderate success in new ventures"
+                StringResources.get(StringKeyTarabala.TARA_SADHAKA_REC_1, language),
+                StringResources.get(StringKeyTarabala.TARA_SADHAKA_REC_2, language),
+                StringResources.get(StringKeyTarabala.TARA_SADHAKA_REC_3, language),
+                StringResources.get(StringKeyTarabala.TARA_SADHAKA_REC_4, language)
             )
             Tara.VADHA -> listOf(
-                "Most inauspicious tara - maximum caution",
-                "Avoid all major activities",
-                "Not suitable for travel or surgery",
-                "Focus on prayers and spiritual protection"
+                StringResources.get(StringKeyTarabala.TARA_VADHA_REC_1, language),
+                StringResources.get(StringKeyTarabala.TARA_VADHA_REC_2, language),
+                StringResources.get(StringKeyTarabala.TARA_VADHA_REC_3, language),
+                StringResources.get(StringKeyTarabala.TARA_VADHA_REC_4, language)
             )
             Tara.MITRA -> listOf(
-                "Favorable for relationships",
-                "Good for meetings and collaborations",
-                "Support partnerships and friendships",
-                "Suitable for social activities"
+                StringResources.get(StringKeyTarabala.TARA_MITRA_REC_1, language),
+                StringResources.get(StringKeyTarabala.TARA_MITRA_REC_2, language),
+                StringResources.get(StringKeyTarabala.TARA_MITRA_REC_3, language),
+                StringResources.get(StringKeyTarabala.TARA_MITRA_REC_4, language)
             )
             Tara.PARAMA_MITRA -> listOf(
-                "Most auspicious tara - excellent for everything",
-                "Ideal for starting new ventures",
-                "Best time for important decisions",
-                "Maximum success probability"
+                StringResources.get(StringKeyTarabala.TARA_PARAMA_MITRA_REC_1, language),
+                StringResources.get(StringKeyTarabala.TARA_PARAMA_MITRA_REC_2, language),
+                StringResources.get(StringKeyTarabala.TARA_PARAMA_MITRA_REC_3, language),
+                StringResources.get(StringKeyTarabala.TARA_PARAMA_MITRA_REC_4, language)
             )
         }
     }
 
-    private fun generateChandrabalaRecommendations(house: Int, strength: ChandrabalaStrength): List<String> {
+    private fun generateChandrabalaRecommendations(house: Int, language: Language): List<String> {
         return when (house) {
-            1 -> listOf("Personal matters are neutral", "Self-reflection day", "Health awareness needed")
-            2 -> listOf("Good for family matters", "Favorable for financial discussions", "Speech brings benefits")
-            3 -> listOf("Excellent courage and initiative", "Best for bold actions", "Travel is favorable", "Communications succeed")
-            4 -> listOf("Focus on home comforts", "Mother may need attention", "Avoid property decisions")
-            5 -> listOf("Intelligence enhanced", "Good for education", "Children bring joy", "Romance may blossom")
-            6 -> listOf("Victory over enemies", "Competitions favored", "Health improves", "Service brings rewards")
-            7 -> listOf("Partnerships favorable", "Business dealings good", "Marriage matters positive")
-            8 -> listOf("Avoid risky activities", "Hidden matters surface", "Transformation possible", "Caution advised")
-            9 -> listOf("Fortune smiles", "Long journeys favorable", "Spiritual growth", "Father may help")
-            10 -> listOf("Career advancement", "Professional success", "Authority recognition", "Best for work matters")
-            11 -> listOf("Maximum gains possible", "Friends bring opportunities", "Wishes get fulfilled", "Income increases")
-            12 -> listOf("Expenses may increase", "Rest and recuperation needed", "Spiritual practices beneficial", "Foreign matters need care")
-            else -> listOf("Neutral influences")
+            1 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_1_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_1_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_1_3, language))
+            2 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_2_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_2_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_2_3, language))
+            3 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_3_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_3_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_3_3, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_3_4, language))
+            4 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_4_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_4_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_4_3, language))
+            5 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_5_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_5_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_5_3, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_5_4, language))
+            6 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_6_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_6_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_6_3, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_6_4, language))
+            7 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_7_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_7_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_7_3, language))
+            8 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_8_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_8_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_8_3, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_8_4, language))
+            9 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_9_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_9_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_9_3, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_9_4, language))
+            10 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_10_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_10_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_10_3, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_10_4, language))
+            11 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_11_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_11_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_11_3, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_11_4, language))
+            12 -> listOf(StringResources.get(StringKeyTarabala.CHANDRA_REC_12_1, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_12_2, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_12_3, language), StringResources.get(StringKeyTarabala.CHANDRA_REC_12_4, language))
+            else -> listOf(StringResources.get(StringKeyTarabala.NEUTRAL_INFLUENCES, language))
         }
     }
 
     private fun generateActivityRecommendations(
         tarabala: TarabalaResult,
         chandrabala: ChandrabalaResult,
-        combined: CombinedStrength
+        combined: CombinedStrength,
+        language: Language
     ): Pair<List<ActivityRecommendation>, List<ActivityRecommendation>> {
         val favorable = mutableListOf<ActivityRecommendation>()
         val avoid = mutableListOf<ActivityRecommendation>()
@@ -617,59 +623,59 @@ class TarabalaCalculator @Inject constructor(
         when (combined) {
             CombinedStrength.HIGHLY_FAVORABLE -> {
                 favorable.addAll(listOf(
-                    ActivityRecommendation("Starting new business", ActivitySuitability.HIGHLY_RECOMMENDED, "Both Tara and Chandra support new beginnings"),
-                    ActivityRecommendation("Important meetings", ActivitySuitability.HIGHLY_RECOMMENDED, "Communication enhanced"),
-                    ActivityRecommendation("Financial investments", ActivitySuitability.HIGHLY_RECOMMENDED, "Wealth matters favored"),
-                    ActivityRecommendation("Medical treatments", ActivitySuitability.RECOMMENDED, "Health matters supported"),
-                    ActivityRecommendation("Travel", ActivitySuitability.HIGHLY_RECOMMENDED, "Journeys will be successful"),
-                    ActivityRecommendation("Marriage ceremonies", ActivitySuitability.HIGHLY_RECOMMENDED, "Auspicious for unions")
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_START_BUSINESS, language), ActivitySuitability.HIGHLY_RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_TARA_CHANDRA_SUPPORT, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_IMPORTANT_MEETINGS, language), ActivitySuitability.HIGHLY_RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_COMM_ENHANCED, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_FINANCIAL_INVEST, language), ActivitySuitability.HIGHLY_RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_WEALTH_FAVORED, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_MEDICAL_TREATMENT, language), ActivitySuitability.RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_HEALTH_SUPPORTED, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_TRAVEL, language), ActivitySuitability.HIGHLY_RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_JOURNEYS_SUCCESS, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_MARRIAGE, language), ActivitySuitability.HIGHLY_RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_AUSPICIOUS_UNIONS, language))
                 ))
             }
             CombinedStrength.FAVORABLE -> {
                 favorable.addAll(listOf(
-                    ActivityRecommendation("Business activities", ActivitySuitability.RECOMMENDED, "Generally supportive"),
-                    ActivityRecommendation("Routine work", ActivitySuitability.HIGHLY_RECOMMENDED, "Productivity enhanced"),
-                    ActivityRecommendation("Short travels", ActivitySuitability.RECOMMENDED, "Safe for journeys"),
-                    ActivityRecommendation("Social events", ActivitySuitability.RECOMMENDED, "Relationships favored")
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_BUSINESS_ACT, language), ActivitySuitability.RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_GENERALLY_SUPPORTIVE, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_ROUTINE_WORK, language), ActivitySuitability.HIGHLY_RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_PRODUCTIVITY_ENHANCED, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_SHORT_TRAVEL, language), ActivitySuitability.RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_SAFE_JOURNEYS, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_SOCIAL_EVENTS, language), ActivitySuitability.RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_RELATIONSHIPS_FAVORED, language))
                 ))
                 avoid.addAll(listOf(
-                    ActivityRecommendation("High-risk investments", ActivitySuitability.CAUTION, "Not the best time for speculation")
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_HIGH_RISK_INVEST, language), ActivitySuitability.CAUTION, StringResources.get(StringKeyTarabala.REASON_NOT_BEST_SPECULATION, language))
                 ))
             }
             CombinedStrength.MIXED -> {
                 favorable.addAll(listOf(
-                    ActivityRecommendation("Routine activities", ActivitySuitability.ACCEPTABLE, "Normal productivity expected"),
-                    ActivityRecommendation("Ongoing projects", ActivitySuitability.RECOMMENDED, "Continue existing work")
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_ROUTINE_ACT, language), ActivitySuitability.ACCEPTABLE, StringResources.get(StringKeyTarabala.REASON_NORMAL_PRODUCTIVITY, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_ONGOING_PROJECTS, language), ActivitySuitability.RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_CONTINUE_WORK, language))
                 ))
                 avoid.addAll(listOf(
-                    ActivityRecommendation("New ventures", ActivitySuitability.CAUTION, "Wait for better timing"),
-                    ActivityRecommendation("Major purchases", ActivitySuitability.CAUTION, "Delays possible"),
-                    ActivityRecommendation("Important negotiations", ActivitySuitability.CAUTION, "Mixed results likely")
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_NEW_VENTURES, language), ActivitySuitability.CAUTION, StringResources.get(StringKeyTarabala.REASON_WAIT_BETTER_TIMING, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_MAJOR_PURCHASES, language), ActivitySuitability.CAUTION, StringResources.get(StringKeyTarabala.REASON_DELAYS_POSSIBLE, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_IMPORTANT_NEGOTIATIONS, language), ActivitySuitability.CAUTION, StringResources.get(StringKeyTarabala.REASON_MIXED_RESULTS, language))
                 ))
             }
             CombinedStrength.CHALLENGING -> {
                 favorable.addAll(listOf(
-                    ActivityRecommendation("Spiritual practices", ActivitySuitability.RECOMMENDED, "Inner work beneficial"),
-                    ActivityRecommendation("Rest and recovery", ActivitySuitability.RECOMMENDED, "Rejuvenation favored")
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_SPIRITUAL_PRACTICES, language), ActivitySuitability.RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_INNER_WORK_BENEFICIAL, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_REST_RECOVERY, language), ActivitySuitability.RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_REJUVENATION_FAVORED, language))
                 ))
                 avoid.addAll(listOf(
-                    ActivityRecommendation("New beginnings", ActivitySuitability.AVOID, "Obstacles likely"),
-                    ActivityRecommendation("Travel", ActivitySuitability.CAUTION, "Delays and problems possible"),
-                    ActivityRecommendation("Important decisions", ActivitySuitability.AVOID, "Judgment may be clouded"),
-                    ActivityRecommendation("Medical procedures", ActivitySuitability.CAUTION, "Unless emergency")
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_NEW_BEGINNINGS, language), ActivitySuitability.AVOID, StringResources.get(StringKeyTarabala.REASON_OBSTACLES_LIKELY, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_TRAVEL, language), ActivitySuitability.CAUTION, StringResources.get(StringKeyTarabala.REASON_DELAYS_PROBLEMS, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_IMPORTANT_DECISIONS, language), ActivitySuitability.AVOID, StringResources.get(StringKeyTarabala.REASON_JUDGMENT_CLOUDED, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_MEDICAL_PROCEDURES, language), ActivitySuitability.CAUTION, StringResources.get(StringKeyTarabala.REASON_UNLESS_EMERGENCY, language))
                 ))
             }
             CombinedStrength.UNFAVORABLE -> {
                 favorable.addAll(listOf(
-                    ActivityRecommendation("Prayers and meditation", ActivitySuitability.HIGHLY_RECOMMENDED, "Spiritual protection needed"),
-                    ActivityRecommendation("Charity", ActivitySuitability.RECOMMENDED, "Reduces negative karma")
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_PRAYER_MEDITATION, language), ActivitySuitability.HIGHLY_RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_SPIRITUAL_PROT_NEEDED, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_CHARITY, language), ActivitySuitability.RECOMMENDED, StringResources.get(StringKeyTarabala.REASON_REDUCES_NEG_KARMA, language))
                 ))
                 avoid.addAll(listOf(
-                    ActivityRecommendation("All major activities", ActivitySuitability.AVOID, "Day is inauspicious"),
-                    ActivityRecommendation("Travel", ActivitySuitability.AVOID, "Accidents/problems likely"),
-                    ActivityRecommendation("Contracts and agreements", ActivitySuitability.AVOID, "Will not be beneficial"),
-                    ActivityRecommendation("Starting anything new", ActivitySuitability.AVOID, "Will face destruction"),
-                    ActivityRecommendation("Surgeries", ActivitySuitability.AVOID, "Unless life-threatening emergency")
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_MAJOR_ACT, language), ActivitySuitability.AVOID, StringResources.get(StringKeyTarabala.REASON_DAY_INAUSPICIOUS, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_TRAVEL, language), ActivitySuitability.AVOID, StringResources.get(StringKeyTarabala.REASON_ACCIDENTS_LIKELY, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_CONTRACTS_AGREEMENTS, language), ActivitySuitability.AVOID, StringResources.get(StringKeyTarabala.REASON_NOT_BENEFICIAL, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_NEW_BEGINNINGS, language), ActivitySuitability.AVOID, StringResources.get(StringKeyTarabala.REASON_FACE_DESTRUCTION, language)),
+                    ActivityRecommendation(StringResources.get(StringKeyTarabala.ACTIVITY_SURGERIES, language), ActivitySuitability.AVOID, StringResources.get(StringKeyTarabala.REASON_UNLESS_LIFE_THREATENING, language))
                 ))
             }
         }
@@ -680,69 +686,72 @@ class TarabalaCalculator @Inject constructor(
     private fun generateGeneralAdvice(
         tarabala: TarabalaResult,
         chandrabala: ChandrabalaResult,
-        combined: CombinedStrength
+        combined: CombinedStrength,
+        language: Language
     ): String {
         return when (combined) {
             CombinedStrength.HIGHLY_FAVORABLE ->
-                "Today is highly auspicious with both Tarabala (${tarabala.tara.sanskritName}) and Chandrabala supporting your activities. " +
-                "This is an excellent day for important decisions, new beginnings, and significant undertakings. " +
-                "Make the most of this favorable alignment."
+                StringResources.get(StringKeyTarabala.ADVICE_HIGHLY_AUSPICIOUS, language, tarabala.tara.getLocalizedName(language))
 
             CombinedStrength.FAVORABLE ->
-                "Today offers good support from the cosmic energies. Tarabala is ${if (tarabala.isFavorable) "positive" else "neutral"} " +
-                "and Moon's position in the ${chandrabala.houseFromMoon}th house provides ${chandrabala.strength.displayName.lowercase()} results. " +
-                "Proceed with confidence in normal activities."
+                StringResources.get(StringKeyTarabala.ADVICE_FAVORABLE, language, 
+                    StringResources.get(if (tarabala.isFavorable) StringKeyTarabala.SUPPORT_POSITIVE else StringKeyTarabala.SUPPORT_NEUTRAL, language),
+                    chandrabala.houseFromMoon,
+                    chandrabala.strength.getLocalizedName(language))
 
             CombinedStrength.MIXED ->
-                "Mixed influences today require balanced approach. While ${tarabala.tara.sanskritName} Tara brings " +
-                "${if (tarabala.isFavorable) "support" else "challenges"}, Chandrabala shows ${chandrabala.strength.displayName.lowercase()} strength. " +
-                "Focus on routine matters and avoid extremes."
+                StringResources.get(StringKeyTarabala.ADVICE_MIXED, language, 
+                    tarabala.tara.getLocalizedName(language),
+                    StringResources.get(if (tarabala.isFavorable) StringKeyTarabala.SUPPORT_SUPPORT else StringKeyTarabala.SUPPORT_CHALLENGES, language),
+                    chandrabala.strength.getLocalizedName(language))
 
             CombinedStrength.CHALLENGING ->
-                "Today presents challenges with ${tarabala.tara.sanskritName} Tara and Moon in ${chandrabala.houseFromMoon}th house. " +
-                "Exercise caution in all matters. Postpone important decisions if possible. " +
-                "Focus on spiritual practices and inner strength."
+                StringResources.get(StringKeyTarabala.ADVICE_CHALLENGING, language, 
+                    tarabala.tara.getLocalizedName(language),
+                    chandrabala.houseFromMoon)
 
             CombinedStrength.UNFAVORABLE ->
-                "Caution advised today. The ${tarabala.tara.sanskritName} Tara combined with Moon's position creates unfavorable conditions. " +
-                "This is not suitable for any important activity. Focus on prayers, charity, and rest. " +
-                "Wait for better cosmic alignment before proceeding with significant matters."
+                StringResources.get(StringKeyTarabala.ADVICE_UNFAVORABLE, language, 
+                    tarabala.tara.getLocalizedName(language))
         }
     }
 
     private fun generateWeeklyAdvice(
         dailyStrengths: List<DailyStrengthResult>,
         bestDay: DailyStrengthResult,
-        worstDay: DailyStrengthResult
+        worstDay: DailyStrengthResult,
+        language: Language
     ): String {
         val avgScore = dailyStrengths.map { it.overallScore }.average().toInt()
         val favorableDays = dailyStrengths.count { it.combinedStrength in listOf(CombinedStrength.HIGHLY_FAVORABLE, CombinedStrength.FAVORABLE) }
 
-        return buildString {
-            append("This week shows an average strength score of $avgScore%. ")
-            append("$favorableDays out of 7 days are favorable for important activities. ")
-            append("Best day is ${bestDay.date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }} with ${bestDay.overallScore}% strength. ")
-            append("Avoid major decisions on ${worstDay.date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }} (${worstDay.overallScore}% strength). ")
-            append("Plan your important activities accordingly.")
-        }
+        return StringResources.get(StringKeyTarabala.ADVICE_WEEKLY_TEMPLATE, language,
+            avgScore,
+            favorableDays,
+            bestDay.date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() },
+            bestDay.overallScore,
+            worstDay.date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() },
+            worstDay.overallScore
+        )
     }
 
-    private fun getHouseSignifications(house: Int): String {
-        return when (house) {
-            1 -> "Self, personality, physical body"
-            2 -> "Wealth, family, speech, food"
-            3 -> "Courage, siblings, short journeys, communications"
-            4 -> "Home, mother, comfort, vehicles"
-            5 -> "Children, intelligence, romance, creativity"
-            6 -> "Enemies, diseases, debts, service"
-            7 -> "Marriage, partnership, business, travel"
-            8 -> "Longevity, obstacles, inheritance, transformation"
-            9 -> "Fortune, father, religion, long journeys"
-            10 -> "Career, status, authority, profession"
-            11 -> "Gains, friends, aspirations, income"
-            12 -> "Losses, expenses, liberation, foreign"
-            else -> "Unknown"
+    private fun getHouseSignifications(house: Int, language: Language): String {
+        val key = when (house) {
+            1 -> StringKeyTarabala.HOUSE_SIG_1
+            2 -> StringKeyTarabala.HOUSE_SIG_2
+            3 -> StringKeyTarabala.HOUSE_SIG_3
+            4 -> StringKeyTarabala.HOUSE_SIG_4
+            5 -> StringKeyTarabala.HOUSE_SIG_5
+            6 -> StringKeyTarabala.HOUSE_SIG_6
+            7 -> StringKeyTarabala.HOUSE_SIG_7
+            8 -> StringKeyTarabala.HOUSE_SIG_8
+            9 -> StringKeyTarabala.HOUSE_SIG_9
+            10 -> StringKeyTarabala.HOUSE_SIG_10
+            11 -> StringKeyTarabala.HOUSE_SIG_11
+            12 -> StringKeyTarabala.HOUSE_SIG_12
+            else -> StringKeyTarabala.HOUSE_SIG_UNKNOWN
         }
+        return StringResources.get(key, language)
     }
 
     private fun createEmptyDailyResult(date: LocalDate): DailyStrengthResult {
@@ -764,70 +773,70 @@ class TarabalaCalculator @Inject constructor(
     fun generateReport(analysis: TarabalaChandrabalaAnalysis, language: Language = Language.ENGLISH): String {
         return buildString {
             appendLine("═══════════════════════════════════════════════════════════")
-            appendLine("           TARABALA & CHANDRABALA ANALYSIS")
+            appendLine("           ${StringResources.get(StringKeyTarabala.REPORT_TITLE, language)}")
             appendLine("═══════════════════════════════════════════════════════════")
             appendLine()
-            appendLine("Birth Nakshatra: ${analysis.birthNakshatra.displayName}")
-            appendLine("Natal Moon Sign: ${analysis.natalMoonSign.displayName}")
-            appendLine("Analysis Date: ${analysis.currentDate}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_BIRTH_NAK, language)} ${analysis.birthNakshatra.displayName}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_NATAL_MOON, language)} ${analysis.natalMoonSign.displayName}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_ANALYSIS_DATE, language)} ${analysis.currentDate}")
             appendLine()
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine("TODAY'S TARABALA")
+            appendLine(StringResources.get(StringKeyTarabala.REPORT_TODAY_TARA, language))
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine("Transit Nakshatra: ${analysis.currentTarabala.targetNakshatra.displayName}")
-            appendLine("Tara: ${analysis.currentTarabala.tara.sanskritName} (${analysis.currentTarabala.tara.englishMeaning})")
-            appendLine("Cycle: ${analysis.currentTarabala.cycle} of 3")
-            appendLine("Favorable: ${if (analysis.currentTarabala.isFavorable) "Yes" else "No"}")
-            appendLine("Strength: ${analysis.currentTarabala.overallStrength}%")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_TRANSIT_NAK, language)} ${analysis.currentTarabala.targetNakshatra.displayName}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_TARA_LABEL, language)} ${analysis.currentTarabala.tara.sanskritName} (${analysis.currentTarabala.tara.englishMeaning})")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_CYCLE_LABEL, language)} ${analysis.currentTarabala.cycle} of 3")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_FAVORABLE_LABEL, language)} ${if (analysis.currentTarabala.isFavorable) StringResources.get(StringKeyAnalysis.UI_YES, language) else StringResources.get(StringKeyAnalysis.UI_NO, language)}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_STRENGTH_LABEL, language)} ${analysis.currentTarabala.overallStrength}%")
             appendLine()
-            appendLine("Recommendations:")
+            appendLine(StringResources.get(StringKeyTarabala.REPORT_RECS_LABEL, language))
             analysis.currentTarabala.recommendations.forEach {
                 appendLine("  • $it")
             }
             appendLine()
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine("TODAY'S CHANDRABALA")
+            appendLine(StringResources.get(StringKeyTarabala.REPORT_TODAY_CHANDRA, language))
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine("Transit Moon: ${analysis.currentChandrabala.transitMoonSign.displayName}")
-            appendLine("House from Natal Moon: ${analysis.currentChandrabala.houseFromMoon}")
-            appendLine("Strength: ${analysis.currentChandrabala.strength.displayName}")
-            appendLine("Significations: ${analysis.currentChandrabala.significations}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_TRANSIT_MOON, language)} ${analysis.currentChandrabala.transitMoonSign.displayName}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_HOUSE_FROM_MOON, language)} ${analysis.currentChandrabala.houseFromMoon}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_STRENGTH_LABEL, language)} ${analysis.currentChandrabala.strength.getLocalizedName(language)}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_SIGNIFICATIONS, language)} ${analysis.currentChandrabala.significations}")
             appendLine()
-            appendLine("Recommendations:")
+            appendLine(StringResources.get(StringKeyTarabala.REPORT_RECS_LABEL, language))
             analysis.currentChandrabala.recommendations.forEach {
                 appendLine("  • $it")
             }
             appendLine()
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine("COMBINED DAILY STRENGTH")
+            appendLine(StringResources.get(StringKeyTarabala.REPORT_COMBINED_STRENGTH, language))
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine("Overall Score: ${analysis.todayStrength.overallScore}%")
-            appendLine("Combined Strength: ${analysis.todayStrength.combinedStrength.displayName}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_OVERALL_SCORE, language)} ${analysis.todayStrength.overallScore}%")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_FAVORABLE_LABEL, language)} ${analysis.todayStrength.combinedStrength.getLocalizedName(language)}")
             appendLine()
-            appendLine("General Advice:")
+            appendLine(StringResources.get(StringKeyTarabala.REPORT_GENERAL_ADVICE, language))
             appendLine(analysis.todayStrength.generalAdvice)
             appendLine()
             if (analysis.todayStrength.favorableActivities.isNotEmpty()) {
-                appendLine("Favorable Activities:")
+                appendLine(StringResources.get(StringKeyTarabala.REPORT_FAV_ACT, language))
                 analysis.todayStrength.favorableActivities.forEach {
                     appendLine("  ✓ ${it.activity} - ${it.reason}")
                 }
                 appendLine()
             }
             if (analysis.todayStrength.avoidActivities.isNotEmpty()) {
-                appendLine("Activities to Avoid:")
+                appendLine(StringResources.get(StringKeyTarabala.REPORT_AVOID_ACT, language))
                 analysis.todayStrength.avoidActivities.forEach {
                     appendLine("  ✗ ${it.activity} - ${it.reason}")
                 }
             }
             appendLine()
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine("WEEKLY FORECAST")
+            appendLine(StringResources.get(StringKeyTarabala.REPORT_WEEKLY_FORECAST, language))
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine("Best Day: ${analysis.weeklyForecast.bestDay.date.dayOfWeek} (${analysis.weeklyForecast.bestDay.overallScore}%)")
-            appendLine("Avoid: ${analysis.weeklyForecast.worstDay.date.dayOfWeek} (${analysis.weeklyForecast.worstDay.overallScore}%)")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_BEST_DAY, language)} ${analysis.weeklyForecast.bestDay.date.dayOfWeek} (${analysis.weeklyForecast.bestDay.overallScore}%)")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_AVOID_LABEL, language)} ${analysis.weeklyForecast.worstDay.date.dayOfWeek} (${analysis.weeklyForecast.worstDay.overallScore}%)")
             appendLine()
-            appendLine("Daily Forecast:")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_DAILY_FORECAST, language)}")
             analysis.weeklyForecast.dailyStrengths.forEach { day ->
                 val indicator = when {
                     day.overallScore >= 70 -> "★★★"
@@ -835,13 +844,14 @@ class TarabalaCalculator @Inject constructor(
                     day.overallScore >= 30 -> "★"
                     else -> "○"
                 }
-                appendLine("  ${day.date.dayOfWeek.name.take(3)}: ${day.overallScore}% $indicator ${day.combinedStrength.displayName}")
+                appendLine("  ${day.date.dayOfWeek.name.take(3)}: ${day.overallScore}% $indicator ${day.combinedStrength.getLocalizedName(language)}")
             }
             appendLine()
-            appendLine("Weekly Advice:")
+            appendLine(StringResources.get(StringKeyTarabala.REPORT_WEEKLY_ADVICE, language))
             appendLine(analysis.weeklyForecast.weeklyAdvice)
         }
     }
+}
 }
 
 

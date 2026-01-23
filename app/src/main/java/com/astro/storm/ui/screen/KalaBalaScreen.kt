@@ -457,7 +457,7 @@ private fun KalaBalaInsightsCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) 
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Key Insights",
+                    text = stringResource(StringKeyAnalysis.UI_KEY_INSIGHTS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary

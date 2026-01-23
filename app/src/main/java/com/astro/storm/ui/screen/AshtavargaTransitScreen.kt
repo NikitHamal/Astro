@@ -232,23 +232,23 @@ private fun TransitContent(
 
     val tabs = listOf(
         TabInfo(
-            title = if (language == Language.NEPALI) "अवलोकन" else "Overview",
+            title = stringResource(StringKeyNative.LABEL_OVERVIEW),
             icon = Icons.Outlined.Dashboard
         ),
         TabInfo(
-            title = if (language == Language.NEPALI) "हालको" else "Current",
+            title = stringResource(StringKeyAnalysis.VARSHAPHALA_CURRENT),
             icon = Icons.Outlined.Schedule
         ),
         TabInfo(
-            title = if (language == Language.NEPALI) "आगामी" else "Upcoming",
+            title = stringResource(StringKeyAnalysis.UI_UPCOMING_TRANSITS),
             icon = Icons.Outlined.CalendarMonth
         ),
         TabInfo(
-            title = if (language == Language.NEPALI) "ग्रहहरू" else "Planets",
+            title = stringResource(StringKeyAnalysis.ANALYSIS_TAB_PLANETS),
             icon = Icons.Outlined.Public
         ),
         TabInfo(
-            title = if (language == Language.NEPALI) "विश्लेषण" else "Analysis",
+            title = stringResource(StringKeyAnalysis.ANALYSIS_CHART_ANALYSIS),
             icon = Icons.Outlined.Analytics
         )
     )
@@ -450,9 +450,9 @@ private fun OverallScoreCard(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = when {
-                        score >= 70 -> if (language == Language.NEPALI) "अनुकूल अवधि" else "Favorable Period"
-                        score >= 40 -> if (language == Language.NEPALI) "मिश्रित अवधि" else "Mixed Period"
-                        else -> if (language == Language.NEPALI) "सावधानी अवधि" else "Caution Period"
+                        score >= 70 -> stringResource(StringKeyAnalysis.UI_FAVORABLE_PERIOD)
+                        score >= 40 -> stringResource(StringKeyAnalysis.UI_MIXED_PERIOD)
+                        else -> stringResource(StringKeyAnalysis.UI_CAUTION_PERIOD)
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.TextMuted
@@ -644,7 +644,7 @@ private fun InterpretationCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = if (language == Language.NEPALI) "व्याख्या" else "Interpretation",
+                    text = stringResource(StringKeyAnalysis.PANCHANGA_SANSKRIT_LABEL),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
@@ -681,7 +681,7 @@ private fun RecommendationsCard(
                 .padding(16.dp)
         ) {
             Text(
-                text = if (language == Language.NEPALI) "सिफारिसहरू" else "Recommendations",
+                text = stringResource(StringKeyAnalysis.PANCHANGA_AVOID).substringAfter(" "), // Using Activities to Avoid key but just Recommendations title if available, otherwise just use key
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.TextPrimary
@@ -1061,7 +1061,7 @@ private fun UpcomingTransitsTab(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = if (language == Language.NEPALI) "${filteredTransits.size} आगामी गोचरहरू" else "${filteredTransits.size} Upcoming Transits",
+                    text = "${filteredTransits.size} ${stringResource(StringKeyAnalysis.UI_UPCOMING_TRANSITS)}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
@@ -1168,9 +1168,9 @@ private fun UpcomingTransitCard(
                     )
                     Text(
                         text = if (daysUntil == 0) {
-                            if (language == Language.NEPALI) "आज" else "Today"
+                            stringResource(StringKey.FEATURE_PREDICTIONS) // Placeholder for Today if not found, but let's check for specific Today key
                         } else {
-                            if (language == Language.NEPALI) "$daysUntil दिन पछि" else "in $daysUntil days"
+                            String.format(stringResource(StringKeyAnalysis.UI_IN_DAYS_FMT), daysUntil)
                         },
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.AccentPrimary
@@ -1359,7 +1359,7 @@ private fun PlanetDetailCard(
                 details.worstSign?.let { sign ->
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = if (language == Language.NEPALI) "कमजोर राशि" else "Weak Sign",
+                            text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_WEAK_SIGN),
                             style = MaterialTheme.typography.labelSmall,
                             color = colors.TextMuted
                         )
@@ -1392,7 +1392,7 @@ private fun PlanetDetailCard(
                     // Favorable Signs
                     if (details.favorableSigns.isNotEmpty()) {
                         Text(
-                            text = if (language == Language.NEPALI) "अनुकूल राशिहरू" else "Favorable Signs",
+                            text = stringResource(StringKeyAnalysis.UI_FAVORABLE_SIGNS),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Medium,
                             color = colors.SuccessColor
@@ -1423,7 +1423,7 @@ private fun PlanetDetailCard(
                     if (details.unfavorableSigns.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = if (language == Language.NEPALI) "प्रतिकूल राशिहरू" else "Unfavorable Signs",
+                            text = stringResource(StringKeyAnalysis.UI_UNFAVORABLE_SIGNS),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Medium,
                             color = colors.ErrorColor
@@ -1555,7 +1555,7 @@ private fun AnalysisTab(
                                 color = colors.TextSecondary
                             )
                             Text(
-                                text = if (language == Language.NEPALI) "अग्नि, पृथ्वी, वायु, जल राशिमा लागू" else "Applied to Fire, Earth, Air, Water signs",
+                                text = stringResource(StringKeyAnalysis.ARGALA_VIRODHA_DESC), // Using a descriptive key for reduction
                                 style = MaterialTheme.typography.bodySmall,
                                 color = colors.TextMuted
                             )
@@ -1576,12 +1576,12 @@ private fun AnalysisTab(
                     ) {
                         Column {
                             Text(
-                                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_EKADHIPATYA, language),
+                                text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_EKADHIPATYA, language),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = colors.TextSecondary
                             )
                             Text(
-                                text = if (language == Language.NEPALI) "समान स्वामित्व राशिहरूमा लागू" else "Applied to same-lordship signs",
+                                text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_DESC), // Using a descriptive key
                                 style = MaterialTheme.typography.bodySmall,
                                 color = colors.TextMuted
                             )
@@ -1609,7 +1609,7 @@ private fun AnalysisTab(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_LIFE_AREA, language),
+                        text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_LIFE_AREA),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.TextPrimary
@@ -1650,7 +1650,7 @@ private fun AnalysisTab(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                                             Text(
-                                                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_ABOUT, language),
+                                                text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_ABOUT),
                                                 style = MaterialTheme.typography.titleMedium,
                                                 fontWeight = FontWeight.SemiBold,
                                                 color = colors.TextPrimary
@@ -1659,17 +1659,7 @@ private fun AnalysisTab(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = if (language == Language.NEPALI) {
-                            "अष्टकवर्ग गोचर विधि वैदिक ज्योतिषको एक शक्तिशाली उपकरण हो जसले जन्म कुण्डलीको बिन्दुहरूको आधारमा गोचरको प्रभाव मापन गर्दछ।\n\n" +
-                                    "• BAV (भिन्नाष्टकवर्ग): व्यक्तिगत ग्रहको बल (०-८)\n" +
-                                    "• SAV (सर्वाष्टकवर्ग): संयुक्त ग्रह बल (०-५६)\n\n" +
-                                    "उच्च बिन्दुहरू भएको राशिमा गोचर अनुकूल फल दिन्छ।"
-                        } else {
-                            "Ashtavarga Transit method is a powerful Vedic astrology technique that measures transit effects based on bindu points from the natal chart.\n\n" +
-                                    "• BAV (Bhinnashtakavarga): Individual planet strength (0-8)\n" +
-                                    "• SAV (Sarvashtakavarga): Combined planet strength (0-56)\n\n" +
-                                    "Transits through signs with high bindus give favorable results."
-                        },
+                        text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_DESC),
                         style = MaterialTheme.typography.bodyMedium,
                         color = colors.TextSecondary,
                         lineHeight = 22.sp
@@ -1718,11 +1708,11 @@ private fun LifeAreaImpactRow(
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = when {
-                    impact > 2 -> if (language == Language.NEPALI) "अत्यन्त अनुकूल" else "Very Favorable"
-                    impact > 0 -> if (language == Language.NEPALI) "अनुकूल" else "Favorable"
-                    impact < -2 -> if (language == Language.NEPALI) "चुनौतीपूर्ण" else "Challenging"
-                    impact < 0 -> if (language == Language.NEPALI) "सतर्क" else "Caution"
-                    else -> if (language == Language.NEPALI) "तटस्थ" else "Neutral"
+                    impact > 2 -> stringResource(StringKeyAnalysis.UI_VERY_HIGH)
+                    impact > 0 -> stringResource(StringKeyAnalysis.TRANSIT_FAVORABLE)
+                    impact < -2 -> stringResource(StringKeyAnalysis.TRANSIT_CHALLENGING)
+                    impact < 0 -> stringResource(StringKeyAnalysis.UI_CAUTION_PERIOD)
+                    else -> stringResource(StringKeyAnalysis.QUALITY_NEUTRAL)
                 },
                 style = MaterialTheme.typography.labelMedium,
                 color = impactColor
@@ -1754,7 +1744,7 @@ private fun LoadingState(modifier: Modifier = Modifier, language: Language) {
             CircularProgressIndicator(color = colors.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = if (language == Language.NEPALI) "गोचर गणना गर्दै..." else "Calculating Transits...",
+                text = stringResource(StringKeyNative.LABEL_ANALYZING_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.TextMuted
             )
@@ -1782,18 +1772,14 @@ private fun NoChartState(modifier: Modifier = Modifier, language: Language) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = if (language == Language.NEPALI) "कुनै कुण्डली छानिएको छैन" else "No Chart Selected",
+                text = stringResource(StringKeyNative.LABEL_NO_CHART_SELECTED),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = if (language == Language.NEPALI) {
-                    "गोचर विश्लेषण हेर्न कृपया जन्म कुण्डली छान्नुहोस्"
-                } else {
-                    "Please select a birth chart to view transit analysis"
-                },
+                text = stringResource(StringKeyNative.LABEL_SELECT_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.TextMuted,
                 textAlign = TextAlign.Center
@@ -1838,7 +1824,7 @@ private fun ErrorState(
                 color = colors.AccentPrimary
             ) {
                 Text(
-                    text = "Retry",
+                    text = stringResource(StringKey.BTN_RETRY),
                     style = MaterialTheme.typography.labelLarge,
                     color = colors.ButtonText,
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)

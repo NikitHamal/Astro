@@ -918,7 +918,7 @@ class GocharaVedhaCalculator @Inject constructor(
 
             appendLine()
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine("KEY INSIGHTS")
+            appendLine(StringResources.get(StringKeyAnalysis.UI_KEY_INSIGHTS, language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             analysis.keyInsights.forEach { insight ->
                 appendLine("• $insight")

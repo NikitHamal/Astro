@@ -412,7 +412,7 @@ private fun TithiCard(
     onToggleExpand: (Boolean) -> Unit
 ) {
     val language = LocalLanguage.current
-    val tithiData = getTithiData(panchanga.tithi.tithi.number, language)
+    val tithiData = PanchangaDataProvider.getTithiData(panchanga.tithi.number)
 
     ExpandableDetailCard(
         title = stringResource(StringKeyMatch.PANCHANGA_TITHI),
@@ -422,26 +422,26 @@ private fun TithiCard(
         onToggleExpand = onToggleExpand,
         icon = Icons.Outlined.Brightness4,
         iconColor = ChartDetailColors.AccentTeal,
-        qualityIndicator = tithiData.quality
+        qualityIndicator = tithiData.quality.toUiQuality()
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SANSKRIT_LABEL), panchanga.tithi.tithi.sanskrit, ChartDetailColors.TextSecondary)
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_NUMBER), "${panchanga.tithi.number} of 30", ChartDetailColors.TextPrimary)
             DetailRow(stringResource(StringKeyMatch.PANCHANGA_PAKSHA), panchanga.paksha.getLocalizedName(language), ChartDetailColors.TextSecondary)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_DEITY), tithiData.deity, ChartDetailColors.AccentPurple)
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_DEITY), tithiData.getDeity(language), ChartDetailColors.AccentPurple)
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_LORD), panchanga.tithi.lord.getLocalizedName(language), ChartDetailColors.AccentTeal)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_NATURE), tithiData.nature, getQualityColor(tithiData.quality))
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_NATURE), tithiData.getNature(language), getQualityColor(tithiData.quality.toUiQuality()))
             ProgressRow(stringResource(StringKeyAnalysis.PANCHANGA_PROGRESS), panchanga.tithi.progress, ChartDetailColors.AccentGold)
 
             DescriptionSection(
                 title = stringResource(StringKeyAnalysis.PANCHANGA_SIGNIFICANCE),
-                description = tithiData.description
+                description = tithiData.getDescription(language)
             )
 
-            if (tithiData.activities.isNotEmpty()) {
+            if (tithiData.getActivities(language).isNotEmpty()) {
                 ActivitiesSection(
-                    favorable = tithiData.activities,
-                    unfavorable = tithiData.avoid
+                    favorable = tithiData.getActivities(language),
+                    unfavorable = tithiData.getAvoid(language)
                 )
             }
         }
@@ -455,7 +455,7 @@ private fun NakshatraCard(
     onToggleExpand: (Boolean) -> Unit
 ) {
     val language = LocalLanguage.current
-    val nakshatraData = getNakshatraData(panchanga.nakshatra.nakshatra, language)
+    val nakshatraData = PanchangaDataProvider.getNakshatraData(panchanga.nakshatra.nakshatra)
 
     ExpandableDetailCard(
         title = stringResource(StringKeyMatch.PANCHANGA_NAKSHATRA_LABEL),
@@ -465,23 +465,23 @@ private fun NakshatraCard(
         onToggleExpand = onToggleExpand,
         icon = Icons.Outlined.Star,
         iconColor = ChartDetailColors.AccentPurple,
-        qualityIndicator = nakshatraData.quality
+        qualityIndicator = nakshatraData.quality.toUiQuality()
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SANSKRIT_LABEL), nakshatraData.sanskrit, ChartDetailColors.TextSecondary)
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_NUMBER), "${panchanga.nakshatra.number} of 27", ChartDetailColors.TextPrimary)
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_PADA), "${panchanga.nakshatra.pada} of 4", ChartDetailColors.AccentTeal)
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_RULER), panchanga.nakshatra.lord.getLocalizedName(language), ChartDetailColors.AccentGold)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_DEITY), nakshatraData.deity, ChartDetailColors.AccentPurple)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SYMBOL), nakshatraData.symbol, ChartDetailColors.TextSecondary)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_GANA), nakshatraData.gana, getGanaColor(nakshatraData.gana))
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_GUNA), nakshatraData.guna, ChartDetailColors.TextSecondary)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_ANIMAL), nakshatraData.animal, ChartDetailColors.TextSecondary)
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_DEITY), nakshatraData.getDeity(language), ChartDetailColors.AccentPurple)
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SYMBOL), nakshatraData.getSymbol(language), ChartDetailColors.TextSecondary)
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_GANA), PanchangaDataProvider.getGanaName(nakshatraData.gana, language), getGanaColor(nakshatraData.gana))
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_GUNA), PanchangaDataProvider.getGunaName(nakshatraData.guna, language), ChartDetailColors.TextSecondary)
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_ANIMAL), nakshatraData.getAnimal(language), ChartDetailColors.TextSecondary)
             ProgressRow(stringResource(StringKeyAnalysis.PANCHANGA_PROGRESS), panchanga.nakshatra.progress, ChartDetailColors.AccentGold)
 
             DescriptionSection(
                 title = stringResource(StringKeyAnalysis.PANCHANGA_CHARACTERISTICS),
-                description = nakshatraData.description
+                description = nakshatraData.getDescription(language)
             )
         }
     }
@@ -494,7 +494,7 @@ private fun YogaCard(
     onToggleExpand: (Boolean) -> Unit
 ) {
     val language = LocalLanguage.current
-    val yogaData = getYogaData(panchanga.yoga.yoga, language)
+    val yogaData = PanchangaDataProvider.getYogaData(panchanga.yoga.yoga)
 
     ExpandableDetailCard(
         title = stringResource(StringKeyMatch.PANCHANGA_YOGA),
@@ -504,18 +504,18 @@ private fun YogaCard(
         onToggleExpand = onToggleExpand,
         icon = Icons.Outlined.AutoAwesome,
         iconColor = ChartDetailColors.AccentGold,
-        qualityIndicator = yogaData.quality
+        qualityIndicator = yogaData.quality.toUiQuality()
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SANSKRIT_LABEL), yogaData.sanskrit, ChartDetailColors.TextSecondary)
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_NUMBER), "${panchanga.yoga.number} of 27", ChartDetailColors.TextPrimary)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_MEANING), yogaData.meaning, ChartDetailColors.TextSecondary)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_NATURE), panchanga.yoga.yoga.nature.getLocalizedName(language), getQualityColor(yogaData.quality))
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_MEANING), yogaData.getMeaning(language), ChartDetailColors.TextSecondary)
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_NATURE), panchanga.yoga.yoga.nature.getLocalizedName(language), getQualityColor(yogaData.quality.toUiQuality()))
             ProgressRow(stringResource(StringKeyAnalysis.PANCHANGA_PROGRESS), panchanga.yoga.progress, ChartDetailColors.AccentTeal)
 
             DescriptionSection(
                 title = stringResource(StringKeyAnalysis.PANCHANGA_EFFECTS),
-                description = yogaData.description
+                description = yogaData.getDescription(language)
             )
         }
     }
@@ -528,7 +528,7 @@ private fun KaranaCard(
     onToggleExpand: (Boolean) -> Unit
 ) {
     val language = LocalLanguage.current
-    val karanaData = getKaranaData(panchanga.karana.karana, language)
+    val karanaData = PanchangaDataProvider.getKaranaData(panchanga.karana.karana)
 
     ExpandableDetailCard(
         title = stringResource(StringKeyMatch.PANCHANGA_KARANA),
@@ -538,18 +538,18 @@ private fun KaranaCard(
         onToggleExpand = onToggleExpand,
         icon = Icons.Outlined.Schedule,
         iconColor = ChartDetailColors.AccentBlue,
-        qualityIndicator = karanaData.quality
+        qualityIndicator = karanaData.quality.toUiQuality()
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SANSKRIT_LABEL), karanaData.sanskrit, ChartDetailColors.TextSecondary)
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_NUMBER), "${panchanga.karana.number} of 60", ChartDetailColors.TextPrimary)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_TYPE), karanaData.type, ChartDetailColors.TextSecondary)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_NATURE), panchanga.karana.karana.type.getLocalizedName(language), getQualityColor(karanaData.quality))
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_TYPE), karanaData.getType(language), ChartDetailColors.TextSecondary)
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_NATURE), panchanga.karana.karana.type.getLocalizedName(language), getQualityColor(karanaData.quality.toUiQuality()))
             ProgressRow(stringResource(StringKeyAnalysis.PANCHANGA_PROGRESS), panchanga.karana.progress, ChartDetailColors.AccentGold)
 
             DescriptionSection(
                 title = stringResource(StringKeyAnalysis.PANCHANGA_SIGNIFICANCE),
-                description = karanaData.description
+                description = karanaData.getDescription(language)
             )
         }
     }
@@ -562,7 +562,7 @@ private fun VaraCard(
     onToggleExpand: (Boolean) -> Unit
 ) {
     val language = LocalLanguage.current
-    val varaData = getVaraData(panchanga.vara, language)
+    val varaData = PanchangaDataProvider.getVaraData(panchanga.vara.number)
 
     ExpandableDetailCard(
         title = stringResource(StringKeyMatch.PANCHANGA_VARA),
@@ -575,24 +575,30 @@ private fun VaraCard(
         qualityIndicator = null
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SANSKRIT_LABEL), varaData.sanskrit, ChartDetailColors.TextSecondary)
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SANSKRIT_LABEL), varaData.rulerNe, ChartDetailColors.TextSecondary) // rulerNe is often the sanskrit name for vara
             DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_RULING_PLANET), panchanga.vara.lord.getLocalizedName(language), ChartDetailColors.getPlanetColor(panchanga.vara.lord))
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_ELEMENT), varaData.element, ChartDetailColors.TextSecondary)
-            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_DIRECTION), varaData.direction, ChartDetailColors.TextSecondary)
-
+            DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_ELEMENT), stringResource(if (panchanga.vara == Vara.SUNDAY || panchanga.vara == Vara.TUESDAY) StringKeyAnalysis.NAKSHATRA_ELEMENT_FIRE else StringKeyAnalysis.NAKSHATRA_ELEMENT_EARTH), ChartDetailColors.TextSecondary)
+            
             DescriptionSection(
                 title = stringResource(StringKeyAnalysis.PANCHANGA_SIGNIFICANCE),
-                description = varaData.description
+                description = varaData.getDescription(language)
             )
 
-            if (varaData.favorable.isNotEmpty()) {
+            if (varaData.getActivities(language).isNotEmpty()) {
                 ActivitiesSection(
-                    favorable = varaData.favorable,
-                    unfavorable = varaData.unfavorable
+                    favorable = varaData.getActivities(language),
+                    unfavorable = varaData.getAvoid(language)
                 )
             }
         }
     }
+}
+
+private fun PanchangaDataProvider.Quality.toUiQuality(): Quality = when (this) {
+    PanchangaDataProvider.Quality.EXCELLENT -> Quality.EXCELLENT
+    PanchangaDataProvider.Quality.GOOD -> Quality.GOOD
+    PanchangaDataProvider.Quality.NEUTRAL -> Quality.NEUTRAL
+    PanchangaDataProvider.Quality.CHALLENGING -> Quality.CHALLENGING
 }
 
 @Composable
@@ -1031,579 +1037,11 @@ private fun getQualityColor(quality: Quality): Color {
 
 @Composable
 private fun getGanaColor(gana: String): Color {
-    return when (gana) {
-        "Deva" -> ChartDetailColors.AccentGold
-        "Manushya" -> ChartDetailColors.AccentTeal
-        "Rakshasa" -> ChartDetailColors.AccentOrange
+    return when (gana.lowercase()) {
+        "deva", "देव" -> ChartDetailColors.AccentGold
+        "manushya", "मनुष्य" -> ChartDetailColors.AccentTeal
+        "rakshasa", "राक्षस" -> ChartDetailColors.AccentOrange
         else -> ChartDetailColors.TextSecondary
-    }
-}
-
-private data class TithiData(
-    val deity: String,
-    val nature: String,
-    val quality: Quality,
-    val description: String,
-    val activities: List<String>,
-    val avoid: List<String>
-)
-
-private fun getTithiData(tithiNumber: Int, language: Language): TithiData {
-    return when (tithiNumber) {
-        1, 16 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_AGNI, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_NANDA, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_1, language),
-            activities = listOf("New beginnings", "Starting ventures", "Foundation laying", "Travel"),
-            avoid = listOf("Completing projects", "Endings")
-        )
-        2, 17 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_BRAHMA, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_BHADRA, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_2, language),
-            activities = listOf("Creative work", "Naming ceremonies", "Marriage", "House warming"),
-            avoid = listOf("Conflict", "Aggressive actions")
-        )
-        3, 18 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_GAURI, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_JAYA, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_3, language),
-            activities = listOf("Religious ceremonies", "Celebrations", "Victory rituals", "Arts"),
-            avoid = listOf("Conflicts", "Harsh activities")
-        )
-        4, 19 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_GANESHA_YAMA, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_RIKTA, language),
-            quality = Quality.CHALLENGING,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_4, language),
-            activities = listOf("Ganesha worship", "Removing obstacles", "Spiritual practices"),
-            avoid = listOf("New beginnings", "Travel", "Important decisions")
-        )
-        5, 20 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_NAGAS, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_NANDA, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_5, language),
-            activities = listOf("Education", "Learning", "Writing", "Medicine", "Healing"),
-            avoid = listOf("Destructive activities")
-        )
-        6, 21 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_KARTIKEYA, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_BHADRA, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_6, language),
-            activities = listOf("Medical treatments", "Surgery", "Overcoming obstacles", "Courage"),
-            avoid = listOf("Timid actions", "Postponements")
-        )
-        7, 22 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_SURYA, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_JAYA, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_7, language),
-            activities = listOf("Travel", "Pilgrimages", "Vehicle purchase", "Government work"),
-            avoid = listOf("Night activities", "Moon-related work")
-        )
-        8, 23 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_SHIVA_RUDRA, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_RIKTA, language),
-            quality = Quality.NEUTRAL,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_8, language),
-            activities = listOf("Shiva worship", "Fasting", "Spiritual practices", "Meditation"),
-            avoid = listOf("New ventures", "Material pursuits", "Celebrations")
-        )
-        9, 24 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_DURGA, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_NANDA, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_9, language),
-            activities = listOf("Durga worship", "Protection rituals", "Overcoming enemies", "Strength"),
-            avoid = listOf("Peaceful negotiations", "Gentle activities")
-        )
-        10, 25 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_YAMA, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_BHADRA, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_10, language),
-            activities = listOf("Completing projects", "Victory celebrations", "Important tasks", "Success"),
-            avoid = listOf("Beginning long-term projects")
-        )
-        11, 26 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_VISHNU, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_JAYA, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_11, language),
-            activities = listOf("Fasting", "Vishnu worship", "Spiritual practices", "Meditation", "Charity"),
-            avoid = listOf("Material pursuits", "Eating grains", "Worldly pleasures")
-        )
-        12, 27 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_VISHNU, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_BHADRA, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_12, language),
-            activities = listOf("Breaking fast", "Religious ceremonies", "Charity", "Feeding others"),
-            avoid = listOf("Fasting continuation", "Heavy foods")
-        )
-        13, 28 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_KAMADEVA, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_JAYA, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_13, language),
-            activities = listOf("Shiva worship", "Romance", "Arts", "Music", "Celebrations"),
-            avoid = listOf("Aggressive activities", "Conflicts")
-        )
-        14, 29 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_SHIVA_KALI, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_RIKTA, language),
-            quality = Quality.CHALLENGING,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_14, language),
-            activities = listOf("Tantric practices", "Shiva/Kali worship", "Removing negativity", "Spiritual austerities"),
-            avoid = listOf("New beginnings", "Auspicious ceremonies", "Travel")
-        )
-        15 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_CHANDRA, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_PURNA, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_15, language),
-            activities = listOf("All auspicious activities", "Celebrations", "Spiritual practices", "Charity", "Worship"),
-            avoid = listOf("Surgery", "Activities requiring darkness")
-        )
-        30 -> TithiData(
-            deity = StringResources.get(StringKeyPanchanga.TITHI_DEITY_PITRIS, language),
-            nature = StringResources.get(StringKeyPanchanga.TITHI_NATURE_PURNA, language),
-            quality = Quality.NEUTRAL,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_30, language),
-            activities = listOf("Ancestral rites", "Kali worship", "Tantric practices", "Introspection", "Shadow work"),
-            avoid = listOf("New beginnings", "Auspicious ceremonies", "Travel", "Important decisions")
-        )
-        else -> TithiData(
-            deity = "Various",
-            nature = "Mixed",
-            quality = Quality.NEUTRAL,
-            description = StringResources.get(StringKeyPanchanga.TITHI_DESC_MIXED, language),
-            activities = listOf("General activities"),
-            avoid = emptyList()
-        )
-    }
-}
-
-private data class NakshatraData(
-    val sanskrit: String,
-    val deity: String,
-    val symbol: String,
-    val gana: String,
-    val guna: String,
-    val animal: String,
-    val quality: Quality,
-    val description: String
-)
-
-private fun getNakshatraData(nakshatra: Nakshatra, language: Language): NakshatraData {
-    return when (nakshatra) {
-        Nakshatra.ASHWINI -> NakshatraData(
-            sanskrit = "अश्विनी",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_ASHWINI, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_ASHWINI, language),
-            gana = "Deva",
-            guna = "Rajas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_HORSE, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_ASHWINI, language)
-        )
-        Nakshatra.BHARANI -> NakshatraData(
-            sanskrit = "भरणी",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_BHARANI, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_BHARANI, language),
-            gana = "Manushya",
-            guna = "Rajas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_ELEPHANT, language),
-            quality = Quality.NEUTRAL,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_BHARANI, language)
-        )
-        Nakshatra.KRITTIKA -> NakshatraData(
-            sanskrit = "कृत्तिका",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_KRITTIKA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_KRITTIKA, language),
-            gana = "Rakshasa",
-            guna = "Rajas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_SHEEP, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_KRITTIKA, language)
-        )
-        Nakshatra.ROHINI -> NakshatraData(
-            sanskrit = "रोहिणी",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_ROHINI, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_ROHINI, language),
-            gana = "Manushya",
-            guna = "Rajas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_SERPENT, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_ROHINI, language)
-        )
-        Nakshatra.MRIGASHIRA -> NakshatraData(
-            sanskrit = "मृगशिरा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_MRIGASHIRA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_MRIGASHIRA, language),
-            gana = "Deva",
-            guna = "Tamas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_SERPENT, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_MRIGASHIRA, language)
-        )
-        Nakshatra.ARDRA -> NakshatraData(
-            sanskrit = "आर्द्रा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_ARDRA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_ARDRA, language),
-            gana = "Manushya",
-            guna = "Tamas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_DOG, language),
-            quality = Quality.CHALLENGING,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_ARDRA, language)
-        )
-        Nakshatra.PUNARVASU -> NakshatraData(
-            sanskrit = "पुनर्वसु",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_PUNARVASU, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_PUNARVASU, language),
-            gana = "Deva",
-            guna = "Sattva",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_CAT, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_PUNARVASU, language)
-        )
-        Nakshatra.PUSHYA -> NakshatraData(
-            sanskrit = "पुष्य",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_PUSHYA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_PUSHYA, language),
-            gana = "Deva",
-            guna = "Sattva",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_SHEEP, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_PUSHYA, language)
-        )
-        Nakshatra.ASHLESHA -> NakshatraData(
-            sanskrit = "आश्लेषा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_ASHLESHA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_ASHLESHA, language),
-            gana = "Rakshasa",
-            guna = "Sattva",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_CAT, language),
-            quality = Quality.CHALLENGING,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_ASHLESHA, language)
-        )
-        Nakshatra.MAGHA -> NakshatraData(
-            sanskrit = "मघा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_MAGHA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_MAGHA, language),
-            gana = "Rakshasa",
-            guna = "Tamas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_RAT, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_MAGHA, language)
-        )
-        Nakshatra.PURVA_PHALGUNI -> NakshatraData(
-            sanskrit = "पूर्वा फाल्गुनी",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_PURVA_PHALGUNI, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_PURVA_PHALGUNI, language),
-            gana = "Manushya",
-            guna = "Tamas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_RAT, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_PURVA_PHALGUNI, language)
-        )
-        Nakshatra.UTTARA_PHALGUNI -> NakshatraData(
-            sanskrit = "उत्तरा फाल्गुनी",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_UTTARA_PHALGUNI, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_UTTARA_PHALGUNI, language),
-            gana = "Manushya",
-            guna = "Rajas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_COW, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_UTTARA_PHALGUNI, language)
-        )
-        Nakshatra.HASTA -> NakshatraData(
-            sanskrit = "हस्त",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_HASTA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_HASTA, language),
-            gana = "Deva",
-            guna = "Rajas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_BUFFALO, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_HASTA, language)
-        )
-        Nakshatra.CHITRA -> NakshatraData(
-            sanskrit = "चित्रा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_CHITRA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_CHITRA, language),
-            gana = "Rakshasa",
-            guna = "Rajas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_TIGER, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_CHITRA, language)
-        )
-        Nakshatra.SWATI -> NakshatraData(
-            sanskrit = "स्वाति",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_SWATI, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_SWATI, language),
-            gana = "Deva",
-            guna = "Tamas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_BUFFALO, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_SWATI, language)
-        )
-        Nakshatra.VISHAKHA -> NakshatraData(
-            sanskrit = "विशाखा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_VISHAKHA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_VISHAKHA, language),
-            gana = "Rakshasa",
-            guna = "Sattva",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_TIGER, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_VISHAKHA, language)
-        )
-        Nakshatra.ANURADHA -> NakshatraData(
-            sanskrit = "अनुराधा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_ANURADHA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_ANURADHA, language),
-            gana = "Deva",
-            guna = "Sattva",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_DEER, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_ANURADHA, language)
-        )
-        Nakshatra.JYESHTHA -> NakshatraData(
-            sanskrit = "ज्येष्ठा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_JYESHTHA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_JYESHTHA, language),
-            gana = "Rakshasa",
-            guna = "Sattva",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_DEER, language),
-            quality = Quality.NEUTRAL,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_JYESHTHA, language)
-        )
-        Nakshatra.MULA -> NakshatraData(
-            sanskrit = "मूल",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_MULA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_MULA, language),
-            gana = "Rakshasa",
-            guna = "Tamas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_DOG, language),
-            quality = Quality.CHALLENGING,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_MULA, language)
-        )
-        Nakshatra.PURVA_ASHADHA -> NakshatraData(
-            sanskrit = "पूर्वाषाढ़ा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_PURVA_ASHADHA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_PURVA_ASHADHA, language),
-            gana = "Manushya",
-            guna = "Rajas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_MONKEY, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_PURVA_ASHADHA, language)
-        )
-        Nakshatra.UTTARA_ASHADHA -> NakshatraData(
-            sanskrit = "उत्तराषाढ़ा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_UTTARA_ASHADHA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_UTTARA_ASHADHA, language),
-            gana = "Manushya",
-            guna = "Rajas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_MONGOOSE, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_UTTARA_ASHADHA, language)
-        )
-        Nakshatra.SHRAVANA -> NakshatraData(
-            sanskrit = "श्रवण",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_SHRAVANA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_SHRAVANA, language),
-            gana = "Deva",
-            guna = "Rajas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_MONKEY, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_SHRAVANA, language)
-        )
-        Nakshatra.DHANISHTHA -> NakshatraData(
-            sanskrit = "धनिष्ठा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_DHANISHTHA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_DHANISHTHA, language),
-            gana = "Rakshasa",
-            guna = "Tamas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_LION, language),
-            quality = Quality.GOOD,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_DHANISHTHA, language)
-        )
-        Nakshatra.SHATABHISHA -> NakshatraData(
-            sanskrit = "शतभिषा",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_SHATABHISHA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_SHATABHISHA, language),
-            gana = "Rakshasa",
-            guna = "Tamas",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_HORSE, language),
-            quality = Quality.NEUTRAL,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_SHATABHISHA, language)
-        )
-        Nakshatra.PURVA_BHADRAPADA -> NakshatraData(
-            sanskrit = "पूर्वा भाद्रपद",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_PURVA_BHADRAPADA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_PURVA_BHADRAPADA, language),
-            gana = "Manushya",
-            guna = "Sattva",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_LION, language),
-            quality = Quality.CHALLENGING,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_PURVA_BHADRAPADA, language)
-        )
-        Nakshatra.UTTARA_BHADRAPADA -> NakshatraData(
-            sanskrit = "उत्तरा भाद्रपद",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_UTTARA_BHADRAPADA, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_UTTARA_BHADRAPADA, language),
-            gana = "Manushya",
-            guna = "Sattva",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_COW, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_UTTARA_BHADRAPADA, language)
-        )
-        Nakshatra.REVATI -> NakshatraData(
-            sanskrit = "रेवती",
-            deity = StringResources.get(StringKeyNakshatra.DEITY_REVATI, language),
-            symbol = StringResources.get(StringKeyNakshatra.SYMBOL_REVATI, language),
-            gana = "Deva",
-            guna = "Sattva",
-            animal = StringResources.get(StringKeyNakshatra.ANIMAL_ELEPHANT, language),
-            quality = Quality.EXCELLENT,
-            description = StringResources.get(StringKeyPanchanga.NAK_DESC_REVATI, language)
-        )
-    }
-}
-
-private data class YogaData(
-    val sanskrit: String,
-    val meaning: String,
-    val quality: Quality,
-    val description: String
-)
-
-private fun getYogaData(yoga: Yoga, language: Language): YogaData {
-    return when (yoga) {
-        Yoga.VISHKUMBHA -> YogaData("विष्कुम्भ", StringResources.get(StringKeyPanchanga.YOGA_MEANING_SUPPORTING, language), Quality.CHALLENGING, StringResources.get(StringKeyPanchanga.YOGA_DESC_VISHKUMBHA, language))
-        Yoga.PRITI -> YogaData("प्रीति", StringResources.get(StringKeyPanchanga.YOGA_MEANING_LOVE, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_PRITI, language))
-        Yoga.AYUSHMAN -> YogaData("आयुष्मान", StringResources.get(StringKeyPanchanga.YOGA_MEANING_LONG_LIVED, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_AYUSHMAN, language))
-        Yoga.SAUBHAGYA -> YogaData("सौभाग्य", StringResources.get(StringKeyPanchanga.YOGA_MEANING_GOOD_FORTUNE, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SAUBHAGYA, language))
-        Yoga.SHOBHANA -> YogaData("शोभन", StringResources.get(StringKeyPanchanga.YOGA_MEANING_SPLENDOR, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SHOBHANA, language))
-        Yoga.ATIGANDA -> YogaData("अतिगण्ड", StringResources.get(StringKeyPanchanga.YOGA_MEANING_GREAT_OBSTACLE, language), Quality.INAUSPICIOUS, StringResources.get(StringKeyPanchanga.YOGA_DESC_ATIGANDA, language))
-        Yoga.SUKARMA -> YogaData("सुकर्म", StringResources.get(StringKeyPanchanga.YOGA_MEANING_GOOD_DEEDS, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SUKARMA, language))
-        Yoga.DHRITI -> YogaData("धृति", StringResources.get(StringKeyPanchanga.YOGA_MEANING_STEADINESS, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.YOGA_DESC_DHRITI, language))
-        Yoga.SHULA -> YogaData("शूल", StringResources.get(StringKeyPanchanga.YOGA_MEANING_SPEAR, language), Quality.CHALLENGING, StringResources.get(StringKeyPanchanga.YOGA_DESC_SHULA, language))
-        Yoga.GANDA -> YogaData("गण्ड", StringResources.get(StringKeyPanchanga.YOGA_MEANING_OBSTACLE, language), Quality.CHALLENGING, StringResources.get(StringKeyPanchanga.YOGA_DESC_GANDA, language))
-        Yoga.VRIDDHI -> YogaData("वृद्धि", StringResources.get(StringKeyPanchanga.YOGA_MEANING_GROWTH, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_VRIDDHI, language))
-        Yoga.DHRUVA -> YogaData("ध्रुव", StringResources.get(StringKeyPanchanga.YOGA_MEANING_FIXED, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.YOGA_DESC_DHRUVA, language))
-        Yoga.VYAGHATA -> YogaData("व्याघात", StringResources.get(StringKeyPanchanga.YOGA_MEANING_DESTRUCTION, language), Quality.INAUSPICIOUS, StringResources.get(StringKeyPanchanga.YOGA_DESC_VYAGHATA, language))
-        Yoga.HARSHANA -> YogaData("हर्षण", StringResources.get(StringKeyPanchanga.YOGA_MEANING_JOY, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_HARSHANA, language))
-        Yoga.VAJRA -> YogaData("वज्र", StringResources.get(StringKeyPanchanga.YOGA_MEANING_THUNDERBOLT, language), Quality.NEUTRAL, StringResources.get(StringKeyPanchanga.YOGA_DESC_VAJRA, language))
-        Yoga.SIDDHI -> YogaData("सिद्धि", StringResources.get(StringKeyPanchanga.YOGA_MEANING_ACCOMPLISHMENT, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SIDDHI, language))
-        Yoga.VYATIPATA -> YogaData("व्यतीपात", StringResources.get(StringKeyPanchanga.YOGA_MEANING_CALAMITY, language), Quality.INAUSPICIOUS, StringResources.get(StringKeyPanchanga.YOGA_DESC_VYATIPATA, language))
-        Yoga.VARIYAN -> YogaData("वरीयान", StringResources.get(StringKeyPanchanga.YOGA_MEANING_EXCELLENT, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_VARIYAN, language))
-        Yoga.PARIGHA -> YogaData("परिघ", StringResources.get(StringKeyPanchanga.YOGA_MEANING_OBSTRUCTION, language), Quality.CHALLENGING, StringResources.get(StringKeyPanchanga.YOGA_DESC_PARIGHA, language))
-        Yoga.SHIVA -> YogaData("शिव", StringResources.get(StringKeyPanchanga.YOGA_MEANING_AUSPICIOUS, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SHIVA, language))
-        Yoga.SIDDHA -> YogaData("सिद्ध", StringResources.get(StringKeyPanchanga.YOGA_MEANING_ACCOMPLISHED, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SIDDHA, language))
-        Yoga.SADHYA -> YogaData("साध्य", StringResources.get(StringKeyPanchanga.YOGA_MEANING_ACHIEVABLE, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.YOGA_DESC_SADHYA, language))
-        Yoga.SHUBHA -> YogaData("शुभ", StringResources.get(StringKeyPanchanga.YOGA_MEANING_AUSPICIOUS, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SHUBHA, language))
-        Yoga.SHUKLA -> YogaData("शुक्ल", StringResources.get(StringKeyPanchanga.YOGA_MEANING_BRIGHT, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_SHUKLA, language))
-        Yoga.BRAHMA -> YogaData("ब्रह्म", StringResources.get(StringKeyPanchanga.YOGA_MEANING_CREATOR, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_BRAHMA, language))
-        Yoga.INDRA -> YogaData("इन्द्र", StringResources.get(StringKeyPanchanga.YOGA_MEANING_KING_OF_GODS, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.YOGA_DESC_INDRA, language))
-        Yoga.VAIDHRITI -> YogaData("वैधृति", StringResources.get(StringKeyPanchanga.YOGA_MEANING_DISCORD, language), Quality.INAUSPICIOUS, StringResources.get(StringKeyPanchanga.YOGA_DESC_VAIDHRITI, language))
-    }
-}
-
-private data class KaranaData(
-    val sanskrit: String,
-    val type: String,
-    val quality: Quality,
-    val description: String
-)
-
-private fun getKaranaData(karana: Karana, language: Language): KaranaData {
-    return when (karana) {
-        Karana.BAVA -> KaranaData("बव", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_BAVA, language))
-        Karana.BALAVA -> KaranaData("बालव", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_BALAVA, language))
-        Karana.KAULAVA -> KaranaData("कौलव", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_KAULAVA, language))
-        Karana.TAITILA -> KaranaData("तैतिल", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.KARANA_DESC_TAITILA, language))
-        Karana.GARA -> KaranaData("गर", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_GARA, language))
-        Karana.VANIJA -> KaranaData("वणिज", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.EXCELLENT, StringResources.get(StringKeyPanchanga.KARANA_DESC_VANIJA, language))
-        Karana.VISHTI -> KaranaData("विष्टि", StringResources.get(StringKeyPanchanga.KARANA_TYPE_MOVABLE, language), Quality.INAUSPICIOUS, StringResources.get(StringKeyPanchanga.KARANA_DESC_VISHTI, language))
-        Karana.SHAKUNI -> KaranaData("शकुनि", StringResources.get(StringKeyPanchanga.KARANA_TYPE_FIXED, language), Quality.NEUTRAL, StringResources.get(StringKeyPanchanga.KARANA_DESC_SHAKUNI, language))
-        Karana.CHATUSHPADA -> KaranaData("चतुष्पद", StringResources.get(StringKeyPanchanga.KARANA_TYPE_FIXED, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_CHATUSHPADA, language))
-        Karana.NAGA -> KaranaData("नाग", StringResources.get(StringKeyPanchanga.KARANA_TYPE_FIXED, language), Quality.NEUTRAL, StringResources.get(StringKeyPanchanga.KARANA_DESC_NAGA, language))
-        Karana.KIMSTUGHNA -> KaranaData("किंस्तुघ्न", StringResources.get(StringKeyPanchanga.KARANA_TYPE_FIXED, language), Quality.GOOD, StringResources.get(StringKeyPanchanga.KARANA_DESC_KIMSTUGHNA, language))
-    }
-}
-
-private data class VaraData(
-    val sanskrit: String,
-    val element: String,
-    val direction: String,
-    val description: String,
-    val favorable: List<String>,
-    val unfavorable: List<String>
-)
-
-private fun getVaraData(vara: Vara, language: Language): VaraData {
-    return when (vara) {
-        Vara.SUNDAY -> VaraData(
-            sanskrit = "रविवार",
-            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_FIRE, language),
-            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_EAST, language),
-            description = StringResources.get(StringKeyPanchanga.VARA_DESC_SUNDAY, language),
-            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_SUNDAY, language).split(", "),
-            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_SUNDAY, language).split(", ")
-        )
-        Vara.MONDAY -> VaraData(
-            sanskrit = "सोमवार",
-            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_WATER, language),
-            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST, language),
-            description = StringResources.get(StringKeyPanchanga.VARA_DESC_MONDAY, language),
-            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_MONDAY, language).split(", "),
-            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_MONDAY, language).split(", ")
-        )
-        Vara.TUESDAY -> VaraData(
-            sanskrit = "मंगलवार",
-            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_FIRE, language),
-            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_SOUTH, language),
-            description = StringResources.get(StringKeyPanchanga.VARA_DESC_TUESDAY, language),
-            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_TUESDAY, language).split(", "),
-            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_TUESDAY, language).split(", ")
-        )
-        Vara.WEDNESDAY -> VaraData(
-            sanskrit = "बुधवार",
-            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_EARTH, language),
-            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH, language),
-            description = StringResources.get(StringKeyPanchanga.VARA_DESC_WEDNESDAY, language),
-            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_WEDNESDAY, language).split(", "),
-            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_WEDNESDAY, language).split(", ")
-        )
-        Vara.THURSDAY -> VaraData(
-            sanskrit = "गुरुवार",
-            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_ETHER, language),
-            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH_EAST, language),
-            description = StringResources.get(StringKeyPanchanga.VARA_DESC_THURSDAY, language),
-            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_THURSDAY, language).split(", "),
-            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_THURSDAY, language).split(", ")
-        )
-        Vara.FRIDAY -> VaraData(
-            sanskrit = "शुक्रवार",
-            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_WATER, language),
-            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_SOUTH_EAST, language),
-            description = StringResources.get(StringKeyPanchanga.VARA_DESC_FRIDAY, language),
-            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_FRIDAY, language).split(", "),
-            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_FRIDAY, language).split(", ")
-        )
-        Vara.SATURDAY -> VaraData(
-            sanskrit = "शनिवार",
-            element = StringResources.get(StringKeyAnalysis.NAKSHATRA_ELEMENT_AIR, language),
-            direction = StringResources.get(StringKeyAnalysis.PRASHNA_DIR_WEST, language),
-            description = StringResources.get(StringKeyPanchanga.VARA_DESC_SATURDAY, language),
-            favorable = StringResources.get(StringKeyPanchanga.VARA_FAV_SATURDAY, language).split(", "),
-            unfavorable = StringResources.get(StringKeyPanchanga.VARA_UNFAV_SATURDAY, language).split(", ")
-        )
     }
 }
 

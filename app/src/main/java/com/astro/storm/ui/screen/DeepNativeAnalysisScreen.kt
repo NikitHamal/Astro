@@ -39,13 +39,13 @@ fun DeepNativeAnalysisScreen(
             TopAppBar(
                 title = { 
                     Text(
-                        "Deep Analysis",
+                        stringResource(StringKeyNative.NATIVE_ANALYSIS_TITLE),
                         fontWeight = FontWeight.Bold
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(StringKey.BACK))
                     }
                 }
             )
@@ -75,14 +75,14 @@ fun DeepNativeAnalysisBody(
     }
     
     val sections = listOf(
-        DeepAnalysisSection.OVERVIEW to ("Overview" to Icons.Default.Dashboard),
-        DeepAnalysisSection.CHARACTER to ("Character" to Icons.Default.Person),
-        DeepAnalysisSection.CAREER to ("Career" to Icons.Default.Work),
-        DeepAnalysisSection.RELATIONSHIP to ("Relationship" to Icons.Default.Favorite),
-        DeepAnalysisSection.HEALTH to ("Health" to Icons.Default.HealthAndSafety),
-        DeepAnalysisSection.WEALTH to ("Wealth" to Icons.Default.AttachMoney),
-        DeepAnalysisSection.EDUCATION to ("Education" to Icons.Default.School),
-        DeepAnalysisSection.SPIRITUAL to ("Spiritual" to Icons.Default.SelfImprovement)
+        DeepAnalysisSection.OVERVIEW to (stringResource(StringKeyNative.LABEL_OVERVIEW) to Icons.Default.Dashboard),
+        DeepAnalysisSection.CHARACTER to (stringResource(StringKeyNative.SECTION_CHARACTER) to Icons.Default.Person),
+        DeepAnalysisSection.CAREER to (stringResource(StringKeyNative.SECTION_CAREER) to Icons.Default.Work),
+        DeepAnalysisSection.RELATIONSHIP to (stringResource(StringKeyNative.SECTION_MARRIAGE) to Icons.Default.Favorite),
+        DeepAnalysisSection.HEALTH to (stringResource(StringKeyNative.SECTION_HEALTH) to Icons.Default.HealthAndSafety),
+        DeepAnalysisSection.WEALTH to (stringResource(StringKeyNative.SECTION_WEALTH) to Icons.Default.AttachMoney),
+        DeepAnalysisSection.EDUCATION to (stringResource(StringKeyNative.SECTION_EDUCATION) to Icons.Default.School),
+        DeepAnalysisSection.SPIRITUAL to (stringResource(StringKeyNative.SECTION_SPIRITUAL) to Icons.Default.SelfImprovement)
     )
 
     Column(
@@ -174,15 +174,15 @@ private fun OverviewSection(
 ) {
     // Overview summary card with all scores
     AnalysisOverviewCard(
-        title = "Life Analysis Overview",
+        title = stringResource(StringKeyNative.LABEL_OVERVIEW),
         scores = listOf(
-            "Character" to analysis.character.personalityStrengthScore,
-            "Career" to analysis.career.careerStrengthScore,
-            "Relationship" to analysis.relationship.relationshipStrengthScore,
-            "Health" to analysis.health.healthStrengthScore,
-            "Wealth" to analysis.wealth.wealthStrengthScore,
-            "Education" to analysis.education.educationStrengthScore,
-            "Spiritual" to analysis.spiritual.spiritualStrengthScore
+            stringResource(StringKeyNative.SECTION_CHARACTER) to analysis.character.personalityStrengthScore,
+            stringResource(StringKeyNative.SECTION_CAREER) to analysis.career.careerStrengthScore,
+            stringResource(StringKeyNative.SECTION_MARRIAGE) to analysis.relationship.relationshipStrengthScore,
+            stringResource(StringKeyNative.SECTION_HEALTH) to analysis.health.healthStrengthScore,
+            stringResource(StringKeyNative.SECTION_WEALTH) to analysis.wealth.wealthStrengthScore,
+            stringResource(StringKeyNative.SECTION_EDUCATION) to analysis.education.educationStrengthScore,
+            stringResource(StringKeyNative.SECTION_SPIRITUAL) to analysis.spiritual.spiritualStrengthScore
         ),
         summary = analysis.character.personalitySummary
     )
@@ -190,18 +190,17 @@ private fun OverviewSection(
     Spacer(modifier = Modifier.height(16.dp))
     
     // Quick highlights
-    DeepSectionHeader(title = "Key Strengths", icon = Icons.Default.Star)
+    DeepSectionHeader(title = stringResource(StringKeyNative.LABEL_STRENGTHS), icon = Icons.Default.Star)
     
     ExpandableAnalysisCard(
-        title = "Primary Life Themes",
-        subtitle = "Based on your complete chart analysis",
+        title = stringResource(StringKeyDeepCharacter.INNER_NEEDS_TITLE),
+        subtitle = stringResource(StringKeyNative.LABEL_COMPREHENSIVE_DESC),
         isExpanded = "overview_themes" in expandedCards,
         onToggle = { onToggleCard("overview_themes") }
     ) {
         Column {
             Text(
-                text = "Your chart reveals unique patterns across all life areas. " +
-                    "Explore each section for detailed insights.",
+                text = stringResource(StringKeyNative.LABEL_COMPREHENSIVE_DESC),
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -216,16 +215,16 @@ private fun CharacterSection(
 ) {
     ScoreIndicator(
         score = character.personalityStrengthScore,
-        label = "Personality Score"
+        label = stringResource(StringKeyDeepCharacter.PERSONALITY_SCORE)
     )
     
     Spacer(modifier = Modifier.height(16.dp))
     
-    DeepSectionHeader(title = "Ascendant Analysis", icon = Icons.Default.Person)
+    DeepSectionHeader(title = stringResource(StringKeyDeepCharacter.SECTION_ASCENDANT_ANALYSIS), icon = Icons.Default.Person)
     
     ExpandableAnalysisCard(
-        title = "Rising Sign: ${character.ascendantAnalysis.sign.displayName}",
-        subtitle = "Your outer personality and first impression",
+        title = "${stringResource(StringKeyNative.ASCENDANT)}: ${character.ascendantAnalysis.sign.displayName}",
+        subtitle = stringResource(StringKeyDeepCharacter.FIRST_IMPRESSION_TITLE),
         strength = character.ascendantAnalysis.overallAscendantStrength,
         isExpanded = "char_ascendant" in expandedCards,
         onToggle = { onToggleCard("char_ascendant") }
@@ -240,15 +239,15 @@ private fun CharacterSection(
     }
     
     ExpandableAnalysisCard(
-        title = "Moon Sign: ${character.moonAnalysis.moonSign.displayName}",
-        subtitle = "Your emotional nature and inner self",
+        title = "${stringResource(StringKeyAnalysis.EXPORT_MOON_SIGN)}: ${character.moonAnalysis.moonSign.displayName}",
+        subtitle = stringResource(StringKeyDeepCharacter.SECTION_EMOTIONAL_PROFILE),
         strength = character.moonAnalysis.overallEmotionalStrength,
         isExpanded = "char_moon" in expandedCards,
         onToggle = { onToggleCard("char_moon") }
     ) {
         Column {
             Text(
-                text = "Nakshatra: ${character.moonAnalysis.nakshatra.name} (Pada ${character.moonAnalysis.nakshatraPada})",
+                text = "${stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA)}: ${character.moonAnalysis.nakshatra.name} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${character.moonAnalysis.nakshatraPada})",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Medium
             )
@@ -260,8 +259,8 @@ private fun CharacterSection(
     }
     
     ExpandableAnalysisCard(
-        title = "Sun Sign: ${character.sunAnalysis.sunSign.displayName}",
-        subtitle = "Your core identity and ego expression",
+        title = "${stringResource(StringKeyAnalysis.EXPORT_SUN_SIGN)}: ${character.sunAnalysis.sunSign.displayName}",
+        subtitle = stringResource(StringKeyDeepCharacter.SUN_CORE_IDENTITY),
         strength = character.sunAnalysis.sunStrength,
         isExpanded = "char_sun" in expandedCards,
         onToggle = { onToggleCard("char_sun") }
@@ -274,7 +273,7 @@ private fun CharacterSection(
     }
     
     if (character.keyTraits.isNotEmpty()) {
-        DeepSectionHeader(title = "Key Personality Traits", icon = Icons.Default.Psychology)
+        DeepSectionHeader(title = stringResource(StringKeyDeepCharacter.KEY_TRAITS), icon = Icons.Default.Psychology)
         TraitsList(traits = character.keyTraits)
     }
     
@@ -290,16 +289,16 @@ private fun CareerSection(
 ) {
     ScoreIndicator(
         score = career.careerStrengthScore,
-        label = "Career Score"
+        label = stringResource(StringKeyDeepCareer.CAREER_SCORE)
     )
     
     Spacer(modifier = Modifier.height(16.dp))
     
-    DeepSectionHeader(title = "10th House Analysis", icon = Icons.Default.Work)
+    DeepSectionHeader(title = stringResource(StringKeyDeepCareer.SECTION_10TH_HOUSE), icon = Icons.Default.Work)
     
     ExpandableAnalysisCard(
-        title = "10th House: ${career.tenthHouseAnalysis.sign.displayName}",
-        subtitle = "Your professional environment and public image",
+        title = "${stringResource(StringKeyDeepCareer.TENTH_HOUSE_SIGN)}: ${career.tenthHouseAnalysis.sign.displayName}",
+        subtitle = stringResource(StringKeyDeepCareer.PUBLIC_IMAGE_TITLE),
         strength = career.tenthHouseAnalysis.houseStrength,
         isExpanded = "career_10th" in expandedCards,
         onToggle = { onToggleCard("career_10th") }
@@ -312,8 +311,8 @@ private fun CareerSection(
     }
     
     ExpandableAnalysisCard(
-        title = "10th Lord: ${career.tenthLordAnalysis.lord.displayName}",
-        subtitle = "House ${career.tenthLordAnalysis.housePosition} placement",
+        title = "${stringResource(StringKeyDeepCareer.TENTH_HOUSE_LORD)}: ${career.tenthLordAnalysis.lord.displayName}",
+        subtitle = "${stringResource(StringKeyAnalysis.HOUSE)} ${career.tenthLordAnalysis.housePosition} ${stringResource(StringKeyAnalysis.DIALOG_HOUSE_PLACEMENT)}",
         strength = career.tenthLordAnalysis.strengthLevel,
         isExpanded = "career_lord" in expandedCards,
         onToggle = { onToggleCard("career_lord") }
@@ -322,7 +321,7 @@ private fun CareerSection(
     }
     
     if (career.suitableProfessions.isNotEmpty()) {
-        DeepSectionHeader(title = "Suitable Professions", icon = Icons.Default.BusinessCenter)
+        DeepSectionHeader(title = stringResource(StringKeyDeepCareer.SUITABLE_PROFESSIONS), icon = Icons.Default.BusinessCenter)
         Column {
             career.suitableProfessions.forEach { profession ->
                 Row(
@@ -339,20 +338,20 @@ private fun CareerSection(
     }
     
     ExpandableAnalysisCard(
-        title = "Work Style Profile",
-        subtitle = "Your preferred working patterns",
+        title = stringResource(StringKeyDeepCareer.SECTION_WORK_STYLE),
+        subtitle = stringResource(StringKeyDeepCareer.WORK_STYLE_TITLE),
         isExpanded = "career_style" in expandedCards,
         onToggle = { onToggleCard("career_style") }
     ) {
         Column {
             RecommendationItem(
-                label = "Preferred Environment",
+                label = stringResource(StringKeyDeepCareer.CAREER_ENVIRONMENT),
                 text = career.workStyle.preferredEnvironment,
                 icon = Icons.Default.BusinessCenter
             )
             Spacer(modifier = Modifier.height(8.dp))
             RecommendationItem(
-                label = "Leadership Style",
+                label = stringResource(StringKeyDeepCareer.LEADERSHIP_STYLE),
                 text = career.workStyle.leadershipStyle,
                 icon = Icons.Default.Engineering
             )
@@ -371,16 +370,16 @@ private fun RelationshipSection(
 ) {
     ScoreIndicator(
         score = relationship.relationshipStrengthScore,
-        label = "Relationship Score"
+        label = stringResource(StringKeyDeepRelationship.REL_SCORE)
     )
     
     Spacer(modifier = Modifier.height(16.dp))
     
-    DeepSectionHeader(title = "7th House Analysis", icon = Icons.Default.Favorite)
+    DeepSectionHeader(title = stringResource(StringKeyDeepRelationship.SECTION_7TH_HOUSE), icon = Icons.Default.Favorite)
     
     ExpandableAnalysisCard(
-        title = "7th House: ${relationship.seventhHouseAnalysis.sign.displayName}",
-        subtitle = "Your partnership dynamics",
+        title = "${stringResource(StringKeyDeepRelationship.SEVENTH_HOUSE_SIGN)}: ${relationship.seventhHouseAnalysis.sign.displayName}",
+        subtitle = stringResource(StringKeyDeepRelationship.RELATIONSHIP_STYLE),
         strength = relationship.seventhHouseAnalysis.houseStrength,
         isExpanded = "rel_7th" in expandedCards,
         onToggle = { onToggleCard("rel_7th") }
@@ -393,8 +392,8 @@ private fun RelationshipSection(
     }
     
     ExpandableAnalysisCard(
-        title = "Venus Analysis",
-        subtitle = "Venus in ${relationship.venusAnalysis.sign.displayName}",
+        title = stringResource(StringKeyDeepRelationship.SECTION_VENUS),
+        subtitle = "${stringResource(StringKeyDeepRelationship.SECTION_VENUS)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${relationship.venusAnalysis.sign.displayName}",
         strength = relationship.venusAnalysis.strengthLevel,
         isExpanded = "rel_venus" in expandedCards,
         onToggle = { onToggleCard("rel_venus") }
@@ -407,8 +406,8 @@ private fun RelationshipSection(
     }
     
     ExpandableAnalysisCard(
-        title = "Partner Profile",
-        subtitle = "Indicated partner characteristics",
+        title = stringResource(StringKeyDeepRelationship.SECTION_PARTNER_PROFILE),
+        subtitle = stringResource(StringKeyDeepRelationship.PARTNER_PERSONALITY),
         isExpanded = "rel_partner" in expandedCards,
         onToggle = { onToggleCard("rel_partner") }
     ) {
@@ -419,11 +418,11 @@ private fun RelationshipSection(
         }
     }
     
-    DeepSectionHeader(title = "Marriage Timing", icon = Icons.Default.CalendarMonth)
+    DeepSectionHeader(title = stringResource(StringKeyDeepRelationship.SECTION_MARRIAGE_TIMING), icon = Icons.Default.CalendarMonth)
     
     ExpandableAnalysisCard(
-        title = "Timing: ${relationship.marriageTiming.timingCategory.name}",
-        subtitle = "Estimated age: ${relationship.marriageTiming.estimatedAgeRange}",
+        title = "${stringResource(StringKeyDeepRelationship.TIMING_CATEGORY)}: ${relationship.marriageTiming.timingCategory.name}",
+        subtitle = "${stringResource(StringKeyDeepRelationship.ESTIMATED_AGE)}: ${relationship.marriageTiming.estimatedAgeRange}",
         isExpanded = "rel_timing" in expandedCards,
         onToggle = { onToggleCard("rel_timing") }
     ) {
@@ -442,23 +441,23 @@ private fun HealthSection(
 ) {
     ScoreIndicator(
         score = health.healthStrengthScore,
-        label = "Health Score"
+        label = stringResource(StringKeyDeepHealth.HEALTH_SCORE)
     )
     
     Spacer(modifier = Modifier.height(16.dp))
     
-    DeepSectionHeader(title = "Constitution", icon = Icons.Default.HealthAndSafety)
+    DeepSectionHeader(title = stringResource(StringKeyDeepHealth.CONSTITUTION_TITLE), icon = Icons.Default.HealthAndSafety)
     
     ExpandableAnalysisCard(
-        title = "Dosha: ${health.constitutionAnalysis.primaryDosha.name}",
-        subtitle = "Your Ayurvedic constitution",
+        title = "${stringResource(StringKeyDeepHealth.PRIMARY_DOSHA)}: ${health.constitutionAnalysis.primaryDosha.name}",
+        subtitle = stringResource(StringKeyDeepHealth.SECTION_CONSTITUTION),
         isExpanded = "health_dosha" in expandedCards,
         onToggle = { onToggleCard("health_dosha") }
     ) {
         Column {
             LocalizedParagraphText(paragraph = health.constitutionAnalysis.constitutionDescription)
             Spacer(modifier = Modifier.height(8.dp))
-            Text("Dietary Recommendations", fontWeight = FontWeight.Medium)
+            Text(stringResource(StringKeyDeepHealth.DIETARY_RECS), fontWeight = FontWeight.Medium)
             health.dietaryRecommendations.forEach { item ->
                  Row(
                      modifier = Modifier.padding(vertical = 4.dp),
@@ -478,8 +477,8 @@ private fun HealthSection(
     }
     
     ExpandableAnalysisCard(
-        title = "Vitality Profile",
-        subtitle = "Your innate health strength",
+        title = stringResource(StringKeyDeepHealth.ASCENDANT_HEALTH),
+        subtitle = stringResource(StringKeyDeepHealth.GENERAL_VITALITY),
         strength = health.ascendantHealthProfile.generalVitality,
         isExpanded = "health_vitality" in expandedCards,
         onToggle = { onToggleCard("health_vitality") }
@@ -488,7 +487,7 @@ private fun HealthSection(
     }
     
     if (health.healthStrengths.isNotEmpty()) {
-        DeepSectionHeader(title = "Health Strengths", icon = Icons.Default.Favorite)
+        DeepSectionHeader(title = stringResource(StringKeyDeepHealth.HEALTH_STRENGTHS), icon = Icons.Default.Favorite)
         TraitsList(traits = health.healthStrengths)
     }
     
@@ -504,16 +503,16 @@ private fun WealthSection(
 ) {
     ScoreIndicator(
         score = wealth.wealthStrengthScore,
-        label = "Wealth Score"
+        label = stringResource(StringKeyDeepWealth.WEALTH_SCORE)
     )
     
     Spacer(modifier = Modifier.height(16.dp))
     
-    DeepSectionHeader(title = "Wealth Houses", icon = Icons.Default.AttachMoney)
+    DeepSectionHeader(title = stringResource(StringKeyDeepWealth.SECTION_WEALTH), icon = Icons.Default.AttachMoney)
     
     ExpandableAnalysisCard(
-        title = "2nd House: ${wealth.secondHouseAnalysis.sign.displayName}",
-        subtitle = "Wealth accumulation and savings",
+        title = "${stringResource(StringKeyDeepWealth.SECOND_HOUSE_SIGN)}: ${wealth.secondHouseAnalysis.sign.displayName}",
+        subtitle = stringResource(StringKeyDeepWealth.ACCUMULATION_PATTERN),
         strength = wealth.secondHouseAnalysis.houseStrength,
         isExpanded = "wealth_2nd" in expandedCards,
         onToggle = { onToggleCard("wealth_2nd") }
@@ -522,8 +521,8 @@ private fun WealthSection(
     }
     
     ExpandableAnalysisCard(
-        title = "11th House: ${wealth.eleventhHouseAnalysis.sign.displayName}",
-        subtitle = "Income and gains",
+        title = "${stringResource(StringKeyDeepWealth.ELEVENTH_HOUSE_SIGN)}: ${wealth.eleventhHouseAnalysis.sign.displayName}",
+        subtitle = stringResource(StringKeyDeepWealth.GAINS_PATTERN),
         strength = wealth.eleventhHouseAnalysis.houseStrength,
         isExpanded = "wealth_11th" in expandedCards,
         onToggle = { onToggleCard("wealth_11th") }
@@ -532,12 +531,12 @@ private fun WealthSection(
     }
     
     if (wealth.dhanaYogaAnalysis.presentYogas.isNotEmpty()) {
-        DeepSectionHeader(title = "Dhana Yogas", icon = Icons.Default.Star)
+        DeepSectionHeader(title = stringResource(StringKeyDeepWealth.DHANA_YOGA_TITLE), icon = Icons.Default.Star)
         Column {
             wealth.dhanaYogaAnalysis.presentYogas.forEach { yoga ->
                 TimelinePeriodCard(
                     title = yoga.name,
-                    dateRange = "Active during related dasha",
+                    dateRange = stringResource(StringKeyDeepWealth.YOGA_ACTIVATION),
                     description = yoga.wealthEffect,
                     strength = yoga.strength
                 )
@@ -557,16 +556,16 @@ private fun EducationSection(
 ) {
     ScoreIndicator(
         score = education.educationStrengthScore,
-        label = "Education Score"
+        label = stringResource(StringKeyNative.TITLE_ACADEMIC_POTENTIAL)
     )
     
     Spacer(modifier = Modifier.height(16.dp))
     
-    DeepSectionHeader(title = "Learning Profile", icon = Icons.Default.School)
+    DeepSectionHeader(title = stringResource(StringKeyNative.SECTION_EDUCATION), icon = Icons.Default.School)
     
     ExpandableAnalysisCard(
-        title = "5th House Intelligence",
-        subtitle = "Your intellectual capacity",
+        title = stringResource(StringKeyDeepEducation.INTELLECTUAL_ABILITY),
+        subtitle = stringResource(StringKeyDeepEducation.FIFTH_HOUSE_SIGN),
         strength = education.fifthHouseAnalysis.intellectualAbility,
         isExpanded = "edu_5th" in expandedCards,
         onToggle = { onToggleCard("edu_5th") }
@@ -579,8 +578,8 @@ private fun EducationSection(
     }
     
     ExpandableAnalysisCard(
-        title = "Mercury: ${education.mercuryAnalysis.sign.displayName}",
-        subtitle = "Communication and analytical ability",
+        title = "${stringResource(StringKeyAnalysis.PLANET_MERCURY)}: ${education.mercuryAnalysis.sign.displayName}",
+        subtitle = stringResource(StringKeyDeepEducation.ANALYTICAL_ABILITY),
         strength = education.mercuryAnalysis.strengthLevel,
         isExpanded = "edu_mercury" in expandedCards,
         onToggle = { onToggleCard("edu_mercury") }
@@ -593,7 +592,7 @@ private fun EducationSection(
     }
     
     if (education.suitableSubjects.isNotEmpty()) {
-        DeepSectionHeader(title = "Suitable Subjects", icon = Icons.Default.MenuBook)
+        DeepSectionHeader(title = stringResource(StringKeyDeepEducation.SUBJECT_AFFINITY_TITLE), icon = Icons.Default.MenuBook)
         Column {
             education.suitableSubjects.forEach { subject ->
                 Row(
@@ -621,16 +620,16 @@ private fun SpiritualSection(
 ) {
     ScoreIndicator(
         score = spiritual.spiritualStrengthScore,
-        label = "Spiritual Score"
+        label = stringResource(StringKeyNative.TITLE_SPIRITUAL_INCLINATION)
     )
     
     Spacer(modifier = Modifier.height(16.dp))
     
-    DeepSectionHeader(title = "Dharma Path", icon = Icons.Default.SelfImprovement)
+    DeepSectionHeader(title = stringResource(StringKeyNative.SECTION_SPIRITUAL), icon = Icons.Default.SelfImprovement)
     
     ExpandableAnalysisCard(
-        title = "9th House: ${spiritual.ninthHouseDharma.sign.displayName}",
-        subtitle = "Your dharmic path",
+        title = "${stringResource(StringKeyDeepSpiritual.NINTH_DHARMA_SIGN)}: ${spiritual.ninthHouseDharma.sign.displayName}",
+        subtitle = stringResource(StringKeyDeepSpiritual.DHARMA_PATH),
         strength = spiritual.ninthHouseDharma.houseStrength,
         isExpanded = "spirit_9th" in expandedCards,
         onToggle = { onToggleCard("spirit_9th") }
@@ -643,8 +642,8 @@ private fun SpiritualSection(
     }
     
     ExpandableAnalysisCard(
-        title = "12th House: ${spiritual.twelfthHouseMoksha.sign.displayName}",
-        subtitle = "Liberation and transcendence",
+        title = "${stringResource(StringKeyDeepSpiritual.TWELFTH_SIGN)}: ${spiritual.twelfthHouseMoksha.sign.displayName}",
+        subtitle = stringResource(StringKeyDeepSpiritual.LIBERATION_PATH),
         strength = spiritual.twelfthHouseMoksha.houseStrength,
         isExpanded = "spirit_12th" in expandedCards,
         onToggle = { onToggleCard("spirit_12th") }
@@ -657,8 +656,8 @@ private fun SpiritualSection(
     }
     
     ExpandableAnalysisCard(
-        title = "Ketu Analysis",
-        subtitle = "Past life karma and spiritual talents",
+        title = stringResource(StringKeyDeepSpiritual.SECTION_KETU),
+        subtitle = stringResource(StringKeyDeepSpiritual.PAST_LIFE_KARMA),
         isExpanded = "spirit_ketu" in expandedCards,
         onToggle = { onToggleCard("spirit_ketu") }
     ) {
@@ -670,7 +669,7 @@ private fun SpiritualSection(
     }
     
     if (spiritual.karmicPatterns.isNotEmpty()) {
-        DeepSectionHeader(title = "Karmic Patterns", icon = Icons.Default.Loop)
+        DeepSectionHeader(title = stringResource(StringKeyDeepSpiritual.KARMIC_TITLE), icon = Icons.Default.Loop)
         Column {
             spiritual.karmicPatterns.forEach { pattern ->
                 ExpandableAnalysisCard(

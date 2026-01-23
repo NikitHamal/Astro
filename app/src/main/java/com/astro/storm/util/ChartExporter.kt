@@ -1449,7 +1449,7 @@ class ChartExporter @Inject constructor(
         var yPos = PDF_MARGIN_TOP.toFloat()
 
         // Title
-        drawPageHeader(canvas, paint, pageWidth, yPos, "Vimshottari Dasha Timeline")
+        drawPageHeader(canvas, paint, pageWidth, yPos, locManager.getString(StringKeyExport.EXPORT_DASHA_TIMELINE))
         yPos += 48f
 
         // Calculate dasha periods
@@ -1615,7 +1615,7 @@ class ChartExporter @Inject constructor(
         var yPos = PDF_MARGIN_TOP.toFloat()
 
         // Title
-        drawPageHeader(canvas, paint, pageWidth, yPos, "Nakshatra Analysis")
+        drawPageHeader(canvas, paint, pageWidth, yPos, locManager.getString(StringKeyExport.EXPORT_NAKSHATRA_DETAILS))
         yPos += 48f
 
         // Find Moon position for primary nakshatra
@@ -1645,7 +1645,7 @@ class ChartExporter @Inject constructor(
             paint.textSize = 10f
             paint.color = COLOR_TEXT_MUTED
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
-            canvas.drawText("Birth Star (Janma Nakshatra)", PDF_MARGIN.toFloat() + 16f, yPos + 18f, paint)
+            canvas.drawText(locManager.getString(StringKeyExport.EXPORT_BIRTH_STAR), PDF_MARGIN.toFloat() + 16f, yPos + 18f, paint)
 
             paint.textSize = 14f
             paint.color = COLOR_PRIMARY
@@ -1655,8 +1655,8 @@ class ChartExporter @Inject constructor(
             paint.textSize = 10f
             paint.color = COLOR_TEXT
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
-            canvas.drawText("Pada: ${moonPosition.nakshatraPada + 1} | Ruling Planet: ${moonPosition.nakshatra.ruler.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 16f, yPos + 58f, paint)
-            canvas.drawText("Deity: ${moonPosition.nakshatra.deity}", PDF_MARGIN.toFloat() + 16f, yPos + 72f, paint)
+            canvas.drawText("${locManager.getString(StringKeyExport.EXPORT_PADA)}: ${moonPosition.nakshatraPada + 1} | ${locManager.getString(StringKeyExport.EXPORT_RULER)}: ${moonPosition.nakshatra.ruler.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 16f, yPos + 58f, paint)
+            canvas.drawText("${locManager.getString(StringKeyExport.EXPORT_DEITY)}: ${moonPosition.nakshatra.deity}", PDF_MARGIN.toFloat() + 16f, yPos + 72f, paint)
 
             yPos += cardHeight + 20f
         }
@@ -1665,7 +1665,7 @@ class ChartExporter @Inject constructor(
         paint.textSize = 11f
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
         paint.color = COLOR_PRIMARY
-        canvas.drawText("Planetary Nakshatra Positions", PDF_MARGIN.toFloat(), yPos + 12f, paint)
+        canvas.drawText(locManager.getString(StringKeyAnalysis.EXPORT_PLANETARY_POSITIONS), PDF_MARGIN.toFloat(), yPos + 12f, paint)
         yPos += 24f
 
         // Table header
@@ -1678,11 +1678,11 @@ class ChartExporter @Inject constructor(
         paint.textSize = 9f
         paint.color = Color.WHITE
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-        canvas.drawText("Planet", PDF_MARGIN.toFloat() + 8f, yPos + 13f, paint)
-        canvas.drawText("Nakshatra", PDF_MARGIN.toFloat() + 70f, yPos + 13f, paint)
-        canvas.drawText("Pada", PDF_MARGIN.toFloat() + 180f, yPos + 13f, paint)
-        canvas.drawText("Ruler", PDF_MARGIN.toFloat() + 230f, yPos + 13f, paint)
-        canvas.drawText("Deity", PDF_MARGIN.toFloat() + 290f, yPos + 13f, paint)
+        canvas.drawText(locManager.getString(StringKeyExport.EXPORT_PLANET), PDF_MARGIN.toFloat() + 8f, yPos + 13f, paint)
+        canvas.drawText(locManager.getString(StringKeyExport.EXPORT_NAKSHATRA), PDF_MARGIN.toFloat() + 70f, yPos + 13f, paint)
+        canvas.drawText(locManager.getString(StringKeyExport.EXPORT_PADA), PDF_MARGIN.toFloat() + 180f, yPos + 13f, paint)
+        canvas.drawText(locManager.getString(StringKeyExport.EXPORT_RULER), PDF_MARGIN.toFloat() + 230f, yPos + 13f, paint)
+        canvas.drawText(locManager.getString(StringKeyExport.EXPORT_DEITY), PDF_MARGIN.toFloat() + 290f, yPos + 13f, paint)
         yPos += 20f
 
         // Planet rows
@@ -1751,7 +1751,7 @@ class ChartExporter @Inject constructor(
         var yPos = PDF_MARGIN_TOP.toFloat()
 
         // Title
-        drawPageHeader(canvas, paint, pageWidth, yPos, "Dosha & Special Conditions Analysis")
+        drawPageHeader(canvas, paint, pageWidth, yPos, locManager.getString(StringKeyExport.EXPORT_DOSHA_ANALYSIS))
         yPos += 48f
 
         val cardPaint = Paint().apply {
@@ -1974,7 +1974,7 @@ class ChartExporter @Inject constructor(
                 energyLevel >= 4 -> COLOR_WARNING
                 else -> COLOR_ERROR
             }
-            canvas.drawText("Energy: $energyLevel/10", pageWidth - PDF_MARGIN - 70f, yPos + 18f, paint)
+            canvas.drawText("${locManager.getString(StringKeyAnalysis.TRANSIT_INTENSITY).substringBefore(" ")}: $energyLevel/10", pageWidth - PDF_MARGIN - 70f, yPos + 18f, paint)
 
             // Prediction text
             paint.textSize = 9f
@@ -2455,8 +2455,8 @@ class ChartExporter @Inject constructor(
             val csvBuilder = StringBuilder()
 
             // Planetary Positions CSV
-            csvBuilder.appendLine("PLANETARY POSITIONS")
-            csvBuilder.appendLine("Planet,Longitude,Sign,DegreeInSign,House,Nakshatra,Pada,Retrograde,Speed")
+            csvBuilder.appendLine(locManager.getString(StringKeyAnalysis.EXPORT_PLANETARY_POSITIONS))
+            csvBuilder.appendLine("${locManager.getString(StringKeyExport.EXPORT_PLANET)},Longitude,${locManager.getString(StringKeyExport.EXPORT_SIGN)},DegreeInSign,${locManager.getString(StringKeyExport.EXPORT_HOUSE)},${locManager.getString(StringKeyExport.EXPORT_NAKSHATRA)},${locManager.getString(StringKeyExport.EXPORT_PADA)},Retrograde,Speed")
 
             chart.planetPositions.forEach { pos ->
                 csvBuilder.appendLine(
@@ -2467,16 +2467,16 @@ class ChartExporter @Inject constructor(
             }
 
             csvBuilder.appendLine()
-            csvBuilder.appendLine("HOUSE CUSPS")
-            csvBuilder.appendLine("House,Cusp,Sign")
+            csvBuilder.appendLine(locManager.getString(StringKeyAnalysis.EXPORT_HOUSE_CUSPS))
+            csvBuilder.appendLine("${locManager.getString(StringKeyExport.EXPORT_HOUSE)},Cusp,${locManager.getString(StringKeyExport.EXPORT_SIGN)}")
 
             chart.houseCusps.forEachIndexed { index, cusp ->
                 csvBuilder.appendLine("${index + 1},$cusp,${ZodiacSign.fromLongitude(cusp).getLocalizedName(locManager.currentLanguage)}")
             }
 
             csvBuilder.appendLine()
-            csvBuilder.appendLine("SHADBALA")
-            csvBuilder.appendLine("Planet,TotalRupas,RequiredRupas,Percentage,SthanaBala,DigBala,KalaBala,ChestaBala,NaisargikaBala,DrikBala")
+            csvBuilder.appendLine(locManager.getString(StringKeyAnalysis.EXPORT_SHADBALA_ANALYSIS))
+            csvBuilder.appendLine("${locManager.getString(StringKeyExport.EXPORT_PLANET)},TotalRupas,RequiredRupas,Percentage,SthanaBala,DigBala,KalaBala,ChestaBala,NaisargikaBala,DrikBala")
 
             val shadbala = ShadbalaCalculator.calculateShadbala(context, chart)
             shadbala.planetaryStrengths.forEach { (planet, strength) ->
@@ -2488,8 +2488,8 @@ class ChartExporter @Inject constructor(
             }
 
             csvBuilder.appendLine()
-            csvBuilder.appendLine("SARVASHTAKAVARGA")
-            csvBuilder.append("Sign")
+            csvBuilder.appendLine(locManager.getString(StringKeyAnalysis.EXPORT_SARVASHTAKAVARGA))
+            csvBuilder.append(locManager.getString(StringKeyAnalysis.EXPORT_SIGN))
             ZodiacSign.entries.forEach { csvBuilder.append(",${it.abbreviation}") }
             csvBuilder.appendLine()
 
@@ -2501,10 +2501,10 @@ class ChartExporter @Inject constructor(
             csvBuilder.appendLine()
 
             csvBuilder.appendLine()
-            csvBuilder.appendLine("BHINNASHTAKAVARGA")
-            csvBuilder.append("Planet")
+            csvBuilder.appendLine(locManager.getString(StringKeyAnalysis.EXPORT_BHINNASHTAKAVARGA))
+            csvBuilder.append(locManager.getString(StringKeyExport.EXPORT_PLANET))
             ZodiacSign.entries.forEach { csvBuilder.append(",${it.abbreviation}") }
-            csvBuilder.appendLine(",Total")
+            csvBuilder.appendLine(",${locManager.getString(StringKeyAnalysis.ASHTAK_TOTAL)}")
 
             ashtakavarga.bhinnashtakavarga.forEach { (planet, bav) ->
                 csvBuilder.append(planet.symbol)
@@ -2515,8 +2515,8 @@ class ChartExporter @Inject constructor(
             }
 
             csvBuilder.appendLine()
-            csvBuilder.appendLine("YOGAS")
-            csvBuilder.appendLine("Name,Category,Planets,Strength,StrengthPercentage,IsAuspicious")
+            csvBuilder.appendLine(locManager.getString(StringKeyAnalysis.EXPORT_YOGA_ANALYSIS))
+            csvBuilder.appendLine("Name,Category,${locManager.getString(StringKeyAnalysis.TRANSIT_PLANETS_COUNT)},Strength,StrengthPercentage,IsAuspicious")
 
             val yogaAnalysis = YogaCalculator.calculateYogas(chart)
             yogaAnalysis.allYogas.forEach { yoga ->
@@ -2669,7 +2669,7 @@ class ChartExporter @Inject constructor(
         }
 
         // Handle empty or blank names gracefully
-        val displayName = chart.birthData.name.takeIf { it.isNotBlank() } ?: "Birth Chart"
+        val displayName = chart.birthData.name.takeIf { it.isNotBlank() } ?: locManager.getString(StringKeyAnalysis.CHART_LAGNA)
         val nameY = titleHeight * 0.42f
         canvas.drawText(displayName, bitmap.width / 2f, nameY, textPaint)
 

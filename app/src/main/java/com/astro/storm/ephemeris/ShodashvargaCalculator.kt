@@ -706,7 +706,7 @@ object ShodashvargaCalculator {
                 appendLine()
             }
 
-            appendLine("KEY INSIGHTS")
+            appendLine(StringResources.get(StringKeyAnalysis.UI_KEY_INSIGHTS, language).uppercase())
             appendLine("────────────")
             analysis.overallAssessment.keyInsights.forEach { insight ->
                 appendLine("• $insight")

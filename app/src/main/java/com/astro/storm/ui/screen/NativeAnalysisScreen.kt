@@ -158,7 +158,7 @@ fun NativeAnalysisScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -167,7 +167,7 @@ fun NativeAnalysisScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKey.INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -384,17 +384,17 @@ private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 SignBadge(
-                    label = "Lagna",
+                    label = stringResource(StringKeyAnalysis.CHART_LAGNA),
                     sign = character.ascendantSign.displayName,
                     color = AppTheme.AccentPrimary
                 )
                 SignBadge(
-                    label = "Moon",
+                    label = Planet.MOON.getLocalizedName(language),
                     sign = character.moonSign.displayName,
                     color = AppTheme.AccentTeal
                 )
                 SignBadge(
-                    label = "Sun",
+                    label = Planet.SUN.getLocalizedName(language),
                     sign = character.sunSign.displayName,
                     color = AppTheme.AccentGold
                 )
@@ -410,7 +410,7 @@ private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Element",
+                        text = stringResource(StringKeyAnalysis.PANCHANGA_ELEMENT),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -425,7 +425,7 @@ private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Modality",
+                        text = stringResource(StringKeyAnalysis.DIALOG_MOTION),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1120,7 +1120,7 @@ private fun ConstitutionCard(
         ) {
             Column {
                 Text(
-                    text = "Constitution",
+                    text = stringResource(StringKeyDeepHealth.CONSTITUTION_TITLE),
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.TextMuted
                 )
@@ -1857,7 +1857,7 @@ private fun HouseLordCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "${houseNumber}th House Lord",
+                text = String.format(stringResource(StringKeyAnalysis.DIALOG_HOUSE_PLACEMENT), houseNumber),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1869,7 +1869,7 @@ private fun HouseLordCard(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Lord",
+                        text = stringResource(StringKeyAnalysis.PANCHANGA_LORD),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1882,12 +1882,12 @@ private fun HouseLordCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "In House",
+                        text = stringResource(StringKeyAnalysis.LABEL_IN_HOUSE),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = "${house}th",
+                        text = String.format(stringResource(StringKeyAnalysis.UI_IN_HOUSE_FMT), house),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -1895,7 +1895,7 @@ private fun HouseLordCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Dignity",
+                        text = stringResource(StringKeyAnalysis.DIALOG_DIGNITY),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1920,7 +1920,7 @@ private fun PlanetsInHouseCard(houseNumber: Int, planets: List<String>, color: C
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Planets in ${houseNumber}th House",
+                text = String.format(stringResource(StringKeyNative.LABEL_PLANETS_IN_HOUSE), houseNumber),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1990,7 +1990,7 @@ private fun SummaryCard(summary: String, color: Color) {
                     modifier = Modifier.size(18.dp)
                 )
                 Text(
-                    text = "Summary",
+                    text = stringResource(StringKeyNative.LABEL_OVERVIEW), // Summary -> Overview label
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = color
@@ -1998,6 +1998,14 @@ private fun SummaryCard(summary: String, color: Color) {
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
+                text = summary,
+                style = MaterialTheme.typography.bodyMedium,
+                color = AppTheme.TextSecondary,
+                lineHeight = 22.sp
+            )
+        }
+    }
+}
                 text = summary,
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,

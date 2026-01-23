@@ -37,11 +37,11 @@ fun DeepPredictionsScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Deep Predictions", fontWeight = FontWeight.Bold)
+                    Text(stringResource(StringKeyDeepPrediction.SECTION_PREDICTIONS), fontWeight = FontWeight.Bold)
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(StringKey.BACK))
                     }
                 }
             )
@@ -69,10 +69,10 @@ fun DeepPredictionsBody(
     }
     
     val tabs = listOf(
-        "Dasha" to Icons.Default.Timeline,
-        "Transit" to Icons.Default.Public,
-        "Yearly" to Icons.Default.CalendarMonth,
-        "Remedies" to Icons.Default.Healing
+        stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS) to Icons.Default.Timeline,
+        stringResource(StringKeyAnalysis.ANALYSIS_TAB_TRANSITS) to Icons.Default.Public,
+        stringResource(StringKeyDeepPrediction.SECTION_YEARLY) to Icons.Default.CalendarMonth,
+        stringResource(StringKeyDeepPrediction.SECTION_REMEDIES) to Icons.Default.Healing
     )
 
     Column(
@@ -120,7 +120,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
         dasha.currentMahadasha?.let { mahadasha ->
             item {
                 DeepSectionHeader(
-                    title = "Current Mahadasha",
+                    title = stringResource(StringKeyDeepPrediction.MAHADASHA_TITLE),
                     icon = Icons.Default.Star
                 )
             }
@@ -139,7 +139,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "${mahadasha.planet.displayName} Mahadasha",
+                                text = "${mahadasha.planet.displayName} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold
                             )
@@ -157,18 +157,18 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                         
                         if (mahadasha.strengths.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text("Strengths", fontWeight = FontWeight.Medium)
+                            Text(stringResource(StringKeyNative.LABEL_STRENGTHS), fontWeight = FontWeight.Medium)
                             TraitsList(traits = mahadasha.strengths)
                         }
                         
                         if (mahadasha.challenges.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text("Challenges", fontWeight = FontWeight.Medium)
+                            Text(stringResource(StringKeyNative.LABEL_CHALLENGES), fontWeight = FontWeight.Medium)
                             TraitsList(traits = mahadasha.challenges)
                         }
                         
                         Spacer(modifier = Modifier.height(12.dp))
-                        Text("Advice", fontWeight = FontWeight.Medium)
+                        Text(stringResource(StringKeyDeepPrediction.MAHADASHA_ADVICE), fontWeight = FontWeight.Medium)
                         LocalizedParagraphText(paragraph = mahadasha.advice)
                     }
                 }
@@ -179,7 +179,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
         dasha.currentAntardasha?.let { antardasha ->
             item {
                 DeepSectionHeader(
-                    title = "Current Antardasha",
+                    title = stringResource(StringKeyDeepPrediction.ANTARDASHA_TITLE),
                     icon = Icons.Default.Timeline
                 )
             }
@@ -193,7 +193,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${antardasha.planet.displayName} Antardasha",
+                            text = "${antardasha.planet.displayName} ${stringResource(StringKeyAnalysis.ANTARDASHA_TITLE)}",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -210,7 +210,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                         
                         if (antardasha.activatedYogas.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text("Activated Yogas", fontWeight = FontWeight.Medium)
+                            Text(stringResource(StringKeyDeepPrediction.ACTIVATED_YOGAS), fontWeight = FontWeight.Medium)
                             antardasha.activatedYogas.forEach { yoga ->
                                 Row(
                                     modifier = Modifier
@@ -232,14 +232,14 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
         if (dasha.upcomingDashas.isNotEmpty()) {
             item {
                 DeepSectionHeader(
-                    title = "Upcoming Periods",
+                    title = stringResource(StringKeyDeepPrediction.UPCOMING_DASHAS),
                     icon = Icons.Default.Schedule
                 )
             }
             
             items(dasha.upcomingDashas) { upcoming ->
                 TimelinePeriodCard(
-                    title = "${upcoming.planet.displayName} Mahadasha",
+                    title = "${upcoming.planet.displayName} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
                     dateRange = "${upcoming.startDate.format(dateFormatter)} - ${upcoming.endDate.format(dateFormatter)}",
                     description = upcoming.briefPreview,
                     strength = com.astro.storm.ephemeris.deepanalysis.StrengthLevel.MODERATE
@@ -272,7 +272,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "Sade Sati Active",
+                                text = stringResource(StringKeyDeepPrediction.SADE_SATI_ACTIVE),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.error
@@ -283,7 +283,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                         }
                         
                         Text(
-                            text = "Phase: ${transit.saturnSadeSati.phase.name}",
+                            text = "${stringResource(StringKeyDeepPrediction.SADE_SATI_PHASE)}: ${transit.saturnSadeSati.phase.name}",
                             style = MaterialTheme.typography.bodyMedium
                         )
                         
@@ -291,7 +291,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                         LocalizedParagraphText(paragraph = transit.saturnSadeSati.effects)
                         
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text("Remedies", fontWeight = FontWeight.Medium)
+                        Text(stringResource(StringKeyDeepPrediction.SECTION_REMEDIES), fontWeight = FontWeight.Medium)
                         LocalizedParagraphText(paragraph = transit.saturnSadeSati.remedies)
                     }
                 }
@@ -301,7 +301,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
         // Major Transits
         item {
             DeepSectionHeader(
-                title = "Major Transits",
+                title = stringResource(StringKeyDeepPrediction.MAJOR_TRANSITS),
                 icon = Icons.Default.Public
             )
         }
@@ -339,7 +339,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
         // Jupiter Transit
         item {
             DeepSectionHeader(
-                title = "Jupiter Transit",
+                title = stringResource(StringKeyDeepPrediction.JUPITER_TRANSIT),
                 icon = Icons.Default.Whatshot
             )
         }
@@ -348,7 +348,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Jupiter in ${transit.jupiterTransit.currentTransitSign.displayName} (House ${transit.jupiterTransit.transitHouse})",
+                        text = "${stringResource(StringKeyAnalysis.PLANET_JUPITER)} in ${transit.jupiterTransit.currentTransitSign.displayName} (${stringResource(StringKeyAnalysis.HOUSE)} ${transit.jupiterTransit.transitHouse})",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -358,7 +358,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                     
                     if (transit.jupiterTransit.favorableForAreas.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text("Favorable for: ", fontWeight = FontWeight.Medium)
+                        Text("${stringResource(StringKeyDeepPrediction.JUPITER_FAVORABLE_AREAS)}: ", fontWeight = FontWeight.Medium)
                         Text(
                             text = transit.jupiterTransit.favorableForAreas.joinToString(", ") { it.name },
                             style = MaterialTheme.typography.bodySmall
@@ -371,7 +371,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
         // Nodal Transit
         item {
             DeepSectionHeader(
-                title = "Rahu-Ketu Transit",
+                title = stringResource(StringKeyDeepPrediction.RAHU_KETU_TRANSIT),
                 icon = Icons.Default.Loop
             )
         }
@@ -380,7 +380,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Rahu in House ${transit.rahuKetuTransit.rahuTransitHouse} | Ketu in House ${transit.rahuKetuTransit.ketuTransitHouse}",
+                        text = "${stringResource(StringKeyAnalysis.PLANET_RAHU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.rahuTransitHouse} | ${stringResource(StringKeyAnalysis.PLANET_KETU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.ketuTransitHouse}",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -423,7 +423,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Year ${yearly.year}",
+                            text = "${stringResource(StringKeyAnalysis.CHART_DATE)} ${yearly.year}",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
@@ -439,7 +439,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
         // Life Area Outlooks
         item {
             DeepSectionHeader(
-                title = "Life Area Outlook",
+                title = stringResource(StringKeyDeepPrediction.SECTION_LIFE_AREAS),
                 icon = Icons.Default.Category
             )
         }
@@ -456,7 +456,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
                         com.astro.storm.ephemeris.deepanalysis.StrengthLevel.MODERATE -> 55.0
                         else -> 35.0
                     },
-                    label = "Career"
+                    label = stringResource(StringKeyNative.SECTION_CAREER)
                 )
                 ScoreIndicator(
                     score = when (yearly.relationshipOutlook.rating) {
@@ -465,7 +465,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
                         com.astro.storm.ephemeris.deepanalysis.StrengthLevel.MODERATE -> 55.0
                         else -> 35.0
                     },
-                    label = "Relationship"
+                    label = stringResource(StringKeyDeepRelationship.SECTION_RELATIONSHIP)
                 )
                 ScoreIndicator(
                     score = when (yearly.healthOutlook.rating) {
@@ -474,7 +474,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
                         com.astro.storm.ephemeris.deepanalysis.StrengthLevel.MODERATE -> 55.0
                         else -> 35.0
                     },
-                    label = "Health"
+                    label = stringResource(StringKeyNative.SECTION_HEALTH)
                 )
                 ScoreIndicator(
                     score = when (yearly.wealthOutlook.rating) {
@@ -483,7 +483,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
                         com.astro.storm.ephemeris.deepanalysis.StrengthLevel.MODERATE -> 55.0
                         else -> 35.0
                     },
-                    label = "Wealth"
+                    label = stringResource(StringKeyNative.SECTION_WEALTH)
                 )
             }
         }
@@ -492,14 +492,14 @@ private fun YearlyTab(predictions: DeepPredictions) {
         if (yearly.keyMonths.isNotEmpty()) {
             item {
                 DeepSectionHeader(
-                    title = "Key Months",
+                    title = stringResource(StringKeyDeepPrediction.KEY_MONTHS),
                     icon = Icons.Default.Event
                 )
             }
             
             items(yearly.keyMonths) { keyMonth ->
                 TimelinePeriodCard(
-                    title = "Month ${keyMonth.month}",
+                    title = "${stringResource(StringKeyAnalysis.PANCHANGA_NUMBER)} ${keyMonth.month}",
                     dateRange = "",
                     description = keyMonth.significance,
                     strength = keyMonth.rating
@@ -510,7 +510,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
         // Yearly Advice
         item {
             DeepSectionHeader(
-                title = "Yearly Guidance",
+                title = stringResource(StringKeyDeepPrediction.YEARLY_ADVICE),
                 icon = Icons.Default.Lightbulb
             )
         }
@@ -533,7 +533,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Overall Prediction Summary",
+                        text = stringResource(StringKeyDeepPrediction.PREDICTION_SUMMARY),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -556,7 +556,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
         if (remedies.gemstoneRemedies.isNotEmpty()) {
             item {
                 DeepSectionHeader(
-                    title = "Gemstone Remedies",
+                    title = stringResource(StringKeyDeepPrediction.GEMSTONE_REMEDIES),
                     icon = Icons.Default.Diamond
                 )
             }
@@ -571,7 +571,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         )
                         
                         Text(
-                            text = "Alternative: ${gemstone.alternativeGemstone}",
+                            text = "${stringResource(StringKeyDeepPrediction.ALTERNATIVE_GEMSTONE)}: ${gemstone.alternativeGemstone}",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -599,7 +599,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
         if (remedies.mantraRemedies.isNotEmpty()) {
             item {
                 DeepSectionHeader(
-                    title = "Mantra Remedies",
+                    title = stringResource(StringKeyDeepPrediction.MANTRA_REMEDIES),
                     icon = Icons.Default.RecordVoiceOver
                 )
             }
@@ -608,7 +608,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${mantra.planet.displayName} Mantra",
+                            text = "${mantra.planet.displayName} ${stringResource(StringKeyDeepPrediction.MANTRA_REMEDIES)}",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -624,7 +624,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         Spacer(modifier = Modifier.height(4.dp))
                         
                         Text(
-                            text = "Chant count: ${mantra.chantCount}",
+                            text = "${stringResource(StringKeyDeepPrediction.CHANT_COUNT)}: ${mantra.chantCount}",
                             style = MaterialTheme.typography.bodySmall
                         )
                         
@@ -641,7 +641,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
         if (remedies.charitableRemedies.isNotEmpty()) {
             item {
                 DeepSectionHeader(
-                    title = "Charitable Remedies",
+                    title = stringResource(StringKeyDeepPrediction.CHARITABLE_REMEDIES),
                     icon = Icons.Default.VolunteerActivism
                 )
             }
@@ -650,18 +650,18 @@ private fun RemediesTab(remedies: RemedialProfile) {
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "For ${charity.planet.displayName}",
+                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)} ${charity.planet.displayName}",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
                         
                         Text(
-                            text = "Donate: ${charity.donationItems}",
+                            text = "${stringResource(StringKeyDeepPrediction.DONATION_ITEMS)}: ${charity.donationItems}",
                             style = MaterialTheme.typography.bodyMedium
                         )
                         
                         Text(
-                            text = "Best Day: ${charity.bestDay}",
+                            text = "${stringResource(StringKeyDeepPrediction.BEST_DAY)}: ${charity.bestDay}",
                             style = MaterialTheme.typography.bodySmall
                         )
                         
@@ -675,7 +675,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
         if (remedies.fastingRemedies.isNotEmpty()) {
             item {
                 DeepSectionHeader(
-                    title = "Fasting Remedies",
+                    title = stringResource(StringKeyDeepPrediction.FASTING_REMEDIES),
                     icon = Icons.Default.NoMeals
                 )
             }
@@ -684,13 +684,13 @@ private fun RemediesTab(remedies: RemedialProfile) {
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "For ${fast.planet.displayName}",
+                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)} ${fast.planet.displayName}",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
                         
                         Text(
-                            text = "Day: ${fast.fastingDay}",
+                            text = "${stringResource(StringKeyDeepPrediction.FASTING_DAY)}: ${fast.fastingDay}",
                             style = MaterialTheme.typography.bodyMedium
                         )
                         
@@ -705,7 +705,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
         if (remedies.yogicRemedies.isNotEmpty()) {
             item {
                 DeepSectionHeader(
-                    title = "Yogic Practices",
+                    title = stringResource(StringKeyDeepPrediction.YOGIC_REMEDIES),
                     icon = Icons.Default.SelfImprovement
                 )
             }
@@ -720,7 +720,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         )
                         
                         Text(
-                            text = "Strengthens: ${yoga.targetPlanet.displayName}",
+                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)}: ${yoga.targetPlanet.displayName}",
                             style = MaterialTheme.typography.bodySmall
                         )
                         
@@ -742,7 +742,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Overall Remedial Guidance",
+                        text = stringResource(StringKeyDeepPrediction.OVERALL_ADVICE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
