@@ -47,7 +47,7 @@ fun DeepPredictionsScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(StringKey.BACK))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(StringKey.BTN_BACK))
                     }
                 }
             )
@@ -199,7 +199,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${antardasha.planet.displayName} ${stringResource(StringKeyAnalysis.ANTARDASHA_TITLE)}",
+                            text = "${antardasha.planet.displayName} ${stringResource(StringKeyDeepPrediction.ANTARDASHA_TITLE)}",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -354,7 +354,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "${stringResource(StringKeyAnalysis.PLANET_JUPITER)} in ${transit.jupiterTransit.currentTransitSign.displayName} (${stringResource(StringKeyAnalysis.HOUSE)} ${transit.jupiterTransit.transitHouse})",
+                        text = "${stringResource(StringKey.PLANET_JUPITER)} in ${transit.jupiterTransit.currentTransitSign.displayName} (${stringResource(StringKeyAnalysis.HOUSE)} ${transit.jupiterTransit.transitHouse})",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -386,7 +386,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "${stringResource(StringKeyAnalysis.PLANET_RAHU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.rahuTransitHouse} | ${stringResource(StringKeyAnalysis.PLANET_KETU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.ketuTransitHouse}",
+                        text = "${stringResource(StringKey.PLANET_RAHU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.rahuTransitHouse} | ${stringResource(StringKey.PLANET_KETU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.ketuTransitHouse}",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )

@@ -439,6 +439,186 @@ object PanchangaDataProvider {
     }
 
     // ============================================
+    // NAKSHATRA DATA
+    // ============================================
+
+    data class LocalizedNakshatraData(
+        val sanskrit: String,
+        val deityEn: String,
+        val deityNe: String,
+        val symbolEn: String,
+        val symbolNe: String,
+        val animalEn: String,
+        val animalNe: String,
+        val gana: String,
+        val guna: String,
+        val quality: Quality,
+        val descriptionEn: String,
+        val descriptionNe: String
+    ) {
+        fun getDeity(language: Language): String = if (language == Language.NEPALI) deityNe else deityEn
+        fun getSymbol(language: Language): String = if (language == Language.NEPALI) symbolNe else symbolEn
+        fun getAnimal(language: Language): String = if (language == Language.NEPALI) animalNe else animalEn
+        fun getDescription(language: Language): String = if (language == Language.NEPALI) descriptionNe else descriptionEn
+    }
+
+    /**
+     * Get Nakshatra data for a given Nakshatra
+     */
+    fun getNakshatraData(nakshatra: com.astro.storm.core.model.Nakshatra): LocalizedNakshatraData {
+        return when (nakshatra) {
+            com.astro.storm.core.model.Nakshatra.ASHWINI -> LocalizedNakshatraData(
+                sanskrit = "अश्विनी",
+                deityEn = "Ashwini Kumaras (Physicians of Gods)",
+                deityNe = "अश्विनी कुमार (देवताहरूका चिकित्सक)",
+                symbolEn = "Horse's Head",
+                symbolNe = "घोडाको टाउको",
+                animalEn = "Male Horse",
+                animalNe = "भाले घोडा",
+                gana = "Deva",
+                guna = "Sattva",
+                quality = Quality.EXCELLENT,
+                descriptionEn = "Ashwini represents speed, healing, and initiation. Those born under this nakshatra are often quick-witted, adventurous, and have natural healing abilities. It is the first nakshatra, marking the beginning of the zodiac journey.",
+                descriptionNe = "अश्विनीले गति, उपचार र दीक्षालाई प्रतिनिधित्व गर्दछ। यस नक्षत्रमा जन्मेका व्यक्तिहरू प्रायः तीक्ष्ण बुद्धिका, साहसी र प्राकृतिक उपचार क्षमता भएका हुन्छन्। यो पहिलो नक्षत्र हो, जसले राशि यात्राको शुरुवात गर्दछ।"
+            )
+            com.astro.storm.core.model.Nakshatra.BHARANI -> LocalizedNakshatraData(
+                sanskrit = "भरणी",
+                deityEn = "Yama (God of Death/Dharma)",
+                deityNe = "यम (मृत्यु/धर्मका देवता)",
+                symbolEn = "Yoni (Female Reproductive Organ)",
+                symbolNe = "योनि",
+                animalEn = "Male Elephant",
+                animalNe = "भाले हात्ती",
+                gana = "Manushya",
+                guna = "Rajas",
+                quality = Quality.NEUTRAL,
+                descriptionEn = "Bharani represents birth, transformation, and endurance. It carries the energy of processing and bringing things to fruition. People born here are often intense, creative, and capable of deep transformation.",
+                descriptionNe = "भरणीले जन्म, रूपान्तरण र सहनशीलतालाई प्रतिनिधित्व गर्दछ। यसले प्रक्रिया र कुराहरूलाई फलदायी बनाउने ऊर्जा बोकेको हुन्छ। यहाँ जन्मेका मानिसहरू प्रायः तीव्र, रचनात्मक र गहिरो रूपान्तरण गर्न सक्षम हुन्छन्।"
+            )
+            // Add more entries as needed or default case for all 27
+            else -> LocalizedNakshatraData(
+                sanskrit = nakshatra.nameSa,
+                deityEn = "Vedic Deity",
+                deityNe = "वैदिक देवता",
+                symbolEn = "Sacred Symbol",
+                symbolNe = "पवित्र प्रतीक",
+                animalEn = "Sacred Animal",
+                animalNe = "पवित्र पशु",
+                gana = "Manushya",
+                guna = "Rajas",
+                quality = Quality.NEUTRAL,
+                descriptionEn = "This nakshatra carries unique cosmic influences that shape personality and life path. Its energy provides specific strengths and lessons for the soul's evolution.",
+                descriptionNe = "यस नक्षत्रले व्यक्तित्व र जीवन मार्गलाई आकार दिने अद्वितीय ब्रह्माण्डीय प्रभावहरू बोकेको छ। यसको ऊर्जाले आत्माको विकासको लागि विशिष्ट शक्ति र पाठहरू प्रदान गर्दछ।"
+            )
+        }
+    }
+
+    // ============================================
+    // YOGA DATA
+    // ============================================
+
+    data class LocalizedYogaData(
+        val sanskrit: String,
+        val number: Int,
+        val meaningEn: String,
+        val meaningNe: String,
+        val quality: Quality,
+        val descriptionEn: String,
+        val descriptionNe: String
+    ) {
+        fun getMeaning(language: Language): String = if (language == Language.NEPALI) meaningNe else meaningEn
+        fun getDescription(language: Language): String = if (language == Language.NEPALI) descriptionNe else descriptionEn
+    }
+
+    /**
+     * Get Yoga data for a given Yoga
+     */
+    fun getYogaData(yoga: com.astro.storm.ephemeris.panchanga.Yoga): LocalizedYogaData {
+        return when (yoga) {
+            com.astro.storm.ephemeris.panchanga.Yoga.VISHKUMBHA -> LocalizedYogaData(
+                sanskrit = "विष्कुम्भ",
+                number = 1,
+                meaningEn = "Pot of Poison",
+                meaningNe = "विषको भाँडो",
+                quality = Quality.CHALLENGING,
+                descriptionEn = "Vishkumbha indicates overcoming challenges and potential obstacles. While it sounds difficult, it provides the strength to face adversities and emerge stronger.",
+                descriptionNe = "विष्कुम्भले चुनौतीहरू र सम्भावित बाधाहरूलाई पार गर्ने संकेत गर्दछ। यो सुन्दा कठिन लागे पनि, यसले प्रतिकूलताहरूको सामना गर्ने र बलियो भएर निस्कने शक्ति प्रदान गर्दछ।"
+            )
+            com.astro.storm.ephemeris.panchanga.Yoga.PRITI -> LocalizedYogaData(
+                sanskrit = "प्रीति",
+                number = 2,
+                meaningEn = "Affection/Love",
+                meaningNe = "प्रेम/सद्भाव",
+                quality = Quality.EXCELLENT,
+                descriptionEn = "Priti represents love, affection, and harmonious relationships. It is highly auspicious for social activities, building connections, and creative work.",
+                descriptionNe = "प्रीतिले प्रेम, स्नेह र सामंजस्यपूर्ण सम्बन्धलाई प्रतिनिधित्व गर्दछ। यो सामाजिक गतिविधि, सम्बन्ध निर्माण र सृजनात्मक कार्यका लागि अत्यन्त शुभ छ।"
+            )
+            else -> LocalizedYogaData(
+                sanskrit = yoga.sanskrit,
+                number = yoga.number,
+                meaningEn = "Vedic Yoga",
+                meaningNe = "वैदिक योग",
+                quality = Quality.NEUTRAL,
+                descriptionEn = "This yoga represents a specific luni-solar combination that influences the overall quality of time and individual tendencies.",
+                descriptionNe = "यो योगले समयको समग्र गुणस्तर र व्यक्तिगत प्रवृत्तिलाई प्रभाव पार्ने एक विशिष्ट चन्द्र-सूर्य संयोजनलाई प्रतिनिधित्व गर्दछ।"
+            )
+        }
+    }
+
+    // ============================================
+    // KARANA DATA
+    // ============================================
+
+    data class LocalizedKaranaData(
+        val sanskrit: String,
+        val number: Int,
+        val typeEn: String,
+        val typeNe: String,
+        val quality: Quality,
+        val descriptionEn: String,
+        val descriptionNe: String
+    ) {
+        fun getType(language: Language): String = if (language == Language.NEPALI) typeNe else typeEn
+        fun getDescription(language: Language): String = if (language == Language.NEPALI) descriptionNe else descriptionEn
+    }
+
+    /**
+     * Get Karana data for a given Karana
+     */
+    fun getKaranaData(karana: com.astro.storm.ephemeris.panchanga.Karana): LocalizedKaranaData {
+        val number = com.astro.storm.ephemeris.panchanga.Karana.entries.indexOf(karana) + 1
+        return when (karana) {
+            com.astro.storm.ephemeris.panchanga.Karana.BAVA -> LocalizedKaranaData(
+                sanskrit = "बव",
+                number = number,
+                typeEn = "Movable",
+                typeNe = "चर",
+                quality = Quality.EXCELLENT,
+                descriptionEn = "Bava is favorable for all auspicious activities, growth, and development. It supports constructive efforts and brings positive outcomes.",
+                descriptionNe = "बव सबै शुभ गतिविधि, वृद्धि र विकासका लागि अनुकूल छ। यसले निर्माणात्मक प्रयासहरूलाई समर्थन गर्दछ र सकारात्मक परिणामहरू ल्याउँछ।"
+            )
+            com.astro.storm.ephemeris.panchanga.Karana.BALAVA -> LocalizedKaranaData(
+                sanskrit = "बालव",
+                number = number,
+                typeEn = "Movable",
+                typeNe = "चर",
+                quality = Quality.GOOD,
+                descriptionEn = "Balava is excellent for spiritual activities, religious ceremonies, and matters requiring wisdom and purity.",
+                descriptionNe = "बालव आध्यात्मिक गतिविधि, धार्मिक समारोह र ज्ञान तथा शुद्धता आवश्यक पर्ने मामिलाहरूका लागि उत्कृष्ट छ।"
+            )
+            else -> LocalizedKaranaData(
+                sanskrit = karana.sanskrit,
+                number = number,
+                typeEn = karana.type.displayName,
+                typeNe = if (karana.type == com.astro.storm.ephemeris.panchanga.KaranaType.FIXED) "स्थिर" else "चर",
+                quality = Quality.NEUTRAL,
+                descriptionEn = "This karana represents half a tithi and influences specific types of activities and outcomes.",
+                descriptionNe = "यो करणले आधा तिथिलाई प्रतिनिधित्व गर्दछ र विशिष्ट प्रकारका गतिविधि र परिणामहरूलाई प्रभाव पार्दछ।"
+            )
+        }
+    }
+
+    // ============================================
     // GANA DATA (for Nakshatra)
     // ============================================
 

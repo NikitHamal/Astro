@@ -1883,7 +1883,7 @@ private fun HouseLordCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.LABEL_IN_HOUSE),
+                        text = stringResource(StringKeyNative.LABEL_IN_HOUSE),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )

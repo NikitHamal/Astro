@@ -56,7 +56,7 @@ fun DeepNativeAnalysisScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(StringKey.BACK))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(StringKey.BTN_BACK))
                     }
                 }
             )
@@ -234,7 +234,7 @@ private fun CharacterSection(
     DeepSectionHeader(title = stringResource(StringKeyDeepCharacter.SECTION_ASCENDANT_ANALYSIS), icon = Icons.Default.Person)
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyNative.ASCENDANT)}: ${character.ascendantAnalysis.sign.displayName}",
+        title = "${stringResource(StringKeyAnalysis.ASCENDANT)}: ${character.ascendantAnalysis.sign.displayName}",
         subtitle = stringResource(StringKeyDeepCharacter.FIRST_IMPRESSION_TITLE),
         strength = character.ascendantAnalysis.overallAscendantStrength,
         isExpanded = "char_ascendant" in expandedCards,
@@ -589,7 +589,7 @@ private fun EducationSection(
     }
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyAnalysis.PLANET_MERCURY)}: ${education.mercuryAnalysis.sign.displayName}",
+        title = "${stringResource(StringKey.PLANET_MERCURY)}: ${education.mercuryAnalysis.sign.displayName}",
         subtitle = stringResource(StringKeyDeepEducation.ANALYTICAL_ABILITY),
         strength = education.mercuryAnalysis.strengthLevel,
         isExpanded = "edu_mercury" in expandedCards,
