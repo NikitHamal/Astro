@@ -561,7 +561,12 @@ private fun ShadbalaProgressSection(shadbala: PlanetaryShadbala) {
         Spacer(modifier = Modifier.height(2.dp))
 
         Text(
-            text = "$formattedTotal / $formattedRequired ${stringResource(StringKey.UNIT_RUPAS)} ($formattedPercentage%)",
+            text = stringResource(
+                StringKeyAnalysis.PLANETS_RUPAS,
+                formattedTotal,
+                formattedRequired,
+                formattedPercentage
+            ),
             fontSize = 10.sp,
             color = ChartDetailColors.TextMuted
         )

@@ -137,8 +137,11 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // ============================================
     LABEL_UNKNOWN("Unknown", "अज्ञात"),
     LABEL_REQUIRED("Required:", "आवश्यक:"),
+    LABEL_REQUIRED_VALUE("Required: %s", "आवश्यक: %s"),
     LABEL_RUPAS("Rupas", "रूपा"),
+    SHADBALA_RUPAS_VALUE("%s Rupas", "%s रूपा"),
     LABEL_PERCENT_REQUIRED("% of required", "आवश्यकको %"),
+    LABEL_PERCENT_REQUIRED_VALUE("%s%% of required", "आवश्यकको %s%%"),
     LABEL_TODAY("Today", "आज"),
     LABEL_PREVIOUS_MONTH("Previous month", "अघिल्लो महिना"),
     LABEL_NEXT_MONTH("Next month", "अर्को महिना"),

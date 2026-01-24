@@ -254,7 +254,7 @@ private fun InsightsContent(
                             RecommendationsCard(horoscope.recommendations, horoscope.cautions)
                         }
                         item(key = "today_affirmation") {
-                            AffirmationCard(horoscope.affirmation)
+                            AffirmationCard(horoscope.affirmationKey)
                         }
                     } ?: item(key = "today_unavailable") {
                         HoroscopeUnavailableCard(period = "today", onRetry = onRetryFailed)
@@ -728,7 +728,7 @@ private fun DailyHoroscopeHeader(
             Spacer(Modifier.height(8.dp))
 
             Text(
-                text = horoscope.theme,
+                text = stringResource(horoscope.themeKey),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
@@ -737,7 +737,7 @@ private fun DailyHoroscopeHeader(
             Spacer(Modifier.height(12.dp))
 
             Text(
-                text = horoscope.themeDescription,
+                text = stringResource(horoscope.themeDescriptionKey),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
@@ -934,16 +934,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
     val interactionSource = remember { MutableInteractionSource() }
 
     // Get localized area name
-    val localizedAreaName = remember(prediction.area, language) {
-        when (prediction.area) {
-            HoroscopeCalculator.LifeArea.CAREER -> StringResources.get(StringKey.LIFE_AREA_CAREER, language)
-            HoroscopeCalculator.LifeArea.LOVE -> StringResources.get(StringKey.LIFE_AREA_LOVE, language)
-            HoroscopeCalculator.LifeArea.HEALTH -> StringResources.get(StringKey.LIFE_AREA_HEALTH, language)
-            HoroscopeCalculator.LifeArea.FINANCE -> StringResources.get(StringKey.LIFE_AREA_FINANCE, language)
-            HoroscopeCalculator.LifeArea.FAMILY -> StringResources.get(StringKey.LIFE_AREA_FAMILY, language)
-            HoroscopeCalculator.LifeArea.SPIRITUALITY -> StringResources.get(StringKey.LIFE_AREA_SPIRITUALITY, language)
-        }
-    }
+    val localizedAreaName = stringResource(prediction.area.displayNameKey)
 
     Card(
         modifier = Modifier
@@ -1113,8 +1104,8 @@ private fun LuckyElementsCard(lucky: HoroscopeCalculator.LuckyElements) {
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                LuckyElement(Icons.Outlined.Numbers, stringResource(StringKey.LUCKY_NUMBER), lucky.number.toString())
-                LuckyElement(Icons.Outlined.Palette, stringResource(StringKey.LUCKY_COLOR), colorValue)
+                LuckyElement(Icons.Outlined.Numbers, stringResource(StringKey.LUCKY_NUMBER), lucky.number.toString().let { if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it) else it })
+                LuckyElement(Icons.Outlined.Palette, stringResource(StringKey.LUCKY_COLOR), lucky.color)
                 LuckyElement(Icons.Outlined.Explore, stringResource(StringKey.LUCKY_DIRECTION), lucky.direction)
                 LuckyElement(Icons.Outlined.Diamond, stringResource(StringKey.LUCKY_GEMSTONE), lucky.gemstone)
             }
@@ -1155,7 +1146,7 @@ private fun LuckyElement(icon: ImageVector, label: String, value: String) {
 }
 
 @Composable
-private fun RecommendationsCard(recommendations: List<String>, cautions: List<String>) {
+private fun RecommendationsCard(recommendations: List<StringKey>, cautions: List<StringKey>) {
     if (recommendations.isEmpty() && cautions.isEmpty()) return
 
     Card(
@@ -1174,11 +1165,11 @@ private fun RecommendationsCard(recommendations: List<String>, cautions: List<St
                     color = AppTheme.SuccessColor
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                recommendations.forEach { rec ->
-                    key(rec.hashCode()) {
+                recommendations.forEach { recKey ->
+                    key(recKey.name) {
                         BulletItem(
                             icon = Icons.Filled.CheckCircle,
-                            text = rec,
+                            textKey = recKey,
                             iconTint = AppTheme.SuccessColor
                         )
                     }
@@ -1196,11 +1187,11 @@ private fun RecommendationsCard(recommendations: List<String>, cautions: List<St
                     color = AppTheme.WarningColor
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                cautions.forEach { caution ->
-                    key(caution.hashCode()) {
+                cautions.forEach { cautionKey ->
+                    key(cautionKey.name) {
                         BulletItem(
                             icon = Icons.Filled.Warning,
-                            text = caution,
+                            textKey = cautionKey,
                             iconTint = AppTheme.WarningColor
                         )
                     }
@@ -1213,7 +1204,7 @@ private fun RecommendationsCard(recommendations: List<String>, cautions: List<St
 @Composable
 private fun BulletItem(
     icon: ImageVector,
-    text: String,
+    textKey: StringKey,
     iconTint: Color
 ) {
     Row(
@@ -1228,7 +1219,7 @@ private fun BulletItem(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = text,
+            text = stringResource(textKey),
             style = MaterialTheme.typography.bodyMedium,
             color = AppTheme.TextSecondary,
             lineHeight = 20.sp
@@ -1237,7 +1228,7 @@ private fun BulletItem(
 }
 
 @Composable
-private fun AffirmationCard(affirmation: String) {
+private fun AffirmationCard(affirmationKey: StringKey) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -1259,7 +1250,7 @@ private fun AffirmationCard(affirmation: String) {
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = affirmation,
+                text = stringResource(affirmationKey),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary,
@@ -1278,8 +1269,10 @@ private fun AffirmationCard(affirmation: String) {
 
 @Composable
 private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
-    val dateRange = remember(weekly.startDate, weekly.endDate) {
-        "${weekly.startDate.format(InsightsFormatters.monthDay)} - ${weekly.endDate.format(InsightsFormatters.monthDay)}"
+    val language = LocalLanguage.current
+    val dateRange = remember(weekly.startDate, weekly.endDate, language) {
+        val format = InsightsFormatters.getMonthDay(language)
+        "${weekly.startDate.format(format)} - ${weekly.endDate.format(format)}"
     }
 
     Card(
@@ -1497,16 +1490,7 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
     val interactionSource = remember { MutableInteractionSource() }
 
     // Get localized area name
-    val localizedAreaName = remember(area, language) {
-        when (area) {
-            HoroscopeCalculator.LifeArea.CAREER -> StringResources.get(StringKey.LIFE_AREA_CAREER, language)
-            HoroscopeCalculator.LifeArea.LOVE -> StringResources.get(StringKey.LIFE_AREA_LOVE, language)
-            HoroscopeCalculator.LifeArea.HEALTH -> StringResources.get(StringKey.LIFE_AREA_HEALTH, language)
-            HoroscopeCalculator.LifeArea.FINANCE -> StringResources.get(StringKey.LIFE_AREA_FINANCE, language)
-            HoroscopeCalculator.LifeArea.FAMILY -> StringResources.get(StringKey.LIFE_AREA_FAMILY, language)
-            HoroscopeCalculator.LifeArea.SPIRITUALITY -> StringResources.get(StringKey.LIFE_AREA_SPIRITUALITY, language)
-        }
-    }
+    val localizedAreaName = stringResource(area.displayNameKey)
 
     Card(
         modifier = Modifier
@@ -1796,7 +1780,7 @@ private fun DashaPeriodRow(
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "$label: ${planet.getLocalizedName(language)}",
+                text = stringResource(StringKey.DASHA_PERIOD_NAME, label, planet.getLocalizedName(language)),
                 style = if (isPrimary) MaterialTheme.typography.titleSmall
                 else MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
@@ -1934,8 +1918,8 @@ private fun UpcomingPeriodItem(
     val language = LocalLanguage.current
     val planetColor = getPlanetColor(planet)
 
-    val formattedDate = remember(startDate) {
-        startDate.format(InsightsFormatters.fullDate)
+    val formattedDate = remember(startDate, language) {
+        startDate.format(InsightsFormatters.getDayMonth(language))
     }
 
     val daysUntil = remember(startDate) {
@@ -1971,7 +1955,7 @@ private fun UpcomingPeriodItem(
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "${mahadashaPlanet.getLocalizedName(language)}-${planet.getLocalizedName(language)}",
+                text = stringResource(StringKey.DASHA_COMBINED_NAME, mahadashaPlanet.getLocalizedName(language), planet.getLocalizedName(language)),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary

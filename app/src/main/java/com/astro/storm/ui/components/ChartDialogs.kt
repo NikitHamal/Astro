@@ -54,6 +54,7 @@ import com.astro.storm.ephemeris.PlanetaryShadbala
 import com.astro.storm.ephemeris.RetrogradeCombustionCalculator
 import com.astro.storm.ephemeris.ShadbalaCalculator
 import com.astro.storm.ui.chart.ChartRenderer
+import com.astro.storm.ui.theme.AppTheme
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -126,7 +127,7 @@ fun FullScreenChartDialog(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DialogBackground)
+                .background(AppTheme.ScreenBackground)
         ) {
             // Chart canvas with zoom/pan
             Box(
@@ -180,7 +181,7 @@ fun FullScreenChartDialog(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(DialogBackground.copy(alpha = 0.9f))
+                    .background(AppTheme.ScreenBackground.copy(alpha = 0.9f))
                     .padding(16.dp)
                     .align(Alignment.TopCenter),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -190,13 +191,13 @@ fun FullScreenChartDialog(
                     text = chartTitle,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = AccentGold
+                    color = AppTheme.AccentPrimary
                 )
                 IconButton(onClick = onDismiss) {
                     Icon(
                         Icons.Default.Close,
                         contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE),
-                        tint = TextPrimary
+                        tint = AppTheme.TextPrimary
                     )
                 }
             }
@@ -205,7 +206,7 @@ fun FullScreenChartDialog(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(DialogBackground.copy(alpha = 0.9f))
+                    .background(AppTheme.ScreenBackground.copy(alpha = 0.9f))
                     .padding(16.dp)
                     .align(Alignment.BottomCenter),
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -290,13 +291,13 @@ fun FullScreenChartDialog(
             ) {
                 Surface(
                     shape = RoundedCornerShape(8.dp),
-                    color = DialogSurface.copy(alpha = 0.8f)
+                    color = AppTheme.CardBackground.copy(alpha = 0.8f)
                 ) {
                     Text(
                         text = "${(scale * 100).toInt()}%",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         fontSize = 14.sp,
-                        color = TextSecondary
+                        color = AppTheme.TextSecondary
                     )
                 }
             }
@@ -321,14 +322,14 @@ private fun ActionButton(
         Icon(
             icon,
             contentDescription = label,
-            tint = if (enabled) AccentGold else TextMuted,
+            tint = if (enabled) AppTheme.AccentPrimary else AppTheme.TextMuted,
             modifier = Modifier.size(28.dp)
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
             fontSize = 12.sp,
-            color = if (enabled) TextSecondary else TextMuted
+            color = if (enabled) AppTheme.TextSecondary else AppTheme.TextMuted
         )
     }
 }
@@ -435,7 +436,7 @@ fun PlanetDetailDialog(
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.9f),
             shape = RoundedCornerShape(20.dp),
-            color = DialogBackground
+            color = AppTheme.ScreenBackground
         ) {
             Column {
                 // Header
@@ -490,7 +491,7 @@ private fun PlanetDialogHeader(
     val language = LocalLanguage.current
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = DialogSurface
+        color = AppTheme.CardBackground
     ) {
         Row(
             modifier = Modifier
@@ -911,15 +912,15 @@ fun NakshatraDetailDialog(
         Surface(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
-                .fillMaxHeight(0.85f),
+                .fillMaxHeight(0.9f),
             shape = RoundedCornerShape(20.dp),
-            color = DialogBackground
+            color = AppTheme.ScreenBackground
         ) {
             Column {
                 // Header
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = DialogSurface
+                    color = AppTheme.CardBackground
                 ) {
                     Row(
                         modifier = Modifier
@@ -1054,13 +1055,13 @@ fun HouseDetailDialog(
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.85f),
             shape = RoundedCornerShape(20.dp),
-            color = DialogBackground
+            color = AppTheme.ScreenBackground
         ) {
             Column {
                 // Header
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = DialogSurface
+                    color = AppTheme.CardBackground
                 ) {
                     Row(
                         modifier = Modifier
@@ -1074,16 +1075,16 @@ fun HouseDetailDialog(
                                 text = "${stringResource(StringKeyAnalysis.HOUSE)} $houseNumber",
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = TextPrimary
+                                color = AppTheme.TextPrimary
                             )
                             Text(
                                 text = houseDetails.name,
                                 fontSize = 14.sp,
-                                color = AccentGold
+                                color = AppTheme.AccentPrimary
                             )
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = TextPrimary)
+                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
                         }
                     }
                 }
@@ -1097,10 +1098,10 @@ fun HouseDetailDialog(
                     item {
                         DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_HOUSE_INFO), icon = Icons.Outlined.Home) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), sign.getLocalizedName(language), AccentTeal)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_CUSP_DEGREE), formatDegree(houseCusp), TextPrimary)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_SIGN_LORD), sign.ruler.getLocalizedName(language), AccentGold)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE_TYPE), houseDetails.type, TextSecondary)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), sign.getLocalizedName(language), AppTheme.AccentTeal)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_CUSP_DEGREE), formatDegree(houseCusp), AppTheme.TextPrimary)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_SIGN_LORD), sign.ruler.getLocalizedName(language), AppTheme.AccentPrimary)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE_TYPE), houseDetails.type, AppTheme.TextSecondary)
                             }
                         }
                     }
@@ -1113,10 +1114,10 @@ fun HouseDetailDialog(
                                         Box(
                                             modifier = Modifier
                                                 .size(6.dp)
-                                                .background(AccentGold, CircleShape)
+                                                .background(AppTheme.AccentPrimary, CircleShape)
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text(text = signification, fontSize = 13.sp, color = TextPrimary)
+                                        Text(text = signification, fontSize = 13.sp, color = AppTheme.TextPrimary)
                                     }
                                 }
                             }
@@ -1138,7 +1139,7 @@ fun HouseDetailDialog(
                                                     modifier = Modifier
                                                         .size(8.dp)
                                                         .background(
-                                                            planetColors[planet.planet] ?: AccentGold,
+                                                            planetColors[planet.planet] ?: AppTheme.AccentPrimary,
                                                             CircleShape
                                                         )
                                                 )
@@ -1147,13 +1148,13 @@ fun HouseDetailDialog(
                                                     text = planet.planet.getLocalizedName(language),
                                                     fontSize = 14.sp,
                                                     fontWeight = FontWeight.Medium,
-                                                    color = TextPrimary
+                                                    color = AppTheme.TextPrimary
                                                 )
                                             }
                                             Text(
                                                 text = formatDegreeInSign(planet.longitude),
                                                 fontSize = 13.sp,
-                                                color = TextSecondary
+                                                color = AppTheme.TextSecondary
                                             )
                                         }
                                     }
@@ -1167,7 +1168,7 @@ fun HouseDetailDialog(
                             Text(
                                 text = houseDetails.interpretation,
                                 fontSize = 14.sp,
-                                color = TextPrimary,
+                                color = AppTheme.TextPrimary,
                                 lineHeight = 22.sp
                             )
                         }
@@ -1201,13 +1202,13 @@ fun ShadbalaDialog(
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.9f),
             shape = RoundedCornerShape(20.dp),
-            color = DialogBackground
+            color = AppTheme.ScreenBackground
         ) {
             Column {
                 // Header
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = DialogSurface
+                    color = AppTheme.CardBackground
                 ) {
                     Row(
                         modifier = Modifier
@@ -1221,16 +1222,16 @@ fun ShadbalaDialog(
                                 text = stringResource(StringKeyAnalysis.DIALOG_SHADBALA_ANALYSIS),
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = TextPrimary
+                                color = AppTheme.TextPrimary
                             )
                             Text(
                                 text = stringResource(StringKeyAnalysis.DIALOG_SIXFOLD_STRENGTH),
                                 fontSize = 14.sp,
-                                color = TextSecondary
+                                color = AppTheme.TextSecondary
                             )
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = TextPrimary)
+                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
                         }
                     }
                 }
@@ -1253,20 +1254,20 @@ fun ShadbalaDialog(
                                         label = stringResource(StringKeyAnalysis.DIALOG_CHART_STRENGTH),
                                         value = "${String.format("%.1f", shadbalaAnalysis.overallStrengthScore)}%",
                                         color = when {
-                                            shadbalaAnalysis.overallStrengthScore >= 100 -> AccentGreen
-                                            shadbalaAnalysis.overallStrengthScore >= 85 -> AccentOrange
-                                            else -> AccentRose
+                                            shadbalaAnalysis.overallStrengthScore >= 100 -> AppTheme.SuccessColor
+                                            shadbalaAnalysis.overallStrengthScore >= 85 -> AppTheme.WarningColor
+                                            else -> AppTheme.ErrorColor
                                         }
                                     )
                                     SummaryBadge(
                                         label = stringResource(StringKeyAnalysis.DIALOG_STRONGEST),
                                         value = shadbalaAnalysis.strongestPlanet.getLocalizedName(language),
-                                        color = AccentGold
+                                        color = AppTheme.AccentPrimary
                                     )
                                     SummaryBadge(
                                         label = stringResource(StringKeyAnalysis.DIALOG_WEAKEST),
                                         value = shadbalaAnalysis.weakestPlanet.getLocalizedName(language),
-                                        color = AccentPurple
+                                        color = AppTheme.AccentPurple
                                     )
                                 }
                             }
@@ -1295,7 +1296,7 @@ private fun SummaryBadge(label: String, value: String, color: Color) {
         Text(
             text = label,
             fontSize = 12.sp,
-            color = TextMuted
+            color = AppTheme.TextMuted
         )
     }
 }
@@ -1305,7 +1306,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        color = DialogSurface
+        color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1318,7 +1319,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                         modifier = Modifier
                             .size(40.dp)
                             .background(
-                                planetColors[shadbala.planet] ?: AccentGold,
+                                planetColors[shadbala.planet] ?: AppTheme.AccentPrimary,
                                 CircleShape
                             ),
                         contentAlignment = Alignment.Center
@@ -1336,15 +1337,15 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                             text = shadbala.planet.getLocalizedName(language),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = TextPrimary
+                            color = AppTheme.TextPrimary
                         )
                         Text(
                             text = shadbala.strengthRating.getLocalizedName(language),
                             fontSize = 12.sp,
                             color = when {
-                                shadbala.isStrong -> AccentGreen
-                                shadbala.percentageOfRequired >= 85 -> AccentOrange
-                                else -> AccentRose
+                                shadbala.isStrong -> AppTheme.SuccessColor
+                                shadbala.percentageOfRequired >= 85 -> AppTheme.WarningColor
+                                else -> AppTheme.ErrorColor
                             }
                         )
                     }
@@ -1352,15 +1353,15 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = "${String.format("%.2f", shadbala.totalRupas)} Rupas",
+                        text = stringResource(StringKeyDosha.SHADBALA_RUPAS_VALUE, String.format("%.2f", shadbala.totalRupas)),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary
+                        color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = "Required: ${String.format("%.2f", shadbala.requiredRupas)}",
+                        text = stringResource(StringKeyDosha.LABEL_REQUIRED_VALUE, String.format("%.2f", shadbala.requiredRupas)),
                         fontSize = 11.sp,
-                        color = TextMuted
+                        color = AppTheme.TextMuted
                     )
                 }
             }
@@ -1376,19 +1377,19 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                     .height(6.dp)
                     .clip(RoundedCornerShape(3.dp)),
                 color = when {
-                    shadbala.isStrong -> AccentGreen
-                    shadbala.percentageOfRequired >= 85 -> AccentOrange
-                    else -> AccentRose
+                    shadbala.isStrong -> AppTheme.SuccessColor
+                    shadbala.percentageOfRequired >= 85 -> AppTheme.WarningColor
+                    else -> AppTheme.ErrorColor
                 },
-                trackColor = DividerColor
+                trackColor = AppTheme.DividerColor
             )
 
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "${String.format("%.1f", shadbala.percentageOfRequired)}% of required",
+                text = stringResource(StringKeyDosha.LABEL_PERCENT_REQUIRED_VALUE, String.format("%.1f", shadbala.percentageOfRequired)),
                 fontSize = 11.sp,
-                color = TextMuted
+                color = AppTheme.TextMuted
             )
         }
     }

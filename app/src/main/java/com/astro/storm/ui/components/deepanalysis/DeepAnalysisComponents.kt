@@ -23,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.deepanalysis.*
 
 /**
@@ -446,7 +448,7 @@ fun DeepAnalysisLoading(
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = "This may take a moment",
+                text = stringResource(StringKey.MSG_MAY_TAKE_MOMENT),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -478,7 +480,7 @@ fun DeepAnalysisError(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Analysis Failed",
+                text = stringResource(StringKey.ERROR_ANALYSIS_FAILED),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.error
             )
@@ -489,7 +491,7 @@ fun DeepAnalysisError(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = onRetry) {
-                Text("Retry")
+                Text(stringResource(StringKey.BTN_RETRY))
             }
         }
     }
