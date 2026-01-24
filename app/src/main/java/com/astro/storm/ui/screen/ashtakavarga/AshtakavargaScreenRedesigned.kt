@@ -778,7 +778,7 @@ private fun PlanetQuickView(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = planet.symbol,
+                                text = planet.localizedAbbr(),
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
@@ -1004,7 +1004,7 @@ private fun PlanetAshtakavargaCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = planet.symbol,
+                            text = planet.localizedAbbr(),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -1241,7 +1241,7 @@ private fun HouseDetailCard(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = planet.symbol,
+                                text = planet.localizedAbbr(),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = planetColor

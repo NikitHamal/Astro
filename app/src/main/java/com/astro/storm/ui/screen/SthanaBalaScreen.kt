@@ -327,7 +327,7 @@ private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaB
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = analysis.strongestPlanet.symbol,
+                    text = analysis.strongestPlanet.localizedAbbr(),
                     fontSize = 24.sp,
                     color = AppTheme.SuccessColor
                 )
@@ -367,7 +367,7 @@ private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaB
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = analysis.weakestPlanet.symbol,
+                    text = analysis.weakestPlanet.localizedAbbr(),
                     fontSize = 24.sp,
                     color = AppTheme.ErrorColor
                 )
@@ -607,7 +607,7 @@ private fun PlanetSthanaBalaCard(planetBala: SthanaBalaCalculator.PlanetSthanaBa
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = planetBala.planet.symbol,
+                            text = planetBala.planet.localizedAbbr(),
                             fontSize = 22.sp,
                             color = scoreColor
                         )

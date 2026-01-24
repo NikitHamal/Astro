@@ -538,7 +538,7 @@ private fun TransitPlanetCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = transitPosition.planet.symbol,
+                            text = transitPosition.planet.localizedAbbr(),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -800,7 +800,7 @@ private fun HouseTransitCard(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = transit.planet.symbol,
+                                text = transit.planet.localizedAbbr(),
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
@@ -1016,7 +1016,7 @@ private fun TransitAspectCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = aspect.transitingPlanet.symbol,
+                        text = aspect.transitingPlanet.localizedAbbr(),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
@@ -1050,7 +1050,7 @@ private fun TransitAspectCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = aspect.natalPlanet.symbol,
+                        text = aspect.natalPlanet.localizedAbbr(),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White

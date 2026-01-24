@@ -131,7 +131,7 @@ private fun PlanetDialogHeader(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = planetPosition.planet.symbol,
+                        text = planetPosition.planet.localizedAbbr(),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White

@@ -422,7 +422,7 @@ private fun PlanetCardHeader(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             PlanetSymbolBadge(
-                symbol = position.planet.symbol,
+                symbol = position.planet.localizedAbbr(),
                 color = planetColor
             )
             Spacer(modifier = Modifier.width(12.dp))
@@ -573,6 +573,7 @@ private fun ConditionChipsSection(
     isRetrograde: Boolean,
     conditions: RetrogradeCombustionCalculator.PlanetCondition?
 ) {
+    val language = LocalLanguage.current
     val showDignity = dignityStatus.isSignificant
     val showRetrograde = isRetrograde
     val showCombust = conditions?.combustionStatus != null &&
@@ -603,7 +604,7 @@ private fun ConditionChipsSection(
 
         if (showCombust && conditions != null) {
             ConditionChip(
-                label = conditions.combustionStatus.displayName,
+                label = conditions.combustionStatus.getLocalizedName(language),
                 color = ChartDetailColors.ErrorColor
             )
         }

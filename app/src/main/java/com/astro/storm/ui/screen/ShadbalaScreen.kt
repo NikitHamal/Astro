@@ -481,7 +481,7 @@ private fun StrongestWeakestCard(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    planet.symbol,
+                    planet.localizedAbbr(),
                     style = MaterialTheme.typography.headlineSmall,
                     color = accentColor
                 )
@@ -530,7 +530,7 @@ private fun PlanetStrengthRow(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                shadbala.planet.symbol,
+                shadbala.planet.localizedAbbr(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.getPlanetColor(shadbala.planet)
             )
@@ -599,13 +599,14 @@ private fun ShadbalaDetailsTab(
                 FilterChip(
                     selected = isSelected,
                     onClick = { onSelectPlanet(planet) },
-                    label = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(planet.symbol)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(planet.getLocalizedName(language))
-                        }
-                    },
+                                    label = {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Text(planet.localizedAbbr())
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text(planet.getLocalizedName(language))
+                                        }
+                                    },
+                    
                     leadingIcon = if (isSelected) {
                         {
                             Icon(
@@ -689,7 +690,7 @@ private fun PlanetShadbalaDetailCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            planet.symbol,
+                            planet.localizedAbbr(),
                             style = MaterialTheme.typography.headlineMedium,
                             color = accentColor
                         )
@@ -1069,21 +1070,22 @@ private fun ShadbalaComparisonTab(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Data rows
-                analysis.getPlanetsByStrength().forEach { shadbala ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 6.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            shadbala.planet.symbol,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = AppTheme.getPlanetColor(shadbala.planet),
-                            modifier = Modifier.width(60.dp)
-                        )
+                                    analysis.getPlanetsByStrength().forEach { shadbala ->
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(vertical = 6.dp),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                shadbala.planet.localizedAbbr(),
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                fontWeight = FontWeight.Bold,
+                                                color = AppTheme.getPlanetColor(shadbala.planet),
+                                                modifier = Modifier.width(60.dp)
+                                            )
+                
                         Text(
                             String.format("%.0f", shadbala.sthanaBala.total),
                             style = MaterialTheme.typography.bodySmall,
@@ -1152,7 +1154,7 @@ private fun ComparisonBarRow(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                shadbala.planet.symbol,
+                shadbala.planet.localizedAbbr(),
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.getPlanetColor(shadbala.planet)

@@ -588,7 +588,7 @@ private fun YoginiPeriodRow(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = yogini.planet.symbol,
+                    text = yogini.planet.localizedAbbr(),
                     fontSize = if (isLarge) 17.sp else 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -917,7 +917,7 @@ private fun RowScope.YoginiSequenceItem(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = yogini.planet.symbol,
+                    text = yogini.planet.localizedAbbr(),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = getYoginiColor(yogini)
@@ -1040,15 +1040,16 @@ private fun YoginiMahadashaCard(
                                     Modifier.border(2.5.dp, yoginiColor.copy(alpha = 0.4f), CircleShape)
                                 } else Modifier
                             ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = mahadasha.yogini.planet.symbol,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    }
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = mahadasha.yogini.planet.localizedAbbr(),
+                                                fontSize = 18.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color.White
+                                            )
+                                        }
+                        
                     Spacer(modifier = Modifier.width(14.dp))
                     Column {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1186,7 +1187,7 @@ private fun YoginiAntardashaRow(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = antardasha.yogini.planet.symbol,
+                    text = antardasha.yogini.planet.localizedAbbr(),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -1291,7 +1292,7 @@ private fun YoginiDetailCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = yogini.planet.symbol,
+                            text = yogini.planet.localizedAbbr(),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = yoginiColor

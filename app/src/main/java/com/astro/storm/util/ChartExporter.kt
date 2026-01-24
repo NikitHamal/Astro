@@ -1307,7 +1307,7 @@ class ChartExporter @Inject constructor(
             // Planet symbol
             paint.color = COLOR_PRIMARY
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-            canvas.drawText(planet.symbol, xPos, yPos + 13f, paint)
+            canvas.drawText(planet.getLocalizedAbbr(locManager.currentLanguage), xPos, yPos + 13f, paint)
             xPos = PDF_MARGIN.toFloat() + 35f
 
             // Bindus for each sign

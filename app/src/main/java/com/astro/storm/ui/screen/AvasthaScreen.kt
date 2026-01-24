@@ -390,7 +390,7 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = strongest.planet.symbol,
+                        text = strongest.planet.localizedAbbr(),
                         fontSize = 24.sp,
                         color = getPlanetColor(strongest.planet)
                     )
@@ -434,7 +434,7 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = weakest.planet.symbol,
+                        text = weakest.planet.localizedAbbr(),
                         fontSize = 24.sp,
                         color = getPlanetColor(weakest.planet)
                     )
@@ -599,7 +599,7 @@ private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.A
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = rec.planet.symbol,
+                                text = rec.planet.localizedAbbr(),
                                 fontSize = 20.sp,
                                 color = getPlanetColor(rec.planet)
                             )
@@ -688,7 +688,7 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = avastha.planet.symbol,
+                            text = avastha.planet.localizedAbbr(),
                             fontSize = 24.sp,
                             color = getPlanetColor(avastha.planet)
                         )
@@ -906,7 +906,7 @@ private fun BaladiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = avastha.planet.symbol,
+                    text = avastha.planet.localizedAbbr(),
                     fontSize = 24.sp,
                     color = getPlanetColor(avastha.planet)
                 )
@@ -1010,7 +1010,7 @@ private fun JagradadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = avastha.planet.symbol,
+                    text = avastha.planet.localizedAbbr(),
                     fontSize = 24.sp,
                     color = getPlanetColor(avastha.planet)
                 )
@@ -1118,7 +1118,7 @@ private fun DeeptadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(
-                        text = avastha.planet.symbol,
+                        text = avastha.planet.localizedAbbr(),
                         fontSize = 24.sp,
                         color = getPlanetColor(avastha.planet)
                     )
@@ -1227,7 +1227,7 @@ private fun LajjitadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(
-                        text = avastha.planet.symbol,
+                        text = avastha.planet.localizedAbbr(),
                         fontSize = 24.sp,
                         color = getPlanetColor(avastha.planet)
                     )

@@ -529,7 +529,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = yoga.dusthanaLord.symbol,
+                            text = yoga.dusthanaLord.localizedAbbr(),
                             fontSize = 24.sp,
                             color = if (yoga.isFormed) yogaColor else AppTheme.TextMuted
                         )
@@ -691,7 +691,7 @@ private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaE
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "${exchange.planet1.symbol} ↔ ${exchange.planet2.symbol}",
+                    text = "${exchange.planet1.localizedAbbr()} ↔ ${exchange.planet2.localizedAbbr()}",
                     style = MaterialTheme.typography.titleMedium,
                     color = AppTheme.AccentGold
                 )
@@ -909,7 +909,7 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = period.planet.symbol,
+                        text = period.planet.localizedAbbr(),
                         fontSize = 18.sp,
                         color = yogaColor
                     )

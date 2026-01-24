@@ -531,7 +531,7 @@ class ChartRenderer(
         }
 
         planets.forEach { planet ->
-            val abbrev = planet.planet.symbol
+            val abbrev = planet.planet.getLocalizedAbbr(language)
             val degree = (planet.longitude % 30.0).toInt()
             val degreeSuper = toSuperscript(degree)
 
@@ -1274,7 +1274,7 @@ class ChartRenderer(
                 val planets = planetsBySign[sign] ?: emptyList()
                 val signItems = mutableListOf<HouseDisplayItem>()
                 planets.forEach { planet ->
-                    val abbrev = planet.planet.symbol
+                    val abbrev = planet.planet.getLocalizedAbbr(language)
                     val degree = (planet.longitude % 30.0).toInt()
                     val degreeSuper = toSuperscript(degree)
                     val statusIndicators = buildString {

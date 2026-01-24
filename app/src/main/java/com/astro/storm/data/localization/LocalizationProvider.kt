@@ -149,6 +149,13 @@ fun StringKeyInterface.localized(vararg args: Any): String = stringResource(this
 fun com.astro.storm.core.model.Planet.localizedName(): String = stringResource(this.stringKey)
 
 /**
+ * Extension function for Planet to get localized abbreviation in Compose
+ */
+@Composable
+@ReadOnlyComposable
+fun com.astro.storm.core.model.Planet.localizedAbbr(): String = stringResource(this.abbrKey)
+
+/**
  * Extension function for ZodiacSign to get localized name in Compose
  */
 @Composable

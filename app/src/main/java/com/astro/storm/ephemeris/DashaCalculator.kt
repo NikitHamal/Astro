@@ -411,34 +411,34 @@ object DashaCalculator {
             }
         }
 
-        fun getShortDescription(): String {
+        fun getLocalizedShortDescription(language: Language): String {
             return buildString {
                 currentMahadasha?.let { md ->
-                    append(md.planet.symbol)
+                    append(md.planet.getLocalizedAbbr(language))
                     currentAntardasha?.let { ad ->
-                        append("-${ad.planet.symbol}")
+                        append("-${ad.planet.getLocalizedAbbr(language)}")
                         currentPratyantardasha?.let { pd ->
-                            append("-${pd.planet.symbol}")
+                            append("-${pd.planet.getLocalizedAbbr(language)}")
                         }
                     }
                 } ?: append("--")
             }
         }
 
-        fun getFullShortDescription(): String {
+        fun getLocalizedFullShortDescription(language: Language): String {
             return buildString {
                 currentMahadasha?.let { md ->
-                    append(md.planet.symbol)
+                    append(md.planet.getLocalizedAbbr(language))
                     currentAntardasha?.let { ad ->
-                        append("-${ad.planet.symbol}")
+                        append("-${ad.planet.getLocalizedAbbr(language)}")
                         currentPratyantardasha?.let { pd ->
-                            append("-${pd.planet.symbol}")
+                            append("-${pd.planet.getLocalizedAbbr(language)}")
                             currentSookshmadasha?.let { sd ->
-                                append("-${sd.planet.symbol}")
+                                append("-${sd.planet.getLocalizedAbbr(language)}")
                                 currentPranadasha?.let { prd ->
-                                    append("-${prd.planet.symbol}")
+                                    append("-${prd.planet.getLocalizedAbbr(language)}")
                                     currentDehadasha?.let { dd ->
-                                        append("-${dd.planet.symbol}")
+                                        append("-${dd.planet.getLocalizedAbbr(language)}")
                                     }
                                 }
                             }
@@ -514,6 +514,10 @@ object DashaCalculator {
 
         fun getCombinedPeriodString(): String {
             return getAllLords().joinToString("-") { it.displayName }
+        }
+
+        fun getLocalizedCombinedPeriodString(language: Language): String {
+            return getAllLords().joinToString("-") { it.getLocalizedName(language) }
         }
     }
 

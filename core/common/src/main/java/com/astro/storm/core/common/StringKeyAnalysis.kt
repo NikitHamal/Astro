@@ -1333,6 +1333,20 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     CHART_LEGEND_OWN_SHORT("Own", "स्व"),
     CHART_ASC_ABBR("Asc", "ल"),
 
+    // Planet Abbreviations for Charts
+    PLANET_SUN_ABBR("Su", "सू"),
+    PLANET_MOON_ABBR("Mo", "च"),
+    PLANET_MARS_ABBR("Ma", "मं"),
+    PLANET_MERCURY_ABBR("Me", "बु"),
+    PLANET_JUPITER_ABBR("Ju", "गु"),
+    PLANET_VENUS_ABBR("Ve", "शु"),
+    PLANET_SATURN_ABBR("Sa", "श"),
+    PLANET_RAHU_ABBR("Ra", "रा"),
+    PLANET_KETU_ABBR("Ke", "के"),
+    PLANET_URANUS_ABBR("Ur", "यु"),
+    PLANET_NEPTUNE_ABBR("Ne", "ने"),
+    PLANET_PLUTO_ABBR("Pl", "प्लु"),
+
     // ============================================
     // ASHTAKAVARGA ANALYSIS HEADERS
     // ============================================

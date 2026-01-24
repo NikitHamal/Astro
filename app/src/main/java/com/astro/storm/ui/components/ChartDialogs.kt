@@ -509,7 +509,7 @@ private fun PlanetDialogHeader(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = planetPosition.planet.symbol,
+                        text = planetPosition.planet.localizedAbbr(),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
@@ -1323,7 +1323,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = shadbala.planet.symbol,
+                            text = shadbala.planet.localizedAbbr(),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White

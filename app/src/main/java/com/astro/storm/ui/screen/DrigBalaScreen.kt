@@ -336,7 +336,7 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = analysis.strongestPlanet.symbol,
+                    text = analysis.strongestPlanet.localizedAbbr(),
                     fontSize = 24.sp,
                     color = AppTheme.SuccessColor
                 )
@@ -376,7 +376,7 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = analysis.weakestPlanet.symbol,
+                    text = analysis.weakestPlanet.localizedAbbr(),
                     fontSize = 24.sp,
                     color = AppTheme.ErrorColor
                 )
@@ -542,7 +542,7 @@ private fun AspectGroupCard(planet: Planet, aspects: List<DrigBalaCalculator.Asp
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = planet.symbol,
+                            text = planet.localizedAbbr(),
                             fontSize = 18.sp,
                             color = AppTheme.AccentPrimary
                         )
@@ -605,7 +605,7 @@ private fun AspectDetailRow(aspect: DrigBalaCalculator.AspectInfo) {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = aspect.aspectedPlanet.symbol,
+                text = aspect.aspectedPlanet.localizedAbbr(),
                 fontSize = 16.sp,
                 color = AppTheme.TextPrimary
             )

@@ -538,7 +538,7 @@ private fun StrongestWeakestCard(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    planet.symbol,
+                    planet.localizedAbbr(),
                     style = MaterialTheme.typography.headlineSmall,
                     color = accentColor
                 )
@@ -588,7 +588,7 @@ private fun PlanetStrengthRow(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                planet.symbol,
+                planet.localizedAbbr(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.getPlanetColor(planet)
             )
@@ -661,13 +661,14 @@ private fun PlanetStrengthsTab(
                 FilterChip(
                     selected = isSelected,
                     onClick = { onSelectPlanet(planet) },
-                    label = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(planet.symbol)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(planet.getLocalizedName(language))
-                        }
-                    },
+                                    label = {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Text(planet.localizedAbbr())
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text(planet.getLocalizedName(language))
+                                        }
+                                    },
+                    
                     leadingIcon = if (isSelected) {
                         {
                             Icon(
@@ -751,7 +752,7 @@ private fun PlanetDetailCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            planet.symbol,
+                            planet.localizedAbbr(),
                             style = MaterialTheme.typography.headlineMedium,
                             color = accentColor
                         )
@@ -1095,7 +1096,7 @@ private fun VimsopakaCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            planet.symbol,
+                            planet.localizedAbbr(),
                             style = MaterialTheme.typography.bodyLarge,
                             color = AppTheme.getPlanetColor(planet)
                         )
@@ -1306,7 +1307,7 @@ private fun VargottamaPlanetCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        planet.symbol,
+                        planet.localizedAbbr(),
                         style = MaterialTheme.typography.headlineSmall,
                         color = AppTheme.getPlanetColor(planet)
                     )

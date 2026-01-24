@@ -19,27 +19,35 @@ enum class Planet(
     @Deprecated("Use stringResource(planet.stringKey) or getLocalizedName(language)")
     val displayName: String,
     val symbol: String,
-    val stringKey: com.astro.storm.core.common.StringKeyInterface
+    val stringKey: com.astro.storm.core.common.StringKeyInterface,
+    val abbrKey: com.astro.storm.core.common.StringKeyInterface
 ) {
-    SUN(0, "Sun", "Su", StringKey.PLANET_SUN),
-    MOON(1, "Moon", "Mo", StringKey.PLANET_MOON),
-    MERCURY(2, "Mercury", "Me", StringKey.PLANET_MERCURY),
-    VENUS(3, "Venus", "Ve", StringKey.PLANET_VENUS),
-    MARS(4, "Mars", "Ma", StringKey.PLANET_MARS),
-    JUPITER(5, "Jupiter", "Ju", StringKey.PLANET_JUPITER),
-    SATURN(6, "Saturn", "Sa", StringKey.PLANET_SATURN),
-    RAHU(10, "Rahu", "Ra", StringKey.PLANET_RAHU),  // Mean node (North Node)
-    KETU(-1, "Ketu", "Ke", StringKey.PLANET_KETU),  // 180° from Rahu (South Node)
-    TRUE_NODE(11, "True Rahu", "TRa", StringKey.PLANET_RAHU), // True node
-    URANUS(7, "Uranus", "Ur", StringKey.PLANET_URANUS),
-    NEPTUNE(8, "Neptune", "Ne", StringKey.PLANET_NEPTUNE),
-    PLUTO(9, "Pluto", "Pl", StringKey.PLANET_PLUTO);
+    SUN(0, "Sun", "Su", StringKey.PLANET_SUN, StringKeyAnalysis.PLANET_SUN_ABBR),
+    MOON(1, "Moon", "Mo", StringKey.PLANET_MOON, StringKeyAnalysis.PLANET_MOON_ABBR),
+    MERCURY(2, "Mercury", "Me", StringKey.PLANET_MERCURY, StringKeyAnalysis.PLANET_MERCURY_ABBR),
+    VENUS(3, "Venus", "Ve", StringKey.PLANET_VENUS, StringKeyAnalysis.PLANET_VENUS_ABBR),
+    MARS(4, "Mars", "Ma", StringKey.PLANET_MARS, StringKeyAnalysis.PLANET_MARS_ABBR),
+    JUPITER(5, "Jupiter", "Ju", StringKey.PLANET_JUPITER, StringKeyAnalysis.PLANET_JUPITER_ABBR),
+    SATURN(6, "Saturn", "Sa", StringKey.PLANET_SATURN, StringKeyAnalysis.PLANET_SATURN_ABBR),
+    RAHU(10, "Rahu", "Ra", StringKey.PLANET_RAHU, StringKeyAnalysis.PLANET_RAHU_ABBR),  // Mean node (North Node)
+    KETU(-1, "Ketu", "Ke", StringKey.PLANET_KETU, StringKeyAnalysis.PLANET_KETU_ABBR),  // 180° from Rahu (South Node)
+    TRUE_NODE(11, "True Rahu", "TRa", StringKey.PLANET_RAHU, StringKeyAnalysis.PLANET_RAHU_ABBR), // True node
+    URANUS(7, "Uranus", "Ur", StringKey.PLANET_URANUS, StringKeyAnalysis.PLANET_URANUS_ABBR),
+    NEPTUNE(8, "Neptune", "Ne", StringKey.PLANET_NEPTUNE, StringKeyAnalysis.PLANET_NEPTUNE_ABBR),
+    PLUTO(9, "Pluto", "Pl", StringKey.PLANET_PLUTO, StringKeyAnalysis.PLANET_PLUTO_ABBR);
 
     /**
      * Get localized planet name based on current language
      */
     fun getLocalizedName(language: Language): String {
         return StringResources.get(stringKey, language)
+    }
+
+    /**
+     * Get localized abbreviation based on current language
+     */
+    fun getLocalizedAbbr(language: Language): String {
+        return StringResources.get(abbrKey, language)
     }
 
     /**
