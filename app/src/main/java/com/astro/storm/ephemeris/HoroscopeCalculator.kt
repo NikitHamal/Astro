@@ -623,7 +623,7 @@ class HoroscopeCalculator @Inject constructor(
         val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
 
         val themeKey = determineTheme(moonSign, currentDashaLord)
-        val descriptionKey = THEME_DESCRIPTIONS_KEYS[themeKey] ?: StringKey.DESC_BALANCE_EQUILIBRIUM
+        val descriptionKey = THEME_DESCRIPTIONS_KEYS[themeKey] ?: StringKey.THEME_DESC_BALANCE_EQUILIBRIUM
 
         return Pair(themeKey, descriptionKey)
     }
@@ -763,21 +763,21 @@ class HoroscopeCalculator @Inject constructor(
     private fun calculateWeeklyTheme(
         dashaTimeline: DashaCalculator.DashaTimeline,
         dailyHighlights: List<DailyHighlight>
-    ): Pair<String, String> {
+    ): Pair<StringKey, String> {
         val avgEnergy = if (dailyHighlights.isNotEmpty()) {
             dailyHighlights.sumOf { it.energy }.toDouble() / dailyHighlights.size
         } else 5.0
 
         val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
 
-        val theme = when {
-            avgEnergy >= 7 -> "Week of Opportunities"
-            avgEnergy >= 5 -> "Steady Progress"
-            else -> "Mindful Navigation"
+        val themeKey = when {
+            avgEnergy >= 7 -> StringKey.THEME_WEEK_OPPORTUNITIES
+            avgEnergy >= 5 -> StringKey.THEME_WEEK_STEADY_PROGRESS
+            else -> StringKey.THEME_WEEK_MINDFUL_NAVIGATION
         }
 
         val overview = buildWeeklyOverview(currentDashaLord, avgEnergy, dailyHighlights)
-        return Pair(theme, overview)
+        return Pair(themeKey, overview)
     }
 
     private fun buildWeeklyOverview(
@@ -1199,7 +1199,7 @@ class HoroscopeCalculator @Inject constructor(
         )
 
         private val DASHA_AFFIRMATIONS_KEYS = mapOf(
-            Planet.SUN to StringKey.THEME_SELF_EXPRESS,
+            Planet.SUN to StringKey.THEME_SELF_EXPRESSION,
             Planet.MOON to StringKey.THEME_INTUITION_NURTURING,
             Planet.MARS to StringKey.THEME_ENERGY_INITIATIVE,
             Planet.MERCURY to StringKey.THEME_COMMUNICATION_LEARNING,

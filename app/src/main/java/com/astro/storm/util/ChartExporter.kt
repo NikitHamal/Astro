@@ -22,6 +22,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyExport
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
@@ -1916,6 +1917,7 @@ class ChartExporter @Inject constructor(
             isSubpixelText = true
         }
 
+        val language = locManager.currentLanguage
         var yPos = PDF_MARGIN_TOP.toFloat()
 
         // Title
@@ -1925,6 +1927,7 @@ class ChartExporter @Inject constructor(
         // Calculate horoscope data
         val horoscopeCalculator = HoroscopeCalculator(context, ephemerisEngine)
         val horoscope = horoscopeCalculator.calculateDailyHoroscope(chart, java.time.LocalDate.now())
+        val language = locManager.currentLanguage
 
         val cardPaint = Paint().apply {
             color = COLOR_CARD_BG
