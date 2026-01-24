@@ -132,7 +132,7 @@ fun InsightsTab(
     when (val state = insightsState) {
         is InsightsUiState.Loading -> InsightsLoadingSkeleton()
         is InsightsUiState.Error -> InsightsErrorState(
-            messageKey = StringKey.ERROR_EPHEMERIS_DATA,
+            messageKey = state.messageKey,
             onRetry = onRetry
         )
         is InsightsUiState.Success -> {
@@ -156,6 +156,7 @@ private fun InsightsContent(
     onRetryFailed: () -> Unit
 ) {
     val listState = rememberLazyListState()
+    val language = LocalLanguage.current
 
     val hasAnyContent by remember(data) {
         derivedStateOf {
@@ -174,11 +175,9 @@ private fun InsightsContent(
         }
     }
 
-    val language = LocalLanguage.current
-
     if (!hasAnyContent && data.errors.isNotEmpty()) {
         InsightsErrorState(
-            messageKey = StringKey.ERROR_EPHEMERIS_DATA,
+            messageKey = data.errors.firstOrNull()?.messageKey ?: StringKey.ERROR_EPHEMERIS_DATA,
             onRetry = onRetryFailed
         )
         return
@@ -257,7 +256,7 @@ private fun InsightsContent(
                             AffirmationCard(horoscope.affirmationKey)
                         }
                     } ?: item(key = "today_unavailable") {
-                        HoroscopeUnavailableCard(period = "today", onRetry = onRetryFailed)
+                        HoroscopeUnavailableCard(periodKey = StringKey.PERIOD_TODAY, onRetry = onRetryFailed)
                     }
                 }
                 HoroscopePeriod.TOMORROW -> {
@@ -275,7 +274,7 @@ private fun InsightsContent(
                             LuckyElementsCard(horoscope.luckyElements)
                         }
                     } ?: item(key = "tomorrow_unavailable") {
-                        HoroscopeUnavailableCard(period = "tomorrow", onRetry = onRetryFailed)
+                        HoroscopeUnavailableCard(periodKey = StringKey.PERIOD_TOMORROW, onRetry = onRetryFailed)
                     }
                 }
                 HoroscopePeriod.WEEKLY -> {
@@ -296,7 +295,7 @@ private fun InsightsContent(
                             WeeklyAdviceCard(weekly.weeklyAdvice)
                         }
                     } ?: item(key = "weekly_unavailable") {
-                        HoroscopeUnavailableCard(period = "weekly", onRetry = onRetryFailed)
+                        HoroscopeUnavailableCard(periodKey = StringKey.PERIOD_WEEKLY, onRetry = onRetryFailed)
                     }
                 }
             }
@@ -311,6 +310,10 @@ private fun PartialErrorBanner(
 ) {
     val language = LocalLanguage.current
     val errorCount = remember(errors) { errors.size }
+    val localizedCount = remember(errorCount, language) {
+        if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(errorCount.toString())
+        else errorCount.toString()
+    }
 
     Card(
         modifier = Modifier
@@ -342,7 +345,7 @@ private fun PartialErrorBanner(
                     color = AppTheme.WarningColor
                 )
                 Text(
-                    text = stringResource(StringKey.ERROR_CALCULATIONS_FAILED, errorCount),
+                    text = stringResource(StringKey.ERROR_CALCULATIONS_FAILED, localizedCount),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -361,18 +364,11 @@ private fun PartialErrorBanner(
 
 @Composable
 private fun HoroscopeUnavailableCard(
-    period: String,
+    periodKey: StringKey,
     onRetry: () -> Unit
 ) {
     val language = LocalLanguage.current
-    val displayPeriod = remember(period, language) {
-        when (period.lowercase()) {
-            "today" -> StringResources.get(StringKey.PERIOD_TODAY, language)
-            "tomorrow" -> StringResources.get(StringKey.PERIOD_TOMORROW, language)
-            "weekly" -> StringResources.get(StringKey.PERIOD_WEEKLY, language)
-            else -> period.replaceFirstChar { it.uppercase() }
-        }
-    }
+    val displayPeriod = remember(periodKey, language) { StringResources.get(periodKey, language) }
 
     Card(
         modifier = Modifier
@@ -704,8 +700,12 @@ private fun DailyHoroscopeHeader(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val dateText = remember(formattedDate, language) {
+                    if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(formattedDate)
+                    else formattedDate
+                }
                 Text(
-                    text = formattedDate,
+                    text = dateText,
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.TextMuted
                 )
@@ -749,7 +749,6 @@ private fun DailyHoroscopeHeader(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                val language = LocalLanguage.current
                 InfoChip(
                     icon = Icons.Outlined.NightlightRound,
                     label = stringResource(StringKey.TRANSITS_MOON_IN, horoscope.moonSign.getLocalizedName(language)),
@@ -806,6 +805,12 @@ private fun EnergyCard(overallEnergy: Int) {
 
     val energyColor = getEnergyColor(overallEnergy)
     val energyDescription = remember(overallEnergy, language) { getEnergyDescription(overallEnergy, language) }
+    
+    val localizedScore = remember(overallEnergy, language) {
+        val score = "$overallEnergy/10"
+        if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(score)
+        else score
+    }
 
     Card(
         modifier = Modifier
@@ -843,7 +848,7 @@ private fun EnergyCard(overallEnergy: Int) {
                 Spacer(modifier = Modifier.width(12.dp))
 
                 Text(
-                    text = "$overallEnergy/10",
+                    text = localizedScore,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = energyColor
@@ -928,7 +933,6 @@ private fun LifeAreasSection(lifeAreas: List<HoroscopeCalculator.LifeAreaPredict
 
 @Composable
 private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
-    val language = LocalLanguage.current
     var expanded by remember { mutableStateOf(false) }
     val areaConfig = getLifeAreaConfig(prediction.area)
     val interactionSource = remember { MutableInteractionSource() }
@@ -1279,7 +1283,9 @@ private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
     val language = LocalLanguage.current
     val dateRange = remember(weekly.startDate, weekly.endDate, language) {
         val format = InsightsFormatters.getMonthDay(language)
-        "${weekly.startDate.format(format)} - ${weekly.endDate.format(format)}"
+        val range = "${weekly.startDate.format(format)} - ${weekly.endDate.format(format)}"
+        if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(range)
+        else range
     }
 
     Card(
@@ -1348,6 +1354,7 @@ private fun WeeklyEnergyChart(dailyHighlights: List<HoroscopeCalculator.DailyHig
 
 @Composable
 private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
+    val language = LocalLanguage.current
     val animatedHeight by animateFloatAsState(
         targetValue = highlight.energy / 10f,
         animationSpec = tween(600, easing = FastOutSlowInEasing),
@@ -1355,7 +1362,10 @@ private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
     )
 
     val barColor = getEnergyColor(highlight.energy)
-    val dayAbbrev = remember(highlight.dayOfWeek) { highlight.dayOfWeek.name.take(3) }
+    val dayAbbrev = remember(highlight.dayOfWeek, language) { 
+        val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
+        highlight.date.format(DateTimeFormatter.ofPattern("EEE", locale))
+    }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
@@ -1409,8 +1419,13 @@ private fun KeyDatesSection(keyDates: List<HoroscopeCalculator.KeyDate>) {
 
 @Composable
 private fun KeyDateCard(keyDate: HoroscopeCalculator.KeyDate) {
+    val language = LocalLanguage.current
     val indicatorColor = if (keyDate.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor
-    val dayOfMonth = remember(keyDate.date) { keyDate.date.dayOfMonth.toString() }
+    val dayOfMonth = remember(keyDate.date, language) { 
+        val day = keyDate.date.dayOfMonth.toString()
+        if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(day)
+        else day
+    }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -1491,7 +1506,6 @@ private fun WeeklyPredictionsSection(predictions: Map<HoroscopeCalculator.LifeAr
 
 @Composable
 private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: String) {
-    val language = LocalLanguage.current
     var expanded by remember { mutableStateOf(false) }
     val areaConfig = getLifeAreaConfig(area)
     val interactionSource = remember { MutableInteractionSource() }
@@ -1750,16 +1764,19 @@ private fun DashaPeriodRow(
     val planetColor = getPlanetColor(planet)
     val label = stringResource(labelKey)
 
-    val dateRange = remember(startDate, endDate) {
-        "${startDate.format(InsightsFormatters.monthYear)} - ${endDate.format(InsightsFormatters.monthYear)}"
+    val dateRange = remember(startDate, endDate, language) {
+        val format = InsightsFormatters.getMonthYear(language)
+        val range = "${startDate.format(format)} - ${endDate.format(format)}"
+        if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(range)
+        else range
     }
 
     val daysRemaining = remember(endDate) {
         ChronoUnit.DAYS.between(LocalDate.now(), endDate)
     }
 
-    val formattedDuration = remember(daysRemaining) {
-        formatDuration(daysRemaining)
+    val formattedDuration = remember(daysRemaining, language) {
+        formatDuration(daysRemaining, language)
     }
 
     Row(
@@ -1933,7 +1950,7 @@ private fun UpcomingPeriodItem(
         ChronoUnit.DAYS.between(LocalDate.now(), startDate)
     }
 
-    val durationText = formatDuration(daysUntil)
+    val durationText = formatDuration(daysUntil, language)
 
     Row(
         modifier = Modifier
@@ -2130,6 +2147,260 @@ private fun EmptyInsightsState(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
+                text = stringResource(StringKey.SETTINGS_NO_PROFILE),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = colors.TextPrimary,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = stringResource(StringKey.SETTINGS_TAP_TO_SELECT),
+                style = MaterialTheme.typography.bodyMedium,
+                color = colors.TextMuted,
+                textAlign = TextAlign.Center,
+                lineHeight = 22.sp
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Minimal fully-rounded button with no shadow
+            Button(
+                onClick = onCreateChart,
+                modifier = Modifier
+                    .height(52.dp)
+                    .widthIn(min = 200.dp),
+                shape = RoundedCornerShape(26.dp), // Fully rounded
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colors.AccentPrimary,
+                    contentColor = colors.ButtonText
+                ),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 0.dp,
+                    pressedElevation = 0.dp,
+                    hoveredElevation = 0.dp,
+                    focusedElevation = 0.dp
+                )
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(StringKey.BTN_CREATE_CHART),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
+    }
+}
+
+private fun calculateProgress(startDate: LocalDate, endDate: LocalDate): Float {
+    val today = LocalDate.now()
+    if (today.isBefore(startDate)) return 0f
+    if (today.isAfter(endDate)) return 1f
+
+    val totalDays = ChronoUnit.DAYS.between(startDate, endDate).toFloat()
+    if (totalDays <= 0) return 1f
+
+    val elapsedDays = ChronoUnit.DAYS.between(startDate, today).toFloat()
+    return (elapsedDays / totalDays).coerceIn(0f, 1f)
+}
+
+private fun formatDuration(days: Long, language: Language): String {
+    if (days <= 0) {
+        val zero = "0"
+        val d = StringResources.get(StringKey.DAYS_SHORT, language)
+        return if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(zero) + d else zero + d
+    }
+
+    val d = StringResources.get(StringKey.DAYS_SHORT, language)
+    val w = StringResources.get(StringKey.DASHA_SOOKSHMA, language).take(1) // Placeholder for Week
+    val m = StringResources.get(StringKey.DASHA_BHUKTI, language).take(1) // Placeholder for Month
+    val y = StringResources.get(StringKey.YEARS, language).take(1)
+
+    fun num(n: Long): String = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n.toString()) else n.toString()
+
+    return when {
+        days < 7 -> "${num(days)}$d"
+        days < 30 -> {
+            val weeks = days / 7
+            val remainingDays = days % 7
+            if (remainingDays == 0L) "${num(weeks)}$w" else "${num(weeks)}$w ${num(remainingDays)}$d"
+        }
+        days < 365 -> {
+            val months = days / 30
+            val remainingDays = days % 30
+            when {
+                remainingDays == 0L -> "${num(months)}$m"
+                remainingDays < 7 -> "${num(months)}$m ${num(remainingDays)}$d"
+                else -> "${num(months)}$m ${num(remainingDays / 7)}$w"
+            }
+        }
+        else -> {
+            val years = days / 365
+            val remainingDays = days % 365
+            val months = remainingDays / 30
+            if (months == 0L) "${num(years)}$y" else "${num(years)}$y ${num(months)}$m"
+        }
+    }
+}
+
+@Composable
+private fun getPlanetColor(planet: Planet): Color {
+    return when (planet) {
+        Planet.SUN -> AppTheme.PlanetSun
+        Planet.MOON -> AppTheme.PlanetMoon
+        Planet.MARS -> AppTheme.PlanetMars
+        Planet.MERCURY -> AppTheme.PlanetMercury
+        Planet.JUPITER -> AppTheme.PlanetJupiter
+        Planet.VENUS -> AppTheme.PlanetVenus
+        Planet.SATURN -> AppTheme.PlanetSaturn
+        Planet.RAHU -> AppTheme.PlanetRahu
+        Planet.KETU -> AppTheme.PlanetKetu
+        else -> AppTheme.AccentPrimary
+    }
+}
+
+
+
+            items(
+                items = displayedInfluences,
+                key = { it.planet.name }
+            ) { influence ->
+                TransitCard(influence)
+            }
+        }
+    }
+}
+
+@Composable
+private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
+    val language = LocalLanguage.current
+    val planetColor = getPlanetColor(influence.planet)
+    val trendColor = if (influence.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor
+    val strengthDots = remember(influence.strength) { (influence.strength / 2).coerceIn(0, 5) }
+
+    Card(
+        modifier = Modifier.width(160.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(CircleShape)
+                        .background(planetColor.copy(alpha = 0.15f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = influence.planet.symbol,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = planetColor
+                    )
+                }
+
+                Icon(
+                    imageVector = if (influence.isPositive) Icons.Filled.TrendingUp
+                    else Icons.Filled.TrendingDown,
+                    contentDescription = null,
+                    tint = trendColor,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = influence.planet.getLocalizedName(language),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+                color = AppTheme.TextPrimary
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = influence.influence,
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextMuted,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                lineHeight = 16.sp
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                repeat(5) { index ->
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .clip(CircleShape)
+                            .background(
+                                if (index < strengthDots) trendColor else AppTheme.ChipBackground
+                            )
+                    )
+                    if (index < 4) Spacer(modifier = Modifier.width(4.dp))
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Minimal Empty State UI for Insights Screen
+ * Matches the Home screen empty state style with Create Chart button
+ */
+@Composable
+private fun EmptyInsightsState(
+    onCreateChart: () -> Unit = {}
+) {
+    val colors = AppTheme.current
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colors.ScreenBackground)
+            .padding(32.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            // Simple circular icon container
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape)
+                    .background(colors.ChipBackground),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Insights,
+                    contentDescription = null,
+                    tint = colors.TextMuted,
+                    modifier = Modifier.size(36.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
                 text = stringResource(StringKey.NO_PROFILE_SELECTED),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
@@ -2193,34 +2464,6 @@ private fun calculateProgress(startDate: LocalDate, endDate: LocalDate): Float {
 
     val elapsedDays = ChronoUnit.DAYS.between(startDate, today).toFloat()
     return (elapsedDays / totalDays).coerceIn(0f, 1f)
-}
-
-private fun formatDuration(days: Long): String {
-    if (days <= 0) return "0d"
-
-    return when {
-        days < 7 -> "${days}d"
-        days < 30 -> {
-            val weeks = days / 7
-            val remainingDays = days % 7
-            if (remainingDays == 0L) "${weeks}w" else "${weeks}w ${remainingDays}d"
-        }
-        days < 365 -> {
-            val months = days / 30
-            val remainingDays = days % 30
-            when {
-                remainingDays == 0L -> "${months}m"
-                remainingDays < 7 -> "${months}m ${remainingDays}d"
-                else -> "${months}m ${remainingDays / 7}w"
-            }
-        }
-        else -> {
-            val years = days / 365
-            val remainingDays = days % 365
-            val months = remainingDays / 30
-            if (months == 0L) "${years}y" else "${years}y ${months}m"
-        }
-    }
 }
 
 @Composable
