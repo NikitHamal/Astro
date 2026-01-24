@@ -2,6 +2,7 @@ package com.astro.storm.core.model
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringResources
 
 /**
