@@ -1927,7 +1927,6 @@ class ChartExporter @Inject constructor(
         // Calculate horoscope data
         val horoscopeCalculator = HoroscopeCalculator(context, ephemerisEngine)
         val horoscope = horoscopeCalculator.calculateDailyHoroscope(chart, java.time.LocalDate.now())
-        val language = locManager.currentLanguage
 
         val cardPaint = Paint().apply {
             color = COLOR_CARD_BG

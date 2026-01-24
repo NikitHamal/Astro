@@ -1078,7 +1078,6 @@ private fun getLifeAreaConfig(area: HoroscopeCalculator.LifeArea): LifeAreaConfi
 }
 
 @Composable
-@Composable
 private fun LuckyElementsCard(lucky: HoroscopeCalculator.LuckyElements) {
     val language = LocalLanguage.current
     val colorValue = remember(lucky.color) { lucky.color.split(",").first().trim() }
