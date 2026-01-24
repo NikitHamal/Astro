@@ -465,67 +465,6 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     ENERGY_REST("Rest and recharge recommended - avoid major decisions", "आराम र रिचार्ज सिफारिस - प्रमुख निर्णयहरूबाट बच्नुहोस्"),
 
     // ============================================
-    // HOROSCOPE THEMES
-    // ============================================
-    // Theme Descriptions
-    THEME_DESC_DYNAMIC_ACTION(
-        "Your energy is high and aligned with fire elements. This is an excellent day for taking initiative, starting new projects, and asserting yourself confidently. Channel this vibrant energy into productive pursuits.",
-        "तपाईंको ऊर्जा उच्च छ र अग्नि तत्वहरूसँग मिलेको छ। यो पहल लिन, नयाँ परियोजनाहरू सुरु गर्न, र आत्मविश्वासका साथ आफूलाई प्रस्तुत गर्न उत्कृष्ट दिन हो। यो जीवन्त ऊर्जालाई उत्पादक कार्यहरूमा प्रयोग गर्नुहोस्।"
-    ),
-    THEME_DESC_PRACTICAL_PROGRESS(
-        "Grounded earth energy supports methodical progress today. Focus on practical tasks, financial planning, and building stable foundations. Your efforts will yield tangible results.",
-        "भूमिगत पृथ्वी ऊर्जाले आज व्यवस्थित प्रगतिलाई समर्थन गर्छ। व्यावहारिक कार्यहरू, वित्तीय योजना, र स्थिर आधारहरू निर्माण गर्नमा ध्यान दिनुहोस्। तपाईंको प्रयासले ठोस परिणामहरू दिनेछ।"
-    ),
-    THEME_DESC_SOCIAL_CONNECTIONS(
-        "Air element energy enhances communication and social interactions. Networking, negotiations, and intellectual pursuits are favored. Express your ideas and connect with like-minded people.",
-        "वायु तत्व ऊर्जाले सञ्चार र सामाजिक अन्तरक्रियाहरूलाई बढाउँछ। नेटवर्किङ, वार्ता, र बौद्धिक प्रयासहरू अनुकूल छन्। आफ्ना विचारहरू व्यक्त गर्नुहोस् र समान विचार भएका मानिसहरूसँग जोडिनुहोस्।"
-    ),
-    THEME_DESC_EMOTIONAL_INSIGHT(
-        "Water element energy deepens your intuition and emotional awareness. Trust your feelings and pay attention to subtle cues. This is a powerful day for healing and self-reflection.",
-        "जल तत्व ऊर्जाले तपाईंको अन्तर्ज्ञान र भावनात्मक जागरूकता गहिरो बनाउँछ। आफ्ना भावनाहरूमाथि विश्वास गर्नुहोस् र सूक्ष्म संकेतहरूमा ध्यान दिनुहोस्। यो उपचार र आत्म-चिन्तनको लागि शक्तिशाली दिन हो।"
-    ),
-    THEME_DESC_EXPANSION_WISDOM(
-        "Jupiter's benevolent influence brings opportunities for growth, learning, and good fortune. Be open to new possibilities and share your wisdom generously.",
-        "बृहस्पतिको उदार प्रभावले वृद्धि, सिकाइ र सौभाग्यका अवसरहरू ल्याउँछ। नयाँ सम्भावनाहरूको लागि खुला हुनुहोस् र आफ्नो ज्ञान उदारतापूर्वक साझा गर्नुहोस्।"
-    ),
-    THEME_DESC_HARMONY_BEAUTY(
-        "Venus graces you with appreciation for beauty, art, and relationships. Indulge in pleasurable activities and nurture your connections with loved ones.",
-        "शुक्रले तपाईंलाई सौन्दर्य, कला र सम्बन्धहरूको प्रशंसाको वरदान दिन्छ। रमाइलो गतिविधिहरूमा संलग्न हुनुहोस् र आफ्ना प्रियजनहरूसँगको सम्बन्ध पोषण गर्नुहोस्।"
-    ),
-    THEME_DESC_DISCIPLINE_GROWTH(
-        "Saturn's influence calls for patience, hard work, and responsibility. Embrace challenges as opportunities for growth and stay committed to your long-term goals.",
-        "शनिको प्रभावले धैर्य, कडा परिश्रम र जिम्मेवारीको आह्वान गर्छ। चुनौतीहरूलाई वृद्धिका अवसरहरूको रूपमा स्वीकार गर्नुहोस् र आफ्नो दीर्घकालीन लक्ष्यहरूप्रति प्रतिबद्ध रहनुहोस्।"
-    ),
-    THEME_DESC_COMMUNICATION_LEARNING(
-        "Mercury enhances your mental agility and communication skills. This is ideal for learning, teaching, writing, and all forms of information exchange.",
-        "बुधले तपाईंको मानसिक चुस्ती र सञ्चार कौशल बढाउँछ। यो सिक्न, सिकाउन, लेख्न र सूचना आदानप्रदानको सबै रूपहरूको लागि आदर्श छ।"
-    ),
-    THEME_DESC_ENERGY_INITIATIVE(
-        "Mars provides courage and drive. Take bold action, compete with integrity, and channel aggressive energy into constructive activities.",
-        "मंगलले साहस र प्रेरणा प्रदान गर्छ। साहसी कदम चाल्नुहोस्, इमानदारीताका साथ प्रतिस्पर्धा गर्नुहोस्, र आक्रामक ऊर्जालाई रचनात्मक गतिविधिहरूमा प्रयोग गर्नुहोस्।"
-    ),
-    THEME_DESC_SELF_EXPRESSION(
-        "The Sun illuminates your path to self-expression and leadership. Shine your light confidently and pursue activities that bring you recognition.",
-        "सूर्यले तपाईंको आत्म-अभिव्यक्ति र नेतृत्वको बाटो उज्यालो बनाउँछ। आत्मविश्वासका साथ आफ्नो प्रकाश फैलाउनुहोस् र पहिचान ल्याउने गतिविधिहरू अनुसरण गर्नुहोस्।"
-    ),
-    THEME_DESC_INTUITION_NURTURING(
-        "The Moon heightens your sensitivity and caring nature. Nurture yourself and others, and trust your instincts in important decisions.",
-        "चन्द्रमाले तपाईंको संवेदनशीलता र हेरचाहको स्वभाव बढाउँछ। आफू र अरूलाई पोषण गर्नुहोस्, र महत्त्वपूर्ण निर्णयहरूमा आफ्नो सहजज्ञानमाथि विश्वास गर्नुहोस्।"
-    ),
-    THEME_DESC_TRANSFORMATION(
-        "Rahu's influence brings unconventional opportunities and desires for change. Embrace innovation but stay grounded in your values.",
-        "राहुको प्रभावले अपरम्परागत अवसरहरू र परिवर्तनको इच्छा ल्याउँछ। नवीनतालाई अँगाल्नुहोस् तर आफ्ना मूल्यहरूमा जमिनमा रहनुहोस्।"
-    ),
-    THEME_DESC_SPIRITUAL_LIBERATION(
-        "Ketu's energy supports detachment and spiritual insight. Let go of what no longer serves you and focus on inner growth.",
-        "केतुको ऊर्जाले वैराग्य र आध्यात्मिक अन्तर्दृष्टिलाई समर्थन गर्छ। जुन कुरा अब तपाईंको सेवा गर्दैन त्यसलाई छोडिदिनुहोस् र आन्तरिक वृद्धिमा ध्यान केन्द्रित गर्नुहोस्।"
-    ),
-    THEME_DESC_BALANCE_EQUILIBRIUM(
-        "A day of balance where all energies are in equilibrium. Maintain steadiness and make measured progress in all areas of life.",
-        "सन्तुलनको दिन जहाँ सबै ऊर्जाहरू समानमा छन्। स्थिरता कायम राख्नुहोस् र जीवनका सबै क्षेत्रहरूमा मापित प्रगति गर्नुहोस्।"
-    ),
-
-    // ============================================
     // LUCKY ELEMENTS
     // ============================================
     LUCKY_COLOR_FIRE("Red, Orange, or Gold", "रातो, सुन्तला, वा सुनौलो"),
