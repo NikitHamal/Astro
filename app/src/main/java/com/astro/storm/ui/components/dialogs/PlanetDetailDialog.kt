@@ -51,6 +51,7 @@ import com.astro.storm.core.common.StringKeyAnalysis as StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.data.localization.stringResource
+import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart

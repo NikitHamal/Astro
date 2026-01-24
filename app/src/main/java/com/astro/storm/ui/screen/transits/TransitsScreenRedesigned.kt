@@ -73,6 +73,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource

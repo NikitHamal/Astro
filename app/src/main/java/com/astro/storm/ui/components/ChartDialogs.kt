@@ -46,6 +46,7 @@ import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.LocalizationManagerEntryPoint
+import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.DivisionalChartData

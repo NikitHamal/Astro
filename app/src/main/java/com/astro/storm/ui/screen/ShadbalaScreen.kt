@@ -35,6 +35,7 @@ import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
+import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
