@@ -1104,7 +1104,13 @@ private fun LuckyElementsCard(lucky: HoroscopeCalculator.LuckyElements) {
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                LuckyElement(Icons.Outlined.Numbers, stringResource(StringKey.LUCKY_NUMBER), lucky.number.toString().let { if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it) else it })
+                LuckyElement(
+                    Icons.Outlined.Numbers,
+                    stringResource(StringKey.LUCKY_NUMBER),
+                    lucky.number.toString().let {
+                        if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it) else it
+                    }
+                )
                 LuckyElement(Icons.Outlined.Palette, stringResource(StringKey.LUCKY_COLOR), lucky.color)
                 LuckyElement(Icons.Outlined.Explore, stringResource(StringKey.LUCKY_DIRECTION), lucky.direction)
                 LuckyElement(Icons.Outlined.Diamond, stringResource(StringKey.LUCKY_GEMSTONE), lucky.gemstone)
@@ -1290,7 +1296,7 @@ private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = weekly.weeklyTheme,
+                text = stringResource(weekly.weeklyThemeKey),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
@@ -1344,11 +1350,11 @@ private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
     val animatedHeight by animateFloatAsState(
         targetValue = highlight.energy / 10f,
         animationSpec = tween(600, easing = FastOutSlowInEasing),
-        label = "energy_bar_${highlight.dayOfWeek}"
+        label = "energy_bar_${highlight.dayOfWeek.name}"
     )
 
     val barColor = getEnergyColor(highlight.energy)
-    val dayAbbrev = remember(highlight.dayOfWeek) { highlight.dayOfWeek.take(3) }
+    val dayAbbrev = remember(highlight.dayOfWeek) { highlight.dayOfWeek.name.take(3) }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(

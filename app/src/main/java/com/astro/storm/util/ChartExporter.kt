@@ -1945,7 +1945,10 @@ class ChartExporter @Inject constructor(
             HoroscopeCalculator.LifeArea.FAMILY to Color.rgb(0, 150, 136),
             HoroscopeCalculator.LifeArea.SPIRITUALITY to Color.rgb(103, 58, 183)
         )
-        val lifeAreas = horoscope.lifeAreas.map { Triple(it.area.displayName, it, areaColors[it.area] ?: COLOR_PRIMARY) }
+        val lifeAreas = horoscope.lifeAreas.map { 
+            val title = StringResources.get(it.area.displayNameKey, language)
+            Triple(title, it, areaColors[it.area] ?: COLOR_PRIMARY) 
+        }
 
         val cardHeight = 70f
 

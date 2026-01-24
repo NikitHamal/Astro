@@ -308,6 +308,14 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     LIFE_AREA_FINANCE("Finance & Wealth", "वित्त र सम्पत्ति"),
     LIFE_AREA_FAMILY("Family & Home", "परिवार र घर"),
     LIFE_AREA_SPIRITUALITY("Spiritual Growth", "आध्यात्मिक वृद्धि"),
+
+    // For compatibility with LocalizedDisplayNames.kt
+    LIFE_AREA_CAREER_FULL("Career", "क्यारियर"),
+    LIFE_AREA_LOVE_FULL("Love & Relationships", "प्रेम र सम्बन्ध"),
+    LIFE_AREA_HEALTH_FULL("Health & Vitality", "स्वास्थ्य र जीवनशक्ति"),
+    LIFE_AREA_FINANCE_FULL("Finance & Wealth", "वित्त र सम्पत्ति"),
+    LIFE_AREA_FAMILY_FULL("Family & Home", "परिवार र घर"),
+    LIFE_AREA_SPIRITUALITY_FULL("Spiritual Growth", "आध्यात्मिक वृद्धि"),
     
     // Theme names
     THEME_DYNAMIC_ACTION("Dynamic Action", "गत्यात्मक कार्य"),

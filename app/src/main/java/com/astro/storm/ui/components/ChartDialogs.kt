@@ -78,20 +78,25 @@ private val TextMuted = Color(0xFF757575)
 private val DividerColor = Color(0xFF333333)
 
 // Planet colors (including outer planets for complete coverage)
-private val planetColors = mapOf(
-    Planet.SUN to Color(0xFFD2691E),
-    Planet.MOON to Color(0xFFDC143C),
-    Planet.MARS to Color(0xFFDC143C),
-    Planet.MERCURY to Color(0xFF228B22),
-    Planet.JUPITER to Color(0xFFDAA520),
-    Planet.VENUS to Color(0xFF9370DB),
-    Planet.SATURN to Color(0xFF4169E1),
-    Planet.RAHU to Color(0xFF8B0000),
-    Planet.KETU to Color(0xFF8B0000),
-    Planet.URANUS to Color(0xFF20B2AA),
-    Planet.NEPTUNE to Color(0xFF4682B4),
-    Planet.PLUTO to Color(0xFF800080)
-)
+@Composable
+fun getPlanetColors(): Map<Planet, Color> {
+    val colors = AppTheme.current
+    return mapOf(
+        Planet.SUN to colors.PlanetSun,
+        Planet.MOON to colors.PlanetMoon,
+        Planet.MARS to colors.PlanetMars,
+        Planet.MERCURY to colors.PlanetMercury,
+        Planet.JUPITER to colors.PlanetJupiter,
+        Planet.VENUS to colors.PlanetVenus,
+        Planet.SATURN to colors.PlanetSaturn,
+        Planet.RAHU to colors.PlanetRahu,
+        Planet.KETU to colors.PlanetKetu,
+        Planet.TRUE_NODE to colors.PlanetRahu,
+        Planet.URANUS to colors.AccentTeal,
+        Planet.NEPTUNE to colors.InfoColor,
+        Planet.PLUTO to colors.LifeAreaSpiritual
+    )
+}
 
 /**
  * Full-screen chart dialog with zoom, pan, and download functionality
@@ -505,7 +510,7 @@ private fun PlanetDialogHeader(
                     modifier = Modifier
                         .size(48.dp)
                         .background(
-                            planetColors[planetPosition.planet] ?: AccentGold,
+                            getPlanetColors()[planetPosition.planet] ?: AppTheme.AccentPrimary,
                             CircleShape
                         ),
                     contentAlignment = Alignment.Center
@@ -1139,7 +1144,7 @@ fun HouseDetailDialog(
                                                     modifier = Modifier
                                                         .size(8.dp)
                                                         .background(
-                                                            planetColors[planet.planet] ?: AppTheme.AccentPrimary,
+                                                            getPlanetColors()[planet.planet] ?: AppTheme.AccentPrimary,
                                                             CircleShape
                                                         )
                                                 )
@@ -1267,7 +1272,7 @@ fun ShadbalaDialog(
                                     SummaryBadge(
                                         label = stringResource(StringKeyAnalysis.DIALOG_WEAKEST),
                                         value = shadbalaAnalysis.weakestPlanet.getLocalizedName(language),
-                                        color = AppTheme.AccentPurple
+                                        color = AppTheme.current.LifeAreaSpiritual
                                     )
                                 }
                             }
@@ -1319,7 +1324,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                         modifier = Modifier
                             .size(40.dp)
                             .background(
-                                planetColors[shadbala.planet] ?: AppTheme.AccentPrimary,
+                                getPlanetColors()[shadbala.planet] ?: AppTheme.AccentPrimary,
                                 CircleShape
                             ),
                         contentAlignment = Alignment.Center
