@@ -211,5 +211,24 @@ enum class StringKeyAshtamangala(override val en: String, override val ne: Strin
     // ============================================
     FEATURE_TITLE("Ashtamangala", "अष्टमंगल"),
     FEATURE_DESC("8-fold horary divination system", "आठ-गुना प्रश्न विज्ञान प्रणाली"),
+
+    // New keys
+    POSITIVE_FACTORS("Positive Factors", "सकारात्मक कारकहरू"),
+    CHALLENGES("Challenges", "चुनौतिहरू"),
+    CAUTIONS("Cautions", "सावधानीहरू"),
+    STRENGTH("Strength", "बल"),
+    SPECIAL_INSIGHTS("Special Insights", "विशेष अन्तर्दृष्टि"),
+    DIRECTION_TO_SEARCH("Direction to search", "खोज्ने दिशा"),
+    RECOVERY_LIKELIHOOD("Recovery likelihood", "प्राप्ति सम्भावना"),
+    SAFETY_LEVEL("Safety level", "सुरक्षा स्तर"),
+    SUCCESS_PROBABILITY("Success probability", "सफलताको सम्भावना"),
+    TIMING_INDICATION("Timing indication", "समय संकेत"),
+    RECOVERY_OUTLOOK("Recovery outlook", "सुधारको दृष्टिकोण"),
+    TITHI_SUGGESTION("Tithi Suggestion", "तिथि सुझाव"),
+    THE_EIGHT_POSITIONS("The Eight Positions", "आठ स्थितिहरू"),
+    SHELLS("Shells", "कौडीहरू"),
+    ACTIVE("Active", "सक्रिय"),
+    INACTIVE("Inactive", "निष्क्रिय"),
+    DOMINANT("Dominant", "प्रभावशाली"),
 ;
 }

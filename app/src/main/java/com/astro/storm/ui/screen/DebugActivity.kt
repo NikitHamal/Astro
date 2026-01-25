@@ -1,7 +1,5 @@
 package com.astro.storm.ui.screen
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -42,11 +40,6 @@ class DebugActivity : ComponentActivity() {
             AstroStormTheme {
                 DebugScreen(
                     stackTrace = stackTrace,
-                    onCopy = {
-                        val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val clip = ClipData.newPlainText("Crash Log", stackTrace)
-                        clipboard.setPrimaryClip(clip)
-                    },
                     onRestart = {
                         val intent = Intent(activity, MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -63,7 +56,6 @@ class DebugActivity : ComponentActivity() {
 @Composable
 fun DebugScreen(
     stackTrace: String,
-    onCopy: () -> Unit,
     onRestart: () -> Unit
 ) {
     Scaffold(
@@ -111,13 +103,6 @@ fun DebugScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Button(
-                    onClick = onCopy,
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(containerColor = AppTheme.AccentPrimary)
-                ) {
-                    Text(stringResource(StringKeyAnalysis.DEBUG_COPY_LOG))
-                }
                 Button(
                     onClick = onRestart,
                     modifier = Modifier.weight(1f),

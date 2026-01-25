@@ -2220,9 +2220,9 @@ private fun formatDuration(days: Long, language: Language): String {
     }
 
     val d = StringResources.get(StringKey.DAYS_SHORT, language)
-    val w = StringResources.get(StringKey.DASHA_SOOKSHMA, language).take(1) // Placeholder for Week
-    val m = StringResources.get(StringKey.DASHA_BHUKTI, language).take(1) // Placeholder for Month
-    val y = StringResources.get(StringKey.YEARS, language).take(1)
+    val w = StringResources.get(StringKey.WEEKS_SHORT, language)
+    val m = StringResources.get(StringKey.MONTHS_SHORT, language)
+    val y = StringResources.get(StringKey.YEARS_SHORT, language)
 
     fun num(n: Long): String = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n.toString()) else n.toString()
 

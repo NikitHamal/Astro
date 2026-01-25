@@ -25,8 +25,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -86,7 +84,6 @@ fun BhriguBinduScreen(
     }
 
     val language = currentLanguage()
-    val clipboardManager = LocalClipboardManager.current
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var expandedFactor by remember { mutableStateOf<Int?>(null) }
@@ -209,8 +206,7 @@ fun BhriguBinduScreen(
                 3 -> item {
                     BhriguBinduRemediesTab(
                         analysis = bbAnalysis,
-                        language = language,
-                        onCopyMantra = { mantra -> clipboardManager.setText(AnnotatedString(mantra)) }
+                        language = language
                     )
                 }
             }
@@ -763,8 +759,7 @@ private fun BhriguBinduTransitsTab(
 @Composable
 private fun BhriguBinduRemediesTab(
     analysis: BhriguBinduCalculator.BhriguBinduAnalysis,
-    language: Language,
-    onCopyMantra: (String) -> Unit
+    language: Language
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         // Recommendations
@@ -793,7 +788,7 @@ private fun BhriguBinduRemediesTab(
         )
 
         analysis.interpretation.remedialMeasures.forEach { remedy ->
-            RemedyCard(remedy = remedy, onCopyMantra = onCopyMantra)
+            RemedyCard(remedy = remedy)
             Spacer(modifier = Modifier.height(8.dp))
         }
 
@@ -1381,8 +1376,7 @@ private fun RecommendationCard(recommendation: String) {
 
 @Composable
 private fun RemedyCard(
-    remedy: BhriguBinduCalculator.RemedialMeasure,
-    onCopyMantra: (String) -> Unit
+    remedy: BhriguBinduCalculator.RemedialMeasure
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -1415,20 +1409,6 @@ private fun RemedyCard(
                         fontWeight = FontWeight.SemiBold,
                         color = getRemedyPriorityColor(remedy.priority)
                     )
-                }
-
-                if (remedy.category == RemedyCategory.MANTRA) {
-                    IconButton(
-                        onClick = { onCopyMantra(remedy.remedy) },
-                        modifier = Modifier.size(32.dp)
-                    ) {
-                        Icon(
-                            Icons.Filled.ContentCopy,
-                            contentDescription = "Copy mantra",
-                            tint = AppTheme.AccentGold,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
                 }
             }
 

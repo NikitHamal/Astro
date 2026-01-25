@@ -58,7 +58,8 @@ sealed class InsightsUiState {
 @HiltViewModel
 class InsightsViewModel @Inject constructor(
     application: Application,
-    private val horoscopeCalculator: HoroscopeCalculator
+    private val horoscopeCalculator: HoroscopeCalculator,
+    private val localizationManager: com.astro.storm.data.localization.LocalizationManager
 ) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow<InsightsUiState>(InsightsUiState.Idle)
@@ -68,16 +69,18 @@ class InsightsViewModel @Inject constructor(
     private var cachedData: InsightsData? = null
     private var cachedChartId: String? = null
     private var cachedDate: LocalDate? = null
+    private var cachedLanguage: com.astro.storm.core.common.Language? = null
 
     /**
      * Uses shared ChartUtils for consistent cache key generation across ViewModels.
      */
     private fun getChartId(chart: VedicChart): String = ChartUtils.generateChartKey(chart)
 
-    private fun isCacheValid(chartId: String, today: LocalDate): Boolean {
+    private fun isCacheValid(chartId: String, today: LocalDate, language: com.astro.storm.core.common.Language): Boolean {
         return cachedData?.let {
             cachedChartId == chartId &&
             cachedDate == today &&
+            cachedLanguage == language &&
             it.todayHoroscope != null &&
             it.weeklyHoroscope != null
         } ?: false
@@ -91,8 +94,9 @@ class InsightsViewModel @Inject constructor(
 
         val today = LocalDate.now()
         val chartId = getChartId(chart)
+        val language = localizationManager.currentLanguage
 
-        if (isCacheValid(chartId, today)) {
+        if (isCacheValid(chartId, today, language)) {
             cachedData?.let {
                 _uiState.value = InsightsUiState.Success(it)
                 return
@@ -107,7 +111,7 @@ class InsightsViewModel @Inject constructor(
             try {
                 val errors = ConcurrentLinkedQueue<InsightError>()
 
-                val loadedData = loadInsightsData(chart, today, errors)
+                val loadedData = loadInsightsData(chart, today, language, errors)
 
                 ensureActive()
 
@@ -129,6 +133,7 @@ class InsightsViewModel @Inject constructor(
                 cachedData = finalData
                 cachedChartId = chartId
                 cachedDate = today
+                cachedLanguage = language
 
                 _uiState.value = InsightsUiState.Success(finalData)
 
@@ -151,6 +156,7 @@ class InsightsViewModel @Inject constructor(
     private suspend fun loadInsightsData(
         chart: VedicChart,
         today: LocalDate,
+        language: com.astro.storm.core.common.Language,
         errors: ConcurrentLinkedQueue<InsightError>
     ): LoadedInsights {
         return withContext(Dispatchers.Default) {
@@ -168,7 +174,7 @@ class InsightsViewModel @Inject constructor(
 
                 val todayDeferred = async {
                     try {
-                        horoscopeCalculator.calculateDailyHoroscope(chart, today)
+                        horoscopeCalculator.calculateDailyHoroscope(chart, today, language)
                     } catch (e: Exception) {
                         if (e is CancellationException) throw e
                         Log.e(TAG, "Today's horoscope calculation failed", e)
@@ -179,7 +185,7 @@ class InsightsViewModel @Inject constructor(
 
                 val tomorrowDeferred = async {
                     try {
-                        horoscopeCalculator.calculateDailyHoroscope(chart, today.plusDays(1))
+                        horoscopeCalculator.calculateDailyHoroscope(chart, today.plusDays(1), language)
                     } catch (e: Exception) {
                         if (e is CancellationException) throw e
                         Log.e(TAG, "Tomorrow's horoscope calculation failed", e)
@@ -190,7 +196,7 @@ class InsightsViewModel @Inject constructor(
 
                 val weeklyDeferred = async {
                     try {
-                        horoscopeCalculator.calculateWeeklyHoroscope(chart, today)
+                        horoscopeCalculator.calculateWeeklyHoroscope(chart, today, language)
                     } catch (e: Exception) {
                         if (e is CancellationException) throw e
                         Log.e(TAG, "Weekly horoscope calculation failed", e)

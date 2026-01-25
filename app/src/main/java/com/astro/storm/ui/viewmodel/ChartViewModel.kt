@@ -269,24 +269,6 @@ class ChartViewModel @Inject constructor(
     }
 
     /**
-     * Copy chart plaintext to clipboard
-     */
-    fun copyChartToClipboard(chart: VedicChart) {
-        viewModelScope.launch(ioDispatcher) {
-            try {
-                // Heavy string formatting moved to a background thread
-                val plaintext = withContext(Dispatchers.Default) {
-                    ExportUtils.getChartPlaintext(chart)
-                }
-                ExportUtils.copyToClipboard(getApplication(), plaintext, "Vedic Chart Data")
-                _uiState.value = ChartUiState.Exported("Chart data copied to clipboard")
-            } catch (e: Exception) {
-                _uiState.value = ChartUiState.Error("Failed to copy: ${e.message}")
-            }
-        }
-    }
-
-    /**
      * Export chart to PDF with comprehensive report
      */
     fun exportChartToPdf(

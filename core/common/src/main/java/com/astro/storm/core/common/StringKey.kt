@@ -599,8 +599,6 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     SETTINGS_EXPORT_PDF_DESC("Complete chart report", "पूर्ण कुण्डली रिपोर्ट"),
     SETTINGS_EXPORT_IMAGE("Export as Image", "छविको रूपमा निर्यात"),
     SETTINGS_EXPORT_IMAGE_DESC("High-quality chart image", "उच्च गुणस्तर कुण्डली छवि"),
-    SETTINGS_EXPORT_CLIPBOARD("Copy to Clipboard", "क्लिपबोर्डमा कपी गर्नुहोस्"),
-    SETTINGS_EXPORT_CLIPBOARD_DESC("Plain text format", "सादा पाठ ढाँचा"),
     SETTINGS_EXPORT_JSON("Export as JSON", "JSON को रूपमा निर्यात"),
     SETTINGS_EXPORT_JSON_DESC("Machine-readable format", "मेसिन-पठनयोग्य ढाँचा"),
     SETTINGS_EXPORT_CSV("CSV Data", "CSV डाटा"),

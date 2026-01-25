@@ -317,15 +317,16 @@ private fun CategoryCard(
     }
 }
 
+@Composable
 private fun getCategoryDescription(category: QueryCategory): String = when (category) {
-    QueryCategory.HEALTH -> "Recovery, illness, vitality queries"
-    QueryCategory.WEALTH -> "Money, investments, material gains"
-    QueryCategory.RELATIONSHIP -> "Marriage, partnerships, family"
-    QueryCategory.CAREER -> "Job, business, profession queries"
-    QueryCategory.TRAVEL -> "Journeys, relocation, migrations"
-    QueryCategory.LOST_OBJECT -> "Finding missing items or valuables"
-    QueryCategory.LITIGATION -> "Legal matters, conflicts, competitions"
-    QueryCategory.SPIRITUAL -> "Moksha, sadhana, divine blessings"
+    QueryCategory.HEALTH -> stringResource(StringKeyAshtamangala.CAT_HEALTH_DESC)
+    QueryCategory.WEALTH -> stringResource(StringKeyAshtamangala.CAT_WEALTH_DESC)
+    QueryCategory.RELATIONSHIP -> stringResource(StringKeyAshtamangala.CAT_RELATIONSHIP_DESC)
+    QueryCategory.CAREER -> stringResource(StringKeyAshtamangala.CAT_CAREER_DESC)
+    QueryCategory.TRAVEL -> stringResource(StringKeyAshtamangala.CAT_TRAVEL_DESC)
+    QueryCategory.LOST_OBJECT -> stringResource(StringKeyAshtamangala.CAT_LOST_DESC)
+    QueryCategory.LITIGATION -> stringResource(StringKeyAshtamangala.CAT_LITIGATION_DESC)
+    QueryCategory.SPIRITUAL -> stringResource(StringKeyAshtamangala.CAT_SPIRITUAL_DESC)
 }
 
 // ============================================
@@ -457,7 +458,7 @@ private fun CowrieThrowContent(
                     color = AppTheme.AccentGold
                 )
                 Text(
-                    text = "Shells",
+                    text = stringResource(StringKeyAshtamangala.SHELLS),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -790,8 +791,9 @@ private fun YesNoProbabilityCard(probability: YesNoProbability) {
                     contentAlignment = Alignment.Center
                 ) {
                     if (probability.yesPercentage >= 20) {
+                        val yesLabel = stringResource(StringKeyAshtamangala.YESNO_YES)
                         Text(
-                            text = "${probability.yesPercentage}% Yes",
+                            text = "${probability.yesPercentage}% $yesLabel",
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -806,8 +808,9 @@ private fun YesNoProbabilityCard(probability: YesNoProbability) {
                     contentAlignment = Alignment.Center
                 ) {
                     if (probability.noPercentage >= 20) {
+                        val noLabel = stringResource(StringKeyAshtamangala.YESNO_NO)
                         Text(
-                            text = "${probability.noPercentage}% No",
+                            text = "${probability.noPercentage}% $noLabel",
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -882,7 +885,7 @@ private fun PrimaryIndicationCard(reading: AshtamangalaReading) {
             // Positive factors
             if (reading.interpretation.positiveFactors.isNotEmpty()) {
                 Text(
-                    text = "Positive Factors",
+                    text = stringResource(StringKeyAshtamangala.POSITIVE_FACTORS),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.SuccessColor
@@ -902,7 +905,7 @@ private fun PrimaryIndicationCard(reading: AshtamangalaReading) {
             // Negative factors
             if (reading.interpretation.negativeFactors.isNotEmpty()) {
                 Text(
-                    text = "Challenges",
+                    text = stringResource(StringKeyAshtamangala.CHALLENGES),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.WarningColor
@@ -939,7 +942,7 @@ private fun SpecialReadingsCard(category: QueryCategory, special: SpecialReading
                 QueryCategory.LITIGATION -> stringResource(StringKeyAshtamangala.SPECIAL_LITIGATION_WIN)
                 QueryCategory.RELATIONSHIP -> stringResource(StringKeyAshtamangala.SPECIAL_MARRIAGE_TIMING)
                 QueryCategory.HEALTH -> stringResource(StringKeyAshtamangala.SPECIAL_HEALTH_RECOVERY)
-                else -> "Special Insights"
+                else -> stringResource(StringKeyAshtamangala.SPECIAL_INSIGHTS)
             }
 
             Text(
@@ -952,30 +955,30 @@ private fun SpecialReadingsCard(category: QueryCategory, special: SpecialReading
             when (category) {
                 QueryCategory.LOST_OBJECT -> {
                     special.lostObjectDirection?.let {
-                        InfoRow("Direction to search", it)
+                        InfoRow(stringResource(StringKeyAshtamangala.DIRECTION_TO_SEARCH), it)
                     }
                     special.recoveryPossibility?.let {
-                        InfoRow("Recovery likelihood", "$it%")
+                        InfoRow(stringResource(StringKeyAshtamangala.RECOVERY_LIKELIHOOD), "$it%")
                     }
                 }
                 QueryCategory.TRAVEL -> {
                     special.travelSafety?.let {
-                        InfoRow("Safety level", it.name.replace("_", " "))
+                        InfoRow(stringResource(StringKeyAshtamangala.SAFETY_LEVEL), it.name.replace("_", " "))
                     }
                 }
                 QueryCategory.LITIGATION -> {
                     special.litigationSuccess?.let {
-                        InfoRow("Success probability", "$it%")
+                        InfoRow(stringResource(StringKeyAshtamangala.SUCCESS_PROBABILITY), "$it%")
                     }
                 }
                 QueryCategory.RELATIONSHIP -> {
                     special.marriageTiming?.let {
-                        InfoRow("Timing indication", it)
+                        InfoRow(stringResource(StringKeyAshtamangala.TIMING_INDICATION), it)
                     }
                 }
                 QueryCategory.HEALTH -> {
                     special.healthRecovery?.let {
-                        InfoRow("Recovery outlook", it)
+                        InfoRow(stringResource(StringKeyAshtamangala.RECOVERY_OUTLOOK), it)
                     }
                 }
                 else -> {}
@@ -1130,7 +1133,7 @@ private fun AnalysisTab(reading: AshtamangalaReading) {
                                 modifier = Modifier.size(20.dp)
                             )
                             Text(
-                                text = "Cautions",
+                                text = stringResource(StringKeyAshtamangala.CAUTIONS),
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.WarningColor
@@ -1300,7 +1303,7 @@ private fun PositionCard(position: PositionResult, isDominant: Boolean) {
                         shape = RoundedCornerShape(4.dp)
                     ) {
                         Text(
-                            text = if (position.isActive) "Active" else "Inactive",
+                            text = if (position.isActive) stringResource(StringKeyAshtamangala.ACTIVE) else stringResource(StringKeyAshtamangala.INACTIVE),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = if (position.isActive) AppTheme.SuccessColor else AppTheme.TextMuted
@@ -1308,7 +1311,7 @@ private fun PositionCard(position: PositionResult, isDominant: Boolean) {
                     }
                     if (isDominant) {
                         Text(
-                            text = "Dominant",
+                            text = stringResource(StringKeyAshtamangala.DOMINANT),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.AccentGold,
                             fontWeight = FontWeight.Medium
@@ -1323,7 +1326,7 @@ private fun PositionCard(position: PositionResult, isDominant: Boolean) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Strength",
+                    text = stringResource(StringKeyAshtamangala.STRENGTH),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1446,7 +1449,7 @@ private fun TimingTab(reading: AshtamangalaReading) {
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                text = "Tithi Suggestion",
+                                text = stringResource(StringKeyAshtamangala.TITHI_SUGGESTION),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1577,7 +1580,7 @@ private fun AshtamangalaInfoDialog(onDismiss: () -> Unit) {
 
                 item {
                     Text(
-                        text = "The Eight Positions",
+                        text = stringResource(StringKeyAshtamangala.THE_EIGHT_POSITIONS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary

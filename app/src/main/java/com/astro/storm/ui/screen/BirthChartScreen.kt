@@ -80,8 +80,7 @@ import java.util.Locale
 fun BirthChartScreen(
     chart: VedicChart?,
     chartRenderer: ChartRenderer,
-    onBack: () -> Unit,
-    onCopyToClipboard: () -> Unit
+    onBack: () -> Unit
 ) {
     if (chart == null) {
         EmptyChartScreen(
@@ -152,10 +151,6 @@ fun BirthChartScreen(
                 onBack = {
                     hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                     onBack()
-                },
-                onCopyToClipboard = {
-                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                    onCopyToClipboard()
                 }
             )
         }
@@ -186,8 +181,7 @@ fun BirthChartScreen(
 @Composable
 private fun BirthChartTopBar(
     chartName: String,
-    onBack: () -> Unit,
-    onCopyToClipboard: () -> Unit
+    onBack: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -216,15 +210,7 @@ private fun BirthChartTopBar(
                 )
             }
         },
-        actions = {
-            IconButton(onClick = onCopyToClipboard) {
-                Icon(
-                    imageVector = Icons.Outlined.ContentCopy,
-                    contentDescription = stringResource(StringKey.SETTINGS_EXPORT_CLIPBOARD),
-                    tint = AppTheme.TextPrimary
-                )
-            }
-        },
+        actions = {},
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = AppTheme.ScreenBackground
         )

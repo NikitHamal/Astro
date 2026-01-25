@@ -133,14 +133,14 @@ fun DivisionalChartsScreen(
                     IconButton(onClick = { showFullScreenChart = true }) {
                         Icon(
                             Icons.Default.Fullscreen,
-                            contentDescription = "View Full Chart",
+                            contentDescription = stringResource(StringKeyAnalysis.ACC_FULLSCREEN),
                             tint = AppTheme.TextPrimary
                         )
                     }
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDosha.DIVISIONAL_CHARTS_ABOUT),
+                            contentDescription = stringResource(StringKeyAnalysis.A11Y_SHOW_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }

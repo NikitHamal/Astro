@@ -2637,5 +2637,28 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     HOUSE_LORD_10("10th Lord", "दशमेश"),
     HOUSE_LORD_11("11th Lord", "एकादशेश"),
     HOUSE_LORD_12("12th Lord", "द्वादशेश"),
+
+    // New keys for Transits and UI
+    TRANSIT_EXPAND("Expand", "विस्तार"),
+    TRANSIT_COLLAPSE("Collapse", "संक्षिप्त"),
+    TRANSIT_ORB_VALUE("%d° orb", "%d° कोणान्तर"),
+    TRANSIT_PHRASE("%1\$s transit %2\$s natal %3\$s", "%1\$sको गोचर जन्मकालीन %3\$sमा %2\$s"),
+    CAUTIONS("Cautions", "सावधानी"),
+
+    // Prashna specific new keys
+    PRASHNA_YES("Yes", "हो"),
+    PRASHNA_NO("No", "होइन"),
+    PRASHNA_POSITIVE_FACTORS("Positive Factors", "सकारात्मक कारकहरू"),
+    PRASHNA_CHALLENGES("Challenges", "चुनौतिहरू"),
+    PRASHNA_DIRECTION_SEARCH("Direction to search", "खोज्ने दिशा"),
+    PRASHNA_RECOVERY_LIKELIHOOD("Recovery likelihood", "प्राप्ति सम्भावना"),
+    PRASHNA_SAFETY_LEVEL("Safety level", "सुरक्षा स्तर"),
+    PRASHNA_SUCCESS_PROBABILITY("Success probability", "सफलताको सम्भावना"),
+    PRASHNA_TIMING_INDICATION("Timing indication", "समय संकेत"),
+    PRASHNA_RECOVERY_OUTLOOK("Recovery outlook", "सुधारको दृष्टिकोण"),
+    PRASHNA_ESTIMATED_TIMEFRAME("Estimated timeframe", "अनुमानित समय सीमा"),
+    PRASHNA_ACTIVE("Active", "सक्रिय"),
+    PRASHNA_INACTIVE("Inactive", "निष्क्रिय"),
+    PRASHNA_STRENGTH("Strength", "बल"),
 ;
 }

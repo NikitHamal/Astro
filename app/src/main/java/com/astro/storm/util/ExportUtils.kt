@@ -95,20 +95,4 @@ object ExportUtils {
             Result.failure(e)
         }
     }
-
-    /**
-     * Get plaintext representation of chart for clipboard/LLM
-     */
-    fun getChartPlaintext(chart: VedicChart): String {
-        return chart.toPlainText()
-    }
-
-    /**
-     * Copy text to clipboard
-     */
-    fun copyToClipboard(context: Context, text: String, label: String = "Chart Data") {
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-        val clip = android.content.ClipData.newPlainText(label, text)
-        clipboard.setPrimaryClip(clip)
-    }
 }

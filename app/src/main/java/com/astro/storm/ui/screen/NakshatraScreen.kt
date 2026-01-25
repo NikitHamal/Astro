@@ -24,8 +24,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -73,7 +71,6 @@ fun NakshatraScreen(
     }
 
     val language = currentLanguage()
-    val clipboardManager = LocalClipboardManager.current
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var expandedPlanet by remember { mutableStateOf<Planet?>(null) }
@@ -158,7 +155,7 @@ fun NakshatraScreen(
                 0 -> item { NakshatraOverviewTab(analysis = nakshatraAnalysis, chart = chart, language = language) }
                 1 -> item { NakshatraDetailsTab(analysis = nakshatraAnalysis, expandedPlanet = expandedPlanet, onExpandPlanet = { expandedPlanet = if (expandedPlanet == it) null else it }, language = language) }
                 2 -> item { NakshatraCompatibilityTab(analysis = nakshatraAnalysis, language = language) }
-                3 -> item { NakshatraRemediesTab(analysis = nakshatraAnalysis, onCopyMantra = { mantra -> clipboardManager.setText(AnnotatedString(mantra)) }, language = language) }
+                3 -> item { NakshatraRemediesTab(analysis = nakshatraAnalysis, language = language) }
             }
         }
     }
@@ -1279,7 +1276,6 @@ private fun TarabalaSummaryChip(
 @Composable
 private fun NakshatraRemediesTab(
     analysis: NakshatraAnalysis,
-    onCopyMantra: (String) -> Unit,
     language: Language
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -1290,29 +1286,12 @@ private fun NakshatraRemediesTab(
             shape = RoundedCornerShape(20.dp)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        stringResource(StringKeyDosha.NAKSHATRA_MANTRA),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
-                    )
-                    IconButton(
-                        onClick = { onCopyMantra(analysis.remedy.mantra) },
-                        modifier = Modifier.size(32.dp)
-                    ) {
-                        Icon(
-                            Icons.Filled.ContentCopy,
-                            contentDescription = stringResource(StringKeyMatch.REMEDIES_COPY_MANTRA),
-                            tint = AppTheme.AccentGold,
-                            modifier = Modifier.size(18.dp)
-                        )
-                    }
-                }
+                Text(
+                    stringResource(StringKeyDosha.NAKSHATRA_MANTRA),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.TextPrimary
+                )
 
                 Spacer(modifier = Modifier.height(12.dp))
 

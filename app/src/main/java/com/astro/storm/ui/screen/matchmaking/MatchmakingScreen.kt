@@ -30,9 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -91,7 +89,6 @@ fun MatchmakingScreen(
 ) {
     val scope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
-    val clipboardManager = LocalClipboardManager.current
     val snackbarHostState = remember { SnackbarHostState() }
 
     var selectedBrideId by remember { mutableStateOf<Long?>(null) }
@@ -105,7 +102,6 @@ fun MatchmakingScreen(
 
     var showBrideSelector by remember { mutableStateOf(false) }
     var showGroomSelector by remember { mutableStateOf(false) }
-    var showShareSheet by remember { mutableStateOf(false) }
 
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf(
@@ -136,7 +132,6 @@ fun MatchmakingScreen(
 
     // Pre-fetch localized strings and language for use in LaunchedEffect and scope.launch (stringResource is @Composable)
     val errorCalculationFailedText = stringResource(StringKey.ERROR_CALCULATION_FAILED)
-    val copiedToClipboardText = stringResource(StringKeyMatch.MATCH_COPIED_TO_CLIPBOARD)
     val language = currentLanguage()
 
     LaunchedEffect(brideChart, groomChart) {
@@ -189,38 +184,7 @@ fun MatchmakingScreen(
                         )
                     }
                 },
-                actions = {
-                    AnimatedVisibility(visible = matchingResult != null) {
-                        Row {
-                            IconButton(onClick = {
-                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                showShareSheet = true
-                            }) {
-                                Icon(
-                                    Icons.Outlined.Share,
-                                    contentDescription = stringResource(StringKeyMatch.MATCH_SHARE_REPORT),
-                                    tint = AppTheme.TextSecondary
-                                )
-                            }
-                            IconButton(onClick = {
-                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                matchingResult?.let { result ->
-                                    val report = MatchmakingReportUtils.generateFullReport(result, brideChart, groomChart, language)
-                                    clipboardManager.setText(AnnotatedString(report))
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(copiedToClipboardText)
-                                    }
-                                }
-                            }) {
-                                Icon(
-                                    Icons.Outlined.ContentCopy,
-                                    contentDescription = stringResource(StringKeyMatch.MATCH_COPY_REPORT),
-                                    tint = AppTheme.TextSecondary
-                                )
-                            }
-                        }
-                    }
-                },
+                actions = {},
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = AppTheme.ScreenBackground
                 )
@@ -407,22 +371,6 @@ fun MatchmakingScreen(
                 showGroomSelector = false
             },
             onDismiss = { showGroomSelector = false }
-        )
-    }
-
-    if (showShareSheet) {
-        ShareOptionsSheet(
-            result = matchingResult,
-            brideChart = brideChart,
-            groomChart = groomChart,
-            onDismiss = { showShareSheet = false },
-            onCopyToClipboard = { report ->
-                clipboardManager.setText(AnnotatedString(report))
-                scope.launch {
-                    snackbarHostState.showSnackbar(copiedToClipboardText)
-                }
-                showShareSheet = false
-            }
         )
     }
 }
@@ -2332,146 +2280,9 @@ private fun EnhancedProfileSelectorBottomSheet(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun ShareOptionsSheet(
-    result: MatchmakingResult?,
-    brideChart: VedicChart?,
-    groomChart: VedicChart?,
-    onDismiss: () -> Unit,
-    onCopyToClipboard: (String) -> Unit
-) {
-    val sheetState = rememberModalBottomSheetState()
-    val language = currentLanguage()
-
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        sheetState = sheetState,
-        containerColor = AppTheme.CardBackground,
-        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-        dragHandle = {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(12.dp))
-                Box(
-                    modifier = Modifier
-                        .size(width = 40.dp, height = 4.dp)
-                        .clip(RoundedCornerShape(2.dp))
-                        .background(AppTheme.TextSubtle.copy(alpha = 0.4f))
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(bottom = 32.dp)
-        ) {
-            Text(
-                stringResource(StringKeyMatch.MATCH_SHARE_REPORT),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-
-            ShareOptionItem(
-                icon = Icons.Outlined.ContentCopy,
-                title = stringResource(StringKeyMatch.MATCH_COPY_FULL_REPORT),
-                subtitle = stringResource(StringKeyMatch.MATCH_COPY_FULL_DESC),
-                onClick = {
-                    result?.let {
-                        onCopyToClipboard(MatchmakingReportUtils.generateFullReport(it, brideChart, groomChart, language))
-                    }
-                }
-            )
-
-            ShareOptionItem(
-                icon = Icons.Outlined.Summarize,
-                title = stringResource(StringKeyMatch.MATCH_COPY_SUMMARY),
-                subtitle = stringResource(StringKeyMatch.MATCH_COPY_SUMMARY_DESC),
-                onClick = {
-                    result?.let {
-                        onCopyToClipboard(MatchmakingReportUtils.generateSummaryReport(it, brideChart, groomChart, language))
-                    }
-                }
-            )
-
-            ShareOptionItem(
-                icon = Icons.Outlined.Numbers,
-                title = stringResource(StringKeyMatch.MATCH_COPY_SCORES),
-                subtitle = stringResource(StringKeyMatch.MATCH_COPY_SCORES_DESC),
-                onClick = {
-                    result?.let {
-                        onCopyToClipboard(MatchmakingReportUtils.generateScoresReport(it, language))
-                    }
-                }
-            )
-        }
-    }
-}
-
-@Composable
-private fun ShareOptionItem(
-    icon: ImageVector,
-    title: String,
-    subtitle: String,
-    onClick: () -> Unit
-) {
-    Surface(
-        onClick = onClick,
-        color = Color.Transparent,
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 14.dp, horizontal = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(AppTheme.AccentPrimary.copy(alpha = 0.1f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    icon,
-                    contentDescription = null,
-                    tint = AppTheme.AccentPrimary,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = AppTheme.TextPrimary
-                )
-                Text(
-                    subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted
-                )
-            }
-            Icon(
-                Icons.Filled.KeyboardArrowRight,
-                contentDescription = null,
-                tint = AppTheme.TextSubtle,
-                modifier = Modifier.size(20.dp)
-            )
-        }
-    }
-}
-
-// Report generation functions moved to MatchmakingReportUtils.kt
+/**
+ * Report generation functions moved to MatchmakingReportUtils.kt
+ */
 
 private fun getMoonPosition(chart: VedicChart) = chart.planetPositions.find {
     it.planet == Planet.MOON

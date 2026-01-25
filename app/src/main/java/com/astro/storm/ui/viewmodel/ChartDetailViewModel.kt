@@ -136,19 +136,6 @@ class ChartDetailViewModel @Inject constructor(
     }
 
     /**
-     * Copy chart data to clipboard
-     */
-    fun copyToClipboard(chart: VedicChart) {
-        try {
-            val plaintext = ExportUtils.getChartPlaintext(chart)
-            ExportUtils.copyToClipboard(getApplication(), plaintext, "Vedic Chart Data")
-            _exportState.value = ExportState.Success("Copied to clipboard")
-        } catch (e: Exception) {
-            _exportState.value = ExportState.Error("Failed to copy: ${e.message}")
-        }
-    }
-
-    /**
      * Reset export state
      */
     fun resetExportState() {

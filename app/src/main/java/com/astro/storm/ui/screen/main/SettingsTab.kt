@@ -1090,7 +1090,7 @@ private fun FeatureBadge(textKey: StringKey) {
  * Export formats supported by AstroStorm
  *
  * Note: The Settings UI only exposes PDF export for user-facing functionality.
- * Other formats (IMAGE, JSON, CSV, CLIPBOARD) are used internally by the app
+ * Other formats (IMAGE, JSON, CSV) are used internally by the app
  * for programmatic export operations in Navigation.kt and ChartViewModel.
  */
 enum class ExportFormat(
@@ -1101,8 +1101,7 @@ enum class ExportFormat(
     PDF(StringKey.SETTINGS_EXPORT_PDF, StringKey.SETTINGS_EXPORT_PDF_DESC, Icons.Outlined.PictureAsPdf),
     IMAGE(StringKey.SETTINGS_EXPORT_IMAGE, StringKey.SETTINGS_EXPORT_IMAGE_DESC, Icons.Outlined.Image),
     JSON(StringKey.SETTINGS_EXPORT_JSON, StringKey.SETTINGS_EXPORT_JSON_DESC, Icons.Outlined.Code),
-    CSV(StringKey.SETTINGS_EXPORT_CSV, StringKey.SETTINGS_EXPORT_CSV_DESC, Icons.Outlined.TableChart),
-    CLIPBOARD(StringKey.SETTINGS_EXPORT_CLIPBOARD, StringKey.SETTINGS_EXPORT_CLIPBOARD_DESC, Icons.Outlined.ContentCopy);
+    CSV(StringKey.SETTINGS_EXPORT_CSV, StringKey.SETTINGS_EXPORT_CSV_DESC, Icons.Outlined.TableChart);
 
     fun getLocalizedTitle(language: Language): String = StringResources.get(titleKey, language)
     fun getLocalizedDescription(language: Language): String = StringResources.get(descriptionKey, language)

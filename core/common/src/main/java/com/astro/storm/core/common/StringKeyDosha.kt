@@ -3360,5 +3360,21 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_AREA_HEALING("Healing", "उपचार"),
     KALACHAKRA_AREA_ARTS("Arts", "कला"),
     KALACHAKRA_AREA_PSYCHOLOGY("Psychology", "मनोविज्ञान"),
-    KALACHAKRA_AREA_SPIRITUALITY("Spirituality", "अध्यात्म");
+    KALACHAKRA_AREA_SPIRITUALITY("Spirituality", "अध्यात्म"),
+
+    // Panch Mahapurusha new keys
+    PANCHA_STRENGTH("Strength", "बल"),
+    PANCHA_PERIODS("Periods", "अवधिहरू"),
+    PANCHA_EFFECTS_TITLE("%s Effects", "%s प्रभावहरू"),
+    PANCHA_PHYSICAL("Physical", "शारीरिक"),
+    PANCHA_MENTAL("Mental", "मानसिक"),
+    PANCHA_CAREER("Career", "करियर"),
+    PANCHA_SPIRITUAL("Spiritual", "आध्यात्मिक"),
+    PANCHA_RELATIONSHIPS("Relationships", "सम्बन्ध"),
+    PANCHA_ACTIVATION_PERIODS("Activation Periods", "सक्रियता अवधिहरू"),
+    PANCHA_RECOMMENDATIONS_TITLE("%s Recommendations", "%s सिफारिसहरू"),
+    PANCHA_TIMING_LABEL("Timing: %s", "समय: %s"),
+    PANCHA_DETAILS_EMPTY_DESC("This section will show details when Mahapurusha Yogas are present in the chart.", "यस खण्डले कुण्डलीमा महापुरुष योगहरू उपस्थित हुँदा विवरणहरू देखाउनेछ।"),
+    PANCHA_ANALYZING("Analyzing Panch Mahapurusha Yogas...", "पञ्च महापुरुष योगहरू विश्लेषण गर्दै..."),
+;
 }

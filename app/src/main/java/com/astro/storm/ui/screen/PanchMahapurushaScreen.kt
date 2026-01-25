@@ -153,7 +153,7 @@ fun PanchMahapurushaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKey.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -162,7 +162,7 @@ fun PanchMahapurushaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKeyAshtamangala.INFO_TITLE),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -376,21 +376,13 @@ private fun QuickStatsRow(analysis: PanchMahapurushaYogaCalculator.PanchMahapuru
             modifier = Modifier.weight(1f)
         )
         StatCard(
-            title = "Strength", // Consider defining key for "Strength" generic if not exists, skipping for now as not in list, using literal or common key if available? I will use literal or leave it. Wait, I should verify common key. STRENGTH_STRONG...
-            // Checking if I added generic "Strength". No. 
-            // I'll leave "Strength" as is or add it? "Overall Planetary Strength" was added. But this is just "Strength".
-            // I'll use "Strength" literal for now as I missed adding a specific key "Strength".
-            // Actually, I'll add UI_STRENGTH to StringKeyDosha in next batch or use literal.
-            // Wait, I can't edit StringKeyDosha inside this call.
-            // I'll skip localizing "Strength" and "Periods" here or use "Strength" and "Periods" from previous work if available?
-            // "Activation Periods" -> "Periods".
-            // I will replace later if needed.
+            title = stringResource(StringKeyDosha.PANCHA_STRENGTH),
             value = "${analysis.overallYogaStrength}%",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
         StatCard(
-            title = "Periods",
+            title = stringResource(StringKeyDosha.PANCHA_PERIODS),
             value = "${analysis.activationPeriods.size}",
             color = AppTheme.AccentTeal,
             modifier = Modifier.weight(1f)
@@ -777,7 +769,7 @@ private fun EffectsCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                     color = yogaColor
                 )
                 Text(
-                    text = "${yoga.type.displayName} Effects",
+                    text = stringResource(StringKeyDosha.PANCHA_EFFECTS_TITLE, yoga.type.displayName),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -786,11 +778,11 @@ private fun EffectsCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            EffectRow(label = "Physical", value = yoga.effects.physicalTraits)
-            EffectRow(label = "Mental", value = yoga.effects.mentalTraits)
-            EffectRow(label = "Career", value = yoga.effects.careerIndications)
-            EffectRow(label = "Spiritual", value = yoga.effects.spiritualGrowth)
-            EffectRow(label = "Relationships", value = yoga.effects.relationshipImpact)
+            EffectRow(label = stringResource(StringKeyDosha.PANCHA_PHYSICAL), value = yoga.effects.physicalTraits)
+            EffectRow(label = stringResource(StringKeyDosha.PANCHA_MENTAL), value = yoga.effects.mentalTraits)
+            EffectRow(label = stringResource(StringKeyDosha.PANCHA_CAREER), value = yoga.effects.careerIndications)
+            EffectRow(label = stringResource(StringKeyDosha.PANCHA_SPIRITUAL), value = yoga.effects.spiritualGrowth)
+            EffectRow(label = stringResource(StringKeyDosha.PANCHA_RELATIONSHIPS), value = yoga.effects.relationshipImpact)
 
             Spacer(modifier = Modifier.height(8.dp))
             Surface(
@@ -860,7 +852,7 @@ private fun TimingSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapuru
                             modifier = Modifier.size(20.dp)
                         )
                         Text(
-                            text = "Activation Periods",
+                            text = stringResource(StringKeyDosha.PANCHA_ACTIVATION_PERIODS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -968,7 +960,7 @@ private fun RemedyCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "${yoga.type.displayName} Recommendations",
+                    text = stringResource(StringKeyDosha.PANCHA_RECOMMENDATIONS_TITLE, yoga.type.displayName),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -994,7 +986,7 @@ private fun RemedyCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                                 color = yogaColor.copy(alpha = 0.15f)
                             ) {
                                 Text(
-                                    text = recommendation.category.displayName,
+                                    text = recommendation.category.getLocalizedName(LocalLanguage.current),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = yogaColor,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -1014,7 +1006,7 @@ private fun RemedyCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                             color = AppTheme.TextMuted
                         )
                         Text(
-                            text = "Timing: ${recommendation.timing}",
+                            text = stringResource(StringKeyDosha.PANCHA_TIMING_LABEL, recommendation.timing),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextSecondary
                         )
@@ -1046,7 +1038,7 @@ private fun EmptyYogasMessage() {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "This section will show details when Mahapurusha Yogas are present in the chart.",
+                text = stringResource(StringKeyDosha.PANCHA_DETAILS_EMPTY_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1065,7 +1057,7 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentGold)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Analyzing Panch Mahapurusha Yogas...",
+                text = stringResource(StringKeyDosha.PANCHA_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )

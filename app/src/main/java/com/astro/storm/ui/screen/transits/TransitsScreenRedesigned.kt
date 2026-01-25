@@ -615,7 +615,7 @@ private fun TransitPlanetCard(
 
                 Icon(
                     Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (isExpanded) stringResource(StringKeyAnalysis.TRANSIT_COLLAPSE) else stringResource(StringKeyAnalysis.TRANSIT_EXPAND),
                     tint = AppTheme.TextMuted,
                     modifier = Modifier
                         .size(24.dp)
@@ -1066,7 +1066,7 @@ private fun TransitAspectCard(
                     color = AppTheme.CardBackgroundElevated
                 ) {
                     Text(
-                        text = "${aspect.orb.toInt()}° orb",
+                        text = stringResource(StringKeyAnalysis.TRANSIT_ORB_VALUE, aspect.orb.toInt()),
                         fontSize = 11.sp,
                         color = AppTheme.TextMuted,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -1077,7 +1077,12 @@ private fun TransitAspectCard(
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = "${aspect.transitingPlanet.getLocalizedName(language)} transit ${aspect.aspectType.lowercase()} natal ${aspect.natalPlanet.getLocalizedName(language)}",
+                text = stringResource(
+                    StringKeyAnalysis.TRANSIT_PHRASE,
+                    aspect.transitingPlanet.getLocalizedName(language),
+                    aspect.aspectType.lowercase(),
+                    aspect.natalPlanet.getLocalizedName(language)
+                ),
                 fontSize = 13.sp,
                 color = AppTheme.TextPrimary
             )

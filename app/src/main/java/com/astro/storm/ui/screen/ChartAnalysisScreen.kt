@@ -141,11 +141,7 @@ fun ChartAnalysisScreen(
         topBar = {
             ChartAnalysisTopBar(
                 chartName = chart.birthData.name,
-                onBack = onBack,
-                onExport = {
-                    // Export functionality
-                    viewModel.copyChartToClipboard(chart)
-                }
+                onBack = onBack
             )
         }
     ) { paddingValues ->
@@ -206,8 +202,7 @@ fun ChartAnalysisScreen(
 @Composable
 private fun ChartAnalysisTopBar(
     chartName: String,
-    onBack: () -> Unit,
-    onExport: () -> Unit
+    onBack: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -236,15 +231,7 @@ private fun ChartAnalysisTopBar(
                 )
             }
         },
-        actions = {
-            IconButton(onClick = onExport) {
-                Icon(
-                    imageVector = Icons.Outlined.Share,
-                    contentDescription = stringResource(StringKeyMatch.ACTION_EXPORT),
-                    tint = AppTheme.TextPrimary
-                )
-            }
-        },
+        actions = {},
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = AppTheme.ScreenBackground
         )

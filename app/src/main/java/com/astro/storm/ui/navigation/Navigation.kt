@@ -621,7 +621,6 @@ fun AstroStormNavigation(
                             ExportFormat.IMAGE -> viewModel.exportChartToImage(chart, density)
                             ExportFormat.JSON -> viewModel.exportChartToJson(chart)
                             ExportFormat.CSV -> viewModel.exportChartToCsv(chart)
-                            ExportFormat.CLIPBOARD -> viewModel.copyChartToClipboard(chart)
                         }
                     }
                 }
@@ -762,12 +761,7 @@ fun AstroStormNavigation(
             BirthChartScreen(
                 chart = currentChart,
                 chartRenderer = themeAwareChartRenderer,
-                onBack = { navController.popBackStack() },
-                onCopyToClipboard = {
-                    currentChart?.let {
-                        viewModel.copyChartToClipboard(it)
-                    }
-                }
+                onBack = { navController.popBackStack() }
             )
         }
 

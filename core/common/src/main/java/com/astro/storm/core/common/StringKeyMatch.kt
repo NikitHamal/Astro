@@ -41,7 +41,7 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
 
     // Additional Matchmaking Entries
     MATCH_REMEDIES("Remedies", "उपायहरू"),
-    MATCH_COPIED_TO_CLIPBOARD("Report copied to clipboard", "रिपोर्ट क्लिपबोर्डमा कपी भयो"),
+    MATCH_REPORT_TITLE("Relationship Compatibility Report", "सम्बन्ध अनुकूलता रिपोर्ट"),
     MATCH_CLEAR_SELECTION("Clear Selection", "छनौट हटाउनुहोस्"),
     MATCH_BRIDE("Bride", "वधू"),
     MATCH_GROOM("Groom", "वर"),

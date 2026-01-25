@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.contentDescription
@@ -1088,7 +1087,6 @@ private fun RemedyCard(
     onExpand: () -> Unit
 ) {
     val haptic = LocalHapticFeedback.current
-    val clipboardManager = LocalClipboardManager.current
 
     val rotationAngle by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
@@ -1238,11 +1236,7 @@ private fun RemedyCard(
                     if (remedy.category == RemedyCategory.MANTRA && remedy.mantraText != null) {
                         Spacer(modifier = Modifier.height(12.dp))
                         MantraSection(
-                            mantraText = remedy.mantraText,
-                            onCopy = {
-                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                clipboardManager.setText(AnnotatedString(remedy.mantraText))
-                            }
+                            mantraText = remedy.mantraText
                         )
                     }
 
@@ -1279,37 +1273,19 @@ private fun RemedyCard(
 
 @Composable
 private fun MantraSection(
-    mantraText: String,
-    onCopy: () -> Unit
+    mantraText: String
 ) {
     Surface(
         color = AppTheme.AccentGold.copy(alpha = 0.1f),
         shape = RoundedCornerShape(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    stringResource(StringKeyMatch.REMEDIES_MANTRA_SECTION),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.AccentGold
-                )
-                IconButton(
-                    onClick = onCopy,
-                    modifier = Modifier.size(32.dp)
-                ) {
-                    Icon(
-                        Icons.Outlined.ContentCopy,
-                        contentDescription = stringResource(StringKeyMatch.REMEDIES_COPY_MANTRA),
-                        tint = AppTheme.AccentGold,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
+            Text(
+                stringResource(StringKeyMatch.REMEDIES_MANTRA_SECTION),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.AccentGold
+            )
             Text(
                 mantraText,
                 style = MaterialTheme.typography.bodyMedium,

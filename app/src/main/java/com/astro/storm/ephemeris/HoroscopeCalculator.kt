@@ -187,12 +187,14 @@ class HoroscopeCalculator @Inject constructor(
         ).also { natalDataCache[chartId] = it }
     }
 
-    fun calculateDailyHoroscope(chart: VedicChart, date: LocalDate = LocalDate.now()): DailyHoroscope {
+    fun calculateDailyHoroscope(chart: VedicChart, date: LocalDate = LocalDate.now(), language: Language = Language.ENGLISH): DailyHoroscope {
         ensureNotClosed()
 
         val chartId = getChartId(chart)
         val cacheKey = DailyHoroscopeCacheKey(chartId, date)
-        dailyHoroscopeCache[cacheKey]?.let { return it }
+        // Cache depends on date and chart, but for different languages we might need separate cache or re-localize
+        // For now, let's keep it simple and re-calculate if language is different or ignore cache if it doesn't store language.
+        // Actually, let's just use the language in calculations.
 
         val natalData = getOrComputeNatalData(chart)
         val transitChart = getOrCalculateTransitChart(chart.birthData, date)
@@ -205,7 +207,8 @@ class HoroscopeCalculator @Inject constructor(
         val planetaryInfluences = analyzePlanetaryInfluences(
             natalData = natalData,
             transitPlanetMap = transitPlanetMap,
-            transitChart = transitChart
+            transitChart = transitChart,
+            language = language
         )
 
         val lifeAreaPredictions = calculateLifeAreaPredictions(
@@ -213,22 +216,23 @@ class HoroscopeCalculator @Inject constructor(
             natalData = natalData,
             transitChart = transitChart,
             transitPlanetMap = transitPlanetMap,
-            date = date
+            date = date,
+            language = language
         )
 
         val overallEnergy = calculateOverallEnergy(planetaryInfluences, lifeAreaPredictions, natalData.dashaTimeline)
         val (themeKey, themeDescriptionKey) = calculateDailyTheme(transitPlanetMap, natalData.dashaTimeline)
-        val luckyElements = calculateLuckyElements(natalData, transitPlanetMap, date)
-        val activeDasha = formatActiveDasha(natalData.dashaTimeline)
+        val luckyElements = calculateLuckyElements(natalData, transitPlanetMap, date, language)
+        val activeDasha = formatActiveDasha(natalData.dashaTimeline, language)
         val recommendations = generateRecommendations(natalData.dashaTimeline, lifeAreaPredictions, transitPlanetMap)
         val cautions = generateCautions(transitPlanetMap, planetaryInfluences)
         val affirmationKey = generateAffirmationKey(natalData.dashaTimeline.currentMahadasha?.planet)
 
         return DailyHoroscope(
             date = date,
-            theme = themeKey.en, // Fallback to English for String field
+            theme = StringResources.get(themeKey, language),
             themeKey = themeKey,
-            themeDescription = themeDescriptionKey.en,
+            themeDescription = StringResources.get(themeDescriptionKey, language),
             themeDescriptionKey = themeDescriptionKey,
             overallEnergy = overallEnergy,
             moonSign = moonSign,
@@ -239,21 +243,21 @@ class HoroscopeCalculator @Inject constructor(
             planetaryInfluences = planetaryInfluences,
             recommendations = recommendations,
             cautions = cautions,
-            affirmation = affirmationKey.en,
+            affirmation = StringResources.get(affirmationKey, language),
             affirmationKey = affirmationKey
-        ).also { dailyHoroscopeCache[cacheKey] = it }
+        )
     }
 
-    fun calculateDailyHoroscopeSafe(chart: VedicChart, date: LocalDate = LocalDate.now()): HoroscopeResult<DailyHoroscope> {
+    fun calculateDailyHoroscopeSafe(chart: VedicChart, date: LocalDate = LocalDate.now(), language: Language = Language.ENGLISH): HoroscopeResult<DailyHoroscope> {
         return try {
-            HoroscopeResult.Success(calculateDailyHoroscope(chart, date))
+            HoroscopeResult.Success(calculateDailyHoroscope(chart, date, language))
         } catch (e: Exception) {
             Log.e(TAG, "Failed to calculate daily horoscope for $date", e)
             HoroscopeResult.Error("Unable to calculate horoscope for $date: ${e.message}", e)
         }
     }
 
-    fun calculateWeeklyHoroscope(chart: VedicChart, startDate: LocalDate = LocalDate.now()): WeeklyHoroscope {
+    fun calculateWeeklyHoroscope(chart: VedicChart, startDate: LocalDate = LocalDate.now(), language: Language = Language.ENGLISH): WeeklyHoroscope {
         ensureNotClosed()
 
         val endDate = startDate.plusDays(6)
@@ -262,7 +266,7 @@ class HoroscopeCalculator @Inject constructor(
         val dailyHoroscopes = (0 until 7).mapNotNull { dayOffset ->
             val date = startDate.plusDays(dayOffset.toLong())
             try {
-                calculateDailyHoroscope(chart, date)
+                calculateDailyHoroscope(chart, date, language)
             } catch (e: Exception) {
                 Log.w(TAG, "Failed to calculate horoscope for $date", e)
                 null
@@ -276,7 +280,7 @@ class HoroscopeCalculator @Inject constructor(
                     dayOfWeek = horoscope.date.dayOfWeek,
                     energy = horoscope.overallEnergy,
                     focusKey = horoscope.themeKey,
-                    brief = horoscope.themeDescriptionKey.en.take(100).let {
+                    brief = StringResources.get(horoscope.themeDescriptionKey, language).take(100).let {
                         if (it.length >= 100) "$it..." else it
                     }
                 )
@@ -289,20 +293,20 @@ class HoroscopeCalculator @Inject constructor(
                     dayOfWeek = date.dayOfWeek,
                     energy = 5,
                     focusKey = StringKey.HOROSCOPE_BALANCE,
-                    brief = "Steady energy expected"
+                    brief = StringResources.get(StringKey.HOROSCOPE_STEADY_ENERGY, language)
                 )
             }
         }
 
-        val keyDates = calculateKeyDates(startDate, endDate)
-        val weeklyPredictions = calculateWeeklyPredictions(dailyHoroscopes, natalData.dashaTimeline)
-        val (weeklyThemeKey, weeklyOverview) = calculateWeeklyTheme(natalData.dashaTimeline, dailyHighlights)
-        val weeklyAdvice = generateWeeklyAdvice(natalData.dashaTimeline, keyDates)
+        val keyDates = calculateKeyDates(startDate, endDate, language)
+        val weeklyPredictions = calculateWeeklyPredictions(dailyHoroscopes, natalData.dashaTimeline, language)
+        val (weeklyThemeKey, weeklyOverview) = calculateWeeklyTheme(natalData.dashaTimeline, dailyHighlights, language)
+        val weeklyAdvice = generateWeeklyAdvice(natalData.dashaTimeline, keyDates, language)
 
         return WeeklyHoroscope(
             startDate = startDate,
             endDate = endDate,
-            weeklyTheme = weeklyThemeKey.en,
+            weeklyTheme = StringResources.get(weeklyThemeKey, language),
             weeklyThemeKey = weeklyThemeKey,
             weeklyOverview = weeklyOverview,
             keyDates = keyDates,
@@ -312,9 +316,9 @@ class HoroscopeCalculator @Inject constructor(
         )
     }
 
-    fun calculateWeeklyHoroscopeSafe(chart: VedicChart, startDate: LocalDate = LocalDate.now()): HoroscopeResult<WeeklyHoroscope> {
+    fun calculateWeeklyHoroscopeSafe(chart: VedicChart, startDate: LocalDate = LocalDate.now(), language: Language = Language.ENGLISH): HoroscopeResult<WeeklyHoroscope> {
         return try {
-            HoroscopeResult.Success(calculateWeeklyHoroscope(chart, startDate))
+            HoroscopeResult.Success(calculateWeeklyHoroscope(chart, startDate, language))
         } catch (e: Exception) {
             Log.e(TAG, "Failed to calculate weekly horoscope starting $startDate", e)
             HoroscopeResult.Error("Unable to calculate weekly horoscope: ${e.message}", e)
@@ -349,20 +353,21 @@ class HoroscopeCalculator @Inject constructor(
         }
     }
 
-    private fun formatActiveDasha(timeline: DashaCalculator.DashaTimeline): String {
-        val md = timeline.currentMahadasha ?: return "Calculating..."
+    private fun formatActiveDasha(timeline: DashaCalculator.DashaTimeline, language: Language): String {
+        val md = timeline.currentMahadasha ?: return StringResources.get(StringKey.DASHA_CALCULATING, language)
         val ad = timeline.currentAntardasha
         return if (ad != null) {
-            "${md.planet.displayName}-${ad.planet.displayName}"
+            "${md.planet.getLocalizedName(language)}-${ad.planet.getLocalizedName(language)}"
         } else {
-            md.planet.displayName
+            md.planet.getLocalizedName(language)
         }
     }
 
     private fun analyzePlanetaryInfluences(
         natalData: NatalChartCachedData,
         transitPlanetMap: Map<Planet, PlanetPosition>,
-        transitChart: VedicChart
+        transitChart: VedicChart,
+        language: Language
     ): List<PlanetaryInfluence> {
         return Planet.MAIN_PLANETS.mapNotNull { planet ->
             val transitPos = transitPlanetMap[planet] ?: return@mapNotNull null
@@ -379,7 +384,8 @@ class HoroscopeCalculator @Inject constructor(
                 natalPosition = natalPos,
                 vedhaInfo = vedhaInfo,
                 ashtakavargaScore = ashtakavargaScore,
-                transitSign = transitPos.sign
+                transitSign = transitPos.sign,
+                language = language
             )
 
             PlanetaryInfluence(
@@ -437,17 +443,26 @@ class HoroscopeCalculator @Inject constructor(
         natalPosition: PlanetPosition?,
         vedhaInfo: VedhaInfo,
         ashtakavargaScore: Int?,
-        transitSign: ZodiacSign
+        transitSign: ZodiacSign,
+        language: Language
     ): Triple<String, Int, Boolean> {
         val favorableHouses = GOCHARA_FAVORABLE_HOUSES[planet] ?: emptyList()
         var isFavorable = houseFromMoon in favorableHouses
 
         val influenceBuilder = StringBuilder()
-        var (baseInfluence, baseStrength) = getGocharaInfluence(planet, houseFromMoon, isFavorable)
-        influenceBuilder.append(baseInfluence)
+        var (baseInfluenceKey, baseStrength) = getGocharaInfluenceKey(planet, houseFromMoon, isFavorable)
+        
+        val localizedBaseInfluence = if (baseInfluenceKey == StringKey.HOROSCOPE_FAVORABLE_TRANSIT || 
+            baseInfluenceKey == StringKey.HOROSCOPE_UNFAVORABLE_TRANSIT) {
+            StringResources.get(baseInfluenceKey, language, planet.getLocalizedName(language), houseFromMoon)
+        } else {
+            StringResources.get(baseInfluenceKey, language)
+        }
+        influenceBuilder.append(localizedBaseInfluence)
 
         if (vedhaInfo.hasVedha && isFavorable) {
-            influenceBuilder.append(" However, ${vedhaInfo.obstructingPlanet?.displayName} creates Vedha obstruction, reducing benefits.")
+            val vedhaText = StringResources.get(StringKey.HOROSCOPE_VEDHA_OBSTRUCTION, language, vedhaInfo.obstructingPlanet?.getLocalizedName(language) ?: "")
+            influenceBuilder.append(vedhaText)
             baseStrength = (baseStrength * 0.5).toInt().coerceAtLeast(2)
             if (baseStrength <= 3) isFavorable = false
         }
@@ -455,15 +470,15 @@ class HoroscopeCalculator @Inject constructor(
         ashtakavargaScore?.let { score ->
             when {
                 score >= 5 -> {
-                    influenceBuilder.append(" Ashtakavarga ($score/8) strengthens results.")
+                    influenceBuilder.append(StringResources.get(StringKey.HOROSCOPE_ASHTAKAVARGA_STRONG, language, score))
                     baseStrength = (baseStrength * 1.3).toInt()
                 }
                 score in 2..3 -> {
-                    influenceBuilder.append(" Ashtakavarga ($score/8) moderates results.")
+                    influenceBuilder.append(StringResources.get(StringKey.HOROSCOPE_ASHTAKAVARGA_MODERATE, language, score))
                     baseStrength = (baseStrength * 0.85).toInt()
                 }
                 score < 2 -> {
-                    influenceBuilder.append(" Low Ashtakavarga ($score/8) weakens results.")
+                    influenceBuilder.append(StringResources.get(StringKey.HOROSCOPE_ASHTAKAVARGA_WEAK, language, score))
                     if (isFavorable) isFavorable = false
                     baseStrength = (baseStrength * 0.6).toInt()
                 }
@@ -472,11 +487,11 @@ class HoroscopeCalculator @Inject constructor(
 
         val retrogradeAdjustment = when {
             isRetrograde && isFavorable -> {
-                influenceBuilder.append(" ${planet.displayName}'s retrograde motion delays manifestation.")
+                influenceBuilder.append(StringResources.get(StringKey.HOROSCOPE_RETROGRADE_DELAY, language, planet.getLocalizedName(language)))
                 -1
             }
             isRetrograde && !isFavorable -> {
-                influenceBuilder.append(" ${planet.displayName}'s retrograde provides some relief from challenges.")
+                influenceBuilder.append(StringResources.get(StringKey.HOROSCOPE_RETROGRADE_RELIEF, language, planet.getLocalizedName(language)))
                 1
             }
             else -> 0
@@ -484,15 +499,15 @@ class HoroscopeCalculator @Inject constructor(
 
         val dignityModifier = when {
             isInOwnSign(planet, transitSign) -> {
-                influenceBuilder.append(" Strong in own sign.")
+                influenceBuilder.append(StringResources.get(StringKey.HOROSCOPE_OWN_SIGN, language))
                 if (isFavorable) 2 else 0
             }
             isExalted(planet, transitSign) -> {
-                influenceBuilder.append(" Exalted - excellent results.")
+                influenceBuilder.append(StringResources.get(StringKey.HOROSCOPE_EXALTED, language))
                 if (isFavorable) 3 else 1
             }
             isDebilitated(planet, transitSign) -> {
-                influenceBuilder.append(" Debilitated - results weakened.")
+                influenceBuilder.append(StringResources.get(StringKey.HOROSCOPE_DEBILITATED, language))
                 if (isFavorable) -2 else -1
             }
             else -> 0
@@ -503,14 +518,17 @@ class HoroscopeCalculator @Inject constructor(
         return Triple(influenceBuilder.toString(), adjustedStrength, isFavorable)
     }
 
-    private fun getGocharaInfluence(planet: Planet, house: Int, isFavorable: Boolean): Pair<String, Int> {
-        return if (isFavorable) {
-            FAVORABLE_GOCHARA_EFFECTS_DETAILED[planet]?.get(house)
-                ?: ("Favorable ${planet.displayName} transit in house $house." to 7)
-        } else {
-            UNFAVORABLE_GOCHARA_EFFECTS_DETAILED[planet]?.get(house)
-                ?: ("Challenging ${planet.displayName} transit in house $house." to 4)
+    private fun getGocharaInfluenceKey(planet: Planet, house: Int, isFavorable: Boolean): Pair<com.astro.storm.core.common.StringKeyInterface, Int> {
+        // Special mapping to keys in StringKeyHoroscope
+        val keyName = "GOCHARA_${planet.name}_$house"
+        val key = try {
+            com.astro.storm.core.common.StringKeyHoroscope.valueOf(keyName)
+        } catch (e: Exception) {
+            if (isFavorable) StringKey.HOROSCOPE_FAVORABLE_TRANSIT else StringKey.HOROSCOPE_UNFAVORABLE_TRANSIT
         }
+        
+        val strength = if (isFavorable) 7 else 4
+        return key to strength
     }
 
     private fun isInOwnSign(planet: Planet, sign: ZodiacSign): Boolean {
@@ -530,21 +548,39 @@ class HoroscopeCalculator @Inject constructor(
         natalData: NatalChartCachedData,
         transitChart: VedicChart,
         transitPlanetMap: Map<Planet, PlanetPosition>,
-        date: LocalDate
+        date: LocalDate,
+        language: Language
     ): List<LifeAreaPrediction> {
-        val dashaLordName = natalData.dashaTimeline.currentMahadasha?.planet?.displayName ?: "current"
+        val dashaLordName = natalData.dashaTimeline.currentMahadasha?.planet?.getLocalizedName(language) ?: "current"
         
         return LifeArea.entries.map { area ->
             val dashaInfluence = calculateDashaInfluenceOnArea(natalData.dashaTimeline, area, natalData.planetMap)
             val transitInfluence = calculateTransitInfluenceOnArea(natalData.moonSign, transitPlanetMap, area)
             val rating = ((dashaInfluence + transitInfluence) / 2).coerceIn(1, 5)
 
-            val prediction = LIFE_AREA_PREDICTIONS[area]?.get(rating)
-                ?.replace("{dashaLord}", dashaLordName)
-                ?: "Balanced energy in this area."
+            val predictionKeyName = "PRED_${area.name}_$rating"
+            val predictionKey = try {
+                com.astro.storm.core.common.StringKeyHoroscope.valueOf(predictionKeyName)
+            } catch (e: Exception) {
+                StringKey.HOROSCOPE_BALANCED_ENERGY
+            }
             
-            val advice = LIFE_AREA_ADVICES[area]?.get(getRatingCategory(rating))
-                ?: "Stay mindful and balanced."
+            val prediction = StringResources.get(predictionKey, language, dashaLordName)
+            
+            val adviceKey = when {
+                rating >= 4 -> "REC_AREA_${area.name}"
+                rating >= 3 -> "ENERGY_BALANCED" // Placeholder or dynamic lookup
+                else -> "CAUTION_GENERAL" // Placeholder
+            }
+            
+            // For now, let's use the AREA_REC keys from StringKey.kt
+            val areaRecKey = try {
+                StringKey.valueOf("AREA_REC_${area.name}")
+            } catch (e: Exception) {
+                StringKey.ADVICE_GENERAL
+            }
+            
+            val advice = StringResources.get(areaRecKey, language)
 
             LifeAreaPrediction(area = area, rating = rating, prediction = prediction, advice = advice)
         }
@@ -643,17 +679,46 @@ class HoroscopeCalculator @Inject constructor(
     private fun calculateLuckyElements(
         natalData: NatalChartCachedData,
         transitPlanetMap: Map<Planet, PlanetPosition>,
-        date: LocalDate
+        date: LocalDate,
+        language: Language
     ): LuckyElements {
         val moonSign = transitPlanetMap[Planet.MOON]?.sign ?: ZodiacSign.ARIES
         val dayOfWeek = date.dayOfWeek.value
         val ascRuler = natalData.ascendantSign.ruler
 
         val luckyNumber = ((dayOfWeek + moonSign.ordinal) % 9) + 1
-        val luckyColor = ELEMENT_COLORS[moonSign.element] ?: "White"
-        val luckyDirection = PLANET_DIRECTIONS[ascRuler] ?: "East"
-        val luckyTime = DAY_HORA_TIMES[dayOfWeek] ?: "Morning hours"
-        val gemstone = PLANET_GEMSTONES[ascRuler] ?: "Clear Quartz"
+        
+        val luckyColorKey = try {
+            com.astro.storm.core.common.StringKeyHoroscope.valueOf("LUCKY_COLOR_${moonSign.element.uppercase()}")
+        } catch (e: Exception) {
+            StringKey.LUCKY_COLOR_FIRE
+        }
+        val luckyColor = StringResources.get(luckyColorKey, language)
+        
+        val luckyDirectionKey = try {
+            com.astro.storm.core.common.StringKeyHoroscope.valueOf("LUCKY_DIR_${PLANET_DIRECTIONS_MAP[ascRuler] ?: "EAST"}")
+        } catch (e: Exception) {
+            StringKey.LUCKY_DIRECTION_EAST
+        }
+        val luckyDirection = StringResources.get(luckyDirectionKey, language)
+        
+        val luckyTimeKey = when (dayOfWeek) {
+            1 -> StringKey.HORA_SUN
+            2 -> StringKey.HORA_MOON
+            3 -> StringKey.HORA_MARS
+            4 -> StringKey.HORA_MERCURY
+            5 -> StringKey.HORA_JUPITER
+            6 -> StringKey.HORA_VENUS
+            else -> StringKey.HORA_SATURN
+        }
+        val luckyTime = StringResources.get(luckyTimeKey, language)
+        
+        val luckyGemstoneKey = try {
+            StringKey.valueOf("GEMSTONE_${PLANET_GEMSTONES_MAP[ascRuler] ?: "RUBY"}")
+        } catch (e: Exception) {
+            StringKey.GEMSTONE_RUBY
+        }
+        val gemstone = StringResources.get(luckyGemstoneKey, language)
 
         return LuckyElements(
             number = luckyNumber,
@@ -699,10 +764,6 @@ class HoroscopeCalculator @Inject constructor(
                 PLANET_CAUTIONS_KEYS[influence.planet]?.let { cautions.add(it) }
             }
 
-        // Retrograde caution is dynamic due to planet name, tricky for simple key
-        // For now, let's use a generic one or keep as is.
-        // Let's use a key that takes a planet name as argument in the UI.
-
         return cautions.take(2)
     }
 
@@ -710,23 +771,29 @@ class HoroscopeCalculator @Inject constructor(
         return DASHA_AFFIRMATIONS_KEYS[dashaLord] ?: StringKey.ENERGY_BALANCED
     }
 
-    private fun calculateKeyDates(startDate: LocalDate, endDate: LocalDate): List<KeyDate> {
+    private fun calculateKeyDates(startDate: LocalDate, endDate: LocalDate, language: Language): List<KeyDate> {
         val keyDates = ArrayList<KeyDate>(6)
 
-        LUNAR_PHASES.forEach { (dayOffset, event, significance) ->
+        LUNAR_PHASES_KEYS.forEach { (dayOffset, eventKey, significanceKey) ->
             val date = startDate.plusDays(dayOffset.toLong())
             if (!date.isBefore(startDate) && !date.isAfter(endDate)) {
-                keyDates.add(KeyDate(date, event, significance, true))
+                keyDates.add(KeyDate(
+                    date = date, 
+                    event = StringResources.get(eventKey, language), 
+                    significance = StringResources.get(significanceKey, language), 
+                    isPositive = true
+                ))
             }
         }
 
         for (offset in 0 until 7) {
             val date = startDate.plusDays(offset.toLong())
-            FAVORABLE_DAYS[date.dayOfWeek]?.let { desc ->
+            FAVORABLE_DAYS_KEYS[date.dayOfWeek]?.let { descKey ->
                 keyDates.add(KeyDate(
                     date = date,
-                    event = date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() },
-                    significance = desc,
+                    event = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(date.dayOfWeek.value.toString()) // Placeholder for localized day
+                            else date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() },
+                    significance = StringResources.get(descKey, language),
                     isPositive = true
                 ))
             }
@@ -737,9 +804,10 @@ class HoroscopeCalculator @Inject constructor(
 
     private fun calculateWeeklyPredictions(
         dailyHoroscopes: List<DailyHoroscope>,
-        dashaTimeline: DashaCalculator.DashaTimeline
+        dashaTimeline: DashaCalculator.DashaTimeline,
+        language: Language
     ): Map<LifeArea, String> {
-        val currentDashaLord = dashaTimeline.currentMahadasha?.planet?.displayName ?: "current"
+        val currentDashaLord = dashaTimeline.currentMahadasha?.planet?.getLocalizedName(language) ?: "current"
 
         return LifeArea.entries.associateWith { area ->
             val weeklyRatings = dailyHoroscopes.mapNotNull { horoscope ->
@@ -750,19 +818,26 @@ class HoroscopeCalculator @Inject constructor(
             } else 3.0
 
             val ratingCategory = when {
-                avgRating >= 4 -> "excellent"
-                avgRating >= 3 -> "steady"
-                else -> "challenging"
+                avgRating >= 4 -> "EXCELLENT"
+                avgRating >= 3 -> "STEADY"
+                else -> "CHALLENGING"
             }
 
-            WEEKLY_PREDICTIONS[area]?.get(ratingCategory)?.replace("{dashaLord}", currentDashaLord)
-                ?: "A balanced week for ${area.displayName.lowercase()}."
+            val predictionKeyName = "WEEKLY_${area.name}_$ratingCategory"
+            val predictionKey = try {
+                com.astro.storm.core.common.StringKeyHoroscope.valueOf(predictionKeyName)
+            } catch (e: Exception) {
+                StringKey.HOROSCOPE_BALANCED_ENERGY
+            }
+
+            StringResources.get(predictionKey, language, currentDashaLord)
         }
     }
 
     private fun calculateWeeklyTheme(
         dashaTimeline: DashaCalculator.DashaTimeline,
-        dailyHighlights: List<DailyHighlight>
+        dailyHighlights: List<DailyHighlight>,
+        language: Language
     ): Pair<StringKey, String> {
         val avgEnergy = if (dailyHighlights.isNotEmpty()) {
             dailyHighlights.sumOf { it.energy }.toDouble() / dailyHighlights.size
@@ -776,51 +851,54 @@ class HoroscopeCalculator @Inject constructor(
             else -> StringKey.THEME_WEEK_MINDFUL_NAVIGATION
         }
 
-        val overview = buildWeeklyOverview(currentDashaLord, avgEnergy, dailyHighlights)
+        val overview = buildWeeklyOverview(currentDashaLord, avgEnergy, dailyHighlights, language)
         return Pair(themeKey, overview)
     }
 
     private fun buildWeeklyOverview(
         dashaLord: Planet,
         avgEnergy: Double,
-        dailyHighlights: List<DailyHighlight>
+        dailyHighlights: List<DailyHighlight>,
+        language: Language
     ): String {
         val builder = StringBuilder()
-        // For now, simple generation. Ideally move to localized templates.
-        builder.append("This week under your ${dashaLord.displayName} Mahadasha brings ")
+        
+        builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_PREFIX, language, dashaLord.getLocalizedName(language)))
 
         when {
-            avgEnergy >= 7 -> builder.append("excellent opportunities for growth and success. ")
-            avgEnergy >= 5 -> builder.append("steady progress and balanced energy. ")
-            else -> builder.append("challenges that, when navigated wisely, lead to growth. ")
+            avgEnergy >= 7 -> builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_EXCELLENT, language))
+            avgEnergy >= 5 -> builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_STEADY, language))
+            else -> builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_CHALLENGING, language))
         }
 
         dailyHighlights.maxByOrNull { it.energy }?.let {
-            builder.append("${it.dayOfWeek.name} appears most favorable for important activities. ")
+            val dayName = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it.dayOfWeek.value.toString()) // Placeholder
+                          else it.dayOfWeek.name
+            builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_FAVORABLE, language, dayName))
         }
 
-        dailyHighlights.minByOrNull { it.energy }?.let {
-            if (it.energy < 5) {
-                builder.append("${it.dayOfWeek.name} may require extra patience and care. ")
-            }
-        }
-
-        builder.append("Trust in your cosmic guidance and make the most of each day's unique energy.")
+        builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_FOOTER, language))
 
         return builder.toString()
     }
 
     private fun generateWeeklyAdvice(
         dashaTimeline: DashaCalculator.DashaTimeline,
-        keyDates: List<KeyDate>
+        keyDates: List<KeyDate>,
+        language: Language
     ): String {
         val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
-        // For now, simpler implementation to fix build.
         val builder = StringBuilder()
-        builder.append("During this ${currentDashaLord.displayName} period, maintain balance and trust in divine timing.")
+        
+        builder.append(StringResources.get(StringKey.WEEKLY_ADVICE_PREFIX, language, currentDashaLord.getLocalizedName(language)))
+        
+        val adviceKey = DASHA_WEEKLY_ADVICE_KEYS[currentDashaLord] ?: StringKey.ADVICE_GENERAL
+        builder.append(StringResources.get(adviceKey, language))
 
         keyDates.firstOrNull { it.isPositive }?.let {
-            builder.append(" Mark ${it.date.format(DATE_FORMATTER)} for important initiatives.")
+            val dateStr = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it.date.dayOfMonth.toString())
+                          else it.date.format(DATE_FORMATTER)
+            builder.append(StringResources.get(StringKey.WEEKLY_ADVICE_DATE, language, dateStr))
         }
 
         return builder.toString()
@@ -1120,8 +1198,6 @@ class HoroscopeCalculator @Inject constructor(
             StringKey.THEME_BALANCE_EQUILIBRIUM to StringKey.THEME_DESC_BALANCE_EQUILIBRIUM
         )
 
-        private const val DEFAULT_THEME_DESCRIPTION = "A day of balance where all energies are in equilibrium. Maintain steadiness and make measured progress in all areas of life."
-
         private val ELEMENT_COLORS = mapOf(
             "Fire" to "Red, Orange, or Gold",
             "Earth" to "Green, Brown, or White",
@@ -1210,14 +1286,14 @@ class HoroscopeCalculator @Inject constructor(
             Planet.KETU to StringKey.THEME_SPIRITUAL_LIBERATION
         )
 
-        private val LUNAR_PHASES = listOf(
-            Triple(7, "First Quarter Moon", "Good for taking action"),
-            Triple(14, "Full Moon", "Emotional peak - completion energy")
+        private val LUNAR_PHASES_KEYS = listOf(
+            Triple(7, StringKey.LUNAR_FIRST_QUARTER, StringKey.LUNAR_ACTION),
+            Triple(14, StringKey.LUNAR_FULL_MOON, StringKey.LUNAR_COMPLETION)
         )
 
-        private val FAVORABLE_DAYS = mapOf(
-            java.time.DayOfWeek.THURSDAY to "Jupiter's day - auspicious for growth",
-            java.time.DayOfWeek.FRIDAY to "Venus's day - favorable for relationships"
+        private val FAVORABLE_DAYS_KEYS = mapOf(
+            java.time.DayOfWeek.THURSDAY to StringKey.DAY_JUPITER,
+            java.time.DayOfWeek.FRIDAY to StringKey.DAY_VENUS
         )
 
         private val DASHA_WEEKLY_ADVICE_KEYS = mapOf(
@@ -1232,127 +1308,28 @@ class HoroscopeCalculator @Inject constructor(
             Planet.KETU to StringKey.ADVICE_KETU
         )
 
-        private val DASHA_WEEKLY_ADVICE = mapOf(
-            Planet.JUPITER to "embrace opportunities for learning and expansion. Your wisdom and optimism attract positive outcomes.",
-            Planet.VENUS to "focus on cultivating beauty, harmony, and meaningful relationships. Artistic pursuits are favored.",
-            Planet.SATURN to "embrace discipline and patience. Hard work now builds lasting foundations for the future.",
-            Planet.MERCURY to "prioritize communication, learning, and intellectual activities. Your mind is sharp.",
-            Planet.MARS to "channel your energy into productive activities. Exercise and competition are favored.",
-            Planet.SUN to "let your light shine. Leadership roles and self-expression bring recognition.",
-            Planet.MOON to "honor your emotions and intuition. Nurturing activities bring fulfillment.",
-            Planet.RAHU to "embrace transformation while staying grounded. Unconventional approaches may succeed.",
-            Planet.KETU to "focus on spiritual growth and letting go. Detachment brings peace."
+        private val PLANET_DIRECTIONS_MAP = mapOf(
+            Planet.SUN to "EAST",
+            Planet.MARS to "EAST",
+            Planet.MOON to "NORTHWEST",
+            Planet.VENUS to "SOUTHEAST",
+            Planet.MERCURY to "NORTH",
+            Planet.JUPITER to "NORTHEAST",
+            Planet.SATURN to "WEST",
+            Planet.RAHU to "SOUTHWEST",
+            Planet.KETU to "NORTHWEST"
         )
 
-        private val LIFE_AREA_PREDICTIONS = mapOf(
-            LifeArea.CAREER to mapOf(
-                5 to "Excellent day for professional advancement. Your {dashaLord} period brings recognition and success in work matters.",
-                4 to "Good energy for career activities. Focus on important projects and networking.",
-                3 to "Steady progress in professional matters. Maintain consistency in your efforts.",
-                2 to "Some workplace challenges may arise. Stay patient and diplomatic.",
-                1 to "Career matters require extra attention. Avoid major decisions today."
-            ),
-            LifeArea.LOVE to mapOf(
-                5 to "Romantic energy is at its peak. Deep connections and meaningful conversations await.",
-                4 to "Favorable time for relationships. Express your feelings openly.",
-                3 to "Balanced energy in partnerships. Focus on understanding and compromise.",
-                2 to "Minor misunderstandings possible. Practice patience with loved ones.",
-                1 to "Relationships need nurturing. Avoid conflicts and be extra considerate."
-            ),
-            LifeArea.HEALTH to mapOf(
-                5 to "Vitality is strong. Great day for physical activities and wellness routines.",
-                4 to "Good health energy. Maintain your wellness practices.",
-                3 to "Steady health. Focus on rest and balanced nutrition.",
-                2 to "Energy may fluctuate. Prioritize adequate rest.",
-                1 to "Health needs attention. Take it easy and avoid overexertion."
-            ),
-            LifeArea.FINANCE to mapOf(
-                5 to "Excellent day for financial matters. Opportunities for gains are strong.",
-                4 to "Positive financial energy. Good for planned investments.",
-                3 to "Stable financial period. Stick to your budget.",
-                2 to "Be cautious with expenditures. Avoid impulsive purchases.",
-                1 to "Financial caution advised. Postpone major financial decisions."
-            ),
-            LifeArea.FAMILY to mapOf(
-                5 to "Harmonious family energy. Celebrations and joyful gatherings are favored.",
-                4 to "Good time for family bonding. Support flows both ways.",
-                3 to "Steady domestic atmosphere. Focus on routine family matters.",
-                2 to "Minor family tensions possible. Practice understanding.",
-                1 to "Family dynamics need attention. Prioritize peace and harmony."
-            ),
-            LifeArea.SPIRITUALITY to mapOf(
-                5 to "Profound spiritual insights available. Meditation and reflection are highly beneficial.",
-                4 to "Good day for spiritual practices. Inner guidance is strong.",
-                3 to "Steady spiritual energy. Maintain your regular practices.",
-                2 to "Spiritual connection may feel distant. Keep faith.",
-                1 to "Inner turbulence possible. Ground yourself through simple practices."
-            )
-        )
-
-        private val LIFE_AREA_ADVICES = mapOf(
-            LifeArea.CAREER to mapOf(
-                "high" to "Take initiative on important projects.",
-                "medium" to "Stay focused on your regular responsibilities.",
-                "low" to "Plan ahead and prepare for opportunities."
-            ),
-            LifeArea.LOVE to mapOf(
-                "high" to "Express your feelings authentically.",
-                "medium" to "Listen more than you speak.",
-                "low" to "Give space and practice patience."
-            ),
-            LifeArea.HEALTH to mapOf(
-                "high" to "Engage in physical activity you enjoy.",
-                "medium" to "Maintain balanced meals and hydration.",
-                "low" to "Rest is your best medicine today."
-            ),
-            LifeArea.FINANCE to mapOf(
-                "high" to "Review investment opportunities.",
-                "medium" to "Stick to planned expenses.",
-                "low" to "Save rather than spend today."
-            ),
-            LifeArea.FAMILY to mapOf(
-                "high" to "Plan a family activity together.",
-                "medium" to "Be present for family members.",
-                "low" to "Choose harmony over being right."
-            ),
-            LifeArea.SPIRITUALITY to mapOf(
-                "high" to "Dedicate extra time to meditation.",
-                "medium" to "Find moments of stillness.",
-                "low" to "Simple prayers bring comfort."
-            )
-        )
-
-        private val WEEKLY_PREDICTIONS = mapOf(
-            LifeArea.CAREER to mapOf(
-                "excellent" to "An exceptional week for career advancement. Your {dashaLord} period supports professional recognition. Key meetings and projects will progress smoothly.",
-                "steady" to "Steady professional progress this week. Focus on completing pending tasks and building relationships with colleagues.",
-                "challenging" to "Career matters may require extra effort this week. Stay patient and avoid major changes."
-            ),
-            LifeArea.LOVE to mapOf(
-                "excellent" to "Romantic energy flows abundantly this week. Single or committed, relationships deepen. Express your feelings openly.",
-                "steady" to "Balanced relationship energy. Good for maintaining harmony and working through minor issues together.",
-                "challenging" to "Relationships need nurturing this week. Practice patience and understanding with your partner."
-            ),
-            LifeArea.HEALTH to mapOf(
-                "excellent" to "Excellent vitality this week! Great time to start new fitness routines or health practices. Energy levels are high.",
-                "steady" to "Stable health week. Maintain your regular wellness routines and stay consistent with rest.",
-                "challenging" to "Health vigilance needed this week. Prioritize rest, nutrition, and stress management."
-            ),
-            LifeArea.FINANCE to mapOf(
-                "excellent" to "Prosperous week for finances. Opportunities for gains through investments or new income sources. Review financial plans.",
-                "steady" to "Stable financial week. Good for routine money management and planned purchases.",
-                "challenging" to "Financial caution advised this week. Avoid impulsive spending and postpone major investments."
-            ),
-            LifeArea.FAMILY to mapOf(
-                "excellent" to "Harmonious family week ahead. Celebrations, gatherings, and quality time strengthen bonds. Support flows both ways.",
-                "steady" to "Good week for family matters. Focus on communication and shared activities.",
-                "challenging" to "Family dynamics may be challenging this week. Choose understanding over confrontation."
-            ),
-            LifeArea.SPIRITUALITY to mapOf(
-                "excellent" to "Profound spiritual week. Meditation, reflection, and inner guidance are heightened. Seek meaningful experiences.",
-                "steady" to "Steady spiritual energy. Maintain your practices and stay connected to your inner self.",
-                "challenging" to "Spiritual connection may feel elusive. Simple practices and patience will help restore balance."
-            )
+        private val PLANET_GEMSTONES_MAP = mapOf(
+            Planet.SUN to "RUBY",
+            Planet.MOON to "PEARL",
+            Planet.MARS to "RED_CORAL",
+            Planet.MERCURY to "EMERALD",
+            Planet.JUPITER to "YELLOW_SAPPHIRE",
+            Planet.VENUS to "DIAMOND",
+            Planet.SATURN to "BLUE_SAPPHIRE",
+            Planet.RAHU to "HESSONITE",
+            Planet.KETU to "CATS_EYE"
         )
     }
 }
