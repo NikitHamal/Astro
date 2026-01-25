@@ -1286,7 +1286,7 @@ class HoroscopeCalculator @Inject constructor(
             Planet.KETU to StringKey.THEME_SPIRITUAL_LIBERATION
         )
 
-    private val LUNAR_PHASES_KEYS = listOf(
+    private val LUNAR_PHASES_KEYS: List<Triple<Int, StringKeyInterface, StringKeyInterface>> = listOf(
         Triple(0, StringKey.PERIOD_TODAY, StringKey.MSG_MAY_TAKE_MOMENT),
         Triple(7, StringKeyHoroscope.LUNAR_FIRST_QUARTER, StringKeyHoroscope.LUNAR_ACTION),
         Triple(14, StringKeyHoroscope.LUNAR_FULL_MOON, StringKeyHoroscope.LUNAR_COMPLETION)
