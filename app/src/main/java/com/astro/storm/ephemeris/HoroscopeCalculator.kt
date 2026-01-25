@@ -1286,13 +1286,13 @@ class HoroscopeCalculator @Inject constructor(
             Planet.KETU to StringKey.THEME_SPIRITUAL_LIBERATION
         )
 
-    private val LUNAR_FACTOR_MAP = mapOf(
-        0 to Triple(0, StringKey.PERIOD_TODAY, StringKey.MSG_MAY_TAKE_MOMENT),
-        7 to Triple(7, StringKeyHoroscope.LUNAR_FIRST_QUARTER, StringKeyHoroscope.LUNAR_ACTION),
-        14 to Triple(14, StringKeyHoroscope.LUNAR_FULL_MOON, StringKeyHoroscope.LUNAR_COMPLETION)
+    private val LUNAR_PHASES_KEYS = listOf(
+        Triple(0, StringKey.PERIOD_TODAY, StringKey.MSG_MAY_TAKE_MOMENT),
+        Triple(7, StringKeyHoroscope.LUNAR_FIRST_QUARTER, StringKeyHoroscope.LUNAR_ACTION),
+        Triple(14, StringKeyHoroscope.LUNAR_FULL_MOON, StringKeyHoroscope.LUNAR_COMPLETION)
     )
 
-    private val AUSPICIOUS_DAY_MAP = mapOf(
+    private val FAVORABLE_DAYS_KEYS = mapOf(
         java.time.DayOfWeek.THURSDAY to StringKeyHoroscope.DAY_JUPITER,
         java.time.DayOfWeek.FRIDAY to StringKeyHoroscope.DAY_VENUS
     )

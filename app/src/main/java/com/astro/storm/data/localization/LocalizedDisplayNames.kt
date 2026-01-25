@@ -426,10 +426,11 @@ fun RemedyPriority.getLocalizedName(language: Language): String {
  */
 fun com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.getLocalizedName(language: Language): String {
     return when (this) {
-        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.SPIRITUAL -> if (language == Language.NEPALI) "आध्यात्मिक" else "Spiritual"
-        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.CAREER -> if (language == Language.NEPALI) "क्यारियर" else "Career"
-        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.LIFESTYLE -> if (language == Language.NEPALI) "जीवनशैली" else "Lifestyle"
-        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.REMEDY -> if (language == Language.NEPALI) "उपाय" else "Remedy"
+        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.STRENGTHENING -> if (language == Language.NEPALI) "सुदृढीकरण अभ्यास" else "Strengthening Practice"
+        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.CAREER -> if (language == Language.NEPALI) "क्यारियर संरेखण" else "Career Alignment"
+        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.GEMSTONE -> if (language == Language.NEPALI) "रत्न सिफारिस" else "Gemstone Recommendation"
+        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.MANTRA -> if (language == Language.NEPALI) "मन्त्र जप" else "Mantra Recitation"
+        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.CHARITY -> if (language == Language.NEPALI) "परोपकारी कार्य" else "Charitable Practice"
     }
 }
 
