@@ -421,6 +421,18 @@ fun RemedyPriority.getLocalizedName(language: Language): String {
     }
 }
 
+/**
+ * Get localized display name for PanchMahapurusha recommendation category
+ */
+fun com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.getLocalizedName(language: Language): String {
+    return when (this) {
+        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.SPIRITUAL -> if (language == Language.NEPALI) "आध्यात्मिक" else "Spiritual"
+        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.CAREER -> if (language == Language.NEPALI) "क्यारियर" else "Career"
+        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.LIFESTYLE -> if (language == Language.NEPALI) "जीवनशैली" else "Lifestyle"
+        com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.RecommendationType.REMEDY -> if (language == Language.NEPALI) "उपाय" else "Remedy"
+    }
+}
+
 // ============================================
 // MATCHMAKING CALCULATOR EXTENSIONS
 // ============================================

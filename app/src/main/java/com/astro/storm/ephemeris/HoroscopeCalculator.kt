@@ -2,7 +2,7 @@ package com.astro.storm.ephemeris
 
 import android.content.Context
 import android.util.Log
-import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.*
 import com.astro.storm.core.model.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
@@ -703,13 +703,13 @@ class HoroscopeCalculator @Inject constructor(
         val luckyDirection = StringResources.get(luckyDirectionKey, language)
         
         val luckyTimeKey = when (dayOfWeek) {
-            1 -> StringKey.HORA_SUN
-            2 -> StringKey.HORA_MOON
-            3 -> StringKey.HORA_MARS
-            4 -> StringKey.HORA_MERCURY
-            5 -> StringKey.HORA_JUPITER
-            6 -> StringKey.HORA_VENUS
-            else -> StringKey.HORA_SATURN
+            1 -> StringKeyHoroscope.HORA_SUN
+            2 -> StringKeyHoroscope.HORA_MOON
+            3 -> StringKeyHoroscope.HORA_MARS
+            4 -> StringKeyHoroscope.HORA_MERCURY
+            5 -> StringKeyHoroscope.HORA_JUPITER
+            6 -> StringKeyHoroscope.HORA_VENUS
+            else -> StringKeyHoroscope.HORA_SATURN
         }
         val luckyTime = StringResources.get(luckyTimeKey, language)
         
@@ -863,21 +863,21 @@ class HoroscopeCalculator @Inject constructor(
     ): String {
         val builder = StringBuilder()
         
-        builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_PREFIX, language, dashaLord.getLocalizedName(language)))
+        builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_PREFIX, language, dashaLord.getLocalizedName(language)))
 
         when {
-            avgEnergy >= 7 -> builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_EXCELLENT, language))
-            avgEnergy >= 5 -> builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_STEADY, language))
-            else -> builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_CHALLENGING, language))
+            avgEnergy >= 7 -> builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_HIGH, language))
+            avgEnergy >= 5 -> builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_MED, language))
+            else -> builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_LOW, language))
         }
 
         dailyHighlights.maxByOrNull { it.energy }?.let {
             val dayName = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it.dayOfWeek.value.toString()) // Placeholder
                           else it.dayOfWeek.name
-            builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_FAVORABLE, language, dayName))
+            builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_FAVORABLE, language, dayName))
         }
 
-        builder.append(StringResources.get(StringKey.WEEKLY_OVERVIEW_FOOTER, language))
+        builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_SUFFIX, language))
 
         return builder.toString()
     }
@@ -890,7 +890,7 @@ class HoroscopeCalculator @Inject constructor(
         val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
         val builder = StringBuilder()
         
-        builder.append(StringResources.get(StringKey.WEEKLY_ADVICE_PREFIX, language, currentDashaLord.getLocalizedName(language)))
+        builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_ADVICE_PREFIX, language, currentDashaLord.getLocalizedName(language)))
         
         val adviceKey = DASHA_WEEKLY_ADVICE_KEYS[currentDashaLord] ?: StringKey.ADVICE_GENERAL
         builder.append(StringResources.get(adviceKey, language))
@@ -898,7 +898,7 @@ class HoroscopeCalculator @Inject constructor(
         keyDates.firstOrNull { it.isPositive }?.let {
             val dateStr = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it.date.dayOfMonth.toString())
                           else it.date.format(DATE_FORMATTER)
-            builder.append(StringResources.get(StringKey.WEEKLY_ADVICE_DATE, language, dateStr))
+            builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_ADVICE_DATE, language, dateStr))
         }
 
         return builder.toString()
@@ -1286,15 +1286,16 @@ class HoroscopeCalculator @Inject constructor(
             Planet.KETU to StringKey.THEME_SPIRITUAL_LIBERATION
         )
 
-        private val LUNAR_PHASES_KEYS = listOf(
-            Triple(7, StringKey.LUNAR_FIRST_QUARTER, StringKey.LUNAR_ACTION),
-            Triple(14, StringKey.LUNAR_FULL_MOON, StringKey.LUNAR_COMPLETION)
-        )
+    private val LUNAR_FACTOR_MAP = mapOf(
+        0 to Triple(0, StringKey.PERIOD_TODAY, StringKey.MSG_MAY_TAKE_MOMENT),
+        7 to Triple(7, StringKeyHoroscope.LUNAR_FIRST_QUARTER, StringKeyHoroscope.LUNAR_ACTION),
+        14 to Triple(14, StringKeyHoroscope.LUNAR_FULL_MOON, StringKeyHoroscope.LUNAR_COMPLETION)
+    )
 
-        private val FAVORABLE_DAYS_KEYS = mapOf(
-            java.time.DayOfWeek.THURSDAY to StringKey.DAY_JUPITER,
-            java.time.DayOfWeek.FRIDAY to StringKey.DAY_VENUS
-        )
+    private val AUSPICIOUS_DAY_MAP = mapOf(
+        java.time.DayOfWeek.THURSDAY to StringKeyHoroscope.DAY_JUPITER,
+        java.time.DayOfWeek.FRIDAY to StringKeyHoroscope.DAY_VENUS
+    )
 
         private val DASHA_WEEKLY_ADVICE_KEYS = mapOf(
             Planet.JUPITER to StringKey.ADVICE_JUPITER,
