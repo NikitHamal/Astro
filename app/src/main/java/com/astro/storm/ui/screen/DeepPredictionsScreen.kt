@@ -26,6 +26,10 @@ import com.astro.storm.ui.viewmodel.DeepPredictionsUiState
 import com.astro.storm.ui.viewmodel.DeepPredictionsViewModel
 import java.time.format.DateTimeFormatter
 
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.theme.AppTheme
+
 /**
  * Deep Predictions Screen
  * 
@@ -43,15 +47,27 @@ fun DeepPredictionsScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(stringResource(StringKeyDeepPrediction.SECTION_PREDICTIONS), fontWeight = FontWeight.Bold)
+                    Text(
+                        stringResource(StringKeyDeepPrediction.SECTION_PREDICTIONS),
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.TextPrimary
+                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(StringKey.BTN_BACK))
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            stringResource(StringKey.BTN_BACK),
+                            tint = AppTheme.TextPrimary
+                        )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = AppTheme.ScreenBackground
+                )
             )
-        }
+        },
+        containerColor = AppTheme.ScreenBackground
     ) { padding ->
         DeepPredictionsBody(
             chart = chart,
@@ -75,22 +91,26 @@ fun DeepPredictionsBody(
     }
     
     val tabs = listOf(
-        stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS) to Icons.Default.Timeline,
-        stringResource(StringKeyAnalysis.ANALYSIS_TAB_TRANSITS) to Icons.Default.Public,
-        stringResource(StringKeyDeepPrediction.SECTION_YEARLY) to Icons.Default.CalendarMonth,
-        stringResource(StringKeyDeepPrediction.SECTION_REMEDIES) to Icons.Default.Healing
+        stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS),
+        stringResource(StringKeyAnalysis.ANALYSIS_TAB_TRANSITS),
+        stringResource(StringKeyDeepPrediction.SECTION_YEARLY),
+        stringResource(StringKeyDeepPrediction.SECTION_REMEDIES)
     )
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         // Tab row
-        SectionTabRow(
-            sections = tabs,
+        val tabItems = tabs.map { TabItem(title = it, accentColor = AppTheme.AccentPrimary) }
+        
+        ModernPillTabRow(
+            tabs = tabItems,
             selectedIndex = selectedTab,
-            onSelect = viewModel::selectTab,
-            modifier = Modifier.padding(vertical = 8.dp)
+            onTabSelected = viewModel::selectTab,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
+        
+        HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f))
         
         when (val state = uiState) {
             is DeepPredictionsUiState.Initial,
@@ -135,7 +155,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                        containerColor = AppTheme.CardBackground
                     )
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -147,14 +167,15 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                             Text(
                                 text = "${mahadasha.planet.displayName} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
                                 style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                color = AppTheme.TextPrimary
                             )
                         }
                         
                         Text(
                             text = "${mahadasha.startDate.format(dateFormatter)} - ${mahadasha.endDate.format(dateFormatter)}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = AppTheme.TextSecondary
                         )
                         
                         Spacer(modifier = Modifier.height(12.dp))
@@ -194,20 +215,21 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f)
+                        containerColor = AppTheme.CardBackground
                     )
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "${antardasha.planet.displayName} ${stringResource(StringKeyDeepPrediction.ANTARDASHA_TITLE)}",
                             style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = AppTheme.TextPrimary
                         )
                         
                         Text(
                             text = "${antardasha.startDate.format(dateFormatter)} - ${antardasha.endDate.format(dateFormatter)}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = AppTheme.TextSecondary
                         )
                         
                         Spacer(modifier = Modifier.height(8.dp))
@@ -268,7 +290,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
+                        containerColor = AppTheme.ErrorColor.copy(alpha = 0.1f)
                     )
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -281,7 +303,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                                 text = stringResource(StringKeyDeepPrediction.SADE_SATI_ACTIVE),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.error
+                                color = AppTheme.ErrorColor
                             )
                             StrengthBadge(
                                 strength = com.astro.storm.ephemeris.deepanalysis.StrengthLevel.AFFLICTED
@@ -314,7 +336,10 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
         
         items(transit.majorTransits) { majorTransit ->
             Card(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = AppTheme.CardBackground
+                )
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
@@ -351,7 +376,12 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
         }
         
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = AppTheme.CardBackground
+                )
+            ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "${stringResource(StringKey.PLANET_JUPITER)} in ${transit.jupiterTransit.currentTransitSign.displayName} (${stringResource(StringKeyAnalysis.HOUSE)} ${transit.jupiterTransit.transitHouse})",
@@ -383,7 +413,12 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
         }
         
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = AppTheme.CardBackground
+                )
+            ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "${stringResource(StringKey.PLANET_RAHU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.rahuTransitHouse} | ${stringResource(StringKey.PLANET_KETU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.ketuTransitHouse}",
@@ -419,7 +454,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                    containerColor = AppTheme.CardBackground
                 )
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -431,7 +466,8 @@ private fun YearlyTab(predictions: DeepPredictions) {
                         Text(
                             text = "${stringResource(StringKeyAnalysis.CHART_DATE)} ${yearly.year}",
                             style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = AppTheme.TextPrimary
                         )
                         StrengthBadge(strength = yearly.overallRating)
                     }
@@ -522,7 +558,12 @@ private fun YearlyTab(predictions: DeepPredictions) {
         }
         
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = AppTheme.CardBackground
+                )
+            ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     LocalizedParagraphText(paragraph = yearly.yearlyAdvice)
                 }
@@ -534,14 +575,15 @@ private fun YearlyTab(predictions: DeepPredictions) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    containerColor = AppTheme.CardBackground
                 )
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = stringResource(StringKeyDeepPrediction.PREDICTION_SUMMARY),
                         style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     LocalizedParagraphText(paragraph = predictions.overallPredictionSummary)
@@ -568,7 +610,12 @@ private fun RemediesTab(remedies: RemedialProfile) {
             }
             
             items(remedies.gemstoneRemedies) { gemstone ->
-                Card(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = AppTheme.CardBackground
+                    )
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "${gemstone.planet.displayName}: ${gemstone.primaryGemstone}",
@@ -611,7 +658,12 @@ private fun RemediesTab(remedies: RemedialProfile) {
             }
             
             items(remedies.mantraRemedies) { mantra ->
-                Card(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = AppTheme.CardBackground
+                    )
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "${mantra.planet.displayName} ${stringResource(StringKeyDeepPrediction.MANTRA_REMEDIES)}",
@@ -653,7 +705,12 @@ private fun RemediesTab(remedies: RemedialProfile) {
             }
             
             items(remedies.charitableRemedies) { charity ->
-                Card(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = AppTheme.CardBackground
+                    )
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)} ${charity.planet.displayName}",
@@ -687,7 +744,12 @@ private fun RemediesTab(remedies: RemedialProfile) {
             }
             
             items(remedies.fastingRemedies) { fast ->
-                Card(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = AppTheme.CardBackground
+                    )
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)} ${fast.planet.displayName}",
@@ -717,7 +779,12 @@ private fun RemediesTab(remedies: RemedialProfile) {
             }
             
             items(remedies.yogicRemedies) { yoga ->
-                Card(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = AppTheme.CardBackground
+                    )
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = yoga.practiceName,
@@ -743,14 +810,15 @@ private fun RemediesTab(remedies: RemedialProfile) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                    containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
                 )
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = stringResource(StringKeyDeepPrediction.OVERALL_ADVICE),
                         style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     LocalizedParagraphText(paragraph = remedies.overallRemedialAdvice)

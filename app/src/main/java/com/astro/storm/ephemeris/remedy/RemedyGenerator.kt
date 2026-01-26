@@ -78,7 +78,18 @@ object RemedyGenerator {
         val items = StringResources.get(StringKeyRemedy.valueOf("CHARITY_${pName}_ITEMS"), language)
         val recipients = StringResources.get(StringKeyRemedy.valueOf("CHARITY_${pName}_RECIPIENTS"), language)
         val special = StringResources.get(StringKeyRemedy.valueOf("CHARITY_${pName}_SPECIAL"), language)
-        val weekdayKey = StringKeyRemedy.valueOf("WEEKDAY_${charityInfo.day.uppercase().replace(" ", "_")}")
+        val dayString = charityInfo.day.uppercase().replace(" ", "_")
+        val weekdayKey = try {
+            StringKeyRemedy.valueOf("WEEKDAY_$dayString")
+        } catch (e: Exception) {
+            try {
+                // Handle cases like "TUESDAY_OR_SATURDAY" by taking the first day
+                val firstDay = dayString.split("_OR_").firstOrNull() ?: "SUNDAY"
+                StringKeyRemedy.valueOf("WEEKDAY_$firstDay")
+            } catch (e2: Exception) {
+                StringKeyRemedy.WEEKDAY_SUNDAY
+            }
+        }
         val timing = StringResources.get(StringKeyRemedy.CHARITY_TIMING, language, StringResources.get(weekdayKey, language), getLocalizedCharityTiming(charityInfo.timing, language))
         return Remedy(
             category = RemedyCategory.CHARITY, title = "${planet.getLocalizedName(language)}${StringResources.get(StringKeyRemedy.CHARITY_TITLE_SUFFIX, language)}",

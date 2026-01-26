@@ -32,6 +32,9 @@ import com.astro.storm.ui.viewmodel.DeepAnalysisUiState
 import com.astro.storm.ui.viewmodel.DeepAnalysisViewModel
 import com.astro.storm.ui.theme.AppTheme
 
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
+
 /**
  * Deep Native Analysis Screen
  * 
@@ -51,16 +54,25 @@ fun DeepNativeAnalysisScreen(
                 title = { 
                     Text(
                         stringResource(StringKeyNative.NATIVE_ANALYSIS_TITLE),
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.TextPrimary
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(StringKey.BTN_BACK))
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            stringResource(StringKey.BTN_BACK),
+                            tint = AppTheme.TextPrimary
+                        )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = AppTheme.ScreenBackground
+                )
             )
-        }
+        },
+        containerColor = AppTheme.ScreenBackground
     ) { padding ->
         DeepNativeAnalysisBody(
             chart = chart,
@@ -86,28 +98,33 @@ fun DeepNativeAnalysisBody(
     }
     
     val sections = listOf(
-        DeepAnalysisSection.OVERVIEW to (stringResource(StringKeyNative.LABEL_OVERVIEW) to Icons.Default.Dashboard),
-        DeepAnalysisSection.CHARACTER to (stringResource(StringKeyNative.SECTION_CHARACTER) to Icons.Default.Person),
-        DeepAnalysisSection.CAREER to (stringResource(StringKeyNative.SECTION_CAREER) to Icons.Default.Work),
-        DeepAnalysisSection.RELATIONSHIP to (stringResource(StringKeyNative.SECTION_MARRIAGE) to Icons.Default.Favorite),
-        DeepAnalysisSection.HEALTH to (stringResource(StringKeyNative.SECTION_HEALTH) to Icons.Default.HealthAndSafety),
-        DeepAnalysisSection.WEALTH to (stringResource(StringKeyNative.SECTION_WEALTH) to Icons.Default.AttachMoney),
-        DeepAnalysisSection.EDUCATION to (stringResource(StringKeyNative.SECTION_EDUCATION) to Icons.Default.School),
-        DeepAnalysisSection.SPIRITUAL to (stringResource(StringKeyNative.SECTION_SPIRITUAL) to Icons.Default.SelfImprovement)
+        DeepAnalysisSection.OVERVIEW to stringResource(StringKeyNative.LABEL_OVERVIEW),
+        DeepAnalysisSection.CHARACTER to stringResource(StringKeyNative.SECTION_CHARACTER),
+        DeepAnalysisSection.CAREER to stringResource(StringKeyNative.SECTION_CAREER),
+        DeepAnalysisSection.RELATIONSHIP to stringResource(StringKeyNative.SECTION_MARRIAGE),
+        DeepAnalysisSection.HEALTH to stringResource(StringKeyNative.SECTION_HEALTH),
+        DeepAnalysisSection.WEALTH to stringResource(StringKeyNative.SECTION_WEALTH),
+        DeepAnalysisSection.EDUCATION to stringResource(StringKeyNative.SECTION_EDUCATION),
+        DeepAnalysisSection.SPIRITUAL to stringResource(StringKeyNative.SECTION_SPIRITUAL)
     )
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         // Section tabs
-        SectionTabRow(
-            sections = sections.map { it.second },
-            selectedIndex = sections.indexOfFirst { it.first == selectedSection },
-            onSelect = { index ->
+        val tabItems = sections.map { TabItem(title = it.second, accentColor = AppTheme.AccentPrimary) }
+        val selectedIndex = sections.indexOfFirst { it.first == selectedSection }
+        
+        ModernPillTabRow(
+            tabs = tabItems,
+            selectedIndex = if (selectedIndex >= 0) selectedIndex else 0,
+            onTabSelected = { index ->
                 viewModel.selectSection(sections[index].first)
             },
-            modifier = Modifier.padding(vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
+        
+        HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f))
         
         // Content based on state
         when (val state = uiState) {
