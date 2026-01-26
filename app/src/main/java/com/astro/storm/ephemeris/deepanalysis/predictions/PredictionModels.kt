@@ -180,7 +180,7 @@ data class YogaActivationEvent(
 )
 
 data class CriticalPeriod(
-    val periodName: String,
+    val periodName: LocalizedParagraph,
     val startDate: LocalDate,
     val endDate: LocalDate,
     val areaAffected: LifeArea,
@@ -194,11 +194,11 @@ enum class CriticalPeriodNature {
 }
 
 data class OpportunityWindow(
-    val windowName: String,
+    val windowName: LocalizedParagraph,
     val startDate: LocalDate,
     val endDate: LocalDate,
     val affectedAreas: List<LifeArea>,
-    val opportunityType: String,
+    val opportunityType: LocalizedParagraph,
     val intensity: StrengthLevel,
     val advice: LocalizedParagraph
 )
@@ -214,8 +214,8 @@ data class RemedialProfile(
 
 data class GemstoneRemedy(
     val planet: Planet,
-    val primaryGemstone: String,
-    val alternativeGemstone: String,
+    val primaryGemstone: LocalizedParagraph,
+    val alternativeGemstone: LocalizedParagraph,
     val wearingGuidelines: LocalizedParagraph,
     val cautions: LocalizedParagraph
 )
@@ -230,20 +230,20 @@ data class MantraRemedy(
 
 data class CharitableRemedy(
     val planet: Planet,
-    val donationItems: String,
-    val bestDay: String,
+    val donationItems: LocalizedParagraph,
+    val bestDay: LocalizedParagraph,
     val guidelines: LocalizedParagraph
 )
 
 data class FastingRemedy(
     val planet: Planet,
-    val fastingDay: String,
+    val fastingDay: LocalizedParagraph,
     val fastingType: LocalizedParagraph,
     val guidelines: LocalizedParagraph
 )
 
 data class YogicRemedy(
-    val practiceName: String,
+    val practiceName: LocalizedParagraph,
     val targetPlanet: Planet,
     val guidelines: LocalizedParagraph,
     val benefits: LocalizedParagraph

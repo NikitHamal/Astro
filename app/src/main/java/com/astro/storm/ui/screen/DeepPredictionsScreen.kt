@@ -19,6 +19,9 @@ import com.astro.storm.core.common.StringKeyNative
 import com.astro.storm.core.common.StringKeyDeepPrediction
 import com.astro.storm.core.common.StringKeyDeepRelationship
 import com.astro.storm.data.localization.stringResource
+import com.astro.storm.data.localization.localizedName
+import com.astro.storm.data.localization.localized
+import com.astro.storm.data.localization.formatLocalized
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.deepanalysis.predictions.*
 import com.astro.storm.ui.components.deepanalysis.*
@@ -93,6 +96,7 @@ fun DeepPredictionsBody(
     val tabs = listOf(
         stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS),
         stringResource(StringKeyAnalysis.ANALYSIS_TAB_TRANSITS),
+        stringResource(StringKeyDeepPrediction.SECTION_CRITICAL),
         stringResource(StringKeyDeepPrediction.SECTION_YEARLY),
         stringResource(StringKeyDeepPrediction.SECTION_REMEDIES)
     )
@@ -127,8 +131,9 @@ fun DeepPredictionsBody(
                 when (selectedTab) {
                     0 -> DashaTab(state.predictions.dashaAnalysis)
                     1 -> TransitTab(state.predictions.transitAnalysis)
-                    2 -> YearlyTab(state.predictions)
-                    3 -> RemediesTab(state.predictions.remedialMeasures)
+                    2 -> PredictionsOverviewTab(state.predictions)
+                    3 -> YearlyTab(state.predictions)
+                    4 -> RemediesTab(state.predictions.remedialMeasures)
                 }
             }
         }
@@ -272,6 +277,110 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                     description = upcoming.briefPreview,
                     strength = com.astro.storm.ephemeris.deepanalysis.StrengthLevel.MODERATE
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PredictionsOverviewTab(predictions: DeepPredictions) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        // Critical Periods
+        if (predictions.criticalPeriods.isNotEmpty()) {
+            item {
+                DeepSectionHeader(
+                    title = stringResource(StringKeyDeepPrediction.SECTION_CRITICAL),
+                    icon = Icons.Default.Warning
+                )
+            }
+            
+            items(predictions.criticalPeriods) { period ->
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = AppTheme.ErrorColor.copy(alpha = 0.05f)
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            LocalizedParagraphText(
+                                paragraph = period.periodName,
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    color = AppTheme.ErrorColor
+                                )
+                            )
+                            StrengthBadge(strength = period.intensity)
+                        }
+                        
+                        Text(
+                            text = "${period.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)} - ${period.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = AppTheme.TextMuted
+                        )
+                        
+                        Spacer(modifier = Modifier.height(8.dp))
+                        LocalizedParagraphText(paragraph = period.advice)
+                    }
+                }
+            }
+        }
+        
+        // Opportunity Windows
+        if (predictions.opportunityWindows.isNotEmpty()) {
+            item {
+                DeepSectionHeader(
+                    title = stringResource(StringKeyDeepPrediction.SECTION_OPPORTUNITIES),
+                    icon = Icons.Default.Lightbulb
+                )
+            }
+            
+            items(predictions.opportunityWindows) { window ->
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = AppTheme.AccentPrimary.copy(alpha = 0.05f)
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            LocalizedParagraphText(
+                                paragraph = window.windowName,
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    color = AppTheme.AccentPrimary
+                                )
+                            )
+                            StrengthBadge(strength = window.intensity)
+                        }
+                        
+                        LocalizedParagraphText(
+                            paragraph = window.opportunityType,
+                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium)
+                        )
+                        
+                        Text(
+                            text = "${window.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)} - ${window.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = AppTheme.TextMuted
+                        )
+                        
+                        Spacer(modifier = Modifier.height(8.dp))
+                        LocalizedParagraphText(paragraph = window.advice)
+                    }
+                }
             }
         }
     }
@@ -634,17 +743,22 @@ private fun RemediesTab(remedies: RemedialProfile) {
                     )
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "${gemstone.planet.localizedName()}: ${gemstone.primaryGemstone}",
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold
+                        LocalizedParagraphText(
+                            paragraph = gemstone.primaryGemstone,
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
                         )
                         
-                        Text(
-                            text = "${stringResource(StringKeyDeepPrediction.ALTERNATIVE_GEMSTONE)}: ${gemstone.alternativeGemstone}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        Row {
+                            Text(
+                                text = "${stringResource(StringKeyDeepPrediction.ALTERNATIVE_GEMSTONE)}: ",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            LocalizedParagraphText(
+                                paragraph = gemstone.alternativeGemstone,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
                         
                         Spacer(modifier = Modifier.height(8.dp))
                         LocalizedParagraphText(paragraph = gemstone.wearingGuidelines)
@@ -683,7 +797,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${mantra.planet.localizedName()} ${stringResource(StringKeyDeepPrediction.MANTRA_REMEDIES)}",
+                            text = "${mantra.planet.localizedName()} ${stringResource(StringKeyDeepPrediction.MANTRA_REMEDIES)}",        
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -735,15 +849,27 @@ private fun RemediesTab(remedies: RemedialProfile) {
                             fontWeight = FontWeight.Bold
                         )
                         
-                        Text(
-                            text = "${stringResource(StringKeyDeepPrediction.DONATION_ITEMS)}: ${charity.donationItems}",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        Row {
+                            Text(
+                                text = "${stringResource(StringKeyDeepPrediction.DONATION_ITEMS)}: ",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            LocalizedParagraphText(
+                                paragraph = charity.donationItems,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                         
-                        Text(
-                            text = "${stringResource(StringKeyDeepPrediction.BEST_DAY)}: ${charity.bestDay}",
-                            style = MaterialTheme.typography.bodySmall
-                        )
+                        Row {
+                            Text(
+                                text = "${stringResource(StringKeyDeepPrediction.BEST_DAY)}: ",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                            LocalizedParagraphText(
+                                paragraph = charity.bestDay,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
                         
                         LocalizedParagraphText(paragraph = charity.guidelines)
                     }
@@ -774,10 +900,16 @@ private fun RemediesTab(remedies: RemedialProfile) {
                             fontWeight = FontWeight.Bold
                         )
                         
-                        Text(
-                            text = "${stringResource(StringKeyDeepPrediction.FASTING_DAY)}: ${fast.fastingDay}",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        Row {
+                            Text(
+                                text = "${stringResource(StringKeyDeepPrediction.FASTING_DAY)}: ",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            LocalizedParagraphText(
+                                paragraph = fast.fastingDay,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                         
                         LocalizedParagraphText(paragraph = fast.fastingType)
                         LocalizedParagraphText(paragraph = fast.guidelines)
@@ -803,14 +935,13 @@ private fun RemediesTab(remedies: RemedialProfile) {
                     )
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = yoga.practiceName,
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold
+                        LocalizedParagraphText(
+                            paragraph = yoga.practiceName,
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
                         )
                         
                         Text(
-                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)}: ${yoga.targetPlanet.localizedName()}",
+                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)}: ${yoga.targetPlanet.localizedName()}",     
                             style = MaterialTheme.typography.bodySmall
                         )
                         

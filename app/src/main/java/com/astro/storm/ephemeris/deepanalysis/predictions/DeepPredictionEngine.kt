@@ -420,7 +420,7 @@ object DeepPredictionEngine {
         val saturnSign = context.getPlanetPosition(Planet.SATURN)?.sign ?: ZodiacSign.CAPRICORN
         if (isSadeSatiActive(moonSign, saturnSign)) {
             periods.add(CriticalPeriod(
-                periodName = if (com.astro.storm.data.localization.isNepali()) "साढे साती सक्रिय" else "Sade Sati Active",
+                periodName = LocalizedParagraph("Sade Sati Active", "साढे साती सक्रिय"),
                 startDate = LocalDate.now().minusYears(1),
                 endDate = LocalDate.now().plusYears(2),
                 areaAffected = LifeArea.GENERAL,
@@ -443,11 +443,11 @@ object DeepPredictionEngine {
         )
         if (jupiterHouse in listOf(1, 5, 9)) {
             windows.add(OpportunityWindow(
-                windowName = if (com.astro.storm.data.localization.isNepali()) "त्रिकोणमा बृहस्पति" else "Jupiter in Trine",
+                windowName = LocalizedParagraph("Jupiter in Trine", "त्रिकोणमा बृहस्पति"),
                 startDate = LocalDate.now(),
                 endDate = LocalDate.now().plusMonths(6),
                 affectedAreas = listOf(LifeArea.GENERAL, LifeArea.EDUCATION, LifeArea.SPIRITUAL),
-                opportunityType = if (com.astro.storm.data.localization.isNepali()) "वृद्धि र विस्तार" else "Growth and expansion",
+                opportunityType = LocalizedParagraph("Growth and expansion", "वृद्धि र विस्तार"),
                 intensity = StrengthLevel.STRONG,
                 advice = LocalizedParagraph("Maximize learning and spiritual growth during Jupiter's favorable transit.",
                     "बृहस्पतिको अनुकूल गोचरमा सिकाइ र आध्यात्मिक विकास अधिकतम गर्नुहोस्।")
@@ -468,10 +468,12 @@ object DeepPredictionEngine {
                 planet = planet,
                 primaryGemstone = getGemstone(planet),
                 alternativeGemstone = getAlternativeGemstone(planet),
-                wearingGuidelines = LocalizedParagraph("Wear on ${getGemstoneDay(planet)} after proper energization.",
-                    "उचित ऊर्जीकरण पछि ${getGemstoneDay(planet)} मा लगाउनुहोस्।"),
+                wearingGuidelines = LocalizedParagraph(
+                    "Wear on ${getGemstoneDay(planet).en} after proper energization.",
+                    "उचित ऊर्जीकरण पछि ${getGemstoneDay(planet).ne} मा लगाउनुहोस्।"
+                ),
                 cautions = if (planet == Planet.SATURN || planet == Planet.MARS) 
-                    LocalizedParagraph("Consult astrologer before wearing.", "लगाउनु अघि ज्योतिषीसँग परामर्श गर्नुहोस्।") 
+                    LocalizedParagraph("Consult astrologer before wearing.", "लगाउनु अभि ज्योतिषीसँग परामर्श गर्नुहोस्।") 
                     else LocalizedParagraph("", "")
             )
         }
@@ -482,8 +484,10 @@ object DeepPredictionEngine {
                 beejaMantra = getBeejaMantra(planet),
                 fullMantra = getFullMantra(planet),
                 chantCount = getMantraCount(planet),
-                bestTime = LocalizedParagraph("Best chanted during ${getMantraTime(planet)}.",
-                    "${getMantraTime(planet)}मा जप गर्नु उत्तम।")
+                bestTime = LocalizedParagraph(
+                    "Best chanted during ${getMantraTime(planet).en}.",
+                    "${getMantraTime(planet).ne}मा जप गर्नु उत्तम।"
+                )
             )
         }
         
@@ -494,47 +498,47 @@ object DeepPredictionEngine {
             fastingRemedies = getFastingRemedies(weakPlanets),
             yogicRemedies = getYogicRemedies(context),
             overallRemedialAdvice = LocalizedParagraph(
-                "Focus on strengthening ${weakPlanets.firstOrNull()?.displayName ?: "weak planets"} through consistent practice.",
-                "${weakPlanets.firstOrNull()?.displayName ?: "कमजोर ग्रहहरू"}लाई निरन्तर अभ्यास मार्फत बलियो बनाउनमा ध्यान दिनुहोस्।"
+                "Focus on strengthening ${weakPlanets.firstOrNull()?.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH) ?: "weak planets"} through consistent practice.",
+                "${weakPlanets.firstOrNull()?.getLocalizedName(com.astro.storm.core.common.Language.NEPALI) ?: "कमजोर ग्रहहरू"}लाई निरन्तर अभ्यास मार्फत बलियो बनाउनमा ध्यान दिनुहोस्।"
             )
         )
     }
     
-    private fun getGemstone(planet: Planet): String = when (planet) {
-        Planet.SUN -> if (com.astro.storm.data.localization.isNepali()) "माणिक (Ruby)" else "Ruby (Manik)"
-        Planet.MOON -> if (com.astro.storm.data.localization.isNepali()) "मोती (Pearl)" else "Pearl (Moti)"
-        Planet.MARS -> if (com.astro.storm.data.localization.isNepali()) "मुगा (Red Coral)" else "Red Coral (Moonga)"
-        Planet.MERCURY -> if (com.astro.storm.data.localization.isNepali()) "पन्ना (Emerald)" else "Emerald (Panna)"
-        Planet.JUPITER -> if (com.astro.storm.data.localization.isNepali()) "पुखराज (Yellow Sapphire)" else "Yellow Sapphire (Pukhraj)"
-        Planet.VENUS -> if (com.astro.storm.data.localization.isNepali()) "हीरा (Diamond)" else "Diamond (Heera)"
-        Planet.SATURN -> if (com.astro.storm.data.localization.isNepali()) "नीलम (Blue Sapphire)" else "Blue Sapphire (Neelam)"
-        Planet.RAHU, Planet.TRUE_NODE -> if (com.astro.storm.data.localization.isNepali()) "गोमेद (Hessonite)" else "Hessonite (Gomed)"
-        Planet.KETU -> if (com.astro.storm.data.localization.isNepali()) "लहसुनिया (Cat's Eye)" else "Cat's Eye (Lehsunia)"
-        else -> if (com.astro.storm.data.localization.isNepali()) "ज्योतिषीसँग परामर्श गर्नुहोस्" else "Consult astrologer"
+    private fun getGemstone(planet: Planet): LocalizedParagraph = when (planet) {
+        Planet.SUN -> LocalizedParagraph("Ruby (Manik)", "माणिक (Ruby)")
+        Planet.MOON -> LocalizedParagraph("Pearl (Moti)", "मोती (Pearl)")
+        Planet.MARS -> LocalizedParagraph("Red Coral (Moonga)", "मुगा (Red Coral)")
+        Planet.MERCURY -> LocalizedParagraph("Emerald (Panna)", "पन्ना (Emerald)")
+        Planet.JUPITER -> LocalizedParagraph("Yellow Sapphire (Pukhraj)", "पुखराज (Yellow Sapphire)")
+        Planet.VENUS -> LocalizedParagraph("Diamond (Heera)", "हीरा (Diamond)")
+        Planet.SATURN -> LocalizedParagraph("Blue Sapphire (Neelam)", "नीलम (Blue Sapphire)")
+        Planet.RAHU, Planet.TRUE_NODE -> LocalizedParagraph("Hessonite (Gomed)", "गोमेद (Hessonite)")
+        Planet.KETU -> LocalizedParagraph("Cat's Eye (Lehsunia)", "लहसुनिया (Cat's Eye)")
+        else -> LocalizedParagraph("Consult astrologer", "ज्योतिषीसँग परामर्श गर्नुहोस्")
     }
     
-    private fun getAlternativeGemstone(planet: Planet): String = when (planet) {
-        Planet.SUN -> if (com.astro.storm.data.localization.isNepali()) "गार्नेट" else "Garnet"
-        Planet.MOON -> if (com.astro.storm.data.localization.isNepali()) "मुनस्टोन" else "Moonstone"
-        Planet.MARS -> if (com.astro.storm.data.localization.isNepali()) "कार्नेलियन" else "Carnelian"
-        Planet.MERCURY -> if (com.astro.storm.data.localization.isNepali()) "पेरिडोट" else "Peridot"
-        Planet.JUPITER -> if (com.astro.storm.data.localization.isNepali()) "सिट्रिन" else "Citrine"
-        Planet.VENUS -> if (com.astro.storm.data.localization.isNepali()) "सेतो नीलम" else "White Sapphire"
-        Planet.SATURN -> if (com.astro.storm.data.localization.isNepali()) "एमेथिस्ट" else "Amethyst"
-        else -> ""
+    private fun getAlternativeGemstone(planet: Planet): LocalizedParagraph = when (planet) {
+        Planet.SUN -> LocalizedParagraph("Garnet", "गार्नेट")
+        Planet.MOON -> LocalizedParagraph("Moonstone", "मुनस्टोन")
+        Planet.MARS -> LocalizedParagraph("Carnelian", "कार्नेलियन")
+        Planet.MERCURY -> LocalizedParagraph("Peridot", "पेरिडोट")
+        Planet.JUPITER -> LocalizedParagraph("Citrine", "सिट्रिन")
+        Planet.VENUS -> LocalizedParagraph("White Sapphire", "सेतो नीलम")
+        Planet.SATURN -> LocalizedParagraph("Amethyst", "एमेथिस्ट")
+        else -> LocalizedParagraph("", "")
     }
     
-    private fun getGemstoneDay(planet: Planet): String = when (planet) {
-        Planet.SUN -> if (com.astro.storm.data.localization.isNepali()) "आइतबार" else "Sunday"
-        Planet.MOON -> if (com.astro.storm.data.localization.isNepali()) "सोमबार" else "Monday"
-        Planet.MARS -> if (com.astro.storm.data.localization.isNepali()) "मंगलबार" else "Tuesday"
-        Planet.MERCURY -> if (com.astro.storm.data.localization.isNepali()) "बुधबार" else "Wednesday"
-        Planet.JUPITER -> if (com.astro.storm.data.localization.isNepali()) "बिहीबार" else "Thursday"
-        Planet.VENUS -> if (com.astro.storm.data.localization.isNepali()) "शुक्रबार" else "Friday"
-        Planet.SATURN -> if (com.astro.storm.data.localization.isNepali()) "शनिबार" else "Saturday"
-        Planet.RAHU, Planet.TRUE_NODE -> if (com.astro.storm.data.localization.isNepali()) "शनिबार" else "Saturday"
-        Planet.KETU -> if (com.astro.storm.data.localization.isNepali()) "मंगलबार" else "Tuesday"
-        else -> if (com.astro.storm.data.localization.isNepali()) "शुभ दिन" else "auspicious day"
+    private fun getGemstoneDay(planet: Planet): LocalizedParagraph = when (planet) {
+        Planet.SUN -> LocalizedParagraph("Sunday", "आइतबार")
+        Planet.MOON -> LocalizedParagraph("Monday", "सोमबार")
+        Planet.MARS -> LocalizedParagraph("Tuesday", "मंगलबार")
+        Planet.MERCURY -> LocalizedParagraph("Wednesday", "बुधबार")
+        Planet.JUPITER -> LocalizedParagraph("Thursday", "बिहीबार")
+        Planet.VENUS -> LocalizedParagraph("Friday", "शुक्रबार")
+        Planet.SATURN -> LocalizedParagraph("Saturday", "शनिबार")
+        Planet.RAHU, Planet.TRUE_NODE -> LocalizedParagraph("Saturday", "शनिबार")
+        Planet.KETU -> LocalizedParagraph("Tuesday", "मंगलबार")
+        else -> LocalizedParagraph("auspicious day", "शुभ दिन")
     }
     
     private fun getBeejaMantra(planet: Planet): String = when (planet) {
@@ -576,12 +580,12 @@ object DeepPredictionEngine {
         else -> 108
     }
     
-    private fun getMantraTime(planet: Planet): String = when (planet) {
-        Planet.SUN -> if (com.astro.storm.data.localization.isNepali()) "सूर्योदय" else "sunrise"
-        Planet.MOON -> if (com.astro.storm.data.localization.isNepali()) "साँझ" else "evening"
-        Planet.JUPITER -> if (com.astro.storm.data.localization.isNepali()) "बिहान" else "morning"
-        Planet.SATURN, Planet.RAHU, Planet.KETU -> if (com.astro.storm.data.localization.isNepali()) "रात" else "night"
-        else -> if (com.astro.storm.data.localization.isNepali()) "बिहान वा साँझ" else "dawn or dusk"
+    private fun getMantraTime(planet: Planet): LocalizedParagraph = when (planet) {
+        Planet.SUN -> LocalizedParagraph("sunrise", "सूर्योदय")
+        Planet.MOON -> LocalizedParagraph("evening", "साँझ")
+        Planet.JUPITER -> LocalizedParagraph("morning", "बिहान")
+        Planet.SATURN, Planet.RAHU, Planet.KETU -> LocalizedParagraph("night", "रात")
+        else -> LocalizedParagraph("dawn or dusk", "बिहान वा साँझ")
     }
     
     private fun getCharitableRemedies(planets: List<Planet>): List<CharitableRemedy> {
@@ -590,34 +594,39 @@ object DeepPredictionEngine {
                 planet = planet,
                 donationItems = getDonationItems(planet),
                 bestDay = getGemstoneDay(planet),
-                guidelines = LocalizedParagraph("Donate with devotion on ${getGemstoneDay(planet)}.",
-                    "${getGemstoneDay(planet)}मा भक्तिको साथ दान गर्नुहोस्।")
+                guidelines = LocalizedParagraph(
+                    "Donate with devotion on ${getGemstoneDay(planet).en}.",
+                    "${getGemstoneDay(planet).ne}मा भक्तिको साथ दान गर्नुहोस्।"
+                )
             )
         }
     }
     
-    private fun getDonationItems(planet: Planet): String = when (planet) {
-        Planet.SUN -> if (com.astro.storm.data.localization.isNepali()) "गहुँ, सख्खर, तामा" else "Wheat, jaggery, copper"
-        Planet.MOON -> if (com.astro.storm.data.localization.isNepali()) "चामल, दूध, सेतो कपडा" else "Rice, milk, white cloth"
-        Planet.MARS -> if (com.astro.storm.data.localization.isNepali()) "रातो दाल, रातो कपडा" else "Red lentils, red cloth"
-        Planet.MERCURY -> if (com.astro.storm.data.localization.isNepali()) "हरियो सागपात, पुस्तकहरू" else "Green vegetables, books"
-        Planet.JUPITER -> if (com.astro.storm.data.localization.isNepali()) "पहेंलो कपडा, बेसार, केरा" else "Yellow cloth, turmeric, bananas"
-        Planet.VENUS -> if (com.astro.storm.data.localization.isNepali()) "सेतो वस्तुहरू, अत्तर, मिठाई" else "White items, perfume, sweets"
-        Planet.SATURN -> if (com.astro.storm.data.localization.isNepali()) "कालो तिल, फलाम, तोरीको तेल" else "Black sesame, iron, mustard oil"
-        Planet.RAHU, Planet.TRUE_NODE -> if (com.astro.storm.data.localization.isNepali()) "कम्बल, सिसा, कालो मास" else "Blankets, lead, black pulses"
-        Planet.KETU -> if (com.astro.storm.data.localization.isNepali()) "सप्तधान्य, बहुरंगी कपडा" else "Seven types of grains, multi-colored cloth"
-        else -> if (com.astro.storm.data.localization.isNepali()) "असहायलाई खाना" else "Food to needy"
+    private fun getDonationItems(planet: Planet): LocalizedParagraph = when (planet) {
+        Planet.SUN -> LocalizedParagraph("Wheat, jaggery, copper", "गहुँ, सख्खर, तामा")
+        Planet.MOON -> LocalizedParagraph("Rice, milk, white cloth", "चामल, दूध, सेतो कपडा")
+        Planet.MARS -> LocalizedParagraph("Red lentils, red cloth", "रातो दाल, रातो कपडा")
+        Planet.MERCURY -> LocalizedParagraph("Green vegetables, books", "हरियो सागपात, पुस्तकहरू")
+        Planet.JUPITER -> LocalizedParagraph("Yellow cloth, turmeric, bananas", "पहेंलो कपडा, बेसार, केरा")
+        Planet.VENUS -> LocalizedParagraph("White items, perfume, sweets", "सेतो वस्तुहरू, अत्तर, मिठाई")
+        Planet.SATURN -> LocalizedParagraph("Black sesame, iron, mustard oil", "कालो तिल, फलाम, तोरीको तेल")
+        Planet.RAHU, Planet.TRUE_NODE -> LocalizedParagraph("Blankets, lead, black pulses", "कम्बल, सिसा, कालो मास")
+        Planet.KETU -> LocalizedParagraph("Seven types of grains, multi-colored cloth", "सप्तधान्य, बहुरंगी कपडा")
+        else -> LocalizedParagraph("Food to needy", "असहायलाई खाना")
     }
     
     private fun getFastingRemedies(planets: List<Planet>): List<FastingRemedy> {
         return planets.take(1).map { planet ->
+            val donationItem = getDonationItems(planet)
             FastingRemedy(
                 planet = planet,
                 fastingDay = getGemstoneDay(planet),
                 fastingType = LocalizedParagraph("Water or milk fast until sunset.",
                     "सूर्यास्त सम्म पानी वा दूध उपवास।"),
-                guidelines = LocalizedParagraph("Observe fast with devotion and break with ${getDonationItems(planet).split(",").first().trim()}.",
-                    "भक्तिको साथ उपवास गर्नुहोस् र ${getDonationItems(planet).split(",").first().trim()}को साथ व्रत खोल्नुहोस्।")
+                guidelines = LocalizedParagraph(
+                    "Observe fast with devotion and break with ${donationItem.en.split(",").first().trim()}.",
+                    "भक्तिको साथ उपवास गर्नुहोस् र ${donationItem.ne.split(",").first().trim()}को साथ व्रत खोल्नुहोस्।"
+                )
             )
         }
     }
@@ -627,10 +636,10 @@ object DeepPredictionEngine {
         return listOf(
             YogicRemedy(
                 practiceName = when (dominantElement) {
-                    Element.FIRE -> if (com.astro.storm.data.localization.isNepali()) "सूर्य नमस्कार" else "Surya Namaskar"
-                    Element.EARTH -> if (com.astro.storm.data.localization.isNepali()) "ग्राउन्डिङ आसनहरू" else "Grounding Asanas"
-                    Element.AIR -> if (com.astro.storm.data.localization.isNepali()) "प्राणायाम" else "Pranayama"
-                    Element.WATER -> if (com.astro.storm.data.localization.isNepali()) "चन्द्र नमस्कार" else "Moon Salutation"
+                    Element.FIRE -> LocalizedParagraph("Surya Namaskar", "सूर्य नमस्कार")
+                    Element.EARTH -> LocalizedParagraph("Grounding Asanas", "ग्राउन्डिङ आसनहरू")
+                    Element.AIR -> LocalizedParagraph("Pranayama", "प्राणायाम")
+                    Element.WATER -> LocalizedParagraph("Moon Salutation", "चन्द्र नमस्कार")
                 },
                 targetPlanet = when (dominantElement) {
                     Element.FIRE -> Planet.SUN

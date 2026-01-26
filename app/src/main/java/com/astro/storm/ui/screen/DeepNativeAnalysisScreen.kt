@@ -24,6 +24,8 @@ import com.astro.storm.core.common.StringKeyDeepWealth
 import com.astro.storm.core.common.StringKeyDeepSpiritual
 import com.astro.storm.core.common.StringKeyDeepEducation
 import com.astro.storm.data.localization.stringResource
+import com.astro.storm.data.localization.localizedName
+import com.astro.storm.data.localization.localized
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.deepanalysis.*
 import com.astro.storm.ui.components.deepanalysis.*
