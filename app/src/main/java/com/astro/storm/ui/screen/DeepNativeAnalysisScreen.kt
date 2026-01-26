@@ -353,7 +353,7 @@ private fun CareerSection(
     if (career.suitableProfessions.isNotEmpty()) {
         DeepSectionHeader(title = stringResource(StringKeyDeepCareer.SUITABLE_PROFESSIONS), icon = Icons.Default.BusinessCenter)
         Column {
-            career.suitableProfessions.forEach { profession ->
+            for (profession in career.suitableProfessions) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -508,7 +508,7 @@ private fun HealthSection(
             LocalizedParagraphText(paragraph = health.constitutionAnalysis.constitutionDescription)
             Spacer(modifier = Modifier.height(8.dp))
             Text(stringResource(StringKeyDeepHealth.DIETARY_RECS), fontWeight = FontWeight.Medium)
-            health.dietaryRecommendations.forEach { item ->
+            for (item in health.dietaryRecommendations) {
                  Row(
                      modifier = Modifier.padding(vertical = 4.dp),
                      verticalAlignment = Alignment.CenterVertically
@@ -583,7 +583,7 @@ private fun WealthSection(
     if (wealth.dhanaYogaAnalysis.presentYogas.isNotEmpty()) {
         DeepSectionHeader(title = stringResource(StringKeyDeepWealth.DHANA_YOGA_TITLE), icon = Icons.Default.Star)
         Column {
-            wealth.dhanaYogaAnalysis.presentYogas.forEach { yoga ->
+            for (yoga in wealth.dhanaYogaAnalysis.presentYogas) {
                 TimelinePeriodCard(
                     title = yoga.name,
                     dateRange = stringResource(StringKeyDeepWealth.YOGA_ACTIVATION),
@@ -644,7 +644,7 @@ private fun EducationSection(
     if (education.suitableSubjects.isNotEmpty()) {
         DeepSectionHeader(title = stringResource(StringKeyDeepEducation.SUBJECT_AFFINITY_TITLE), icon = Icons.Default.MenuBook)
         Column {
-            education.suitableSubjects.forEach { subject ->
+            for (subject in education.suitableSubjects) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -721,7 +721,7 @@ private fun SpiritualSection(
     if (spiritual.karmicPatterns.isNotEmpty()) {
         DeepSectionHeader(title = stringResource(StringKeyDeepSpiritual.KARMIC_TITLE), icon = Icons.Default.Loop)
         Column {
-            spiritual.karmicPatterns.forEach { pattern ->
+            for (pattern in spiritual.karmicPatterns) {
                 val language = com.astro.storm.data.localization.LocalLanguage.current
                 val patternName = if (language == com.astro.storm.core.common.Language.NEPALI) {
                     // This pattern name should ideally be localized in the model

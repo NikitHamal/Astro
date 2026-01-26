@@ -244,7 +244,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                         if (antardasha.activatedYogas.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(stringResource(StringKeyDeepPrediction.ACTIVATED_YOGAS), fontWeight = FontWeight.Medium)
-                            antardasha.activatedYogas.forEach { yoga ->
+                            for (yoga in antardasha.activatedYogas) {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -388,6 +388,8 @@ private fun PredictionsOverviewTab(predictions: DeepPredictions) {
 
 @Composable
 private fun TransitTab(transit: TransitDeepAnalysis) {
+    val language = com.astro.storm.data.localization.LocalLanguage.current
+    
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -513,15 +515,16 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                         Text("${stringResource(StringKeyDeepPrediction.JUPITER_FAVORABLE_AREAS)}: ", fontWeight = FontWeight.Medium)
                         Text(
                             text = transit.jupiterTransit.favorableForAreas.joinToString(", ") { 
-                                when(it) {
-                                    LifeArea.GENERAL -> stringResource(StringKeyDeepPrediction.AREA_GENERAL)
-                                    LifeArea.CAREER -> stringResource(StringKeyDeepPrediction.AREA_CAREER)
-                                    LifeArea.RELATIONSHIP -> stringResource(StringKeyDeepPrediction.AREA_RELATIONSHIP)
-                                    LifeArea.HEALTH -> stringResource(StringKeyDeepPrediction.AREA_HEALTH)
-                                    LifeArea.WEALTH -> stringResource(StringKeyDeepPrediction.AREA_WEALTH)
-                                    LifeArea.EDUCATION -> stringResource(StringKeyDeepPrediction.AREA_EDUCATION)
-                                    LifeArea.SPIRITUAL -> stringResource(StringKeyDeepPrediction.AREA_SPIRITUAL)
+                                val key = when(it) {
+                                    LifeArea.GENERAL -> StringKeyDeepPrediction.AREA_GENERAL
+                                    LifeArea.CAREER -> StringKeyDeepPrediction.AREA_CAREER
+                                    LifeArea.RELATIONSHIP -> StringKeyDeepPrediction.AREA_RELATIONSHIP
+                                    LifeArea.HEALTH -> StringKeyDeepPrediction.AREA_HEALTH
+                                    LifeArea.WEALTH -> StringKeyDeepPrediction.AREA_WEALTH
+                                    LifeArea.EDUCATION -> StringKeyDeepPrediction.AREA_EDUCATION
+                                    LifeArea.SPIRITUAL -> StringKeyDeepPrediction.AREA_SPIRITUAL
                                 }
+                                com.astro.storm.core.common.StringResources.get(key, language)
                             },
                             style = MaterialTheme.typography.bodySmall
                         )
