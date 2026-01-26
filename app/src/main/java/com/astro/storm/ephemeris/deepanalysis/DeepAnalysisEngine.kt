@@ -237,13 +237,13 @@ internal object SynthesisGenerator {
         val atmakaraka = character.atmakarakaAnalysis.planet
         
         return LocalizedParagraph(
-            en = "Your life purpose centers around ${atmakaraka.displayName}'s energy, " +
-                "working through ${ascSign.displayName} rising nature. " +
+            en = "Your life purpose centers around ${atmakaraka.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)}'s energy, " +
+                "working through ${ascSign.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)} rising nature. " +
                 "Your soul seeks ${character.atmakarakaAnalysis.soulDesire.en}, " +
                 "with dharmic expression through ${spiritual.ninthHouseDharma.dharmaPath.en.lowercase()}. " +
                 "Career fulfillment comes through ${career.tenthLordAnalysis.effectOnHouseMatters.en.lowercase()}.",
-            ne = "तपाईंको जीवनको उद्देश्य ${atmakaraka.displayName}को ऊर्जामा केन्द्रित छ, " +
-                "${ascSign.displayName} उदय स्वभाव मार्फत काम गर्दै। " +
+            ne = "तपाईंको जीवनको उद्देश्य ${atmakaraka.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)}को ऊर्जामा केन्द्रित छ, " +
+                "${ascSign.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)} उदय स्वभाव मार्फत काम गर्दै। " +
                 "तपाईंको आत्माले ${character.atmakarakaAnalysis.soulDesire.ne} खोज्छ, " +
                 "${spiritual.ninthHouseDharma.dharmaPath.ne} मार्फत धार्मिक अभिव्यक्तिको साथ। " +
                 "${career.tenthLordAnalysis.effectOnHouseMatters.ne} मार्फत क्यारियर पूर्ति आउँछ।"
@@ -300,9 +300,11 @@ internal object SynthesisGenerator {
         
         // Add other karmic patterns
         spiritual.karmicPatterns.take(2).forEach { pattern ->
+            val patternNameEn = pattern.patternName
+            // patternNameNe would be same for now as it's from the analyzer
             indicators.add(LocalizedParagraph(
-                en = "${pattern.patternName}: ${pattern.lessonToLearn.en}",
-                ne = "${pattern.patternName}: ${pattern.lessonToLearn.ne}"
+                en = "$patternNameEn: ${pattern.lessonToLearn.en}",
+                ne = "$patternNameEn: ${pattern.lessonToLearn.ne}"
             ))
         }
         
@@ -369,7 +371,7 @@ internal object SynthesisGenerator {
             score >= 60 -> "strong $context"
             score >= 40 -> "moderate $context"
             score >= 20 -> "developing $context"
-            else -> "growth-oriented $context"
+            else -> "potential for $context"
         }
     }
     
@@ -379,7 +381,7 @@ internal object SynthesisGenerator {
             score >= 60 -> "बलियो $context"
             score >= 40 -> "मध्यम $context"
             score >= 20 -> "विकासशील $context"
-            else -> "विकास-उन्मुख $context"
+            else -> "$context को सम्भावना"
         }
     }
 }

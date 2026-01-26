@@ -251,7 +251,7 @@ private fun CharacterSection(
     DeepSectionHeader(title = stringResource(StringKeyDeepCharacter.SECTION_ASCENDANT_ANALYSIS), icon = Icons.Default.Person)
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyAnalysis.ASCENDANT)}: ${character.ascendantAnalysis.sign.displayName}",
+        title = "${stringResource(StringKeyAnalysis.ASCENDANT)}: ${character.ascendantAnalysis.sign.localizedName()}",
         subtitle = stringResource(StringKeyDeepCharacter.FIRST_IMPRESSION_TITLE),
         strength = character.ascendantAnalysis.overallAscendantStrength,
         isExpanded = "char_ascendant" in expandedCards,
@@ -267,7 +267,7 @@ private fun CharacterSection(
     }
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyAnalysis.EXPORT_MOON_SIGN)}: ${character.moonAnalysis.moonSign.displayName}",
+        title = "${stringResource(StringKeyAnalysis.EXPORT_MOON_SIGN)}: ${character.moonAnalysis.moonSign.localizedName()}",
         subtitle = stringResource(StringKeyDeepCharacter.SECTION_EMOTIONAL_PROFILE),
         strength = character.moonAnalysis.overallEmotionalStrength,
         isExpanded = "char_moon" in expandedCards,
@@ -275,7 +275,7 @@ private fun CharacterSection(
     ) {
         Column {
             Text(
-                text = "${stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA)}: ${character.moonAnalysis.nakshatra.name} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${character.moonAnalysis.nakshatraPada})",
+                text = "${stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA)}: ${character.moonAnalysis.nakshatra.localizedName()} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${character.moonAnalysis.nakshatraPada.localized()})",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Medium
             )
@@ -287,7 +287,7 @@ private fun CharacterSection(
     }
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyAnalysis.EXPORT_SUN_SIGN)}: ${character.sunAnalysis.sunSign.displayName}",
+        title = "${stringResource(StringKeyAnalysis.EXPORT_SUN_SIGN)}: ${character.sunAnalysis.sunSign.localizedName()}",
         subtitle = stringResource(StringKeyDeepCharacter.SUN_CORE_IDENTITY),
         strength = character.sunAnalysis.sunStrength,
         isExpanded = "char_sun" in expandedCards,
@@ -325,7 +325,7 @@ private fun CareerSection(
     DeepSectionHeader(title = stringResource(StringKeyDeepCareer.SECTION_10TH_HOUSE), icon = Icons.Default.Work)
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyDeepCareer.TENTH_HOUSE_SIGN)}: ${career.tenthHouseAnalysis.sign.displayName}",
+        title = "${stringResource(StringKeyDeepCareer.TENTH_HOUSE_SIGN)}: ${career.tenthHouseAnalysis.sign.localizedName()}",
         subtitle = stringResource(StringKeyDeepCareer.PUBLIC_IMAGE_TITLE),
         strength = career.tenthHouseAnalysis.houseStrength,
         isExpanded = "career_10th" in expandedCards,
@@ -339,8 +339,8 @@ private fun CareerSection(
     }
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyDeepCareer.TENTH_HOUSE_LORD)}: ${career.tenthLordAnalysis.lord.displayName}",
-        subtitle = "${stringResource(StringKeyAnalysis.HOUSE)} ${career.tenthLordAnalysis.housePosition} ${stringResource(StringKeyAnalysis.DIALOG_HOUSE_PLACEMENT)}",
+        title = "${stringResource(StringKeyDeepCareer.TENTH_HOUSE_LORD)}: ${career.tenthLordAnalysis.lord.localizedName()}",
+        subtitle = "${stringResource(StringKeyAnalysis.HOUSE)} ${career.tenthLordAnalysis.housePosition.localized()} ${stringResource(StringKeyAnalysis.DIALOG_HOUSE_PLACEMENT)}",
         strength = career.tenthLordAnalysis.strengthLevel,
         isExpanded = "career_lord" in expandedCards,
         onToggle = { onToggleCard("career_lord") }
@@ -358,7 +358,14 @@ private fun CareerSection(
                         .padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = profession.professionName)
+                    val language = com.astro.storm.data.localization.LocalLanguage.current
+                    val localizedProfession = if (language == com.astro.storm.core.common.Language.NEPALI) {
+                        // In production we would have a profession mapping, for now use category displayName
+                        profession.professionName // This might need more work in the engine
+                    } else {
+                        profession.professionName
+                    }
+                    Text(text = localizedProfession)
                     StrengthBadge(strength = profession.suitability)
                 }
             }
@@ -406,7 +413,7 @@ private fun RelationshipSection(
     DeepSectionHeader(title = stringResource(StringKeyDeepRelationship.SECTION_7TH_HOUSE), icon = Icons.Default.Favorite)
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyDeepRelationship.SEVENTH_HOUSE_SIGN)}: ${relationship.seventhHouseAnalysis.sign.displayName}",
+        title = "${stringResource(StringKeyDeepRelationship.SEVENTH_HOUSE_SIGN)}: ${relationship.seventhHouseAnalysis.sign.localizedName()}",
         subtitle = stringResource(StringKeyDeepRelationship.RELATIONSHIP_STYLE),
         strength = relationship.seventhHouseAnalysis.houseStrength,
         isExpanded = "rel_7th" in expandedCards,
@@ -421,7 +428,7 @@ private fun RelationshipSection(
     
     ExpandableAnalysisCard(
         title = stringResource(StringKeyDeepRelationship.SECTION_VENUS),
-        subtitle = "${stringResource(StringKeyDeepRelationship.SECTION_VENUS)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${relationship.venusAnalysis.sign.displayName}",
+        subtitle = "${stringResource(StringKeyDeepRelationship.SECTION_VENUS)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${relationship.venusAnalysis.sign.localizedName()}",
         strength = relationship.venusAnalysis.strengthLevel,
         isExpanded = "rel_venus" in expandedCards,
         onToggle = { onToggleCard("rel_venus") }
@@ -449,7 +456,14 @@ private fun RelationshipSection(
     DeepSectionHeader(title = stringResource(StringKeyDeepRelationship.SECTION_MARRIAGE_TIMING), icon = Icons.Default.CalendarMonth)
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyDeepRelationship.TIMING_CATEGORY)}: ${relationship.marriageTiming.timingCategory.name}",
+        title = "${stringResource(StringKeyDeepRelationship.TIMING_CATEGORY)}: ${
+            when(relationship.marriageTiming.timingCategory) {
+                MarriageTimingCategory.EARLY -> stringResource(StringKeyNative.MARRIAGE_TIMING_EARLY)
+                MarriageTimingCategory.NORMAL -> stringResource(StringKeyNative.MARRIAGE_TIMING_NORMAL)
+                MarriageTimingCategory.DELAYED -> stringResource(StringKeyNative.MARRIAGE_TIMING_DELAYED)
+                else -> relationship.marriageTiming.timingCategory.name
+            }
+        }",
         subtitle = "${stringResource(StringKeyDeepRelationship.ESTIMATED_AGE)}: ${relationship.marriageTiming.estimatedAgeRange}",
         isExpanded = "rel_timing" in expandedCards,
         onToggle = { onToggleCard("rel_timing") }
@@ -477,7 +491,13 @@ private fun HealthSection(
     DeepSectionHeader(title = stringResource(StringKeyDeepHealth.CONSTITUTION_TITLE), icon = Icons.Default.HealthAndSafety)
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyDeepHealth.PRIMARY_DOSHA)}: ${health.constitutionAnalysis.primaryDosha.name}",
+        title = "${stringResource(StringKeyDeepHealth.PRIMARY_DOSHA)}: ${
+            when(health.constitutionAnalysis.primaryDosha) {
+                AyurvedicDosha.VATA -> "Vata (वात)"
+                AyurvedicDosha.PITTA -> "Pitta (पित्त)"
+                AyurvedicDosha.KAPHA -> "Kapha (कफ)"
+            }
+        }",
         subtitle = stringResource(StringKeyDeepHealth.SECTION_CONSTITUTION),
         isExpanded = "health_dosha" in expandedCards,
         onToggle = { onToggleCard("health_dosha") }
@@ -539,7 +559,7 @@ private fun WealthSection(
     DeepSectionHeader(title = stringResource(StringKeyDeepWealth.SECTION_WEALTH), icon = Icons.Default.AttachMoney)
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyDeepWealth.SECOND_HOUSE_SIGN)}: ${wealth.secondHouseAnalysis.sign.displayName}",
+        title = "${stringResource(StringKeyDeepWealth.SECOND_HOUSE_SIGN)}: ${wealth.secondHouseAnalysis.sign.localizedName()}",
         subtitle = stringResource(StringKeyDeepWealth.ACCUMULATION_PATTERN),
         strength = wealth.secondHouseAnalysis.houseStrength,
         isExpanded = "wealth_2nd" in expandedCards,
@@ -549,7 +569,7 @@ private fun WealthSection(
     }
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyDeepWealth.ELEVENTH_HOUSE_SIGN)}: ${wealth.eleventhHouseAnalysis.sign.displayName}",
+        title = "${stringResource(StringKeyDeepWealth.ELEVENTH_HOUSE_SIGN)}: ${wealth.eleventhHouseAnalysis.sign.localizedName()}",
         subtitle = stringResource(StringKeyDeepWealth.GAINS_PATTERN),
         strength = wealth.eleventhHouseAnalysis.houseStrength,
         isExpanded = "wealth_11th" in expandedCards,
@@ -606,7 +626,7 @@ private fun EducationSection(
     }
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKey.PLANET_MERCURY)}: ${education.mercuryAnalysis.sign.displayName}",
+        title = "${stringResource(StringKey.PLANET_MERCURY)}: ${education.mercuryAnalysis.sign.localizedName()}",
         subtitle = stringResource(StringKeyDeepEducation.ANALYTICAL_ABILITY),
         strength = education.mercuryAnalysis.strengthLevel,
         isExpanded = "edu_mercury" in expandedCards,
@@ -656,7 +676,7 @@ private fun SpiritualSection(
     DeepSectionHeader(title = stringResource(StringKeyNative.SECTION_SPIRITUAL), icon = Icons.Default.SelfImprovement)
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyDeepSpiritual.NINTH_DHARMA_SIGN)}: ${spiritual.ninthHouseDharma.sign.displayName}",
+        title = "${stringResource(StringKeyDeepSpiritual.NINTH_DHARMA_SIGN)}: ${spiritual.ninthHouseDharma.sign.localizedName()}",
         subtitle = stringResource(StringKeyDeepSpiritual.DHARMA_PATH),
         strength = spiritual.ninthHouseDharma.houseStrength,
         isExpanded = "spirit_9th" in expandedCards,
@@ -670,7 +690,7 @@ private fun SpiritualSection(
     }
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyDeepSpiritual.TWELFTH_SIGN)}: ${spiritual.twelfthHouseMoksha.sign.displayName}",
+        title = "${stringResource(StringKeyDeepSpiritual.TWELFTH_SIGN)}: ${spiritual.twelfthHouseMoksha.sign.localizedName()}",
         subtitle = stringResource(StringKeyDeepSpiritual.LIBERATION_PATH),
         strength = spiritual.twelfthHouseMoksha.houseStrength,
         isExpanded = "spirit_12th" in expandedCards,
@@ -700,8 +720,16 @@ private fun SpiritualSection(
         DeepSectionHeader(title = stringResource(StringKeyDeepSpiritual.KARMIC_TITLE), icon = Icons.Default.Loop)
         Column {
             spiritual.karmicPatterns.forEach { pattern ->
+                val language = com.astro.storm.data.localization.LocalLanguage.current
+                val patternName = if (language == com.astro.storm.core.common.Language.NEPALI) {
+                    // This pattern name should ideally be localized in the model
+                    pattern.patternName
+                } else {
+                    pattern.patternName
+                }
+                
                 ExpandableAnalysisCard(
-                    title = pattern.patternName,
+                    title = patternName,
                     isExpanded = "spirit_karma_${pattern.patternName}" in expandedCards,
                     onToggle = { onToggleCard("spirit_karma_${pattern.patternName}") }
                 ) {
@@ -751,11 +779,14 @@ private fun RecommendationItem(
 @Composable
 private fun LocalizedTraitText(
     trait: LocalizedTrait,
-    useNepali: Boolean = false,
+    useNepali: Boolean? = null,
     modifier: Modifier = Modifier
 ) {
+    val language = com.astro.storm.data.localization.LocalLanguage.current
+    val shouldShowNepali = useNepali ?: (language == com.astro.storm.core.common.Language.NEPALI)
+    
     Text(
-        text = if (useNepali) trait.nameNe else trait.name,
+        text = if (shouldShowNepali) trait.nameNe else trait.name,
         modifier = modifier,
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant

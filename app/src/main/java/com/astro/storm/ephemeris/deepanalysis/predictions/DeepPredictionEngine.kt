@@ -68,8 +68,8 @@ object DeepPredictionEngine {
             currentAntardasha = antardashaAnalysis,
             upcomingDashas = upcomingDashas,
             dashaBalance = LocalizedParagraph(
-                "Your current ${current?.planet?.displayName ?: "dasha"} period sets the foundation for this life phase.",
-                "तपाईंको वर्तमान ${current?.planet?.displayName ?: "दशा"} अवधिले यस जीवन चरणको लागि आधार सेट गर्दछ।"
+                "Your current ${current?.planet?.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH) ?: "dasha"} period sets the foundation for this life phase.",
+                "तपाईंको वर्तमान ${current?.planet?.getLocalizedName(com.astro.storm.core.common.Language.NEPALI) ?: "दशा"} अवधिले यस जीवन चरणको लागि आधार सेट गर्दछ।"
             )
         )
     }
@@ -277,8 +277,8 @@ object DeepPredictionEngine {
         return YearlyPrediction(
             year = year,
             overallTheme = LocalizedParagraph(
-                "Year $year brings ${dasha?.planet?.displayName ?: "planetary"} energy themes to the forefront.",
-                "वर्ष $year ले ${dasha?.planet?.displayName ?: "ग्रहीय"} ऊर्जा विषयहरूलाई अगाडि ल्याउँछ।"
+                "Year $year brings ${dasha?.planet?.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH) ?: "planetary"} energy themes to the forefront.",
+                "वर्ष $year ले ${dasha?.planet?.getLocalizedName(com.astro.storm.core.common.Language.NEPALI) ?: "ग्रहीय"} ऊर्जा विषयहरूलाई अगाडि ल्याउँछ।"
             ),
             overallRating = context.getPlanetStrengthLevel(dasha?.planet ?: Planet.JUPITER),
             careerOutlook = generateAreaOutlook(LifeArea.CAREER, context),
@@ -320,8 +320,8 @@ object DeepPredictionEngine {
                 months.add(KeyMonth(
                     month = antar.startDate.monthValue,
                     significance = LocalizedParagraph(
-                        "${antar.planet.displayName} antardasha begins - new sub-cycle starts.",
-                        "${antar.planet.displayName} अन्तर्दशा सुरु हुन्छ - नयाँ उप-चक्र सुरु।"
+                        "${antar.planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)} antardasha begins - new sub-cycle starts.",
+                        "${antar.planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)} अन्तर्दशा सुरु हुन्छ - नयाँ उप-चक्र सुरु।"
                     ),
                     rating = context.getPlanetStrengthLevel(antar.planet)
                 ))
@@ -339,14 +339,30 @@ object DeepPredictionEngine {
                 year = month.year,
                 overallRating = context.getPlanetStrengthLevel(context.currentMahadasha?.planet ?: Planet.JUPITER),
                 summary = LocalizedParagraph(
-                    "Month ${month.month.name.lowercase().replaceFirstChar { it.uppercase() }} continues current dasha themes.",
-                    "महिना ${month.month.name}ले वर्तमान दशा विषयहरू जारी राख्छ।"
+                    "Month ${getMonthName(month.monthValue, com.astro.storm.core.common.Language.ENGLISH)} continues current dasha themes.",
+                    "${getMonthName(month.monthValue, com.astro.storm.core.common.Language.NEPALI)} महिनाले वर्तमान दशा विषयहरू जारी राख्छ।"
                 ),
                 focusAreas = listOf(LifeArea.CAREER, LifeArea.HEALTH),
                 favorableDates = listOf(1, 5, 9, 14, 18, 23, 27),
                 challengingDates = listOf(8, 15, 22)
             )
         }
+    }
+
+    private fun getMonthName(month: Int, language: com.astro.storm.core.common.Language): String = when(month) {
+        1 -> if (language == com.astro.storm.core.common.Language.NEPALI) "जनवरी" else "January"
+        2 -> if (language == com.astro.storm.core.common.Language.NEPALI) "फेब्रुअरी" else "February"
+        3 -> if (language == com.astro.storm.core.common.Language.NEPALI) "मार्च" else "March"
+        4 -> if (language == com.astro.storm.core.common.Language.NEPALI) "अप्रिल" else "April"
+        5 -> if (language == com.astro.storm.core.common.Language.NEPALI) "मे" else "May"
+        6 -> if (language == com.astro.storm.core.common.Language.NEPALI) "जुन" else "June"
+        7 -> if (language == com.astro.storm.core.common.Language.NEPALI) "जुलाई" else "July"
+        8 -> if (language == com.astro.storm.core.common.Language.NEPALI) "अगस्ट" else "August"
+        9 -> if (language == com.astro.storm.core.common.Language.NEPALI) "सेप्टेम्बर" else "September"
+        10 -> if (language == com.astro.storm.core.common.Language.NEPALI) "अक्टोबर" else "October"
+        11 -> if (language == com.astro.storm.core.common.Language.NEPALI) "नोभेम्बर" else "November"
+        12 -> if (language == com.astro.storm.core.common.Language.NEPALI) "डिसेम्बर" else "December"
+        else -> ""
     }
     
     private fun generateLifeAreaPredictions(context: AnalysisContext): Map<LifeArea, LifeAreaPrediction> {
@@ -384,8 +400,8 @@ object DeepPredictionEngine {
             YogaActivationEvent(
                 yogaName = yoga.name,
                 activationPeriod = LocalizedParagraph(
-                    "During ${yoga.planets.firstOrNull()?.displayName ?: "planetary"} dasha periods.",
-                    "${yoga.planets.firstOrNull()?.displayName ?: "ग्रहीय"} दशा अवधिहरूमा।"
+                    "During ${yoga.planets.firstOrNull()?.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH) ?: "planetary"} dasha periods.",
+                    "${yoga.planets.firstOrNull()?.getLocalizedName(com.astro.storm.core.common.Language.NEPALI) ?: "ग्रहीय"} दशा अवधिहरूमा।"
                 ),
                 expectedResults = LocalizedParagraph(
                     "${yoga.name} brings ${yoga.category.name.lowercase().replace("_", " ")} results.",
@@ -404,7 +420,7 @@ object DeepPredictionEngine {
         val saturnSign = context.getPlanetPosition(Planet.SATURN)?.sign ?: ZodiacSign.CAPRICORN
         if (isSadeSatiActive(moonSign, saturnSign)) {
             periods.add(CriticalPeriod(
-                periodName = "Sade Sati Active",
+                periodName = if (com.astro.storm.data.localization.isNepali()) "साढे साती सक्रिय" else "Sade Sati Active",
                 startDate = LocalDate.now().minusYears(1),
                 endDate = LocalDate.now().plusYears(2),
                 areaAffected = LifeArea.GENERAL,
@@ -427,11 +443,11 @@ object DeepPredictionEngine {
         )
         if (jupiterHouse in listOf(1, 5, 9)) {
             windows.add(OpportunityWindow(
-                windowName = "Jupiter in Trine",
+                windowName = if (com.astro.storm.data.localization.isNepali()) "त्रिकोणमा बृहस्पति" else "Jupiter in Trine",
                 startDate = LocalDate.now(),
                 endDate = LocalDate.now().plusMonths(6),
                 affectedAreas = listOf(LifeArea.GENERAL, LifeArea.EDUCATION, LifeArea.SPIRITUAL),
-                opportunityType = "Growth and expansion",
+                opportunityType = if (com.astro.storm.data.localization.isNepali()) "वृद्धि र विस्तार" else "Growth and expansion",
                 intensity = StrengthLevel.STRONG,
                 advice = LocalizedParagraph("Maximize learning and spiritual growth during Jupiter's favorable transit.",
                     "बृहस्पतिको अनुकूल गोचरमा सिकाइ र आध्यात्मिक विकास अधिकतम गर्नुहोस्।")
@@ -485,40 +501,40 @@ object DeepPredictionEngine {
     }
     
     private fun getGemstone(planet: Planet): String = when (planet) {
-        Planet.SUN -> "Ruby (Manik)"
-        Planet.MOON -> "Pearl (Moti)"
-        Planet.MARS -> "Red Coral (Moonga)"
-        Planet.MERCURY -> "Emerald (Panna)"
-        Planet.JUPITER -> "Yellow Sapphire (Pukhraj)"
-        Planet.VENUS -> "Diamond (Heera)"
-        Planet.SATURN -> "Blue Sapphire (Neelam)"
-        Planet.RAHU, Planet.TRUE_NODE -> "Hessonite (Gomed)"
-        Planet.KETU -> "Cat's Eye (Lehsunia)"
-        else -> "Consult astrologer"
+        Planet.SUN -> if (com.astro.storm.data.localization.isNepali()) "माणिक (Ruby)" else "Ruby (Manik)"
+        Planet.MOON -> if (com.astro.storm.data.localization.isNepali()) "मोती (Pearl)" else "Pearl (Moti)"
+        Planet.MARS -> if (com.astro.storm.data.localization.isNepali()) "मुगा (Red Coral)" else "Red Coral (Moonga)"
+        Planet.MERCURY -> if (com.astro.storm.data.localization.isNepali()) "पन्ना (Emerald)" else "Emerald (Panna)"
+        Planet.JUPITER -> if (com.astro.storm.data.localization.isNepali()) "पुखराज (Yellow Sapphire)" else "Yellow Sapphire (Pukhraj)"
+        Planet.VENUS -> if (com.astro.storm.data.localization.isNepali()) "हीरा (Diamond)" else "Diamond (Heera)"
+        Planet.SATURN -> if (com.astro.storm.data.localization.isNepali()) "नीलम (Blue Sapphire)" else "Blue Sapphire (Neelam)"
+        Planet.RAHU, Planet.TRUE_NODE -> if (com.astro.storm.data.localization.isNepali()) "गोमेद (Hessonite)" else "Hessonite (Gomed)"
+        Planet.KETU -> if (com.astro.storm.data.localization.isNepali()) "लहसुनिया (Cat's Eye)" else "Cat's Eye (Lehsunia)"
+        else -> if (com.astro.storm.data.localization.isNepali()) "ज्योतिषीसँग परामर्श गर्नुहोस्" else "Consult astrologer"
     }
     
     private fun getAlternativeGemstone(planet: Planet): String = when (planet) {
-        Planet.SUN -> "Garnet"
-        Planet.MOON -> "Moonstone"
-        Planet.MARS -> "Carnelian"
-        Planet.MERCURY -> "Peridot"
-        Planet.JUPITER -> "Citrine"
-        Planet.VENUS -> "White Sapphire"
-        Planet.SATURN -> "Amethyst"
+        Planet.SUN -> if (com.astro.storm.data.localization.isNepali()) "गार्नेट" else "Garnet"
+        Planet.MOON -> if (com.astro.storm.data.localization.isNepali()) "मुनस्टोन" else "Moonstone"
+        Planet.MARS -> if (com.astro.storm.data.localization.isNepali()) "कार्नेलियन" else "Carnelian"
+        Planet.MERCURY -> if (com.astro.storm.data.localization.isNepali()) "पेरिडोट" else "Peridot"
+        Planet.JUPITER -> if (com.astro.storm.data.localization.isNepali()) "सिट्रिन" else "Citrine"
+        Planet.VENUS -> if (com.astro.storm.data.localization.isNepali()) "सेतो नीलम" else "White Sapphire"
+        Planet.SATURN -> if (com.astro.storm.data.localization.isNepali()) "एमेथिस्ट" else "Amethyst"
         else -> ""
     }
     
     private fun getGemstoneDay(planet: Planet): String = when (planet) {
-        Planet.SUN -> "Sunday"
-        Planet.MOON -> "Monday"
-        Planet.MARS -> "Tuesday"
-        Planet.MERCURY -> "Wednesday"
-        Planet.JUPITER -> "Thursday"
-        Planet.VENUS -> "Friday"
-        Planet.SATURN -> "Saturday"
-        Planet.RAHU, Planet.TRUE_NODE -> "Saturday"
-        Planet.KETU -> "Tuesday"
-        else -> "auspicious day"
+        Planet.SUN -> if (com.astro.storm.data.localization.isNepali()) "आइतबार" else "Sunday"
+        Planet.MOON -> if (com.astro.storm.data.localization.isNepali()) "सोमबार" else "Monday"
+        Planet.MARS -> if (com.astro.storm.data.localization.isNepali()) "मंगलबार" else "Tuesday"
+        Planet.MERCURY -> if (com.astro.storm.data.localization.isNepali()) "बुधबार" else "Wednesday"
+        Planet.JUPITER -> if (com.astro.storm.data.localization.isNepali()) "बिहीबार" else "Thursday"
+        Planet.VENUS -> if (com.astro.storm.data.localization.isNepali()) "शुक्रबार" else "Friday"
+        Planet.SATURN -> if (com.astro.storm.data.localization.isNepali()) "शनिबार" else "Saturday"
+        Planet.RAHU, Planet.TRUE_NODE -> if (com.astro.storm.data.localization.isNepali()) "शनिबार" else "Saturday"
+        Planet.KETU -> if (com.astro.storm.data.localization.isNepali()) "मंगलबार" else "Tuesday"
+        else -> if (com.astro.storm.data.localization.isNepali()) "शुभ दिन" else "auspicious day"
     }
     
     private fun getBeejaMantra(planet: Planet): String = when (planet) {
@@ -561,11 +577,11 @@ object DeepPredictionEngine {
     }
     
     private fun getMantraTime(planet: Planet): String = when (planet) {
-        Planet.SUN -> "sunrise"
-        Planet.MOON -> "evening"
-        Planet.JUPITER -> "morning"
-        Planet.SATURN, Planet.RAHU, Planet.KETU -> "night"
-        else -> "dawn or dusk"
+        Planet.SUN -> if (com.astro.storm.data.localization.isNepali()) "सूर्योदय" else "sunrise"
+        Planet.MOON -> if (com.astro.storm.data.localization.isNepali()) "साँझ" else "evening"
+        Planet.JUPITER -> if (com.astro.storm.data.localization.isNepali()) "बिहान" else "morning"
+        Planet.SATURN, Planet.RAHU, Planet.KETU -> if (com.astro.storm.data.localization.isNepali()) "रात" else "night"
+        else -> if (com.astro.storm.data.localization.isNepali()) "बिहान वा साँझ" else "dawn or dusk"
     }
     
     private fun getCharitableRemedies(planets: List<Planet>): List<CharitableRemedy> {
@@ -581,16 +597,16 @@ object DeepPredictionEngine {
     }
     
     private fun getDonationItems(planet: Planet): String = when (planet) {
-        Planet.SUN -> "Wheat, jaggery, copper"
-        Planet.MOON -> "Rice, milk, white cloth"
-        Planet.MARS -> "Red lentils, red cloth"
-        Planet.MERCURY -> "Green vegetables, books"
-        Planet.JUPITER -> "Yellow cloth, turmeric, bananas"
-        Planet.VENUS -> "White items, perfume, sweets"
-        Planet.SATURN -> "Black sesame, iron, mustard oil"
-        Planet.RAHU, Planet.TRUE_NODE -> "Blankets, lead, black pulses"
-        Planet.KETU -> "Seven types of grains, multi-colored cloth"
-        else -> "Food to needy"
+        Planet.SUN -> if (com.astro.storm.data.localization.isNepali()) "गहुँ, सख्खर, तामा" else "Wheat, jaggery, copper"
+        Planet.MOON -> if (com.astro.storm.data.localization.isNepali()) "चामल, दूध, सेतो कपडा" else "Rice, milk, white cloth"
+        Planet.MARS -> if (com.astro.storm.data.localization.isNepali()) "रातो दाल, रातो कपडा" else "Red lentils, red cloth"
+        Planet.MERCURY -> if (com.astro.storm.data.localization.isNepali()) "हरियो सागपात, पुस्तकहरू" else "Green vegetables, books"
+        Planet.JUPITER -> if (com.astro.storm.data.localization.isNepali()) "पहेंलो कपडा, बेसार, केरा" else "Yellow cloth, turmeric, bananas"
+        Planet.VENUS -> if (com.astro.storm.data.localization.isNepali()) "सेतो वस्तुहरू, अत्तर, मिठाई" else "White items, perfume, sweets"
+        Planet.SATURN -> if (com.astro.storm.data.localization.isNepali()) "कालो तिल, फलाम, तोरीको तेल" else "Black sesame, iron, mustard oil"
+        Planet.RAHU, Planet.TRUE_NODE -> if (com.astro.storm.data.localization.isNepali()) "कम्बल, सिसा, कालो मास" else "Blankets, lead, black pulses"
+        Planet.KETU -> if (com.astro.storm.data.localization.isNepali()) "सप्तधान्य, बहुरंगी कपडा" else "Seven types of grains, multi-colored cloth"
+        else -> if (com.astro.storm.data.localization.isNepali()) "असहायलाई खाना" else "Food to needy"
     }
     
     private fun getFastingRemedies(planets: List<Planet>): List<FastingRemedy> {
@@ -611,10 +627,10 @@ object DeepPredictionEngine {
         return listOf(
             YogicRemedy(
                 practiceName = when (dominantElement) {
-                    Element.FIRE -> "Surya Namaskar"
-                    Element.EARTH -> "Grounding Asanas"
-                    Element.AIR -> "Pranayama"
-                    Element.WATER -> "Moon Salutation"
+                    Element.FIRE -> if (com.astro.storm.data.localization.isNepali()) "सूर्य नमस्कार" else "Surya Namaskar"
+                    Element.EARTH -> if (com.astro.storm.data.localization.isNepali()) "ग्राउन्डिङ आसनहरू" else "Grounding Asanas"
+                    Element.AIR -> if (com.astro.storm.data.localization.isNepali()) "प्राणायाम" else "Pranayama"
+                    Element.WATER -> if (com.astro.storm.data.localization.isNepali()) "चन्द्र नमस्कार" else "Moon Salutation"
                 },
                 targetPlanet = when (dominantElement) {
                     Element.FIRE -> Planet.SUN
@@ -635,11 +651,11 @@ object DeepPredictionEngine {
         val strength = context.getPlanetStrengthLevel(dasha?.planet ?: Planet.JUPITER)
         
         return LocalizedParagraph(
-            en = "Your current ${dasha?.planet?.displayName ?: "planetary"} period shows ${strength.displayName.lowercase()} influence. " +
+            en = "Your current ${dasha?.planet?.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH) ?: "planetary"} period shows ${strength.displayName.lowercase()} influence. " +
                 "Focus on ${if (strength >= StrengthLevel.STRONG) "maximizing opportunities" else "building foundations"} " +
                 "while attending to health and relationships. The coming period favors " +
                 "${if (context.rajaYogas.isNotEmpty()) "achievement and recognition" else "steady growth and development"}.",
-            ne = "तपाईंको वर्तमान ${dasha?.planet?.displayName ?: "ग्रहीय"} अवधिले ${strength.displayNameNe} प्रभाव देखाउँछ। " +
+            ne = "तपाईंको वर्तमान ${dasha?.planet?.getLocalizedName(com.astro.storm.core.common.Language.NEPALI) ?: "ग्रहीय"} अवधिले ${strength.displayNameNe} प्रभाव देखाउँछ। " +
                 "${if (strength >= StrengthLevel.STRONG) "अवसरहरूलाई अधिकतम बनाउन" else "आधारहरू निर्माण गर्न"} ध्यान दिनुहोस् " +
                 "स्वास्थ्य र सम्बन्धहरूमा ध्यान दिँदै।"
         )

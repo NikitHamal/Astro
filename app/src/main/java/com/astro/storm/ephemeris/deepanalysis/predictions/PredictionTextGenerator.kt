@@ -55,17 +55,17 @@ object PredictionTextGenerator {
             ne = "यो अवधिले आध्यात्मिकता, विरक्ति र पूर्व-जीवन कर्मामा जोड दिन्छ।"
         )
         else -> LocalizedParagraph(
-            en = "This period brings unique and unconventional developments related to ${planet.displayName}'s energy. " +
+            en = "This period brings unique and unconventional developments related to ${planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)}'s energy. " +
                 "Expect the unexpected and stay open to new perspectives.",
-            ne = "यो अवधिले ${planet.displayName}को ऊर्जासँग सम्बन्धित अद्वितीय र अपरम्परागत विकासहरू ल्याउँछ।"
+            ne = "यो अवधिले ${planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)}को ऊर्जासँग सम्बन्धित अद्वितीय र अपरम्परागत विकासहरू ल्याउँछ।"
         )
     }
     
     fun getAntardashaTheme(mahadasha: Planet, antardasha: Planet): LocalizedParagraph {
         return LocalizedParagraph(
-            en = "Within the ${mahadasha.displayName} period, ${antardasha.displayName}'s sub-period " +
+            en = "Within the ${mahadasha.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)} period, ${antardasha.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)}'s sub-period " +
                 "refines the experience by adding ${getAntardashaFlavor(antardasha)}.",
-            ne = "${mahadasha.displayName} अवधि भित्र, ${antardasha.displayName}को उप-अवधिले " +
+            ne = "${mahadasha.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)} अवधि भित्र, ${antardasha.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)}को उप-अवधिले " +
                 "${getAntardashaFlavorNe(antardasha)} थपेर अनुभव परिष्कृत गर्छ।"
         )
     }
@@ -80,7 +80,7 @@ object PredictionTextGenerator {
         Planet.SATURN -> "discipline and karmic lessons"
         Planet.RAHU -> "unconventional experiences and ambition"
         Planet.KETU -> "spiritual depth and detachment"
-        else -> "${planet.displayName.lowercase()} influences"
+        else -> "${planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH).lowercase()} influences"
     }
     
     private fun getAntardashaFlavorNe(planet: Planet): String = when (planet) {
@@ -114,17 +114,17 @@ object PredictionTextGenerator {
             ne = "धैर्यवान र अनुशासित हुनुहोस्। स्थायी परिणामहरूको लागि अहिले कडा परिश्रम गर्नुहोस्।"
         )
         else -> LocalizedParagraph(
-            en = "Work with ${planet.displayName}'s energy constructively during this period.",
-            ne = "यस अवधिमा ${planet.displayName}को ऊर्जासँग रचनात्मक रूपमा काम गर्नुहोस्।"
+            en = "Work with ${planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)}'s energy constructively during this period.",
+            ne = "यस अवधिमा ${planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)}को ऊर्जासँग रचनात्मक रूपमा काम गर्नुहोस्।"
         )
     }
     
     fun getDashaBriefPreview(planet: Planet, context: AnalysisContext): LocalizedParagraph {
         val strength = context.getPlanetStrengthLevel(planet)
         return LocalizedParagraph(
-            en = "${planet.displayName} period ahead with ${strength.displayName.lowercase()} promise. " +
+            en = "${planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)} period ahead with ${strength.displayName.lowercase()} promise. " +
                 "Prepare for ${getDashaThemeShort(planet)}.",
-            ne = "${planet.displayName} अवधि ${strength.displayNameNe} वाचाको साथ अगाडि।"
+            ne = "${planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)} अवधि ${strength.displayNameNe} वाचाको साथ अगाडि।"
         )
     }
     
@@ -138,15 +138,26 @@ object PredictionTextGenerator {
         Planet.SATURN -> "discipline and lessons"
         Planet.RAHU -> "ambition and change"
         Planet.KETU -> "spirituality and detachment"
-        else -> "${planet.displayName.lowercase()} themes"
+        else -> "${planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH).lowercase()} themes"
     }
     
     fun getLifeAreaEffect(planet: Planet, area: LifeArea, context: AnalysisContext): LocalizedParagraph {
-        val areaName = area.name.lowercase().replace("_", " ")
+        val enArea = getAreaName(area, com.astro.storm.core.common.Language.ENGLISH)
+        val neArea = getAreaName(area, com.astro.storm.core.common.Language.NEPALI)
         return LocalizedParagraph(
-            en = "${planet.displayName}'s influence on $areaName ${getEffectQuality(planet, area)}.",
-            ne = "${planet.displayName}को $areaName मा प्रभाव।"
+            en = "${planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)}'s influence on $enArea ${getEffectQuality(planet, area)}.",
+            ne = "${planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)}को $neArea मा प्रभाव।"
         )
+    }
+    
+    internal fun getAreaName(area: LifeArea, language: com.astro.storm.core.common.Language): String = when(area) {
+        LifeArea.GENERAL -> if (language == com.astro.storm.core.common.Language.NEPALI) "सामान्य जीवन" else "general life"
+        LifeArea.CAREER -> if (language == com.astro.storm.core.common.Language.NEPALI) "क्यारियर" else "career"
+        LifeArea.RELATIONSHIP -> if (language == com.astro.storm.core.common.Language.NEPALI) "सम्बन्ध" else "relationship"
+        LifeArea.HEALTH -> if (language == com.astro.storm.core.common.Language.NEPALI) "स्वास्थ्य" else "health"
+        LifeArea.WEALTH -> if (language == com.astro.storm.core.common.Language.NEPALI) "धन" else "wealth"
+        LifeArea.EDUCATION -> if (language == com.astro.storm.core.common.Language.NEPALI) "शिक्षा" else "education"
+        LifeArea.SPIRITUAL -> if (language == com.astro.storm.core.common.Language.NEPALI) "आध्यात्मिकता" else "spirituality"
     }
     
     private fun getEffectQuality(planet: Planet, area: LifeArea): String = when {
@@ -158,9 +169,11 @@ object PredictionTextGenerator {
     }
     
     fun getShortTermEffect(planet: Planet, area: LifeArea, context: AnalysisContext): LocalizedParagraph {
+        val enArea = getAreaName(area, com.astro.storm.core.common.Language.ENGLISH)
+        val neArea = getAreaName(area, com.astro.storm.core.common.Language.NEPALI)
         return LocalizedParagraph(
-            en = "Short-term ${area.name.lowercase()} matters are influenced by ${planet.displayName}'s current transit.",
-            ne = "छोटो-अवधि ${area.name} मामिलाहरू ${planet.displayName}को वर्तमान गोचरले प्रभावित छन्।"
+            en = "Short-term $enArea matters are influenced by ${planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)}'s current transit.",
+            ne = "छोटो-अवधि $neArea मामिलाहरू ${planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)}को वर्तमान गोचरले प्रभावित छन्।"
         )
     }
     
@@ -240,44 +253,52 @@ object PredictionTextGenerator {
             ne = "यो वर्षले धैर्य र कठिन परिश्रम माग्छ।"
         )
         else -> LocalizedParagraph(
-            en = "Align your efforts with ${planet.displayName}'s energy for optimal results this year.",
-            ne = "यस वर्ष इष्टतम परिणामहरूको लागि ${planet.displayName}को ऊर्जासँग प्रयासहरू मिलाउनुहोस्।"
+            en = "Align your efforts with ${planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)}'s energy for optimal results this year.",
+            ne = "यस वर्ष इष्टतम परिणामहरूको लागि ${planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)}को ऊर्जासँग प्रयासहरू मिलाउनुहोस्।"
         )
     }
     
     fun getAreaOutlookSummary(area: LifeArea, strength: StrengthLevel): LocalizedParagraph {
-        val areaName = area.name.lowercase().replace("_", " ")
+        val enArea = getAreaName(area, com.astro.storm.core.common.Language.ENGLISH)
+        val neArea = getAreaName(area, com.astro.storm.core.common.Language.NEPALI)
         return LocalizedParagraph(
-            en = "${areaName.replaceFirstChar { it.uppercase() }} shows ${strength.displayName.lowercase()} potential this period.",
-            ne = "${areaName}ले यस अवधिमा ${strength.displayNameNe} क्षमता देखाउँछ।"
+            en = "${enArea.replaceFirstChar { it.uppercase() }} shows ${strength.displayName.lowercase()} potential this period.",
+            ne = "${neArea}ले यस अवधिमा ${strength.displayNameNe} क्षमता देखाउँछ।"
         )
     }
     
     fun getAreaOpportunities(area: LifeArea, strength: StrengthLevel): List<LocalizedTrait> {
+        val enArea = getAreaName(area, com.astro.storm.core.common.Language.ENGLISH)
+        val neArea = getAreaName(area, com.astro.storm.core.common.Language.NEPALI)
         return if (strength >= StrengthLevel.MODERATE) {
-            listOf(LocalizedTrait("Growth opportunity", "विकास अवसर", strength))
+            listOf(LocalizedTrait("Growth opportunity in $enArea", "$neArea मा विकास अवसर", strength))
         } else emptyList()
     }
     
     fun getAreaChallenges(area: LifeArea, strength: StrengthLevel): List<LocalizedTrait> {
+        val enArea = getAreaName(area, com.astro.storm.core.common.Language.ENGLISH)
+        val neArea = getAreaName(area, com.astro.storm.core.common.Language.NEPALI)
         return if (strength <= StrengthLevel.WEAK) {
-            listOf(LocalizedTrait("Requires attention", "ध्यान चाहिन्छ", strength))
+            listOf(LocalizedTrait("$enArea requires attention", "$neArea मा ध्यान चाहिन्छ", strength))
         } else emptyList()
     }
     
     fun getAreaAdvice(area: LifeArea, strength: StrengthLevel): LocalizedParagraph {
-        val areaName = area.name.lowercase().replace("_", " ")
+        val enArea = getAreaName(area, com.astro.storm.core.common.Language.ENGLISH)
+        val neArea = getAreaName(area, com.astro.storm.core.common.Language.NEPALI)
         return LocalizedParagraph(
-            en = "${if (strength >= StrengthLevel.MODERATE) "Maximize" else "Work on"} $areaName matters during favorable periods.",
-            ne = "अनुकूल अवधिहरूमा $areaName मामिलाहरू ${if (strength >= StrengthLevel.MODERATE) "अधिकतम गर्नुहोस्" else "काम गर्नुहोस्"}।"
+            en = "${if (strength >= StrengthLevel.MODERATE) "Maximize" else "Work on"} $enArea matters during favorable periods.",
+            ne = "अनुकूल अवधिहरूमा $neArea मामिलाहरू ${if (strength >= StrengthLevel.MODERATE) "अधिकतम गर्नुहोस्" else "काम गर्नुहोस्"}।"
         )
     }
     
     fun getAreaRecommendations(area: LifeArea, context: AnalysisContext): List<LocalizedParagraph> {
+        val enArea = getAreaName(area, com.astro.storm.core.common.Language.ENGLISH)
+        val neArea = getAreaName(area, com.astro.storm.core.common.Language.NEPALI)
         return listOf(
             LocalizedParagraph(
-                "Follow dasha and transit guidance for ${area.name.lowercase()} timing.",
-                "${area.name} समयको लागि दशा र गोचर मार्गदर्शन पछ्याउनुहोस्।"
+                "Follow dasha and transit guidance for $enArea timing.",
+                "$neArea समयको लागि दशा र गोचर मार्गदर्शन पछ्याउनुहोस्।"
             )
         )
     }

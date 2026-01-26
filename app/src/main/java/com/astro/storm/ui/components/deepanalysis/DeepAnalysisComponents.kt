@@ -164,13 +164,16 @@ fun StrengthBadge(
     strength: StrengthLevel,
     modifier: Modifier = Modifier
 ) {
+    val language = com.astro.storm.data.localization.LocalLanguage.current
+    val localizedName = if (language == com.astro.storm.core.common.Language.NEPALI) strength.displayNameNe else strength.displayName
+    
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         color = DeepAnalysisColors.forStrength(strength).copy(alpha = 0.2f)
     ) {
         Text(
-            text = strength.displayName,
+            text = localizedName,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             style = MaterialTheme.typography.labelSmall,
             color = DeepAnalysisColors.forStrength(strength),
@@ -188,6 +191,13 @@ fun ScoreIndicator(
     label: String,
     modifier: Modifier = Modifier
 ) {
+    val language = com.astro.storm.data.localization.LocalLanguage.current
+    val localizedScore = if (language == com.astro.storm.core.common.Language.NEPALI) {
+        com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(score.toInt())
+    } else {
+        "${score.toInt()}"
+    }
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -208,7 +218,7 @@ fun ScoreIndicator(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "${score.toInt()}",
+                text = localizedScore,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = when {
@@ -236,12 +246,15 @@ fun ScoreIndicator(
 @Composable
 fun LocalizedParagraphText(
     paragraph: LocalizedParagraph,
-    useNepali: Boolean = false,
+    useNepali: Boolean? = null,
     modifier: Modifier = Modifier,
     style: androidx.compose.ui.text.TextStyle = MaterialTheme.typography.bodyMedium
 ) {
+    val language = com.astro.storm.data.localization.LocalLanguage.current
+    val shouldShowNepali = useNepali ?: (language == com.astro.storm.core.common.Language.NEPALI)
+    
     Text(
-        text = if (useNepali) paragraph.ne else paragraph.en,
+        text = if (shouldShowNepali) paragraph.ne else paragraph.en,
         modifier = modifier,
         style = style,
         color = AppTheme.TextSecondary
@@ -254,9 +267,12 @@ fun LocalizedParagraphText(
 @Composable
 fun TraitsList(
     traits: List<LocalizedTrait>,
-    useNepali: Boolean = false,
+    useNepali: Boolean? = null,
     modifier: Modifier = Modifier
 ) {
+    val language = com.astro.storm.data.localization.LocalLanguage.current
+    val shouldShowNepali = useNepali ?: (language == com.astro.storm.core.common.Language.NEPALI)
+
     Column(modifier = modifier) {
         traits.forEach { trait ->
             Row(
@@ -267,7 +283,7 @@ fun TraitsList(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = if (useNepali) trait.nameNe else trait.name,
+                    text = if (shouldShowNepali) trait.nameNe else trait.name,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.weight(1f),
                     color = AppTheme.TextSecondary
@@ -289,7 +305,7 @@ fun TimelinePeriodCard(
     dateRange: String,
     description: LocalizedParagraph,
     strength: StrengthLevel,
-    useNepali: Boolean = false,
+    useNepali: Boolean? = null,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -347,7 +363,7 @@ fun AnalysisOverviewCard(
     title: String,
     scores: List<Pair<String, Double>>,
     summary: LocalizedParagraph,
-    useNepali: Boolean = false,
+    useNepali: Boolean? = null,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -394,6 +410,13 @@ fun AnalysisOverviewCard(
 fun DeepAnalysisLoading(
     modifier: Modifier = Modifier
 ) {
+    val language = com.astro.storm.data.localization.LocalLanguage.current
+    val loadingText = if (language == com.astro.storm.core.common.Language.NEPALI) {
+        "तपाईंको कुण्डलीको गहन विश्लेषण गर्दै..."
+    } else {
+        "Analyzing your chart deeply..."
+    }
+
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -408,7 +431,7 @@ fun DeepAnalysisLoading(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Analyzing your chart deeply...",
+                text = loadingText,
                 style = MaterialTheme.typography.bodyLarge,
                 color = AppTheme.TextPrimary
             )

@@ -165,7 +165,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "${mahadasha.planet.displayName} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
+                                text = "${mahadasha.planet.localizedName()} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.TextPrimary
@@ -173,7 +173,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                         }
                         
                         Text(
-                            text = "${mahadasha.startDate.format(dateFormatter)} - ${mahadasha.endDate.format(dateFormatter)}",
+                            text = "${mahadasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${mahadasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
@@ -220,14 +220,14 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${antardasha.planet.displayName} ${stringResource(StringKeyDeepPrediction.ANTARDASHA_TITLE)}",
+                            text = "${antardasha.planet.localizedName()} ${stringResource(StringKeyDeepPrediction.ANTARDASHA_TITLE)}",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         
                         Text(
-                            text = "${antardasha.startDate.format(dateFormatter)} - ${antardasha.endDate.format(dateFormatter)}",
+                            text = "${antardasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${antardasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
@@ -267,8 +267,8 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
             
             items(dasha.upcomingDashas) { upcoming ->
                 TimelinePeriodCard(
-                    title = "${upcoming.planet.displayName} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
-                    dateRange = "${upcoming.startDate.format(dateFormatter)} - ${upcoming.endDate.format(dateFormatter)}",
+                    title = "${upcoming.planet.localizedName()} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
+                    dateRange = "${upcoming.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${upcoming.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
                     description = upcoming.briefPreview,
                     strength = com.astro.storm.ephemeris.deepanalysis.StrengthLevel.MODERATE
                 )
@@ -311,7 +311,14 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                         }
                         
                         Text(
-                            text = "${stringResource(StringKeyDeepPrediction.SADE_SATI_PHASE)}: ${transit.saturnSadeSati.phase.name}",
+                            text = "${stringResource(StringKeyDeepPrediction.SADE_SATI_PHASE)}: ${
+                                when(transit.saturnSadeSati.phase) {
+                                    SadeSatiPhase.RISING -> stringResource(StringKeyDeepPrediction.SADE_SATI_RISING)
+                                    SadeSatiPhase.PEAK -> stringResource(StringKeyDeepPrediction.SADE_SATI_PEAK)
+                                    SadeSatiPhase.SETTING -> stringResource(StringKeyDeepPrediction.SADE_SATI_SETTING)
+                                    else -> transit.saturnSadeSati.phase.name
+                                }
+                            }",
                             style = MaterialTheme.typography.bodyMedium
                         )
                         
@@ -348,7 +355,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "${majorTransit.planet.displayName} in ${majorTransit.currentSign.displayName}",
+                            text = "${majorTransit.planet.localizedName()} ${stringResource(StringKeyNative.LABEL_IN_HOUSE).lowercase()} ${majorTransit.currentSign.localizedName()}",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -384,7 +391,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "${stringResource(StringKey.PLANET_JUPITER)} in ${transit.jupiterTransit.currentTransitSign.displayName} (${stringResource(StringKeyAnalysis.HOUSE)} ${transit.jupiterTransit.transitHouse})",
+                        text = "${stringResource(StringKey.PLANET_JUPITER)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE).lowercase()} ${transit.jupiterTransit.currentTransitSign.localizedName()} (${stringResource(StringKeyAnalysis.HOUSE)} ${transit.jupiterTransit.transitHouse.localized()})",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -396,7 +403,17 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text("${stringResource(StringKeyDeepPrediction.JUPITER_FAVORABLE_AREAS)}: ", fontWeight = FontWeight.Medium)
                         Text(
-                            text = transit.jupiterTransit.favorableForAreas.joinToString(", ") { it.name },
+                            text = transit.jupiterTransit.favorableForAreas.joinToString(", ") { 
+                                when(it) {
+                                    LifeArea.GENERAL -> stringResource(StringKeyDeepPrediction.AREA_GENERAL)
+                                    LifeArea.CAREER -> stringResource(StringKeyDeepPrediction.AREA_CAREER)
+                                    LifeArea.RELATIONSHIP -> stringResource(StringKeyDeepPrediction.AREA_RELATIONSHIP)
+                                    LifeArea.HEALTH -> stringResource(StringKeyDeepPrediction.AREA_HEALTH)
+                                    LifeArea.WEALTH -> stringResource(StringKeyDeepPrediction.AREA_WEALTH)
+                                    LifeArea.EDUCATION -> stringResource(StringKeyDeepPrediction.AREA_EDUCATION)
+                                    LifeArea.SPIRITUAL -> stringResource(StringKeyDeepPrediction.AREA_SPIRITUAL)
+                                }
+                            },
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -421,7 +438,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "${stringResource(StringKey.PLANET_RAHU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.rahuTransitHouse} | ${stringResource(StringKey.PLANET_KETU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.ketuTransitHouse}",
+                        text = "${stringResource(StringKey.PLANET_RAHU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.rahuTransitHouse.localized()} | ${stringResource(StringKey.PLANET_KETU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.ketuTransitHouse.localized()}",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -464,7 +481,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "${stringResource(StringKeyAnalysis.CHART_DATE)} ${yearly.year}",
+                            text = "${stringResource(StringKeyAnalysis.CHART_DATE)} ${yearly.year.localized()}",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
@@ -541,7 +558,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
             
             items(yearly.keyMonths) { keyMonth ->
                 TimelinePeriodCard(
-                    title = "${stringResource(StringKeyAnalysis.PANCHANGA_NUMBER)} ${keyMonth.month}",
+                    title = "${stringResource(StringKeyAnalysis.PANCHANGA_NUMBER)} ${keyMonth.month.localized()}",
                     dateRange = "",
                     description = keyMonth.significance,
                     strength = keyMonth.rating
@@ -618,7 +635,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${gemstone.planet.displayName}: ${gemstone.primaryGemstone}",
+                            text = "${gemstone.planet.localizedName()}: ${gemstone.primaryGemstone}",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -666,7 +683,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${mantra.planet.displayName} ${stringResource(StringKeyDeepPrediction.MANTRA_REMEDIES)}",
+                            text = "${mantra.planet.localizedName()} ${stringResource(StringKeyDeepPrediction.MANTRA_REMEDIES)}",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -682,7 +699,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         Spacer(modifier = Modifier.height(4.dp))
                         
                         Text(
-                            text = "${stringResource(StringKeyDeepPrediction.CHANT_COUNT)}: ${mantra.chantCount}",
+                            text = "${stringResource(StringKeyDeepPrediction.CHANT_COUNT)}: ${mantra.chantCount.localized()}",
                             style = MaterialTheme.typography.bodySmall
                         )
                         
@@ -713,7 +730,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)} ${charity.planet.displayName}",
+                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)} ${charity.planet.localizedName()}",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -752,7 +769,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)} ${fast.planet.displayName}",
+                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)} ${fast.planet.localizedName()}",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -793,7 +810,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         )
                         
                         Text(
-                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)}: ${yoga.targetPlanet.displayName}",
+                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)}: ${yoga.targetPlanet.localizedName()}",
                             style = MaterialTheme.typography.bodySmall
                         )
                         

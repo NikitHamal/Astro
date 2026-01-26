@@ -56,7 +56,8 @@ class DeepAnalysisViewModel @Inject constructor(
                 cachedResult = result
                 _uiState.value = DeepAnalysisUiState.Success(result)
             } catch (e: Exception) {
-                _uiState.value = DeepAnalysisUiState.Error(e.message ?: "Analysis failed")
+                val errorMsg = e.message ?: "Analysis failed"
+                _uiState.value = DeepAnalysisUiState.Error(errorMsg)
             }
         }
     }
@@ -147,7 +148,8 @@ class DeepPredictionsViewModel @Inject constructor(
                 cachedPredictions = predictions
                 _uiState.value = DeepPredictionsUiState.Success(predictions)
             } catch (e: Exception) {
-                _uiState.value = DeepPredictionsUiState.Error(e.message ?: "Prediction failed")
+                val errorMsg = e.message ?: "Prediction failed"
+                _uiState.value = DeepPredictionsUiState.Error(errorMsg)
             }
         }
     }
