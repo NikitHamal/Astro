@@ -100,21 +100,23 @@ fun DeepNativeAnalysisBody(
     }
     
     val sections = listOf(
-        DeepAnalysisSection.OVERVIEW to stringResource(StringKeyNative.LABEL_OVERVIEW),
-        DeepAnalysisSection.CHARACTER to stringResource(StringKeyNative.SECTION_CHARACTER),
-        DeepAnalysisSection.CAREER to stringResource(StringKeyNative.SECTION_CAREER),
-        DeepAnalysisSection.RELATIONSHIP to stringResource(StringKeyNative.SECTION_MARRIAGE),
-        DeepAnalysisSection.HEALTH to stringResource(StringKeyNative.SECTION_HEALTH),
-        DeepAnalysisSection.WEALTH to stringResource(StringKeyNative.SECTION_WEALTH),
-        DeepAnalysisSection.EDUCATION to stringResource(StringKeyNative.SECTION_EDUCATION),
-        DeepAnalysisSection.SPIRITUAL to stringResource(StringKeyNative.SECTION_SPIRITUAL)
+        Triple(DeepAnalysisSection.OVERVIEW, stringResource(StringKeyNative.LABEL_OVERVIEW), Icons.Default.Dashboard),
+        Triple(DeepAnalysisSection.CHARACTER, stringResource(StringKeyNative.SECTION_CHARACTER), Icons.Default.Person),
+        Triple(DeepAnalysisSection.CAREER, stringResource(StringKeyNative.SECTION_CAREER), Icons.Default.Work),
+        Triple(DeepAnalysisSection.RELATIONSHIP, stringResource(StringKeyNative.SECTION_MARRIAGE), Icons.Default.Favorite),
+        Triple(DeepAnalysisSection.HEALTH, stringResource(StringKeyNative.SECTION_HEALTH), Icons.Default.HealthAndSafety),
+        Triple(DeepAnalysisSection.WEALTH, stringResource(StringKeyNative.SECTION_WEALTH), Icons.Default.AttachMoney),
+        Triple(DeepAnalysisSection.EDUCATION, stringResource(StringKeyNative.SECTION_EDUCATION), Icons.Default.School),
+        Triple(DeepAnalysisSection.SPIRITUAL, stringResource(StringKeyNative.SECTION_SPIRITUAL), Icons.Default.SelfImprovement)
     )
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        // Section tabs
-        val tabItems = sections.map { TabItem(title = it.second, accentColor = AppTheme.AccentPrimary) }
+        // Section tabs with icons
+        val tabItems = sections.map { (section, title, icon) -> 
+            TabItem(title = title, icon = icon, accentColor = AppTheme.AccentPrimary) 
+        }
         val selectedIndex = sections.indexOfFirst { it.first == selectedSection }
         
         ModernPillTabRow(
@@ -123,7 +125,7 @@ fun DeepNativeAnalysisBody(
             onTabSelected = { index ->
                 viewModel.selectSection(sections[index].first)
             },
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
         )
         
         HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f))
@@ -220,7 +222,7 @@ private fun OverviewSection(
     Spacer(modifier = Modifier.height(16.dp))
     
     // Quick highlights
-    DeepSectionHeader(title = stringResource(StringKeyNative.LABEL_STRENGTHS), icon = Icons.Default.Star)
+    DeepSectionHeader(title = stringResource(StringKeyNative.LABEL_STRENGTHS), icon = Icons.Default.AutoAwesome)
     
     ExpandableAnalysisCard(
         title = stringResource(StringKeyDeepCharacter.INNER_NEEDS_TITLE),
@@ -229,9 +231,9 @@ private fun OverviewSection(
         onToggle = { onToggleCard("overview_themes") }
     ) {
         Column {
-            Text(
-                text = stringResource(StringKeyNative.LABEL_COMPREHENSIVE_DESC),
-                style = MaterialTheme.typography.bodyMedium
+            LocalizedParagraphText(
+                paragraph = analysis.character.personalitySummary,
+                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp)
             )
         }
     }
@@ -296,9 +298,15 @@ private fun CharacterSection(
         onToggle = { onToggleCard("char_sun") }
     ) {
         Column {
-            LocalizedParagraphText(paragraph = character.sunAnalysis.coreIdentity)
-            Spacer(modifier = Modifier.height(8.dp))
-            LocalizedParagraphText(paragraph = character.sunAnalysis.egoExpression)
+            LocalizedParagraphText(
+                paragraph = character.sunAnalysis.coreIdentity,
+                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            LocalizedParagraphText(
+                paragraph = character.sunAnalysis.egoExpression,
+                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp)
+            )
         }
     }
     
@@ -351,24 +359,47 @@ private fun CareerSection(
     }
     
     if (career.suitableProfessions.isNotEmpty()) {
-        DeepSectionHeader(title = stringResource(StringKeyDeepCareer.SUITABLE_PROFESSIONS), icon = Icons.Default.BusinessCenter)
-        Column {
+        DeepSectionHeader(title = stringResource(StringKeyDeepCareer.SUITABLE_PROFESSIONS), icon = Icons.Default.WorkOutline)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(AppTheme.CardBackground)
+                .padding(16.dp)
+        ) {
             for (profession in career.suitableProfessions) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     val language = com.astro.storm.data.localization.LocalLanguage.current
                     val localizedProfession = if (language == com.astro.storm.core.common.Language.NEPALI) {
-                        // In production we would have a profession mapping, for now use category displayName
-                        profession.professionName // This might need more work in the engine
+                        profession.professionName
                     } else {
                         profession.professionName
                     }
-                    Text(text = localizedProfession)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Default.ArrowRight,
+                            contentDescription = null,
+                            tint = AppTheme.AccentPrimary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = localizedProfession,
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Medium,
+                            color = AppTheme.TextPrimary
+                        )
+                    }
                     StrengthBadge(strength = profession.suitability)
+                }
+                if (profession != career.suitableProfessions.last()) {
+                    HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f))
                 }
             }
         }
@@ -510,17 +541,20 @@ private fun HealthSection(
             Text(stringResource(StringKeyDeepHealth.DIETARY_RECS), fontWeight = FontWeight.Medium)
             for (item in health.dietaryRecommendations) {
                  Row(
-                     modifier = Modifier.padding(vertical = 4.dp),
-                     verticalAlignment = Alignment.CenterVertically
+                     modifier = Modifier.padding(vertical = 6.dp),
+                     verticalAlignment = Alignment.Top
                  ) {
                      Icon(
                          Icons.Default.Restaurant,
                          contentDescription = null,
-                         modifier = Modifier.size(16.dp),
+                         modifier = Modifier.size(16.dp).padding(top = 2.dp),
                          tint = AppTheme.AccentPrimary
                      )
-                     Spacer(modifier = Modifier.width(8.dp))
-                     LocalizedTraitText(trait = item)
+                     Spacer(modifier = Modifier.width(10.dp))
+                     LocalizedTraitText(
+                         trait = item,
+                         modifier = Modifier.weight(1f)
+                     )
                  }
             }
         }
@@ -581,7 +615,7 @@ private fun WealthSection(
     }
     
     if (wealth.dhanaYogaAnalysis.presentYogas.isNotEmpty()) {
-        DeepSectionHeader(title = stringResource(StringKeyDeepWealth.DHANA_YOGA_TITLE), icon = Icons.Default.Star)
+        DeepSectionHeader(title = stringResource(StringKeyDeepWealth.DHANA_YOGA_TITLE), icon = Icons.Default.AutoAwesome)
         Column {
             for (yoga in wealth.dhanaYogaAnalysis.presentYogas) {
                 TimelinePeriodCard(
@@ -643,16 +677,39 @@ private fun EducationSection(
     
     if (education.suitableSubjects.isNotEmpty()) {
         DeepSectionHeader(title = stringResource(StringKeyDeepEducation.SUBJECT_AFFINITY_TITLE), icon = Icons.Default.MenuBook)
-        Column {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(AppTheme.CardBackground)
+                .padding(16.dp)
+        ) {
             for (subject in education.suitableSubjects) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = subject.subjectName)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Default.CheckCircle,
+                            contentDescription = null,
+                            tint = AppTheme.AccentPrimary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = subject.subjectName,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = AppTheme.TextPrimary
+                        )
+                    }
                     StrengthBadge(strength = subject.affinity)
+                }
+                if (subject != education.suitableSubjects.last()) {
+                    HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f))
                 }
             }
         }

@@ -94,24 +94,26 @@ fun DeepPredictionsBody(
     }
     
     val tabs = listOf(
-        stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS),
-        stringResource(StringKeyAnalysis.ANALYSIS_TAB_TRANSITS),
-        stringResource(StringKeyDeepPrediction.SECTION_CRITICAL),
-        stringResource(StringKeyDeepPrediction.SECTION_YEARLY),
-        stringResource(StringKeyDeepPrediction.SECTION_REMEDIES)
+        Triple(stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS), Icons.Default.Timeline, AppTheme.AccentPrimary),
+        Triple(stringResource(StringKeyAnalysis.ANALYSIS_TAB_TRANSITS), Icons.Default.Public, AppTheme.AccentPrimary),
+        Triple(stringResource(StringKeyDeepPrediction.SECTION_CRITICAL), Icons.Default.Warning, AppTheme.ErrorColor),
+        Triple(stringResource(StringKeyDeepPrediction.SECTION_YEARLY), Icons.Default.Event, AppTheme.AccentPrimary),
+        Triple(stringResource(StringKeyDeepPrediction.SECTION_REMEDIES), Icons.Default.AutoAwesome, AppTheme.SecondaryColor)
     )
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        // Tab row
-        val tabItems = tabs.map { TabItem(title = it, accentColor = AppTheme.AccentPrimary) }
+        // Tab row with icons and contextual colors
+        val tabItems = tabs.map { (title, icon, color) -> 
+            TabItem(title = title, icon = icon, accentColor = color) 
+        }
         
         ModernPillTabRow(
             tabs = tabItems,
-            selectedIndex = selectedTab,
+            selectedIndex = selectedIndex,
             onTabSelected = viewModel::selectTab,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
         )
         
         HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f))
@@ -157,51 +159,101 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
             }
             
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.CardBackground
-                    )
+                Surface(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    shape = RoundedCornerShape(20.dp),
+                    color = AppTheme.CardBackground,
+                    border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor.copy(alpha = 0.3f))
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
+                    Column(modifier = Modifier.padding(20.dp)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Column {
+                                Text(
+                                    text = mahadasha.planet.localizedName(),
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = AppTheme.TextPrimary
+                                )
+                                Text(
+                                    text = stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = AppTheme.AccentPrimary,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
+                            
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(AppTheme.AccentPrimary.copy(alpha = 0.1f))
+                                    .padding(horizontal = 12.dp, vertical = 6.dp)
+                            ) {
+                                Text(
+                                    text = "${mahadasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${mahadasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = AppTheme.AccentPrimary,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        LocalizedParagraphText(
+                             paragraph = mahadasha.overallTheme,
+                             style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp)
+                        )
+                        
+                        if (mahadasha.strengths.isNotEmpty()) {
+                            Spacer(modifier = Modifier.height(16.dp))
                             Text(
-                                text = "${mahadasha.planet.localizedName()} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
-                                style = MaterialTheme.typography.titleLarge,
+                                text = stringResource(StringKeyNative.LABEL_STRENGTHS), 
+                                style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.TextPrimary
                             )
-                        }
-                        
-                        Text(
-                            text = "${mahadasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${mahadasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextSecondary
-                        )
-                        
-                        Spacer(modifier = Modifier.height(12.dp))
-                        
-                        LocalizedParagraphText(paragraph = mahadasha.overallTheme)
-                        
-                        if (mahadasha.strengths.isNotEmpty()) {
-                            Spacer(modifier = Modifier.height(12.dp))
-                            Text(stringResource(StringKeyNative.LABEL_STRENGTHS), fontWeight = FontWeight.Medium)
+                            Spacer(modifier = Modifier.height(8.dp))
                             TraitsList(traits = mahadasha.strengths)
                         }
                         
                         if (mahadasha.challenges.isNotEmpty()) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = stringResource(StringKeyNative.LABEL_CHALLENGES), 
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = AppTheme.TextPrimary
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text(stringResource(StringKeyNative.LABEL_CHALLENGES), fontWeight = FontWeight.Medium)
                             TraitsList(traits = mahadasha.challenges)
                         }
                         
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Text(stringResource(StringKeyDeepPrediction.MAHADASHA_ADVICE), fontWeight = FontWeight.Medium)
-                        LocalizedParagraphText(paragraph = mahadasha.advice)
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(AppTheme.ScreenBackground.copy(alpha = 0.5f))
+                                .padding(16.dp)
+                        ) {
+                            Column {
+                                Text(
+                                    text = stringResource(StringKeyDeepPrediction.MAHADASHA_ADVICE),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = AppTheme.TextPrimary
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                LocalizedParagraphText(
+                                    paragraph = mahadasha.advice,
+                                    style = MaterialTheme.typography.bodySmall.copy(lineHeight = 18.sp)
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -217,41 +269,71 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
             }
             
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.CardBackground
-                    )
+                Surface(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    color = AppTheme.CardBackground,
+                    border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor.copy(alpha = 0.3f))
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "${antardasha.planet.localizedName()} ${stringResource(StringKeyDeepPrediction.ANTARDASHA_TITLE)}",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = AppTheme.TextPrimary
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                Text(
+                                    text = antardasha.planet.localizedName(),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = AppTheme.TextPrimary
+                                )
+                                Text(
+                                    text = stringResource(StringKeyDeepPrediction.ANTARDASHA_TITLE),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = AppTheme.AccentPrimary,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
+                            
+                            Text(
+                                text = "${antardasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${antardasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = AppTheme.TextMuted
+                            )
+                        }
+                        
+                        Spacer(modifier = Modifier.height(12.dp))
+                        
+                        LocalizedParagraphText(
+                            paragraph = antardasha.refinedTheme,
+                            style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp)
                         )
-                        
-                        Text(
-                            text = "${antardasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${antardasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextSecondary
-                        )
-                        
-                        Spacer(modifier = Modifier.height(8.dp))
-                        
-                        LocalizedParagraphText(paragraph = antardasha.refinedTheme)
                         
                         if (antardasha.activatedYogas.isNotEmpty()) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f))
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(stringResource(StringKeyDeepPrediction.ACTIVATED_YOGAS), fontWeight = FontWeight.Medium)
+                            Text(
+                                text = stringResource(StringKeyDeepPrediction.ACTIVATED_YOGAS), 
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = AppTheme.TextPrimary
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
                             for (yoga in antardasha.activatedYogas) {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(vertical = 4.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween
+                                        .padding(vertical = 6.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(yoga.yogaName)
+                                    Text(
+                                        text = yoga.yogaName,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = AppTheme.TextSecondary
+                                    )
                                     StrengthBadge(strength = yoga.activationLevel)
                                 }
                             }
@@ -299,11 +381,11 @@ private fun PredictionsOverviewTab(predictions: DeepPredictions) {
             }
             
             items(predictions.criticalPeriods) { period ->
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.ErrorColor.copy(alpha = 0.05f)
-                    )
+                Surface(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    color = AppTheme.ErrorColor.copy(alpha = 0.05f),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.ErrorColor.copy(alpha = 0.2f))
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
@@ -311,24 +393,31 @@ private fun PredictionsOverviewTab(predictions: DeepPredictions) {
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            LocalizedParagraphText(
-                                paragraph = period.periodName,
-                                style = MaterialTheme.typography.titleMedium.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = AppTheme.ErrorColor
+                            Column(modifier = Modifier.weight(1f)) {
+                                LocalizedParagraphText(
+                                    paragraph = period.periodName,
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = AppTheme.ErrorColor
+                                    )
                                 )
-                            )
+                                Text(
+                                    text = "${period.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)} - ${period.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)}",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = AppTheme.TextMuted
+                                )
+                            }
                             StrengthBadge(strength = period.intensity)
                         }
                         
-                        Text(
-                            text = "${period.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)} - ${period.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
-                        )
-                        
+                        Spacer(modifier = Modifier.height(12.dp))
+                        HorizontalDivider(color = AppTheme.ErrorColor.copy(alpha = 0.1f))
                         Spacer(modifier = Modifier.height(8.dp))
-                        LocalizedParagraphText(paragraph = period.advice)
+                        
+                        LocalizedParagraphText(
+                            paragraph = period.advice,
+                            style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp)
+                        )
                     }
                 }
             }
@@ -739,43 +828,64 @@ private fun RemediesTab(remedies: RemedialProfile) {
             }
             
             items(remedies.gemstoneRemedies) { gemstone ->
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.CardBackground
-                    )
+                Surface(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    color = AppTheme.CardBackground,
+                    border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor.copy(alpha = 0.3f))
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         LocalizedParagraphText(
                             paragraph = gemstone.primaryGemstone,
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = AppTheme.TextPrimary
+                            )
                         )
                         
-                        Row {
+                        Row(modifier = Modifier.padding(top = 4.dp)) {
                             Text(
                                 text = "${stringResource(StringKeyDeepPrediction.ALTERNATIVE_GEMSTONE)}: ",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                style = MaterialTheme.typography.labelSmall,
+                                color = AppTheme.TextMuted,
+                                fontWeight = FontWeight.Medium
                             )
                             LocalizedParagraphText(
                                 paragraph = gemstone.alternativeGemstone,
-                                style = MaterialTheme.typography.bodySmall
+                                style = MaterialTheme.typography.labelSmall.copy(color = AppTheme.TextSecondary)
                             )
                         }
                         
-                        Spacer(modifier = Modifier.height(8.dp))
-                        LocalizedParagraphText(paragraph = gemstone.wearingGuidelines)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        LocalizedParagraphText(
+                            paragraph = gemstone.wearingGuidelines,
+                            style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp)
+                        )
                         
                         if (gemstone.cautions.en.isNotEmpty()) {
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "⚠️ ",
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                            LocalizedParagraphText(
-                                paragraph = gemstone.cautions,
-                                style = MaterialTheme.typography.bodySmall
-                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(AppTheme.ErrorColor.copy(alpha = 0.05f))
+                                    .padding(12.dp)
+                            ) {
+                                Row(verticalAlignment = Alignment.Top) {
+                                    Text(
+                                        text = "⚠️",
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    LocalizedParagraphText(
+                                        paragraph = gemstone.cautions,
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            color = AppTheme.ErrorColor.copy(alpha = 0.8f),
+                                            lineHeight = 18.sp
+                                        )
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -792,38 +902,73 @@ private fun RemediesTab(remedies: RemedialProfile) {
             }
             
             items(remedies.mantraRemedies) { mantra ->
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.CardBackground
-                    )
+                Surface(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    color = AppTheme.CardBackground,
+                    border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor.copy(alpha = 0.3f))
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "${mantra.planet.localizedName()} ${stringResource(StringKeyDeepPrediction.MANTRA_REMEDIES)}",        
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = mantra.planet.localizedName(),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = AppTheme.TextPrimary
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .background(AppTheme.AccentPrimary.copy(alpha = 0.1f))
+                                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                            ) {
+                                Text(
+                                    text = "${stringResource(StringKeyDeepPrediction.CHANT_COUNT)}: ${mantra.chantCount.localized()}",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = AppTheme.AccentPrimary,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
                         
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
                         
-                        Text(
-                            text = mantra.beejaMantra,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Medium
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(AppTheme.ScreenBackground.copy(alpha = 0.6f))
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = mantra.beejaMantra,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = AppTheme.AccentPrimary,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                         
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
                         
-                        Text(
-                            text = "${stringResource(StringKeyDeepPrediction.CHANT_COUNT)}: ${mantra.chantCount.localized()}",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        
-                        LocalizedParagraphText(
-                            paragraph = mantra.bestTime,
-                            style = MaterialTheme.typography.bodySmall
-                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                Icons.Default.Schedule,
+                                contentDescription = null,
+                                modifier = Modifier.size(14.dp),
+                                tint = AppTheme.TextMuted
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            LocalizedParagraphText(
+                                paragraph = mantra.bestTime,
+                                style = MaterialTheme.typography.labelSmall.copy(color = AppTheme.TextMuted)
+                            )
+                        }
                     }
                 }
             }
@@ -958,21 +1103,36 @@ private fun RemediesTab(remedies: RemedialProfile) {
         
         // Overall Advice
         item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
-                )
+            Surface(
+                modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                shape = RoundedCornerShape(20.dp),
+                color = AppTheme.AccentPrimary.copy(alpha = 0.05f),
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.AccentPrimary.copy(alpha = 0.2f))
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = stringResource(StringKeyDeepPrediction.OVERALL_ADVICE),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Default.Lightbulb,
+                            contentDescription = null,
+                            tint = AppTheme.AccentPrimary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = stringResource(StringKeyDeepPrediction.OVERALL_ADVICE),
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = AppTheme.TextPrimary
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                    LocalizedParagraphText(
+                        paragraph = remedies.overallRemedialAdvice,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            lineHeight = 22.sp,
+                            color = AppTheme.TextPrimary.copy(alpha = 0.9f)
+                        )
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    LocalizedParagraphText(paragraph = remedies.overallRemedialAdvice)
                 }
             }
         }
