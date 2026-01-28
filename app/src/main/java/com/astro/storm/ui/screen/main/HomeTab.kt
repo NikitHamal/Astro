@@ -46,6 +46,8 @@ import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Grid4x4
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.AccountTree
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Timelapse

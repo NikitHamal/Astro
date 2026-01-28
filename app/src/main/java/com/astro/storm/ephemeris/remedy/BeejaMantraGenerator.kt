@@ -84,7 +84,7 @@ object BeejaMantraGenerator {
             AstrologicalConstants.isExalted(planet, position.sign) -> "Shreem"
             AstrologicalConstants.isInOwnSign(planet, position.sign) -> "Hreem"
             AstrologicalConstants.isDebilitated(planet, position.sign) -> "Hum"
-            AstrologicalConstants.isInMooltrikona(planet, position.sign, position.longitude % 30.0) -> "Kleem"
+            AstrologicalConstants.isInMoolatrikona(planet, position.sign, position.longitude % 30.0) -> "Kleem"
             else -> "Aim"
         }
     }
