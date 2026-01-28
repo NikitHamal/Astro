@@ -339,7 +339,7 @@ fun LocalizedParagraphText(
 }
 
 /**
- * Trait list display - Modern list with proper spacing
+ * Trait list display - Premium style with colored indicators
  */
 @Composable
 fun TraitsList(
@@ -352,30 +352,52 @@ fun TraitsList(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         traits.forEach { trait ->
+            val strengthColor = DeepAnalysisColors.forStrength(trait.strength)
+            
             Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = AppTheme.CardBackgroundElevated,
-                shape = RoundedCornerShape(10.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(
+                        elevation = 2.dp,
+                        shape = RoundedCornerShape(12.dp),
+                        ambientColor = strengthColor.copy(alpha = 0.08f),
+                        spotColor = strengthColor.copy(alpha = 0.08f)
+                    ),
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                        .padding(14.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    // Left colored indicator
+                    Box(
+                        modifier = Modifier
+                            .width(4.dp)
+                            .height(32.dp)
+                            .clip(RoundedCornerShape(2.dp))
+                            .background(strengthColor)
+                    )
+                    
+                    Spacer(modifier = Modifier.width(14.dp))
+                    
                     Text(
                         text = if (shouldShowNepali) trait.nameNe else trait.name,
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.weight(1f),
                         color = AppTheme.TextPrimary,
+                        fontWeight = FontWeight.Medium,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
+                    
                     Spacer(modifier = Modifier.width(12.dp))
+                    
                     StrengthBadge(strength = trait.strength)
                 }
             }

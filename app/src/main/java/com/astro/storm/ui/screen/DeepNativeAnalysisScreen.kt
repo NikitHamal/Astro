@@ -1,7 +1,9 @@
 package com.astro.storm.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
@@ -9,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -364,20 +367,41 @@ private fun CareerSection(
     
     if (career.suitableProfessions.isNotEmpty()) {
         DeepSectionHeader(title = stringResource(StringKeyDeepCareer.SUITABLE_PROFESSIONS), icon = Icons.Default.BusinessCenter)
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             for (profession in career.suitableProfessions) {
+                val strengthColor = DeepAnalysisColors.forStrength(profession.suitability)
+                
                 Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = AppTheme.CardBackgroundElevated,
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(
+                            elevation = 2.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            ambientColor = strengthColor.copy(alpha = 0.08f),
+                            spotColor = strengthColor.copy(alpha = 0.08f)
+                        ),
+                    color = AppTheme.CardBackground,
+                    shape = RoundedCornerShape(12.dp)
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                            .padding(14.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        // Left colored indicator
+                        Box(
+                            modifier = Modifier
+                                .width(4.dp)
+                                .height(32.dp)
+                                .background(
+                                    strengthColor,
+                                    RoundedCornerShape(2.dp)
+                                )
+                        )
+                        
+                        Spacer(modifier = Modifier.width(14.dp))
+                        
                         val language = com.astro.storm.data.localization.LocalLanguage.current
                         val localizedProfession = if (language == com.astro.storm.core.common.Language.NEPALI) {
                             profession.professionName
@@ -387,10 +411,13 @@ private fun CareerSection(
                         Text(
                             text = localizedProfession,
                             style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary,
                             modifier = Modifier.weight(1f)
                         )
+                        
                         Spacer(modifier = Modifier.width(12.dp))
+                        
                         StrengthBadge(strength = profession.suitability)
                     }
                 }
@@ -691,27 +718,51 @@ private fun EducationSection(
     
     if (education.suitableSubjects.isNotEmpty()) {
         DeepSectionHeader(title = stringResource(StringKeyDeepEducation.SUBJECT_AFFINITY_TITLE), icon = Icons.Default.MenuBook)
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             for (subject in education.suitableSubjects) {
+                val strengthColor = DeepAnalysisColors.forStrength(subject.affinity)
+                
                 Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = AppTheme.CardBackgroundElevated,
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(
+                            elevation = 2.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            ambientColor = strengthColor.copy(alpha = 0.08f),
+                            spotColor = strengthColor.copy(alpha = 0.08f)
+                        ),
+                    color = AppTheme.CardBackground,
+                    shape = RoundedCornerShape(12.dp)
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                            .padding(14.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        // Left colored indicator
+                        Box(
+                            modifier = Modifier
+                                .width(4.dp)
+                                .height(32.dp)
+                                .background(
+                                    strengthColor,
+                                    RoundedCornerShape(2.dp)
+                                )
+                        )
+                        
+                        Spacer(modifier = Modifier.width(14.dp))
+                        
                         Text(
                             text = subject.subjectName,
                             style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary,
                             modifier = Modifier.weight(1f)
                         )
+                        
                         Spacer(modifier = Modifier.width(12.dp))
+                        
                         StrengthBadge(strength = subject.affinity)
                     }
                 }
