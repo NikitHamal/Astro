@@ -78,6 +78,9 @@ fun MainScreen(
     onNavigateToBhriguBindu: () -> Unit = {},
     onNavigateToPredictions: () -> Unit = {},
     onNavigateToAshtottariDasha: () -> Unit = {},
+    onNavigateToTriplePillar: () -> Unit = {},
+    onNavigateToBnnNadi: () -> Unit = {},
+    onNavigateToKpSystem: () -> Unit = {},
     onNavigateToSudarshanaChakra: () -> Unit = {},
     onNavigateToMrityuBhaga: () -> Unit = {},
     onNavigateToLalKitab: () -> Unit = {},
@@ -236,6 +239,9 @@ fun MainScreen(
                                         InsightFeature.DASHAS -> if (currentChart != null) onNavigateToDashas()
                                         InsightFeature.TRANSITS -> if (currentChart != null) onNavigateToTransits()
                                         InsightFeature.ASHTAKAVARGA -> if (currentChart != null) onNavigateToAshtakavarga()
+                                        InsightFeature.TRIPLE_PILLAR -> if (currentChart != null) onNavigateToTriplePillar()
+                                        InsightFeature.BNN_NADI -> if (currentChart != null) onNavigateToBnnNadi()
+                                        InsightFeature.KP_SYSTEM -> if (currentChart != null) onNavigateToKpSystem()
                                         InsightFeature.PANCHANGA -> if (currentChart != null) onNavigateToPanchanga()
                                         InsightFeature.REMEDIES -> if (currentChart != null) onNavigateToRemedies()
                                         InsightFeature.VARSHAPHALA -> if (currentChart != null) onNavigateToVarshaphala()
@@ -468,5 +474,3 @@ enum class MainTab(
         return StringResources.get(titleKey, language)
     }
 }
-
-

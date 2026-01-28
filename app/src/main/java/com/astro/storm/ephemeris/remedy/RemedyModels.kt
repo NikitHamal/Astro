@@ -135,6 +135,8 @@ data class RemediesResult(
     val lifeAreaFocus: Map<LifeArea, List<Remedy>>,
     val prioritizedRemedies: List<Remedy>,
     val summary: String,
+    val ishtaDevataProfile: IshtaDevataCalculator.IshtaDevataProfile?,
+    val beejaMantraProfile: BeejaMantraGenerator.BeejaMantraProfile?,
     val ascendantSign: ZodiacSign,
     val moonSign: ZodiacSign,
     val timestamp: Long = System.currentTimeMillis()
@@ -206,6 +208,18 @@ data class RemediesResult(
         appendLine("─────────────────────────────────────────────────────────")
         generalRecommendations.forEach { appendLine("• $it") }
         appendLine()
+        ishtaDevataProfile?.let { profile ->
+            appendLine("─────────────────────────────────────────────────────────")
+            appendLine("                Ishta Devata & Beeja")
+            appendLine("─────────────────────────────────────────────────────────")
+            appendLine(profile.description)
+            beejaMantraProfile?.let { beeja ->
+                appendLine()
+                appendLine("Beeja Akshara: ${beeja.akshara}")
+                appendLine("Mantra: ${beeja.mantra}")
+            }
+            appendLine()
+        }
         appendLine("─────────────────────────────────────────────────────────")
         appendLine("                        $summaryTitle")
         appendLine("─────────────────────────────────────────────────────────")

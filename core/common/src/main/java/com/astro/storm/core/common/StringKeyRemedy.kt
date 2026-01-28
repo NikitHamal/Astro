@@ -101,6 +101,13 @@ enum class StringKeyRemedy(override val en: String, override val ne: String) : S
     MANTRA_CAUTION_DIET("Avoid eating non-vegetarian food during the practice period", "अभ्यास अवधिमा मांसाहारी भोजन नगर्नुहोस्"),
     MANTRA_CAUTION_VOW("Complete the sankalpa (vow) once started", "एक पटक सुरु गरेपछि संकल्प पूरा गर्नुहोस्"),
 
+    ISHTA_DEVATA_TITLE("Ishta Devata Mantra", "इष्ट देवता मन्त्र"),
+    ISHTA_DEVATA_DESC("Atmakaraka %s in Karakamsha %s reveals the 12th sign %s as your Ishta Devata path, led by %s.", "आत्मकारक %s करकम्श %s मा हुँदा १२औं राशि %s तपाईंको इष्ट देवता मार्ग हो, जसलाई %s ले नेतृत्व गर्छ।"),
+    ISHTA_DEVATA_METHOD("Invoke %s with focused chanting. Begin with the Beeja mantra:\n\n\"%s\"", "%s लाई केन्द्रित जपद्वारा आह्वान गर्नुहोस्। बीज मन्त्रबाट सुरु गर्नुहोस्:\n\n\"%s\""),
+    ISHTA_DEVATA_TIMING("Daily at dawn or during personal meditation time.", "दैनिक बिहान वा ध्यान समयमा।"),
+    ISHTA_DEVATA_DURATION("Practice consistently for 40 days or more for deep alignment.", "गहिरो समन्वयको लागि ४० दिन वा बढी निरन्तर अभ्यास गर्नुहोस्।"),
+    BEEJA_RATIONALE("Birth Nakshatra %s (Pada %d) gives the Akshara \"%s\". Combined with Ishta Devata %s, this forms your tailored Beeja sequence.", "जन्म नक्षत्र %s (पद %d) ले अक्षर \"%s\" दिन्छ। इष्ट देवता %s संग मिलाएर यो तपाईंको विशेष बीज अनुक्रम बनाउँछ।"),
+
     // Charity
     CHARITY_TITLE_SUFFIX(" Daan (Charity)", " दान"),
     CHARITY_DESC("Charitable acts to reduce %s's karmic debts and negative effects.", "%s को कार्मिक ऋण र नकारात्मक प्रभावहरू कम गर्न परोपकारी कार्यहरू।"),

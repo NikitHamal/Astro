@@ -351,6 +351,12 @@ private fun OverviewTab(
             }
         }
 
+        result.ishtaDevataProfile?.let { profile ->
+            item(key = "ishta_devata") {
+                IshtaDevataCard(profile = profile, beeja = result.beejaMantraProfile)
+            }
+        }
+
         if (result.generalRecommendations.isNotEmpty()) {
             item(key = "recommendations") {
                 GeneralRecommendationsCard(result.generalRecommendations)
@@ -423,6 +429,55 @@ private fun SummaryCard(result: RemediesResult) {
             Spacer(modifier = Modifier.height(16.dp))
 
             OverallChartHealthIndicator(result)
+        }
+    }
+}
+
+@Composable
+private fun IshtaDevataCard(
+    profile: IshtaDevataCalculator.IshtaDevataProfile,
+    beeja: BeejaMantraGenerator.BeejaMantraProfile?
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Text(
+                text = "Ishta Devata & Beeja",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = profile.description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = AppTheme.TextSecondary
+            )
+            beeja?.let {
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "Beeja Akshara: ${it.akshara}",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = AppTheme.TextMuted
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = it.mantra,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = AppTheme.TextPrimary
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = it.mantraSanskrit,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextMuted
+                )
+            }
         }
     }
 }
@@ -1900,4 +1955,3 @@ private fun getWeekdayForPlanet(planet: Planet): String {
         else -> ""
     }
 }
-

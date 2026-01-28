@@ -203,6 +203,12 @@ data class MuhurtaSearchResult(
     val specialYogas: List<SpecialYoga>
 )
 
+data class MuhurtaOptimizationResult(
+    val best: MuhurtaSearchResult?,
+    val topResults: List<MuhurtaSearchResult>,
+    val evaluatedWindows: Int
+)
+
 data class PanchangaData(
     val date: LocalDate, val vara: Vara, val tithi: TithiInfo, val tithiEndTime: LocalDateTime,
     val nakshatra: NakshatraInfo, val nakshatraEndTime: LocalDateTime, val yoga: YogaInfo,
@@ -210,5 +216,4 @@ data class PanchangaData(
     val sunrise: LocalTime, val sunset: LocalTime, val rahukala: TimePeriod, val yamaghanta: TimePeriod,
     val gulikaKala: TimePeriod, val abhijitMuhurta: AbhijitMuhurta, val specialYogas: List<SpecialYoga>
 )
-
 

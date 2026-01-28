@@ -53,22 +53,66 @@ class MuhurtaCalculator(context: Context) {
 
     private fun calculateVara(date: LocalDate): Vara = Vara.entries.find { it.dayNumber == date.dayOfWeek.value % 7 } ?: Vara.SUNDAY
 
-    fun findAuspiciousMuhurtas(activity: ActivityType, startDate: LocalDate, endDate: LocalDate, latitude: Double, longitude: Double, timezone: String, minScore: Int = 60): List<MuhurtaSearchResult> {
-        val results = mutableListOf<MuhurtaSearchResult>(); var current = startDate
+    fun findAuspiciousMuhurtas(
+        activity: ActivityType,
+        startDate: LocalDate,
+        endDate: LocalDate,
+        latitude: Double,
+        longitude: Double,
+        timezone: String,
+        minScore: Int = 60
+    ): List<MuhurtaSearchResult> {
+        return findOptimalMuhurtas(activity, startDate, endDate, latitude, longitude, timezone, minScore).topResults
+    }
+
+    fun findOptimalMuhurtas(
+        activity: ActivityType,
+        startDate: LocalDate,
+        endDate: LocalDate,
+        latitude: Double,
+        longitude: Double,
+        timezone: String,
+        minScore: Int = 60,
+        stepMinutes: Long = 5,
+        maxResults: Int = 20
+    ): MuhurtaOptimizationResult {
+        val results = mutableListOf<MuhurtaSearchResult>()
+        var current = startDate
+        var evaluated = 0
         while (!current.isAfter(endDate)) {
             val jd = calculateJulianDay(ZonedDateTime.of(current, LocalTime.of(6, 0), ZoneId.of(timezone)).withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime())
             val (srJd, ssJd) = calculateSunriseSunsetJD(jd, latitude, longitude, swissEph)
-            val sr = jdToLocalTime(srJd, ZoneId.of(timezone)); val ss = jdToLocalTime(ssJd, ZoneId.of(timezone))
+            val sr = jdToLocalTime(srJd, ZoneId.of(timezone))
+            val nextSunrise = jdToLocalTime(srJd + 1.0, ZoneId.of(timezone))
             var time = sr
-            while (time.isBefore(ss)) {
-                val m = calculateMuhurta(LocalDateTime.of(current, time), latitude, longitude, timezone)
+            while (time.isBefore(nextSunrise)) {
+                val baseDate = if (time.isBefore(sr)) current.plusDays(1) else current
+                if (baseDate.isAfter(endDate)) break
+                val dateTime = LocalDateTime.of(baseDate, time)
+                val m = calculateMuhurta(dateTime, latitude, longitude, timezone)
                 val (s, r, w) = evaluateForActivity(m, activity, Language.ENGLISH)
-                if (s >= minScore) results.add(MuhurtaSearchResult(LocalDateTime.of(current, time), s, m.vara, m.nakshatra.nakshatra, m.tithi.name, m.choghadiya.choghadiya, r, w, m.specialYogas))
-                time = time.plusMinutes(30)
+                if (s >= minScore) {
+                    results.add(
+                        MuhurtaSearchResult(
+                            dateTime,
+                            s,
+                            m.vara,
+                            m.nakshatra.nakshatra,
+                            m.tithi.name,
+                            m.choghadiya.choghadiya,
+                            r,
+                            w,
+                            m.specialYogas
+                        )
+                    )
+                }
+                evaluated++
+                time = time.plusMinutes(stepMinutes)
             }
             current = current.plusDays(1)
         }
-        return results.sortedByDescending { it.score }.take(20)
+        val sorted = results.sortedByDescending { it.score }.take(maxResults)
+        return MuhurtaOptimizationResult(sorted.firstOrNull(), sorted, evaluated)
     }
 
     fun getDailyChoghadiya(date: LocalDate, latitude: Double, longitude: Double, timezone: String): Pair<List<ChoghadiyaInfo>, List<ChoghadiyaInfo>> {

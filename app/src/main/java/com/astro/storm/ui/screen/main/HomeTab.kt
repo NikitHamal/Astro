@@ -428,6 +428,27 @@ enum class InsightFeature(
         color = DarkAppThemeColors.SuccessColor,
         isImplemented = true
     ),
+    TRIPLE_PILLAR(
+        titleKey = StringKey.FEATURE_TRIPLE_PILLAR,
+        descriptionKey = StringKey.FEATURE_TRIPLE_PILLAR_DESC,
+        icon = Icons.Outlined.Timeline,
+        color = DarkAppThemeColors.AccentGold,
+        isImplemented = true
+    ),
+    BNN_NADI(
+        titleKey = StringKey.FEATURE_BNN,
+        descriptionKey = StringKey.FEATURE_BNN_DESC,
+        icon = Icons.Outlined.Share,
+        color = DarkAppThemeColors.AccentTeal,
+        isImplemented = true
+    ),
+    KP_SYSTEM(
+        titleKey = StringKey.FEATURE_KP,
+        descriptionKey = StringKey.FEATURE_KP_DESC,
+        icon = Icons.Outlined.AccountTree,
+        color = DarkAppThemeColors.LifeAreaSpiritual,
+        isImplemented = true
+    ),
     PANCHANGA(
         titleKey = StringKey.FEATURE_PANCHANGA,
         descriptionKey = StringKey.FEATURE_PANCHANGA_DESC,
@@ -868,5 +889,4 @@ private fun EmptyHomeState(
         }
     }
 }
-
 

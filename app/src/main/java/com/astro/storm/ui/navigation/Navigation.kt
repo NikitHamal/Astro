@@ -64,6 +64,9 @@ import com.astro.storm.ui.screen.SthanaBalaScreen
 import com.astro.storm.ui.screen.KalaBalaScreen
 import com.astro.storm.ui.screen.SahamScreen
 import com.astro.storm.ui.screen.DeepNativeAnalysisScreen
+import com.astro.storm.ui.screen.TriplePillarScreen
+import com.astro.storm.ui.screen.BnnAspectScreen
+import com.astro.storm.ui.screen.KpSystemScreen
 import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
@@ -151,6 +154,15 @@ sealed class Screen(val route: String) {
     }
     object Ashtakavarga : Screen("ashtakavarga/{chartId}") {
         fun createRoute(chartId: Long) = "ashtakavarga/$chartId"
+    }
+    object TriplePillar : Screen("triple_pillar/{chartId}") {
+        fun createRoute(chartId: Long) = "triple_pillar/$chartId"
+    }
+    object BnnNadi : Screen("bnn_nadi/{chartId}") {
+        fun createRoute(chartId: Long) = "bnn_nadi/$chartId"
+    }
+    object KpSystem : Screen("kp_system/{chartId}") {
+        fun createRoute(chartId: Long) = "kp_system/$chartId"
     }
     object Panchanga : Screen("panchanga/{chartId}") {
         fun createRoute(chartId: Long) = "panchanga/$chartId"
@@ -404,6 +416,21 @@ fun AstroStormNavigation(
                 onNavigateToAshtakavarga = {
                     selectedChartId?.let { chartId ->
                         navController.navigate(Screen.Ashtakavarga.createRoute(chartId))
+                    }
+                },
+                onNavigateToTriplePillar = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.TriplePillar.createRoute(chartId))
+                    }
+                },
+                onNavigateToBnnNadi = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.BnnNadi.createRoute(chartId))
+                    }
+                },
+                onNavigateToKpSystem = {
+                    selectedChartId?.let { chartId ->
+                        navController.navigate(Screen.KpSystem.createRoute(chartId))
                     }
                 },
                 onNavigateToPanchanga = {
@@ -862,6 +889,63 @@ fun AstroStormNavigation(
             }
 
             AshtakavargaScreenRedesigned(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // Triple-Pillar Synthesis screen
+        composable(
+            route = Screen.TriplePillar.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            TriplePillarScreen(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // BNN Nadi Links screen
+        composable(
+            route = Screen.BnnNadi.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            BnnAspectScreen(
+                chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // KP System screen
+        composable(
+            route = Screen.KpSystem.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+
+            KpSystemScreen(
                 chart = currentChart,
                 onBack = { navController.popBackStack() }
             )

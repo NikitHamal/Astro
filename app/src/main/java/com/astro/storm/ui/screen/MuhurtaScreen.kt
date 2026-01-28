@@ -148,7 +148,7 @@ private sealed interface MuhurtaUiState {
 private sealed interface SearchUiState {
     data object Idle : SearchUiState
     data object Searching : SearchUiState
-    data class Results(val results: List<MuhurtaSearchResult>) : SearchUiState
+    data class Results(val results: MuhurtaOptimizationResult) : SearchUiState
     data class Error(val message: String) : SearchUiState
 }
 
@@ -301,8 +301,13 @@ fun MuhurtaScreen(
                                 searchState = SearchUiState.Searching
                                 try {
                                     withContext(Dispatchers.IO) {
-                                        val results = calculator.findAuspiciousMuhurtas(
-                                            activity, startDate, endDate, latitude, longitude, timezone
+                                        val results = calculator.findOptimalMuhurtas(
+                                            activity,
+                                            startDate,
+                                            endDate,
+                                            latitude,
+                                            longitude,
+                                            timezone
                                         )
                                         searchState = SearchUiState.Results(results)
                                     }
@@ -1267,14 +1272,18 @@ private fun FindMuhurtaTabContent(
                 item(key = "searching") { SearchingState() }
             }
             is SearchUiState.Results -> {
-                if (searchState.results.isEmpty()) {
+                val optimization = searchState.results
+                if (optimization.topResults.isEmpty()) {
                     item(key = "no_results") { NoResultsState() }
                 } else {
+                    item(key = "best_result") {
+                        BestMuhurtaCard(best = optimization.best, evaluatedWindows = optimization.evaluatedWindows)
+                    }
                     item(key = "results_header") {
-                        ResultsHeader(count = searchState.results.size)
+                        ResultsHeader(count = optimization.topResults.size)
                     }
                     items(
-                        items = searchState.results,
+                        items = optimization.topResults,
                         key = { it.dateTime.toString() }
                     ) { result ->
                         SearchResultCard(result = result)
@@ -1744,6 +1753,62 @@ private fun ResultsHeader(count: Int) {
 }
 
 @Composable
+private fun BestMuhurtaCard(best: MuhurtaSearchResult?, evaluatedWindows: Int) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Best Muhurta Window",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = "Evaluated $evaluatedWindows windows (5-minute precision).",
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextMuted
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            if (best == null) {
+                Text(
+                    text = "No window met the minimum score. Try expanding the date range.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextSecondary
+                )
+            } else {
+                val dateText = best.dateTime.format(MuhurtaFormatters.shortDateFormatter)
+                val timeText = best.dateTime.toLocalTime().format(MuhurtaFormatters.timeFormatter)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "$dateText • $timeText",
+                            style = MaterialTheme.typography.titleSmall,
+                            color = AppTheme.TextPrimary
+                        )
+                        Text(
+                            text = "${best.nakshatra.getLocalizedName(LocalLanguage.current)} • ${best.tithi}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = AppTheme.TextMuted
+                        )
+                    }
+                    ScoreBadge(score = best.score)
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun SearchResultCard(result: MuhurtaSearchResult) {
     val scoreColor = remember(result.score) { getScoreColor(result.score) }
 
@@ -1887,6 +1952,32 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
 }
 
 @Composable
+private fun ScoreBadge(score: Int) {
+    val scoreColor = remember(score) { getScoreColor(score) }
+    Surface(
+        color = scoreColor.copy(alpha = 0.15f),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "$score",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = scoreColor
+            )
+            Text(
+                text = stringResource(StringKeyMatch.MUHURTA_SCORE),
+                style = MaterialTheme.typography.labelSmall,
+                color = scoreColor.copy(alpha = 0.8f)
+            )
+        }
+    }
+}
+
+@Composable
 private fun ResultDetailChip(
     label: String,
     value: String,
@@ -1955,4 +2046,3 @@ private fun getActivityIcon(activity: ActivityType): ImageVector {
         ActivityType.NAMING_CEREMONY -> Icons.Outlined.ChildCare
     }
 }
-

@@ -44,6 +44,15 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     FEATURE_ASHTAKAVARGA("Ashtakavarga", "अष्टकवर्ग"),
     FEATURE_ASHTAKAVARGA_DESC("Strength analysis by house", "भावानुसार बल विश्लेषण"),
 
+    FEATURE_TRIPLE_PILLAR("Triple-Pillar Synthesis", "त्रि-स्तम्भ समन्वय"),
+    FEATURE_TRIPLE_PILLAR_DESC("Dasha, transit, and Ashtakavarga timing", "दशा, गोचर र अष्टकवर्ग समय संयोजन"),
+
+    FEATURE_BNN("BNN Nadi Links", "BNN नाडी लिंक"),
+    FEATURE_BNN_DESC("Bhrigu Nandi Nadi planetary chains", "भृगु नंदी नाडी ग्रह श्रृंखला"),
+
+    FEATURE_KP("KP Sub-Lords", "KP उप-स्वामी"),
+    FEATURE_KP_DESC("Krishnamurti 4-step event verification", "कृष्णमूर्ति ४-चरण घटना पुष्टि"),
+
     // Ashtakavarga Details
     ASHTAKAVARGA_ABOUT_TITLE("About Ashtakavarga", "अष्टकवर्ग बारेमा"),
     ASHTAKAVARGA_ABOUT_DESC("Ashtakavarga is an ancient Vedic astrology technique for assessing planetary strength and predicting transit effects.", "अष्टकवर्ग वैदिक ज्योतिषको एक प्राचीन प्रविधि हो जसले ग्रहको शक्ति मापन र गोचर प्रभाव पूर्वानुमान गर्दछ।"),

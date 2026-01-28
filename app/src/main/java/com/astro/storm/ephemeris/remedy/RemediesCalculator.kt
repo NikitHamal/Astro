@@ -15,6 +15,8 @@ import com.astro.storm.ephemeris.remedy.RemedyGenerator.getPlanetaryWeekday
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getRudrakshaRemedy
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getYantraRemedy
 import com.astro.storm.ephemeris.remedy.RemedyPlanetaryAnalyzer.analyzePlanet
+import com.astro.storm.ephemeris.remedy.BeejaMantraGenerator
+import com.astro.storm.ephemeris.remedy.IshtaDevataCalculator
 
 object RemediesCalculator {
 
@@ -72,6 +74,13 @@ object RemediesCalculator {
         val generalRecommendations = generateGeneralRecommendations(chart, planetaryAnalyses, ascendantSign, language)
         val dashaRemedies = generateDashaRemedies(chart, planetaryAnalyses, language)
         val lifeAreaFocus = categorizeByLifeArea(allRemedies, planetaryAnalyses, language)
+        val ishtaDevataProfile = runCatching { IshtaDevataCalculator.calculate(chart, language) }.getOrNull()
+        val beejaMantraProfile = ishtaDevataProfile?.let { profile ->
+            runCatching { BeejaMantraGenerator.generate(chart, profile.ishtaPlanet, language) }.getOrNull()
+        }
+        if (ishtaDevataProfile != null && beejaMantraProfile != null) {
+            allRemedies.add(buildIshtaDevataRemedy(ishtaDevataProfile, beejaMantraProfile, language))
+        }
         val prioritizedRemedies = prioritizeRemedies(allRemedies, planetaryAnalyses)
         val summary = generateSummary(planetaryAnalyses, weakestPlanets, ascendantSign, language)
 
@@ -80,7 +89,42 @@ object RemediesCalculator {
             remedies = allRemedies, generalRecommendations = generalRecommendations,
             dashaRemedies = dashaRemedies, lifeAreaFocus = lifeAreaFocus,
             prioritizedRemedies = prioritizedRemedies, summary = summary,
+            ishtaDevataProfile = ishtaDevataProfile,
+            beejaMantraProfile = beejaMantraProfile,
             ascendantSign = ascendantSign, moonSign = moonSign
+        )
+    }
+
+    private fun buildIshtaDevataRemedy(
+        profile: IshtaDevataCalculator.IshtaDevataProfile,
+        beeja: BeejaMantraGenerator.BeejaMantraProfile,
+        language: Language
+    ): Remedy {
+        return Remedy(
+            category = RemedyCategory.MANTRA,
+            title = StringResources.get(StringKeyRemedy.ISHTA_DEVATA_TITLE, language),
+            description = profile.description,
+            method = StringResources.get(
+                StringKeyRemedy.ISHTA_DEVATA_METHOD,
+                language,
+                profile.deityName,
+                beeja.mantra
+            ),
+            timing = StringResources.get(StringKeyRemedy.ISHTA_DEVATA_TIMING, language),
+            duration = StringResources.get(StringKeyRemedy.ISHTA_DEVATA_DURATION, language),
+            planet = profile.ishtaPlanet,
+            priority = RemedyPriority.ESSENTIAL,
+            benefits = listOf(
+                StringResources.get(StringKeyRemedy.MANTRA_BENEFIT_INVOKE, language, profile.deityName),
+                StringResources.get(StringKeyRemedy.MANTRA_BENEFIT_VIBES, language)
+            ),
+            cautions = listOf(
+                StringResources.get(StringKeyRemedy.MANTRA_CAUTION_PURITY, language),
+                StringResources.get(StringKeyRemedy.MANTRA_CAUTION_VOW, language)
+            ),
+            mantraText = beeja.mantra,
+            mantraSanskrit = beeja.mantraSanskrit,
+            mantraCount = 108
         )
     }
 
