@@ -157,6 +157,20 @@ object VedicAstrologyUtils {
         }
     }
 
+    /**
+     * Check if a planet is in its Moolatrikona sign (ignoring degrees).
+     */
+    fun isMoolatrikona(planet: Planet, sign: ZodiacSign): Boolean {
+        return AstrologicalConstants.MOOLATRIKONA_RANGES[planet]?.sign == sign
+    }
+
+    /**
+     * Check if a planet is in its own sign (Swakshetra).
+     */
+    fun isOwnSign(planet: Planet, sign: ZodiacSign): Boolean {
+        return isInOwnSign(planet, sign)
+    }
+
     // ============================================================================
     // PLANETARY RELATIONSHIPS - FRIENDSHIPS
     // ============================================================================
@@ -191,6 +205,28 @@ object VedicAstrologyUtils {
         Planet.RAHU to setOf(Planet.SUN, Planet.MOON, Planet.MARS),
         Planet.KETU to setOf(Planet.SUN, Planet.MOON)
     )
+
+    /**
+     * Enum for planetary friendship levels for legacy support and specific pillar logic.
+     */
+    enum class Friendship {
+        GREAT_FRIEND,
+        FRIEND,
+        NEUTRAL,
+        ENEMY,
+        GREAT_ENEMY
+    }
+
+    /**
+     * Get the natural friendship level between two planets.
+     */
+    fun getPlanetaryFriendship(planet1: Planet, planet2: Planet): Friendship {
+        return when {
+            areNaturalFriends(planet1, planet2) -> Friendship.FRIEND
+            areNaturalEnemies(planet1, planet2) -> Friendship.ENEMY
+            else -> Friendship.NEUTRAL
+        }
+    }
 
     /**
      * Relationship types between planets.
@@ -859,6 +895,13 @@ object VedicAstrologyUtils {
      */
     fun aspectsHouse(planet: Planet, fromHouse: Int, targetHouse: Int): Boolean {
         return targetHouse in getAspectedHouses(planet, fromHouse)
+    }
+
+    /**
+     * Get the house offsets for Vedic aspects of a planet.
+     */
+    fun getVedicAspects(planet: Planet): List<Int> {
+        return AstrologicalConstants.getAllAspects(planet).keys.toList()
     }
 
     // ============================================================================

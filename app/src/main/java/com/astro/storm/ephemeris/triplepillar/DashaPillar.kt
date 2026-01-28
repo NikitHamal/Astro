@@ -466,12 +466,13 @@ object DashaPillar {
         val navamsaPada = (degreeInSign / 3.333333).toInt()
 
         // Navamsa starts from different signs based on element of Rashi sign
-        val rashiSign = ZodiacSign.entries[signIndex]
+        val rashiSign = ZodiacSign.fromLongitude(longitude)
         val startingNavamsaIndex = when (rashiSign.element) {
-            ZodiacSign.Element.FIRE -> 0     // Aries
-            ZodiacSign.Element.EARTH -> 9    // Capricorn
-            ZodiacSign.Element.AIR -> 6      // Libra
-            ZodiacSign.Element.WATER -> 3    // Cancer
+            "Fire" -> 0     // Aries
+            "Earth" -> 9    // Capricorn
+            "Air" -> 6      // Libra
+            "Water" -> 3    // Cancer
+            else -> 0
         }
 
         val navamsaIndex = (startingNavamsaIndex + navamsaPada) % 12
