@@ -1,6 +1,8 @@
 package com.astro.storm.ui.components.deepanalysis
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,11 +19,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
@@ -31,17 +37,18 @@ import com.astro.storm.ui.theme.AppTheme
 
 /**
  * Reusable UI components for Deep Analysis screens
+ * Revamped for consistency with app design system
  */
 
-// Strength level colors
+// Strength level colors - harmonized with app theme
 object DeepAnalysisColors {
     val extremelyStrong = Color(0xFF1B5E20)
     val veryStrong = Color(0xFF2E7D32)
     val excellent = Color(0xFF4CAF50)
     val strong = Color(0xFF8BC34A)
-    val moderate = Color(0xFFFFEB3B)
+    val moderate = Color(0xFFD4A537)  // Warmer gold instead of harsh yellow
     val weak = Color(0xFFFF9800)
-    val afflicted = Color(0xFFF44336)
+    val afflicted = Color(0xFFE57373)  // Softer red
     
     fun forStrength(level: StrengthLevel): Color = when (level) {
         StrengthLevel.EXTREMELY_STRONG -> extremelyStrong
@@ -55,46 +62,48 @@ object DeepAnalysisColors {
 }
 
 /**
- * Section header with icon and subtle background
+ * Section header with icon - Modern style matching app design
  */
 @Composable
 fun DeepSectionHeader(
     title: String,
     icon: ImageVector,
-    modifier: Modifier = Modifier,
-    accentColor: Color = AppTheme.AccentPrimary
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 24.dp, bottom = 12.dp),
+            .padding(vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(40.dp)
-                .background(accentColor.copy(alpha = 0.12f), RoundedCornerShape(10.dp)),
+                .size(36.dp)
+                .background(
+                    AppTheme.AccentPrimary.copy(alpha = 0.15f),
+                    CircleShape
+                ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = accentColor,
-                modifier = Modifier.size(22.dp)
+                tint = AppTheme.AccentPrimary,
+                modifier = Modifier.size(20.dp)
             )
         }
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = title,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary
         )
     }
 }
 
 /**
- * Premium Expandable analysis card with better hierarchy and styling
+ * Expandable analysis card - Premium style with animations
  */
 @Composable
 fun ExpandableAnalysisCard(
@@ -106,66 +115,98 @@ fun ExpandableAnalysisCard(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
+    val rotation by animateFloatAsState(
+        targetValue = if (isExpanded) 180f else 0f,
+        animationSpec = tween(250),
+        label = "expandRotation"
+    )
+
     Surface(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(16.dp),
+                ambientColor = AppTheme.AccentPrimary.copy(alpha = 0.08f),
+                spotColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
+            )
+            .clip(RoundedCornerShape(16.dp))
             .clickable { onToggle() },
         shape = RoundedCornerShape(16.dp),
-        color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(
-            width = 1.dp,
-            color = if (isExpanded) AppTheme.AccentPrimary.copy(alpha = 0.2f) else AppTheme.BorderColor.copy(alpha = 0.3f)
-        )
+        color = AppTheme.CardBackground
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .animateContentSize(animationSpec = tween(250))
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Left indicator line
+                Box(
+                    modifier = Modifier
+                        .width(4.dp)
+                        .height(40.dp)
+                        .clip(RoundedCornerShape(2.dp))
+                        .background(
+                            strength?.let { DeepAnalysisColors.forStrength(it) }
+                                ?: AppTheme.AccentPrimary
+                        )
+                )
+                
+                Spacer(modifier = Modifier.width(12.dp))
+                
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = if (isExpanded) AppTheme.AccentPrimary else AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
                     subtitle?.let {
+                        Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = it,
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
-                            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
                 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    strength?.let {
-                        StrengthBadge(strength = it)
-                        Spacer(modifier = Modifier.width(12.dp))
-                    }
-                    
-                    Icon(
-                        imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                        contentDescription = if (isExpanded) "Collapse" else "Expand",
-                        tint = if (isExpanded) AppTheme.AccentPrimary else AppTheme.TextMuted,
-                        modifier = Modifier.size(24.dp)
-                    )
+                Spacer(modifier = Modifier.width(8.dp))
+                
+                strength?.let {
+                    StrengthBadge(strength = it)
+                    Spacer(modifier = Modifier.width(8.dp))
                 }
+                
+                Icon(
+                    imageVector = Icons.Default.ExpandMore,
+                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    tint = AppTheme.TextMuted,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .rotate(rotation)
+                )
             }
             
             AnimatedVisibility(
                 visible = isExpanded,
-                enter = expandVertically() + fadeIn(),
-                exit = shrinkVertically() + fadeOut()
+                enter = expandVertically(tween(250)) + fadeIn(tween(250)),
+                exit = shrinkVertically(tween(200)) + fadeOut(tween(150))
             ) {
                 Column(modifier = Modifier.padding(top = 16.dp)) {
                     HorizontalDivider(
-                        modifier = Modifier.padding(bottom = 16.dp), 
-                        color = AppTheme.DividerColor.copy(alpha = 0.5f)
+                        color = AppTheme.DividerColor,
+                        modifier = Modifier.padding(bottom = 16.dp)
                     )
                     content()
                 }
@@ -175,7 +216,7 @@ fun ExpandableAnalysisCard(
 }
 
 /**
- * Strength indicator badge
+ * Strength indicator badge - Horizontal layout with proper sizing
  */
 @Composable
 fun StrengthBadge(
@@ -183,25 +224,32 @@ fun StrengthBadge(
     modifier: Modifier = Modifier
 ) {
     val language = com.astro.storm.data.localization.LocalLanguage.current
-    val localizedName = if (language == com.astro.storm.core.common.Language.NEPALI) strength.displayNameNe else strength.displayName
+    val localizedName = if (language == com.astro.storm.core.common.Language.NEPALI) 
+        strength.displayNameNe 
+    else 
+        strength.displayName
+    
+    val color = DeepAnalysisColors.forStrength(strength)
     
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        color = DeepAnalysisColors.forStrength(strength).copy(alpha = 0.2f)
+        color = color.copy(alpha = 0.15f)
     ) {
         Text(
             text = localizedName,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
             style = MaterialTheme.typography.labelSmall,
-            color = DeepAnalysisColors.forStrength(strength),
-            fontWeight = FontWeight.Bold
+            color = color,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
 
 /**
- * Premium circular score indicator with a progress ring
+ * Circular score indicator - Enhanced with gradient ring
  */
 @Composable
 fun ScoreIndicator(
@@ -215,7 +263,7 @@ fun ScoreIndicator(
     } else {
         "${score.toInt()}"
     }
-
+    
     val scoreColor = when {
         score >= 80 -> DeepAnalysisColors.excellent
         score >= 60 -> DeepAnalysisColors.strong
@@ -229,51 +277,41 @@ fun ScoreIndicator(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
-            modifier = Modifier.size(90.dp),
+            modifier = Modifier
+                .size(72.dp)
+                .border(
+                    width = 4.dp,
+                    brush = Brush.sweepGradient(
+                        listOf(
+                            scoreColor,
+                            scoreColor.copy(alpha = 0.3f),
+                            scoreColor
+                        )
+                    ),
+                    shape = CircleShape
+                )
+                .padding(4.dp)
+                .background(
+                    scoreColor.copy(alpha = 0.1f),
+                    CircleShape
+                ),
             contentAlignment = Alignment.Center
         ) {
-            // Track
-            CircularProgressIndicator(
-                progress = { 1f },
-                modifier = Modifier.fillMaxSize(),
-                color = AppTheme.DividerColor.copy(alpha = 0.5f),
-                strokeWidth = 6.dp,
-                strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
+            Text(
+                text = localizedScore,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = scoreColor
             )
-            
-            // Progress
-            CircularProgressIndicator(
-                progress = { (score / 100f).toFloat() },
-                modifier = Modifier.fillMaxSize(),
-                color = scoreColor,
-                strokeWidth = 6.dp,
-                strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
-            )
-
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = localizedScore,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = AppTheme.TextPrimary
-                )
-                Text(
-                    text = "/100",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AppTheme.TextMuted,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
-            }
         }
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = label,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.labelSmall,
             textAlign = TextAlign.Center,
-            color = AppTheme.TextSecondary,
-            lineHeight = 16.sp,
+            color = AppTheme.TextMuted,
             maxLines = 2,
-            modifier = Modifier.width(100.dp)
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -295,12 +333,13 @@ fun LocalizedParagraphText(
         text = if (shouldShowNepali) paragraph.ne else paragraph.en,
         modifier = modifier,
         style = style,
-        color = AppTheme.TextSecondary
+        color = AppTheme.TextSecondary,
+        lineHeight = 22.sp
     )
 }
 
 /**
- * Trait list display
+ * Trait list display - Modern list with proper spacing
  */
 @Composable
 fun TraitsList(
@@ -311,31 +350,41 @@ fun TraitsList(
     val language = com.astro.storm.data.localization.LocalLanguage.current
     val shouldShowNepali = useNepali ?: (language == com.astro.storm.core.common.Language.NEPALI)
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         traits.forEach { trait ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = AppTheme.CardBackgroundElevated,
+                shape = RoundedCornerShape(10.dp)
             ) {
-                Text(
-                    text = if (shouldShowNepali) trait.nameNe else trait.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.weight(1f),
-                    color = AppTheme.TextSecondary
-                )
-                StrengthBadge(strength = trait.strength)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = if (shouldShowNepali) trait.nameNe else trait.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f),
+                        color = AppTheme.TextPrimary,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    StrengthBadge(strength = trait.strength)
+                }
             }
         }
     }
 }
 
-
-
 /**
- * Enhanced timeline period card with vertical timeline line
+ * Timeline period card - Modern style with colored indicator
  */
 @Composable
 fun TimelinePeriodCard(
@@ -346,93 +395,63 @@ fun TimelinePeriodCard(
     useNepali: Boolean? = null,
     modifier: Modifier = Modifier
 ) {
-    val strengthColor = DeepAnalysisColors.forStrength(strength)
+    val color = DeepAnalysisColors.forStrength(strength)
     
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        shape = RoundedCornerShape(16.dp),
-        color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor.copy(alpha = 0.3f))
+            .padding(vertical = 6.dp)
+            .shadow(
+                elevation = 2.dp,
+                shape = RoundedCornerShape(14.dp),
+                ambientColor = color.copy(alpha = 0.1f),
+                spotColor = color.copy(alpha = 0.1f)
+            ),
+        shape = RoundedCornerShape(14.dp),
+        color = AppTheme.CardBackground
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            // Timeline indicator
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.width(24.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(16.dp)
-                        .clip(CircleShape)
-                        .background(strengthColor.copy(alpha = 0.2f), CircleShape)
-                        .border(2.dp, strengthColor, CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(6.dp)
-                            .background(strengthColor, CircleShape)
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .width(2.dp)
-                        .height(60.dp)
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(strengthColor.copy(alpha = 0.5f), Color.Transparent)
-                            )
-                        )
-                )
-            }
+        Row(modifier = Modifier.padding(14.dp)) {
+            // Colored indicator dot with pulse animation effect
+            Box(
+                modifier = Modifier
+                    .size(10.dp)
+                    .clip(CircleShape)
+                    .background(color)
+            )
             
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(14.dp))
             
             Column(modifier = Modifier.weight(1f)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = AppTheme.TextPrimary
-                        )
-                        Text(
-                            text = dateRange,
-                            style = MaterialTheme.typography.labelMedium,
-                            color = AppTheme.AccentPrimary,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                    StrengthBadge(strength = strength)
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.TextPrimary
+                )
+                if (dateRange.isNotEmpty()) {
+                    Text(
+                        text = dateRange,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AppTheme.TextMuted
+                    )
                 }
-                
-                Spacer(modifier = Modifier.height(12.dp))
-                
+                Spacer(modifier = Modifier.height(6.dp))
                 LocalizedParagraphText(
                     paragraph = description,
                     useNepali = useNepali,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        lineHeight = 22.sp,
-                        color = AppTheme.TextSecondary
-                    )
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
+            
+            Spacer(modifier = Modifier.width(8.dp))
+            
+            StrengthBadge(strength = strength)
         }
     }
 }
 
 /**
- * Revamped analysis overview card with horizontal scrollable scores
+ * Analysis overview card with scores - Premium design
  */
 @Composable
 fun AnalysisOverviewCard(
@@ -445,55 +464,70 @@ fun AnalysisOverviewCard(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp),
-        shape = RoundedCornerShape(24.dp),
-        color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor.copy(alpha = 0.3f))
+            .padding(vertical = 8.dp)
+            .shadow(
+                elevation = 6.dp,
+                shape = RoundedCornerShape(20.dp),
+                ambientColor = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+                spotColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
+            ),
+        shape = RoundedCornerShape(20.dp),
+        color = AppTheme.CardBackground
     ) {
-        Column(modifier = Modifier.padding(vertical = 24.dp)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary,
-                modifier = Modifier.padding(horizontal = 24.dp)
-            )
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(
+                            AppTheme.AccentPrimary.copy(alpha = 0.15f),
+                            CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Analytics,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = AppTheme.TextPrimary
+                )
+            }
             
             Spacer(modifier = Modifier.height(20.dp))
             
+            // Score row with proper spacing
             LazyRow(
-                contentPadding = PaddingValues(horizontal = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                items(scores) { (label, score) ->
+                items(scores.take(4)) { (label, score) ->
                     ScoreIndicator(score = score, label = label)
                 }
             }
             
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+            HorizontalDivider(color = AppTheme.DividerColor)
+            Spacer(modifier = Modifier.height(16.dp))
             
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(AppTheme.ScreenBackground.copy(alpha = 0.5f))
-                    .padding(16.dp)
-            ) {
-                LocalizedParagraphText(
-                    paragraph = summary,
-                    useNepali = useNepali,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        lineHeight = 22.sp,
-                        color = AppTheme.TextSecondary
-                    )
-                )
-            }
+            LocalizedParagraphText(
+                paragraph = summary,
+                useNepali = useNepali
+            )
         }
     }
 }
 
 /**
- * Loading state
+ * Loading state - Modern spinner
  */
 @Composable
 fun DeepAnalysisLoading(
@@ -513,17 +547,30 @@ fun DeepAnalysisLoading(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(48.dp),
-                strokeWidth = 4.dp,
-                color = AppTheme.AccentPrimary
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .background(
+                        AppTheme.AccentPrimary.copy(alpha = 0.1f),
+                        CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp),
+                    strokeWidth = 4.dp,
+                    color = AppTheme.AccentPrimary,
+                    strokeCap = StrokeCap.Round
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = loadingText,
                 style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(StringKey.MSG_MAY_TAKE_MOMENT),
                 style = MaterialTheme.typography.bodySmall,
@@ -534,7 +581,7 @@ fun DeepAnalysisLoading(
 }
 
 /**
- * Error state
+ * Error state - Modern error display
  */
 @Composable
 fun DeepAnalysisError(
@@ -546,33 +593,128 @@ fun DeepAnalysisError(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            shape = RoundedCornerShape(20.dp),
+            color = AppTheme.ErrorColor.copy(alpha = 0.08f)
         ) {
-            Icon(
-                imageVector = Icons.Default.Error,
-                contentDescription = null,
-                tint = AppTheme.ErrorColor,
-                modifier = Modifier.size(48.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(StringKey.ERROR_ANALYSIS_FAILED),
-                style = MaterialTheme.typography.titleMedium,
-                color = AppTheme.ErrorColor
-            )
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodySmall,
-                color = AppTheme.TextMuted
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = onRetry,
-                colors = ButtonDefaults.buttonColors(containerColor = AppTheme.AccentPrimary)
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(stringResource(StringKey.BTN_RETRY))
+                Box(
+                    modifier = Modifier
+                        .size(64.dp)
+                        .background(
+                            AppTheme.ErrorColor.copy(alpha = 0.15f),
+                            CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Error,
+                        contentDescription = null,
+                        tint = AppTheme.ErrorColor,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = stringResource(StringKey.ERROR_ANALYSIS_FAILED),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.ErrorColor
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextMuted,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = onRetry,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = AppTheme.AccentPrimary
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(StringKey.BTN_RETRY),
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
             }
         }
+    }
+}
+
+/**
+ * Modern section card for consistent styling across deep analysis screens
+ */
+@Composable
+fun DeepAnalysisSectionCard(
+    modifier: Modifier = Modifier,
+    accentColor: Color = AppTheme.AccentPrimary,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(16.dp),
+                ambientColor = accentColor.copy(alpha = 0.08f),
+                spotColor = accentColor.copy(alpha = 0.08f)
+            ),
+        shape = RoundedCornerShape(16.dp),
+        color = AppTheme.CardBackground
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            content = content
+        )
+    }
+}
+
+/**
+ * Info row for consistent key-value display
+ */
+@Composable
+fun DeepAnalysisInfoRow(
+    label: String,
+    value: String,
+    valueColor: Color = AppTheme.TextPrimary,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = AppTheme.TextMuted,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = valueColor
+        )
     }
 }

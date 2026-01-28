@@ -1,9 +1,7 @@
 package com.astro.storm.ui.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
@@ -11,11 +9,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
@@ -104,23 +100,21 @@ fun DeepNativeAnalysisBody(
     }
     
     val sections = listOf(
-        Triple(DeepAnalysisSection.OVERVIEW, stringResource(StringKeyNative.LABEL_OVERVIEW), Icons.Default.Dashboard),
-        Triple(DeepAnalysisSection.CHARACTER, stringResource(StringKeyNative.SECTION_CHARACTER), Icons.Default.Person),
-        Triple(DeepAnalysisSection.CAREER, stringResource(StringKeyNative.SECTION_CAREER), Icons.Default.Work),
-        Triple(DeepAnalysisSection.RELATIONSHIP, stringResource(StringKeyNative.SECTION_MARRIAGE), Icons.Default.Favorite),
-        Triple(DeepAnalysisSection.HEALTH, stringResource(StringKeyNative.SECTION_HEALTH), Icons.Default.HealthAndSafety),
-        Triple(DeepAnalysisSection.WEALTH, stringResource(StringKeyNative.SECTION_WEALTH), Icons.Default.AttachMoney),
-        Triple(DeepAnalysisSection.EDUCATION, stringResource(StringKeyNative.SECTION_EDUCATION), Icons.Default.School),
-        Triple(DeepAnalysisSection.SPIRITUAL, stringResource(StringKeyNative.SECTION_SPIRITUAL), Icons.Default.SelfImprovement)
+        DeepAnalysisSection.OVERVIEW to stringResource(StringKeyNative.LABEL_OVERVIEW),
+        DeepAnalysisSection.CHARACTER to stringResource(StringKeyNative.SECTION_CHARACTER),
+        DeepAnalysisSection.CAREER to stringResource(StringKeyNative.SECTION_CAREER),
+        DeepAnalysisSection.RELATIONSHIP to stringResource(StringKeyNative.SECTION_MARRIAGE),
+        DeepAnalysisSection.HEALTH to stringResource(StringKeyNative.SECTION_HEALTH),
+        DeepAnalysisSection.WEALTH to stringResource(StringKeyNative.SECTION_WEALTH),
+        DeepAnalysisSection.EDUCATION to stringResource(StringKeyNative.SECTION_EDUCATION),
+        DeepAnalysisSection.SPIRITUAL to stringResource(StringKeyNative.SECTION_SPIRITUAL)
     )
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        // Section tabs with icons
-        val tabItems = sections.map { (section, title, icon) -> 
-            TabItem(title = title, icon = icon, accentColor = AppTheme.AccentPrimary) 
-        }
+        // Section tabs
+        val tabItems = sections.map { TabItem(title = it.second, accentColor = AppTheme.AccentPrimary) }
         val selectedIndex = sections.indexOfFirst { it.first == selectedSection }
         
         ModernPillTabRow(
@@ -129,7 +123,7 @@ fun DeepNativeAnalysisBody(
             onTabSelected = { index ->
                 viewModel.selectSection(sections[index].first)
             },
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
         
         HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f))
@@ -226,7 +220,7 @@ private fun OverviewSection(
     Spacer(modifier = Modifier.height(16.dp))
     
     // Quick highlights
-    DeepSectionHeader(title = stringResource(StringKeyNative.LABEL_STRENGTHS), icon = Icons.Default.AutoAwesome)
+    DeepSectionHeader(title = stringResource(StringKeyNative.LABEL_STRENGTHS), icon = Icons.Default.Star)
     
     ExpandableAnalysisCard(
         title = stringResource(StringKeyDeepCharacter.INNER_NEEDS_TITLE),
@@ -235,9 +229,9 @@ private fun OverviewSection(
         onToggle = { onToggleCard("overview_themes") }
     ) {
         Column {
-            LocalizedParagraphText(
-                paragraph = analysis.character.personalitySummary,
-                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp)
+            Text(
+                text = stringResource(StringKeyNative.LABEL_COMPREHENSIVE_DESC),
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
@@ -249,10 +243,16 @@ private fun CharacterSection(
     expandedCards: Set<String>,
     onToggleCard: (String) -> Unit
 ) {
-    ScoreIndicator(
-        score = character.personalityStrengthScore,
-        label = stringResource(StringKeyDeepCharacter.PERSONALITY_SCORE)
-    )
+    // Centered score indicator
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        ScoreIndicator(
+            score = character.personalityStrengthScore,
+            label = stringResource(StringKeyDeepCharacter.PERSONALITY_SCORE)
+        )
+    }
     
     Spacer(modifier = Modifier.height(16.dp))
     
@@ -302,15 +302,9 @@ private fun CharacterSection(
         onToggle = { onToggleCard("char_sun") }
     ) {
         Column {
-            LocalizedParagraphText(
-                paragraph = character.sunAnalysis.coreIdentity,
-                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp)
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            LocalizedParagraphText(
-                paragraph = character.sunAnalysis.egoExpression,
-                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp)
-            )
+            LocalizedParagraphText(paragraph = character.sunAnalysis.coreIdentity)
+            Spacer(modifier = Modifier.height(8.dp))
+            LocalizedParagraphText(paragraph = character.sunAnalysis.egoExpression)
         }
     }
     
@@ -329,10 +323,16 @@ private fun CareerSection(
     expandedCards: Set<String>,
     onToggleCard: (String) -> Unit
 ) {
-    ScoreIndicator(
-        score = career.careerStrengthScore,
-        label = stringResource(StringKeyDeepCareer.CAREER_SCORE)
-    )
+    // Centered score indicator
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        ScoreIndicator(
+            score = career.careerStrengthScore,
+            label = stringResource(StringKeyDeepCareer.CAREER_SCORE)
+        )
+    }
     
     Spacer(modifier = Modifier.height(16.dp))
     
@@ -363,47 +363,36 @@ private fun CareerSection(
     }
     
     if (career.suitableProfessions.isNotEmpty()) {
-        DeepSectionHeader(title = stringResource(StringKeyDeepCareer.SUITABLE_PROFESSIONS), icon = Icons.Default.WorkOutline)
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
-                .background(AppTheme.CardBackground)
-                .padding(16.dp)
-        ) {
+        DeepSectionHeader(title = stringResource(StringKeyDeepCareer.SUITABLE_PROFESSIONS), icon = Icons.Default.BusinessCenter)
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             for (profession in career.suitableProfessions) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = AppTheme.CardBackgroundElevated,
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp)
                 ) {
-                    val language = com.astro.storm.data.localization.LocalLanguage.current
-                    val localizedProfession = if (language == com.astro.storm.core.common.Language.NEPALI) {
-                        profession.professionName
-                    } else {
-                        profession.professionName
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            Icons.Default.ArrowRight,
-                            contentDescription = null,
-                            tint = AppTheme.AccentPrimary,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        val language = com.astro.storm.data.localization.LocalLanguage.current
+                        val localizedProfession = if (language == com.astro.storm.core.common.Language.NEPALI) {
+                            profession.professionName
+                        } else {
+                            profession.professionName
+                        }
                         Text(
                             text = localizedProfession,
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Medium,
-                            color = AppTheme.TextPrimary
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = AppTheme.TextPrimary,
+                            modifier = Modifier.weight(1f)
                         )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        StrengthBadge(strength = profession.suitability)
                     }
-                    StrengthBadge(strength = profession.suitability)
-                }
-                if (profession != career.suitableProfessions.last()) {
-                    HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f))
                 }
             }
         }
@@ -440,10 +429,16 @@ private fun RelationshipSection(
     expandedCards: Set<String>,
     onToggleCard: (String) -> Unit
 ) {
-    ScoreIndicator(
-        score = relationship.relationshipStrengthScore,
-        label = stringResource(StringKeyDeepRelationship.REL_SCORE)
-    )
+    // Centered score indicator
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        ScoreIndicator(
+            score = relationship.relationshipStrengthScore,
+            label = stringResource(StringKeyDeepRelationship.REL_SCORE)
+        )
+    }
     
     Spacer(modifier = Modifier.height(16.dp))
     
@@ -518,10 +513,16 @@ private fun HealthSection(
     expandedCards: Set<String>,
     onToggleCard: (String) -> Unit
 ) {
-    ScoreIndicator(
-        score = health.healthStrengthScore,
-        label = stringResource(StringKeyDeepHealth.HEALTH_SCORE)
-    )
+    // Centered score indicator
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        ScoreIndicator(
+            score = health.healthStrengthScore,
+            label = stringResource(StringKeyDeepHealth.HEALTH_SCORE)
+        )
+    }
     
     Spacer(modifier = Modifier.height(16.dp))
     
@@ -545,20 +546,17 @@ private fun HealthSection(
             Text(stringResource(StringKeyDeepHealth.DIETARY_RECS), fontWeight = FontWeight.Medium)
             for (item in health.dietaryRecommendations) {
                  Row(
-                     modifier = Modifier.padding(vertical = 6.dp),
-                     verticalAlignment = Alignment.Top
+                     modifier = Modifier.padding(vertical = 4.dp),
+                     verticalAlignment = Alignment.CenterVertically
                  ) {
                      Icon(
                          Icons.Default.Restaurant,
                          contentDescription = null,
-                         modifier = Modifier.size(16.dp).padding(top = 2.dp),
+                         modifier = Modifier.size(16.dp),
                          tint = AppTheme.AccentPrimary
                      )
-                     Spacer(modifier = Modifier.width(10.dp))
-                     LocalizedTraitText(
-                         trait = item,
-                         modifier = Modifier.weight(1f)
-                     )
+                     Spacer(modifier = Modifier.width(8.dp))
+                     LocalizedTraitText(trait = item)
                  }
             }
         }
@@ -589,10 +587,16 @@ private fun WealthSection(
     expandedCards: Set<String>,
     onToggleCard: (String) -> Unit
 ) {
-    ScoreIndicator(
-        score = wealth.wealthStrengthScore,
-        label = stringResource(StringKeyDeepWealth.WEALTH_SCORE)
-    )
+    // Centered score indicator
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        ScoreIndicator(
+            score = wealth.wealthStrengthScore,
+            label = stringResource(StringKeyDeepWealth.WEALTH_SCORE)
+        )
+    }
     
     Spacer(modifier = Modifier.height(16.dp))
     
@@ -619,7 +623,7 @@ private fun WealthSection(
     }
     
     if (wealth.dhanaYogaAnalysis.presentYogas.isNotEmpty()) {
-        DeepSectionHeader(title = stringResource(StringKeyDeepWealth.DHANA_YOGA_TITLE), icon = Icons.Default.AutoAwesome)
+        DeepSectionHeader(title = stringResource(StringKeyDeepWealth.DHANA_YOGA_TITLE), icon = Icons.Default.Star)
         Column {
             for (yoga in wealth.dhanaYogaAnalysis.presentYogas) {
                 TimelinePeriodCard(
@@ -642,10 +646,16 @@ private fun EducationSection(
     expandedCards: Set<String>,
     onToggleCard: (String) -> Unit
 ) {
-    ScoreIndicator(
-        score = education.educationStrengthScore,
-        label = stringResource(StringKeyNative.TITLE_ACADEMIC_POTENTIAL)
-    )
+    // Centered score indicator
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        ScoreIndicator(
+            score = education.educationStrengthScore,
+            label = stringResource(StringKeyNative.TITLE_ACADEMIC_POTENTIAL)
+        )
+    }
     
     Spacer(modifier = Modifier.height(16.dp))
     
@@ -681,39 +691,29 @@ private fun EducationSection(
     
     if (education.suitableSubjects.isNotEmpty()) {
         DeepSectionHeader(title = stringResource(StringKeyDeepEducation.SUBJECT_AFFINITY_TITLE), icon = Icons.Default.MenuBook)
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
-                .background(AppTheme.CardBackground)
-                .padding(16.dp)
-        ) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             for (subject in education.suitableSubjects) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = AppTheme.CardBackgroundElevated,
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp)
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            Icons.Default.CheckCircle,
-                            contentDescription = null,
-                            tint = AppTheme.AccentPrimary,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(
                             text = subject.subjectName,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = AppTheme.TextPrimary
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = AppTheme.TextPrimary,
+                            modifier = Modifier.weight(1f)
                         )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        StrengthBadge(strength = subject.affinity)
                     }
-                    StrengthBadge(strength = subject.affinity)
-                }
-                if (subject != education.suitableSubjects.last()) {
-                    HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.3f))
                 }
             }
         }
@@ -729,10 +729,16 @@ private fun SpiritualSection(
     expandedCards: Set<String>,
     onToggleCard: (String) -> Unit
 ) {
-    ScoreIndicator(
-        score = spiritual.spiritualStrengthScore,
-        label = stringResource(StringKeyNative.TITLE_SPIRITUAL_INCLINATION)
-    )
+    // Centered score indicator
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        ScoreIndicator(
+            score = spiritual.spiritualStrengthScore,
+            label = stringResource(StringKeyNative.TITLE_SPIRITUAL_INCLINATION)
+        )
+    }
     
     Spacer(modifier = Modifier.height(16.dp))
     
