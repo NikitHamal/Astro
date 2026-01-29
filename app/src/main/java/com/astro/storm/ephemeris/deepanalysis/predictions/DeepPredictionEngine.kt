@@ -52,16 +52,16 @@ object DeepPredictionEngine {
     private fun analyzeDashaSystem(context: AnalysisContext): DashaDeepAnalysis {
         val currentMaha = context.currentMahadasha
         val currentAntar = context.currentMahadasha?.antardashas?.find { 
-            val now = LocalDate.now()
-            !it.startDate.isAfter(now) && !it.endDate.isBefore(now)
+            val now = LocalDateTime.now()
+            it.isActiveOn(now)
         }
 
         return DashaDeepAnalysis(
             currentMahadasha = currentMaha?.let { mah ->
                 MahadashaDeepAnalysis(
                     planet = mah.planet,
-                    startDate = mah.startDate,
-                    endDate = mah.endDate,
+                    startDate = mah.startDate.toLocalDate(),
+                    endDate = mah.endDate.toLocalDate(),
                     overallTheme = LocalizedParagraph(
                         "${mah.planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)} dasha: Focus on ${mah.planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)} significations.",
                         "${mah.planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)} को महादशा: ${mah.planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)} को क्षेत्रमा ध्यान दिनुहोस्।"
@@ -75,8 +75,8 @@ object DeepPredictionEngine {
             currentAntardasha = currentAntar?.let { ant ->
                 AntardashaDeepAnalysis(
                     planet = ant.planet,
-                    startDate = ant.startDate,
-                    endDate = ant.endDate,
+                    startDate = ant.startDate.toLocalDate(),
+                    endDate = ant.endDate.toLocalDate(),
                     refinedTheme = LocalizedParagraph("Refining focus through ${ant.planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)}.", "अन्त्यर्दशा मार्फत थप ध्यान।"),
                     shortTermEffects = emptyList(),
                     activatedYogas = emptyList()
