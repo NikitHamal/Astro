@@ -1043,6 +1043,33 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     // ============================================
     // ERROR STRINGS
     // ============================================
-    ERROR_CALCULATION("Calculation Error", "गणना त्रुटि");
+    ERROR_CALCULATION("Calculation Error", "गणना त्रुटि"),
+
+    // ============================================
+    // HOME TAB - REVAMPED UI
+    // ============================================
+    HOME_EXPLORE_FEATURES("Explore your chart features", "आफ्नो कुण्डली सुविधाहरू अन्वेषण गर्नुहोस्"),
+    QUICK_ACTIONS("Quick Actions", "द्रुत कार्यहरू"),
+    TODAYS_SNAPSHOT("Today's Snapshot", "आजको झलक"),
+    VIEW_CURRENT_TRANSITS("View current planetary positions", "हालको ग्रह स्थितिहरू हेर्नुहोस्"),
+    CURRENT_MAHA_DASHA("Current Maha Dasha", "हालको महा दशा"),
+    DASHA_PERIOD("Dasha", "दशा"),
+    REMAINING_PERIOD_YEARS("%s years, %s months remaining", "%s वर्ष, %s महिना बाँकी"),
+    REMAINING_PERIOD_MONTHS("%s months remaining", "%s महिना बाँकी"),
+    TAP_TO_VIEW_DASHAS("Tap to view your Dasha timeline", "आफ्नो दशा समयरेखा हेर्न ट्याप गर्नुहोस्"),
+    
+    // Feature Categories
+    CATEGORY_CORE_ANALYSIS("Core Analysis", "मुख्य विश्लेषण"),
+    CATEGORY_CORE_DESC("Charts, planets, nakshatras & vargas", "कुण्डली, ग्रह, नक्षत्र र वर्गहरू"),
+    CATEGORY_TIMING_SYSTEMS("Timing Systems", "समय प्रणाली"),
+    CATEGORY_TIMING_DESC("Dashas & planetary periods", "दशा र ग्रह अवधिहरू"),
+    CATEGORY_PREDICTIONS("Predictions & Yogas", "भविष्यवाणी र योग"),
+    CATEGORY_PREDICTIONS_DESC("Life predictions & combinations", "जीवन भविष्यवाणी र संयोजन"),
+    CATEGORY_STRENGTH_ANALYSIS("Strength Analysis", "बल विश्लेषण"),
+    CATEGORY_STRENGTH_DESC("Shadbala & planetary strength", "षड्बल र ग्रह बल"),
+    CATEGORY_ADVANCED("Advanced Techniques", "उन्नत प्रविधि"),
+    CATEGORY_ADVANCED_DESC("Jaimini, Nadi & specialized systems", "जैमिनी, नाडी र विशेष प्रणाली"),
+    CATEGORY_REMEDIAL("Remedies & Compatibility", "उपाय र अनुकूलता"),
+    CATEGORY_REMEDIAL_DESC("Remedies, matching & muhurta", "उपाय, मिलान र मुहूर्त");
 
 }
