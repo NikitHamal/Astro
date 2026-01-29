@@ -36,20 +36,20 @@ object ShoolaDashaCalculator {
         val applicability = calculateApplicability(chart, triMurti)
 
         return ShoolaDashaResult(
-            triMurtiAnalysis = triMurti,
+            triMurti = triMurti,
             startingSign = startSign,
-            direction = direction,
+            dashaDirection = direction,
             mahadashas = mahadashas,
             currentMahadasha = currentMahadasha,
             currentAntardasha = antardashas.find { it.isCurrent },
             antardashas = antardashas,
-            allVulnerabilities = vulnerabilities,
-            upcomingVulnerabilities = vulnerabilities.filter { it.startDate.isAfter(LocalDateTime.now()) }.take(5),
+            healthVulnerabilities = vulnerabilities,
+            upcomingCriticalPeriods = vulnerabilities.filter { it.startDate.isAfter(LocalDateTime.now()) }.take(5),
             longevityAssessment = longevity,
             remedies = generateRemedies(triMurti, currentMahadasha),
-            summaryEn = StringResources.get(StringKeyDosha.SHOOLA_SUMMARY_EN, Language.ENGLISH),
-            summaryNe = StringResources.get(StringKeyDosha.SHOOLA_SUMMARY_NE, Language.NEPALI),
-            applicabilityScore = applicability
+            overallAssessment = StringResources.get(StringKeyDosha.SHOOLA_SUMMARY_EN, Language.ENGLISH),
+            overallAssessmentNe = StringResources.get(StringKeyDosha.SHOOLA_SUMMARY_NE, Language.NEPALI),
+            systemApplicability = applicability
         )
     }
 
@@ -94,7 +94,7 @@ object ShoolaDashaCalculator {
             mahadashas.add(
                 ShoolaDashaPeriod(
                     sign = sign,
-                    lord = sign.ruler,
+                    signLord = sign.ruler,
                     startDate = currentStartDate,
                     endDate = endDate,
                     durationYears = SIGN_DASHA_YEARS,
@@ -102,13 +102,13 @@ object ShoolaDashaCalculator {
                     healthSeverity = healthSeverity,
                     isCurrent = isCurrent,
                     progress = progress,
-                    occupiedPlanets = findPlanets(chart, sign),
-                    aspectedPlanets = emptyList(),
-                    vulnerabilityAreas = emptyList(),
-                    interpretationsEn = emptyList(),
-                    interpretationsNe = emptyList(),
-                    displayName = "${sign.displayName} period",
-                    displayNameNe = "${sign.displayName} अवधि"
+                    significantPlanets = findPlanets(chart, sign),
+                    healthConcerns = emptyList(),
+                    healthConcernsNe = emptyList(),
+                    precautions = emptyList(),
+                    precautionsNe = emptyList(),
+                    interpretation = "${sign.displayName} period",
+                    interpretationNe = "${sign.displayName} अवधि"
                 )
             )
             currentStartDate = endDate
@@ -150,15 +150,17 @@ object ShoolaDashaCalculator {
             antardashas.add(
                 ShoolaAntardasha(
                     sign = sign,
-                    lord = sign.ruler,
+                    signLord = sign.ruler,
                     startDate = currentStartDate,
                     endDate = endDate,
-                    durationYears = SIGN_DASHA_YEARS / 12.0,
+                    durationMonths = SIGN_DASHA_YEARS,
+                    // If SIGN_DASHA_YEARS is 9.0 (total dasha duration in years),
+                    // then each sign's antardasha (1/12th of total cycle) is 9 months.
                     nature = assessPeriodNature(chart, sign, triMurti),
                     healthSeverity = assessHealthSeverity(chart, sign, triMurti),
                     isCurrent = isCurrent,
-                    displayName = "Sub-period",
-                    displayNameNe = "उप-अवधि"
+                    interpretation = "Sub-period",
+                    interpretationNe = "उप-अवधि"
                 )
             )
             currentStartDate = endDate
