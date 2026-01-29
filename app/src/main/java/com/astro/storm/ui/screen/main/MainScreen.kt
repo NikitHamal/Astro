@@ -107,6 +107,7 @@ fun MainScreen(
     onNavigateToNativeAnalysis: () -> Unit = {},
     onNavigateToKakshaTransit: (Long) -> Unit = {},
     onNavigateToNadiAmsha: (Long) -> Unit = {},
+    onNavigateToKpSystem: (Long) -> Unit = {},
     onNavigateToAiModels: () -> Unit = {},
     onNavigateToChat: (Long?) -> Unit = {}, // null for new chat, Long for existing
     onExportChart: (ExportFormat) -> Unit
@@ -229,6 +230,7 @@ fun MainScreen(
                                         InsightFeature.CHART_COMPARISON -> onNavigateToSynastry()
                                         InsightFeature.KAKSHYA_TRANSIT -> selectedChartId?.let { onNavigateToKakshaTransit(it) }
                                         InsightFeature.NADI_AMSHA -> selectedChartId?.let { onNavigateToNadiAmsha(it) }
+                                        InsightFeature.KP_SYSTEM -> selectedChartId?.let { onNavigateToKpSystem(it) }
                                         // Features that require a chart - navigate to individual screens
                                         InsightFeature.FULL_CHART -> if (currentChart != null) onNavigateToBirthChart()
                                         InsightFeature.PLANETS -> if (currentChart != null) onNavigateToPlanets()
@@ -468,5 +470,4 @@ enum class MainTab(
         return StringResources.get(titleKey, language)
     }
 }
-
 

@@ -1,40 +1,34 @@
-# AstroStorm Overhaul - Continuity Ledger
-> Last updated: 2026-01-15T12:00:00+05:45
+## Goal (incl. success criteria):
+Implement and fully integrate NEXT.md items 1-5: Triple-Pillar Predictive Engine, BNN Aspect Engine, KP 4-Step (Cusp Sub-Lords), Muhurta Optimization Search, and Ishta Devata + Beeja Mantra generator, all production-grade and Vedic-accurate.
 
-## Goal (incl. success criteria)
-Implement advanced Vedic astrology features and refactor codebase for production-grade quality.
-1. Modularize core logic into :core:common and :core:model ✅
-2. Refactor all 1000+ line monoliths into maintainable packages ✅
-3. Improve Shadbala precision (D60, BPHS values) ✅
-4. Implement persistent calculation settings (Node, Ayanamsa) ✅
-5. Enhance PDF export quality with vector rendering ✅
+## Constraints/Assumptions:
+- Never build; verify mentally only.
+- No TODOs or simplified logic; production-grade only.
+- Modularization: keep files ~500-800 LOC max.
+- Follow existing architecture (Kotlin, MVVM, Compose) and offline-first constraints.
 
-## Constraints/Assumptions
-- Follow existing patterns
-- Zero hardcoded text where possible
-- Vedic accuracy per classical texts
+## Key Decisions:
+- UNCONFIRMED: None yet for new features.
 
-## State
-
+## State:
 - Done:
-  - Created :core:common and :core:model modules ✅
-  - Moved all core models and localization keys to core modules ✅
-  - Refactored Prashna, Remedies, Varshaphala, Muhurta, Varga, NativeAnalysis, and Shoola calculators ✅
-  - Updated Shadbala to Tradition B (D60) with precise BPHS values ✅
-  - Implemented persistent Ayanamsa and Node settings in AstrologySettingsManager ✅
-  - Updated SwissEphemerisEngine to use dynamic settings ✅
-  - Enhanced ChartExporter to use vector-based rendering for charts ✅
-  - Established unit test foundation for Panchanga logic ✅
-
+  - Read `NEXT.md` and task requirements.
+  - Added Triple-Pillar engine, BNN aspect engine, KP system engine, and Ishta Devata/Beeja mantra generator.
+  - Integrated Triple-Pillar into Deep Predictions, BNN into Nadi Amsha, KP into navigation, and Muhurta 5-minute optimization.
 - Now:
-  - All critical findings from FINDINGS.md have been addressed.
-
+  - Wiring KP screen and remaining UI/localization adjustments; checking for compile-level issues.
 - Next:
-  - Further localization of remaining hardcoded strings in minor components.
-  - Expansion of unit tests to cover all 16 divisional charts.
-  - Implementation of Transit Alert background service (from AI.md).
+  - Add missing localization keys for new UI labels where needed.
+  - Review KP/BNN UI text and ensure minimal hardcoding.
 
-## Working Set (files/ids/commands)
-- **New Modules**: `:core:common`, `:core:model`
-- **Refactored Packages**: `ephemeris/prashna`, `ephemeris/remedy`, `ephemeris/varshaphala`, `ephemeris/muhurta`, `ephemeris/varga`, `ephemeris/nativeanalysis`, `ephemeris/shoola`
-- **Core Engine**: `ephemeris/SwissEphemerisEngine.kt`, `data/preferences/AstrologySettingsManager.kt`
+## Open Questions (UNCONFIRMED if needed):
+- Which screens or flows should surface each new feature first?
+- Any specific Vedic sources/variants preferred for KP and BNN rules in this app?
+
+## Working Set (files/ids/commands):
+- `NEXT.md`
+- `app/src/main/java/com/astro/storm/ephemeris/prediction/TriplePillarPredictiveEngine.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/bnn/BnnAspectEngine.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/kp/KpSystemEngine.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/remedy/IshtaDevataCalculator.kt`
+- `app/src/main/java/com/astro/storm/ui/screen/KpSystemScreen.kt`

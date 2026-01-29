@@ -2,12 +2,14 @@ package com.astro.storm.ephemeris.remedy
 
 import com.astro.storm.core.common.*
 import com.astro.storm.core.model.*
+import com.astro.storm.ephemeris.remedy.RemedyGenerator.getBeejaMantraRemedy
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getCharityRemedy
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getColorRemedy
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getDeityRemedy
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getFastingRemedy
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getGandantaRemedy
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getGemstoneRemedy
+import com.astro.storm.ephemeris.remedy.RemedyGenerator.getIshtaDevataRemedy
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getLifestyleRemedy
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getMantraRemedy
 import com.astro.storm.ephemeris.remedy.RemedyGenerator.getNakshatraRemedy
@@ -60,6 +62,11 @@ object RemediesCalculator {
         planetaryAnalyses.filter { it.needsRemedy }.forEach { analysis ->
             getDeityRemedy(analysis.planet, language)?.let { allRemedies.add(it) }
         }
+
+        val ishtaDevata = IshtaDevataCalculator.calculate(chart)
+        val beejaMantra = BeejaMantraGenerator.generate(chart, ishtaDevata.ishtaDevataPlanet)
+        allRemedies.add(getIshtaDevataRemedy(ishtaDevata, language))
+        allRemedies.add(getBeejaMantraRemedy(beejaMantra, language))
 
         planetaryAnalyses.forEach { analysis ->
             getNakshatraRemedy(analysis, language)?.let { allRemedies.add(it) }

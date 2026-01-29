@@ -25,6 +25,9 @@ class AnalysisContext(
     val chart: VedicChart,
     private val androidContext: Context
 ) {
+
+    val appContext: Context
+        get() = androidContext
     
     // ═══════════════════════════════════════════════════════════════════════════════
     // CACHED CALCULATIONS

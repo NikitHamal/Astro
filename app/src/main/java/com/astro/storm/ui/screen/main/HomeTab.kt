@@ -701,6 +701,13 @@ enum class InsightFeature(
         color = DarkAppThemeColors.AccentGold,
         isImplemented = true
     ),
+    KP_SYSTEM(
+        titleKey = StringKeyAdvanced.KP_TITLE,
+        descriptionKey = StringKeyAdvanced.KP_DESC,
+        icon = Icons.Outlined.TrackChanges,
+        color = DarkAppThemeColors.AccentTeal,
+        isImplemented = true
+    ),
     SARVATOBHADRA_CHAKRA(
         titleKey = StringKeyShadbala.SARVATOBHADRA_TITLE,
         descriptionKey = StringKeyShadbala.SARVATOBHADRA_DESC,
@@ -868,5 +875,4 @@ private fun EmptyHomeState(
         }
     }
 }
-
 
