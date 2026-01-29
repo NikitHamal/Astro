@@ -1,40 +1,39 @@
-# AstroStorm Overhaul - Continuity Ledger
-> Last updated: 2026-01-15T12:00:00+05:45
+## Goal (incl. success criteria):
+- Implement and fully integrate NEXT.md features (1–5): Triple-Pillar engine, BNN aspect engine, KP 4-step system, Muhurta optimization search, Ishta Devata & Beeja Mantra generator; production-grade, accurate, integrated in UI + calculations.
 
-## Goal (incl. success criteria)
-Implement advanced Vedic astrology features and refactor codebase for production-grade quality.
-1. Modularize core logic into :core:common and :core:model ✅
-2. Refactor all 1000+ line monoliths into maintainable packages ✅
-3. Improve Shadbala precision (D60, BPHS values) ✅
-4. Implement persistent calculation settings (Node, Ayanamsa) ✅
-5. Enhance PDF export quality with vector rendering ✅
+## Constraints/Assumptions:
+- Follow existing code patterns and Vedic accuracy; no TODOs or simplified logic.
+- Modularize code (500–800 lines per file max).
+- Kotlin, MVVM, Jetpack Compose; Swiss Ephemeris used for calculations.
 
-## Constraints/Assumptions
-- Follow existing patterns
-- Zero hardcoded text where possible
-- Vedic accuracy per classical texts
+## Key Decisions:
+- UNCONFIRMED: Integrate Triple-Pillar into Predictions/DeepPredictions timing sections.
+- UNCONFIRMED: Add dedicated screens for BNN and KP under InsightFeature.
+- UNCONFIRMED: Extend Muhurta search UI with optimization results.
+- UNCONFIRMED: Integrate Ishta Devata/Beeja Mantra in Remedies.
 
-## State
-
+## State:
 - Done:
-  - Created :core:common and :core:model modules ✅
-  - Moved all core models and localization keys to core modules ✅
-  - Refactored Prashna, Remedies, Varshaphala, Muhurta, Varga, NativeAnalysis, and Shoola calculators ✅
-  - Updated Shadbala to Tradition B (D60) with precise BPHS values ✅
-  - Implemented persistent Ayanamsa and Node settings in AstrologySettingsManager ✅
-  - Updated SwissEphemerisEngine to use dynamic settings ✅
-  - Enhanced ChartExporter to use vector-based rendering for charts ✅
-  - Established unit test foundation for Panchanga logic ✅
-
+  - Located `NEXT.md` and reviewed scope for items 1–5.
+  - Audited existing Dasha, Transit, Ashtakavarga, Muhurta, Remedies, and Predictions modules for integration points.
 - Now:
-  - All critical findings from FINDINGS.md have been addressed.
-
+  - Design new calculation modules and data models for Triple-Pillar, BNN, KP, Muhurta optimization, Ishta Devata/Mantra.
 - Next:
-  - Further localization of remaining hardcoded strings in minor components.
-  - Expansion of unit tests to cover all 16 divisional charts.
-  - Implementation of Transit Alert background service (from AI.md).
+  - Implement new engines and integrate with UI/viewmodels and navigation.
 
-## Working Set (files/ids/commands)
-- **New Modules**: `:core:common`, `:core:model`
-- **Refactored Packages**: `ephemeris/prashna`, `ephemeris/remedy`, `ephemeris/varshaphala`, `ephemeris/muhurta`, `ephemeris/varga`, `ephemeris/nativeanalysis`, `ephemeris/shoola`
-- **Core Engine**: `ephemeris/SwissEphemerisEngine.kt`, `data/preferences/AstrologySettingsManager.kt`
+## Open Questions (UNCONFIRMED if needed):
+- Where exactly should new UI panels live (new screens vs tabs in existing Predictions/Muhurta/Remedies)?
+- Should KP use current house system (KP/Placidus) or keep chart house cusps as-is?
+- Preferred date range defaults for Muhurta optimization (e.g., 30 days) and max results?
+
+## Working Set (files/ids/commands):
+- `NEXT.md`
+- `CONTINUITY.md`
+- `app/src/main/java/com/astro/storm/ephemeris/DashaCalculator.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/TransitAnalyzer.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/AshtakavargaCalculator.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/muhurta/MuhurtaCalculator.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/muhurta/MuhurtaEvaluator.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/remedy/RemediesCalculator.kt`
+- `app/src/main/java/com/astro/storm/ui/screen/PredictionsScreen.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/deepanalysis/predictions/DeepPredictionEngine.kt`
