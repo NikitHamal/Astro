@@ -118,8 +118,10 @@ enum class DeepAnalysisSection {
  * ViewModel for Deep Predictions
  */
 @HiltViewModel
+@HiltViewModel
 class DeepPredictionsViewModel @Inject constructor(
-    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context
+    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
+    private val ephemerisEngine: com.astro.storm.ephemeris.SwissEphemerisEngine
 ) : ViewModel() {
     
     private val _uiState = MutableStateFlow<DeepPredictionsUiState>(DeepPredictionsUiState.Initial)
@@ -143,7 +145,7 @@ class DeepPredictionsViewModel @Inject constructor(
             try {
                 val context = AnalysisContext(chart, context)
                 val predictions = com.astro.storm.ephemeris.deepanalysis.predictions.DeepPredictionEngine
-                    .generatePredictions(chart, context)
+                    .generatePredictions(chart, context, ephemerisEngine)
                 cachedChart = chart
                 cachedPredictions = predictions
                 _uiState.value = DeepPredictionsUiState.Success(predictions)

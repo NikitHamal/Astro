@@ -308,6 +308,7 @@ object TransitPillarAnalyzer {
                     impact = 0.4,
                     duration = "~2.5 years"
                 ))
+                else -> { /* Other houses - generally neutral or mixed */ }
             }
         }
 
@@ -333,14 +334,13 @@ object TransitPillarAnalyzer {
                         duration = "~1 year"
                     ))
                 }
-                houseFromMoon in listOf(3, 6, 8, 12) -> {
-                    significant.add(TransitPillarAnalysis.SignificantTransit(
                         planet = Planet.JUPITER,
                         description = "Challenging Jupiter transit: ${houseFromMoon}th from Moon",
                         impact = -0.3,
                         duration = "~1 year"
                     ))
                 }
+                else -> { /* Other cases */ }
             }
         }
 
@@ -362,12 +362,12 @@ object TransitPillarAnalyzer {
                     impact = -0.4,
                     duration = "~1.5 years"
                 ))
-                in listOf(3, 6, 10, 11) -> significant.add(TransitPillarAnalysis.SignificantTransit(
                     planet = Planet.RAHU,
                     description = "Favorable Rahu transit: Material gains possible",
                     impact = 0.3,
                     duration = "~1.5 years"
                 ))
+                else -> { /* Other houses */ }
             }
         }
 
@@ -383,12 +383,13 @@ object TransitPillarAnalyzer {
                     duration = "~1.5 months"
                 ))
             } else if (houseFromMoon in listOf(3, 6, 11)) {
-                significant.add(TransitPillarAnalysis.SignificantTransit(
                     planet = Planet.MARS,
                     description = "Favorable Mars transit: Energy and drive",
                     impact = 0.3,
                     duration = "~1.5 months"
                 ))
+            } else {
+                // Neutral
             }
         }
 

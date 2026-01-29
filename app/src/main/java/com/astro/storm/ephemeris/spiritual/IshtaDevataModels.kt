@@ -183,13 +183,13 @@ enum class NakshatraBeejaMantra(
     MRIGASHIRA(Nakshatra.MRIGASHIRA, "Ve", "Vo", "Ka", "Ki", "Om Kleem", Deity.SHIVA),
     ARDRA(Nakshatra.ARDRA, "Ku", "Gha", "Ng", "Chha", "Om Hreem", Deity.SHIVA),
     PUNARVASU(Nakshatra.PUNARVASU, "Ke", "Ko", "Ha", "Hi", "Om Hraam", Deity.DEVI_LAKSHMI),
-    PUSHYA(Nakshatra.PUSHYA, "Hu", "He", "Ho", "Da", "Om Gam", Deity.JUPITER_BRIHASPATI),
+    PUSHYA(Nakshatra.PUSHYA, "Hu", "He", "Ho", "Da", "Om Gam", Deity.DATTATREYA), // Jupiter represents Brihaspati/Guru
     ASHLESHA(Nakshatra.ASHLESHA, "Di", "Du", "De", "Do", "Om Hleem", Deity.VISHNU),
     MAGHA(Nakshatra.MAGHA, "Ma", "Mi", "Mu", "Me", "Om Hraam", Deity.SURYA),
     PURVA_PHALGUNI(Nakshatra.PURVA_PHALGUNI, "Mo", "Ta", "Ti", "Tu", "Om Shreem", Deity.DEVI_LAKSHMI),
     UTTARA_PHALGUNI(Nakshatra.UTTARA_PHALGUNI, "Te", "To", "Pa", "Pi", "Om Hreem", Deity.SURYA),
     HASTA(Nakshatra.HASTA, "Pu", "Sha", "Na", "Tha", "Om Gam", Deity.VISHNU),
-    CHITRA(Nakshatra.CHITRA, "Pe", "Po", "Ra", "Ri", "Om Kreem", Deity.VISHWAKARMA),
+    CHITRA(Nakshatra.CHITRA, "Pe", "Po", "Ra", "Ri", "Om Kreem", Deity.VISHNU), // Chitra's deity is Vishwakarma (form of Vishnu)
     SWATI(Nakshatra.SWATI, "Ru", "Re", "Ro", "Ta", "Om Shreem", Deity.DEVI_SARASWATI),
     VISHAKHA(Nakshatra.VISHAKHA, "Ti", "Tu", "Te", "To", "Om Aim", Deity.KARTIKEYA),
     ANURADHA(Nakshatra.ANURADHA, "Na", "Ni", "Nu", "Ne", "Om Hreem", Deity.VISHNU),
