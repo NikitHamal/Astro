@@ -15,34 +15,39 @@ import java.time.LocalDateTime
  */
 object DeepPredictionEngine {
     
-    fun generatePredictions(chart: VedicChart, context: AnalysisContext, ephemerisEngine: com.astro.storm.ephemeris.SwissEphemerisEngine): DeepPredictions {
+    fun generatePredictions(
+        chart: VedicChart, 
+        context: AnalysisContext, 
+        ephemerisEngine: com.astro.storm.ephemeris.SwissEphemerisEngine,
+        triplePillarEngine: com.astro.storm.ephemeris.triplepillar.TriplePillarSynthesisEngine
+    ): DeepPredictions {
         val currentDate = LocalDate.now()
         
+        // 1. Generate Triple Pillar Synthesis
+        val synthesis = triplePillarEngine.generateSynthesis(chart)
+        
+        // 2. Map to DeepPredictions
         return DeepPredictions(
             dashaAnalysis = analyzeDashaSystem(context),
-            transitAnalysis = analyzeTransits(context, currentDate, ephemerisEngine),
+            transitAnalysis = analyzeTransitsMap(context, synthesis.transitPillar),
             yearlyPrediction = generateYearlyPrediction(context, currentDate),
             monthlyPredictions = generateMonthlyPredictions(context, currentDate),
-            lifeAreaPredictions = generateLifeAreaPredictions(context),
+            lifeAreaPredictions = mapLifeAreaPredictions(synthesis.lifeAreaPredictions, context),
             yogaActivationTimeline = getYogaActivationTimeline(context),
-            criticalPeriods = identifyCriticalPeriods(context),
-            opportunityWindows = identifyOpportunityWindows(context),
+            criticalPeriods = mapCriticalPeriods(synthesis.cautionPeriods, synthesis.transitPillar),
+            opportunityWindows = mapOpportunityWindows(synthesis.peakPeriods),
             remedialMeasures = generateRemedialMeasures(context),
-            overallPredictionSummary = generateOverallSummary(context),
-            predictionScore = calculatePredictionScore(context)
+            overallPredictionSummary = LocalizedParagraph(
+                "Overall success probability: ${(synthesis.overallSuccessProbability * 100).toInt()}%. ${synthesis.transitPillar.toPillarContribution().interpretation}",
+                "समग्र सफलता सम्भावना: ${(synthesis.overallSuccessProbability * 100).toInt()}%। ${synthesis.transitPillar.toPillarContribution().interpretation}"
+            ),
+            predictionScore = synthesis.overallSuccessProbability * 100
         )
     }
     
     // ... items ...
 
-    private fun analyzeTransits(context: AnalysisContext, date: LocalDate, ephemerisEngine: com.astro.storm.ephemeris.SwissEphemerisEngine): TransitDeepAnalysis {
-        // Use Real Transit Pillar Analyzer
-        val transitAnalysis = com.astro.storm.ephemeris.triplepillar.TransitPillarAnalyzer.analyzeTransitPillar(
-            natalChart = context.chart,
-            transitDateTime = LocalDateTime.now(),
-            ephemerisEngine = ephemerisEngine
-        )
-
+    private fun analyzeTransitsMap(context: AnalysisContext, transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): TransitDeepAnalysis {
         return TransitDeepAnalysis(
             majorTransits = getMajorTransits(transitAnalysis),
             saturnSadeSati = analyzeSadeSati(context, transitAnalysis),
@@ -52,72 +57,109 @@ object DeepPredictionEngine {
         )
     }
     
-    private fun getMajorTransits(transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): List<MajorTransit> {
-        return transitAnalysis.significantTransits.map { sig ->
-            val position = transitAnalysis.transitPositions[sig.planet]
-            MajorTransit(
-                planet = sig.planet,
-                currentSign = position?.sign ?: ZodiacSign.ARIES,
-                effectOnNative = LocalizedParagraph(sig.description, sig.description), // Needs localization strategy
-                duration = LocalizedParagraph(sig.duration, sig.duration),
-                intensity = StrengthLevel.fromDouble(kotlin.math.abs(sig.impact) * 100.0) // Map impact magnitude to Strength
+    // --- Mapping Functions ---
+
+    private fun mapLifeAreaPredictions(
+        source: Map<com.astro.storm.ephemeris.triplepillar.LifeAreaCategory, com.astro.storm.ephemeris.triplepillar.LifeAreaPrediction>, 
+        context: AnalysisContext
+    ): Map<LifeArea, LifeAreaPrediction> {
+        val result = mutableMapOf<LifeArea, LifeAreaPrediction>()
+        
+        source.forEach { (category, prediction) ->
+            val targetArea = when(category) {
+                com.astro.storm.ephemeris.triplepillar.LifeAreaCategory.CAREER -> LifeArea.CAREER
+                com.astro.storm.ephemeris.triplepillar.LifeAreaCategory.WEALTH -> LifeArea.WEALTH
+                com.astro.storm.ephemeris.triplepillar.LifeAreaCategory.RELATIONSHIP -> LifeArea.RELATIONSHIP
+                com.astro.storm.ephemeris.triplepillar.LifeAreaCategory.HEALTH -> LifeArea.HEALTH
+                com.astro.storm.ephemeris.triplepillar.LifeAreaCategory.EDUCATION -> LifeArea.EDUCATION
+                com.astro.storm.ephemeris.triplepillar.LifeAreaCategory.SPIRITUALITY -> LifeArea.SPIRITUAL
+                else -> return@forEach // Skip unmapped areas for now or map to General if needed
+            }
+            
+            val strength = StrengthLevel.fromDouble(prediction.successProbability * 100)
+            
+            result[targetArea] = LifeAreaPrediction(
+                area = targetArea,
+                shortTermOutlook = LifeAreaOutlook(
+                    area = targetArea,
+                    rating = strength,
+                    summary = LocalizedParagraph(prediction.briefInterpretation, prediction.briefInterpretation),
+                    opportunities = prediction.opportunities.map { LocalizedTrait(it, it, StrengthLevel.STRONG) },
+                    challenges = prediction.challenges.map { LocalizedTrait(it, it, StrengthLevel.WEAK) },
+                    advice = LocalizedParagraph("Leverage strength during favorable periods.", "अनुकूल समयमा शक्तिको लाभ लिनुहोस्।")
+                ),
+                mediumTermOutlook = LifeAreaOutlook(
+                    area = targetArea,
+                    rating = strength,
+                    summary = LocalizedParagraph("Medium term outlook: ${prediction.briefInterpretation}", "मध्यम अवधिको दृष्टिकोण: ${prediction.briefInterpretation}"),
+                    opportunities = emptyList(),
+                    challenges = emptyList(),
+                    advice = LocalizedParagraph("Plan ahead.", "अगाडि योजना गर्नुहोस्।")
+                ),
+                longTermOutlook = LifeAreaOutlook(
+                    area = targetArea,
+                    rating = strength,
+                    summary = LocalizedParagraph(prediction.detailedInterpretation.take(100) + "...", prediction.detailedInterpretation.take(100) + "..."),
+                    opportunities = emptyList(),
+                    challenges = emptyList(),
+                    advice = LocalizedParagraph("Long term growth.", "दीर्घकालीन वृद्धि।")
+                ),
+                timingAnalysis = TimingAnalysis(
+                    favorablePeriods = prediction.favorableTimings.map { 
+                        TimingPeriod(it, it.plusMonths(1), LocalizedParagraph("Favorable", "अनुकूल"), StrengthLevel.STRONG) 
+                    },
+                    challengingPeriods = emptyList(),
+                    peakPeriod = LocalizedParagraph(prediction.keyTransits.joinToString(), prediction.keyTransits.joinToString())
+                ),
+                recommendations = listOf(LocalizedParagraph(prediction.detailedInterpretation, prediction.detailedInterpretation))
             )
         }
+        return result
     }
-    
-    private fun analyzeSadeSati(context: AnalysisContext, transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): SadeSatiAnalysis {
-        val moonSign = context.moonSign
-        val saturnPos = transitAnalysis.transitPositions[Planet.SATURN]
-        val saturnSign = saturnPos?.sign ?: ZodiacSign.CAPRICORN // Fallback
-        
-        val isActive = isSadeSatiActive(moonSign, saturnSign)
-        val phase = getSadeSatiPhase(moonSign, saturnSign)
-        
-        return SadeSatiAnalysis(
-            isActive = isActive,
-            phase = phase,
-            startDate = if (isActive) LocalDate.now().minusYears(1) else null,
-            endDate = if (isActive) LocalDate.now().plusYears(2) else null,
-            effects = if (isActive) PredictionTextGenerator.getSadeSatiEffects(phase) else LocalizedParagraph("", ""),
-            remedies = if (isActive) PredictionTextGenerator.getSadeSatiRemedies() else LocalizedParagraph("", "")
-        )
+
+    private fun mapCriticalPeriods(
+        cautionPeriods: List<com.astro.storm.ephemeris.triplepillar.PredictionTimeWindow>,
+        transitPillar: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis
+    ): List<CriticalPeriod> {
+        return cautionPeriods.take(3).map { window ->
+            CriticalPeriod(
+                periodName = LocalizedParagraph("Challenging Period", "चुनौतीपूर्ण अवधि"),
+                startDate = window.startDate.toLocalDate(),
+                endDate = window.endDate.toLocalDate(),
+                areaAffected = LifeArea.GENERAL,
+                nature = CriticalPeriodNature.CHALLENGING,
+                intensity = StrengthLevel.STRONG,
+                advice = LocalizedParagraph(
+                    "Success probability is low (${(window.successProbability*100).toInt()}%). Proceed with caution. Influences: ${window.dominantInfluences.joinToString()}",
+                     "सफलताको सम्भावना कम छ (${(window.successProbability*100).toInt()}%). सावधानीपूर्वक अघि बढ्नुहोस्।"
+                )
+            )
+        } + identifySadeSatiCritical(transitPillar)
     }
-    
-    // ... helpers ...
-    
-    private fun analyzeJupiterTransit(context: AnalysisContext, transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): JupiterTransitAnalysis {
-        val jupiterPos = transitAnalysis.transitPositions[Planet.JUPITER]
-        val jupiterSign = jupiterPos?.sign ?: ZodiacSign.SAGITTARIUS
-        return JupiterTransitAnalysis(
-            currentTransitSign = jupiterSign,
-            transitHouse = getTransitHouse(jupiterSign, context.ascendantSign),
-            effects = PredictionTextGenerator.getJupiterTransitHouseEffect(getTransitHouse(jupiterSign, context.ascendantSign)),
-            favorableForAreas = getJupiterFavorableAreas(getTransitHouse(jupiterSign, context.ascendantSign))
-        )
+
+    private fun identifySadeSatiCritical(transitPillar: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): List<CriticalPeriod> {
+         // Re-use logic or manual check
+         // Simplification: returns empty list as Sade Sati is handled in TransitDeepAnalysis
+         return emptyList()
     }
-    
-    // ... helpers ...
-    
-    private fun analyzeNodalTransit(context: AnalysisContext, transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): NodalTransitAnalysis {
-        val rahuPos = transitAnalysis.transitPositions[Planet.RAHU]
-        val ketuPos = transitAnalysis.transitPositions[Planet.KETU] // Assuming TransitPillarAnalyzer provides KETU
-        
-        val rahuSign = rahuPos?.sign ?: ZodiacSign.ARIES
-        // If Ketu not in transit positions (sometimes only Rahu is tracked as main), calculate opposite
-        val ketuSign = ketuPos?.sign ?: ZodiacSign.entries[(rahuSign.ordinal + 6) % 12]
-        
-        return NodalTransitAnalysis(
-            rahuTransitSign = rahuSign,
-            ketuTransitSign = ketuSign,
-            rahuTransitHouse = getTransitHouse(rahuSign, context.ascendantSign),
-            ketuTransitHouse = getTransitHouse(ketuSign, context.ascendantSign),
-            nodalAxisEffects = PredictionTextGenerator.getNodalAxisEffects(
-                getTransitHouse(rahuSign, context.ascendantSign),
-                getTransitHouse(ketuSign, context.ascendantSign)
-            ),
-            duration = LocalizedParagraph("Nodal transit lasts approximately 18 months per axis.",
-                "नोडल गोचर प्रति अक्षमा लगभग 18 महिना रहन्छ।")
-        )
+
+    private fun mapOpportunityWindows(
+        peakPeriods: List<com.astro.storm.ephemeris.triplepillar.PredictionTimeWindow>
+    ): List<OpportunityWindow> {
+        return peakPeriods.take(3).map { window ->
+            OpportunityWindow(
+                windowName = LocalizedParagraph("Golden Opportunity", "सुनौलो अवसर"),
+                startDate = window.startDate.toLocalDate(),
+                endDate = window.endDate.toLocalDate(),
+                affectedAreas = listOf(LifeArea.GENERAL),
+                opportunityType = LocalizedParagraph("High Success Probability", "उच्च सफलता सम्भावना"),
+                intensity = StrengthLevel.VERY_STRONG,
+                advice = LocalizedParagraph(
+                    "Success probability is high (${(window.successProbability*100).toInt()}%). Take initiative! Influences: ${window.dominantInfluences.joinToString()}",
+                    "सफलताको सम्भावना उच्च छ (${(window.successProbability*100).toInt()}%). पहल गर्नुहोस्!"
+                )
+            )
+        }
     }
     
     private fun getTransitInteractions(transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): List<TransitInteraction> {

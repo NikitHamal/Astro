@@ -121,40 +121,23 @@ enum class DeepAnalysisSection {
 @HiltViewModel
 class DeepPredictionsViewModel @Inject constructor(
     @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
-    private val ephemerisEngine: com.astro.storm.ephemeris.SwissEphemerisEngine
+    private val ephemerisEngine: com.astro.storm.ephemeris.SwissEphemerisEngine,
+    private val triplePillarSynthesisEngine: com.astro.storm.ephemeris.triplepillar.TriplePillarSynthesisEngine
 ) : ViewModel() {
     
-    private val _uiState = MutableStateFlow<DeepPredictionsUiState>(DeepPredictionsUiState.Initial)
-    val uiState: StateFlow<DeepPredictionsUiState> = _uiState.asStateFlow()
-    
-    private val _selectedTab = MutableStateFlow(0)
-    val selectedTab: StateFlow<Int> = _selectedTab.asStateFlow()
-    
-    private var cachedChart: VedicChart? = null
-    private var cachedPredictions: DeepPredictions? = null
-    
+    // ... items ...
+
     fun calculatePredictions(chart: VedicChart) {
-        if (cachedChart?.hashCode() == chart.hashCode() && cachedPredictions != null) {
-            _uiState.value = DeepPredictionsUiState.Success(cachedPredictions!!)
-            return
-        }
-        
+        // ... items ...
         viewModelScope.launch(Dispatchers.Default) {
             _uiState.value = DeepPredictionsUiState.Loading
             
             try {
                 val context = AnalysisContext(chart, context)
                 val predictions = com.astro.storm.ephemeris.deepanalysis.predictions.DeepPredictionEngine
-                    .generatePredictions(chart, context, ephemerisEngine)
+                    .generatePredictions(chart, context, ephemerisEngine, triplePillarSynthesisEngine)
                 cachedChart = chart
-                cachedPredictions = predictions
-                _uiState.value = DeepPredictionsUiState.Success(predictions)
-            } catch (e: Exception) {
-                val errorMsg = e.message ?: "Prediction failed"
-                _uiState.value = DeepPredictionsUiState.Error(errorMsg)
-            }
-        }
-    }
+                // ... items ...
     
     fun selectTab(index: Int) {
         _selectedTab.value = index
