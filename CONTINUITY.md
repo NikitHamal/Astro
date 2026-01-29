@@ -1,40 +1,62 @@
 # AstroStorm Overhaul - Continuity Ledger
-> Last updated: 2026-01-15T12:00:00+05:45
+> Last updated: 2026-01-29T15:30:00+05:45
 
 ## Goal (incl. success criteria)
-Implement advanced Vedic astrology features and refactor codebase for production-grade quality.
-1. Modularize core logic into :core:common and :core:model ✅
-2. Refactor all 1000+ line monoliths into maintainable packages ✅
-3. Improve Shadbala precision (D60, BPHS values) ✅
-4. Implement persistent calculation settings (Node, Ayanamsa) ✅
-5. Enhance PDF export quality with vector rendering ✅
+Implement three advanced Vedic astrology predictive engines:
+1. **Triple-Pillar Predictive Engine** - Synthesize Vimshottari Dasha + Gochara (Transits) + Ashtakavarga for "Success Probability" timelines
+2. **Bhrigu Nandi Nadi (BNN) Aspect Engine** - Implement Nadi aspects (1,5,9,2,12,7) with recursive planetary link graph traversal
+3. **KP System (Krishnamurti Padhdhati)** - Calculate Cusp Sub-Lords with 4-Step Theory for binary event verification
+
+Success criteria:
+- All implementations must be production-grade, fully functional, and Vedically accurate
+- Modular code (500-800 lines per file max)
+- Full UI integration with screens, ViewModels, and navigation
+- Multi-language localization support
 
 ## Constraints/Assumptions
-- Follow existing patterns
-- Zero hardcoded text where possible
-- Vedic accuracy per classical texts
+- Follow existing MVVM architecture patterns
+- Use existing Swiss Ephemeris engine for calculations
+- Build on existing Vimshottari, Ashtakavarga, Transit calculators
+- Zero hardcoded text - use localization keys
+- No TODOs or placeholder code - everything production-ready
+
+## Key Decisions
+- Triple-Pillar: Create new synthesis engine combining existing calculators
+- BNN: New dedicated module ignoring Lagna, focusing on planetary yogas by consecutive signs
+- KP: Implement 249 zodiac divisions for sub-lord determination
 
 ## State
 
 - Done:
-  - Created :core:common and :core:model modules ✅
-  - Moved all core models and localization keys to core modules ✅
-  - Refactored Prashna, Remedies, Varshaphala, Muhurta, Varga, NativeAnalysis, and Shoola calculators ✅
-  - Updated Shadbala to Tradition B (D60) with precise BPHS values ✅
-  - Implemented persistent Ayanamsa and Node settings in AstrologySettingsManager ✅
-  - Updated SwissEphemerisEngine to use dynamic settings ✅
-  - Enhanced ChartExporter to use vector-based rendering for charts ✅
-  - Established unit test foundation for Panchanga logic ✅
+  - Comprehensive codebase exploration completed
+  - Identified all existing calculation engines and integration points
+  - Located key files: DashaCalculator, AshtakavargaCalculator, TransitAnalyzer, AspectCalculator
+  - **Triple-Pillar Predictive Engine - CORE COMPLETE:**
+    - `TriplePillarModels.kt` - All data models, enums, config classes (~535 lines)
+    - `TriplePillarEngine.kt` - Main synthesis engine (~800 lines)
+    - `DashaLordAnalyzer.kt` - Dasha lord combination analysis (~450 lines)
 
 - Now:
-  - All critical findings from FINDINGS.md have been addressed.
+  - Starting BNN Aspect Engine implementation
 
 - Next:
-  - Further localization of remaining hardcoded strings in minor components.
-  - Expansion of unit tests to cover all 16 divisional charts.
-  - Implementation of Transit Alert background service (from AI.md).
+  - KP System implementation
+  - UI screens and ViewModels for all three systems
+  - Navigation integration
+  - Localization strings
+
+## Open Questions (UNCONFIRMED if needed)
+- None currently
 
 ## Working Set (files/ids/commands)
-- **New Modules**: `:core:common`, `:core:model`
-- **Refactored Packages**: `ephemeris/prashna`, `ephemeris/remedy`, `ephemeris/varshaphala`, `ephemeris/muhurta`, `ephemeris/varga`, `ephemeris/nativeanalysis`, `ephemeris/shoola`
-- **Core Engine**: `ephemeris/SwissEphemerisEngine.kt`, `data/preferences/AstrologySettingsManager.kt`
+- **Existing Calculators to build upon:**
+  - `/app/src/main/java/com/astro/storm/ephemeris/DashaCalculator.kt`
+  - `/app/src/main/java/com/astro/storm/ephemeris/AshtakavargaCalculator.kt`
+  - `/app/src/main/java/com/astro/storm/ephemeris/TransitAnalyzer.kt`
+  - `/app/src/main/java/com/astro/storm/ephemeris/AspectCalculator.kt`
+- **Models to extend:**
+  - `/core/model/src/main/java/com/astro/storm/core/model/`
+- **New files to create:**
+  - `/app/src/main/java/com/astro/storm/ephemeris/triplepillar/` (new package)
+  - `/app/src/main/java/com/astro/storm/ephemeris/bnn/` (new package)
+  - `/app/src/main/java/com/astro/storm/ephemeris/kpsystem/` (new package)
