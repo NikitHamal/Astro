@@ -356,7 +356,7 @@ private fun HeroDashaCard(
                         
                         Column {
                             Text(
-                                text = "${currentDasha.planet.getLocalizedName(language)} ${stringResource(StringKey.DASHA_PERIOD)}",
+                                text = "${currentDasha.planet.getLocalizedName(language)} ${stringResource(StringKey.HOME_DASHA_LABEL)}",
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = colors.TextPrimary

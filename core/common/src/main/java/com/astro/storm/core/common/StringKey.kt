@@ -1053,7 +1053,7 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     TODAYS_SNAPSHOT("Today's Snapshot", "आजको झलक"),
     VIEW_CURRENT_TRANSITS("View current planetary positions", "हालको ग्रह स्थितिहरू हेर्नुहोस्"),
     CURRENT_MAHA_DASHA("Current Maha Dasha", "हालको महा दशा"),
-    DASHA_PERIOD("Dasha", "दशा"),
+    HOME_DASHA_LABEL("Dasha", "दशा"),
     REMAINING_PERIOD_YEARS("%s years, %s months remaining", "%s वर्ष, %s महिना बाँकी"),
     REMAINING_PERIOD_MONTHS("%s months remaining", "%s महिना बाँकी"),
     TAP_TO_VIEW_DASHAS("Tap to view your Dasha timeline", "आफ्नो दशा समयरेखा हेर्न ट्याप गर्नुहोस्"),
