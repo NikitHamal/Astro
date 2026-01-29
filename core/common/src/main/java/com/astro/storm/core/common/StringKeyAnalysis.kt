@@ -367,8 +367,8 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     // ============================================
     DEBUG_UNHANDLED_EXCEPTION("Unhandled Exception", "अप्रत्याशित त्रुटि"),
     DEBUG_ERROR_OCCURRED("An unexpected error occurred.", "एउटा अप्रत्याशित त्रुटि भयो।"),
-    DEBUG_COPY_LOG("Copy Log", "लग कपी गर्नुहोस्"),
-    DEBUG_RESTART_APP("Restart App", "एप पुनः सुरु गर्नुहोस्"),
+    DEBUG_COPY_LOG("Copy", "कपी गर्नुहोस्"),
+    DEBUG_RESTART_APP("Restart", "पुनः सुरु गर्नुहोस्"),
     DEBUG_CRASH_LOG("Crash Log", "क्र्यास लग"),
 
     // ============================================

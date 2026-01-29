@@ -18,6 +18,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import com.astro.storm.MainActivity
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
@@ -58,6 +60,8 @@ fun DebugScreen(
     stackTrace: String,
     onRestart: () -> Unit
 ) {
+    val clipboardManager = LocalClipboardManager.current
+
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
@@ -85,12 +89,12 @@ fun DebugScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .background(Color.DarkGray, shape = MaterialTheme.shapes.medium)
+                    .background(AppTheme.CardBackgroundElevated, shape = MaterialTheme.shapes.medium)
                     .padding(8.dp)
             ) {
                 Text(
                     text = stackTrace,
-                    color = Color.White,
+                    color = AppTheme.TextSecondary,
                     fontFamily = FontFamily.Monospace,
                     fontSize = 12.sp,
                     modifier = Modifier
@@ -103,12 +107,26 @@ fun DebugScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                OutlinedButton(
+                    onClick = { clipboardManager.setText(AnnotatedString(stackTrace)) },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = AppTheme.AccentPrimary),
+                    border = ButtonDefaults.outlinedButtonBorder.copy(
+                        brush = androidx.compose.ui.graphics.SolidColor(AppTheme.AccentPrimary)
+                    )
+                ) {
+                    Text(stringResource(StringKeyAnalysis.DEBUG_COPY_LOG))
+                }
+
                 Button(
                     onClick = onRestart,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = AppTheme.AccentSecondary)
                 ) {
-                    Text(stringResource(StringKeyAnalysis.DEBUG_RESTART_APP))
+                    Text(
+                        text = stringResource(StringKeyAnalysis.DEBUG_RESTART_APP),
+                        color = Color.White
+                    )
                 }
             }
         }
