@@ -22,6 +22,25 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     HOME_CHART_ANALYSIS("Chart Analysis", "कुण्डली विश्लेषण"),
     HOME_COMING_SOON("Coming Soon", "छिट्टै आउँदैछ"),
     HOME_SOON_BADGE("Soon", "छिट्टै"),
+    HOME_CHART_OVERVIEW("Chart Overview", "कुण्डली अवलोकन"),
+    HOME_VIEW_CHART("View Chart", "कुण्डली हेर्नुहोस्"),
+
+    // ============================================
+    // HOME TAB - CHART POSITION LABELS
+    // ============================================
+    LABEL_ASCENDANT("Ascendant", "लग्न"),
+    LABEL_MOON("Moon", "चन्द्र"),
+    LABEL_SUN("Sun", "सूर्य"),
+
+    // ============================================
+    // HOME TAB - FEATURE CATEGORIES
+    // ============================================
+    CATEGORY_CHART_BASICS("Chart Basics", "कुण्डली आधारभूत"),
+    CATEGORY_TIMING_SYSTEMS("Timing Systems", "समय प्रणालीहरू"),
+    CATEGORY_STRENGTH_ANALYSIS("Strength Analysis", "बल विश्लेषण"),
+    CATEGORY_PREDICTIONS("Predictions", "भविष्यवाणी"),
+    CATEGORY_COMPATIBILITY("Compatibility", "मिलान"),
+    CATEGORY_ADVANCED("Advanced", "उन्नत"),
 
     // ============================================
     // HOME TAB - FEATURE CARDS

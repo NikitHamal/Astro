@@ -2,6 +2,7 @@ package com.astro.storm.ui.screen.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,54 +18,61 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.BarChart
+import androidx.compose.material.icons.outlined.Balance
+import androidx.compose.material.icons.outlined.Block
+import androidx.compose.material.icons.outlined.Brightness2
 import androidx.compose.material.icons.outlined.Cake
+import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.CompareArrows
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Grid4x4
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.HealthAndSafety
 import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.PersonAddAlt
+import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Spa
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.Stars
 import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Timeline
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Balance
-import androidx.compose.material.icons.outlined.Block
-import androidx.compose.material.icons.outlined.Brightness2
-import androidx.compose.material.icons.outlined.Psychology
-import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.material.icons.outlined.Timer
-import androidx.compose.material.icons.outlined.Grid4x4
-import androidx.compose.material.icons.outlined.Visibility
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Timelapse
-import androidx.compose.material.icons.outlined.Calculate
+import androidx.compose.material.icons.outlined.Timeline
+import androidx.compose.material.icons.outlined.Timer
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
@@ -74,27 +82,57 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
-import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAdvanced
 import com.astro.storm.core.common.StringKeyInterface
-import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyShadbala
-import com.astro.storm.data.localization.stringResource
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 
-private val GridSpacing = 12.dp
-private val CardCornerRadius = 12.dp
-private val IconContainerSize = 40.dp
-private val IconContainerCornerRadius = 10.dp
-private val IconSize = 22.dp
-private val CardContentPadding = 16.dp
+/**
+ * Revamped Home Tab - Professional Vedic Astrology Dashboard
+ *
+ * Design Philosophy:
+ * - Clean, uncluttered interface with clear visual hierarchy
+ * - Chart summary at top for quick reference
+ * - Categorized features in horizontal scrollable sections
+ * - Performance optimized with stable keys and minimal recomposition
+ * - Professional vedic astrology app aesthetic
+ */
+
+// ============================================================================
+// FEATURE CATEGORIES - Organized grouping for better UX
+// ============================================================================
+
+@Immutable
+enum class FeatureCategory(
+    val titleKey: StringKey,
+    val color: Color
+) {
+    CHART_BASICS(StringKey.CATEGORY_CHART_BASICS, DarkAppThemeColors.AccentPrimary),
+    TIMING_SYSTEMS(StringKey.CATEGORY_TIMING_SYSTEMS, DarkAppThemeColors.LifeAreaSpiritual),
+    STRENGTH_ANALYSIS(StringKey.CATEGORY_STRENGTH_ANALYSIS, DarkAppThemeColors.SuccessColor),
+    PREDICTIONS(StringKey.CATEGORY_PREDICTIONS, DarkAppThemeColors.AccentGold),
+    COMPATIBILITY(StringKey.CATEGORY_COMPATIBILITY, DarkAppThemeColors.LifeAreaLove),
+    ADVANCED(StringKey.CATEGORY_ADVANCED, DarkAppThemeColors.AccentTeal);
+
+    fun getLocalizedTitle(language: Language): String {
+        return StringResources.get(titleKey, language)
+    }
+}
+
+// ============================================================================
+// MAIN HOME TAB COMPOSABLE
+// ============================================================================
 
 @Composable
 fun HomeTab(
@@ -112,271 +150,585 @@ fun HomeTab(
         return
     }
 
-    val allFeatures = remember { InsightFeature.entries.toList() }
-    val comingSoonFeatures = remember { InsightFeature.comingSoonFeatures }
+    val colors = AppTheme.current
+    val language = LocalLanguage.current
+
+    // Pre-compute categorized features for performance
+    val categorizedFeatures = remember {
+        mapOf(
+            FeatureCategory.CHART_BASICS to listOf(
+                InsightFeature.FULL_CHART,
+                InsightFeature.PLANETS,
+                InsightFeature.NAKSHATRA_ANALYSIS,
+                InsightFeature.DIVISIONAL_CHARTS,
+                InsightFeature.SHODASHVARGA,
+                InsightFeature.NATIVE_ANALYSIS
+            ),
+            FeatureCategory.TIMING_SYSTEMS to listOf(
+                InsightFeature.DASHAS,
+                InsightFeature.YOGINI_DASHA,
+                InsightFeature.CHARA_DASHA,
+                InsightFeature.ASHTOTTARI_DASHA,
+                InsightFeature.KALACHAKRA_DASHA,
+                InsightFeature.SHOOLA_DASHA,
+                InsightFeature.DASHA_SANDHI
+            ),
+            FeatureCategory.STRENGTH_ANALYSIS to listOf(
+                InsightFeature.SHADBALA,
+                InsightFeature.ASHTAKAVARGA,
+                InsightFeature.STHANA_BALA,
+                InsightFeature.KALA_BALA,
+                InsightFeature.DRIG_BALA,
+                InsightFeature.ISHTA_KASHTA_PHALA
+            ),
+            FeatureCategory.PREDICTIONS to listOf(
+                InsightFeature.PREDICTIONS,
+                InsightFeature.YOGAS,
+                InsightFeature.TRANSITS,
+                InsightFeature.VARSHAPHALA,
+                InsightFeature.PANCHANGA,
+                InsightFeature.MUHURTA,
+                InsightFeature.PRASHNA
+            ),
+            FeatureCategory.COMPATIBILITY to listOf(
+                InsightFeature.MATCHMAKING,
+                InsightFeature.CHART_COMPARISON,
+                InsightFeature.TARABALA
+            ),
+            FeatureCategory.ADVANCED to listOf(
+                InsightFeature.ARGALA,
+                InsightFeature.ARUDHA_PADA,
+                InsightFeature.BHRIGU_BINDU,
+                InsightFeature.SUDARSHANA_CHAKRA,
+                InsightFeature.MRITYU_BHAGA,
+                InsightFeature.GRAHA_YUDDHA,
+                InsightFeature.GOCHARA_VEDHA,
+                InsightFeature.REMEDIES,
+                InsightFeature.LAL_KITAB,
+                InsightFeature.AVASTHA,
+                InsightFeature.MARAKA,
+                InsightFeature.BADHAKA,
+                InsightFeature.KEMADRUMA_YOGA,
+                InsightFeature.PANCH_MAHAPURUSHA,
+                InsightFeature.VIPAREETA_RAJA_YOGA,
+                InsightFeature.NITYA_YOGA,
+                InsightFeature.UPACHAYA_TRANSIT,
+                InsightFeature.ASHTAVARGA_TRANSIT,
+                InsightFeature.KAKSHYA_TRANSIT,
+                InsightFeature.NADI_AMSHA,
+                InsightFeature.SARVATOBHADRA_CHAKRA,
+                InsightFeature.SAHAM
+            )
+        )
+    }
 
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(AppTheme.ScreenBackground),
-        contentPadding = contentPadding
+            .background(colors.ScreenBackground),
+        contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(0.dp)
     ) {
-        item(key = "header_chart_analysis") {
-            SectionHeader(
-                textKey = StringKey.HOME_CHART_ANALYSIS,
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    top = 16.dp,
-                    end = 16.dp,
-                    bottom = 12.dp
-                )
+        // Chart Summary Card
+        item(key = "chart_summary") {
+            ChartSummaryCard(
+                chart = chart,
+                onViewChart = { onFeatureClick(InsightFeature.FULL_CHART) },
+                modifier = Modifier.padding(16.dp)
             )
         }
 
-        item(key = "grid_all_features") {
-            FeatureGrid(
-                features = allFeatures,
+        // Quick Actions Row
+        item(key = "quick_actions") {
+            QuickActionsRow(
                 onFeatureClick = onFeatureClick,
-                isDisabled = false
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
 
-        // Only show coming soon section if there are pending features
-        if (comingSoonFeatures.isNotEmpty()) {
-            item(key = "header_coming_soon") {
-                SectionHeader(
-                    textKey = StringKey.HOME_COMING_SOON,
-                    isMuted = true,
-                    modifier = Modifier.padding(
-                        start = 16.dp,
-                        top = 24.dp,
-                        end = 16.dp,
-                        bottom = 12.dp
+        // Divider
+        item(key = "divider_1") {
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                color = colors.DividerColor.copy(alpha = 0.5f),
+                thickness = 0.5.dp
+            )
+        }
+
+        // Feature Categories
+        FeatureCategory.entries.forEach { category ->
+            val features = categorizedFeatures[category] ?: emptyList()
+            if (features.isNotEmpty()) {
+                item(key = "section_${category.name}") {
+                    FeatureCategorySection(
+                        category = category,
+                        features = features,
+                        onFeatureClick = onFeatureClick
                     )
-                )
-            }
-
-            item(key = "grid_coming_soon") {
-                FeatureGrid(
-                    features = comingSoonFeatures,
-                    onFeatureClick = {},
-                    isDisabled = true
-                )
+                }
             }
         }
 
+        // Bottom spacing
         item(key = "bottom_spacer") {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
-@Composable
-private fun SectionHeader(
-    textKey: StringKey,
-    modifier: Modifier = Modifier,
-    isMuted: Boolean = false
-) {
-    Text(
-        text = stringResource(textKey),
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.SemiBold,
-        color = if (isMuted) AppTheme.TextMuted else AppTheme.TextPrimary,
-        modifier = modifier
-    )
-}
+// ============================================================================
+// CHART SUMMARY CARD - Shows key natal chart information at a glance
+// ============================================================================
 
 @Composable
-private fun FeatureGrid(
-    features: List<InsightFeature>,
-    onFeatureClick: (InsightFeature) -> Unit,
-    isDisabled: Boolean,
-    modifier: Modifier = Modifier,
-    columns: Int = 2,
-    horizontalSpacing: Dp = GridSpacing,
-    verticalSpacing: Dp = GridSpacing
+private fun ChartSummaryCard(
+    chart: VedicChart,
+    onViewChart: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val chunkedFeatures = remember(features, columns) {
-        features.chunked(columns)
-    }
+    val colors = AppTheme.current
+    val language = LocalLanguage.current
 
-    Column(
-        modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(verticalSpacing)
+    // Extract chart data
+    val ascendantSign = chart.ascendant.sign
+    val moonSign = chart.planets.find { it.planet == Planet.MOON }?.sign ?: ascendantSign
+    val sunSign = chart.planets.find { it.planet == Planet.SUN }?.sign ?: ascendantSign
+
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = colors.CardBackground
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
-        chunkedFeatures.forEach { rowFeatures ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            // Header row
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(horizontalSpacing)
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                rowFeatures.forEach { feature ->
-                    FeatureCard(
-                        feature = feature,
-                        onClick = { onFeatureClick(feature) },
-                        isDisabled = isDisabled,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-                repeat(columns - rowFeatures.size) {
-                    Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = stringResource(StringKey.HOME_CHART_OVERVIEW),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.TextPrimary
+                )
+
+                Surface(
+                    onClick = onViewChart,
+                    shape = RoundedCornerShape(8.dp),
+                    color = colors.AccentPrimary.copy(alpha = 0.1f)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(StringKey.HOME_VIEW_CHART),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = colors.AccentPrimary
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(
+                            imageVector = Icons.Outlined.ChevronRight,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = colors.AccentPrimary
+                        )
+                    }
                 }
             }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Key positions row
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                ChartPositionItem(
+                    label = stringResource(StringKey.LABEL_ASCENDANT),
+                    sign = ascendantSign,
+                    icon = Icons.Outlined.Person
+                )
+                ChartPositionItem(
+                    label = stringResource(StringKey.LABEL_MOON),
+                    sign = moonSign,
+                    icon = Icons.Outlined.Brightness2
+                )
+                ChartPositionItem(
+                    label = stringResource(StringKey.LABEL_SUN),
+                    sign = sunSign,
+                    icon = Icons.Outlined.Public
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ChartPositionItem(
+    label: String,
+    sign: ZodiacSign,
+    icon: ImageVector,
+    modifier: Modifier = Modifier
+) {
+    val colors = AppTheme.current
+    val signColor = AppTheme.getSignColor(sign)
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Icon with colored background
+        Box(
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape)
+                .background(signColor.copy(alpha = 0.15f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = signColor,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = colors.TextMuted
+        )
+
+        Spacer(modifier = Modifier.height(2.dp))
+
+        Text(
+            text = sign.displayName,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
+            color = colors.TextPrimary
+        )
+    }
+}
+
+// ============================================================================
+// QUICK ACTIONS ROW - Most commonly used features
+// ============================================================================
+
+@Composable
+private fun QuickActionsRow(
+    onFeatureClick: (InsightFeature) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val colors = AppTheme.current
+    val quickActions = remember {
+        listOf(
+            InsightFeature.FULL_CHART,
+            InsightFeature.DASHAS,
+            InsightFeature.TRANSITS,
+            InsightFeature.YOGAS
+        )
+    }
+
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        quickActions.forEach { feature ->
+            QuickActionChip(
+                feature = feature,
+                onClick = { onFeatureClick(feature) },
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }
 
 @Suppress("DEPRECATION")
 @Composable
-private fun FeatureCard(
+private fun QuickActionChip(
     feature: InsightFeature,
     onClick: () -> Unit,
-    isDisabled: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.current
+    val language = LocalLanguage.current
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Surface(
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(
+                interactionSource = interactionSource,
+                indication = rememberRipple(color = feature.color),
+                onClick = onClick
+            ),
+        shape = RoundedCornerShape(12.dp),
+        color = feature.color.copy(alpha = 0.1f)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(vertical = 12.dp, horizontal = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = feature.icon,
+                contentDescription = null,
+                tint = feature.color,
+                modifier = Modifier.size(22.dp)
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = feature.getLocalizedTitle(language),
+                style = MaterialTheme.typography.labelSmall,
+                color = colors.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+// ============================================================================
+// FEATURE CATEGORY SECTION - Horizontal scrollable feature cards
+// ============================================================================
+
+@Composable
+private fun FeatureCategorySection(
+    category: FeatureCategory,
+    features: List<InsightFeature>,
+    onFeatureClick: (InsightFeature) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val colors = AppTheme.current
     val language = LocalLanguage.current
 
-    // Read colors outside remember
-    val cardBackground = AppTheme.CardBackground
-    val textSubtle = AppTheme.TextSubtle
+    Column(modifier = modifier) {
+        // Section Header
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(4.dp, 20.dp)
+                        .clip(RoundedCornerShape(2.dp))
+                        .background(category.color)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = category.getLocalizedTitle(language),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.TextPrimary
+                )
+            }
+        }
 
-    val containerColor = remember(isDisabled, cardBackground) {
-        if (isDisabled) cardBackground.copy(alpha = 0.5f)
-        else cardBackground
+        // Horizontal scrolling features
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(
+                items = features,
+                key = { it.name }
+            ) { feature ->
+                CompactFeatureCard(
+                    feature = feature,
+                    onClick = { onFeatureClick(feature) }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
     }
+}
 
-    val iconBackgroundColor = remember(isDisabled, feature.color, textSubtle) {
-        if (isDisabled) textSubtle.copy(alpha = 0.1f)
-        else feature.color.copy(alpha = 0.15f)
-    }
-
-    val iconTint = if (isDisabled) AppTheme.TextSubtle else feature.color
-    val titleColor = if (isDisabled) AppTheme.TextSubtle else AppTheme.TextPrimary
-    val descriptionColor = if (isDisabled) {
-        AppTheme.TextSubtle.copy(alpha = 0.7f)
-    } else {
-        AppTheme.TextMuted
-    }
-
+@Suppress("DEPRECATION")
+@Composable
+private fun CompactFeatureCard(
+    feature: InsightFeature,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val colors = AppTheme.current
+    val language = LocalLanguage.current
     val interactionSource = remember { MutableInteractionSource() }
-    val rippleIndication = rememberRipple(color = feature.color)
-
     val title = feature.getLocalizedTitle(language)
-    val description = feature.getLocalizedDescription(language)
-    val comingSoonText = stringResource(StringKey.HOME_COMING_SOON)
 
     Card(
         modifier = modifier
-            .semantics(mergeDescendants = true) {
-                contentDescription = buildString {
-                    append(title)
-                    append(": ")
-                    append(description)
-                    if (isDisabled) append(". $comingSoonText")
-                }
-            }
-            .clip(RoundedCornerShape(CardCornerRadius))
+            .width(140.dp)
+            .semantics { contentDescription = title }
+            .clip(RoundedCornerShape(12.dp))
             .clickable(
-                enabled = !isDisabled,
-                role = Role.Button,
                 interactionSource = interactionSource,
-                indication = rippleIndication,
+                indication = rememberRipple(color = feature.color),
                 onClick = onClick
             ),
-        colors = CardDefaults.cardColors(containerColor = containerColor),
-        shape = RoundedCornerShape(CardCornerRadius),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = if (isDisabled) 0.dp else 2.dp,
-            pressedElevation = 4.dp
-        )
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(CardContentPadding)
+                .padding(14.dp)
         ) {
-            FeatureCardHeader(
-                icon = feature.icon,
-                iconBackgroundColor = iconBackgroundColor,
-                iconTint = iconTint,
-                showComingSoonBadge = isDisabled
-            )
+            // Icon container
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(feature.color.copy(alpha = 0.12f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = feature.icon,
+                    contentDescription = null,
+                    tint = feature.color,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
-                color = titleColor,
+                color = colors.TextPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.clearAndSetSemantics { }
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(2.dp))
 
             Text(
-                text = description,
+                text = feature.getLocalizedDescription(language),
                 style = MaterialTheme.typography.bodySmall,
-                color = descriptionColor,
+                color = colors.TextMuted,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                lineHeight = 16.sp,
+                lineHeight = 14.sp,
                 modifier = Modifier.clearAndSetSemantics { }
             )
         }
     }
 }
 
+// ============================================================================
+// EMPTY HOME STATE
+// ============================================================================
+
 @Composable
-private fun FeatureCardHeader(
-    icon: ImageVector,
-    iconBackgroundColor: Color,
-    iconTint: Color,
-    showComingSoonBadge: Boolean,
+private fun EmptyHomeState(
+    onCreateProfile: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+    val colors = AppTheme.current
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(colors.ScreenBackground)
+            .padding(32.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .size(IconContainerSize)
-                .clip(RoundedCornerShape(IconContainerCornerRadius))
-                .background(iconBackgroundColor),
-            contentAlignment = Alignment.Center
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = iconTint,
-                modifier = Modifier.size(IconSize)
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape)
+                    .background(colors.ChipBackground),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.PersonAddAlt,
+                    contentDescription = null,
+                    tint = colors.TextMuted,
+                    modifier = Modifier.size(36.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = stringResource(StringKey.NO_PROFILE_SELECTED),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = colors.TextPrimary,
+                textAlign = TextAlign.Center
             )
-        }
 
-        if (showComingSoonBadge) {
-            ComingSoonBadge()
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = stringResource(StringKey.NO_PROFILE_MESSAGE),
+                style = MaterialTheme.typography.bodyMedium,
+                color = colors.TextMuted,
+                textAlign = TextAlign.Center,
+                lineHeight = 22.sp
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Button(
+                onClick = onCreateProfile,
+                modifier = Modifier
+                    .height(52.dp)
+                    .widthIn(min = 200.dp),
+                shape = RoundedCornerShape(26.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colors.AccentPrimary,
+                    contentColor = colors.ButtonText
+                ),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 0.dp,
+                    pressedElevation = 0.dp
+                )
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(StringKey.BTN_CREATE_CHART),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
         }
     }
 }
 
-@Composable
-private fun ComingSoonBadge(modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(4.dp),
-        color = AppTheme.TextSubtle.copy(alpha = 0.12f)
-    ) {
-        Text(
-            text = stringResource(StringKey.HOME_SOON_BADGE),
-            style = MaterialTheme.typography.labelSmall,
-            color = AppTheme.TextSubtle,
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-        )
-    }
-}
+// ============================================================================
+// INSIGHT FEATURE ENUM - All available features
+// ============================================================================
 
 @Stable
 enum class InsightFeature(
@@ -718,7 +1070,7 @@ enum class InsightFeature(
     STHANA_BALA(
         titleKey = StringKeyShadbala.STHANA_TITLE,
         descriptionKey = StringKeyShadbala.STHANA_DESC,
-        icon = Icons.Outlined.Home, // Using Home as proxy for position/place
+        icon = Icons.Outlined.Home,
         color = DarkAppThemeColors.LifeAreaCareer,
         isImplemented = true
     ),
@@ -744,16 +1096,10 @@ enum class InsightFeature(
         isImplemented = true
     );
 
-    /**
-     * Get localized title
-     */
     fun getLocalizedTitle(language: Language): String {
         return StringResources.get(titleKey, language)
     }
 
-    /**
-     * Get localized description
-     */
     fun getLocalizedDescription(language: Language): String {
         return StringResources.get(descriptionKey, language)
     }
@@ -768,105 +1114,3 @@ enum class InsightFeature(
         }
     }
 }
-
-/**
- * Minimal Empty State UI for Home Screen
- *
- * Clean, minimal design with:
- * - Simple icon and text
- * - Fully rounded "Create Chart" button
- * - No shadows, no extra decorations
- * - Theme-aware colors
- */
-@Composable
-private fun EmptyHomeState(
-    onCreateProfile: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val colors = AppTheme.current
-
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colors.ScreenBackground)
-            .padding(32.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            // Simple circular icon container
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
-                    .background(colors.ChipBackground),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.PersonAddAlt,
-                    contentDescription = null,
-                    tint = colors.TextMuted,
-                    modifier = Modifier.size(36.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(
-                text = stringResource(StringKey.NO_PROFILE_SELECTED),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = colors.TextPrimary,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = stringResource(StringKey.NO_PROFILE_MESSAGE),
-                style = MaterialTheme.typography.bodyMedium,
-                color = colors.TextMuted,
-                textAlign = TextAlign.Center,
-                lineHeight = 22.sp
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Minimal fully-rounded button with no shadow
-            Button(
-                onClick = onCreateProfile,
-                modifier = Modifier
-                    .height(52.dp)
-                    .widthIn(min = 200.dp),
-                shape = RoundedCornerShape(26.dp), // Fully rounded
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colors.AccentPrimary,
-                    contentColor = colors.ButtonText
-                ),
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 0.dp,
-                    pressedElevation = 0.dp,
-                    hoveredElevation = 0.dp,
-                    focusedElevation = 0.dp
-                )
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(StringKey.BTN_CREATE_CHART),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-        }
-    }
-}
-
-
