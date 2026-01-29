@@ -357,7 +357,7 @@ private fun HeroDashaCard(
                             Spacer(modifier = Modifier.height(4.dp))
                             
                             // Duration
-                            val remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), currentDasha.endDate)
+                            val remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), currentDasha.endDate.toLocalDate())
                             val years = remainingDays / 365
                             val months = (remainingDays % 365) / 30
                             
@@ -376,8 +376,8 @@ private fun HeroDashaCard(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Progress Bar
-                    val totalDays = ChronoUnit.DAYS.between(currentDasha.startDate, currentDasha.endDate).toFloat()
-                    val elapsedDays = ChronoUnit.DAYS.between(currentDasha.startDate, LocalDate.now()).toFloat()
+                    val totalDays = ChronoUnit.DAYS.between(currentDasha.startDate.toLocalDate(), currentDasha.endDate.toLocalDate()).toFloat()
+                    val elapsedDays = ChronoUnit.DAYS.between(currentDasha.startDate.toLocalDate(), LocalDate.now()).toFloat()
                     val progress = (elapsedDays / totalDays).coerceIn(0f, 1f)
                     
                     Column {
