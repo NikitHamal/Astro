@@ -21,54 +21,149 @@ object ShoolaDashaCalculator {
 
     fun calculateShoolaDasha(chart: VedicChart): ShoolaDashaResult? {
         if (chart.planetPositions.isEmpty()) return null
-        val asc = ZodiacSign.fromLongitude(chart.ascendant); val birth = chart.birthData.dateTime
-        val tm = calculateTriMurti(chart, asc); val (sSign, dir) = determineStart(chart, asc, tm)
-        val mahadashas = calculateMahadashas(chart, sSign, dir, birth, tm)
-        val currM = mahadashas.find { it.isCurrent }
-        val antardashas = currM?.let { calculateAntardashas(chart, it, tm) } ?: emptyList()
-        val vulnerabilities = identifyHealthVulnerabilities(chart, mahadashas, tm)
-        val longevity = calculateLongevityAssessment(chart, tm, asc)
-        val applicability = calculateApplicability(chart, tm)
+
+        val ascendantSign = ZodiacSign.fromLongitude(chart.ascendant)
+        val birthDateTime = chart.birthData.dateTime
+        val triMurti = calculateTriMurti(chart, ascendantSign)
+        val (startSign, direction) = determineStart(chart, ascendantSign, triMurti)
+
+        val mahadashas = calculateMahadashas(chart, startSign, direction, birthDateTime, triMurti)
+        val currentMahadasha = mahadashas.find { it.isCurrent }
+        val antardashas = currentMahadasha?.let { calculateAntardashas(chart, it, triMurti) } ?: emptyList()
+
+        val vulnerabilities = identifyHealthVulnerabilities(chart, mahadashas, triMurti)
+        val longevity = calculateLongevityAssessment(chart, triMurti, ascendantSign)
+        val applicability = calculateApplicability(chart, triMurti)
+
         return ShoolaDashaResult(
-            tm, sSign, dir, mahadashas, currM, antardashas.find { it.isCurrent }, 
-            antardashas, vulnerabilities, vulnerabilities.filter { it.startDate.isAfter(LocalDateTime.now()) }.take(5), 
-            longevity, generateRemedies(tm, currM), 
-            StringResources.get(StringKeyDosha.SHOOLA_SUMMARY_EN, Language.ENGLISH), 
-            StringResources.get(StringKeyDosha.SHOOLA_SUMMARY_NE, Language.NEPALI), 
-            applicability
+            triMurtiAnalysis = triMurti,
+            startingSign = startSign,
+            direction = direction,
+            mahadashas = mahadashas,
+            currentMahadasha = currentMahadasha,
+            currentAntardasha = antardashas.find { it.isCurrent },
+            antardashas = antardashas,
+            allVulnerabilities = vulnerabilities,
+            upcomingVulnerabilities = vulnerabilities.filter { it.startDate.isAfter(LocalDateTime.now()) }.take(5),
+            longevityAssessment = longevity,
+            remedies = generateRemedies(triMurti, currentMahadasha),
+            summaryEn = StringResources.get(StringKeyDosha.SHOOLA_SUMMARY_EN, Language.ENGLISH),
+            summaryNe = StringResources.get(StringKeyDosha.SHOOLA_SUMMARY_NE, Language.NEPALI),
+            applicabilityScore = applicability
         )
     }
 
-    private fun determineStart(chart: VedicChart, asc: ZodiacSign, tm: TriMurtiAnalysis): Pair<ZodiacSign, DashaDirection> {
-        val s = chart.planetPositions.find { it.planet == tm.rudra }?.let { ZodiacSign.fromLongitude(it.longitude) } ?: asc
-        return s to if (s.number % 2 == 1) DashaDirection.DIRECT else DashaDirection.REVERSE
+    private fun determineStart(
+        chart: VedicChart,
+        ascendantSign: ZodiacSign,
+        triMurti: TriMurtiAnalysis
+    ): Pair<ZodiacSign, DashaDirection> {
+        val startSign = chart.planetPositions.find { it.planet == triMurti.rudra }
+            ?.let { ZodiacSign.fromLongitude(it.longitude) } ?: ascendantSign
+
+        val direction = if (startSign.number % 2 == 1) DashaDirection.DIRECT else DashaDirection.REVERSE
+        return startSign to direction
     }
 
-    private fun calculateMahadashas(chart: VedicChart, start: ZodiacSign, dir: DashaDirection, birth: LocalDateTime, tm: TriMurtiAnalysis): List<ShoolaDashaPeriod> {
-        val res = mutableListOf<ShoolaDashaPeriod>(); var curr = birth; val signs = getProgression(start, dir); val now = LocalDateTime.now()
-        for (s in signs) {
-            val end = curr.plusYears(SIGN_DASHA_YEARS.toLong()); val isC = now.isAfter(curr) && now.isBefore(end)
-            val n = assessPeriodNature(chart, s, tm); val sev = assessHealthSeverity(chart, s, tm)
-            res.add(ShoolaDashaPeriod(s, s.ruler, curr, end, SIGN_DASHA_YEARS, n, sev, isC, if (isC) ChronoUnit.DAYS.between(curr, now).toDouble() / ChronoUnit.DAYS.between(curr, end).toDouble() else if (now.isAfter(end)) 1.0 else 0.0, findPlanets(chart, s), emptyList(), emptyList(), emptyList(), emptyList(), "${s.displayName} period", "${s.displayName} अवधि"))
-            curr = end
+    private fun calculateMahadashas(
+        chart: VedicChart,
+        startSign: ZodiacSign,
+        direction: DashaDirection,
+        birthDateTime: LocalDateTime,
+        triMurti: TriMurtiAnalysis
+    ): List<ShoolaDashaPeriod> {
+        val mahadashas = mutableListOf<ShoolaDashaPeriod>()
+        var currentStartDate = birthDateTime
+        val signSequence = getProgression(startSign, direction)
+        val now = LocalDateTime.now()
+
+        for (sign in signSequence) {
+            val endDate = currentStartDate.plusYears(SIGN_DASHA_YEARS.toLong())
+            val isCurrent = now.isAfter(currentStartDate) && now.isBefore(endDate)
+
+            val nature = assessPeriodNature(chart, sign, triMurti)
+            val healthSeverity = assessHealthSeverity(chart, sign, triMurti)
+
+            val progress = when {
+                isCurrent -> ChronoUnit.DAYS.between(currentStartDate, now).toDouble() /
+                        ChronoUnit.DAYS.between(currentStartDate, endDate).toDouble()
+                now.isAfter(endDate) -> 1.0
+                else -> 0.0
+            }
+
+            mahadashas.add(
+                ShoolaDashaPeriod(
+                    sign = sign,
+                    lord = sign.ruler,
+                    startDate = currentStartDate,
+                    endDate = endDate,
+                    durationYears = SIGN_DASHA_YEARS,
+                    nature = nature,
+                    healthSeverity = healthSeverity,
+                    isCurrent = isCurrent,
+                    progress = progress,
+                    occupiedPlanets = findPlanets(chart, sign),
+                    aspectedPlanets = emptyList(),
+                    vulnerabilityAreas = emptyList(),
+                    interpretationsEn = emptyList(),
+                    interpretationsNe = emptyList(),
+                    displayName = "${sign.displayName} period",
+                    displayNameNe = "${sign.displayName} अवधि"
+                )
+            )
+            currentStartDate = endDate
         }
-        return res
+        return mahadashas
     }
 
-    private fun getProgression(start: ZodiacSign, dir: DashaDirection): List<ZodiacSign> {
-        val res = mutableListOf<ZodiacSign>()
-        for (i in 0 until 12) res.add(ZodiacSign.entries[if (dir == DashaDirection.DIRECT) (start.number - 1 + i) % 12 else (start.number - 1 - i + 12) % 12])
-        return res
-    }
-
-    private fun calculateAntardashas(chart: VedicChart, m: ShoolaDashaPeriod, tm: TriMurtiAnalysis): List<ShoolaAntardasha> {
-        val res = mutableListOf<ShoolaAntardasha>(); var curr = m.startDate; val signs = getProgression(m.sign, DashaDirection.DIRECT); val now = LocalDateTime.now()
-        for (s in signs) {
-            val end = curr.plusDays((SIGN_DASHA_YEARS * 30.44).toLong()); val isC = now.isAfter(curr) && now.isBefore(end)
-            res.add(ShoolaAntardasha(s, s.ruler, curr, end, SIGN_DASHA_YEARS, assessPeriodNature(chart, s, tm), assessHealthSeverity(chart, s, tm), isC, "Sub-period", "उप-अवधि"))
-            curr = end
+    private fun getProgression(startSign: ZodiacSign, direction: DashaDirection): List<ZodiacSign> {
+        val progression = mutableListOf<ZodiacSign>()
+        for (i in 0 until 12) {
+            val index = if (direction == DashaDirection.DIRECT) {
+                (startSign.number - 1 + i) % 12
+            } else {
+                (startSign.number - 1 - i + 12) % 12
+            }
+            progression.add(ZodiacSign.entries[index])
         }
-        return res
+        return progression
+    }
+
+    private fun calculateAntardashas(
+        chart: VedicChart,
+        mahadasha: ShoolaDashaPeriod,
+        triMurti: TriMurtiAnalysis
+    ): List<ShoolaAntardasha> {
+        val antardashas = mutableListOf<ShoolaAntardasha>()
+        var currentStartDate = mahadasha.startDate
+        val signSequence = getProgression(mahadasha.sign, DashaDirection.DIRECT)
+        val now = LocalDateTime.now()
+
+        // Each antardasha in a 9-year dasha lasts 9 months.
+        // Standardizing to use DashaUtils.DAYS_PER_YEAR for consistency.
+        val daysPerAntardasha = (com.astro.storm.ephemeris.DashaUtils.DAYS_PER_YEAR.toDouble() * SIGN_DASHA_YEARS) / 12.0
+
+        for (sign in signSequence) {
+            val endDate = currentStartDate.plusDays(daysPerAntardasha.toLong())
+            val isCurrent = now.isAfter(currentStartDate) && now.isBefore(endDate)
+
+            antardashas.add(
+                ShoolaAntardasha(
+                    sign = sign,
+                    lord = sign.ruler,
+                    startDate = currentStartDate,
+                    endDate = endDate,
+                    durationYears = SIGN_DASHA_YEARS / 12.0,
+                    nature = assessPeriodNature(chart, sign, triMurti),
+                    healthSeverity = assessHealthSeverity(chart, sign, triMurti),
+                    isCurrent = isCurrent,
+                    displayName = "Sub-period",
+                    displayNameNe = "उप-अवधि"
+                )
+            )
+            currentStartDate = endDate
+        }
+        return antardashas
     }
 
     private fun findPlanets(chart: VedicChart, sign: ZodiacSign): List<Planet> = chart.planetPositions.filter { ZodiacSign.fromLongitude(it.longitude) == sign || aspectsPoint(it.planet, it.longitude, (sign.number - 1) * 30.0 + 15.0) }.map { it.planet }.distinct()

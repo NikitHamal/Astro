@@ -11,6 +11,8 @@ import com.astro.storm.core.model.ZodiacSign
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.abs
+import kotlin.math.cos
+import kotlin.math.PI
 
 /**
  * Nadi Amsha (D-150) Calculator
@@ -146,9 +148,10 @@ object NadiAmshaCalculator {
         val currentSign = ZodiacSign.entries[currentSignIndex]
         val degreeInSign = currentAscendant % 30.0
 
-        // Approximate Ascendant speed: ~360 degrees in 24 hours => 15 degrees per hour => 0.25 degrees per min
-        // Nadi width is 0.2 degrees. So Ascendant crosses a Nadi every ~0.8 minutes (~48 seconds).
-        val avgAscendantSpeedPerMin = 0.25
+        // Approximate Ascendant speed: ~360 degrees in 24 hours => 15 degrees per hour => 0.25 degrees per min.
+        // Adjusted for latitude: speed increases at higher latitudes on average.
+        val latRad = chart.birthData.latitude.toDouble() * PI / 180.0
+        val avgAscendantSpeedPerMin = 0.25 / cos(latRad).coerceAtLeast(0.5) // Cap to avoid infinity at poles
 
         // Check +/- 5 Nadis (approx +/- 4 minutes)
         for (i in -3..3) {
