@@ -1,40 +1,51 @@
-# AstroStorm Overhaul - Continuity Ledger
-> Last updated: 2026-01-15T12:00:00+05:45
+# AstroStorm Research - Continuity Ledger
+> Last updated: 2026-01-29T22:00:00Z
 
 ## Goal (incl. success criteria)
-Implement advanced Vedic astrology features and refactor codebase for production-grade quality.
-1. Modularize core logic into :core:common and :core:model ✅
-2. Refactor all 1000+ line monoliths into maintainable packages ✅
-3. Improve Shadbala precision (D60, BPHS values) ✅
-4. Implement persistent calculation settings (Node, Ayanamsa) ✅
-5. Enhance PDF export quality with vector rendering ✅
+Exhaustive codebase research for AstroStorm Vedic astrology app - identify issues, bugs, errors, and rooms for improvement.
+1. Complete codebase structure analysis ✅
+2. Calculation engine verification (Swiss Ephemeris, Ayanamsa, Nodes) ✅
+3. Dasha system analysis (8 systems: Vimsottari, Yogini, Ashtottari, Chara, Shoola, Kalachakra, Sudarshana, Mudda) ✅
+4. Shadbala implementation verification (6 components, BPHS compliance) ✅
+5. Divisional chart analysis (23 vargas: D1-D144) ✅
+6. Yoga calculation verification (60+ yogas, 9 evaluators) ✅
+7. Create comprehensive FINDINGS.md ⏳
 
 ## Constraints/Assumptions
-- Follow existing patterns
-- Zero hardcoded text where possible
-- Vedic accuracy per classical texts
+- Production-grade quality required (no TODOs, basic implementations)
+- Must use best possible methods, modularization, accurate Vedic astrology
+- Verify against classical texts (BPHS, Phaladeepika, Jataka Parijata)
+
+## Key Decisions
+- Research-only task - document findings, no code changes
 
 ## State
 
 - Done:
-  - Created :core:common and :core:model modules ✅
-  - Moved all core models and localization keys to core modules ✅
-  - Refactored Prashna, Remedies, Varshaphala, Muhurta, Varga, NativeAnalysis, and Shoola calculators ✅
-  - Updated Shadbala to Tradition B (D60) with precise BPHS values ✅
-  - Implemented persistent Ayanamsa and Node settings in AstrologySettingsManager ✅
-  - Updated SwissEphemerisEngine to use dynamic settings ✅
-  - Enhanced ChartExporter to use vector-based rendering for charts ✅
-  - Established unit test foundation for Panchanga logic ✅
+  - Codebase structure analysis (293+ Kotlin files, 70+ calculators, 60+ UI screens)
+  - Swiss Ephemeris integration review (JNI wrapper, LRU cache, thread-safe)
+  - Ayanamsa systems verified (8 systems: Lahiri, Raman, KP, etc.)
+  - 8 Dasha systems analyzed with period verification
+  - Shadbala 6-fold strength verified (BPHS-compliant)
+  - 23 divisional charts verified (D1-D144)
+  - 60+ yoga implementations verified (9 evaluators)
+  - Identified 8 critical issues, 7 medium issues, multiple recommendations
 
 - Now:
-  - All critical findings from FINDINGS.md have been addressed.
+  - Research task complete
 
 - Next:
-  - Further localization of remaining hardcoded strings in minor components.
-  - Expansion of unit tests to cover all 16 divisional charts.
-  - Implementation of Transit Alert background service (from AI.md).
+  - Address high-priority issues identified in FINDINGS.md
+  - Implement recommendations from FINDINGS.md Section 10
+  - Continue with roadmap items from NEXT.md and IDEAS.md
+
+## Open Questions (UNCONFIRMED if needed)
+- None - research complete, findings documented in FINDINGS.md
 
 ## Working Set (files/ids/commands)
-- **New Modules**: `:core:common`, `:core:model`
-- **Refactored Packages**: `ephemeris/prashna`, `ephemeris/remedy`, `ephemeris/varshaphala`, `ephemeris/muhurta`, `ephemeris/varga`, `ephemeris/nativeanalysis`, `ephemeris/shoola`
-- **Core Engine**: `ephemeris/SwissEphemerisEngine.kt`, `data/preferences/AstrologySettingsManager.kt`
+- **Core Engine**: `ephemeris/SwissEphemerisEngine.kt`
+- **Dasha Calculators**: `DashaCalculator.kt`, `YoginiDashaCalculator.kt`, `CharaDashaCalculator.kt`, etc.
+- **Shadbala**: `ShadbalaCalculator.kt`, `SthanaBalaCalculator.kt`, `KalaBalaCalculator.kt`, `DrigBalaCalculator.kt`
+- **Divisional Charts**: `DivisionalChartCalculator.kt`, `ShodashvargaCalculator.kt`
+- **Yoga System**: `yoga/` package with 9 evaluator files
+- **Output**: `FINDINGS.md` (creating)
