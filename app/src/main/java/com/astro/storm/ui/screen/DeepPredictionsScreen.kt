@@ -98,6 +98,7 @@ fun DeepPredictionsBody(
     val tabs = listOf(
         stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS),
         stringResource(StringKeyAnalysis.ANALYSIS_TAB_TRANSITS),
+        stringResource(StringKeyDeepPrediction.SECTION_TRIPLE_PILLAR),
         stringResource(StringKeyDeepPrediction.SECTION_CRITICAL),
         stringResource(StringKeyDeepPrediction.SECTION_YEARLY),
         stringResource(StringKeyDeepPrediction.SECTION_REMEDIES)
@@ -133,9 +134,10 @@ fun DeepPredictionsBody(
                 when (selectedTab) {
                     0 -> DashaTab(state.predictions.dashaAnalysis)
                     1 -> TransitTab(state.predictions.transitAnalysis)
-                    2 -> PredictionsOverviewTab(state.predictions)
-                    3 -> YearlyTab(state.predictions)
-                    4 -> RemediesTab(state.predictions.remedialMeasures)
+                    2 -> TriplePillarTab(state.predictions.triplePillarSynthesis)
+                    3 -> PredictionsOverviewTab(state.predictions)
+                    4 -> YearlyTab(state.predictions)
+                    5 -> RemediesTab(state.predictions.remedialMeasures)
                 }
             }
         }
@@ -306,6 +308,111 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                     description = upcoming.briefPreview,
                     strength = com.astro.storm.ephemeris.deepanalysis.StrengthLevel.MODERATE
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TriplePillarTab(synthesis: com.astro.storm.ephemeris.prediction.TriplePillarPredictiveEngine.TriplePillarSynthesisResult) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        item {
+            DeepSectionHeader(
+                title = stringResource(StringKeyDeepPrediction.TRIPLE_PILLAR_TITLE),
+                icon = Icons.Default.Timeline
+            )
+        }
+
+        item {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                color = AppTheme.CardBackground
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = synthesis.summary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = AppTheme.TextSecondary
+                    )
+                }
+            }
+        }
+
+        if (synthesis.peakWindows.isNotEmpty()) {
+            item {
+                Text(
+                    text = stringResource(StringKeyDeepPrediction.TRIPLE_PILLAR_PEAKS),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = AppTheme.TextPrimary,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            items(synthesis.peakWindows) { peak ->
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(14.dp),
+                    color = AppTheme.AccentPrimary.copy(alpha = 0.12f)
+                ) {
+                    Column(modifier = Modifier.padding(14.dp)) {
+                        Text(
+                            text = "${peak.start.toLocalDate()} - ${peak.end.toLocalDate()}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = AppTheme.TextPrimary,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "${peak.dashaLord.localizedName()} • ${peak.transitSign.localizedName()}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = AppTheme.TextSecondary
+                        )
+                        Text(
+                            text = "${stringResource(StringKeyDeepPrediction.TRIPLE_PILLAR_SCORE)}: ${peak.successProbability}%",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = AppTheme.TextSecondary
+                        )
+                    }
+                }
+            }
+        }
+
+        item {
+            Text(
+                text = stringResource(StringKeyDeepPrediction.TRIPLE_PILLAR_SCORE),
+                style = MaterialTheme.typography.titleMedium,
+                color = AppTheme.TextPrimary,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+
+        items(synthesis.timeline) { point ->
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                color = AppTheme.CardBackground
+            ) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Text(
+                        text = point.dateTime.toLocalDate().toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = "${point.mahadashaLord.localizedName()} • ${point.transitPlanet.localizedName()} @ ${point.transitSign.localizedName()}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextSecondary
+                    )
+                    Text(
+                        text = "${stringResource(StringKeyDeepPrediction.TRIPLE_PILLAR_SCORE)}: ${point.successProbability}%",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = if (point.isPeak) AppTheme.SuccessColor else AppTheme.TextSecondary
+                    )
+                }
             }
         }
     }

@@ -301,8 +301,15 @@ fun MuhurtaScreen(
                                 searchState = SearchUiState.Searching
                                 try {
                                     withContext(Dispatchers.IO) {
-                                        val results = calculator.findAuspiciousMuhurtas(
-                                            activity, startDate, endDate, latitude, longitude, timezone
+                                        val results = calculator.findOptimalMuhurtas(
+                                            activity = activity,
+                                            startDate = startDate,
+                                            endDate = endDate,
+                                            latitude = latitude,
+                                            longitude = longitude,
+                                            timezone = timezone,
+                                            stepMinutes = 5,
+                                            topN = 30
                                         )
                                         searchState = SearchUiState.Results(results)
                                     }
@@ -1955,4 +1962,3 @@ private fun getActivityIcon(activity: ActivityType): ImageVector {
         ActivityType.NAMING_CEREMONY -> Icons.Outlined.ChildCare
     }
 }
-

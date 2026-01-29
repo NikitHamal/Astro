@@ -71,6 +71,55 @@ class MuhurtaCalculator(context: Context) {
         return results.sortedByDescending { it.score }.take(20)
     }
 
+    fun findOptimalMuhurtas(
+        activity: ActivityType,
+        startDate: LocalDate,
+        endDate: LocalDate,
+        latitude: Double,
+        longitude: Double,
+        timezone: String,
+        stepMinutes: Long = 5,
+        topN: Int = 20
+    ): List<MuhurtaSearchResult> {
+        val results = mutableListOf<MuhurtaSearchResult>()
+        var currentDate = startDate
+
+        while (!currentDate.isAfter(endDate)) {
+            val jd = calculateJulianDay(ZonedDateTime.of(currentDate, LocalTime.NOON, ZoneId.of(timezone)).withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime())
+            val (srJd, _) = calculateSunriseSunsetJD(jd, latitude, longitude, swissEph)
+            val nextDayJd = jd + 1.0
+            val (nextSrJd, _) = calculateSunriseSunsetJD(nextDayJd, latitude, longitude, swissEph)
+            val dayStart = LocalDateTime.of(currentDate, jdToLocalTime(srJd, ZoneId.of(timezone)))
+            val dayEnd = LocalDateTime.of(currentDate.plusDays(1), jdToLocalTime(nextSrJd, ZoneId.of(timezone)))
+
+            var cursor = dayStart
+            while (cursor.isBefore(dayEnd)) {
+                val m = calculateMuhurta(cursor, latitude, longitude, timezone)
+                val (score, reasons, warnings) = evaluateForActivity(m, activity, Language.ENGLISH)
+                if (score > 0) {
+                    results.add(
+                        MuhurtaSearchResult(
+                            dateTime = cursor,
+                            score = score,
+                            vara = m.vara,
+                            nakshatra = m.nakshatra.nakshatra,
+                            tithi = m.tithi.name,
+                            choghadiya = m.choghadiya.choghadiya,
+                            reasons = reasons,
+                            warnings = warnings,
+                            specialYogas = m.specialYogas
+                        )
+                    )
+                }
+                cursor = cursor.plusMinutes(stepMinutes)
+            }
+
+            currentDate = currentDate.plusDays(1)
+        }
+
+        return results.sortedByDescending { it.score }.take(topN)
+    }
+
     fun getDailyChoghadiya(date: LocalDate, latitude: Double, longitude: Double, timezone: String): Pair<List<ChoghadiyaInfo>, List<ChoghadiyaInfo>> {
         val jd = calculateJulianDay(ZonedDateTime.of(date, LocalTime.NOON, ZoneId.of(timezone)).withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime())
         val (srJd, ssJd) = calculateSunriseSunsetJD(jd, latitude, longitude, swissEph); val sr = jdToLocalTime(srJd, ZoneId.of(timezone)); val ss = jdToLocalTime(ssJd, ZoneId.of(timezone))

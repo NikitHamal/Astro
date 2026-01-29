@@ -119,6 +119,7 @@ fun NadiAmshaScreen(
                 is NadiAmshaUiState.Success -> {
                     NadiAmshaContent(
                         result = state.result,
+                        bnnAnalysis = state.bnnAnalysis,
                         selectedTab = selectedTab,
                         onTabSelected = { viewModel.setSelectedTab(it) }
                     )
@@ -145,12 +146,14 @@ fun NadiAmshaScreen(
 @Composable
 private fun NadiAmshaContent(
     result: NadiAmshaResult,
+    bnnAnalysis: com.astro.storm.ephemeris.bnn.BnnAspectEngine.BnnAnalysis,
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
     val tabs = listOf(
         TabItem(stringResource(StringKeyAdvanced.NADI_TAB_OVERVIEW), Icons.Filled.Dashboard),
         TabItem(stringResource(StringKeyAdvanced.NADI_TAB_POSITIONS), Icons.Filled.List),
+        TabItem(stringResource(StringKeyAdvanced.BNN_TAB_LINKS), Icons.Filled.Share),
         TabItem(stringResource(StringKeyAdvanced.NADI_TAB_RECTIFICATION), Icons.Filled.Build)
     )
 
@@ -178,6 +181,12 @@ private fun NadiAmshaContent(
                     }
                 }
                 2 -> {
+                    item { BnnSummaryCard(bnnAnalysis) }
+                    items(bnnAnalysis.planetaryLinks) { link ->
+                        BnnLinkCard(link)
+                    }
+                }
+                3 -> {
                     item { RectificationHeader(result.chart) }
                     items(result.rectificationCandidates) { candidate ->
                         RectificationCandidateCard(candidate)
@@ -223,6 +232,56 @@ private fun NadiLagnaCard(nadi: NadiAmshaCalculator.NadiPosition) {
                 NadiInfoItem(stringResource(StringKeyAdvanced.NADI_NUMBER), "#${nadi.nadiNumber}")
                 NadiInfoItem(stringResource(StringKeyAdvanced.KAKSHYA_SIGN), nadi.nadiSign.getLocalizedName(LocalLanguage.current))
             }
+        }
+    }
+}
+
+@Composable
+private fun BnnSummaryCard(analysis: com.astro.storm.ephemeris.bnn.BnnAspectEngine.BnnAnalysis) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentTeal.copy(alpha = 0.12f)),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = stringResource(StringKeyAdvanced.BNN_SUMMARY_TITLE),
+                fontWeight = FontWeight.Bold,
+                color = AppTheme.TextPrimary
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = stringResource(StringKeyAdvanced.BNN_TOTAL_LINKS, analysis.planetaryLinks.size, analysis.consecutiveChains.size),
+                color = AppTheme.TextSecondary,
+                fontSize = 12.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun BnnLinkCard(link: com.astro.storm.ephemeris.bnn.BnnAspectEngine.BnnPlanetaryLink) {
+    val language = LocalLanguage.current
+    val planetNames = link.path.joinToString(" → ") { it.getLocalizedName(language) }
+    val distances = link.distances.joinToString(" / ") { "$it" }
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(14.dp)
+    ) {
+        Column(modifier = Modifier.padding(14.dp)) {
+            Text(
+                text = planetNames,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = stringResource(StringKeyAdvanced.BNN_ASPECT_DISTANCES, distances),
+                color = AppTheme.TextSecondary,
+                fontSize = 12.sp
+            )
         }
     }
 }
@@ -371,4 +430,3 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
         }
     }
 }
-

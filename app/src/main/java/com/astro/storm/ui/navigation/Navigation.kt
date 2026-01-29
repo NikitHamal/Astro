@@ -41,6 +41,7 @@ import com.astro.storm.ui.screen.LalKitabRemediesScreen
 import com.astro.storm.ui.screen.DivisionalChartsScreen
 import com.astro.storm.ui.screen.UpachayaTransitScreen
 import com.astro.storm.ui.screen.KalachakraDashaScreen
+import com.astro.storm.ui.screen.KpSystemScreen
 import com.astro.storm.ui.screen.tarabala.TarabalaScreen
 import com.astro.storm.ui.screen.AiModelsScreen
 import com.astro.storm.ui.screen.ArudhaPadaScreen
@@ -200,6 +201,9 @@ sealed class Screen(val route: String) {
     }
     object KalachakraDasha : Screen("kalachakra_dasha/{chartId}") {
         fun createRoute(chartId: Long) = "kalachakra_dasha/$chartId"
+    }
+    object KpSystem : Screen("kp_system/{chartId}") {
+        fun createRoute(chartId: Long) = "kp_system/$chartId"
     }
     object Tarabala : Screen("tarabala/{chartId}") {
         fun createRoute(chartId: Long) = "tarabala/$chartId"
@@ -419,6 +423,9 @@ fun AstroStormNavigation(
                 },
                 onNavigateToNadiAmsha = { chartId ->
                     navController.navigate(Screen.NadiAmsha.createRoute(chartId))
+                },
+                onNavigateToKpSystem = { chartId ->
+                    navController.navigate(Screen.KpSystem.createRoute(chartId))
                 },
                 onNavigateToSynastry = {
                     navController.navigate(Screen.Synastry.route)
@@ -1524,6 +1531,19 @@ fun AstroStormNavigation(
                 }
             }
             NadiAmshaScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        composable(
+            route = Screen.KpSystem.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) {
+                if (selectedChartId != chartId) {
+                    viewModel.loadChart(chartId)
+                }
+            }
+            KpSystemScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
         // ===================================

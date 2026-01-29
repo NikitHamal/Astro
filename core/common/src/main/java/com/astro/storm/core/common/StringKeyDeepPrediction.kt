@@ -9,6 +9,7 @@ enum class StringKeyDeepPrediction(override val en: String, override val ne: Str
     SECTION_PREDICTIONS("Deep Predictions", "गहन भविष्यवाणीहरू"),
     SECTION_DASHA("Dasha Analysis", "दशा विश्लेषण"),
     SECTION_TRANSIT("Transit Analysis", "गोचर विश्लेषण"),
+    SECTION_TRIPLE_PILLAR("Three Pillars", "त्रि स्तम्भ"),
     SECTION_YEARLY("Yearly Prediction", "वार्षिक भविष्यवाणी"),
     SECTION_MONTHLY("Monthly Predictions", "मासिक भविष्यवाणीहरू"),
     SECTION_LIFE_AREAS("Life Area Predictions", "जीवन क्षेत्र भविष्यवाणीहरू"),
@@ -16,6 +17,11 @@ enum class StringKeyDeepPrediction(override val en: String, override val ne: Str
     SECTION_CRITICAL("Critical Periods", "महत्वपूर्ण अवधिहरू"),
     SECTION_OPPORTUNITIES("Opportunity Windows", "अवसर सञ्झ्यालहरू"),
     SECTION_REMEDIES("Remedial Measures", "उपचारात्मक उपायहरू"),
+
+    // Triple Pillar Synthesis
+    TRIPLE_PILLAR_TITLE("Success Probability Timeline", "सफलता सम्भावना समयरेखा"),
+    TRIPLE_PILLAR_PEAKS("Peak Windows", "शिखर सञ्झ्यालहरू"),
+    TRIPLE_PILLAR_SCORE("Success Probability", "सफलता सम्भावना"),
     
     // Mahadasha
     MAHADASHA_TITLE("Current Mahadasha", "वर्तमान महादशा"),

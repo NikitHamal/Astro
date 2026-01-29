@@ -5,6 +5,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.deepanalysis.*
 import com.astro.storm.ephemeris.DashaCalculator
+import com.astro.storm.ephemeris.prediction.TriplePillarPredictiveEngine
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -17,10 +18,18 @@ object DeepPredictionEngine {
     
     fun generatePredictions(chart: VedicChart, context: AnalysisContext): DeepPredictions {
         val currentDate = LocalDate.now()
+        val synthesis = TriplePillarPredictiveEngine.buildTimeline(
+            chart = chart,
+            context = context.appContext,
+            startDate = currentDate,
+            endDate = currentDate.plusYears(1),
+            stepDays = 7
+        )
         
         return DeepPredictions(
             dashaAnalysis = analyzeDashaSystem(context),
             transitAnalysis = analyzeTransits(context, currentDate),
+            triplePillarSynthesis = synthesis,
             yearlyPrediction = generateYearlyPrediction(context, currentDate),
             monthlyPredictions = generateMonthlyPredictions(context, currentDate),
             lifeAreaPredictions = generateLifeAreaPredictions(context),

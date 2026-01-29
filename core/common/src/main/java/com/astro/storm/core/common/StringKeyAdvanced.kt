@@ -271,6 +271,20 @@ enum class StringKeyAdvanced(override val en: String, override val ne: String) :
     NADI_VEDIC_REF("Vedic Reference: Brighu Nadi, Dhruva Nadi, South Indian Nadi traditions", "वैदिक सन्दर्भ: भृगु नाडी, ध्रुव नाडी, दक्षिण भारतीय नाडी परम्पराहरू"),
     NADI_UNABLE_CALCULATE("Unable to calculate Nadi Amsha", "नाडी अंश गणना गर्न सकिएन"),
 
+    // KP SYSTEM STRINGS
+    KP_TITLE("KP System (Krishnamurti)", "के.पी. प्रणाली (कृष्णमूर्ति)"),
+    KP_DESC("Cusp sub-lord navigator with 4-step event verification", "कप उप-स्वामी नेभिगेटर र ४ चरण घटना प्रमाणीकरण"),
+    KP_SCREEN_TITLE("KP 4-Step System", "के.पी. ४ चरण प्रणाली"),
+    KP_SUB_LORD_NAVIGATOR("Sub-Lord Navigator", "उप-स्वामी नेभिगेटर"),
+    KP_EVENT_VERIFICATION("Event Verification", "घटना प्रमाणीकरण"),
+    KP_VERDICT("Verdict", "निर्णय"),
+    KP_SIGNIFICATIONS("Sub-Lord Significations", "उप-स्वामी सूचकहरू"),
+
+    BNN_TAB_LINKS("BNN Links", "बीएनएन लिंकहरू"),
+    BNN_SUMMARY_TITLE("BNN Planetary Links", "बीएनएन ग्रह लिंकहरू"),
+    BNN_TOTAL_LINKS("Total links: %d • Consecutive chains: %d", "कुल लिंक: %d • क्रमागत श्रृंखला: %d"),
+    BNN_ASPECT_DISTANCES("Aspect distances: %s", "दृष्टि दूरी: %s"),
+
     // ============================================
     // PRASHNA ENHANCEMENTS STRINGS
     // ============================================

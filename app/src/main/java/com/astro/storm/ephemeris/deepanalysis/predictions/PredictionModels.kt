@@ -3,6 +3,7 @@ package com.astro.storm.ephemeris.deepanalysis.predictions
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.deepanalysis.*
+import com.astro.storm.ephemeris.prediction.TriplePillarPredictiveEngine
 import java.time.LocalDate
 
 /**
@@ -11,6 +12,7 @@ import java.time.LocalDate
 data class DeepPredictions(
     val dashaAnalysis: DashaDeepAnalysis,
     val transitAnalysis: TransitDeepAnalysis,
+    val triplePillarSynthesis: TriplePillarPredictiveEngine.TriplePillarSynthesisResult,
     val yearlyPrediction: YearlyPrediction,
     val monthlyPredictions: List<MonthlyPrediction>,
     val lifeAreaPredictions: Map<LifeArea, LifeAreaPrediction>,

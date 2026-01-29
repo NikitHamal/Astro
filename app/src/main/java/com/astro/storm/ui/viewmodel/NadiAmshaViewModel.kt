@@ -6,6 +6,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.NadiAmshaCalculator
 import com.astro.storm.ephemeris.NadiAmshaCalculator.NadiAmshaResult
 import com.astro.storm.ephemeris.NadiAmshaCalculator.RectificationCandidate
+import com.astro.storm.ephemeris.bnn.BnnAspectEngine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +39,10 @@ class NadiAmshaViewModel @Inject constructor() : ViewModel() {
                 val result = withContext(Dispatchers.Default) {
                     NadiAmshaCalculator.calculateNadiAmsha(chart)
                 }
-                _uiState.value = NadiAmshaUiState.Success(result)
+                val bnnAnalysis = withContext(Dispatchers.Default) {
+                    BnnAspectEngine.analyze(chart)
+                }
+                _uiState.value = NadiAmshaUiState.Success(result, bnnAnalysis)
             } catch (e: Exception) {
                 _uiState.value = NadiAmshaUiState.Error(e.message ?: "Unknown error")
             }
@@ -58,6 +62,6 @@ class NadiAmshaViewModel @Inject constructor() : ViewModel() {
 
 sealed class NadiAmshaUiState {
     data object Loading : NadiAmshaUiState()
-    data class Success(val result: NadiAmshaResult) : NadiAmshaUiState()
+    data class Success(val result: NadiAmshaResult, val bnnAnalysis: BnnAspectEngine.BnnAnalysis) : NadiAmshaUiState()
     data class Error(val message: String) : NadiAmshaUiState()
 }

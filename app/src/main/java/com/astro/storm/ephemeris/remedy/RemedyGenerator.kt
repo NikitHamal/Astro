@@ -346,6 +346,69 @@ object RemedyGenerator {
             else -> "Sunday"
         }
     }
+
+    fun getIshtaDevataRemedy(result: IshtaDevataCalculator.IshtaDevataResult, language: Language): Remedy {
+        val localizedDay = StringResources.get(
+            StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(result.ishtaDevataPlanet).uppercase()}"),
+            language
+        )
+        val title = "Ishta Devata: ${result.ishtaDevataName}"
+        val description = "Ishta Devata derived from Atmakaraka in Navamsa. ${result.reasoning}"
+        val method = buildString {
+            appendLine("1. Offer daily prayers to ${result.ishtaDevataName}.")
+            appendLine("2. Light a ghee lamp and offer flowers or tulsi leaves.")
+            appendLine("3. Chant the Ishta Devata mantra with focused intention.")
+        }
+        val timing = "Preferably on $localizedDay during sunrise or twilight."
+        return Remedy(
+            category = RemedyCategory.DEITY,
+            title = title,
+            description = description,
+            method = method,
+            timing = timing,
+            duration = StringResources.get(StringKeyRemedy.DEITY_DURATION, language, result.ishtaDevataPlanet.getLocalizedName(language)),
+            planet = result.ishtaDevataPlanet,
+            priority = RemedyPriority.ESSENTIAL,
+            benefits = listOf(
+                "Deepens spiritual alignment",
+                "Strengthens inner guidance",
+                "Balances the Atmakaraka channel"
+            ),
+            cautions = listOf(
+                "Maintain consistency for 40 days",
+                "Keep a clean and sacred space for practice"
+            )
+        )
+    }
+
+    fun getBeejaMantraRemedy(result: BeejaMantraGenerator.BeejaMantraResult, language: Language): Remedy {
+        val title = "Personal Beeja Mantra"
+        val description = "Derived from birth Nakshatra syllable (${result.akshara}) and planet dignity tone (${result.dignityTone})."
+        val method = buildString {
+            appendLine("Chant the mantra with a steady breath and calm mind:")
+            appendLine("\"${result.mantra}\"")
+            appendLine("Complete one mala (108 times) daily for at least 40 days.")
+        }
+        return Remedy(
+            category = RemedyCategory.MANTRA,
+            title = title,
+            description = description,
+            method = method,
+            timing = "Daily at sunrise or sunset.",
+            duration = StringResources.get(StringKeyRemedy.MANTRA_DURATION, language, 108),
+            planet = result.planet,
+            priority = RemedyPriority.HIGHLY_RECOMMENDED,
+            benefits = listOf(
+                "Aligns birth syllable with planetary current",
+                "Improves mental clarity and focus",
+                "Refines spiritual resonance"
+            ),
+            cautions = listOf(
+                "Chant on a clean and quiet seat",
+                "Avoid distractions during practice"
+            ),
+            mantraText = result.mantra,
+            mantraCount = 108
+        )
+    }
 }
-
-
