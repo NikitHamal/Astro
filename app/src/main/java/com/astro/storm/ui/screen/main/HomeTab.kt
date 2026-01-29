@@ -290,9 +290,9 @@ private fun ChartSummaryCard(
     val language = LocalLanguage.current
 
     // Extract chart data
-    val ascendantSign = chart.ascendant.sign
-    val moonSign = chart.planets.find { it.planet == Planet.MOON }?.sign ?: ascendantSign
-    val sunSign = chart.planets.find { it.planet == Planet.SUN }?.sign ?: ascendantSign
+    val ascendantSign = ZodiacSign.fromLongitude(chart.ascendant)
+    val moonSign = chart.planetPositions.find { it.planet == Planet.MOON }?.sign ?: ascendantSign
+    val sunSign = chart.planetPositions.find { it.planet == Planet.SUN }?.sign ?: ascendantSign
 
     Card(
         modifier = modifier.fillMaxWidth(),
