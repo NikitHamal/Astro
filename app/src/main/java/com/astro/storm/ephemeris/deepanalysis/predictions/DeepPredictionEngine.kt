@@ -4,6 +4,7 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.deepanalysis.*
+import com.astro.storm.ephemeris.VedicAstrologyUtils
 import com.astro.storm.ephemeris.DashaCalculator
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -46,6 +47,45 @@ object DeepPredictionEngine {
     }
     
 
+
+
+    private fun analyzeDashaSystem(context: AnalysisContext): DashaDeepAnalysis {
+        val currentMaha = context.currentMahadasha
+        val currentAntar = context.currentMahadasha?.antardashas?.find { 
+            val now = LocalDate.now()
+            !it.startDate.isAfter(now) && !it.endDate.isBefore(now)
+        }
+
+        return DashaDeepAnalysis(
+            currentMahadasha = currentMaha?.let { mah ->
+                MahadashaDeepAnalysis(
+                    planet = mah.planet,
+                    startDate = mah.startDate,
+                    endDate = mah.endDate,
+                    overallTheme = LocalizedParagraph(
+                        "${mah.planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)} dasha: Focus on ${mah.planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)} significations.",
+                        "${mah.planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)} को महादशा: ${mah.planet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)} को क्षेत्रमा ध्यान दिनुहोस्।"
+                    ),
+                    lifeAreaEffects = emptyMap(),
+                    strengths = emptyList(),
+                    challenges = emptyList(),
+                    advice = LocalizedParagraph("Follow the planetary energy.", "ग्रहीय ऊर्जाको पालना गर्नुहोस्।")
+                )
+            },
+            currentAntardasha = currentAntar?.let { ant ->
+                AntardashaDeepAnalysis(
+                    planet = ant.planet,
+                    startDate = ant.startDate,
+                    endDate = ant.endDate,
+                    refinedTheme = LocalizedParagraph("Refining focus through ${ant.planet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)}.", "अन्त्यर्दशा मार्फत थप ध्यान।"),
+                    shortTermEffects = emptyList(),
+                    activatedYogas = emptyList()
+                )
+            },
+            upcomingDashas = emptyList(),
+            dashaBalance = LocalizedParagraph("Balanced dasha influence.", "सन्तुलित दशा प्रभाव।")
+        )
+    }
 
     private fun analyzeTransitsMap(context: AnalysisContext, transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): TransitDeepAnalysis {
         return TransitDeepAnalysis(
@@ -634,12 +674,43 @@ object DeepPredictionEngine {
         )
     }
     
-    private fun calculatePredictionScore(context: AnalysisContext): Double {
-        val dashaScore = context.getPlanetStrengthLevel(context.currentMahadasha?.planet ?: Planet.JUPITER).value * 10
-        val yogaBonus = context.yogaAnalysis.allYogas.count { it.strength.ordinal >= 2 } * 3
-        val transitBonus = 10 // Simplified - would calculate based on actual transits
-        return ((dashaScore + yogaBonus + transitBonus) / 1.5).coerceIn(0.0, 100.0)
+    private fun isSadeSatiActive(moonSign: ZodiacSign, saturnSign: ZodiacSign): Boolean {
+        val houseFromMoon = getTransitHouse(saturnSign, moonSign)
+        return houseFromMoon in listOf(12, 1, 2)
     }
+
+    private fun getSadeSatiPhase(moonSign: ZodiacSign, saturnSign: ZodiacSign): SadeSatiPhase {
+        val houseFromMoon = getTransitHouse(saturnSign, moonSign)
+        return when (houseFromMoon) {
+            12 -> SadeSatiPhase.RISING
+            1 -> SadeSatiPhase.PEAK
+            2 -> SadeSatiPhase.SETTING
+            else -> SadeSatiPhase.NOT_ACTIVE
+        }
+    }
+
+    private fun getTransitHouse(transitSign: ZodiacSign, natalAscendantSign: ZodiacSign): Int {
+        return VedicAstrologyUtils.getHouseFromSigns(transitSign, natalAscendantSign)
+    }
+
+    private fun getJupiterFavorableAreas(house: Int): List<LifeArea> = when (house) {
+        1 -> listOf(LifeArea.GENERAL, LifeArea.HEALTH)
+        2 -> listOf(LifeArea.WEALTH)
+        5 -> listOf(LifeArea.EDUCATION)
+        7 -> listOf(LifeArea.RELATIONSHIP)
+        9 -> listOf(LifeArea.SPIRITUAL, LifeArea.EDUCATION)
+        10 -> listOf(LifeArea.CAREER)
+        11 -> listOf(LifeArea.WEALTH, LifeArea.GENERAL)
+        else -> emptyList()
+    }
+
+    private fun getSadeSatiAdvice(): LocalizedParagraph {
+        return LocalizedParagraph(
+            "During Sade Sati, practice patience and perform Shani remedies. Success comes through discipline.",
+            "साढे सातीको समयमा धैर्यता अभ्यास गर्नुहोस् र शनि उपचार गर्नुहोस्। सफलता अनुशासनबाट आउँछ।"
+        )
+    }
+
     
     private fun com.astro.storm.ephemeris.yoga.YogaStrength.toStrengthLevel(): StrengthLevel = when (this) {
         com.astro.storm.ephemeris.yoga.YogaStrength.EXTREMELY_STRONG -> StrengthLevel.EXTREMELY_STRONG

@@ -45,7 +45,40 @@ object SpiritualDeepAnalyzer {
         )
     }
     
-    // ... existing ninthHouseDharma and twelfthHouseMoksha methods ... (keeping them as they are good placeholders or logic)
+    private fun analyzeNinthHouse(context: AnalysisContext): NinthHouseDharmaAnalysis {
+        return NinthHouseDharmaAnalysis(
+            sign = context.getHouseSign(9),
+            planetsInHouse = emptyList(),
+            houseStrength = context.getHouseStrength(9),
+            dharmaPath = LocalizedParagraph("Path of wisdom and righteousness.", "ज्ञान र धार्मिकताको मार्ग।"),
+            religiousInclination = LocalizedParagraph("Strong spiritual inclination.", "बलियो आध्यात्मिक झुकाव।"),
+            guruConnection = LocalizedParagraph("Guidance from spiritual teachers.", "आध्यात्मिक गुरुहरूबाट मार्गदर्शन।"),
+            higherPhilosophy = LocalizedParagraph("Interest in higher knowledge.", "उच्च ज्ञानमा रुचि।")
+        )
+    }
+
+    private fun analyzeTwelfthHouse(context: AnalysisContext): TwelfthHouseMokshaAnalysis {
+        return TwelfthHouseMokshaAnalysis(
+            sign = context.getHouseSign(12),
+            planetsInHouse = emptyList(),
+            houseStrength = context.getHouseStrength(12),
+            liberationPath = LocalizedParagraph("Path toward liberation through detachment.", "विरक्ति मार्फत मोक्षतर्फको मार्ग।"),
+            meditationInclination = LocalizedParagraph("Natural tendency toward inner silence.", "आन्तरिक मौनतातर्फ प्राकृतिक झुकाव।"),
+            asceticTendencies = LocalizedParagraph("Simple living and high thinking.", "सादा जीवन र उच्च विचार।"),
+            dreamLife = LocalizedParagraph("Vivid and meaningful dreams.", "स्पष्ट र अर्थपूर्ण सपनाहरू।")
+        )
+    }
+
+    private fun analyzeJupiterSpiritual(context: AnalysisContext): JupiterSpiritualAnalysis {
+        val jupiter = context.getPlanetPosition(Planet.JUPITER)
+        return JupiterSpiritualAnalysis(
+            sign = jupiter?.sign ?: ZodiacSign.SAGITTARIUS,
+            house = jupiter?.house ?: 9,
+            dignity = PlanetaryDignityLevel.NEUTRAL,
+            wisdomDevelopment = LocalizedParagraph("Growth through wisdom.", "ज्ञान मार्फत वृद्धि।"),
+            faithAndBelief = LocalizedParagraph("Strong faith in cosmic order.", "ब्रह्माण्डीय व्यवस्थामा बलियो विश्वास।")
+        )
+    }
 
     // Update analyzeKetu to use Karakamsha info
     private fun analyzeKetu(context: AnalysisContext, karakamsha: KarakamshaResult): KetuSpiritualAnalysis {
@@ -75,7 +108,21 @@ object SpiritualDeepAnalyzer {
         )
     }
     
-    // ... existing methods ...
+    private fun getSpiritualYogas(context: AnalysisContext): List<SpiritualYoga> {
+        return emptyList()
+    }
+
+    private fun getKarmicPatterns(context: AnalysisContext): List<KarmicPattern> {
+        return emptyList()
+    }
+
+    private fun getSpiritualStrengths(context: AnalysisContext): List<LocalizedTrait> {
+        return listOf(LocalizedTrait("Strong intuition", "बलियो अन्तर्ज्ञान", StrengthLevel.STRONG))
+    }
+
+    private fun getSpiritualChallenges(context: AnalysisContext): List<LocalizedTrait> {
+        return emptyList()
+    }
 
     private fun getMeditationRecommendations(context: AnalysisContext, spiritualAnalysis: SpiritualAnalysisResult): MeditationProfile {
         val dominantElement = context.getDominantElement()
@@ -107,7 +154,18 @@ object SpiritualDeepAnalyzer {
         )
     }
     
-    // ... existing generateTimeline, analyzeCurrentPhase ...
+    private fun generateTimeline(context: AnalysisContext): List<SpiritualTimingPeriod> {
+        return emptyList()
+    }
+
+    private fun analyzeCurrentPhase(context: AnalysisContext): CurrentSpiritualPhase {
+        return CurrentSpiritualPhase(
+            currentDasha = context.currentMahadasha?.planet?.name ?: "Unknown",
+            spiritualGrowthPotential = StrengthLevel.MODERATE,
+            currentFocus = LocalizedParagraph("Internal growth and awareness.", "आन्तरिक वृद्धि र चेतना।"),
+            practiceAdvice = LocalizedParagraph("Maintain daily meditation.", "दैनिक ध्यान जारी राख्नुहोस्।")
+        )
+    }
 
     private fun generateSummary(context: AnalysisContext, karakamsha: KarakamshaResult): LocalizedParagraph {
         val jupiterStrength = context.getPlanetStrengthLevel(Planet.JUPITER)

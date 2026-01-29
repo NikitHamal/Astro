@@ -140,6 +140,13 @@ class AnalysisContext(
     }
     
     /**
+     * Get the zodiac sign of a specific house
+     */
+    fun getHouseSign(house: Int): ZodiacSign {
+        return VedicAstrologyUtils.getHouseSign(chart, house)
+    }
+    
+    /**
      * Get Atmakaraka Analysis
      */
     fun getAtmakarakaAnalysis(): AtmakarakaAnalysis {
