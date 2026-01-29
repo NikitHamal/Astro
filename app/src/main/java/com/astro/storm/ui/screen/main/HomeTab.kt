@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -95,23 +96,14 @@ fun HomeTab(
     val language = LocalLanguage.current
     
     // Pre-calculate dasha data once
-    val dashaData = remember(chart) {
+    val dashaTimeline = remember(chart) {
         try {
-            val calculator = DashaCalculator()
-            val periods = calculator.calculateVimshottariDasha(
-                chart.birthData.dateTime,
-                chart.moonLongitude
-            )
-            val now = LocalDateTime.now()
-            val currentPeriod = periods.find { period ->
-                now.isAfter(period.startDate.atStartOfDay()) && 
-                now.isBefore(period.endDate.atStartOfDay())
-            }
-            currentPeriod
+            DashaCalculator.calculateDashaTimeline(chart)
         } catch (e: Exception) {
             null
         }
     }
+    val currentDasha = dashaTimeline?.currentMahadasha
 
     LazyColumn(
         state = listState,
@@ -125,7 +117,7 @@ fun HomeTab(
         item(key = "hero_dasha") {
             HeroDashaCard(
                 chart = chart,
-                currentDasha = dashaData,
+                currentDasha = currentDasha,
                 language = language,
                 onClick = { onFeatureClick(InsightFeature.DASHAS) }
             )
@@ -243,7 +235,7 @@ fun HomeTab(
 @Composable
 private fun HeroDashaCard(
     chart: VedicChart,
-    currentDasha: DashaCalculator.MahaDashaPeriod?,
+    currentDasha: DashaCalculator.Mahadasha?,
     language: Language,
     onClick: () -> Unit
 ) {
