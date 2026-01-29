@@ -45,7 +45,7 @@ object DeepPredictionEngine {
         )
     }
     
-    // ... items ...
+
 
     private fun analyzeTransitsMap(context: AnalysisContext, transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): TransitDeepAnalysis {
         return TransitDeepAnalysis(
@@ -56,6 +56,70 @@ object DeepPredictionEngine {
             transitInteractions = getTransitInteractions(transitAnalysis)
         )
     }
+
+    private fun getMajorTransits(transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): List<MajorTransit> {
+        return transitAnalysis.significantTransits.map { sig ->
+            val position = transitAnalysis.transitPositions[sig.planet]
+            MajorTransit(
+                planet = sig.planet,
+                currentSign = position?.sign ?: ZodiacSign.ARIES,
+                effectOnNative = LocalizedParagraph(sig.description, sig.description),
+                duration = LocalizedParagraph(sig.duration, sig.duration),
+                intensity = StrengthLevel.fromDouble(kotlin.math.abs(sig.impact) * 100.0)
+            )
+        }
+    }
+
+    private fun analyzeSadeSati(context: AnalysisContext, transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): SadeSatiAnalysis {
+        val moonSign = context.moonSign
+        val saturnPos = transitAnalysis.transitPositions[Planet.SATURN]
+        val saturnSign = saturnPos?.sign ?: ZodiacSign.CAPRICORN
+        
+        val isActive = isSadeSatiActive(moonSign, saturnSign)
+        val phase = getSadeSatiPhase(moonSign, saturnSign)
+        
+        return SadeSatiAnalysis(
+            isActive = isActive,
+            phase = phase,
+            startDate = if (isActive) LocalDate.now().minusYears(1) else null,
+            endDate = if (isActive) LocalDate.now().plusYears(2) else null,
+            effects = if (isActive) PredictionTextGenerator.getSadeSatiEffects(phase) else LocalizedParagraph("", ""),
+            remedies = if (isActive) PredictionTextGenerator.getSadeSatiRemedies() else LocalizedParagraph("", "")
+        )
+    }
+
+    private fun analyzeJupiterTransit(context: AnalysisContext, transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): JupiterTransitAnalysis {
+        val jupiterPos = transitAnalysis.transitPositions[Planet.JUPITER]
+        val jupiterSign = jupiterPos?.sign ?: ZodiacSign.SAGITTARIUS
+        return JupiterTransitAnalysis(
+            currentTransitSign = jupiterSign,
+            transitHouse = getTransitHouse(jupiterSign, context.ascendantSign),
+            effects = PredictionTextGenerator.getJupiterTransitHouseEffect(getTransitHouse(jupiterSign, context.ascendantSign)),
+            favorableForAreas = getJupiterFavorableAreas(getTransitHouse(jupiterSign, context.ascendantSign))
+        )
+    }
+
+    private fun analyzeNodalTransit(context: AnalysisContext, transitAnalysis: com.astro.storm.ephemeris.triplepillar.TransitPillarAnalysis): NodalTransitAnalysis {
+        val rahuPos = transitAnalysis.transitPositions[Planet.RAHU]
+        val ketuPos = transitAnalysis.transitPositions[Planet.KETU]
+        
+        val rahuSign = rahuPos?.sign ?: ZodiacSign.ARIES
+        val ketuSign = ketuPos?.sign ?: ZodiacSign.entries[(rahuSign.ordinal + 6) % 12]
+        
+        return NodalTransitAnalysis(
+            rahuTransitSign = rahuSign,
+            ketuTransitSign = ketuSign,
+            rahuTransitHouse = getTransitHouse(rahuSign, context.ascendantSign),
+            ketuTransitHouse = getTransitHouse(ketuSign, context.ascendantSign),
+            nodalAxisEffects = PredictionTextGenerator.getNodalAxisEffects(
+                getTransitHouse(rahuSign, context.ascendantSign),
+                getTransitHouse(ketuSign, context.ascendantSign)
+            ),
+            duration = LocalizedParagraph("Nodal transit lasts approximately 18 months per axis.",
+                "नोडल गोचर प्रति अक्षमा लगभग 18 महिना रहन्छ।")
+        )
+    }
+
     
     // --- Mapping Functions ---
 

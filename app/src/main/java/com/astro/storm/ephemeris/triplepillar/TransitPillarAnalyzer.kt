@@ -342,7 +342,6 @@ object TransitPillarAnalyzer {
                         duration = "~1 year"
                     ))
                 }
-                else -> { /* Other cases */ }
             }
         }
 
