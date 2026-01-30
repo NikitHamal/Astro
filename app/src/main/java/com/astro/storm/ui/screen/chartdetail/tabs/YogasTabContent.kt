@@ -75,7 +75,10 @@ import com.astro.storm.ui.screen.chartdetail.components.StatusBadge
  * Yogas tab content displaying all detected yogas with filtering and analysis.
  */
 @Composable
-fun YogasTabContent(chart: VedicChart) {
+fun YogasTabContent(
+    chart: VedicChart,
+    onNavigateToDetailedYoga: (Yoga) -> Unit = {}
+) {
     val yogaAnalysis = remember(chart) {
         YogaCalculator.calculateYogas(chart)
     }
@@ -129,7 +132,8 @@ fun YogasTabContent(chart: VedicChart) {
                         } else {
                             expandedYogaKeys.remove(yogaKey)
                         }
-                    }
+                    },
+                    onViewDeepAnalysis = { onNavigateToDetailedYoga(yoga) }
                 )
             }
         }
@@ -363,7 +367,8 @@ private fun YogaCategoryFilter(
 private fun YogaCard(
     yoga: Yoga,
     isExpanded: Boolean,
-    onToggleExpand: (Boolean) -> Unit
+    onToggleExpand: (Boolean) -> Unit,
+    onViewDeepAnalysis: () -> Unit
 ) {
     val language = LocalLanguage.current
     val rotation by animateFloatAsState(
@@ -533,6 +538,11 @@ private fun YogaCard(
                         )
                     }
 
+                    // Integrated Detailed Analysis Summary
+                    if (yoga.detailedResult != null) {
+                        DetailedAnalysisSummary(yoga.detailedResult, onViewDeepAnalysis)
+                    }
+
                     if (!yoga.isAuspicious && yoga.cancellationFactors.isNotEmpty()) {
                         HorizontalDivider(
                             color = ChartDetailColors.DividerColor,
@@ -666,6 +676,80 @@ private fun formatPercentage(value: Double, language: Language): String {
                 }
             }.joinToString("")
             "$nepaliNumber%"
+        }
+    }
+}
+
+@Composable
+private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit) {
+    val language = LocalLanguage.current
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        color = AppTheme.AccentGold.copy(alpha = 0.08f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.AccentGold.copy(alpha = 0.2f))
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Outlined.AutoAwesome,
+                        contentDescription = null,
+                        tint = AppTheme.AccentGold,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Deep Vedic Analysis Available",
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = AppTheme.TextPrimary
+                    )
+                }
+
+                Surface(
+                    modifier = Modifier.clickable { onViewDeepAnalysis() },
+                    shape = RoundedCornerShape(8.dp),
+                    color = AppTheme.AccentGold.copy(alpha = 0.15f)
+                ) {
+                    Text(
+                        text = "View Deep Analysis",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = AppTheme.AccentGold,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            val summaryText = when (result) {
+                is com.astro.storm.ephemeris.KemadrumaYogaCalculator.KemadrumaAnalysis -> {
+                    "Status: ${result.effectiveStatus.getLocalizedName(language)}. Cancellation Score: ${result.totalCancellationScore}%"
+                }
+                is com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.MahapurushaYoga -> {
+                    "Dignity: ${if (result.isExalted) "Exalted" else "Own Sign"}. Strength: ${result.strengthLevel.displayName}"
+                }
+                is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
+                    "Activation: ${result.activationStatus.displayName}. Strength: ${result.strength.displayName}"
+                }
+                else -> "Comprehensive logic and remedial measures calculated."
+            }
+
+            Text(
+                text = summaryText,
+                fontSize = 12.sp,
+                color = AppTheme.TextSecondary,
+                lineHeight = 18.sp
+            )
         }
     }
 }

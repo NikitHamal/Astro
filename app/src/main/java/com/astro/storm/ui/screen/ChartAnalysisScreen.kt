@@ -71,7 +71,8 @@ fun ChartAnalysisScreen(
     chart: VedicChart,
     initialFeature: InsightFeature = InsightFeature.FULL_CHART,
     viewModel: ChartViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onNavigateToDetailedYoga: (Yoga) -> Unit = {}
 ) {
     var selectedTab by remember { mutableStateOf(mapFeatureToTab(initialFeature)) }
     val context = LocalContext.current
@@ -184,7 +185,7 @@ fun ChartAnalysisScreen(
                             onNakshatraClick = { nakshatra, pada -> selectedNakshatra = nakshatra to pada },
                             onShadbalaClick = { showShadbalaDialog = true }
                         )
-                        AnalysisTab.YOGAS -> YogasTabContentWrapper(chart)
+                        AnalysisTab.YOGAS -> YogasTabContentWrapper(chart, onNavigateToDetailedYoga)
                         AnalysisTab.DASHAS -> DashasTabContentWrapper(chart)
                         AnalysisTab.TRANSITS -> TransitsTabContentWrapper(chart)
                         AnalysisTab.ASHTAKAVARGA -> AshtakavargaTabContentWrapper(chart)
@@ -378,13 +379,19 @@ private fun PlanetsTabContentWrapper(
 }
 
 @Composable
-private fun YogasTabContentWrapper(chart: VedicChart) {
+private fun YogasTabContentWrapper(
+    chart: VedicChart,
+    onNavigateToDetailedYoga: (Yoga) -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(AppTheme.ScreenBackground)
     ) {
-        YogasTabContent(chart = chart)
+        YogasTabContent(
+            chart = chart,
+            onNavigateToDetailedYoga = onNavigateToDetailedYoga
+        )
     }
 }
 

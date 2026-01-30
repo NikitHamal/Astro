@@ -387,7 +387,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
     }
 
     /**
-     * Kala Sarpa Yoga - All planets between Rahu-Ketu axis
+     * Kala Sarpa Yoga - All planets between Rahu-Ketu axis.
+     * Refined logic to distinguish between full and partial, and identify specific types.
      */
     private fun evaluateKalaSarpaYoga(chart: VedicChart): Yoga? {
         val rahuPos = chart.planetPositions.find { it.planet == Planet.RAHU } ?: return null
@@ -402,36 +403,55 @@ class NegativeYogaEvaluator : YogaEvaluator {
         val ketuLong = ketuPos.longitude
 
         // Check if all planets are on one side of the Rahu-Ketu axis
-        val allOnOneSide = mainPlanets.all { pos ->
-            isInArc(pos.longitude, rahuLong, ketuLong)
-        } || mainPlanets.all { pos ->
-            isInArc(pos.longitude, ketuLong, rahuLong)
-        }
+        // We check both directions because the axis divides the 360 into two 180 arcs
+        val side1Count = mainPlanets.count { isInArc(it.longitude, rahuLong, ketuLong) }
+        val side2Count = mainPlanets.count { isInArc(it.longitude, ketuLong, rahuLong) }
 
-        if (allOnOneSide) {
+        val isFullKalaSarpa = side1Count == mainPlanets.size || side2Count == mainPlanets.size
+        val isPartialKalaSarpa = (side1Count == mainPlanets.size - 1 || side2Count == mainPlanets.size - 1) && mainPlanets.size > 1
+
+        if (isFullKalaSarpa || isPartialKalaSarpa) {
             // Determine type based on Rahu position
-            val yogaType = when (rahuPos.house) {
-                1 -> "Ananta Kala Sarpa"
-                2 -> "Kulik Kala Sarpa"
-                3 -> "Vasuki Kala Sarpa"
-                4 -> "Shankhpal Kala Sarpa"
-                5 -> "Padma Kala Sarpa"
-                6 -> "Maha Padma Kala Sarpa"
-                7 -> "Takshak Kala Sarpa"
-                8 -> "Karkotak Kala Sarpa"
-                9 -> "Shankhachur Kala Sarpa"
-                10 -> "Ghatak Kala Sarpa"
-                11 -> "Vishdhar Kala Sarpa"
-                12 -> "Sheshnag Kala Sarpa"
-                else -> "Kala Sarpa"
+            val yogaNamePrefix = when (rahuPos.house) {
+                1 -> "Ananta"
+                2 -> "Kulik"
+                3 -> "Vasuki"
+                4 -> "Shankhpal"
+                5 -> "Padma"
+                6 -> "Maha Padma"
+                7 -> "Takshak"
+                8 -> "Karkotak"
+                9 -> "Shankhachur"
+                10 -> "Ghatak"
+                11 -> "Vishdhar"
+                12 -> "Sheshnag"
+                else -> ""
             }
 
-            val severity = 60.0
-            val cancellationReasons = listOf(
-                "Effects reduce after age 33-36",
-                "Jupiter aspect provides relief",
-                "Can give sudden rise after struggles"
-            )
+            val prefix = if (isPartialKalaSarpa) "Partial " else ""
+            val yogaType = "$prefix$yogaNamePrefix Kala Sarpa"
+
+            val severity = if (isFullKalaSarpa) 75.0 else 45.0
+
+            val cancellationReasons = mutableListOf<String>()
+            cancellationReasons.add("Effects typically reduce after age 33-36")
+
+            // Jupiter aspect provides major relief
+            val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
+            if (jupiterPos != null && (YogaHelpers.isAspecting(jupiterPos, rahuPos) || YogaHelpers.isAspecting(jupiterPos, ketuPos))) {
+                cancellationReasons.add("Jupiter aspect on Rahu/Ketu axis provides divine protection")
+            }
+
+            // Check if any planet is outside the axis (for partial)
+            if (isPartialKalaSarpa) {
+                val outsidePlanet = mainPlanets.find {
+                    if (side1Count == mainPlanets.size - 1) !isInArc(it.longitude, rahuLong, ketuLong)
+                    else !isInArc(it.longitude, ketuLong, rahuLong)
+                }
+                outsidePlanet?.let {
+                    cancellationReasons.add("Broken by ${it.planet.displayName} being outside the Rahu-Ketu axis")
+                }
+            }
 
             return Yoga(
                 name = "$yogaType Yoga",
@@ -439,12 +459,13 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 category = YogaCategory.NEGATIVE_YOGA,
                 planets = listOf(Planet.RAHU, Planet.KETU),
                 houses = listOf(rahuPos.house, ketuPos.house),
-                description = "All planets hemmed between Rahu-Ketu axis",
-                effects = "Karmic restrictions, sudden ups and downs, struggle followed by success, destiny-driven life",
+                description = if (isFullKalaSarpa) "All 7 main planets are hemmed between the Rahu-Ketu axis."
+                             else "Most planets are hemmed between the Rahu-Ketu axis, with one planet breaking the formation.",
+                effects = "Intense karmic experiences, sudden life transformations, initial struggle followed by significant rise, destiny-oriented path.",
                 strength = YogaHelpers.strengthFromPercentage(severity),
                 strengthPercentage = severity,
                 isAuspicious = false,
-                activationPeriod = "Throughout life, especially Rahu-Ketu periods",
+                activationPeriod = "Throughout life, especially Rahu or Ketu periods",
                 cancellationFactors = cancellationReasons
             )
         }
