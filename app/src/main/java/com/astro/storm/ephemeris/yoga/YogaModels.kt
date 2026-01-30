@@ -28,6 +28,27 @@ import com.astro.storm.core.model.VedicChart
 
 /**
  * Yoga category enumeration
+ * 
+ * Core Categories:
+ * - RAJA_YOGA: Power, authority, leadership
+ * - DHANA_YOGA: Wealth, prosperity
+ * - MAHAPURUSHA_YOGA: Five great person yogas
+ * - NABHASA_YOGA: Pattern-based combinations
+ * - CHANDRA_YOGA: Moon-based combinations
+ * - SOLAR_YOGA: Sun-based combinations
+ * - NEGATIVE_YOGA: Challenging combinations
+ * - SPECIAL_YOGA: Other significant combinations
+ * - BHAVA_YOGA: House lord placements
+ * - CONJUNCTION_YOGA: Planetary conjunctions
+ * 
+ * Extended Categories:
+ * - PARIVARTANA_YOGA: Mutual exchange yogas
+ * - ARISHTA_YOGA: Comprehensive negative yogas
+ * - NAKSHATRA_YOGA: Nakshatra-based yogas
+ * - KARMA_YOGA: Career and profession yogas
+ * - VIVAHA_YOGA: Marriage and relationship yogas
+ * - NODAL_YOGA: Rahu-Ketu based yogas
+ * - SANNYASA_YOGA: Renunciation and spiritual yogas
  */
 enum class YogaCategory(val displayName: String, val description: String) {
     RAJA_YOGA("Raja Yoga", "Power, authority, and leadership combinations"),
@@ -39,13 +60,20 @@ enum class YogaCategory(val displayName: String, val description: String) {
     NEGATIVE_YOGA("Negative Yoga", "Challenging combinations"),
     SPECIAL_YOGA("Special Yoga", "Other significant combinations"),
     BHAVA_YOGA("Bhava Yoga", "House Lord Placements"),
-    CONJUNCTION_YOGA("Conjunction Yoga", "Planetary Conjunctions");
+    CONJUNCTION_YOGA("Conjunction Yoga", "Planetary Conjunctions"),
+    PARIVARTANA_YOGA("Parivartana Yoga", "Mutual exchange combinations"),
+    ARISHTA_YOGA("Arishta Yoga", "Comprehensive challenging combinations"),
+    NAKSHATRA_YOGA("Nakshatra Yoga", "Nakshatra-based combinations"),
+    KARMA_YOGA("Karma Yoga", "Career and profession combinations"),
+    VIVAHA_YOGA("Vivaha Yoga", "Marriage and relationship combinations"),
+    NODAL_YOGA("Nodal Yoga", "Rahu-Ketu based combinations"),
+    SANNYASA_YOGA("Sannyasa Yoga", "Renunciation and spiritual combinations");
 
     /**
      * Get localized display name
      */
     fun getLocalizedName(language: Language): String {
-        val key: StringKeyInterface = when (this) {
+        val key: StringKeyInterface? = when (this) {
             RAJA_YOGA -> StringKeyMatch.YOGA_CAT_RAJA
             DHANA_YOGA -> StringKeyMatch.YOGA_CAT_DHANA
             MAHAPURUSHA_YOGA -> StringKeyMatch.YOGA_CAT_PANCHA_MAHAPURUSHA
@@ -56,15 +84,23 @@ enum class YogaCategory(val displayName: String, val description: String) {
             SPECIAL_YOGA -> StringKeyMatch.YOGA_CAT_SPECIAL
             BHAVA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_BHAVA
             CONJUNCTION_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CONJUNCTION
+            // New categories - fallback to displayName until localization strings are added
+            PARIVARTANA_YOGA -> null
+            ARISHTA_YOGA -> null
+            NAKSHATRA_YOGA -> null
+            KARMA_YOGA -> null
+            VIVAHA_YOGA -> null
+            NODAL_YOGA -> null
+            SANNYASA_YOGA -> null
         }
-        return StringResources.get(key, language)
+        return if (key != null) StringResources.get(key, language) else displayName
     }
 
     /**
      * Get localized description
      */
     fun getLocalizedDescription(language: Language): String {
-        val key: StringKeyInterface = when (this) {
+        val key: StringKeyInterface? = when (this) {
             RAJA_YOGA -> StringKeyMatch.YOGA_CAT_RAJA_DESC
             DHANA_YOGA -> StringKeyMatch.YOGA_CAT_DHANA_DESC
             MAHAPURUSHA_YOGA -> StringKeyMatch.YOGA_CAT_PANCHA_MAHAPURUSHA_DESC
@@ -75,8 +111,16 @@ enum class YogaCategory(val displayName: String, val description: String) {
             SPECIAL_YOGA -> StringKeyMatch.YOGA_CAT_SPECIAL_DESC
             BHAVA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_BHAVA_DESC
             CONJUNCTION_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CONJUNCTION_DESC
+            // New categories - fallback to description until localization strings are added
+            PARIVARTANA_YOGA -> null
+            ARISHTA_YOGA -> null
+            NAKSHATRA_YOGA -> null
+            KARMA_YOGA -> null
+            VIVAHA_YOGA -> null
+            NODAL_YOGA -> null
+            SANNYASA_YOGA -> null
         }
-        return StringResources.get(key, language)
+        return if (key != null) StringResources.get(key, language) else description
     }
 }
 

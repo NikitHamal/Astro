@@ -17,6 +17,13 @@ import com.astro.storm.ephemeris.yoga.YogaAnalysis
 import com.astro.storm.ephemeris.yoga.YogaCategory
 import com.astro.storm.ephemeris.yoga.YogaEvaluator
 import com.astro.storm.ephemeris.yoga.YogaStrength
+import com.astro.storm.ephemeris.yoga.evaluators.ArishtaYogaEvaluator
+import com.astro.storm.ephemeris.yoga.evaluators.KarmaYogaEvaluator
+import com.astro.storm.ephemeris.yoga.evaluators.NakshatraYogaEvaluator
+import com.astro.storm.ephemeris.yoga.evaluators.ParivartanaYogaEvaluator
+import com.astro.storm.ephemeris.yoga.evaluators.RahuKetuYogaEvaluator
+import com.astro.storm.ephemeris.yoga.evaluators.SannyasaYogaEvaluator
+import com.astro.storm.ephemeris.yoga.evaluators.VivahaYogaEvaluator
 
 /**
  * Yoga Calculator - Orchestrator for Planetary Yoga Analysis
@@ -46,8 +53,31 @@ object YogaCalculator {
 
     /**
      * Registry of yoga evaluators
+     * 
+     * Core Evaluators (Original):
+     * - RajaYogaEvaluator: Power and authority combinations
+     * - DhanaYogaEvaluator: Wealth and prosperity combinations
+     * - MahapurushaYogaEvaluator: Five great person yogas
+     * - NabhasaYogaEvaluator: Pattern-based planetary combinations
+     * - ChandraYogaEvaluator: Moon-based combinations
+     * - SolarYogaEvaluator: Sun-based combinations
+     * - NegativeYogaEvaluator: Challenging combinations
+     * - BhavaYogaEvaluator: House lord placement yogas
+     * - ConjunctionYogaEvaluator: Planetary conjunction yogas
+     * - AdvancedYogaEvaluator: Complex multi-planet yogas
+     * - SpecialYogaEvaluator: Other significant combinations
+     * 
+     * Extended Evaluators (New):
+     * - ParivartanaYogaEvaluator: Mutual exchange yogas
+     * - ArishtaYogaEvaluator: Comprehensive negative/challenging yogas
+     * - NakshatraYogaEvaluator: Nakshatra-based yogas
+     * - KarmaYogaEvaluator: Career and profession yogas
+     * - VivahaYogaEvaluator: Marriage and relationship yogas
+     * - RahuKetuYogaEvaluator: Nodal yogas including 12 Kala Sarpa types
+     * - SannyasaYogaEvaluator: Renunciation and spiritual yogas
      */
     private val evaluators: List<YogaEvaluator> = listOf(
+        // Core evaluators
         RajaYogaEvaluator(),
         DhanaYogaEvaluator(),
         MahapurushaYogaEvaluator(),
@@ -58,7 +88,15 @@ object YogaCalculator {
         BhavaYogaEvaluator(),
         ConjunctionYogaEvaluator(),
         AdvancedYogaEvaluator(),
-        SpecialYogaEvaluator()
+        SpecialYogaEvaluator(),
+        // Extended evaluators
+        ParivartanaYogaEvaluator(),
+        ArishtaYogaEvaluator(),
+        NakshatraYogaEvaluator(),
+        KarmaYogaEvaluator(),
+        VivahaYogaEvaluator(),
+        RahuKetuYogaEvaluator(),
+        SannyasaYogaEvaluator()
     )
 
     /**
