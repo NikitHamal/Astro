@@ -34,6 +34,7 @@ import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.ephemeris.yoga.Yoga
 import com.astro.storm.ephemeris.DivisionalChartCalculator
 import com.astro.storm.ephemeris.DivisionalChartData
 import com.astro.storm.ephemeris.DivisionalChartType

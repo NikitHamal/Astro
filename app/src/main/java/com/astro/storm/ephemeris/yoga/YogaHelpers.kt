@@ -4,6 +4,7 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.ephemeris.AstrologicalConstants
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import kotlin.math.abs
 import kotlin.math.min
@@ -215,9 +216,9 @@ object YogaHelpers {
         }
 
         // 4. Planet that would be exalted in the debilitated planet's sign, being in Kendra from Lagna or Moon
-        val planetExaltedInThisSign = AstrologicalConstants.EXALTATION_SIGNS.filterValues { it == debilitatedSign }.keys.firstOrNull()
+        val planetExaltedInThisSign = AstrologicalConstants.EXALTATION_SIGNS.filterValues { sign -> sign == debilitatedSign }.keys.firstOrNull()
         if (planetExaltedInThisSign != null) {
-            val exaltedPlanetPos = chart.planetPositions.find { it.planet == planetExaltedInThisSign }
+            val exaltedPlanetPos = chart.planetPositions.find { pos -> pos.planet == planetExaltedInThisSign }
             if (exaltedPlanetPos != null) {
                 if (exaltedPlanetPos.house in kendraHouses) return true
                 if (moonPos != null && isInKendraFrom(exaltedPlanetPos, moonPos)) return true

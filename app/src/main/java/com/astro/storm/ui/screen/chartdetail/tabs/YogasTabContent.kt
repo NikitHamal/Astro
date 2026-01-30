@@ -70,6 +70,7 @@ import com.astro.storm.ephemeris.yoga.YogaCategory
 import com.astro.storm.ephemeris.yoga.YogaStrength
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.components.StatusBadge
+import com.astro.storm.ui.theme.AppTheme
 
 /**
  * Yogas tab content displaying all detected yogas with filtering and analysis.
