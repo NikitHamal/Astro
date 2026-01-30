@@ -211,32 +211,62 @@ object DivisionalChartCalculator {
     }
 
     /**
-     * Calculate Vargottama score across multiple divisional charts.
-     * Higher score indicates the planet is in the same sign in more vargas.
+     * Perform comprehensive Vargottama analysis for all main planets.
+     * Optimizes calculation by computing each divisional chart once.
+     * Includes "True Vargottama" (D9) and "Bhaskara" (D9+D3) detection.
      */
-    fun calculateVargottamaScore(planet: Planet, chart: VedicChart): Int {
-        val rashiPos = chart.planetPositions.find { it.planet == planet } ?: return 0
-        val rashiSign = rashiPos.sign
-
-        var score = 0
-        val vargasToCheck = listOf(
+    fun analyzeAllVargottamas(chart: VedicChart): Map<Planet, VargottamaAnalysis> {
+        val rashiChart = calculateRashi(chart)
+        val vargasToAnalyze = listOf(
             DivisionalChartType.D9_NAVAMSA,
             DivisionalChartType.D10_DASAMSA,
             DivisionalChartType.D60_SHASHTIAMSA,
             DivisionalChartType.D3_DREKKANA,
             DivisionalChartType.D12_DWADASAMSA,
-            DivisionalChartType.D30_TRIMSAMSA
+            DivisionalChartType.D30_TRIMSAMSA,
+            DivisionalChartType.D2_HORA,
+            DivisionalChartType.D7_SAPTAMSA,
+            DivisionalChartType.D16_SHODASAMSA
         )
 
-        for (varga in vargasToCheck) {
-            val vargaChart = calculateDivisionalChart(chart, varga)
-            val vargaPos = vargaChart.planetPositions.find { it.planet == planet }
-            if (vargaPos?.sign == rashiSign) {
-                score++
-            }
-        }
+        // Optimization: Calculate each divisional chart once
+        val vargaResults = vargasToAnalyze.associateWith { calculateDivisionalChart(chart, it) }
 
-        return score
+        return Planet.MAIN_PLANETS.associateWith { planet ->
+            val rashiSign = rashiChart.planetPositions.find { it.planet == planet }?.sign
+
+            val matchingVargas = mutableListOf<DivisionalChartType>()
+            if (rashiSign != null) {
+                for ((vargaType, vargaChart) in vargaResults) {
+                    val vargaSign = vargaChart.planetPositions.find { it.planet == planet }?.sign
+                    if (vargaSign == rashiSign) {
+                        matchingVargas.add(vargaType)
+                    }
+                }
+            }
+
+            val isD9 = matchingVargas.contains(DivisionalChartType.D9_NAVAMSA)
+            val isD3 = matchingVargas.contains(DivisionalChartType.D3_DREKKANA)
+
+            // Note: In traditional Parashari analysis, D60 (Shashtiamsa) has
+            // the highest weightage for auspiciousness.
+            VargottamaAnalysis(
+                planet = planet,
+                isD9Vargottama = isD9,
+                isBhaskara = isD9 && isD3,
+                vargottamaScore = matchingVargas.size,
+                matchingVargas = matchingVargas
+            )
+        }
+    }
+
+    /**
+     * Calculate Vargottama score for a single planet.
+     * Helper for quick checks; use analyzeAllVargottamas for full chart analysis.
+     */
+    fun calculateVargottamaScore(planet: Planet, chart: VedicChart): Int {
+        val analysis = analyzeAllVargottamas(chart)
+        return analysis[planet]?.vargottamaScore ?: 0
     }
 
     fun calculateDasamsa(chart: VedicChart): DivisionalChartData {
@@ -890,6 +920,17 @@ object DivisionalChartCalculator {
     private enum class Modality { MOVABLE, FIXED, DUAL }
     private enum class Element { FIRE, EARTH, AIR, WATER }
 }
+
+/**
+ * Results of Vargottama analysis for a planet
+ */
+data class VargottamaAnalysis(
+    val planet: Planet,
+    val isD9Vargottama: Boolean, // Same sign in D1 and D9
+    val isBhaskara: Boolean,     // Same sign in D1, D9, and D3
+    val vargottamaScore: Int,    // Count of vargas matching D1
+    val matchingVargas: List<DivisionalChartType>
+)
 
 enum class DivisionalChartType(
     val division: Int,
