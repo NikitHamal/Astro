@@ -61,7 +61,7 @@ class NakshatraYogaEvaluator : YogaEvaluator {
         Nakshatra.PURVA_ASHADHA to "Apas",
         Nakshatra.UTTARA_ASHADHA to "Vishvadevas",
         Nakshatra.SHRAVANA to "Vishnu",
-        Nakshatra.DHANISHTA to "Vasus",
+        Nakshatra.DHANISHTHA to "Vasus",
         Nakshatra.SHATABHISHA to "Varuna",
         Nakshatra.PURVA_BHADRAPADA to "Ajaikapada",
         Nakshatra.UTTARA_BHADRAPADA to "Ahirbudhnya",
@@ -98,7 +98,7 @@ class NakshatraYogaEvaluator : YogaEvaluator {
         Nakshatra.VISHAKHA to "Rakshasa",
         Nakshatra.JYESHTHA to "Rakshasa",
         Nakshatra.MULA to "Rakshasa",
-        Nakshatra.DHANISHTA to "Rakshasa",
+        Nakshatra.DHANISHTHA to "Rakshasa",
         Nakshatra.SHATABHISHA to "Rakshasa"
     )
 
@@ -332,7 +332,7 @@ class NakshatraYogaEvaluator : YogaEvaluator {
             Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.PUSHYA,
             Nakshatra.UTTARA_PHALGUNI, Nakshatra.HASTA, Nakshatra.SWATI,
             Nakshatra.ANURADHA, Nakshatra.UTTARA_ASHADHA, Nakshatra.SHRAVANA,
-            Nakshatra.DHANISHTA, Nakshatra.UTTARA_BHADRAPADA, Nakshatra.REVATI
+            Nakshatra.DHANISHTHA, Nakshatra.UTTARA_BHADRAPADA, Nakshatra.REVATI
         )
         if (janmaNakshatra in shubhaNakshatras && YogaHelpers.getMoonPhaseStrength(moonPos, chart) > 0.5) {
             val strength = 75.0
@@ -363,7 +363,7 @@ class NakshatraYogaEvaluator : YogaEvaluator {
         val janmaNakshatra = moonPos.nakshatra
 
         // Get nakshatra lord
-        val nakshatraLord = janmaNakshatra.lord
+        val nakshatraLord = janmaNakshatra.ruler
         val lordPos = chart.planetPositions.find { it.planet == nakshatraLord } ?: return yogas
 
         // 1. Nakshatra Lord in Kendra
@@ -578,7 +578,7 @@ class NakshatraYogaEvaluator : YogaEvaluator {
         // 1. Planet in own nakshatra (Swanakshatra)
         chart.planetPositions.forEach { pos ->
             val nakshatra = pos.nakshatra
-            if (nakshatra.lord == pos.planet) {
+            if (nakshatra.ruler == pos.planet) {
                 val strength = YogaHelpers.calculateYogaStrength(chart, listOf(pos)) * 1.15
                 yogas.add(Yoga(
                     name = "Swanakshatra Yoga (${pos.planet.displayName})",
