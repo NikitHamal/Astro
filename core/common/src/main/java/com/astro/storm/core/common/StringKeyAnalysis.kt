@@ -2658,5 +2658,14 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     PRASHNA_ACTIVE("Active", "सक्रिय"),
     PRASHNA_INACTIVE("Inactive", "निष्क्रिय"),
     PRASHNA_STRENGTH("Strength", "बल"),
+
+    // Integrated Yoga Analysis UI
+    YOGA_DEEP_ANALYSIS("Deep Vedic Analysis", "गहिरो वैदिक विश्लेषण"),
+    YOGA_VIEW_MORE("View More", "थप हेर्नुहोस्"),
+    YOGA_STATUS_FMT("Status: %s", "अवस्था: %s"),
+    YOGA_CANCELLATION_FMT("Cancellation: %d%%", "न्यूनीकरण: %d%%"),
+    YOGA_STRENGTH_FMT("Strength: %d%%", "बल: %d%%"),
+    YOGA_DIGNITY_EXALTED("Exalted", "उच्च"),
+    YOGA_DIGNITY_OWN_SIGN("Own Sign", "स्वराशि"),
 ;
 }

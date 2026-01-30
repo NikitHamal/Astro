@@ -973,7 +973,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = "Deep Vedic Analysis",
+                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DEEP_ANALYSIS),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = theme.TextPrimary
@@ -986,7 +986,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                     color = theme.AccentGold.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = "View More",
+                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_VIEW_MORE),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = theme.AccentGold,
@@ -999,15 +999,34 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
 
             val summaryText = when (result) {
                 is com.astro.storm.ephemeris.KemadrumaYogaCalculator.KemadrumaAnalysis -> {
-                    "Effective Status: ${result.effectiveStatus.getLocalizedName(language)}. Cancellation: ${result.totalCancellationScore}%."
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        result.effectiveStatus.getLocalizedName(language)
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_CANCELLATION_FMT),
+                        result.totalCancellationScore
+                    )
                 }
                 is com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.MahapurushaYoga -> {
-                    "Strength: ${result.strength}%. Dignity: ${if (result.isExalted) "Exalted" else "Own Sign"}."
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_FMT),
+                        result.strength
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        if (result.isExalted) stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DIGNITY_EXALTED)
+                        else stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DIGNITY_OWN_SIGN)
+                    )
                 }
                 is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
-                    "Status: ${result.activationStatus.displayName}. Strength: ${result.strength.displayName}."
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        detailedYogaStatus(result.activationStatus)
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_FMT),
+                        detailedYogaStrengthValue(result.strength)
+                    )
                 }
-                else -> "Detailed classical analysis and remedies available."
+                else -> stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.EFFECT_GENERIC_GOOD) // Generic fallback
             }
 
             Text(
@@ -1019,6 +1038,10 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
         }
     }
 }
+
+// Helper functions for mapping status/strength to values for formatting
+private fun detailedYogaStatus(status: com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.ActivationStatus): String = status.displayName
+private fun detailedYogaStrengthValue(strength: com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.YogaStrength): String = strength.displayName
 
 @Composable
 private fun getCategoryColor(category: YogaCategory): Color {

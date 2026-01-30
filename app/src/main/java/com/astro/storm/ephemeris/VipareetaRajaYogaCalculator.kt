@@ -4,6 +4,8 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.ephemeris.AstrologicalConstants
+import com.astro.storm.ephemeris.VedicAstrologyUtils
 
 /**
  * VipareetaRajaYogaCalculator - Vipareeta (Reverse) Raja Yoga Analysis
@@ -13,30 +15,6 @@ import com.astro.storm.core.model.ZodiacSign
  * The principle is "negative times negative equals positive" - when lords of
  * houses of difficulties occupy houses of difficulties, the native benefits
  * from others' misfortunes or rises through unconventional means.
- *
- * Three primary Vipareeta Raja Yogas:
- * 1. HARSHA YOGA - 6th lord in 6th, 8th, or 12th house
- *    - Victory over enemies, good health despite odds
- *
- * 2. SARALA YOGA - 8th lord in 6th, 8th, or 12th house
- *    - Freedom from fear, longevity, occult success
- *
- * 3. VIMALA YOGA - 12th lord in 6th, 8th, or 12th house
- *    - Spending capacity, spiritual growth, liberation
- *
- * This calculator provides:
- * 1. Detection of all three Vipareeta Raja Yogas
- * 2. Yoga strength assessment
- * 3. Activation conditions analysis
- * 4. Dasha period effects
- * 5. House significations affected
- * 6. Interpretation and life areas benefited
- *
- * Traditional References:
- * - Brihat Parashara Hora Shastra (Chapter on Raja Yogas)
- * - Phaladeepika
- * - Uttara Kalamrita
- * - Jataka Parijata
  */
 object VipareetaRajaYogaCalculator {
 
@@ -166,12 +144,12 @@ object VipareetaRajaYogaCalculator {
     fun analyzeVipareetaRajaYogas(chart: VedicChart): VipareetaRajaYogaAnalysis? {
         if (chart.planetPositions.isEmpty()) return null
 
-        val ascendantSign = ZodiacSign.fromLongitude(chart.ascendant)
+        val ascendantSign = VedicAstrologyUtils.getAscendantSign(chart)
 
         // Get dusthana lords
-        val sixthLord = getHouseLord(ascendantSign, 6)
-        val eighthLord = getHouseLord(ascendantSign, 8)
-        val twelfthLord = getHouseLord(ascendantSign, 12)
+        val sixthLord = VedicAstrologyUtils.getHouseLord(chart, 6)
+        val eighthLord = VedicAstrologyUtils.getHouseLord(chart, 8)
+        val twelfthLord = VedicAstrologyUtils.getHouseLord(chart, 12)
 
         // Analyze each Vipareeta Raja Yoga
         val harshaYoga = analyzeYoga(chart, VipareetaYogaType.HARSHA, sixthLord, ascendantSign)
@@ -240,19 +218,22 @@ object VipareetaRajaYogaCalculator {
             return createDefaultYoga(yogaType, dusthanaLord)
         }
 
-        // Check if lord is in a dusthana house (6, 8, or 12)
-        val isInDusthana = lordPosition.house in VedicAstrologyUtils.DUSTHANA_HOUSES
+        // Use sign-based house calculation for traditional yoga detection
+        val houseFromLagna = VedicAstrologyUtils.getHouseFromSigns(lordPosition.sign, ascendantSign)
+
+        // Check if lord is in a dusthana house (6, 8, or 12) from Lagna sign
+        val isInDusthana = houseFromLagna in AstrologicalConstants.DUSTHANA_HOUSES
 
         val isExalted = VedicAstrologyUtils.isExalted(lordPosition)
         val isDebilitated = VedicAstrologyUtils.isDebilitated(lordPosition)
-        val isCombust = checkCombustion(chart, lordPosition)
+        val isCombust = VedicAstrologyUtils.isCombust(lordPosition, VedicAstrologyUtils.getSunPosition(chart)!!)
 
         // Calculate strength factors
         val strengthFactors = mutableListOf<String>()
         val weaknessFactors = mutableListOf<String>()
 
         if (isInDusthana) {
-            strengthFactors.add("Dusthana lord placed in dusthana house (primary condition met)")
+            strengthFactors.add("Dusthana lord placed in dusthana house (${houseFromLagna}th sign)")
         }
 
         if (isExalted) {
@@ -270,8 +251,7 @@ object VipareetaRajaYogaCalculator {
         // Check if receiving Jupiter's aspect
         val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
         jupiterPos?.let { jupiter ->
-            val jupiterAspects = getAspectedHouses(jupiter)
-            if (lordPosition.house in jupiterAspects) {
+            if (VedicAstrologyUtils.aspectsHouse(Planet.JUPITER, jupiter.house, lordPosition.house)) {
                 strengthFactors.add("Jupiter's aspect enhances benefic potential")
             }
         }
@@ -307,14 +287,14 @@ object VipareetaRajaYogaCalculator {
         )
 
         // Get benefits areas
-        val benefitsAreas = getBenefitsAreas(yogaType, lordPosition.house)
+        val benefitsAreas = getBenefitsAreas(yogaType, houseFromLagna)
 
         // Get activation dashas
         val activationDashas = getActivationDashas(dusthanaLord, chart, ascendantSign)
 
         // Build interpretation
         val interpretation = buildYogaInterpretation(
-            yogaType, isInDusthana, strength, lordPosition, strengthFactors, weaknessFactors
+            yogaType, isInDusthana, strength, lordPosition, houseFromLagna, strengthFactors, weaknessFactors
         )
 
         return VipareetaYoga(
@@ -324,7 +304,7 @@ object VipareetaRajaYogaCalculator {
             activationStatus = activationStatus,
             dusthanaLord = dusthanaLord,
             dusthanaLordPosition = lordPosition,
-            placedInHouse = lordPosition.house,
+            placedInHouse = houseFromLagna,
             placedInSign = lordPosition.sign,
             isRetrograde = lordPosition.isRetrograde,
             isExalted = isExalted,
@@ -509,17 +489,9 @@ object VipareetaRajaYogaCalculator {
 
             // Planets aspecting the dusthana lord
             chart.planetPositions.forEach { otherPos ->
-                val aspects = getAspectedHouses(otherPos)
-                if (pos.house in aspects && otherPos.planet !in activatingPlanets) {
+                if (VedicAstrologyUtils.aspectsHouse(otherPos.planet, otherPos.house, pos.house) && otherPos.planet !in activatingPlanets) {
                     activatingPlanets.add(otherPos.planet)
                 }
-            }
-        }
-
-        // Nakshatra lord of dusthana lord
-        dusthanaLordPos?.nakshatra?.ruler?.let { ruler ->
-            if (ruler !in activatingPlanets) {
-                activatingPlanets.add(ruler)
             }
         }
 
@@ -544,7 +516,10 @@ object VipareetaRajaYogaCalculator {
 
         // Check 6th-8th exchange
         if (sixthLordPos != null && eighthLordPos != null) {
-            if (sixthLordPos.house == 8 && eighthLordPos.house == 6) {
+            val s6 = VedicAstrologyUtils.getHouseFromSigns(sixthLordPos.sign, ascendantSign)
+            val e8 = VedicAstrologyUtils.getHouseFromSigns(eighthLordPos.sign, ascendantSign)
+
+            if (s6 == 8 && e8 == 6) {
                 exchanges.add(
                     DusthanaExchange(
                         planet1 = sixthLord,
@@ -561,7 +536,10 @@ object VipareetaRajaYogaCalculator {
 
         // Check 6th-12th exchange
         if (sixthLordPos != null && twelfthLordPos != null) {
-            if (sixthLordPos.house == 12 && twelfthLordPos.house == 6) {
+            val s6 = VedicAstrologyUtils.getHouseFromSigns(sixthLordPos.sign, ascendantSign)
+            val t12 = VedicAstrologyUtils.getHouseFromSigns(twelfthLordPos.sign, ascendantSign)
+
+            if (s6 == 12 && t12 == 6) {
                 exchanges.add(
                     DusthanaExchange(
                         planet1 = sixthLord,
@@ -578,7 +556,10 @@ object VipareetaRajaYogaCalculator {
 
         // Check 8th-12th exchange
         if (eighthLordPos != null && twelfthLordPos != null) {
-            if (eighthLordPos.house == 12 && twelfthLordPos.house == 8) {
+            val e8 = VedicAstrologyUtils.getHouseFromSigns(eighthLordPos.sign, ascendantSign)
+            val t12 = VedicAstrologyUtils.getHouseFromSigns(twelfthLordPos.sign, ascendantSign)
+
+            if (e8 == 12 && t12 == 8) {
                 exchanges.add(
                     DusthanaExchange(
                         planet1 = eighthLord,
@@ -754,32 +735,16 @@ object VipareetaRajaYogaCalculator {
             }
 
             // Check if aspected by functional malefics
-            val maraka2ndLord = getHouseLord(ascendantSign, 2)
-            val maraka7thLord = getHouseLord(ascendantSign, 7)
+            val maraka2ndLord = VedicAstrologyUtils.getHouseLord(chart, 2)
+            val maraka7thLord = VedicAstrologyUtils.getHouseLord(chart, 7)
 
             val dusthanaLordPos = yoga.dusthanaLordPosition
             chart.planetPositions.forEach { pos ->
-                val aspects = getAspectedHouses(pos)
-                if (dusthanaLordPos.house in aspects) {
+                if (VedicAstrologyUtils.aspectsHouse(pos.planet, pos.house, dusthanaLordPos.house)) {
                     if (pos.planet == maraka2ndLord || pos.planet == maraka7thLord) {
                         factors.add("${yoga.yogaType.displayName}: Aspected by Maraka lord ${pos.planet.displayName}")
                     }
                 }
-            }
-        }
-
-        // Check if dusthana lords are in Kendra from each other (can reduce effect)
-        val sixthLordHouse = chart.planetPositions.find {
-            it.planet == getHouseLord(ascendantSign, 6)
-        }?.house ?: 0
-        val eighthLordHouse = chart.planetPositions.find {
-            it.planet == getHouseLord(ascendantSign, 8)
-        }?.house ?: 0
-
-        if (sixthLordHouse > 0 && eighthLordHouse > 0) {
-            val difference = kotlin.math.abs(sixthLordHouse - eighthLordHouse)
-            if (difference in listOf(1, 4, 7, 10) || (12 - difference) in listOf(1, 4, 7, 10)) {
-                // Actually being in dusthana from each other is good, this check is for other cases
             }
         }
 
@@ -799,9 +764,8 @@ object VipareetaRajaYogaCalculator {
         // Jupiter's beneficial aspect
         val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
         jupiterPos?.let { jupiter ->
-            val jupiterAspects = getAspectedHouses(jupiter)
             formedYogas.forEach { yoga ->
-                if (yoga.dusthanaLordPosition.house in jupiterAspects) {
+                if (VedicAstrologyUtils.aspectsHouse(Planet.JUPITER, jupiter.house, yoga.dusthanaLordPosition.house)) {
                     factors.add("Jupiter's aspect on ${yoga.dusthanaLord.displayName} enhances ${yoga.yogaType.displayName}")
                 }
             }
@@ -832,7 +796,7 @@ object VipareetaRajaYogaCalculator {
 
         // Benefics in Kendra
         val beneficsInKendra = chart.planetPositions.filter {
-            it.house in VedicAstrologyUtils.KENDRA_HOUSES && VedicAstrologyUtils.isNaturalBenefic(it.planet)
+            VedicAstrologyUtils.isKendra(it.house) && VedicAstrologyUtils.isNaturalBenefic(it.planet)
         }
         if (beneficsInKendra.isNotEmpty()) {
             factors.add("Benefics in Kendra support overall chart strength and yoga results")
@@ -849,6 +813,7 @@ object VipareetaRajaYogaCalculator {
         isFormed: Boolean,
         strength: YogaStrength,
         position: PlanetPosition,
+        houseFromLagna: Int,
         strengthFactors: List<String>,
         weaknessFactors: List<String>
     ): String {
@@ -856,14 +821,14 @@ object VipareetaRajaYogaCalculator {
 
         if (!isFormed) {
             sb.append("${yogaType.displayName} is NOT formed. ")
-            sb.append("The ${yogaType.houseLord}th lord ${position.planet.displayName} is in house ${position.house}, ")
+            sb.append("The ${yogaType.houseLord}th lord ${position.planet.displayName} is in ${houseFromLagna}th sign, ")
             sb.append("not in a dusthana house (6th, 8th, or 12th).")
             return sb.toString()
         }
 
         sb.append("${yogaType.displayName} (${yogaType.sanskritName}) is FORMED. ")
         sb.append("${position.planet.displayName}, lord of the ${yogaType.houseLord}th house, ")
-        sb.append("is placed in the ${position.house}th house in ${position.sign.displayName}. ")
+        sb.append("is placed in the ${houseFromLagna}th house/sign in ${position.sign.displayName}. ")
 
         sb.append("Yoga strength: ${strength.displayName}. ")
 
@@ -1001,74 +966,5 @@ object VipareetaRajaYogaCalculator {
         sb.appendLine("misfortunes, or achieving success through unconventional means.")
 
         return sb.toString()
-    }
-
-    // ============================================
-    // HELPER FUNCTIONS
-    // ============================================
-
-    /**
-     * Get the lord of a house based on Ascendant
-     */
-    private fun getHouseLord(ascendant: ZodiacSign, house: Int): Planet {
-        val houseSignIndex = (ascendant.ordinal + house - 1) % 12
-        return ZodiacSign.entries[houseSignIndex].ruler
-    }
-
-    /**
-     * Get houses aspected by a planet
-     */
-    private fun getAspectedHouses(pos: PlanetPosition): List<Int> {
-        val aspects = mutableListOf<Int>()
-        val planetHouse = pos.house
-
-        // 7th aspect (all planets)
-        aspects.add(((planetHouse + 6) % 12).let { if (it == 0) 12 else it })
-
-        // Special aspects
-        when (pos.planet) {
-            Planet.MARS -> {
-                aspects.add(((planetHouse + 3) % 12).let { if (it == 0) 12 else it })
-                aspects.add(((planetHouse + 7) % 12).let { if (it == 0) 12 else it })
-            }
-            Planet.JUPITER -> {
-                aspects.add(((planetHouse + 4) % 12).let { if (it == 0) 12 else it })
-                aspects.add(((planetHouse + 8) % 12).let { if (it == 0) 12 else it })
-            }
-            Planet.SATURN -> {
-                aspects.add(((planetHouse + 2) % 12).let { if (it == 0) 12 else it })
-                aspects.add(((planetHouse + 9) % 12).let { if (it == 0) 12 else it })
-            }
-            Planet.RAHU, Planet.KETU -> {
-                aspects.add(((planetHouse + 4) % 12).let { if (it == 0) 12 else it })
-                aspects.add(((planetHouse + 8) % 12).let { if (it == 0) 12 else it })
-            }
-            else -> {}
-        }
-
-        return aspects
-    }
-
-    /**
-     * Check if planet is combust
-     */
-    private fun checkCombustion(chart: VedicChart, pos: PlanetPosition): Boolean {
-        if (pos.planet == Planet.SUN) return false
-
-        val sunPos = chart.planetPositions.find { it.planet == Planet.SUN } ?: return false
-        val distance = kotlin.math.abs(pos.longitude - sunPos.longitude)
-        val normalizedDistance = if (distance > 180) 360 - distance else distance
-
-        val combustionOrb = when (pos.planet) {
-            Planet.MOON -> 12.0
-            Planet.MARS -> 17.0
-            Planet.MERCURY -> 14.0
-            Planet.JUPITER -> 11.0
-            Planet.VENUS -> 10.0
-            Planet.SATURN -> 15.0
-            else -> 0.0
-        }
-
-        return normalizedDistance <= combustionOrb
     }
 }

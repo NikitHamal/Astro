@@ -714,7 +714,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Deep Vedic Analysis Available",
+                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DEEP_ANALYSIS),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         color = theme.TextPrimary
@@ -727,7 +727,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                     color = theme.AccentGold.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = "View Deep Analysis",
+                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_VIEW_MORE),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         color = theme.AccentGold,
@@ -740,15 +740,34 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
 
             val summaryText = when (result) {
                 is com.astro.storm.ephemeris.KemadrumaYogaCalculator.KemadrumaAnalysis -> {
-                    "Status: ${result.effectiveStatus.getLocalizedName(language)}. Cancellation Score: ${result.totalCancellationScore}%"
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        result.effectiveStatus.getLocalizedName(language)
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_CANCELLATION_FMT),
+                        result.totalCancellationScore
+                    )
                 }
                 is com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.MahapurushaYoga -> {
-                    "Dignity: ${if (result.isExalted) "Exalted" else "Own Sign"}. Strength: ${result.strengthLevel.displayName}"
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        if (result.isExalted) stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DIGNITY_EXALTED)
+                        else stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DIGNITY_OWN_SIGN)
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_FMT),
+                        result.strength
+                    )
                 }
                 is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
-                    "Activation: ${result.activationStatus.displayName}. Strength: ${result.strength.displayName}"
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        result.activationStatus.displayName
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_FMT),
+                        result.strength.displayName
+                    )
                 }
-                else -> "Comprehensive logic and remedial measures calculated."
+                else -> stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.EFFECT_GENERIC_GOOD)
             }
 
             Text(
