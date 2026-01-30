@@ -1,51 +1,39 @@
 # AstroStorm Research - Continuity Ledger
-> Last updated: 2026-01-29T22:00:00Z
+> Last updated: 2026-01-30T08:17:12Z
 
 ## Goal (incl. success criteria)
-Exhaustive codebase research for AstroStorm Vedic astrology app - identify issues, bugs, errors, and rooms for improvement.
-1. Complete codebase structure analysis ✅
-2. Calculation engine verification (Swiss Ephemeris, Ayanamsa, Nodes) ✅
-3. Dasha system analysis (8 systems: Vimsottari, Yogini, Ashtottari, Chara, Shoola, Kalachakra, Sudarshana, Mudda) ✅
-4. Shadbala implementation verification (6 components, BPHS compliance) ✅
-5. Divisional chart analysis (23 vargas: D1-D144) ✅
-6. Yoga calculation verification (60+ yogas, 9 evaluators) ✅
-7. Create comprehensive FINDINGS.md ⏳
+Extend yoga analysis to 500+ verified yogas with accurate detection and high-quality descriptions; ensure production-grade modular implementation and Vedic accuracy.
 
 ## Constraints/Assumptions
 - Production-grade quality required (no TODOs, basic implementations)
 - Must use best possible methods, modularization, accurate Vedic astrology
 - Verify against classical texts (BPHS, Phaladeepika, Jataka Parijata)
+- Build instructions: never build; verify mentally
 
 ## Key Decisions
-- Research-only task - document findings, no code changes
+- None yet for implementation approach
 
 ## State
 
 - Done:
-  - Codebase structure analysis (293+ Kotlin files, 70+ calculators, 60+ UI screens)
-  - Swiss Ephemeris integration review (JNI wrapper, LRU cache, thread-safe)
-  - Ayanamsa systems verified (8 systems: Lahiri, Raman, KP, etc.)
-  - 8 Dasha systems analyzed with period verification
-  - Shadbala 6-fold strength verified (BPHS-compliant)
-  - 23 divisional charts verified (D1-D144)
-  - 60+ yoga implementations verified (9 evaluators)
-  - Identified 8 critical issues, 7 medium issues, multiple recommendations
+  - Prior research pass documented in `FINDINGS.md`
+  - Reviewed yoga engine orchestration in `YogaCalculator` and core yoga models
+  - Reviewed localization + string key mapping approach for yoga names/effects
 
 - Now:
-  - Research task complete
+  - Assess feasibility for 500+ yoga expansion and required data sources
 
 - Next:
-  - Address high-priority issues identified in FINDINGS.md
-  - Implement recommendations from FINDINGS.md Section 10
-  - Continue with roadmap items from NEXT.md and IDEAS.md
+  - Propose modular data model and extensibility plan for 500+ yogas
+  - Confirm authoritative sources and target language coverage for yoga descriptions
 
 ## Open Questions (UNCONFIRMED if needed)
-- None - research complete, findings documented in FINDINGS.md
+- Which classical sources should be treated as authoritative for the 500+ yoga list and effect descriptions?
+- Is there an existing canonical yoga data source in this repo or external references to use?
+- Should descriptions be English-only or include Nepali/localized equivalents?
 
 ## Working Set (files/ids/commands)
-- **Core Engine**: `ephemeris/SwissEphemerisEngine.kt`
-- **Dasha Calculators**: `DashaCalculator.kt`, `YoginiDashaCalculator.kt`, `CharaDashaCalculator.kt`, etc.
-- **Shadbala**: `ShadbalaCalculator.kt`, `SthanaBalaCalculator.kt`, `KalaBalaCalculator.kt`, `DrigBalaCalculator.kt`
-- **Divisional Charts**: `DivisionalChartCalculator.kt`, `ShodashvargaCalculator.kt`
-- **Yoga System**: `yoga/` package with 9 evaluator files
-- **Output**: `FINDINGS.md` (creating)
+- `app/src/main/java/com/astro/storm/ephemeris/yoga/YogaModels.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/yoga/YogaLocalization.kt`
+- `app/src/main/java/com/astro/storm/ephemeris/YogaCalculator.kt`
+- `core/common/src/main/java/com/astro/storm/core/common/StringKeyYogaExpanded.kt`
