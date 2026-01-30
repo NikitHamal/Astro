@@ -1067,19 +1067,10 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
         }
 
         // 4. Vargottama - Planet in same sign in D1 and D9
-        // This requires navamsha calculation - simplified check based on longitude
+        // This requires navamsha calculation
         chart.planetPositions.forEach { pos ->
             val d1Sign = pos.sign
-            // Calculate D9 sign (simplified - actual implementation should use DivisionalChartCalculator)
-            val navamshaNumber = ((pos.longitude % 30) / 3.333333).toInt()
-            val navamshaStartSign = when (d1Sign.element) {
-                ZodiacSign.Element.FIRE -> ZodiacSign.ARIES
-                ZodiacSign.Element.EARTH -> ZodiacSign.CAPRICORN
-                ZodiacSign.Element.AIR -> ZodiacSign.LIBRA
-                ZodiacSign.Element.WATER -> ZodiacSign.CANCER
-            }
-            val d9SignIndex = (navamshaStartSign.ordinal + navamshaNumber) % 12
-            val d9Sign = ZodiacSign.entries[d9SignIndex]
+            val d9Sign = YogaHelpers.getNavamshaSign(pos.longitude)
 
             if (d1Sign == d9Sign) {
                 val baseStrength = YogaHelpers.calculateYogaStrength(chart, listOf(pos))

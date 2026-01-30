@@ -543,6 +543,49 @@ object YogaHelpers {
     // ==================== HOUSE SIGNIFICATIONS ====================
 
     /**
+     * Get the lord (ruler) of a zodiac sign
+     */
+    fun getSignLord(sign: ZodiacSign): Planet {
+        return sign.ruler
+    }
+
+    /**
+     * Calculate Navamsha sign for a given longitude
+     */
+    fun getNavamshaSign(longitude: Double): ZodiacSign {
+        val totalNavamsas = ((longitude % 360.0 + 360.0) % 360.0 * 9.0 / 30.0).toInt()
+        return ZodiacSign.entries[totalNavamsas % 12]
+    }
+
+    /**
+     * Check if a planet is Vargottama (same sign in D1 and D9)
+     */
+    fun isVargottama(pos: PlanetPosition, chart: VedicChart): Boolean {
+        return pos.sign == getNavamshaSign(pos.longitude)
+    }
+
+    /**
+     * Get house position from Moon (relative house)
+     */
+    fun getHouseFromMoon(targetHouse: Int, referenceHouse: Int): Int {
+        return (targetHouse - referenceHouse + 12) % 12 + 1
+    }
+
+    /**
+     * Find Atmakaraka planet (planet with highest degree in sign)
+     */
+    fun findAtmakaraka(chart: VedicChart): Planet? {
+        val mainPlanets = listOf(
+            Planet.SUN, Planet.MOON, Planet.MARS, Planet.MERCURY,
+            Planet.JUPITER, Planet.VENUS, Planet.SATURN
+        )
+        return chart.planetPositions
+            .filter { it.planet in mainPlanets }
+            .maxByOrNull { it.longitude % 30.0 }
+            ?.planet
+    }
+
+    /**
      * Get house significations (English fallback)
      */
     fun getHouseSignifications(house: Int): String {
