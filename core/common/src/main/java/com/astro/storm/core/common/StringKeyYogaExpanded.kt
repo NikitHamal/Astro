@@ -118,6 +118,195 @@ enum class StringKeyYogaExpanded(override val en: String, override val ne: Strin
     YOGA_BHARATHI("Bharathi Yoga", "भारती योग"),
     EFFECT_BHARATHI("Exceptional intelligence, scholarship, fame, wealth, religious nature.", "असाधारण बुद्धि, विद्वता, प्रसिद्धि, धन, धार्मिक स्वभाव।"),
 
+    // ============================================
+    // EXTENDED RAJA YOGAS
+    // ============================================
+    YOGA_SIMHASANA("Simhasana Yoga", "सिंहासन योग"),
+    EFFECT_SIMHASANA("Royal authority, leadership, sits on a throne-like position.", "राजकीय अधिकार, नेतृत्व, सिंहासन जस्तो स्थानमा बस्ने।"),
+
+    YOGA_CHATUSSAGARA("Chatussagara Yoga", "चतुःसागर योग"),
+    EFFECT_CHATUSSAGARA("Fame spreading to four directions, international recognition.", "चारैतिर प्रसिद्धि फैलिने, अन्तर्राष्ट्रिय मान्यता।"),
+
+    YOGA_AKHANDA_SAMRAJYA_EXP("Akhanda Samrajya Yoga", "अखण्ड साम्राज्य योग"),
+    EFFECT_AKHANDA_SAMRAJYA_EXP("Unbroken empire, sustained authority throughout life.", "अखण्डित साम्राज्य, जीवनभर निरन्तर अधिकार।"),
+
+    YOGA_DIGBALA_RAJA("Digbala Raja Yoga", "दिक्बल राज योग"),
+    EFFECT_DIGBALA_RAJA("Directional strength giving kingly results.", "दिशाको बलले राजकीय परिणाम दिने।"),
+
+    // ============================================
+    // EXTENDED DHANA (WEALTH) YOGAS
+    // ============================================
+    YOGA_MAHALAKSHMI("Mahalakshmi Yoga", "महालक्ष्मी योग"),
+    EFFECT_MAHALAKSHMI("Great wealth, luxuries, blessed by goddess Lakshmi.", "महान धन, विलासिता, देवी लक्ष्मीको कृपा।"),
+
+    YOGA_KUBERA_EXP("Kubera Yoga", "कुबेर योग"),
+    EFFECT_KUBERA_EXP("Treasurer of the gods, immense wealth accumulation.", "देवताहरूको कोषाध्यक्ष, अपार धन संचय।"),
+
+    YOGA_DHANA_KARAKA("Dhana Karaka Yoga", "धन कारक योग"),
+    EFFECT_DHANA_KARAKA("Natural significator of wealth giving prosperity.", "धनको प्राकृतिक कारकले समृद्धि दिने।"),
+
+    YOGA_INDU_LAGNA_EXP("Indu Lagna Dhana Yoga", "इन्दु लग्न धन योग"),
+    EFFECT_INDU_LAGNA_EXP("Wealth through Moon ascendant calculations.", "चन्द्र लग्न गणनाद्वारा धन।"),
+
+    YOGA_BUSINESS("Business Yoga", "व्यापार योग"),
+    EFFECT_BUSINESS("Success in commercial ventures and trade.", "व्यापारिक उद्यम र व्यापारमा सफलता।"),
+
+    YOGA_PROPERTY("Property Yoga", "सम्पत्ति योग"),
+    EFFECT_PROPERTY("Gains through land, buildings, and real estate.", "जग्गा, भवन र अचल सम्पत्तिबाट लाभ।"),
+
+    YOGA_INHERITANCE("Inheritance Yoga", "उत्तराधिकार योग"),
+    EFFECT_INHERITANCE("Wealth through inheritance, hidden treasures.", "उत्तराधिकार, गुप्त धनबाट सम्पत्ति।"),
+
+    // ============================================
+    // ARISHTA (NEGATIVE) YOGAS
+    // ============================================
+    YOGA_DARIDRA_EXP("Daridra Yoga", "दरिद्र योग"),
+    EFFECT_DARIDRA_EXP("Poverty, financial struggles, difficulties in accumulating wealth.", "गरिबी, आर्थिक संघर्ष, धन संचयमा कठिनाई।"),
+
+    YOGA_BALARISHTA("Balarishta Yoga", "बालारिष्ट योग"),
+    EFFECT_BALARISHTA("Early childhood health concerns, requires remedies.", "बाल्यकालमा स्वास्थ्य चिन्ता, उपचार आवश्यक।"),
+
+    YOGA_ROGAISHTA("Rogaishta Yoga", "रोगेष्ट योग"),
+    EFFECT_ROGAISHTA("Health afflictions, chronic diseases possible.", "स्वास्थ्य समस्या, दीर्घकालीन रोग सम्भव।"),
+
+    YOGA_BANDHANA("Bandhana Yoga", "बन्धन योग"),
+    EFFECT_BANDHANA("Confinement, imprisonment, or restrictions.", "कैद, बन्धन, वा प्रतिबन्ध।"),
+
+    YOGA_DURYOGA("Duryoga", "दुर्योग"),
+    EFFECT_DURYOGA("General misfortune, obstacles in progress.", "सामान्य दुर्भाग्य, प्रगतिमा बाधा।"),
+
+    YOGA_COMBUSTION("Combustion Yoga", "अस्त योग"),
+    EFFECT_COMBUSTION("Planet too close to Sun, diminished significations.", "ग्रह सूर्यको धेरै नजिक, कमजोर महत्व।"),
+
+    // ============================================
+    // SANNYASA & MOKSHA YOGAS
+    // ============================================
+    YOGA_SANNYASA("Sannyasa Yoga", "सन्यास योग"),
+    EFFECT_SANNYASA("Renunciation, detachment from material world.", "त्याग, भौतिक संसारबाट विरक्ति।"),
+
+    YOGA_MOKSHA("Moksha Yoga", "मोक्ष योग"),
+    EFFECT_MOKSHA("Liberation, spiritual enlightenment potential.", "मुक्ति, आध्यात्मिक ज्ञानको सम्भावना।"),
+
+    YOGA_PRAVRAJYA("Pravrajya Yoga", "प्रव्रज्या योग"),
+    EFFECT_PRAVRAJYA("Ascetic life, monastic tendencies.", "तपस्वी जीवन, सन्यासी प्रवृत्ति।"),
+
+    YOGA_KETU_MOKSHA("Ketu Moksha Yoga", "केतु मोक्ष योग"),
+    EFFECT_KETU_MOKSHA("Spiritual liberation through Ketu's grace.", "केतुको कृपाद्वारा आध्यात्मिक मुक्ति।"),
+
+    YOGA_MOKSHA_TRIKONA("Moksha Trikona Yoga", "मोक्ष त्रिकोण योग"),
+    EFFECT_MOKSHA_TRIKONA("Spiritual advancement through 4th, 8th, 12th connection.", "४, ८, १२ सम्बन्धद्वारा आध्यात्मिक प्रगति।"),
+
+    // ============================================
+    // LAGNA (ASCENDANT) YOGAS
+    // ============================================
+    YOGA_LAGNESH_STRENGTH("Lagnesh Strength Yoga", "लग्नेश बल योग"),
+    EFFECT_LAGNESH_STRENGTH("Strong ascendant lord giving vitality and success.", "बलियो लग्नेशले जीवनशक्ति र सफलता दिने।"),
+
+    YOGA_LAGNA_ADHI("Lagna Adhi Yoga", "लग्न अधि योग"),
+    EFFECT_LAGNA_ADHI("Benefics in 6th, 7th, 8th from Lagna giving protection.", "६, ७, ८मा शुभ ग्रहले सुरक्षा दिने।"),
+
+    YOGA_SUBHAKARTARI_LAGNA("Subhakartari Lagna Yoga", "शुभकर्तरी लग्न योग"),
+    EFFECT_SUBHAKARTARI_LAGNA("Benefics hemming the ascendant, overall protection.", "लग्नलाई शुभ ग्रहले घेरेको, समग्र सुरक्षा।"),
+
+    YOGA_PAPAKARTARI_LAGNA("Papakartari Lagna Yoga", "पापकर्तरी लग्न योग"),
+    EFFECT_PAPAKARTARI_LAGNA("Malefics hemming the ascendant, challenges in life.", "लग्नलाई पाप ग्रहले घेरेको, जीवनमा चुनौती।"),
+
+    YOGA_VARGOTTAMA_LAGNA("Vargottama Lagna Yoga", "वर्गोत्तम लग्न योग"),
+    EFFECT_VARGOTTAMA_LAGNA("Same sign in Rashi and Navamsha, strengthened ascendant.", "राशि र नवांशमा एउटै राशि, बलियो लग्न।"),
+
+    // ============================================
+    // PARIVARTTANA (EXCHANGE) YOGAS
+    // ============================================
+    YOGA_MAHA_PARIVARTTANA("Maha Parivarttana Yoga", "महा परिवर्तन योग"),
+    EFFECT_MAHA_PARIVARTTANA("Powerful exchange between benefic house lords.", "शुभ भाव अधिपतिहरू बीच शक्तिशाली आदानप्रदान।"),
+
+    YOGA_KHALA_PARIVARTTANA("Khala Parivarttana Yoga", "खल परिवर्तन योग"),
+    EFFECT_KHALA_PARIVARTTANA("Exchange involving 3rd lord, mixed results.", "तृतीयेश समावेश आदानप्रदान, मिश्रित परिणाम।"),
+
+    YOGA_DAINYA_PARIVARTTANA("Dainya Parivarttana Yoga", "दैन्य परिवर्तन योग"),
+    EFFECT_DAINYA_PARIVARTTANA("Exchange involving 6th/8th/12th, challenging but transformative.", "६/८/१२ समावेश आदानप्रदान, चुनौतीपूर्ण तर रूपान्तरणकारी।"),
+
+    // ============================================
+    // PLANETARY YOGAS
+    // ============================================
+    YOGA_SURYA_DIGNITY("Surya Dignity Yoga", "सूर्य गरिमा योग"),
+    EFFECT_SURYA_DIGNITY("Sun in strong position giving authority.", "बलियो स्थानमा सूर्यले अधिकार दिने।"),
+
+    YOGA_CHANDRA_DIGNITY("Chandra Dignity Yoga", "चन्द्र गरिमा योग"),
+    EFFECT_CHANDRA_DIGNITY("Moon in favorable position giving mental peace.", "अनुकूल स्थानमा चन्द्रले मानसिक शान्ति दिने।"),
+
+    YOGA_MANGAL_DIGNITY("Mangala Dignity Yoga", "मंगल गरिमा योग"),
+    EFFECT_MANGAL_DIGNITY("Mars in powerful position giving courage.", "शक्तिशाली स्थानमा मंगलले साहस दिने।"),
+
+    YOGA_BUDHA_DIGNITY("Budha Dignity Yoga", "बुध गरिमा योग"),
+    EFFECT_BUDHA_DIGNITY("Mercury well-placed giving intelligence.", "राम्रो स्थानमा बुधले बुद्धि दिने।"),
+
+    YOGA_GURU_DIGNITY("Guru Dignity Yoga", "गुरु गरिमा योग"),
+    EFFECT_GURU_DIGNITY("Jupiter strong giving wisdom and prosperity.", "बलियो गुरुले ज्ञान र समृद्धि दिने।"),
+
+    YOGA_SHUKRA_DIGNITY("Shukra Dignity Yoga", "शुक्र गरिमा योग"),
+    EFFECT_SHUKRA_DIGNITY("Venus well-placed giving comforts and beauty.", "राम्रो स्थानमा शुक्रले सुख र सौन्दर्य दिने।"),
+
+    YOGA_SHANI_DIGNITY("Shani Dignity Yoga", "शनि गरिमा योग"),
+    EFFECT_SHANI_DIGNITY("Saturn in good position giving discipline and longevity.", "राम्रो स्थानमा शनिले अनुशासन र दीर्घायु दिने।"),
+
+    // ============================================
+    // NAKSHATRA YOGAS
+    // ============================================
+    YOGA_PUSHYA_NAKSHATRA("Pushya Nakshatra Yoga", "पुष्य नक्षत्र योग"),
+    EFFECT_PUSHYA_NAKSHATRA("Auspicious star of nourishment and growth.", "पोषण र वृद्धिको शुभ तारा।"),
+
+    YOGA_GANDANTA("Gandanta Yoga", "गण्डान्त योग"),
+    EFFECT_GANDANTA("Junction point between water and fire signs, karmic knot.", "जल र अग्नि राशि बीचको जंक्शन, कार्मिक गाँठो।"),
+
+    YOGA_NAKSHATRA_DEVA("Deva Nakshatra Yoga", "देव नक्षत्र योग"),
+    EFFECT_NAKSHATRA_DEVA("Divine temperament nakshatra placement.", "दैवी स्वभाव नक्षत्र स्थान।"),
+
+    YOGA_NAKSHATRA_MANUSHYA("Manushya Nakshatra Yoga", "मनुष्य नक्षत्र योग"),
+    EFFECT_NAKSHATRA_MANUSHYA("Human temperament nakshatra, balanced nature.", "मानव स्वभाव नक्षत्र, सन्तुलित प्रकृति।"),
+
+    YOGA_NAKSHATRA_RAKSHASA("Rakshasa Nakshatra Yoga", "राक्षस नक्षत्र योग"),
+    EFFECT_NAKSHATRA_RAKSHASA("Fierce temperament nakshatra, powerful but challenging.", "उग्र स्वभाव नक्षत्र, शक्तिशाली तर चुनौतीपूर्ण।"),
+
+    // ============================================
+    // CLASSICAL NABHASA YOGAS
+    // ============================================
+    YOGA_RAJJU_EXP("Rajju Yoga", "रज्जु योग"),
+    EFFECT_RAJJU_EXP("Planets in movable signs, constant movement and travel.", "चर राशिमा ग्रह, निरन्तर चाल र यात्रा।"),
+
+    YOGA_MUSALA_EXP("Musala Yoga", "मुसल योग"),
+    EFFECT_MUSALA_EXP("Planets in fixed signs, stability and persistence.", "स्थिर राशिमा ग्रह, स्थिरता र दृढता।"),
+
+    YOGA_NALA_EXP("Nala Yoga", "नल योग"),
+    EFFECT_NALA_EXP("Planets in dual signs, adaptability and versatility.", "द्विस्वभाव राशिमा ग्रह, अनुकूलता र बहुमुखी प्रतिभा।"),
+
+    YOGA_KAMALA("Kamala Yoga", "कमल योग"),
+    EFFECT_KAMALA("Lotus yoga, planets in kendras, wealth and fame.", "कमल योग, केन्द्रमा ग्रह, धन र प्रसिद्धि।"),
+
+    YOGA_VAPI("Vapi Yoga", "वापी योग"),
+    EFFECT_VAPI("Well yoga, planets in panaparas, steady gains.", "कुवा योग, पनपारमा ग्रह, स्थिर लाभ।"),
+
+    YOGA_YUPA("Yupa Yoga", "यूप योग"),
+    EFFECT_YUPA("Sacrificial post yoga, religious and charitable.", "यज्ञस्तम्भ योग, धार्मिक र दानशील।"),
+
+    YOGA_SHARA("Shara Yoga", "शर योग"),
+    EFFECT_SHARA("Arrow yoga, focused and goal-oriented.", "तीर योग, केन्द्रित र लक्ष्योन्मुख।"),
+
+    YOGA_SHAKTI("Shakti Yoga", "शक्ति योग"),
+    EFFECT_SHAKTI("Spear yoga, powerful and commanding.", "भाला योग, शक्तिशाली र आदेशात्मक।"),
+
+    YOGA_DANDA("Danda Yoga", "दण्ड योग"),
+    EFFECT_DANDA("Staff yoga, authority and punishment capacity.", "दण्ड योग, अधिकार र दण्ड क्षमता।"),
+
+    YOGA_NAUKA("Nauka Yoga", "नौका योग"),
+    EFFECT_NAUKA("Boat yoga, success through overseas connections.", "नाव योग, विदेशी सम्बन्धद्वारा सफलता।"),
+
+    YOGA_KUTA("Kuta Yoga", "कूट योग"),
+    EFFECT_KUTA("Peak yoga, rise to high positions.", "शिखर योग, उच्च पदमा उदय।"),
+
+    YOGA_VAJRA("Vajra Yoga", "वज्र योग"),
+    EFFECT_VAJRA("Thunderbolt yoga, strong beginning and end of life.", "वज्र योग, जीवनको सुरु र अन्त बलियो।"),
+
     // Categories
     YOGA_CAT_BHAVA("Bhava Yoga", "भाव योग"),
     YOGA_CAT_BHAVA_DESC("House Lord Placements", "भाव अधिपति स्थितिहरू"),

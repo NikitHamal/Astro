@@ -2,14 +2,23 @@ package com.astro.storm.ephemeris
 
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.yoga.AdvancedYogaEvaluator
+import com.astro.storm.ephemeris.yoga.ArishtaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.BhavaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.ChandraYogaEvaluator
+import com.astro.storm.ephemeris.yoga.ClassicalNabhasaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.ConjunctionYogaEvaluator
 import com.astro.storm.ephemeris.yoga.DhanaYogaEvaluator
+import com.astro.storm.ephemeris.yoga.ExtendedDhanaYogaEvaluator
+import com.astro.storm.ephemeris.yoga.ExtendedRajaYogaEvaluator
+import com.astro.storm.ephemeris.yoga.LagnaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.MahapurushaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.NabhasaYogaEvaluator
+import com.astro.storm.ephemeris.yoga.NakshatraYogaEvaluator
 import com.astro.storm.ephemeris.yoga.NegativeYogaEvaluator
+import com.astro.storm.ephemeris.yoga.ParivarttanaYogaEvaluator
+import com.astro.storm.ephemeris.yoga.PlanetaryYogaEvaluator
 import com.astro.storm.ephemeris.yoga.RajaYogaEvaluator
+import com.astro.storm.ephemeris.yoga.SannyasaMokshaYogaEvaluator
 import com.astro.storm.ephemeris.yoga.SolarYogaEvaluator
 import com.astro.storm.ephemeris.yoga.SpecialYogaEvaluator
 import com.astro.storm.ephemeris.yoga.Yoga
@@ -23,8 +32,9 @@ import com.astro.storm.ephemeris.yoga.YogaStrength
  *
  * This calculator uses the Strategy Pattern to evaluate different categories
  * of Vedic yogas. Each yoga category is handled by a specialized evaluator.
+ * The system evaluates 500+ classical yogas from authoritative texts.
  *
- * Evaluators:
+ * Core Evaluators:
  * - RajaYogaEvaluator: Power and authority combinations
  * - DhanaYogaEvaluator: Wealth and prosperity combinations
  * - MahapurushaYogaEvaluator: Five great person yogas (Pancha Mahapurusha)
@@ -33,12 +43,30 @@ import com.astro.storm.ephemeris.yoga.YogaStrength
  * - SolarYogaEvaluator: Sun-based combinations
  * - NegativeYogaEvaluator: Challenging combinations (Arishta)
  * - SpecialYogaEvaluator: Other significant combinations
+ * - BhavaYogaEvaluator: House Lord Placements
+ * - ConjunctionYogaEvaluator: Planetary Conjunctions
+ * - AdvancedYogaEvaluator: Advanced specialized combinations
+ *
+ * Extended Evaluators (500+ yogas total):
+ * - PlanetaryYogaEvaluator: Suryadi yogas, planetary dignity yogas (50+ yogas)
+ * - NakshatraYogaEvaluator: Nakshatra-based combinations (40+ yogas)
+ * - ArishtaYogaEvaluator: Comprehensive negative/poverty yogas (60+ yogas)
+ * - LagnaYogaEvaluator: Ascendant-based yogas per sign (50+ yogas)
+ * - SannyasaMokshaYogaEvaluator: Renunciation and spiritual yogas (30+ yogas)
+ * - ExtendedRajaYogaEvaluator: Additional raja yoga variants (40+ yogas)
+ * - ExtendedDhanaYogaEvaluator: Additional wealth yogas (40+ yogas)
+ * - ParivarttanaYogaEvaluator: All 66 exchange combinations (66+ yogas)
+ * - ClassicalNabhasaYogaEvaluator: Complete 32 Nabhasa yogas from Hora Sara
  *
  * Based on classical texts:
  * - Brihat Parasara Hora Shastra (BPHS)
  * - Phaladeepika
  * - Saravali
  * - Jataka Parijata
+ * - Brihat Jataka
+ * - Hora Sara
+ * - Uttara Kalamrita
+ * - Laghu Parasari (Jataka Chandrika)
  *
  * @author AstroStorm
  */
@@ -46,8 +74,13 @@ object YogaCalculator {
 
     /**
      * Registry of yoga evaluators
+     *
+     * Ordered by category importance for optimal evaluation:
+     * 1. Core yoga evaluators (original)
+     * 2. Extended evaluators for comprehensive 500+ yoga coverage
      */
     private val evaluators: List<YogaEvaluator> = listOf(
+        // ===== Core Evaluators =====
         RajaYogaEvaluator(),
         DhanaYogaEvaluator(),
         MahapurushaYogaEvaluator(),
@@ -58,7 +91,27 @@ object YogaCalculator {
         BhavaYogaEvaluator(),
         ConjunctionYogaEvaluator(),
         AdvancedYogaEvaluator(),
-        SpecialYogaEvaluator()
+        SpecialYogaEvaluator(),
+
+        // ===== Extended Evaluators (500+ additional yogas) =====
+        // Extended Raja Yogas - Additional kingly combinations
+        ExtendedRajaYogaEvaluator(),
+        // Extended Dhana Yogas - Comprehensive wealth combinations
+        ExtendedDhanaYogaEvaluator(),
+        // Classical Nabhasa Yogas - Complete 32 yogas from Hora Sara
+        ClassicalNabhasaYogaEvaluator(),
+        // Arishta Yogas - Comprehensive negative combinations
+        ArishtaYogaEvaluator(),
+        // Planetary Yogas - Suryadi and dignity-based yogas
+        PlanetaryYogaEvaluator(),
+        // Nakshatra Yogas - Lunar mansion combinations
+        NakshatraYogaEvaluator(),
+        // Lagna Yogas - Ascendant-based combinations
+        LagnaYogaEvaluator(),
+        // Sannyasa & Moksha Yogas - Spiritual liberation combinations
+        SannyasaMokshaYogaEvaluator(),
+        // Parivarttana Yogas - All 66 exchange combinations
+        ParivarttanaYogaEvaluator()
     )
 
     /**

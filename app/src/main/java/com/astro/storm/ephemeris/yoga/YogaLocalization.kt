@@ -126,6 +126,63 @@ object YogaLocalization {
             englishName.contains("Sreenatha") -> StringKeyYogaExpanded.YOGA_SREENATHA
             englishName.contains("Khadga") -> StringKeyYogaExpanded.YOGA_KHADGA
             englishName.contains("Kalanidhi") -> StringKeyYogaExpanded.YOGA_KALANIDHI
+
+            // Extended Raja Yogas
+            englishName.contains("Simhasana") -> StringKeyYogaExpanded.YOGA_SIMHASANA
+            englishName.contains("Chatussagara") -> StringKeyYogaExpanded.YOGA_CHATUSSAGARA
+            englishName.contains("Digbala Raja") -> StringKeyYogaExpanded.YOGA_DIGBALA_RAJA
+
+            // Extended Dhana Yogas
+            englishName.contains("Mahalakshmi") -> StringKeyYogaExpanded.YOGA_MAHALAKSHMI
+            englishName.contains("Dhana Karaka") -> StringKeyYogaExpanded.YOGA_DHANA_KARAKA
+            englishName.contains("Business") -> StringKeyYogaExpanded.YOGA_BUSINESS
+            englishName.contains("Property") -> StringKeyYogaExpanded.YOGA_PROPERTY
+            englishName.contains("Inheritance") -> StringKeyYogaExpanded.YOGA_INHERITANCE
+
+            // Arishta Yogas
+            englishName.contains("Balarishta") -> StringKeyYogaExpanded.YOGA_BALARISHTA
+            englishName.contains("Rogaishta") -> StringKeyYogaExpanded.YOGA_ROGAISHTA
+            englishName.contains("Bandhana") -> StringKeyYogaExpanded.YOGA_BANDHANA
+            englishName.contains("Duryoga") -> StringKeyYogaExpanded.YOGA_DURYOGA
+            englishName.contains("Combustion") -> StringKeyYogaExpanded.YOGA_COMBUSTION
+
+            // Sannyasa & Moksha Yogas
+            englishName.contains("Sannyasa") -> StringKeyYogaExpanded.YOGA_SANNYASA
+            englishName.contains("Moksha Trikona") -> StringKeyYogaExpanded.YOGA_MOKSHA_TRIKONA
+            englishName.contains("Moksha") -> StringKeyYogaExpanded.YOGA_MOKSHA
+            englishName.contains("Pravrajya") -> StringKeyYogaExpanded.YOGA_PRAVRAJYA
+            englishName.contains("Ketu Moksha") -> StringKeyYogaExpanded.YOGA_KETU_MOKSHA
+
+            // Lagna Yogas
+            englishName.contains("Lagnesh Strength") -> StringKeyYogaExpanded.YOGA_LAGNESH_STRENGTH
+            englishName.contains("Lagna Adhi") -> StringKeyYogaExpanded.YOGA_LAGNA_ADHI
+            englishName.contains("Subhakartari Lagna") -> StringKeyYogaExpanded.YOGA_SUBHAKARTARI_LAGNA
+            englishName.contains("Papakartari Lagna") -> StringKeyYogaExpanded.YOGA_PAPAKARTARI_LAGNA
+            englishName.contains("Vargottama Lagna") -> StringKeyYogaExpanded.YOGA_VARGOTTAMA_LAGNA
+
+            // Parivarttana Yogas
+            englishName.contains("Maha Parivarttana") -> StringKeyYogaExpanded.YOGA_MAHA_PARIVARTTANA
+            englishName.contains("Khala Parivarttana") -> StringKeyYogaExpanded.YOGA_KHALA_PARIVARTTANA
+            englishName.contains("Dainya Parivarttana") -> StringKeyYogaExpanded.YOGA_DAINYA_PARIVARTTANA
+
+            // Nakshatra Yogas
+            englishName.contains("Pushya Nakshatra") -> StringKeyYogaExpanded.YOGA_PUSHYA_NAKSHATRA
+            englishName.contains("Gandanta") -> StringKeyYogaExpanded.YOGA_GANDANTA
+            englishName.contains("Deva Nakshatra") -> StringKeyYogaExpanded.YOGA_NAKSHATRA_DEVA
+            englishName.contains("Manushya Nakshatra") -> StringKeyYogaExpanded.YOGA_NAKSHATRA_MANUSHYA
+            englishName.contains("Rakshasa Nakshatra") -> StringKeyYogaExpanded.YOGA_NAKSHATRA_RAKSHASA
+
+            // Classical Nabhasa Yogas
+            englishName.contains("Kamala") -> StringKeyYogaExpanded.YOGA_KAMALA
+            englishName.contains("Vapi") -> StringKeyYogaExpanded.YOGA_VAPI
+            englishName.contains("Yupa") -> StringKeyYogaExpanded.YOGA_YUPA
+            englishName.contains("Shara") -> StringKeyYogaExpanded.YOGA_SHARA
+            englishName.contains("Shakti") -> StringKeyYogaExpanded.YOGA_SHAKTI
+            englishName.contains("Danda") -> StringKeyYogaExpanded.YOGA_DANDA
+            englishName.contains("Nauka") -> StringKeyYogaExpanded.YOGA_NAUKA
+            englishName.contains("Kuta") -> StringKeyYogaExpanded.YOGA_KUTA
+            englishName.contains("Vajra") -> StringKeyYogaExpanded.YOGA_VAJRA
+
             // Generic handling for Bhava and Conjunction
             englishName.contains("Lord of") -> return englishName
             englishName.contains("Conjunction of") -> return englishName
@@ -216,6 +273,63 @@ object YogaLocalization {
             yogaName.contains("Sreenatha") -> StringKeyYogaExpanded.EFFECT_SREENATHA
             yogaName.contains("Khadga") -> StringKeyYogaExpanded.EFFECT_KHADGA
             yogaName.contains("Kalanidhi") -> StringKeyYogaExpanded.EFFECT_KALANIDHI
+
+            // Extended Raja Yoga Effects
+            yogaName.contains("Simhasana") -> StringKeyYogaExpanded.EFFECT_SIMHASANA
+            yogaName.contains("Chatussagara") -> StringKeyYogaExpanded.EFFECT_CHATUSSAGARA
+            yogaName.contains("Digbala Raja") -> StringKeyYogaExpanded.EFFECT_DIGBALA_RAJA
+
+            // Extended Dhana Yoga Effects
+            yogaName.contains("Mahalakshmi") -> StringKeyYogaExpanded.EFFECT_MAHALAKSHMI
+            yogaName.contains("Dhana Karaka") -> StringKeyYogaExpanded.EFFECT_DHANA_KARAKA
+            yogaName.contains("Business") -> StringKeyYogaExpanded.EFFECT_BUSINESS
+            yogaName.contains("Property") -> StringKeyYogaExpanded.EFFECT_PROPERTY
+            yogaName.contains("Inheritance") -> StringKeyYogaExpanded.EFFECT_INHERITANCE
+
+            // Arishta Yoga Effects
+            yogaName.contains("Balarishta") -> StringKeyYogaExpanded.EFFECT_BALARISHTA
+            yogaName.contains("Rogaishta") -> StringKeyYogaExpanded.EFFECT_ROGAISHTA
+            yogaName.contains("Bandhana") -> StringKeyYogaExpanded.EFFECT_BANDHANA
+            yogaName.contains("Duryoga") -> StringKeyYogaExpanded.EFFECT_DURYOGA
+            yogaName.contains("Combustion") -> StringKeyYogaExpanded.EFFECT_COMBUSTION
+
+            // Sannyasa & Moksha Yoga Effects
+            yogaName.contains("Sannyasa") -> StringKeyYogaExpanded.EFFECT_SANNYASA
+            yogaName.contains("Moksha Trikona") -> StringKeyYogaExpanded.EFFECT_MOKSHA_TRIKONA
+            yogaName.contains("Moksha") -> StringKeyYogaExpanded.EFFECT_MOKSHA
+            yogaName.contains("Pravrajya") -> StringKeyYogaExpanded.EFFECT_PRAVRAJYA
+            yogaName.contains("Ketu Moksha") -> StringKeyYogaExpanded.EFFECT_KETU_MOKSHA
+
+            // Lagna Yoga Effects
+            yogaName.contains("Lagnesh Strength") -> StringKeyYogaExpanded.EFFECT_LAGNESH_STRENGTH
+            yogaName.contains("Lagna Adhi") -> StringKeyYogaExpanded.EFFECT_LAGNA_ADHI
+            yogaName.contains("Subhakartari Lagna") -> StringKeyYogaExpanded.EFFECT_SUBHAKARTARI_LAGNA
+            yogaName.contains("Papakartari Lagna") -> StringKeyYogaExpanded.EFFECT_PAPAKARTARI_LAGNA
+            yogaName.contains("Vargottama Lagna") -> StringKeyYogaExpanded.EFFECT_VARGOTTAMA_LAGNA
+
+            // Parivarttana Yoga Effects
+            yogaName.contains("Maha Parivarttana") -> StringKeyYogaExpanded.EFFECT_MAHA_PARIVARTTANA
+            yogaName.contains("Khala Parivarttana") -> StringKeyYogaExpanded.EFFECT_KHALA_PARIVARTTANA
+            yogaName.contains("Dainya Parivarttana") -> StringKeyYogaExpanded.EFFECT_DAINYA_PARIVARTTANA
+
+            // Nakshatra Yoga Effects
+            yogaName.contains("Pushya Nakshatra") -> StringKeyYogaExpanded.EFFECT_PUSHYA_NAKSHATRA
+            yogaName.contains("Gandanta") -> StringKeyYogaExpanded.EFFECT_GANDANTA
+            yogaName.contains("Deva Nakshatra") -> StringKeyYogaExpanded.EFFECT_NAKSHATRA_DEVA
+            yogaName.contains("Manushya Nakshatra") -> StringKeyYogaExpanded.EFFECT_NAKSHATRA_MANUSHYA
+            yogaName.contains("Rakshasa Nakshatra") -> StringKeyYogaExpanded.EFFECT_NAKSHATRA_RAKSHASA
+
+            // Classical Nabhasa Yoga Effects
+            yogaName.contains("Kamala") -> StringKeyYogaExpanded.EFFECT_KAMALA
+            yogaName.contains("Vapi") -> StringKeyYogaExpanded.EFFECT_VAPI
+            yogaName.contains("Yupa") -> StringKeyYogaExpanded.EFFECT_YUPA
+            yogaName.contains("Shara") -> StringKeyYogaExpanded.EFFECT_SHARA
+            yogaName.contains("Shakti") -> StringKeyYogaExpanded.EFFECT_SHAKTI
+            yogaName.contains("Danda") -> StringKeyYogaExpanded.EFFECT_DANDA
+            yogaName.contains("Nauka") -> StringKeyYogaExpanded.EFFECT_NAUKA
+            yogaName.contains("Kuta") -> StringKeyYogaExpanded.EFFECT_KUTA
+            yogaName.contains("Vajra") -> StringKeyYogaExpanded.EFFECT_VAJRA
+
             else -> return "" // Return empty for unknown yogas, caller should use original
         }
         return StringResources.get(key, language)
@@ -307,6 +421,64 @@ object YogaLocalization {
             englishName.contains("Sreenatha") -> "श्रीनाथ योग"
             englishName.contains("Khadga") -> "खड्ग योग"
             englishName.contains("Kalanidhi") -> "कलानिधि योग"
+
+            // Extended Raja Yogas
+            englishName.contains("Simhasana") -> "सिंहासन योग"
+            englishName.contains("Chatussagara") -> "चतुःसागर योग"
+            englishName.contains("Digbala Raja") -> "दिक्बल राज योग"
+
+            // Extended Dhana Yogas
+            englishName.contains("Mahalakshmi") -> "महालक्ष्मी योग"
+            englishName.contains("Kubera") -> "कुबेर योग"
+            englishName.contains("Dhana Karaka") -> "धन कारक योग"
+            englishName.contains("Business") -> "व्यापार योग"
+            englishName.contains("Property") -> "सम्पत्ति योग"
+            englishName.contains("Inheritance") -> "उत्तराधिकार योग"
+
+            // Arishta Yogas
+            englishName.contains("Balarishta") -> "बालारिष्ट योग"
+            englishName.contains("Rogaishta") -> "रोगेष्ट योग"
+            englishName.contains("Bandhana") -> "बन्धन योग"
+            englishName.contains("Duryoga") -> "दुर्योग"
+            englishName.contains("Combustion") -> "अस्त योग"
+
+            // Sannyasa & Moksha Yogas
+            englishName.contains("Sannyasa") -> "सन्यास योग"
+            englishName.contains("Moksha Trikona") -> "मोक्ष त्रिकोण योग"
+            englishName.contains("Moksha") -> "मोक्ष योग"
+            englishName.contains("Pravrajya") -> "प्रव्रज्या योग"
+            englishName.contains("Ketu Moksha") -> "केतु मोक्ष योग"
+
+            // Lagna Yogas
+            englishName.contains("Lagnesh Strength") -> "लग्नेश बल योग"
+            englishName.contains("Lagna Adhi") -> "लग्न अधि योग"
+            englishName.contains("Subhakartari Lagna") -> "शुभकर्तरी लग्न योग"
+            englishName.contains("Papakartari Lagna") -> "पापकर्तरी लग्न योग"
+            englishName.contains("Vargottama Lagna") -> "वर्गोत्तम लग्न योग"
+
+            // Parivarttana Yogas
+            englishName.contains("Maha Parivarttana") -> "महा परिवर्तन योग"
+            englishName.contains("Khala Parivarttana") -> "खल परिवर्तन योग"
+            englishName.contains("Dainya Parivarttana") -> "दैन्य परिवर्तन योग"
+
+            // Nakshatra Yogas
+            englishName.contains("Pushya Nakshatra") -> "पुष्य नक्षत्र योग"
+            englishName.contains("Gandanta") -> "गण्डान्त योग"
+            englishName.contains("Deva Nakshatra") -> "देव नक्षत्र योग"
+            englishName.contains("Manushya Nakshatra") -> "मनुष्य नक्षत्र योग"
+            englishName.contains("Rakshasa Nakshatra") -> "राक्षस नक्षत्र योग"
+
+            // Classical Nabhasa Yogas
+            englishName.contains("Kamala") -> "कमल योग"
+            englishName.contains("Vapi") -> "वापी योग"
+            englishName.contains("Yupa") -> "यूप योग"
+            englishName.contains("Shara") -> "शर योग"
+            englishName.contains("Shakti") -> "शक्ति योग"
+            englishName.contains("Danda") -> "दण्ड योग"
+            englishName.contains("Nauka") -> "नौका योग"
+            englishName.contains("Kuta") -> "कूट योग"
+            englishName.contains("Vajra") -> "वज्र योग"
+
             else -> englishName
         }
     }
