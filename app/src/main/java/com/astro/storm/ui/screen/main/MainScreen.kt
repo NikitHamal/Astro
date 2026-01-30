@@ -107,7 +107,6 @@ fun MainScreen(
     onNavigateToNativeAnalysis: () -> Unit = {},
     onNavigateToKakshaTransit: (Long) -> Unit = {},
     onNavigateToNadiAmsha: (Long) -> Unit = {},
-    onNavigateToDetailedYoga: (com.astro.storm.ephemeris.yoga.Yoga) -> Unit = {},
     onNavigateToAiModels: () -> Unit = {},
     onNavigateToChat: (Long?) -> Unit = {}, // null for new chat, Long for existing
     onExportChart: (ExportFormat) -> Unit
@@ -280,8 +279,7 @@ fun MainScreen(
                                         else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
                                     }
                                 }
-                            },
-                            onNavigateToDetailedYoga = onNavigateToDetailedYoga
+                            }
                         )
                     }
                     MainTab.INSIGHTS -> {

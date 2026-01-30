@@ -205,7 +205,7 @@ object YogaHelpers {
         }
 
         // 3. Lord of the sign where the debilitated planet would be exalted, in Kendra from Lagna or Moon
-        val exaltationSign = AstrologicalConstants.EXALTATION_SIGNS[pos.planet]
+        val exaltationSign = com.astro.storm.ephemeris.AstrologicalConstants.EXALTATION_SIGNS[pos.planet]
         if (exaltationSign != null) {
             val exaltationSignLord = exaltationSign.ruler
             val exaltLordPos = chart.planetPositions.find { it.planet == exaltationSignLord }
@@ -216,7 +216,7 @@ object YogaHelpers {
         }
 
         // 4. Planet that would be exalted in the debilitated planet's sign, being in Kendra from Lagna or Moon
-        val planetExaltedInThisSign = AstrologicalConstants.EXALTATION_SIGNS.filterValues { sign -> sign == debilitatedSign }.keys.firstOrNull()
+        val planetExaltedInThisSign = com.astro.storm.ephemeris.AstrologicalConstants.EXALTATION_SIGNS.filterValues { sign -> sign == debilitatedSign }.keys.firstOrNull()
         if (planetExaltedInThisSign != null) {
             val exaltedPlanetPos = chart.planetPositions.find { pos -> pos.planet == planetExaltedInThisSign }
             if (exaltedPlanetPos != null) {

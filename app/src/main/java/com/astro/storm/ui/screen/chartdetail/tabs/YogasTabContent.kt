@@ -70,7 +70,7 @@ import com.astro.storm.ephemeris.yoga.YogaCategory
 import com.astro.storm.ephemeris.yoga.YogaStrength
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.components.StatusBadge
-import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.LocalAppThemeColors
 
 /**
  * Yogas tab content displaying all detected yogas with filtering and analysis.
@@ -227,11 +227,12 @@ private fun YogaSummaryCard(analysis: YogaAnalysis) {
 @Composable
 private fun OverallStrengthBar(strength: Double, language: Language) {
     val progress = (strength / 100.0).coerceIn(0.0, 1.0).toFloat()
+    val theme = LocalAppThemeColors.current
     val color = when {
-        strength >= 75 -> ChartDetailColors.SuccessColor
-        strength >= 50 -> ChartDetailColors.AccentTeal
-        strength >= 25 -> ChartDetailColors.WarningColor
-        else -> ChartDetailColors.ErrorColor
+        strength >= 75 -> theme.SuccessColor
+        strength >= 50 -> theme.AccentTeal
+        strength >= 25 -> theme.WarningColor
+        else -> theme.ErrorColor
     }
 
     Column {
@@ -266,12 +267,13 @@ private fun OverallStrengthBar(strength: Double, language: Language) {
 
 @Composable
 private fun TopYogasSection(topYogas: List<Yoga>, language: Language) {
+    val theme = LocalAppThemeColors.current
     Column {
         Text(
             text = stringResource(StringKey.YOGA_MOST_SIGNIFICANT),
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
-            color = ChartDetailColors.AccentGold,
+            color = theme.AccentGold,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         topYogas.forEach { yoga ->
@@ -639,17 +641,20 @@ private fun getCategoryDisplayName(category: YogaCategory, language: Language): 
 }
 
 @Composable
-private fun getCategoryColor(category: YogaCategory): Color = when (category) {
-    YogaCategory.RAJA_YOGA -> ChartDetailColors.AccentGold
-    YogaCategory.DHANA_YOGA -> ChartDetailColors.SuccessColor
-    YogaCategory.MAHAPURUSHA_YOGA -> ChartDetailColors.AccentPurple
-    YogaCategory.NABHASA_YOGA -> ChartDetailColors.AccentTeal
-    YogaCategory.CHANDRA_YOGA -> ChartDetailColors.AccentBlue
-    YogaCategory.SOLAR_YOGA -> ChartDetailColors.AccentOrange
-    YogaCategory.NEGATIVE_YOGA -> ChartDetailColors.ErrorColor
-    YogaCategory.SPECIAL_YOGA -> ChartDetailColors.AccentRose
-    YogaCategory.BHAVA_YOGA -> ChartDetailColors.AccentPrimary
-    YogaCategory.CONJUNCTION_YOGA -> ChartDetailColors.AccentTeal
+private fun getCategoryColor(category: YogaCategory): Color {
+    val theme = LocalAppThemeColors.current
+    return when (category) {
+        YogaCategory.RAJA_YOGA -> theme.AccentGold
+        YogaCategory.DHANA_YOGA -> theme.SuccessColor
+        YogaCategory.MAHAPURUSHA_YOGA -> theme.LifeAreaSpiritual
+        YogaCategory.NABHASA_YOGA -> theme.AccentTeal
+        YogaCategory.CHANDRA_YOGA -> theme.InfoColor
+        YogaCategory.SOLAR_YOGA -> theme.WarningColor
+        YogaCategory.NEGATIVE_YOGA -> theme.ErrorColor
+        YogaCategory.SPECIAL_YOGA -> theme.AccentPrimary
+        YogaCategory.BHAVA_YOGA -> theme.AccentPrimary
+        YogaCategory.CONJUNCTION_YOGA -> theme.AccentTeal
+    }
 }
 
 private fun formatNumber(number: Int, language: Language): String {
@@ -684,14 +689,15 @@ private fun formatPercentage(value: Double, language: Language): String {
 @Composable
 private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit) {
     val language = LocalLanguage.current
+    val theme = LocalAppThemeColors.current
 
     Spacer(modifier = Modifier.height(12.dp))
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        color = AppTheme.AccentGold.copy(alpha = 0.08f),
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.AccentGold.copy(alpha = 0.2f))
+        color = theme.AccentGold.copy(alpha = 0.08f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, theme.AccentGold.copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -703,7 +709,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                     Icon(
                         Icons.Outlined.AutoAwesome,
                         contentDescription = null,
-                        tint = AppTheme.AccentGold,
+                        tint = theme.AccentGold,
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -711,20 +717,20 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                         text = "Deep Vedic Analysis Available",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
+                        color = theme.TextPrimary
                     )
                 }
 
                 Surface(
                     modifier = Modifier.clickable { onViewDeepAnalysis() },
                     shape = RoundedCornerShape(8.dp),
-                    color = AppTheme.AccentGold.copy(alpha = 0.15f)
+                    color = theme.AccentGold.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = "View Deep Analysis",
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        color = AppTheme.AccentGold,
+                        color = theme.AccentGold,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
@@ -748,7 +754,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
             Text(
                 text = summaryText,
                 fontSize = 12.sp,
-                color = AppTheme.TextSecondary,
+                color = theme.TextSecondary,
                 lineHeight = 18.sp
             )
         }

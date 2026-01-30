@@ -392,21 +392,6 @@ fun AstroStormNavigation(
                         navController.navigate(Screen.Yogas.createRoute(chartId))
                     }
                 },
-                onNavigateToDetailedYoga = { yoga ->
-                    selectedChartId?.let { chartId ->
-                        when {
-                            yoga.detailedResult is com.astro.storm.ephemeris.KemadrumaYogaCalculator.KemadrumaAnalysis -> {
-                                navController.navigate(Screen.KemadrumaYoga.createRoute(chartId))
-                            }
-                            yoga.detailedResult is com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.MahapurushaYoga -> {
-                                navController.navigate(Screen.PanchMahapurusha.createRoute(chartId))
-                            }
-                            yoga.detailedResult is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
-                                navController.navigate(Screen.VipareetaRajaYoga.createRoute(chartId))
-                            }
-                        }
-                    }
-                },
                 onNavigateToDashas = {
                     selectedChartId?.let { chartId ->
                         navController.navigate(Screen.Dashas.createRoute(chartId))

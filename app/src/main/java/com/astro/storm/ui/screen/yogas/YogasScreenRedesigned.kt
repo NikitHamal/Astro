@@ -948,14 +948,15 @@ private fun EmptyYogasContent(modifier: Modifier = Modifier) {
 @Composable
 private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit) {
     val language = LocalLanguage.current
+    val theme = AppTheme.current
 
     Spacer(modifier = Modifier.height(14.dp))
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = AppTheme.AccentGold.copy(alpha = 0.08f),
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.AccentGold.copy(alpha = 0.2f))
+        color = theme.AccentGold.copy(alpha = 0.08f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, theme.AccentGold.copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -967,7 +968,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                     Icon(
                         Icons.Outlined.AutoAwesome,
                         contentDescription = null,
-                        tint = AppTheme.AccentGold,
+                        tint = theme.AccentGold,
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(10.dp))
@@ -975,20 +976,20 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                         text = "Deep Vedic Analysis",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
+                        color = theme.TextPrimary
                     )
                 }
 
                 Surface(
                     modifier = Modifier.clickable { onViewDeepAnalysis() },
                     shape = RoundedCornerShape(10.dp),
-                    color = AppTheme.AccentGold.copy(alpha = 0.15f)
+                    color = theme.AccentGold.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = "View More",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = AppTheme.AccentGold,
+                        color = theme.AccentGold,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                     )
                 }
@@ -1012,7 +1013,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
             Text(
                 text = summaryText,
                 fontSize = 13.sp,
-                color = AppTheme.TextSecondary,
+                color = theme.TextSecondary,
                 lineHeight = 20.sp
             )
         }
@@ -1021,17 +1022,18 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
 
 @Composable
 private fun getCategoryColor(category: YogaCategory): Color {
+    val theme = AppTheme.current
     return when (category) {
-        YogaCategory.RAJA_YOGA -> AppTheme.AccentGold
-        YogaCategory.DHANA_YOGA -> AppTheme.LifeAreaFinance
-        YogaCategory.MAHAPURUSHA_YOGA -> AppTheme.LifeAreaSpiritual
-        YogaCategory.NABHASA_YOGA -> AppTheme.AccentTeal
-        YogaCategory.CHANDRA_YOGA -> AppTheme.LifeAreaLove
-        YogaCategory.SOLAR_YOGA -> AppTheme.PlanetSun
-        YogaCategory.NEGATIVE_YOGA -> AppTheme.ErrorColor
-        YogaCategory.SPECIAL_YOGA -> AppTheme.AccentPrimary
-        YogaCategory.BHAVA_YOGA -> AppTheme.AccentPrimary
-        YogaCategory.CONJUNCTION_YOGA -> AppTheme.AccentTeal
+        YogaCategory.RAJA_YOGA -> theme.AccentGold
+        YogaCategory.DHANA_YOGA -> theme.LifeAreaFinance
+        YogaCategory.MAHAPURUSHA_YOGA -> theme.LifeAreaSpiritual
+        YogaCategory.NABHASA_YOGA -> theme.AccentTeal
+        YogaCategory.CHANDRA_YOGA -> theme.LifeAreaLove
+        YogaCategory.SOLAR_YOGA -> theme.PlanetSun
+        YogaCategory.NEGATIVE_YOGA -> theme.ErrorColor
+        YogaCategory.SPECIAL_YOGA -> theme.AccentPrimary
+        YogaCategory.BHAVA_YOGA -> theme.AccentPrimary
+        YogaCategory.CONJUNCTION_YOGA -> theme.AccentTeal
     }
 }
 
@@ -1052,12 +1054,13 @@ private fun getCategoryIcon(category: YogaCategory): ImageVector {
 
 @Composable
 private fun getStrengthColor(strength: Double): Color {
+    val theme = AppTheme.current
     return when {
-        strength >= 80 -> AppTheme.SuccessColor
-        strength >= 60 -> AppTheme.AccentTeal
-        strength >= 40 -> AppTheme.AccentGold
-        strength >= 20 -> AppTheme.WarningColor
-        else -> AppTheme.ErrorColor
+        strength >= 80 -> theme.SuccessColor
+        strength >= 60 -> theme.AccentTeal
+        strength >= 40 -> theme.AccentGold
+        strength >= 20 -> theme.WarningColor
+        else -> theme.ErrorColor
     }
 }
 
