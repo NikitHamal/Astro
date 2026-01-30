@@ -19,7 +19,8 @@ data class PlanetPosition(
     val isRetrograde: Boolean,
     val nakshatra: Nakshatra,
     val nakshatraPada: Int,
-    val house: Int
+    val house: Int,
+    val isOnHouseCusp: Boolean = false
 ) {
     /** Formatted degree string (e.g., "12°34'56\"") */
     val formattedDegree: String

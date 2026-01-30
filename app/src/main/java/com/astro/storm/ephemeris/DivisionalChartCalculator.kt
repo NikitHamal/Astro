@@ -210,6 +210,35 @@ object DivisionalChartCalculator {
         return rashiSign == getNavamsaSign(longitude)
     }
 
+    /**
+     * Calculate Vargottama score across multiple divisional charts.
+     * Higher score indicates the planet is in the same sign in more vargas.
+     */
+    fun calculateVargottamaScore(planet: Planet, chart: VedicChart): Int {
+        val rashiPos = chart.planetPositions.find { it.planet == planet } ?: return 0
+        val rashiSign = rashiPos.sign
+
+        var score = 0
+        val vargasToCheck = listOf(
+            DivisionalChartType.D9_NAVAMSA,
+            DivisionalChartType.D10_DASAMSA,
+            DivisionalChartType.D60_SHASHTIAMSA,
+            DivisionalChartType.D3_DREKKANA,
+            DivisionalChartType.D12_DWADASAMSA,
+            DivisionalChartType.D30_TRIMSAMSA
+        )
+
+        for (varga in vargasToCheck) {
+            val vargaChart = calculateDivisionalChart(chart, varga)
+            val vargaPos = vargaChart.planetPositions.find { it.planet == planet }
+            if (vargaPos?.sign == rashiSign) {
+                score++
+            }
+        }
+
+        return score
+    }
+
     fun calculateDasamsa(chart: VedicChart): DivisionalChartData {
         val dasamsaAscendant = calculateDasamsaLongitude(chart.ascendant)
         val dasamsaAscendantSign = ZodiacSign.fromLongitude(dasamsaAscendant)
@@ -738,7 +767,8 @@ object DivisionalChartCalculator {
             seconds = seconds,
             nakshatra = nakshatra,
             nakshatraPada = pada,
-            house = divisionalHouse
+            house = divisionalHouse,
+            isOnHouseCusp = false // Divisional house boundaries are sign-based
         )
     }
 
@@ -881,7 +911,7 @@ enum class DivisionalChartType(
     D12_DWADASAMSA(12, "Dwadasamsa", "D12", "Parents, Ancestry"),
     D16_SHODASAMSA(16, "Shodasamsa", "D16", "Vehicles, Pleasures"),
     D20_VIMSAMSA(20, "Vimsamsa", "D20", "Spiritual Life"),
-    D24_CHATURVIMSAMSA(24, "Siddhamsa", "D24", "Education, Learning"),
+    D24_CHATURVIMSAMSA(24, "Chaturvimsamsa (D24)", "D24", "Education, Learning"),
     D27_SAPTAVIMSAMSA(27, "Bhamsa", "D27", "Strength, Weakness"),
     D30_TRIMSAMSA(30, "Trimsamsa", "D30", "Evils, Misfortunes"),
     D40_KHAVEDAMSA(40, "Khavedamsa", "D40", "Auspicious/Inauspicious Effects"),

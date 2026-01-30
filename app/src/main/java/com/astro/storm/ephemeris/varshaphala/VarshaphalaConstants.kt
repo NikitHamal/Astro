@@ -180,21 +180,23 @@ object VarshaphalaConstants {
         Planet.SATURN to listOf(Planet.MARS, Planet.JUPITER)
     )
 
-    val MUDDA_DASHA_PLANETS = listOf(
-        Planet.SUN, Planet.MOON, Planet.MARS, Planet.MERCURY,
-        Planet.JUPITER, Planet.VENUS, Planet.SATURN, Planet.RAHU, Planet.KETU
-    )
+    /** Mudda Dasha planets follow Vimshottari order */
+    val MUDDA_DASHA_PLANETS = VIMSHOTTARI_ORDER
 
+    /**
+     * Mudda Dasha days for a 360-day Savana year.
+     * Calculated as (Vimshottari Years / 120) * 360.
+     */
     val MUDDA_DASHA_DAYS = mapOf(
-        Planet.SUN to 110,
-        Planet.MOON to 60,
-        Planet.MARS to 32,
-        Planet.MERCURY to 40,
+        Planet.KETU to 21,
+        Planet.VENUS to 60,
+        Planet.SUN to 18,
+        Planet.MOON to 30,
+        Planet.MARS to 21,
+        Planet.RAHU to 54,
         Planet.JUPITER to 48,
-        Planet.VENUS to 56,
-        Planet.SATURN to 4,
-        Planet.RAHU to 5,
-        Planet.KETU to 5
+        Planet.SATURN to 57,
+        Planet.MERCURY to 51
     )
 
     val STANDARD_ZODIAC_SIGNS = listOf(

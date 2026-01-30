@@ -483,6 +483,7 @@ class SwissEphemerisEngine internal constructor(
         val (nakshatra, pada) = Nakshatra.fromLongitude(normalizedLongitude)
 
         val house = determineHouse(normalizedLongitude, houseCusps)
+        val isOnCusp = isNearHouseCusp(normalizedLongitude, houseCusps)
 
         return PlanetPosition(
             planet = planet,
@@ -497,8 +498,16 @@ class SwissEphemerisEngine internal constructor(
             isRetrograde = isRetrograde,
             nakshatra = nakshatra,
             nakshatraPada = pada,
-            house = house
+            house = house,
+            isOnHouseCusp = isOnCusp
         )
+    }
+
+    private fun isNearHouseCusp(longitude: Double, houseCusps: List<Double>): Boolean {
+        val threshold = 0.01 // ±0.01° as recommended in findings
+        return houseCusps.any { cusp ->
+            angularDistance(longitude, cusp) <= threshold
+        }
     }
 
     private fun determineHouse(longitude: Double, houseCusps: List<Double>): Int {
