@@ -150,11 +150,23 @@ class ChartViewModel @Inject constructor(
                 val chart = withContext(Dispatchers.Default) {
                     ephemerisEngine.calculateVedicChart(birthData, houseSystem)
                 }
+
+                // Preserve the ID of the existing chart so repository.updateChart knows which one to update
+                val updatedChart = chart.copy(id = existingChartId)
+
                 // Update the existing chart instead of creating a new one
-                repository.updateChart(existingChartId, chart)
-                _uiState.value = ChartUiState.Saved
-                // Reload the updated chart
-                loadChart(existingChartId)
+                repository.updateChart(existingChartId, updatedChart)
+
+                // Update selected ID and cache
+                _selectedChartId.value = existingChartId
+                prefs.edit().putLong("last_selected_chart_id", existingChartId).apply()
+
+                // Update hash to prevent duplicate saves of the same data
+                lastSavedChartHash = generateChartHash(updatedChart)
+
+                // Set success state directly with the updated chart
+                // This ensures UI and other screens reflect changes immediately
+                _uiState.value = ChartUiState.Success(updatedChart)
             } catch (e: Exception) {
                 _uiState.value = ChartUiState.Error(e.message ?: "Unknown error occurred")
             }
@@ -201,8 +213,13 @@ class ChartViewModel @Inject constructor(
                     return@launch
                 }
 
-                repository.saveChart(chart)
+                val id = repository.saveChart(chart)
                 lastSavedChartHash = chartHash
+
+                // Set the newly saved chart as selected
+                _selectedChartId.value = id
+                prefs.edit().putLong("last_selected_chart_id", id).apply()
+
                 _uiState.value = ChartUiState.Saved
             } catch (e: Exception) {
                 _uiState.value = ChartUiState.Error("Failed to save chart: ${e.message}")

@@ -29,13 +29,13 @@ object AspectCalculator {
 
         SEVENTH_HOUSE("7th Aspect", 7, 180.0, AspectNature.SIGNIFICANT, "☍", 1.0),
 
-        MARS_4TH("Mars 4th Aspect", 4, 90.0, AspectNature.CHALLENGING, "♂₄", 0.75),
+        MARS_4TH("Mars 4th Aspect", 4, 90.0, AspectNature.CHALLENGING, "♂₄", 1.0),
         MARS_8TH("Mars 8th Aspect", 8, 210.0, AspectNature.CHALLENGING, "♂₈", 1.0),
 
-        JUPITER_5TH("Jupiter 5th Aspect", 5, 120.0, AspectNature.HARMONIOUS, "♃₅", 0.5),
+        JUPITER_5TH("Jupiter 5th Aspect", 5, 120.0, AspectNature.HARMONIOUS, "♃₅", 1.0),
         JUPITER_9TH("Jupiter 9th Aspect", 9, 240.0, AspectNature.HARMONIOUS, "♃₉", 1.0),
 
-        SATURN_3RD("Saturn 3rd Aspect", 3, 60.0, AspectNature.CHALLENGING, "♄₃", 0.75),
+        SATURN_3RD("Saturn 3rd Aspect", 3, 60.0, AspectNature.CHALLENGING, "♄₃", 1.0),
         SATURN_10TH("Saturn 10th Aspect", 10, 270.0, AspectNature.CHALLENGING, "♄₁₀", 1.0);
 
         fun getLocalizedName(language: Language): String = when (this) {

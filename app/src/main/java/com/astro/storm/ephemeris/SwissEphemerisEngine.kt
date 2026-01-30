@@ -322,9 +322,8 @@ class SwissEphemerisEngine internal constructor(
         val currentAyanamsa = astroSettings.ayanamsa.value
         val isSidereal = currentAyanamsa.swissEphId != -1
         
-        if (isSidereal) {
-            swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
-        }
+        // Explicitly set sidereal mode, even if Sayana (using -1) to reset state
+        swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
 
         val ayanamsa = if (isSidereal) swissEph.swe_get_ayanamsa_ut(julianDay) else 0.0
         val currentFlags = if (isSidereal) SweConst.SEFLG_SIDEREAL else 0
@@ -384,7 +383,13 @@ class SwissEphemerisEngine internal constructor(
         houseCuspsBuffer.fill(0.0)
         ascMcBuffer.fill(0.0)
 
-        val currentFlags = if (astroSettings.ayanamsa.value.swissEphId != -1) SweConst.SEFLG_SIDEREAL else 0
+        val currentAyanamsa = astroSettings.ayanamsa.value
+        val isSidereal = currentAyanamsa.swissEphId != -1
+
+        // Explicitly set sidereal mode, even if Sayana (using -1) to reset state
+        swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
+
+        val currentFlags = if (isSidereal) SweConst.SEFLG_SIDEREAL else 0
         
         swissEph.swe_houses(
             julianDay,
@@ -417,7 +422,12 @@ class SwissEphemerisEngine internal constructor(
 
         val sweId = if (planet == Planet.KETU || planet == Planet.RAHU) rahuId else planet.swissEphId
 
-        val isSidereal = astroSettings.ayanamsa.value.swissEphId != -1
+        val currentAyanamsa = astroSettings.ayanamsa.value
+        val isSidereal = currentAyanamsa.swissEphId != -1
+
+        // Explicitly set sidereal mode, even if Sayana (using -1) to reset state
+        swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
+
         val currentCalculationFlags = if (isSidereal) {
             calculationFlags
         } else {
@@ -449,8 +459,11 @@ class SwissEphemerisEngine internal constructor(
         var speed = planetResultBuffer[3]
 
         if (planet == Planet.KETU) {
+            // Ketu is calculated as 180° offset from Rahu (North Node).
+            // In high-precision True Node mode, they are theoretically 180° apart
+            // geocentrically, but we calculate it here by applying the offset.
+            // Note: Speed is NOT flipped as Ketu moves with Rahu in the same direction.
             rawLongitude = normalizeDegree(rawLongitude + KETU_OFFSET)
-            speed = -speed
         }
 
         val normalizedLongitude = VedicAstrologyUtils.normalizeLongitude(rawLongitude)
@@ -470,6 +483,7 @@ class SwissEphemerisEngine internal constructor(
         val (nakshatra, pada) = Nakshatra.fromLongitude(normalizedLongitude)
 
         val house = determineHouse(normalizedLongitude, houseCusps)
+        val isOnCusp = isNearHouseCusp(normalizedLongitude, houseCusps)
 
         return PlanetPosition(
             planet = planet,
@@ -484,8 +498,16 @@ class SwissEphemerisEngine internal constructor(
             isRetrograde = isRetrograde,
             nakshatra = nakshatra,
             nakshatraPada = pada,
-            house = house
+            house = house,
+            isOnHouseCusp = isOnCusp
         )
+    }
+
+    private fun isNearHouseCusp(longitude: Double, houseCusps: List<Double>): Boolean {
+        val threshold = 0.01 // ±0.01° as recommended in findings
+        return houseCusps.any { cusp ->
+            angularDistance(longitude, cusp) <= threshold
+        }
     }
 
     private fun determineHouse(longitude: Double, houseCusps: List<Double>): Int {

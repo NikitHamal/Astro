@@ -126,10 +126,11 @@ object YoginiDashaCalculator {
             /**
              * Get starting Yogini for a nakshatra
              * Formula: (Nakshatra number + 3) mod 8
+             * Note: Adjusted for 0-based enum indexing.
              */
             fun getStartingYogini(nakshatra: Nakshatra): Yogini {
-                val nakshatraIndex = nakshatra.ordinal + 1 // 1-based index
-                val yoginiIndex = (nakshatraIndex + 3) % 8
+                val nakshatraNumber = nakshatra.ordinal + 1 // 1-based index
+                val yoginiIndex = (nakshatraNumber + 2) % 8
                 return fromIndex(yoginiIndex)
             }
         }

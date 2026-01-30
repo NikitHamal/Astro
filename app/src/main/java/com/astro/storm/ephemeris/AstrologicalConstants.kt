@@ -366,7 +366,7 @@ object AstrologicalConstants {
     )
 
     /** Cazimi distance (heart of Sun - planet gains strength) */
-    const val CAZIMI_DEGREE = 0.2833  // 17 arc minutes
+    const val CAZIMI_DEGREE = 17.0 / 60.0  // Exactly 17 arc minutes
 
     // ============================================
     // UTILITY FUNCTIONS

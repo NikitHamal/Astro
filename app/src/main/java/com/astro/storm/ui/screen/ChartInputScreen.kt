@@ -146,8 +146,16 @@ fun ChartInputScreen(
             is ChartUiState.Success -> {
                 // Only save if calculation was initiated from this screen and save hasn't been requested yet
                 if (chartCalculationInitiated && !chartSaveRequested) {
-                    chartSaveRequested = true  // Prevent duplicate saves
-                    viewModel.saveChart(state.chart)
+                    if (isEditMode) {
+                        // In edit mode, calculation and update are handled in a single step in ViewModel
+                        // to avoid duplicate entries and ensure atomic updates.
+                        chartCalculationInitiated = false
+                        onChartCalculated()
+                    } else {
+                        // For new charts, we must save the calculation result to database
+                        chartSaveRequested = true
+                        viewModel.saveChart(state.chart)
+                    }
                 }
             }
             is ChartUiState.Saved -> {

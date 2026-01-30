@@ -486,6 +486,9 @@ object ShodashvargaCalculator {
         val dashavargaTypes = saptavargaTypes + listOf(VargaType.D10_DASHAMSHA, VargaType.D16_SHODASHAMSHA, VargaType.D60_SHASHTIAMSHA)
         val dashavargaBala = dashavargaTypes.sumOf { vargaPositions[it]?.dignityPoints ?: 0.0 } / 4.0
 
+        // Shodashvarga Bala: Sum of dignity points across 16 vargas.
+        // Note: In traditional Parashari systems, D60 is given the highest weightage (often 4/20 or more)
+        // because it represents the subtlest karmic results.
         val shodashvargaBala = vargaPositions.values.sumOf { it.dignityPoints } / 4.0
 
         // Calculate Vimsopaka Bala for different schemes
