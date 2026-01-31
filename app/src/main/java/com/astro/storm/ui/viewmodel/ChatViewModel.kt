@@ -2,6 +2,7 @@ package com.astro.storm.ui.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.astro.storm.data.ai.agent.AgentResponse
 import com.astro.storm.data.ai.agent.AskUserOptionData
@@ -30,9 +31,13 @@ import com.astro.storm.ui.components.agentic.ToolDisplayUtils
 import com.astro.storm.ui.components.agentic.ToolExecution
 import com.astro.storm.ui.components.agentic.ToolExecutionStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -92,6 +97,7 @@ data class StreamingMessageState(
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     application: Application,
+    private val savedStateHandle: SavedStateHandle,
     private val chatRepository: ChatRepository,
     private val providerRegistry: AiProviderRegistry,
     private val stormyAgent: StormyAgent
@@ -104,8 +110,13 @@ class ChatViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ChatUiState>(ChatUiState.Idle)
     val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
 
-    private val _currentConversationId = MutableStateFlow<Long?>(null)
+    private val _currentConversationId = MutableStateFlow(savedStateHandle.get<Long?>("currentConversationId"))
     val currentConversationId: StateFlow<Long?> = _currentConversationId.asStateFlow()
+
+    private fun setCurrentConversationId(id: Long?) {
+        _currentConversationId.value = id
+        savedStateHandle["currentConversationId"] = id
+    }
 
     private val _streamingContent = MutableStateFlow("")
     val streamingContent: StateFlow<String> = _streamingContent.asStateFlow()
@@ -150,12 +161,20 @@ class ChatViewModel @Inject constructor(
     private var pendingToolsUsed: List<String> = emptyList()
 
     // Track the ID of the message being streamed to exclude from regular message list
-    private val _streamingMessageId = MutableStateFlow<Long?>(null)
+    private val _streamingMessageId = MutableStateFlow(savedStateHandle.get<Long?>("streamingMessageId"))
     val streamingMessageId: StateFlow<Long?> = _streamingMessageId.asStateFlow()
+
+    private fun setStreamingMessageId(id: Long?) {
+        _streamingMessageId.value = id
+        savedStateHandle["streamingMessageId"] = id
+    }
 
     // Current streaming message ID
     private var currentMessageId: Long? = null
     private var streamingJob: Job? = null
+
+    // Mutex to prevent race conditions in sendMessage()
+    private val sendMessageMutex = Mutex()
 
     // Raw content accumulators for proper cleaning
     private var rawContentAccumulator = StringBuilder()
@@ -173,6 +192,11 @@ class ChatViewModel @Inject constructor(
     private var activeTaskId: String? = null
     private var reasoningStartTime: Long = 0L
 
+    // Performance optimization: Maps for O(1) lookups instead of O(n) indexOfFirst
+    private val sectionIndexMap = mutableMapOf<String, Int>()
+    private val toolStepIndexMap = mutableMapOf<String, Int>()
+    private val toolNameToSectionIndexMap = mutableMapOf<String, Int>()  // Maps toolName -> section index
+
     // Performance optimization: Throttling for UI updates
     private var lastUiUpdateTime = 0L
     private var lastDbUpdateTime = 0L
@@ -183,6 +207,10 @@ class ChatViewModel @Inject constructor(
         const val UI_UPDATE_THROTTLE_MS = 100L // ~10 FPS, smoother for heavy text
         const val DB_UPDATE_THROTTLE_MS = 500L // Reduced DB writes
         const val MIN_CONTENT_CHANGE_LENGTH = 5 // Min chars to trigger update
+        
+        // Accumulator size limits to prevent OOM crashes during long streaming
+        const val MAX_ACCUMULATOR_SIZE = 100_000 // Maximum characters in accumulators
+        const val TRIM_RATIO = 0.5 // Remove 50% of content when limit reached
     }
 
     // ============================================
@@ -276,7 +304,7 @@ class ChatViewModel @Inject constructor(
             )
 
             // Clear current conversation ID (signals we're in "new chat" mode)
-            _currentConversationId.value = null
+            setCurrentConversationId(null)
 
             // Initialize agent with context
             initializeAgent(currentChart, savedCharts, selectedChartId)
@@ -293,7 +321,7 @@ class ChatViewModel @Inject constructor(
         selectedChartId: Long?
     ) {
         viewModelScope.launch {
-            _currentConversationId.value = conversationId
+            setCurrentConversationId(conversationId)
 
             // Get conversation model
             val conversation = chatRepository.getConversationEntityById(conversationId)
@@ -316,7 +344,7 @@ class ChatViewModel @Inject constructor(
      */
     fun closeConversation() {
         cancelStreaming()
-        _currentConversationId.value = null
+        setCurrentConversationId(null)
         pendingConversationContext = null
         // No need to clear stormyAgent as it's now injected as a singleton
     }
@@ -398,10 +426,16 @@ class ChatViewModel @Inject constructor(
     ) {
         val model = _selectedModel.value ?: return
 
-        // Cancel any existing streaming
-        cancelStreaming()
-
         viewModelScope.launch {
+            // Atomic check and cancellation to prevent race conditions from rapid double-clicks
+            sendMessageMutex.withLock {
+                if (_isStreaming.value) {
+                    // Cancel any existing streaming and wait for cleanup
+                    cancelStreaming()
+                    streamingJob?.join()
+                }
+            }
+
             try {
                 _isStreaming.value = true
                 _streamingContent.value = ""
@@ -445,22 +479,26 @@ class ChatViewModel @Inject constructor(
                         providerId = model.providerId,
                         profileId = context.selectedChartId
                     )
-                    _currentConversationId.value = newConversationId
+                    setCurrentConversationId(newConversationId)
                     pendingConversationContext = null
                     newConversationId
                 }
 
                 // Add user message
-                chatRepository.addUserMessage(conversationId, content)
+                withContext(Dispatchers.IO) {
+                    chatRepository.addUserMessage(conversationId, content)
+                }
 
                 // Create placeholder for assistant message
-                currentMessageId = chatRepository.addAssistantMessagePlaceholder(
-                    conversationId,
-                    model.id
-                )
+                currentMessageId = withContext(Dispatchers.IO) {
+                    chatRepository.addAssistantMessagePlaceholder(
+                        conversationId,
+                        model.id
+                    )
+                }
 
                 // Set the streaming message ID to exclude from regular message list
-                _streamingMessageId.value = currentMessageId
+                setStreamingMessageId(currentMessageId)
 
                 // Initialize streaming message state for agentic UI
                 currentMessageId?.let { msgId ->
@@ -480,8 +518,9 @@ class ChatViewModel @Inject constructor(
                 }
 
                 // Get conversation history and convert to ChatMessage format
-                val dbMessages = chatRepository.getMessagesForConversationSync(conversationId)
-                    .dropLast(1) // Exclude the placeholder
+                val dbMessages = withContext(Dispatchers.IO) {
+                    chatRepository.getMessagesForConversationSync(conversationId)
+                }.dropLast(1) // Exclude the placeholder
                 val chatMessages = dbMessages.map { msg ->
                     ChatMessage(
                         role = msg.role,
@@ -512,7 +551,7 @@ class ChatViewModel @Inject constructor(
                         when (response) {
                             is AgentResponse.ContentChunk -> {
                                 // Accumulate raw content
-                                rawContentAccumulator.append(response.text)
+                                appendToAccumulator(rawContentAccumulator, response.text)
 
                                 // Mark reasoning as complete when content starts
                                 if (currentReasoningSection != null && !currentReasoningSection!!.isComplete) {
@@ -553,18 +592,20 @@ class ChatViewModel @Inject constructor(
                                             ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
                                         } else null
 
-                                        chatRepository.updateAssistantMessageContent(
-                                            messageId = msgId,
-                                            content = cleanedContent,
-                                            reasoningContent = cleanedReasoning?.takeIf { it.isNotEmpty() },
-                                            isStreaming = true
-                                        )
+                                        withContext(Dispatchers.IO) {
+                                            chatRepository.updateAssistantMessageContent(
+                                                messageId = msgId,
+                                                content = cleanedContent,
+                                                reasoningContent = cleanedReasoning?.takeIf { it.isNotEmpty() },
+                                                isStreaming = true
+                                            )
+                                        }
                                     }
                                 }
                             }
                             is AgentResponse.ReasoningChunk -> {
                                 // Accumulate raw reasoning
-                                rawReasoningAccumulator.append(response.text)
+                                appendToAccumulator(rawReasoningAccumulator, response.text)
 
                                 // Track reasoning section start time
                                 if (reasoningStartTime == 0L) {
@@ -600,12 +641,14 @@ class ChatViewModel @Inject constructor(
                                     currentMessageId?.let { msgId ->
                                         val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
                                         val cleanedReasoning = ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
-                                        chatRepository.updateAssistantMessageContent(
-                                            messageId = msgId,
-                                            content = cleanedContent,
-                                            reasoningContent = cleanedReasoning.takeIf { it.isNotEmpty() },
-                                            isStreaming = true
-                                        )
+                                        withContext(Dispatchers.IO) {
+                                            chatRepository.updateAssistantMessageContent(
+                                                messageId = msgId,
+                                                content = cleanedContent,
+                                                reasoningContent = cleanedReasoning.takeIf { it.isNotEmpty() },
+                                                isStreaming = true
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -629,6 +672,7 @@ class ChatViewModel @Inject constructor(
                                             status = ToolStepStatus.PENDING
                                         )
                                         currentToolSteps.add(step)
+                                        toolStepIndexMap[toolName] = currentToolSteps.size - 1
                                     }
                                 }
 
@@ -646,8 +690,8 @@ class ChatViewModel @Inject constructor(
                                 }
                                 _aiStatus.value = AiStatus.CallingTool(response.toolName)
 
-                                // Update tool step status to executing
-                                val stepIndex = currentToolSteps.indexOfFirst { it.toolName == response.toolName }
+                                // Update tool step status to executing (O(1) lookup)
+                                val stepIndex = getToolStepIndex(response.toolName)
                                 if (stepIndex >= 0) {
                                     currentToolSteps[stepIndex] = currentToolSteps[stepIndex].copy(
                                         status = ToolStepStatus.EXECUTING
@@ -658,6 +702,7 @@ class ChatViewModel @Inject constructor(
                                         displayName = ToolDisplayUtils.formatToolName(response.toolName),
                                         status = ToolStepStatus.EXECUTING
                                     ))
+                                    toolStepIndexMap[response.toolName] = currentToolSteps.size - 1
                                 }
 
                                 // Update sectioned UI
@@ -672,8 +717,8 @@ class ChatViewModel @Inject constructor(
                                     _aiStatus.value = AiStatus.Thinking
                                 }
 
-                                // Update tool step status to completed/failed
-                                val stepIndex = currentToolSteps.indexOfFirst { it.toolName == response.toolName }
+                                // Update tool step status to completed/failed (O(1) lookup)
+                                val stepIndex = getToolStepIndex(response.toolName)
                                 if (stepIndex >= 0) {
                                     currentToolSteps[stepIndex] = currentToolSteps[stepIndex].copy(
                                         status = if (response.success) ToolStepStatus.COMPLETED else ToolStepStatus.FAILED,
@@ -781,7 +826,7 @@ class ChatViewModel @Inject constructor(
                                     allowCustomInput = response.allowCustomInput,
                                     isAnswered = false
                                 )
-                                currentSections.add(askSection)
+                                addSection(askSection)
                                 updateSectionedMessageState()
 
                                 // Set the ask user state for UI handling
@@ -862,7 +907,7 @@ class ChatViewModel @Inject constructor(
                 _uiState.value = ChatUiState.Idle
 
                 // Clear streaming message state and ID - this allows the message to appear in regular list
-                _streamingMessageId.value = null
+                setStreamingMessageId(null)
                 _streamingMessageState.value = null
                 _sectionedMessageState.value = null
                 clearSectionTracking()
@@ -879,13 +924,26 @@ class ChatViewModel @Inject constructor(
                 }
 
                 // Clear streaming state on error
-                _streamingMessageId.value = null
+                setStreamingMessageId(null)
                 _streamingMessageState.value = null
                 _sectionedMessageState.value = null
                 clearSectionTracking()
                 currentMessageId = null
             }
         }
+    }
+
+    /**
+     * Helper to safely append to accumulators with size limit
+     */
+    private fun appendToAccumulator(builder: StringBuilder, text: String) {
+        if (builder.length + text.length > MAX_ACCUMULATOR_SIZE) {
+            val trimSize = (builder.length * TRIM_RATIO).toInt()
+            if (trimSize > 0 && trimSize < builder.length) {
+                builder.delete(0, trimSize)
+            }
+        }
+        builder.append(text)
     }
 
     /**
@@ -910,6 +968,61 @@ class ChatViewModel @Inject constructor(
     // ============================================
     // SECTION MANAGEMENT HELPERS
     // ============================================
+
+    /**
+     * Performance optimization: Rebuild section index map for O(1) lookups.
+     * Call this whenever sections are added, removed, or reordered.
+     */
+    private fun rebuildSectionIndexMap() {
+        sectionIndexMap.clear()
+        currentSections.forEachIndexed { index, section ->
+            sectionIndexMap[section.id] = index
+        }
+    }
+
+    /**
+     * Performance optimization: Rebuild tool step index map for O(1) lookups.
+     * Call this whenever tool steps are added or modified.
+     */
+    private fun rebuildToolStepIndexMap() {
+        toolStepIndexMap.clear()
+        currentToolSteps.forEachIndexed { index, step ->
+            toolStepIndexMap[step.toolName] = index
+        }
+    }
+
+    /**
+     * Performance optimization: Add section with map update.
+     */
+    private fun addSection(section: AgentSection) {
+        sectionIndexMap[section.id] = currentSections.size
+        currentSections.add(section)
+    }
+
+    /**
+     * Performance optimization: Remove section by ID with map update.
+     */
+    private fun removeSectionById(sectionId: String) {
+        val index = sectionIndexMap[sectionId] ?: return
+        if (index < currentSections.size) {
+            currentSections.removeAt(index)
+            rebuildSectionIndexMap()
+        }
+    }
+
+    /**
+     * Performance optimization: Get section index by ID using O(1) map lookup.
+     */
+    private fun getSectionIndex(sectionId: String): Int {
+        return sectionIndexMap[sectionId] ?: -1
+    }
+
+    /**
+     * Performance optimization: Get tool step index by name using O(1) map lookup.
+     */
+    private fun getToolStepIndex(toolName: String): Int {
+        return toolStepIndexMap[toolName] ?: -1
+    }
 
     /**
      * Chronological Section Management Strategy
@@ -967,7 +1080,7 @@ class ChatViewModel @Inject constructor(
                 isExpanded = false,
                 durationMs = 0L // Will be calculated when finalized
             )
-            currentSections.add(currentReasoningSection!!)
+            addSection(currentReasoningSection!!)
         }
     }
 
@@ -988,7 +1101,7 @@ class ChatViewModel @Inject constructor(
                 System.currentTimeMillis() - reasoningStartTime
             } else 0L
 
-            val index = currentSections.indexOfFirst { it.id == currentReasoningSection!!.id }
+            val index = getSectionIndex(currentReasoningSection!!.id)
             if (index >= 0) {
                 currentReasoningSection = currentReasoningSection!!.copy(
                     isComplete = true,
@@ -1034,7 +1147,7 @@ class ChatViewModel @Inject constructor(
                 isComplete = isComplete,
                 isTyping = !isComplete && text.isNotEmpty()
             )
-            currentSections.add(currentContentSection!!)
+            addSection(currentContentSection!!)
         }
     }
 
@@ -1043,7 +1156,7 @@ class ChatViewModel @Inject constructor(
      */
     private fun finalizeCurrentContentSection() {
         if (currentContentSection != null && !currentContentSection!!.isComplete) {
-            val index = currentSections.indexOfFirst { it.id == currentContentSection!!.id }
+            val index = getSectionIndex(currentContentSection!!.id)
             if (index >= 0) {
                 currentContentSection = currentContentSection!!.copy(
                     isComplete = true,
@@ -1107,6 +1220,8 @@ class ChatViewModel @Inject constructor(
                     existingTools[existingIndex] = newTool
                 } else {
                     existingTools.add(newTool)
+                    // Update map for new tool
+                    toolNameToSectionIndexMap[newTool.toolName] = index
                 }
             }
             currentToolGroup = currentToolGroup!!.copy(tools = existingTools)
@@ -1123,7 +1238,13 @@ class ChatViewModel @Inject constructor(
                 isComplete = false,
                 isExpanded = true
             )
+            val newIndex = currentSections.size
             currentSections.add(currentToolGroup!!)
+            sectionIndexMap[currentToolGroup!!.id] = newIndex
+            // Update map for all tools in new group
+            toolExecutions.forEach { tool ->
+                toolNameToSectionIndexMap[tool.toolName] = newIndex
+            }
         }
     }
 
@@ -1132,7 +1253,7 @@ class ChatViewModel @Inject constructor(
      */
     private fun finalizeCurrentToolGroup() {
         if (currentToolGroup != null && !currentToolGroup!!.isComplete) {
-            val index = currentSections.indexOfFirst { it.id == currentToolGroup!!.id }
+            val index = getSectionIndex(currentToolGroup!!.id)
             if (index >= 0) {
                 currentToolGroup = currentToolGroup!!.copy(
                     isComplete = true,
@@ -1156,12 +1277,10 @@ class ChatViewModel @Inject constructor(
         result: String? = null,
         error: String? = null
     ) {
-        // Find the tool group containing this tool (could be any tool group in chronological order)
-        val toolGroupIndex = currentSections.indexOfFirst { section ->
-            section is AgentSection.ToolGroup && section.tools.any { it.toolName == toolName }
-        }
+        // Find the tool group containing this tool using O(1) map lookup
+        val toolGroupIndex = toolNameToSectionIndexMap[toolName] ?: -1
 
-        if (toolGroupIndex >= 0) {
+        if (toolGroupIndex >= 0 && toolGroupIndex < currentSections.size) {
             val toolGroup = currentSections[toolGroupIndex] as AgentSection.ToolGroup
             val updatedTools = toolGroup.tools.map { tool ->
                 if (tool.toolName == toolName) {
@@ -1212,7 +1331,7 @@ class ChatViewModel @Inject constructor(
                     taskName = taskName,
                     isStart = true
                 )
-                currentSections.add(taskSection)
+                addSection(taskSection)
 
                 // Reset content section for new task
                 currentContentSection = null
@@ -1227,7 +1346,7 @@ class ChatViewModel @Inject constructor(
                     isStart = false,
                     summary = summary
                 )
-                currentSections.add(taskSection)
+                addSection(taskSection)
 
                 activeTaskId = null
             }
@@ -1259,7 +1378,7 @@ class ChatViewModel @Inject constructor(
                     allowCustomInput = allowCustomInput,
                     isAnswered = false
                 )
-                currentSections.add(askSection)
+                addSection(askSection)
             }
 
             "update_todo" -> {
@@ -1293,11 +1412,12 @@ class ChatViewModel @Inject constructor(
                             // Remove old todo list if replacing
                             if (operation == "replace") {
                                 currentSections.removeAll { it is AgentSection.TodoList }
+                                rebuildSectionIndexMap()
                             }
-                            currentSections.add(currentTodoList!!)
+                            addSection(currentTodoList!!)
                         } else {
-                            // Add items to existing list
-                            val index = currentSections.indexOfFirst { it.id == currentTodoList!!.id }
+                            // Add items to existing list (O(1) lookup)
+                            val index = getSectionIndex(currentTodoList!!.id)
                             if (index >= 0) {
                                 currentTodoList = currentTodoList!!.copy(
                                     items = currentTodoList!!.items + todoItems
@@ -1309,7 +1429,7 @@ class ChatViewModel @Inject constructor(
 
                     "complete" -> {
                         if (currentTodoList != null) {
-                            val index = currentSections.indexOfFirst { it.id == currentTodoList!!.id }
+                            val index = getSectionIndex(currentTodoList!!.id)
                             if (index >= 0) {
                                 val updatedItems = currentTodoList!!.items.mapIndexed { idx, item ->
                                     if (items.contains(idx.toString()) || items.contains(item.text)) {
@@ -1324,7 +1444,7 @@ class ChatViewModel @Inject constructor(
 
                     "set_in_progress" -> {
                         if (currentTodoList != null) {
-                            val index = currentSections.indexOfFirst { it.id == currentTodoList!!.id }
+                            val index = getSectionIndex(currentTodoList!!.id)
                             if (index >= 0) {
                                 val updatedItems = currentTodoList!!.items.mapIndexed { idx, item ->
                                     val shouldBeInProgress = items.contains(idx.toString()) || items.contains(item.text)
@@ -1360,7 +1480,7 @@ class ChatViewModel @Inject constructor(
                     profileId = if (profileId > 0) profileId else null,
                     status = opStatus
                 )
-                currentSections.add(profileSection)
+                addSection(profileSection)
             }
 
             "delete_profile" -> {
@@ -1372,7 +1492,7 @@ class ChatViewModel @Inject constructor(
                     profileName = profileName,
                     status = if (status == "deleted") ProfileOperationStatus.SUCCESS else ProfileOperationStatus.FAILED
                 )
-                currentSections.add(profileSection)
+                addSection(profileSection)
             }
 
             "set_active_profile" -> {
@@ -1385,7 +1505,7 @@ class ChatViewModel @Inject constructor(
                     profileId = if (profileId > 0) profileId else null,
                     status = ProfileOperationStatus.SUCCESS
                 )
-                currentSections.add(profileSection)
+                addSection(profileSection)
             }
         }
     }
@@ -1464,6 +1584,9 @@ class ChatViewModel @Inject constructor(
         activeTaskId = null
         reasoningStartTime = 0L
         _sectionedMessageState.value = null
+        sectionIndexMap.clear()
+        toolStepIndexMap.clear()
+        toolNameToSectionIndexMap.clear()
     }
 
     /**
@@ -1471,7 +1594,7 @@ class ChatViewModel @Inject constructor(
      * Updates the section state and can trigger continuation.
      */
     fun handleAskUserResponse(sectionId: String, response: String) {
-        val index = currentSections.indexOfFirst { it.id == sectionId }
+        val index = getSectionIndex(sectionId)
         if (index >= 0) {
             val section = currentSections[index]
             if (section is AgentSection.AskUser) {
@@ -1488,7 +1611,7 @@ class ChatViewModel @Inject constructor(
      * Handle user selection of an option in AskUser section.
      */
     fun handleAskUserOptionSelect(sectionId: String, option: AskUserOption) {
-        val index = currentSections.indexOfFirst { it.id == sectionId }
+        val index = getSectionIndex(sectionId)
         if (index >= 0) {
             val section = currentSections[index]
             if (section is AgentSection.AskUser) {
@@ -1556,7 +1679,7 @@ class ChatViewModel @Inject constructor(
                     ).collect { response ->
                         when (response) {
                             is AgentResponse.ContentChunk -> {
-                                rawContentAccumulator.append(response.text)
+                                appendToAccumulator(rawContentAccumulator, response.text)
 
                                 if (currentReasoningSection != null && !currentReasoningSection!!.isComplete) {
                                     finalizeReasoningSection()
@@ -1587,17 +1710,19 @@ class ChatViewModel @Inject constructor(
                                             ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
                                         } else null
 
-                                        chatRepository.updateAssistantMessageContent(
-                                            messageId = msgId,
-                                            content = cleanedContent,
-                                            reasoningContent = cleanedReasoning?.takeIf { it.isNotEmpty() },
-                                            isStreaming = true
-                                        )
+                                        withContext(Dispatchers.IO) {
+                                            chatRepository.updateAssistantMessageContent(
+                                                messageId = msgId,
+                                                content = cleanedContent,
+                                                reasoningContent = cleanedReasoning?.takeIf { it.isNotEmpty() },
+                                                isStreaming = true
+                                            )
+                                        }
                                     }
                                 }
                             }
                             is AgentResponse.ReasoningChunk -> {
-                                rawReasoningAccumulator.append(response.text)
+                                appendToAccumulator(rawReasoningAccumulator, response.text)
 
                                 if (reasoningStartTime == 0L) {
                                     reasoningStartTime = System.currentTimeMillis()
@@ -1634,6 +1759,7 @@ class ChatViewModel @Inject constructor(
                                     )
                                     if (currentToolSteps.none { it.toolName == toolName }) {
                                         currentToolSteps.add(step)
+                                        toolStepIndexMap[toolName] = currentToolSteps.size - 1
                                     }
                                 }
 
@@ -1650,7 +1776,7 @@ class ChatViewModel @Inject constructor(
                                 }
                                 _aiStatus.value = AiStatus.CallingTool(response.toolName)
 
-                                val stepIndex = currentToolSteps.indexOfFirst { it.toolName == response.toolName }
+                                val stepIndex = getToolStepIndex(response.toolName)
                                 if (stepIndex >= 0) {
                                     currentToolSteps[stepIndex] = currentToolSteps[stepIndex].copy(
                                         status = ToolStepStatus.EXECUTING
@@ -1661,6 +1787,7 @@ class ChatViewModel @Inject constructor(
                                         displayName = ToolDisplayUtils.formatToolName(response.toolName),
                                         status = ToolStepStatus.EXECUTING
                                     ))
+                                    toolStepIndexMap[response.toolName] = currentToolSteps.size - 1
                                 }
 
                                 updateToolExecutionStatus(response.toolName, ToolExecutionStatus.EXECUTING)
@@ -1673,7 +1800,7 @@ class ChatViewModel @Inject constructor(
                                     _aiStatus.value = AiStatus.Thinking
                                 }
 
-                                val stepIndex = currentToolSteps.indexOfFirst { it.toolName == response.toolName }
+                                val stepIndex = getToolStepIndex(response.toolName)
                                 if (stepIndex >= 0) {
                                     currentToolSteps[stepIndex] = currentToolSteps[stepIndex].copy(
                                         status = if (response.success) ToolStepStatus.COMPLETED else ToolStepStatus.FAILED,
@@ -1760,7 +1887,7 @@ class ChatViewModel @Inject constructor(
                                     allowCustomInput = response.allowCustomInput,
                                     isAnswered = false
                                 )
-                                currentSections.add(askSection)
+                                addSection(askSection)
                                 updateSectionedMessageState()
 
                                 _askUserState.value = AskUserInterruptState(
@@ -1826,7 +1953,7 @@ class ChatViewModel @Inject constructor(
                 _toolsInProgress.value = emptyList()
                 _aiStatus.value = AiStatus.Idle
                 _uiState.value = ChatUiState.Idle
-                _streamingMessageId.value = null
+                setStreamingMessageId(null)
                 _streamingMessageState.value = null
                 _sectionedMessageState.value = null
                 clearSectionTracking()
@@ -1844,7 +1971,7 @@ class ChatViewModel @Inject constructor(
                     chatRepository.setMessageError(msgId, e.message ?: "Unknown error")
                 }
 
-                _streamingMessageId.value = null
+                setStreamingMessageId(null)
                 _streamingMessageState.value = null
                 _sectionedMessageState.value = null
                 clearSectionTracking()
@@ -1859,7 +1986,7 @@ class ChatViewModel @Inject constructor(
      * Toggle expansion state of a section (for reasoning, tools, todo).
      */
     fun toggleSectionExpanded(sectionId: String) {
-        val index = currentSections.indexOfFirst { it.id == sectionId }
+        val index = getSectionIndex(sectionId)
         if (index >= 0) {
             val section = currentSections[index]
             currentSections[index] = when (section) {
@@ -1930,7 +2057,7 @@ class ChatViewModel @Inject constructor(
         pendingUiUpdate = false
 
         // Clear streaming state
-        _streamingMessageId.value = null
+        setStreamingMessageId(null)
         _streamingMessageState.value = null
         _sectionedMessageState.value = null
         clearSectionTracking()
@@ -1993,6 +2120,56 @@ class ChatViewModel @Inject constructor(
         selectedChartId: Long?
     ) {
         // No-op for now as StormyAgent is injected
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        
+        // Cancel streaming job and cleanup resources
+        streamingJob?.cancel()
+        streamingJob = null
+        
+        // Call cancelStreaming to ensure all state is cleaned up
+        cancelStreaming()
+        
+        // Clear all accumulators
+        rawContentAccumulator.clear()
+        rawReasoningAccumulator.clear()
+        currentToolSteps.clear()
+        
+        // Clear section tracking lists
+        currentSections.clear()
+        currentReasoningSection = null
+        currentContentSection = null
+        currentToolGroup = null
+        currentTodoList = null
+        
+        // Clear pending state
+        pendingConversationHistory = null
+        pendingToolsUsed = emptyList()
+        pendingConversationContext = null
+        activeTaskId = null
+        
+        // Reset throttle timers and flags
+        lastUiUpdateTime = 0L
+        lastDbUpdateTime = 0L
+        pendingUiUpdate = false
+        reasoningStartTime = 0L
+        
+        // Clear all mutable state flows
+        setStreamingMessageId(null)
+        _streamingMessageState.value = null
+        _sectionedMessageState.value = null
+        _askUserState.value = null
+        _streamingContent.value = ""
+        _streamingReasoning.value = ""
+        _isStreaming.value = false
+        _toolsInProgress.value = emptyList()
+        _aiStatus.value = AiStatus.Idle
+        _uiState.value = ChatUiState.Idle
+        
+        // Clear message tracking
+        currentMessageId = null
     }
 }
 

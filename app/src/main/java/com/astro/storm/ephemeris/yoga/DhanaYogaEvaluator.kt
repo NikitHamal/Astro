@@ -218,7 +218,10 @@ class DhanaYogaEvaluator : YogaEvaluator {
                             strengthPercentage = strength,
                             isAuspicious = true,
                             activationPeriod = "${lord1.displayName} or ${lord2.displayName} Dasha",
-                            cancellationFactors = listOf("Combustion", "Debilitation without cancellation")
+                            cancellationFactors = listOf("Combustion", "Debilitation without cancellation"),
+                            
+                            // Add high-precision keys
+                            effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_CAT_DHANA
                         )
                     )
                 }

@@ -74,7 +74,11 @@ class ChandraYogaEvaluator : YogaEvaluator {
                 isAuspicious = isFullyCancelled,
                 activationPeriod = "Moon periods",
                 cancellationFactors = kemadrumaAnalysis.cancellations.map { it.description },
-                detailedResult = kemadrumaAnalysis
+                detailedResult = kemadrumaAnalysis,
+                
+                // Add high-precision keys
+                nameKey = if (isFullyCancelled) com.astro.storm.core.common.StringKeyMatch.YOGA_KEMADRUMA_BHANGA else com.astro.storm.core.common.StringKeyMatch.YOGA_KEMADRUMA,
+                effectsKey = if (isFullyCancelled) com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_KEMADRUMA_BHANGA else com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_KEMADRUMA
             ))
         }
 
@@ -134,7 +138,9 @@ class ChandraYogaEvaluator : YogaEvaluator {
             strengthPercentage = strength,
             isAuspicious = true,
             activationPeriod = "Moon and ${planets.first().displayName} periods",
-            cancellationFactors = emptyList()
+            cancellationFactors = emptyList(),
+            nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SUNAFA,
+            effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SUNAFA
         )
     }
 
@@ -167,7 +173,9 @@ class ChandraYogaEvaluator : YogaEvaluator {
             strengthPercentage = strength,
             isAuspicious = true,
             activationPeriod = "Moon and ${planets.first().displayName} periods",
-            cancellationFactors = emptyList()
+            cancellationFactors = emptyList(),
+            nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_ANAFA,
+            effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_ANAFA
         )
     }
 
@@ -192,7 +200,9 @@ class ChandraYogaEvaluator : YogaEvaluator {
             strengthPercentage = strength.coerceAtMost(100.0),
             isAuspicious = true,
             activationPeriod = "Moon periods especially",
-            cancellationFactors = emptyList()
+            cancellationFactors = emptyList(),
+            nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_DURUDHARA,
+            effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_DURUDHARA
         )
     }
 
@@ -227,7 +237,9 @@ class ChandraYogaEvaluator : YogaEvaluator {
                 strengthPercentage = adjustedStrength.coerceIn(10.0, 100.0),
                 isAuspicious = true,
                 activationPeriod = "Jupiter and Moon periods",
-                cancellationFactors = cancellationReasons.ifEmpty { listOf("None - yoga is unafflicted") }
+                cancellationFactors = cancellationReasons.ifEmpty { listOf("None - yoga is unafflicted") },
+                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_GAJA_KESARI,
+                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_GAJA_KESARI
             )
         }
 
@@ -263,7 +275,9 @@ class ChandraYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength.coerceAtMost(100.0),
                 isAuspicious = true,
                 activationPeriod = "Moon and benefic periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_ADHI,
+                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_ADHI
             )
         }
 

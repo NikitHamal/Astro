@@ -428,7 +428,7 @@ private fun YogaCard(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = yoga.name,
+                            text = com.astro.storm.ephemeris.yoga.YogaLocalization.getLocalizedYogaName(yoga, language),
                             fontSize = 15.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = ChartDetailColors.TextPrimary
@@ -475,7 +475,7 @@ private fun YogaCard(
                     }
 
                     Text(
-                        text = yoga.description,
+                        text = com.astro.storm.ephemeris.yoga.YogaLocalization.getLocalizedYogaDescription(yoga, language),
                         fontSize = 13.sp,
                         color = ChartDetailColors.TextSecondary,
                         modifier = Modifier.padding(bottom = 12.dp)
@@ -533,7 +533,7 @@ private fun YogaCard(
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = yoga.effects,
+                                text = com.astro.storm.ephemeris.yoga.YogaLocalization.getLocalizedYogaEffects(yoga, language),
                                 fontSize = 13.sp,
                                 color = ChartDetailColors.TextPrimary,
                                 lineHeight = 20.sp
@@ -779,10 +779,10 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                 is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
                     String.format(
                         stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
-                        result.activationStatus.displayName
+                        stringResource(result.activationStatus.key)
                     ) + ". " + String.format(
                         stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_LEVEL_FMT),
-                        result.strength.displayName
+                        stringResource(result.strength.key)
                     )
                 }
                 else -> stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.EFFECT_GENERIC_GOOD)

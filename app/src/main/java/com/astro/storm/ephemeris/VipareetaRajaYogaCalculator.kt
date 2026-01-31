@@ -25,49 +25,57 @@ object VipareetaRajaYogaCalculator {
         val displayName: String,
         val sanskritName: String,
         val houseLord: Int,
-        val description: String
+        val description: String,
+        val nameKey: com.astro.storm.core.common.StringKeyInterface,
+        val descKey: com.astro.storm.core.common.StringKeyInterface
     ) {
         HARSHA(
             "Harsha Yoga",
             "हर्ष योग",
             6,
-            "6th lord in dusthana - Victory over enemies, good health, happiness from overcoming obstacles"
+            "6th lord in dusthana - Victory over enemies, good health, happiness from overcoming obstacles",
+            com.astro.storm.core.common.StringKeyMatch.YOGA_VIPARITA, // Shared or specific
+            com.astro.storm.core.common.StringKeyYogaExpanded.VIP_DESC_HARSHA
         ),
         SARALA(
             "Sarala Yoga",
             "सरल योग",
             8,
-            "8th lord in dusthana - Fearlessness, longevity, gains through inheritance, occult knowledge"
+            "8th lord in dusthana - Fearlessness, longevity, gains through inheritance, occult knowledge",
+            com.astro.storm.core.common.StringKeyMatch.YOGA_VIPARITA,
+            com.astro.storm.core.common.StringKeyYogaExpanded.VIP_DESC_SARALA
         ),
         VIMALA(
             "Vimala Yoga",
             "विमल योग",
             12,
-            "12th lord in dusthana - Reduced losses, spiritual advancement, liberation, fame after death"
+            "12th lord in dusthana - Reduced losses, spiritual advancement, liberation, fame after death",
+            com.astro.storm.core.common.StringKeyMatch.YOGA_VIPARITA,
+            com.astro.storm.core.common.StringKeyYogaExpanded.VIP_DESC_VIMALA
         )
     }
 
     /**
      * Strength level of the yoga
      */
-    enum class YogaStrength(val displayName: String, val score: Int) {
-        EXCEPTIONAL("Exceptional", 5),
-        STRONG("Strong", 4),
-        MODERATE("Moderate", 3),
-        MILD("Mild", 2),
-        WEAK("Weak", 1),
-        NOT_FORMED("Not Formed", 0)
+    enum class YogaStrength(val displayName: String, val score: Int, val key: com.astro.storm.core.common.StringKeyInterface) {
+        EXCEPTIONAL("Exceptional", 5, com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_EXCEPTIONAL),
+        STRONG("Strong", 4, com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_STRONG_VIP),
+        MODERATE("Moderate", 3, com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_MODERATE_VIP),
+        MILD("Mild", 2, com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_MILD),
+        WEAK("Weak", 1, com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_WEAK_VIP),
+        NOT_FORMED("Not Formed", 0, com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_NOT_FORMED)
     }
 
     /**
      * Activation status of the yoga
      */
-    enum class ActivationStatus(val displayName: String) {
-        FULLY_ACTIVE("Fully Active"),
-        PARTIALLY_ACTIVE("Partially Active"),
-        LATENT("Latent - Awaiting Activation"),
-        DORMANT("Dormant"),
-        CANCELLED("Cancelled by Afflictions")
+    enum class ActivationStatus(val displayName: String, val key: com.astro.storm.core.common.StringKeyInterface) {
+        FULLY_ACTIVE("Fully Active", com.astro.storm.core.common.StringKeyYogaExpanded.STATUS_FULLY_ACTIVE),
+        PARTIALLY_ACTIVE("Partially Active", com.astro.storm.core.common.StringKeyYogaExpanded.STATUS_PARTIALLY_ACTIVE),
+        LATENT("Latent - Awaiting Activation", com.astro.storm.core.common.StringKeyYogaExpanded.STATUS_LATENT),
+        DORMANT("Dormant", com.astro.storm.core.common.StringKeyYogaExpanded.STATUS_DORMANT),
+        CANCELLED("Cancelled by Afflictions", com.astro.storm.core.common.StringKeyYogaExpanded.STATUS_CANCELLED)
     }
 
     /**

@@ -89,7 +89,11 @@ class ConjunctionYogaEvaluator : YogaEvaluator {
             strengthPercentage = strength,
             isAuspicious = true, // Simplified
             activationPeriod = "${planet1.displayName}-${planet2.displayName} period",
-            cancellationFactors = emptyList()
+            cancellationFactors = emptyList(),
+            
+            // Add high-precision keys
+            nameKey = StringKeyYogaExpanded.YOGA_CONJUNCTION_2_PLANETS,
+            effectsKey = effectKey
         )
     }
 
@@ -106,6 +110,12 @@ class ConjunctionYogaEvaluator : YogaEvaluator {
         
         val strength = YogaHelpers.calculateYogaStrength(chart, positions)
         
+        val nameKey = when (count) {
+            3 -> StringKeyYogaExpanded.YOGA_CONJUNCTION_3_PLANETS
+            4 -> StringKeyYogaExpanded.YOGA_CONJUNCTION_4_PLANETS
+            else -> StringKeyYogaExpanded.YOGA_CONJUNCTION_TITLE // Fallback
+        }
+
         return Yoga(
             name = name,
             sanskritName = "Graha Malika Yoga (Partial)", // Generic name
@@ -118,7 +128,10 @@ class ConjunctionYogaEvaluator : YogaEvaluator {
             strengthPercentage = strength,
             isAuspicious = true,
             activationPeriod = "Dasha of strongest planet",
-            cancellationFactors = emptyList()
+            cancellationFactors = emptyList(),
+            
+            // Add high-precision keys
+            nameKey = nameKey
         )
     }
 

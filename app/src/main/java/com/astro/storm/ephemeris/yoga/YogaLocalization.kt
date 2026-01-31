@@ -40,6 +40,84 @@ object YogaLocalization {
     }
 
     /**
+     * Get localized yoga name from a Yoga object
+     */
+    fun getLocalizedYogaName(yoga: Yoga, language: Language): String {
+        yoga.nameKey?.let { key ->
+            if (key == StringKeyYogaExpanded.YOGA_VARGOTTAMA_SPEC && yoga.planets.isNotEmpty()) {
+                return StringResources.get(key, language, yoga.planets.first().getLocalizedName(language))
+            }
+            if (yoga.category == YogaCategory.BHAVA_YOGA && yoga.houses.isNotEmpty()) {
+                val lordName = StringResources.get(getLordKey(yoga.planets.firstOrNull()), language)
+                val houseName = StringResources.get(com.astro.storm.core.common.StringKeyMatch.HOUSE_LABEL, language, yoga.houses.first())
+                return StringResources.get(key, language, lordName, houseName)
+            }
+            if (yoga.category == YogaCategory.CONJUNCTION_YOGA && yoga.planets.size >= 2) {
+                val planetNames = yoga.planets.map { it.getLocalizedName(language) }
+                val keyToUse = when (yoga.planets.size) {
+                    2 -> StringKeyYogaExpanded.YOGA_CONJUNCTION_2_PLANETS
+                    3 -> StringKeyYogaExpanded.YOGA_CONJUNCTION_3_PLANETS
+                    else -> StringKeyYogaExpanded.YOGA_CONJUNCTION_4_PLANETS
+                }
+                return when (yoga.planets.size) {
+                    2 -> StringResources.get(keyToUse, language, planetNames[0], planetNames[1])
+                    3 -> StringResources.get(keyToUse, language, planetNames[0], planetNames[1], planetNames[2])
+                    4 -> StringResources.get(keyToUse, language, planetNames[0], planetNames[1], planetNames[2], planetNames[3])
+                    else -> yoga.name
+                }
+            }
+            return StringResources.get(key, language)
+        }
+        return getLocalizedYogaName(yoga.name, language)
+    }
+
+    /**
+     * Get localized yoga description
+     */
+    fun getLocalizedYogaDescription(yoga: Yoga, language: Language): String {
+        yoga.descriptionKey?.let { return StringResources.get(it, language) }
+        return yoga.description // Fallback to original English
+    }
+
+    /**
+     * Get localized yoga effects
+     */
+    fun getLocalizedYogaEffects(yoga: Yoga, language: Language): String {
+        yoga.effectsKey?.let { key ->
+            if (yoga.category == YogaCategory.BHAVA_YOGA && yoga.houses.isNotEmpty()) {
+                val lordHouse = "House ${getHouseFromLord(yoga.planets.firstOrNull(), yoga.name)}"
+                val houseName = "House ${yoga.houses.first()}"
+                return StringResources.get(key, language, lordHouse, houseName)
+            }
+            return StringResources.get(key, language)
+        }
+        return getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
+    }
+
+    private fun getLordKey(planet: Planet?): com.astro.storm.core.common.StringKeyInterface {
+        return when (planet) {
+            Planet.SUN -> StringKeyYogaExpanded.LORD_1 // Simplified mapping, ideally should be house-based
+            Planet.MOON -> StringKeyYogaExpanded.LORD_4
+            Planet.MARS -> StringKeyYogaExpanded.LORD_1
+            Planet.MERCURY -> StringKeyYogaExpanded.LORD_3
+            Planet.JUPITER -> StringKeyYogaExpanded.LORD_9
+            Planet.VENUS -> StringKeyYogaExpanded.LORD_2
+            Planet.SATURN -> StringKeyYogaExpanded.LORD_10
+            else -> com.astro.storm.core.common.StringKeyMatch.REPORT_PLANET
+        }
+    }
+    
+    /**
+     * Get the house number ruled by a planet for a specific chart.
+     * Since we don't have the chart here, we attempt to extract it from the yoga name
+     * which was originally generated as "Lord of X in House Y"
+     */
+    private fun getHouseFromLord(planet: Planet?, yogaName: String): Int {
+        // Extract from "Lord of X in House Y"
+        return yogaName.substringAfter("Lord of ").substringBefore(" in").toIntOrNull() ?: 1
+    }
+
+    /**
      * Get localized yoga name from the yoga's English name
      */
     fun getLocalizedYogaName(englishName: String, language: Language): String {

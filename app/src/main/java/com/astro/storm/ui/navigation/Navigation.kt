@@ -1487,6 +1487,13 @@ fun AstroStormNavigation(
                 }
             }
 
+            // Cleanup conversation when leaving composition (handles deep links, gestures, process death)
+            DisposableEffect(conversationId) {
+                onDispose {
+                    chatViewModel.closeConversation()
+                }
+            }
+
             ChatScreen(
                 messages = currentMessages,
                 streamingContent = streamingContent,

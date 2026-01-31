@@ -95,7 +95,11 @@ class RajaYogaEvaluator : YogaEvaluator {
                     isAuspicious = true,
                     activationPeriod = detailedYoga.dusthanaLord.displayName + " periods",
                     cancellationFactors = detailedYoga.weaknessFactors,
-                    detailedResult = detailedYoga
+                    detailedResult = detailedYoga,
+                    
+                    // Add high-precision keys
+                    nameKey = detailedYoga.yogaType.nameKey,
+                    descriptionKey = detailedYoga.yogaType.descKey
                 ))
             }
         }

@@ -44,10 +44,9 @@ class ChatRepository @Inject constructor(
      * Get all active conversations
      */
     fun getAllConversations(): Flow<List<ChatConversation>> {
-        return chatDao.getAllConversations().map { entities ->
-            entities.map { entity ->
-                val lastMessage = chatDao.getLastMessage(entity.id)
-                ChatConversation.fromEntity(entity, lastMessage)
+        return chatDao.getConversationsWithPreview().map { items ->
+            items.map { item ->
+                ChatConversation.fromEntity(item.conversation, item.lastMessage)
             }
         }
     }

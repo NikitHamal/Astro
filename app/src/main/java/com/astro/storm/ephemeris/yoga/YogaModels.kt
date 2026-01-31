@@ -139,7 +139,13 @@ data class Yoga(
     val isAuspicious: Boolean,
     val activationPeriod: String,
     val cancellationFactors: List<String>,
-    val detailedResult: Any? = null
+    val detailedResult: Any? = null,
+    
+    // Optional keys for high-precision localization
+    val nameKey: StringKeyInterface? = null,
+    val descriptionKey: StringKeyInterface? = null,
+    val effectsKey: StringKeyInterface? = null,
+    val activationKey: StringKeyInterface? = null
 )
 
 /**
@@ -193,9 +199,9 @@ data class YogaAnalysis(
             appendLine(YogaCategory.MAHAPURUSHA_YOGA.getLocalizedName(language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             mahapurushaYogas.forEach { yoga ->
-                val localizedName = YogaLocalization.getLocalizedYogaName(yoga.name, language)
+                val localizedName = YogaLocalization.getLocalizedYogaName(yoga, language)
                 val localizedSanskrit = YogaLocalization.getLocalizedYogaSanskritName(yoga.name, language)
-                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
+                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga, language)
                 appendLine("★ $localizedName ($localizedSanskrit)")
                 appendLine("  $planetsLabel: ${yoga.planets.joinToString { it.getLocalizedName(language) }}")
                 appendLine("  $strengthLabel: ${yoga.strength.getLocalizedName(language)} (${String.format("%.0f", yoga.strengthPercentage)}%)")
@@ -208,9 +214,9 @@ data class YogaAnalysis(
             appendLine(YogaCategory.RAJA_YOGA.getLocalizedName(language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             rajaYogas.forEach { yoga ->
-                val localizedName = YogaLocalization.getLocalizedYogaName(yoga.name, language)
+                val localizedName = YogaLocalization.getLocalizedYogaName(yoga, language)
                 val localizedSanskrit = YogaLocalization.getLocalizedYogaSanskritName(yoga.name, language)
-                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
+                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga, language)
                 appendLine("★ $localizedName ($localizedSanskrit)")
                 appendLine("  $planetsLabel: ${yoga.planets.joinToString { it.getLocalizedName(language) }}")
                 appendLine("  $housesLabel: ${yoga.houses.joinToString()}")
@@ -225,9 +231,9 @@ data class YogaAnalysis(
             appendLine(YogaCategory.DHANA_YOGA.getLocalizedName(language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             dhanaYogas.forEach { yoga ->
-                val localizedName = YogaLocalization.getLocalizedYogaName(yoga.name, language)
+                val localizedName = YogaLocalization.getLocalizedYogaName(yoga, language)
                 val localizedSanskrit = YogaLocalization.getLocalizedYogaSanskritName(yoga.name, language)
-                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
+                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga, language)
                 appendLine("★ $localizedName ($localizedSanskrit)")
                 appendLine("  $planetsLabel: ${yoga.planets.joinToString { it.getLocalizedName(language) }}")
                 appendLine("  $strengthLabel: ${yoga.strength.getLocalizedName(language)}")
@@ -240,8 +246,8 @@ data class YogaAnalysis(
             appendLine(YogaCategory.CHANDRA_YOGA.getLocalizedName(language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             chandraYogas.forEach { yoga ->
-                val localizedName = YogaLocalization.getLocalizedYogaName(yoga.name, language)
-                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
+                val localizedName = YogaLocalization.getLocalizedYogaName(yoga, language)
+                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga, language)
                 val auspicious = if (yoga.isAuspicious) auspiciousText else inauspiciousText
                 appendLine("★ $localizedName - $auspicious")
                 appendLine("  $effectsLabel: $localizedEffects")
@@ -253,9 +259,9 @@ data class YogaAnalysis(
             appendLine(YogaCategory.SOLAR_YOGA.getLocalizedName(language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             solarYogas.forEach { yoga ->
-                val localizedName = YogaLocalization.getLocalizedYogaName(yoga.name, language)
+                val localizedName = YogaLocalization.getLocalizedYogaName(yoga, language)
                 val localizedSanskrit = YogaLocalization.getLocalizedYogaSanskritName(yoga.name, language)
-                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
+                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga, language)
                 appendLine("★ $localizedName ($localizedSanskrit)")
                 appendLine("  $effectsLabel: $localizedEffects")
                 appendLine()
@@ -266,11 +272,11 @@ data class YogaAnalysis(
             appendLine(YogaCategory.NABHASA_YOGA.getLocalizedName(language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             nabhasaYogas.forEach { yoga ->
-                val localizedName = YogaLocalization.getLocalizedYogaName(yoga.name, language)
+                val localizedName = YogaLocalization.getLocalizedYogaName(yoga, language)
                 val localizedSanskrit = YogaLocalization.getLocalizedYogaSanskritName(yoga.name, language)
-                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
+                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga, language)
                 appendLine("★ $localizedName ($localizedSanskrit)")
-                appendLine("  $patternLabel: ${yoga.description}")
+                appendLine("  $patternLabel: ${YogaLocalization.getLocalizedYogaDescription(yoga, language)}")
                 appendLine("  $effectsLabel: $localizedEffects")
                 appendLine()
             }
@@ -280,9 +286,9 @@ data class YogaAnalysis(
             appendLine(YogaCategory.NEGATIVE_YOGA.getLocalizedName(language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             negativeYogas.forEach { yoga ->
-                val localizedName = YogaLocalization.getLocalizedYogaName(yoga.name, language)
+                val localizedName = YogaLocalization.getLocalizedYogaName(yoga, language)
                 val localizedSanskrit = YogaLocalization.getLocalizedYogaSanskritName(yoga.name, language)
-                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
+                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga, language)
                 appendLine("⚠ $localizedName ($localizedSanskrit)")
                 appendLine("  $effectsLabel: $localizedEffects")
                 if (yoga.cancellationFactors.isNotEmpty()) {
@@ -298,10 +304,11 @@ data class YogaAnalysis(
             appendLine("─────────────────────────────────────────────────────────")
             conjunctionYogas.forEach { yoga ->
                 // Basic localization or fallback
-                val localizedName = yoga.name // Already somewhat localized or generic
+                val localizedName = YogaLocalization.getLocalizedYogaName(yoga, language)
+                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga, language)
                 appendLine("★ $localizedName")
                 appendLine("  $planetsLabel: ${yoga.planets.joinToString { it.getLocalizedName(language) }}")
-                appendLine("  $effectsLabel: ${yoga.effects}")
+                appendLine("  $effectsLabel: $localizedEffects")
                 appendLine()
             }
         }
@@ -311,9 +318,10 @@ data class YogaAnalysis(
             appendLine(YogaCategory.BHAVA_YOGA.getLocalizedName(language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             bhavaYogas.forEach { yoga ->
-                // Bhava yogas are numerous, keep concise
-                appendLine("★ ${yoga.name}")
-                appendLine("  $effectsLabel: ${yoga.effects}")
+                val localizedName = YogaLocalization.getLocalizedYogaName(yoga, language)
+                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga, language)
+                appendLine("★ $localizedName")
+                appendLine("  $effectsLabel: $localizedEffects")
                 appendLine()
             }
         }
@@ -322,8 +330,8 @@ data class YogaAnalysis(
             appendLine(YogaCategory.SPECIAL_YOGA.getLocalizedName(language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             specialYogas.forEach { yoga ->
-                val localizedName = YogaLocalization.getLocalizedYogaName(yoga.name, language)
-                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
+                val localizedName = YogaLocalization.getLocalizedYogaName(yoga, language)
+                val localizedEffects = YogaLocalization.getLocalizedYogaEffects(yoga, language)
                 appendLine("★ $localizedName")
                 appendLine("  $effectsLabel: $localizedEffects")
                 appendLine()

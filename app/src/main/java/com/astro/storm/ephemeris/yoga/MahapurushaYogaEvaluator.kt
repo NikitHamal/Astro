@@ -47,7 +47,11 @@ class MahapurushaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = detailedYoga.planet.displayName + " periods",
                 cancellationFactors = emptyList(), // Detailed calculator doesn't currently provide explicit cancellations, but handles strength
-                detailedResult = detailedYoga
+                detailedResult = detailedYoga,
+                
+                // Add high-precision keys
+                nameKey = detailedYoga.type.nameKey,
+                descriptionKey = detailedYoga.type.descKey
             )
         }
     }

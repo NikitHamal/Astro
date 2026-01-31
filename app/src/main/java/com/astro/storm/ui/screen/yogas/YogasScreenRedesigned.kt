@@ -644,7 +644,7 @@ private fun YogaCard(
                     Column(modifier = Modifier.weight(1f)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = yoga.name,
+                                text = com.astro.storm.ephemeris.yoga.YogaLocalization.getLocalizedYogaName(yoga, language),
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary,
@@ -854,7 +854,7 @@ private fun YogaCard(
                             }
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = yoga.effects,
+                                text = com.astro.storm.ephemeris.yoga.YogaLocalization.getLocalizedYogaEffects(yoga, language),
                                 fontSize = 13.sp,
                                 color = AppTheme.TextPrimary,
                                 lineHeight = 19.sp
@@ -1019,10 +1019,10 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                 is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
                     String.format(
                         stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
-                        detailedYogaStatus(result.activationStatus)
+                        DetailedYogaStatus(result.activationStatus)
                     ) + ". " + String.format(
                         stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_LEVEL_FMT),
-                        detailedYogaStrengthValue(result.strength)
+                        DetailedYogaStrengthValue(result.strength)
                     )
                 }
                 else -> stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.EFFECT_GENERIC_GOOD) // Generic fallback
@@ -1039,8 +1039,15 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
 }
 
 // Helper functions for mapping status/strength to values for formatting
-private fun detailedYogaStatus(status: com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.ActivationStatus): String = status.displayName
-private fun detailedYogaStrengthValue(strength: com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.YogaStrength): String = strength.displayName
+@Composable
+private fun DetailedYogaStatus(status: com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.ActivationStatus): String {
+    return com.astro.storm.core.common.StringResources.get(status.key, LocalLanguage.current)
+}
+
+@Composable
+private fun DetailedYogaStrengthValue(strength: com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.YogaStrength): String {
+    return com.astro.storm.core.common.StringResources.get(strength.key, LocalLanguage.current)
+}
 
 @Composable
 private fun getCategoryColor(category: YogaCategory): Color {

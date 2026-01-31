@@ -506,12 +506,23 @@ fun ChatScreen(
     var showModelOptions by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
-    // Auto-scroll to bottom on new messages or when streaming status changes
-    LaunchedEffect(messages.size, streamingContent, aiStatus) {
-        if (messages.isNotEmpty() || isStreaming) {
-            listState.animateScrollToItem(
-                (messages.size + if (isStreaming) 1 else 0).coerceAtLeast(0)
-            )
+    // Check if user is at bottom before scrolling to respect user's scroll position
+    val isAtBottom by remember {
+        derivedStateOf {
+            val layoutInfo = listState.layoutInfo
+            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
+            lastVisibleItem?.index == layoutInfo.totalItemsCount - 1
+        }
+    }
+
+    LaunchedEffect(messages.size, isStreaming) {
+        if (messages.isNotEmpty() && isAtBottom) {
+            // Use instant scroll during streaming for performance, animated when not streaming
+            if (isStreaming) {
+                listState.scrollToItem(messages.size - 1)
+            } else {
+                listState.animateScrollToItem(messages.size - 1)
+            }
         }
     }
 

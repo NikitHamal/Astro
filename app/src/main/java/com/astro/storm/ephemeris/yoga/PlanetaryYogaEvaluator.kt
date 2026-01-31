@@ -96,7 +96,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Sun Dasha and Antardasha periods",
                 cancellationFactors = if (sunPos.house in listOf(6, 8, 12))
-                    listOf("Sun in dusthana house reduces some benefic effects") else emptyList()
+                    listOf("Sun in dusthana house reduces some benefic effects") else emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_UTTAMADI
             ))
         }
 
@@ -117,7 +118,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                     strengthPercentage = strength,
                     isAuspicious = true,
                     activationPeriod = "Sun-Venus or Venus-Sun periods",
-                    cancellationFactors = emptyList()
+                    cancellationFactors = emptyList(),
+                    nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_NEECHABHILASHI
                 ))
             }
         }
@@ -138,7 +140,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Sun or Saturn periods",
-                cancellationFactors = listOf("Sun-Saturn aspect creates tension between ego and discipline")
+                cancellationFactors = listOf("Sun-Saturn aspect creates tension between ego and discipline"),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_TAPASVI
             ))
         }
 
@@ -157,7 +160,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Sun Dasha periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SURYA
             ))
         }
 
@@ -179,7 +183,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Sun-Jupiter or Jupiter-Sun periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_PRABHAKAR
             ))
         }
 
@@ -251,7 +256,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength.coerceIn(10.0, 100.0),
                 isAuspicious = true,
                 activationPeriod = "Moon Dasha periods",
-                cancellationFactors = if (moonStrength < 0.3) listOf("Waning Moon reduces effect") else emptyList()
+                cancellationFactors = if (moonStrength < 0.3) listOf("Waning Moon reduces effect") else emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_PUSHKARA_NAVAMSA
             ))
         }
 
@@ -274,7 +280,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Moon-Mercury or Mercury-Moon periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SHARADA
             ))
         }
 
@@ -295,7 +302,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Moon-Venus or Venus-Moon periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_CHANDRA_LAKSHMI
             ))
         }
 
@@ -314,7 +322,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Moon Dasha periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_PURNIMA
             ))
         }
 
@@ -333,7 +342,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = false,
                 activationPeriod = "Moon Dasha periods require extra care",
-                cancellationFactors = listOf("Jupiter aspect significantly improves results", "Moon in Kendra reduces negative effects")
+                cancellationFactors = listOf("Jupiter aspect significantly improves results", "Moon in Kendra reduces negative effects"),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_AMAVASYA
             ))
         }
 
@@ -364,7 +374,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Periods of the benefics involved",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_CHANDRADHI
             ))
         }
 
@@ -444,7 +455,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Mars Dasha periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VIJAYA
             ))
         }
 
@@ -463,7 +475,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Mars Dasha periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_PARAKRAMA
             ))
         }
 
@@ -518,7 +531,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Mercury-Jupiter or Jupiter-Mercury periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VIDYA
             ))
         }
 
@@ -539,7 +553,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Mercury Dasha periods",
                 cancellationFactors = if (YogaHelpers.getCombustionFactor(mercuryPos, chart) < 0.7)
-                    listOf("Combustion reduces Mercury's expression") else emptyList()
+                    listOf("Combustion reduces Mercury's expression") else emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_NIPUNA
             ))
         }
 
@@ -614,7 +629,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Jupiter-Mars or Mars-Jupiter periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_GURU_MANGALA
             ))
         }
 
@@ -634,7 +650,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Jupiter Dasha periods",
                 cancellationFactors = if (YogaHelpers.isDebilitated(jupiterPos))
-                    listOf("Jupiter debilitated reduces spiritual inclinations") else emptyList()
+                    listOf("Jupiter debilitated reduces spiritual inclinations") else emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_DHARMA
             ))
         }
 
@@ -655,7 +672,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Jupiter Dasha periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_BRAHMA
             ))
         }
 
@@ -676,7 +694,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                     strengthPercentage = strength,
                     isAuspicious = true,
                     activationPeriod = "Jupiter Dasha periods",
-                    cancellationFactors = emptyList()
+                    cancellationFactors = emptyList(),
+                    nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_GANAPATI
                 ))
             }
         }
@@ -709,7 +728,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Venus-Mercury or Mercury-Venus periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_BHARATHI_EXP
             ))
         }
 
@@ -730,7 +750,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Venus-Moon or Moon-Venus periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_KAMINI
             ))
         }
 
@@ -750,7 +771,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Venus Dasha periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_KALATRA
             ))
         }
 
@@ -770,7 +792,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Venus-Jupiter or Jupiter-Venus periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_MRIDANGA
             ))
         }
 
@@ -790,7 +813,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Venus Dasha periods",
                 cancellationFactors = if (YogaHelpers.getCombustionFactor(venusPos, chart) < 0.7)
-                    listOf("Venus combust reduces material gains") else emptyList()
+                    listOf("Venus combust reduces material gains") else emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SHUKRA_DIGNITY
             ))
         }
 
@@ -845,7 +869,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Saturn Dasha periods (results mature after age 36)",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SHANI
             ))
         }
 
@@ -864,7 +889,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = false,
                 activationPeriod = "Saturn Dasha periods",
-                cancellationFactors = listOf("Jupiter aspect significantly reduces negative effects", "Spiritual practices provide relief")
+                cancellationFactors = listOf("Jupiter aspect significantly reduces negative effects", "Spiritual practices provide relief"),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_DUR
             ))
         }
 
@@ -884,7 +910,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Saturn Dasha periods, especially after age 36",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_AYUSH
             ))
         }
 
@@ -924,7 +951,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                     strengthPercentage = strength,
                     isAuspicious = true,
                     activationPeriod = "Rahu Dasha periods",
-                    cancellationFactors = emptyList()
+                    cancellationFactors = emptyList(),
+                    nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_RAHU_UPACHAYA
                 ))
             }
 
@@ -946,7 +974,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                     strengthPercentage = strength,
                     isAuspicious = true,
                     activationPeriod = "Rahu-Jupiter or Jupiter-Rahu periods",
-                    cancellationFactors = listOf("Jupiter's benefic nature modified by Rahu - unconventional expression")
+                    cancellationFactors = listOf("Jupiter's benefic nature modified by Rahu - unconventional expression"),
+                    nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VIJNAANA
                 ))
             }
         }
@@ -972,7 +1001,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                     isAuspicious = true,
                     activationPeriod = "Ketu Dasha periods",
                     cancellationFactors = if (!jupiterInfluence)
-                        listOf("Jupiter influence enhances spiritual benefits") else emptyList()
+                        listOf("Jupiter influence enhances spiritual benefits") else emptyList(),
+                    nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_MOKSHA
                 ))
             }
 
@@ -991,7 +1021,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                     strengthPercentage = strength,
                     isAuspicious = true,
                     activationPeriod = "Ketu Dasha periods",
-                    cancellationFactors = emptyList()
+                    cancellationFactors = emptyList(),
+                    nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_TAPASVI
                 ))
             }
         }
@@ -1020,7 +1051,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength.coerceIn(10.0, 100.0),
                 isAuspicious = true,
                 activationPeriod = "Periods of any exalted planet",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_UTTAMA_GRAHAS
             ))
         }
 
@@ -1040,7 +1072,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength.coerceIn(10.0, 100.0),
                 isAuspicious = true,
                 activationPeriod = "Periods of planets in own signs",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SWAGRAHA
             ))
         }
 
@@ -1062,7 +1095,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength.coerceIn(10.0, 100.0),
                 isAuspicious = false,
                 activationPeriod = "Periods of debilitated planets require extra care",
-                cancellationFactors = listOf("Strong Jupiter aspects can help", "Good Dasha can mitigate effects")
+                cancellationFactors = listOf("Strong Jupiter aspects can help", "Good Dasha can mitigate effects"),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_NEECHA_GRAHAS
             ))
         }
 
@@ -1087,7 +1121,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                     strengthPercentage = strength.coerceIn(10.0, 100.0),
                     isAuspicious = true,
                     activationPeriod = "${pos.planet.displayName} Dasha periods",
-                    cancellationFactors = emptyList()
+                    cancellationFactors = emptyList(),
+                    nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VARGOTTAMA_SPEC
                 ))
             }
         }
@@ -1121,7 +1156,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = true,
                 activationPeriod = "Throughout life, especially during benefic periods",
-                cancellationFactors = emptyList()
+                cancellationFactors = emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SUBHAPATI
             ))
         }
 
@@ -1149,7 +1185,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 strengthPercentage = strength,
                 isAuspicious = false,
                 activationPeriod = "Periods of malefics involved",
-                cancellationFactors = listOf("Jupiter aspect on 2nd house mitigates effects", "Strong 2nd lord helps")
+                cancellationFactors = listOf("Jupiter aspect on 2nd house mitigates effects", "Strong 2nd lord helps"),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_DHANA_PAPA_KARTARI
             ))
         }
 
@@ -1180,7 +1217,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                 isAuspicious = isAuspicious,
                 activationPeriod = "Periods of any planet in the conjunction",
                 cancellationFactors = if (!isAuspicious)
-                    listOf("Benefic aspects can moderate effects") else emptyList()
+                    listOf("Benefic aspects can moderate effects") else emptyList(),
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_TRIGRAHA
             ))
         }
 
@@ -1221,7 +1259,8 @@ class PlanetaryYogaEvaluator : YogaEvaluator {
                         strengthPercentage = strength,
                         isAuspicious = false,
                         activationPeriod = "Periods of either planet involved",
-                        cancellationFactors = listOf("Winner planet gives better results", "Loser planet's results are weakened")
+                        cancellationFactors = listOf("Winner planet gives better results", "Loser planet's results are weakened"),
+                        nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_GRAHAYUDDHA
                     ))
                 }
             }

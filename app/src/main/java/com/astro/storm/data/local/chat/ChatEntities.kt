@@ -198,6 +198,22 @@ data class ChatConversation(
                 lastMessagePreview = lastMessage?.content?.take(100)
             )
         }
+
+        fun fromEntity(entity: ConversationEntity, lastMessage: LastMessagePreview?): ChatConversation {
+            return ChatConversation(
+                id = entity.id,
+                title = entity.title,
+                modelId = entity.modelId,
+                providerId = entity.providerId,
+                profileId = entity.profileId,
+                createdAt = entity.createdAt,
+                updatedAt = entity.updatedAt,
+                isPinned = entity.isPinned,
+                isArchived = entity.isArchived,
+                messageCount = entity.messageCount,
+                lastMessagePreview = lastMessage?.content?.take(100)
+            )
+        }
     }
 }
 

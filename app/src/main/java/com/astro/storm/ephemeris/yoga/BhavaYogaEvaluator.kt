@@ -117,19 +117,13 @@ class BhavaYogaEvaluator : YogaEvaluator {
                 10 -> StringKeyYogaExpanded.EFFECT_LORD_1_IN_10
                 11 -> StringKeyYogaExpanded.EFFECT_LORD_1_IN_11
                 12 -> StringKeyYogaExpanded.EFFECT_LORD_1_IN_12
-                else -> StringKeyYogaExpanded.EFFECT_GENERIC_MIXED // Should not happen
+                else -> StringKeyYogaExpanded.EFFECT_GENERIC_MIXED
             }
         } else {
             // For others, we use generic good/bad
             if (isAuspicious) StringKeyYogaExpanded.EFFECT_GENERIC_GOOD
             else StringKeyYogaExpanded.EFFECT_GENERIC_BAD
         }
-        
-        // For the data class, we put the English text as fallback or a marker.
-        // We will use the StringKey in a custom way or rely on the fact that we might need to 
-        // update `YogaLocalization` to handle these dynamic keys.
-        // However, `Yoga` class expects `effects: String`. 
-        // We can pass the ENGLISH string from the Enum as the default effect.
         
         val defaultEffects = descriptionKey.en
             .replace("{0}", "House $lordHouse")
@@ -147,7 +141,11 @@ class BhavaYogaEvaluator : YogaEvaluator {
             strengthPercentage = strengthVal.coerceIn(0.0, 100.0),
             isAuspicious = isAuspicious,
             activationPeriod = "${lordPlanet.displayName} Dasha",
-            cancellationFactors = emptyList()
+            cancellationFactors = emptyList(),
+            
+            // Add high-precision keys
+            nameKey = StringKeyYogaExpanded.YOGA_BHAVA_LORD_PLACEMENT,
+            effectsKey = descriptionKey
         )
     }
 }

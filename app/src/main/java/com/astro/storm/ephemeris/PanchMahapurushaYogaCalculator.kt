@@ -635,7 +635,16 @@ object PanchMahapurushaYogaCalculator {
         val gemstone: String,
         val mantra: String,
         val charityItems: String,
-        val suitableCareers: List<String>
+        val suitableCareers: List<String>,
+        // Localization Keys
+        val nameKey: com.astro.storm.core.common.StringKeyInterface,
+        val descKey: com.astro.storm.core.common.StringKeyInterface,
+        val shortDescKey: com.astro.storm.core.common.StringKeyInterface,
+        val blessingsKey: com.astro.storm.core.common.StringKeyInterface,
+        val deityKey: com.astro.storm.core.common.StringKeyInterface,
+        val gemstoneKey: com.astro.storm.core.common.StringKeyInterface,
+        val mantraKey: com.astro.storm.core.common.StringKeyInterface,
+        val charityKey: com.astro.storm.core.common.StringKeyInterface
     ) {
         RUCHAKA(
             displayName = "Ruchaka Yoga",
@@ -649,7 +658,15 @@ object PanchMahapurushaYogaCalculator {
             gemstone = "Red Coral (Moonga)",
             mantra = "Om Kraam Kreem Kraum Sah Bhaumaya Namah",
             charityItems = "red lentils, red cloth, jaggery to the needy",
-            suitableCareers = listOf("Military", "Police", "Sports", "Surgery", "Engineering", "Real estate", "Martial arts")
+            suitableCareers = listOf("Military", "Police", "Sports", "Surgery", "Engineering", "Real estate", "Martial arts"),
+            nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_RUCHAKA,
+            descKey = com.astro.storm.core.common.StringKeyYogaExpanded.DESC_RUCHAKA,
+            shortDescKey = com.astro.storm.core.common.StringKeyYogaExpanded.SHORT_DESC_RUCHAKA,
+            blessingsKey = com.astro.storm.core.common.StringKeyYogaExpanded.BLESSINGS_RUCHAKA,
+            deityKey = com.astro.storm.core.common.StringKeyYogaExpanded.DEITY_RUCHAKA,
+            gemstoneKey = com.astro.storm.core.common.StringKeyYogaExpanded.GEMSTONE_RUCHAKA,
+            mantraKey = com.astro.storm.core.common.StringKeyYogaExpanded.MANTRA_RUCHAKA,
+            charityKey = com.astro.storm.core.common.StringKeyYogaExpanded.CHARITY_RUCHAKA
         ),
         BHADRA(
             displayName = "Bhadra Yoga",
@@ -663,7 +680,15 @@ object PanchMahapurushaYogaCalculator {
             gemstone = "Emerald (Panna)",
             mantra = "Om Braam Breem Braum Sah Budhaya Namah",
             charityItems = "green moong dal, green cloth, books to students",
-            suitableCareers = listOf("Writing", "Teaching", "Commerce", "Accounting", "IT", "Journalism", "Astrology")
+            suitableCareers = listOf("Writing", "Teaching", "Commerce", "Accounting", "IT", "Journalism", "Astrology"),
+            nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_BHADRA,
+            descKey = com.astro.storm.core.common.StringKeyYogaExpanded.DESC_BHADRA,
+            shortDescKey = com.astro.storm.core.common.StringKeyYogaExpanded.SHORT_DESC_BHADRA,
+            blessingsKey = com.astro.storm.core.common.StringKeyYogaExpanded.BLESSINGS_BHADRA,
+            deityKey = com.astro.storm.core.common.StringKeyYogaExpanded.DEITY_BHADRA,
+            gemstoneKey = com.astro.storm.core.common.StringKeyYogaExpanded.GEMSTONE_BHADRA,
+            mantraKey = com.astro.storm.core.common.StringKeyYogaExpanded.MANTRA_BHADRA,
+            charityKey = com.astro.storm.core.common.StringKeyYogaExpanded.CHARITY_BHADRA
         ),
         HAMSA(
             displayName = "Hamsa Yoga",
@@ -677,7 +702,15 @@ object PanchMahapurushaYogaCalculator {
             gemstone = "Yellow Sapphire (Pukhraj)",
             mantra = "Om Graam Greem Graum Sah Gurave Namah",
             charityItems = "turmeric, yellow cloth, ghee, gold to Brahmins",
-            suitableCareers = listOf("Education", "Law", "Finance", "Consulting", "Priesthood", "Philosophy", "Judiciary")
+            suitableCareers = listOf("Education", "Law", "Finance", "Consulting", "Priesthood", "Philosophy", "Judiciary"),
+            nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_HAMSA,
+            descKey = com.astro.storm.core.common.StringKeyYogaExpanded.DESC_HAMSA,
+            shortDescKey = com.astro.storm.core.common.StringKeyYogaExpanded.SHORT_DESC_HAMSA,
+            blessingsKey = com.astro.storm.core.common.StringKeyYogaExpanded.BLESSINGS_HAMSA,
+            deityKey = com.astro.storm.core.common.StringKeyYogaExpanded.DEITY_HAMSA,
+            gemstoneKey = com.astro.storm.core.common.StringKeyYogaExpanded.GEMSTONE_HAMSA,
+            mantraKey = com.astro.storm.core.common.StringKeyYogaExpanded.MANTRA_HAMSA,
+            charityKey = com.astro.storm.core.common.StringKeyYogaExpanded.CHARITY_HAMSA
         ),
         MALAVYA(
             displayName = "Malavya Yoga",
@@ -691,7 +724,15 @@ object PanchMahapurushaYogaCalculator {
             gemstone = "Diamond (Heera) or White Sapphire",
             mantra = "Om Draam Dreem Draum Sah Shukraya Namah",
             charityItems = "white rice, white cloth, sugar, silver items to women",
-            suitableCareers = listOf("Arts", "Entertainment", "Fashion", "Hospitality", "Luxury goods", "Interior design", "Music")
+            suitableCareers = listOf("Arts", "Entertainment", "Fashion", "Hospitality", "Luxury goods", "Interior design", "Music"),
+            nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_MALAVYA,
+            descKey = com.astro.storm.core.common.StringKeyYogaExpanded.DESC_MALAVYA,
+            shortDescKey = com.astro.storm.core.common.StringKeyYogaExpanded.SHORT_DESC_MALAVYA,
+            blessingsKey = com.astro.storm.core.common.StringKeyYogaExpanded.BLESSINGS_MALAVYA,
+            deityKey = com.astro.storm.core.common.StringKeyYogaExpanded.DEITY_MALAVYA,
+            gemstoneKey = com.astro.storm.core.common.StringKeyYogaExpanded.GEMSTONE_MALAVYA,
+            mantraKey = com.astro.storm.core.common.StringKeyYogaExpanded.MANTRA_MALAVYA,
+            charityKey = com.astro.storm.core.common.StringKeyYogaExpanded.CHARITY_MALAVYA
         ),
         SASHA(
             displayName = "Sasha Yoga",
@@ -705,7 +746,15 @@ object PanchMahapurushaYogaCalculator {
             gemstone = "Blue Sapphire (Neelam) - only after careful consultation",
             mantra = "Om Praam Preem Praum Sah Shanaischaraya Namah",
             charityItems = "black sesame, black cloth, iron items, oil to the poor",
-            suitableCareers = listOf("Government", "Construction", "Mining", "Management", "Agriculture", "Real estate", "Manufacturing")
+            suitableCareers = listOf("Government", "Construction", "Mining", "Management", "Agriculture", "Real estate", "Manufacturing"),
+            nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SASA,
+            descKey = com.astro.storm.core.common.StringKeyYogaExpanded.DESC_SASHA,
+            shortDescKey = com.astro.storm.core.common.StringKeyYogaExpanded.SHORT_DESC_SASHA,
+            blessingsKey = com.astro.storm.core.common.StringKeyYogaExpanded.BLESSINGS_SASHA,
+            deityKey = com.astro.storm.core.common.StringKeyYogaExpanded.DEITY_SASHA,
+            gemstoneKey = com.astro.storm.core.common.StringKeyYogaExpanded.GEMSTONE_SASHA,
+            mantraKey = com.astro.storm.core.common.StringKeyYogaExpanded.MANTRA_SASHA,
+            charityKey = com.astro.storm.core.common.StringKeyYogaExpanded.CHARITY_SASHA
         )
     }
 

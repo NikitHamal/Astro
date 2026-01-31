@@ -17,11 +17,15 @@ import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.core.common.Language
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -88,6 +92,90 @@ class StormyAgent @Inject constructor(
     }
 
     /**
+     * Thread-safe state holder for the agent processing
+     */
+    private data class AgentState(
+        val totalEmittedContent: String = "",
+        val totalEmittedReasoning: String = "",
+        val contentByIteration: List<String> = emptyList(),
+        val allReasoning: String = "",
+        val executedToolCalls: Set<String> = emptySet()
+    ) {
+        fun withAppendedContent(content: String): AgentState =
+            copy(totalEmittedContent = totalEmittedContent + content)
+
+        fun withAppendedReasoning(reasoning: String): AgentState =
+            copy(totalEmittedReasoning = totalEmittedReasoning + reasoning)
+
+        fun withIterationContent(content: String): AgentState =
+            copy(contentByIteration = contentByIteration + content)
+
+        fun withAppendedAllReasoning(reasoning: String): AgentState =
+            copy(allReasoning = if (allReasoning.isEmpty()) reasoning else "$allReasoning\n\n$reasoning")
+
+        fun withExecutedToolCall(toolKey: String): AgentState =
+            copy(executedToolCalls = executedToolCalls + toolKey)
+    }
+
+    /**
+     * Creates a canonical JSON string for deduplication purposes.
+     * This ensures that semantically identical JSON objects produce the same string
+     * regardless of key ordering or whitespace.
+     */
+    private fun canonicalizeJson(jsonStr: String): String {
+        return try {
+            val json = JSONObject(jsonStr)
+            canonicalizeJsonObject(json)
+        } catch (e: Exception) {
+            // If parsing fails, normalize whitespace as fallback
+            jsonStr.replace(Regex("\\s+"), "").trim()
+        }
+    }
+
+    private fun canonicalizeJsonObject(json: JSONObject): String {
+        val sortedKeys = json.keys().asSequence().sorted()
+        val entries = sortedKeys.map { key ->
+            val value = json.get(key)
+            val canonicalValue = when (value) {
+                is JSONObject -> canonicalizeJsonObject(value)
+                is JSONArray -> canonicalizeJsonArray(value)
+                else -> value.toString()
+            }
+            "\"$key\":$canonicalValue"
+        }
+        return "{${entries.joinToString(",")}}"
+    }
+
+    private fun canonicalizeJsonArray(array: JSONArray): String {
+        val elements = (0 until array.length()).map { i ->
+            val value = array.get(i)
+            when (value) {
+                is JSONObject -> canonicalizeJsonObject(value)
+                is JSONArray -> canonicalizeJsonArray(value)
+                else -> value.toString()
+            }
+        }
+        return "[${elements.joinToString(",")}]"
+    }
+
+    /**
+     * Thread-safe content deduplication tracker
+     */
+    private class ContentDeduplicator {
+        private val emittedChunks = ConcurrentHashMap<String, Boolean>()
+
+        fun isDuplicate(content: String): Boolean {
+            val normalized = content.trim()
+            if (normalized.isEmpty()) return false
+            return emittedChunks.putIfAbsent(normalized, true) != null
+        }
+
+        fun clear() {
+            emittedChunks.clear()
+        }
+    }
+
+    /**
      * Process a user message and generate a response with tool calling support
      */
     fun processMessage(
@@ -99,44 +187,142 @@ class StormyAgent @Inject constructor(
         temperature: Float? = null,
         maxTokens: Int? = null,
         language: Language = Language.ENGLISH
-    ): Flow<AgentResponse> = flow {
+    ): Flow<AgentResponse> = channelFlow {
         val provider = providerRegistry.getProvider(model.providerId)
             ?: throw IllegalStateException("Provider not found: ${model.providerId}")
 
         val systemPrompt = generateSystemPrompt(currentProfile, allProfiles, currentChart, language)
 
         // Build messages with system prompt
-        val fullMessages = mutableListOf<ChatMessage>()
-        fullMessages.add(ChatMessage(role = MessageRole.SYSTEM, content = systemPrompt))
-        fullMessages.addAll(messages)
+        val fullMessages = mutableListOf<ChatMessage>().apply {
+            add(ChatMessage(role = MessageRole.SYSTEM, content = systemPrompt))
+            addAll(messages)
+        }
 
-        // Track emitted content/reasoning to prevent duplicate chunks in the flow
-        val totalEmittedContent = StringBuilder()
-        val totalEmittedReasoning = StringBuilder()
-        
-        // Track unique content across tool iterations to avoid repetition
-        val contentByIteration = mutableListOf<String>()
-        val allReasoning = StringBuilder()
+        // Thread-safe state using AtomicReference
+        val stateRef = AtomicReference(AgentState())
+
+        // Thread-safe content deduplication tracker
+        val contentDeduplicator = ContentDeduplicator()
+        val reasoningDeduplicator = ContentDeduplicator()
 
         var iteration = 0
         var toolIterations = 0
         var continueProcessing = true
         val toolsUsed = mutableListOf<String>()
 
-        // Track executed tool calls to prevent duplicates/loops across iterations
-        val executedToolCalls = mutableSetOf<String>()
-
         while (continueProcessing && iteration < MAX_TOTAL_ITERATIONS && toolIterations < MAX_TOOL_ITERATIONS) {
             iteration++
-            var currentContent = StringBuilder()
-            var currentReasoning = StringBuilder()
-            // Track tool calls for THIS iteration
-            var pendingToolCalls = mutableListOf<ToolCallRequest>()
-            // Track IDs processed in THIS iteration to prevent duplicates from multiple parse passes
-            var processedToolIdsInIteration = mutableSetOf<String>() 
+
+            // Per-iteration state
+            val iterationContentBuilder = StringBuilder()
+            val iterationReasoningBuilder = StringBuilder()
+            val pendingToolCalls = mutableListOf<ToolCallRequest>()
+            val processedToolIdsInIteration = mutableSetOf<String>()
             var hasError = false
 
-            // Call the AI model
+            // Channel for collecting responses from the flow
+            val responseChannel = Channel<ChatResponse>(Channel.UNLIMITED)
+
+            // Launch collector in a separate coroutine for thread-safe processing
+            val collectorJob = launch {
+                for (response in responseChannel) {
+                    when (response) {
+                        is ChatResponse.Content -> {
+                            val newContent = response.text
+                            iterationContentBuilder.append(newContent)
+
+                            if (newContent.isNotEmpty()) {
+                                // Thread-safe deduplication check
+                                if (!contentDeduplicator.isDuplicate(newContent)) {
+                                    // Update atomic state
+                                    val currentState = stateRef.get()
+                                    stateRef.set(currentState.withAppendedContent(newContent))
+                                    send(AgentResponse.ContentChunk(newContent))
+                                }
+                            }
+                        }
+
+                        is ChatResponse.Reasoning -> {
+                            if (response.text.isNotEmpty()) {
+                                val newReasoning = response.text
+                                iterationReasoningBuilder.append(newReasoning)
+
+                                // Thread-safe deduplication check
+                                if (!reasoningDeduplicator.isDuplicate(newReasoning)) {
+                                    val currentState = stateRef.get()
+                                    stateRef.set(currentState.withAppendedReasoning(newReasoning))
+                                    send(AgentResponse.ReasoningChunk(newReasoning))
+                                }
+                            }
+                        }
+
+                        is ChatResponse.ToolCallRequest -> {
+                            response.toolCalls.forEach { call ->
+                                val canonicalArgs = canonicalizeJson(call.function.arguments)
+                                val toolKey = "${call.function.name}:$canonicalArgs"
+                                val currentState = stateRef.get()
+
+                                if (toolKey !in currentState.executedToolCalls && toolKey !in processedToolIdsInIteration) {
+                                    processedToolIdsInIteration.add(toolKey)
+                                    pendingToolCalls.add(
+                                        ToolCallRequest(
+                                            id = call.id.ifEmpty { "tool_${UUID.randomUUID().toString().take(8)}" },
+                                            name = call.function.name,
+                                            arguments = call.function.arguments
+                                        )
+                                    )
+                                }
+                            }
+                        }
+
+                        is ChatResponse.Error -> {
+                            hasError = true
+                            send(AgentResponse.Error(response.message, response.isRetryable))
+                        }
+
+                        is ChatResponse.Usage -> {
+                            send(AgentResponse.TokenUsage(
+                                response.promptTokens,
+                                response.completionTokens,
+                                response.totalTokens
+                            ))
+                        }
+
+                        is ChatResponse.Done -> {
+                            // Check for embedded tool calls in content if native ones weren't found
+                            if (pendingToolCalls.isEmpty()) {
+                                val embeddedCalls = parseEmbeddedToolCalls(iterationContentBuilder.toString())
+                                embeddedCalls.forEach { call ->
+                                    val canonicalArgs = canonicalizeJson(call.arguments)
+                                    val toolKey = "${call.name}:$canonicalArgs"
+                                    val currentState = stateRef.get()
+
+                                    if (toolKey !in currentState.executedToolCalls && toolKey !in processedToolIdsInIteration) {
+                                        processedToolIdsInIteration.add(toolKey)
+                                        pendingToolCalls.add(call)
+                                    }
+                                }
+                            }
+                        }
+
+                        is ChatResponse.ProviderInfo -> {
+                            send(AgentResponse.ModelInfo(response.providerId, response.model))
+                        }
+
+                        is ChatResponse.RetryNotification -> {
+                            send(AgentResponse.RetryInfo(
+                                attempt = response.attempt,
+                                maxAttempts = response.maxAttempts,
+                                delayMs = response.delayMs,
+                                reason = response.reason
+                            ))
+                        }
+                    }
+                }
+            }
+
+            // Call the AI model and send responses to channel
             provider.chat(
                 messages = fullMessages,
                 model = model.id,
@@ -144,109 +330,34 @@ class StormyAgent @Inject constructor(
                 maxTokens = maxTokens,
                 stream = true
             ).collect { response ->
-                when (response) {
-                    is ChatResponse.Content -> {
-                        currentContent.append(response.text)
-                        // Only emit if this content hasn't already been emitted
-                        val newContent = response.text
-                        if (newContent.isNotEmpty()) {
-                            // Check if this chunk is already in our total emitted content
-                            // (Simple heuristic: check endsWith or strict contains for small chunks)
-                            val currentTotal = totalEmittedContent.toString()
-                            if (!currentTotal.endsWith(newContent)) {
-                                totalEmittedContent.append(newContent)
-                                emit(AgentResponse.ContentChunk(newContent))
-                            }
-                        }
-                    }
-                    is ChatResponse.Reasoning -> {
-                        // Skip empty reasoning markers
-                        if (response.text.isNotEmpty()) {
-                            currentReasoning.append(response.text)
-                            val newReasoning = response.text
-                            val currentTotalReasoning = totalEmittedReasoning.toString()
-                            if (!currentTotalReasoning.endsWith(newReasoning)) {
-                                totalEmittedReasoning.append(newReasoning)
-                                emit(AgentResponse.ReasoningChunk(newReasoning))
-                            }
-                        }
-                    }
-                    is ChatResponse.ToolCallRequest -> {
-                        response.toolCalls.forEach { call ->
-                            val toolKey = "${call.function.name}:${call.function.arguments.hashCode()}"
-                            if (toolKey !in executedToolCalls && toolKey !in processedToolIdsInIteration) {
-                                processedToolIdsInIteration.add(toolKey)
-                                pendingToolCalls.add(
-                                    ToolCallRequest(
-                                        id = call.id.ifEmpty { "tool_${UUID.randomUUID().toString().take(8)}" },
-                                        name = call.function.name,
-                                        arguments = call.function.arguments
-                                    )
-                                )
-                            }
-                        }
-                    }
-                    is ChatResponse.Error -> {
-                        hasError = true
-                        emit(AgentResponse.Error(response.message, response.isRetryable))
-                    }
-                    is ChatResponse.Usage -> {
-                        emit(AgentResponse.TokenUsage(
-                            response.promptTokens,
-                            response.completionTokens,
-                            response.totalTokens
-                        ))
-                    }
-                    is ChatResponse.Done -> {
-                        // Check for embedded tool calls in content if native ones weren't found
-                        if (pendingToolCalls.isEmpty()) {
-                            val embeddedCalls = parseEmbeddedToolCalls(currentContent.toString())
-                            embeddedCalls.forEach { call ->
-                                val toolKey = "${call.name}:${call.arguments.hashCode()}"
-                                if (toolKey !in executedToolCalls && toolKey !in processedToolIdsInIteration) {
-                                    processedToolIdsInIteration.add(toolKey)
-                                    pendingToolCalls.add(call)
-                                }
-                            }
-                        }
-                    }
-                    is ChatResponse.ProviderInfo -> {
-                        emit(AgentResponse.ModelInfo(response.providerId, response.model))
-                    }
-                    is ChatResponse.RetryNotification -> {
-                        // Emit retry notification so UI can show it
-                        emit(AgentResponse.RetryInfo(
-                            attempt = response.attempt,
-                            maxAttempts = response.maxAttempts,
-                            delayMs = response.delayMs,
-                            reason = response.reason
-                        ))
-                    }
-                }
+                responseChannel.send(response)
             }
 
+            // Close channel and wait for collector to finish
+            responseChannel.close()
+            collectorJob.join()
+
             // Clean current content of tool call blocks
-            val cleanedCurrentContent = currentContent.toString().cleanToolCallBlocks().trim()
+            val cleanedCurrentContent = iterationContentBuilder.toString().cleanToolCallBlocks().trim()
 
             // Only add this iteration's content if it's not a duplicate of previous content
             if (cleanedCurrentContent.isNotEmpty()) {
-                val isDuplicate = contentByIteration.any { previousContent ->
+                val currentState = stateRef.get()
+                val isDuplicate = currentState.contentByIteration.any { previousContent ->
                     previousContent.trim() == cleanedCurrentContent ||
                     previousContent.contains(cleanedCurrentContent) ||
                     cleanedCurrentContent.contains(previousContent.trim())
                 }
 
                 if (!isDuplicate) {
-                    contentByIteration.add(cleanedCurrentContent)
+                    stateRef.set(currentState.withIterationContent(cleanedCurrentContent))
                 }
             }
 
             // Accumulate reasoning (reasoning can be additive across iterations)
-            if (currentReasoning.isNotEmpty()) {
-                if (allReasoning.isNotEmpty()) {
-                    allReasoning.append("\n\n")
-                }
-                allReasoning.append(currentReasoning)
+            if (iterationReasoningBuilder.isNotEmpty()) {
+                val currentState = stateRef.get()
+                stateRef.set(currentState.withAppendedAllReasoning(iterationReasoningBuilder.toString()))
             }
 
             if (hasError) {
@@ -257,10 +368,10 @@ class StormyAgent @Inject constructor(
             // Process tool calls if any
             if (pendingToolCalls.isNotEmpty()) {
                 toolIterations++
-                emit(AgentResponse.ToolCallsStarted(pendingToolCalls.map { it.name }))
+                send(AgentResponse.ToolCallsStarted(pendingToolCalls.map { it.name }))
 
                 // Add assistant message with tool calls
-                val assistantContent = currentContent.toString().cleanToolCallBlocks()
+                val assistantContent = iterationContentBuilder.toString().cleanToolCallBlocks()
                 fullMessages.add(ChatMessage(
                     role = MessageRole.ASSISTANT,
                     content = assistantContent.ifEmpty { "I'll use some tools to help answer your question." },
@@ -276,17 +387,20 @@ class StormyAgent @Inject constructor(
                 var askUserInterrupt: AgentResponse.AskUserInterrupt? = null
 
                 for (toolCall in pendingToolCalls) {
-                    emit(AgentResponse.ToolExecuting(toolCall.name))
+                    send(AgentResponse.ToolExecuting(toolCall.name))
                     if (!toolsUsed.contains(toolCall.name)) {
                         toolsUsed.add(toolCall.name)
                     }
-                    
+
                     // Mark as executed to prevent re-execution in future iterations
-                    executedToolCalls.add("${toolCall.name}:${toolCall.arguments.hashCode()}")
+                    val canonicalArgs = canonicalizeJson(toolCall.arguments)
+                    val toolKey = "${toolCall.name}:$canonicalArgs"
+                    val currentState = stateRef.get()
+                    stateRef.set(currentState.withExecutedToolCall(toolKey))
 
                     val result = executeToolCall(toolCall, currentProfile, allProfiles, currentChart)
 
-                    emit(AgentResponse.ToolResult(toolCall.name, result.success, result.summary))
+                    send(AgentResponse.ToolResult(toolCall.name, result.success, result.summary))
 
                     // Add tool result message
                     fullMessages.add(ChatMessage(
@@ -329,6 +443,8 @@ class StormyAgent @Inject constructor(
                                         conversationHistory = fullMessages.toList(),
                                         toolsUsed = toolsUsed.distinct().toList()
                                     )
+                                    // Stop executing other tools in this batch since we need user input
+                                    break
                                 }
                             }
                         } catch (e: Exception) {
@@ -339,20 +455,21 @@ class StormyAgent @Inject constructor(
 
                 // If ask_user was called, interrupt and wait for user response
                 if (askUserInterrupt != null) {
-                    emit(askUserInterrupt)
+                    send(askUserInterrupt)
                     continueProcessing = false
-                    return@flow // Exit the flow - UI will handle resuming with user response
+                    return@channelFlow // Exit the flow - UI will handle resuming with user response
                 }
 
                 // Continue processing to let AI respond to tool results
             } else {
                 // No tool calls - combine unique content from all iterations
-                val finalContent = if (contentByIteration.isNotEmpty()) {
-                    contentByIteration.last()
+                val currentState = stateRef.get()
+                val finalContent = if (currentState.contentByIteration.isNotEmpty()) {
+                    currentState.contentByIteration.last()
                 } else {
                     ""
                 }
-                val finalReasoning = allReasoning.toString().trim()
+                val finalReasoning = currentState.allReasoning.trim()
 
                 // Check if we only have reasoning but no content
                 if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
@@ -370,8 +487,9 @@ class StormyAgent @Inject constructor(
                         ))
 
                         // Clear content for the continuation
-                        contentByIteration.clear()
-                        allReasoning.clear()
+                        contentDeduplicator.clear()
+                        reasoningDeduplicator.clear()
+                        stateRef.set(AgentState())
 
                         // Continue for one more iteration
                         continue
@@ -391,7 +509,7 @@ class StormyAgent @Inject constructor(
                 }
 
                 continueProcessing = false
-                emit(AgentResponse.Complete(
+                send(AgentResponse.Complete(
                     content = contentToEmit,
                     reasoning = reasoningToEmit,
                     toolsUsed = toolsUsed.distinct().toList()
@@ -401,12 +519,13 @@ class StormyAgent @Inject constructor(
 
         if (iteration >= MAX_TOTAL_ITERATIONS || toolIterations >= MAX_TOOL_ITERATIONS) {
             // Still emit what we have - use the last content iteration
-            val finalContent = if (contentByIteration.isNotEmpty()) {
-                contentByIteration.last()
+            val currentState = stateRef.get()
+            val finalContent = if (currentState.contentByIteration.isNotEmpty()) {
+                currentState.contentByIteration.last()
             } else {
                 ""
             }
-            val finalReasoning = allReasoning.toString().trim()
+            val finalReasoning = currentState.allReasoning.trim()
 
             if (finalContent.isNotEmpty() || finalReasoning.isNotEmpty()) {
                 val contentToEmit = if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
@@ -421,14 +540,14 @@ class StormyAgent @Inject constructor(
                     null
                 }
 
-                emit(AgentResponse.Complete(
+                send(AgentResponse.Complete(
                     content = contentToEmit,
                     reasoning = reasoningToEmit,
                     toolsUsed = toolsUsed.distinct().toList()
                 ))
             }
 
-            emit(AgentResponse.Error(
+            send(AgentResponse.Error(
                 "Maximum iterations reached (${iteration} total, ${toolIterations} tool calls). The analysis may be incomplete.",
                 isRetryable = false
             ))
@@ -568,8 +687,9 @@ class StormyAgent @Inject constructor(
         toolCalls: MutableList<ToolCallRequest>,
         processedIds: MutableSet<String>
     ) {
-        // Create a unique key for deduplication based on tool name and arguments
-        val toolKey = "$toolName:${arguments.hashCode()}"
+        // Create a unique key for deduplication based on tool name and canonicalized arguments
+        val canonicalArgs = canonicalizeJson(arguments)
+        val toolKey = "$toolName:$canonicalArgs"
         if (toolKey in processedIds) return
 
         processedIds.add(toolKey)
@@ -589,7 +709,7 @@ class StormyAgent @Inject constructor(
         val argsJson = JSONObject()
 
         // Split by comma, handling quoted strings
-        val argPairs = argsStr.split(Regex(""",(?=(?:[^"'*`]*"[^"'*`]*")*[^"'*`]*$)"""))
+        val argPairs = argsStr.split(Regex(""",(?=(?:[^"'*`*]*"[^"'*`*]*")*[^"'*`*]*$)"""))
 
         for (pair in argPairs) {
             val parts = pair.split("=", limit = 2)

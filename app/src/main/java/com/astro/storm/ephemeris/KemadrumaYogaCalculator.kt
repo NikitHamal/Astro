@@ -162,7 +162,8 @@ object KemadrumaYogaCalculator {
         val tithi: Int,
         val brightness: MoonBrightness,
         val dispositor: Planet,
-        val dispositorStrength: String
+        val dispositorStrength: String,
+        val dispositorStrengthKey: com.astro.storm.core.common.StringKeyInterface? = null
     )
 
     enum class LunarPaksha { SHUKLA, KRISHNA }
@@ -230,7 +231,14 @@ object KemadrumaYogaCalculator {
         val recommendations: List<String>
     )
 
-    enum class ImpactLevel { SEVERE, HIGH, MODERATE, MILD, MINIMAL, POSITIVE }
+    enum class ImpactLevel(val key: com.astro.storm.core.common.StringKeyInterface) {
+        SEVERE(com.astro.storm.core.common.StringKeyYogaExpanded.IMPACT_SEVERE),
+        HIGH(com.astro.storm.core.common.StringKeyYogaExpanded.IMPACT_HIGH),
+        MODERATE(com.astro.storm.core.common.StringKeyYogaExpanded.IMPACT_MODERATE),
+        MILD(com.astro.storm.core.common.StringKeyYogaExpanded.IMPACT_MILD),
+        MINIMAL(com.astro.storm.core.common.StringKeyYogaExpanded.IMPACT_MINIMAL),
+        POSITIVE(com.astro.storm.core.common.StringKeyYogaExpanded.IMPACT_POSITIVE)
+    }
 
     /**
      * Dasha periods when Kemadruma activates
@@ -239,7 +247,8 @@ object KemadrumaYogaCalculator {
         val planet: Planet,
         val periodType: String, // Mahadasha, Antardasha
         val reason: String,
-        val intensity: Int // 1-5
+        val intensity: Int, // 1-5
+        val reasonKey: com.astro.storm.core.common.StringKeyInterface? = null
     )
 
     /**
@@ -249,11 +258,19 @@ object KemadrumaYogaCalculator {
         val category: RemedyCategory,
         val description: String,
         val timing: String,
-        val priority: Int // 1-3
+        val priority: Int, // 1-3
+        val descriptionKey: com.astro.storm.core.common.StringKeyInterface? = null,
+        val timingKey: com.astro.storm.core.common.StringKeyInterface? = null
     )
 
-    enum class RemedyCategory {
-        MANTRA, DONATION, FASTING, GEMSTONE, PUJA, LIFESTYLE, YANTRA
+    enum class RemedyCategory(val key: com.astro.storm.core.common.StringKeyInterface) {
+        MANTRA(com.astro.storm.core.common.StringKeyMatch.REMEDY_CAT_MANTRA),
+        DONATION(com.astro.storm.core.common.StringKeyMatch.REMEDY_CAT_CHARITY),
+        FASTING(com.astro.storm.core.common.StringKeyMatch.REMEDY_CAT_FASTING),
+        GEMSTONE(com.astro.storm.core.common.StringKeyMatch.REMEDY_CAT_GEMSTONE),
+        PUJA(com.astro.storm.core.common.StringKeyMatch.REMEDY_CAT_DEITY),
+        LIFESTYLE(com.astro.storm.core.common.StringKeyMatch.REMEDY_CAT_LIFESTYLE),
+        YANTRA(com.astro.storm.core.common.StringKeyMatch.REMEDY_CAT_YANTRA)
     }
 
     // ============================================================================
@@ -357,7 +374,8 @@ object KemadrumaYogaCalculator {
         // Get dispositor
         val dispositor = moonPos.sign.ruler
         val dispositorPos = chart.planetPositions.find { it.planet == dispositor }
-        val dispositorStrength = dispositorPos?.let { assessPlanetStrength(it) } ?: "Unknown"
+        val strengthKey = dispositorPos?.let { assessPlanetStrength(it) }
+        val dispositorStrength = strengthKey?.en ?: "Unknown"
 
         return MoonAnalysis(
             sign = moonPos.sign,
@@ -371,7 +389,8 @@ object KemadrumaYogaCalculator {
             tithi = tithi,
             brightness = brightness,
             dispositor = dispositor,
-            dispositorStrength = dispositorStrength
+            dispositorStrength = dispositorStrength,
+            dispositorStrengthKey = strengthKey
         )
     }
 
@@ -729,7 +748,8 @@ object KemadrumaYogaCalculator {
             planet = Planet.MOON,
             periodType = "Mahadasha/Antardasha",
             reason = "Moon is the yoga-forming planet",
-            intensity = 5
+            intensity = 5,
+            reasonKey = com.astro.storm.core.common.StringKeyYogaExpanded.ACT_MOON_FORMING
         ))
 
         // Rahu periods can trigger mental disturbances
@@ -737,7 +757,8 @@ object KemadrumaYogaCalculator {
             planet = Planet.RAHU,
             periodType = "Mahadasha/Antardasha",
             reason = "Rahu amplifies mental anxieties",
-            intensity = 4
+            intensity = 4,
+            reasonKey = com.astro.storm.core.common.StringKeyYogaExpanded.ACT_RAHU_ANXIETY
         ))
 
         // Saturn periods can bring isolation
@@ -745,7 +766,8 @@ object KemadrumaYogaCalculator {
             planet = Planet.SATURN,
             periodType = "Mahadasha/Antardasha",
             reason = "Saturn increases feelings of separation",
-            intensity = 4
+            intensity = 4,
+            reasonKey = com.astro.storm.core.common.StringKeyYogaExpanded.ACT_SATURN_ISOLATION
         ))
 
         // Check Moon's dispositor
@@ -756,7 +778,8 @@ object KemadrumaYogaCalculator {
                 planet = dispositor,
                 periodType = "Mahadasha/Antardasha",
                 reason = "As Moon's dispositor, activates Moon-related yogas",
-                intensity = 3
+                intensity = 3,
+                reasonKey = com.astro.storm.core.common.StringKeyYogaExpanded.ACT_DISPOSITOR_MOON
             ))
         }
 
@@ -773,7 +796,9 @@ object KemadrumaYogaCalculator {
                     category = RemedyCategory.LIFESTYLE,
                     description = "Continue regular Moon worship on Mondays for emotional wellbeing",
                     timing = "Monday evenings",
-                    priority = 3
+                    priority = 3,
+                    descriptionKey = com.astro.storm.core.common.StringKeyYogaExpanded.REM_MOON_WORSHIP,
+                    timingKey = com.astro.storm.core.common.StringKeyYogaExpanded.TIMING_MONDAY_EVENING
                 )
             )
         }
@@ -785,7 +810,9 @@ object KemadrumaYogaCalculator {
             category = RemedyCategory.MANTRA,
             description = "Chant 'Om Som Somaya Namah' or 'Om Chandraya Namah' 108 times daily",
             timing = "Monday evenings, during Moon hora",
-            priority = 1
+            priority = 1,
+            descriptionKey = com.astro.storm.core.common.StringKeyYogaExpanded.REM_MANTRA_SOM,
+            timingKey = com.astro.storm.core.common.StringKeyYogaExpanded.TIMING_MONDAY_HORA
         ))
 
         // Priority 1: Puja
@@ -793,7 +820,9 @@ object KemadrumaYogaCalculator {
             category = RemedyCategory.PUJA,
             description = "Perform Chandra Shanti puja or Kemadruma Nivarana puja",
             timing = "On a Monday in Shukla Paksha",
-            priority = 1
+            priority = 1,
+            descriptionKey = com.astro.storm.core.common.StringKeyYogaExpanded.REM_CHANDRA_SHANTI,
+            timingKey = com.astro.storm.core.common.StringKeyYogaExpanded.TIMING_SHUKLA_PAKSHA
         ))
 
         // Priority 2: Donation
@@ -801,7 +830,9 @@ object KemadrumaYogaCalculator {
             category = RemedyCategory.DONATION,
             description = "Donate white items (rice, milk, white cloth) on Mondays",
             timing = "Every Monday",
-            priority = 2
+            priority = 2,
+            descriptionKey = com.astro.storm.core.common.StringKeyYogaExpanded.REM_DONATE_WHITE,
+            timingKey = com.astro.storm.core.common.StringKeyYogaExpanded.TIMING_EVERY_MONDAY
         ))
 
         // Priority 2: Fasting
@@ -809,7 +840,9 @@ object KemadrumaYogaCalculator {
             category = RemedyCategory.FASTING,
             description = "Observe Monday fasts consuming only milk and white foods",
             timing = "Mondays, especially on Purnima",
-            priority = 2
+            priority = 2,
+            descriptionKey = com.astro.storm.core.common.StringKeyYogaExpanded.REM_FAST_MONDAY,
+            timingKey = com.astro.storm.core.common.StringKeyYogaExpanded.TIMING_PURNIMA
         ))
 
         // Priority 2: Gemstone
@@ -818,7 +851,9 @@ object KemadrumaYogaCalculator {
                 category = RemedyCategory.GEMSTONE,
                 description = "Wear natural Pearl (Moti) in silver on Monday after proper energization",
                 timing = "On Monday during Shukla Paksha",
-                priority = 2
+                priority = 2,
+                descriptionKey = com.astro.storm.core.common.StringKeyYogaExpanded.REM_WEAR_PEARL,
+                timingKey = com.astro.storm.core.common.StringKeyYogaExpanded.TIMING_SHUKLA_PAKSHA
             ))
         }
 
@@ -827,7 +862,9 @@ object KemadrumaYogaCalculator {
             category = RemedyCategory.YANTRA,
             description = "Worship Chandra Yantra daily with sandalwood paste and white flowers",
             timing = "Daily in the evening",
-            priority = 3
+            priority = 3,
+            descriptionKey = com.astro.storm.core.common.StringKeyYogaExpanded.REM_CHANDRA_YANTRA,
+            timingKey = com.astro.storm.core.common.StringKeyYogaExpanded.TIMING_DAILY_EVENING
         ))
 
         // Priority 3: Lifestyle
@@ -835,14 +872,18 @@ object KemadrumaYogaCalculator {
             category = RemedyCategory.LIFESTYLE,
             description = "Maintain good relationship with mother, serve elderly women, avoid isolation",
             timing = "Ongoing",
-            priority = 3
+            priority = 3,
+            descriptionKey = com.astro.storm.core.common.StringKeyYogaExpanded.REM_MOTHER_RELATION,
+            timingKey = com.astro.storm.core.common.StringKeyYogaExpanded.TIMING_ONGOING
         ))
 
         remedies.add(KemadrumaRemedy(
             category = RemedyCategory.LIFESTYLE,
             description = "Practice meditation and pranayama for mental peace",
             timing = "Daily, preferably at dawn and dusk",
-            priority = 3
+            priority = 3,
+            descriptionKey = com.astro.storm.core.common.StringKeyYogaExpanded.REM_MEDITATION,
+            timingKey = com.astro.storm.core.common.StringKeyYogaExpanded.TIMING_DAWN_DUSK
         ))
 
         return remedies.sortedBy { it.priority }
@@ -852,13 +893,13 @@ object KemadrumaYogaCalculator {
     // HELPER METHODS
     // ============================================================================
 
-    private fun assessPlanetStrength(pos: PlanetPosition): String {
+    private fun assessPlanetStrength(pos: PlanetPosition): com.astro.storm.core.common.StringKeyInterface {
         return when {
-            VedicAstrologyUtils.isExalted(pos) -> "Strong (Exalted)"
-            VedicAstrologyUtils.isDebilitated(pos) -> "Weak (Debilitated)"
-            VedicAstrologyUtils.isInOwnSign(pos) -> "Strong (Own Sign)"
-            VedicAstrologyUtils.isInMoolatrikona(pos) -> "Strong (Moolatrikona)"
-            else -> "Average"
+            VedicAstrologyUtils.isExalted(pos) -> com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_EXALTED_KEMA
+            VedicAstrologyUtils.isDebilitated(pos) -> com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_DEBILITATED_KEMA
+            VedicAstrologyUtils.isInOwnSign(pos) -> com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_OWN_SIGN_KEMA
+            VedicAstrologyUtils.isInMoolatrikona(pos) -> com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_MOOLATRIKONA_KEMA
+            else -> com.astro.storm.core.common.StringKeyYogaExpanded.STRENGTH_AVERAGE_KEMA
         }
     }
 
