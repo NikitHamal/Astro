@@ -18,30 +18,7 @@ object DivisionalChartCalculator {
         return "${chart.hashCode()}_${type.name}"
     }
 
-    fun calculateDivisionalChart(chart: VedicChart, type: DivisionalChartType): DivisionalChartData {
-        val key = getCacheKey(chart, type)
-        return chartCache.getOrPut(key) {
-            when (type) {
-                DivisionalChartType.D1_RASHI -> calculateRashi(chart)
-                DivisionalChartType.D2_HORA -> calculateHora(chart)
-                DivisionalChartType.D3_DREKKANA -> calculateDrekkana(chart)
-                DivisionalChartType.D4_CHATURTHAMSA -> calculateChaturthamsa(chart)
-                DivisionalChartType.D7_SAPTAMSA -> calculateSaptamsa(chart)
-                DivisionalChartType.D9_NAVAMSA -> calculateNavamsa(chart)
-                DivisionalChartType.D10_DASAMSA -> calculateDasamsa(chart)
-                DivisionalChartType.D12_DWADASAMSA -> calculateDwadasamsa(chart)
-                DivisionalChartType.D16_SHODASHAMSA -> calculateShodasamsa(chart)
-                DivisionalChartType.D20_VIMSAMSA -> calculateVimsamsa(chart)
-                DivisionalChartType.D24_CHATURVIMSAMSA -> calculateChaturvimsamsa(chart)
-                DivisionalChartType.D27_SAPTAVIMSAMSA -> calculateSaptavimsamsa(chart)
-                DivisionalChartType.D30_TRIMSAMSA -> calculateTrimsamsa(chart)
-                DivisionalChartType.D40_KHAVEDAMSA -> calculateKhavedamsa(chart)
-                DivisionalChartType.D45_AKSHAVEDAMSA -> calculateAkshavedamsa(chart)
-                DivisionalChartType.D60_SHASHTIAMSA -> calculateShashtiamsa(chart)
-                else -> calculateRashi(chart)
-            }
-        }
-    }
+    // Moved the logic into the existing calculateDivisionalChart at line 922
 
     fun calculateRashi(chart: VedicChart): DivisionalChartData {
         val ascendantSign = ZodiacSign.fromLongitude(chart.ascendant)
@@ -920,30 +897,33 @@ object DivisionalChartCalculator {
     }
 
     fun calculateDivisionalChart(chart: VedicChart, type: DivisionalChartType): DivisionalChartData {
-        return when (type) {
-            DivisionalChartType.D1_RASHI -> calculateRashi(chart)
-            DivisionalChartType.D2_HORA -> calculateHora(chart)
-            DivisionalChartType.D3_DREKKANA -> calculateDrekkana(chart)
-            DivisionalChartType.D4_CHATURTHAMSA -> calculateChaturthamsa(chart)
-            DivisionalChartType.D5_PANCHAMSA -> calculatePanchamsa(chart)
-            DivisionalChartType.D6_SHASTHAMSA -> calculateShasthamsa(chart)
-            DivisionalChartType.D7_SAPTAMSA -> calculateSaptamsa(chart)
-            DivisionalChartType.D8_ASHTAMSA -> calculateAshtamsa(chart)
-            DivisionalChartType.D9_NAVAMSA -> calculateNavamsa(chart)
-            DivisionalChartType.D10_DASAMSA -> calculateDasamsa(chart)
-            DivisionalChartType.D11_RUDRAMSA -> calculateRudramsa(chart)
-            DivisionalChartType.D12_DWADASAMSA -> calculateDwadasamsa(chart)
-            DivisionalChartType.D16_SHODASAMSA -> calculateShodasamsa(chart)
-            DivisionalChartType.D20_VIMSAMSA -> calculateVimsamsa(chart)
-            DivisionalChartType.D24_CHATURVIMSAMSA -> calculateChaturvimsamsa(chart)
-            DivisionalChartType.D27_SAPTAVIMSAMSA -> calculateSaptavimsamsa(chart)
-            DivisionalChartType.D30_TRIMSAMSA -> calculateTrimsamsa(chart)
-            DivisionalChartType.D40_KHAVEDAMSA -> calculateKhavedamsa(chart)
-            DivisionalChartType.D45_AKSHAVEDAMSA -> calculateAkshavedamsa(chart)
-            DivisionalChartType.D60_SHASHTIAMSA -> calculateShashtiamsa(chart)
-            DivisionalChartType.D81_NAVNAVAMSA -> calculateNavnavamsa(chart)
-            DivisionalChartType.D108_ASHTOTTARSHAMSA -> calculateAshtottarshamsa(chart)
-            DivisionalChartType.D144_DWADASH_DWADASHAMSA -> calculateDwadashDwadashamsa(chart)
+        val key = getCacheKey(chart, type)
+        return chartCache.getOrPut(key) {
+            when (type) {
+                DivisionalChartType.D1_RASHI -> calculateRashi(chart)
+                DivisionalChartType.D2_HORA -> calculateHora(chart)
+                DivisionalChartType.D3_DREKKANA -> calculateDrekkana(chart)
+                DivisionalChartType.D4_CHATURTHAMSA -> calculateChaturthamsa(chart)
+                DivisionalChartType.D5_PANCHAMSA -> calculatePanchamsa(chart)
+                DivisionalChartType.D6_SHASTHAMSA -> calculateShasthamsa(chart)
+                DivisionalChartType.D7_SAPTAMSA -> calculateSaptamsa(chart)
+                DivisionalChartType.D8_ASHTAMSA -> calculateAshtamsa(chart)
+                DivisionalChartType.D9_NAVAMSA -> calculateNavamsa(chart)
+                DivisionalChartType.D10_DASAMSA -> calculateDasamsa(chart)
+                DivisionalChartType.D11_RUDRAMSA -> calculateRudramsa(chart)
+                DivisionalChartType.D12_DWADASAMSA -> calculateDwadasamsa(chart)
+                DivisionalChartType.D16_SHODASAMSA -> calculateShodasamsa(chart)
+                DivisionalChartType.D20_VIMSAMSA -> calculateVimsamsa(chart)
+                DivisionalChartType.D24_CHATURVIMSAMSA -> calculateChaturvimsamsa(chart)
+                DivisionalChartType.D27_SAPTAVIMSAMSA -> calculateSaptavimsamsa(chart)
+                DivisionalChartType.D30_TRIMSAMSA -> calculateTrimsamsa(chart)
+                DivisionalChartType.D40_KHAVEDAMSA -> calculateKhavedamsa(chart)
+                DivisionalChartType.D45_AKSHAVEDAMSA -> calculateAkshavedamsa(chart)
+                DivisionalChartType.D60_SHASHTIAMSA -> calculateShashtiamsa(chart)
+                DivisionalChartType.D81_NAVNAVAMSA -> calculateNavnavamsa(chart)
+                DivisionalChartType.D108_ASHTOTTARSHAMSA -> calculateAshtottarshamsa(chart)
+                DivisionalChartType.D144_DWADASH_DWADASHAMSA -> calculateDwadashDwadashamsa(chart)
+            }
         }
     }
 
