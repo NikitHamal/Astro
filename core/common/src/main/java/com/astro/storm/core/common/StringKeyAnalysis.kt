@@ -124,7 +124,7 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     UI_AVOID_ACTIVITIES("Avoid important activities", "महत्त्वपूर्ण गतिविधिहरूबाट बच्नुहोस्"),
     UI_AUSPICIOUS_TIMING("Auspicious timing", "शुभ समय"),
     UI_IN_DAYS_FMT("In %d days", "%d दिनमा"),
-    UI_YOGAS_FOUND_FMT("%d yogas found - %s", "%s मा %d योगहरू फेला परे",),
+    UI_YOGAS_FOUND_FMT("%d yogas found - %s", "%d योगहरू %s मा फेला परे",),
     UI_ALL_COUNT_FMT("All (%d)", "सबै (%d)"),
     UI_SORT_BY("Sort by", "क्रमबद्ध गर्नुहोस्"),
     UI_EXIT_DATE("Exit Date", "निस्कने मिति"),
