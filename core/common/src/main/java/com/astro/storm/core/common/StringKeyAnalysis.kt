@@ -124,7 +124,7 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     UI_AVOID_ACTIVITIES("Avoid important activities", "महत्त्वपूर्ण गतिविधिहरूबाट बच्नुहोस्"),
     UI_AUSPICIOUS_TIMING("Auspicious timing", "शुभ समय"),
     UI_IN_DAYS_FMT("In %d days", "%d दिनमा"),
-    UI_YOGAS_FOUND_FMT("%d yogas found - %s", "%s मा %d योगहरू फेला परे",),
+    UI_YOGAS_FOUND_FMT("%1$d yogas found - %2$s", "%2$s मा %1$d योगहरू फेला परे"),
     UI_ALL_COUNT_FMT("All (%d)", "सबै (%d)"),
     UI_SORT_BY("Sort by", "क्रमबद्ध गर्नुहोस्"),
     UI_EXIT_DATE("Exit Date", "निस्कने मिति"),
@@ -950,7 +950,7 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     // ============================================
     // VARSHAPHALA - MUNTHA INTERPRETATION TEMPLATE
     // ============================================
-    MUNTHA_INTERPRETATION_TEMPLATE("Muntha in %s in the %d%s house focuses the year's energy on %s. The Muntha lord %s in house %d provides %s support for these matters.", "%d%s भावमा %s मा मुन्थले वर्षको ऊर्जालाई %s मा केन्द्रित गर्दछ। मुन्थ स्वामी %s भाव %d मा यी मामिलाहरूको लागि %s समर्थन प्रदान गर्दछ।"),
+    MUNTHA_INTERPRETATION_TEMPLATE("Muntha in %1$s in the %2$d%3$s house focuses the year's energy on %4$s. The Muntha lord %5$s in house %6$d provides %7$s support for these matters.", "%2$d%3$s भावमा %1$s मा मुन्थले वर्षको ऊर्जालाई %4$s मा केन्द्रित गर्दछ। मुन्थ स्वामी %5$s भाव %6$d मा यी मामिलाहरूको लागि %7$s समर्थन प्रदान गर्दछ।"),
     MUNTHA_SUPPORT_EXCELLENT("excellent", "उत्कृष्ट"),
     MUNTHA_SUPPORT_FAVORABLE("favorable", "अनुकूल"),
     MUNTHA_SUPPORT_CHALLENGING("challenging but growth-oriented", "चुनौतीपूर्ण तर विकासोन्मुख"),
@@ -2278,7 +2278,7 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     // ============================================
     // VARSHAPHALA - DASHA PREDICTIONS
     // ============================================
-    VARSHA_DASHA_PERIOD_FORMAT("%s Period: %s to %s", "%s अवधि: %s देखि %s"),
+    VARSHA_DASHA_PERIOD_FORMAT("%1$s - %2$s Period", "%1$s - %2$s अवधि"),
     PLANET_NATURE_SUN("vitality and authority", "जीवनशक्ति र अधिकार"),
     PLANET_NATURE_MOON("emotional connection and growth", "भावनात्मक सम्बन्ध र विकास"),
     PLANET_NATURE_MARS("energy and initiative", "ऊर्जा र पहल"),
@@ -2397,8 +2397,8 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     VARSHA_HOUSE_LORD_DEPENDENT("Success in %s depends heavily on other planetary configurations.", "%s मा सफलता धेरै हदसम्म अन्य ग्रह विन्यासमा निर्भर गर्दछ।"),
     VARSHA_HOUSE_MUNTHA_EMPHASIS("Muntha's presence here significantly increases the priority of %s this year.", "यहाँ मुन्थको उपस्थितिले यस वर्ष %s को प्राथमिकतालाई महत्त्वपूर्ण रूपमा बढाउँछ।"),
     VARSHA_HOUSE_YEARLORD_RULE("Year Lord's rule over this house elevates the importance of %s matters.", "यस भावमा वर्ष स्वामीको शासनले %s मामिलाहरूको महत्त्व बढाउँछ।"),
-    VARSHA_HOUSE_PREDICTION_FORMAT("House %d Overview: %s. %s", "भाव %d अवलोकन: %s। %s"),
-    VARSHA_YEARLORD_DIGNITY_FORMAT("%s is in %s (House %d)", "%s भाव %d मा %s राशिमा छ"),
+    VARSHA_HOUSE_PREDICTION_FORMAT("House %1$d (%2$s) Overview: %3$s. %4$s %5$s %6$s", "भाव %1$d (%2$s) अवलोकन: %3$s। %4$s %5$s %6$s"),
+    VARSHA_YEARLORD_DIGNITY_FORMAT("%1$s is in %2$s (House %3$d)", "%1$s भाव %3$d मा %2$s राशिमा छ"),
     HOUSE_1_SIGNIFICANCE("Self, Appearance, Health", "स्वयं, स्वरूप, स्वास्थ्य"),
     HOUSE_2_SIGNIFICANCE("Wealth, Family, Speech", "धन, परिवार, वाणी"),
     HOUSE_3_SIGNIFICANCE("Siblings, Courage, Communication", "भाइबहिनी, साहस, सञ्चार"),
@@ -2432,10 +2432,10 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     VARSHA_EVENT_GOVERNMENT_FAVOR("Favor from government or influential figures", "सरकार वा प्रभावशाली व्यक्तिहरूबाट सहयोग"),
     VARSHA_EVENT_DESIRE_FULFILLMENT("Fulfillment of long-held desires and ambitions", "लामो समयदेखिका इच्छाहरू र महत्त्वाकांक्षाहरूको पूर्ति"),
     VARSHA_THEME_YEARLORD("Year Lord (%s Influence)", "वर्ष स्वामी (%s प्रभाव)"),
-    VARSHA_THEME_MUNTHA("Muntha Focus (%s)", "मुन्थ फोकस (%s)"),
+    VARSHA_THEME_MUNTHA("Muntha Focus: House %1$d - %2$s", "मुन्थ फोकस: भाव %1$d - %2$s"),
     VARSHA_THEME_TRIPATAKI("Tri-Pataki Activation in %s", "%s मा त्रिपताकी सक्रियता"),
     VARSHA_THEME_FAVORABLE("Favorable year for overall progress", "समग्र प्रगतिको लागि अनुकूल वर्ष"),
-    VARSHA_THEME_TAJIKA("Tajika Aspect Influence: %s", "ताजिक दृष्टि प्रभाव: %s"),
+    VARSHA_THEME_TAJIKA("Tajika Aspect Influence: %1$s (%2$d/%3$d)", "ताजिक दृष्टि प्रभाव: %1$s (%2$d/%3$d)"),
     VARSHA_EVENT_SOLAR_RETURN("Solar Return Activation", "सौर्य फिर्ती सक्रियता"),
     VARSHA_EVENT_SOLAR_RETURN_DESC("The precise moment the Sun returns to your birth position.", "सूर्य तपाईंको जन्म स्थितिमा फर्कने सटीक क्षण।"),
     VARSHA_EVENT_DASHA_BEGINS("%s Dasha Begins", "%s दशा सुरु हुन्छ"),
