@@ -342,14 +342,6 @@ fun AstroStormNavigation(
     ) {
         // Main screen with bottom navigation
         composable(Screen.Main.route) {
-            MainScreen(
-                viewModel = viewModel,
-                chatViewModel = chatViewModel,
-                themeManager = themeManager,
-                savedCharts = savedCharts,
-                currentChart = currentChart,
-                selectedChartId = selectedChartId,
-                onChartSelected = viewModel::loadChart,
             fun navigateToFeature(route: String) {
                 navController.navigate(route)
             }
