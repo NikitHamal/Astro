@@ -312,6 +312,8 @@ enum class StringKeyYogaExpanded(override val en: String, override val ne: Strin
     YOGA_CAT_BHAVA_DESC("House Lord Placements", "भाव अधिपति स्थितिहरू"),
     YOGA_CAT_CONJUNCTION("Conjunction Yoga", "युति योग"),
     YOGA_CAT_CONJUNCTION_DESC("Planetary Conjunctions", "ग्रह युतिहरू"),
+    YOGA_CAT_NABHASA("Nabhasa Yoga", "नाभस योग"),
+    YOGA_CAT_NABHASA_DESC("Planetary Patterns", "ग्रह आकृतिहरू"),
 
     // ============================================
     // PANCH MAHAPURUSHA YOGA DETAILS
