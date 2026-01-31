@@ -50,6 +50,7 @@ class ChartRepository @Inject constructor(private val chartDao: ChartDao) {
 
     private fun VedicChart.toEntity(): ChartEntity {
         return ChartEntity(
+            id = id,
             name = birthData.name,
             dateTime = birthData.dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
             latitude = birthData.latitude,

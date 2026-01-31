@@ -4,6 +4,7 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.ephemeris.VipareetaRajaYogaCalculator
 
 /**
  * Raja Yoga Evaluator - Power and Authority Combinations
@@ -11,10 +12,12 @@ import com.astro.storm.core.model.ZodiacSign
  * Raja Yogas are formed by the association of Kendra lords (1,4,7,10) and Trikona lords (1,5,9).
  * These yogas indicate power, authority, and leadership potential.
  *
+ * This evaluator integrates with [VipareetaRajaYogaCalculator] for precise reverse raja yoga analysis.
+ *
  * Types evaluated:
  * 1. Kendra-Trikona Raja Yoga - Conjunction/aspect/exchange of Kendra and Trikona lords
  * 2. Parivartana Raja Yoga - Exchange between benefic house lords
- * 3. Viparita Raja Yoga - Lords of 6, 8, 12 in each other's houses
+ * 3. Viparita Raja Yoga - Lords of 6, 8, 12 in each other's houses (via specialized calculator)
  * 4. Neecha Bhanga Raja Yoga - Cancellation of debilitation creating power
  * 5. Maha Raja Yoga - Jupiter and Venus in Kendra from Moon
  *
@@ -44,8 +47,8 @@ class RajaYogaEvaluator : YogaEvaluator {
         // 1. Kendra-Trikona Raja Yoga
         yogas.addAll(evaluateKendraTrikonaYogas(chart, kendraLords, trikonaLords))
 
-        // 2. Viparita Raja Yoga
-        yogas.addAll(evaluateViparitaRajaYogas(chart, houseLords))
+        // 2. Viparita Raja Yoga (via specialized calculator)
+        evaluateDusthanaYogas(chart, yogas)
 
         // 3. Neecha Bhanga Raja Yoga
         yogas.addAll(evaluateNeechaBhangaYogas(chart))
@@ -63,6 +66,39 @@ class RajaYogaEvaluator : YogaEvaluator {
         evaluateAkhandaSamrajyaYoga(chart, houseLords)?.let { yogas.add(it) }
 
         return yogas
+    }
+
+    private fun evaluateDusthanaYogas(chart: VedicChart, yogas: MutableList<Yoga>) {
+        val analysis = VipareetaRajaYogaCalculator.analyzeVipareetaRajaYogas(chart) ?: return
+
+        listOf(analysis.harshaYoga, analysis.saralaYoga, analysis.vimalaYoga).forEach { detailedYoga ->
+            if (detailedYoga.isFormed) {
+                val basePct = when (detailedYoga.strength) {
+                    VipareetaRajaYogaCalculator.YogaStrength.EXCEPTIONAL -> 90.0
+                    VipareetaRajaYogaCalculator.YogaStrength.STRONG -> 75.0
+                    VipareetaRajaYogaCalculator.YogaStrength.MODERATE -> 60.0
+                    VipareetaRajaYogaCalculator.YogaStrength.MILD -> 45.0
+                    VipareetaRajaYogaCalculator.YogaStrength.WEAK -> 30.0
+                    else -> 0.0
+                }
+
+                yogas.add(Yoga(
+                    name = detailedYoga.yogaType.displayName,
+                    sanskritName = detailedYoga.yogaType.sanskritName,
+                    category = YogaCategory.RAJA_YOGA,
+                    planets = listOf(detailedYoga.dusthanaLord),
+                    houses = listOf(detailedYoga.placedInHouse),
+                    description = detailedYoga.yogaType.description,
+                    effects = detailedYoga.interpretation,
+                    strength = YogaHelpers.strengthFromPercentage(basePct),
+                    strengthPercentage = basePct,
+                    isAuspicious = true,
+                    activationPeriod = detailedYoga.dusthanaLord.displayName + " periods",
+                    cancellationFactors = detailedYoga.weaknessFactors,
+                    detailedResult = detailedYoga
+                ))
+            }
+        }
     }
 
     /**
@@ -256,33 +292,6 @@ class RajaYogaEvaluator : YogaEvaluator {
     }
 
     /**
-     * Evaluate Viparita Raja Yogas (lords of 6, 8, 12 in each other's houses)
-     */
-    private fun evaluateViparitaRajaYogas(
-        chart: VedicChart,
-        houseLords: Map<Int, Planet>
-    ): List<Yoga> {
-        val yogas = mutableListOf<Yoga>()
-
-        val dusthanaLords = listOf(houseLords[6], houseLords[8], houseLords[12]).filterNotNull()
-        dusthanaLords.forEachIndexed { i, lord1 ->
-            dusthanaLords.drop(i + 1).forEach { lord2 ->
-                val pos1 = chart.planetPositions.find { it.planet == lord1 }
-                val pos2 = chart.planetPositions.find { it.planet == lord2 }
-
-                if (pos1 != null && pos2 != null) {
-                    if (YogaHelpers.areInExchange(pos1, pos2) || YogaHelpers.areConjunct(pos1, pos2)) {
-                        val strength = YogaHelpers.calculateYogaStrength(chart, listOf(pos1, pos2)) * 0.7
-                        yogas.add(createViparitaRajaYoga(lord1, lord2, strength, chart))
-                    }
-                }
-            }
-        }
-
-        return yogas
-    }
-
-    /**
      * Evaluate Neecha Bhanga Raja Yogas
      */
     private fun evaluateNeechaBhangaYogas(chart: VedicChart): List<Yoga> {
@@ -394,43 +403,6 @@ class RajaYogaEvaluator : YogaEvaluator {
             isAuspicious = true,
             activationPeriod = "${planet1.displayName} and ${planet2.displayName} Dashas",
             cancellationFactors = cancellationReasons.ifEmpty { listOf("None - yoga is unafflicted") }
-        )
-    }
-
-    private fun createViparitaRajaYoga(
-        planet1: Planet,
-        planet2: Planet,
-        baseStrength: Double,
-        chart: VedicChart
-    ): Yoga {
-        val pos1 = chart.planetPositions.find { it.planet == planet1 }
-        val pos2 = chart.planetPositions.find { it.planet == planet2 }
-        val positions = listOfNotNull(pos1, pos2)
-
-        val (cancellationFactor, cancellationReasons) = YogaHelpers.calculateCancellationFactor(positions, chart)
-        val adjustedStrength = (baseStrength * cancellationFactor).coerceIn(10.0, 100.0)
-
-        // Add Viparita-specific consideration
-        val specificReasons = cancellationReasons.toMutableList()
-        positions.forEach { pos ->
-            if (YogaHelpers.isExalted(pos) || YogaHelpers.isInOwnSign(pos)) {
-                specificReasons.add("${pos.planet.displayName} is strong - Viparita results may be modified")
-            }
-        }
-
-        return Yoga(
-            name = "Viparita Raja Yoga",
-            sanskritName = "Viparita Raja Yoga",
-            category = YogaCategory.RAJA_YOGA,
-            planets = listOf(planet1, planet2),
-            houses = positions.map { it.house },
-            description = "Lords of Dusthanas (6,8,12) connected",
-            effects = "Rise through fall of enemies, sudden fortune from unexpected sources, gains through others' losses",
-            strength = YogaHelpers.strengthFromPercentage(adjustedStrength),
-            strengthPercentage = adjustedStrength,
-            isAuspicious = true,
-            activationPeriod = "${planet1.displayName}-${planet2.displayName} periods",
-            cancellationFactors = specificReasons.ifEmpty { listOf("None - yoga is unafflicted") }
         )
     }
 

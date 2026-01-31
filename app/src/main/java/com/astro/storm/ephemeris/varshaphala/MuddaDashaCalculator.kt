@@ -28,7 +28,7 @@ object MuddaDashaCalculator {
 
         for (i in MUDDA_DASHA_PLANETS.indices) {
             val planet = MUDDA_DASHA_PLANETS[(startIndex + i) % MUDDA_DASHA_PLANETS.size]
-            val days = ((MUDDA_DASHA_DAYS[planet] ?: 30) * 360 / 360).coerceAtLeast(1)
+            val days = (MUDDA_DASHA_DAYS[planet] ?: 30).coerceAtLeast(1)
             val endDate = currentDate.plusDays(days.toLong() - 1)
             val isCurrent = !today.isBefore(currentDate) && !today.isAfter(endDate)
             val strength = evaluatePlanetStrengthDescription(planet, chart, language)

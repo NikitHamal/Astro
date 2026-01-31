@@ -32,8 +32,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Diamond
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Hub
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.MilitaryTech
+import androidx.compose.material.icons.outlined.NightsStay
+import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.outlined.WorkspacePremium
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -70,12 +79,16 @@ import com.astro.storm.ephemeris.yoga.YogaCategory
 import com.astro.storm.ephemeris.yoga.YogaStrength
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.components.StatusBadge
+import com.astro.storm.ui.theme.LocalAppThemeColors
 
 /**
  * Yogas tab content displaying all detected yogas with filtering and analysis.
  */
 @Composable
-fun YogasTabContent(chart: VedicChart) {
+fun YogasTabContent(
+    chart: VedicChart,
+    onNavigateToDetailedYoga: (Yoga) -> Unit = {}
+) {
     val yogaAnalysis = remember(chart) {
         YogaCalculator.calculateYogas(chart)
     }
@@ -129,7 +142,8 @@ fun YogasTabContent(chart: VedicChart) {
                         } else {
                             expandedYogaKeys.remove(yogaKey)
                         }
-                    }
+                    },
+                    onViewDeepAnalysis = { onNavigateToDetailedYoga(yoga) }
                 )
             }
         }
@@ -222,11 +236,12 @@ private fun YogaSummaryCard(analysis: YogaAnalysis) {
 @Composable
 private fun OverallStrengthBar(strength: Double, language: Language) {
     val progress = (strength / 100.0).coerceIn(0.0, 1.0).toFloat()
+    val theme = LocalAppThemeColors.current
     val color = when {
-        strength >= 75 -> ChartDetailColors.SuccessColor
-        strength >= 50 -> ChartDetailColors.AccentTeal
-        strength >= 25 -> ChartDetailColors.WarningColor
-        else -> ChartDetailColors.ErrorColor
+        strength >= 75 -> theme.SuccessColor
+        strength >= 50 -> theme.AccentTeal
+        strength >= 25 -> theme.WarningColor
+        else -> theme.ErrorColor
     }
 
     Column {
@@ -261,12 +276,13 @@ private fun OverallStrengthBar(strength: Double, language: Language) {
 
 @Composable
 private fun TopYogasSection(topYogas: List<Yoga>, language: Language) {
+    val theme = LocalAppThemeColors.current
     Column {
         Text(
             text = stringResource(StringKey.YOGA_MOST_SIGNIFICANT),
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
-            color = ChartDetailColors.AccentGold,
+            color = theme.AccentGold,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         topYogas.forEach { yoga ->
@@ -363,7 +379,8 @@ private fun YogaCategoryFilter(
 private fun YogaCard(
     yoga: Yoga,
     isExpanded: Boolean,
-    onToggleExpand: (Boolean) -> Unit
+    onToggleExpand: (Boolean) -> Unit,
+    onViewDeepAnalysis: () -> Unit
 ) {
     val language = LocalLanguage.current
     val rotation by animateFloatAsState(
@@ -402,7 +419,7 @@ private fun YogaCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            if (yoga.isAuspicious) Icons.Outlined.Star else Icons.Outlined.Warning,
+                            imageVector = getCategoryIcon(yoga.category),
                             contentDescription = null,
                             tint = getCategoryColor(yoga.category),
                             modifier = Modifier.size(20.dp)
@@ -533,6 +550,11 @@ private fun YogaCard(
                         )
                     }
 
+                    // Integrated Detailed Analysis Summary
+                    if (yoga.detailedResult != null) {
+                        DetailedAnalysisSummary(yoga.detailedResult, onViewDeepAnalysis)
+                    }
+
                     if (!yoga.isAuspicious && yoga.cancellationFactors.isNotEmpty()) {
                         HorizontalDivider(
                             color = ChartDetailColors.DividerColor,
@@ -627,18 +649,36 @@ private fun getCategoryDisplayName(category: YogaCategory, language: Language): 
     return category.getLocalizedName(language)
 }
 
+private fun getCategoryIcon(category: YogaCategory): androidx.compose.ui.graphics.vector.ImageVector {
+    return when (category) {
+        YogaCategory.RAJA_YOGA -> Icons.Outlined.WorkspacePremium
+        YogaCategory.DHANA_YOGA -> Icons.Outlined.Diamond
+        YogaCategory.MAHAPURUSHA_YOGA -> Icons.Outlined.Psychology
+        YogaCategory.NABHASA_YOGA -> Icons.Outlined.AutoAwesome
+        YogaCategory.CHANDRA_YOGA -> Icons.Outlined.NightsStay
+        YogaCategory.SOLAR_YOGA -> Icons.Outlined.LightMode
+        YogaCategory.NEGATIVE_YOGA -> Icons.Outlined.Info
+        YogaCategory.SPECIAL_YOGA -> Icons.Outlined.MilitaryTech
+        YogaCategory.BHAVA_YOGA -> Icons.Outlined.Home
+        YogaCategory.CONJUNCTION_YOGA -> Icons.Outlined.Hub
+    }
+}
+
 @Composable
-private fun getCategoryColor(category: YogaCategory): Color = when (category) {
-    YogaCategory.RAJA_YOGA -> ChartDetailColors.AccentGold
-    YogaCategory.DHANA_YOGA -> ChartDetailColors.SuccessColor
-    YogaCategory.MAHAPURUSHA_YOGA -> ChartDetailColors.AccentPurple
-    YogaCategory.NABHASA_YOGA -> ChartDetailColors.AccentTeal
-    YogaCategory.CHANDRA_YOGA -> ChartDetailColors.AccentBlue
-    YogaCategory.SOLAR_YOGA -> ChartDetailColors.AccentOrange
-    YogaCategory.NEGATIVE_YOGA -> ChartDetailColors.ErrorColor
-    YogaCategory.SPECIAL_YOGA -> ChartDetailColors.AccentRose
-    YogaCategory.BHAVA_YOGA -> ChartDetailColors.AccentPrimary
-    YogaCategory.CONJUNCTION_YOGA -> ChartDetailColors.AccentTeal
+private fun getCategoryColor(category: YogaCategory): Color {
+    val theme = LocalAppThemeColors.current
+    return when (category) {
+        YogaCategory.RAJA_YOGA -> theme.AccentGold
+        YogaCategory.DHANA_YOGA -> theme.SuccessColor
+        YogaCategory.MAHAPURUSHA_YOGA -> theme.LifeAreaSpiritual
+        YogaCategory.NABHASA_YOGA -> theme.AccentTeal
+        YogaCategory.CHANDRA_YOGA -> theme.InfoColor
+        YogaCategory.SOLAR_YOGA -> theme.WarningColor
+        YogaCategory.NEGATIVE_YOGA -> theme.ErrorColor
+        YogaCategory.SPECIAL_YOGA -> theme.AccentPrimary
+        YogaCategory.BHAVA_YOGA -> theme.AccentPrimary
+        YogaCategory.CONJUNCTION_YOGA -> theme.AccentTeal
+    }
 }
 
 private fun formatNumber(number: Int, language: Language): String {
@@ -666,6 +706,94 @@ private fun formatPercentage(value: Double, language: Language): String {
                 }
             }.joinToString("")
             "$nepaliNumber%"
+        }
+    }
+}
+
+@Composable
+private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit) {
+    val language = LocalLanguage.current
+    val theme = LocalAppThemeColors.current
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        color = ChartDetailColors.CardBackgroundElevated,
+        border = androidx.compose.foundation.BorderStroke(1.dp, theme.AccentGold.copy(alpha = 0.15f))
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    Icons.Outlined.AutoAwesome,
+                    contentDescription = null,
+                    tint = theme.AccentGold,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DEEP_ANALYSIS),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = theme.TextPrimary,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Text(
+                    text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_VIEW_MORE),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = theme.AccentGold,
+                    modifier = Modifier
+                        .clickable { onViewDeepAnalysis() }
+                        .padding(4.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            val summaryText = when (result) {
+                is com.astro.storm.ephemeris.KemadrumaYogaCalculator.KemadrumaAnalysis -> {
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        result.effectiveStatus.getLocalizedName(language)
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_CANCELLATION_FMT),
+                        result.totalCancellationScore
+                    )
+                }
+                is com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.MahapurushaYoga -> {
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        if (result.isExalted) stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DIGNITY_EXALTED)
+                        else stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DIGNITY_OWN_SIGN)
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_FMT),
+                        result.strength
+                    )
+                }
+                is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        result.activationStatus.displayName
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_LEVEL_FMT),
+                        result.strength.displayName
+                    )
+                }
+                else -> stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.EFFECT_GENERIC_GOOD)
+            }
+
+            Text(
+                text = summaryText,
+                fontSize = 12.sp,
+                color = theme.TextSecondary,
+                lineHeight = 18.sp
+            )
         }
     }
 }

@@ -37,11 +37,22 @@ object SudarshanaChakraDashaCalculator {
     /**
      * Calculate Sudarshana Chakra Dasha for a given age/year
      */
-    fun calculateSudarshanaChakra(chart: VedicChart, targetAge: Int = 0, language: Language = Language.ENGLISH): SudarshanaChakraResult {
+    fun calculateSudarshanaChakra(
+        chart: VedicChart,
+        targetAge: Int = 0,
+        language: Language = Language.ENGLISH,
+        useVedicAge: Boolean = true
+    ): SudarshanaChakraResult {
         val birthDateTime = chart.birthData.dateTime
         val ageAtCalculation = if (targetAge <= 0) {
-            val years = java.time.Period.between(birthDateTime.toLocalDate(), java.time.LocalDate.now()).years
-            years + 1 // Vedic age: 1st year of life is age 1
+            if (useVedicAge) {
+                // Vedic age based on 360-day Savana years
+                val totalDays = java.time.temporal.ChronoUnit.DAYS.between(birthDateTime.toLocalDate(), java.time.LocalDate.now())
+                (totalDays / 360).toInt() + 1
+            } else {
+                val years = java.time.Period.between(birthDateTime.toLocalDate(), java.time.LocalDate.now()).years
+                years + 1 // 1st year of life is age 1
+            }
         } else {
             targetAge
         }

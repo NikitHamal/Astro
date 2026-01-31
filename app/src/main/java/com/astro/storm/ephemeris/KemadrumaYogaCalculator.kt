@@ -7,6 +7,8 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.ephemeris.AstrologicalConstants
+import com.astro.storm.ephemeris.VedicAstrologyUtils
 
 /**
  * Comprehensive Kemadruma Yoga Calculator
@@ -377,15 +379,15 @@ object KemadrumaYogaCalculator {
      * Check if Kemadruma Yoga is formed
      */
     private fun checkKemadrumaFormation(moonPos: PlanetPosition, chart: VedicChart): KemadrumaFormation {
-        val moonSign = moonPos.sign.number
+        val moonSignNum = moonPos.sign.number
 
-        // Calculate 2nd and 12th from Moon
-        val secondFromMoon = ((moonSign) % 12) + 1
-        val twelfthFromMoon = if (moonSign == 1) 12 else moonSign - 1
+        // Calculate 2nd and 12th from Moon (Sign-based)
+        val secondFromMoon = if (moonSignNum == 12) 1 else moonSignNum + 1
+        val twelfthFromMoon = if (moonSignNum == 1) 12 else moonSignNum - 1
 
         // Planets to check (exclude Sun, Rahu, Ketu for classical Kemadruma)
         val relevantPlanets = listOf(
-            Planet.MOON, Planet.MARS, Planet.MERCURY, Planet.JUPITER, Planet.VENUS, Planet.SATURN
+            Planet.MARS, Planet.MERCURY, Planet.JUPITER, Planet.VENUS, Planet.SATURN
         )
 
         val planetsInSecond = mutableListOf<Planet>()
@@ -393,12 +395,12 @@ object KemadrumaYogaCalculator {
         val planetsConjunct = mutableListOf<Planet>()
 
         for (pos in chart.planetPositions) {
-            if (pos.planet !in relevantPlanets || pos.planet == Planet.MOON) continue
+            if (pos.planet !in relevantPlanets) continue
 
             when (pos.sign.number) {
                 secondFromMoon -> planetsInSecond.add(pos.planet)
                 twelfthFromMoon -> planetsInTwelfth.add(pos.planet)
-                moonSign -> planetsConjunct.add(pos.planet)
+                moonSignNum -> planetsConjunct.add(pos.planet)
             }
         }
 
@@ -432,26 +434,21 @@ object KemadrumaYogaCalculator {
         chart: VedicChart
     ): List<KemadrumaBhanga> {
         val cancellations = mutableListOf<KemadrumaBhanga>()
-        val moonSign = moonPos.sign.number
-        val ascendantSign = ZodiacSign.fromLongitude(chart.ascendant).number
+        val ascendantSign = VedicAstrologyUtils.getAscendantSign(chart)
 
-        // 1. Planets in Kendra from Moon
-        val kendraFromMoon = listOf(
-            moonSign,
-            ((moonSign + 2) % 12).let { if (it == 0) 12 else it },
-            ((moonSign + 5) % 12).let { if (it == 0) 12 else it },
-            ((moonSign + 8) % 12).let { if (it == 0) 12 else it }
-        )
+        // 1. Planets in Kendra from Moon (using sign-based houses)
+        val kendraHouses = AstrologicalConstants.KENDRA_HOUSES
 
         for (pos in chart.planetPositions) {
             if (pos.planet == Planet.MOON || pos.planet == Planet.RAHU || pos.planet == Planet.KETU) continue
 
-            if (pos.sign.number in kendraFromMoon) {
+            val houseFromMoon = VedicAstrologyUtils.getHouseFromSigns(pos.sign, moonPos.sign)
+            if (houseFromMoon in kendraHouses) {
                 cancellations.add(KemadrumaBhanga(
                     type = BhangaType.KENDRA_FROM_MOON,
                     planet = pos.planet,
-                    house = kendraFromMoon.indexOf(pos.sign.number) * 3 + 1, // 1, 4, 7, or 10
-                    description = "${pos.planet.displayName} in Kendra from Moon",
+                    house = houseFromMoon,
+                    description = "${pos.planet.displayName} in Kendra from Moon (${houseFromMoon}th sign)",
                     strength = BhangaType.KENDRA_FROM_MOON.cancellationStrength * 10,
                     isEffective = true
                 ))
@@ -459,16 +456,17 @@ object KemadrumaYogaCalculator {
         }
 
         // 2. Planets in Kendra from Lagna
-        val kendraFromLagna = listOf(1, 4, 7, 10)
         for (pos in chart.planetPositions) {
             if (pos.planet == Planet.MOON || pos.planet == Planet.RAHU || pos.planet == Planet.KETU) continue
 
-            if (pos.house in kendraFromLagna && pos.sign.number !in kendraFromMoon) {
+            // Using sign-based house for consistency in yoga logic
+            val houseFromLagna = VedicAstrologyUtils.getHouseFromSigns(pos.sign, ascendantSign)
+            if (houseFromLagna in kendraHouses) {
                 cancellations.add(KemadrumaBhanga(
                     type = BhangaType.KENDRA_FROM_LAGNA,
                     planet = pos.planet,
-                    house = pos.house,
-                    description = "${pos.planet.displayName} in ${pos.house}th house (Kendra from Lagna)",
+                    house = houseFromLagna,
+                    description = "${pos.planet.displayName} in Kendra from Lagna (${houseFromLagna}th sign)",
                     strength = BhangaType.KENDRA_FROM_LAGNA.cancellationStrength * 10,
                     isEffective = true
                 ))
@@ -476,12 +474,13 @@ object KemadrumaYogaCalculator {
         }
 
         // 3. Moon in Kendra from Lagna
-        if (moonPos.house in listOf(1, 4, 7, 10)) {
+        val moonHouseFromLagna = VedicAstrologyUtils.getHouseFromSigns(moonPos.sign, ascendantSign)
+        if (moonHouseFromLagna in kendraHouses) {
             cancellations.add(KemadrumaBhanga(
                 type = BhangaType.MOON_IN_KENDRA,
                 planet = Planet.MOON,
-                house = moonPos.house,
-                description = "Moon in ${moonPos.house}th house (Kendra from Lagna)",
+                house = moonHouseFromLagna,
+                description = "Moon in Kendra from Lagna (${moonHouseFromLagna}th sign)",
                 strength = BhangaType.MOON_IN_KENDRA.cancellationStrength * 10,
                 isEffective = true
             ))
@@ -489,13 +488,13 @@ object KemadrumaYogaCalculator {
 
         // 4. Jupiter aspecting Moon
         val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
-        jupiterPos?.let {
-            if (hasJupiterAspect(it.sign.number, moonSign)) {
+        jupiterPos?.let { jupiter ->
+            if (VedicAstrologyUtils.aspectsHouse(Planet.JUPITER, jupiter.house, moonPos.house)) {
                 cancellations.add(KemadrumaBhanga(
                     type = BhangaType.JUPITER_ASPECT,
                     planet = Planet.JUPITER,
-                    house = it.house,
-                    description = "Jupiter aspects Moon from ${it.sign.displayName}",
+                    house = jupiter.house,
+                    description = "Jupiter aspects Moon",
                     strength = BhangaType.JUPITER_ASPECT.cancellationStrength * 10,
                     isEffective = true
                 ))
@@ -504,13 +503,13 @@ object KemadrumaYogaCalculator {
 
         // 5. Venus aspecting Moon
         val venusPos = chart.planetPositions.find { it.planet == Planet.VENUS }
-        venusPos?.let {
-            if (hasStandardAspect(it.sign.number, moonSign)) {
+        venusPos?.let { venus ->
+            if (VedicAstrologyUtils.aspectsHouse(Planet.VENUS, venus.house, moonPos.house)) {
                 cancellations.add(KemadrumaBhanga(
                     type = BhangaType.VENUS_ASPECT,
                     planet = Planet.VENUS,
-                    house = it.house,
-                    description = "Venus aspects Moon from ${it.sign.displayName}",
+                    house = venus.house,
+                    description = "Venus aspects Moon",
                     strength = BhangaType.VENUS_ASPECT.cancellationStrength * 10,
                     isEffective = true
                 ))
@@ -530,7 +529,7 @@ object KemadrumaYogaCalculator {
         }
 
         // 7. Moon in own sign
-        if (moonPos.sign == ZodiacSign.CANCER) {
+        if (VedicAstrologyUtils.isInOwnSign(moonPos)) {
             cancellations.add(KemadrumaBhanga(
                 type = BhangaType.MOON_OWN_SIGN,
                 planet = Planet.MOON,
@@ -541,40 +540,7 @@ object KemadrumaYogaCalculator {
             ))
         }
 
-        // 8. Moon in friendly sign
-        val friendlySigns = listOf(ZodiacSign.TAURUS, ZodiacSign.CANCER, ZodiacSign.GEMINI, ZodiacSign.VIRGO)
-        if (moonPos.sign in friendlySigns && !VedicAstrologyUtils.isExalted(moonPos) && moonPos.sign != ZodiacSign.CANCER) {
-            cancellations.add(KemadrumaBhanga(
-                type = BhangaType.MOON_FRIEND_SIGN,
-                planet = Planet.MOON,
-                house = moonPos.house,
-                description = "Moon in friendly sign ${moonPos.sign.displayName}",
-                strength = BhangaType.MOON_FRIEND_SIGN.cancellationStrength * 10,
-                isEffective = true
-            ))
-        }
-
         return cancellations
-    }
-
-    /**
-     * Check Jupiter's special aspects (5th, 7th, 9th from its position)
-     */
-    private fun hasJupiterAspect(jupiterSign: Int, targetSign: Int): Boolean {
-        val aspects = listOf(
-            ((jupiterSign + 4) % 12).let { if (it == 0) 12 else it }, // 5th
-            ((jupiterSign + 6) % 12).let { if (it == 0) 12 else it }, // 7th
-            ((jupiterSign + 8) % 12).let { if (it == 0) 12 else it }  // 9th
-        )
-        return targetSign in aspects
-    }
-
-    /**
-     * Check standard 7th house aspect
-     */
-    private fun hasStandardAspect(fromSign: Int, toSign: Int): Boolean {
-        val seventhFrom = ((fromSign + 6) % 12).let { if (it == 0) 12 else it }
-        return toSign == seventhFrom
     }
 
     /**
@@ -676,7 +642,7 @@ object KemadrumaYogaCalculator {
         var support = (100 - severityFactor * 60).toInt()
 
         // Check 2nd and 11th house strength for financial matters
-        val secondLord = ZodiacSign.entries[(ZodiacSign.fromLongitude(chart.ascendant).number) % 12].ruler
+        val secondLord = VedicAstrologyUtils.getHouseLord(chart, 2)
         val secondLordPos = chart.planetPositions.find { it.planet == secondLord }
 
         secondLordPos?.let {
@@ -720,7 +686,7 @@ object KemadrumaYogaCalculator {
         var isolation = (severityFactor * 60).toInt()
 
         // Check 4th house (family) and 11th house (friends)
-        val fourthLord = ZodiacSign.entries[(ZodiacSign.fromLongitude(chart.ascendant).number + 3) % 12].ruler
+        val fourthLord = VedicAstrologyUtils.getHouseLord(chart, 4)
         val fourthLordPos = chart.planetPositions.find { it.planet == fourthLord }
 
         fourthLordPos?.let {
@@ -1114,5 +1080,3 @@ object KemadrumaYogaCalculator {
         }
     }
 }
-
-

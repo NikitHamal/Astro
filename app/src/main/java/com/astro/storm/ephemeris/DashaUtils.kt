@@ -20,9 +20,9 @@ object DashaUtils {
 
     /**
      * Average days per year used in Dasha calculations.
-     * 365.25 accounts for leap years.
+     * Uses 365.24219 (tropical year) for high precision.
      */
-    val DAYS_PER_YEAR = BigDecimal("365.24219") // More precise tropical year
+    val DAYS_PER_YEAR = BigDecimal("365.24219")
 
     /**
      * Savana year (360 days) often used in Dasha calculations

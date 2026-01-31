@@ -41,7 +41,13 @@ import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Diamond
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Hub
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.JoinInner
+import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.MilitaryTech
+import androidx.compose.material.icons.outlined.NightsStay
+import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material.icons.outlined.TipsAndUpdates
@@ -108,7 +114,8 @@ import com.astro.storm.ui.theme.AppTheme
 @Composable
 fun YogasScreenRedesigned(
     chart: VedicChart?,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onNavigateToDetailedYoga: (Yoga) -> Unit = {}
 ) {
     val language = LocalLanguage.current
     var selectedCategory by rememberSaveable { mutableStateOf<YogaCategory?>(null) }
@@ -204,7 +211,8 @@ fun YogasScreenRedesigned(
                             } else {
                                 expandedYogaKeys - key
                             }
-                        }
+                        },
+                        onViewDeepAnalysis = { onNavigateToDetailedYoga(yoga) }
                     )
                 }
 
@@ -573,7 +581,8 @@ private fun CategoryHeader(
 private fun YogaCard(
     yoga: Yoga,
     isExpanded: Boolean,
-    onToggleExpand: (Boolean) -> Unit
+    onToggleExpand: (Boolean) -> Unit,
+    onViewDeepAnalysis: () -> Unit
 ) {
     val rotation by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
@@ -655,8 +664,7 @@ private fun YogaCard(
                         Text(
                             text = yoga.sanskritName,
                             fontSize = 12.sp,
-                            color = AppTheme.TextMuted,
-                            fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                            color = AppTheme.TextMuted
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -775,6 +783,11 @@ private fun YogaCard(
                                 color = AppTheme.TextPrimary
                             )
                         }
+                    }
+
+                    // Integrated Detailed Analysis Summary
+                    if (yoga.detailedResult != null) {
+                        DetailedAnalysisSummary(yoga.detailedResult, onViewDeepAnalysis)
                     }
 
                     // Strength indicator
@@ -938,18 +951,111 @@ private fun EmptyYogasContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
+private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit) {
+    val language = LocalLanguage.current
+    val theme = AppTheme.current
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        color = theme.CardBackgroundElevated,
+        border = androidx.compose.foundation.BorderStroke(1.dp, theme.AccentGold.copy(alpha = 0.15f))
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    Icons.Outlined.AutoAwesome,
+                    contentDescription = null,
+                    tint = theme.AccentGold,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DEEP_ANALYSIS),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = theme.TextPrimary,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Text(
+                    text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_VIEW_MORE),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = theme.AccentGold,
+                    modifier = Modifier
+                        .clickable { onViewDeepAnalysis() }
+                        .padding(4.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            val summaryText = when (result) {
+                is com.astro.storm.ephemeris.KemadrumaYogaCalculator.KemadrumaAnalysis -> {
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        result.effectiveStatus.getLocalizedName(language)
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_CANCELLATION_FMT),
+                        result.totalCancellationScore
+                    )
+                }
+                is com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.MahapurushaYoga -> {
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_FMT),
+                        result.strength
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        if (result.isExalted) stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DIGNITY_EXALTED)
+                        else stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DIGNITY_OWN_SIGN)
+                    )
+                }
+                is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
+                    String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
+                        detailedYogaStatus(result.activationStatus)
+                    ) + ". " + String.format(
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_LEVEL_FMT),
+                        detailedYogaStrengthValue(result.strength)
+                    )
+                }
+                else -> stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.EFFECT_GENERIC_GOOD) // Generic fallback
+            }
+
+            Text(
+                text = summaryText,
+                fontSize = 13.sp,
+                color = theme.TextSecondary,
+                lineHeight = 20.sp
+            )
+        }
+    }
+}
+
+// Helper functions for mapping status/strength to values for formatting
+private fun detailedYogaStatus(status: com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.ActivationStatus): String = status.displayName
+private fun detailedYogaStrengthValue(strength: com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.YogaStrength): String = strength.displayName
+
+@Composable
 private fun getCategoryColor(category: YogaCategory): Color {
+    val theme = AppTheme.current
     return when (category) {
-        YogaCategory.RAJA_YOGA -> AppTheme.AccentGold
-        YogaCategory.DHANA_YOGA -> AppTheme.LifeAreaFinance
-        YogaCategory.MAHAPURUSHA_YOGA -> AppTheme.LifeAreaSpiritual
-        YogaCategory.NABHASA_YOGA -> AppTheme.AccentTeal
-        YogaCategory.CHANDRA_YOGA -> AppTheme.LifeAreaLove
-        YogaCategory.SOLAR_YOGA -> AppTheme.PlanetSun
-        YogaCategory.NEGATIVE_YOGA -> AppTheme.ErrorColor
-        YogaCategory.SPECIAL_YOGA -> AppTheme.AccentPrimary
-        YogaCategory.BHAVA_YOGA -> AppTheme.AccentPrimary
-        YogaCategory.CONJUNCTION_YOGA -> AppTheme.AccentTeal
+        YogaCategory.RAJA_YOGA -> theme.AccentGold
+        YogaCategory.DHANA_YOGA -> theme.LifeAreaFinance
+        YogaCategory.MAHAPURUSHA_YOGA -> theme.LifeAreaSpiritual
+        YogaCategory.NABHASA_YOGA -> theme.AccentTeal
+        YogaCategory.CHANDRA_YOGA -> theme.LifeAreaLove
+        YogaCategory.SOLAR_YOGA -> theme.PlanetSun
+        YogaCategory.NEGATIVE_YOGA -> theme.ErrorColor
+        YogaCategory.SPECIAL_YOGA -> theme.AccentPrimary
+        YogaCategory.BHAVA_YOGA -> theme.AccentPrimary
+        YogaCategory.CONJUNCTION_YOGA -> theme.AccentTeal
     }
 }
 
@@ -957,25 +1063,26 @@ private fun getCategoryIcon(category: YogaCategory): ImageVector {
     return when (category) {
         YogaCategory.RAJA_YOGA -> Icons.Outlined.WorkspacePremium
         YogaCategory.DHANA_YOGA -> Icons.Outlined.Diamond
-        YogaCategory.MAHAPURUSHA_YOGA -> Icons.Outlined.Star
+        YogaCategory.MAHAPURUSHA_YOGA -> Icons.Outlined.Psychology
         YogaCategory.NABHASA_YOGA -> Icons.Outlined.AutoAwesome
-        YogaCategory.CHANDRA_YOGA -> Icons.Outlined.StarOutline
-        YogaCategory.SOLAR_YOGA -> Icons.Outlined.Star
-        YogaCategory.NEGATIVE_YOGA -> Icons.Outlined.StarOutline
-        YogaCategory.SPECIAL_YOGA -> Icons.Outlined.TipsAndUpdates
+        YogaCategory.CHANDRA_YOGA -> Icons.Outlined.NightsStay
+        YogaCategory.SOLAR_YOGA -> Icons.Outlined.LightMode
+        YogaCategory.NEGATIVE_YOGA -> Icons.Outlined.Info
+        YogaCategory.SPECIAL_YOGA -> Icons.Outlined.MilitaryTech
         YogaCategory.BHAVA_YOGA -> Icons.Outlined.Home
-        YogaCategory.CONJUNCTION_YOGA -> Icons.Outlined.JoinInner
+        YogaCategory.CONJUNCTION_YOGA -> Icons.Outlined.Hub
     }
 }
 
 @Composable
 private fun getStrengthColor(strength: Double): Color {
+    val theme = AppTheme.current
     return when {
-        strength >= 80 -> AppTheme.SuccessColor
-        strength >= 60 -> AppTheme.AccentTeal
-        strength >= 40 -> AppTheme.AccentGold
-        strength >= 20 -> AppTheme.WarningColor
-        else -> AppTheme.ErrorColor
+        strength >= 80 -> theme.SuccessColor
+        strength >= 60 -> theme.AccentTeal
+        strength >= 40 -> theme.AccentGold
+        strength >= 20 -> theme.WarningColor
+        else -> theme.ErrorColor
     }
 }
 

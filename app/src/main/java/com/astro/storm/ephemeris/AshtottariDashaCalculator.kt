@@ -22,7 +22,7 @@ object AshtottariDashaCalculator {
     const val TOTAL_CYCLE_YEARS = 108.0
 
     /** Days per year for calculations */
-    private const val DAYS_PER_YEAR = 365.25
+    private val DAYS_PER_YEAR = DashaUtils.DAYS_PER_YEAR.toDouble()
 
     /**
      * Ashtottari Dasha periods in years
