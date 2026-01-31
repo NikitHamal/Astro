@@ -455,8 +455,6 @@ enum class StringKeyYogaExpanded(override val en: String, override val ne: Strin
     REC_PLANETARY_REMEDIES("Planetary remedies can enhance positive influences", "ग्रह सम्बन्धी उपायहरूले सकारात्मक प्रभावहरूलाई बढाउन सक्छन्"),
     REC_ACTIVATE_YOGA("Activate {0} through {1} worship", "{1} पूजाको माध्यमबाट {0} सक्रिय गर्नुहोस्"),
     REC_BEST_CAREER("Best career alignment: {0}", "उत्तम करियर संरेखण: {0}"),
-    
-    REC_BEST_CAREER("Best career alignment: {0}", "उत्तम करियर संरेखण: {0}"),
 
     // ============================================
     // VIPAREETA RAJA YOGA DETAILS
@@ -516,8 +514,6 @@ enum class StringKeyYogaExpanded(override val en: String, override val ne: Strin
     SUMMARY_VIP_NONE("No Vipareeta Raja Yogas formed in this chart.", "यस कुण्डलीमा कुनै विपरीत राज योग बनेको छैन।"),
     SUMMARY_VIP_SINGLE("{0} is present with {1} strength.", "{0} {1} बलका साथ उपस्थित छ।"),
     SUMMARY_VIP_DOUBLE("Two Vipareeta Raja Yogas: {0}. Overall strength: {1}.", "दुई विपरीत राज योगहरू: {0}। समग्र बल: {1}।"),
-    SUMMARY_VIP_TRIPLE("All three Vipareeta Raja Yogas (Harsha, Sarala, Vimala) are present - a rare and powerful combination! Overall strength: {0}.", "तीनै विपरीत राज योगहरू (हर्ष, सरल, विमल) उपस्थित छन् - एक दुर्लभ र शक्तिशाली संयोजन! समग्र बल: {0}।"),
-
     SUMMARY_VIP_TRIPLE("All three Vipareeta Raja Yogas (Harsha, Sarala, Vimala) are present - a rare and powerful combination! Overall strength: {0}.", "तीनै विपरीत राज योगहरू (हर्ष, सरल, विमल) उपस्थित छन् - एक दुर्लभ र शक्तिशाली संयोजन! समग्र बल: {0}।"),
 
     // ============================================
@@ -590,8 +586,6 @@ enum class StringKeyYogaExpanded(override val en: String, override val ne: Strin
     INTERP_PAKSHA_BRIGHT("The {0} paksha {1} Moon indicates {2} emotional resilience. ", "{0} पक्षको {1} चन्द्रमाले {2} भावनात्मक लचिलोपन संकेत गर्दछ। "),
     INTERP_CANCELLATION_SUMMARY("\n\nCancellation factors present: {0}", "\n\nउपस्थित रद्द गर्ने कारकहरू: {0}"),
 
-    INTERP_CANCELLATION_SUMMARY("\n\nCancellation factors present: {0}", "\n\nउपस्थित रद्द गर्ने कारकहरू: {0}"),
-
     // ============================================
     // PLANETARY YOGA DETAILS
     // ============================================
@@ -632,7 +626,5 @@ enum class StringKeyYogaExpanded(override val en: String, override val ne: Strin
     YOGA_SUBHAPATI("Subhapati Yoga", "शुभपति योग"),
     YOGA_DHANA_PAPA_KARTARI("Dhana Papa Kartari", "धन पाप कर्तरी"),
     YOGA_TRIGRAHA("Trigraha Yoga", "त्रिग्रह योग"),
-    YOGA_GRAHAYUDDHA("Grahayuddha", "ग्रहयुद्ध"),
-
-    YOGA_CAT_CONJUNCTION("Conjunction Yoga", "युति योग");
+    YOGA_GRAHAYUDDHA("Grahayuddha", "ग्रहयुद्ध");
 }
