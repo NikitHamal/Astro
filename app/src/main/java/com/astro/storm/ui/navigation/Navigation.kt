@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.ephemeris.yoga.Yoga
 import com.astro.storm.ui.screen.ArgalaScreen
 import com.astro.storm.ui.screen.ashtakavarga.AshtakavargaScreenRedesigned
 import com.astro.storm.ui.screen.BhriguBinduScreen
@@ -671,6 +672,19 @@ fun AstroStormNavigation(
                     viewModel = viewModel,
                     onBack = {
                         navController.popBackStack()
+                    },
+                    onNavigateToDetailedYoga = { yoga ->
+                        when {
+                            yoga.detailedResult is com.astro.storm.ephemeris.KemadrumaYogaCalculator.KemadrumaAnalysis -> {
+                                navController.navigate(Screen.KemadrumaYoga.createRoute(chartId))
+                            }
+                            yoga.detailedResult is com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.MahapurushaYoga -> {
+                                navController.navigate(Screen.PanchMahapurusha.createRoute(chartId))
+                            }
+                            yoga.detailedResult is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
+                                navController.navigate(Screen.VipareetaRajaYoga.createRoute(chartId))
+                            }
+                        }
                     }
                 )
             }
@@ -799,7 +813,23 @@ fun AstroStormNavigation(
 
             YogasScreenRedesigned(
                 chart = currentChart,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onNavigateToDetailedYoga = { yoga ->
+                    val chartIdLong = backStackEntry.arguments?.getLong("chartId")
+                    chartIdLong?.let { id ->
+                        when {
+                            yoga.detailedResult is com.astro.storm.ephemeris.KemadrumaYogaCalculator.KemadrumaAnalysis -> {
+                                navController.navigate(Screen.KemadrumaYoga.createRoute(id))
+                            }
+                            yoga.detailedResult is com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.MahapurushaYoga -> {
+                                navController.navigate(Screen.PanchMahapurusha.createRoute(id))
+                            }
+                            yoga.detailedResult is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
+                                navController.navigate(Screen.VipareetaRajaYoga.createRoute(id))
+                            }
+                        }
+                    }
+                }
             )
         }
 

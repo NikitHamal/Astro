@@ -138,7 +138,8 @@ data class Yoga(
     val strengthPercentage: Double,
     val isAuspicious: Boolean,
     val activationPeriod: String,
-    val cancellationFactors: List<String>
+    val cancellationFactors: List<String>,
+    val detailedResult: Any? = null
 )
 
 /**

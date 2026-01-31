@@ -4,6 +4,8 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.ephemeris.AstrologicalConstants
+import com.astro.storm.ephemeris.VedicAstrologyUtils
 import kotlin.math.abs
 
 /**
@@ -26,46 +28,25 @@ import kotlin.math.abs
  */
 object PanchMahapurushaYogaCalculator {
 
-    // Kendra houses (angular houses)
-    private val KENDRA_HOUSES = setOf(1, 4, 7, 10)
+    // Kendra houses (angular houses) - Using centralized constants
+    private val KENDRA_HOUSES = AstrologicalConstants.KENDRA_HOUSES
 
-    // Exaltation signs for each planet
-    private val EXALTATION_SIGNS = mapOf(
-        Planet.MARS to ZodiacSign.CAPRICORN,
-        Planet.MERCURY to ZodiacSign.VIRGO,
-        Planet.JUPITER to ZodiacSign.CANCER,
-        Planet.VENUS to ZodiacSign.PISCES,
-        Planet.SATURN to ZodiacSign.LIBRA
-    )
-
-    // Exaltation degrees for precise strength calculation
-    private val EXALTATION_DEGREES = mapOf(
-        Planet.MARS to 28.0,      // 28° Capricorn
-        Planet.MERCURY to 15.0,   // 15° Virgo
-        Planet.JUPITER to 5.0,    // 5° Cancer
-        Planet.VENUS to 27.0,     // 27° Pisces
-        Planet.SATURN to 20.0     // 20° Libra
-    )
-
-    // Own signs for each planet
-    private val OWN_SIGNS = mapOf(
-        Planet.MARS to setOf(ZodiacSign.ARIES, ZodiacSign.SCORPIO),
-        Planet.MERCURY to setOf(ZodiacSign.GEMINI, ZodiacSign.VIRGO),
-        Planet.JUPITER to setOf(ZodiacSign.SAGITTARIUS, ZodiacSign.PISCES),
-        Planet.VENUS to setOf(ZodiacSign.TAURUS, ZodiacSign.LIBRA),
-        Planet.SATURN to setOf(ZodiacSign.CAPRICORN, ZodiacSign.AQUARIUS)
-    )
+    // Exaltation and Own signs from centralized source
+    private val EXALTATION_SIGNS = AstrologicalConstants.EXALTATION_SIGNS
+    private val EXALTATION_DEGREES = AstrologicalConstants.EXALTATION_DEGREES
+    private val OWN_SIGNS = AstrologicalConstants.OWN_SIGNS
 
     /**
      * Main analysis entry point
      */
     fun analyzePanchMahapurushaYogas(chart: VedicChart): PanchMahapurushaAnalysis {
         val detectedYogas = mutableListOf<MahapurushaYoga>()
+        val ascendantSign = VedicAstrologyUtils.getAscendantSign(chart)
 
         // Check each of the 5 planets for Mahapurusha Yoga formation
         for (planet in listOf(Planet.MARS, Planet.MERCURY, Planet.JUPITER, Planet.VENUS, Planet.SATURN)) {
             val position = chart.planetPositions.find { it.planet == planet } ?: continue
-            val yoga = checkMahapurushaYoga(planet, position, chart)
+            val yoga = checkMahapurushaYoga(planet, position, chart, ascendantSign)
             if (yoga != null) {
                 detectedYogas.add(yoga)
             }
@@ -93,17 +74,19 @@ object PanchMahapurushaYogaCalculator {
     private fun checkMahapurushaYoga(
         planet: Planet,
         position: PlanetPosition,
-        chart: VedicChart
+        chart: VedicChart,
+        ascendantSign: ZodiacSign
     ): MahapurushaYoga? {
-        val house = position.house
-        val sign = ZodiacSign.fromLongitude(position.longitude)
+        // Use sign-based house calculation for traditional yoga detection
+        val house = VedicAstrologyUtils.getHouseFromSigns(position.sign, ascendantSign)
+        val sign = position.sign
 
-        // Check if in Kendra
+        // Check if in Kendra (1, 4, 7, or 10)
         if (house !in KENDRA_HOUSES) return null
 
         // Check if in own sign or exaltation
-        val isExalted = sign == EXALTATION_SIGNS[planet]
-        val isOwnSign = sign in (OWN_SIGNS[planet] ?: emptySet())
+        val isExalted = VedicAstrologyUtils.isExalted(position)
+        val isOwnSign = VedicAstrologyUtils.isInOwnSign(position)
 
         if (!isExalted && !isOwnSign) return null
 
@@ -192,7 +175,7 @@ object PanchMahapurushaYogaCalculator {
 
         // Strength from not being combust or retrograde (10 points max)
         if (!position.isRetrograde) strength += 5
-        if (!isComust(position, chart)) strength += 5
+        if (!VedicAstrologyUtils.isCombust(position, VedicAstrologyUtils.getSunPosition(chart)!!)) strength += 5
 
         return strength.coerceIn(0, 100)
     }
@@ -204,10 +187,11 @@ object PanchMahapurushaYogaCalculator {
         val exaltationDegree = EXALTATION_DEGREES[planet] ?: return null
         val exaltationSign = EXALTATION_SIGNS[planet] ?: return null
 
-        val signStart = exaltationSign.ordinal * 30.0
+        val signStart = (exaltationSign.number - 1) * 30.0
         val exactLongitude = signStart + exaltationDegree
 
-        return abs(longitude - exactLongitude)
+        val distance = abs(longitude - exactLongitude)
+        return if (distance > 180) 360 - distance else distance
     }
 
     /**
@@ -215,53 +199,20 @@ object PanchMahapurushaYogaCalculator {
      */
     private fun calculateAspectBonus(position: PlanetPosition, chart: VedicChart): Int {
         var bonus = 0
-        val benefics = listOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY)
-        val malefics = listOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU)
 
         for (otherPosition in chart.planetPositions) {
             if (otherPosition.planet == position.planet) continue
 
-            val houseDiff = calculateHouseDifference(otherPosition.house, position.house)
-
-            // Check for aspects (simplified: 1st, 5th, 7th, 9th aspects)
-            val isAspecting = houseDiff in listOf(0, 4, 6, 8) ||
-                              (otherPosition.planet == Planet.JUPITER && houseDiff in listOf(4, 6, 8)) ||
-                              (otherPosition.planet == Planet.MARS && houseDiff in listOf(3, 6, 7)) ||
-                              (otherPosition.planet == Planet.SATURN && houseDiff in listOf(2, 6, 9))
-
-            if (isAspecting) {
-                if (otherPosition.planet in benefics) {
+            if (VedicAstrologyUtils.aspectsHouse(otherPosition.planet, otherPosition.house, position.house)) {
+                if (VedicAstrologyUtils.isNaturalBenefic(otherPosition.planet)) {
                     bonus += 5
-                } else if (otherPosition.planet in malefics) {
+                } else if (VedicAstrologyUtils.isNaturalMalefic(otherPosition.planet)) {
                     bonus -= 3
                 }
             }
         }
 
         return bonus.coerceIn(0, 15)
-    }
-
-    private fun calculateHouseDifference(house1: Int, house2: Int): Int {
-        val diff = house1 - house2
-        return if (diff < 0) diff + 12 else diff
-    }
-
-    private fun isComust(position: PlanetPosition, chart: VedicChart): Boolean {
-        val sunPosition = chart.planetPositions.find { it.planet == Planet.SUN } ?: return false
-        val separation = abs(position.longitude - sunPosition.longitude)
-        val normalizedSeparation = if (separation > 180) 360 - separation else separation
-
-        // Combustion ranges vary by planet
-        val combustionOrb = when (position.planet) {
-            Planet.MARS -> 17.0
-            Planet.MERCURY -> 14.0 // Can be as low as 12° when retrograde
-            Planet.JUPITER -> 11.0
-            Planet.VENUS -> 10.0
-            Planet.SATURN -> 15.0
-            else -> 10.0
-        }
-
-        return normalizedSeparation <= combustionOrb
     }
 
     private fun getStrengthLevel(strength: Int): YogaStrengthLevel {

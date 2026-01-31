@@ -3,6 +3,7 @@ package com.astro.storm.ephemeris.yoga
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.ephemeris.KemadrumaYogaCalculator
 
 /**
  * Chandra (Moon) Yoga Evaluator - Lunar Combinations
@@ -10,11 +11,14 @@ import com.astro.storm.core.model.VedicChart
  * Chandra Yogas are formed based on the Moon's position and its relationship
  * with other planets. The Moon represents mind, emotions, and public life.
  *
+ * This evaluator integrates with the detailed [KemadrumaYogaCalculator]
+ * for exhaustive Moon isolation analysis.
+ *
  * Types evaluated:
  * 1. Sunafa Yoga - Planet (not Sun) in 2nd from Moon
  * 2. Anafa Yoga - Planet (not Sun) in 12th from Moon
  * 3. Durudhara Yoga - Planets in both 2nd and 12th from Moon
- * 4. Kemadruma Yoga - No planets in 2nd and 12th from Moon (negative)
+ * 4. Kemadruma Yoga - No planets in 2nd and 12th from Moon (with exhaustive Bhanga analysis)
  * 5. Gaja-Kesari Yoga - Jupiter in Kendra from Moon
  * 6. Adhi Yoga - Benefics in 6, 7, 8 from Moon
  *
@@ -33,12 +37,52 @@ class ChandraYogaEvaluator : YogaEvaluator {
 
         val moonPos = chart.planetPositions.find { it.planet == Planet.MOON } ?: return yogas
 
-        // Calculate houses from Moon
+        // 1-4. Lunar Position Yogas (Sunafa, Anafa, Durudhara, Kemadruma)
+        evaluateLunarPositionYogas(chart, moonPos, yogas)
+
+        // 5. Gaja-Kesari Yoga
+        evaluateGajaKesariYoga(chart, moonPos)?.let { yogas.add(it) }
+
+        // 6. Adhi Yoga
+        evaluateAdhiYoga(chart, moonPos)?.let { yogas.add(it) }
+
+        return yogas
+    }
+
+    private fun evaluateLunarPositionYogas(chart: VedicChart, moonPos: PlanetPosition, yogas: MutableList<Yoga>) {
+        val kemadrumaAnalysis = KemadrumaYogaCalculator.analyzeKemadruma(chart) ?: return
+
+        // Map Kemadruma from detailed calculator
+        if (kemadrumaAnalysis.isKemadrumaFormed) {
+            val isFullyCancelled = kemadrumaAnalysis.effectiveStatus == KemadrumaYogaCalculator.KemadrumaStatus.FULLY_CANCELLED ||
+                                   kemadrumaAnalysis.effectiveStatus == KemadrumaYogaCalculator.KemadrumaStatus.NOT_PRESENT
+
+            val severity = kemadrumaAnalysis.effectiveStatus.severity * 20.0
+
+            yogas.add(Yoga(
+                name = if (isFullyCancelled) "Kemadruma Bhanga" else "Kemadruma Yoga",
+                sanskritName = "Kemadruma Yoga",
+                category = YogaCategory.CHANDRA_YOGA,
+                planets = listOf(Planet.MOON),
+                houses = listOf(moonPos.house),
+                description = "No planets in 2nd or 12th from Moon. " +
+                             if (isFullyCancelled) "Fully cancelled by beneficial factors." else "Status: ${kemadrumaAnalysis.effectiveStatus.displayName}",
+                effects = if (isFullyCancelled) "Resilience and overcoming obstacles after struggle."
+                         else "Emotional sensitivity, feelings of isolation, financial instability.",
+                strength = YogaHelpers.strengthFromPercentage(severity.coerceIn(10.0, 100.0)),
+                strengthPercentage = severity.coerceIn(10.0, 100.0),
+                isAuspicious = isFullyCancelled,
+                activationPeriod = "Moon periods",
+                cancellationFactors = kemadrumaAnalysis.cancellations.map { it.description },
+                detailedResult = kemadrumaAnalysis
+            ))
+        }
+
+        // Calculate houses from Moon for Sunafa, Anafa, Durudhara
         val houseFromMoon = { pos: PlanetPosition ->
             YogaHelpers.getHouseFrom(pos.sign, moonPos.sign)
         }
 
-        // Get planets in 2nd and 12th from Moon (excluding Sun, Rahu, Ketu)
         val eligiblePlanets = listOf(Planet.MARS, Planet.MERCURY, Planet.JUPITER, Planet.VENUS, Planet.SATURN)
         val positions = chart.planetPositions.filter { it.planet in eligiblePlanets }
 
@@ -59,23 +103,6 @@ class ChandraYogaEvaluator : YogaEvaluator {
         if (planetsIn2nd.isNotEmpty() && planetsIn12th.isNotEmpty()) {
             yogas.add(createDurudharaYoga(planetsIn2nd, planetsIn12th, moonPos, chart))
         }
-
-        // 4. Kemadruma Yoga - No planets in 2nd and 12th (negative)
-        if (planetsIn2nd.isEmpty() && planetsIn12th.isEmpty()) {
-            // Check for cancellation conditions
-            val hasCancellation = checkKemadrumaCancel(chart, moonPos)
-            if (!hasCancellation) {
-                yogas.add(createKemadrumaYoga(moonPos, chart))
-            }
-        }
-
-        // 5. Gaja-Kesari Yoga
-        evaluateGajaKesariYoga(chart, moonPos)?.let { yogas.add(it) }
-
-        // 6. Adhi Yoga
-        evaluateAdhiYoga(chart, moonPos)?.let { yogas.add(it) }
-
-        return yogas
     }
 
     private fun createSunafaYoga(
@@ -166,51 +193,6 @@ class ChandraYogaEvaluator : YogaEvaluator {
             isAuspicious = true,
             activationPeriod = "Moon periods especially",
             cancellationFactors = emptyList()
-        )
-    }
-
-    private fun checkKemadrumaCancel(chart: VedicChart, moonPos: PlanetPosition): Boolean {
-        // Cancellation 1: Moon in Kendra from Lagna
-        if (moonPos.house in listOf(1, 4, 7, 10)) return true
-
-        // Cancellation 2: Moon conjunct or aspected by Jupiter
-        val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
-        if (jupiterPos != null) {
-            if (YogaHelpers.areConjunct(moonPos, jupiterPos)) return true
-            if (YogaHelpers.isAspecting(jupiterPos, moonPos)) return true
-        }
-
-        // Cancellation 3: Moon in own sign (Cancer) or exalted (Taurus)
-        if (YogaHelpers.isInOwnSign(moonPos) || YogaHelpers.isExalted(moonPos)) return true
-
-        // Cancellation 4: Full moon (bright)
-        val moonStrength = YogaHelpers.getMoonPhaseStrength(moonPos, chart)
-        if (moonStrength >= 0.8) return true
-
-        return false
-    }
-
-    private fun createKemadrumaYoga(moonPos: PlanetPosition, chart: VedicChart): Yoga {
-        val moonStrength = YogaHelpers.getMoonPhaseStrength(moonPos, chart)
-        val severity = if (moonStrength < 0.3) 70.0 else 50.0
-
-        return Yoga(
-            name = "Kemadruma Yoga",
-            sanskritName = "Kemadruma Yoga",
-            category = YogaCategory.CHANDRA_YOGA,
-            planets = listOf(Planet.MOON),
-            houses = listOf(moonPos.house),
-            description = "No planets in 2nd or 12th from Moon",
-            effects = "Periods of loneliness or financial struggle, need to rely on self, emotional challenges",
-            strength = YogaHelpers.strengthFromPercentage(severity),
-            strengthPercentage = severity,
-            isAuspicious = false,
-            activationPeriod = "Moon Mahadasha especially",
-            cancellationFactors = listOf(
-                "Jupiter aspect cancels",
-                "Moon in Kendra cancels",
-                "Moon in own/exalted sign cancels"
-            )
         )
     }
 

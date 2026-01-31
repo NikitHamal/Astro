@@ -4,6 +4,7 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.ephemeris.AstrologicalConstants
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import kotlin.math.abs
 import kotlin.math.min
@@ -185,15 +186,47 @@ object YogaHelpers {
 
     /**
      * Check if a debilitated planet has Neecha Bhanga (cancellation of debilitation)
+     * Using comprehensive rules from Phaladeepika and BPHS.
      */
     fun hasNeechaBhanga(pos: PlanetPosition, chart: VedicChart): Boolean {
-        // Condition 1: Debilitated planet in Kendra from Lagna
-        if (pos.house in listOf(1, 4, 7, 10)) return true
+        val debilitatedSign = pos.sign
+        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
+        val kendraHouses = listOf(1, 4, 7, 10)
 
-        // Condition 2: Lord of debilitation sign in Kendra from Lagna
-        val debilitatedSignLord = pos.sign.ruler
+        // 1. Debilitated planet in Kendra from Lagna
+        if (pos.house in kendraHouses) return true
+
+        // 2. Lord of debilitation sign in Kendra from Lagna or Moon
+        val debilitatedSignLord = debilitatedSign.ruler
         val lordPos = chart.planetPositions.find { it.planet == debilitatedSignLord }
-        if (lordPos != null && lordPos.house in listOf(1, 4, 7, 10)) return true
+        if (lordPos != null) {
+            if (lordPos.house in kendraHouses) return true
+            if (moonPos != null && isInKendraFrom(lordPos, moonPos)) return true
+        }
+
+        // 3. Lord of the sign where the debilitated planet would be exalted, in Kendra from Lagna or Moon
+        val exaltationSign = com.astro.storm.ephemeris.AstrologicalConstants.EXALTATION_SIGNS[pos.planet]
+        if (exaltationSign != null) {
+            val exaltationSignLord = exaltationSign.ruler
+            val exaltLordPos = chart.planetPositions.find { it.planet == exaltationSignLord }
+            if (exaltLordPos != null) {
+                if (exaltLordPos.house in kendraHouses) return true
+                if (moonPos != null && isInKendraFrom(exaltLordPos, moonPos)) return true
+            }
+        }
+
+        // 4. Planet that would be exalted in the debilitated planet's sign, being in Kendra from Lagna or Moon
+        val planetExaltedInThisSign = com.astro.storm.ephemeris.AstrologicalConstants.EXALTATION_SIGNS.filterValues { sign -> sign == debilitatedSign }.keys.firstOrNull()
+        if (planetExaltedInThisSign != null) {
+            val exaltedPlanetPos = chart.planetPositions.find { pos -> pos.planet == planetExaltedInThisSign }
+            if (exaltedPlanetPos != null) {
+                if (exaltedPlanetPos.house in kendraHouses) return true
+                if (moonPos != null && isInKendraFrom(exaltedPlanetPos, moonPos)) return true
+            }
+        }
+
+        // 5. Debilitated planet in Kendra from Moon
+        if (moonPos != null && isInKendraFrom(pos, moonPos)) return true
 
         return false
     }
