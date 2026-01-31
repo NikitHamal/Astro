@@ -32,8 +32,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Diamond
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Hub
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.MilitaryTech
+import androidx.compose.material.icons.outlined.NightsStay
+import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.outlined.WorkspacePremium
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -410,7 +419,7 @@ private fun YogaCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            if (yoga.isAuspicious) Icons.Outlined.Star else Icons.Outlined.Warning,
+                            imageVector = getCategoryIcon(yoga.category),
                             contentDescription = null,
                             tint = getCategoryColor(yoga.category),
                             modifier = Modifier.size(20.dp)
@@ -640,6 +649,21 @@ private fun getCategoryDisplayName(category: YogaCategory, language: Language): 
     return category.getLocalizedName(language)
 }
 
+private fun getCategoryIcon(category: YogaCategory): androidx.compose.ui.graphics.vector.ImageVector {
+    return when (category) {
+        YogaCategory.RAJA_YOGA -> Icons.Outlined.WorkspacePremium
+        YogaCategory.DHANA_YOGA -> Icons.Outlined.Diamond
+        YogaCategory.MAHAPURUSHA_YOGA -> Icons.Outlined.Psychology
+        YogaCategory.NABHASA_YOGA -> Icons.Outlined.AutoAwesome
+        YogaCategory.CHANDRA_YOGA -> Icons.Outlined.NightsStay
+        YogaCategory.SOLAR_YOGA -> Icons.Outlined.LightMode
+        YogaCategory.NEGATIVE_YOGA -> Icons.Outlined.Info
+        YogaCategory.SPECIAL_YOGA -> Icons.Outlined.MilitaryTech
+        YogaCategory.BHAVA_YOGA -> Icons.Outlined.Home
+        YogaCategory.CONJUNCTION_YOGA -> Icons.Outlined.Hub
+    }
+}
+
 @Composable
 private fun getCategoryColor(category: YogaCategory): Color {
     val theme = LocalAppThemeColors.current
@@ -696,47 +720,41 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        color = theme.AccentGold.copy(alpha = 0.08f),
-        border = androidx.compose.foundation.BorderStroke(1.dp, theme.AccentGold.copy(alpha = 0.2f))
+        color = ChartDetailColors.CardBackgroundElevated,
+        border = androidx.compose.foundation.BorderStroke(1.dp, theme.AccentGold.copy(alpha = 0.15f))
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        Icons.Outlined.AutoAwesome,
-                        contentDescription = null,
-                        tint = theme.AccentGold,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DEEP_ANALYSIS),
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = theme.TextPrimary
-                    )
-                }
+                Icon(
+                    Icons.Outlined.AutoAwesome,
+                    contentDescription = null,
+                    tint = theme.AccentGold,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DEEP_ANALYSIS),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = theme.TextPrimary,
+                    modifier = Modifier.weight(1f)
+                )
 
-                Surface(
-                    modifier = Modifier.clickable { onViewDeepAnalysis() },
-                    shape = RoundedCornerShape(8.dp),
-                    color = theme.AccentGold.copy(alpha = 0.15f)
-                ) {
-                    Text(
-                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_VIEW_MORE),
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = theme.AccentGold,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                    )
-                }
+                Text(
+                    text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_VIEW_MORE),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = theme.AccentGold,
+                    modifier = Modifier
+                        .clickable { onViewDeepAnalysis() }
+                        .padding(4.dp)
+                )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
             val summaryText = when (result) {
                 is com.astro.storm.ephemeris.KemadrumaYogaCalculator.KemadrumaAnalysis -> {
