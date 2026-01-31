@@ -79,40 +79,42 @@ object YogaCalculator {
      * 1. Core yoga evaluators (original)
      * 2. Extended evaluators for comprehensive 500+ yoga coverage
      */
-    private val evaluators: List<YogaEvaluator> = listOf(
-        // ===== Core Evaluators =====
-        RajaYogaEvaluator(),
-        DhanaYogaEvaluator(),
-        MahapurushaYogaEvaluator(),
-        NabhasaYogaEvaluator(),
-        ChandraYogaEvaluator(),
-        SolarYogaEvaluator(),
-        NegativeYogaEvaluator(),
-        BhavaYogaEvaluator(),
-        ConjunctionYogaEvaluator(),
-        AdvancedYogaEvaluator(),
-        SpecialYogaEvaluator(),
+    private val evaluators: List<YogaEvaluator> by lazy {
+        listOf(
+            // ===== Core Evaluators =====
+            RajaYogaEvaluator(),
+            DhanaYogaEvaluator(),
+            MahapurushaYogaEvaluator(),
+            NabhasaYogaEvaluator(),
+            ChandraYogaEvaluator(),
+            SolarYogaEvaluator(),
+            NegativeYogaEvaluator(),
+            BhavaYogaEvaluator(),
+            ConjunctionYogaEvaluator(),
+            AdvancedYogaEvaluator(),
+            SpecialYogaEvaluator(),
 
-        // ===== Extended Evaluators (500+ additional yogas) =====
-        // Extended Raja Yogas - Additional kingly combinations
-        ExtendedRajaYogaEvaluator(),
-        // Extended Dhana Yogas - Comprehensive wealth combinations
-        ExtendedDhanaYogaEvaluator(),
-        // Classical Nabhasa Yogas - Complete 32 yogas from Hora Sara
-        ClassicalNabhasaYogaEvaluator(),
-        // Arishta Yogas - Comprehensive negative combinations
-        ArishtaYogaEvaluator(),
-        // Planetary Yogas - Suryadi and dignity-based yogas
-        PlanetaryYogaEvaluator(),
-        // Nakshatra Yogas - Lunar mansion combinations
-        NakshatraYogaEvaluator(),
-        // Lagna Yogas - Ascendant-based combinations
-        LagnaYogaEvaluator(),
-        // Sannyasa & Moksha Yogas - Spiritual liberation combinations
-        SannyasaMokshaYogaEvaluator(),
-        // Parivarttana Yogas - All 66 exchange combinations
-        ParivarttanaYogaEvaluator()
-    )
+            // ===== Extended Evaluators (500+ additional yogas) =====
+            // Extended Raja Yogas - Additional kingly combinations
+            ExtendedRajaYogaEvaluator(),
+            // Extended Dhana Yogas - Comprehensive wealth combinations
+            ExtendedDhanaYogaEvaluator(),
+            // Classical Nabhasa Yogas - Complete 32 yogas from Hora Sara
+            ClassicalNabhasaYogaEvaluator(),
+            // Arishta Yogas - Comprehensive negative combinations
+            ArishtaYogaEvaluator(),
+            // Planetary Yogas - Suryadi and dignity-based yogas
+            PlanetaryYogaEvaluator(),
+            // Nakshatra Yogas - Lunar mansion combinations
+            NakshatraYogaEvaluator(),
+            // Lagna Yogas - Ascendant-based combinations
+            LagnaYogaEvaluator(),
+            // Sannyasa & Moksha Yogas - Spiritual liberation combinations
+            SannyasaMokshaYogaEvaluator(),
+            // Parivarttana Yogas - All 66 exchange combinations
+            ParivarttanaYogaEvaluator()
+        )
+    }
 
     /**
      * Analyze a Vedic chart for all yogas

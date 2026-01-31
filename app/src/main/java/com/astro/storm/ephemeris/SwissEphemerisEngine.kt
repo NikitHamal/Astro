@@ -67,6 +67,7 @@ class SwissEphemerisEngine internal constructor(
     private val houseCuspsBuffer = DoubleArray(HOUSE_CUSPS_ARRAY_SIZE)
     private val ascMcBuffer = DoubleArray(ASC_MC_ARRAY_SIZE)
     private val errorBuffer = StringBuffer(ERROR_BUFFER_SIZE)
+    private var lastSiderealMode: Int = -1
 
     private val calculationFlags: Int = if (hasHighPrecisionEphemeris) {
         BASE_CALC_FLAGS or SweConst.SEFLG_JPLEPH
@@ -322,8 +323,11 @@ class SwissEphemerisEngine internal constructor(
         val currentAyanamsa = astroSettings.ayanamsa.value
         val isSidereal = currentAyanamsa.swissEphId != -1
         
-        // Explicitly set sidereal mode, even if Sayana (using -1) to reset state
-        swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
+        // Cache sidereal mode to avoid redundant JNI calls
+        if (lastSiderealMode != currentAyanamsa.swissEphId) {
+            swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
+            lastSiderealMode = currentAyanamsa.swissEphId
+        }
 
         val ayanamsa = if (isSidereal) swissEph.swe_get_ayanamsa_ut(julianDay) else 0.0
         val currentFlags = if (isSidereal) SweConst.SEFLG_SIDEREAL else 0
@@ -383,11 +387,15 @@ class SwissEphemerisEngine internal constructor(
         houseCuspsBuffer.fill(0.0)
         ascMcBuffer.fill(0.0)
 
+        // Dynamically set Ayanamsa based on settings
         val currentAyanamsa = astroSettings.ayanamsa.value
         val isSidereal = currentAyanamsa.swissEphId != -1
 
-        // Explicitly set sidereal mode, even if Sayana (using -1) to reset state
-        swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
+        // Cache sidereal mode to avoid redundant JNI calls
+        if (lastSiderealMode != currentAyanamsa.swissEphId) {
+            swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
+            lastSiderealMode = currentAyanamsa.swissEphId
+        }
 
         val currentFlags = if (isSidereal) SweConst.SEFLG_SIDEREAL else 0
         

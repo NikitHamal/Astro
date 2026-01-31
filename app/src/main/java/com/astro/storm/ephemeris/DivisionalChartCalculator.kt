@@ -12,6 +12,36 @@ private const val DEGREES_IN_SIGN = 30.0
 private const val DEGREES_IN_CIRCLE = 360.0
 
 object DivisionalChartCalculator {
+    private val chartCache = java.util.Collections.synchronizedMap(mutableMapOf<String, DivisionalChartData>())
+
+    private fun getCacheKey(chart: VedicChart, type: DivisionalChartType): String {
+        return "${chart.hashCode()}_${type.name}"
+    }
+
+    fun calculateDivisionalChart(chart: VedicChart, type: DivisionalChartType): DivisionalChartData {
+        val key = getCacheKey(chart, type)
+        return chartCache.getOrPut(key) {
+            when (type) {
+                DivisionalChartType.D1_RASHI -> calculateRashi(chart)
+                DivisionalChartType.D2_HORA -> calculateHora(chart)
+                DivisionalChartType.D3_DREKKANA -> calculateDrekkana(chart)
+                DivisionalChartType.D4_CHATURTHAMSA -> calculateChaturthamsa(chart)
+                DivisionalChartType.D7_SAPTAMSA -> calculateSaptamsa(chart)
+                DivisionalChartType.D9_NAVAMSA -> calculateNavamsa(chart)
+                DivisionalChartType.D10_DASAMSA -> calculateDasamsa(chart)
+                DivisionalChartType.D12_DWADASAMSA -> calculateDwadasamsa(chart)
+                DivisionalChartType.D16_SHODASHAMSA -> calculateShodasamsa(chart)
+                DivisionalChartType.D20_VIMSAMSA -> calculateVimsamsa(chart)
+                DivisionalChartType.D24_CHATURVIMSAMSA -> calculateChaturvimsamsa(chart)
+                DivisionalChartType.D27_SAPTAVIMSAMSA -> calculateSaptavimsamsa(chart)
+                DivisionalChartType.D30_TRIMSAMSA -> calculateTrimsamsa(chart)
+                DivisionalChartType.D40_KHAVEDAMSA -> calculateKhavedamsa(chart)
+                DivisionalChartType.D45_AKSHAVEDAMSA -> calculateAkshavedamsa(chart)
+                DivisionalChartType.D60_SHASHTIAMSA -> calculateShashtiamsa(chart)
+                else -> calculateRashi(chart)
+            }
+        }
+    }
 
     fun calculateRashi(chart: VedicChart): DivisionalChartData {
         val ascendantSign = ZodiacSign.fromLongitude(chart.ascendant)

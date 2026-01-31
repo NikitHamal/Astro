@@ -76,7 +76,8 @@ object AshtottariDashaCalculator {
         Nakshatra.BHARANI to Planet.VENUS,
         Nakshatra.KRITTIKA to Planet.SUN,
         Nakshatra.ROHINI to Planet.MOON,
-        Nakshatra.MRIGASHIRA to Planet.MARS
+        Nakshatra.MRIGASHIRA to Planet.MARS,
+        Nakshatra.ABHIJIT to Planet.VENUS
     )
 
     /**

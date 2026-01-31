@@ -350,269 +350,88 @@ fun AstroStormNavigation(
                 currentChart = currentChart,
                 selectedChartId = selectedChartId,
                 onChartSelected = viewModel::loadChart,
-                onAddNewChart = {
-                    navController.navigate(Screen.ChartInput.route)
-                },
+            fun navigateToFeature(route: String) {
+                navController.navigate(route)
+            }
+
+            fun navigateWithId(screen: Screen, chartId: Long? = selectedChartId) {
+                chartId?.let { id ->
+                    navController.navigate(screen.route.replace("{chartId}", id.toString()))
+                }
+            }
+
+            MainScreen(
+                viewModel = viewModel,
+                chatViewModel = chatViewModel,
+                themeManager = themeManager,
+                savedCharts = savedCharts,
+                currentChart = currentChart,
+                selectedChartId = selectedChartId,
+                onChartSelected = viewModel::loadChart,
+                onAddNewChart = { navigateToFeature(Screen.ChartInput.route) },
                 onNavigateToChartAnalysis = { feature ->
                     selectedChartId?.let { chartId ->
                         navController.navigate(Screen.ChartAnalysis.createRoute(chartId, feature))
                     }
                 },
-                onNavigateToMatchmaking = {
-                    navController.navigate(Screen.Matchmaking.route)
-                },
-                onNavigateToMuhurta = {
-                    navController.navigate(Screen.Muhurta.route)
-                },
-                onNavigateToRemedies = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Remedies.createRoute(chartId))
-                    }
-                },
-                onNavigateToVarshaphala = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Varshaphala.createRoute(chartId))
-                    }
-                },
-                onNavigateToPrashna = {
-                    navController.navigate(Screen.Prashna.route)
-                },
-                onNavigateToBirthChart = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.BirthChart.createRoute(chartId))
-                    }
-                },
-                onNavigateToPlanets = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Planets.createRoute(chartId))
-                    }
-                },
-                onNavigateToYogas = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Yogas.createRoute(chartId))
-                    }
-                },
-                onNavigateToDashas = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Dashas.createRoute(chartId))
-                    }
-                },
-                onNavigateToTransits = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Transits.createRoute(chartId))
-                    }
-                },
-                onNavigateToAshtakavarga = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Ashtakavarga.createRoute(chartId))
-                    }
-                },
-                onNavigateToPanchanga = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Panchanga.createRoute(chartId))
-                    }
-                },
-                onNavigateToProfileEdit = { chartId ->
-                    navController.navigate(Screen.ProfileEdit.createRoute(chartId))
-                },
-                onNavigateToKakshaTransit = { chartId ->
-                    navController.navigate(Screen.KakshaTransit.createRoute(chartId))
-                },
-                onNavigateToNadiAmsha = { chartId ->
-                    navController.navigate(Screen.NadiAmsha.createRoute(chartId))
-                },
-                onNavigateToSynastry = {
-                    navController.navigate(Screen.Synastry.route)
-                },
-                onNavigateToNakshatra = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Nakshatra.createRoute(chartId))
-                    }
-                },
-                onNavigateToShadbala = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Shadbala.createRoute(chartId))
-                    }
-                },
-                onNavigateToShodashvarga = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Shodashvarga.createRoute(chartId))
-                    }
-                },
-                onNavigateToYoginiDasha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.YoginiDasha.createRoute(chartId))
-                    }
-                },
-                onNavigateToArgala = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Argala.createRoute(chartId))
-                    }
-                },
-                onNavigateToCharaDasha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.CharaDasha.createRoute(chartId))
-                    }
-                },
-                onNavigateToBhriguBindu = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.BhriguBindu.createRoute(chartId))
-                    }
-                },
-                onNavigateToPredictions = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Predictions.createRoute(chartId))
-                    }
-                },
-                onNavigateToAshtottariDasha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.AshtottariDasha.createRoute(chartId))
-                    }
-                },
-                onNavigateToSudarshanaChakra = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.SudarshanaChakra.createRoute(chartId))
-                    }
-                },
-                onNavigateToMrityuBhaga = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.MrityuBhaga.createRoute(chartId))
-                    }
-                },
-                onNavigateToLalKitab = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.LalKitabRemedies.createRoute(chartId))
-                    }
-                },
-                onNavigateToDivisionalCharts = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.DivisionalCharts.createRoute(chartId))
-                    }
-                },
-                onNavigateToUpachayaTransit = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.UpachayaTransit.createRoute(chartId))
-                    }
-                },
-                onNavigateToKalachakraDasha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.KalachakraDasha.createRoute(chartId))
-                    }
-                },
-                onNavigateToTarabala = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Tarabala.createRoute(chartId))
-                    }
-                },
-                onNavigateToArudhaPada = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.ArudhaPada.createRoute(chartId))
-                    }
-                },
-                onNavigateToGrahaYuddha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.GrahaYuddha.createRoute(chartId))
-                    }
-                },
-                onNavigateToDashaSandhi = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.DashaSandhi.createRoute(chartId))
-                    }
-                },
-                onNavigateToGocharaVedha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.GocharaVedha.createRoute(chartId))
-                    }
-                },
-                onNavigateToKemadrumaYoga = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.KemadrumaYoga.createRoute(chartId))
-                    }
-                },
-                onNavigateToPanchMahapurusha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.PanchMahapurusha.createRoute(chartId))
-                    }
-                },
-                onNavigateToNityaYoga = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.NityaYoga.createRoute(chartId))
-                    }
-                },
-                onNavigateToAvastha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Avastha.createRoute(chartId))
-                    }
-                },
-                onNavigateToMaraka = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Maraka.createRoute(chartId))
-                    }
-                },
-                onNavigateToBadhaka = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Badhaka.createRoute(chartId))
-                    }
-                },
-                onNavigateToVipareetaRajaYoga = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.VipareetaRajaYoga.createRoute(chartId))
-                    }
-                },
-                onNavigateToIshtaKashtaPhala = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.IshtaKashtaPhala.createRoute(chartId))
-                    }
-                },
-                onNavigateToShoolaDasha = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.ShoolaDasha.createRoute(chartId))
-                    }
-                },
-                onNavigateToAshtavargaTransit = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.AshtavargaTransit.createRoute(chartId))
-                    }
-                },
-                onNavigateToSarvatobhadraChakra = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.SarvatobhadraChakra.createRoute(chartId))
-                    }
-                },
-                onNavigateToDrigBala = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.DrigBala.createRoute(chartId))
-                    }
-                },
-                onNavigateToSthanaBala = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.SthanaBala.createRoute(chartId))
-                    }
-                },
-                onNavigateToKalaBala = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.KalaBala.createRoute(chartId))
-                    }
-                },
-                onNavigateToSaham = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.Saham.createRoute(chartId))
-                    }
-                },
-                onNavigateToNativeAnalysis = {
-                    selectedChartId?.let { chartId ->
-                        navController.navigate(Screen.NativeAnalysis.createRoute(chartId))
-                    }
-                },
-
-                onNavigateToAiModels = {
-                    navController.navigate(Screen.AiModels.route)
-                },
+                onNavigateToMatchmaking = { navigateToFeature(Screen.Matchmaking.route) },
+                onNavigateToMuhurta = { navigateToFeature(Screen.Muhurta.route) },
+                onNavigateToRemedies = { navigateWithId(Screen.Remedies) },
+                onNavigateToVarshaphala = { navigateWithId(Screen.Varshaphala) },
+                onNavigateToPrashna = { navigateToFeature(Screen.Prashna.route) },
+                onNavigateToBirthChart = { navigateWithId(Screen.BirthChart) },
+                onNavigateToPlanets = { navigateWithId(Screen.Planets) },
+                onNavigateToYogas = { navigateWithId(Screen.Yogas) },
+                onNavigateToDashas = { navigateWithId(Screen.Dashas) },
+                onNavigateToTransits = { navigateWithId(Screen.Transits) },
+                onNavigateToAshtakavarga = { navigateWithId(Screen.Ashtakavarga) },
+                onNavigateToPanchanga = { navigateWithId(Screen.Panchanga) },
+                onNavigateToProfileEdit = { chartId -> navigateWithId(Screen.ProfileEdit, chartId) },
+                onNavigateToKakshaTransit = { chartId -> navigateWithId(Screen.KakshaTransit, chartId) },
+                onNavigateToNadiAmsha = { chartId -> navigateWithId(Screen.NadiAmsha, chartId) },
+                onNavigateToSynastry = { navigateToFeature(Screen.Synastry.route) },
+                onNavigateToNakshatra = { navigateWithId(Screen.Nakshatra) },
+                onNavigateToShadbala = { navigateWithId(Screen.Shadbala) },
+                onNavigateToShodashvarga = { navigateWithId(Screen.Shodashvarga) },
+                onNavigateToYoginiDasha = { navigateWithId(Screen.YoginiDasha) },
+                onNavigateToArgala = { navigateWithId(Screen.Argala) },
+                onNavigateToCharaDasha = { navigateWithId(Screen.CharaDasha) },
+                onNavigateToBhriguBindu = { navigateWithId(Screen.BhriguBindu) },
+                onNavigateToPredictions = { navigateWithId(Screen.Predictions) },
+                onNavigateToAshtottariDasha = { navigateWithId(Screen.AshtottariDasha) },
+                onNavigateToSudarshanaChakra = { navigateWithId(Screen.SudarshanaChakra) },
+                onNavigateToMrityuBhaga = { navigateWithId(Screen.MrityuBhaga) },
+                onNavigateToLalKitab = { navigateWithId(Screen.LalKitabRemedies) },
+                onNavigateToDivisionalCharts = { navigateWithId(Screen.DivisionalCharts) },
+                onNavigateToUpachayaTransit = { navigateWithId(Screen.UpachayaTransit) },
+                onNavigateToKalachakraDasha = { navigateWithId(Screen.KalachakraDasha) },
+                onNavigateToTarabala = { navigateWithId(Screen.Tarabala) },
+                onNavigateToArudhaPada = { navigateWithId(Screen.ArudhaPada) },
+                onNavigateToGrahaYuddha = { navigateWithId(Screen.GrahaYuddha) },
+                onNavigateToDashaSandhi = { navigateWithId(Screen.DashaSandhi) },
+                onNavigateToGocharaVedha = { navigateWithId(Screen.GocharaVedha) },
+                onNavigateToKemadrumaYoga = { navigateWithId(Screen.KemadrumaYoga) },
+                onNavigateToPanchMahapurusha = { navigateWithId(Screen.PanchMahapurusha) },
+                onNavigateToNityaYoga = { navigateWithId(Screen.NityaYoga) },
+                onNavigateToAvastha = { navigateWithId(Screen.Avastha) },
+                onNavigateToMaraka = { navigateWithId(Screen.Maraka) },
+                onNavigateToBadhaka = { navigateWithId(Screen.Badhaka) },
+                onNavigateToVipareetaRajaYoga = { navigateWithId(Screen.VipareetaRajaYoga) },
+                onNavigateToIshtaKashtaPhala = { navigateWithId(Screen.IshtaKashtaPhala) },
+                onNavigateToShoolaDasha = { navigateWithId(Screen.ShoolaDasha) },
+                onNavigateToAshtavargaTransit = { navigateWithId(Screen.AshtavargaTransit) },
+                onNavigateToSarvatobhadraChakra = { navigateWithId(Screen.SarvatobhadraChakra) },
+                onNavigateToDrigBala = { navigateWithId(Screen.DrigBala) },
+                onNavigateToSthanaBala = { navigateWithId(Screen.SthanaBala) },
+                onNavigateToKalaBala = { navigateWithId(Screen.KalaBala) },
+                onNavigateToSaham = { navigateWithId(Screen.Saham) },
+                onNavigateToNativeAnalysis = { navigateWithId(Screen.NativeAnalysis) },
+                onNavigateToAiModels = { navigateToFeature(Screen.AiModels.route) },
                 onNavigateToChat = { conversationId ->
                     if (conversationId != null) {
-                        navController.navigate(Screen.Chat.createRoute(conversationId))
+                        navigateToFeature(Screen.Chat.createRoute(conversationId))
                     } else {
-                        navController.navigate(Screen.Chat.createNewRoute())
+                        navigateToFeature(Screen.Chat.createNewRoute())
                     }
                 },
                 onExportChart = { format ->
