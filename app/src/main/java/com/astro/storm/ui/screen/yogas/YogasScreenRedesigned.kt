@@ -1021,7 +1021,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                         stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STATUS_FMT),
                         detailedYogaStatus(result.activationStatus)
                     ) + ". " + String.format(
-                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_FMT),
+                        stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_STRENGTH_LEVEL_FMT),
                         detailedYogaStrengthValue(result.strength)
                     )
                 }

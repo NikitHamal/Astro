@@ -2665,6 +2665,7 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     YOGA_STATUS_FMT("Status: %s", "अवस्था: %s"),
     YOGA_CANCELLATION_FMT("Cancellation: %d%%", "न्यूनीकरण: %d%%"),
     YOGA_STRENGTH_FMT("Strength: %d%%", "बल: %d%%"),
+    YOGA_STRENGTH_LEVEL_FMT("Strength: %s", "बल: %s"),
     YOGA_DIGNITY_EXALTED("Exalted", "उच्च"),
     YOGA_DIGNITY_OWN_SIGN("Own Sign", "स्वराशि"),
 ;
