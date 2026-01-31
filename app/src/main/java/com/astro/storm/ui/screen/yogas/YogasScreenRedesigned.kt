@@ -238,7 +238,7 @@ private fun YogasTopBar(
                     if (chartName.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_YOGAS_FOUND_FMT), totalYogas, chartName),
+                            text = String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_YOGAS_FOUND_FMT), totalYogas.toString(), chartName),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
