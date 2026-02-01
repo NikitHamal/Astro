@@ -207,15 +207,15 @@ object KalachakraDashaCalculator {
 
         fun getLocalizedName(language: Language): String {
             return when (this) {
-                SAVYA -> StringResources.get(StringKeyDosha.KALACHAKRA_GROUP_SAVYA, language)
-                APSAVYA -> StringResources.get(StringKeyDosha.KALACHAKRA_GROUP_APSAVYA, language)
+                SAVYA -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_GROUP_SAVYA, language)
+                APSAVYA -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_GROUP_APSAVYA, language)
             }
         }
 
         fun getLocalizedDescription(language: Language): String {
             return when (this) {
-                SAVYA -> StringResources.get(StringKeyDosha.KALACHAKRA_DESC_SAVYA, language)
-                APSAVYA -> StringResources.get(StringKeyDosha.KALACHAKRA_DESC_APSAVYA, language)
+                SAVYA -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_DESC_SAVYA, language)
+                APSAVYA -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_DESC_APSAVYA, language)
             }
         }
     }
@@ -306,21 +306,21 @@ object KalachakraDashaCalculator {
 
         fun getLocalizedName(language: Language): String {
              return when (this) {
-                EXCELLENT -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_EXCELLENT, language)
-                GOOD -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_GOOD, language)
-                MODERATE -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_MODERATE, language)
-                CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_CHALLENGING, language)
-                CRITICAL -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_CRITICAL, language)
+                EXCELLENT -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_EXCELLENT, language)
+                GOOD -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_GOOD, language)
+                MODERATE -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_MODERATE, language)
+                CHALLENGING -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_CHALLENGING, language)
+                CRITICAL -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_CRITICAL, language)
             }
         }
 
         fun getLocalizedDescription(language: Language): String {
             return when (this) {
-                EXCELLENT -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_DESC_EXCELLENT, language)
-                GOOD -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_DESC_GOOD, language)
-                MODERATE -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_DESC_MODERATE, language)
-                CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_DESC_CHALLENGING, language)
-                CRITICAL -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_DESC_CRITICAL, language)
+                EXCELLENT -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_DESC_EXCELLENT, language)
+                GOOD -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_DESC_GOOD, language)
+                MODERATE -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_DESC_MODERATE, language)
+                CHALLENGING -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_DESC_CHALLENGING, language)
+                CRITICAL -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_DESC_CRITICAL, language)
             }
         }
     }
@@ -353,21 +353,21 @@ object KalachakraDashaCalculator {
 
         fun getLocalizedName(language: Language): String {
             return when (this) {
-                HARMONIOUS -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_HARMONIOUS, language)
-                SUPPORTIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_SUPPORTIVE, language)
-                NEUTRAL -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_NEUTRAL, language)
-                CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_CHALLENGING, language)
-                TRANSFORMATIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_TRANSFORMATIVE, language)
+                HARMONIOUS -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REL_HARMONIOUS, language)
+                SUPPORTIVE -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REL_SUPPORTIVE, language)
+                NEUTRAL -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REL_NEUTRAL, language)
+                CHALLENGING -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REL_CHALLENGING, language)
+                TRANSFORMATIVE -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REL_TRANSFORMATIVE, language)
             }
         }
 
         fun getLocalizedDescription(language: Language): String {
             return when (this) {
-                HARMONIOUS -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_DESC_HARMONIOUS, language)
-                SUPPORTIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_DESC_SUPPORTIVE, language)
-                NEUTRAL -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_DESC_NEUTRAL, language)
-                CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_DESC_CHALLENGING, language)
-                TRANSFORMATIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_REL_DESC_TRANSFORMATIVE, language)
+                HARMONIOUS -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REL_DESC_HARMONIOUS, language)
+                SUPPORTIVE -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REL_DESC_SUPPORTIVE, language)
+                NEUTRAL -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REL_DESC_NEUTRAL, language)
+                CHALLENGING -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REL_DESC_CHALLENGING, language)
+                TRANSFORMATIVE -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REL_DESC_TRANSFORMATIVE, language)
             }
         }
     }
@@ -898,14 +898,14 @@ object KalachakraDashaCalculator {
         chart: VedicChart,
         language: Language
     ): String {
-        if (position == null) return StringResources.get(StringKeyDosha.PLANET_STRENGTH_UNKNOWN, language)
+        if (position == null) return StringResources.get(StringKeyDoshaPart3.PLANET_STRENGTH_UNKNOWN, language)
 
         return when {
-            position.sign == planet.exaltationSign -> StringResources.get(StringKeyDosha.PLANET_STRENGTH_EXALTED, language)
-            position.sign.ruler == planet -> StringResources.get(StringKeyDosha.PLANET_STRENGTH_OWN_SIGN, language)
-            position.sign == planet.debilitationSign -> StringResources.get(StringKeyDosha.PLANET_STRENGTH_DEBILITATED, language)
-            position.isRetrograde -> StringResources.get(StringKeyDosha.PLANET_STRENGTH_RETROGRADE, language)
-            else -> StringResources.get(StringKeyDosha.PLANET_STRENGTH_MODERATE, language)
+            position.sign == planet.exaltationSign -> StringResources.get(StringKeyDoshaPart3.PLANET_STRENGTH_EXALTED, language)
+            position.sign.ruler == planet -> StringResources.get(StringKeyDoshaPart3.PLANET_STRENGTH_OWN_SIGN, language)
+            position.sign == planet.debilitationSign -> StringResources.get(StringKeyDoshaPart3.PLANET_STRENGTH_DEBILITATED, language)
+            position.isRetrograde -> StringResources.get(StringKeyDoshaPart3.PLANET_STRENGTH_RETROGRADE, language)
+            else -> StringResources.get(StringKeyDoshaPart3.PLANET_STRENGTH_MODERATE, language)
         }
     }
 
@@ -955,14 +955,14 @@ object KalachakraDashaCalculator {
     ): String {
         return buildString {
             // "Based on Deha lord's %1$s status and %2$s Deha-Jeeva relationship: "
-            append(StringResources.get(StringKeyDosha.KALACHAKRA_PRED_INTRO_DEHA, language, dehaLordStrength, relationship.getLocalizedName(language)))
+            append(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_PRED_INTRO_DEHA, language, dehaLordStrength, relationship.getLocalizedName(language)))
             
             val effect = when (relationship) {
-                DehaJeevaRelationship.HARMONIOUS -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_PRED_HARMONIOUS, language)
-                DehaJeevaRelationship.SUPPORTIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_PRED_SUPPORTIVE, language)
-                DehaJeevaRelationship.NEUTRAL -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_PRED_NEUTRAL, language)
-                DehaJeevaRelationship.CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_PRED_CHALLENGING, language)
-                DehaJeevaRelationship.TRANSFORMATIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_PRED_TRANSFORMATIVE, language)
+                DehaJeevaRelationship.HARMONIOUS -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_PRED_HARMONIOUS, language)
+                DehaJeevaRelationship.SUPPORTIVE -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_PRED_SUPPORTIVE, language)
+                DehaJeevaRelationship.NEUTRAL -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_PRED_NEUTRAL, language)
+                DehaJeevaRelationship.CHALLENGING -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_PRED_CHALLENGING, language)
+                DehaJeevaRelationship.TRANSFORMATIVE -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_HEALTH_PRED_TRANSFORMATIVE, language)
             }
             append(effect)
         }
@@ -978,14 +978,14 @@ object KalachakraDashaCalculator {
     ): String {
         return buildString {
             // "Jeeva lord's %1$s condition indicates "
-            append(StringResources.get(StringKeyDosha.KALACHAKRA_PRED_INTRO_JEEVA, language, jeevaLordStrength))
+            append(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_PRED_INTRO_JEEVA, language, jeevaLordStrength))
             
             val effect = when (relationship) {
-                DehaJeevaRelationship.HARMONIOUS -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_PRED_HARMONIOUS, language)
-                DehaJeevaRelationship.SUPPORTIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_PRED_SUPPORTIVE, language)
-                DehaJeevaRelationship.NEUTRAL -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_PRED_NEUTRAL, language)
-                DehaJeevaRelationship.CHALLENGING -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_PRED_CHALLENGING, language)
-                DehaJeevaRelationship.TRANSFORMATIVE -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_PRED_TRANSFORMATIVE, language)
+                DehaJeevaRelationship.HARMONIOUS -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_SPIRITUAL_PRED_HARMONIOUS, language)
+                DehaJeevaRelationship.SUPPORTIVE -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_SPIRITUAL_PRED_SUPPORTIVE, language)
+                DehaJeevaRelationship.NEUTRAL -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_SPIRITUAL_PRED_NEUTRAL, language)
+                DehaJeevaRelationship.CHALLENGING -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_SPIRITUAL_PRED_CHALLENGING, language)
+                DehaJeevaRelationship.TRANSFORMATIVE -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_SPIRITUAL_PRED_TRANSFORMATIVE, language)
             }
             append(effect)
         }
@@ -1004,33 +1004,33 @@ object KalachakraDashaCalculator {
 
         // Deha lord remedies
         val dehaLordName = dehaLord.displayName // Ideally localized
-        recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_DEHA_LORD, language, dehaLordName))
+        recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_DEHA_LORD, language, dehaLordName))
 
         // Jeeva lord remedies
         val jeevaLordName = jeevaLord.displayName // Ideally localized
-        recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_JEEVA_LORD, language, jeevaLordName))
+        recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_JEEVA_LORD, language, jeevaLordName))
 
         // Relationship-specific recommendations
         when (relationship) {
             DehaJeevaRelationship.HARMONIOUS -> {
-                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_HARMONIOUS_1, language))
-                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_HARMONIOUS_2, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_HARMONIOUS_1, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_HARMONIOUS_2, language))
             }
             DehaJeevaRelationship.SUPPORTIVE -> {
-                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_SUPPORTIVE_1, language))
-                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_SUPPORTIVE_2, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_SUPPORTIVE_1, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_SUPPORTIVE_2, language))
             }
             DehaJeevaRelationship.NEUTRAL -> {
-                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_NEUTRAL_1, language))
-                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_NEUTRAL_2, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_NEUTRAL_1, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_NEUTRAL_2, language))
             }
             DehaJeevaRelationship.CHALLENGING -> {
-                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_CHALLENGING_1, language))
-                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_CHALLENGING_2, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_CHALLENGING_1, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_CHALLENGING_2, language))
             }
             DehaJeevaRelationship.TRANSFORMATIVE -> {
-                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_TRANSFORMATIVE_1, language))
-                recommendations.add(StringResources.get(StringKeyDosha.KALACHAKRA_REC_TRANSFORMATIVE_2, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_TRANSFORMATIVE_1, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_REC_TRANSFORMATIVE_2, language))
             }
         }
 
@@ -1087,7 +1087,7 @@ object KalachakraDashaCalculator {
         language: Language
     ): MahadashaInterpretation {
         val generalEffects = getSignGeneralEffects(sign, language)
-        val healthPrediction = "${StringResources.get(StringKeyDosha.KALACHAKRA_HEALTH_INDICATOR, language)}: ${healthIndicator.getLocalizedName(language)} - ${healthIndicator.getLocalizedDescription(language)}"
+        val healthPrediction = "${StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_HEALTH_INDICATOR, language)}: ${healthIndicator.getLocalizedName(language)} - ${healthIndicator.getLocalizedDescription(language)}"
         val spiritualPrediction = getSignSpiritualEffects(sign, language)
         val materialPrediction = getSignMaterialEffects(sign, chart, language)
         val favorableAreas = getFavorableAreas(sign, signLord, language)
@@ -1116,18 +1116,18 @@ object KalachakraDashaCalculator {
         language: Language
     ): String {
         return buildString {
-            append("${antardashaSign.getLocalizedName(language)} ${StringResources.get(StringKeyDosha.SUDARSHANA_FOCUS_GENERAL, language)} ${StringResources.get(StringKeyDosha.FROM_LABEL, language)} ${mahadashaSign.getLocalizedName(language)}: ")
+            append("${antardashaSign.getLocalizedName(language)} ${StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_FOCUS_GENERAL, language)} ${StringResources.get(StringKeyDoshaPart4.FROM_LABEL, language)} ${mahadashaSign.getLocalizedName(language)}: ")
 
             if (isDeha) {
-                append(StringResources.get(StringKeyDosha.KALACHAKRA_DEHA_ANALYSIS, language))
+                append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_DEHA_ANALYSIS, language))
                 append(". ")
             }
             if (isJeeva) {
-                append(StringResources.get(StringKeyDosha.KALACHAKRA_JEEVA_ANALYSIS, language))
+                append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_JEEVA_ANALYSIS, language))
                 append(". ")
             }
             if (!isDeha && !isJeeva) {
-                append("${StringResources.get(StringKeyDosha.SUDARSHANA_FOCUS_GENERAL, language)} ${antardashaSign.getLocalizedName(language)}. ")
+                append("${StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_FOCUS_GENERAL, language)} ${antardashaSign.getLocalizedName(language)}. ")
             }
 
             append(getSignBriefEffect(antardashaSign, language))
@@ -1146,16 +1146,16 @@ object KalachakraDashaCalculator {
         chart: VedicChart,
         language: Language
     ): KalachakraInterpretation {
-        val systemOverview = StringResources.get(StringKeyDosha.KALACHAKRA_OVERVIEW_TEXT, language)
+        val systemOverview = StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_OVERVIEW_TEXT, language)
 
         val nakshatraGroupAnalysis = String.format(
-            StringResources.get(StringKeyDosha.KALACHAKRA_INTERP_GROUP_ANALYSIS, language),
+            StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_INTERP_GROUP_ANALYSIS, language),
             nakshatraGroup.getLocalizedName(language),
             nakshatraGroup.getLocalizedDescription(language)
         )
 
         val dehaJeevaSummary = String.format(
-            StringResources.get(StringKeyDosha.KALACHAKRA_INTERP_DEHA_JEEVA_SUMMARY, language),
+            StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_INTERP_DEHA_JEEVA_SUMMARY, language),
             dehaRashi.getLocalizedName(language),
             jeevaRashi.getLocalizedName(language),
             dehaJeevaAnalysis.dehaJeevaRelationship.getLocalizedName(language)
@@ -1163,25 +1163,25 @@ object KalachakraDashaCalculator {
 
         val currentPhaseAnalysis = if (currentMahadasha != null) {
             String.format(
-                StringResources.get(StringKeyDosha.KALACHAKRA_INTERP_CURRENT_PHASE, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_INTERP_CURRENT_PHASE, language),
                 currentMahadasha.sign.getLocalizedName(language),
                 currentMahadasha.durationYears,
                 currentMahadasha.healthIndicator.getLocalizedName(language),
                 currentMahadasha.interpretation.generalEffects
             )
         } else {
-            StringResources.get(StringKeyDosha.KALACHAKRA_INTERP_NO_CURRENT, language)
+            StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_INTERP_NO_CURRENT, language)
         }
 
         val healthOutlook = dehaJeevaAnalysis.healthPrediction
         val spiritualOutlook = dehaJeevaAnalysis.spiritualPrediction
 
         val generalGuidance = listOf(
-            StringResources.get(StringKeyDosha.KALACHAKRA_GUIDANCE_1, language),
-            StringResources.get(StringKeyDosha.KALACHAKRA_GUIDANCE_2, language),
-            StringResources.get(StringKeyDosha.KALACHAKRA_GUIDANCE_3, language),
-            StringResources.get(StringKeyDosha.KALACHAKRA_GUIDANCE_4, language),
-            StringResources.get(StringKeyDosha.KALACHAKRA_GUIDANCE_5, language)
+            StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_GUIDANCE_1, language),
+            StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_GUIDANCE_2, language),
+            StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_GUIDANCE_3, language),
+            StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_GUIDANCE_4, language),
+            StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_GUIDANCE_5, language)
         )
 
         return KalachakraInterpretation(
@@ -1203,28 +1203,28 @@ object KalachakraDashaCalculator {
 
     private fun getSignGeneralEffects(sign: ZodiacSign, language: Language): String {
         return when (sign) {
-            ZodiacSign.ARIES -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_ARIES, language)
-            ZodiacSign.TAURUS -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_TAURUS, language)
-            ZodiacSign.GEMINI -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_GEMINI, language)
-            ZodiacSign.CANCER -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_CANCER, language)
-            ZodiacSign.LEO -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_LEO, language)
-            ZodiacSign.VIRGO -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_VIRGO, language)
-            ZodiacSign.LIBRA -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_LIBRA, language)
-            ZodiacSign.SCORPIO -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_SCORPIO, language)
-            ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_SAGITTARIUS, language)
-            ZodiacSign.CAPRICORN -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_CAPRICORN, language)
-            ZodiacSign.AQUARIUS -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_AQUARIUS, language)
-            ZodiacSign.PISCES -> StringResources.get(StringKeyDosha.KALACHAKRA_EFFECT_PISCES, language)
+            ZodiacSign.ARIES -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_ARIES, language)
+            ZodiacSign.TAURUS -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_TAURUS, language)
+            ZodiacSign.GEMINI -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_GEMINI, language)
+            ZodiacSign.CANCER -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_CANCER, language)
+            ZodiacSign.LEO -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_LEO, language)
+            ZodiacSign.VIRGO -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_VIRGO, language)
+            ZodiacSign.LIBRA -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_LIBRA, language)
+            ZodiacSign.SCORPIO -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_SCORPIO, language)
+            ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_SAGITTARIUS, language)
+            ZodiacSign.CAPRICORN -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_CAPRICORN, language)
+            ZodiacSign.AQUARIUS -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_AQUARIUS, language)
+            ZodiacSign.PISCES -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECT_PISCES, language)
         }
     }
 
     private fun getSignSpiritualEffects(sign: ZodiacSign, language: Language): String {
         return when (sign.element) {
-            "Fire" -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_FIRE, language)
-            "Earth" -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_EARTH, language)
-            "Air" -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_AIR, language)
-            "Water" -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_WATER, language)
-            else -> StringResources.get(StringKeyDosha.KALACHAKRA_SPIRITUAL_GENERAL, language)
+            "Fire" -> StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_SPIRITUAL_FIRE, language)
+            "Earth" -> StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_SPIRITUAL_EARTH, language)
+            "Air" -> StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_SPIRITUAL_AIR, language)
+            "Water" -> StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_SPIRITUAL_WATER, language)
+            else -> StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_SPIRITUAL_GENERAL, language)
         }
     }
 
@@ -1234,23 +1234,23 @@ object KalachakraDashaCalculator {
         val lordHouse = lordPosition?.house ?: 1
 
         return buildString {
-            append(String.format(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_SIGN_FOCUS, language), sign.getLocalizedName(language)))
+            append(String.format(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_SIGN_FOCUS, language), sign.getLocalizedName(language)))
             append(" ")
-            append(String.format(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_LORD_POS, language), getLocalizedPlanetName(signLord, language), lordHouse))
+            append(String.format(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_LORD_POS, language), getLocalizedPlanetName(signLord, language), lordHouse))
             when (lordHouse) {
-                1 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H1, language))
-                2 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H2, language))
-                3 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H3, language))
-                4 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H4, language))
-                5 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H5, language))
-                6 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H6, language))
-                7 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H7, language))
-                8 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H8, language))
-                9 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H9, language))
-                10 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H10, language))
-                11 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H11, language))
-                12 -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_H12, language))
-                else -> append(StringResources.get(StringKeyDosha.KALACHAKRA_MATERIAL_GENERAL_PROGRESS, language))
+                1 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H1, language))
+                2 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H2, language))
+                3 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H3, language))
+                4 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H4, language))
+                5 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H5, language))
+                6 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H6, language))
+                7 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H7, language))
+                8 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H8, language))
+                9 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H9, language))
+                10 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H10, language))
+                11 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H11, language))
+                12 -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_H12, language))
+                else -> append(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_MATERIAL_GENERAL_PROGRESS, language))
             }
         }
     }
@@ -1258,32 +1258,32 @@ object KalachakraDashaCalculator {
     private fun getFavorableAreas(sign: ZodiacSign, signLord: Planet, language: Language): List<String> {
         val areas = mutableListOf<String>()
 
-        areas.add("${getLocalizedPlanetName(signLord, language)}-${StringResources.get(com.astro.storm.core.common.StringKey.VARSHAPHALA_KEY_DATES, language)}") // Fallback to "Key Dates" or similar if needed, but better to have specific key
+        areas.add("${getLocalizedPlanetName(signLord, language)}-${StringResources.get(com.astro.storm.core.common.StringKeyPart1.VARSHAPHALA_KEY_DATES, language)}") // Fallback to "Key Dates" or similar if needed, but better to have specific key
 
         when (sign.element) {
             "Fire" -> areas.addAll(listOf(
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_LEADERSHIP, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_SPORTS, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_ENGINEERING, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_MILITARY, language)
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_LEADERSHIP, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_SPORTS, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_ENGINEERING, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_MILITARY, language)
             ))
             "Earth" -> areas.addAll(listOf(
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_FINANCE, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_REAL_ESTATE, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_AGRICULTURE, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_CONSTRUCTION, language)
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_FINANCE, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_REAL_ESTATE, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_AGRICULTURE, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_CONSTRUCTION, language)
             ))
             "Air" -> areas.addAll(listOf(
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_COMMUNICATION, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_EDUCATION, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_TRAVEL, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_TECHNOLOGY, language)
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_COMMUNICATION, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_EDUCATION, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_TRAVEL, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_TECHNOLOGY, language)
             ))
             "Water" -> areas.addAll(listOf(
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_HEALING, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_ARTS, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_PSYCHOLOGY, language),
-                StringResources.get(StringKeyDosha.KALACHAKRA_AREA_SPIRITUALITY, language)
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_HEALING, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_ARTS, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_PSYCHOLOGY, language),
+                StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_AREA_SPIRITUALITY, language)
             ))
         }
 
@@ -1294,22 +1294,22 @@ object KalachakraDashaCalculator {
         val areas = mutableListOf<String>()
 
         if (healthIndicator.score <= 2) {
-            areas.add(StringResources.get(StringKeyDosha.KALACHAKRA_CAUTION_HEALTH, language))
+            areas.add(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_HEALTH, language))
         }
 
         val key = when (sign) {
-            ZodiacSign.ARIES -> StringKeyDosha.KALACHAKRA_CAUTION_ARIES
-            ZodiacSign.TAURUS -> StringKeyDosha.KALACHAKRA_CAUTION_TAURUS
-            ZodiacSign.GEMINI -> StringKeyDosha.KALACHAKRA_CAUTION_GEMINI
-            ZodiacSign.CANCER -> StringKeyDosha.KALACHAKRA_CAUTION_CANCER
-            ZodiacSign.LEO -> StringKeyDosha.KALACHAKRA_CAUTION_LEO
-            ZodiacSign.VIRGO -> StringKeyDosha.KALACHAKRA_CAUTION_VIRGO
-            ZodiacSign.LIBRA -> StringKeyDosha.KALACHAKRA_CAUTION_LIBRA
-            ZodiacSign.SCORPIO -> StringKeyDosha.KALACHAKRA_CAUTION_SCORPIO
-            ZodiacSign.SAGITTARIUS -> StringKeyDosha.KALACHAKRA_CAUTION_SAGITTARIUS
-            ZodiacSign.CAPRICORN -> StringKeyDosha.KALACHAKRA_CAUTION_CAPRICORN
-            ZodiacSign.AQUARIUS -> StringKeyDosha.KALACHAKRA_CAUTION_AQUARIUS
-            ZodiacSign.PISCES -> StringKeyDosha.KALACHAKRA_CAUTION_PISCES
+            ZodiacSign.ARIES -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_ARIES
+            ZodiacSign.TAURUS -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_TAURUS
+            ZodiacSign.GEMINI -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_GEMINI
+            ZodiacSign.CANCER -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_CANCER
+            ZodiacSign.LEO -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_LEO
+            ZodiacSign.VIRGO -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_VIRGO
+            ZodiacSign.LIBRA -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_LIBRA
+            ZodiacSign.SCORPIO -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_SCORPIO
+            ZodiacSign.SAGITTARIUS -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_SAGITTARIUS
+            ZodiacSign.CAPRICORN -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_CAPRICORN
+            ZodiacSign.AQUARIUS -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_AQUARIUS
+            ZodiacSign.PISCES -> StringKeyDashaInterpretationsPart2.KALACHAKRA_CAUTION_PISCES
         }
         areas.add(StringResources.get(key, language))
 
@@ -1320,38 +1320,38 @@ object KalachakraDashaCalculator {
         val remedies = mutableListOf<String>()
 
         // Sign lord mantra
-        remedies.add(String.format(StringResources.get(StringKeyDosha.KALACHAKRA_REMEDY_MANTRA, language), getLocalizedPlanetName(signLord, language)))
+        remedies.add(String.format(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_REMEDY_MANTRA, language), getLocalizedPlanetName(signLord, language)))
 
         // Elemental remedies
         val elemKey = when (sign.element) {
-            "Fire" -> StringKeyDosha.KALACHAKRA_REMEDY_FIRE
-            "Earth" -> StringKeyDosha.KALACHAKRA_REMEDY_EARTH
-            "Air" -> StringKeyDosha.KALACHAKRA_REMEDY_AIR
-            "Water" -> StringKeyDosha.KALACHAKRA_REMEDY_WATER
+            "Fire" -> StringKeyDashaInterpretationsPart2.KALACHAKRA_REMEDY_FIRE
+            "Earth" -> StringKeyDashaInterpretationsPart2.KALACHAKRA_REMEDY_EARTH
+            "Air" -> StringKeyDashaInterpretationsPart2.KALACHAKRA_REMEDY_AIR
+            "Water" -> StringKeyDashaInterpretationsPart2.KALACHAKRA_REMEDY_WATER
             else -> null
         }
         elemKey?.let { remedies.add(StringResources.get(it, language)) }
 
         // Health-specific
-        remedies.add(StringResources.get(StringKeyDosha.KALACHAKRA_REMEDY_DEITY, language))
+        remedies.add(StringResources.get(StringKeyDashaInterpretationsPart2.KALACHAKRA_REMEDY_DEITY, language))
 
         return remedies
     }
 
     private fun getSignBriefEffect(sign: ZodiacSign, language: Language): String {
         return when (sign) {
-            ZodiacSign.ARIES -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_ARIES, language)
-            ZodiacSign.TAURUS -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_TAURUS, language)
-            ZodiacSign.GEMINI -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_GEMINI, language)
-            ZodiacSign.CANCER -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_CANCER, language)
-            ZodiacSign.LEO -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_LEO, language)
-            ZodiacSign.VIRGO -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_VIRGO, language)
-            ZodiacSign.LIBRA -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_LIBRA, language)
-            ZodiacSign.SCORPIO -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_SCORPIO, language)
-            ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_SAGITTARIUS, language)
-            ZodiacSign.CAPRICORN -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_CAPRICORN, language)
-            ZodiacSign.AQUARIUS -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_AQUARIUS, language)
-            ZodiacSign.PISCES -> StringResources.get(StringKeyDosha.KALACHAKRA_BRIEF_PISCES, language)
+            ZodiacSign.ARIES -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_ARIES, language)
+            ZodiacSign.TAURUS -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_TAURUS, language)
+            ZodiacSign.GEMINI -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_GEMINI, language)
+            ZodiacSign.CANCER -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_CANCER, language)
+            ZodiacSign.LEO -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_LEO, language)
+            ZodiacSign.VIRGO -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_VIRGO, language)
+            ZodiacSign.LIBRA -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_LIBRA, language)
+            ZodiacSign.SCORPIO -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_SCORPIO, language)
+            ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_SAGITTARIUS, language)
+            ZodiacSign.CAPRICORN -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_CAPRICORN, language)
+            ZodiacSign.AQUARIUS -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_AQUARIUS, language)
+            ZodiacSign.PISCES -> StringResources.get(StringKeyDashaInterpretationsPart1.KALACHAKRA_BRIEF_PISCES, language)
         }
     }
 
@@ -1409,15 +1409,15 @@ object KalachakraDashaCalculator {
 
     private fun getLocalizedPlanetName(planet: Planet, language: Language): String {
         val key = when (planet) {
-            Planet.SUN -> com.astro.storm.core.common.StringKey.PLANET_SUN
-            Planet.MOON -> com.astro.storm.core.common.StringKey.PLANET_MOON
-            Planet.MARS -> com.astro.storm.core.common.StringKey.PLANET_MARS
-            Planet.MERCURY -> com.astro.storm.core.common.StringKey.PLANET_MERCURY
-            Planet.JUPITER -> com.astro.storm.core.common.StringKey.PLANET_JUPITER
-            Planet.VENUS -> com.astro.storm.core.common.StringKey.PLANET_VENUS
-            Planet.SATURN -> com.astro.storm.core.common.StringKey.PLANET_SATURN
-            Planet.RAHU -> com.astro.storm.core.common.StringKey.PLANET_RAHU
-            Planet.KETU -> com.astro.storm.core.common.StringKey.PLANET_KETU
+            Planet.SUN -> com.astro.storm.core.common.StringKeyPart1.PLANET_SUN
+            Planet.MOON -> com.astro.storm.core.common.StringKeyPart1.PLANET_MOON
+            Planet.MARS -> com.astro.storm.core.common.StringKeyPart1.PLANET_MARS
+            Planet.MERCURY -> com.astro.storm.core.common.StringKeyPart1.PLANET_MERCURY
+            Planet.JUPITER -> com.astro.storm.core.common.StringKeyPart1.PLANET_JUPITER
+            Planet.VENUS -> com.astro.storm.core.common.StringKeyPart1.PLANET_VENUS
+            Planet.SATURN -> com.astro.storm.core.common.StringKeyPart1.PLANET_SATURN
+            Planet.RAHU -> com.astro.storm.core.common.StringKeyPart1.PLANET_RAHU
+            Planet.KETU -> com.astro.storm.core.common.StringKeyPart1.PLANET_KETU
             else -> return planet.displayName
         }
         return StringResources.get(key, language)

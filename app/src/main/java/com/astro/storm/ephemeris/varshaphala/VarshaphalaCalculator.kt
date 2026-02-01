@@ -59,7 +59,7 @@ class VarshaphalaCalculator(context: Context) {
 
     private fun getYearLordDignityDescription(planet: com.astro.storm.core.model.Planet, chart: SolarReturnChart, language: Language): String {
         val pos = chart.planetPositions[planet] ?: return ""
-        return StringResources.get(StringKeyAnalysis.VARSHA_YEARLORD_DIGNITY_FORMAT, language, planet.getLocalizedName(language), pos.sign.getLocalizedName(language), pos.house)
+        return StringResources.get(StringKeyVarshaphala.VARSHA_YEARLORD_DIGNITY_FORMAT, language, planet.getLocalizedName(language), pos.sign.getLocalizedName(language), pos.house)
     }
 
     private fun calculateMonthlyInfluences(chart: SolarReturnChart, solarReturnTime: LocalDateTime): Pair<List<Int>, List<Int>> {
@@ -75,8 +75,8 @@ class VarshaphalaCalculator(context: Context) {
     }
 
     private fun calculateKeyDates(chart: SolarReturnChart, solarReturnTime: LocalDateTime, muddaDasha: List<MuddaDashaPeriod>, language: Language): List<KeyDate> {
-        val dates = mutableListOf(KeyDate(solarReturnTime.toLocalDate(), StringResources.get(StringKeyAnalysis.VARSHA_EVENT_SOLAR_RETURN, language), KeyDateType.IMPORTANT, StringResources.get(StringKeyAnalysis.VARSHA_EVENT_SOLAR_RETURN_DESC, language)))
-        muddaDasha.forEach { dates.add(KeyDate(it.startDate, StringResources.get(StringKeyAnalysis.VARSHA_EVENT_DASHA_BEGINS, language, it.planet.getLocalizedName(language)), if (it.planetStrength in listOf(StringResources.get(StringKeyAnalysis.VARSHA_STRENGTH_EXALTED, language), StringResources.get(StringKeyAnalysis.VARSHA_STRENGTH_STRONG, language))) KeyDateType.FAVORABLE else KeyDateType.IMPORTANT, StringResources.get(StringKeyAnalysis.VARSHA_EVENT_DASHA_BEGINS_DESC, language, it.planet.getLocalizedName(language), it.days))) }
+        val dates = mutableListOf(KeyDate(solarReturnTime.toLocalDate(), StringResources.get(StringKeyVarshaphala.VARSHA_EVENT_SOLAR_RETURN, language), KeyDateType.IMPORTANT, StringResources.get(StringKeyVarshaphala.VARSHA_EVENT_SOLAR_RETURN_DESC, language)))
+        muddaDasha.forEach { dates.add(KeyDate(it.startDate, StringResources.get(StringKeyVarshaphala.VARSHA_EVENT_DASHA_BEGINS, language, it.planet.getLocalizedName(language)), if (it.planetStrength in listOf(StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_EXALTED, language), StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_STRONG, language))) KeyDateType.FAVORABLE else KeyDateType.IMPORTANT, StringResources.get(StringKeyVarshaphala.VARSHA_EVENT_DASHA_BEGINS_DESC, language, it.planet.getLocalizedName(language), it.days))) }
         return dates.sortedBy { it.date }.take(15)
     }
 

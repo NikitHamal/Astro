@@ -26,11 +26,11 @@ object PrashnaYogaEvaluator {
         if (isIthasalaPresent(moonAnalysis)) {
             yogas.add(
                 PrashnaYoga(
-                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_ITHASALA_NAME, language),
-                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_ITHASALA_DESC, language),
+                    name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_ITHASALA_NAME, language),
+                    description = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_ITHASALA_DESC, language),
                     isPositive = true,
                     strength = 4,
-                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_ITHASALA_INTERP, language)
+                    interpretation = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_ITHASALA_INTERP, language)
                 )
             )
         }
@@ -38,11 +38,11 @@ object PrashnaYogaEvaluator {
         if (isMusariphaPresent(moonAnalysis)) {
             yogas.add(
                 PrashnaYoga(
-                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MUSARIPHA_NAME, language),
-                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MUSARIPHA_DESC, language),
+                    name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_MUSARIPHA_NAME, language),
+                    description = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_MUSARIPHA_DESC, language),
                     isPositive = false,
                     strength = 3,
-                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MUSARIPHA_INTERP, language)
+                    interpretation = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_MUSARIPHA_INTERP, language)
                 )
             )
         }
@@ -50,11 +50,11 @@ object PrashnaYogaEvaluator {
         if (isNaktaPresent(chart)) {
             yogas.add(
                 PrashnaYoga(
-                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_NAKTA_NAME, language),
-                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_NAKTA_DESC, language),
+                    name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_NAKTA_NAME, language),
+                    description = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_NAKTA_DESC, language),
                     isPositive = true,
                     strength = 3,
-                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_NAKTA_INTERP, language)
+                    interpretation = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_NAKTA_INTERP, language)
                 )
             )
         }
@@ -62,11 +62,11 @@ object PrashnaYogaEvaluator {
         if (isManaouPresent(chart)) {
             yogas.add(
                 PrashnaYoga(
-                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MANAOU_NAME, language),
-                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MANAOU_DESC, language),
+                    name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_MANAOU_NAME, language),
+                    description = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_MANAOU_DESC, language),
                     isPositive = false,
                     strength = 4,
-                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_MANAOU_INTERP, language)
+                    interpretation = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_MANAOU_INTERP, language)
                 )
             )
         }
@@ -74,11 +74,11 @@ object PrashnaYogaEvaluator {
         if (isKamboolaPresent(moonAnalysis)) {
             yogas.add(
                 PrashnaYoga(
-                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_KAMBOOLA_NAME, language),
-                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_KAMBOOLA_DESC, language),
+                    name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_KAMBOOLA_NAME, language),
+                    description = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_KAMBOOLA_DESC, language),
                     isPositive = true,
                     strength = 4,
-                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_KAMBOOLA_INTERP, language)
+                    interpretation = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_KAMBOOLA_INTERP, language)
                 )
             )
         }
@@ -86,11 +86,11 @@ object PrashnaYogaEvaluator {
         if (isGairiKamboolaPresent(moonAnalysis)) {
             yogas.add(
                 PrashnaYoga(
-                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GAIRI_KAMBOOLA_NAME, language),
-                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GAIRI_KAMBOOLA_DESC, language),
+                    name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_GAIRI_KAMBOOLA_NAME, language),
+                    description = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_GAIRI_KAMBOOLA_DESC, language),
                     isPositive = false,
                     strength = 2,
-                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GAIRI_KAMBOOLA_INTERP, language)
+                    interpretation = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_GAIRI_KAMBOOLA_INTERP, language)
                 )
             )
         }
@@ -98,11 +98,11 @@ object PrashnaYogaEvaluator {
         if (isDhurufaPresent(moonAnalysis)) {
             yogas.add(
                 PrashnaYoga(
-                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_DHURUFA_NAME, language),
-                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_DHURUFA_DESC, language),
+                    name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_DHURUFA_NAME, language),
+                    description = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_DHURUFA_DESC, language),
                     isPositive = false,
                     strength = 4,
-                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_DHURUFA_INTERP, language)
+                    interpretation = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_DHURUFA_INTERP, language)
                 )
             )
         }
@@ -110,11 +110,11 @@ object PrashnaYogaEvaluator {
         if (isPushkaraNavamsha(moonAnalysis.position.longitude)) {
             yogas.add(
                 PrashnaYoga(
-                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_PUSHKARA_NAME, language),
-                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_PUSHKARA_DESC, language),
+                    name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_PUSHKARA_NAME, language),
+                    description = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_PUSHKARA_DESC, language),
                     isPositive = true,
                     strength = 5,
-                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_PUSHKARA_INTERP, language)
+                    interpretation = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_PUSHKARA_INTERP, language)
                 )
             )
         }
@@ -122,11 +122,11 @@ object PrashnaYogaEvaluator {
         if (isGandanta(moonAnalysis.position.longitude)) {
             yogas.add(
                 PrashnaYoga(
-                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GANDANTA_NAME, language),
-                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GANDANTA_DESC, language),
+                    name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_GANDANTA_NAME, language),
+                    description = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_GANDANTA_DESC, language),
                     isPositive = false,
                     strength = 5,
-                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_GANDANTA_INTERP, language)
+                    interpretation = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_GANDANTA_INTERP, language)
                 )
             )
         }
@@ -135,11 +135,11 @@ object PrashnaYogaEvaluator {
             angularDistance(moonAnalysis.position.longitude, lagnaAnalysis.lagnaLordPosition.longitude) < 10) {
             yogas.add(
                 PrashnaYoga(
-                    name = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_UNION_NAME, language),
-                    description = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_UNION_DESC, language),
+                    name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_UNION_NAME, language),
+                    description = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_UNION_DESC, language),
                     isPositive = true,
                     strength = 4,
-                    interpretation = StringResources.get(StringKeyAnalysis.PRASHNA_YOGA_UNION_INTERP, language)
+                    interpretation = StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_UNION_INTERP, language)
                 )
             )
         }

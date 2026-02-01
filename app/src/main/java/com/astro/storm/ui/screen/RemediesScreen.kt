@@ -77,9 +77,9 @@ fun RemediesScreen(
     var isSearchVisible by rememberSaveable { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyMatch.TAB_OVERVIEW),
-        stringResource(StringKeyMatch.TAB_REMEDIES),
-        stringResource(StringKeyMatch.TAB_PLANETS)
+        stringResource(StringKeyUI.TAB_OVERVIEW),
+        stringResource(StringKeyUI.TAB_REMEDIES),
+        stringResource(StringKeyUI.TAB_PLANETS)
     )
 
     val overviewListState = rememberLazyListState()
@@ -127,7 +127,7 @@ fun RemediesScreen(
                             )
                         } else {
                             Text(
-                                stringResource(StringKeyMatch.REMEDY_TITLE),
+                                stringResource(StringKeyRemedy.REMEDY_TITLE),
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
                             )
@@ -148,7 +148,7 @@ fun RemediesScreen(
                     ) {
                         Icon(
                             Icons.Default.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -163,7 +163,7 @@ fun RemediesScreen(
                         ) {
                             Icon(
                                 Icons.Outlined.Search,
-                                contentDescription = stringResource(StringKeyMatch.REMEDY_SEARCH),
+                                contentDescription = stringResource(StringKeyRemedy.REMEDY_SEARCH),
                                 tint = AppTheme.TextPrimary
                             )
                         }
@@ -289,7 +289,7 @@ private fun SearchTextField(
         onValueChange = onQueryChange,
         placeholder = {
             Text(
-                stringResource(StringKeyMatch.REMEDIES_SEARCH),
+                stringResource(StringKeyRemedy.REMEDIES_SEARCH),
                 color = AppTheme.TextMuted
             )
         },
@@ -306,7 +306,7 @@ private fun SearchTextField(
                 IconButton(onClick = onClear) {
                     Icon(
                         Icons.Filled.Close,
-                        contentDescription = stringResource(StringKeyMatch.ACTION_CLEAR_SEARCH),
+                        contentDescription = stringResource(StringKeyMatchPart2.ACTION_CLEAR_SEARCH),
                         tint = AppTheme.TextMuted
                     )
                 }
@@ -382,7 +382,7 @@ private fun SummaryCard(result: RemediesResult) {
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        stringResource(StringKeyMatch.REMEDIES_ANALYSIS),
+                        stringResource(StringKeyRemedy.REMEDIES_ANALYSIS),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -399,11 +399,11 @@ private fun SummaryCard(result: RemediesResult) {
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     StatItem(
                         value = "${result.totalRemediesCount}",
-                        label = stringResource(StringKeyMatch.REMEDIES_TOTAL)
+                        label = stringResource(StringKeyRemedy.REMEDIES_TOTAL)
                     )
                     StatItem(
                         value = "${result.essentialRemediesCount}",
-                        label = stringResource(StringKeyMatch.REMEDIES_ESSENTIAL_COUNT),
+                        label = stringResource(StringKeyRemedy.REMEDIES_ESSENTIAL_COUNT),
                         color = AppTheme.WarningColor
                     )
                 }
@@ -455,13 +455,13 @@ private fun OverallChartHealthIndicator(result: RemediesResult) {
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    stringResource(StringKeyMatch.REMEDIES_CHART_STRENGTH),
+                    stringResource(StringKeyRemedy.REMEDIES_CHART_STRENGTH),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    stringResource(StringKeyMatch.REMEDIES_PLANETS_WELL_PLACED, strongPlanets, totalPlanets),
+                    stringResource(StringKeyRemedy.REMEDIES_PLANETS_WELL_PLACED, strongPlanets, totalPlanets),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -537,7 +537,7 @@ private fun WeakPlanetsCard(weakPlanets: List<Planet>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyMatch.REMEDIES_PLANETS_ATTENTION),
+                    stringResource(StringKeyRemedy.REMEDIES_PLANETS_ATTENTION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -624,7 +624,7 @@ private fun EssentialRemediesPreview(result: RemediesResult) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyMatch.REMEDIES_ESSENTIAL),
+                    stringResource(StringKeyRemedy.REMEDIES_ESSENTIAL),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -692,13 +692,13 @@ private fun EssentialRemedyRow(remedy: Remedy) {
 @Composable
 private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
     val weekDays = listOf(
-        Triple(Planet.SUN, "Sunday", stringResource(StringKeyMatch.DAY_SUNDAY)),
-        Triple(Planet.MOON, "Monday", stringResource(StringKeyMatch.DAY_MONDAY)),
-        Triple(Planet.MARS, "Tuesday", stringResource(StringKeyMatch.DAY_TUESDAY)),
-        Triple(Planet.MERCURY, "Wednesday", stringResource(StringKeyMatch.DAY_WEDNESDAY)),
-        Triple(Planet.JUPITER, "Thursday", stringResource(StringKeyMatch.DAY_THURSDAY)),
-        Triple(Planet.VENUS, "Friday", stringResource(StringKeyMatch.DAY_FRIDAY)),
-        Triple(Planet.SATURN, "Saturday", stringResource(StringKeyMatch.DAY_SATURDAY))
+        Triple(Planet.SUN, "Sunday", stringResource(StringKeyMatchPart1.DAY_SUNDAY)),
+        Triple(Planet.MOON, "Monday", stringResource(StringKeyMatchPart1.DAY_MONDAY)),
+        Triple(Planet.MARS, "Tuesday", stringResource(StringKeyMatchPart1.DAY_TUESDAY)),
+        Triple(Planet.MERCURY, "Wednesday", stringResource(StringKeyMatchPart1.DAY_WEDNESDAY)),
+        Triple(Planet.JUPITER, "Thursday", stringResource(StringKeyMatchPart1.DAY_THURSDAY)),
+        Triple(Planet.VENUS, "Friday", stringResource(StringKeyMatchPart1.DAY_FRIDAY)),
+        Triple(Planet.SATURN, "Saturday", stringResource(StringKeyMatchPart1.DAY_SATURDAY))
     )
 
     val remediesByPlanet = remember(result) {
@@ -724,7 +724,7 @@ private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyMatch.REMEDIES_WEEKLY_SCHEDULE),
+                    stringResource(StringKeyRemedy.REMEDIES_WEEKLY_SCHEDULE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -734,7 +734,7 @@ private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                stringResource(StringKeyMatch.REMEDIES_WEEKLY_SCHEDULE_DESC),
+                stringResource(StringKeyRemedy.REMEDIES_WEEKLY_SCHEDULE_DESC),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -815,7 +815,7 @@ private fun LifeAreaFocusCard(lifeAreaFocus: Map<LifeArea, List<Remedy>>) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                stringResource(StringKeyMatch.REMEDIES_LIFE_AREA_FOCUS),
+                stringResource(StringKeyRemedy.REMEDIES_LIFE_AREA_FOCUS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -892,7 +892,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyMatch.REMEDIES_GENERAL_RECOMMENDATIONS),
+                    stringResource(StringKeyRemedy.REMEDIES_GENERAL_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -997,8 +997,8 @@ private fun NoResultsState(searchQuery: String) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                if (searchQuery.isNotBlank()) stringResource(StringKeyMatch.REMEDIES_NO_RESULTS_SEARCH, searchQuery)
-                else stringResource(StringKeyMatch.REMEDIES_NO_CATEGORY),
+                if (searchQuery.isNotBlank()) stringResource(StringKeyRemedy.REMEDIES_NO_RESULTS_SEARCH, searchQuery)
+                else stringResource(StringKeyRemedy.REMEDIES_NO_CATEGORY),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -1021,7 +1021,7 @@ private fun CategoryFilter(
             FilterChip(
                 selected = selectedCategory == null,
                 onClick = { onCategoryChange(null) },
-                label = { Text(stringResource(StringKeyMatch.REMEDIES_FILTER_ALL)) },
+                label = { Text(stringResource(StringKeyRemedy.REMEDIES_FILTER_ALL)) },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
                     selectedLabelColor = AppTheme.AccentPrimary,
@@ -1209,7 +1209,7 @@ private fun RemedyCard(
 
                     DetailSection(
                         icon = Icons.Outlined.MenuBook,
-                        title = stringResource(StringKeyMatch.REMEDIES_METHOD),
+                        title = stringResource(StringKeyRemedy.REMEDIES_METHOD),
                         content = remedy.method
                     )
 
@@ -1219,7 +1219,7 @@ private fun RemedyCard(
                         Box(modifier = Modifier.weight(1f)) {
                             DetailSection(
                                 icon = Icons.Outlined.Schedule,
-                                title = stringResource(StringKeyMatch.REMEDIES_TIMING),
+                                title = stringResource(StringKeyRemedy.REMEDIES_TIMING),
                                 content = remedy.timing
                             )
                         }
@@ -1227,7 +1227,7 @@ private fun RemedyCard(
                         Box(modifier = Modifier.weight(1f)) {
                             DetailSection(
                                 icon = Icons.Outlined.DateRange,
-                                title = stringResource(StringKeyMatch.REMEDIES_DURATION),
+                                title = stringResource(StringKeyRemedy.REMEDIES_DURATION),
                                 content = remedy.duration
                             )
                         }
@@ -1260,7 +1260,7 @@ private fun RemedyCard(
             ) {
                 Icon(
                     Icons.Filled.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKeyMatch.MISC_COLLAPSE) else stringResource(StringKeyMatch.MISC_EXPAND),
+                    contentDescription = if (isExpanded) stringResource(StringKeyMatchPart1.MISC_COLLAPSE) else stringResource(StringKeyMatchPart1.MISC_EXPAND),
                     tint = AppTheme.TextSubtle,
                     modifier = Modifier
                         .size(20.dp)
@@ -1281,7 +1281,7 @@ private fun MantraSection(
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
-                stringResource(StringKeyMatch.REMEDIES_MANTRA_SECTION),
+                stringResource(StringKeyRemedy.REMEDIES_MANTRA_SECTION),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentGold
@@ -1301,7 +1301,7 @@ private fun MantraSection(
 private fun BenefitsList(benefits: List<String>) {
     Column {
         Text(
-            stringResource(StringKeyMatch.REMEDIES_BENEFITS),
+            stringResource(StringKeyRemedy.REMEDIES_BENEFITS),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary
@@ -1339,7 +1339,7 @@ private fun CautionsList(cautions: List<String>) {
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
-                stringResource(StringKeyMatch.REMEDIES_CAUTIONS),
+                stringResource(StringKeyRemedy.REMEDIES_CAUTIONS),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.WarningColor
@@ -1484,7 +1484,7 @@ private fun PlanetAnalysisCard(analysis: PlanetaryAnalysis) {
                             )
                             Text(" • ", color = AppTheme.TextMuted)
                             Text(
-                                stringResource(StringKeyAnalysis.DIALOG_HOUSE) + " ${analysis.housePosition}",
+                                stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE) + " ${analysis.housePosition}",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1505,13 +1505,13 @@ private fun PlanetAnalysisCard(analysis: PlanetaryAnalysis) {
                 )
             }
 
-            val exaltedLabel = stringResource(StringKeyMatch.PLANETARY_STATUS_EXALTED)
-            val debilitatedLabel = stringResource(StringKeyMatch.PLANETARY_STATUS_DEBILITATED)
-            val retrogradeLabel = stringResource(StringKeyMatch.PLANETARY_STATUS_RETROGRADE)
-            val combustLabel = stringResource(StringKeyMatch.PLANETARY_STATUS_COMBUST)
-            val ownSignLabel = stringResource(StringKeyMatch.PLANETARY_STATUS_OWN_SIGN)
-            val friendlyLabel = stringResource(StringKeyMatch.PLANETARY_STATUS_FRIENDLY)
-            val enemySignLabel = stringResource(StringKeyMatch.PLANETARY_STATUS_ENEMY_SIGN)
+            val exaltedLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_EXALTED)
+            val debilitatedLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_DEBILITATED)
+            val retrogradeLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_RETROGRADE)
+            val combustLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_COMBUST)
+            val ownSignLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_OWN_SIGN)
+            val friendlyLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_FRIENDLY)
+            val enemySignLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_ENEMY_SIGN)
 
             val statusIndicators = buildList {
                 if (analysis.isExalted) add(exaltedLabel to AppTheme.SuccessColor)
@@ -1667,13 +1667,13 @@ private fun RemedyRecommendationBanner(planet: Planet) {
             Spacer(modifier = Modifier.width(8.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    stringResource(StringKeyMatch.REMEDIES_RECOMMENDED, 1),
+                    stringResource(StringKeyRemedy.REMEDIES_RECOMMENDED, 1),
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.AccentPrimary
                 )
                 Text(
-                    stringResource(StringKeyMatch.REMEDIES_BEST_DAY, weekday),
+                    stringResource(StringKeyRemedy.REMEDIES_BEST_DAY, weekday),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1713,12 +1713,12 @@ private fun EmptyState(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKeyMatch.REMEDIES_NO_CHART),
+                stringResource(StringKeyRemedy.REMEDIES_NO_CHART),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppTheme.TextMuted
             )
             Text(
-                stringResource(StringKeyMatch.REMEDIES_SELECT_CHART),
+                stringResource(StringKeyRemedy.REMEDIES_SELECT_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSubtle
             )
@@ -1739,13 +1739,13 @@ private fun LoadingState(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKeyMatch.REMEDIES_ANALYZING),
+                stringResource(StringKeyRemedy.REMEDIES_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                stringResource(StringKeyMatch.REMEDIES_PREPARING),
+                stringResource(StringKeyRemedy.REMEDIES_PREPARING),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSubtle
             )
@@ -1772,7 +1772,7 @@ private fun ErrorState(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKey.ERROR_SOMETHING_WRONG),
+                stringResource(StringKeyError.ERROR_SOMETHING_WRONG),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppTheme.TextPrimary
             )
@@ -1797,7 +1797,7 @@ private fun ErrorState(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(StringKey.BTN_RETRY))
+                Text(stringResource(StringKeyUI.BTN_RETRY))
             }
         }
     }

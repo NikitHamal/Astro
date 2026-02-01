@@ -63,8 +63,8 @@ fun NakshatraScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDosha.NAKSHATRA_TITLE),
-            message = stringResource(StringKey.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyNakshatra.NAKSHATRA_TITLE),
+            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -76,10 +76,10 @@ fun NakshatraScreen(
     var expandedPlanet by remember { mutableStateOf<Planet?>(null) }
 
     val tabs = listOf(
-        stringResource(StringKeyDosha.NAKSHATRA_OVERVIEW),
-        stringResource(StringKeyDosha.NAKSHATRA_DETAILS),
-        stringResource(StringKeyDosha.NAKSHATRA_COMPATIBILITY),
-        stringResource(StringKeyDosha.NAKSHATRA_REMEDIES)
+        stringResource(StringKeyNakshatra.NAKSHATRA_OVERVIEW),
+        stringResource(StringKeyNakshatra.NAKSHATRA_DETAILS),
+        stringResource(StringKeyNakshatra.NAKSHATRA_COMPATIBILITY),
+        stringResource(StringKeyNakshatra.NAKSHATRA_REMEDIES)
     )
 
     // Calculate nakshatra analysis
@@ -98,7 +98,7 @@ fun NakshatraScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDosha.NAKSHATRA_TITLE),
+                            stringResource(StringKeyNakshatra.NAKSHATRA_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
@@ -114,7 +114,7 @@ fun NakshatraScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -123,7 +123,7 @@ fun NakshatraScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDosha.NAKSHATRA_INFO_TITLE),
+                            contentDescription = stringResource(StringKeyNakshatra.NAKSHATRA_INFO_TITLE),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -188,56 +188,56 @@ data class NakshatraDetails(
 )
 
 enum class NakshatraNature(val key: StringKeyDosha) {
-    FIXED(StringKeyDosha.NAKSHATRA_NATURE_FIXED),
-    MOVEABLE(StringKeyDosha.NAKSHATRA_NATURE_MOVEABLE),
-    SHARP(StringKeyDosha.NAKSHATRA_NATURE_SHARP),
-    SOFT(StringKeyDosha.NAKSHATRA_NATURE_SOFT),
-    MIXED(StringKeyDosha.NAKSHATRA_NATURE_MIXED),
-    LIGHT(StringKeyDosha.NAKSHATRA_NATURE_LIGHT),
-    FIERCE(StringKeyDosha.NAKSHATRA_NATURE_FIERCE);
+    FIXED(StringKeyNakshatra.NAKSHATRA_NATURE_FIXED),
+    MOVEABLE(StringKeyNakshatra.NAKSHATRA_NATURE_MOVEABLE),
+    SHARP(StringKeyNakshatra.NAKSHATRA_NATURE_SHARP),
+    SOFT(StringKeyNakshatra.NAKSHATRA_NATURE_SOFT),
+    MIXED(StringKeyNakshatra.NAKSHATRA_NATURE_MIXED),
+    LIGHT(StringKeyNakshatra.NAKSHATRA_NATURE_LIGHT),
+    FIERCE(StringKeyNakshatra.NAKSHATRA_NATURE_FIERCE);
 
     fun getLocalizedName(language: Language): String = StringResources.get(key, language)
 }
 
 enum class NakshatraGana(val key: StringKeyDosha) {
-    DEVA(StringKeyDosha.NAKSHATRA_GANA_DEVA),
-    MANUSHYA(StringKeyDosha.NAKSHATRA_GANA_MANUSHYA),
-    RAKSHASA(StringKeyDosha.NAKSHATRA_GANA_RAKSHASA);
+    DEVA(StringKeyNakshatra.NAKSHATRA_GANA_DEVA),
+    MANUSHYA(StringKeyNakshatra.NAKSHATRA_GANA_MANUSHYA),
+    RAKSHASA(StringKeyNakshatra.NAKSHATRA_GANA_RAKSHASA);
 
     fun getLocalizedName(language: Language): String = StringResources.get(key, language)
 }
 
 enum class NakshatraElement(val key: StringKeyDosha) {
-    FIRE(StringKeyDosha.NAKSHATRA_ELEMENT_FIRE),
-    EARTH(StringKeyDosha.NAKSHATRA_ELEMENT_EARTH),
-    AIR(StringKeyDosha.NAKSHATRA_ELEMENT_AIR),
-    WATER(StringKeyDosha.NAKSHATRA_ELEMENT_WATER),
-    ETHER(StringKeyDosha.NAKSHATRA_ELEMENT_ETHER);
+    FIRE(StringKeyNakshatra.NAKSHATRA_ELEMENT_FIRE),
+    EARTH(StringKeyNakshatra.NAKSHATRA_ELEMENT_EARTH),
+    AIR(StringKeyNakshatra.NAKSHATRA_ELEMENT_AIR),
+    WATER(StringKeyNakshatra.NAKSHATRA_ELEMENT_WATER),
+    ETHER(StringKeyNakshatra.NAKSHATRA_ELEMENT_ETHER);
 
     fun getLocalizedName(language: Language): String = StringResources.get(key, language)
 }
 
 enum class NakshatraCaste(val key: StringKeyDosha) {
-    BRAHMIN(StringKeyDosha.NAKSHATRA_CASTE_BRAHMIN),
-    KSHATRIYA(StringKeyDosha.NAKSHATRA_CASTE_KSHATRIYA),
-    VAISHYA(StringKeyDosha.NAKSHATRA_CASTE_VAISHYA),
-    SHUDRA(StringKeyDosha.NAKSHATRA_CASTE_SHUDRA);
+    BRAHMIN(StringKeyNakshatra.NAKSHATRA_CASTE_BRAHMIN),
+    KSHATRIYA(StringKeyNakshatra.NAKSHATRA_CASTE_KSHATRIYA),
+    VAISHYA(StringKeyNakshatra.NAKSHATRA_CASTE_VAISHYA),
+    SHUDRA(StringKeyNakshatra.NAKSHATRA_CASTE_SHUDRA);
 
     fun getLocalizedName(language: Language): String = StringResources.get(key, language)
 }
 
 enum class NakshatraGender(val key: StringKeyDosha) {
-    MALE(StringKeyDosha.NAKSHATRA_GENDER_MALE),
-    FEMALE(StringKeyDosha.NAKSHATRA_GENDER_FEMALE),
-    NEUTRAL(StringKeyDosha.NAKSHATRA_GENDER_NEUTRAL);
+    MALE(StringKeyNakshatra.NAKSHATRA_GENDER_MALE),
+    FEMALE(StringKeyNakshatra.NAKSHATRA_GENDER_FEMALE),
+    NEUTRAL(StringKeyNakshatra.NAKSHATRA_GENDER_NEUTRAL);
 
     fun getLocalizedName(language: Language): String = StringResources.get(key, language)
 }
 
 enum class NakshatraDosha(val key: StringKeyDosha) {
-    VATA(StringKeyDosha.NAKSHATRA_DOSHA_VATA),
-    PITTA(StringKeyDosha.NAKSHATRA_DOSHA_PITTA),
-    KAPHA(StringKeyDosha.NAKSHATRA_DOSHA_KAPHA);
+    VATA(StringKeyNakshatra.NAKSHATRA_DOSHA_VATA),
+    PITTA(StringKeyNakshatra.NAKSHATRA_DOSHA_PITTA),
+    KAPHA(StringKeyNakshatra.NAKSHATRA_DOSHA_KAPHA);
 
     fun getLocalizedName(language: Language): String = StringResources.get(key, language)
 }
@@ -265,11 +265,11 @@ data class NakshatraCompatibility(
 )
 
 enum class RajjuType(val key: StringKeyDosha, val bodyPartKey: StringKeyDosha) {
-    PAADA(StringKeyDosha.NAKSHATRA_RAJJU_PAADA, StringKeyDosha.NAKSHATRA_BODY_PART_FEET),
-    KATI(StringKeyDosha.NAKSHATRA_RAJJU_KATI, StringKeyDosha.NAKSHATRA_BODY_PART_WAIST),
-    NABHI(StringKeyDosha.NAKSHATRA_RAJJU_NABHI, StringKeyDosha.NAKSHATRA_BODY_PART_NAVEL),
-    KANTHA(StringKeyDosha.NAKSHATRA_RAJJU_KANTHA, StringKeyDosha.NAKSHATRA_BODY_PART_NECK),
-    SHIRO(StringKeyDosha.NAKSHATRA_RAJJU_SHIRO, StringKeyDosha.NAKSHATRA_BODY_PART_HEAD);
+    PAADA(StringKeyNakshatra.NAKSHATRA_RAJJU_PAADA, StringKeyNakshatra.NAKSHATRA_BODY_PART_FEET),
+    KATI(StringKeyNakshatra.NAKSHATRA_RAJJU_KATI, StringKeyNakshatra.NAKSHATRA_BODY_PART_WAIST),
+    NABHI(StringKeyNakshatra.NAKSHATRA_RAJJU_NABHI, StringKeyNakshatra.NAKSHATRA_BODY_PART_NAVEL),
+    KANTHA(StringKeyNakshatra.NAKSHATRA_RAJJU_KANTHA, StringKeyNakshatra.NAKSHATRA_BODY_PART_NECK),
+    SHIRO(StringKeyNakshatra.NAKSHATRA_RAJJU_SHIRO, StringKeyNakshatra.NAKSHATRA_BODY_PART_HEAD);
 
     fun getLocalizedName(language: Language): String = StringResources.get(key, language)
     fun getLocalizedBodyPart(language: Language): String = StringResources.get(bodyPartKey, language)
@@ -467,11 +467,11 @@ private fun getNakshatraCaste(nakshatra: Nakshatra): NakshatraCaste = when (naks
 }
 
 private fun getNakshatraDirection(nakshatra: Nakshatra, language: Language): String = when (nakshatra.number % 4) {
-    1 -> StringResources.get(StringKeyAnalysis.PRASHNA_DIR_EAST, language)
-    2 -> StringResources.get(StringKeyAnalysis.PRASHNA_DIR_SOUTH, language)
-    3 -> StringResources.get(StringKeyAnalysis.PRASHNA_DIR_WEST, language)
-    0 -> StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH, language)
-    else -> StringResources.get(StringKeyAnalysis.PRASHNA_DIR_NORTH, language)
+    1 -> StringResources.get(StringKeyPrashnaPart2.PRASHNA_DIR_EAST, language)
+    2 -> StringResources.get(StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH, language)
+    3 -> StringResources.get(StringKeyPrashnaPart2.PRASHNA_DIR_WEST, language)
+    0 -> StringResources.get(StringKeyPrashnaPart2.PRASHNA_DIR_NORTH, language)
+    else -> StringResources.get(StringKeyPrashnaPart2.PRASHNA_DIR_NORTH, language)
 }
 
 private fun getNakshatraBodyPart(nakshatra: Nakshatra, language: Language): String = when (nakshatra) {
@@ -659,15 +659,15 @@ private fun calculateTarabala(birthNakshatra: Nakshatra, targetNakshatra: Naksha
     val taraNumber = (diff % 9) + 1
 
     val (taraName, isFavorable, description) = when (taraNumber) {
-        1 -> Triple(StringResources.get(StringKeyDosha.TARABALA_JANMA, language), false, StringResources.get(StringKeyDosha.TARABALA_DESC_JANMA, language))
-        2 -> Triple(StringResources.get(StringKeyDosha.TARABALA_SAMPAT, language), true, StringResources.get(StringKeyDosha.TARABALA_DESC_SAMPAT, language))
-        3 -> Triple(StringResources.get(StringKeyDosha.TARABALA_VIPAT, language), false, StringResources.get(StringKeyDosha.TARABALA_DESC_VIPAT, language))
-        4 -> Triple(StringResources.get(StringKeyDosha.TARABALA_KSHEMA, language), true, StringResources.get(StringKeyDosha.TARABALA_DESC_KSHEMA, language))
-        5 -> Triple(StringResources.get(StringKeyDosha.TARABALA_PRATYARI, language), false, StringResources.get(StringKeyDosha.TARABALA_DESC_PRATYARI, language))
-        6 -> Triple(StringResources.get(StringKeyDosha.TARABALA_SADHAKA, language), true, StringResources.get(StringKeyDosha.TARABALA_DESC_SADHAKA, language))
-        7 -> Triple(StringResources.get(StringKeyDosha.TARABALA_VADHA, language), false, StringResources.get(StringKeyDosha.TARABALA_DESC_VADHA, language))
-        8 -> Triple(StringResources.get(StringKeyDosha.TARABALA_MITRA, language), true, StringResources.get(StringKeyDosha.TARABALA_DESC_MITRA, language))
-        9 -> Triple(StringResources.get(StringKeyDosha.TARABALA_PARAMA_MITRA, language), true, StringResources.get(StringKeyDosha.TARABALA_DESC_PARAMA_MITRA, language))
+        1 -> Triple(StringResources.get(StringKeyDoshaPart4.TARABALA_JANMA, language), false, StringResources.get(StringKeyDoshaPart4.TARABALA_DESC_JANMA, language))
+        2 -> Triple(StringResources.get(StringKeyDoshaPart4.TARABALA_SAMPAT, language), true, StringResources.get(StringKeyDoshaPart4.TARABALA_DESC_SAMPAT, language))
+        3 -> Triple(StringResources.get(StringKeyDoshaPart4.TARABALA_VIPAT, language), false, StringResources.get(StringKeyDoshaPart4.TARABALA_DESC_VIPAT, language))
+        4 -> Triple(StringResources.get(StringKeyDoshaPart4.TARABALA_KSHEMA, language), true, StringResources.get(StringKeyDoshaPart4.TARABALA_DESC_KSHEMA, language))
+        5 -> Triple(StringResources.get(StringKeyDoshaPart4.TARABALA_PRATYARI, language), false, StringResources.get(StringKeyDoshaPart4.TARABALA_DESC_PRATYARI, language))
+        6 -> Triple(StringResources.get(StringKeyDoshaPart4.TARABALA_SADHAKA, language), true, StringResources.get(StringKeyDoshaPart4.TARABALA_DESC_SADHAKA, language))
+        7 -> Triple(StringResources.get(StringKeyDoshaPart4.TARABALA_VADHA, language), false, StringResources.get(StringKeyDoshaPart4.TARABALA_DESC_VADHA, language))
+        8 -> Triple(StringResources.get(StringKeyDoshaPart4.TARABALA_MITRA, language), true, StringResources.get(StringKeyDoshaPart4.TARABALA_DESC_MITRA, language))
+        9 -> Triple(StringResources.get(StringKeyDoshaPart4.TARABALA_PARAMA_MITRA, language), true, StringResources.get(StringKeyDoshaPart4.TARABALA_DESC_PARAMA_MITRA, language))
         else -> Triple("Unknown", false, "")
     }
 
@@ -684,36 +684,36 @@ private fun calculateNakshatraRemedy(details: NakshatraDetails, language: Langua
     val nakshatra = details.nakshatra
 
     val gemstone = when (nakshatra.ruler) {
-        Planet.SUN -> StringResources.get(StringKeyDosha.GEM_RUBY, language)
-        Planet.MOON -> StringResources.get(StringKeyDosha.GEM_PEARL, language)
-        Planet.MARS -> StringResources.get(StringKeyDosha.GEM_RED_CORAL, language)
-        Planet.MERCURY -> StringResources.get(StringKeyDosha.GEM_EMERALD, language)
-        Planet.JUPITER -> StringResources.get(StringKeyDosha.GEM_YELLOW_SAPPHIRE, language)
-        Planet.VENUS -> StringResources.get(StringKeyDosha.GEM_DIAMOND, language)
-        Planet.SATURN -> StringResources.get(StringKeyDosha.GEM_BLUE_SAPPHIRE, language)
-        Planet.RAHU -> StringResources.get(StringKeyDosha.GEM_HESSONITE, language)
-        Planet.KETU -> StringResources.get(StringKeyDosha.GEM_CATS_EYE, language)
+        Planet.SUN -> StringResources.get(StringKeyDoshaPart4.GEM_RUBY, language)
+        Planet.MOON -> StringResources.get(StringKeyDoshaPart4.GEM_PEARL, language)
+        Planet.MARS -> StringResources.get(StringKeyDoshaPart4.GEM_RED_CORAL, language)
+        Planet.MERCURY -> StringResources.get(StringKeyDoshaPart4.GEM_EMERALD, language)
+        Planet.JUPITER -> StringResources.get(StringKeyDoshaPart4.GEM_YELLOW_SAPPHIRE, language)
+        Planet.VENUS -> StringResources.get(StringKeyDoshaPart4.GEM_DIAMOND, language)
+        Planet.SATURN -> StringResources.get(StringKeyDoshaPart4.GEM_BLUE_SAPPHIRE, language)
+        Planet.RAHU -> StringResources.get(StringKeyDoshaPart4.GEM_HESSONITE, language)
+        Planet.KETU -> StringResources.get(StringKeyDoshaPart4.GEM_CATS_EYE, language)
         else -> null
     }
 
     val favorableDays = when (nakshatra.ruler) {
-        Planet.SUN -> listOf(StringResources.get(StringKeyDosha.DAY_SUNDAY, language))
-        Planet.MOON -> listOf(StringResources.get(StringKeyDosha.DAY_MONDAY, language))
-        Planet.MARS -> listOf(StringResources.get(StringKeyDosha.DAY_TUESDAY, language))
-        Planet.MERCURY -> listOf(StringResources.get(StringKeyDosha.DAY_WEDNESDAY, language))
-        Planet.JUPITER -> listOf(StringResources.get(StringKeyDosha.DAY_THURSDAY, language))
-        Planet.VENUS -> listOf(StringResources.get(StringKeyDosha.DAY_FRIDAY, language))
-        Planet.SATURN -> listOf(StringResources.get(StringKeyDosha.DAY_SATURDAY, language))
-        Planet.RAHU -> listOf(StringResources.get(StringKeyDosha.DAY_SATURDAY, language))
-        Planet.KETU -> listOf(StringResources.get(StringKeyDosha.DAY_TUESDAY, language))
-        else -> listOf(StringResources.get(StringKeyDosha.DAY_ANY, language))
+        Planet.SUN -> listOf(StringResources.get(StringKeyMatchPart1.DAY_SUNDAY, language))
+        Planet.MOON -> listOf(StringResources.get(StringKeyMatchPart1.DAY_MONDAY, language))
+        Planet.MARS -> listOf(StringResources.get(StringKeyMatchPart1.DAY_TUESDAY, language))
+        Planet.MERCURY -> listOf(StringResources.get(StringKeyMatchPart1.DAY_WEDNESDAY, language))
+        Planet.JUPITER -> listOf(StringResources.get(StringKeyMatchPart1.DAY_THURSDAY, language))
+        Planet.VENUS -> listOf(StringResources.get(StringKeyMatchPart1.DAY_FRIDAY, language))
+        Planet.SATURN -> listOf(StringResources.get(StringKeyMatchPart1.DAY_SATURDAY, language))
+        Planet.RAHU -> listOf(StringResources.get(StringKeyMatchPart1.DAY_SATURDAY, language))
+        Planet.KETU -> listOf(StringResources.get(StringKeyMatchPart1.DAY_TUESDAY, language))
+        else -> listOf(StringResources.get(StringKeyMatchPart1.DAY_ANY, language))
     }
 
     // Format title and description with localized values
-    val title = String.format(StringResources.get(StringKeyDosha.NAKSHATRA_REMEDY_TITLE, language), nakshatra.getLocalizedName(language))
-    val description = StringResources.get(StringKeyDosha.NAKSHATRA_REMEDY_DESC, language)
+    val title = String.format(StringResources.get(StringKeyNakshatra.NAKSHATRA_REMEDY_TITLE, language), nakshatra.getLocalizedName(language))
+    val description = StringResources.get(StringKeyNakshatra.NAKSHATRA_REMEDY_DESC, language)
     val timing = String.format(
-        StringResources.get(StringKeyDosha.NAKSHATRA_REMEDY_TIMING, language),
+        StringResources.get(StringKeyNakshatra.NAKSHATRA_REMEDY_TIMING, language),
         nakshatra.ruler.getLocalizedName(language),
         favorableDays.first()
     )
@@ -745,16 +745,16 @@ private fun getLuckyNumbers(nakshatra: Nakshatra): List<Int> = when (nakshatra.r
 }
 
 private fun getLuckyColors(nakshatra: Nakshatra, language: Language): List<String> = when (nakshatra.ruler) {
-    Planet.SUN -> listOf(StringResources.get(StringKeyDosha.COLOR_ORANGE, language), StringResources.get(StringKeyDosha.COLOR_GOLD, language), StringResources.get(StringKeyDosha.COLOR_RED, language))
-    Planet.MOON -> listOf(StringResources.get(StringKeyDosha.COLOR_WHITE, language), StringResources.get(StringKeyDosha.COLOR_SILVER, language), StringResources.get(StringKeyDosha.COLOR_PEARL, language)) // Note: Pearl used as color too
-    Planet.MARS -> listOf(StringResources.get(StringKeyDosha.COLOR_RED, language), StringResources.get(StringKeyDosha.COLOR_CORAL, language), StringResources.get(StringKeyDosha.COLOR_SCARLET, language))
-    Planet.MERCURY -> listOf(StringResources.get(StringKeyDosha.COLOR_GREEN, language), StringResources.get(StringKeyDosha.COLOR_EMERALD, language), StringResources.get(StringKeyDosha.COLOR_TURQUOISE, language))
-    Planet.JUPITER -> listOf(StringResources.get(StringKeyDosha.COLOR_YELLOW, language), StringResources.get(StringKeyDosha.COLOR_GOLD, language), StringResources.get(StringKeyDosha.COLOR_ORANGE, language))
-    Planet.VENUS -> listOf(StringResources.get(StringKeyDosha.COLOR_WHITE, language), StringResources.get(StringKeyDosha.COLOR_PINK, language), StringResources.get(StringKeyDosha.COLOR_PASTEL, language))
-    Planet.SATURN -> listOf(StringResources.get(StringKeyDosha.COLOR_BLUE, language), StringResources.get(StringKeyDosha.COLOR_BLACK, language), StringResources.get(StringKeyDosha.COLOR_DARK, language))
-    Planet.RAHU -> listOf(StringResources.get(StringKeyDosha.COLOR_SMOKY, language), StringResources.get(StringKeyDosha.COLOR_GREY, language), StringResources.get(StringKeyDosha.COLOR_MIXED, language))
-    Planet.KETU -> listOf(StringResources.get(StringKeyDosha.COLOR_GREY, language), StringResources.get(StringKeyDosha.COLOR_BROWN, language), StringResources.get(StringKeyDosha.COLOR_MULTI, language))
-    else -> listOf(StringResources.get(StringKeyDosha.COLOR_WHITE, language), StringResources.get(StringKeyDosha.COLOR_YELLOW, language), StringResources.get(StringKeyDosha.COLOR_BLUE, language))
+    Planet.SUN -> listOf(StringResources.get(StringKeyUI.COLOR_ORANGE, language), StringResources.get(StringKeyUI.COLOR_GOLD, language), StringResources.get(StringKeyUI.COLOR_RED, language))
+    Planet.MOON -> listOf(StringResources.get(StringKeyUI.COLOR_WHITE, language), StringResources.get(StringKeyUI.COLOR_SILVER, language), StringResources.get(StringKeyUI.COLOR_PEARL, language)) // Note: Pearl used as color too
+    Planet.MARS -> listOf(StringResources.get(StringKeyUI.COLOR_RED, language), StringResources.get(StringKeyUI.COLOR_CORAL, language), StringResources.get(StringKeyUI.COLOR_SCARLET, language))
+    Planet.MERCURY -> listOf(StringResources.get(StringKeyUI.COLOR_GREEN, language), StringResources.get(StringKeyUI.COLOR_EMERALD, language), StringResources.get(StringKeyUI.COLOR_TURQUOISE, language))
+    Planet.JUPITER -> listOf(StringResources.get(StringKeyUI.COLOR_YELLOW, language), StringResources.get(StringKeyUI.COLOR_GOLD, language), StringResources.get(StringKeyUI.COLOR_ORANGE, language))
+    Planet.VENUS -> listOf(StringResources.get(StringKeyUI.COLOR_WHITE, language), StringResources.get(StringKeyUI.COLOR_PINK, language), StringResources.get(StringKeyUI.COLOR_PASTEL, language))
+    Planet.SATURN -> listOf(StringResources.get(StringKeyUI.COLOR_BLUE, language), StringResources.get(StringKeyUI.COLOR_BLACK, language), StringResources.get(StringKeyUI.COLOR_DARK, language))
+    Planet.RAHU -> listOf(StringResources.get(StringKeyUI.COLOR_SMOKY, language), StringResources.get(StringKeyUI.COLOR_GREY, language), StringResources.get(StringKeyUI.COLOR_MIXED, language))
+    Planet.KETU -> listOf(StringResources.get(StringKeyUI.COLOR_GREY, language), StringResources.get(StringKeyUI.COLOR_BROWN, language), StringResources.get(StringKeyUI.COLOR_MULTI, language))
+    else -> listOf(StringResources.get(StringKeyUI.COLOR_WHITE, language), StringResources.get(StringKeyUI.COLOR_YELLOW, language), StringResources.get(StringKeyUI.COLOR_BLUE, language))
 }
 
 // ============================================
@@ -813,7 +813,7 @@ private fun NakshatraOverviewTab(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_BIRTH_STAR),
+                    stringResource(StringKeyNakshatra.NAKSHATRA_BIRTH_STAR),
                     style = MaterialTheme.typography.titleSmall,
                     color = AppTheme.TextMuted
                 )
@@ -828,7 +828,7 @@ private fun NakshatraOverviewTab(
                 )
 
                 Text(
-                    "${stringResource(StringKeyAnalysis.NAKSHATRA_PADA)} ${analysis.birthNakshatra.pada}",
+                    "${stringResource(StringKeyNakshatra.NAKSHATRA_PADA)} ${analysis.birthNakshatra.pada}",
                     style = MaterialTheme.typography.bodyLarge,
                     color = AppTheme.AccentPrimary
                 )
@@ -844,17 +844,17 @@ private fun NakshatraOverviewTab(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     NakshatraInfoChip(
-                        label = stringResource(StringKeyDosha.NAKSHATRA_RULER),
+                        label = stringResource(StringKeyNakshatra.NAKSHATRA_RULER),
                         value = analysis.birthNakshatra.nakshatra.ruler.getLocalizedName(language),
                         icon = Icons.Filled.Star
                     )
                     NakshatraInfoChip(
-                        label = stringResource(StringKeyAnalysis.NAKSHATRA_GANA),
+                        label = stringResource(StringKeyNakshatra.NAKSHATRA_GANA),
                         value = stringResource(analysis.birthNakshatra.gana.key),
                         icon = Icons.Filled.Groups
                     )
                     NakshatraInfoChip(
-                        label = stringResource(StringKeyDosha.NAKSHATRA_ELEMENT),
+                        label = stringResource(StringKeyNakshatra.NAKSHATRA_ELEMENT),
                         value = analysis.birthNakshatra.element.getLocalizedName(language),
                         icon = Icons.Filled.Public
                     )
@@ -872,22 +872,22 @@ private fun NakshatraOverviewTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 NakshatraDetailRow(
-                    label = stringResource(StringKeyAnalysis.NAKSHATRA_DEITY),
+                    label = stringResource(StringKeyNakshatra.NAKSHATRA_DEITY),
                     value = analysis.birthNakshatra.deity
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 NakshatraDetailRow(
-                    label = stringResource(StringKeyAnalysis.NAKSHATRA_SYMBOL),
+                    label = stringResource(StringKeyNakshatra.NAKSHATRA_SYMBOL),
                     value = analysis.birthNakshatra.symbol
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 NakshatraDetailRow(
-                    label = stringResource(StringKeyAnalysis.NAKSHATRA_NATURE),
+                    label = stringResource(StringKeyNakshatra.NAKSHATRA_NATURE),
                     value = analysis.birthNakshatra.nature.getLocalizedName(language)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 NakshatraDetailRow(
-                    label = stringResource(StringKeyAnalysis.NAKSHATRA_ANIMAL),
+                    label = stringResource(StringKeyNakshatra.NAKSHATRA_ANIMAL),
                     value = analysis.birthNakshatra.animal
                 )
             }
@@ -903,7 +903,7 @@ private fun NakshatraOverviewTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_CHARACTERISTICS),
+                    stringResource(StringKeyNakshatra.NAKSHATRA_CHARACTERISTICS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1000,7 +1000,7 @@ private fun NakshatraDetailsTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
-            stringResource(StringKeyDosha.NAKSHATRA_ALL_PLANETS),
+            stringResource(StringKeyNakshatra.NAKSHATRA_ALL_PLANETS),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -1095,17 +1095,17 @@ private fun PlanetaryNakshatraCard(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     NakshatraDetailRow(
-                        label = stringResource(StringKeyAnalysis.NAKSHATRA_DEITY),
+                        label = stringResource(StringKeyNakshatra.NAKSHATRA_DEITY),
                         value = planetary.details.deity
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     NakshatraDetailRow(
-                        label = stringResource(StringKeyDosha.NAKSHATRA_DASHA_LORD),
+                        label = stringResource(StringKeyNakshatra.NAKSHATRA_DASHA_LORD),
                         value = planetary.details.nakshatra.ruler.getLocalizedName(language)
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     NakshatraDetailRow(
-                        label = stringResource(StringKeyDosha.NAKSHATRA_DEGREE_IN),
+                        label = stringResource(StringKeyNakshatra.NAKSHATRA_DEGREE_IN),
                         value = String.format("%.2f°", planetary.details.degreeInNakshatra)
                     )
                 }
@@ -1128,7 +1128,7 @@ private fun NakshatraCompatibilityTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_TARABALA),
+                    stringResource(StringKeyNakshatra.NAKSHATRA_TARABALA),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1142,12 +1142,12 @@ private fun NakshatraCompatibilityTab(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     TarabalaSummaryChip(
-                        label = stringResource(StringKeyDosha.NAKSHATRA_COMPATIBLE_WITH),
+                        label = stringResource(StringKeyNakshatra.NAKSHATRA_COMPATIBLE_WITH),
                         count = analysis.compatibility.favorableNakshatras.size,
                         color = AppTheme.SuccessColor
                     )
                     TarabalaSummaryChip(
-                        label = stringResource(StringKeyDosha.NAKSHATRA_INCOMPATIBLE_WITH),
+                        label = stringResource(StringKeyNakshatra.NAKSHATRA_INCOMPATIBLE_WITH),
                         count = analysis.compatibility.unfavorableNakshatras.size,
                         color = AppTheme.WarningColor
                     )
@@ -1165,7 +1165,7 @@ private fun NakshatraCompatibilityTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_RAJJU_TYPE),
+                    stringResource(StringKeyNakshatra.NAKSHATRA_RAJJU_TYPE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1196,7 +1196,7 @@ private fun NakshatraCompatibilityTab(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            "${stringResource(StringKeyDosha.NAKSHATRA_BODY_PART_HEAD)}: ${analysis.compatibility.rajjuType.getLocalizedBodyPart(language)}",
+                            "${stringResource(StringKeyNakshatra.NAKSHATRA_BODY_PART_HEAD)}: ${analysis.compatibility.rajjuType.getLocalizedBodyPart(language)}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1224,7 +1224,7 @@ private fun NakshatraCompatibilityTab(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            stringResource(StringKeyDosha.NAKSHATRA_VEDHA_PAIRS),
+                            stringResource(StringKeyNakshatra.NAKSHATRA_VEDHA_PAIRS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -1287,7 +1287,7 @@ private fun NakshatraRemediesTab(
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_MANTRA),
+                    stringResource(StringKeyNakshatra.NAKSHATRA_MANTRA),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1345,7 +1345,7 @@ private fun NakshatraRemediesTab(
                     Spacer(modifier = Modifier.width(14.dp))
                     Column {
                         Text(
-                            stringResource(StringKeyDosha.NAKSHATRA_LUCKY_STONES),
+                            stringResource(StringKeyNakshatra.NAKSHATRA_LUCKY_STONES),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1371,7 +1371,7 @@ private fun NakshatraRemediesTab(
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
                     Text(
-                        stringResource(StringKeyDosha.NAKSHATRA_LUCKY_NUMBERS),
+                        stringResource(StringKeyNakshatra.NAKSHATRA_LUCKY_NUMBERS),
                         style = MaterialTheme.typography.labelMedium,
                         color = AppTheme.TextMuted
                     )
@@ -1394,7 +1394,7 @@ private fun NakshatraRemediesTab(
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
                     Text(
-                        stringResource(StringKeyDosha.NAKSHATRA_LUCKY_COLORS),
+                        stringResource(StringKeyNakshatra.NAKSHATRA_LUCKY_COLORS),
                         style = MaterialTheme.typography.labelMedium,
                         color = AppTheme.TextMuted
                     )
@@ -1419,7 +1419,7 @@ private fun NakshatraRemediesTab(
         ) {
             Column(modifier = Modifier.padding(14.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_FAVORABLE_DAYS),
+                    stringResource(StringKeyNakshatra.NAKSHATRA_FAVORABLE_DAYS),
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.TextMuted
                 )
@@ -1441,21 +1441,21 @@ private fun NakshatraInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                stringResource(StringKeyDosha.NAKSHATRA_INFO_TITLE),
+                stringResource(StringKeyNakshatra.NAKSHATRA_INFO_TITLE),
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
         },
         text = {
             Text(
-                stringResource(StringKeyDosha.NAKSHATRA_INFO_DESC),
+                stringResource(StringKeyNakshatra.NAKSHATRA_INFO_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary
             )
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyUI.BTN_CLOSE), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground

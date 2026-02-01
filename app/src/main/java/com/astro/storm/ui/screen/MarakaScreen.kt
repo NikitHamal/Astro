@@ -103,11 +103,11 @@ fun MarakaScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyDosha.UI_OVERVIEW),
-        stringResource(StringKeyDosha.MARAKA_TAB_PLANETS),
-        stringResource(StringKeyDosha.MARAKA_TAB_LONGEVITY),
-        stringResource(StringKeyDosha.UI_TIMING),
-        stringResource(StringKeyDosha.UI_REMEDIES)
+        stringResource(StringKeyUI.UI_OVERVIEW),
+        stringResource(StringKeyDoshaPart4.MARAKA_TAB_PLANETS),
+        stringResource(StringKeyDoshaPart4.MARAKA_TAB_LONGEVITY),
+        stringResource(StringKeyUI.UI_TIMING),
+        stringResource(StringKeyUI.UI_REMEDIES)
     )
 
     LaunchedEffect(chart) {
@@ -132,13 +132,13 @@ fun MarakaScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.MARAKA_SCREEN_TITLE),
+                            text = stringResource(StringKeyDoshaPart4.MARAKA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.MARAKA_SUBTITLE),
+                            text = stringResource(StringKeyDoshaPart4.MARAKA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -324,7 +324,7 @@ private fun LongevityStatusCard(longevity: MarakaCalculator.LongevityAnalysis) {
                 strokeCap = StrokeCap.Round
             )
             Text(
-                text = "${stringResource(StringKeyDosha.MARAKA_LONGEVITY_SCORE)}: ${longevity.overallScore}%",
+                text = "${stringResource(StringKeyDoshaPart4.MARAKA_LONGEVITY_SCORE)}: ${longevity.overallScore}%",
                 style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(top = 4.dp)
@@ -340,19 +340,19 @@ private fun MarakaQuickStats(analysis: MarakaCalculator.MarakaAnalysis) {
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         MarakaStatCard(
-            title = stringResource(StringKeyDosha.MARAKA_PRIMARY),
+            title = stringResource(StringKeyDoshaPart4.MARAKA_PRIMARY),
             value = "${analysis.primaryMarakas.size}",
             color = AppTheme.ErrorColor,
             modifier = Modifier.weight(1f)
         )
         MarakaStatCard(
-            title = stringResource(StringKeyDosha.MARAKA_SECONDARY),
+            title = stringResource(StringKeyDoshaPart4.MARAKA_SECONDARY),
             value = "${analysis.secondaryMarakas.size}",
             color = AppTheme.WarningColor,
             modifier = Modifier.weight(1f)
         )
         MarakaStatCard(
-            title = stringResource(StringKeyDosha.MARAKA_PERIODS),
+            title = stringResource(StringKeyDoshaPart4.MARAKA_PERIODS),
             value = "${analysis.dashaPeriods.size}",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
@@ -414,7 +414,7 @@ private fun MarakaInterpretationCard(analysis: MarakaCalculator.MarakaAnalysis) 
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.UI_INTERPRETATION),
+                    text = stringResource(StringKeyUI.UI_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -430,7 +430,7 @@ private fun MarakaInterpretationCard(analysis: MarakaCalculator.MarakaAnalysis) 
             if (analysis.protectiveFactors.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.MARAKA_PROTECTIVE),
+                    text = stringResource(StringKeyDoshaPart4.MARAKA_PROTECTIVE),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.SuccessColor
@@ -483,7 +483,7 @@ private fun MarakaPlanetsSection(analysis: MarakaCalculator.MarakaAnalysis) {
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.MARAKA_NO_SIGNIFICANT),
+                        text = stringResource(StringKeyDoshaPart4.MARAKA_NO_SIGNIFICANT),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary,
@@ -494,7 +494,7 @@ private fun MarakaPlanetsSection(analysis: MarakaCalculator.MarakaAnalysis) {
         } else {
             if (analysis.primaryMarakas.isNotEmpty()) {
                 Text(
-                    text = stringResource(StringKeyDosha.MARAKA_PRIMARY_TITLE),
+                    text = stringResource(StringKeyDoshaPart4.MARAKA_PRIMARY_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.ErrorColor
@@ -506,7 +506,7 @@ private fun MarakaPlanetsSection(analysis: MarakaCalculator.MarakaAnalysis) {
             if (analysis.secondaryMarakas.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.MARAKA_SECONDARY_TITLE),
+                    text = stringResource(StringKeyDoshaPart4.MARAKA_SECONDARY_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.WarningColor
@@ -639,7 +639,7 @@ private fun MarakaPlanetCard(
                     if (false) { // maraka.afflictions does not exist in MarakaPlanet
                         Spacer(modifier = Modifier.height(8.dp))
 //                        Text(
-//                            text = stringResource(StringKeyDosha.MARAKA_AFFLICTIONS),
+//                            text = stringResource(StringKeyDoshaPart4.MARAKA_AFFLICTIONS),
 //                            style = MaterialTheme.typography.labelSmall,
 //                            fontWeight = FontWeight.SemiBold,
 //                            color = AppTheme.WarningColor
@@ -685,7 +685,7 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.MARAKA_METHODS),
+                        text = stringResource(StringKeyDoshaPart4.MARAKA_METHODS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -694,17 +694,17 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 LongevityMethodRow(
-                    method = stringResource(StringKeyDosha.MARAKA_AMSAYURDAYA), // Generalized title
+                    method = stringResource(StringKeyDoshaPart4.MARAKA_AMSAYURDAYA), // Generalized title
                     result = longevity.category.displayName,
                     score = longevity.overallScore
                 )
 //                LongevityMethodRow(
-//                    method = stringResource(StringKeyDosha.MARAKA_PINDAYURDAYA),
+//                    method = stringResource(StringKeyDoshaPart4.MARAKA_PINDAYURDAYA),
 //                    result = longevity.pindayurdayaResult,
 //                    score = longevity.pindayurdayaScore
 //                )
 //                LongevityMethodRow(
-//                    method = stringResource(StringKeyDosha.MARAKA_NISARGAYURDAYA),
+//                    method = stringResource(StringKeyDoshaPart4.MARAKA_NISARGAYURDAYA),
 //                    result = longevity.nisargayurdayaResult,
 //                    score = longevity.nisargayurdayaScore
 //                )
@@ -719,7 +719,7 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = stringResource(StringKeyDosha.MARAKA_FACTORS),
+                        text = stringResource(StringKeyDoshaPart4.MARAKA_FACTORS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -728,7 +728,7 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
 
                     if (longevity.supportingFactors.isNotEmpty()) {
                         Text(
-                            text = stringResource(StringKeyDosha.MARAKA_POSITIVE),
+                            text = stringResource(StringKeyDoshaPart4.MARAKA_POSITIVE),
                             style = MaterialTheme.typography.labelMedium,
                             color = AppTheme.SuccessColor
                         )
@@ -750,7 +750,7 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                     if (longevity.challengingFactors.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = stringResource(StringKeyDosha.MARAKA_NEGATIVE),
+                            text = stringResource(StringKeyDoshaPart4.MARAKA_NEGATIVE),
                             style = MaterialTheme.typography.labelMedium,
                             color = AppTheme.WarningColor
                         )
@@ -854,7 +854,7 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.MARAKA_NO_CRITICAL),
+                        text = stringResource(StringKeyDoshaPart4.MARAKA_NO_CRITICAL),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary,
@@ -880,7 +880,7 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
                             modifier = Modifier.size(20.dp)
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.MARAKA_CRITICAL_PERIODS),
+                            text = stringResource(StringKeyDoshaPart4.MARAKA_CRITICAL_PERIODS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -990,7 +990,7 @@ private fun MarakaRemediesSection(analysis: MarakaCalculator.MarakaAnalysis) {
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.MARAKA_NO_REMEDIES),
+                        text = stringResource(StringKeyDoshaPart4.MARAKA_NO_REMEDIES),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -1059,7 +1059,7 @@ private fun MarakaRemedyCard(remedy: MarakaCalculator.MarakaRemedy) {
             )
             if (!remedy.fasting.isNullOrEmpty()) {
                 Text(
-                    text = "${stringResource(StringKeyDosha.UI_TIMING)}: ${remedy.fasting}",
+                    text = "${stringResource(StringKeyUI.UI_TIMING)}: ${remedy.fasting}",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted,
                     modifier = Modifier.padding(top = 4.dp)
@@ -1079,7 +1079,7 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.WarningColor)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.MARAKA_ANALYZING),
+                text = stringResource(StringKeyDoshaPart4.MARAKA_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1105,14 +1105,14 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+                text = stringResource(StringKeyUI.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.MARAKA_NO_CHART_DESC),
+                text = stringResource(StringKeyDoshaPart4.MARAKA_NO_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1127,14 +1127,14 @@ private fun MarakaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(StringKeyDosha.MARAKA_ABOUT_TITLE),
+                text = stringResource(StringKeyDoshaPart4.MARAKA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = stringResource(StringKeyDosha.MARAKA_ABOUT_DESC),
+                text = stringResource(StringKeyDoshaPart4.MARAKA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
@@ -1142,7 +1142,7 @@ private fun MarakaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground

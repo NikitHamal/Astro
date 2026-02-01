@@ -172,64 +172,64 @@ object UpachayaTransitTracker {
     ): List<String> {
         val houseEffects = when (house) {
             3 -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_COURAGE, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_TRAVELS, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_SIBLINGS, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_SKILLS, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_COURAGE, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_TRAVELS, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_SIBLINGS, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_SKILLS, language)
             )
             6 -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_ENEMIES, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_HEALTH_IMPROVE, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_SERVICE, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_DEBTS, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_ENEMIES, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_HEALTH_IMPROVE, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_SERVICE, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_DEBTS, language)
             )
             10 -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_CAREER_ADVANCE, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_PROFESSIONAL, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_STATUS, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_GOVT_FAVORED, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_CAREER_ADVANCE, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_PROFESSIONAL, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_STATUS, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_GOVT_FAVORED, language)
             )
             11 -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_GAINS, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_DESIRES, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_FRIENDSHIP, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_EFFECT_ELDER_SIBLINGS, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_GAINS, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_DESIRES, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_FRIENDSHIP, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_EFFECT_ELDER_SIBLINGS, language)
             )
             else -> emptyList()
         }
 
         val planetEffects = when (planet) {
             Planet.SATURN -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_SATURN_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_SATURN_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_SATURN_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_SATURN_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_SATURN_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_SATURN_3, language)
             )
             Planet.MARS -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_MARS_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_MARS_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_MARS_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_MARS_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_MARS_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_MARS_3, language)
             )
             Planet.RAHU -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_RAHU_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_RAHU_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_RAHU_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_RAHU_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_RAHU_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_RAHU_3, language)
             )
             Planet.KETU -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_KETU_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_KETU_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_KETU_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_KETU_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_KETU_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_KETU_3, language)
             )
             Planet.JUPITER -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_JUPITER_1, language, getHouseName(house, language)),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_JUPITER_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_JUPITER_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_JUPITER_1, language, getHouseName(house, language)),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_JUPITER_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_JUPITER_3, language)
             )
             Planet.SUN -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_SUN_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_SUN_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_PLANET_SUN_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_SUN_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_SUN_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_SUN_3, language)
             )
-            else -> listOf(StringResources.get(StringKeyDosha.UPACHAYA_PLANET_GENERIC, language, planet.displayName, getHouseName(house, language)))
+            else -> listOf(StringResources.get(StringKeyDoshaPart2.UPACHAYA_PLANET_GENERIC, language, planet.displayName, getHouseName(house, language)))
         }
 
         return houseEffects.take(2) + planetEffects.take(2)
@@ -237,15 +237,15 @@ object UpachayaTransitTracker {
 
     private fun getTransitDuration(planet: Planet, language: Language): String {
         return when (planet) {
-            Planet.MOON -> StringResources.get(StringKeyDosha.UPACHAYA_DURATION_MOON, language)
-            Planet.SUN -> StringResources.get(StringKeyDosha.UPACHAYA_DURATION_SUN, language)
-            Planet.MERCURY -> StringResources.get(StringKeyDosha.UPACHAYA_DURATION_MERCURY, language)
-            Planet.VENUS -> StringResources.get(StringKeyDosha.UPACHAYA_DURATION_VENUS, language)
-            Planet.MARS -> StringResources.get(StringKeyDosha.UPACHAYA_DURATION_MARS, language)
-            Planet.JUPITER -> StringResources.get(StringKeyDosha.UPACHAYA_DURATION_JUPITER, language)
-            Planet.SATURN -> StringResources.get(StringKeyDosha.UPACHAYA_DURATION_SATURN, language)
-            Planet.RAHU -> StringResources.get(StringKeyDosha.UPACHAYA_DURATION_RAHU, language)
-            Planet.KETU -> StringResources.get(StringKeyDosha.UPACHAYA_DURATION_RAHU, language) // Ketu same as Rahu
+            Planet.MOON -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_DURATION_MOON, language)
+            Planet.SUN -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_DURATION_SUN, language)
+            Planet.MERCURY -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_DURATION_MERCURY, language)
+            Planet.VENUS -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_DURATION_VENUS, language)
+            Planet.MARS -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_DURATION_MARS, language)
+            Planet.JUPITER -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_DURATION_JUPITER, language)
+            Planet.SATURN -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_DURATION_SATURN, language)
+            Planet.RAHU -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_DURATION_RAHU, language)
+            Planet.KETU -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_DURATION_RAHU, language) // Ketu same as Rahu
             else -> "Variable"
         }
     }
@@ -253,48 +253,48 @@ object UpachayaTransitTracker {
     private fun getTransitRecommendations(planet: Planet, house: Int, language: Language): List<String> {
         val houseRecs = when (house) {
             3 -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_3_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_3_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_3_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_3_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_3_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_3_3, language)
             )
             6 -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_6_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_6_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_6_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_6_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_6_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_6_3, language)
             )
             10 -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_10_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_10_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_10_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_10_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_10_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_10_3, language)
             )
             11 -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_11_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_11_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_HOUSE_11_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_11_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_11_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HOUSE_11_3, language)
             )
             else -> emptyList()
         }
 
         val planetRecs = when (planet) {
             Planet.SATURN -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_SATURN_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_SATURN_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_SATURN_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_SATURN_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_SATURN_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_SATURN_3, language)
             )
             Planet.MARS -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_MARS_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_MARS_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_MARS_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_MARS_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_MARS_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_MARS_3, language)
             )
             Planet.RAHU -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_RAHU_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_RAHU_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_RAHU_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_RAHU_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_RAHU_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_RAHU_3, language)
             )
             Planet.JUPITER -> listOf(
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_JUPITER_1, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_JUPITER_2, language),
-                StringResources.get(StringKeyDosha.UPACHAYA_REC_JUPITER_3, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_JUPITER_1, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_JUPITER_2, language),
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_JUPITER_3, language)
             )
             else -> emptyList()
         }
@@ -315,37 +315,37 @@ object UpachayaTransitTracker {
                 strength = calculateHouseTransitStrength(houseTransits),
                 effects = getHouseTransitSummary(house, planets, language),
                 timing = if (houseTransits.isNotEmpty()) {
-                    val activeLabel = StringResources.get(StringKeyAnalysis.VARSHAPHALA_ACTIVE, language)
+                    val activeLabel = StringResources.get(StringKeyAnalysisPart1.VARSHAPHALA_ACTIVE, language)
                     "$activeLabel: ${planets.joinToString { it.getLocalizedName(language) }}"
-                } else StringResources.get(StringKeyDosha.UPACHAYA_HOUSE_INACTIVE, language)
+                } else StringResources.get(StringKeyDoshaPart2.UPACHAYA_HOUSE_INACTIVE, language)
             )
         }
     }
 
     private fun getHouseTheme(house: Int, language: Language): String {
         return when (house) {
-            3 -> StringResources.get(StringKeyDosha.UPACHAYA_SCREEN_HOUSE_3, language).split(" - ").getOrElse(1) { "Courage, Siblings" }
-            6 -> StringResources.get(StringKeyDosha.UPACHAYA_SCREEN_HOUSE_6, language).split(" - ").getOrElse(1) { "Enemies, Health" }
-            10 -> StringResources.get(StringKeyDosha.UPACHAYA_SCREEN_HOUSE_10, language).split(" - ").getOrElse(1) { "Career, Status" }
-            11 -> StringResources.get(StringKeyDosha.UPACHAYA_SCREEN_HOUSE_11, language).split(" - ").getOrElse(1) { "Gains, Aspirations" }
+            3 -> StringResources.get(StringKeyDoshaPart3.UPACHAYA_SCREEN_HOUSE_3, language).split(" - ").getOrElse(1) { "Courage, Siblings" }
+            6 -> StringResources.get(StringKeyDoshaPart3.UPACHAYA_SCREEN_HOUSE_6, language).split(" - ").getOrElse(1) { "Enemies, Health" }
+            10 -> StringResources.get(StringKeyDoshaPart3.UPACHAYA_SCREEN_HOUSE_10, language).split(" - ").getOrElse(1) { "Career, Status" }
+            11 -> StringResources.get(StringKeyDoshaPart3.UPACHAYA_SCREEN_HOUSE_11, language).split(" - ").getOrElse(1) { "Gains, Aspirations" }
             else -> "General"
         }
     }
 
     private fun getHouseTransitSummary(house: Int, planets: List<Planet>, language: Language): List<String> {
-        if (planets.isEmpty()) return listOf(StringResources.get(StringKeyDosha.UPACHAYA_HOUSE_NO_TRANSIT, language, getHouseName(house, language)))
+        if (planets.isEmpty()) return listOf(StringResources.get(StringKeyDoshaPart2.UPACHAYA_HOUSE_NO_TRANSIT, language, getHouseName(house, language)))
 
         val summary = mutableListOf<String>()
-        summary.add(StringResources.get(StringKeyDosha.UPACHAYA_HOUSE_PLANETS_COUNT, language, planets.size, getHouseName(house, language)))
+        summary.add(StringResources.get(StringKeyDoshaPart2.UPACHAYA_HOUSE_PLANETS_COUNT, language, planets.size, getHouseName(house, language)))
 
         if (planets.any { it == Planet.SATURN }) {
-            summary.add(StringResources.get(StringKeyDosha.UPACHAYA_SATURN_PROGRESS, language, getHouseTheme(house, language).lowercase()))
+            summary.add(StringResources.get(StringKeyDoshaPart2.UPACHAYA_SATURN_PROGRESS, language, getHouseTheme(house, language).lowercase()))
         }
         if (planets.any { it == Planet.MARS }) {
-            summary.add(StringResources.get(StringKeyDosha.UPACHAYA_MARS_PROGRESS, language, getHouseTheme(house, language).lowercase()))
+            summary.add(StringResources.get(StringKeyDoshaPart2.UPACHAYA_MARS_PROGRESS, language, getHouseTheme(house, language).lowercase()))
         }
         if (planets.any { it == Planet.JUPITER }) {
-            summary.add(StringResources.get(StringKeyDosha.UPACHAYA_JUPITER_PROGRESS, language, getHouseTheme(house, language).lowercase()))
+            summary.add(StringResources.get(StringKeyDoshaPart2.UPACHAYA_JUPITER_PROGRESS, language, getHouseTheme(house, language).lowercase()))
         }
 
         return summary
@@ -369,8 +369,8 @@ object UpachayaTransitTracker {
             return OverallUpachayaAssessment(
                 level = UpachayaLevel.LOW,
                 score = 30.0,
-                summary = StringResources.get(StringKeyDosha.UPACHAYA_ASSESS_NO_ACTIVE, language),
-                keyPeriod = StringResources.get(StringKeyDosha.UPACHAYA_ASSESS_WAIT, language)
+                summary = StringResources.get(StringKeyDoshaPart2.UPACHAYA_ASSESS_NO_ACTIVE, language),
+                keyPeriod = StringResources.get(StringKeyDoshaPart2.UPACHAYA_ASSESS_WAIT, language)
             )
         }
 
@@ -385,18 +385,18 @@ object UpachayaTransitTracker {
         }
 
         val summary = when (level) {
-            UpachayaLevel.EXCEPTIONAL -> StringResources.get(StringKeyDosha.UPACHAYA_ASSESS_EXCEPTIONAL, language)
-            UpachayaLevel.HIGH -> StringResources.get(StringKeyDosha.UPACHAYA_ASSESS_HIGH, language)
-            UpachayaLevel.MODERATE -> StringResources.get(StringKeyDosha.UPACHAYA_ASSESS_MODERATE, language)
-            UpachayaLevel.LOW -> StringResources.get(StringKeyDosha.UPACHAYA_ASSESS_LOW, language)
+            UpachayaLevel.EXCEPTIONAL -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_ASSESS_EXCEPTIONAL, language)
+            UpachayaLevel.HIGH -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_ASSESS_HIGH, language)
+            UpachayaLevel.MODERATE -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_ASSESS_MODERATE, language)
+            UpachayaLevel.LOW -> StringResources.get(StringKeyDoshaPart2.UPACHAYA_ASSESS_LOW, language)
         }
 
         val keyPeriod = transits
             .filter { it.planet in listOf(Planet.SATURN, Planet.JUPITER, Planet.RAHU) }
             .maxByOrNull { it.significance }
             ?.let { 
-                StringResources.get(StringKeyDosha.UPACHAYA_ASSESS_KEY_TRANSIT, language, it.planet.displayName, getHouseName(it.houseFromReference, language))
-            } ?: StringResources.get(StringKeyDosha.UPACHAYA_ASSESS_DAILY_ACTION, language)
+                StringResources.get(StringKeyDoshaPart2.UPACHAYA_ASSESS_KEY_TRANSIT, language, it.planet.displayName, getHouseName(it.houseFromReference, language))
+            } ?: StringResources.get(StringKeyDoshaPart2.UPACHAYA_ASSESS_DAILY_ACTION, language)
 
         return OverallUpachayaAssessment(
             level = level,
@@ -410,17 +410,17 @@ object UpachayaTransitTracker {
         val recommendations = mutableListOf<String>()
         val activeHouses = transits.filter { it.isInUpachaya }.map { it.houseFromReference }.distinct()
 
-        if (3 in activeHouses) recommendations.add(StringResources.get(StringKeyDosha.UPACHAYA_REC_BOLD_INITIATIVE, language))
-        if (6 in activeHouses) recommendations.add(StringResources.get(StringKeyDosha.UPACHAYA_REC_HEALTH_CONFLICTS, language))
-        if (10 in activeHouses) recommendations.add(StringResources.get(StringKeyDosha.UPACHAYA_REC_CAREER_FOCUS, language))
-        if (11 in activeHouses) recommendations.add(StringResources.get(StringKeyDosha.UPACHAYA_REC_FINANCIAL_GOALS, language))
+        if (3 in activeHouses) recommendations.add(StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_BOLD_INITIATIVE, language))
+        if (6 in activeHouses) recommendations.add(StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_HEALTH_CONFLICTS, language))
+        if (10 in activeHouses) recommendations.add(StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_CAREER_FOCUS, language))
+        if (11 in activeHouses) recommendations.add(StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_FINANCIAL_GOALS, language))
 
         if (transits.any { it.isInUpachaya && it.planet in listOf(Planet.SATURN, Planet.RAHU) }) {
-            recommendations.add(StringResources.get(StringKeyDosha.UPACHAYA_REC_SLOW_PLANET, language))
+            recommendations.add(StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_SLOW_PLANET, language))
         }
 
         if (recommendations.isEmpty()) {
-            recommendations.add(StringResources.get(StringKeyDosha.UPACHAYA_REC_PREPARE_UPCOMING, language))
+            recommendations.add(StringResources.get(StringKeyDoshaPart2.UPACHAYA_REC_PREPARE_UPCOMING, language))
         }
 
         return recommendations
@@ -434,7 +434,7 @@ object UpachayaTransitTracker {
                 type = AlertType.OPPORTUNITY,
                 planet = transit.planet,
                 house = transit.houseFromReference,
-                message = StringResources.get(StringKeyDosha.UPACHAYA_ALERT_EXCELLENT, language, transit.planet.displayName, getHouseName(transit.houseFromReference, language)),
+                message = StringResources.get(StringKeyDoshaPart2.UPACHAYA_ALERT_EXCELLENT, language, transit.planet.displayName, getHouseName(transit.houseFromReference, language)),
                 priority = AlertPriority.HIGH
             ))
         }
@@ -444,7 +444,7 @@ object UpachayaTransitTracker {
                 type = AlertType.MAJOR_TRANSIT,
                 planet = Planet.SATURN,
                 house = 10,
-                message = StringResources.get(StringKeyDosha.UPACHAYA_ALERT_SATURN_10, language),
+                message = StringResources.get(StringKeyDoshaPart2.UPACHAYA_ALERT_SATURN_10, language),
                 priority = AlertPriority.HIGH
             ))
         }
@@ -454,7 +454,7 @@ object UpachayaTransitTracker {
                 type = AlertType.FORTUNE,
                 planet = Planet.JUPITER,
                 house = 11,
-                message = StringResources.get(StringKeyDosha.UPACHAYA_ALERT_JUPITER_11, language),
+                message = StringResources.get(StringKeyDoshaPart2.UPACHAYA_ALERT_JUPITER_11, language),
                 priority = AlertPriority.HIGH
             ))
         }
@@ -476,8 +476,8 @@ object UpachayaTransitTracker {
                     planet = planet,
                     targetHouse = house,
                     targetSign = targetSign,
-                    significance = StringResources.get(StringKeyDosha.UPACHAYA_UPCOMING_SIGNIFICANCE, language, planet.displayName, targetSign.displayName, getHouseTheme(house, language)),
-                    recommendation = StringResources.get(StringKeyDosha.UPACHAYA_UPCOMING_REC, language, getHouseTheme(house, language))
+                    significance = StringResources.get(StringKeyDoshaPart2.UPACHAYA_UPCOMING_SIGNIFICANCE, language, planet.displayName, targetSign.displayName, getHouseTheme(house, language)),
+                    recommendation = StringResources.get(StringKeyDoshaPart2.UPACHAYA_UPCOMING_REC, language, getHouseTheme(house, language))
                 ))
             }
         }

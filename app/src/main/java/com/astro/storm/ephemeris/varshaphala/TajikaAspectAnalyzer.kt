@@ -77,18 +77,18 @@ object TajikaAspectAnalyzer {
 
     private fun getAspectEffectDescription(type: TajikaAspectType, p1: Planet, p2: Planet, language: Language): String {
         return when (type) {
-            TajikaAspectType.ITHASALA -> StringResources.get(StringKeyAnalysis.TAJIKA_ITHASALA_EFFECT, language, p1.getLocalizedName(language), p2.getLocalizedName(language))
-            TajikaAspectType.EASARAPHA -> StringResources.get(StringKeyAnalysis.TAJIKA_EASARAPHA_EFFECT, language)
-            TajikaAspectType.KAMBOOLA -> StringResources.get(StringKeyAnalysis.TAJIKA_KAMBOOLA_EFFECT, language)
-            TajikaAspectType.RADDA -> StringResources.get(StringKeyAnalysis.TAJIKA_RADDA_EFFECT, language)
-            TajikaAspectType.DURAPHA -> StringResources.get(StringKeyAnalysis.TAJIKA_DURAPHA_EFFECT, language)
-            else -> StringResources.get(StringKeyAnalysis.TAJIKA_INFLUENCE_ENERGY, language, type.getDisplayName(language), if (type.isPositive) StringResources.get(StringKeyAnalysis.VARSHA_TONE_SUPPORTIVE, language) else StringResources.get(StringKeyAnalysis.VARSHA_TONE_CHALLENGING, language))
+            TajikaAspectType.ITHASALA -> StringResources.get(StringKeyVarshaphala.TAJIKA_ITHASALA_EFFECT, language, p1.getLocalizedName(language), p2.getLocalizedName(language))
+            TajikaAspectType.EASARAPHA -> StringResources.get(StringKeyVarshaphala.TAJIKA_EASARAPHA_EFFECT, language)
+            TajikaAspectType.KAMBOOLA -> StringResources.get(StringKeyVarshaphala.TAJIKA_KAMBOOLA_EFFECT, language)
+            TajikaAspectType.RADDA -> StringResources.get(StringKeyVarshaphala.TAJIKA_RADDA_EFFECT, language)
+            TajikaAspectType.DURAPHA -> StringResources.get(StringKeyVarshaphala.TAJIKA_DURAPHA_EFFECT, language)
+            else -> StringResources.get(StringKeyVarshaphala.TAJIKA_INFLUENCE_ENERGY, language, type.getDisplayName(language), if (type.isPositive) StringResources.get(StringKeyVarshaphala.VARSHA_TONE_SUPPORTIVE, language) else StringResources.get(StringKeyVarshaphala.VARSHA_TONE_CHALLENGING, language))
         }
     }
 
     private fun generateAspectPrediction(type: TajikaAspectType, p1: Planet, p2: Planet, houses: List<Int>, language: Language): String {
         val houseStr = houses.joinToString(if (language == Language.NEPALI) " र " else " and ") { if (language == Language.NEPALI) "${it}औं भाव" else "House $it" }
-        return StringResources.get(StringKeyAnalysis.TAJIKA_PREDICTION_X_FOR_Y, language, type.getDisplayName(language), p1.getLocalizedName(language), p2.getLocalizedName(language), if (type.isPositive) StringResources.get(StringKeyAnalysis.VARSHA_TONE_FAVORABLE, language) else StringResources.get(StringKeyAnalysis.VARSHA_TONE_CHALLENGING, language), houseStr)
+        return StringResources.get(StringKeyVarshaphala.TAJIKA_PREDICTION_X_FOR_Y, language, type.getDisplayName(language), p1.getLocalizedName(language), p2.getLocalizedName(language), if (type.isPositive) StringResources.get(StringKeyVarshaphala.VARSHA_TONE_FAVORABLE, language) else StringResources.get(StringKeyVarshaphala.VARSHA_TONE_CHALLENGING, language), houseStr)
     }
 }
 

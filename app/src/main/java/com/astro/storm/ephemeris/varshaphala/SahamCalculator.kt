@@ -75,13 +75,13 @@ object SahamCalculator {
 
     private fun generateSahamInterpretation(type: SahamType, sign: com.astro.storm.core.model.ZodiacSign, house: Int, lord: Planet, lordHouse: Int, lordStrength: String, language: Language): String {
         val lordQuality = when (lordStrength) {
-            StringResources.get(StringKeyAnalysis.VARSHA_STRENGTH_EXALTED, language), StringResources.get(StringKeyAnalysis.VARSHA_STRENGTH_STRONG, language) -> StringResources.get(StringKeyAnalysis.VARSHA_TONE_EXCELLENT, language)
-            StringResources.get(StringKeyAnalysis.VARSHA_STRENGTH_MODERATE, language), StringResources.get(StringKeyAnalysis.VARSHA_STRENGTH_ANGULAR, language) -> StringResources.get(StringKeyAnalysis.VARSHA_TONE_FAVORABLE, language)
-            StringResources.get(StringKeyAnalysis.VARSHA_STRENGTH_DEBILITATED, language) -> StringResources.get(StringKeyAnalysis.VARSHA_TONE_CHALLENGING, language)
-            else -> StringResources.get(StringKeyAnalysis.VARSHA_TONE_BALANCED, language)
+            StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_EXALTED, language), StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_STRONG, language) -> StringResources.get(StringKeyVarshaphala.VARSHA_TONE_EXCELLENT, language)
+            StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_MODERATE, language), StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_ANGULAR, language) -> StringResources.get(StringKeyVarshaphala.VARSHA_TONE_FAVORABLE, language)
+            StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_DEBILITATED, language) -> StringResources.get(StringKeyVarshaphala.VARSHA_TONE_CHALLENGING, language)
+            else -> StringResources.get(StringKeyVarshaphala.VARSHA_TONE_BALANCED, language)
         }
-        return StringResources.get(StringKeyAnalysis.VARSHA_SAHAM_RELATES, language, type.getDisplayName(language), sign.getLocalizedName(language), house, type.getDescription(language).lowercase()) +
-                " " + StringResources.get(StringKeyAnalysis.VARSHA_SAHAM_LORD_SUPPORT, language, lord.getLocalizedName(language), lordHouse, lordQuality)
+        return StringResources.get(StringKeyVarshaphala.VARSHA_SAHAM_RELATES, language, type.getDisplayName(language), sign.getLocalizedName(language), house, type.getDescription(language).lowercase()) +
+                " " + StringResources.get(StringKeyVarshaphala.VARSHA_SAHAM_LORD_SUPPORT, language, lord.getLocalizedName(language), lordHouse, lordQuality)
     }
 }
 

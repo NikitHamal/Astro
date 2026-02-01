@@ -30,10 +30,10 @@ object PanchangaDataProvider {
         CHALLENGING;
 
         fun getLocalizedName(language: Language): String = when (this) {
-            EXCELLENT -> StringResources.get(StringKeyAnalysis.QUALITY_EXCELLENT, language)
-            GOOD -> StringResources.get(StringKeyAnalysis.QUALITY_GOOD, language)
-            NEUTRAL -> StringResources.get(StringKeyAnalysis.QUALITY_NEUTRAL, language)
-            CHALLENGING -> StringResources.get(StringKeyAnalysis.QUALITY_CHALLENGING, language)
+            EXCELLENT -> StringResources.get(StringKeyAnalysisPart1.QUALITY_EXCELLENT, language)
+            GOOD -> StringResources.get(StringKeyAnalysisPart1.QUALITY_GOOD, language)
+            NEUTRAL -> StringResources.get(StringKeyAnalysisPart1.QUALITY_NEUTRAL, language)
+            CHALLENGING -> StringResources.get(StringKeyAnalysisPart1.QUALITY_CHALLENGING, language)
         }
     }
 

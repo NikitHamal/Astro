@@ -151,10 +151,10 @@ object PrashnaLagnaAnalyzer {
         val planetsDesc = if (planetsInLagna.isEmpty()) {
             ""
         } else {
-            " " + StringResources.get(StringKeyAnalysis.PRASHNA_PLANETS_IN_LAGNA_TEMPLATE, language)
+            " " + StringResources.get(StringKeyPrashnaPart1.PRASHNA_PLANETS_IN_LAGNA_TEMPLATE, language)
                 .format(planetsInLagna.joinToString { it.planet.getLocalizedName(language) })
         }
-        return StringResources.get(StringKeyAnalysis.PRASHNA_LAGNA_INTERP_TEMPLATE, language).format(
+        return StringResources.get(StringKeyPrashnaPart1.PRASHNA_LAGNA_INTERP_TEMPLATE, language).format(
             lagnaSign.getLocalizedName(language),
             lagnaSign.ruler.getLocalizedName(language),
             lordPosition.house.localized(language),

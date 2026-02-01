@@ -89,7 +89,7 @@ fun stringResource(key: StringKeyInterface): String {
  *
  * Usage:
  * ```kotlin
- * Text(text = stringResource(StringKey.ERROR_CALCULATIONS_FAILED, errorCount))
+ * Text(text = stringResource(StringKeyError.ERROR_CALCULATIONS_FAILED, errorCount))
  * ```
  */
 @Composable
@@ -377,13 +377,13 @@ private fun convertToNepaliNumerals(text: String): String {
  */
 private fun getWeekdayKey(dayOfWeek: java.time.DayOfWeek): StringKeyInterface {
     return when (dayOfWeek) {
-        java.time.DayOfWeek.SUNDAY -> StringKeyMatch.DAY_SUNDAY
-        java.time.DayOfWeek.MONDAY -> StringKeyMatch.DAY_MONDAY
-        java.time.DayOfWeek.TUESDAY -> StringKeyMatch.DAY_TUESDAY
-        java.time.DayOfWeek.WEDNESDAY -> StringKeyMatch.DAY_WEDNESDAY
-        java.time.DayOfWeek.THURSDAY -> StringKeyMatch.DAY_THURSDAY
-        java.time.DayOfWeek.FRIDAY -> StringKeyMatch.DAY_FRIDAY
-        java.time.DayOfWeek.SATURDAY -> StringKeyMatch.DAY_SATURDAY
+        java.time.DayOfWeek.SUNDAY -> StringKeyMatchPart1.DAY_SUNDAY
+        java.time.DayOfWeek.MONDAY -> StringKeyMatchPart1.DAY_MONDAY
+        java.time.DayOfWeek.TUESDAY -> StringKeyMatchPart1.DAY_TUESDAY
+        java.time.DayOfWeek.WEDNESDAY -> StringKeyMatchPart1.DAY_WEDNESDAY
+        java.time.DayOfWeek.THURSDAY -> StringKeyMatchPart1.DAY_THURSDAY
+        java.time.DayOfWeek.FRIDAY -> StringKeyMatchPart1.DAY_FRIDAY
+        java.time.DayOfWeek.SATURDAY -> StringKeyMatchPart1.DAY_SATURDAY
     }
 }
 

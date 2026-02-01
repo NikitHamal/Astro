@@ -37,7 +37,7 @@ data class InsightsData(
 
 data class InsightError(
     val type: InsightErrorType,
-    val messageKey: StringKey = StringKey.ERROR_SOMETHING_WRONG
+    val messageKey: StringKey = StringKeyError.ERROR_SOMETHING_WRONG
 )
 
 enum class InsightErrorType {
@@ -116,7 +116,7 @@ class InsightsViewModel @Inject constructor(
                 ensureActive()
 
                 if (loadedData.todayHoroscope == null && loadedData.dashaTimeline == null) {
-                    _uiState.value = InsightsUiState.Error(StringKey.ERROR_EPHEMERIS_DATA)
+                    _uiState.value = InsightsUiState.Error(StringKeyError.ERROR_EPHEMERIS_DATA)
                     return@launch
                 }
 
@@ -141,7 +141,7 @@ class InsightsViewModel @Inject constructor(
                 throw e
             } catch (e: Exception) {
                 Log.e(TAG, "Unexpected error loading insights", e)
-                _uiState.value = InsightsUiState.Error(StringKey.ERROR_SOMETHING_WRONG)
+                _uiState.value = InsightsUiState.Error(StringKeyError.ERROR_SOMETHING_WRONG)
             }
         }
     }
@@ -167,7 +167,7 @@ class InsightsViewModel @Inject constructor(
                     } catch (e: Exception) {
                         if (e is CancellationException) throw e
                         Log.e(TAG, "Dasha calculation failed", e)
-                        errors.add(InsightError(InsightErrorType.DASHA, StringKey.DASHA_ERROR))
+                        errors.add(InsightError(InsightErrorType.DASHA, StringKeyPart1.DASHA_ERROR))
                         null
                     }
                 }
@@ -178,7 +178,7 @@ class InsightsViewModel @Inject constructor(
                     } catch (e: Exception) {
                         if (e is CancellationException) throw e
                         Log.e(TAG, "Today's horoscope calculation failed", e)
-                        errors.add(InsightError(InsightErrorType.TODAY_HOROSCOPE, StringKey.ERROR_ANALYSIS_FAILED))
+                        errors.add(InsightError(InsightErrorType.TODAY_HOROSCOPE, StringKeyError.ERROR_ANALYSIS_FAILED))
                         null
                     }
                 }
@@ -189,7 +189,7 @@ class InsightsViewModel @Inject constructor(
                     } catch (e: Exception) {
                         if (e is CancellationException) throw e
                         Log.e(TAG, "Tomorrow's horoscope calculation failed", e)
-                        errors.add(InsightError(InsightErrorType.TOMORROW_HOROSCOPE, StringKey.ERROR_ANALYSIS_FAILED))
+                        errors.add(InsightError(InsightErrorType.TOMORROW_HOROSCOPE, StringKeyError.ERROR_ANALYSIS_FAILED))
                         null
                     }
                 }
@@ -200,7 +200,7 @@ class InsightsViewModel @Inject constructor(
                     } catch (e: Exception) {
                         if (e is CancellationException) throw e
                         Log.e(TAG, "Weekly horoscope calculation failed", e)
-                        errors.add(InsightError(InsightErrorType.WEEKLY_HOROSCOPE, StringKey.ERROR_ANALYSIS_FAILED))
+                        errors.add(InsightError(InsightErrorType.WEEKLY_HOROSCOPE, StringKeyError.ERROR_ANALYSIS_FAILED))
                         null
                     }
                 }

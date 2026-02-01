@@ -106,10 +106,10 @@ fun DashaSandhiScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyDosha.UI_OVERVIEW),
-        stringResource(StringKeyDosha.UI_CURRENT),
-        stringResource(StringKeyDosha.UI_UPCOMING),
-        stringResource(StringKeyDosha.UI_CALENDAR)
+        stringResource(StringKeyUI.UI_OVERVIEW),
+        stringResource(StringKeyUI.UI_CURRENT),
+        stringResource(StringKeyUI.UI_UPCOMING),
+        stringResource(StringKeyUI.UI_CALENDAR)
     )
 
     // Calculate Dasha Sandhi analysis
@@ -143,13 +143,13 @@ fun DashaSandhiScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.SANDHI_SCREEN_TITLE),
+                            text = stringResource(StringKeyDasha.SANDHI_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.SANDHI_SUBTITLE),
+                            text = stringResource(StringKeyDasha.SANDHI_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -326,7 +326,7 @@ private fun VolatilityScoreCard(score: Int) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(StringKeyDosha.SANDHI_VOLATILITY),
+                text = stringResource(StringKeyDasha.SANDHI_VOLATILITY),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -370,7 +370,7 @@ private fun VolatilityScoreCard(score: Int) {
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = stringResource(StringKeyDosha.SANDHI_VOLATILITY_DESC),
+                text = stringResource(StringKeyDasha.SANDHI_VOLATILITY_DESC),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -386,19 +386,19 @@ private fun QuickStatsRow(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis) 
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         StatCard(
-            title = stringResource(StringKeyDosha.SANDHI_ACTIVE),
+            title = stringResource(StringKeyDasha.SANDHI_ACTIVE),
             value = if (analysis.currentSandhi != null) "Yes" else "No",
             color = if (analysis.currentSandhi != null) AppTheme.WarningColor else AppTheme.SuccessColor,
             modifier = Modifier.weight(1f)
         )
         StatCard(
-            title = stringResource(StringKeyDosha.SANDHI_UPCOMING),
+            title = stringResource(StringKeyDasha.SANDHI_UPCOMING),
             value = "${analysis.upcomingSandhis.size}",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
         StatCard(
-            title = stringResource(StringKeyDosha.SANDHI_RECENT),
+            title = stringResource(StringKeyDasha.SANDHI_RECENT),
             value = "${analysis.recentPastSandhis.size}",
             color = AppTheme.TextMuted,
             modifier = Modifier.weight(1f)
@@ -461,7 +461,7 @@ private fun GuidanceCard(guidance: String) {
             )
             Column {
                 Text(
-                    text = stringResource(StringKeyDosha.SANDHI_GUIDANCE),
+                    text = stringResource(StringKeyDasha.SANDHI_GUIDANCE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -505,7 +505,7 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.SANDHI_CURRENT_ACTIVE),
+                    text = stringResource(StringKeyDasha.SANDHI_CURRENT_ACTIVE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = getSandhiIntensityColor(sandhi.intensity)
@@ -528,12 +528,12 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "${stringResource(StringKeyDosha.SANDHI_INTENSITY)} ${sandhi.intensity.displayName}",
+                    text = "${stringResource(StringKeyDasha.SANDHI_INTENSITY)} ${sandhi.intensity.displayName}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    text = "${stringResource(StringKeyDosha.SANDHI_ENDS)} ${sandhi.sandhi.sandhiEndDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
+                    text = "${stringResource(StringKeyDasha.SANDHI_ENDS)} ${sandhi.sandhi.sandhiEndDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -576,14 +576,14 @@ private fun CurrentSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAna
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.SANDHI_NO_ACTIVE),
+                        text = stringResource(StringKeyDasha.SANDHI_NO_ACTIVE),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.SANDHI_NO_ACTIVE_DESC),
+                        text = stringResource(StringKeyDasha.SANDHI_NO_ACTIVE_DESC),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -675,12 +675,12 @@ private fun SandhiDetailCard(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "${stringResource(StringKeyDosha.UI_START)} ${sandhi.sandhi.sandhiStartDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
+                    text = "${stringResource(StringKeyUI.UI_START)} ${sandhi.sandhi.sandhiStartDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    text = "${stringResource(StringKeyDosha.UI_END)} ${sandhi.sandhi.sandhiEndDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
+                    text = "${stringResource(StringKeyUI.UI_END)} ${sandhi.sandhi.sandhiEndDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -698,7 +698,7 @@ private fun SandhiDetailCard(
 
                     // Predictions
                     Text(
-                        text = stringResource(StringKeyDosha.SANDHI_PREDICTIONS),
+                        text = stringResource(StringKeyDasha.SANDHI_PREDICTIONS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -714,7 +714,7 @@ private fun SandhiDetailCard(
                     if (sandhi.affectedLifeAreas.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = stringResource(StringKeyDosha.SANDHI_IMPACTS),
+                            text = stringResource(StringKeyDasha.SANDHI_IMPACTS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -734,7 +734,7 @@ private fun SandhiDetailCard(
                     if (sandhi.remedies.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = stringResource(StringKeyDosha.SANDHI_REMEDIES),
+                            text = stringResource(StringKeyDasha.SANDHI_REMEDIES),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -860,7 +860,7 @@ private fun UpcomingSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAn
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = stringResource(StringKeyDosha.SANDHI_NO_UPCOMING),
+                        text = stringResource(StringKeyDasha.SANDHI_NO_UPCOMING),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -903,7 +903,7 @@ private fun CalendarSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.SANDHI_NO_CALENDAR),
+                        text = stringResource(StringKeyDasha.SANDHI_NO_CALENDAR),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -1043,14 +1043,14 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+                text = stringResource(StringKeyUI.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.SANDHI_NO_CHART_DESC),
+                text = stringResource(StringKeyDasha.SANDHI_NO_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1084,7 +1084,7 @@ private fun InfoDialog(
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.AccentPrimary)
             }
         },
         containerColor = AppTheme.CardBackground

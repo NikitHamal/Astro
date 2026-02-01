@@ -57,10 +57,10 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 enum class PredictionsTab(val stringKey: StringKey) {
-    OVERVIEW(StringKey.PREDICTIONS_TAB_OVERVIEW),
-    LIFE_AREAS(StringKey.PREDICTIONS_TAB_LIFE_AREAS),
-    TIMING(StringKey.PREDICTIONS_TAB_TIMING),
-    REMEDIES(StringKey.PREDICTIONS_TAB_REMEDIES);
+    OVERVIEW(StringKeyPart1.PREDICTIONS_TAB_OVERVIEW),
+    LIFE_AREAS(StringKeyPart1.PREDICTIONS_TAB_LIFE_AREAS),
+    TIMING(StringKeyPart1.PREDICTIONS_TAB_TIMING),
+    REMEDIES(StringKeyPart1.PREDICTIONS_TAB_REMEDIES);
 
     fun getLocalizedTitle(language: Language): String = StringResources.get(stringKey, language)
 }
@@ -89,7 +89,7 @@ fun PredictionsScreen(
                     calculatePredictions(chart, language)
                 }
             } catch (e: Exception) {
-                errorMessage = e.message ?: StringResources.get(StringKey.PREDICTIONS_CALC_FAILED, language)
+                errorMessage = e.message ?: StringResources.get(StringKeyPart1.PREDICTIONS_CALC_FAILED, language)
             } finally {
                 isLoading = false
             }
@@ -101,7 +101,7 @@ fun PredictionsScreen(
             TopAppBar(
                 title = {
                     Text(
-                        StringResources.get(StringKey.FEATURE_PREDICTIONS, language),
+                        StringResources.get(StringKeyFeature.FEATURE_PREDICTIONS, language),
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -110,7 +110,7 @@ fun PredictionsScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.Default.ArrowBack,
-                            contentDescription = StringResources.get(StringKey.BTN_BACK, language),
+                            contentDescription = StringResources.get(StringKeyUI.BTN_BACK, language),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -138,7 +138,7 @@ fun PredictionsScreen(
                                     calculatePredictions(chart, language)
                                 }
                             } catch (e: Exception) {
-                                errorMessage = e.message ?: StringResources.get(StringKey.PREDICTIONS_CALC_FAILED, language)
+                                errorMessage = e.message ?: StringResources.get(StringKeyPart1.PREDICTIONS_CALC_FAILED, language)
                             } finally {
                                 isLoading = false
                             }
@@ -431,7 +431,7 @@ private fun LifePathCard(overview: LifeOverview) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKey.PREDICTIONS_YOUR_LIFE_PATH, language),
+                    StringResources.get(StringKeyPart1.PREDICTIONS_YOUR_LIFE_PATH, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -458,7 +458,7 @@ private fun LifePathCard(overview: LifeOverview) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                StringResources.get(StringKey.PREDICTIONS_KEY_STRENGTHS, language),
+                StringResources.get(StringKeyPart1.PREDICTIONS_KEY_STRENGTHS, language),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
@@ -504,7 +504,7 @@ private fun LifePathCard(overview: LifeOverview) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Column {
                         Text(
-                            StringResources.get(StringKey.PREDICTIONS_SPIRITUAL_PATH, language),
+                            StringResources.get(StringKeyPart1.PREDICTIONS_SPIRITUAL_PATH, language),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.LifeAreaSpiritual
@@ -548,7 +548,7 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        StringResources.get(StringKey.PREDICTIONS_CURRENT_PERIOD, language),
+                        StringResources.get(StringKeyPart1.PREDICTIONS_CURRENT_PERIOD, language),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -606,7 +606,7 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    StringResources.get(StringKey.PREDICTIONS_ACTIVE_TRANSITS, language),
+                    StringResources.get(StringKeyPart1.PREDICTIONS_ACTIVE_TRANSITS, language),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
@@ -694,7 +694,7 @@ private fun ActiveYogasSummaryCard(yogas: List<ActiveYoga>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKey.PREDICTIONS_ACTIVE_YOGAS, language),
+                    StringResources.get(StringKeyPart1.PREDICTIONS_ACTIVE_YOGAS, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -790,7 +790,7 @@ private fun ChallengesOpportunitiesCard(data: ChallengesOpportunities) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        StringResources.get(StringKey.PREDICTIONS_OPPORTUNITIES, language),
+                        StringResources.get(StringKeyPart1.PREDICTIONS_OPPORTUNITIES, language),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.SuccessColor
@@ -822,7 +822,7 @@ private fun ChallengesOpportunitiesCard(data: ChallengesOpportunities) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        StringResources.get(StringKey.PREDICTIONS_CURRENT_CHALLENGES, language),
+                        StringResources.get(StringKeyPart1.PREDICTIONS_CURRENT_CHALLENGES, language),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.WarningColor
@@ -925,7 +925,7 @@ private fun QuickLifeAreasSummary(areas: List<LifeAreaPrediction>) {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                StringResources.get(StringKey.PREDICTIONS_LIFE_AREAS_GLANCE, language),
+                StringResources.get(StringKeyPart1.PREDICTIONS_LIFE_AREAS_GLANCE, language),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
@@ -1047,19 +1047,19 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
             AnimatedVisibility(visible = expanded) {
                 Column(modifier = Modifier.padding(top = 12.dp)) {
                     PredictionTimeframe(
-                        StringResources.get(StringKey.PREDICTIONS_SHORT_TERM, language),
+                        StringResources.get(StringKeyPart1.PREDICTIONS_SHORT_TERM, language),
                         area.shortTerm,
                         areaColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     PredictionTimeframe(
-                        StringResources.get(StringKey.PREDICTIONS_MEDIUM_TERM, language),
+                        StringResources.get(StringKeyPart1.PREDICTIONS_MEDIUM_TERM, language),
                         area.mediumTerm,
                         areaColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     PredictionTimeframe(
-                        StringResources.get(StringKey.PREDICTIONS_LONG_TERM, language),
+                        StringResources.get(StringKeyPart1.PREDICTIONS_LONG_TERM, language),
                         area.longTerm,
                         areaColor
                     )
@@ -1171,7 +1171,7 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKey.PREDICTIONS_FAVORABLE_PERIODS, language),
+                    StringResources.get(StringKeyPart1.PREDICTIONS_FAVORABLE_PERIODS, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1201,7 +1201,7 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
                         if (period.bestFor.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                "${StringResources.get(StringKey.PREDICTIONS_BEST_FOR, language)}:",
+                                "${StringResources.get(StringKeyPart1.PREDICTIONS_BEST_FOR, language)}:",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1246,7 +1246,7 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKey.PREDICTIONS_CAUTION_PERIODS, language),
+                    StringResources.get(StringKeyPart1.PREDICTIONS_CAUTION_PERIODS, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1276,7 +1276,7 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
                         if (period.avoid.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                "${StringResources.get(StringKey.PREDICTIONS_CAUTION_FOR, language)}:",
+                                "${StringResources.get(StringKeyPart1.PREDICTIONS_CAUTION_FOR, language)}:",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1321,7 +1321,7 @@ private fun KeyDatesCard(dates: List<KeyDate>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKey.PREDICTIONS_IMPORTANT_DATES, language),
+                    StringResources.get(StringKeyPart1.PREDICTIONS_IMPORTANT_DATES, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1404,7 +1404,7 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKey.PREDICTIONS_REMEDIAL_SUGGESTIONS, language),
+                    StringResources.get(StringKeyPart1.PREDICTIONS_REMEDIAL_SUGGESTIONS, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1479,12 +1479,12 @@ private fun EmptyPredictionsState(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                StringResources.get(StringKey.PREDICTIONS_NO_CHART_SELECTED, language),
+                StringResources.get(StringKeyPart1.PREDICTIONS_NO_CHART_SELECTED, language),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppTheme.TextMuted
             )
             Text(
-                StringResources.get(StringKey.PREDICTIONS_SELECT_CHART_MESSAGE, language),
+                StringResources.get(StringKeyPart1.PREDICTIONS_SELECT_CHART_MESSAGE, language),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSubtle
             )
@@ -1507,7 +1507,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                StringResources.get(StringKey.PREDICTIONS_CALCULATING, language),
+                StringResources.get(StringKeyPart1.PREDICTIONS_CALCULATING, language),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1536,7 +1536,7 @@ private fun ErrorState(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                StringResources.get(StringKey.PREDICTIONS_ERROR_LOADING, language),
+                StringResources.get(StringKeyPart1.PREDICTIONS_ERROR_LOADING, language),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppTheme.TextPrimary
             )
@@ -1561,7 +1561,7 @@ private fun ErrorState(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(StringResources.get(StringKey.BTN_RETRY, language))
+                Text(StringResources.get(StringKeyUI.BTN_RETRY, language))
             }
         }
     }

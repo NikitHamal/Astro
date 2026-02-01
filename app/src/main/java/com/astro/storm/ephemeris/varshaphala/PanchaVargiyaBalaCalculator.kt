@@ -22,7 +22,7 @@ object PanchaVargiyaBalaCalculator {
     }
 
     private fun calculatePanchaVargiyaBala(planet: Planet, chart: SolarReturnChart, language: Language): PanchaVargiyaBala {
-        val pos = chart.planetPositions[planet] ?: return PanchaVargiyaBala(planet, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, StringResources.get(StringKeyAnalysis.VARSHA_STRENGTH_UNKNOWN, language))
+        val pos = chart.planetPositions[planet] ?: return PanchaVargiyaBala(planet, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_UNKNOWN, language))
         val long = normalizeAngle(pos.longitude)
         val u = calculateUchchaBala(planet, long)
         val h = calculateHaddaBala(planet, pos.sign, pos.degree)
@@ -30,7 +30,7 @@ object PanchaVargiyaBalaCalculator {
         val n = calculateNavamshaBala(planet, long)
         val dw = calculateDwadashamshabala(planet, long)
         val tot = u + h + dr + n + dw
-        val cat = when { tot >= 15 -> StringResources.get(StringKeyAnalysis.PANCHA_EXCELLENT, language); tot >= 12 -> StringResources.get(StringKeyAnalysis.PANCHA_GOOD, language); tot >= 8 -> StringResources.get(StringKeyAnalysis.PANCHA_AVERAGE, language); tot >= 5 -> StringResources.get(StringKeyAnalysis.PANCHA_BELOW_AVERAGE, language); else -> StringResources.get(StringKeyAnalysis.PANCHA_WEAK, language) }
+        val cat = when { tot >= 15 -> StringResources.get(StringKeyAnalysisPart1.PANCHA_EXCELLENT, language); tot >= 12 -> StringResources.get(StringKeyAnalysisPart1.PANCHA_GOOD, language); tot >= 8 -> StringResources.get(StringKeyAnalysisPart1.PANCHA_AVERAGE, language); tot >= 5 -> StringResources.get(StringKeyAnalysisPart1.PANCHA_BELOW_AVERAGE, language); else -> StringResources.get(StringKeyAnalysisPart1.PANCHA_WEAK, language) }
         return PanchaVargiyaBala(planet, u, h, dr, n, dw, tot, cat)
     }
 

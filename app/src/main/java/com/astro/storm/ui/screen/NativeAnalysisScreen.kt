@@ -159,7 +159,7 @@ fun NativeAnalysisScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -168,7 +168,7 @@ fun NativeAnalysisScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKey.TAB_CHAT), // Using TAB_CHAT as info placeholder if general info button missing
+                            contentDescription = stringResource(StringKeyUI.TAB_CHAT), // Using TAB_CHAT as info placeholder if general info button missing
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -385,7 +385,7 @@ private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 SignBadge(
-                    label = stringResource(StringKeyAnalysis.CHART_LAGNA),
+                    label = stringResource(StringKeyMatchPart2.CHART_LAGNA),
                     sign = character.ascendantSign.displayName,
                     color = AppTheme.AccentPrimary
                 )
@@ -411,7 +411,7 @@ private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.PANCHANGA_ELEMENT),
+                        text = stringResource(StringKeyPanchanga.PANCHANGA_ELEMENT),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -426,7 +426,7 @@ private fun KeySignsCard(character: CharacterAnalysis, language: Language) {
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.DIALOG_MOTION),
+                        text = stringResource(StringKeyAnalysisPart1.DIALOG_MOTION),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1355,7 +1355,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.HOUSE_LORD_2),
+                        text = stringResource(StringKeyAnalysisPart3.HOUSE_LORD_2),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1373,7 +1373,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.HOUSE_LORD_11),
+                        text = stringResource(StringKeyAnalysisPart3.HOUSE_LORD_11),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1668,7 +1668,7 @@ private fun SpiritualLordsCard(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.HOUSE_LORD_9),
+                        text = stringResource(StringKeyAnalysisPart3.HOUSE_LORD_9),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1681,7 +1681,7 @@ private fun SpiritualLordsCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.HOUSE_LORD_12),
+                        text = stringResource(StringKeyAnalysisPart3.HOUSE_LORD_12),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1858,7 +1858,7 @@ private fun HouseLordCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = String.format(stringResource(StringKeyAnalysis.DIALOG_HOUSE_PLACEMENT), houseNumber),
+                text = String.format(stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE_PLACEMENT), houseNumber),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1870,7 +1870,7 @@ private fun HouseLordCard(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.PANCHANGA_LORD),
+                        text = stringResource(StringKeyPanchanga.PANCHANGA_LORD),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1888,7 +1888,7 @@ private fun HouseLordCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = String.format(stringResource(StringKeyAnalysis.UI_IN_HOUSE_FMT), house),
+                        text = String.format(stringResource(StringKeyUI.UI_IN_HOUSE_FMT), house),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -1896,7 +1896,7 @@ private fun HouseLordCard(
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.DIALOG_DIGNITY),
+                        text = stringResource(StringKeyAnalysisPart1.DIALOG_DIGNITY),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -2148,7 +2148,7 @@ private fun NativeInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_OK), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyUI.BTN_OK), color = AppTheme.AccentPrimary)
             }
         },
         containerColor = AppTheme.CardBackground

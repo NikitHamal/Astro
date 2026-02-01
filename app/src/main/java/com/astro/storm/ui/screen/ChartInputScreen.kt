@@ -217,8 +217,8 @@ fun ChartInputScreen(
                     longitude = String.format(java.util.Locale.US, "%.6f", lon)
                 },
                 onSearch = viewModel::searchLocation,
-                label = stringResource(StringKey.INPUT_LOCATION),
-                placeholder = stringResource(StringKey.INPUT_SEARCH_LOCATION)
+                label = stringResource(StringKeyPart1.INPUT_LOCATION),
+                placeholder = stringResource(StringKeyPart1.INPUT_SEARCH_LOCATION)
             )
 
             Spacer(modifier = Modifier.height(28.dp))
@@ -256,7 +256,7 @@ fun ChartInputScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             // Extract localized string outside the lambda (stringResource is @Composable)
-            val unknownText = stringResource(StringKeyMatch.MISC_UNKNOWN)
+            val unknownText = stringResource(StringKeyMatchPart1.MISC_UNKNOWN)
 
             GenerateButton(
                 isCalculating = isCalculating,
@@ -355,7 +355,7 @@ fun ChartInputScreen(
             },
             title = {
                 Text(
-                    stringResource(StringKey.ERROR_INPUT),
+                    stringResource(StringKeyError.ERROR_INPUT),
                     color = colors.TextPrimary,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -371,7 +371,7 @@ fun ChartInputScreen(
                     showErrorDialog = false
                     errorKey = null
                 }) {
-                    Text(stringResource(StringKey.BTN_OK), color = colors.AccentPrimary)
+                    Text(stringResource(StringKeyUI.BTN_OK), color = colors.AccentPrimary)
                 }
             },
             containerColor = colors.CardBackground,
@@ -429,18 +429,18 @@ private fun validateBirthDataInput(
 ): StringKey? {
     // Name validation - max 100 characters
     if (name.length > 100) {
-        return StringKey.ERROR_NAME_TOO_LONG
+        return StringKeyError.ERROR_NAME_TOO_LONG
     }
 
     // Date validation - not in the future for birth charts
     if (selectedDate.isAfter(LocalDate.now())) {
-        return StringKey.ERROR_DATE_IN_FUTURE
+        return StringKeyError.ERROR_DATE_IN_FUTURE
     }
 
     // Date validation - reasonable historical limit (1800 CE)
     // Swiss Ephemeris has data from 5401 BCE to 5399 CE, but 1800 is reasonable for birth charts
     if (selectedDate.year < 1800) {
-        return StringKey.ERROR_DATE_TOO_OLD
+        return StringKeyError.ERROR_DATE_TOO_OLD
     }
 
     // Location/coordinate validation - need either location label or valid coordinates
@@ -448,22 +448,22 @@ private fun validateBirthDataInput(
     val lon = parseCoordinate(longitude)
 
     if (lat == null || lon == null) {
-        return StringKey.ERROR_INVALID_COORDS
+        return StringKeyError.ERROR_INVALID_COORDS
     }
 
     if (lat < -90 || lat > 90) {
-        return StringKey.ERROR_LATITUDE_RANGE
+        return StringKeyError.ERROR_LATITUDE_RANGE
     }
 
     if (lon < -180 || lon > 180) {
-        return StringKey.ERROR_LONGITUDE_RANGE
+        return StringKeyError.ERROR_LONGITUDE_RANGE
     }
 
     // Timezone validation - ensure it's a valid zone ID
     try {
         ZoneId.of(timezone)
     } catch (_: Exception) {
-        return StringKey.ERROR_TIMEZONE_INVALID
+        return StringKeyError.ERROR_TIMEZONE_INVALID
     }
 
     return null
@@ -477,7 +477,7 @@ private fun ChartInputHeader(
     isEditMode: Boolean = false
 ) {
     val colors = LocalAppThemeColors.current
-    val goBackText = stringResource(StringKey.BTN_BACK)
+    val goBackText = stringResource(StringKeyUI.BTN_BACK)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -497,7 +497,7 @@ private fun ChartInputHeader(
         }
         Spacer(Modifier.width(12.dp))
         Text(
-            text = if (isEditMode) stringResource(StringKey.INPUT_EDIT_CHART) else stringResource(StringKey.INPUT_NEW_CHART),
+            text = if (isEditMode) stringResource(StringKeyPart1.INPUT_EDIT_CHART) else stringResource(StringKeyPart1.INPUT_NEW_CHART),
             fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold,
             color = colors.TextPrimary,
@@ -517,13 +517,13 @@ private fun IdentitySection(
     val colors = LocalAppThemeColors.current
     val language = LocalLanguage.current
     Column {
-        SectionTitle(stringResource(StringKey.INPUT_IDENTITY))
+        SectionTitle(stringResource(StringKeyPart1.INPUT_IDENTITY))
         Spacer(modifier = Modifier.height(12.dp))
 
         ChartOutlinedTextField(
             value = name,
             onValueChange = onNameChange,
-            label = stringResource(StringKey.INPUT_FULL_NAME),
+            label = stringResource(StringKeyPart1.INPUT_FULL_NAME),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { onFocusNext() })
         )
@@ -531,7 +531,7 @@ private fun IdentitySection(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(StringKey.INPUT_GENDER),
+            text = stringResource(StringKeyPart1.INPUT_GENDER),
             fontSize = 14.sp,
             color = colors.TextSecondary,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -575,8 +575,8 @@ private fun DateTimeSection(
         }
     }
 
-    val selectDateText = stringResource(StringKey.INPUT_SELECT_DATE)
-    val selectTimeText = stringResource(StringKey.INPUT_SELECT_TIME)
+    val selectDateText = stringResource(StringKeyPart1.INPUT_SELECT_DATE)
+    val selectTimeText = stringResource(StringKeyPart1.INPUT_SELECT_TIME)
 
     Column {
         Row(
@@ -584,7 +584,7 @@ private fun DateTimeSection(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            SectionTitle(stringResource(StringKey.INPUT_DATE_TIME))
+            SectionTitle(stringResource(StringKeyPart1.INPUT_DATE_TIME))
 
             // Date System Toggle (AD / BS)
             DateSystemToggle(
@@ -634,8 +634,8 @@ private fun DateSystemToggle(
     onToggle: () -> Unit
 ) {
     val colors = LocalAppThemeColors.current
-    val adLabel = stringResource(StringKey.LABEL_AD)
-    val bsLabel = stringResource(StringKey.LABEL_BS)
+    val adLabel = stringResource(StringKeyUI.LABEL_AD)
+    val bsLabel = stringResource(StringKeyUI.LABEL_BS)
 
     Surface(
         onClick = onToggle,
@@ -691,7 +691,7 @@ private fun CoordinatesSection(
     onDone: () -> Unit
 ) {
     Column {
-        SectionTitle(stringResource(StringKey.INPUT_COORDINATES))
+        SectionTitle(stringResource(StringKeyPart1.INPUT_COORDINATES))
         Spacer(modifier = Modifier.height(12.dp))
 
         Row(
@@ -701,7 +701,7 @@ private fun CoordinatesSection(
             ChartOutlinedTextField(
                 value = latitude,
                 onValueChange = onLatitudeChange,
-                label = stringResource(StringKey.INPUT_LATITUDE),
+                label = stringResource(StringKeyPart1.INPUT_LATITUDE),
                 modifier = Modifier
                     .weight(1f)
                     .focusRequester(latitudeFocusRequester),
@@ -717,7 +717,7 @@ private fun CoordinatesSection(
             ChartOutlinedTextField(
                 value = longitude,
                 onValueChange = onLongitudeChange,
-                label = stringResource(StringKey.INPUT_LONGITUDE),
+                label = stringResource(StringKeyPart1.INPUT_LONGITUDE),
                 modifier = Modifier
                     .weight(1f)
                     .focusRequester(longitudeFocusRequester),
@@ -740,7 +740,7 @@ private fun GenerateButton(
     onClick: () -> Unit
 ) {
     val colors = LocalAppThemeColors.current
-    val buttonText = if (isEditMode) stringResource(StringKey.BTN_UPDATE_SAVE) else stringResource(StringKey.BTN_GENERATE_SAVE)
+    val buttonText = if (isEditMode) stringResource(StringKeyUI.BTN_UPDATE_SAVE) else stringResource(StringKeyUI.BTN_GENERATE_SAVE)
     val buttonContentDesc = buttonText
     Button(
         onClick = onClick,
@@ -804,12 +804,12 @@ private fun ChartDatePickerDialog(
                     datePickerState.selectedDateMillis?.let(onConfirm)
                 }
             ) {
-                Text(stringResource(StringKey.BTN_OK), color = colors.AccentPrimary)
+                Text(stringResource(StringKeyUI.BTN_OK), color = colors.AccentPrimary)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CANCEL), color = colors.TextSecondary)
+                Text(stringResource(StringKeyUI.BTN_CANCEL), color = colors.TextSecondary)
             }
         },
         colors = DatePickerDefaults.colors(containerColor = colors.CardBackground)
@@ -863,7 +863,7 @@ private fun ChartTimePickerDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(StringKey.INPUT_SELECT_TIME),
+                    text = stringResource(StringKeyPart1.INPUT_SELECT_TIME),
                     color = colors.TextSecondary,
                     fontSize = 14.sp,
                     modifier = Modifier
@@ -898,13 +898,13 @@ private fun ChartTimePickerDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = onDismiss) {
-                        Text(stringResource(StringKey.BTN_CANCEL), color = colors.TextSecondary)
+                        Text(stringResource(StringKeyUI.BTN_CANCEL), color = colors.TextSecondary)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     TextButton(
                         onClick = { onConfirm(timePickerState.hour, timePickerState.minute) }
                     ) {
-                        Text(stringResource(StringKey.BTN_OK), color = colors.AccentPrimary)
+                        Text(stringResource(StringKeyUI.BTN_OK), color = colors.AccentPrimary)
                     }
                 }
             }

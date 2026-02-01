@@ -47,7 +47,7 @@ fun NadiAmshaScreen(
     if (chart == null) {
         EmptyChartScreen(
             title = stringResource(StringKeyAdvanced.NADI_TITLE),
-            message = stringResource(StringKey.NO_PROFILE_MESSAGE),
+            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -82,7 +82,7 @@ fun NadiAmshaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -91,7 +91,7 @@ fun NadiAmshaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKey.BTN_DETAILS),
+                            contentDescription = stringResource(StringKeyUI.BTN_DETAILS),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -134,7 +134,7 @@ fun NadiAmshaScreen(
             text = { Text(stringResource(StringKeyAdvanced.NADI_INFO_DESC)) },
             confirmButton = {
                 TextButton(onClick = { showInfoDialog = false }) {
-                    Text(stringResource(StringKey.BTN_CLOSE))
+                    Text(stringResource(StringKeyUI.BTN_CLOSE))
                 }
             },
             containerColor = AppTheme.CardBackground

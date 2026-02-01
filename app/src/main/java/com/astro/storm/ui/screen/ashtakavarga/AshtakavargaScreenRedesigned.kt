@@ -102,10 +102,10 @@ import com.astro.storm.ui.theme.AppTheme
  */
 
 enum class AshtakavargaViewType(val titleKey: StringKey) {
-    OVERVIEW(StringKey.TAB_OVERVIEW),
-    SARVASHTAKAVARGA(StringKey.TAB_SARVASHTAKAVARGA),
-    BY_PLANET(StringKey.TAB_BY_PLANET),
-    BY_HOUSE(StringKey.TAB_BY_HOUSE)
+    OVERVIEW(StringKeyUI.TAB_OVERVIEW),
+    SARVASHTAKAVARGA(StringKeyUI.TAB_SARVASHTAKAVARGA),
+    BY_PLANET(StringKeyUI.TAB_BY_PLANET),
+    BY_HOUSE(StringKeyUI.TAB_BY_HOUSE)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -238,7 +238,7 @@ private fun AshtakavargaTopBar(
             title = {
                 Column {
                     Text(
-                        text = stringResource(StringKey.FEATURE_ASHTAKAVARGA),
+                        text = stringResource(StringKeyFeature.FEATURE_ASHTAKAVARGA),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -247,7 +247,7 @@ private fun AshtakavargaTopBar(
                         Spacer(modifier = Modifier.height(2.dp))
                         val language = LocalLanguage.current
                         Text(
-                            text = StringResources.get(StringKeyDosha.ASHTAKAVARGA_DESC_FMT, language, chartName),
+                            text = StringResources.get(StringKeyDoshaPart4.ASHTAKAVARGA_DESC_FMT, language, chartName),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -258,7 +258,7 @@ private fun AshtakavargaTopBar(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKey.BTN_BACK),
+                        contentDescription = stringResource(StringKeyUI.BTN_BACK),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -268,7 +268,7 @@ private fun AshtakavargaTopBar(
                 IconButton(onClick = onInfoClick) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
-                        contentDescription = stringResource(StringKeyDosha.ASHTAKAVARGA_INFO_A11Y),
+                        contentDescription = stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_INFO_A11Y),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -367,7 +367,7 @@ private fun AshtakavargaSummaryCard(
                 Spacer(modifier = Modifier.width(14.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyDosha.ASHTAKAVARGA_SUMMARY_TITLE),
+                        text = stringResource(StringKeyDoshaPart3.ASHTAKAVARGA_SUMMARY_TITLE),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
@@ -375,7 +375,7 @@ private fun AshtakavargaSummaryCard(
                     )
                     val language = LocalLanguage.current
                     Text(
-                        text = stringResource(StringKeyDosha.ASHTAKAVARGA_DISTRIBUTION_DESC),
+                        text = stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_DISTRIBUTION_DESC),
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -390,19 +390,19 @@ private fun AshtakavargaSummaryCard(
             ) {
                 AshtakavargaStatItem(
                     value = totalBindus.toString(),
-                    label = stringResource(StringKeyDosha.ASHTAKAVARGA_TOTAL_BINDUS),
+                    label = stringResource(StringKeyDoshaPart3.ASHTAKAVARGA_TOTAL_BINDUS),
                     color = AppTheme.SuccessColor,
                     modifier = Modifier.weight(1f)
                 )
                 AshtakavargaStatItem(
                     value = String.format("%.1f", averageBindus),
-                    label = stringResource(StringKeyDosha.ASHTAKAVARGA_AVG_PER_HOUSE),
+                    label = stringResource(StringKeyDoshaPart3.ASHTAKAVARGA_AVG_PER_HOUSE),
                     color = AppTheme.AccentPrimary,
                     modifier = Modifier.weight(1f)
                 )
                 AshtakavargaStatItem(
                     value = "${strengthPercent.toInt()}%",
-                    label = stringResource(StringKeyDosha.ASHTAKAVARGA_STRENGTH),
+                    label = stringResource(StringKeyDoshaPart3.ASHTAKAVARGA_STRENGTH),
                     color = getBinduStrengthColor(strengthPercent),
                     modifier = Modifier.weight(1f)
                 )
@@ -423,7 +423,7 @@ private fun AshtakavargaSummaryCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = stringResource(StringKeyDosha.ASHTAKAVARGA_CHART_STRENGTH),
+                            text = stringResource(StringKeyDoshaPart3.ASHTAKAVARGA_CHART_STRENGTH),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextMuted
@@ -506,7 +506,7 @@ private fun HouseStrengthDistribution(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.ASHTAKAVARGA_DISTRIBUTION_TITLE),
+                    text = stringResource(StringKeyDoshaPart3.ASHTAKAVARGA_DISTRIBUTION_TITLE),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -586,9 +586,9 @@ private fun HouseStrengthDistribution(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                LegendItem(color = AppTheme.SuccessColor, label = stringResource(StringKeyDosha.ASHTAKAVARGA_LEGEND_STRONG))
-                LegendItem(color = AppTheme.AccentGold, label = stringResource(StringKeyDosha.ASHTAKAVARGA_LEGEND_GOOD))
-                LegendItem(color = AppTheme.WarningColor, label = stringResource(StringKeyDosha.ASHTAKAVARGA_LEGEND_WEAK))
+                LegendItem(color = AppTheme.SuccessColor, label = stringResource(StringKeyDoshaPart3.ASHTAKAVARGA_LEGEND_STRONG))
+                LegendItem(color = AppTheme.AccentGold, label = stringResource(StringKeyDoshaPart3.ASHTAKAVARGA_LEGEND_GOOD))
+                LegendItem(color = AppTheme.WarningColor, label = stringResource(StringKeyDoshaPart3.ASHTAKAVARGA_LEGEND_WEAK))
             }
         }
     }
@@ -633,7 +633,7 @@ private fun AshtakavargaInsightsCard(
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
-                text = stringResource(StringKeyDosha.ASHTAKAVARGA_KEY_INSIGHTS),
+                text = stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_KEY_INSIGHTS),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
@@ -642,7 +642,7 @@ private fun AshtakavargaInsightsCard(
 
             // Strongest houses
             Text(
-                text = stringResource(StringKeyDosha.ASHTAKAVARGA_STRONGEST),
+                text = stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_STRONGEST),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.SuccessColor,
@@ -669,7 +669,7 @@ private fun AshtakavargaInsightsCard(
 
             // Weakest houses
             Text(
-                text = stringResource(StringKeyDosha.ASHTAKAVARGA_WEAKEST),
+                text = stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_WEAKEST),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.WarningColor,
@@ -727,7 +727,7 @@ private fun InsightHouseChip(
                 color = AppTheme.TextPrimary
             )
             Text(
-                text = "$bindus " + stringResource(StringKeyDosha.ASHTAKAVARGA_BINDUS_SUFFIX),
+                text = "$bindus " + stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_BINDUS_SUFFIX),
                 fontSize = 10.sp,
                 color = AppTheme.TextMuted
             )
@@ -748,7 +748,7 @@ private fun PlanetQuickView(
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
-                text = stringResource(StringKeyDosha.ASHTAKAVARGA_PLANET_TOTALS),
+                text = stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_PLANET_TOTALS),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
@@ -811,7 +811,7 @@ private fun SarvashtakavargaContent(
     ) {
         item(key = "sarva_header") {
             Text(
-                text = stringResource(StringKeyDosha.ASHTAKAVARGA_SARVA_DESC),
+                text = stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_SARVA_DESC),
                 fontSize = 13.sp,
                 color = AppTheme.TextMuted,
                 lineHeight = 19.sp,
@@ -1022,7 +1022,7 @@ private fun PlanetAshtakavargaCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = StringResources.get(StringKeyDosha.ASHTAKAVARGA_TOTAL_BINDUS, language) + ": $totalBindus " + stringResource(StringKeyDosha.ASHTAKAVARGA_BINDUS_SUFFIX),
+                            text = StringResources.get(StringKeyDoshaPart3.ASHTAKAVARGA_TOTAL_BINDUS, language) + ": $totalBindus " + stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_BINDUS_SUFFIX),
                             fontSize = 12.sp,
                             color = planetColor
                         )
@@ -1047,7 +1047,7 @@ private fun PlanetAshtakavargaCard(
 
                 Icon(
                     Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKey.ACC_COLLAPSE) else stringResource(StringKey.ACC_EXPAND),
+                    contentDescription = if (isExpanded) stringResource(StringKeyUI.ACC_COLLAPSE) else stringResource(StringKeyUI.ACC_EXPAND),
                     tint = AppTheme.TextMuted,
                     modifier = Modifier
                         .size(24.dp)
@@ -1217,7 +1217,7 @@ private fun HouseDetailCard(
                         color = getBinduColor(totalBindus)
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.ASHTAKAVARGA_BINDUS_SUFFIX),
+                        text = stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_BINDUS_SUFFIX),
                         fontSize = 10.sp,
                         color = AppTheme.TextMuted
                     )
@@ -1280,14 +1280,14 @@ private fun EmptyAshtakavargaContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.UI_NO_ASHTAKAVARGA_DATA),
+                text = stringResource(StringKeyUI.UI_NO_ASHTAKAVARGA_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.UI_SELECT_CHART),
+                text = stringResource(StringKeyUI.UI_SELECT_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1302,7 +1302,7 @@ private fun AshtakavargaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(StringKeyDosha.ASHTAKAVARGA_ABOUT_TITLE),
+                text = stringResource(StringKeyPart1.ASHTAKAVARGA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1311,21 +1311,21 @@ private fun AshtakavargaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Column {
                 Text(
-                    text = stringResource(StringKeyDosha.ASHTAKAVARGA_ABOUT_DESC),
+                    text = stringResource(StringKeyPart1.ASHTAKAVARGA_ABOUT_DESC),
                     fontSize = 13.sp,
                     color = AppTheme.TextSecondary,
                     lineHeight = 19.sp
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.ASHTAKAVARGA_INTERPRETATION),
+                    text = stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_INTERPRETATION),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextSecondary
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.ASHTAKAVARGA_GUIDE_TEXT),
+                    text = stringResource(StringKeyDoshaPart4.ASHTAKAVARGA_GUIDE_TEXT),
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted,
                     lineHeight = 18.sp
@@ -1334,7 +1334,7 @@ private fun AshtakavargaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.AccentPrimary)
             }
         },
         containerColor = AppTheme.CardBackground,
@@ -1365,10 +1365,10 @@ private fun getBinduStrengthColor(percent: Double): Color {
 @Composable
 private fun getBinduLabel(bindus: Int, language: Language): String {
     val key = when {
-        bindus >= 30 -> StringKeyAnalysis.STRENGTH_STRONG
-        bindus >= 25 -> StringKeyAnalysis.STRENGTH_GOOD
-        bindus >= 20 -> StringKeyAnalysis.STRENGTH_AVERAGE
-        else -> StringKeyAnalysis.STRENGTH_WEAK
+        bindus >= 30 -> StringKeyUI.STRENGTH_STRONG
+        bindus >= 25 -> StringKeyUI.STRENGTH_GOOD
+        bindus >= 20 -> StringKeyUI.STRENGTH_AVERAGE
+        else -> StringKeyUI.STRENGTH_WEAK
     }
     return stringResource(key, language)
 }
@@ -1376,28 +1376,28 @@ private fun getBinduLabel(bindus: Int, language: Language): String {
 @Composable
 private fun getStrengthLabel(percent: Double, language: Language): String {
     val key = when {
-        percent >= 75 -> StringKeyAnalysis.STRENGTH_EXCELLENT
-        percent >= 55 -> StringKeyAnalysis.STRENGTH_GOOD
-        percent >= 40 -> StringKeyAnalysis.STRENGTH_AVERAGE
-        else -> StringKeyAnalysis.STRENGTH_BELOW_AVERAGE
+        percent >= 75 -> StringKeyUI.STRENGTH_EXCELLENT
+        percent >= 55 -> StringKeyUI.STRENGTH_GOOD
+        percent >= 40 -> StringKeyUI.STRENGTH_AVERAGE
+        else -> StringKeyUI.STRENGTH_BELOW_AVERAGE
     }
     return stringResource(key, language)
 }
 
 private fun getHouseSignification(house: Int, language: Language): String {
     val key = when (house) {
-        1 -> StringKeyAnalysis.HOUSE_1_SIG
-        2 -> StringKeyAnalysis.HOUSE_2_SIG
-        3 -> StringKeyAnalysis.HOUSE_3_SIG
-        4 -> StringKeyAnalysis.HOUSE_4_SIG
-        5 -> StringKeyAnalysis.HOUSE_5_SIG
-        6 -> StringKeyAnalysis.HOUSE_6_SIG
-        7 -> StringKeyAnalysis.HOUSE_7_SIG
-        8 -> StringKeyAnalysis.HOUSE_8_SIG
-        9 -> StringKeyAnalysis.HOUSE_9_SIG
-        10 -> StringKeyAnalysis.HOUSE_10_SIG
-        11 -> StringKeyAnalysis.HOUSE_11_SIG
-        12 -> StringKeyAnalysis.HOUSE_12_SIG
+        1 -> StringKeyAnalysisPart1.HOUSE_1_SIG
+        2 -> StringKeyAnalysisPart1.HOUSE_2_SIG
+        3 -> StringKeyAnalysisPart1.HOUSE_3_SIG
+        4 -> StringKeyAnalysisPart1.HOUSE_4_SIG
+        5 -> StringKeyAnalysisPart1.HOUSE_5_SIG
+        6 -> StringKeyAnalysisPart1.HOUSE_6_SIG
+        7 -> StringKeyAnalysisPart1.HOUSE_7_SIG
+        8 -> StringKeyAnalysisPart1.HOUSE_8_SIG
+        9 -> StringKeyAnalysisPart1.HOUSE_9_SIG
+        10 -> StringKeyAnalysisPart1.HOUSE_10_SIG
+        11 -> StringKeyAnalysisPart1.HOUSE_11_SIG
+        12 -> StringKeyAnalysisPart1.HOUSE_12_SIG
         else -> null
     }
     return key?.let { StringResources.get(it, language) } ?: ""

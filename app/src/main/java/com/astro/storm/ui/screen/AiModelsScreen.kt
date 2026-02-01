@@ -70,13 +70,13 @@ fun AiModelsScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.AI_MODELS_TITLE),
+                            text = stringResource(StringKeyDoshaPart3.AI_MODELS_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.AI_MODELS_ENABLED_COUNT, enabledModels.size),
+                            text = stringResource(StringKeyDoshaPart3.AI_MODELS_ENABLED_COUNT, enabledModels.size),
                             style = MaterialTheme.typography.labelSmall,
                             color = colors.TextMuted
                         )
@@ -86,7 +86,7 @@ fun AiModelsScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyDosha.AI_MODELS_BACK),
+                            contentDescription = stringResource(StringKeyDoshaPart3.AI_MODELS_BACK),
                             tint = colors.TextPrimary
                         )
                     }
@@ -111,7 +111,7 @@ fun AiModelsScreen(
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
-                                contentDescription = stringResource(StringKeyDosha.AI_MODELS_REFRESH),
+                                contentDescription = stringResource(StringKeyDoshaPart3.AI_MODELS_REFRESH),
                                 tint = colors.TextSecondary
                             )
                         }
@@ -217,14 +217,14 @@ private fun InfoCard() {
 
             Column {
                 Text(
-                    text = stringResource(StringKeyDosha.AI_MODELS_FREE_TITLE),
+                    text = stringResource(StringKeyDoshaPart3.AI_MODELS_FREE_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.AI_MODELS_FREE_DESC),
+                    text = stringResource(StringKeyDoshaPart3.AI_MODELS_FREE_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.TextMuted
                 )
@@ -273,13 +273,13 @@ private fun DefaultModelSection(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(StringKeyDosha.AI_MODELS_DEFAULT),
+                    text = stringResource(StringKeyDoshaPart3.AI_MODELS_DEFAULT),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Medium,
                     color = colors.TextPrimary
                 )
                 Text(
-                    text = defaultModel?.displayName ?: stringResource(StringKeyDosha.AI_MODELS_NOT_SET),
+                    text = defaultModel?.displayName ?: stringResource(StringKeyDoshaPart3.AI_MODELS_NOT_SET),
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.TextMuted
                 )
@@ -297,7 +297,7 @@ private fun DefaultModelSection(
     if (showSelector) {
         AlertDialog(
             onDismissRequest = { showSelector = false },
-            title = { Text(stringResource(StringKeyDosha.AI_MODELS_SELECT_DEFAULT)) },
+            title = { Text(stringResource(StringKeyDoshaPart3.AI_MODELS_SELECT_DEFAULT)) },
             text = {
                 LazyColumn {
                     items(enabledModels) { model ->
@@ -345,7 +345,7 @@ private fun DefaultModelSection(
             },
             confirmButton = {
                 TextButton(onClick = { showSelector = false }) {
-                    Text(stringResource(StringKeyDosha.AI_MODELS_CANCEL))
+                    Text(stringResource(StringKeyDoshaPart3.AI_MODELS_CANCEL))
                 }
             },
             containerColor = colors.CardBackground
@@ -415,7 +415,7 @@ private fun ProviderSection(
                             color = colors.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.AI_MODELS_MODELS_ENABLED, enabledCount, models.size),
+                            text = stringResource(StringKeyDoshaPart3.AI_MODELS_MODELS_ENABLED, enabledCount, models.size),
                             style = MaterialTheme.typography.bodySmall,
                             color = colors.TextMuted
                         )
@@ -466,7 +466,7 @@ private fun ProviderSection(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = stringResource(StringKeyDosha.AI_MODELS_ENABLE_ALL),
+                                text = stringResource(StringKeyDoshaPart3.AI_MODELS_ENABLE_ALL),
                                 style = MaterialTheme.typography.labelMedium
                             )
                         }
@@ -488,7 +488,7 @@ private fun ProviderSection(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = stringResource(StringKeyDosha.AI_MODELS_DISABLE_ALL),
+                                text = stringResource(StringKeyDoshaPart3.AI_MODELS_DISABLE_ALL),
                                 style = MaterialTheme.typography.labelMedium
                             )
                         }
@@ -554,13 +554,13 @@ private fun ModelItem(
                 modifier = Modifier.padding(top = 4.dp)
             ) {
                 if (model.supportsTools) {
-                    CapabilityBadge(stringResource(StringKeyDosha.AI_MODELS_TOOLS))
+                    CapabilityBadge(stringResource(StringKeyDoshaPart3.AI_MODELS_TOOLS))
                 }
                 if (model.supportsReasoning) {
-                    CapabilityBadge(stringResource(StringKeyDosha.AI_MODELS_REASONING))
+                    CapabilityBadge(stringResource(StringKeyDoshaPart3.AI_MODELS_REASONING))
                 }
                 if (model.supportsVision) {
-                    CapabilityBadge(stringResource(StringKeyDosha.AI_MODELS_VISION))
+                    CapabilityBadge(stringResource(StringKeyDoshaPart3.AI_MODELS_VISION))
                 }
             }
         }
@@ -615,7 +615,7 @@ private fun EmptyModelsState(onRefresh: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(StringKeyDosha.AI_MODELS_NONE),
+            text = stringResource(StringKeyDoshaPart3.AI_MODELS_NONE),
             style = MaterialTheme.typography.titleMedium,
             color = colors.TextPrimary
         )
@@ -623,7 +623,7 @@ private fun EmptyModelsState(onRefresh: () -> Unit) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = stringResource(StringKeyDosha.AI_MODELS_NONE_DESC),
+            text = stringResource(StringKeyDoshaPart3.AI_MODELS_NONE_DESC),
             style = MaterialTheme.typography.bodyMedium,
             color = colors.TextMuted,
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -638,7 +638,7 @@ private fun EmptyModelsState(onRefresh: () -> Unit) {
                 modifier = Modifier.size(18.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(stringResource(StringKeyDosha.AI_MODELS_RETRY))
+            Text(stringResource(StringKeyDoshaPart3.AI_MODELS_RETRY))
         }
     }
 }
@@ -654,22 +654,22 @@ private data class ProviderInfo(
 private fun getProviderInfo(providerId: String): ProviderInfo {
     return when (providerId.lowercase()) {
         "deepinfra" -> ProviderInfo(
-            displayName = stringResource(StringKeyDosha.AI_PROVIDER_DEEPINFRA),
+            displayName = stringResource(StringKeyDoshaPart3.AI_PROVIDER_DEEPINFRA),
             icon = Icons.Outlined.Speed,
             color = androidx.compose.ui.graphics.Color(0xFF7C3AED)
         )
         "qwen" -> ProviderInfo(
-            displayName = stringResource(StringKeyDosha.AI_PROVIDER_QWEN),
+            displayName = stringResource(StringKeyDoshaPart3.AI_PROVIDER_QWEN),
             icon = Icons.Outlined.Psychology,
             color = androidx.compose.ui.graphics.Color(0xFF2563EB)
         )
         "blackbox" -> ProviderInfo(
-            displayName = stringResource(StringKeyDosha.AI_PROVIDER_BLACKBOX),
+            displayName = stringResource(StringKeyDoshaPart3.AI_PROVIDER_BLACKBOX),
             icon = Icons.Outlined.Code,
             color = androidx.compose.ui.graphics.Color(0xFF1A1A1A)
         )
         "ddg" -> ProviderInfo(
-            displayName = stringResource(StringKeyDosha.AI_PROVIDER_DDG),
+            displayName = stringResource(StringKeyDoshaPart3.AI_PROVIDER_DDG),
             icon = Icons.Outlined.Shield,
             color = androidx.compose.ui.graphics.Color(0xFFDE5833)
         )

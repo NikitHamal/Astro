@@ -421,7 +421,7 @@ private fun DrigBalaInsightsCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) 
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyAnalysis.UI_KEY_INSIGHTS),
+                    text = stringResource(StringKeyUI.UI_KEY_INSIGHTS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary

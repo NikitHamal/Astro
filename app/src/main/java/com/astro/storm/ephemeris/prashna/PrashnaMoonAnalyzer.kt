@@ -155,9 +155,9 @@ object PrashnaMoonAnalyzer {
         tithiName: String,
         language: Language
     ): String {
-        val phaseDesc = if (isWaxing) StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_WAXING, language) else StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_WANING, language)
-        val voidDesc = if (isVoid) " (" + StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_WARNING_VOID, language) + ")" else ""
-        return StringResources.get(StringKeyAnalysis.PRASHNA_MOON_INTERP_TEMPLATE, language).format(
+        val phaseDesc = if (isWaxing) StringResources.get(StringKeyPrashnaPart1.PRASHNA_REPORT_WAXING, language) else StringResources.get(StringKeyPrashnaPart1.PRASHNA_REPORT_WANING, language)
+        val voidDesc = if (isVoid) " (" + StringResources.get(StringKeyPrashnaPart1.PRASHNA_REPORT_WARNING_VOID, language) + ")" else ""
+        return StringResources.get(StringKeyPrashnaPart1.PRASHNA_MOON_INTERP_TEMPLATE, language).format(
             position.planet.getLocalizedName(language),
             position.sign.getLocalizedName(language),
             position.house.localized(language),

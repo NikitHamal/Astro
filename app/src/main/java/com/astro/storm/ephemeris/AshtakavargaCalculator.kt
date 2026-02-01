@@ -207,18 +207,18 @@ object AshtakavargaCalculator {
                 sign = sign,
                 binduScore = 0,
                 savScore = sarvashtakavarga.getBindusForSign(sign),
-                interpretation = StringResources.get(StringKeyDosha.LABEL_UNKNOWN, language)
+                interpretation = StringResources.get(StringKeyUI.LABEL_UNKNOWN, language)
             )
 
             val binduScore = bav.getBindusForSign(sign)
             val savScore = sarvashtakavarga.getBindusForSign(sign)
 
             val interpretation = when {
-                binduScore >= 5 && savScore >= 30 -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_EXCELLENT, language)
-                binduScore >= 4 && savScore >= 28 -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_GOOD, language)
-                binduScore >= 3 && savScore >= 25 -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_AVERAGE, language)
-                binduScore >= 2 && savScore >= 22 -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_BELOW_AVG, language)
-                else -> StringResources.get(StringKeyAnalysis.TRANSIT_INTERP_DIFFICULT, language)
+                binduScore >= 5 && savScore >= 30 -> StringResources.get(StringKeyTransit.TRANSIT_INTERP_EXCELLENT, language)
+                binduScore >= 4 && savScore >= 28 -> StringResources.get(StringKeyTransit.TRANSIT_INTERP_GOOD, language)
+                binduScore >= 3 && savScore >= 25 -> StringResources.get(StringKeyTransit.TRANSIT_INTERP_AVERAGE, language)
+                binduScore >= 2 && savScore >= 22 -> StringResources.get(StringKeyTransit.TRANSIT_INTERP_BELOW_AVG, language)
+                else -> StringResources.get(StringKeyTransit.TRANSIT_INTERP_DIFFICULT, language)
             }
 
             return TransitScore(

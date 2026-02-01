@@ -706,11 +706,11 @@ enum class MrityuBhagaSeverity {
 
     fun getLocalizedName(language: Language): String {
         return StringResources.get(when(this) {
-            EXACT -> StringKeyDosha.MB_SEV_EXACT
-            VERY_CLOSE -> StringKeyDosha.MB_SEV_VERY_CLOSE
-            WITHIN_ORB -> StringKeyDosha.MB_SEV_WITHIN_ORB
-            APPROACHING -> StringKeyDosha.MB_SEV_APPROACHING
-            SAFE -> StringKeyDosha.MB_SEV_SAFE
+            EXACT -> StringKeyDoshaPart3.MB_SEV_EXACT
+            VERY_CLOSE -> StringKeyDoshaPart3.MB_SEV_VERY_CLOSE
+            WITHIN_ORB -> StringKeyDoshaPart3.MB_SEV_WITHIN_ORB
+            APPROACHING -> StringKeyDoshaPart3.MB_SEV_APPROACHING
+            SAFE -> StringKeyDoshaPart3.MB_SEV_SAFE
         }, language)
     }
 }
@@ -734,11 +734,11 @@ enum class GandantaSeverity {
 
     fun getLocalizedName(language: Language): String {
         return StringResources.get(when(this) {
-            EXACT_JUNCTION -> StringKeyDosha.GANDANTA_SEV_EXACT
-            CRITICAL -> StringKeyDosha.GANDANTA_SEV_CRITICAL
-            SEVERE -> StringKeyDosha.GANDANTA_SEV_SEVERE
-            MODERATE -> StringKeyDosha.GANDANTA_SEV_MODERATE
-            MILD -> StringKeyDosha.GANDANTA_SEV_MILD
+            EXACT_JUNCTION -> StringKeyDoshaPart3.GANDANTA_SEV_EXACT
+            CRITICAL -> StringKeyDoshaPart3.GANDANTA_SEV_CRITICAL
+            SEVERE -> StringKeyDoshaPart3.GANDANTA_SEV_SEVERE
+            MODERATE -> StringKeyDoshaPart3.GANDANTA_SEV_MODERATE
+            MILD -> StringKeyDoshaPart3.GANDANTA_SEV_MILD
         }, language)
     }
 }

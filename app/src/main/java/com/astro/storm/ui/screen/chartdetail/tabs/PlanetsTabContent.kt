@@ -73,10 +73,10 @@ import com.astro.storm.ui.screen.chartdetail.components.StyledDivider
 import java.text.DecimalFormat
 
 enum class DignityStatus(val stringKey: com.astro.storm.core.common.StringKeyInterface) {
-    EXALTED(StringKey.DIGNITY_EXALTED_STATUS),
-    DEBILITATED(StringKey.DIGNITY_DEBILITATED_STATUS),
-    OWN_SIGN(StringKey.DIGNITY_OWN_SIGN_STATUS),
-    NEUTRAL(StringKey.DIGNITY_NEUTRAL_STATUS);
+    EXALTED(StringKeyUI.DIGNITY_EXALTED_STATUS),
+    DEBILITATED(StringKeyUI.DIGNITY_DEBILITATED_STATUS),
+    OWN_SIGN(StringKeyUI.DIGNITY_OWN_SIGN_STATUS),
+    NEUTRAL(StringKeyUI.DIGNITY_NEUTRAL_STATUS);
 
     val isSignificant: Boolean get() = this != NEUTRAL
 }
@@ -227,7 +227,7 @@ private fun PlanetaryConditionsSummary(
             ) {
                 SectionHeader(
                     icon = Icons.Outlined.Info,
-                    title = stringResource(StringKeyAnalysis.PLANETS_CONDITIONS),
+                    title = stringResource(StringKeyAnalysisPart1.PLANETS_CONDITIONS),
                     iconTint = ChartDetailColors.AccentPurple
                 )
                 
@@ -249,17 +249,17 @@ private fun PlanetaryConditionsSummary(
             ) {
                 ConditionStatBadge(
                     count = conditions.retrogradePlanets.size,
-                    label = stringResource(StringKeyAnalysis.PLANETS_RETROGRADE),
+                    label = stringResource(StringKeyAnalysisPart1.PLANETS_RETROGRADE),
                     color = ChartDetailColors.WarningColor
                 )
                 ConditionStatBadge(
                     count = conditions.combustPlanets.size,
-                    label = stringResource(StringKeyAnalysis.PLANETS_COMBUST),
+                    label = stringResource(StringKeyAnalysisPart1.PLANETS_COMBUST),
                     color = ChartDetailColors.ErrorColor
                 )
                 ConditionStatBadge(
                     count = conditions.planetaryWars.size,
-                    label = stringResource(StringKeyAnalysis.PLANETS_AT_WAR),
+                    label = stringResource(StringKeyAnalysisPart1.PLANETS_AT_WAR),
                     color = ChartDetailColors.AccentPurple
                 )
             }
@@ -347,10 +347,10 @@ private fun PlanetDetailCard(
     val nakshatraName = position.nakshatra.localizedName()
     val houseNum = position.house.localized()
     val padaNum = position.nakshatraPada.localized()
-    val planetInSignStr = stringResource(StringKey.PLANET_IN_SIGN_ACCESSIBILITY, planetName, signName)
-    val houseStr = stringResource(StringKey.CHART_HOUSE)
-    val nakshatraPadaStr = stringResource(StringKey.NAKSHATRA_PADA_ACCESSIBILITY, nakshatraName, padaNum)
-    val retrogradeStr = stringResource(StringKey.PLANET_RETROGRADE)
+    val planetInSignStr = stringResource(StringKeyPart1.PLANET_IN_SIGN_ACCESSIBILITY, planetName, signName)
+    val houseStr = stringResource(StringKeyPart1.CHART_HOUSE)
+    val nakshatraPadaStr = stringResource(StringKeyNakshatra.NAKSHATRA_PADA_ACCESSIBILITY, nakshatraName, padaNum)
+    val retrogradeStr = stringResource(StringKeyPart1.PLANET_RETROGRADE)
 
     Surface(
         onClick = onClick,
@@ -436,7 +436,7 @@ private fun PlanetCardHeader(
                     color = ChartDetailColors.TextPrimary
                 )
                 Text(
-                    text = "${position.sign.localizedName()} • ${stringResource(StringKey.CHART_HOUSE)} ${position.house.localized()}",
+                    text = "${position.sign.localizedName()} • ${stringResource(StringKeyPart1.CHART_HOUSE)} ${position.house.localized()}",
                     fontSize = 12.sp,
                     color = ChartDetailColors.TextSecondary
                 )
@@ -503,7 +503,7 @@ private fun NakshatraChip(
             Spacer(modifier = Modifier.width(2.dp))
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = stringResource(StringKey.ACC_VIEW_DETAILS),
+                contentDescription = stringResource(StringKeyUI.ACC_VIEW_DETAILS),
                 tint = ChartDetailColors.AccentPurple,
                 modifier = Modifier.size(12.dp)
             )
@@ -534,7 +534,7 @@ private fun ShadbalaProgressSection(shadbala: PlanetaryShadbala) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = stringResource(StringKeyAnalysis.PLANETS_SHADBALA),
+                text = stringResource(StringKeyAnalysisPart1.PLANETS_SHADBALA),
                 fontSize = 12.sp,
                 color = ChartDetailColors.TextSecondary
             )
@@ -562,7 +562,7 @@ private fun ShadbalaProgressSection(shadbala: PlanetaryShadbala) {
 
         Text(
             text = stringResource(
-                StringKeyAnalysis.PLANETS_RUPAS,
+                StringKeyAnalysisPart1.PLANETS_RUPAS,
                 formattedTotal,
                 formattedRequired,
                 formattedPercentage
@@ -604,7 +604,7 @@ private fun ConditionChipsSection(
 
         if (showRetrograde) {
             ConditionChip(
-                label = stringResource(StringKeyAnalysis.PLANETS_RETROGRADE),
+                label = stringResource(StringKeyAnalysisPart1.PLANETS_RETROGRADE),
                 color = ChartDetailColors.WarningColor
             )
         }
@@ -618,7 +618,7 @@ private fun ConditionChipsSection(
 
         if (showWar) {
             ConditionChip(
-                label = stringResource(StringKeyAnalysis.PLANETS_PLANETARY_WAR),
+                label = stringResource(StringKeyAnalysisPart1.PLANETS_PLANETARY_WAR),
                 color = ChartDetailColors.AccentPurple
             )
         }
@@ -635,7 +635,7 @@ private fun TapForDetailsHint() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(StringKey.ACC_VIEW_DETAILS),
+            text = stringResource(StringKeyUI.ACC_VIEW_DETAILS),
             fontSize = 11.sp,
             color = ChartDetailColors.TextMuted
         )

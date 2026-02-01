@@ -25,11 +25,11 @@ object ManglikDoshaCalculator {
         SEVERE;
 
         fun getLocalizedName(language: Language): String = when (this) {
-            NONE -> StringResources.get(StringKeyDosha.MANGLIK_NONE_LEVEL, language)
-            MILD -> StringResources.get(StringKeyDosha.MANGLIK_MILD, language)
-            PARTIAL -> StringResources.get(StringKeyDosha.MANGLIK_PARTIAL_LEVEL, language)
-            FULL -> StringResources.get(StringKeyDosha.MANGLIK_FULL_LEVEL, language)
-            SEVERE -> StringResources.get(StringKeyDosha.MANGLIK_SEVERE, language)
+            NONE -> StringResources.get(StringKeyDoshaPart1.MANGLIK_NONE_LEVEL, language)
+            MILD -> StringResources.get(StringKeyDoshaPart1.MANGLIK_MILD, language)
+            PARTIAL -> StringResources.get(StringKeyDoshaPart1.MANGLIK_PARTIAL_LEVEL, language)
+            FULL -> StringResources.get(StringKeyDoshaPart1.MANGLIK_FULL_LEVEL, language)
+            SEVERE -> StringResources.get(StringKeyDoshaPart1.MANGLIK_SEVERE, language)
         }
     }
 
@@ -75,105 +75,105 @@ object ManglikDoshaCalculator {
         fun getSummary(language: Language): String {
             return if (isManglik && effectiveLevel != ManglikLevel.NONE) {
                 val levelName = effectiveLevel.getLocalizedName(language)
-                StringResources.get(StringKeyDosha.MANGLIK_SUMMARY_PRESENT, language)
+                StringResources.get(StringKeyDoshaPart1.MANGLIK_SUMMARY_PRESENT, language)
                     .replace("{level}", levelName)
                     .replace("{intensity}", "%.1f".format(remainingIntensityAfterCancellations))
             } else {
-                StringResources.get(StringKeyDosha.MANGLIK_SUMMARY_ABSENT, language)
+                StringResources.get(StringKeyDoshaPart1.MANGLIK_SUMMARY_ABSENT, language)
             }
         }
 
         fun getInterpretation(language: Language): String {
             return buildString {
                 if (!isManglik || effectiveLevel == ManglikLevel.NONE) {
-                    appendLine(StringResources.get(StringKeyDosha.MANGLIK_INTERP_NO_DOSHA_TITLE, language))
+                    appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_NO_DOSHA_TITLE, language))
                     appendLine()
-                    appendLine(StringResources.get(StringKeyDosha.MANGLIK_INTERP_NO_DOSHA_DESC, language))
+                    appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_NO_DOSHA_DESC, language))
                     return@buildString
                 }
 
-                appendLine(StringResources.get(StringKeyDosha.MANGLIK_INTERP_TITLE, language))
+                appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_TITLE, language))
                 appendLine()
 
                 marsPosition?.let {
-                    appendLine(StringResources.get(StringKeyDosha.MANGLIK_INTERP_MARS_POSITION, language)
+                    appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_MARS_POSITION, language)
                         .replace("{sign}", it.sign.getLocalizedName(language))
                         .replace("{house}", it.house.toString()))
                     if (isMarsRetrograde) {
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_INTERP_MARS_RETROGRADE, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_MARS_RETROGRADE, language))
                     }
                     appendLine()
                 }
 
-                appendLine(StringResources.get(StringKeyDosha.MANGLIK_INTERP_THREE_REF, language))
+                appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_THREE_REF, language))
                 appendLine()
 
-                appendLine(StringResources.get(StringKeyDosha.MANGLIK_FROM_LAGNA, language) + " (${analysisFromLagna.referenceSign.getLocalizedName(language)}):")
-                appendLine("  ${StringResources.get(StringKeyDosha.MANGLIK_INTERP_MARS_HOUSE, language).replace("{house}", analysisFromLagna.marsHouse.toString())}")
-                appendLine("  ${StringResources.get(StringKeyDosha.MANGLIK_INTERP_IS_MANGLIK, language)}: ${if (analysisFromLagna.isManglik) StringResources.get(StringKeyDosha.YES, language) else StringResources.get(StringKeyDosha.NO, language)}")
+                appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_FROM_LAGNA, language) + " (${analysisFromLagna.referenceSign.getLocalizedName(language)}):")
+                appendLine("  ${StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_MARS_HOUSE, language).replace("{house}", analysisFromLagna.marsHouse.toString())}")
+                appendLine("  ${StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_IS_MANGLIK, language)}: ${if (analysisFromLagna.isManglik) StringResources.get(StringKeyDoshaPart1.YES, language) else StringResources.get(StringKeyDoshaPart1.NO, language)}")
                 appendLine()
 
-                appendLine(StringResources.get(StringKeyDosha.MANGLIK_FROM_MOON, language) + " (${analysisFromMoon.referenceSign.getLocalizedName(language)}):")
-                appendLine("  ${StringResources.get(StringKeyDosha.MANGLIK_INTERP_MARS_HOUSE, language).replace("{house}", analysisFromMoon.marsHouse.toString())}")
-                appendLine("  ${StringResources.get(StringKeyDosha.MANGLIK_INTERP_IS_MANGLIK, language)}: ${if (analysisFromMoon.isManglik) StringResources.get(StringKeyDosha.YES, language) else StringResources.get(StringKeyDosha.NO, language)}")
+                appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_FROM_MOON, language) + " (${analysisFromMoon.referenceSign.getLocalizedName(language)}):")
+                appendLine("  ${StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_MARS_HOUSE, language).replace("{house}", analysisFromMoon.marsHouse.toString())}")
+                appendLine("  ${StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_IS_MANGLIK, language)}: ${if (analysisFromMoon.isManglik) StringResources.get(StringKeyDoshaPart1.YES, language) else StringResources.get(StringKeyDoshaPart1.NO, language)}")
                 appendLine()
 
-                appendLine(StringResources.get(StringKeyDosha.MANGLIK_FROM_VENUS, language) + " (${analysisFromVenus.referenceSign.getLocalizedName(language)}):")
-                appendLine("  ${StringResources.get(StringKeyDosha.MANGLIK_INTERP_MARS_HOUSE, language).replace("{house}", analysisFromVenus.marsHouse.toString())}")
-                appendLine("  ${StringResources.get(StringKeyDosha.MANGLIK_INTERP_IS_MANGLIK, language)}: ${if (analysisFromVenus.isManglik) StringResources.get(StringKeyDosha.YES, language) else StringResources.get(StringKeyDosha.NO, language)}")
+                appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_FROM_VENUS, language) + " (${analysisFromVenus.referenceSign.getLocalizedName(language)}):")
+                appendLine("  ${StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_MARS_HOUSE, language).replace("{house}", analysisFromVenus.marsHouse.toString())}")
+                appendLine("  ${StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_IS_MANGLIK, language)}: ${if (analysisFromVenus.isManglik) StringResources.get(StringKeyDoshaPart1.YES, language) else StringResources.get(StringKeyDoshaPart1.NO, language)}")
                 appendLine()
 
-                appendLine(StringResources.get(StringKeyDosha.MANGLIK_INTERP_INITIAL_LEVEL, language).replace("{level}", level.getLocalizedName(language)))
+                appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_INTERP_INITIAL_LEVEL, language).replace("{level}", level.getLocalizedName(language)))
 
                 if (cancellationFactors.isNotEmpty()) {
                     appendLine()
-                    appendLine(StringResources.get(StringKeyDosha.MANGLIK_CANCELLATIONS, language) + ":")
+                    appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_CANCELLATIONS, language) + ":")
                     cancellationFactors.forEach { factor ->
                         appendLine("  - ${factor.getTitle(language)} (${factor.strength.name})")
                     }
                     appendLine()
-                    appendLine(StringResources.get(StringKeyDosha.MANGLIK_EFFECTIVE_LEVEL, language) + ": ${effectiveLevel.getLocalizedName(language)}")
+                    appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_EFFECTIVE_LEVEL, language) + ": ${effectiveLevel.getLocalizedName(language)}")
                 }
             }
         }
 
         fun getMarriageConsiderations(language: Language): String {
             return buildString {
-                appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_TITLE, language))
+                appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_TITLE, language))
                 appendLine()
 
                 when (effectiveLevel) {
                     ManglikLevel.NONE -> {
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_NONE_1, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_NONE_2, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_NONE_1, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_NONE_2, language))
                     }
                     ManglikLevel.MILD -> {
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_MILD_1, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_MILD_2, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_MILD_3, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_MILD_1, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_MILD_2, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_MILD_3, language))
                     }
                     ManglikLevel.PARTIAL -> {
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_PARTIAL_1, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_PARTIAL_2, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_PARTIAL_3, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_PARTIAL_1, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_PARTIAL_2, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_PARTIAL_3, language))
                     }
                     ManglikLevel.FULL -> {
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_FULL_1, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_FULL_2, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_FULL_3, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_FULL_4, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_FULL_1, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_FULL_2, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_FULL_3, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_FULL_4, language))
                     }
                     ManglikLevel.SEVERE -> {
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_SEVERE_1, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_SEVERE_2, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_SEVERE_3, language))
-                        appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_SEVERE_4, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_SEVERE_1, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_SEVERE_2, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_SEVERE_3, language))
+                        appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_SEVERE_4, language))
                     }
                 }
 
                 if (cancellationFactors.any { it.strength == CancellationStrength.FULL }) {
                     appendLine()
-                    appendLine(StringResources.get(StringKeyDosha.MANGLIK_MARRIAGE_FULL_CANCEL_NOTE, language))
+                    appendLine(StringResources.get(StringKeyDoshaPart1.MANGLIK_MARRIAGE_FULL_CANCEL_NOTE, language))
                 }
             }
         }
@@ -201,19 +201,19 @@ object ManglikDoshaCalculator {
         val ascendantSign = VedicAstrologyUtils.getAscendantSign(chart)
 
         val analysisFromLagna = analyzeFromReference(
-            StringKeyDosha.MANGLIK_REF_LAGNA,
+            StringKeyDoshaPart1.MANGLIK_REF_LAGNA,
             ascendantSign,
             marsPosition
         )
 
         val analysisFromMoon = analyzeFromReference(
-            StringKeyDosha.MANGLIK_REF_MOON,
+            StringKeyDoshaPart1.MANGLIK_REF_MOON,
             moonPosition?.sign ?: ascendantSign,
             marsPosition
         )
 
         val analysisFromVenus = analyzeFromReference(
-            StringKeyDosha.MANGLIK_REF_VENUS,
+            StringKeyDoshaPart1.MANGLIK_REF_VENUS,
             venusPosition?.sign ?: ascendantSign,
             marsPosition
         )
@@ -343,8 +343,8 @@ object ManglikDoshaCalculator {
         // 1. Mars in own sign (Aries or Scorpio)
         if (marsPosition.sign == ZodiacSign.ARIES || marsPosition.sign == ZodiacSign.SCORPIO) {
             factors.add(CancellationFactor(
-                titleKey = StringKeyDosha.MANGLIK_CANCEL_OWN_SIGN_TITLE,
-                descriptionKey = StringKeyDosha.MANGLIK_CANCEL_OWN_SIGN_DESC,
+                titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_OWN_SIGN_TITLE,
+                descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_OWN_SIGN_DESC,
                 strength = CancellationStrength.STRONG
             ))
         }
@@ -352,8 +352,8 @@ object ManglikDoshaCalculator {
         // 2. Mars in exaltation (Capricorn)
         if (marsPosition.sign == ZodiacSign.CAPRICORN) {
             factors.add(CancellationFactor(
-                titleKey = StringKeyDosha.MANGLIK_CANCEL_EXALTED_TITLE,
-                descriptionKey = StringKeyDosha.MANGLIK_CANCEL_EXALTED_DESC,
+                titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_EXALTED_TITLE,
+                descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_EXALTED_DESC,
                 strength = CancellationStrength.FULL
             ))
         }
@@ -364,16 +364,16 @@ object ManglikDoshaCalculator {
 
         if (jupiter != null && jupiter.house == marsPosition.house) {
             factors.add(CancellationFactor(
-                titleKey = StringKeyDosha.MANGLIK_CANCEL_JUPITER_CONJUNCT_TITLE,
-                descriptionKey = StringKeyDosha.MANGLIK_CANCEL_JUPITER_CONJUNCT_DESC,
+                titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_JUPITER_CONJUNCT_TITLE,
+                descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_JUPITER_CONJUNCT_DESC,
                 strength = CancellationStrength.FULL
             ))
         }
 
         if (venus != null && venus.house == marsPosition.house) {
             factors.add(CancellationFactor(
-                titleKey = StringKeyDosha.MANGLIK_CANCEL_VENUS_CONJUNCT_TITLE,
-                descriptionKey = StringKeyDosha.MANGLIK_CANCEL_VENUS_CONJUNCT_DESC,
+                titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_VENUS_CONJUNCT_TITLE,
+                descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_VENUS_CONJUNCT_DESC,
                 strength = CancellationStrength.STRONG
             ))
         }
@@ -383,8 +383,8 @@ object ManglikDoshaCalculator {
             val jupiterAspects = VedicAstrologyUtils.getAspectedHouses(Planet.JUPITER, jupiter.house)
             if (marsPosition.house in jupiterAspects) {
                 factors.add(CancellationFactor(
-                    titleKey = StringKeyDosha.MANGLIK_CANCEL_JUPITER_ASPECT_TITLE,
-                    descriptionKey = StringKeyDosha.MANGLIK_CANCEL_JUPITER_ASPECT_DESC,
+                    titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_JUPITER_ASPECT_TITLE,
+                    descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_JUPITER_ASPECT_DESC,
                     strength = CancellationStrength.STRONG
                 ))
             }
@@ -394,8 +394,8 @@ object ManglikDoshaCalculator {
         if (analysisFromLagna.marsHouse == 2 &&
             (marsPosition.sign == ZodiacSign.GEMINI || marsPosition.sign == ZodiacSign.VIRGO)) {
             factors.add(CancellationFactor(
-                titleKey = StringKeyDosha.MANGLIK_CANCEL_SECOND_MERCURY_TITLE,
-                descriptionKey = StringKeyDosha.MANGLIK_CANCEL_SECOND_MERCURY_DESC,
+                titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_SECOND_MERCURY_TITLE,
+                descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_SECOND_MERCURY_DESC,
                 strength = CancellationStrength.FULL
             ))
         }
@@ -404,8 +404,8 @@ object ManglikDoshaCalculator {
         if (analysisFromLagna.marsHouse == 4 &&
             (marsPosition.sign == ZodiacSign.ARIES || marsPosition.sign == ZodiacSign.SCORPIO)) {
             factors.add(CancellationFactor(
-                titleKey = StringKeyDosha.MANGLIK_CANCEL_FOURTH_OWN_TITLE,
-                descriptionKey = StringKeyDosha.MANGLIK_CANCEL_FOURTH_OWN_DESC,
+                titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_FOURTH_OWN_TITLE,
+                descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_FOURTH_OWN_DESC,
                 strength = CancellationStrength.FULL
             ))
         }
@@ -414,8 +414,8 @@ object ManglikDoshaCalculator {
         if (analysisFromLagna.marsHouse == 7 &&
             (marsPosition.sign == ZodiacSign.CANCER || marsPosition.sign == ZodiacSign.CAPRICORN)) {
             factors.add(CancellationFactor(
-                titleKey = StringKeyDosha.MANGLIK_CANCEL_SEVENTH_SPECIAL_TITLE,
-                descriptionKey = StringKeyDosha.MANGLIK_CANCEL_SEVENTH_SPECIAL_DESC,
+                titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_SEVENTH_SPECIAL_TITLE,
+                descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_SEVENTH_SPECIAL_DESC,
                 strength = CancellationStrength.STRONG
             ))
         }
@@ -424,8 +424,8 @@ object ManglikDoshaCalculator {
         if (analysisFromLagna.marsHouse == 8 &&
             (marsPosition.sign == ZodiacSign.SAGITTARIUS || marsPosition.sign == ZodiacSign.PISCES)) {
             factors.add(CancellationFactor(
-                titleKey = StringKeyDosha.MANGLIK_CANCEL_EIGHTH_JUPITER_TITLE,
-                descriptionKey = StringKeyDosha.MANGLIK_CANCEL_EIGHTH_JUPITER_DESC,
+                titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_EIGHTH_JUPITER_TITLE,
+                descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_EIGHTH_JUPITER_DESC,
                 strength = CancellationStrength.STRONG
             ))
         }
@@ -434,8 +434,8 @@ object ManglikDoshaCalculator {
         if (analysisFromLagna.marsHouse == 12 &&
             (marsPosition.sign == ZodiacSign.TAURUS || marsPosition.sign == ZodiacSign.LIBRA)) {
             factors.add(CancellationFactor(
-                titleKey = StringKeyDosha.MANGLIK_CANCEL_TWELFTH_VENUS_TITLE,
-                descriptionKey = StringKeyDosha.MANGLIK_CANCEL_TWELFTH_VENUS_DESC,
+                titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_TWELFTH_VENUS_TITLE,
+                descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_TWELFTH_VENUS_DESC,
                 strength = CancellationStrength.FULL
             ))
         }
@@ -444,8 +444,8 @@ object ManglikDoshaCalculator {
         // For Aries, Cancer, Leo, and Scorpio ascendants, Mars is a benefic
         if (ascendantSign in listOf(ZodiacSign.ARIES, ZodiacSign.CANCER, ZodiacSign.LEO, ZodiacSign.SCORPIO)) {
             factors.add(CancellationFactor(
-                titleKey = StringKeyDosha.MANGLIK_CANCEL_BENEFIC_ASC_TITLE,
-                descriptionKey = StringKeyDosha.MANGLIK_CANCEL_BENEFIC_ASC_DESC,
+                titleKey = StringKeyDoshaPart1.MANGLIK_CANCEL_BENEFIC_ASC_TITLE,
+                descriptionKey = StringKeyDoshaPart1.MANGLIK_CANCEL_BENEFIC_ASC_DESC,
                 strength = CancellationStrength.PARTIAL
             ))
         }
@@ -482,39 +482,39 @@ object ManglikDoshaCalculator {
 
         remedies.add(ManglikRemedy(
             type = RemedyType.MARRIAGE_REMEDY,
-            titleKey = StringKeyDosha.REMEDY_KUMBH_VIVAH_TITLE,
-            descriptionKey = StringKeyDosha.REMEDY_KUMBH_VIVAH_DESC,
-            effectivenessKey = StringKeyDosha.REMEDY_EFFECTIVENESS_TRADITIONAL
+            titleKey = StringKeyRemedy.REMEDY_KUMBH_VIVAH_TITLE,
+            descriptionKey = StringKeyRemedy.REMEDY_KUMBH_VIVAH_DESC,
+            effectivenessKey = StringKeyRemedy.REMEDY_EFFECTIVENESS_TRADITIONAL
         ))
 
         remedies.add(ManglikRemedy(
             type = RemedyType.RITUAL,
-            titleKey = StringKeyDosha.REMEDY_MANGAL_SHANTI_TITLE,
-            descriptionKey = StringKeyDosha.REMEDY_MANGAL_SHANTI_DESC,
-            effectivenessKey = StringKeyDosha.REMEDY_EFFECTIVENESS_ALL_LEVELS
+            titleKey = StringKeyRemedy.REMEDY_MANGAL_SHANTI_TITLE,
+            descriptionKey = StringKeyRemedy.REMEDY_MANGAL_SHANTI_DESC,
+            effectivenessKey = StringKeyRemedy.REMEDY_EFFECTIVENESS_ALL_LEVELS
         ))
 
         remedies.add(ManglikRemedy(
             type = RemedyType.MANTRA,
-            titleKey = StringKeyDosha.REMEDY_MARS_MANTRA_TITLE,
-            descriptionKey = StringKeyDosha.REMEDY_MARS_MANTRA_DESC,
-            effectivenessKey = StringKeyDosha.REMEDY_EFFECTIVENESS_TUESDAY
+            titleKey = StringKeyRemedy.REMEDY_MARS_MANTRA_TITLE,
+            descriptionKey = StringKeyRemedy.REMEDY_MARS_MANTRA_DESC,
+            effectivenessKey = StringKeyRemedy.REMEDY_EFFECTIVENESS_TUESDAY
         ))
 
         if (level == ManglikLevel.FULL || level == ManglikLevel.SEVERE) {
             remedies.add(ManglikRemedy(
                 type = RemedyType.GEMSTONE,
-                titleKey = StringKeyDosha.REMEDY_CORAL_TITLE,
-                descriptionKey = StringKeyDosha.REMEDY_CORAL_DESC,
-                effectivenessKey = StringKeyDosha.REMEDY_EFFECTIVENESS_CONSULT
+                titleKey = StringKeyRemedy.REMEDY_CORAL_TITLE,
+                descriptionKey = StringKeyRemedy.REMEDY_CORAL_DESC,
+                effectivenessKey = StringKeyRemedy.REMEDY_EFFECTIVENESS_CONSULT
             ))
         }
 
         remedies.add(ManglikRemedy(
             type = RemedyType.CHARITY,
-            titleKey = StringKeyDosha.REMEDY_TUESDAY_CHARITY_TITLE,
-            descriptionKey = StringKeyDosha.REMEDY_TUESDAY_CHARITY_DESC,
-            effectivenessKey = StringKeyDosha.REMEDY_EFFECTIVENESS_EVERY_TUESDAY
+            titleKey = StringKeyRemedy.REMEDY_TUESDAY_CHARITY_TITLE,
+            descriptionKey = StringKeyRemedy.REMEDY_TUESDAY_CHARITY_DESC,
+            effectivenessKey = StringKeyRemedy.REMEDY_EFFECTIVENESS_EVERY_TUESDAY
         ))
 
         return remedies
@@ -560,11 +560,11 @@ object ManglikDoshaCalculator {
         }
 
         val recommendationKey = when (compatibility) {
-            CompatibilityLevel.EXCELLENT -> StringKeyDosha.MANGLIK_COMPAT_EXCELLENT
-            CompatibilityLevel.GOOD -> StringKeyDosha.MANGLIK_COMPAT_GOOD
-            CompatibilityLevel.AVERAGE -> StringKeyDosha.MANGLIK_COMPAT_AVERAGE
-            CompatibilityLevel.BELOW_AVERAGE -> StringKeyDosha.MANGLIK_COMPAT_BELOW_AVERAGE
-            CompatibilityLevel.POOR -> StringKeyDosha.MANGLIK_COMPAT_POOR
+            CompatibilityLevel.EXCELLENT -> StringKeyDoshaPart1.MANGLIK_COMPAT_EXCELLENT
+            CompatibilityLevel.GOOD -> StringKeyDoshaPart1.MANGLIK_COMPAT_GOOD
+            CompatibilityLevel.AVERAGE -> StringKeyDoshaPart1.MANGLIK_COMPAT_AVERAGE
+            CompatibilityLevel.BELOW_AVERAGE -> StringKeyDoshaPart1.MANGLIK_COMPAT_BELOW_AVERAGE
+            CompatibilityLevel.POOR -> StringKeyDoshaPart1.MANGLIK_COMPAT_POOR
         }
 
         return ManglikCompatibility(

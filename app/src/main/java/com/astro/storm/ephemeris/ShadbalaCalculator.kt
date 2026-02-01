@@ -31,49 +31,49 @@ enum class StrengthRating(
         "Extremely Weak",
         "Planet is severely debilitated and may cause significant challenges",
         0.0,
-        StringKeyAnalysis.STRENGTH_EXTREMELY_WEAK
+        StringKeyUI.STRENGTH_EXTREMELY_WEAK
     ),
     WEAK(
         "Weak",
         "Planet struggles to deliver its significations effectively",
         50.0,
-        StringKeyAnalysis.STRENGTH_WEAK
+        StringKeyUI.STRENGTH_WEAK
     ),
     BELOW_AVERAGE(
         "Below Average",
         "Planet has limited capacity to provide positive results",
         70.0,
-        StringKeyAnalysis.STRENGTH_BELOW_AVERAGE
+        StringKeyUI.STRENGTH_BELOW_AVERAGE
     ),
     AVERAGE(
         "Average",
         "Planet functions at a baseline level with mixed results",
         85.0,
-        StringKeyAnalysis.STRENGTH_AVERAGE
+        StringKeyUI.STRENGTH_AVERAGE
     ),
     ABOVE_AVERAGE(
         "Above Average",
         "Planet is reasonably strong and delivers good results",
         100.0,
-        StringKeyAnalysis.STRENGTH_ABOVE_AVERAGE
+        StringKeyUI.STRENGTH_ABOVE_AVERAGE
     ),
     STRONG(
         "Strong",
         "Planet is well-positioned and gives excellent results",
         115.0,
-        StringKeyAnalysis.STRENGTH_STRONG
+        StringKeyUI.STRENGTH_STRONG
     ),
     VERY_STRONG(
         "Very Strong",
         "Planet is highly potent and provides outstanding outcomes",
         130.0,
-        StringKeyAnalysis.STRENGTH_VERY_STRONG
+        StringKeyUI.STRENGTH_VERY_STRONG
     ),
     EXTREMELY_STRONG(
         "Extremely Strong",
         "Planet is exceptionally powerful and dominates the chart",
         150.0,
-        StringKeyAnalysis.STRENGTH_EXTREMELY_STRONG
+        StringKeyUI.STRENGTH_EXTREMELY_STRONG
     );
 
     fun getLocalizedName(language: Language): String {
@@ -127,38 +127,38 @@ data class PlanetaryShadbala(
     val isStrong: Boolean = totalRupas >= requiredRupas
 
     fun getInterpretation(language: Language = Language.ENGLISH): String = buildString {
-        appendLine(StringResources.get(StringKeyDosha.SHADBALA_PLANET_ANALYSIS, language, planet.getLocalizedName(language)))
+        appendLine(StringResources.get(StringKeyShadbala.SHADBALA_PLANET_ANALYSIS, language, planet.getLocalizedName(language)))
         appendLine("═══════════════════════════════════════")
         appendLine()
-        appendLine("${StringResources.get(StringKeyDosha.SHADBALA_TOTAL_STRENGTH, language)}: ${FORMAT_TWO_DECIMAL.format(totalRupas)} ${StringResources.get(StringKeyDosha.SHADBALA_RUPAS, language)}")
-        appendLine("${StringResources.get(StringKeyDosha.SHADBALA_REQUIRED, language)}: ${FORMAT_TWO_DECIMAL.format(requiredRupas)} ${StringResources.get(StringKeyDosha.SHADBALA_RUPAS, language)}")
-        appendLine("${StringResources.get(StringKeyDosha.SHADBALA_PERCENTAGE, language)}: ${FORMAT_ONE_DECIMAL.format(percentageOfRequired)}%")
-        appendLine("${StringResources.get(StringKeyDosha.SHADBALA_RATING, language)}: ${strengthRating.getLocalizedName(language)}")
+        appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_TOTAL_STRENGTH, language)}: ${FORMAT_TWO_DECIMAL.format(totalRupas)} ${StringResources.get(StringKeyShadbala.SHADBALA_RUPAS, language)}")
+        appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_REQUIRED, language)}: ${FORMAT_TWO_DECIMAL.format(requiredRupas)} ${StringResources.get(StringKeyShadbala.SHADBALA_RUPAS, language)}")
+        appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_PERCENTAGE, language)}: ${FORMAT_ONE_DECIMAL.format(percentageOfRequired)}%")
+        appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_RATING, language)}: ${strengthRating.getLocalizedName(language)}")
         appendLine()
-        appendLine("${StringResources.get(StringKeyDosha.SHADBALA_BREAKDOWN, language)} (${StringResources.get(StringKeyDosha.SHADBALA_VIRUPAS, language)}):")
+        appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_BREAKDOWN, language)} (${StringResources.get(StringKeyShadbala.SHADBALA_VIRUPAS, language)}):")
         appendLine("───────────────────────────────────────")
-        appendLine("1. ${StringResources.get(StringKeyDosha.SHADBALA_STHANA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.total)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_UCCHA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.ucchaBala)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_SAPTAVARGAJA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.saptavargajaBala)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_OJHAYUGMA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.ojhayugmarasyamsaBala)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_KENDRADI_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.kendradiBala)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_DREKKANA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.drekkanaBala)}")
+        appendLine("1. ${StringResources.get(StringKeyShadbala.SHADBALA_STHANA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.total)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_UCCHA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.ucchaBala)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_SAPTAVARGAJA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.saptavargajaBala)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_OJHAYUGMA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.ojhayugmarasyamsaBala)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_KENDRADI_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.kendradiBala)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_DREKKANA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(sthanaBala.drekkanaBala)}")
         appendLine()
-        appendLine("2. ${StringResources.get(StringKeyDosha.SHADBALA_DIG_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(digBala)}")
+        appendLine("2. ${StringResources.get(StringKeyShadbala.SHADBALA_DIG_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(digBala)}")
         appendLine()
-        appendLine("3. ${StringResources.get(StringKeyDosha.SHADBALA_KALA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.total)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_NATHONNATHA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.nathonnathaBala)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_PAKSHA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.pakshaBala)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_TRIBHAGA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.tribhagaBala)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_HORA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.horaAdiBala)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_AYANA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.ayanaBala)}")
-        appendLine("   • ${StringResources.get(StringKeyDosha.SHADBALA_YUDDHA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.yuddhaBala)}")
+        appendLine("3. ${StringResources.get(StringKeyShadbala.SHADBALA_KALA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.total)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_NATHONNATHA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.nathonnathaBala)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_PAKSHA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.pakshaBala)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_TRIBHAGA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.tribhagaBala)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_HORA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.horaAdiBala)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_AYANA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.ayanaBala)}")
+        appendLine("   • ${StringResources.get(StringKeyShadbala.SHADBALA_YUDDHA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(kalaBala.yuddhaBala)}")
         appendLine()
-        appendLine("4. ${StringResources.get(StringKeyDosha.SHADBALA_CHESTA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(chestaBala)}")
+        appendLine("4. ${StringResources.get(StringKeyShadbala.SHADBALA_CHESTA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(chestaBala)}")
         appendLine()
-        appendLine("5. ${StringResources.get(StringKeyDosha.SHADBALA_NAISARGIKA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(naisargikaBala)}")
+        appendLine("5. ${StringResources.get(StringKeyShadbala.SHADBALA_NAISARGIKA_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(naisargikaBala)}")
         appendLine()
-        appendLine("6. ${StringResources.get(StringKeyDosha.SHADBALA_DRIK_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(drikBala)}")
+        appendLine("6. ${StringResources.get(StringKeyShadbala.SHADBALA_DRIK_BALA, language)}: ${FORMAT_TWO_DECIMAL.format(drikBala)}")
     }
 
     companion object {
@@ -189,17 +189,17 @@ data class ShadbalaAnalysis(
         val weak = planetaryStrengths.values.size - strong
 
         return buildString {
-            appendLine(StringResources.get(StringKeyDosha.SHADBALA_TITLE, language) + " " + StringResources.get(StringKeyDosha.SHADBALA_OVERVIEW, language))
+            appendLine(StringResources.get(StringKeyShadbala.SHADBALA_TITLE, language) + " " + StringResources.get(StringKeyShadbala.SHADBALA_OVERVIEW, language))
             appendLine("═══════════════════════════════════════")
             appendLine()
-            appendLine("${StringResources.get(StringKeyDosha.SHADBALA_OVERALL_STRENGTH, language)}: ${String.format("%.1f", overallStrengthScore)}%")
-            appendLine("${StringResources.get(StringKeyDosha.SHADBALA_STRONG_COUNT, language, strong)}")
-            appendLine("${StringResources.get(StringKeyDosha.SHADBALA_WEAK_COUNT, language, weak)}")
+            appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_OVERALL_STRENGTH, language)}: ${String.format("%.1f", overallStrengthScore)}%")
+            appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_STRONG_COUNT, language, strong)}")
+            appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_WEAK_COUNT, language, weak)}")
             appendLine()
-            appendLine("${StringResources.get(StringKeyDosha.SHADBALA_STRONGEST_PLANET, language)}: ${strongestPlanet.getLocalizedName(language)}")
-            appendLine("${StringResources.get(StringKeyDosha.SHADBALA_WEAKEST_PLANET, language)}: ${weakestPlanet.getLocalizedName(language)}")
+            appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_STRONGEST_PLANET, language)}: ${strongestPlanet.getLocalizedName(language)}")
+            appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_WEAKEST_PLANET, language)}: ${weakestPlanet.getLocalizedName(language)}")
             appendLine()
-            appendLine("${StringResources.get(StringKeyDosha.SHADBALA_BREAKDOWN, language)} (${StringResources.get(StringKeyDosha.SHADBALA_RUPAS, language)}):")
+            appendLine("${StringResources.get(StringKeyShadbala.SHADBALA_BREAKDOWN, language)} (${StringResources.get(StringKeyShadbala.SHADBALA_RUPAS, language)}):")
             appendLine("───────────────────────────────────────")
             getPlanetsByStrength().forEach { shadbala ->
                 val status = if (shadbala.isStrong) "✓" else "✗"

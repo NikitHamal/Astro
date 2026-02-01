@@ -37,9 +37,9 @@ object GenericVargaAnalyzer {
                 houseNumber = houseNum,
                 planetsInHouse = planetsInHouse,
                 status = if (planetsInHouse.isNotEmpty()) 
-                    StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.DIVISIONAL_HOUSE_OCCUPIED, language) 
+                    StringResources.get(com.astro.storm.core.common.StringKeyAnalysisPart3.DIVISIONAL_HOUSE_OCCUPIED, language)
                 else 
-                    StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.DIVISIONAL_HOUSE_EMPTY, language),
+                    StringResources.get(com.astro.storm.core.common.StringKeyAnalysisPart3.DIVISIONAL_HOUSE_EMPTY, language),
                 houseLord = houseLord
             )
         }
@@ -67,10 +67,10 @@ object GenericVargaAnalyzer {
         val keySignifications = type.description.split(", ")
         val recommendations = mutableListOf<String>()
         if (strengthScore < 40) {
-            recommendations.add(StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.DIVISIONAL_REMEDIES_DESC, language, type.shortName))
+            recommendations.add(StringResources.get(com.astro.storm.core.common.StringKeyAnalysisPart3.DIVISIONAL_REMEDIES_DESC, language, type.shortName))
         }
         if (vargottamas.isNotEmpty()) {
-            recommendations.add(StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.DIVISIONAL_STRENGTH_DESC, language, vargottamas.joinToString { it.getLocalizedName(language) }))
+            recommendations.add(StringResources.get(com.astro.storm.core.common.StringKeyAnalysisPart3.DIVISIONAL_STRENGTH_DESC, language, vargottamas.joinToString { it.getLocalizedName(language) }))
         }
 
         return GenericVargaAnalysis(

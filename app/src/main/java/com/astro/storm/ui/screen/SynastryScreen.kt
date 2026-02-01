@@ -88,10 +88,10 @@ fun SynastryScreen(
 
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf(
-        stringResource(StringKeyDosha.SYNASTRY_OVERVIEW),
-        stringResource(StringKeyDosha.SYNASTRY_ASPECTS),
-        stringResource(StringKeyDosha.SYNASTRY_HOUSES),
-        stringResource(StringKeyDosha.SYNASTRY_COMPATIBILITY)
+        stringResource(StringKeyDoshaPart1.SYNASTRY_OVERVIEW),
+        stringResource(StringKeyDoshaPart1.SYNASTRY_ASPECTS),
+        stringResource(StringKeyDoshaPart1.SYNASTRY_HOUSES),
+        stringResource(StringKeyDoshaPart1.SYNASTRY_COMPATIBILITY)
     )
 
     val animatedProgress by animateFloatAsState(
@@ -124,7 +124,7 @@ fun SynastryScreen(
                     calculateSynastry(chart1!!, chart2!!, language)
                 }
             } catch (e: Exception) {
-                errorMessage = e.message ?: com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_CALC_FAILED, language)
+                errorMessage = e.message ?: com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_CALC_FAILED, language)
             }
             isCalculating = false
         } else {
@@ -143,14 +143,14 @@ fun SynastryScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDosha.SYNASTRY_TITLE),
+                            stringResource(StringKeyDoshaPart1.SYNASTRY_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
                         )
                         AnimatedVisibility(visible = synastryResult != null) {
                             Text(
-                                stringResource(StringKeyDosha.SYNASTRY_SUBTITLE),
+                                stringResource(StringKeyDoshaPart1.SYNASTRY_SUBTITLE),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
@@ -161,7 +161,7 @@ fun SynastryScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -170,7 +170,7 @@ fun SynastryScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDosha.SYNASTRY_INFO_TITLE),
+                            contentDescription = stringResource(StringKeyDoshaPart1.SYNASTRY_INFO_TITLE),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -267,7 +267,7 @@ fun SynastryScreen(
     // Chart selector bottom sheets
     if (showChart1Selector) {
         ChartSelectorBottomSheet(
-            title = stringResource(StringKeyDosha.SYNASTRY_CHART_1),
+            title = stringResource(StringKeyDoshaPart1.SYNASTRY_CHART_1),
             icon = Icons.Filled.Person,
             accentColor = AppTheme.AccentPrimary,
             charts = savedCharts,
@@ -284,7 +284,7 @@ fun SynastryScreen(
 
     if (showChart2Selector) {
         ChartSelectorBottomSheet(
-            title = stringResource(StringKeyDosha.SYNASTRY_CHART_2),
+            title = stringResource(StringKeyDoshaPart1.SYNASTRY_CHART_2),
             icon = Icons.Filled.PersonOutline,
             accentColor = AppTheme.AccentTeal,
             charts = savedCharts,
@@ -332,13 +332,13 @@ enum class SynastryAspectType(
     SEMI_SEXTILE("Semi-Sextile", 30.0, AspectNature.MINOR, "⚺", 3.0);
 
     fun getLocalizedName(language: Language): String = when (this) {
-        CONJUNCTION -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_CONJUNCTION, language)
-        OPPOSITION -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_OPPOSITION, language)
-        TRINE -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_TRINE, language)
-        SQUARE -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_SQUARE, language)
-        SEXTILE -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_SEXTILE, language)
-        QUINCUNX -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_QUINCUNX, language)
-        SEMI_SEXTILE -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_SEMI_SEXTILE, language)
+        CONJUNCTION -> com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_CONJUNCTION, language)
+        OPPOSITION -> com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_OPPOSITION, language)
+        TRINE -> com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_TRINE, language)
+        SQUARE -> com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_SQUARE, language)
+        SEXTILE -> com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_SEXTILE, language)
+        QUINCUNX -> com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_QUINCUNX, language)
+        SEMI_SEXTILE -> com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_SEMI_SEXTILE, language)
     }
 }
 
@@ -586,19 +586,19 @@ private fun getHouseForLongitude(longitude: Double, houseCusps: List<Double>): I
 
 private fun getLifeAreaForHouse(house: Int, language: Language): String {
     val key = when (house) {
-        1 -> StringKeyDosha.HOUSE_SIG_1
-        2 -> StringKeyDosha.HOUSE_SIG_2
-        3 -> StringKeyDosha.HOUSE_SIG_3
-        4 -> StringKeyDosha.HOUSE_SIG_4
-        5 -> StringKeyDosha.HOUSE_SIG_5
-        6 -> StringKeyDosha.HOUSE_SIG_6
-        7 -> StringKeyDosha.HOUSE_SIG_7
-        8 -> StringKeyDosha.HOUSE_SIG_8
-        9 -> StringKeyDosha.HOUSE_SIG_9
-        10 -> StringKeyDosha.HOUSE_SIG_10
-        11 -> StringKeyDosha.HOUSE_SIG_11
-        12 -> StringKeyDosha.HOUSE_SIG_12
-        else -> StringKeyDosha.SYNASTRY_LIFE_AREA_GENERAL
+        1 -> StringKeyDoshaPart4.HOUSE_SIG_1
+        2 -> StringKeyDoshaPart4.HOUSE_SIG_2
+        3 -> StringKeyDoshaPart4.HOUSE_SIG_3
+        4 -> StringKeyDoshaPart4.HOUSE_SIG_4
+        5 -> StringKeyDoshaPart4.HOUSE_SIG_5
+        6 -> StringKeyDoshaPart4.HOUSE_SIG_6
+        7 -> StringKeyDoshaPart4.HOUSE_SIG_7
+        8 -> StringKeyDoshaPart4.HOUSE_SIG_8
+        9 -> StringKeyDoshaPart4.HOUSE_SIG_9
+        10 -> StringKeyDoshaPart4.HOUSE_SIG_10
+        11 -> StringKeyDoshaPart4.HOUSE_SIG_11
+        12 -> StringKeyDoshaPart4.HOUSE_SIG_12
+        else -> StringKeyDoshaPart1.SYNASTRY_LIFE_AREA_GENERAL
     }
     return com.astro.storm.core.common.StringResources.get(key, language)
 }
@@ -613,17 +613,17 @@ private fun generateAspectInterpretation(
     val p2Name = planet2.getLocalizedName(language)
 
     val key = when (aspectType.nature) {
-        AspectNature.HARMONIOUS -> StringKeyDosha.SYNASTRY_INTERPRET_HARMONIOUS
-        AspectNature.CHALLENGING -> StringKeyDosha.SYNASTRY_INTERPRET_CHALLENGING
-        AspectNature.MAJOR -> StringKeyDosha.SYNASTRY_INTERPRET_MAJOR
-        AspectNature.MINOR -> StringKeyDosha.SYNASTRY_INTERPRET_MINOR
+        AspectNature.HARMONIOUS -> StringKeyDoshaPart1.SYNASTRY_INTERPRET_HARMONIOUS
+        AspectNature.CHALLENGING -> StringKeyDoshaPart1.SYNASTRY_INTERPRET_CHALLENGING
+        AspectNature.MAJOR -> StringKeyDoshaPart1.SYNASTRY_INTERPRET_MAJOR
+        AspectNature.MINOR -> StringKeyDoshaPart1.SYNASTRY_INTERPRET_MINOR
     }
     return com.astro.storm.core.common.StringResources.get(key, language, p1Name, p2Name)
 }
 
 private fun generateAscendantInterpretation(planet: Planet, chartNum: Int, language: Language): String {
     return com.astro.storm.core.common.StringResources.get(
-        StringKeyDosha.SYNASTRY_INTERPRET_ASCENDANT,
+        StringKeyDoshaPart1.SYNASTRY_INTERPRET_ASCENDANT,
         language,
         planet.getLocalizedName(language),
         chartNum
@@ -632,7 +632,7 @@ private fun generateAscendantInterpretation(planet: Planet, chartNum: Int, langu
 
 private fun generateHouseOverlayInterpretation(planet: Planet, house: Int, chartNum: Int, language: Language): String {
     return com.astro.storm.core.common.StringResources.get(
-        StringKeyDosha.SYNASTRY_INTERPRET_OVERLAY,
+        StringKeyDoshaPart1.SYNASTRY_INTERPRET_OVERLAY,
         language,
         chartNum,
         planet.getLocalizedName(language),
@@ -672,38 +672,38 @@ private fun calculateCompatibilityCategories(
 
     return listOf(
         CompatibilityCategory(
-            name = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_EMOTIONAL_BOND, language),
+            name = com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_EMOTIONAL_BOND, language),
             score = emotionalScore,
             maxScore = 10.0,
-            description = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_EMOTIONAL, language),
+            description = com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_DESC_EMOTIONAL, language),
             icon = Icons.Filled.Favorite
         ),
         CompatibilityCategory(
-            name = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_ROMANCE, language),
+            name = com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_ROMANCE, language),
             score = romanceScore,
             maxScore = 10.0,
-            description = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_ROMANCE, language),
+            description = com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_DESC_ROMANCE, language),
             icon = Icons.Filled.FavoriteBorder
         ),
         CompatibilityCategory(
-            name = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_COMMUNICATION, language),
+            name = com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_COMMUNICATION, language),
             score = communicationScore,
             maxScore = 10.0,
-            description = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_COMMUNICATION, language),
+            description = com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_DESC_COMMUNICATION, language),
             icon = Icons.Filled.ChatBubble
         ),
         CompatibilityCategory(
-            name = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_STABILITY, language),
+            name = com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_STABILITY, language),
             score = stabilityScore,
             maxScore = 10.0,
-            description = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_STABILITY, language),
+            description = com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_DESC_STABILITY, language),
             icon = Icons.Filled.Shield
         ),
         CompatibilityCategory(
-            name = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_GROWTH, language),
+            name = com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_GROWTH, language),
             score = growthScore,
             maxScore = 10.0,
-            description = com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_GROWTH, language),
+            description = com.astro.storm.core.common.StringResources.get(StringKeyDoshaPart1.SYNASTRY_DESC_GROWTH, language),
             icon = Icons.Filled.TrendingUp
         )
     )
@@ -721,7 +721,7 @@ private fun generateKeyFindings(
     aspects.take(3).forEach { aspect ->
         findings.add(
             com.astro.storm.core.common.StringResources.get(
-                StringKeyDosha.SYNASTRY_FINDING_ASPECT,
+                StringKeyDoshaPart1.SYNASTRY_FINDING_ASPECT,
                 language,
                 aspect.aspectType.getLocalizedName(language),
                 aspect.planet1.getLocalizedName(language),
@@ -734,7 +734,7 @@ private fun generateKeyFindings(
     overlays1In2.filter { it.houseNumber in listOf(1, 5, 7, 10) }.take(2).forEach { overlay ->
         findings.add(
             com.astro.storm.core.common.StringResources.get(
-                StringKeyDosha.SYNASTRY_FINDING_HOUSE,
+                StringKeyDoshaPart1.SYNASTRY_FINDING_HOUSE,
                 language,
                 overlay.planet.getLocalizedName(language),
                 overlay.houseNumber,
@@ -778,7 +778,7 @@ private fun ChartSelectionSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    stringResource(StringKeyDosha.SYNASTRY_SELECT_CHARTS),
+                    stringResource(StringKeyDoshaPart1.SYNASTRY_SELECT_CHARTS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -793,7 +793,7 @@ private fun ChartSelectionSection(
                             ) {
                                 Icon(
                                     Icons.Filled.SwapHoriz,
-                                    contentDescription = stringResource(StringKeyDosha.SYNASTRY_SWAP),
+                                    contentDescription = stringResource(StringKeyDoshaPart1.SYNASTRY_SWAP),
                                     tint = AppTheme.AccentPrimary,
                                     modifier = Modifier.size(20.dp)
                                 )
@@ -805,7 +805,7 @@ private fun ChartSelectionSection(
                         ) {
                             Icon(
                                 Icons.Filled.Close,
-                                contentDescription = stringResource(StringKeyDosha.SYNASTRY_CLEAR),
+                                contentDescription = stringResource(StringKeyDoshaPart1.SYNASTRY_CLEAR),
                                 tint = AppTheme.TextMuted,
                                 modifier = Modifier.size(18.dp)
                             )
@@ -822,7 +822,7 @@ private fun ChartSelectionSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SynastryChartCard(
-                    label = stringResource(StringKeyDosha.SYNASTRY_CHART_1),
+                    label = stringResource(StringKeyDoshaPart1.SYNASTRY_CHART_1),
                     chart = chart1,
                     icon = Icons.Filled.Person,
                     color = AppTheme.AccentPrimary,
@@ -851,7 +851,7 @@ private fun ChartSelectionSection(
                 }
 
                 SynastryChartCard(
-                    label = stringResource(StringKeyDosha.SYNASTRY_CHART_2),
+                    label = stringResource(StringKeyDoshaPart1.SYNASTRY_CHART_2),
                     chart = chart2,
                     icon = Icons.Filled.PersonOutline,
                     color = AppTheme.AccentTeal,
@@ -879,7 +879,7 @@ private fun ChartSelectionSection(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            stringResource(StringKeyMatch.MATCH_CREATE_CHARTS_FIRST),
+                            stringResource(StringKeyMatchmaking.MATCH_CREATE_CHARTS_FIRST),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.InfoColor
                         )
@@ -971,7 +971,7 @@ private fun SynastryChartCard(
                 )
             } else {
                 Text(
-                    stringResource(StringKeyMatch.MATCH_TAP_TO_SELECT),
+                    stringResource(StringKeyMatchmaking.MATCH_TAP_TO_SELECT),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSubtle
                 )
@@ -1033,7 +1033,7 @@ private fun SynastryOverviewTab(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    stringResource(StringKeyDosha.SYNASTRY_OVERALL_SCORE),
+                    stringResource(StringKeyDoshaPart1.SYNASTRY_OVERALL_SCORE),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1151,7 +1151,7 @@ private fun SynastryOverviewTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.SYNASTRY_KEY_ASPECTS),
+                    stringResource(StringKeyDoshaPart1.SYNASTRY_KEY_ASPECTS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1164,12 +1164,12 @@ private fun SynastryOverviewTab(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     AspectCountChip(
-                        label = stringResource(StringKeyDosha.SYNASTRY_HARMONIOUS),
+                        label = stringResource(StringKeyDoshaPart1.SYNASTRY_HARMONIOUS),
                         count = result.harmoniousAspects.size,
                         color = AppTheme.SuccessColor
                     )
                     AspectCountChip(
-                        label = stringResource(StringKeyDosha.SYNASTRY_CHALLENGING),
+                        label = stringResource(StringKeyDoshaPart1.SYNASTRY_CHALLENGING),
                         count = result.challengingAspects.size,
                         color = AppTheme.WarningColor
                     )
@@ -1303,7 +1303,7 @@ private fun SynastryAspectsTab(result: SynastryAnalysisResult) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    stringResource(StringKeyDosha.SYNASTRY_NO_ASPECTS),
+                    stringResource(StringKeyDoshaPart1.SYNASTRY_NO_ASPECTS),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextMuted
                 )
@@ -1385,8 +1385,8 @@ private fun AspectCard(aspect: SynastryAspect, language: Language) {
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    if (aspect.isApplying) stringResource(StringKeyDosha.SYNASTRY_APPLYING)
-                    else stringResource(StringKeyDosha.SYNASTRY_SEPARATING),
+                    if (aspect.isApplying) stringResource(StringKeyDoshaPart1.SYNASTRY_APPLYING)
+                    else stringResource(StringKeyDoshaPart1.SYNASTRY_SEPARATING),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextSubtle
                 )
@@ -1562,7 +1562,7 @@ private fun SynastryCalculatingState() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKeyDosha.SYNASTRY_ANALYZING),
+                stringResource(StringKeyDoshaPart1.SYNASTRY_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1599,7 +1599,7 @@ private fun SynastryErrorCard(error: String, onRetry: () -> Unit) {
                 modifier = Modifier.weight(1f)
             )
             TextButton(onClick = onRetry) {
-                Text(stringResource(StringKey.BTN_RETRY), color = AppTheme.ErrorColor)
+                Text(stringResource(StringKeyUI.BTN_RETRY), color = AppTheme.ErrorColor)
             }
         }
     }
@@ -1654,7 +1654,7 @@ private fun ChartSelectorBottomSheet(
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        stringResource(StringKeyDosha.SYNASTRY_AVAILABLE_CHARTS, availableCharts.size),
+                        stringResource(StringKeyDoshaPart1.SYNASTRY_AVAILABLE_CHARTS, availableCharts.size),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )
@@ -1669,7 +1669,7 @@ private fun ChartSelectorBottomSheet(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        stringResource(StringKeyMatch.MATCH_NO_CHARTS_AVAILABLE),
+                        stringResource(StringKeyMatchmaking.MATCH_NO_CHARTS_AVAILABLE),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted
                     )
@@ -1750,21 +1750,21 @@ private fun SynastryInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                stringResource(StringKeyDosha.SYNASTRY_INFO_TITLE),
+                stringResource(StringKeyDoshaPart1.SYNASTRY_INFO_TITLE),
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
         },
         text = {
             Text(
-                stringResource(StringKeyDosha.SYNASTRY_INFO_DESC),
+                stringResource(StringKeyDoshaPart1.SYNASTRY_INFO_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary
             )
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyUI.BTN_CLOSE), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground

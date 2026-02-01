@@ -53,8 +53,8 @@ fun PlanetsScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKey.FEATURE_PLANETS),
-            message = stringResource(StringKey.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyFeature.FEATURE_PLANETS),
+            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -117,7 +117,7 @@ private fun PlanetsTopBar(
         title = {
             Column {
                 Text(
-                    text = stringResource(StringKey.FEATURE_PLANETS),
+                    text = stringResource(StringKeyFeature.FEATURE_PLANETS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -135,7 +135,7 @@ private fun PlanetsTopBar(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(StringKey.BTN_BACK),
+                    contentDescription = stringResource(StringKeyUI.BTN_BACK),
                     tint = AppTheme.TextPrimary
                 )
             }

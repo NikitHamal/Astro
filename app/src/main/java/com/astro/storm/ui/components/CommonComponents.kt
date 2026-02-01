@@ -67,7 +67,7 @@ fun ScreenTopBar(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(StringKey.BTN_BACK),
+                    contentDescription = stringResource(StringKeyUI.BTN_BACK),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -177,7 +177,7 @@ fun InfoCard(
  */
 @Composable
 fun LoadingState(
-    message: String = stringResource(StringKeyMatch.MISC_LOADING),
+    message: String = stringResource(StringKeyMatchPart1.MISC_LOADING),
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -332,7 +332,7 @@ fun InfoButton(
     IconButton(onClick = onClick, modifier = modifier) {
         Icon(
             imageVector = Icons.Outlined.Info,
-            contentDescription = stringResource(StringKey.MISC_INFO),
+            contentDescription = stringResource(StringKeyPart1.MISC_INFO),
             tint = tint
         )
     }

@@ -115,9 +115,9 @@ object PrashnaTimingCalculator {
         val roundedValue = round(value * 10) / 10
         val unitName = unit.getLocalizedName(language)
         return when {
-            roundedValue < 1 -> StringResources.get(StringKeyAnalysis.PRASHNA_TIMING_WITHIN, language).format("1 $unitName".let { if (language == Language.NEPALI) BikramSambatConverter.toNepaliNumerals(it) else it })
-            roundedValue == 1.0 -> StringResources.get(StringKeyAnalysis.PRASHNA_TIMING_ABOUT, language).format("1 $unitName".let { if (language == Language.NEPALI) BikramSambatConverter.toNepaliNumerals(it) else it })
-            else -> StringResources.get(StringKeyAnalysis.PRASHNA_TIMING_ABOUT, language).format("${roundedValue.toInt()} $unitName".let { if (language == Language.NEPALI) BikramSambatConverter.toNepaliNumerals(it) else it })
+            roundedValue < 1 -> StringResources.get(StringKeyPrashnaPart1.PRASHNA_TIMING_WITHIN, language).format("1 $unitName".let { if (language == Language.NEPALI) BikramSambatConverter.toNepaliNumerals(it) else it })
+            roundedValue == 1.0 -> StringResources.get(StringKeyPrashnaPart1.PRASHNA_TIMING_ABOUT, language).format("1 $unitName".let { if (language == Language.NEPALI) BikramSambatConverter.toNepaliNumerals(it) else it })
+            else -> StringResources.get(StringKeyPrashnaPart1.PRASHNA_TIMING_ABOUT, language).format("${roundedValue.toInt()} $unitName".let { if (language == Language.NEPALI) BikramSambatConverter.toNepaliNumerals(it) else it })
         }
     }
 
@@ -143,7 +143,7 @@ object PrashnaTimingCalculator {
         val methodLabel = method.getLocalizedName(language)
         val timeframe = formatTimingEstimate(value, unit, language)
         val moonSpeed = moonAnalysis.moonSpeed.localized(language, 2)
-        return StringResources.get(StringKeyAnalysis.PRASHNA_TIMING_EXPLANATION, language).format(methodLabel, timeframe, moonSpeed)
+        return StringResources.get(StringKeyPrashnaPart1.PRASHNA_TIMING_EXPLANATION, language).format(methodLabel, timeframe, moonSpeed)
     }
 }
 

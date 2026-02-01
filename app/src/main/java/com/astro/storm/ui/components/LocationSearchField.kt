@@ -62,17 +62,17 @@ fun LocationSearchField(
     onLocationSelected: (location: String, latitude: Double, longitude: Double) -> Unit,
     onSearch: suspend (String) -> Result<List<GeocodingService.GeocodingResult>>,
     modifier: Modifier = Modifier,
-    label: String = stringResource(StringKey.LOCATION_SEARCH),
-    placeholder: String = stringResource(StringKey.LOCATION_PLACEHOLDER),
+    label: String = stringResource(StringKeyPart1.LOCATION_SEARCH),
+    placeholder: String = stringResource(StringKeyPart1.LOCATION_PLACEHOLDER),
     searchState: LocationSearchState = rememberLocationSearchState()
 ) {
     val focusManager = LocalFocusManager.current
     var hasFocus by remember { mutableStateOf(false) }
 
     // Pre-fetch localized error strings for display
-    val rateLimitText = stringResource(StringKey.ERROR_RATE_LIMIT)
-    val searchFailedText = stringResource(StringKey.ERROR_SEARCH_FAILED)
-    val clearSearchText = stringResource(StringKey.LOCATION_CLEAR)
+    val rateLimitText = stringResource(StringKeyError.ERROR_RATE_LIMIT)
+    val searchFailedText = stringResource(StringKeyError.ERROR_SEARCH_FAILED)
+    val clearSearchText = stringResource(StringKeyPart1.LOCATION_CLEAR)
 
     // Compute the display error message from error type
     val errorMessage = when (searchState.errorType) {
@@ -235,7 +235,7 @@ private fun LocationResultItem(
     result: GeocodingService.GeocodingResult,
     onClick: () -> Unit
 ) {
-    val selectText = stringResource(StringKey.LOCATION_SELECT, result.formattedShortName)
+    val selectText = stringResource(StringKeyPart1.LOCATION_SELECT, result.formattedShortName)
     Row(
         modifier = Modifier
             .fillMaxWidth()

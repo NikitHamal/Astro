@@ -1198,7 +1198,7 @@ private fun ShoolaRemediesSection(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = stringResource(StringKeyDosha.KEMA_NO_REMEDIES),
+                            text = stringResource(StringKeyDoshaPart4.KEMA_NO_REMEDIES),
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextMuted,
                             textAlign = TextAlign.Center
@@ -1399,7 +1399,7 @@ private fun ShoolaEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyAnalysis.TRANSIT_SELECT_CHART),
+                text = stringResource(StringKeyTransit.TRANSIT_SELECT_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1438,7 +1438,7 @@ private fun ShoolaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(com.astro.storm.core.common.StringKey.BTN_OK), color = AppTheme.AccentGold)
+                Text(stringResource(com.astro.storm.core.common.StringKeyUI.BTN_OK), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground

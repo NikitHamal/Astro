@@ -83,7 +83,7 @@ fun ChartAnalysisScreen(
         ChartRenderer(context, if (isDarkTheme) ChartColorConfig.Dark else ChartColorConfig.Light)
     }
 
-    val defaultTitle = stringResource(StringKeyAnalysis.CHART_LAGNA)
+    val defaultTitle = stringResource(StringKeyMatchPart2.CHART_LAGNA)
     var fullScreenChartTitle by remember { mutableStateOf(defaultTitle) }
     var fullScreenDivisionalData by remember { mutableStateOf<DivisionalChartData?>(null) }
     var showShadbalaDialog by remember { mutableStateOf(false) }
@@ -210,7 +210,7 @@ private fun ChartAnalysisTopBar(
         title = {
             Column {
                 Text(
-                    text = stringResource(StringKeyAnalysis.ANALYSIS_CHART_ANALYSIS),
+                    text = stringResource(StringKeyAnalysisPart1.ANALYSIS_CHART_ANALYSIS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -228,7 +228,7 @@ private fun ChartAnalysisTopBar(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(StringKeyMatch.NAV_BACK),
+                    contentDescription = stringResource(StringKeyMatchPart2.NAV_BACK),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -301,15 +301,15 @@ enum class AnalysisTab(
     val stringKey: com.astro.storm.core.common.StringKeyInterface,
     val icon: ImageVector
 ) {
-    CHART(StringKeyAnalysis.ANALYSIS_TAB_CHART, Icons.Outlined.GridView),
-    PLANETS(StringKeyAnalysis.ANALYSIS_TAB_PLANETS, Icons.Outlined.Public),
-    YOGAS(StringKeyAnalysis.ANALYSIS_TAB_YOGAS, Icons.Outlined.AutoAwesome),
-    DASHAS(StringKeyAnalysis.ANALYSIS_TAB_DASHAS, Icons.Outlined.Timeline),
-    TRANSITS(StringKeyAnalysis.ANALYSIS_TAB_TRANSITS, Icons.Outlined.Sync),
-    ASHTAKAVARGA(StringKeyAnalysis.ANALYSIS_TAB_ASHTAKAVARGA, Icons.Outlined.BarChart),
-    PANCHANGA(StringKeyAnalysis.ANALYSIS_TAB_PANCHANGA, Icons.Outlined.CalendarMonth),
-    DEEP_ANALYSIS(StringKey.FEATURE_NATIVE_ANALYSIS, Icons.Outlined.Person),
-    PREDICTIONS(StringKey.FEATURE_PREDICTIONS, Icons.Outlined.AutoAwesome)
+    CHART(StringKeyAnalysisPart1.ANALYSIS_TAB_CHART, Icons.Outlined.GridView),
+    PLANETS(StringKeyAnalysisPart1.ANALYSIS_TAB_PLANETS, Icons.Outlined.Public),
+    YOGAS(StringKeyAnalysisPart1.ANALYSIS_TAB_YOGAS, Icons.Outlined.AutoAwesome),
+    DASHAS(StringKeyAnalysisPart1.ANALYSIS_TAB_DASHAS, Icons.Outlined.Timeline),
+    TRANSITS(StringKeyAnalysisPart1.ANALYSIS_TAB_TRANSITS, Icons.Outlined.Sync),
+    ASHTAKAVARGA(StringKeyAnalysisPart1.ANALYSIS_TAB_ASHTAKAVARGA, Icons.Outlined.BarChart),
+    PANCHANGA(StringKeyAnalysisPart1.ANALYSIS_TAB_PANCHANGA, Icons.Outlined.CalendarMonth),
+    DEEP_ANALYSIS(StringKeyFeature.FEATURE_NATIVE_ANALYSIS, Icons.Outlined.Person),
+    PREDICTIONS(StringKeyFeature.FEATURE_PREDICTIONS, Icons.Outlined.AutoAwesome)
 }
 
 /**
