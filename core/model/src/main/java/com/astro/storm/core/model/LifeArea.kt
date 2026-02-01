@@ -5,8 +5,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringKeyRemedy
+import com.astro.storm.core.common.StringKeyGeneralPart6
 import com.astro.storm.core.common.StringResources
 
 /**

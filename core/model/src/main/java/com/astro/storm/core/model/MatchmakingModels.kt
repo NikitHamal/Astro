@@ -2,10 +2,13 @@ package com.astro.storm.core.model
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyMatchmakingPart1
+import com.astro.storm.core.common.StringKeyUIPart1
+import com.astro.storm.core.common.StringKeyGeneralPart5
+import com.astro.storm.core.common.StringKeyGeneralPart4
 import com.astro.storm.core.common.StringResources
 
 /**
@@ -163,7 +166,7 @@ enum class YoniGender { MALE, FEMALE }
  * Yoni represents sexual and physical compatibility.
  * Each Nakshatra is assigned an animal nature with male/female classification.
  */
-enum class Yoni(val animalKey: StringKeyMatch, val gender: YoniGender, val groupId: Int) {
+enum class Yoni(val animalKey: StringKeyInterface, val gender: YoniGender, val groupId: Int) {
     ASHWA_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_HORSE, YoniGender.MALE, 1),
     ASHWA_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_HORSE, YoniGender.FEMALE, 1),
     GAJA_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_ELEPHANT, YoniGender.MALE, 2),
