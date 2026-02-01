@@ -33,20 +33,20 @@ enum class PrashnaCategory(val displayName: String, val description: String) {
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
             YES_NO -> StringKeyPrashnaPart1.PRASHNA_CAT_YES_NO
-            CAREER -> StringKeyPrashnaPart2.PRASHNA_CAT_CAREER
+            CAREER -> StringKeyPrashnaPart1.PRASHNA_CAT_CAREER
             MARRIAGE -> StringKeyPrashnaPart1.PRASHNA_CAT_MARRIAGE
             CHILDREN -> StringKeyPrashnaPart1.PRASHNA_CAT_CHILDREN
-            HEALTH -> StringKeyPrashnaPart2.PRASHNA_CAT_HEALTH
+            HEALTH -> StringKeyPrashnaPart1.PRASHNA_CAT_HEALTH
             WEALTH -> StringKeyPrashnaPart1.PRASHNA_CAT_WEALTH
-            PROPERTY -> StringKeyPrashnaPart2.PRASHNA_CAT_PROPERTY
-            TRAVEL -> StringKeyPrashnaPart2.PRASHNA_CAT_TRAVEL
-            EDUCATION -> StringKeyPrashnaPart2.PRASHNA_CAT_EDUCATION
-            LEGAL -> StringKeyPrashnaPart2.PRASHNA_CAT_LEGAL
+            PROPERTY -> StringKeyPrashnaPart1.PRASHNA_CAT_PROPERTY
+            TRAVEL -> StringKeyPrashnaPart1.PRASHNA_CAT_TRAVEL
+            EDUCATION -> StringKeyPrashnaPart1.PRASHNA_CAT_EDUCATION
+            LEGAL -> StringKeyPrashnaPart1.PRASHNA_CAT_LEGAL
             LOST_OBJECT -> StringKeyPrashnaPart1.PRASHNA_CAT_LOST_OBJECT
-            RELATIONSHIP -> StringKeyPrashnaPart2.PRASHNA_CAT_RELATIONSHIP
+            RELATIONSHIP -> StringKeyPrashnaPart1.PRASHNA_CAT_RELATIONSHIP
             BUSINESS -> StringKeyPrashnaPart1.PRASHNA_CAT_BUSINESS
             SPIRITUAL -> StringKeyPrashnaPart1.PRASHNA_CAT_SPIRITUAL
-            GENERAL -> StringKeyPrashnaPart2.PRASHNA_CAT_GENERAL
+            GENERAL -> StringKeyPrashnaPart1.PRASHNA_CAT_GENERAL
         }
         return StringResources.get(key, language)
     }
@@ -175,14 +175,14 @@ enum class PrashnaVerdict(val displayName: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            STRONGLY_YES -> StringKeyPrashnaPart1.PRASHNA_VERDICT_STRONGLY_YES
-            YES -> StringKeyPrashnaPart1.PRASHNA_VERDICT_YES
-            LIKELY_YES -> StringKeyPrashnaPart1.PRASHNA_VERDICT_LIKELY_YES
-            UNCERTAIN -> StringKeyPrashnaPart1.PRASHNA_VERDICT_UNCERTAIN
-            LIKELY_NO -> StringKeyPrashnaPart1.PRASHNA_VERDICT_LIKELY_NO
-            NO -> StringKeyPrashnaPart1.PRASHNA_VERDICT_NO
-            STRONGLY_NO -> StringKeyPrashnaPart1.PRASHNA_VERDICT_STRONGLY_NO
-            TIMING_DEPENDENT -> StringKeyPrashnaPart1.PRASHNA_VERDICT_TIMING_DEPENDENT
+            STRONGLY_YES -> StringKeyPrashnaPart2.PRASHNA_VERDICT_STRONGLY_YES
+            YES -> StringKeyPrashnaPart2.PRASHNA_VERDICT_YES
+            LIKELY_YES -> StringKeyPrashnaPart2.PRASHNA_VERDICT_LIKELY_YES
+            UNCERTAIN -> StringKeyPrashnaPart2.PRASHNA_VERDICT_UNCERTAIN
+            LIKELY_NO -> StringKeyPrashnaPart2.PRASHNA_VERDICT_LIKELY_NO
+            NO -> StringKeyPrashnaPart2.PRASHNA_VERDICT_NO
+            STRONGLY_NO -> StringKeyPrashnaPart2.PRASHNA_VERDICT_STRONGLY_NO
+            TIMING_DEPENDENT -> StringKeyPrashnaPart2.PRASHNA_VERDICT_TIMING_DEPENDENT
         }
         return StringResources.get(key, language)
     }

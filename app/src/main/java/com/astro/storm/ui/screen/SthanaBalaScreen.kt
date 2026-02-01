@@ -412,7 +412,7 @@ private fun SthanaBalaInsightsCard(analysis: SthanaBalaCalculator.SthanaBalaAnal
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyUI.UI_KEY_INSIGHTS),
+                    text = stringResource(StringKeyUIPart2.UI_KEY_INSIGHTS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary

@@ -66,12 +66,12 @@ class PrashnaCalculator(context: Context) {
         houseSystem: HouseSystem = HouseSystem.PLACIDUS
     ): PrashnaResult {
         val prashnaData = BirthData(
-            name = StringResources.get(StringKeyPrashnaPart2.PRASHNA_CHART_LABEL, language),
+            name = StringResources.get(StringKeyPrashnaPart1.PRASHNA_CHART_LABEL, language),
             dateTime = questionTime,
             latitude = latitude,
             longitude = longitude,
             timezone = timezone,
-            location = StringResources.get(StringKeyPrashnaPart2.PRASHNA_QUESTION_LOCATION, language)
+            location = StringResources.get(StringKeyPrashnaPart1.PRASHNA_QUESTION_LOCATION, language)
         )
 
         val chart = calculatePrashnaChart(prashnaData, houseSystem)

@@ -145,7 +145,7 @@ fun AshtavargaTransitScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_TITLE),
+                        text = stringResource(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_TITLE),
                         fontWeight = FontWeight.SemiBold
                     )
                 },
@@ -153,7 +153,7 @@ fun AshtavargaTransitScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK)
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK)
                         )
                     }
                 },
@@ -161,7 +161,7 @@ fun AshtavargaTransitScreen(
                     IconButton(onClick = { viewModel.refresh(chart, language) }) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = stringResource(StringKeyUI.BTN_RETRY)
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_RETRY)
                         )
                     }
                 },
@@ -237,19 +237,19 @@ private fun TransitContent(
             icon = Icons.Outlined.Dashboard
         ),
         TabInfo(
-            title = stringResource(StringKeyAnalysisPart1.VARSHAPHALA_CURRENT),
+            title = stringResource(StringKeyVarshaphala.VARSHAPHALA_CURRENT),
             icon = Icons.Outlined.Schedule
         ),
         TabInfo(
-            title = stringResource(StringKeyUI.UI_UPCOMING_TRANSITS),
+            title = stringResource(StringKeyUIPart2.UI_UPCOMING_TRANSITS),
             icon = Icons.Outlined.CalendarMonth
         ),
         TabInfo(
-            title = stringResource(StringKeyAnalysisPart1.ANALYSIS_TAB_PLANETS),
+            title = stringResource(StringKeyAnalysis.ANALYSIS_TAB_PLANETS),
             icon = Icons.Outlined.Public
         ),
         TabInfo(
-            title = stringResource(StringKeyAnalysisPart1.ANALYSIS_CHART_ANALYSIS),
+            title = stringResource(StringKeyAnalysis.ANALYSIS_CHART_ANALYSIS),
             icon = Icons.Outlined.Analytics
         )
     )
@@ -353,7 +353,7 @@ private fun OverviewTab(
         // Current Transit Highlights
         item {
             SectionHeader(
-                title = StringResources.get(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_HIGHLIGHTS, language),
+                title = StringResources.get(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_HIGHLIGHTS, language),
                 language = language
             )
         }
@@ -385,7 +385,7 @@ private fun OverallScoreCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = StringResources.get(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_SCORE, language),
+                text = StringResources.get(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_SCORE, language),
                 style = MaterialTheme.typography.titleMedium,
                 color = colors.TextSecondary
             )
@@ -451,9 +451,9 @@ private fun OverallScoreCard(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = when {
-                        score >= 70 -> stringResource(StringKeyUI.UI_FAVORABLE_PERIOD)
-                        score >= 40 -> stringResource(StringKeyUI.UI_MIXED_PERIOD)
-                        else -> stringResource(StringKeyUI.UI_CAUTION_PERIOD)
+                        score >= 70 -> stringResource(StringKeyUIPart1.UI_FAVORABLE_PERIOD)
+                        score >= 40 -> stringResource(StringKeyUIPart2.UI_MIXED_PERIOD)
+                        else -> stringResource(StringKeyUIPart1.UI_CAUTION_PERIOD)
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = colors.TextMuted
@@ -481,7 +481,7 @@ private fun SummaryStatisticsCard(
                 .padding(16.dp)
         ) {
             Text(
-                text = StringResources.get(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_SUMMARY, language),
+                text = StringResources.get(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_SUMMARY, language),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.TextPrimary
@@ -496,17 +496,17 @@ private fun SummaryStatisticsCard(
             ) {
                 StatItem(
                     value = summary.favorableCount.toString(),
-                    label = StringResources.get(StringKeyTransit.TRANSIT_FAVORABLE, language),
+                    label = StringResources.get(StringKeyTransitPart1.TRANSIT_FAVORABLE, language),
                     color = colors.SuccessColor
                 )
                 StatItem(
                     value = summary.averageCount.toString(),
-                    label = StringResources.get(com.astro.storm.core.common.StringKeyMatchmaking.MATCH_AVERAGE, language),
+                    label = StringResources.get(com.astro.storm.core.common.StringKeyMatchmakingPart1.MATCH_AVERAGE, language),
                     color = colors.WarningColor
                 )
                 StatItem(
                     value = summary.challengingCount.toString(),
-                    label = StringResources.get(StringKeyTransit.TRANSIT_CHALLENGING, language),
+                    label = StringResources.get(StringKeyTransitPart1.TRANSIT_CHALLENGING, language),
                     color = colors.ErrorColor
                 )
             }
@@ -516,7 +516,7 @@ private fun SummaryStatisticsCard(
             // Dominant Life Areas
             if (summary.dominantLifeAreas.isNotEmpty()) {
                 Text(
-                    text = StringResources.get(StringKeyUI.UI_AFFECTED_AREAS, language),
+                    text = StringResources.get(StringKeyUIPart1.UI_AFFECTED_AREAS, language),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = colors.TextSecondary
@@ -558,7 +558,7 @@ private fun SummaryStatisticsCard(
                         Spacer(modifier = Modifier.width(8.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = StringResources.get(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_NEXT, language),
+                                text = StringResources.get(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_NEXT, language),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = colors.TextMuted
                             )
@@ -767,7 +767,7 @@ private fun SortOptionsRow(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = StringResources.get(StringKeyUI.UI_SORT_BY, language),
+                text = StringResources.get(StringKeyUIPart2.UI_SORT_BY, language),
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.TextMuted
             )
@@ -780,10 +780,10 @@ private fun SortOptionsRow(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             val options = listOf(
-                TransitSortCriteria.BY_QUALITY_DESC to StringResources.get(StringKeyTransit.TRANSIT_QUALITY_LABEL, language),
+                TransitSortCriteria.BY_QUALITY_DESC to StringResources.get(StringKeyTransitPart1.TRANSIT_QUALITY_LABEL, language),
                 TransitSortCriteria.BY_BAV_DESC to "BAV",
                 TransitSortCriteria.BY_SAV_DESC to "SAV",
-                TransitSortCriteria.BY_EXIT_DATE to StringResources.get(StringKeyUI.UI_EXIT_DATE, language)
+                TransitSortCriteria.BY_EXIT_DATE to StringResources.get(StringKeyUIPart1.UI_EXIT_DATE, language)
             )
 
             options.forEach { (criteria, label) ->
@@ -936,11 +936,11 @@ private fun CurrentTransitCard(
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         InfoItem(
-                            label = StringResources.get(StringKeyUI.UI_FROM_MOON, language),
+                            label = StringResources.get(StringKeyUIPart1.UI_FROM_MOON, language),
                             value = "${transit.houseFromMoon}"
                         )
                         InfoItem(
-                            label = StringResources.get(StringKeyUI.UI_FROM_LAGNA, language),
+                            label = StringResources.get(StringKeyUIPart1.UI_FROM_LAGNA, language),
                             value = "${transit.houseFromAsc}"
                         )
                     }
@@ -1062,7 +1062,7 @@ private fun UpcomingTransitsTab(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "${filteredTransits.size} ${stringResource(StringKeyUI.UI_UPCOMING_TRANSITS)}",
+                    text = "${filteredTransits.size} ${stringResource(StringKeyUIPart2.UI_UPCOMING_TRANSITS)}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
@@ -1073,7 +1073,7 @@ private fun UpcomingTransitsTab(
                     onClick = { showOnlySignificant = !showOnlySignificant },
                     label = {
                         Text(
-                            text = StringResources.get(StringKeyUI.UI_SIGNIFICANT_ONLY, language),
+                            text = StringResources.get(StringKeyUIPart2.UI_SIGNIFICANT_ONLY, language),
                             fontSize = 12.sp
                         )
                     },
@@ -1171,7 +1171,7 @@ private fun UpcomingTransitCard(
                         text = if (daysUntil == 0) {
                             stringResource(StringKeyFeature.FEATURE_PREDICTIONS) // Placeholder for Today if not found, but let's check for specific Today key
                         } else {
-                            String.format(stringResource(StringKeyUI.UI_IN_DAYS_FMT), daysUntil)
+                            String.format(stringResource(StringKeyUIPart1.UI_IN_DAYS_FMT), daysUntil)
                         },
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.AccentPrimary
@@ -1335,7 +1335,7 @@ private fun PlanetDetailCard(
                 details.bestSign?.let { sign ->
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = StringResources.get(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_BEST_SIGN, language),
+                            text = StringResources.get(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_BEST_SIGN, language),
                             style = MaterialTheme.typography.labelSmall,
                             color = colors.TextMuted
                         )
@@ -1360,7 +1360,7 @@ private fun PlanetDetailCard(
                 details.worstSign?.let { sign ->
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = stringResource(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_WEAK_SIGN),
+                            text = stringResource(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_WEAK_SIGN),
                             style = MaterialTheme.typography.labelSmall,
                             color = colors.TextMuted
                         )
@@ -1393,7 +1393,7 @@ private fun PlanetDetailCard(
                     // Favorable Signs
                     if (details.favorableSigns.isNotEmpty()) {
                         Text(
-                            text = stringResource(StringKeyUI.UI_FAVORABLE_SIGNS),
+                            text = stringResource(StringKeyUIPart1.UI_FAVORABLE_SIGNS),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Medium,
                             color = colors.SuccessColor
@@ -1424,7 +1424,7 @@ private fun PlanetDetailCard(
                     if (details.unfavorableSigns.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = stringResource(StringKeyUI.UI_UNFAVORABLE_SIGNS),
+                            text = stringResource(StringKeyUIPart2.UI_UNFAVORABLE_SIGNS),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Medium,
                             color = colors.ErrorColor
@@ -1455,7 +1455,7 @@ private fun PlanetDetailCard(
                     if (details.upcomingTransits.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = StringResources.get(StringKeyUI.UI_UPCOMING_TRANSITS, language),
+                            text = StringResources.get(StringKeyUIPart2.UI_UPCOMING_TRANSITS, language),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Medium,
                             color = colors.AccentPrimary
@@ -1536,7 +1536,7 @@ private fun AnalysisTab(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = StringResources.get(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_REDUCTION, language),
+                        text = StringResources.get(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_REDUCTION, language),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.TextPrimary
@@ -1551,12 +1551,12 @@ private fun AnalysisTab(
                     ) {
                         Column {
                             Text(
-                                text = StringResources.get(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_TRIKONA, language),
+                                text = StringResources.get(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_TRIKONA, language),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = colors.TextSecondary
                             )
                             Text(
-                                text = stringResource(StringKeyAnalysisPart2.ARGALA_VIRODHA_DESC), // Using a descriptive key for reduction
+                                text = stringResource(StringKeyGeneralPart1.ARGALA_VIRODHA_DESC), // Using a descriptive key for reduction
                                 style = MaterialTheme.typography.bodySmall,
                                 color = colors.TextMuted
                             )
@@ -1577,12 +1577,12 @@ private fun AnalysisTab(
                     ) {
                         Column {
                             Text(
-                                text = stringResource(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_EKADHIPATYA, language),
+                                text = stringResource(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_EKADHIPATYA, language),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = colors.TextSecondary
                             )
                             Text(
-                                text = stringResource(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_DESC), // Using a descriptive key
+                                text = stringResource(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_DESC), // Using a descriptive key
                                 style = MaterialTheme.typography.bodySmall,
                                 color = colors.TextMuted
                             )
@@ -1610,7 +1610,7 @@ private fun AnalysisTab(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_LIFE_AREA),
+                        text = stringResource(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_LIFE_AREA),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.TextPrimary
@@ -1651,7 +1651,7 @@ private fun AnalysisTab(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                                             Text(
-                                                text = stringResource(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_ABOUT),
+                                                text = stringResource(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_ABOUT),
                                                 style = MaterialTheme.typography.titleMedium,
                                                 fontWeight = FontWeight.SemiBold,
                                                 color = colors.TextPrimary
@@ -1660,7 +1660,7 @@ private fun AnalysisTab(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.ASHTAVARGA_TRANSIT_DESC),
+                        text = stringResource(StringKeyGeneralPart2.ASHTAVARGA_TRANSIT_DESC),
                         style = MaterialTheme.typography.bodyMedium,
                         color = colors.TextSecondary,
                         lineHeight = 22.sp
@@ -1709,11 +1709,11 @@ private fun LifeAreaImpactRow(
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = when {
-                    impact > 2 -> stringResource(StringKeyUI.UI_VERY_HIGH)
-                    impact > 0 -> stringResource(StringKeyTransit.TRANSIT_FAVORABLE)
-                    impact < -2 -> stringResource(StringKeyTransit.TRANSIT_CHALLENGING)
-                    impact < 0 -> stringResource(StringKeyUI.UI_CAUTION_PERIOD)
-                    else -> stringResource(StringKeyAnalysisPart1.QUALITY_NEUTRAL)
+                    impact > 2 -> stringResource(StringKeyUIPart2.UI_VERY_HIGH)
+                    impact > 0 -> stringResource(StringKeyTransitPart1.TRANSIT_FAVORABLE)
+                    impact < -2 -> stringResource(StringKeyTransitPart1.TRANSIT_CHALLENGING)
+                    impact < 0 -> stringResource(StringKeyUIPart1.UI_CAUTION_PERIOD)
+                    else -> stringResource(StringKeyGeneralPart9.QUALITY_NEUTRAL)
                 },
                 style = MaterialTheme.typography.labelMedium,
                 color = impactColor
@@ -1825,7 +1825,7 @@ private fun ErrorState(
                 color = colors.AccentPrimary
             ) {
                 Text(
-                    text = stringResource(StringKeyUI.BTN_RETRY),
+                    text = stringResource(StringKeyUIPart1.BTN_RETRY),
                     style = MaterialTheme.typography.labelLarge,
                     color = colors.ButtonText,
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)

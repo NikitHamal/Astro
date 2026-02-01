@@ -34,11 +34,11 @@ enum class TajikaAspectType(
 }
 
 enum class AspectStrength(val displayNameKey: StringKeyInterface, val weight: Double) {
-    VERY_STRONG(StringKeyAnalysisPart1.ASPECT_VERY_STRONG, 1.0),
-    STRONG(StringKeyAnalysisPart1.ASPECT_STRONG, 0.8),
-    MODERATE(StringKeyAnalysisPart1.ASPECT_MODERATE, 0.6),
-    WEAK(StringKeyAnalysisPart1.ASPECT_WEAK, 0.4),
-    VERY_WEAK(StringKeyAnalysisPart1.ASPECT_VERY_WEAK, 0.2);
+    VERY_STRONG(StringKeyGeneralPart2.ASPECT_VERY_STRONG, 1.0),
+    STRONG(StringKeyGeneralPart2.ASPECT_STRONG, 0.8),
+    MODERATE(StringKeyGeneralPart2.ASPECT_MODERATE, 0.6),
+    WEAK(StringKeyGeneralPart2.ASPECT_WEAK, 0.4),
+    VERY_WEAK(StringKeyGeneralPart2.ASPECT_VERY_WEAK, 0.2);
 
     fun getDisplayName(language: Language): String = StringResources.get(displayNameKey, language)
 }
@@ -75,10 +75,10 @@ enum class SahamType(
 }
 
 enum class KeyDateType(val displayNameKey: StringKeyInterface) {
-    FAVORABLE(StringKeyAnalysisPart1.KEY_DATE_FAVORABLE),
-    CHALLENGING(StringKeyAnalysisPart1.KEY_DATE_CHALLENGING),
-    IMPORTANT(StringKeyAnalysisPart1.KEY_DATE_IMPORTANT),
-    TRANSIT(StringKeyAnalysisPart1.KEY_DATE_TRANSIT);
+    FAVORABLE(StringKeyGeneralPart6.KEY_DATE_FAVORABLE),
+    CHALLENGING(StringKeyGeneralPart6.KEY_DATE_CHALLENGING),
+    IMPORTANT(StringKeyGeneralPart6.KEY_DATE_IMPORTANT),
+    TRANSIT(StringKeyGeneralPart6.KEY_DATE_TRANSIT);
 
     fun getDisplayName(language: Language): String = StringResources.get(displayNameKey, language)
 }
@@ -246,37 +246,37 @@ data class VarshaphalaResult(
     val timestamp: Long = System.currentTimeMillis()
 ) {
     fun toPlainText(language: Language = Language.ENGLISH): String = buildString {
-        val reportTitle = StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_TITLE, language)
-        val yearLordSection = StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_SECTION_YEARLORD, language)
-        val munthaSection = StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_SECTION_MUNTHA, language)
-        val themesSection = StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_SECTION_THEMES, language)
-        val muddaDashaSection = StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_SECTION_MUDDA, language)
-        val predictionSection = StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_SECTION_PREDICTION, language)
-        val currentMarker = StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_CURRENT_MARKER, language)
-        val footer = StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_FOOTER, language)
+        val reportTitle = StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_TITLE, language)
+        val yearLordSection = StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_SECTION_YEARLORD, language)
+        val munthaSection = StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_SECTION_MUNTHA, language)
+        val themesSection = StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_SECTION_THEMES, language)
+        val muddaDashaSection = StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_SECTION_MUDDA, language)
+        val predictionSection = StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_SECTION_PREDICTION, language)
+        val currentMarker = StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_CURRENT_MARKER, language)
+        val footer = StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_FOOTER, language)
 
         appendLine("═══════════════════════════════════════════════════════════")
         appendLine("            $reportTitle")
         appendLine("═══════════════════════════════════════════════════════════")
         appendLine()
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_NAME, language, natalChart.birthData.name))
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_YEAR, language, year, age))
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_SOLAR_RETURN, language, solarReturnChart.solarReturnTime.toString()))
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_YEAR_RATING, language, String.format("%.1f", yearRating)))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_NAME, language, natalChart.birthData.name))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_YEAR, language, year, age))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_SOLAR_RETURN, language, solarReturnChart.solarReturnTime.toString()))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_YEAR_RATING, language, String.format("%.1f", yearRating)))
         appendLine()
         appendLine("─────────────────────────────────────────────────────────")
         appendLine("                      $yearLordSection")
         appendLine("─────────────────────────────────────────────────────────")
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_YEARLORD_LINE, language, yearLord.getLocalizedName(language), yearLordStrength))
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_POSITION, language, yearLordHouse))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_YEARLORD_LINE, language, yearLord.getLocalizedName(language), yearLordStrength))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_POSITION, language, yearLordHouse))
         appendLine(yearLordDignity)
         appendLine()
         appendLine("─────────────────────────────────────────────────────────")
         appendLine("                       $munthaSection")
         appendLine("─────────────────────────────────────────────────────────")
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_MUNTHA_POSITION, language, String.format("%.2f", muntha.degree), muntha.sign.getLocalizedName(language)))
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_MUNTHA_HOUSE, language, muntha.house))
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_MUNTHA_LORD, language, muntha.lord.getLocalizedName(language), muntha.lordHouse))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_MUNTHA_POSITION, language, String.format("%.2f", muntha.degree), muntha.sign.getLocalizedName(language)))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_MUNTHA_HOUSE, language, muntha.house))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_MUNTHA_LORD, language, muntha.lord.getLocalizedName(language), muntha.lordHouse))
         appendLine(muntha.interpretation)
         appendLine()
         appendLine("─────────────────────────────────────────────────────────")
@@ -289,7 +289,7 @@ data class VarshaphalaResult(
         appendLine("─────────────────────────────────────────────────────────")
         muddaDasha.forEach { period ->
             val marker = if (period.isCurrent) currentMarker else ""
-            appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_DASHA_LINE, language,
+            appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_DASHA_LINE, language,
                 period.planet.getLocalizedName(language),
                 period.startDate.toString(),
                 period.endDate.toString(),
@@ -298,8 +298,8 @@ data class VarshaphalaResult(
         }
         appendLine()
         appendLine("─────────────────────────────────────────────────────────")
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_FAVORABLE_MONTHS, language, favorableMonths.joinToString()))
-        appendLine(StringResources.get(StringKeyVarshaphala.VARSHA_REPORT_CHALLENGING_MONTHS, language, challengingMonths.joinToString()))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_FAVORABLE_MONTHS, language, favorableMonths.joinToString()))
+        appendLine(StringResources.get(StringKeyGeneralPart12.VARSHA_REPORT_CHALLENGING_MONTHS, language, challengingMonths.joinToString()))
         appendLine("─────────────────────────────────────────────────────────")
         appendLine()
         appendLine("                   $predictionSection")

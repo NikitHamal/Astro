@@ -172,20 +172,20 @@ fun FullScreenChartDialog(
                 IconButton(onClick = onDismiss) {
                     Icon(
                         Icons.Default.Close,
-                        contentDescription = stringResource(StringKeyAnalysisPart1.DIALOG_CLOSE),
+                        contentDescription = stringResource(StringKeyUIPart1.DIALOG_CLOSE),
                         tint = DialogColors.TextPrimary
                     )
                 }
             }
 
             // Localized strings for action buttons
-            val resetLabel = stringResource(StringKeyAnalysisPart1.DIALOG_RESET)
-            val zoomInLabel = stringResource(StringKeyAnalysisPart1.DIALOG_ZOOM_IN)
-            val zoomOutLabel = stringResource(StringKeyAnalysisPart1.DIALOG_ZOOM_OUT)
-            val savingLabel = stringResource(StringKeyAnalysisPart1.DIALOG_SAVING)
-            val downloadLabel = stringResource(StringKeyAnalysisPart1.DIALOG_DOWNLOAD)
-            val savedMessage = stringResource(StringKeyAnalysisPart1.DIALOG_CHART_SAVED)
-            val failedMessage = stringResource(StringKeyAnalysisPart1.DIALOG_SAVE_FAILED)
+            val resetLabel = stringResource(StringKeyUIPart1.DIALOG_RESET)
+            val zoomInLabel = stringResource(StringKeyUIPart1.DIALOG_ZOOM_IN)
+            val zoomOutLabel = stringResource(StringKeyUIPart1.DIALOG_ZOOM_OUT)
+            val savingLabel = stringResource(StringKeyUIPart1.DIALOG_SAVING)
+            val downloadLabel = stringResource(StringKeyUIPart1.DIALOG_DOWNLOAD)
+            val savedMessage = stringResource(StringKeyUIPart1.DIALOG_CHART_SAVED)
+            val failedMessage = stringResource(StringKeyUIPart1.DIALOG_SAVE_FAILED)
 
             // Bottom action bar
             Row(

@@ -85,14 +85,14 @@ fun BirthChartScreen(
     if (chart == null) {
         EmptyChartScreen(
             title = stringResource(StringKeyFeature.FEATURE_BIRTH_CHART),
-            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE_LONG),
+            message = stringResource(StringKeyGeneralPart7.NO_PROFILE_MESSAGE_LONG),
             onBack = onBack
         )
         return
     }
 
     val hapticFeedback = LocalHapticFeedback.current
-    val ascendantLabel = stringResource(StringKeyPart1.CHART_ASCENDANT)
+    val ascendantLabel = stringResource(StringKeyGeneralPart3.CHART_ASCENDANT)
 
     var showFullScreenChart by remember { mutableStateOf(false) }
     var fullScreenChartTitle by remember { mutableStateOf(ascendantLabel) }
@@ -205,7 +205,7 @@ private fun BirthChartTopBar(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                    contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -247,7 +247,7 @@ fun EmptyChartScreen(
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -288,7 +288,7 @@ fun EmptyChartScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(StringKeyMatchPart1.MISC_NO_DATA),
+                    text = stringResource(StringKeyGeneralPart7.MISC_NO_DATA),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,

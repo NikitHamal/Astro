@@ -594,7 +594,7 @@ fun DeepAnalysisLoading(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(StringKeyPart1.MSG_MAY_TAKE_MOMENT),
+                text = stringResource(StringKeyGeneralPart7.MSG_MAY_TAKE_MOMENT),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -671,7 +671,7 @@ fun DeepAnalysisError(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyUI.BTN_RETRY),
+                        text = stringResource(StringKeyUIPart1.BTN_RETRY),
                         fontWeight = FontWeight.SemiBold
                     )
                 }

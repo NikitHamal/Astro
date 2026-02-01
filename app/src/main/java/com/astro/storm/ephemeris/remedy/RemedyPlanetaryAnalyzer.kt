@@ -44,39 +44,39 @@ object RemedyPlanetaryAnalyzer {
 
         if (isDebilitated) {
             if (deepDebilitation) {
-                issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_DEBILITATED_DEEP, language, signLongitude, sign.getLocalizedName(language)))
+                issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_DEBILITATED_DEEP, language, signLongitude, sign.getLocalizedName(language)))
                 strengthScore -= 35
             } else {
-                issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_DEBILITATED, language, sign.getLocalizedName(language)))
+                issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_DEBILITATED, language, sign.getLocalizedName(language)))
                 strengthScore -= 25
             }
         }
 
         if (isExalted) {
             if (deepExaltation) {
-                positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_EXALTED_DEEP, language, signLongitude, sign.getLocalizedName(language)))
+                positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_EXALTED_DEEP, language, signLongitude, sign.getLocalizedName(language)))
                 strengthScore += 35
             } else {
-                positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_EXALTED, language, sign.getLocalizedName(language)))
+                positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_EXALTED, language, sign.getLocalizedName(language)))
                 strengthScore += 25
             }
         }
 
         val hasNeechaBhanga = if (isDebilitated) checkNeechaBhangaRajaYoga(planet, chart, ascendantSign) else false
         if (hasNeechaBhanga) {
-            positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_NEECHA_BHANGA, language))
+            positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_NEECHA_BHANGA, language))
             strengthScore += 20
         }
 
         val isOwnSign = isInOwnSign(planet, sign)
         if (isOwnSign) {
-            positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_OWN_SIGN, language, sign.getLocalizedName(language)))
+            positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_OWN_SIGN, language, sign.getLocalizedName(language)))
             strengthScore += 15
         }
 
         val isMooltrikona = isInMooltrikona(planet, sign, signLongitude)
         if (isMooltrikona && !isOwnSign) {
-            positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_MOOLTRIKONA, language))
+            positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_MOOLTRIKONA, language))
             strengthScore += 12
         }
 
@@ -86,30 +86,30 @@ object RemedyPlanetaryAnalyzer {
         val isNeutralSign = relationship == VedicAstrologyUtils.PlanetaryRelationship.NEUTRAL
 
         if (isFriendlySign && !isOwnSign && !isExalted) {
-            positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_FRIEND_SIGN, language, sign.ruler.displayName))
+            positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_FRIEND_SIGN, language, sign.ruler.displayName))
             strengthScore += 8
         }
 
         if (isEnemySign && !isDebilitated) {
-            issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_ENEMY_SIGN, language, sign.ruler.displayName))
+            issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_ENEMY_SIGN, language, sign.ruler.displayName))
             strengthScore -= 10
         }
 
         when (house) {
             1, 4, 7, 10 -> {
-                positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_KENDRA, language, house))
+                positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_KENDRA, language, house))
                 strengthScore += 10
             }
             5, 9 -> {
-                positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_TRIKONA, language, house))
+                positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_TRIKONA, language, house))
                 strengthScore += 10
             }
             6, 8, 12 -> {
-                issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_DUSTHANA, language, house))
+                issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_DUSTHANA, language, house))
                 strengthScore -= 15
             }
             2, 11 -> {
-                positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_WEALTH, language, house))
+                positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_WEALTH, language, house))
                 strengthScore += 5
             }
         }
@@ -117,12 +117,12 @@ object RemedyPlanetaryAnalyzer {
         val isRetrograde = position.isRetrograde
         if (isRetrograde && planet != Planet.SUN && planet != Planet.MOON) {
             if (planet in listOf(Planet.SATURN, Planet.JUPITER)) {
-                positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_RETRO_STRONG, language))
+                positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_RETRO_STRONG, language))
                 strengthScore += 5
             } else if (planet == Planet.MERCURY) {
-                issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_RETRO_REVIEW, language))
+                issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_RETRO_REVIEW, language))
             } else if (planet in listOf(Planet.MARS, Planet.VENUS)) {
-                issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_RETRO_INTERNAL, language))
+                issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_RETRO_INTERNAL, language))
                 strengthScore -= 5
             }
         }
@@ -130,21 +130,21 @@ object RemedyPlanetaryAnalyzer {
         val isCombust = checkCombustion(planet, chart, isRetrograde)
         if (isCombust) {
             val combustStrength = if (planet == Planet.MOON) "severely" else "moderately"
-            issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_COMBUST, language, combustStrength))
+            issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_COMBUST, language, combustStrength))
             strengthScore -= if (planet == Planet.MOON) 25 else 20
         }
 
         val conjunctMalefics = checkMaleficConjunction(planet, chart)
         if (conjunctMalefics.isNotEmpty()) {
             val names = conjunctMalefics.joinToString { it.getLocalizedName(language) }
-            issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_CONJUNCT_MALEFICS, language, names))
+            issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_CONJUNCT_MALEFICS, language, names))
             strengthScore -= conjunctMalefics.size * 7
         }
 
         val conjunctBenefics = checkBeneficConjunction(planet, chart)
         if (conjunctBenefics.isNotEmpty()) {
             val names = conjunctBenefics.joinToString { it.getLocalizedName(language) }
-            positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_CONJUNCT_BENEFICS, language, names))
+            positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_CONJUNCT_BENEFICS, language, names))
             strengthScore += conjunctBenefics.size * 5
         }
 
@@ -153,29 +153,29 @@ object RemedyPlanetaryAnalyzer {
         val aspectedByMalefics = aspectingPlanets.any { it in listOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU) }
 
         if (aspectedByBenefics && Planet.JUPITER in aspectingPlanets) {
-            positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_ASPECT_JUPITER, language))
+            positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_ASPECT_JUPITER, language))
             strengthScore += 8
         }
         if (aspectedByMalefics && Planet.SATURN in aspectingPlanets) {
-            issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_ASPECT_SATURN, language))
+            issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_ASPECT_SATURN, language))
             strengthScore -= 5
         }
 
         val isInGandanta = checkGandanta(sign, signLongitude)
         if (isInGandanta) {
-            issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_GANDANTA, language))
+            issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_GANDANTA, language))
             strengthScore -= 12
         }
 
         val isInMrityuBhaga = checkMrityuBhaga(planet, sign, signLongitude)
         if (isInMrityuBhaga) {
-            issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_MRITYU_BHAGA, language))
+            issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_MRITYU_BHAGA, language))
             strengthScore -= 8
         }
 
         val isInPushkara = checkPushkaraNavamsha(signLongitude, sign)
         if (isInPushkara) {
-            positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_PUSHKARA, language))
+            positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_PUSHKARA, language))
             strengthScore += 5
         }
 
@@ -184,17 +184,17 @@ object RemedyPlanetaryAnalyzer {
         val isYogakaraka = isYogakarakaPlanet(planet, ascendantSign)
 
         if (isYogakaraka) {
-            positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_YOGAKARAKA, language, ascendantSign.getLocalizedName(language)))
+            positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_YOGAKARAKA, language, ascendantSign.getLocalizedName(language)))
             strengthScore += 10
         }
 
         if (planet == Planet.MOON) {
             val moonStrength = checkMoonPaksha(chart)
             if (moonStrength < 0) {
-                issues.add(StringResources.get(StringKeyRemedy.ANALYSIS_MOON_DARK, language))
+                issues.add(StringResources.get(StringKeyAnalysis.ANALYSIS_MOON_DARK, language))
                 strengthScore += moonStrength
             } else if (moonStrength > 0) {
-                positives.add(StringResources.get(StringKeyRemedy.ANALYSIS_MOON_BRIGHT, language))
+                positives.add(StringResources.get(StringKeyAnalysis.ANALYSIS_MOON_BRIGHT, language))
                 strengthScore += moonStrength
             }
         }
@@ -272,18 +272,18 @@ object RemedyPlanetaryAnalyzer {
         isRetrograde: Boolean, isCombust: Boolean, language: Language
     ): String {
         val parts = mutableListOf<String>()
-        parts.add(StringResources.get(StringKeyRemedy.DIGNITY_IN_SIGN, language, planet.getLocalizedName(language), sign.getLocalizedName(language)))
+        parts.add(StringResources.get(StringKeyUIPart1.DIGNITY_IN_SIGN, language, planet.getLocalizedName(language), sign.getLocalizedName(language)))
         when {
-            isExalted -> parts.add(StringResources.get(StringKeyRemedy.DIGNITY_EXALTED, language))
-            isDebilitated -> parts.add(StringResources.get(StringKeyRemedy.DIGNITY_DEBILITATED, language))
-            isMooltrikona -> parts.add(StringResources.get(StringKeyRemedy.DIGNITY_MOOLTRIKONA, language))
-            isOwnSign -> parts.add(StringResources.get(StringKeyRemedy.DIGNITY_OWN, language))
-            isFriendlySign -> parts.add(StringResources.get(StringKeyRemedy.DIGNITY_FRIEND, language))
-            isEnemySign -> parts.add(StringResources.get(StringKeyRemedy.DIGNITY_ENEMY, language))
-            isNeutralSign -> parts.add(StringResources.get(StringKeyRemedy.DIGNITY_NEUTRAL, language))
+            isExalted -> parts.add(StringResources.get(StringKeyUIPart1.DIGNITY_EXALTED, language))
+            isDebilitated -> parts.add(StringResources.get(StringKeyUIPart1.DIGNITY_DEBILITATED, language))
+            isMooltrikona -> parts.add(StringResources.get(StringKeyUIPart1.DIGNITY_MOOLTRIKONA, language))
+            isOwnSign -> parts.add(StringResources.get(StringKeyUIPart1.DIGNITY_OWN, language))
+            isFriendlySign -> parts.add(StringResources.get(StringKeyUIPart1.DIGNITY_FRIEND, language))
+            isEnemySign -> parts.add(StringResources.get(StringKeyUIPart1.DIGNITY_ENEMY, language))
+            isNeutralSign -> parts.add(StringResources.get(StringKeyUIPart1.DIGNITY_NEUTRAL, language))
         }
-        if (isRetrograde) parts.add(StringResources.get(StringKeyRemedy.DIGNITY_RETRO, language))
-        if (isCombust) parts.add(StringResources.get(StringKeyRemedy.DIGNITY_COMBUST, language))
+        if (isRetrograde) parts.add(StringResources.get(StringKeyUIPart1.DIGNITY_RETRO, language))
+        if (isCombust) parts.add(StringResources.get(StringKeyUIPart1.DIGNITY_COMBUST, language))
         return parts.joinToString(" ")
     }
 

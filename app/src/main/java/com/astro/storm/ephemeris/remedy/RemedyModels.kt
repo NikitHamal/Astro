@@ -14,12 +14,12 @@ enum class PlanetaryStrength(val displayName: String, val severity: Int) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            VERY_STRONG -> StringKeyRemedy.STRENGTH_VERY_STRONG
-            STRONG -> StringKeyRemedy.STRENGTH_STRONG
-            MODERATE -> StringKeyRemedy.STRENGTH_MODERATE
-            WEAK -> StringKeyRemedy.STRENGTH_WEAK
-            VERY_WEAK -> StringKeyRemedy.STRENGTH_VERY_WEAK
-            AFFLICTED -> StringKeyRemedy.STRENGTH_AFFLICTED
+            VERY_STRONG -> StringKeyUIPart1.STRENGTH_VERY_STRONG
+            STRONG -> StringKeyUIPart1.STRENGTH_STRONG
+            MODERATE -> StringKeyUIPart1.STRENGTH_MODERATE
+            WEAK -> StringKeyUIPart1.STRENGTH_WEAK
+            VERY_WEAK -> StringKeyUIPart1.STRENGTH_VERY_WEAK
+            AFFLICTED -> StringKeyUIPart1.STRENGTH_AFFLICTED
         }
         return StringResources.get(key, language)
     }
@@ -39,16 +39,16 @@ enum class RemedyCategory(val displayName: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            GEMSTONE -> StringKeyRemedy.CAT_GEMSTONE
-            MANTRA -> StringKeyRemedy.CAT_MANTRA
-            YANTRA -> StringKeyRemedy.CAT_YANTRA
-            CHARITY -> StringKeyRemedy.CAT_CHARITY
-            FASTING -> StringKeyRemedy.CAT_FASTING
-            COLOR -> StringKeyRemedy.CAT_COLOR
-            METAL -> StringKeyRemedy.CAT_METAL
-            RUDRAKSHA -> StringKeyRemedy.CAT_RUDRAKSHA
-            DEITY -> StringKeyRemedy.CAT_DEITY
-            LIFESTYLE -> StringKeyRemedy.CAT_LIFESTYLE
+            GEMSTONE -> StringKeyGeneralPart2.CAT_GEMSTONE
+            MANTRA -> StringKeyGeneralPart2.CAT_MANTRA
+            YANTRA -> StringKeyGeneralPart2.CAT_YANTRA
+            CHARITY -> StringKeyGeneralPart2.CAT_CHARITY
+            FASTING -> StringKeyGeneralPart2.CAT_FASTING
+            COLOR -> StringKeyGeneralPart2.CAT_COLOR
+            METAL -> StringKeyGeneralPart2.CAT_METAL
+            RUDRAKSHA -> StringKeyGeneralPart2.CAT_RUDRAKSHA
+            DEITY -> StringKeyGeneralPart2.CAT_DEITY
+            LIFESTYLE -> StringKeyGeneralPart2.CAT_LIFESTYLE
         }
         return StringResources.get(key, language)
     }
@@ -62,10 +62,10 @@ enum class RemedyPriority(val displayName: String, val level: Int) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            ESSENTIAL -> StringKeyRemedy.PRIORITY_ESSENTIAL
-            HIGHLY_RECOMMENDED -> StringKeyRemedy.PRIORITY_HIGHLY_RECOMMENDED
-            RECOMMENDED -> StringKeyRemedy.PRIORITY_RECOMMENDED
-            OPTIONAL -> StringKeyRemedy.PRIORITY_OPTIONAL
+            ESSENTIAL -> StringKeyGeneralPart9.PRIORITY_ESSENTIAL
+            HIGHLY_RECOMMENDED -> StringKeyGeneralPart9.PRIORITY_HIGHLY_RECOMMENDED
+            RECOMMENDED -> StringKeyGeneralPart9.PRIORITY_RECOMMENDED
+            OPTIONAL -> StringKeyGeneralPart9.PRIORITY_OPTIONAL
         }
         return StringResources.get(key, language)
     }

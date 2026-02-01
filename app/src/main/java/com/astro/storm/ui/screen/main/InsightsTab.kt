@@ -59,9 +59,9 @@ import java.time.temporal.ChronoUnit
 import java.util.Locale
 
 enum class HoroscopePeriod(val titleKey: StringKey) {
-    TODAY(StringKeyPart1.PERIOD_TODAY),
-    TOMORROW(StringKeyPart1.PERIOD_TOMORROW),
-    WEEKLY(StringKeyPart1.PERIOD_WEEKLY);
+    TODAY(StringKeyGeneralPart7.PERIOD_TODAY),
+    TOMORROW(StringKeyGeneralPart7.PERIOD_TOMORROW),
+    WEEKLY(StringKeyGeneralPart7.PERIOD_WEEKLY);
 
     fun getLocalizedTitle(language: Language): String = StringResources.get(titleKey, language)
 }
@@ -256,7 +256,7 @@ private fun InsightsContent(
                             AffirmationCard(horoscope.affirmationKey)
                         }
                     } ?: item(key = "today_unavailable") {
-                        HoroscopeUnavailableCard(periodKey = StringKeyPart1.PERIOD_TODAY, onRetry = onRetryFailed)
+                        HoroscopeUnavailableCard(periodKey = StringKeyGeneralPart7.PERIOD_TODAY, onRetry = onRetryFailed)
                     }
                 }
                 HoroscopePeriod.TOMORROW -> {
@@ -274,7 +274,7 @@ private fun InsightsContent(
                             LuckyElementsCard(horoscope.luckyElements)
                         }
                     } ?: item(key = "tomorrow_unavailable") {
-                        HoroscopeUnavailableCard(periodKey = StringKeyPart1.PERIOD_TOMORROW, onRetry = onRetryFailed)
+                        HoroscopeUnavailableCard(periodKey = StringKeyGeneralPart7.PERIOD_TOMORROW, onRetry = onRetryFailed)
                     }
                 }
                 HoroscopePeriod.WEEKLY -> {
@@ -295,7 +295,7 @@ private fun InsightsContent(
                             WeeklyAdviceCard(weekly.weeklyAdvice)
                         }
                     } ?: item(key = "weekly_unavailable") {
-                        HoroscopeUnavailableCard(periodKey = StringKeyPart1.PERIOD_WEEKLY, onRetry = onRetryFailed)
+                        HoroscopeUnavailableCard(periodKey = StringKeyGeneralPart7.PERIOD_WEEKLY, onRetry = onRetryFailed)
                     }
                 }
             }
@@ -353,7 +353,7 @@ private fun PartialErrorBanner(
 
             TextButton(onClick = onRetry) {
                 Text(
-                    text = stringResource(StringKeyUI.BTN_RETRY),
+                    text = stringResource(StringKeyUIPart1.BTN_RETRY),
                     color = AppTheme.WarningColor,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -437,7 +437,7 @@ private fun HoroscopeUnavailableCard(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(StringKeyUI.BTN_TRY_AGAIN))
+                Text(stringResource(StringKeyUIPart1.BTN_TRY_AGAIN))
             }
         }
     }
@@ -507,7 +507,7 @@ private fun InsightsErrorState(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyUI.BTN_TRY_AGAIN),
+                    text = stringResource(StringKeyUIPart1.BTN_TRY_AGAIN),
                     fontWeight = FontWeight.SemiBold
                 )
             }
@@ -668,7 +668,7 @@ private fun PeriodSelectorItem(
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
                     imageVector = Icons.Outlined.CloudOff,
-                    contentDescription = stringResource(StringKeyMatchPart1.MISC_UNAVAILABLE),
+                    contentDescription = stringResource(StringKeyGeneralPart7.MISC_UNAVAILABLE),
                     tint = textColor,
                     modifier = Modifier.size(12.dp)
                 )
@@ -717,7 +717,7 @@ private fun DailyHoroscopeHeader(
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            text = stringResource(StringKeyUI.BTN_PREVIEW),
+                            text = stringResource(StringKeyUIPart1.BTN_PREVIEW),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.AccentPrimary
                         )
@@ -751,7 +751,7 @@ private fun DailyHoroscopeHeader(
             ) {
                 InfoChip(
                     icon = Icons.Outlined.NightlightRound,
-                    label = stringResource(StringKeyPart1.TRANSITS_MOON_IN, horoscope.moonSign.getLocalizedName(language)),
+                    label = stringResource(StringKeyTransitPart1.TRANSITS_MOON_IN, horoscope.moonSign.getLocalizedName(language)),
                     modifier = Modifier.weight(1f)
                 )
                 InfoChip(
@@ -821,7 +821,7 @@ private fun EnergyCard(overallEnergy: Int) {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = stringResource(StringKeyPart1.INSIGHTS_OVERALL_ENERGY),
+                text = stringResource(StringKeyGeneralPart5.INSIGHTS_OVERALL_ENERGY),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -898,22 +898,22 @@ private fun getEnergyColor(energy: Int): Color = when {
 }
 
 private fun getEnergyDescription(energy: Int, language: Language): String = when {
-    energy >= 9 -> StringResources.get(StringKeyPart1.ENERGY_EXCEPTIONAL, language)
-    energy >= 8 -> StringResources.get(StringKeyPart1.ENERGY_EXCELLENT, language)
-    energy >= 7 -> StringResources.get(StringKeyPart1.ENERGY_STRONG, language)
-    energy >= 6 -> StringResources.get(StringKeyPart1.ENERGY_FAVORABLE, language)
-    energy >= 5 -> StringResources.get(StringKeyPart1.ENERGY_BALANCED, language)
-    energy >= 4 -> StringResources.get(StringKeyPart1.ENERGY_MODERATE, language)
-    energy >= 3 -> StringResources.get(StringKeyPart1.ENERGY_LOWER, language)
-    energy >= 2 -> StringResources.get(StringKeyPart1.ENERGY_CHALLENGING, language)
-    else -> StringResources.get(StringKeyPart1.ENERGY_REST, language)
+    energy >= 9 -> StringResources.get(StringKeyGeneralPart4.ENERGY_EXCEPTIONAL, language)
+    energy >= 8 -> StringResources.get(StringKeyGeneralPart4.ENERGY_EXCELLENT, language)
+    energy >= 7 -> StringResources.get(StringKeyGeneralPart4.ENERGY_STRONG, language)
+    energy >= 6 -> StringResources.get(StringKeyGeneralPart4.ENERGY_FAVORABLE, language)
+    energy >= 5 -> StringResources.get(StringKeyGeneralPart4.ENERGY_BALANCED, language)
+    energy >= 4 -> StringResources.get(StringKeyGeneralPart4.ENERGY_MODERATE, language)
+    energy >= 3 -> StringResources.get(StringKeyGeneralPart4.ENERGY_LOWER, language)
+    energy >= 2 -> StringResources.get(StringKeyGeneralPart4.ENERGY_CHALLENGING, language)
+    else -> StringResources.get(StringKeyGeneralPart4.ENERGY_REST, language)
 }
 
 @Composable
 private fun LifeAreasSection(lifeAreas: List<HoroscopeCalculator.LifeAreaPrediction>) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(
-            text = stringResource(StringKeyPart1.INSIGHTS_LIFE_AREAS),
+            text = stringResource(StringKeyGeneralPart5.INSIGHTS_LIFE_AREAS),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -1058,7 +1058,7 @@ private fun ExpandIcon(expanded: Boolean) {
 
     Icon(
         imageVector = Icons.Default.ExpandMore,
-        contentDescription = if (expanded) stringResource(StringKeyMatchPart1.MISC_COLLAPSE) else stringResource(StringKeyMatchPart1.MISC_EXPAND),
+        contentDescription = if (expanded) stringResource(StringKeyGeneralPart7.MISC_COLLAPSE) else stringResource(StringKeyGeneralPart7.MISC_EXPAND),
         tint = AppTheme.TextMuted,
         modifier = Modifier
             .size(24.dp)
@@ -1095,7 +1095,7 @@ private fun LuckyElementsCard(lucky: HoroscopeCalculator.LuckyElements) {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = stringResource(StringKeyPart1.INSIGHTS_LUCKY_ELEMENTS),
+                text = stringResource(StringKeyGeneralPart5.INSIGHTS_LUCKY_ELEMENTS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1111,14 +1111,14 @@ private fun LuckyElementsCard(lucky: HoroscopeCalculator.LuckyElements) {
             ) {
                 LuckyElement(
                     Icons.Outlined.Numbers,
-                    stringResource(StringKeyPart1.LUCKY_NUMBER),
+                    stringResource(StringKeyGeneralPart6.LUCKY_NUMBER),
                     lucky.number.toString().let {
                         if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it) else it
                     }
                 )
-                LuckyElement(Icons.Outlined.Palette, stringResource(StringKeyPart1.LUCKY_COLOR), lucky.color)
-                LuckyElement(Icons.Outlined.Explore, stringResource(StringKeyPart1.LUCKY_DIRECTION), lucky.direction)
-                LuckyElement(Icons.Outlined.Diamond, stringResource(StringKeyPart1.LUCKY_GEMSTONE), lucky.gemstone)
+                LuckyElement(Icons.Outlined.Palette, stringResource(StringKeyGeneralPart6.LUCKY_COLOR), lucky.color)
+                LuckyElement(Icons.Outlined.Explore, stringResource(StringKeyGeneralPart6.LUCKY_DIRECTION), lucky.direction)
+                LuckyElement(Icons.Outlined.Diamond, stringResource(StringKeyGeneralPart6.LUCKY_GEMSTONE), lucky.gemstone)
             }
         }
     }
@@ -1170,7 +1170,7 @@ private fun RecommendationsCard(recommendations: List<StringKey>, cautions: List
         Column(modifier = Modifier.padding(20.dp)) {
             if (recommendations.isNotEmpty()) {
                 Text(
-                    text = stringResource(StringKeyPart1.INSIGHTS_RECOMMENDATIONS),
+                    text = stringResource(StringKeyGeneralPart5.INSIGHTS_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.SuccessColor
@@ -1192,7 +1192,7 @@ private fun RecommendationsCard(recommendations: List<StringKey>, cautions: List
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 Text(
-                    text = stringResource(StringKeyPart1.INSIGHTS_CAUTIONS),
+                    text = stringResource(StringKeyGeneralPart5.INSIGHTS_CAUTIONS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.WarningColor
@@ -1270,7 +1270,7 @@ private fun AffirmationCard(affirmationKey: StringKey) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyPart1.INSIGHTS_TODAYS_AFFIRMATION),
+                text = stringResource(StringKeyGeneralPart5.INSIGHTS_TODAYS_AFFIRMATION),
                 style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.AccentPrimary
             )
@@ -1330,7 +1330,7 @@ private fun WeeklyEnergyChart(dailyHighlights: List<HoroscopeCalculator.DailyHig
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = stringResource(StringKeyPart1.INSIGHTS_WEEKLY_ENERGY),
+                text = stringResource(StringKeyGeneralPart5.INSIGHTS_WEEKLY_ENERGY),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1399,7 +1399,7 @@ private fun KeyDatesSection(keyDates: List<HoroscopeCalculator.KeyDate>) {
 
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(
-            text = stringResource(StringKeyPart1.INSIGHTS_KEY_DATES),
+            text = stringResource(StringKeyGeneralPart5.INSIGHTS_KEY_DATES),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -1484,7 +1484,7 @@ private fun WeeklyPredictionsSection(predictions: Map<HoroscopeCalculator.LifeAr
 
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(
-            text = stringResource(StringKeyPart1.INSIGHTS_WEEKLY_OVERVIEW),
+            text = stringResource(StringKeyGeneralPart5.INSIGHTS_WEEKLY_OVERVIEW),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -1600,7 +1600,7 @@ private fun WeeklyAdviceCard(advice: String) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyPart1.INSIGHTS_WEEKLY_ADVICE),
+                    text = stringResource(StringKeyGeneralPart5.INSIGHTS_WEEKLY_ADVICE),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.AccentPrimary
@@ -1641,7 +1641,7 @@ private fun CurrentDashaCard(timeline: DashaCalculator.DashaTimeline) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(StringKeyPart1.DASHA_CURRENT_PERIOD),
+                    text = stringResource(StringKeyDashaPart1.DASHA_CURRENT_PERIOD),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1654,7 +1654,7 @@ private fun CurrentDashaCard(timeline: DashaCalculator.DashaTimeline) {
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = stringResource(StringKeyPart1.DASHA_ACTIVE),
+                        text = stringResource(StringKeyDashaPart1.DASHA_ACTIVE),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.SuccessColor
                     )
@@ -1664,7 +1664,7 @@ private fun CurrentDashaCard(timeline: DashaCalculator.DashaTimeline) {
             Spacer(modifier = Modifier.height(16.dp))
 
             DashaPeriodRow(
-                labelKey = StringKeyPart1.DASHA_MAHADASHA,
+                labelKey = StringKeyDashaPart1.DASHA_MAHADASHA,
                 planet = currentMahadasha.planet,
                 startDate = currentMahadasha.startDate.toLocalDate(),
                 endDate = currentMahadasha.endDate.toLocalDate(),
@@ -1688,7 +1688,7 @@ private fun CurrentDashaCard(timeline: DashaCalculator.DashaTimeline) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 DashaPeriodRow(
-                    labelKey = StringKeyPart1.DASHA_ANTARDASHA,
+                    labelKey = StringKeyDashaPart1.DASHA_ANTARDASHA,
                     planet = antardasha.planet,
                     startDate = antardasha.startDate.toLocalDate(),
                     endDate = antardasha.endDate.toLocalDate(),
@@ -1722,7 +1722,7 @@ private fun PratyantardashaRow(pratyantardasha: DashaCalculator.Pratyantardasha)
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(StringKeyPart1.DASHA_PRATYANTARDASHA),
+            text = stringResource(StringKeyDashaPart1.DASHA_PRATYANTARDASHA),
             style = MaterialTheme.typography.bodySmall,
             color = AppTheme.TextMuted
         )
@@ -1804,7 +1804,7 @@ private fun DashaPeriodRow(
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = stringResource(StringKeyPart1.DASHA_PERIOD_NAME, label, planet.getLocalizedName(language)),
+                text = stringResource(StringKeyDashaPart1.DASHA_PERIOD_NAME, label, planet.getLocalizedName(language)),
                 style = if (isPrimary) MaterialTheme.typography.titleSmall
                 else MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
@@ -1826,7 +1826,7 @@ private fun DashaPeriodRow(
                     color = AppTheme.AccentPrimary
                 )
                 Text(
-                    text = stringResource(StringKeyPart1.DASHA_REMAINING),
+                    text = stringResource(StringKeyDashaPart1.DASHA_REMAINING),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1883,7 +1883,7 @@ private fun DashaTimelinePreview(timeline: DashaCalculator.DashaTimeline) {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = stringResource(StringKeyPart1.DASHA_UPCOMING),
+                text = stringResource(StringKeyDashaPart1.DASHA_UPCOMING),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1908,7 +1908,7 @@ private fun DashaTimelinePreview(timeline: DashaCalculator.DashaTimeline) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyPart1.DASHA_LAST_IN_MAHADASHA),
+                        text = stringResource(StringKeyDashaPart1.DASHA_LAST_IN_MAHADASHA),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )
@@ -1979,13 +1979,13 @@ private fun UpcomingPeriodItem(
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = stringResource(StringKeyPart1.DASHA_COMBINED_NAME, mahadashaPlanet.getLocalizedName(language), planet.getLocalizedName(language)),
+                text = stringResource(StringKeyDashaPart1.DASHA_COMBINED_NAME, mahadashaPlanet.getLocalizedName(language), planet.getLocalizedName(language)),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Text(
-                text = stringResource(StringKeyPart1.DASHA_STARTS, formattedDate),
+                text = stringResource(StringKeyDashaPart1.DASHA_STARTS, formattedDate),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -1993,7 +1993,7 @@ private fun UpcomingPeriodItem(
 
         if (daysUntil > 0) {
             Text(
-                text = stringResource(StringKeyMatchPart1.TIME_IN, durationText),
+                text = stringResource(StringKeyGeneralPart11.TIME_IN, durationText),
                 style = MaterialTheme.typography.labelSmall,
                 color = if (isFirst) AppTheme.AccentPrimary else AppTheme.TextMuted
             )
@@ -2007,7 +2007,7 @@ private fun PlanetaryTransitsSection(influences: List<HoroscopeCalculator.Planet
 
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(
-            text = stringResource(StringKeyPart1.TRANSITS_CURRENT),
+            text = stringResource(StringKeyTransitPart1.TRANSITS_CURRENT),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -2147,7 +2147,7 @@ private fun EmptyInsightsState(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = stringResource(StringKeyPart1.SETTINGS_NO_PROFILE),
+                text = stringResource(StringKeyGeneralPart10.SETTINGS_NO_PROFILE),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.TextPrimary,
@@ -2157,7 +2157,7 @@ private fun EmptyInsightsState(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = stringResource(StringKeyPart1.SETTINGS_TAP_TO_SELECT),
+                text = stringResource(StringKeyGeneralPart10.SETTINGS_TAP_TO_SELECT),
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.TextMuted,
                 textAlign = TextAlign.Center,
@@ -2191,7 +2191,7 @@ private fun EmptyInsightsState(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyUI.BTN_CREATE_CHART),
+                    text = stringResource(StringKeyUIPart1.BTN_CREATE_CHART),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -2215,14 +2215,14 @@ private fun calculateProgress(startDate: LocalDate, endDate: LocalDate): Float {
 private fun formatDuration(days: Long, language: Language): String {
     if (days <= 0) {
         val zero = "0"
-        val d = StringResources.get(StringKeyPart1.DAYS_SHORT, language)
+        val d = StringResources.get(StringKeyGeneralPart3.DAYS_SHORT, language)
         return if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(zero) + d else zero + d
     }
 
-    val d = StringResources.get(StringKeyPart1.DAYS_SHORT, language)
-    val w = StringResources.get(StringKeyPart1.WEEKS_SHORT, language)
-    val m = StringResources.get(StringKeyPart1.MONTHS_SHORT, language)
-    val y = StringResources.get(StringKeyPart1.YEARS_SHORT, language)
+    val d = StringResources.get(StringKeyGeneralPart3.DAYS_SHORT, language)
+    val w = StringResources.get(StringKeyGeneralPart12.WEEKS_SHORT, language)
+    val m = StringResources.get(StringKeyGeneralPart7.MONTHS_SHORT, language)
+    val y = StringResources.get(StringKeyGeneralPart12.YEARS_SHORT, language)
 
     fun num(n: Long): String = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n.toString()) else n.toString()
 

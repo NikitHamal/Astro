@@ -578,7 +578,7 @@ private fun VaraCard(
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             DetailRow(stringResource(StringKeyPanchanga.PANCHANGA_SANSKRIT_LABEL), varaData.rulerNe, ChartDetailColors.TextSecondary) // rulerNe is often the sanskrit name for vara
             DetailRow(stringResource(StringKeyPanchanga.PANCHANGA_RULING_PLANET), panchanga.vara.lord.getLocalizedName(language), ChartDetailColors.getPlanetColor(panchanga.vara.lord))
-            DetailRow(stringResource(StringKeyPanchanga.PANCHANGA_ELEMENT), stringResource(if (panchanga.vara == Vara.SUNDAY || panchanga.vara == Vara.TUESDAY) StringKeyNakshatra.NAKSHATRA_ELEMENT_FIRE else StringKeyNakshatra.NAKSHATRA_ELEMENT_EARTH), ChartDetailColors.TextSecondary)
+            DetailRow(stringResource(StringKeyPanchanga.PANCHANGA_ELEMENT), stringResource(if (panchanga.vara == Vara.SUNDAY || panchanga.vara == Vara.TUESDAY) StringKeyPanchanga.NAKSHATRA_ELEMENT_FIRE else StringKeyPanchanga.NAKSHATRA_ELEMENT_EARTH), ChartDetailColors.TextSecondary)
             
             DescriptionSection(
                 title = stringResource(StringKeyPanchanga.PANCHANGA_SIGNIFICANCE),
@@ -715,11 +715,11 @@ private fun ExpandableDetailCard(
 @Composable
 private fun QualityBadge(quality: Quality) {
     val (color, text) = when (quality) {
-        Quality.EXCELLENT -> ChartDetailColors.SuccessColor to stringResource(StringKeyAnalysisPart1.QUALITY_EXCELLENT)
-        Quality.GOOD -> ChartDetailColors.AccentTeal to stringResource(StringKeyAnalysisPart1.QUALITY_GOOD)
-        Quality.NEUTRAL -> ChartDetailColors.TextMuted to stringResource(StringKeyAnalysisPart1.QUALITY_NEUTRAL)
-        Quality.CHALLENGING -> ChartDetailColors.WarningColor to stringResource(StringKeyAnalysisPart1.QUALITY_CHALLENGING)
-        Quality.INAUSPICIOUS -> ChartDetailColors.ErrorColor to stringResource(StringKeyAnalysisPart1.QUALITY_INAUSPICIOUS)
+        Quality.EXCELLENT -> ChartDetailColors.SuccessColor to stringResource(StringKeyGeneralPart9.QUALITY_EXCELLENT)
+        Quality.GOOD -> ChartDetailColors.AccentTeal to stringResource(StringKeyGeneralPart9.QUALITY_GOOD)
+        Quality.NEUTRAL -> ChartDetailColors.TextMuted to stringResource(StringKeyGeneralPart9.QUALITY_NEUTRAL)
+        Quality.CHALLENGING -> ChartDetailColors.WarningColor to stringResource(StringKeyGeneralPart9.QUALITY_CHALLENGING)
+        Quality.INAUSPICIOUS -> ChartDetailColors.ErrorColor to stringResource(StringKeyGeneralPart9.QUALITY_INAUSPICIOUS)
     }
 
     Surface(

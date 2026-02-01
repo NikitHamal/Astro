@@ -71,13 +71,13 @@ object KemadrumaYogaCalculator {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                NOT_PRESENT -> StringKeyAnalysisPart2.KEMADRUMA_NOT_PRESENT
-                FULLY_CANCELLED -> StringKeyAnalysisPart2.KEMADRUMA_FULLY_CANCELLED
-                MOSTLY_CANCELLED -> StringKeyAnalysisPart2.KEMADRUMA_MOSTLY_CANCELLED
-                PARTIALLY_CANCELLED -> StringKeyAnalysisPart2.KEMADRUMA_PARTIALLY_CANCELLED
-                WEAKLY_CANCELLED -> StringKeyAnalysisPart2.KEMADRUMA_WEAKLY_CANCELLED
-                ACTIVE_MODERATE -> StringKeyAnalysisPart2.KEMADRUMA_ACTIVE_MODERATE
-                ACTIVE_SEVERE -> StringKeyAnalysisPart2.KEMADRUMA_ACTIVE_SEVERE
+                NOT_PRESENT -> StringKeyGeneralPart6.KEMADRUMA_NOT_PRESENT
+                FULLY_CANCELLED -> StringKeyGeneralPart6.KEMADRUMA_FULLY_CANCELLED
+                MOSTLY_CANCELLED -> StringKeyGeneralPart6.KEMADRUMA_MOSTLY_CANCELLED
+                PARTIALLY_CANCELLED -> StringKeyGeneralPart6.KEMADRUMA_PARTIALLY_CANCELLED
+                WEAKLY_CANCELLED -> StringKeyGeneralPart6.KEMADRUMA_WEAKLY_CANCELLED
+                ACTIVE_MODERATE -> StringKeyGeneralPart6.KEMADRUMA_ACTIVE_MODERATE
+                ACTIVE_SEVERE -> StringKeyGeneralPart6.KEMADRUMA_ACTIVE_SEVERE
             }
             return StringResources.get(key, language)
         }
@@ -106,19 +106,19 @@ object KemadrumaYogaCalculator {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                KENDRA_FROM_MOON -> StringKeyAnalysisPart2.BHANGA_KENDRA_MOON
-                KENDRA_FROM_LAGNA -> StringKeyAnalysisPart2.BHANGA_KENDRA_LAGNA
-                MOON_IN_KENDRA -> StringKeyAnalysisPart2.BHANGA_MOON_KENDRA
-                BENEFIC_ASPECT -> StringKeyAnalysisPart2.BHANGA_BENEFIC_ASPECT
-                BENEFIC_CONJUNCTION -> StringKeyAnalysisPart2.BHANGA_BENEFIC_CONJUNCTION
-                MOON_EXALTED -> StringKeyAnalysisPart2.BHANGA_MOON_EXALTED
-                MOON_OWN_SIGN -> StringKeyAnalysisPart2.BHANGA_MOON_OWN
-                MOON_FRIEND_SIGN -> StringKeyAnalysisPart2.BHANGA_MOON_FRIEND
-                FULL_MOON -> StringKeyAnalysisPart2.BHANGA_FULL_MOON
-                ANGULAR_MOON -> StringKeyAnalysisPart2.BHANGA_ANGULAR_MOON
-                STRONG_DISPOSITOR -> StringKeyAnalysisPart2.BHANGA_STRONG_DISPOSITOR
-                JUPITER_ASPECT -> StringKeyAnalysisPart2.BHANGA_JUPITER_ASPECT
-                VENUS_ASPECT -> StringKeyAnalysisPart2.BHANGA_VENUS_ASPECT
+                KENDRA_FROM_MOON -> StringKeyGeneralPart2.BHANGA_KENDRA_MOON
+                KENDRA_FROM_LAGNA -> StringKeyGeneralPart2.BHANGA_KENDRA_LAGNA
+                MOON_IN_KENDRA -> StringKeyGeneralPart2.BHANGA_MOON_KENDRA
+                BENEFIC_ASPECT -> StringKeyGeneralPart2.BHANGA_BENEFIC_ASPECT
+                BENEFIC_CONJUNCTION -> StringKeyGeneralPart2.BHANGA_BENEFIC_CONJUNCTION
+                MOON_EXALTED -> StringKeyGeneralPart2.BHANGA_MOON_EXALTED
+                MOON_OWN_SIGN -> StringKeyGeneralPart2.BHANGA_MOON_OWN
+                MOON_FRIEND_SIGN -> StringKeyGeneralPart2.BHANGA_MOON_FRIEND
+                FULL_MOON -> StringKeyGeneralPart2.BHANGA_FULL_MOON
+                ANGULAR_MOON -> StringKeyGeneralPart2.BHANGA_ANGULAR_MOON
+                STRONG_DISPOSITOR -> StringKeyGeneralPart2.BHANGA_STRONG_DISPOSITOR
+                JUPITER_ASPECT -> StringKeyGeneralPart2.BHANGA_JUPITER_ASPECT
+                VENUS_ASPECT -> StringKeyGeneralPart2.BHANGA_VENUS_ASPECT
             }
             return StringResources.get(key, language)
         }

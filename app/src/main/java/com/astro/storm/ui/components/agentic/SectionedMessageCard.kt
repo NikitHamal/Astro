@@ -223,7 +223,7 @@ private fun SectionedAgentHeader(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyDoshaPart3.STORMY_TITLE),
+                    text = stringResource(StringKeyGeneralPart10.STORMY_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
@@ -310,7 +310,7 @@ private fun ErrorBanner(message: String) {
 @Composable
 private fun ProcessingIndicator(aiStatus: AiStatus) {
     val colors = AppTheme.current
-    val statusText = getStatusText(aiStatus) ?: stringResource(StringKeyDoshaPart3.STORMY_PROCESSING)
+    val statusText = getStatusText(aiStatus) ?: stringResource(StringKeyGeneralPart10.STORMY_PROCESSING)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -338,11 +338,11 @@ private fun getStatusText(aiStatus: AiStatus): String? {
     return when (aiStatus) {
         is AiStatus.Idle -> null
         is AiStatus.Complete -> null
-        is AiStatus.Thinking -> stringResource(StringKeyDoshaPart3.AI_ANALYZING_QUESTION)
-        is AiStatus.Reasoning -> stringResource(StringKeyDoshaPart3.STORMY_REASONING_VEDIC)
-        is AiStatus.CallingTool -> stringResource(StringKeyDoshaPart3.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
-        is AiStatus.ExecutingTools -> stringResource(StringKeyDoshaPart3.STORMY_GATHERING_DATA)
-        is AiStatus.Typing -> stringResource(StringKeyDoshaPart3.STORMY_COMPOSING)
+        is AiStatus.Thinking -> stringResource(StringKeyGeneralPart1.AI_ANALYZING_QUESTION)
+        is AiStatus.Reasoning -> stringResource(StringKeyGeneralPart10.STORMY_REASONING_VEDIC)
+        is AiStatus.CallingTool -> stringResource(StringKeyGeneralPart10.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
+        is AiStatus.ExecutingTools -> stringResource(StringKeyGeneralPart10.STORMY_GATHERING_DATA)
+        is AiStatus.Typing -> stringResource(StringKeyGeneralPart10.STORMY_COMPOSING)
     }
 }
 
@@ -527,7 +527,7 @@ fun CompletedSectionedMessageCard(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(StringKeyUI.BTN_REGENERATE),
+                    text = stringResource(StringKeyUIPart1.BTN_REGENERATE),
                     style = MaterialTheme.typography.labelSmall
                 )
             }

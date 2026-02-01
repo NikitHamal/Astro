@@ -46,14 +46,14 @@ enum class YogaCategory(val displayName: String, val description: String) {
      */
     fun getLocalizedName(language: Language): String {
         val key: StringKeyInterface = when (this) {
-            RAJA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_RAJA
-            DHANA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_DHANA
-            MAHAPURUSHA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_PANCHA_MAHAPURUSHA
-            NABHASA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_NABHASA
-            CHANDRA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CHANDRA
-            SOLAR_YOGA -> StringKeyYogaExpanded.YOGA_CAT_SOLAR
-            NEGATIVE_YOGA -> StringKeyYogaExpanded.YOGA_CAT_NEGATIVE
-            SPECIAL_YOGA -> StringKeyYogaExpanded.YOGA_CAT_SPECIAL
+            RAJA_YOGA -> StringKeyPanchanga.YOGA_CAT_RAJA
+            DHANA_YOGA -> StringKeyPanchanga.YOGA_CAT_DHANA
+            MAHAPURUSHA_YOGA -> StringKeyPanchanga.YOGA_CAT_PANCHA_MAHAPURUSHA
+            NABHASA_YOGA -> StringKeyPanchanga.YOGA_CAT_NABHASA
+            CHANDRA_YOGA -> StringKeyPanchanga.YOGA_CAT_CHANDRA
+            SOLAR_YOGA -> StringKeyPanchanga.YOGA_CAT_SOLAR
+            NEGATIVE_YOGA -> StringKeyPanchanga.YOGA_CAT_NEGATIVE
+            SPECIAL_YOGA -> StringKeyPanchanga.YOGA_CAT_SPECIAL
             BHAVA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_BHAVA
             CONJUNCTION_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CONJUNCTION
         }
@@ -65,14 +65,14 @@ enum class YogaCategory(val displayName: String, val description: String) {
      */
     fun getLocalizedDescription(language: Language): String {
         val key: StringKeyInterface = when (this) {
-            RAJA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_RAJA_DESC
-            DHANA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_DHANA_DESC
-            MAHAPURUSHA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_PANCHA_MAHAPURUSHA_DESC
-            NABHASA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_NABHASA_DESC
-            CHANDRA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CHANDRA_DESC
-            SOLAR_YOGA -> StringKeyYogaExpanded.YOGA_CAT_SOLAR_DESC
-            NEGATIVE_YOGA -> StringKeyYogaExpanded.YOGA_CAT_NEGATIVE_DESC
-            SPECIAL_YOGA -> StringKeyYogaExpanded.YOGA_CAT_SPECIAL_DESC
+            RAJA_YOGA -> StringKeyPanchanga.YOGA_CAT_RAJA_DESC
+            DHANA_YOGA -> StringKeyPanchanga.YOGA_CAT_DHANA_DESC
+            MAHAPURUSHA_YOGA -> StringKeyPanchanga.YOGA_CAT_PANCHA_MAHAPURUSHA_DESC
+            NABHASA_YOGA -> StringKeyPanchanga.YOGA_CAT_NABHASA_DESC
+            CHANDRA_YOGA -> StringKeyPanchanga.YOGA_CAT_CHANDRA_DESC
+            SOLAR_YOGA -> StringKeyPanchanga.YOGA_CAT_SOLAR_DESC
+            NEGATIVE_YOGA -> StringKeyPanchanga.YOGA_CAT_NEGATIVE_DESC
+            SPECIAL_YOGA -> StringKeyPanchanga.YOGA_CAT_SPECIAL_DESC
             BHAVA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_BHAVA_DESC
             CONJUNCTION_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CONJUNCTION_DESC
         }
@@ -96,12 +96,12 @@ enum class YogaStrength(val displayName: String, val value: Int) {
      */
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            EXTREMELY_STRONG -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_EXTREMELY_STRONG
-            VERY_STRONG -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_VERY_STRONG
-            STRONG -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_STRONG
-            MODERATE -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_MODERATE
-            WEAK -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_WEAK
-            VERY_WEAK -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_VERY_WEAK
+            EXTREMELY_STRONG -> com.astro.storm.core.common.StringKeyPanchanga.YOGA_STRENGTH_EXTREMELY_STRONG
+            VERY_STRONG -> com.astro.storm.core.common.StringKeyPanchanga.YOGA_STRENGTH_VERY_STRONG
+            STRONG -> com.astro.storm.core.common.StringKeyPanchanga.YOGA_STRENGTH_STRONG
+            MODERATE -> com.astro.storm.core.common.StringKeyPanchanga.YOGA_STRENGTH_MODERATE
+            WEAK -> com.astro.storm.core.common.StringKeyPanchanga.YOGA_STRENGTH_WEAK
+            VERY_WEAK -> com.astro.storm.core.common.StringKeyPanchanga.YOGA_STRENGTH_VERY_WEAK
         }
         return StringResources.get(key, language)
     }
@@ -178,7 +178,7 @@ data class YogaAnalysis(
         val dominantCategoryLabel = StringResources.get(StringKeyReport.REPORT_DOMINANT_CATEGORY, language)
         val planetsLabel = StringResources.get(StringKeyReport.REPORT_PLANETS, language)
         val housesLabel = StringResources.get(StringKeyReport.REPORT_HOUSES, language)
-        val strengthLabel = StringResources.get(StringKeyUI.TAB_STRENGTH, language)
+        val strengthLabel = StringResources.get(StringKeyUIPart1.TAB_STRENGTH, language)
         val effectsLabel = StringResources.get(StringKeyReport.REPORT_EFFECTS, language)
         val activationLabel = StringResources.get(StringKeyReport.REPORT_ACTIVATION, language)
         val patternLabel = StringResources.get(StringKeyReport.REPORT_PATTERN, language)

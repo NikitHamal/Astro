@@ -304,7 +304,7 @@ fun BSDatePickerDialog(
                 }
             ) {
                 Text(
-                    text = stringResource(StringKeyUI.BTN_OK),
+                    text = stringResource(StringKeyUIPart1.BTN_OK),
                     color = colors.accentColor,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -313,7 +313,7 @@ fun BSDatePickerDialog(
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(
-                    text = stringResource(StringKeyUI.BTN_CANCEL),
+                    text = stringResource(StringKeyUIPart1.BTN_CANCEL),
                     color = colors.textSecondary
                 )
             }
@@ -334,7 +334,7 @@ private fun BSDatePickerHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(StringKeyMatchPart1.BS_DATE_PICKER_TITLE),
+            text = stringResource(StringKeyGeneralPart2.BS_DATE_PICKER_TITLE),
             fontWeight = FontWeight.SemiBold,
             fontSize = 18.sp
         )
@@ -678,7 +678,7 @@ private fun YearSelector(
 
     Column(modifier = modifier) {
         Text(
-            text = stringResource(StringKeyMatchPart1.BS_YEAR),
+            text = stringResource(StringKeyGeneralPart2.BS_YEAR),
             style = MaterialTheme.typography.labelMedium,
             color = colors.textMuted,
             modifier = Modifier.padding(bottom = 4.dp)
@@ -743,7 +743,7 @@ private fun MonthSelector(
 
     Column(modifier = modifier) {
         Text(
-            text = stringResource(StringKeyMatchPart1.BS_MONTH),
+            text = stringResource(StringKeyGeneralPart2.BS_MONTH),
             style = MaterialTheme.typography.labelMedium,
             color = colors.textMuted,
             modifier = Modifier.padding(bottom = 4.dp)
@@ -910,7 +910,7 @@ private fun CalendarGrid(
 
     Column {
         Text(
-            text = stringResource(StringKeyMatchPart1.BS_DAY),
+            text = stringResource(StringKeyGeneralPart2.BS_DAY),
             style = MaterialTheme.typography.labelMedium,
             color = colors.textMuted,
             modifier = Modifier.padding(bottom = 8.dp)

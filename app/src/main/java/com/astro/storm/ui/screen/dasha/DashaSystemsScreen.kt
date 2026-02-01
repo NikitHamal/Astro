@@ -81,34 +81,34 @@ enum class DashaSystemType(
     val descriptionKey: StringKeyDosha
 ) {
     VIMSOTTARI(
-        displayNameKey = StringKeyDoshaPart3.DASHA_VIMSOTTARI_NAME,
-        shortNameKey = StringKeyDoshaPart4.DASHA_SHORT_VIM,
-        cycleDurationKey = StringKeyDoshaPart3.DASHA_VIMSOTTARI_DURATION,
-        descriptionKey = StringKeyDoshaPart3.DASHA_VIMSOTTARI_DESC
+        displayNameKey = StringKeyDashaPart1.DASHA_VIMSOTTARI_NAME,
+        shortNameKey = StringKeyDashaPart1.DASHA_SHORT_VIM,
+        cycleDurationKey = StringKeyDashaPart1.DASHA_VIMSOTTARI_DURATION,
+        descriptionKey = StringKeyDashaPart1.DASHA_VIMSOTTARI_DESC
     ),
     YOGINI(
-        displayNameKey = StringKeyDoshaPart3.DASHA_YOGINI,
-        shortNameKey = StringKeyDoshaPart4.DASHA_SHORT_YOG,
-        cycleDurationKey = StringKeyDoshaPart3.DASHA_YOGINI_DURATION,
-        descriptionKey = StringKeyAnalysisPart3.DASHA_YOGINI_DESC
+        displayNameKey = StringKeyDashaPart1.DASHA_YOGINI,
+        shortNameKey = StringKeyDashaPart1.DASHA_SHORT_YOG,
+        cycleDurationKey = StringKeyDashaPart1.DASHA_YOGINI_DURATION,
+        descriptionKey = StringKeyDashaPart1.DASHA_YOGINI_DESC
     ),
     ASHTOTTARI(
-        displayNameKey = StringKeyDoshaPart3.DASHA_ASHTOTTARI,
-        shortNameKey = StringKeyDoshaPart4.DASHA_SHORT_ASH,
-        cycleDurationKey = StringKeyDoshaPart3.DASHA_ASHTOTTARI_DURATION,
-        descriptionKey = StringKeyAnalysisPart3.DASHA_ASHTOTTARI_DESC
+        displayNameKey = StringKeyDashaPart1.DASHA_ASHTOTTARI,
+        shortNameKey = StringKeyDashaPart1.DASHA_SHORT_ASH,
+        cycleDurationKey = StringKeyDashaPart1.DASHA_ASHTOTTARI_DURATION,
+        descriptionKey = StringKeyDashaPart1.DASHA_ASHTOTTARI_DESC
     ),
     SUDARSHANA(
-        displayNameKey = StringKeyDoshaPart3.DASHA_SUDARSHANA,
-        shortNameKey = StringKeyDoshaPart4.DASHA_SHORT_SUD,
-        cycleDurationKey = StringKeyDoshaPart3.DASHA_SUDARSHANA_DURATION,
-        descriptionKey = StringKeyDoshaPart3.DASHA_SUDARSHANA_DESC
+        displayNameKey = StringKeyDashaPart1.DASHA_SUDARSHANA,
+        shortNameKey = StringKeyDashaPart1.DASHA_SHORT_SUD,
+        cycleDurationKey = StringKeyDashaPart1.DASHA_SUDARSHANA_DURATION,
+        descriptionKey = StringKeyDashaPart1.DASHA_SUDARSHANA_DESC
     ),
     CHARA(
-        displayNameKey = StringKeyDoshaPart3.DASHA_CHARA,
-        shortNameKey = StringKeyDoshaPart4.DASHA_SHORT_CHA,
-        cycleDurationKey = StringKeyDoshaPart3.DASHA_CHARA_DURATION,
-        descriptionKey = StringKeyAnalysisPart3.DASHA_CHARA_DESC
+        displayNameKey = StringKeyDashaPart1.DASHA_CHARA,
+        shortNameKey = StringKeyDashaPart1.DASHA_SHORT_CHA,
+        cycleDurationKey = StringKeyDashaPart1.DASHA_CHARA_DURATION,
+        descriptionKey = StringKeyDashaPart1.DASHA_CHARA_DESC
     );
 
     fun getShortName(language: com.astro.storm.core.common.Language): String =
@@ -266,8 +266,8 @@ fun DashaSystemsScreen(
                     }
                     DashaSystemType.YOGINI -> {
                         NavigationPromptContent(
-                            systemName = stringResource(StringKeyDoshaPart3.DASHA_TITLE_YOGINI),
-                            description = stringResource(StringKeyAnalysisPart3.DASHA_YOGINI_DESC),
+                            systemName = stringResource(StringKeyDashaPart1.DASHA_TITLE_YOGINI),
+                            description = stringResource(StringKeyDashaPart1.DASHA_YOGINI_DESC),
                             onNavigate = onNavigateToYoginiDasha
                         )
                     }
@@ -279,8 +279,8 @@ fun DashaSystemsScreen(
                     }
                     DashaSystemType.CHARA -> {
                         NavigationPromptContent(
-                            systemName = stringResource(StringKeyDoshaPart3.DASHA_TITLE_CHARA),
-                            description = stringResource(StringKeyAnalysisPart3.DASHA_CHARA_DESC),
+                            systemName = stringResource(StringKeyDashaPart1.DASHA_TITLE_CHARA),
+                            description = stringResource(StringKeyDashaPart1.DASHA_CHARA_DESC),
                             onNavigate = onNavigateToCharaDasha
                         )
                     }
@@ -327,7 +327,7 @@ private fun DashaSystemsTopBar(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                        contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -337,7 +337,7 @@ private fun DashaSystemsTopBar(
                     IconButton(onClick = onJumpToToday) {
                         Icon(
                             imageVector = Icons.Outlined.CalendarToday,
-                            contentDescription = stringResource(StringKeyUI.BTN_JUMP_TODAY),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_JUMP_TODAY),
                             tint = AppTheme.AccentPrimary
                         )
                     }
@@ -345,7 +345,7 @@ private fun DashaSystemsTopBar(
                 IconButton(onClick = onInfoClick) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
-                        contentDescription = stringResource(StringKeyPart1.INFO_DASHA),
+                        contentDescription = stringResource(StringKeyGeneralPart5.INFO_DASHA),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -365,7 +365,7 @@ private fun VimsottariDashaContent(
 ) {
     when (uiState) {
         is DashaUiState.Loading -> {
-            LoadingContent(message = stringResource(StringKeyDoshaPart3.DASHA_CALC_LOADING, stringResource(StringKeyDoshaPart3.DASHA_VIMSOTTARI_NAME)))
+            LoadingContent(message = stringResource(StringKeyDashaPart1.DASHA_CALC_LOADING, stringResource(StringKeyDashaPart1.DASHA_VIMSOTTARI_NAME)))
         }
         is DashaUiState.Success -> {
             DashasTabContent(
@@ -380,7 +380,7 @@ private fun VimsottariDashaContent(
             )
         }
         is DashaUiState.Idle -> {
-            EmptyContent(message = stringResource(StringKeyDoshaPart3.DASHA_NO_CHART))
+            EmptyContent(message = stringResource(StringKeyDashaPart1.DASHA_NO_CHART))
         }
     }
 }
@@ -390,7 +390,7 @@ private fun AshtottariDashaContent(
     data: AshtottariTimeline?
 ) {
     if (data == null) {
-        EmptyContent(message = stringResource(StringKeyDoshaPart3.DASHA_NOT_AVAILABLE, stringResource(StringKeyDoshaPart3.DASHA_ASHTOTTARI)))
+        EmptyContent(message = stringResource(StringKeyDashaPart1.DASHA_NOT_AVAILABLE, stringResource(StringKeyDashaPart1.DASHA_ASHTOTTARI)))
         return
     }
 
@@ -402,7 +402,7 @@ private fun SudarshanaChakraContent(
     data: SudarshanaTimeline?
 ) {
     if (data == null) {
-        EmptyContent(message = stringResource(StringKeyDoshaPart3.DASHA_NOT_AVAILABLE, stringResource(StringKeyDoshaPart3.DASHA_SUDARSHANA)))
+        EmptyContent(message = stringResource(StringKeyDashaPart1.DASHA_NOT_AVAILABLE, stringResource(StringKeyDashaPart1.DASHA_SUDARSHANA)))
         return
     }
 
@@ -451,7 +451,7 @@ private fun NavigationPromptContent(
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyDoshaPart3.DASHA_VIEW_SYSTEM, systemName),
+                    text = stringResource(StringKeyDashaPart1.DASHA_VIEW_SYSTEM, systemName),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.ButtonText,
@@ -511,7 +511,7 @@ private fun ErrorContent(message: String, onRetry: () -> Unit) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyDoshaPart3.AI_MODELS_RETRY),
+                    text = stringResource(StringKeyGeneralPart1.AI_MODELS_RETRY),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.ButtonText,
@@ -562,7 +562,7 @@ private fun DashaSystemInfoDialog(
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = stringResource(StringKeyDoshaPart3.DASHA_CYCLE_DURATION, stringResource(system.cycleDurationKey)),
+                    text = stringResource(StringKeyDashaPart1.DASHA_CYCLE_DURATION, stringResource(system.cycleDurationKey)),
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.AccentGold
@@ -572,7 +572,7 @@ private fun DashaSystemInfoDialog(
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
                 Text(
-                    text = stringResource(StringKeyUI.BTN_GOT_IT),
+                    text = stringResource(StringKeyUIPart1.BTN_GOT_IT),
                     color = AppTheme.AccentPrimary
                 )
             }

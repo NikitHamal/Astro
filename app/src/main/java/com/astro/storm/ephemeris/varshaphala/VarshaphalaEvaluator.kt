@@ -110,8 +110,8 @@ object VarshaphalaEvaluator {
 
     private fun generateMunthaInterpretation(sign: ZodiacSign, house: Int, lord: Planet, lordHouse: Int, lordStrength: String, language: Language): String {
         val houseSignificance = getHouseSignificance(house, language)
-        return StringResources.get(StringKeyVarshaphala.VARSHA_MUNTHA_DIRECTS, language, house, sign.getLocalizedName(language), houseSignificance.lowercase()) +
-                " " + StringResources.get(StringKeyVarshaphala.VARSHA_PERIOD_WELL_SUPPORTED, language)
+        return StringResources.get(StringKeyGeneralPart12.VARSHA_MUNTHA_DIRECTS, language, house, sign.getLocalizedName(language), houseSignificance.lowercase()) +
+                " " + StringResources.get(StringKeyGeneralPart12.VARSHA_PERIOD_WELL_SUPPORTED, language)
     }
 
     fun calculateTriPatakiChakra(chart: SolarReturnChart, language: Language): TriPatakiChakra {
@@ -124,28 +124,28 @@ object VarshaphalaEvaluator {
         val arthaPlanets = getPlanetsInSector(arthaSigns)
         val kamaPlanets = getPlanetsInSector(kamaSigns)
         val sectors = listOf(
-            TriPatakiSector(StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_DHARMA, language), dharmaSigns, dharmaPlanets, generateSectorInfluence(StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_DHARMA, language), dharmaPlanets, language)),
-            TriPatakiSector(StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_ARTHA, language), arthaSigns, arthaPlanets, generateSectorInfluence(StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_ARTHA, language), arthaPlanets, language)),
-            TriPatakiSector(StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_KAMA, language), kamaSigns, kamaPlanets, generateSectorInfluence(StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_KAMA, language), kamaPlanets, language))
+            TriPatakiSector(StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_DHARMA, language), dharmaSigns, dharmaPlanets, generateSectorInfluence(StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_DHARMA, language), dharmaPlanets, language)),
+            TriPatakiSector(StringResources.get(StringKeyGeneralPart11.TRI_PATAKI_ARTHA, language), arthaSigns, arthaPlanets, generateSectorInfluence(StringResources.get(StringKeyGeneralPart11.TRI_PATAKI_ARTHA, language), arthaPlanets, language)),
+            TriPatakiSector(StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_KAMA, language), kamaSigns, kamaPlanets, generateSectorInfluence(StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_KAMA, language), kamaPlanets, language))
         )
         val dominantSector = sectors.maxByOrNull { it.planets.size }
         val dominantInfluence = when {
-            dominantSector?.name == StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_DHARMA, language) -> StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_DHARMA_DESC, language)
-            dominantSector?.name == StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_ARTHA, language) -> StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_ARTHA_DESC, language)
-            dominantSector?.name == StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_KAMA, language) -> StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_KAMA_DESC, language)
-            else -> StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_BALANCED, language)
+            dominantSector?.name == StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_DHARMA, language) -> StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_DHARMA_DESC, language)
+            dominantSector?.name == StringResources.get(StringKeyGeneralPart11.TRI_PATAKI_ARTHA, language) -> StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_ARTHA_DESC, language)
+            dominantSector?.name == StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_KAMA, language) -> StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_KAMA_DESC, language)
+            else -> StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_BALANCED, language)
         }
         return TriPatakiChakra(chart.ascendant, sectors, dominantInfluence, buildTriPatakiInterpretation(sectors, language))
     }
 
     private fun generateSectorInfluence(sectorName: String, planets: List<Planet>, language: Language): String {
-        if (planets.isEmpty()) return StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_QUIET, language, sectorName)
+        if (planets.isEmpty()) return StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_QUIET, language, sectorName)
         val benefics = planets.filter { it in listOf(Planet.JUPITER, Planet.VENUS, Planet.MOON, Planet.MERCURY) }
         val malefics = planets.filter { it in listOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU) }
         return when {
-            benefics.size > malefics.size -> StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_FAVORABLE, language, benefics.joinToString { it.getLocalizedName(language) })
-            malefics.size > benefics.size -> StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_CHALLENGING, language, malefics.joinToString { it.getLocalizedName(language) })
-            else -> StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_VARIABLE, language)
+            benefics.size > malefics.size -> StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_FAVORABLE, language, benefics.joinToString { it.getLocalizedName(language) })
+            malefics.size > benefics.size -> StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_CHALLENGING, language, malefics.joinToString { it.getLocalizedName(language) })
+            else -> StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_VARIABLE, language)
         }
     }
 
@@ -154,13 +154,13 @@ object VarshaphalaEvaluator {
         sectors.forEach { sector ->
             if (sector.planets.isNotEmpty()) {
                 val areaName = when {
-                    sector.name.contains(StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_DHARMA, language)) -> StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_DHARMA_AREA, language)
-                    sector.name.contains(StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_ARTHA, language)) -> StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_ARTHA_AREA, language)
-                    else -> StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_KAMA_AREA, language)
+                    sector.name.contains(StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_DHARMA, language)) -> StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_DHARMA_AREA, language)
+                    sector.name.contains(StringResources.get(StringKeyGeneralPart11.TRI_PATAKI_ARTHA, language)) -> StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_ARTHA_AREA, language)
+                    else -> StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_KAMA_AREA, language)
                 }
-                interpretations.add(StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_EMPHASIS, language, sector.planets.size, sector.name, areaName))
+                interpretations.add(StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_EMPHASIS, language, sector.planets.size, sector.name, areaName))
             }
         }
-        return if (interpretations.isNotEmpty()) interpretations.joinToString(" ") else StringResources.get(StringKeyAnalysisPart2.TRI_PATAKI_BALANCED_DESC, language)
+        return if (interpretations.isNotEmpty()) interpretations.joinToString(" ") else StringResources.get(StringKeyGeneralPart12.TRI_PATAKI_BALANCED_DESC, language)
     }
 }

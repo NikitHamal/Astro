@@ -85,12 +85,12 @@ class HoroscopeCalculator @Inject constructor(
     )
 
     enum class LifeArea(val displayName: String, val displayNameKey: StringKey, val houses: List<Int>) {
-        CAREER("Career", StringKeyPart1.LIFE_AREA_CAREER, listOf(10, 6, 2)),
-        LOVE("Love & Relationships", StringKeyPart1.LIFE_AREA_LOVE, listOf(7, 5, 11)),
-        HEALTH("Health & Vitality", StringKeyPart1.LIFE_AREA_HEALTH, listOf(1, 6, 8)),
-        FINANCE("Finance & Wealth", StringKeyPart1.LIFE_AREA_FINANCE, listOf(2, 11, 5)),
-        FAMILY("Family & Home", StringKeyPart1.LIFE_AREA_FAMILY, listOf(4, 2, 12)),
-        SPIRITUALITY("Spiritual Growth", StringKeyPart1.LIFE_AREA_SPIRITUALITY, listOf(9, 12, 5))
+        CAREER("Career", StringKeyGeneralPart6.LIFE_AREA_CAREER, listOf(10, 6, 2)),
+        LOVE("Love & Relationships", StringKeyGeneralPart6.LIFE_AREA_LOVE, listOf(7, 5, 11)),
+        HEALTH("Health & Vitality", StringKeyGeneralPart6.LIFE_AREA_HEALTH, listOf(1, 6, 8)),
+        FINANCE("Finance & Wealth", StringKeyGeneralPart6.LIFE_AREA_FINANCE, listOf(2, 11, 5)),
+        FAMILY("Family & Home", StringKeyGeneralPart6.LIFE_AREA_FAMILY, listOf(4, 2, 12)),
+        SPIRITUALITY("Spiritual Growth", StringKeyGeneralPart6.LIFE_AREA_SPIRITUALITY, listOf(9, 12, 5))
     }
 
     data class LuckyElements(
@@ -292,8 +292,8 @@ class HoroscopeCalculator @Inject constructor(
                     date = date,
                     dayOfWeek = date.dayOfWeek,
                     energy = 5,
-                    focusKey = StringKeyPart1.HOROSCOPE_BALANCE,
-                    brief = StringResources.get(StringKeyPart1.HOROSCOPE_STEADY_ENERGY, language)
+                    focusKey = StringKeyGeneralPart5.HOROSCOPE_BALANCE,
+                    brief = StringResources.get(StringKeyGeneralPart5.HOROSCOPE_STEADY_ENERGY, language)
                 )
             }
         }
@@ -354,7 +354,7 @@ class HoroscopeCalculator @Inject constructor(
     }
 
     private fun formatActiveDasha(timeline: DashaCalculator.DashaTimeline, language: Language): String {
-        val md = timeline.currentMahadasha ?: return StringResources.get(StringKeyPart1.DASHA_CALCULATING, language)
+        val md = timeline.currentMahadasha ?: return StringResources.get(StringKeyDashaPart1.DASHA_CALCULATING, language)
         val ad = timeline.currentAntardasha
         return if (ad != null) {
             "${md.planet.getLocalizedName(language)}-${ad.planet.getLocalizedName(language)}"
@@ -452,8 +452,8 @@ class HoroscopeCalculator @Inject constructor(
         val influenceBuilder = StringBuilder()
         var (baseInfluenceKey, baseStrength) = getGocharaInfluenceKey(planet, houseFromMoon, isFavorable)
         
-        val localizedBaseInfluence = if (baseInfluenceKey == StringKeyPart1.HOROSCOPE_FAVORABLE_TRANSIT ||
-            baseInfluenceKey == StringKeyPart1.HOROSCOPE_UNFAVORABLE_TRANSIT) {
+        val localizedBaseInfluence = if (baseInfluenceKey == StringKeyGeneralPart5.HOROSCOPE_FAVORABLE_TRANSIT ||
+            baseInfluenceKey == StringKeyGeneralPart5.HOROSCOPE_UNFAVORABLE_TRANSIT) {
             StringResources.get(baseInfluenceKey, language, planet.getLocalizedName(language), houseFromMoon)
         } else {
             StringResources.get(baseInfluenceKey, language)
@@ -461,7 +461,7 @@ class HoroscopeCalculator @Inject constructor(
         influenceBuilder.append(localizedBaseInfluence)
 
         if (vedhaInfo.hasVedha && isFavorable) {
-            val vedhaText = StringResources.get(StringKeyPart1.HOROSCOPE_VEDHA_OBSTRUCTION, language, vedhaInfo.obstructingPlanet?.getLocalizedName(language) ?: "")
+            val vedhaText = StringResources.get(StringKeyGeneralPart5.HOROSCOPE_VEDHA_OBSTRUCTION, language, vedhaInfo.obstructingPlanet?.getLocalizedName(language) ?: "")
             influenceBuilder.append(vedhaText)
             baseStrength = (baseStrength * 0.5).toInt().coerceAtLeast(2)
             if (baseStrength <= 3) isFavorable = false
@@ -470,15 +470,15 @@ class HoroscopeCalculator @Inject constructor(
         ashtakavargaScore?.let { score ->
             when {
                 score >= 5 -> {
-                    influenceBuilder.append(StringResources.get(StringKeyPart1.HOROSCOPE_ASHTAKAVARGA_STRONG, language, score))
+                    influenceBuilder.append(StringResources.get(StringKeyGeneralPart5.HOROSCOPE_ASHTAKAVARGA_STRONG, language, score))
                     baseStrength = (baseStrength * 1.3).toInt()
                 }
                 score in 2..3 -> {
-                    influenceBuilder.append(StringResources.get(StringKeyPart1.HOROSCOPE_ASHTAKAVARGA_MODERATE, language, score))
+                    influenceBuilder.append(StringResources.get(StringKeyGeneralPart5.HOROSCOPE_ASHTAKAVARGA_MODERATE, language, score))
                     baseStrength = (baseStrength * 0.85).toInt()
                 }
                 score < 2 -> {
-                    influenceBuilder.append(StringResources.get(StringKeyPart1.HOROSCOPE_ASHTAKAVARGA_WEAK, language, score))
+                    influenceBuilder.append(StringResources.get(StringKeyGeneralPart5.HOROSCOPE_ASHTAKAVARGA_WEAK, language, score))
                     if (isFavorable) isFavorable = false
                     baseStrength = (baseStrength * 0.6).toInt()
                 }
@@ -487,11 +487,11 @@ class HoroscopeCalculator @Inject constructor(
 
         val retrogradeAdjustment = when {
             isRetrograde && isFavorable -> {
-                influenceBuilder.append(StringResources.get(StringKeyPart1.HOROSCOPE_RETROGRADE_DELAY, language, planet.getLocalizedName(language)))
+                influenceBuilder.append(StringResources.get(StringKeyGeneralPart5.HOROSCOPE_RETROGRADE_DELAY, language, planet.getLocalizedName(language)))
                 -1
             }
             isRetrograde && !isFavorable -> {
-                influenceBuilder.append(StringResources.get(StringKeyPart1.HOROSCOPE_RETROGRADE_RELIEF, language, planet.getLocalizedName(language)))
+                influenceBuilder.append(StringResources.get(StringKeyGeneralPart5.HOROSCOPE_RETROGRADE_RELIEF, language, planet.getLocalizedName(language)))
                 1
             }
             else -> 0
@@ -499,15 +499,15 @@ class HoroscopeCalculator @Inject constructor(
 
         val dignityModifier = when {
             isInOwnSign(planet, transitSign) -> {
-                influenceBuilder.append(StringResources.get(StringKeyPart1.HOROSCOPE_OWN_SIGN, language))
+                influenceBuilder.append(StringResources.get(StringKeyGeneralPart5.HOROSCOPE_OWN_SIGN, language))
                 if (isFavorable) 2 else 0
             }
             isExalted(planet, transitSign) -> {
-                influenceBuilder.append(StringResources.get(StringKeyPart1.HOROSCOPE_EXALTED, language))
+                influenceBuilder.append(StringResources.get(StringKeyGeneralPart5.HOROSCOPE_EXALTED, language))
                 if (isFavorable) 3 else 1
             }
             isDebilitated(planet, transitSign) -> {
-                influenceBuilder.append(StringResources.get(StringKeyPart1.HOROSCOPE_DEBILITATED, language))
+                influenceBuilder.append(StringResources.get(StringKeyGeneralPart5.HOROSCOPE_DEBILITATED, language))
                 if (isFavorable) -2 else -1
             }
             else -> 0
@@ -524,7 +524,7 @@ class HoroscopeCalculator @Inject constructor(
         val key = try {
             com.astro.storm.core.common.StringKeyHoroscope.valueOf(keyName)
         } catch (e: Exception) {
-            if (isFavorable) StringKeyPart1.HOROSCOPE_FAVORABLE_TRANSIT else StringKeyPart1.HOROSCOPE_UNFAVORABLE_TRANSIT
+            if (isFavorable) StringKeyGeneralPart5.HOROSCOPE_FAVORABLE_TRANSIT else StringKeyGeneralPart5.HOROSCOPE_UNFAVORABLE_TRANSIT
         }
         
         val strength = if (isFavorable) 7 else 4
@@ -562,7 +562,7 @@ class HoroscopeCalculator @Inject constructor(
             val predictionKey = try {
                 com.astro.storm.core.common.StringKeyHoroscope.valueOf(predictionKeyName)
             } catch (e: Exception) {
-                StringKeyPart1.HOROSCOPE_BALANCED_ENERGY
+                StringKeyGeneralPart5.HOROSCOPE_BALANCED_ENERGY
             }
             
             val prediction = StringResources.get(predictionKey, language, dashaLordName)
@@ -575,9 +575,9 @@ class HoroscopeCalculator @Inject constructor(
             
             // For now, let's use the AREA_REC keys from StringKey.kt
             val areaRecKey = try {
-                StringKey.valueOf("AREA_REC_${area.name}")
+                StringKeyAnalysis.valueOf("AREA_REC_${area.name}")
             } catch (e: Exception) {
-                StringKeyPart1.ADVICE_GENERAL
+                StringKeyGeneralPart1.ADVICE_GENERAL
             }
             
             val advice = StringResources.get(areaRecKey, language)
@@ -659,7 +659,7 @@ class HoroscopeCalculator @Inject constructor(
         val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
 
         val themeKey = determineTheme(moonSign, currentDashaLord)
-        val descriptionKey = THEME_DESCRIPTIONS_KEYS[themeKey] ?: StringKeyPart1.THEME_DESC_BALANCE_EQUILIBRIUM
+        val descriptionKey = THEME_DESCRIPTIONS_KEYS[themeKey] ?: StringKeyPrediction.THEME_DESC_BALANCE_EQUILIBRIUM
 
         return Pair(themeKey, descriptionKey)
     }
@@ -668,11 +668,11 @@ class HoroscopeCalculator @Inject constructor(
         val moonElement = moonSign.element
 
         return when {
-            moonElement == "Fire" && dashaLord in FIRE_PLANETS -> StringKeyPart1.THEME_DYNAMIC_ACTION
-            moonElement == "Earth" && dashaLord in EARTH_PLANETS -> StringKeyPart1.THEME_PRACTICAL_PROGRESS
-            moonElement == "Air" && dashaLord in AIR_PLANETS -> StringKeyPart1.THEME_SOCIAL_CONNECTIONS
-            moonElement == "Water" && dashaLord in WATER_PLANETS -> StringKeyPart1.THEME_EMOTIONAL_INSIGHT
-            else -> DASHA_LORD_THEMES_KEYS[dashaLord] ?: StringKeyPart1.THEME_BALANCE_EQUILIBRIUM
+            moonElement == "Fire" && dashaLord in FIRE_PLANETS -> StringKeyPrediction.THEME_DYNAMIC_ACTION
+            moonElement == "Earth" && dashaLord in EARTH_PLANETS -> StringKeyPrediction.THEME_PRACTICAL_PROGRESS
+            moonElement == "Air" && dashaLord in AIR_PLANETS -> StringKeyPrediction.THEME_SOCIAL_CONNECTIONS
+            moonElement == "Water" && dashaLord in WATER_PLANETS -> StringKeyPrediction.THEME_EMOTIONAL_INSIGHT
+            else -> DASHA_LORD_THEMES_KEYS[dashaLord] ?: StringKeyPrediction.THEME_BALANCE_EQUILIBRIUM
         }
     }
 
@@ -689,34 +689,34 @@ class HoroscopeCalculator @Inject constructor(
         val luckyNumber = ((dayOfWeek + moonSign.ordinal) % 9) + 1
         
         val luckyColorKey = try {
-            com.astro.storm.core.common.StringKeyHoroscope.valueOf("LUCKY_COLOR_${moonSign.element.uppercase()}")
+            com.astro.storm.core.common.StringKeyPrediction.valueOf("LUCKY_COLOR_${moonSign.element.uppercase()}")
         } catch (e: Exception) {
-            StringKeyPart1.LUCKY_COLOR_FIRE
+            StringKeyPrediction.LUCKY_COLOR_FIRE
         }
         val luckyColor = StringResources.get(luckyColorKey, language)
         
         val luckyDirectionKey = try {
-            com.astro.storm.core.common.StringKeyHoroscope.valueOf("LUCKY_DIR_${PLANET_DIRECTIONS_MAP[ascRuler] ?: "EAST"}")
+            com.astro.storm.core.common.StringKeyPrediction.valueOf("LUCKY_DIR_${PLANET_DIRECTIONS_MAP[ascRuler] ?: "EAST"}")
         } catch (e: Exception) {
-            StringKeyPart1.LUCKY_DIRECTION_EAST
+            StringKeyGeneralPart6.LUCKY_DIRECTION_EAST
         }
         val luckyDirection = StringResources.get(luckyDirectionKey, language)
         
         val luckyTimeKey = when (dayOfWeek) {
-            1 -> StringKeyHoroscope.HORA_SUN
-            2 -> StringKeyHoroscope.HORA_MOON
-            3 -> StringKeyHoroscope.HORA_MARS
-            4 -> StringKeyHoroscope.HORA_MERCURY
-            5 -> StringKeyHoroscope.HORA_JUPITER
-            6 -> StringKeyHoroscope.HORA_VENUS
-            else -> StringKeyHoroscope.HORA_SATURN
+            1 -> StringKeyVargaPart1.HORA_SUN
+            2 -> StringKeyVargaPart1.HORA_MOON
+            3 -> StringKeyVargaPart1.HORA_MARS
+            4 -> StringKeyVargaPart1.HORA_MERCURY
+            5 -> StringKeyVargaPart1.HORA_JUPITER
+            6 -> StringKeyVargaPart1.HORA_VENUS
+            else -> StringKeyVargaPart1.HORA_SATURN
         }
         val luckyTime = StringResources.get(luckyTimeKey, language)
         
         val luckyGemstoneKey = try {
-            StringKey.valueOf("GEMSTONE_${PLANET_GEMSTONES_MAP[ascRuler] ?: "RUBY"}")
+            StringKeyPrediction.valueOf("GEMSTONE_${PLANET_GEMSTONES_MAP[ascRuler] ?: "RUBY"}")
         } catch (e: Exception) {
-            StringKeyUI.GEMSTONE_RUBY
+            StringKeyUIPart1.GEMSTONE_RUBY
         }
         val gemstone = StringResources.get(luckyGemstoneKey, language)
 
@@ -768,7 +768,7 @@ class HoroscopeCalculator @Inject constructor(
     }
 
     private fun generateAffirmationKey(dashaLord: Planet?): StringKey {
-        return DASHA_AFFIRMATIONS_KEYS[dashaLord] ?: StringKeyPart1.ENERGY_BALANCED
+        return DASHA_AFFIRMATIONS_KEYS[dashaLord] ?: StringKeyGeneralPart4.ENERGY_BALANCED
     }
 
     private fun calculateKeyDates(startDate: LocalDate, endDate: LocalDate, language: Language): List<KeyDate> {
@@ -827,7 +827,7 @@ class HoroscopeCalculator @Inject constructor(
             val predictionKey = try {
                 com.astro.storm.core.common.StringKeyHoroscope.valueOf(predictionKeyName)
             } catch (e: Exception) {
-                StringKeyPart1.HOROSCOPE_BALANCED_ENERGY
+                StringKeyGeneralPart5.HOROSCOPE_BALANCED_ENERGY
             }
 
             StringResources.get(predictionKey, language, currentDashaLord)
@@ -846,9 +846,9 @@ class HoroscopeCalculator @Inject constructor(
         val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
 
         val themeKey = when {
-            avgEnergy >= 7 -> StringKeyPart1.THEME_WEEK_OPPORTUNITIES
-            avgEnergy >= 5 -> StringKeyPart1.THEME_WEEK_STEADY_PROGRESS
-            else -> StringKeyPart1.THEME_WEEK_MINDFUL_NAVIGATION
+            avgEnergy >= 7 -> StringKeyPrediction.THEME_WEEK_OPPORTUNITIES
+            avgEnergy >= 5 -> StringKeyPrediction.THEME_WEEK_STEADY_PROGRESS
+            else -> StringKeyPrediction.THEME_WEEK_MINDFUL_NAVIGATION
         }
 
         val overview = buildWeeklyOverview(currentDashaLord, avgEnergy, dailyHighlights, language)
@@ -863,21 +863,21 @@ class HoroscopeCalculator @Inject constructor(
     ): String {
         val builder = StringBuilder()
         
-        builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_PREFIX, language, dashaLord.getLocalizedName(language)))
+        builder.append(StringResources.get(StringKeyGeneralPart12.WEEKLY_OVERVIEW_PREFIX, language, dashaLord.getLocalizedName(language)))
 
         when {
-            avgEnergy >= 7 -> builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_HIGH, language))
-            avgEnergy >= 5 -> builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_MED, language))
-            else -> builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_LOW, language))
+            avgEnergy >= 7 -> builder.append(StringResources.get(StringKeyGeneralPart12.WEEKLY_OVERVIEW_HIGH, language))
+            avgEnergy >= 5 -> builder.append(StringResources.get(StringKeyGeneralPart12.WEEKLY_OVERVIEW_MED, language))
+            else -> builder.append(StringResources.get(StringKeyGeneralPart12.WEEKLY_OVERVIEW_LOW, language))
         }
 
         dailyHighlights.maxByOrNull { it.energy }?.let {
             val dayName = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it.dayOfWeek.value.toString()) // Placeholder
                           else it.dayOfWeek.name
-            builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_FAVORABLE, language, dayName))
+            builder.append(StringResources.get(StringKeyGeneralPart12.WEEKLY_OVERVIEW_FAVORABLE, language, dayName))
         }
 
-        builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_SUFFIX, language))
+        builder.append(StringResources.get(StringKeyGeneralPart12.WEEKLY_OVERVIEW_SUFFIX, language))
 
         return builder.toString()
     }
@@ -890,15 +890,15 @@ class HoroscopeCalculator @Inject constructor(
         val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
         val builder = StringBuilder()
         
-        builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_ADVICE_PREFIX, language, currentDashaLord.getLocalizedName(language)))
+        builder.append(StringResources.get(StringKeyGeneralPart12.WEEKLY_ADVICE_PREFIX, language, currentDashaLord.getLocalizedName(language)))
         
-        val adviceKey = DASHA_WEEKLY_ADVICE_KEYS[currentDashaLord] ?: StringKeyPart1.ADVICE_GENERAL
+        val adviceKey = DASHA_WEEKLY_ADVICE_KEYS[currentDashaLord] ?: StringKeyGeneralPart1.ADVICE_GENERAL
         builder.append(StringResources.get(adviceKey, language))
 
         keyDates.firstOrNull { it.isPositive }?.let {
             val dateStr = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it.date.dayOfMonth.toString())
                           else it.date.format(DATE_FORMATTER)
-            builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_ADVICE_DATE, language, dateStr))
+            builder.append(StringResources.get(StringKeyGeneralPart12.WEEKLY_ADVICE_DATE, language, dateStr))
         }
 
         return builder.toString()
@@ -1170,32 +1170,32 @@ class HoroscopeCalculator @Inject constructor(
         )
 
         private val DASHA_LORD_THEMES_KEYS = mapOf(
-            Planet.JUPITER to StringKeyPart1.THEME_EXPANSION_WISDOM,
-            Planet.VENUS to StringKeyPart1.THEME_HARMONY_BEAUTY,
-            Planet.SATURN to StringKeyPart1.THEME_DISCIPLINE_GROWTH,
-            Planet.MERCURY to StringKeyPart1.THEME_COMMUNICATION_LEARNING,
-            Planet.MARS to StringKeyPart1.THEME_ENERGY_INITIATIVE,
-            Planet.SUN to StringKeyPart1.THEME_SELF_EXPRESSION,
-            Planet.MOON to StringKeyPart1.THEME_INTUITION_NURTURING,
-            Planet.RAHU to StringKeyPart1.THEME_TRANSFORMATION,
-            Planet.KETU to StringKeyPart1.THEME_SPIRITUAL_LIBERATION
+            Planet.JUPITER to StringKeyPrediction.THEME_EXPANSION_WISDOM,
+            Planet.VENUS to StringKeyPrediction.THEME_HARMONY_BEAUTY,
+            Planet.SATURN to StringKeyPrediction.THEME_DISCIPLINE_GROWTH,
+            Planet.MERCURY to StringKeyPrediction.THEME_COMMUNICATION_LEARNING,
+            Planet.MARS to StringKeyPrediction.THEME_ENERGY_INITIATIVE,
+            Planet.SUN to StringKeyPrediction.THEME_SELF_EXPRESSION,
+            Planet.MOON to StringKeyPrediction.THEME_INTUITION_NURTURING,
+            Planet.RAHU to StringKeyPrediction.THEME_TRANSFORMATION,
+            Planet.KETU to StringKeyPrediction.THEME_SPIRITUAL_LIBERATION
         )
 
         private val THEME_DESCRIPTIONS_KEYS = mapOf(
-            StringKeyPart1.THEME_DYNAMIC_ACTION to StringKeyPart1.THEME_DESC_DYNAMIC_ACTION,
-            StringKeyPart1.THEME_PRACTICAL_PROGRESS to StringKeyPart1.THEME_DESC_PRACTICAL_PROGRESS,
-            StringKeyPart1.THEME_SOCIAL_CONNECTIONS to StringKeyPart1.THEME_DESC_SOCIAL_CONNECTIONS,
-            StringKeyPart1.THEME_EMOTIONAL_INSIGHT to StringKeyPart1.THEME_DESC_EMOTIONAL_INSIGHT,
-            StringKeyPart1.THEME_EXPANSION_WISDOM to StringKeyPart1.THEME_DESC_EXPANSION_WISDOM,
-            StringKeyPart1.THEME_HARMONY_BEAUTY to StringKeyPart1.THEME_DESC_HARMONY_BEAUTY,
-            StringKeyPart1.THEME_DISCIPLINE_GROWTH to StringKeyPart1.THEME_DESC_DISCIPLINE_GROWTH,
-            StringKeyPart1.THEME_COMMUNICATION_LEARNING to StringKeyPart1.THEME_DESC_COMMUNICATION_LEARNING,
-            StringKeyPart1.THEME_ENERGY_INITIATIVE to StringKeyPart1.THEME_DESC_ENERGY_INITIATIVE,
-            StringKeyPart1.THEME_SELF_EXPRESSION to StringKeyPart1.THEME_DESC_SELF_EXPRESSION,
-            StringKeyPart1.THEME_INTUITION_NURTURING to StringKeyPart1.THEME_DESC_INTUITION_NURTURING,
-            StringKeyPart1.THEME_TRANSFORMATION to StringKeyPart1.THEME_DESC_TRANSFORMATION,
-            StringKeyPart1.THEME_SPIRITUAL_LIBERATION to StringKeyPart1.THEME_DESC_SPIRITUAL_LIBERATION,
-            StringKeyPart1.THEME_BALANCE_EQUILIBRIUM to StringKeyPart1.THEME_DESC_BALANCE_EQUILIBRIUM
+            StringKeyPrediction.THEME_DYNAMIC_ACTION to StringKeyPrediction.THEME_DESC_DYNAMIC_ACTION,
+            StringKeyPrediction.THEME_PRACTICAL_PROGRESS to StringKeyPrediction.THEME_DESC_PRACTICAL_PROGRESS,
+            StringKeyPrediction.THEME_SOCIAL_CONNECTIONS to StringKeyPrediction.THEME_DESC_SOCIAL_CONNECTIONS,
+            StringKeyPrediction.THEME_EMOTIONAL_INSIGHT to StringKeyPrediction.THEME_DESC_EMOTIONAL_INSIGHT,
+            StringKeyPrediction.THEME_EXPANSION_WISDOM to StringKeyPrediction.THEME_DESC_EXPANSION_WISDOM,
+            StringKeyPrediction.THEME_HARMONY_BEAUTY to StringKeyPrediction.THEME_DESC_HARMONY_BEAUTY,
+            StringKeyPrediction.THEME_DISCIPLINE_GROWTH to StringKeyPrediction.THEME_DESC_DISCIPLINE_GROWTH,
+            StringKeyPrediction.THEME_COMMUNICATION_LEARNING to StringKeyPrediction.THEME_DESC_COMMUNICATION_LEARNING,
+            StringKeyPrediction.THEME_ENERGY_INITIATIVE to StringKeyPrediction.THEME_DESC_ENERGY_INITIATIVE,
+            StringKeyPrediction.THEME_SELF_EXPRESSION to StringKeyPrediction.THEME_DESC_SELF_EXPRESSION,
+            StringKeyPrediction.THEME_INTUITION_NURTURING to StringKeyPrediction.THEME_DESC_INTUITION_NURTURING,
+            StringKeyPrediction.THEME_TRANSFORMATION to StringKeyPrediction.THEME_DESC_TRANSFORMATION,
+            StringKeyPrediction.THEME_SPIRITUAL_LIBERATION to StringKeyPrediction.THEME_DESC_SPIRITUAL_LIBERATION,
+            StringKeyPrediction.THEME_BALANCE_EQUILIBRIUM to StringKeyPrediction.THEME_DESC_BALANCE_EQUILIBRIUM
         )
 
         private val ELEMENT_COLORS = mapOf(
@@ -1240,73 +1240,73 @@ class HoroscopeCalculator @Inject constructor(
         )
 
         private val DASHA_RECOMMENDATIONS_KEYS = mapOf(
-            Planet.SUN to StringKeyPart1.ADVICE_SUN,
-            Planet.MOON to StringKeyPart1.ADVICE_MOON,
-            Planet.MARS to StringKeyPart1.ADVICE_MARS,
-            Planet.MERCURY to StringKeyPart1.ADVICE_MERCURY,
-            Planet.JUPITER to StringKeyPart1.ADVICE_JUPITER,
-            Planet.VENUS to StringKeyPart1.ADVICE_VENUS,
-            Planet.SATURN to StringKeyPart1.ADVICE_SATURN,
-            Planet.RAHU to StringKeyPart1.ADVICE_RAHU,
-            Planet.KETU to StringKeyPart1.ADVICE_KETU
+            Planet.SUN to StringKeyGeneralPart1.ADVICE_SUN,
+            Planet.MOON to StringKeyGeneralPart1.ADVICE_MOON,
+            Planet.MARS to StringKeyGeneralPart1.ADVICE_MARS,
+            Planet.MERCURY to StringKeyGeneralPart1.ADVICE_MERCURY,
+            Planet.JUPITER to StringKeyGeneralPart1.ADVICE_JUPITER,
+            Planet.VENUS to StringKeyGeneralPart1.ADVICE_VENUS,
+            Planet.SATURN to StringKeyGeneralPart1.ADVICE_SATURN,
+            Planet.RAHU to StringKeyGeneralPart1.ADVICE_RAHU,
+            Planet.KETU to StringKeyGeneralPart1.ADVICE_KETU
         )
 
         private val BEST_AREA_RECOMMENDATIONS_KEYS = mapOf(
-            LifeArea.CAREER to StringKeyPart1.LIFE_AREA_CAREER,
-            LifeArea.LOVE to StringKeyPart1.LIFE_AREA_LOVE,
-            LifeArea.HEALTH to StringKeyPart1.LIFE_AREA_HEALTH,
-            LifeArea.FINANCE to StringKeyPart1.LIFE_AREA_FINANCE,
-            LifeArea.FAMILY to StringKeyPart1.LIFE_AREA_FAMILY,
-            LifeArea.SPIRITUALITY to StringKeyPart1.LIFE_AREA_SPIRITUALITY
+            LifeArea.CAREER to StringKeyGeneralPart6.LIFE_AREA_CAREER,
+            LifeArea.LOVE to StringKeyGeneralPart6.LIFE_AREA_LOVE,
+            LifeArea.HEALTH to StringKeyGeneralPart6.LIFE_AREA_HEALTH,
+            LifeArea.FINANCE to StringKeyGeneralPart6.LIFE_AREA_FINANCE,
+            LifeArea.FAMILY to StringKeyGeneralPart6.LIFE_AREA_FAMILY,
+            LifeArea.SPIRITUALITY to StringKeyGeneralPart6.LIFE_AREA_SPIRITUALITY
         )
 
         private val ELEMENT_RECOMMENDATIONS_KEYS = mapOf(
-            "Fire" to StringKeyPart1.THEME_DYNAMIC_ACTION,
-            "Earth" to StringKeyPart1.THEME_PRACTICAL_PROGRESS,
-            "Air" to StringKeyPart1.THEME_SOCIAL_CONNECTIONS,
-            "Water" to StringKeyPart1.THEME_EMOTIONAL_INSIGHT
+            "Fire" to StringKeyPrediction.THEME_DYNAMIC_ACTION,
+            "Earth" to StringKeyPrediction.THEME_PRACTICAL_PROGRESS,
+            "Air" to StringKeyPrediction.THEME_SOCIAL_CONNECTIONS,
+            "Water" to StringKeyPrediction.THEME_EMOTIONAL_INSIGHT
         )
 
         private val PLANET_CAUTIONS_KEYS = mapOf(
-            Planet.SATURN to StringKeyPart1.ADVICE_SATURN,
-            Planet.MARS to StringKeyPart1.ADVICE_MARS,
-            Planet.RAHU to StringKeyPart1.ADVICE_RAHU,
-            Planet.KETU to StringKeyPart1.ADVICE_KETU
+            Planet.SATURN to StringKeyGeneralPart1.ADVICE_SATURN,
+            Planet.MARS to StringKeyGeneralPart1.ADVICE_MARS,
+            Planet.RAHU to StringKeyGeneralPart1.ADVICE_RAHU,
+            Planet.KETU to StringKeyGeneralPart1.ADVICE_KETU
         )
 
         private val DASHA_AFFIRMATIONS_KEYS = mapOf(
-            Planet.SUN to StringKeyPart1.THEME_SELF_EXPRESSION,
-            Planet.MOON to StringKeyPart1.THEME_INTUITION_NURTURING,
-            Planet.MARS to StringKeyPart1.THEME_ENERGY_INITIATIVE,
-            Planet.MERCURY to StringKeyPart1.THEME_COMMUNICATION_LEARNING,
-            Planet.JUPITER to StringKeyPart1.THEME_EXPANSION_WISDOM,
-            Planet.VENUS to StringKeyPart1.THEME_HARMONY_BEAUTY,
-            Planet.SATURN to StringKeyPart1.THEME_DISCIPLINE_GROWTH,
-            Planet.RAHU to StringKeyPart1.THEME_TRANSFORMATION,
-            Planet.KETU to StringKeyPart1.THEME_SPIRITUAL_LIBERATION
+            Planet.SUN to StringKeyPrediction.THEME_SELF_EXPRESSION,
+            Planet.MOON to StringKeyPrediction.THEME_INTUITION_NURTURING,
+            Planet.MARS to StringKeyPrediction.THEME_ENERGY_INITIATIVE,
+            Planet.MERCURY to StringKeyPrediction.THEME_COMMUNICATION_LEARNING,
+            Planet.JUPITER to StringKeyPrediction.THEME_EXPANSION_WISDOM,
+            Planet.VENUS to StringKeyPrediction.THEME_HARMONY_BEAUTY,
+            Planet.SATURN to StringKeyPrediction.THEME_DISCIPLINE_GROWTH,
+            Planet.RAHU to StringKeyPrediction.THEME_TRANSFORMATION,
+            Planet.KETU to StringKeyPrediction.THEME_SPIRITUAL_LIBERATION
         )
 
     private val LUNAR_PHASES_KEYS: List<Triple<Int, StringKeyInterface, StringKeyInterface>> = listOf(
-        Triple(0, StringKeyPart1.PERIOD_TODAY, StringKeyPart1.MSG_MAY_TAKE_MOMENT),
-        Triple(7, StringKeyHoroscope.LUNAR_FIRST_QUARTER, StringKeyHoroscope.LUNAR_ACTION),
-        Triple(14, StringKeyHoroscope.LUNAR_FULL_MOON, StringKeyHoroscope.LUNAR_COMPLETION)
+        Triple(0, StringKeyGeneralPart7.PERIOD_TODAY, StringKeyGeneralPart7.MSG_MAY_TAKE_MOMENT),
+        Triple(7, StringKeyGeneralPart6.LUNAR_FIRST_QUARTER, StringKeyGeneralPart6.LUNAR_ACTION),
+        Triple(14, StringKeyGeneralPart6.LUNAR_FULL_MOON, StringKeyGeneralPart6.LUNAR_COMPLETION)
     )
 
     private val FAVORABLE_DAYS_KEYS = mapOf(
-        java.time.DayOfWeek.THURSDAY to StringKeyHoroscope.DAY_JUPITER,
-        java.time.DayOfWeek.FRIDAY to StringKeyHoroscope.DAY_VENUS
+        java.time.DayOfWeek.THURSDAY to StringKeyGeneralPart3.DAY_JUPITER,
+        java.time.DayOfWeek.FRIDAY to StringKeyGeneralPart3.DAY_VENUS
     )
 
         private val DASHA_WEEKLY_ADVICE_KEYS = mapOf(
-            Planet.JUPITER to StringKeyPart1.ADVICE_JUPITER,
-            Planet.VENUS to StringKeyPart1.ADVICE_VENUS,
-            Planet.SATURN to StringKeyPart1.ADVICE_SATURN,
-            Planet.MERCURY to StringKeyPart1.ADVICE_MERCURY,
-            Planet.MARS to StringKeyPart1.ADVICE_MARS,
-            Planet.SUN to StringKeyPart1.ADVICE_SUN,
-            Planet.MOON to StringKeyPart1.ADVICE_MOON,
-            Planet.RAHU to StringKeyPart1.ADVICE_RAHU,
-            Planet.KETU to StringKeyPart1.ADVICE_KETU
+            Planet.JUPITER to StringKeyGeneralPart1.ADVICE_JUPITER,
+            Planet.VENUS to StringKeyGeneralPart1.ADVICE_VENUS,
+            Planet.SATURN to StringKeyGeneralPart1.ADVICE_SATURN,
+            Planet.MERCURY to StringKeyGeneralPart1.ADVICE_MERCURY,
+            Planet.MARS to StringKeyGeneralPart1.ADVICE_MARS,
+            Planet.SUN to StringKeyGeneralPart1.ADVICE_SUN,
+            Planet.MOON to StringKeyGeneralPart1.ADVICE_MOON,
+            Planet.RAHU to StringKeyGeneralPart1.ADVICE_RAHU,
+            Planet.KETU to StringKeyGeneralPart1.ADVICE_KETU
         )
 
         private val PLANET_DIRECTIONS_MAP = mapOf(

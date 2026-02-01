@@ -208,21 +208,21 @@ private fun DeleteChartConfirmationDialog(
         shape = RoundedCornerShape(20.dp),
         title = {
             Text(
-                text = stringResource(StringKeyPart2.PROFILE_DELETE_TITLE),
+                text = stringResource(StringKeyGeneralPart9.PROFILE_DELETE_TITLE),
                 color = colors.TextPrimary,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = stringResource(StringKeyPart2.PROFILE_DELETE_MESSAGE).replace("{name}", chartName),
+                text = stringResource(StringKeyGeneralPart9.PROFILE_DELETE_MESSAGE).replace("{name}", chartName),
                 color = colors.TextSecondary
             )
         },
         confirmButton = {
             TextButton(onClick = onConfirm) {
                 Text(
-                    text = stringResource(StringKeyUI.BTN_DELETE),
+                    text = stringResource(StringKeyUIPart1.BTN_DELETE),
                     color = colors.ErrorColor,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -231,7 +231,7 @@ private fun DeleteChartConfirmationDialog(
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(
-                    text = stringResource(StringKeyUI.BTN_CANCEL),
+                    text = stringResource(StringKeyUIPart1.BTN_CANCEL),
                     color = colors.TextSecondary
                 )
             }
@@ -254,7 +254,7 @@ private fun ProfileSwitcherDragHandle() {
 @Composable
 private fun ProfileSwitcherHeader() {
     Text(
-        text = stringResource(StringKeyPart1.PROFILE_SWITCH),
+        text = stringResource(StringKeyGeneralPart9.PROFILE_SWITCH),
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.SemiBold,
         color = AppTheme.TextPrimary,
@@ -290,14 +290,14 @@ private fun ProfileSwitcherEmptyState() {
             }
 
             Text(
-                text = stringResource(StringKeyPart1.PROFILE_NO_SAVED_CHARTS),
+                text = stringResource(StringKeyGeneralPart9.PROFILE_NO_SAVED_CHARTS),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextMuted
             )
 
             Text(
-                text = stringResource(StringKeyPart1.PROFILE_ADD_FIRST_CHART),
+                text = stringResource(StringKeyGeneralPart9.PROFILE_ADD_FIRST_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSubtle
             )
@@ -352,13 +352,13 @@ private fun ProfileItem(
         label = "profile_item_bg"
     )
 
-    val birthChartFallback = stringResource(StringKeyPart2.PROFILE_BIRTH_CHART)
+    val birthChartFallback = stringResource(StringKeyGeneralPart9.PROFILE_BIRTH_CHART)
     val formattedDetails = remember(chart.dateTime, chart.location, birthChartFallback) {
         formatChartDetails(chart, birthChartFallback)
     }
 
     val interactionSource = remember { MutableInteractionSource() }
-    val selectedText = stringResource(StringKeyPart2.PROFILE_SELECTED)
+    val selectedText = stringResource(StringKeyGeneralPart9.PROFILE_SELECTED)
 
     val accessibilityDesc = buildString {
         append(chart.name)
@@ -449,7 +449,7 @@ private fun ProfileItem(
         ) {
             Icon(
                 imageVector = Icons.Default.Edit,
-                contentDescription = stringResource(StringKeyUI.BTN_EDIT),
+                contentDescription = stringResource(StringKeyUIPart1.BTN_EDIT),
                 tint = AppTheme.TextMuted,
                 modifier = Modifier.size(18.dp)
             )
@@ -462,7 +462,7 @@ private fun ProfileItem(
         ) {
             Icon(
                 imageVector = Icons.Default.Delete,
-                contentDescription = stringResource(StringKeyUI.BTN_DELETE),
+                contentDescription = stringResource(StringKeyUIPart1.BTN_DELETE),
                 tint = AppTheme.ErrorColor.copy(alpha = 0.7f),
                 modifier = Modifier.size(18.dp)
             )
@@ -535,7 +535,7 @@ fun ProfileAvatar(
 @Composable
 private fun AddNewChartButton(onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
-    val addNewChartDesc = stringResource(StringKeyPart1.PROFILE_ADD_NEW_CHART)
+    val addNewChartDesc = stringResource(StringKeyGeneralPart9.PROFILE_ADD_NEW_CHART)
 
     Row(
         modifier = Modifier
@@ -591,14 +591,14 @@ fun ProfileHeaderRow(
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val interactionSource = remember { MutableInteractionSource() }
-    val selectProfileText = stringResource(StringKeyPart2.PROFILE_SELECT)
+    val selectProfileText = stringResource(StringKeyGeneralPart9.PROFILE_SELECT)
 
     val accessibilityDesc = currentChart?.let {
         String.format(
-            stringResource(StringKeyPart2.PROFILE_CURRENT_A11Y),
+            stringResource(StringKeyGeneralPart9.PROFILE_CURRENT_A11Y),
             it.name
         )
-    } ?: stringResource(StringKeyPart2.PROFILE_NO_SELECTED_A11Y)
+    } ?: stringResource(StringKeyGeneralPart9.PROFILE_NO_SELECTED_A11Y)
 
     Row(
         modifier = modifier

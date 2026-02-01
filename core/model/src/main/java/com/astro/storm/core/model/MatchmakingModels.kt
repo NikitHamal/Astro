@@ -36,10 +36,10 @@ enum class Varna(val value: Int, val displayName: String) {
     SHUDRA(1, "Shudra");
 
     fun getLocalizedName(language: Language): String = when (this) {
-        BRAHMIN -> StringResources.get(StringKeyMatchmaking.VARNA_BRAHMIN, language)
-        KSHATRIYA -> StringResources.get(StringKeyMatchmaking.VARNA_KSHATRIYA, language)
-        VAISHYA -> StringResources.get(StringKeyMatchmaking.VARNA_VAISHYA, language)
-        SHUDRA -> StringResources.get(StringKeyMatchmaking.VARNA_SHUDRA, language)
+        BRAHMIN -> StringResources.get(StringKeyMatchmakingPart1.VARNA_BRAHMIN, language)
+        KSHATRIYA -> StringResources.get(StringKeyMatchmakingPart1.VARNA_KSHATRIYA, language)
+        VAISHYA -> StringResources.get(StringKeyMatchmakingPart1.VARNA_VAISHYA, language)
+        SHUDRA -> StringResources.get(StringKeyMatchmakingPart1.VARNA_SHUDRA, language)
     }
 
     companion object {
@@ -72,11 +72,11 @@ enum class Vashya(val displayName: String) {
     KEETA("Insect");
 
     fun getLocalizedName(language: Language): String = when (this) {
-        CHATUSHPADA -> StringResources.get(StringKeyMatchmaking.VASHYA_CHATUSHPADA, language)
-        MANAVA -> StringResources.get(StringKeyMatchmaking.VASHYA_MANAVA, language)
-        JALACHARA -> StringResources.get(StringKeyMatchmaking.VASHYA_JALACHARA, language)
-        VANACHARA -> StringResources.get(StringKeyMatchmaking.VASHYA_VANACHARA, language)
-        KEETA -> StringResources.get(StringKeyMatchmaking.VASHYA_KEETA, language)
+        CHATUSHPADA -> StringResources.get(StringKeyMatchmakingPart1.VASHYA_CHATUSHPADA, language)
+        MANAVA -> StringResources.get(StringKeyMatchmakingPart1.VASHYA_MANAVA, language)
+        JALACHARA -> StringResources.get(StringKeyMatchmakingPart1.VASHYA_JALACHARA, language)
+        VANACHARA -> StringResources.get(StringKeyMatchmakingPart1.VASHYA_VANACHARA, language)
+        KEETA -> StringResources.get(StringKeyMatchmakingPart1.VASHYA_KEETA, language)
     }
 
     companion object {
@@ -124,15 +124,15 @@ enum class Gana(val displayName: String, val description: String) {
     RAKSHASA("Rakshasa", "Demon - Tamasik, aggressive, dominant");
 
     fun getLocalizedName(language: Language): String = when (this) {
-        DEVA -> StringResources.get(StringKeyMatchmaking.GANA_DEVA, language)
-        MANUSHYA -> StringResources.get(StringKeyMatchmaking.GANA_MANUSHYA, language)
-        RAKSHASA -> StringResources.get(StringKeyMatchmaking.GANA_RAKSHASA, language)
+        DEVA -> StringResources.get(StringKeyMatchmakingPart1.GANA_DEVA, language)
+        MANUSHYA -> StringResources.get(StringKeyMatchmakingPart1.GANA_MANUSHYA, language)
+        RAKSHASA -> StringResources.get(StringKeyMatchmakingPart1.GANA_RAKSHASA, language)
     }
 
     fun getLocalizedDescription(language: Language): String = when (this) {
-        DEVA -> StringResources.get(StringKeyMatchmaking.GANA_DEVA_DESC, language)
-        MANUSHYA -> StringResources.get(StringKeyMatchmaking.GANA_MANUSHYA_DESC, language)
-        RAKSHASA -> StringResources.get(StringKeyMatchmaking.GANA_RAKSHASA_DESC, language)
+        DEVA -> StringResources.get(StringKeyMatchmakingPart1.GANA_DEVA_DESC, language)
+        MANUSHYA -> StringResources.get(StringKeyMatchmakingPart1.GANA_MANUSHYA_DESC, language)
+        RAKSHASA -> StringResources.get(StringKeyMatchmakingPart1.GANA_RAKSHASA_DESC, language)
     }
 
     companion object {
@@ -164,40 +164,40 @@ enum class YoniGender { MALE, FEMALE }
  * Each Nakshatra is assigned an animal nature with male/female classification.
  */
 enum class Yoni(val animalKey: StringKeyMatch, val gender: YoniGender, val groupId: Int) {
-    ASHWA_MALE(StringKeyMatchmaking.YONI_ANIMAL_HORSE, YoniGender.MALE, 1),
-    ASHWA_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_HORSE, YoniGender.FEMALE, 1),
-    GAJA_MALE(StringKeyMatchmaking.YONI_ANIMAL_ELEPHANT, YoniGender.MALE, 2),
-    GAJA_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_ELEPHANT, YoniGender.FEMALE, 2),
-    MESHA_MALE(StringKeyMatchmaking.YONI_ANIMAL_SHEEP, YoniGender.MALE, 3),
-    MESHA_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_SHEEP, YoniGender.FEMALE, 3),
-    SARPA_MALE(StringKeyMatchmaking.YONI_ANIMAL_SERPENT, YoniGender.MALE, 4),
-    SARPA_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_SERPENT, YoniGender.FEMALE, 4),
-    SHWAN_MALE(StringKeyMatchmaking.YONI_ANIMAL_DOG, YoniGender.MALE, 5),
-    SHWAN_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_DOG, YoniGender.FEMALE, 5),
-    MARJAR_MALE(StringKeyMatchmaking.YONI_ANIMAL_CAT, YoniGender.MALE, 6),
-    MARJAR_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_CAT, YoniGender.FEMALE, 6),
-    MUSHAK_MALE(StringKeyMatchmaking.YONI_ANIMAL_RAT, YoniGender.MALE, 7),
-    MUSHAK_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_RAT, YoniGender.FEMALE, 7),
-    GAU_MALE(StringKeyMatchmaking.YONI_ANIMAL_COW, YoniGender.MALE, 8),
-    GAU_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_COW, YoniGender.FEMALE, 8),
-    MAHISH_MALE(StringKeyMatchmaking.YONI_ANIMAL_BUFFALO, YoniGender.MALE, 9),
-    MAHISH_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_BUFFALO, YoniGender.FEMALE, 9),
-    VYAGHRA_MALE(StringKeyMatchmaking.YONI_ANIMAL_TIGER, YoniGender.MALE, 10),
-    VYAGHRA_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_TIGER, YoniGender.FEMALE, 10),
-    MRIGA_MALE(StringKeyMatchmaking.YONI_ANIMAL_DEER, YoniGender.MALE, 11),
-    MRIGA_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_DEER, YoniGender.FEMALE, 11),
-    VANAR_MALE(StringKeyMatchmaking.YONI_ANIMAL_MONKEY, YoniGender.MALE, 12),
-    VANAR_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_MONKEY, YoniGender.FEMALE, 12),
-    NAKUL_MALE(StringKeyMatchmaking.YONI_ANIMAL_MONGOOSE, YoniGender.MALE, 13),
-    NAKUL_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_MONGOOSE, YoniGender.FEMALE, 13),
-    SIMHA_MALE(StringKeyMatchmaking.YONI_ANIMAL_LION, YoniGender.MALE, 14),
-    SIMHA_FEMALE(StringKeyMatchmaking.YONI_ANIMAL_LION, YoniGender.FEMALE, 14);
+    ASHWA_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_HORSE, YoniGender.MALE, 1),
+    ASHWA_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_HORSE, YoniGender.FEMALE, 1),
+    GAJA_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_ELEPHANT, YoniGender.MALE, 2),
+    GAJA_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_ELEPHANT, YoniGender.FEMALE, 2),
+    MESHA_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_SHEEP, YoniGender.MALE, 3),
+    MESHA_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_SHEEP, YoniGender.FEMALE, 3),
+    SARPA_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_SERPENT, YoniGender.MALE, 4),
+    SARPA_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_SERPENT, YoniGender.FEMALE, 4),
+    SHWAN_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_DOG, YoniGender.MALE, 5),
+    SHWAN_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_DOG, YoniGender.FEMALE, 5),
+    MARJAR_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_CAT, YoniGender.MALE, 6),
+    MARJAR_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_CAT, YoniGender.FEMALE, 6),
+    MUSHAK_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_RAT, YoniGender.MALE, 7),
+    MUSHAK_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_RAT, YoniGender.FEMALE, 7),
+    GAU_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_COW, YoniGender.MALE, 8),
+    GAU_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_COW, YoniGender.FEMALE, 8),
+    MAHISH_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_BUFFALO, YoniGender.MALE, 9),
+    MAHISH_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_BUFFALO, YoniGender.FEMALE, 9),
+    VYAGHRA_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_TIGER, YoniGender.MALE, 10),
+    VYAGHRA_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_TIGER, YoniGender.FEMALE, 10),
+    MRIGA_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_DEER, YoniGender.MALE, 11),
+    MRIGA_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_DEER, YoniGender.FEMALE, 11),
+    VANAR_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_MONKEY, YoniGender.MALE, 12),
+    VANAR_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_MONKEY, YoniGender.FEMALE, 12),
+    NAKUL_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_MONGOOSE, YoniGender.MALE, 13),
+    NAKUL_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_MONGOOSE, YoniGender.FEMALE, 13),
+    SIMHA_MALE(StringKeyMatchmakingPart1.YONI_ANIMAL_LION, YoniGender.MALE, 14),
+    SIMHA_FEMALE(StringKeyMatchmakingPart1.YONI_ANIMAL_LION, YoniGender.FEMALE, 14);
 
     fun getLocalizedAnimal(language: Language): String = StringResources.get(animalKey, language)
     
     fun getLocalizedGender(language: Language): String = when (gender) {
-        YoniGender.MALE -> StringResources.get(StringKeyUI.GENDER_MALE, language)
-        YoniGender.FEMALE -> StringResources.get(StringKeyUI.GENDER_FEMALE, language)
+        YoniGender.MALE -> StringResources.get(StringKeyUIPart1.GENDER_MALE, language)
+        YoniGender.FEMALE -> StringResources.get(StringKeyUIPart1.GENDER_FEMALE, language)
     }
 
     companion object {
@@ -267,15 +267,15 @@ enum class Nadi(val displayName: String, val description: String) {
     ANTYA("Antya (Kapha)", "End - Water element, controls structure and lubrication");
 
     fun getLocalizedName(language: Language): String = when (this) {
-        ADI -> StringResources.get(StringKeyMatchmaking.NADI_ADI, language)
-        MADHYA -> StringResources.get(StringKeyMatchmaking.NADI_MADHYA, language)
-        ANTYA -> StringResources.get(StringKeyMatchmaking.NADI_ANTYA, language)
+        ADI -> StringResources.get(StringKeyMatchmakingPart1.NADI_ADI, language)
+        MADHYA -> StringResources.get(StringKeyMatchmakingPart1.NADI_MADHYA, language)
+        ANTYA -> StringResources.get(StringKeyMatchmakingPart1.NADI_ANTYA, language)
     }
 
     fun getLocalizedDescription(language: Language): String = when (this) {
-        ADI -> StringResources.get(StringKeyMatchmaking.NADI_ADI_DESC, language)
-        MADHYA -> StringResources.get(StringKeyMatchmaking.NADI_MADHYA_DESC, language)
-        ANTYA -> StringResources.get(StringKeyMatchmaking.NADI_ANTYA_DESC, language)
+        ADI -> StringResources.get(StringKeyMatchmakingPart1.NADI_ADI_DESC, language)
+        MADHYA -> StringResources.get(StringKeyMatchmakingPart1.NADI_MADHYA_DESC, language)
+        ANTYA -> StringResources.get(StringKeyMatchmakingPart1.NADI_ANTYA_DESC, language)
     }
 
     companion object {
@@ -335,30 +335,30 @@ enum class Rajju(val displayName: String, val bodyPart: String) {
     SIRO("Siro Rajju", "Head");
 
     fun getLocalizedName(language: Language): String = when (this) {
-        PADA -> StringResources.get(StringKeyMatchPart1.RAJJU_PADA, language)
-        KATI -> StringResources.get(StringKeyMatchPart1.RAJJU_KATI, language)
-        NABHI -> StringResources.get(StringKeyMatchPart1.RAJJU_NABHI, language)
-        KANTHA -> StringResources.get(StringKeyMatchPart1.RAJJU_KANTHA, language)
-        SIRO -> StringResources.get(StringKeyMatchPart1.RAJJU_SIRO, language)
+        PADA -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_PADA, language)
+        KATI -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_KATI, language)
+        NABHI -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_NABHI, language)
+        KANTHA -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_KANTHA, language)
+        SIRO -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_SIRO, language)
     }
 
     fun getLocalizedBodyPart(language: Language): String = when (this) {
-        PADA -> StringResources.get(StringKeyMatchPart1.RAJJU_PADA_BODY, language)
-        KATI -> StringResources.get(StringKeyMatchPart1.RAJJU_KATI_BODY, language)
-        NABHI -> StringResources.get(StringKeyMatchPart1.RAJJU_NABHI_BODY, language)
-        KANTHA -> StringResources.get(StringKeyMatchPart1.RAJJU_KANTHA_BODY, language)
-        SIRO -> StringResources.get(StringKeyMatchPart1.RAJJU_SIRO_BODY, language)
+        PADA -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_PADA_BODY, language)
+        KATI -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_KATI_BODY, language)
+        NABHI -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_NABHI_BODY, language)
+        KANTHA -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_KANTHA_BODY, language)
+        SIRO -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_SIRO_BODY, language)
     }
 
     /**
      * Get warning message for same Rajju dosha
      */
     fun getWarning(language: Language): String = when (this) {
-        SIRO -> StringResources.get(StringKeyMatchPart1.RAJJU_SIRO_WARNING, language)
-        KANTHA -> StringResources.get(StringKeyMatchPart1.RAJJU_KANTHA_WARNING, language)
-        NABHI -> StringResources.get(StringKeyMatchPart1.RAJJU_NABHI_WARNING, language)
-        KATI -> StringResources.get(StringKeyMatchPart1.RAJJU_KATI_WARNING, language)
-        PADA -> StringResources.get(StringKeyMatchPart1.RAJJU_PADA_WARNING, language)
+        SIRO -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_SIRO_WARNING, language)
+        KANTHA -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_KANTHA_WARNING, language)
+        NABHI -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_NABHI_WARNING, language)
+        KATI -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_KATI_WARNING, language)
+        PADA -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_PADA_WARNING, language)
     }
 
     /**
@@ -400,8 +400,8 @@ enum class RajjuArudha(val displayName: String) {
     DESCENDING("Avarohana (Descending)");
 
     fun getLocalizedName(language: Language): String = when (this) {
-        ASCENDING -> StringResources.get(StringKeyMatchPart1.RAJJU_ASCENDING, language)
-        DESCENDING -> StringResources.get(StringKeyMatchPart1.RAJJU_DESCENDING, language)
+        ASCENDING -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_ASCENDING, language)
+        DESCENDING -> StringResources.get(StringKeyMatchmakingPart1.RAJJU_DESCENDING, language)
     }
 
     companion object {
@@ -439,10 +439,10 @@ enum class ManglikDosha(val displayName: String, val severity: Int) {
     DOUBLE("Double Manglik (Severe)", 3);
 
     fun getLocalizedName(language: Language): String = when (this) {
-        NONE -> StringResources.get(StringKeyDoshaPart4.MANGLIK_NONE, language)
-        PARTIAL -> StringResources.get(StringKeyDoshaPart4.MANGLIK_PARTIAL, language)
-        FULL -> StringResources.get(StringKeyDoshaPart4.MANGLIK_FULL, language)
-        DOUBLE -> StringResources.get(StringKeyDoshaPart4.MANGLIK_DOUBLE, language)
+        NONE -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_NONE, language)
+        PARTIAL -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_PARTIAL, language)
+        FULL -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_FULL, language)
+        DOUBLE -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_DOUBLE, language)
     }
 }
 
@@ -461,19 +461,19 @@ enum class CompatibilityRating(val displayName: String, val description: String)
     POOR("Poor Match", "Not recommended. Significant compatibility challenges that may cause ongoing difficulties.");
 
     fun getLocalizedName(language: Language): String = when (this) {
-        EXCELLENT -> StringResources.get(StringKeyMatchmaking.COMPAT_EXCELLENT, language)
-        GOOD -> StringResources.get(StringKeyMatchmaking.COMPAT_GOOD, language)
-        AVERAGE -> StringResources.get(StringKeyMatchmaking.COMPAT_AVERAGE, language)
-        BELOW_AVERAGE -> StringResources.get(StringKeyMatchmaking.COMPAT_BELOW_AVERAGE, language)
-        POOR -> StringResources.get(StringKeyMatchmaking.COMPAT_POOR, language)
+        EXCELLENT -> StringResources.get(StringKeyMatchmakingPart1.COMPAT_EXCELLENT, language)
+        GOOD -> StringResources.get(StringKeyMatchmakingPart1.COMPAT_GOOD, language)
+        AVERAGE -> StringResources.get(StringKeyMatchmakingPart1.COMPAT_AVERAGE, language)
+        BELOW_AVERAGE -> StringResources.get(StringKeyMatchmakingPart1.COMPAT_BELOW_AVERAGE, language)
+        POOR -> StringResources.get(StringKeyMatchmakingPart1.COMPAT_POOR, language)
     }
 
     fun getLocalizedDescription(language: Language): String = when (this) {
-        EXCELLENT -> StringResources.get(StringKeyMatchmaking.COMPAT_EXCELLENT_DESC, language)
-        GOOD -> StringResources.get(StringKeyMatchmaking.COMPAT_GOOD_DESC, language)
-        AVERAGE -> StringResources.get(StringKeyMatchmaking.COMPAT_AVERAGE_DESC, language)
-        BELOW_AVERAGE -> StringResources.get(StringKeyMatchmaking.COMPAT_BELOW_AVERAGE_DESC, language)
-        POOR -> StringResources.get(StringKeyMatchmaking.COMPAT_POOR_DESC, language)
+        EXCELLENT -> StringResources.get(StringKeyMatchmakingPart1.COMPAT_EXCELLENT_DESC, language)
+        GOOD -> StringResources.get(StringKeyMatchmakingPart1.COMPAT_GOOD_DESC, language)
+        AVERAGE -> StringResources.get(StringKeyMatchmakingPart1.COMPAT_AVERAGE_DESC, language)
+        BELOW_AVERAGE -> StringResources.get(StringKeyMatchmakingPart1.COMPAT_BELOW_AVERAGE_DESC, language)
+        POOR -> StringResources.get(StringKeyMatchmakingPart1.COMPAT_POOR_DESC, language)
     }
 
     companion object {
@@ -517,14 +517,14 @@ enum class GunaType(val displayName: String, val maxPoints: Double) {
     NADI("Nadi", 8.0);
 
     fun getLocalizedName(language: Language): String = when (this) {
-        VARNA -> StringResources.get(StringKeyMatchPart1.GUNA_VARNA, language)
-        VASHYA -> StringResources.get(StringKeyMatchPart1.GUNA_VASHYA, language)
-        TARA -> StringResources.get(StringKeyMatchPart1.GUNA_TARA, language)
-        YONI -> StringResources.get(StringKeyMatchPart1.GUNA_YONI, language)
-        GRAHA_MAITRI -> StringResources.get(StringKeyMatchPart1.GUNA_GRAHA_MAITRI, language)
-        GANA -> StringResources.get(StringKeyMatchPart1.GUNA_GANA, language)
-        BHAKOOT -> StringResources.get(StringKeyMatchPart1.GUNA_BHAKOOT, language)
-        NADI -> StringResources.get(StringKeyMatchPart1.GUNA_NADI, language)
+        VARNA -> StringResources.get(StringKeyGeneralPart5.GUNA_VARNA, language)
+        VASHYA -> StringResources.get(StringKeyGeneralPart5.GUNA_VASHYA, language)
+        TARA -> StringResources.get(StringKeyGeneralPart5.GUNA_TARA, language)
+        YONI -> StringResources.get(StringKeyGeneralPart5.GUNA_YONI, language)
+        GRAHA_MAITRI -> StringResources.get(StringKeyGeneralPart5.GUNA_GRAHA_MAITRI, language)
+        GANA -> StringResources.get(StringKeyGeneralPart5.GUNA_GANA, language)
+        BHAKOOT -> StringResources.get(StringKeyGeneralPart4.GUNA_BHAKOOT, language)
+        NADI -> StringResources.get(StringKeyGeneralPart5.GUNA_NADI, language)
     }
 
     companion object {
@@ -547,11 +547,11 @@ enum class ManglikCompatibilityLevel {
     EXCELLENT, GOOD, AVERAGE, BELOW_AVERAGE, POOR;
 
     fun getLocalizedName(language: Language): String = when (this) {
-        EXCELLENT -> StringResources.get(StringKeyDoshaPart1.MANGLIK_COMPAT_EXCELLENT, language)
-        GOOD -> StringResources.get(StringKeyDoshaPart1.MANGLIK_COMPAT_GOOD, language)
-        AVERAGE -> StringResources.get(StringKeyDoshaPart1.MANGLIK_COMPAT_AVERAGE, language)
-        BELOW_AVERAGE -> StringResources.get(StringKeyDoshaPart1.MANGLIK_COMPAT_BELOW_AVERAGE, language)
-        POOR -> StringResources.get(StringKeyDoshaPart1.MANGLIK_COMPAT_POOR, language)
+        EXCELLENT -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_COMPAT_EXCELLENT, language)
+        GOOD -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_COMPAT_GOOD, language)
+        AVERAGE -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_COMPAT_AVERAGE, language)
+        BELOW_AVERAGE -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_COMPAT_BELOW_AVERAGE, language)
+        POOR -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_COMPAT_POOR, language)
     }
 }
 
@@ -603,20 +603,20 @@ data class ManglikAnalysis(
 ) {
     fun getDetailedDescription(language: Language): String {
         if (effectiveDosha == ManglikDosha.NONE) {
-            return StringResources.get(StringKeyDoshaPart4.MANGLIK_NO_DOSHA_DESC, language)
+            return StringResources.get(StringKeyMatchmakingPart1.MANGLIK_NO_DOSHA_DESC, language)
         }
 
         return buildString {
             append("${effectiveDosha.getLocalizedName(language)} ")
-            append(StringResources.get(StringKeyDoshaPart4.MANGLIK_DETECTED, language))
+            append(StringResources.get(StringKeyMatchmakingPart1.MANGLIK_DETECTED, language))
             if (intensity < 100) {
-                append(" (${intensity}% ${StringResources.get(StringKeyDoshaPart4.MANGLIK_INTENSITY, language)})")
+                append(" (${intensity}% ${StringResources.get(StringKeyMatchmakingPart1.MANGLIK_INTENSITY, language)})")
             }
-            append(". ${StringResources.get(StringKeyDoshaPart4.MANGLIK_MARS_IN, language)} ")
+            append(". ${StringResources.get(StringKeyMatchmakingPart1.MANGLIK_MARS_IN, language)} ")
             val sources = mutableListOf<String>()
-            if (fromLagna) sources.add("${StringResources.get(StringKeyAnalysisPart1.HOUSE, language)} $marsHouse ${StringResources.get(StringKeyMatchPart1.FROM_LAGNA, language)}")
-            if (fromMoon) sources.add("${StringResources.get(StringKeyAnalysisPart1.HOUSE, language)} $marsHouseFromMoon ${StringResources.get(StringKeyMatchPart1.FROM_MOON, language)}")
-            if (fromVenus) sources.add("${StringResources.get(StringKeyAnalysisPart1.HOUSE, language)} $marsHouseFromVenus ${StringResources.get(StringKeyMatchPart1.FROM_VENUS, language)}")
+            if (fromLagna) sources.add("${StringResources.get(StringKeyGeneralPart5.HOUSE, language)} $marsHouse ${StringResources.get(StringKeyGeneralPart4.FROM_LAGNA, language)}")
+            if (fromMoon) sources.add("${StringResources.get(StringKeyGeneralPart5.HOUSE, language)} $marsHouseFromMoon ${StringResources.get(StringKeyGeneralPart4.FROM_MOON, language)}")
+            if (fromVenus) sources.add("${StringResources.get(StringKeyGeneralPart5.HOUSE, language)} $marsHouseFromVenus ${StringResources.get(StringKeyGeneralPart4.FROM_VENUS, language)}")
             append(sources.joinToString(", "))
             append(".")
         }

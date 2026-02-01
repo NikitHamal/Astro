@@ -80,15 +80,15 @@ class TarabalaCalculator @Inject constructor(
          */
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                JANMA -> StringKeyMatchPart1.TARA_JANMA
-                SAMPAT -> StringKeyMatchPart1.TARA_SAMPAT
-                VIPAT -> StringKeyMatchPart1.TARA_VIPAT
-                KSHEMA -> StringKeyMatchPart1.TARA_KSHEMA
-                PRATYARI -> StringKeyMatchPart1.TARA_PRATYARI
-                SADHAKA -> StringKeyAnalysisPart2.TARA_SADHAKA
-                VADHA -> StringKeyMatchPart1.TARA_VADHA
-                MITRA -> StringKeyMatchPart1.TARA_MITRA
-                PARAMA_MITRA -> StringKeyMatchPart1.TARA_PARAMA_MITRA
+                JANMA -> StringKeyGeneralPart11.TARA_JANMA
+                SAMPAT -> StringKeyGeneralPart11.TARA_SAMPAT
+                VIPAT -> StringKeyGeneralPart11.TARA_VIPAT
+                KSHEMA -> StringKeyGeneralPart11.TARA_KSHEMA
+                PRATYARI -> StringKeyGeneralPart11.TARA_PRATYARI
+                SADHAKA -> StringKeyGeneralPart11.TARA_SADHAKA
+                VADHA -> StringKeyGeneralPart11.TARA_VADHA
+                MITRA -> StringKeyGeneralPart11.TARA_MITRA
+                PARAMA_MITRA -> StringKeyGeneralPart11.TARA_PARAMA_MITRA
             }
             return StringResources.get(key, language)
         }
@@ -98,15 +98,15 @@ class TarabalaCalculator @Inject constructor(
          */
         fun getLocalizedDescription(language: Language): String {
             val key = when (this) {
-                JANMA -> StringKeyAnalysisPart2.TARA_JANMA_DESC
-                SAMPAT -> StringKeyAnalysisPart2.TARA_SAMPAT_DESC
-                VIPAT -> StringKeyAnalysisPart2.TARA_VIPAT_DESC
-                KSHEMA -> StringKeyAnalysisPart2.TARA_KSHEMA_DESC
-                PRATYARI -> StringKeyAnalysisPart2.TARA_PRATYARI_DESC
-                SADHAKA -> StringKeyAnalysisPart2.TARA_SADHAKA_DESC
-                VADHA -> StringKeyAnalysisPart2.TARA_VADHA_DESC
-                MITRA -> StringKeyAnalysisPart2.TARA_MITRA_DESC
-                PARAMA_MITRA -> StringKeyAnalysisPart2.TARA_PARAMA_MITRA_DESC
+                JANMA -> StringKeyGeneralPart11.TARA_JANMA_DESC
+                SAMPAT -> StringKeyGeneralPart11.TARA_SAMPAT_DESC
+                VIPAT -> StringKeyGeneralPart11.TARA_VIPAT_DESC
+                KSHEMA -> StringKeyGeneralPart11.TARA_KSHEMA_DESC
+                PRATYARI -> StringKeyGeneralPart11.TARA_PRATYARI_DESC
+                SADHAKA -> StringKeyGeneralPart11.TARA_SADHAKA_DESC
+                VADHA -> StringKeyGeneralPart11.TARA_VADHA_DESC
+                MITRA -> StringKeyGeneralPart11.TARA_MITRA_DESC
+                PARAMA_MITRA -> StringKeyGeneralPart11.TARA_PARAMA_MITRA_DESC
             }
             return StringResources.get(key, language)
         }
@@ -136,11 +136,11 @@ class TarabalaCalculator @Inject constructor(
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                EXCELLENT -> StringKeyAnalysisPart2.CHANDRABALA_EXCELLENT
-                GOOD -> StringKeyAnalysisPart2.CHANDRABALA_GOOD
-                NEUTRAL -> StringKeyAnalysisPart2.CHANDRABALA_NEUTRAL
-                WEAK -> StringKeyAnalysisPart2.CHANDRABALA_WEAK
-                UNFAVORABLE -> StringKeyAnalysisPart2.CHANDRABALA_UNFAVORABLE
+                EXCELLENT -> StringKeyGeneralPart2.CHANDRABALA_EXCELLENT
+                GOOD -> StringKeyGeneralPart2.CHANDRABALA_GOOD
+                NEUTRAL -> StringKeyGeneralPart2.CHANDRABALA_NEUTRAL
+                WEAK -> StringKeyGeneralPart2.CHANDRABALA_WEAK
+                UNFAVORABLE -> StringKeyGeneralPart2.CHANDRABALA_UNFAVORABLE
             }
             return StringResources.get(key, language)
         }
@@ -224,11 +224,11 @@ class TarabalaCalculator @Inject constructor(
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                HIGHLY_FAVORABLE -> StringKeyAnalysisPart2.COMBINED_HIGHLY_FAVORABLE
-                FAVORABLE -> StringKeyAnalysisPart2.COMBINED_FAVORABLE
-                MIXED -> StringKeyAnalysisPart2.COMBINED_MIXED
-                CHALLENGING -> StringKeyAnalysisPart2.COMBINED_CHALLENGING
-                UNFAVORABLE -> StringKeyAnalysisPart2.COMBINED_UNFAVORABLE
+                HIGHLY_FAVORABLE -> StringKeyGeneralPart3.COMBINED_HIGHLY_FAVORABLE
+                FAVORABLE -> StringKeyGeneralPart3.COMBINED_FAVORABLE
+                MIXED -> StringKeyGeneralPart3.COMBINED_MIXED
+                CHALLENGING -> StringKeyGeneralPart3.COMBINED_CHALLENGING
+                UNFAVORABLE -> StringKeyGeneralPart3.COMBINED_UNFAVORABLE
             }
             return StringResources.get(key, language)
         }
@@ -788,7 +788,7 @@ class TarabalaCalculator @Inject constructor(
             appendLine("${StringResources.get(StringKeyTarabala.REPORT_TRANSIT_NAK, language)} ${analysis.currentTarabala.targetNakshatra.displayName}")
             appendLine("${StringResources.get(StringKeyTarabala.REPORT_TARA_LABEL, language)} ${analysis.currentTarabala.tara.sanskritName} (${analysis.currentTarabala.tara.englishMeaning})")
             appendLine("${StringResources.get(StringKeyTarabala.REPORT_CYCLE_LABEL, language)} ${analysis.currentTarabala.cycle} of 3")
-            appendLine("${StringResources.get(StringKeyTarabala.REPORT_FAVORABLE_LABEL, language)} ${if (analysis.currentTarabala.isFavorable) StringResources.get(StringKeyUI.UI_YES, language) else StringResources.get(StringKeyUI.UI_NO, language)}")
+            appendLine("${StringResources.get(StringKeyTarabala.REPORT_FAVORABLE_LABEL, language)} ${if (analysis.currentTarabala.isFavorable) StringResources.get(StringKeyUIPart2.UI_YES, language) else StringResources.get(StringKeyUIPart2.UI_NO, language)}")
             appendLine("${StringResources.get(StringKeyTarabala.REPORT_STRENGTH_LABEL, language)} ${analysis.currentTarabala.overallStrength}%")
             appendLine()
             appendLine(StringResources.get(StringKeyTarabala.REPORT_RECS_LABEL, language))

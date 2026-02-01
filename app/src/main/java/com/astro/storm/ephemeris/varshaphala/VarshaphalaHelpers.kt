@@ -70,31 +70,31 @@ object VarshaphalaHelpers {
     fun isDebilitated(planet: Planet, sign: ZodiacSign): Boolean = DEBILITATION_SIGNS[planet] == sign
 
     fun evaluatePlanetStrengthDescription(planet: Planet, chart: SolarReturnChart, language: Language): String {
-        val pos = chart.planetPositions[planet] ?: return StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_UNKNOWN, language)
+        val pos = chart.planetPositions[planet] ?: return StringResources.get(StringKeyGeneralPart12.VARSHA_STRENGTH_UNKNOWN, language)
         return when {
-            isExalted(planet, pos.sign) -> StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_EXALTED, language)
-            pos.sign.ruler == planet -> StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_STRONG, language)
-            pos.house in listOf(1, 4, 7, 10) -> StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_ANGULAR, language)
-            isDebilitated(planet, pos.sign) -> StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_DEBILITATED, language)
-            else -> StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_MODERATE, language)
+            isExalted(planet, pos.sign) -> StringResources.get(StringKeyGeneralPart12.VARSHA_STRENGTH_EXALTED, language)
+            pos.sign.ruler == planet -> StringResources.get(StringKeyGeneralPart12.VARSHA_STRENGTH_STRONG, language)
+            pos.house in listOf(1, 4, 7, 10) -> StringResources.get(StringKeyGeneralPart12.VARSHA_STRENGTH_ANGULAR, language)
+            isDebilitated(planet, pos.sign) -> StringResources.get(StringKeyGeneralPart12.VARSHA_STRENGTH_DEBILITATED, language)
+            else -> StringResources.get(StringKeyGeneralPart12.VARSHA_STRENGTH_MODERATE, language)
         }
     }
 
     fun getHouseSignificance(house: Int, language: Language): String {
         val key = when (house) {
-            1 -> StringKeyAnalysisPart3.HOUSE_1_SIGNIFICANCE
-            2 -> StringKeyAnalysisPart3.HOUSE_2_SIGNIFICANCE
-            3 -> StringKeyAnalysisPart3.HOUSE_3_SIGNIFICANCE
-            4 -> StringKeyAnalysisPart3.HOUSE_4_SIGNIFICANCE
-            5 -> StringKeyAnalysisPart3.HOUSE_5_SIGNIFICANCE
-            6 -> StringKeyAnalysisPart3.HOUSE_6_SIGNIFICANCE
-            7 -> StringKeyAnalysisPart3.HOUSE_7_SIGNIFICANCE
-            8 -> StringKeyAnalysisPart3.HOUSE_8_SIGNIFICANCE
-            9 -> StringKeyAnalysisPart3.HOUSE_9_SIGNIFICANCE
-            10 -> StringKeyAnalysisPart3.HOUSE_10_SIGNIFICANCE
-            11 -> StringKeyAnalysisPart3.HOUSE_11_SIGNIFICANCE
-            12 -> StringKeyAnalysisPart3.HOUSE_12_SIGNIFICANCE
-            else -> StringKeyUI.LABEL_UNKNOWN
+            1 -> StringKeyGeneralPart5.HOUSE_1_SIGNIFICANCE
+            2 -> StringKeyGeneralPart5.HOUSE_2_SIGNIFICANCE
+            3 -> StringKeyGeneralPart5.HOUSE_3_SIGNIFICANCE
+            4 -> StringKeyGeneralPart5.HOUSE_4_SIGNIFICANCE
+            5 -> StringKeyGeneralPart5.HOUSE_5_SIGNIFICANCE
+            6 -> StringKeyGeneralPart5.HOUSE_6_SIGNIFICANCE
+            7 -> StringKeyGeneralPart5.HOUSE_7_SIGNIFICANCE
+            8 -> StringKeyGeneralPart5.HOUSE_8_SIGNIFICANCE
+            9 -> StringKeyGeneralPart5.HOUSE_9_SIGNIFICANCE
+            10 -> StringKeyGeneralPart5.HOUSE_10_SIGNIFICANCE
+            11 -> StringKeyGeneralPart5.HOUSE_11_SIGNIFICANCE
+            12 -> StringKeyGeneralPart5.HOUSE_12_SIGNIFICANCE
+            else -> StringKeyUIPart1.LABEL_UNKNOWN
         }
         return StringResources.get(key, language)
     }

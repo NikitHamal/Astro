@@ -55,7 +55,7 @@ object MuddaDashaCalculator {
             val planet = MUDDA_DASHA_PLANETS[(startIndex + i) % MUDDA_DASHA_PLANETS.size]
             val actualSubDays = if (i == MUDDA_DASHA_PLANETS.size - 1) ChronoUnit.DAYS.between(currentDate, endDate).toInt().coerceAtLeast(1) else subDays
             val subEndDate = currentDate.plusDays(actualSubDays.toLong() - 1).let { if (it.isAfter(endDate)) endDate else it }
-            subPeriods.add(MuddaAntardasha(planet, currentDate, subEndDate, actualSubDays, StringResources.get(StringKeyVarshaphala.VARSHA_DASHA_PERIOD_FORMAT, language, mainPlanet.getLocalizedName(language), planet.getLocalizedName(language))))
+            subPeriods.add(MuddaAntardasha(planet, currentDate, subEndDate, actualSubDays, StringResources.get(StringKeyGeneralPart12.VARSHA_DASHA_PERIOD_FORMAT, language, mainPlanet.getLocalizedName(language), planet.getLocalizedName(language))))
             currentDate = subEndDate.plusDays(1)
             if (currentDate.isAfter(endDate)) break
         }
@@ -71,33 +71,33 @@ object MuddaDashaCalculator {
 
     private fun generateDashaPrediction(planet: Planet, chart: SolarReturnChart, strength: String, language: Language): String {
         val nature = when (planet) {
-            Planet.SUN -> StringResources.get(StringKeyAnalysisPart2.PLANET_NATURE_SUN, language); Planet.MOON -> StringResources.get(StringKeyAnalysisPart2.PLANET_NATURE_MOON, language)
-            Planet.MARS -> StringResources.get(StringKeyAnalysisPart2.PLANET_NATURE_MARS, language); Planet.MERCURY -> StringResources.get(StringKeyAnalysisPart2.PLANET_NATURE_MERCURY, language)
-            Planet.JUPITER -> StringResources.get(StringKeyAnalysisPart2.PLANET_NATURE_JUPITER, language); Planet.VENUS -> StringResources.get(StringKeyAnalysisPart2.PLANET_NATURE_VENUS, language)
-            Planet.SATURN -> StringResources.get(StringKeyAnalysisPart2.PLANET_NATURE_SATURN, language); Planet.RAHU -> StringResources.get(StringKeyAnalysisPart2.PLANET_NATURE_RAHU, language)
-            Planet.KETU -> StringResources.get(StringKeyAnalysisPart2.PLANET_NATURE_KETU, language); else -> StringResources.get(StringKeyVarshaphala.VARSHA_TONE_BALANCED, language)
+            Planet.SUN -> StringResources.get(StringKeyGeneralPart8.PLANET_NATURE_SUN, language); Planet.MOON -> StringResources.get(StringKeyGeneralPart8.PLANET_NATURE_MOON, language)
+            Planet.MARS -> StringResources.get(StringKeyGeneralPart8.PLANET_NATURE_MARS, language); Planet.MERCURY -> StringResources.get(StringKeyGeneralPart8.PLANET_NATURE_MERCURY, language)
+            Planet.JUPITER -> StringResources.get(StringKeyGeneralPart8.PLANET_NATURE_JUPITER, language); Planet.VENUS -> StringResources.get(StringKeyGeneralPart8.PLANET_NATURE_VENUS, language)
+            Planet.SATURN -> StringResources.get(StringKeyGeneralPart8.PLANET_NATURE_SATURN, language); Planet.RAHU -> StringResources.get(StringKeyGeneralPart8.PLANET_NATURE_RAHU, language)
+            Planet.KETU -> StringResources.get(StringKeyGeneralPart8.PLANET_NATURE_KETU, language); else -> StringResources.get(StringKeyGeneralPart12.VARSHA_TONE_BALANCED, language)
         }
         val quality = when (strength) {
-            StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_EXALTED, language) -> StringResources.get(StringKeyVarshaphala.VARSHA_DASHA_EXCEPTIONAL, language)
-            StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_STRONG, language) -> StringResources.get(StringKeyVarshaphala.VARSHA_DASHA_SUPPORTED, language)
-            StringResources.get(StringKeyVarshaphala.VARSHA_STRENGTH_DEBILITATED, language) -> StringResources.get(StringKeyVarshaphala.VARSHA_DASHA_CHALLENGING, language)
-            else -> StringResources.get(StringKeyVarshaphala.VARSHA_DASHA_MIXED, language)
+            StringResources.get(StringKeyGeneralPart12.VARSHA_STRENGTH_EXALTED, language) -> StringResources.get(StringKeyGeneralPart12.VARSHA_DASHA_EXCEPTIONAL, language)
+            StringResources.get(StringKeyGeneralPart12.VARSHA_STRENGTH_STRONG, language) -> StringResources.get(StringKeyGeneralPart12.VARSHA_DASHA_SUPPORTED, language)
+            StringResources.get(StringKeyGeneralPart12.VARSHA_STRENGTH_DEBILITATED, language) -> StringResources.get(StringKeyGeneralPart12.VARSHA_DASHA_CHALLENGING, language)
+            else -> StringResources.get(StringKeyGeneralPart12.VARSHA_DASHA_MIXED, language)
         }
-        return StringResources.get(StringKeyVarshaphala.VARSHA_DASHA_PREDICTION_FORMAT, language, planet.getLocalizedName(language), nature, getHouseSignificance(chart.planetPositions[planet]?.house ?: 1, language), quality)
+        return StringResources.get(StringKeyGeneralPart12.VARSHA_DASHA_PREDICTION_FORMAT, language, planet.getLocalizedName(language), nature, getHouseSignificance(chart.planetPositions[planet]?.house ?: 1, language), quality)
     }
 
     private fun getDashaKeywords(planet: Planet, chart: SolarReturnChart, language: Language): List<String> {
         val keys = when (planet) {
-            Planet.SUN -> listOf(StringKeyAnalysisPart2.KEYWORD_LEADERSHIP, StringKeyAnalysisPart2.KEYWORD_VITALITY, StringKeyAnalysisPart2.KEYWORD_FATHER)
-            Planet.MOON -> listOf(StringKeyAnalysisPart2.KEYWORD_EMOTIONS, StringKeyAnalysisPart2.KEYWORD_MOTHER, StringKeyAnalysisPart2.KEYWORD_PUBLIC)
-            Planet.MARS -> listOf(StringKeyAnalysisPart2.KEYWORD_ACTION, StringKeyAnalysisPart3.KEYWORD_ENERGY, StringKeyAnalysisPart3.KEYWORD_COURAGE)
-            Planet.MERCURY -> listOf(StringKeyAnalysisPart3.KEYWORD_COMMUNICATION, StringKeyAnalysisPart3.KEYWORD_LEARNING, StringKeyAnalysisPart3.KEYWORD_BUSINESS)
-            Planet.JUPITER -> listOf(StringKeyAnalysisPart3.KEYWORD_WISDOM, StringKeyAnalysisPart3.KEYWORD_GROWTH, StringKeyAnalysisPart3.KEYWORD_FORTUNE)
-            Planet.VENUS -> listOf(StringKeyAnalysisPart3.KEYWORD_LOVE, StringKeyAnalysisPart3.KEYWORD_ART, StringKeyAnalysisPart3.KEYWORD_COMFORT)
-            Planet.SATURN -> listOf(StringKeyAnalysisPart3.KEYWORD_DISCIPLINE, StringKeyAnalysisPart3.KEYWORD_KARMA, StringKeyAnalysisPart3.KEYWORD_DELAYS)
-            Planet.RAHU -> listOf(StringKeyAnalysisPart3.KEYWORD_AMBITION, StringKeyAnalysisPart3.KEYWORD_INNOVATION, StringKeyAnalysisPart3.KEYWORD_FOREIGN)
-            Planet.KETU -> listOf(StringKeyAnalysisPart3.KEYWORD_SPIRITUALITY, StringKeyAnalysisPart3.KEYWORD_DETACHMENT, StringKeyAnalysisPart3.KEYWORD_PAST)
-            else -> listOf(StringKeyAnalysisPart3.KEYWORD_GENERAL)
+            Planet.SUN -> listOf(StringKeyGeneralPart6.KEYWORD_LEADERSHIP, StringKeyGeneralPart6.KEYWORD_VITALITY, StringKeyGeneralPart6.KEYWORD_FATHER)
+            Planet.MOON -> listOf(StringKeyGeneralPart6.KEYWORD_EMOTIONS, StringKeyGeneralPart6.KEYWORD_MOTHER, StringKeyGeneralPart6.KEYWORD_PUBLIC)
+            Planet.MARS -> listOf(StringKeyGeneralPart6.KEYWORD_ACTION, StringKeyGeneralPart6.KEYWORD_ENERGY, StringKeyGeneralPart6.KEYWORD_COURAGE)
+            Planet.MERCURY -> listOf(StringKeyGeneralPart6.KEYWORD_COMMUNICATION, StringKeyGeneralPart6.KEYWORD_LEARNING, StringKeyGeneralPart6.KEYWORD_BUSINESS)
+            Planet.JUPITER -> listOf(StringKeyGeneralPart6.KEYWORD_WISDOM, StringKeyGeneralPart6.KEYWORD_GROWTH, StringKeyGeneralPart6.KEYWORD_FORTUNE)
+            Planet.VENUS -> listOf(StringKeyGeneralPart6.KEYWORD_LOVE, StringKeyGeneralPart6.KEYWORD_ART, StringKeyGeneralPart6.KEYWORD_COMFORT)
+            Planet.SATURN -> listOf(StringKeyGeneralPart6.KEYWORD_DISCIPLINE, StringKeyGeneralPart6.KEYWORD_KARMA, StringKeyGeneralPart6.KEYWORD_DELAYS)
+            Planet.RAHU -> listOf(StringKeyGeneralPart6.KEYWORD_AMBITION, StringKeyGeneralPart6.KEYWORD_INNOVATION, StringKeyGeneralPart6.KEYWORD_FOREIGN)
+            Planet.KETU -> listOf(StringKeyGeneralPart6.KEYWORD_SPIRITUALITY, StringKeyGeneralPart6.KEYWORD_DETACHMENT, StringKeyGeneralPart6.KEYWORD_PAST)
+            else -> listOf(StringKeyGeneralPart6.KEYWORD_GENERAL)
         }
         return (keys.map { StringResources.get(it, language) }).take(5)
     }

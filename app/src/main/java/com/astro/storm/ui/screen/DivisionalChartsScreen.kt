@@ -60,8 +60,8 @@ fun DivisionalChartsScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDoshaPart3.DIVISIONAL_CHARTS_TITLE),
-            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyGeneralPart3.DIVISIONAL_CHARTS_TITLE),
+            message = stringResource(StringKeyGeneralPart7.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -110,7 +110,7 @@ fun DivisionalChartsScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDoshaPart3.DIVISIONAL_CHARTS_TITLE),
+                            stringResource(StringKeyGeneralPart3.DIVISIONAL_CHARTS_TITLE),
                             fontWeight = FontWeight.Bold
                         )
                         Text(
@@ -124,7 +124,7 @@ fun DivisionalChartsScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -133,14 +133,14 @@ fun DivisionalChartsScreen(
                     IconButton(onClick = { showFullScreenChart = true }) {
                         Icon(
                             Icons.Default.Fullscreen,
-                            contentDescription = stringResource(StringKeyUI.ACC_FULLSCREEN),
+                            contentDescription = stringResource(StringKeyUIPart1.ACC_FULLSCREEN),
                             tint = AppTheme.TextPrimary
                         )
                     }
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyUI.A11Y_SHOW_INFO),
+                            contentDescription = stringResource(StringKeyUIPart1.A11Y_SHOW_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -197,14 +197,14 @@ fun DivisionalChartsScreen(
             onDismissRequest = { showInfoDialog = false },
             title = {
                 Text(
-                    stringResource(StringKeyDoshaPart3.DIVISIONAL_CHARTS_ABOUT),
+                    stringResource(StringKeyGeneralPart3.DIVISIONAL_CHARTS_ABOUT),
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
             },
             text = {
                 Text(
-                    stringResource(StringKeyDoshaPart3.DIVISIONAL_CHARTS_ABOUT_DESC),
+                    stringResource(StringKeyGeneralPart3.DIVISIONAL_CHARTS_ABOUT_DESC),
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )
@@ -212,7 +212,7 @@ fun DivisionalChartsScreen(
             confirmButton = {
                 TextButton(onClick = { showInfoDialog = false }) {
                     Text(
-                        stringResource(StringKeyUI.BTN_CLOSE),
+                        stringResource(StringKeyUIPart1.BTN_CLOSE),
                         color = AppTheme.AccentPrimary
                     )
                 }
@@ -258,16 +258,16 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
                     
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(stringResource(StringKeyAnalysisPart1.CHART_ASCENDANT_LAGNA), fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text(stringResource(StringKeyGeneralPart3.CHART_ASCENDANT_LAGNA), fontSize = 11.sp, color = AppTheme.TextMuted)
                             Text(analysis.ascendantSign.getLocalizedName(language), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(stringResource(StringKeyAnalysisPart3.DIVISIONAL_OVERALL_STRENGTH), fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text(stringResource(StringKeyGeneralPart3.DIVISIONAL_OVERALL_STRENGTH), fontSize = 11.sp, color = AppTheme.TextMuted)
                             Text("${analysis.overallStrengthScore}%", fontWeight = FontWeight.SemiBold, color = AppTheme.AccentGold)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(stringResource(StringKeyAnalysisPart3.DIVISIONAL_DOMINANT_PLANET), fontSize = 11.sp, color = AppTheme.TextMuted)
-                            Text(analysis.dominantPlanet?.getLocalizedName(language) ?: stringResource(StringKeyUI.UI_NONE), fontWeight = FontWeight.SemiBold, color = AppTheme.AccentTeal)
+                            Text(stringResource(StringKeyGeneralPart3.DIVISIONAL_DOMINANT_PLANET), fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text(analysis.dominantPlanet?.getLocalizedName(language) ?: stringResource(StringKeyUIPart2.UI_NONE), fontWeight = FontWeight.SemiBold, color = AppTheme.AccentTeal)
                         }
                     }
                 }
@@ -276,14 +276,14 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
 
         if (analysis.vargottamaPlanets.isNotEmpty()) {
             item {
-                SectionHeader(stringResource(StringKeyAnalysisPart3.DIVISIONAL_VARGOTTAMA_PLANETS), Icons.Default.Star, AppTheme.AccentGold)
+                SectionHeader(stringResource(StringKeyGeneralPart3.DIVISIONAL_VARGOTTAMA_PLANETS), Icons.Default.Star, AppTheme.AccentGold)
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(stringResource(StringKeyAnalysisPart3.DIVISIONAL_PLANETS_SAME_SIGN_DESC), fontSize = 12.sp, color = AppTheme.TextMuted)
+                        Text(stringResource(StringKeyGeneralPart3.DIVISIONAL_PLANETS_SAME_SIGN_DESC), fontSize = 12.sp, color = AppTheme.TextMuted)
                         Spacer(modifier = Modifier.height(12.dp))
                         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             items(analysis.vargottamaPlanets) { planet ->
@@ -298,7 +298,7 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
         }
 
         item {
-            SectionHeader(stringResource(StringKeyAnalysisPart3.DIVISIONAL_HOUSE_PLACEMENTS), Icons.Default.Home, AppTheme.AccentPrimary)
+            SectionHeader(stringResource(StringKeyGeneralPart3.DIVISIONAL_HOUSE_PLACEMENTS), Icons.Default.Home, AppTheme.AccentPrimary)
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -314,9 +314,9 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
                                     shape = RoundedCornerShape(8.dp)
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
-                                        Text("${stringResource(StringKeyAnalysisPart1.HOUSE)} ${house.houseNumber}", fontSize = 11.sp, color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
+                                        Text("${stringResource(StringKeyGeneralPart5.HOUSE)} ${house.houseNumber}", fontSize = 11.sp, color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
                                         if (house.planetsInHouse.isEmpty()) {
-                                            Text(stringResource(StringKeyAnalysisPart3.DIVISIONAL_HOUSE_EMPTY), fontSize = 13.sp, color = AppTheme.TextMuted)
+                                            Text(stringResource(StringKeyGeneralPart3.DIVISIONAL_HOUSE_EMPTY), fontSize = 13.sp, color = AppTheme.TextMuted)
                                         } else {
                                             Text(house.planetsInHouse.joinToString { it.getLocalizedName(language) }, fontSize = 13.sp, color = AppTheme.TextPrimary, fontWeight = FontWeight.Medium)
                                         }
@@ -350,7 +350,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKeyUI.SCREEN_CALCULATING),
+                stringResource(StringKeyUIPart1.SCREEN_CALCULATING),
                 color = AppTheme.TextMuted
             )
         }
@@ -424,7 +424,7 @@ private fun HoraTab(analysis: HoraAnalysis, language: Language) {
         if (analysis.sunHoraPlanets.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = stringResource(StringKeyVarga.HORA_SUN_TITLE),
+                    title = stringResource(StringKeyVargaPart1.HORA_SUN_TITLE),
                     icon = Icons.Filled.WbSunny,
                     tint = AppTheme.PlanetSun
                 )
@@ -432,7 +432,7 @@ private fun HoraTab(analysis: HoraAnalysis, language: Language) {
             item {
                 PlanetChipsCard(
                     planets = analysis.sunHoraPlanets,
-                    description = stringResource(StringKeyVarga.HORA_SUN_DESC),
+                    description = stringResource(StringKeyVargaPart1.HORA_SUN_DESC),
                     language = language
                 )
             }
@@ -442,7 +442,7 @@ private fun HoraTab(analysis: HoraAnalysis, language: Language) {
         if (analysis.moonHoraPlanets.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = stringResource(StringKeyVarga.HORA_MOON_TITLE),
+                    title = stringResource(StringKeyVargaPart1.HORA_MOON_TITLE),
                     icon = Icons.Filled.NightsStay,
                     tint = AppTheme.PlanetMoon
                 )
@@ -450,7 +450,7 @@ private fun HoraTab(analysis: HoraAnalysis, language: Language) {
             item {
                 PlanetChipsCard(
                     planets = analysis.moonHoraPlanets,
-                    description = stringResource(StringKeyVarga.HORA_MOON_DESC),
+                    description = stringResource(StringKeyVargaPart1.HORA_MOON_DESC),
                     language = language
                 )
             }
@@ -460,7 +460,7 @@ private fun HoraTab(analysis: HoraAnalysis, language: Language) {
         if (analysis.wealthIndicators.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = stringResource(StringKeyVarga.HORA_WEALTH_SOURCES),
+                    title = stringResource(StringKeyVargaPart1.HORA_WEALTH_SOURCES),
                     icon = Icons.Filled.AccountBalance,
                     tint = AppTheme.AccentGold
                 )
@@ -511,14 +511,14 @@ private fun WealthPotentialCard(analysis: HoraAnalysis) {
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
-                    stringResource(StringKeyDoshaPart3.DIVISIONAL_WEALTH_ANALYSIS),
+                    stringResource(StringKeyGeneralPart3.DIVISIONAL_WEALTH_ANALYSIS),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    "${stringResource(StringKeyVarga.HORA_POTENTIAL)}: $label",
+                    "${stringResource(StringKeyVargaPart1.HORA_POTENTIAL)}: $label",
                     fontSize = 14.sp,
                     color = color,
                     fontWeight = FontWeight.Medium
@@ -589,7 +589,7 @@ private fun WealthIndicatorCard(indicator: WealthIndicator, language: Language) 
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        stringResource(if (indicator.type == WealthType.SELF_EARNED) StringKeyVarga.HORA_SELF_EARNED else StringKeyVarga.HORA_INHERITED),
+                        stringResource(if (indicator.type == WealthType.SELF_EARNED) StringKeyVargaPart1.HORA_SELF_EARNED else StringKeyVargaPart1.HORA_INHERITED),
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted
                     )
@@ -654,7 +654,7 @@ private fun DrekkanaTab(analysis: DrekkanaAnalysis, language: Language) {
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                stringResource(StringKeyVarga.DREKKANA_SHORT_JOURNEYS),
+                                stringResource(StringKeyVargaPart1.DREKKANA_SHORT_JOURNEYS),
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
                             )
@@ -704,12 +704,12 @@ private fun CourageAnalysisCard(analysis: CourageAnalysis) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        stringResource(StringKeyVarga.DREKKANA_COURAGE_TITLE),
+                        stringResource(StringKeyVargaPart1.DREKKANA_COURAGE_TITLE),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
                     )
-                    Text("${stringResource(StringKeyDoshaPart3.COURAGE_LEVEL)}: $label", fontSize = 14.sp, color = color, fontWeight = FontWeight.Medium)
+                    Text("${stringResource(StringKeyGeneralPart3.COURAGE_LEVEL)}: $label", fontSize = 14.sp, color = color, fontWeight = FontWeight.Medium)
                 }
             }
 
@@ -717,18 +717,18 @@ private fun CourageAnalysisCard(analysis: CourageAnalysis) {
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(stringResource(StringKeyDoshaPart3.COURAGE_PHYSICAL), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyGeneralPart3.COURAGE_PHYSICAL), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(analysis.physicalCourage, fontSize = 13.sp, color = AppTheme.TextPrimary)
                 }
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(stringResource(StringKeyDoshaPart3.COURAGE_MENTAL), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyGeneralPart3.COURAGE_MENTAL), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(analysis.mentalCourage, fontSize = 13.sp, color = AppTheme.TextPrimary)
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                "${stringResource(StringKeyDoshaPart3.COURAGE_INITIATIVE)}: ${analysis.initiativeAbility}",
+                "${stringResource(StringKeyGeneralPart3.COURAGE_INITIATIVE)}: ${analysis.initiativeAbility}",
                 fontSize = 12.sp,
                 color = AppTheme.TextSecondary
             )
@@ -761,7 +761,7 @@ private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Langu
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyDoshaPart3.DIVISIONAL_SIBLING_ANALYSIS),
+                    stringResource(StringKeyGeneralPart3.DIVISIONAL_SIBLING_ANALYSIS),
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -771,7 +771,7 @@ private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Langu
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Column {
-                    Text(stringResource(StringKeyVarga.DREKKANA_YOUNGER), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyVargaPart1.DREKKANA_YOUNGER), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(
                         "${indicators.estimatedYoungerSiblings.first}-${indicators.estimatedYoungerSiblings.last}",
                         fontSize = 16.sp,
@@ -780,7 +780,7 @@ private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Langu
                     )
                 }
                 Column {
-                    Text(stringResource(StringKeyVarga.DREKKANA_ELDER), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyVargaPart1.DREKKANA_ELDER), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(
                         "${indicators.estimatedElderSiblings.first}-${indicators.estimatedElderSiblings.last}",
                         fontSize = 16.sp,
@@ -789,7 +789,7 @@ private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Langu
                     )
                 }
                 Column {
-                    Text(stringResource(StringKeyVarga.DREKKANA_RELATIONSHIP), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyVargaPart1.DREKKANA_RELATIONSHIP), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(
                         indicators.relationshipQuality.getLocalizedName(language),
                         fontSize = 13.sp,
@@ -827,18 +827,18 @@ private fun CommunicationCard(analysis: CommunicationAnalysis) {
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(StringKeyVarga.DREKKANA_COMMUNICATION_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+                Text(stringResource(StringKeyVargaPart1.DREKKANA_COMMUNICATION_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Text("${stringResource(StringKeyVarga.DREKKANA_OVERALL)}: ${analysis.overallSkillLevel}", fontSize = 13.sp, color = AppTheme.TextSecondary)
-            Text("${stringResource(StringKeyVarga.DREKKANA_WRITING)}: ${analysis.writingAbility}", fontSize = 13.sp, color = AppTheme.TextSecondary)
-            Text("${stringResource(StringKeyVarga.DREKKANA_SPEAKING)}: ${analysis.speakingAbility}", fontSize = 13.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyVargaPart1.DREKKANA_OVERALL)}: ${analysis.overallSkillLevel}", fontSize = 13.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyVargaPart1.DREKKANA_WRITING)}: ${analysis.writingAbility}", fontSize = 13.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyVargaPart1.DREKKANA_SPEAKING)}: ${analysis.speakingAbility}", fontSize = 13.sp, color = AppTheme.TextSecondary)
 
             if (analysis.artisticTalents.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyVarga.DREKKANA_ARTISTIC_TALENTS)}:", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = AppTheme.TextPrimary)
+                Text("${stringResource(StringKeyVargaPart1.DREKKANA_ARTISTIC_TALENTS)}:", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = AppTheme.TextPrimary)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(analysis.artisticTalents) { talent ->
                         Surface(
@@ -920,7 +920,7 @@ private fun SpouseCharacteristicsCard(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    stringResource(StringKeyDoshaPart2.NAVAMSA_SPOUSE_TITLE),
+                    stringResource(StringKeyVargaPart1.NAVAMSA_SPOUSE_TITLE),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary
@@ -929,14 +929,14 @@ private fun SpouseCharacteristicsCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            InfoRow(stringResource(StringKeyDoshaPart2.NAVAMSA_NATURE), characteristics.generalNature)
-            InfoRow(stringResource(StringKeyDoshaPart2.NAVAMSA_PHYSICAL_TRAITS), characteristics.physicalTraits)
-            InfoRow(stringResource(StringKeyDoshaPart2.NAVAMSA_FAMILY_BACKGROUND), characteristics.familyBackground)
-            InfoRow(stringResource(StringKeyDoshaPart2.NAVAMSA_DIRECTION), direction)
+            InfoRow(stringResource(StringKeyVargaPart1.NAVAMSA_NATURE), characteristics.generalNature)
+            InfoRow(stringResource(StringKeyVargaPart1.NAVAMSA_PHYSICAL_TRAITS), characteristics.physicalTraits)
+            InfoRow(stringResource(StringKeyVargaPart1.NAVAMSA_FAMILY_BACKGROUND), characteristics.familyBackground)
+            InfoRow(stringResource(StringKeyVargaPart1.NAVAMSA_DIRECTION), direction)
 
             if (characteristics.probableProfessions.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDoshaPart2.NAVAMSA_PROBABLE_PROFESSIONS)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
+                Text("${stringResource(StringKeyVargaPart1.NAVAMSA_PROBABLE_PROFESSIONS)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(characteristics.probableProfessions) { profession ->
                         Surface(color = AppTheme.ChipBackground, shape = RoundedCornerShape(12.dp)) {
@@ -975,19 +975,19 @@ private fun MarriageTimingCard(factors: MarriageTimingFactors, language: Languag
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(stringResource(StringKeyDoshaPart2.NAVAMSA_TIMING_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+            Text(stringResource(StringKeyVargaPart1.NAVAMSA_TIMING_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                StatColumn(stringResource(StringKeyDoshaPart2.NAVAMSA_VENUS), "${factors.venusNavamsaStrength.toInt()}%", AppTheme.PlanetVenus)
-                StatColumn(stringResource(StringKeyDoshaPart2.NAVAMSA_7TH_LORD), "${factors.seventhLordStrength.toInt()}%", AppTheme.AccentPrimary)
-                StatColumn(stringResource(StringKeyDoshaPart2.NAVAMSA_DARAKARAKA), "${factors.darakarakaStrength.toInt()}%", AppTheme.AccentGold)
+                StatColumn(stringResource(StringKeyVargaPart1.NAVAMSA_VENUS), "${factors.venusNavamsaStrength.toInt()}%", AppTheme.PlanetVenus)
+                StatColumn(stringResource(StringKeyVargaPart1.NAVAMSA_7TH_LORD), "${factors.seventhLordStrength.toInt()}%", AppTheme.AccentPrimary)
+                StatColumn(stringResource(StringKeyVargaPart1.NAVAMSA_DARAKARAKA), "${factors.darakarakaStrength.toInt()}%", AppTheme.AccentGold)
             }
 
             if (factors.favorableDashaPlanets.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
-                Text("${stringResource(StringKeyDoshaPart2.NAVAMSA_FAVORABLE_DASHA)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
+                Text("${stringResource(StringKeyVargaPart1.NAVAMSA_FAVORABLE_DASHA)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(factors.favorableDashaPlanets) { planet ->
                         Surface(
@@ -1024,24 +1024,24 @@ private fun NavamsaKeyPlanetsCard(analysis: NavamsaMarriageAnalysis, language: L
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(stringResource(StringKeyDoshaPart2.NAVAMSA_KEY_PLANETS_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+            Text(stringResource(StringKeyVargaPart1.NAVAMSA_KEY_PLANETS_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
             Spacer(modifier = Modifier.height(12.dp))
 
             analysis.venusInNavamsa?.let {
-                PlanetPositionRow(stringResource(StringKeyDoshaPart2.NAVAMSA_VENUS), it.sign.getLocalizedName(language), AppTheme.PlanetVenus)
+                PlanetPositionRow(stringResource(StringKeyVargaPart1.NAVAMSA_VENUS), it.sign.getLocalizedName(language), AppTheme.PlanetVenus)
             }
             analysis.jupiterInNavamsa?.let {
-                PlanetPositionRow(stringResource(StringKeyDoshaPart2.NAVAMSA_JUPITER), it.sign.getLocalizedName(language), AppTheme.PlanetJupiter)
+                PlanetPositionRow(stringResource(StringKeyVargaPart1.NAVAMSA_JUPITER), it.sign.getLocalizedName(language), AppTheme.PlanetJupiter)
             }
             analysis.seventhLordNavamsa?.let {
-                PlanetPositionRow(stringResource(StringKeyDoshaPart2.NAVAMSA_7TH_LORD), it.sign.getLocalizedName(language), AppTheme.AccentPrimary)
+                PlanetPositionRow(stringResource(StringKeyVargaPart1.NAVAMSA_7TH_LORD), it.sign.getLocalizedName(language), AppTheme.AccentPrimary)
             }
             analysis.darakarakaNavamsa?.let {
-                PlanetPositionRow("${stringResource(StringKeyDoshaPart2.NAVAMSA_DARAKARAKA)} (${analysis.darakaraka.getLocalizedName(language)})", it.sign.getLocalizedName(language), AppTheme.AccentGold)
+                PlanetPositionRow("${stringResource(StringKeyVargaPart1.NAVAMSA_DARAKARAKA)} (${analysis.darakaraka.getLocalizedName(language)})", it.sign.getLocalizedName(language), AppTheme.AccentGold)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            Text("${stringResource(StringKeyDoshaPart2.NAVAMSA_UPAPADA)}: ${analysis.upapadaSign.getLocalizedName(language)}", fontSize = 13.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyVargaPart1.NAVAMSA_UPAPADA)}: ${analysis.upapadaSign.getLocalizedName(language)}", fontSize = 13.sp, color = AppTheme.TextSecondary)
         }
     }
 }
@@ -1088,12 +1088,12 @@ private fun MultipleMarriageCard(indicators: MultipleMarriageIndicators) {
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(StringKeyDoshaPart2.NAVAMSA_RELATIONSHIP_STABILITY), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+                Text(stringResource(StringKeyVargaPart1.NAVAMSA_RELATIONSHIP_STABILITY), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
             }
 
             if (indicators.riskFactors.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDoshaPart2.NAVAMSA_AREAS_ATTENTION)}:", fontSize = 12.sp, color = AppTheme.WarningColor)
+                Text("${stringResource(StringKeyVargaPart1.NAVAMSA_AREAS_ATTENTION)}:", fontSize = 12.sp, color = AppTheme.WarningColor)
                 indicators.riskFactors.forEach { factor ->
                     Text("• $factor", fontSize = 12.sp, color = AppTheme.TextSecondary)
                 }
@@ -1101,7 +1101,7 @@ private fun MultipleMarriageCard(indicators: MultipleMarriageIndicators) {
 
             if (indicators.mitigatingFactors.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDoshaPart2.NAVAMSA_PROTECTIVE_FACTORS)}:", fontSize = 12.sp, color = AppTheme.SuccessColor)
+                Text("${stringResource(StringKeyVargaPart1.NAVAMSA_PROTECTIVE_FACTORS)}:", fontSize = 12.sp, color = AppTheme.SuccessColor)
                 indicators.mitigatingFactors.forEach { factor ->
                     Text("• $factor", fontSize = 12.sp, color = AppTheme.TextSecondary)
                 }
@@ -1146,7 +1146,7 @@ private fun DashamsaTab(analysis: DashamsaAnalysis, language: Language) {
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(stringResource(StringKeyDoshaPart2.DASHAMSA_PROFESSIONAL_STRENGTHS), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+                        Text(stringResource(StringKeyVargaPart1.DASHAMSA_PROFESSIONAL_STRENGTHS), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
                         Spacer(modifier = Modifier.height(8.dp))
                         analysis.professionalStrengths.forEach { strength ->
                             Row(modifier = Modifier.padding(vertical = 2.dp)) {
@@ -1193,7 +1193,7 @@ private fun CareerTypesCard(careerTypes: List<CareerType>) {
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    stringResource(StringKeyDoshaPart3.DIVISIONAL_CAREER_ANALYSIS),
+                    stringResource(StringKeyGeneralPart3.DIVISIONAL_CAREER_ANALYSIS),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary
@@ -1230,13 +1230,13 @@ private fun BusinessVsServiceCard(analysis: BusinessVsServiceAnalysis) {
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(stringResource(StringKeyDoshaPart2.DASHAMSA_BUSINESS_VS_SERVICE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+            Text(stringResource(StringKeyVargaPart1.DASHAMSA_BUSINESS_VS_SERVICE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(stringResource(StringKeyDoshaPart2.DASHAMSA_BUSINESS), fontSize = 12.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyVargaPart1.DASHAMSA_BUSINESS), fontSize = 12.sp, color = AppTheme.TextMuted)
                     LinearProgressIndicator(
                         progress = { analysis.businessAptitude / 100f },
                         modifier = Modifier
@@ -1250,7 +1250,7 @@ private fun BusinessVsServiceCard(analysis: BusinessVsServiceAnalysis) {
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(stringResource(StringKeyDoshaPart2.DASHAMSA_SERVICE), fontSize = 12.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyVargaPart1.DASHAMSA_SERVICE), fontSize = 12.sp, color = AppTheme.TextMuted)
                     LinearProgressIndicator(
                         progress = { analysis.serviceAptitude / 100f },
                         modifier = Modifier
@@ -1286,11 +1286,11 @@ private fun GovernmentServiceCard(analysis: GovernmentServiceAnalysis) {
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(StringKeyDoshaPart2.DASHAMSA_GOVT_SERVICE_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+                Text(stringResource(StringKeyVargaPart1.DASHAMSA_GOVT_SERVICE_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-            Text("${stringResource(StringKeyDoshaPart2.DASHAMSA_POTENTIAL)}: ${analysis.potential}", fontSize = 14.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyVargaPart1.DASHAMSA_POTENTIAL)}: ${analysis.potential}", fontSize = 14.sp, color = AppTheme.TextSecondary)
 
             if (analysis.favorableFactors.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
@@ -1301,7 +1301,7 @@ private fun GovernmentServiceCard(analysis: GovernmentServiceAnalysis) {
 
             if (analysis.recommendedDepartments.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDoshaPart2.DASHAMSA_RECOMMENDED_AREAS)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
+                Text("${stringResource(StringKeyVargaPart1.DASHAMSA_RECOMMENDED_AREAS)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(analysis.recommendedDepartments) { dept ->
                         Surface(color = AppTheme.ChipBackground, shape = RoundedCornerShape(12.dp)) {
@@ -1331,12 +1331,12 @@ private fun DwadasamsaTab(analysis: DwadasamsaAnalysis, language: Language) {
     ) {
         // Father Analysis
         item {
-            ParentAnalysisCard(analysis.fatherAnalysis, stringResource(StringKeyDoshaPart2.DWADASAMSA_FATHER), Icons.Filled.Man, AppTheme.PlanetSun)
+            ParentAnalysisCard(analysis.fatherAnalysis, stringResource(StringKeyVargaPart1.DWADASAMSA_FATHER), Icons.Filled.Man, AppTheme.PlanetSun)
         }
 
         // Mother Analysis
         item {
-            ParentAnalysisCard(analysis.motherAnalysis, stringResource(StringKeyDoshaPart2.DWADASAMSA_MOTHER), Icons.Filled.Woman, AppTheme.PlanetMoon)
+            ParentAnalysisCard(analysis.motherAnalysis, stringResource(StringKeyVargaPart1.DWADASAMSA_MOTHER), Icons.Filled.Woman, AppTheme.PlanetMoon)
         }
 
         // Inheritance Analysis
@@ -1361,7 +1361,7 @@ private fun DwadasamsaTab(analysis: DwadasamsaAnalysis, language: Language) {
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(stringResource(StringKeyDoshaPart2.DWADASAMSA_ANCESTRAL_PROPERTY), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+                            Text(stringResource(StringKeyVargaPart1.DWADASAMSA_ANCESTRAL_PROPERTY), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         analysis.ancestralPropertyIndicators.forEach { indicator ->
@@ -1411,13 +1411,13 @@ private fun ParentAnalysisCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                StatColumn(stringResource(StringKeyDoshaPart2.DWADASAMSA_SIGNIFICATOR), "${analysis.significatorStrength.toInt()}%", color)
-                StatColumn(stringResource(StringKeyDoshaPart2.DWADASAMSA_HOUSE_LORD), "${analysis.houseLordStrength.toInt()}%", AppTheme.AccentPrimary)
+                StatColumn(stringResource(StringKeyVargaPart1.DWADASAMSA_SIGNIFICATOR), "${analysis.significatorStrength.toInt()}%", color)
+                StatColumn(stringResource(StringKeyVargaPart1.DWADASAMSA_HOUSE_LORD), "${analysis.houseLordStrength.toInt()}%", AppTheme.AccentPrimary)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-            Text("${stringResource(StringKeyDoshaPart2.DWADASAMSA_CHARACTERISTICS)}: ${analysis.characteristics}", fontSize = 13.sp, color = AppTheme.TextSecondary)
-            Text("${stringResource(StringKeyDoshaPart2.DWADASAMSA_RELATIONSHIP)}: ${analysis.relationship}", fontSize = 13.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyVargaPart1.DWADASAMSA_CHARACTERISTICS)}: ${analysis.characteristics}", fontSize = 13.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyVargaPart1.DWADASAMSA_RELATIONSHIP)}: ${analysis.relationship}", fontSize = 13.sp, color = AppTheme.TextSecondary)
         }
     }
 }
@@ -1438,16 +1438,16 @@ private fun InheritanceCard(analysis: InheritanceAnalysis) {
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(StringKeyDoshaPart2.DWADASAMSA_INHERITANCE_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+                Text(stringResource(StringKeyVargaPart1.DWADASAMSA_INHERITANCE_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-            Text("${stringResource(StringKeyDoshaPart2.DWADASAMSA_POTENTIAL)}: ${analysis.potential}", fontSize = 14.sp, color = AppTheme.TextSecondary)
-            Text("${stringResource(StringKeyDoshaPart2.DWADASAMSA_TIMING)}: ${analysis.timing}", fontSize = 13.sp, color = AppTheme.TextMuted)
+            Text("${stringResource(StringKeyVargaPart1.DWADASAMSA_POTENTIAL)}: ${analysis.potential}", fontSize = 14.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyVargaPart1.DWADASAMSA_TIMING)}: ${analysis.timing}", fontSize = 13.sp, color = AppTheme.TextMuted)
 
             if (analysis.sources.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDoshaPart2.DWADASAMSA_SOURCES)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
+                Text("${stringResource(StringKeyVargaPart1.DWADASAMSA_SOURCES)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
                 analysis.sources.forEach { source ->
                     Text("• $source", fontSize = 12.sp, color = AppTheme.TextSecondary)
                 }
@@ -1464,17 +1464,17 @@ private fun LongevityCard(indicators: ParentalLongevityIndicators) {
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(stringResource(StringKeyDoshaPart2.DWADASAMSA_LONGEVITY_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+            Text(stringResource(StringKeyVargaPart1.DWADASAMSA_LONGEVITY_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Column {
-                    Text(stringResource(StringKeyDoshaPart2.DWADASAMSA_FATHER), fontSize = 12.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyVargaPart1.DWADASAMSA_FATHER), fontSize = 12.sp, color = AppTheme.TextMuted)
                     Text(indicators.fatherLongevity, fontSize = 13.sp, color = AppTheme.TextPrimary)
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text(stringResource(StringKeyDoshaPart2.DWADASAMSA_MOTHER), fontSize = 12.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyVargaPart1.DWADASAMSA_MOTHER), fontSize = 12.sp, color = AppTheme.TextMuted)
                     Text(indicators.motherLongevity, fontSize = 13.sp, color = AppTheme.TextPrimary)
                 }
             }
@@ -1520,7 +1520,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    stringResource(StringKeyUI.SCREEN_RECOMMENDATIONS),
+                    stringResource(StringKeyUIPart1.SCREEN_RECOMMENDATIONS),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary

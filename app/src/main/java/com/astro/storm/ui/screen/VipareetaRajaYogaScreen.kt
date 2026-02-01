@@ -108,11 +108,11 @@ fun VipareetaRajaYogaScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyUI.UI_OVERVIEW),
-        stringResource(StringKeyUI.UI_YOGAS),
-        stringResource(StringKeyDoshaPart4.VIPAREETA_TAB_BENEFITS),
-        stringResource(StringKeyUI.UI_TIMING),
-        stringResource(StringKeyDoshaPart4.VIPAREETA_TAB_FACTORS)
+        stringResource(StringKeyUIPart2.UI_OVERVIEW),
+        stringResource(StringKeyUIPart2.UI_YOGAS),
+        stringResource(StringKeyGeneralPart12.VIPAREETA_TAB_BENEFITS),
+        stringResource(StringKeyUIPart2.UI_TIMING),
+        stringResource(StringKeyGeneralPart12.VIPAREETA_TAB_FACTORS)
     )
 
     LaunchedEffect(chart) {
@@ -137,13 +137,13 @@ fun VipareetaRajaYogaScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDoshaPart4.VIPAREETA_SCREEN_TITLE),
+                            text = stringResource(StringKeyGeneralPart12.VIPAREETA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDoshaPart4.VIPAREETA_SUBTITLE),
+                            text = stringResource(StringKeyGeneralPart12.VIPAREETA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -301,10 +301,10 @@ private fun VipareetaStatusCard(analysis: VipareetaRajaYogaCalculator.VipareetaR
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = when (analysis.totalYogasFormed) {
-                    0 -> stringResource(StringKeyDoshaPart4.VIPAREETA_NO_YOGAS)
-                    1 -> stringResource(StringKeyDoshaPart4.VIPAREETA_ONE_YOGA)
-                    2 -> stringResource(StringKeyDoshaPart4.VIPAREETA_TWO_YOGAS)
-                    else -> stringResource(StringKeyDoshaPart4.VIPAREETA_ALL_YOGAS)
+                    0 -> stringResource(StringKeyGeneralPart12.VIPAREETA_NO_YOGAS)
+                    1 -> stringResource(StringKeyGeneralPart12.VIPAREETA_ONE_YOGA)
+                    2 -> stringResource(StringKeyGeneralPart12.VIPAREETA_TWO_YOGAS)
+                    else -> stringResource(StringKeyGeneralPart12.VIPAREETA_ALL_YOGAS)
                 },
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
@@ -312,7 +312,7 @@ private fun VipareetaStatusCard(analysis: VipareetaRajaYogaCalculator.VipareetaR
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "${stringResource(StringKeyDoshaPart4.VIPAREETA_STRENGTH)}: ${analysis.overallStrength.displayName}",
+                text = "${stringResource(StringKeyGeneralPart12.VIPAREETA_STRENGTH)}: ${analysis.overallStrength.displayName}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary
             )
@@ -376,19 +376,19 @@ private fun VipareetaQuickStats(analysis: VipareetaRajaYogaCalculator.VipareetaR
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         VipareetaStatCard(
-            title = stringResource(StringKeyDoshaPart4.VIPAREETA_YOGAS_FORMED),
+            title = stringResource(StringKeyGeneralPart12.VIPAREETA_YOGAS_FORMED),
             value = "${analysis.totalYogasFormed}/3",
             color = AppTheme.AccentGold,
             modifier = Modifier.weight(1f)
         )
         VipareetaStatCard(
-            title = stringResource(StringKeyDoshaPart4.VIPAREETA_EXCHANGES),
+            title = stringResource(StringKeyGeneralPart12.VIPAREETA_EXCHANGES),
             value = "${analysis.dusthanaExchanges.size}",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
         VipareetaStatCard(
-            title = stringResource(StringKeyDoshaPart4.VIPAREETA_ACTIVATIONS),
+            title = stringResource(StringKeyGeneralPart12.VIPAREETA_ACTIVATIONS),
             value = "${analysis.activationTimeline.size}",
             color = AppTheme.AccentTeal,
             modifier = Modifier.weight(1f)
@@ -450,7 +450,7 @@ private fun VipareetaSummaryCard(analysis: VipareetaRajaYogaCalculator.Vipareeta
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyUI.UI_INTERPRETATION),
+                    text = stringResource(StringKeyUIPart1.UI_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -482,7 +482,7 @@ private fun VipareetaYogasSection(analysis: VipareetaRajaYogaCalculator.Vipareet
         if (analysis.dusthanaExchanges.isNotEmpty()) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDoshaPart4.VIPAREETA_EXCHANGES_TITLE),
+                text = stringResource(StringKeyGeneralPart12.VIPAREETA_EXCHANGES_TITLE),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentGold
@@ -632,10 +632,10 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                             ) {
                                 Text(
                                     text = when {
-                                        yoga.isExalted -> stringResource(StringKeyUI.DIGNITY_EXALTED_STATUS)
-                                        yoga.isDebilitated -> stringResource(StringKeyUI.DIGNITY_DEBILITATED_STATUS)
-                                        yoga.isRetrograde -> stringResource(StringKeyPart1.PLANET_RETROGRADE)
-                                        else -> stringResource(StringKeyUI.DIGNITY_NEUTRAL_STATUS)
+                                        yoga.isExalted -> stringResource(StringKeyUIPart1.DIGNITY_EXALTED_STATUS)
+                                        yoga.isDebilitated -> stringResource(StringKeyUIPart1.DIGNITY_DEBILITATED_STATUS)
+                                        yoga.isRetrograde -> stringResource(StringKeyGeneralPart8.PLANET_RETROGRADE)
+                                        else -> stringResource(StringKeyUIPart1.DIGNITY_NEUTRAL_STATUS)
                                     },
                                     style = MaterialTheme.typography.labelSmall,
                                     color = when {
@@ -660,7 +660,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                     if (yoga.isFormed && yoga.benefitsAreas.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = stringResource(StringKeyDoshaPart4.VIPAREETA_BENEFITS),
+                            text = stringResource(StringKeyGeneralPart12.VIPAREETA_BENEFITS),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor
@@ -747,7 +747,7 @@ private fun BenefitsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaY
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = stringResource(StringKeyDoshaPart4.VIPAREETA_NO_BENEFITS),
+                        text = stringResource(StringKeyGeneralPart12.VIPAREETA_NO_BENEFITS),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -772,7 +772,7 @@ private fun BenefitsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaY
                             modifier = Modifier.size(20.dp)
                         )
                         Text(
-                            text = stringResource(StringKeyDoshaPart4.VIPAREETA_PRIMARY_BENEFITS),
+                            text = stringResource(StringKeyGeneralPart12.VIPAREETA_PRIMARY_BENEFITS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -841,7 +841,7 @@ private fun VipareetaTimingSection(analysis: VipareetaRajaYogaCalculator.Viparee
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = stringResource(StringKeyDoshaPart4.VIPAREETA_NO_TIMING),
+                        text = stringResource(StringKeyGeneralPart12.VIPAREETA_NO_TIMING),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -866,7 +866,7 @@ private fun VipareetaTimingSection(analysis: VipareetaRajaYogaCalculator.Viparee
                             modifier = Modifier.size(20.dp)
                         )
                         Text(
-                            text = stringResource(StringKeyDoshaPart4.VIPAREETA_ACTIVATION_PERIODS),
+                            text = stringResource(StringKeyGeneralPart12.VIPAREETA_ACTIVATION_PERIODS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -915,7 +915,7 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
                         color = yogaColor
                     )
                     Text(
-                        text = StringResources.get(com.astro.storm.core.common.StringKeyMatchPart1.DASHA_LEVEL_MAHADASHA, language) + " - ${period.planet.getLocalizedName(language)}",
+                        text = StringResources.get(com.astro.storm.core.common.StringKeyDashaPart1.DASHA_LEVEL_MAHADASHA, language) + " - ${period.planet.getLocalizedName(language)}",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -982,7 +982,7 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = stringResource(StringKeyDoshaPart4.VIPAREETA_ENHANCEMENT),
+                        text = stringResource(StringKeyGeneralPart12.VIPAREETA_ENHANCEMENT),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.SuccessColor
@@ -1014,7 +1014,7 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = stringResource(StringKeyDoshaPart4.VIPAREETA_CANCELLATION),
+                        text = stringResource(StringKeyGeneralPart12.VIPAREETA_CANCELLATION),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.WarningColor
@@ -1051,7 +1051,7 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = stringResource(StringKeyDoshaPart4.VIPAREETA_NO_FACTORS),
+                        text = stringResource(StringKeyGeneralPart12.VIPAREETA_NO_FACTORS),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -1072,7 +1072,7 @@ private fun VipareetaLoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.LifeAreaSpiritual)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDoshaPart4.VIPAREETA_ANALYZING),
+                text = stringResource(StringKeyGeneralPart12.VIPAREETA_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1098,14 +1098,14 @@ private fun VipareetaEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyUI.UI_NO_CHART_DATA),
+                text = stringResource(StringKeyUIPart2.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDoshaPart4.VIPAREETA_NO_CHART_DESC),
+                text = stringResource(StringKeyGeneralPart12.VIPAREETA_NO_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1120,14 +1120,14 @@ private fun VipareetaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(StringKeyDoshaPart4.VIPAREETA_ABOUT_TITLE),
+                text = stringResource(StringKeyGeneralPart12.VIPAREETA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = stringResource(StringKeyDoshaPart4.VIPAREETA_ABOUT_DESC),
+                text = stringResource(StringKeyGeneralPart12.VIPAREETA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
@@ -1135,7 +1135,7 @@ private fun VipareetaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.LifeAreaSpiritual)
+                Text(stringResource(StringKeyUIPart1.BTN_GOT_IT), color = AppTheme.LifeAreaSpiritual)
             }
         },
         containerColor = AppTheme.CardBackground

@@ -72,8 +72,8 @@ fun UpachayaTransitScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDoshaPart3.UPACHAYA_SCREEN_TITLE),
-            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyTransitPart2.UPACHAYA_SCREEN_TITLE),
+            message = stringResource(StringKeyGeneralPart7.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -87,10 +87,10 @@ fun UpachayaTransitScreen(
     var upcomingTransits by remember { mutableStateOf<List<UpcomingUpachayaTransit>>(emptyList()) }
 
     val tabs = listOf(
-        stringResource(StringKeyUI.SCREEN_OVERVIEW),
-        stringResource(StringKeyDoshaPart3.UPACHAYA_HOUSE_ANALYSIS),
-        stringResource(StringKeyDoshaPart3.UPACHAYA_TRANSIT_DETAILS),
-        stringResource(StringKeyDoshaPart3.UPACHAYA_UPCOMING_TRANSITS)
+        stringResource(StringKeyUIPart1.SCREEN_OVERVIEW),
+        stringResource(StringKeyTransitPart1.UPACHAYA_HOUSE_ANALYSIS),
+        stringResource(StringKeyTransitPart2.UPACHAYA_TRANSIT_DETAILS),
+        stringResource(StringKeyTransitPart2.UPACHAYA_UPCOMING_TRANSITS)
     )
 
     // Calculate analysis
@@ -110,11 +110,11 @@ fun UpachayaTransitScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDoshaPart3.UPACHAYA_SCREEN_TITLE),
+                            stringResource(StringKeyTransitPart2.UPACHAYA_SCREEN_TITLE),
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            stringResource(StringKeyDoshaPart3.UPACHAYA_SCREEN_SUBTITLE),
+                            stringResource(StringKeyTransitPart2.UPACHAYA_SCREEN_SUBTITLE),
                             fontSize = 12.sp,
                             color = AppTheme.TextMuted
                         )
@@ -124,7 +124,7 @@ fun UpachayaTransitScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -133,7 +133,7 @@ fun UpachayaTransitScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDoshaPart3.UPACHAYA_SCREEN_ABOUT),
+                            contentDescription = stringResource(StringKeyTransitPart2.UPACHAYA_SCREEN_ABOUT),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -150,7 +150,7 @@ fun UpachayaTransitScreen(
             isCalculating -> LoadingContent(paddingValues)
             analysisResult == null -> ErrorContent(
                 paddingValues = paddingValues,
-                message = stringResource(StringKeyUI.SCREEN_ERROR_CALCULATION)
+                message = stringResource(StringKeyUIPart1.SCREEN_ERROR_CALCULATION)
             )
             else -> {
                 Column(
@@ -183,7 +183,7 @@ fun UpachayaTransitScreen(
             onDismissRequest = { showInfoDialog = false },
             title = {
                 Text(
-                    stringResource(StringKeyDoshaPart3.UPACHAYA_SCREEN_ABOUT),
+                    stringResource(StringKeyTransitPart2.UPACHAYA_SCREEN_ABOUT),
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
@@ -191,7 +191,7 @@ fun UpachayaTransitScreen(
             text = {
                 Column {
                     Text(
-                        stringResource(StringKeyDoshaPart3.UPACHAYA_SCREEN_ABOUT_DESC),
+                        stringResource(StringKeyTransitPart2.UPACHAYA_SCREEN_ABOUT_DESC),
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
                     )
@@ -204,7 +204,7 @@ fun UpachayaTransitScreen(
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(
-                                stringResource(StringKeyDoshaPart2.UPACHAYA_ACTIVE_TRANSITS),
+                                stringResource(StringKeyTransitPart1.UPACHAYA_ACTIVE_TRANSITS),
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 13.sp,
                                 color = AppTheme.TextPrimary
@@ -221,7 +221,7 @@ fun UpachayaTransitScreen(
             confirmButton = {
                 TextButton(onClick = { showInfoDialog = false }) {
                     Text(
-                        stringResource(StringKeyUI.BTN_CLOSE),
+                        stringResource(StringKeyUIPart1.BTN_CLOSE),
                         color = AppTheme.AccentPrimary
                     )
                 }
@@ -244,7 +244,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKeyUI.SCREEN_CALCULATING),
+                stringResource(StringKeyUIPart1.SCREEN_CALCULATING),
                 color = AppTheme.TextMuted
             )
         }
@@ -344,7 +344,7 @@ private fun OverviewTab(analysis: UpachayaTransitAnalysis, language: Language) {
         if (analysis.alerts.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = stringResource(StringKeyDoshaPart3.UPACHAYA_ACTIVE_ALERTS),
+                    title = stringResource(StringKeyTransitPart1.UPACHAYA_ACTIVE_ALERTS),
                     icon = Icons.Filled.Notifications,
                     tint = AppTheme.AccentGold
                 )
@@ -358,7 +358,7 @@ private fun OverviewTab(analysis: UpachayaTransitAnalysis, language: Language) {
         if (analysis.mostSignificantTransits.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = stringResource(StringKeyDoshaPart3.UPACHAYA_SIGNIFICANT_TRANSITS),
+                    title = stringResource(StringKeyTransitPart2.UPACHAYA_SIGNIFICANT_TRANSITS),
                     icon = Icons.Filled.Star,
                     tint = AppTheme.AccentPrimary
                 )
@@ -428,13 +428,13 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
-                        stringResource(StringKeyDoshaPart3.UPACHAYA_TRANSIT_ASSESSMENT),
+                        stringResource(StringKeyTransitPart2.UPACHAYA_TRANSIT_ASSESSMENT),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        "${stringResource(StringKeyDoshaPart4.QUALITY_LABEL)}: ${assessment.level.getLocalizedName(language)}",
+                        "${stringResource(StringKeyGeneralPart9.QUALITY_LABEL)}: ${assessment.level.getLocalizedName(language)}",
                         fontSize = 14.sp,
                         color = iconColor,
                         fontWeight = FontWeight.Medium
@@ -450,7 +450,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    stringResource(StringKeyDoshaPart2.UPACHAYA_SIGNIFICANCE),
+                    stringResource(StringKeyTransitPart2.UPACHAYA_SIGNIFICANCE),
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
@@ -519,7 +519,7 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                stringResource(StringKeyDoshaPart3.UPACHAYA_REFERENCE_POINTS),
+                stringResource(StringKeyTransitPart2.UPACHAYA_REFERENCE_POINTS),
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -546,7 +546,7 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(stringResource(StringKeyDoshaPart3.UPACHAYA_MOON_SIGN), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyTransitPart1.UPACHAYA_MOON_SIGN), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(
                         analysis.moonSign.getLocalizedName(language),
                         fontSize = 13.sp,
@@ -571,7 +571,7 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(stringResource(StringKeyDoshaPart3.UPACHAYA_LAGNA), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyTransitPart1.UPACHAYA_LAGNA), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(
                         analysis.lagnaSign.getLocalizedName(language),
                         fontSize = 13.sp,
@@ -596,9 +596,9 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(stringResource(StringKeyDoshaPart3.UPACHAYA_ACTIVE), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyTransitPart1.UPACHAYA_ACTIVE), fontSize = 11.sp, color = AppTheme.TextMuted)
                     Text(
-                        stringResource(StringKeyDoshaPart3.UPACHAYA_SCREEN_TITLE),
+                        stringResource(StringKeyTransitPart2.UPACHAYA_SCREEN_TITLE),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -736,12 +736,12 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
                     }
                 }
                 Text(
-                    "${transit.transitSign.getLocalizedName(language)} • ${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyDoshaPart4.FROM_LABEL)} ${transit.reference.getLocalizedName(language)}",
+                    "${transit.transitSign.getLocalizedName(language)} • ${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyGeneralPart4.FROM_LABEL)} ${transit.reference.getLocalizedName(language)}",
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    "${stringResource(StringKeyDoshaPart2.UPACHAYA_SIGNIFICANCE)}: ${transit.significance.toInt()}%",
+                    "${stringResource(StringKeyTransitPart2.UPACHAYA_SIGNIFICANCE)}: ${transit.significance.toInt()}%",
                     fontSize = 12.sp,
                     color = qualityColor,
                     fontWeight = FontWeight.Medium
@@ -768,7 +768,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    stringResource(StringKeyUI.SCREEN_RECOMMENDATIONS),
+                    stringResource(StringKeyUIPart1.SCREEN_RECOMMENDATIONS),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary
@@ -814,14 +814,14 @@ private fun HouseAnalysisTab(analysis: UpachayaTransitAnalysis, language: Langua
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        stringResource(StringKeyDoshaPart3.UPACHAYA_ABOUT),
+                        stringResource(StringKeyTransitPart1.UPACHAYA_ABOUT),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        stringResource(StringKeyDoshaPart2.UPACHAYA_TRANSIT_ABOUT_DESC),
+                        stringResource(StringKeyTransitPart2.UPACHAYA_TRANSIT_ABOUT_DESC),
                         fontSize = 13.sp,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
@@ -888,7 +888,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            "${getHouseName(analysis.house, language)} ${stringResource(StringKeyMatchPart1.HOUSE_LABEL)}",
+                            "${getHouseName(analysis.house, language)} ${stringResource(StringKeyGeneralPart5.HOUSE_LABEL)}",
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -919,7 +919,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
             // Transiting Planets
             if (analysis.transitingPlanets.isNotEmpty()) {
                 Text(
-                    stringResource(StringKeyDoshaPart4.PLANETS_TITLE),
+                    stringResource(StringKeyGeneralPart8.PLANETS_TITLE),
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
@@ -995,7 +995,7 @@ private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: Langu
                 FilterChip(
                     selected = selectedReference == TransitReference.MOON,
                     onClick = { selectedReference = TransitReference.MOON },
-                    label = { Text(stringResource(StringKeyDoshaPart2.UPACHAYA_FROM_MOON)) },
+                    label = { Text(stringResource(StringKeyTransitPart1.UPACHAYA_FROM_MOON)) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = AppTheme.PlanetMoon.copy(alpha = 0.2f),
                         selectedLabelColor = AppTheme.PlanetMoon
@@ -1005,7 +1005,7 @@ private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: Langu
                 FilterChip(
                     selected = selectedReference == TransitReference.LAGNA,
                     onClick = { selectedReference = TransitReference.LAGNA },
-                    label = { Text(stringResource(StringKeyDoshaPart2.UPACHAYA_FROM_LAGNA)) },
+                    label = { Text(stringResource(StringKeyTransitPart1.UPACHAYA_FROM_LAGNA)) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
                         selectedLabelColor = AppTheme.AccentPrimary
@@ -1079,14 +1079,14 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        "${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyMatchPart1.HOUSE_LABEL)}",
+                        "${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyGeneralPart5.HOUSE_LABEL)}",
                         fontWeight = FontWeight.Medium,
                         fontSize = 13.sp,
                         color = if (transit.isInUpachaya) AppTheme.SuccessColor else AppTheme.TextSecondary
                     )
                     if (transit.isInUpachaya) {
                         Text(
-                            stringResource(StringKeyDoshaPart3.UPACHAYA_SCREEN_TITLE).uppercase(),
+                            stringResource(StringKeyTransitPart2.UPACHAYA_SCREEN_TITLE).uppercase(),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.SuccessColor
@@ -1120,7 +1120,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                     if (transit.effects.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKeyDoshaPart3.EFFECTS_LABEL),
+                            stringResource(StringKeyGeneralPart4.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextPrimary
@@ -1147,7 +1147,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                     if (transit.recommendations.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKeyUI.SCREEN_RECOMMENDATIONS),
+                            stringResource(StringKeyUIPart1.SCREEN_RECOMMENDATIONS),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.SuccessColor
@@ -1192,14 +1192,14 @@ private fun UpcomingTransitsTab(upcomingTransits: List<UpcomingUpachayaTransit>,
     ) {
         item {
             Text(
-                stringResource(StringKeyDoshaPart3.UPACHAYA_UPCOMING_TRANSITS),
+                stringResource(StringKeyTransitPart2.UPACHAYA_UPCOMING_TRANSITS),
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
-                stringResource(StringKeyDoshaPart2.UPACHAYA_TRANSIT_SUBTITLE),
+                stringResource(StringKeyTransitPart2.UPACHAYA_TRANSIT_SUBTITLE),
                 fontSize = 13.sp,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -1212,7 +1212,7 @@ private fun UpcomingTransitsTab(upcomingTransits: List<UpcomingUpachayaTransit>,
         groupedByHouse.forEach { (house, transits) ->
             item {
                 Text(
-                    "${getHouseName(house, language)} ${stringResource(StringKeyDoshaPart4.UPACHAYA_TRANSITS_LABEL)}",
+                    "${getHouseName(house, language)} ${stringResource(StringKeyTransitPart2.UPACHAYA_TRANSITS_LABEL)}",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
                     color = AppTheme.TextPrimary,
@@ -1287,18 +1287,18 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
 // Helper function
 private fun getHouseName(house: Int, language: Language): String {
     val key = when (house) {
-        1 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_1
-        2 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_2
-        3 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_3
-        4 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_4
-        5 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_5
-        6 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_6
-        7 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_7
-        8 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_8
-        9 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_9
-        10 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_10
-        11 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_11
-        12 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_12
+        1 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_1
+        2 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_2
+        3 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_3
+        4 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_4
+        5 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_5
+        6 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_6
+        7 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_7
+        8 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_8
+        9 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_9
+        10 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_10
+        11 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_11
+        12 -> com.astro.storm.core.common.StringKeyGeneralPart5.HOUSE_SIG_12
         else -> null
     }
     return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: "House $house"

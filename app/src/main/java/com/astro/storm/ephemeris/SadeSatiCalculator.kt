@@ -63,15 +63,15 @@ object SadeSatiCalculator {
         SETTING(3);
 
         fun getLocalizedName(language: Language): String = when (this) {
-            RISING -> StringResources.get(StringKeyDoshaPart1.SADE_SATI_PHASE_RISING, language)
-            PEAK -> StringResources.get(StringKeyDoshaPart1.SADE_SATI_PHASE_PEAK, language)
-            SETTING -> StringResources.get(StringKeyDoshaPart1.SADE_SATI_PHASE_SETTING, language)
+            RISING -> StringResources.get(StringKeyDosha.SADE_SATI_PHASE_RISING, language)
+            PEAK -> StringResources.get(StringKeyDosha.SADE_SATI_PHASE_PEAK, language)
+            SETTING -> StringResources.get(StringKeyDosha.SADE_SATI_PHASE_SETTING, language)
         }
 
         fun getDescription(language: Language): String = when (this) {
-            RISING -> StringResources.get(StringKeyDoshaPart1.SADE_SATI_RISING_DESC, language)
-            PEAK -> StringResources.get(StringKeyDoshaPart1.SADE_SATI_PEAK_DESC, language)
-            SETTING -> StringResources.get(StringKeyDoshaPart1.SADE_SATI_SETTING_DESC, language)
+            RISING -> StringResources.get(StringKeyDosha.SADE_SATI_RISING_DESC, language)
+            PEAK -> StringResources.get(StringKeyDosha.SADE_SATI_PEAK_DESC, language)
+            SETTING -> StringResources.get(StringKeyDosha.SADE_SATI_SETTING_DESC, language)
         }
     }
 
@@ -89,10 +89,10 @@ object SadeSatiCalculator {
         INTENSE;
 
         fun getLocalizedName(language: Language): String = when (this) {
-            MILD -> StringResources.get(StringKeyDoshaPart1.SEVERITY_MILD, language)
-            MODERATE -> StringResources.get(StringKeyDoshaPart1.SEVERITY_MODERATE, language)
-            SIGNIFICANT -> StringResources.get(StringKeyDoshaPart1.SEVERITY_SIGNIFICANT, language)
-            INTENSE -> StringResources.get(StringKeyDoshaPart1.SEVERITY_INTENSE, language)
+            MILD -> StringResources.get(StringKeyGeneralPart10.SEVERITY_MILD, language)
+            MODERATE -> StringResources.get(StringKeyGeneralPart10.SEVERITY_MODERATE, language)
+            SIGNIFICANT -> StringResources.get(StringKeyGeneralPart10.SEVERITY_SIGNIFICANT, language)
+            INTENSE -> StringResources.get(StringKeyGeneralPart10.SEVERITY_INTENSE, language)
         }
     }
 
@@ -107,8 +107,8 @@ object SadeSatiCalculator {
         EIGHTH_FROM_MOON;
 
         fun getLocalizedName(language: Language): String = when (this) {
-            FOURTH_FROM_MOON -> StringResources.get(StringKeyDoshaPart1.SMALL_PANOTI_FOURTH, language)
-            EIGHTH_FROM_MOON -> StringResources.get(StringKeyDoshaPart1.SMALL_PANOTI_EIGHTH, language)
+            FOURTH_FROM_MOON -> StringResources.get(StringKeyGeneralPart10.SMALL_PANOTI_FOURTH, language)
+            EIGHTH_FROM_MOON -> StringResources.get(StringKeyGeneralPart10.SMALL_PANOTI_EIGHTH, language)
         }
     }
 
@@ -139,15 +139,15 @@ object SadeSatiCalculator {
             return if (isActive && currentPhase != null) {
                 val phaseName = currentPhase.getLocalizedName(language)
                 val severityName = severity.getLocalizedName(language)
-                StringResources.get(StringKeyDoshaPart1.SADE_SATI_ACTIVE_SUMMARY, language)
+                StringResources.get(StringKeyDosha.SADE_SATI_ACTIVE_SUMMARY, language)
                     .replace("{phase}", phaseName)
                     .replace("{severity}", severityName)
             } else if (isSmallPanotiActive && smallPanoti != null) {
                 val panotiName = smallPanoti.getLocalizedName(language)
-                StringResources.get(StringKeyDoshaPart1.SMALL_PANOTI_ACTIVE_SUMMARY, language)
+                StringResources.get(StringKeyGeneralPart10.SMALL_PANOTI_ACTIVE_SUMMARY, language)
                     .replace("{type}", panotiName)
             } else {
-                StringResources.get(StringKeyDoshaPart1.SADE_SATI_NOT_ACTIVE, language)
+                StringResources.get(StringKeyDosha.SADE_SATI_NOT_ACTIVE, language)
             }
         }
     }

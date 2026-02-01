@@ -522,7 +522,7 @@ class ChartRenderer(
         if (houseNum == 1) {
             items.add(
                 HouseDisplayItem(
-                    text = StringResources.get(StringKeyAnalysisPart2.CHART_ASC_ABBR, language),
+                    text = StringResources.get(StringKeyGeneralPart3.CHART_ASC_ABBR, language),
                     color = LAGNA_COLOR,
                     isBold = true,
                     isLagna = true
@@ -1006,7 +1006,7 @@ class ChartRenderer(
         val itemTextSize = textSize * 0.72f
 
         drawTextCentered(
-            text = "$SYMBOL_RETROGRADE${StringResources.get(StringKeyAnalysisPart2.CHART_LEGEND_RETRO_SHORT, language)}",
+            text = "$SYMBOL_RETROGRADE${StringResources.get(StringKeyGeneralPart3.CHART_LEGEND_RETRO_SHORT, language)}",
             position = Offset(legendStartX, legendY),
             textSize = itemTextSize,
             color = HOUSE_NUMBER_COLOR,
@@ -1014,7 +1014,7 @@ class ChartRenderer(
         )
 
         drawTextCentered(
-            text = "$SYMBOL_COMBUST${StringResources.get(StringKeyAnalysisPart2.CHART_LEGEND_COMBUST_SHORT, language)}",
+            text = "$SYMBOL_COMBUST${StringResources.get(StringKeyGeneralPart3.CHART_LEGEND_COMBUST_SHORT, language)}",
             position = Offset(legendStartX + legendSpacing, legendY),
             textSize = itemTextSize,
             color = HOUSE_NUMBER_COLOR,
@@ -1022,7 +1022,7 @@ class ChartRenderer(
         )
 
         drawTextCentered(
-            text = "$SYMBOL_VARGOTTAMA${StringResources.get(StringKeyAnalysisPart2.CHART_LEGEND_VARGO_SHORT, language)}",
+            text = "$SYMBOL_VARGOTTAMA${StringResources.get(StringKeyGeneralPart3.CHART_LEGEND_VARGO_SHORT, language)}",
             position = Offset(legendStartX + legendSpacing * 2, legendY),
             textSize = itemTextSize,
             color = HOUSE_NUMBER_COLOR,
@@ -1032,7 +1032,7 @@ class ChartRenderer(
         val exaltedX = legendStartX + legendSpacing * 3
         drawLegendExaltedArrow(Offset(exaltedX - textSize * 0.6f, legendY), textSize)
         drawTextCentered(
-            text = StringResources.get(StringKeyAnalysisPart2.CHART_LEGEND_EXALT_SHORT, language),
+            text = StringResources.get(StringKeyGeneralPart3.CHART_LEGEND_EXALT_SHORT, language),
             position = Offset(exaltedX + textSize * 0.4f, legendY),
             textSize = itemTextSize,
             color = HOUSE_NUMBER_COLOR,
@@ -1042,7 +1042,7 @@ class ChartRenderer(
         val debilitatedX = legendStartX + legendSpacing * 4
         drawLegendDebilitatedArrow(Offset(debilitatedX - textSize * 0.6f, legendY), textSize)
         drawTextCentered(
-            text = StringResources.get(StringKeyAnalysisPart2.CHART_LEGEND_DEB_SHORT, language),
+            text = StringResources.get(StringKeyGeneralPart3.CHART_LEGEND_DEB_SHORT, language),
             position = Offset(debilitatedX + textSize * 0.3f, legendY),
             textSize = itemTextSize,
             color = HOUSE_NUMBER_COLOR,
@@ -1052,7 +1052,7 @@ class ChartRenderer(
         val ownX = legendStartX + legendSpacing * 5
         drawLegendOwnSignIndicator(Offset(ownX - textSize * 0.6f, legendY), textSize)
         drawTextCentered(
-            text = StringResources.get(StringKeyAnalysisPart2.CHART_LEGEND_OWN_SHORT, language),
+            text = StringResources.get(StringKeyGeneralPart3.CHART_LEGEND_OWN_SHORT, language),
             position = Offset(ownX + textSize * 0.3f, legendY),
             textSize = itemTextSize,
             color = HOUSE_NUMBER_COLOR,

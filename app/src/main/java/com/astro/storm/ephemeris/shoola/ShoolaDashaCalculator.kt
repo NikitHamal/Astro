@@ -47,8 +47,8 @@ object ShoolaDashaCalculator {
             upcomingCriticalPeriods = vulnerabilities.filter { it.startDate.isAfter(LocalDateTime.now()) }.take(5),
             longevityAssessment = longevity,
             remedies = generateRemedies(triMurti, currentMahadasha),
-            overallAssessment = StringResources.get(StringKeyDoshaPart1.SHOOLA_SUMMARY_EN, Language.ENGLISH),
-            overallAssessmentNe = StringResources.get(StringKeyDoshaPart1.SHOOLA_SUMMARY_NE, Language.NEPALI),
+            overallAssessment = StringResources.get(StringKeyDashaPart2.SHOOLA_SUMMARY_EN, Language.ENGLISH),
+            overallAssessmentNe = StringResources.get(StringKeyDashaPart2.SHOOLA_SUMMARY_NE, Language.NEPALI),
             systemApplicability = applicability
         )
     }

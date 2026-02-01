@@ -44,25 +44,25 @@ object PrashnaInterpretationGenerator {
         }
 
         if (!moonAnalysis.isWaxing) {
-            recommendations.add(StringResources.get(StringKeyPrashnaPart2.PRASHNA_REC_WANING_MOON, language))
+            recommendations.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_REC_WANING_MOON, language))
         }
         if (moonAnalysis.moonStrength in listOf(MoonStrength.WEAK, MoonStrength.VERY_WEAK, MoonStrength.AFFLICTED)) {
-            recommendations.add(StringResources.get(StringKeyPrashnaPart2.PRASHNA_REC_STRENGTHEN_MOON, language))
+            recommendations.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_REC_STRENGTHEN_MOON, language))
         }
 
         if (lagnaAnalysis.lagnaCondition == LagnaCondition.COMBUST) {
-            recommendations.add(StringResources.get(StringKeyPrashnaPart2.PRASHNA_REC_AVOID_CONFRONTATION, language))
+            recommendations.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_REC_AVOID_CONFRONTATION, language))
         }
         if (lagnaAnalysis.lagnaCondition == LagnaCondition.RETROGRADE_LORD) {
-            recommendations.add(StringResources.get(StringKeyPrashnaPart2.PRASHNA_REC_REVIEW_PAST, language))
+            recommendations.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_REC_REVIEW_PAST, language))
         }
 
         val positiveYogas = specialYogas.filter { it.isPositive }
-        if (positiveYogas.any { it.name == StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_ITHASALA_NAME, language) }) {
-            recommendations.add(StringResources.get(StringKeyPrashnaPart2.PRASHNA_REC_ACT_PROMPTLY, language))
+        if (positiveYogas.any { it.name == StringResources.get(StringKeyPrashnaPart2.PRASHNA_YOGA_ITHASALA_NAME, language) }) {
+            recommendations.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_REC_ACT_PROMPTLY, language))
         }
-        if (specialYogas.any { it.name == StringResources.get(StringKeyPrashnaPart1.PRASHNA_YOGA_NAKTA_NAME, language) }) {
-            recommendations.add(StringResources.get(StringKeyPrashnaPart2.PRASHNA_REC_SEEK_ASSISTANCE, language))
+        if (specialYogas.any { it.name == StringResources.get(StringKeyPrashnaPart2.PRASHNA_YOGA_NAKTA_NAME, language) }) {
+            recommendations.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_REC_SEEK_ASSISTANCE, language))
         }
 
         val weakHouses = houseAnalysis.houseConditions.filter {
@@ -71,7 +71,7 @@ object PrashnaInterpretationGenerator {
         for ((house, _) in weakHouses) {
             val karaka = PRASHNA_HOUSE_SIGNIFICATIONS[house]?.karaka
             if (karaka != null) {
-                recommendations.add(StringResources.get(StringKeyPrashnaPart2.PRASHNA_REC_PROPITIATE, language, karaka.getLocalizedName(language), house.localized(language)))
+                recommendations.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_REC_PROPITIATE, language, karaka.getLocalizedName(language), house.localized(language)))
             }
         }
 
@@ -132,7 +132,7 @@ object PrashnaInterpretationGenerator {
             if (specialYogas.isNotEmpty()) {
                 appendLine(StringResources.get(StringKeyPrashnaPart2.PRASHNA_YOGAS_TITLE, language) + ":")
                 for (yoga in specialYogas) {
-                    val symbolKey = if (yoga.isPositive) StringKeyPrashnaPart1.PRASHNA_YOGA_SYMBOL_POSITIVE else StringKeyPrashnaPart1.PRASHNA_YOGA_SYMBOL_NEGATIVE
+                    val symbolKey = if (yoga.isPositive) StringKeyPrashnaPart2.PRASHNA_YOGA_SYMBOL_POSITIVE else StringKeyPrashnaPart2.PRASHNA_YOGA_SYMBOL_NEGATIVE
                     appendLine(StringResources.get(symbolKey, language).format(yoga.name, yoga.interpretation))
                 }
                 appendLine()

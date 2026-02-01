@@ -92,22 +92,22 @@ object RemediesCalculator {
     ): List<String> {
         val recommendations = mutableListOf<String>()
         val weakCount = analyses.count { it.needsRemedy }
-        if (weakCount >= 5) recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_MULTIPLE, language, weakCount))
+        if (weakCount >= 5) recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_MULTIPLE, language, weakCount))
         val sunAnalysis = analyses.find { it.planet == Planet.SUN }
         val moonAnalysis = analyses.find { it.planet == Planet.MOON }
-        if (sunAnalysis?.needsRemedy == true && moonAnalysis?.needsRemedy == true) recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_LUMINARIES, language))
-        if (moonAnalysis?.needsRemedy == true) recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_MOON, language))
-        analyses.filter { it.isInGandanta }.forEach { recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_GANDANTA, language, it.planet.getLocalizedName(language))) }
-        analyses.filter { it.hasNeechaBhangaRajaYoga }.forEach { recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_NEECHA_BHANGA, language, it.planet.getLocalizedName(language))) }
-        analyses.filter { it.isYogakaraka }.forEach { recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_YOGAKARAKA, language, it.planet.getLocalizedName(language))) }
-        recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_MEDITATION, language))
-        recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_CLEAN, language))
-        recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_ELDERS, language))
-        recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_CHARITY, language))
-        recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_DIET, language))
-        recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_DREAMS, language))
+        if (sunAnalysis?.needsRemedy == true && moonAnalysis?.needsRemedy == true) recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_LUMINARIES, language))
+        if (moonAnalysis?.needsRemedy == true) recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_MOON, language))
+        analyses.filter { it.isInGandanta }.forEach { recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_GANDANTA, language, it.planet.getLocalizedName(language))) }
+        analyses.filter { it.hasNeechaBhangaRajaYoga }.forEach { recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_NEECHA_BHANGA, language, it.planet.getLocalizedName(language))) }
+        analyses.filter { it.isYogakaraka }.forEach { recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_YOGAKARAKA, language, it.planet.getLocalizedName(language))) }
+        recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_MEDITATION, language))
+        recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_CLEAN, language))
+        recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_ELDERS, language))
+        recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_CHARITY, language))
+        recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_DIET, language))
+        recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_DREAMS, language))
         val ketuAnalysis = analyses.find { it.planet == Planet.KETU }
-        if (ketuAnalysis?.housePosition == 12 || ketuAnalysis?.housePosition == 4) recommendations.add(StringResources.get(StringKeyRemedy.GEN_REC_SPIRITUAL, language))
+        if (ketuAnalysis?.housePosition == 12 || ketuAnalysis?.housePosition == 4) recommendations.add(StringResources.get(StringKeyGeneralPart4.GEN_REC_SPIRITUAL, language))
         return recommendations
     }
 
@@ -118,34 +118,34 @@ object RemediesCalculator {
     ): List<Remedy> {
         val dashaRemedies = mutableListOf<Remedy>()
         dashaRemedies.add(Remedy(
-            category = RemedyCategory.LIFESTYLE, title = StringResources.get(StringKeyRemedy.DASHA_AWARENESS_TITLE, language),
-            description = StringResources.get(StringKeyRemedy.DASHA_AWARENESS_DESC, language),
+            category = RemedyCategory.LIFESTYLE, title = StringResources.get(StringKeyDashaPart1.DASHA_AWARENESS_TITLE, language),
+            description = StringResources.get(StringKeyDashaPart1.DASHA_AWARENESS_DESC, language),
             method = buildString {
-                appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_TITLE, language))
-                appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_1, language))
-                appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_2, language))
-                appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_3, language))
-                appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_4, language))
-                appendLine(StringResources.get(StringKeyRemedy.DASHA_METHOD_5, language))
+                appendLine(StringResources.get(StringKeyDashaPart1.DASHA_METHOD_TITLE, language))
+                appendLine(StringResources.get(StringKeyDashaPart1.DASHA_METHOD_1, language))
+                appendLine(StringResources.get(StringKeyDashaPart1.DASHA_METHOD_2, language))
+                appendLine(StringResources.get(StringKeyDashaPart1.DASHA_METHOD_3, language))
+                appendLine(StringResources.get(StringKeyDashaPart1.DASHA_METHOD_4, language))
+                appendLine(StringResources.get(StringKeyDashaPart1.DASHA_METHOD_5, language))
             },
-            timing = StringResources.get(StringKeyRemedy.DASHA_TIMING, language),
-            duration = StringResources.get(StringKeyRemedy.DASHA_DURATION, language),
+            timing = StringResources.get(StringKeyDashaPart1.DASHA_TIMING, language),
+            duration = StringResources.get(StringKeyDashaPart1.DASHA_DURATION, language),
             planet = null, priority = RemedyPriority.RECOMMENDED,
-            benefits = listOf(StringResources.get(StringKeyRemedy.DASHA_BENEFIT_MAX, language), StringResources.get(StringKeyRemedy.DASHA_BENEFIT_MIN, language), StringResources.get(StringKeyRemedy.DASHA_BENEFIT_TIME, language)),
-            cautions = listOf(StringResources.get(StringKeyRemedy.DASHA_CAUTION_CONSULT, language), StringResources.get(StringKeyRemedy.DASHA_CAUTION_TRANSIT, language))
+            benefits = listOf(StringResources.get(StringKeyDashaPart1.DASHA_BENEFIT_MAX, language), StringResources.get(StringKeyDashaPart1.DASHA_BENEFIT_MIN, language), StringResources.get(StringKeyDashaPart1.DASHA_BENEFIT_TIME, language)),
+            cautions = listOf(StringResources.get(StringKeyDashaPart1.DASHA_CAUTION_CONSULT, language), StringResources.get(StringKeyDashaPart1.DASHA_CAUTION_TRANSIT, language))
         ))
         analyses.filter { it.strength.severity >= 4 }.forEach { analysis ->
             val pName = analysis.planet.getLocalizedName(language)
-            val weekday = StringResources.get(StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(analysis.planet).uppercase()}"), language)
+            val weekday = StringResources.get(StringKeyPanchanga.valueOf("WEEKDAY_${getPlanetaryWeekday(analysis.planet).uppercase()}"), language)
             dashaRemedies.add(Remedy(
-                category = RemedyCategory.MANTRA, title = StringResources.get(StringKeyRemedy.DASHA_SPECIFIC_TITLE, language, pName),
-                description = StringResources.get(StringKeyRemedy.DASHA_SPECIFIC_DESC, language, pName),
-                method = StringResources.get(StringKeyRemedy.DASHA_SPECIFIC_METHOD, language, pName, analysis.strength.getLocalizedName(language), weekday, pName, weekday),
-                timing = StringResources.get(StringKeyRemedy.DASHA_TIMING, language),
-                duration = StringResources.get(StringKeyRemedy.DASHA_DURATION, language),
+                category = RemedyCategory.MANTRA, title = StringResources.get(StringKeyDashaPart1.DASHA_SPECIFIC_TITLE, language, pName),
+                description = StringResources.get(StringKeyDashaPart1.DASHA_SPECIFIC_DESC, language, pName),
+                method = StringResources.get(StringKeyDashaPart1.DASHA_SPECIFIC_METHOD, language, pName, analysis.strength.getLocalizedName(language), weekday, pName, weekday),
+                timing = StringResources.get(StringKeyDashaPart1.DASHA_TIMING, language),
+                duration = StringResources.get(StringKeyDashaPart1.DASHA_DURATION, language),
                 planet = analysis.planet, priority = RemedyPriority.ESSENTIAL,
-                benefits = listOf(StringResources.get(StringKeyRemedy.DASHA_SPECIFIC_BENEFIT_REDUCE, language), StringResources.get(StringKeyRemedy.DASHA_SPECIFIC_BENEFIT_TRANSFORM, language)),
-                cautions = listOf(StringResources.get(StringKeyRemedy.DASHA_SPECIFIC_CAUTION, language)),
+                benefits = listOf(StringResources.get(StringKeyDashaPart1.DASHA_SPECIFIC_BENEFIT_REDUCE, language), StringResources.get(StringKeyDashaPart1.DASHA_SPECIFIC_BENEFIT_TRANSFORM, language)),
+                cautions = listOf(StringResources.get(StringKeyDashaPart1.DASHA_SPECIFIC_CAUTION, language)),
                 mantraText = RemedyConstants.planetaryMantras[analysis.planet]?.beejMantra,
                 mantraSanskrit = RemedyConstants.planetaryMantras[analysis.planet]?.beejMantraSanskrit
             ))
@@ -204,43 +204,43 @@ object RemediesCalculator {
         language: Language
     ): String {
         return buildString {
-            appendLine(StringResources.get(StringKeyRemedy.SUMMARY_TITLE, language, ascendantSign.getLocalizedName(language)))
+            appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_TITLE, language, ascendantSign.getLocalizedName(language)))
             appendLine()
             if (weakPlanets.isEmpty()) {
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_FAVORABLE, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_FAVORABLE, language))
                 appendLine()
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE, language))
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE_1, language))
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE_2, language))
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE_3, language))
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_MAINTENANCE_4, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_MAINTENANCE, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_MAINTENANCE_1, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_MAINTENANCE_2, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_MAINTENANCE_3, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_MAINTENANCE_4, language))
             } else {
                 val names = weakPlanets.take(3).joinToString { it.getLocalizedName(language) }
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_FOCUS, language, names))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_FOCUS, language, names))
                 appendLine()
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_PRIORITY, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_PRIORITY, language))
                 appendLine()
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_1, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_1, language))
                 appendLine()
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_2, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_2, language))
                 appendLine()
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_3, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_3, language))
                 appendLine()
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_4, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_4, language))
                 appendLine()
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_5, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_5, language))
                 appendLine()
                 val yogakarakaPlanets = analyses.filter { it.isYogakaraka }
                 if (yogakarakaPlanets.isNotEmpty()) {
-                    appendLine(StringResources.get(StringKeyRemedy.SUMMARY_YOGAKARAKA, language, yogakarakaPlanets.map { it.planet.getLocalizedName(language) }.joinToString(), if (yogakarakaPlanets.size == 1) StringResources.get(StringKeyRemedy.SUMMARY_THIS_PLANET, language) else StringResources.get(StringKeyRemedy.SUMMARY_THESE_PLANETS, language)))
+                    appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_YOGAKARAKA, language, yogakarakaPlanets.map { it.planet.getLocalizedName(language) }.joinToString(), if (yogakarakaPlanets.size == 1) StringResources.get(StringKeyGeneralPart10.SUMMARY_THIS_PLANET, language) else StringResources.get(StringKeyGeneralPart10.SUMMARY_THESE_PLANETS, language)))
                     appendLine()
                 }
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_TITLE, language))
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_POINT_1, language))
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_POINT_2, language))
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_POINT_3, language))
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_POINT_4, language))
-                appendLine(StringResources.get(StringKeyRemedy.SUMMARY_GUIDANCE_POINT_5, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_TITLE, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_POINT_1, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_POINT_2, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_POINT_3, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_POINT_4, language))
+                appendLine(StringResources.get(StringKeyGeneralPart10.SUMMARY_GUIDANCE_POINT_5, language))
             }
         }
     }

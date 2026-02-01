@@ -70,8 +70,8 @@ fun MrityuBhagaScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_SCREEN_TITLE),
-            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyAnalysis.MRITYU_BHAGA_SCREEN_TITLE),
+            message = stringResource(StringKeyGeneralPart7.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -84,9 +84,9 @@ fun MrityuBhagaScreen(
     var analysisResult by remember { mutableStateOf<SensitiveDegreesAnalysis?>(null) }
 
     val tabs = listOf(
-        stringResource(StringKeyUI.SCREEN_OVERVIEW),
-        stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_SIGN_DEGREES),
-        stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_REMEDIES_SECTION)
+        stringResource(StringKeyUIPart1.SCREEN_OVERVIEW),
+        stringResource(StringKeyAnalysis.MRITYU_BHAGA_SIGN_DEGREES),
+        stringResource(StringKeyAnalysis.MRITYU_BHAGA_REMEDIES_SECTION)
     )
 
     // Calculate analysis
@@ -105,11 +105,11 @@ fun MrityuBhagaScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_SCREEN_TITLE),
+                            stringResource(StringKeyAnalysis.MRITYU_BHAGA_SCREEN_TITLE),
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_SCREEN_SUBTITLE),
+                            stringResource(StringKeyAnalysis.MRITYU_BHAGA_SCREEN_SUBTITLE),
                             fontSize = 12.sp,
                             color = AppTheme.TextMuted
                         )
@@ -119,7 +119,7 @@ fun MrityuBhagaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -128,7 +128,7 @@ fun MrityuBhagaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_SCREEN_ABOUT),
+                            contentDescription = stringResource(StringKeyAnalysis.MRITYU_BHAGA_SCREEN_ABOUT),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -145,7 +145,7 @@ fun MrityuBhagaScreen(
             isCalculating -> LoadingContent(paddingValues)
             analysisResult == null -> ErrorContent(
                 paddingValues = paddingValues,
-                message = stringResource(StringKeyUI.SCREEN_ERROR_CALCULATION)
+                message = stringResource(StringKeyUIPart1.SCREEN_ERROR_CALCULATION)
             )
             else -> {
                 Column(
@@ -177,14 +177,14 @@ fun MrityuBhagaScreen(
             onDismissRequest = { showInfoDialog = false },
             title = {
                 Text(
-                    stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_SCREEN_ABOUT),
+                    stringResource(StringKeyAnalysis.MRITYU_BHAGA_SCREEN_ABOUT),
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
             },
             text = {
                 Text(
-                    stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_SCREEN_ABOUT_DESC),
+                    stringResource(StringKeyAnalysis.MRITYU_BHAGA_SCREEN_ABOUT_DESC),
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )
@@ -192,7 +192,7 @@ fun MrityuBhagaScreen(
             confirmButton = {
                 TextButton(onClick = { showInfoDialog = false }) {
                     Text(
-                        stringResource(StringKeyUI.BTN_CLOSE),
+                        stringResource(StringKeyUIPart1.BTN_CLOSE),
                         color = AppTheme.AccentPrimary
                     )
                 }
@@ -215,7 +215,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKeyUI.SCREEN_CALCULATING),
+                stringResource(StringKeyUIPart1.SCREEN_CALCULATING),
                 color = AppTheme.TextMuted
             )
         }
@@ -294,7 +294,7 @@ private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         if (criticalMrityu.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_PLANETS_AFFECTED),
+                    title = stringResource(StringKeyAnalysis.MRITYU_BHAGA_PLANETS_AFFECTED),
                     icon = Icons.Filled.Warning,
                     tint = AppTheme.WarningColor
                 )
@@ -309,7 +309,7 @@ private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         if (gandantaPlanets.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_GANDANTA_PLACEMENTS),
+                    title = stringResource(StringKeyAnalysis.MRITYU_BHAGA_GANDANTA_PLACEMENTS),
                     icon = Icons.Filled.Waves,
                     tint = AppTheme.ErrorColor
                 )
@@ -326,7 +326,7 @@ private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         if (pushkaraNavamsa.isNotEmpty() || pushkaraBhaga.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_AUSPICIOUS_PLACEMENTS),
+                    title = stringResource(StringKeyAnalysis.MRITYU_BHAGA_AUSPICIOUS_PLACEMENTS),
                     icon = Icons.Filled.Star,
                     tint = AppTheme.SuccessColor
                 )
@@ -362,12 +362,12 @@ private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
                             Text(
-                                stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_NO_PLANETS),
+                                stringResource(StringKeyAnalysis.MRITYU_BHAGA_NO_PLANETS),
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
-                                stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_NO_CRITICAL),
+                                stringResource(StringKeyAnalysis.MRITYU_BHAGA_NO_CRITICAL),
                                 fontSize = 13.sp,
                                 color = AppTheme.TextMuted
                             )
@@ -427,18 +427,18 @@ private fun OverallAssessmentCard(analysis: SensitiveDegreesAnalysis) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        stringResource(StringKeyDoshaPart3.MRITYU_BHAGA_OVERALL_ASSESSMENT),
+                        stringResource(StringKeyAnalysis.MRITYU_BHAGA_OVERALL_ASSESSMENT),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         when (assessment.level) {
-                            AssessmentLevel.NEEDS_ATTENTION -> stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_LEVEL_NEEDS_ATTENTION)
-                            AssessmentLevel.MODERATE_CONCERN -> stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_LEVEL_MODERATE_CONCERN)
-                            AssessmentLevel.BALANCED -> stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_LEVEL_BALANCED)
-                            AssessmentLevel.GENERALLY_POSITIVE -> stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_LEVEL_GENERALLY_POSITIVE)
-                            AssessmentLevel.HIGHLY_AUSPICIOUS -> stringResource(StringKeyDoshaPart3.MRITYU_BHAGA_LEVEL_HIGHLY_AUSPICIOUS)
+                            AssessmentLevel.NEEDS_ATTENTION -> stringResource(StringKeyAnalysis.MRITYU_BHAGA_LEVEL_NEEDS_ATTENTION)
+                            AssessmentLevel.MODERATE_CONCERN -> stringResource(StringKeyAnalysis.MRITYU_BHAGA_LEVEL_MODERATE_CONCERN)
+                            AssessmentLevel.BALANCED -> stringResource(StringKeyAnalysis.MRITYU_BHAGA_LEVEL_BALANCED)
+                            AssessmentLevel.GENERALLY_POSITIVE -> stringResource(StringKeyAnalysis.MRITYU_BHAGA_LEVEL_GENERALLY_POSITIVE)
+                            AssessmentLevel.HIGHLY_AUSPICIOUS -> stringResource(StringKeyAnalysis.MRITYU_BHAGA_LEVEL_HIGHLY_AUSPICIOUS)
                         },
                         fontSize = 13.sp,
                         color = iconColor,
@@ -463,12 +463,12 @@ private fun OverallAssessmentCard(analysis: SensitiveDegreesAnalysis) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 StatItem(
-                    label = stringResource(StringKeyDoshaPart3.MRITYU_BHAGA_CRITICAL_COUNT),
+                    label = stringResource(StringKeyAnalysis.MRITYU_BHAGA_CRITICAL_COUNT),
                     value = assessment.criticalPlacementCount.toString(),
                     color = if (assessment.criticalPlacementCount > 0) AppTheme.ErrorColor else AppTheme.TextMuted
                 )
                 StatItem(
-                    label = stringResource(StringKeyDoshaPart3.MRITYU_BHAGA_AUSPICIOUS_COUNT),
+                    label = stringResource(StringKeyAnalysis.MRITYU_BHAGA_AUSPICIOUS_COUNT),
                     value = assessment.auspiciousPlacementCount.toString(),
                     color = if (assessment.auspiciousPlacementCount > 0) AppTheme.SuccessColor else AppTheme.TextMuted
                 )
@@ -595,7 +595,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_SENSITIVE_DEGREE),
+                    stringResource(StringKeyAnalysis.MRITYU_BHAGA_SENSITIVE_DEGREE),
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
@@ -611,7 +611,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_ORB),
+                    stringResource(StringKeyAnalysis.MRITYU_BHAGA_ORB),
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
@@ -631,7 +631,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
 
                     if (result.effects.isNotEmpty()) {
                         Text(
-                            stringResource(StringKeyDoshaPart3.EFFECTS_LABEL),
+                            stringResource(StringKeyGeneralPart4.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextPrimary
@@ -657,7 +657,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                     if (result.vulnerabilityAreas.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_LIFE_AREAS),
+                            stringResource(StringKeyAnalysis.MRITYU_BHAGA_LIFE_AREAS),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextPrimary
@@ -698,9 +698,9 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
     }
 
     val gandantaTypeName = when (result.gandantaType) {
-        GandantaType.BRAHMA_GANDANTA -> stringResource(StringKeyDoshaPart3.MRITYU_BHAGA_GANDANTA_BRAHMA)
-        GandantaType.VISHNU_GANDANTA -> stringResource(StringKeyDoshaPart3.MRITYU_BHAGA_GANDANTA_VISHNU)
-        GandantaType.SHIVA_GANDANTA -> stringResource(StringKeyDoshaPart3.MRITYU_BHAGA_GANDANTA_SHIVA)
+        GandantaType.BRAHMA_GANDANTA -> stringResource(StringKeyAnalysis.MRITYU_BHAGA_GANDANTA_BRAHMA)
+        GandantaType.VISHNU_GANDANTA -> stringResource(StringKeyAnalysis.MRITYU_BHAGA_GANDANTA_VISHNU)
+        GandantaType.SHIVA_GANDANTA -> stringResource(StringKeyAnalysis.MRITYU_BHAGA_GANDANTA_SHIVA)
     }
 
     Card(
@@ -763,12 +763,12 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
 
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                stringResource(StringKeyDoshaPart3.MRITYU_BHAGA_JUNCTION_DESC, result.waterSign.getLocalizedName(language), result.fireSign.getLocalizedName(language)),
+                stringResource(StringKeyAnalysis.MRITYU_BHAGA_JUNCTION_DESC, result.waterSign.getLocalizedName(language), result.fireSign.getLocalizedName(language)),
                 fontSize = 12.sp,
                 color = AppTheme.TextMuted
             )
             Text(
-                stringResource(StringKeyDoshaPart3.MRITYU_BHAGA_DISTANCE_JUNCTION, String.format("%.2f", result.distanceFromJunction) + "°"),
+                stringResource(StringKeyAnalysis.MRITYU_BHAGA_DISTANCE_JUNCTION, String.format("%.2f", result.distanceFromJunction) + "°"),
                 fontSize = 12.sp,
                 color = severityColor
             )
@@ -780,7 +780,7 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
 
                     if (result.effects.isNotEmpty()) {
                         Text(
-                            stringResource(StringKeyDoshaPart3.EFFECTS_LABEL),
+                            stringResource(StringKeyGeneralPart4.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextPrimary
@@ -897,7 +897,7 @@ private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: Languag
     ) {
         item {
             Text(
-                stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_ALL_SIGNS),
+                stringResource(StringKeyAnalysis.MRITYU_BHAGA_ALL_SIGNS),
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 color = AppTheme.TextPrimary,
@@ -999,7 +999,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            stringResource(StringKeyUI.SCREEN_RECOMMENDATIONS),
+                            stringResource(StringKeyUIPart1.SCREEN_RECOMMENDATIONS),
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
                             color = AppTheme.TextPrimary
@@ -1178,7 +1178,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            stringResource(StringKeyDoshaPart2.MRITYU_BHAGA_PRECAUTIONS),
+                            stringResource(StringKeyAnalysis.MRITYU_BHAGA_PRECAUTIONS),
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
                             color = AppTheme.TextPrimary

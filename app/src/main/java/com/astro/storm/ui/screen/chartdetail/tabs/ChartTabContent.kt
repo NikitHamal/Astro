@@ -234,29 +234,29 @@ private fun getChartDataForType(
  */
 private fun getChartInfoKeys(type: String): Triple<StringKeyInterface?, StringKeyInterface?, String> {
     return when (type) {
-        "D1" -> Triple(StringKeyVarga.VARGA_D1_NAME, StringKeyVarga.VARGA_D1_DESC, "D1")
-        "D2" -> Triple(StringKeyVarga.VARGA_D2_NAME, StringKeyVarga.VARGA_D2_DESC, "D2")
-        "D3" -> Triple(StringKeyVarga.VARGA_D3_NAME, StringKeyVarga.VARGA_D3_DESC_FULL, "D3")
-        "D4" -> Triple(StringKeyVarga.VARGA_D4_NAME, StringKeyVarga.VARGA_D4_DESC, "D4")
-        "D5" -> Triple(StringKeyVarga.VARGA_D5_TITLE, StringKeyVarga.VARGA_D5_DESC, "D5")
-        "D6" -> Triple(StringKeyVarga.VARGA_D6_TITLE, StringKeyVarga.VARGA_D6_DESC, "D6")
-        "D7" -> Triple(StringKeyVarga.VARGA_D7_NAME, StringKeyVarga.VARGA_D7_DESC, "D7")
-        "D8" -> Triple(StringKeyVarga.VARGA_D8_TITLE, StringKeyVarga.VARGA_D8_DESC, "D8")
-        "D9" -> Triple(StringKeyVarga.VARGA_D9_NAME, StringKeyVarga.VARGA_D9_DESC_FULL, "D9")
-        "D10" -> Triple(StringKeyVarga.VARGA_D10_NAME, StringKeyVarga.VARGA_D10_DESC_FULL, "D10")
-        "D11" -> Triple(StringKeyVarga.VARGA_D11_TITLE, StringKeyVarga.VARGA_D11_DESC, "D11")
-        "D12" -> Triple(StringKeyVarga.VARGA_D12_NAME, StringKeyVarga.VARGA_D12_DESC_FULL, "D12")
-        "D16" -> Triple(StringKeyVarga.VARGA_D16_NAME, StringKeyVarga.VARGA_D16_DESC_FULL, "D16")
-        "D20" -> Triple(StringKeyVarga.VARGA_D20_NAME, StringKeyVarga.VARGA_D20_DESC_FULL, "D20")
-        "D24" -> Triple(StringKeyVarga.VARGA_D24_NAME, StringKeyVarga.VARGA_D24_DESC_FULL, "D24")
-        "D27" -> Triple(StringKeyVarga.VARGA_D27_NAME, StringKeyVarga.VARGA_D27_DESC_FULL, "D27")
-        "D30" -> Triple(StringKeyVarga.VARGA_D30_NAME, StringKeyVarga.VARGA_D30_DESC_FULL, "D30")
-        "D40" -> Triple(StringKeyVarga.VARGA_D40_TITLE, StringKeyVarga.VARGA_D40_DESC, "D40")
-        "D45" -> Triple(StringKeyVarga.VARGA_D45_TITLE, StringKeyVarga.VARGA_D45_DESC, "D45")
-        "D60" -> Triple(StringKeyVarga.VARGA_D60_NAME, StringKeyVarga.VARGA_D60_DESC_FULL, "D60")
-        "D81" -> Triple(StringKeyVarga.VARGA_D81_TITLE, StringKeyVarga.VARGA_D81_DESC, "D81")
-        "D108" -> Triple(StringKeyVarga.VARGA_D108_TITLE, StringKeyVarga.VARGA_D108_DESC, "D108")
-        "D144" -> Triple(StringKeyVarga.VARGA_D144_TITLE, StringKeyVarga.VARGA_D144_DESC, "D144")
+        "D1" -> Triple(StringKeyVargaPart1.VARGA_D1_NAME, StringKeyVargaPart1.VARGA_D1_DESC, "D1")
+        "D2" -> Triple(StringKeyVargaPart2.VARGA_D2_NAME, StringKeyVargaPart2.VARGA_D2_DESC, "D2")
+        "D3" -> Triple(StringKeyVargaPart2.VARGA_D3_NAME, StringKeyVargaPart2.VARGA_D3_DESC_FULL, "D3")
+        "D4" -> Triple(StringKeyVargaPart2.VARGA_D4_NAME, StringKeyVargaPart2.VARGA_D4_DESC, "D4")
+        "D5" -> Triple(StringKeyVargaPart2.VARGA_D5_TITLE, StringKeyVargaPart2.VARGA_D5_DESC, "D5")
+        "D6" -> Triple(StringKeyVargaPart2.VARGA_D6_TITLE, StringKeyVargaPart2.VARGA_D6_DESC, "D6")
+        "D7" -> Triple(StringKeyVargaPart2.VARGA_D7_NAME, StringKeyVargaPart2.VARGA_D7_DESC, "D7")
+        "D8" -> Triple(StringKeyVargaPart2.VARGA_D8_TITLE, StringKeyVargaPart2.VARGA_D8_DESC, "D8")
+        "D9" -> Triple(StringKeyVargaPart2.VARGA_D9_NAME, StringKeyVargaPart2.VARGA_D9_DESC_FULL, "D9")
+        "D10" -> Triple(StringKeyVargaPart1.VARGA_D10_NAME, StringKeyVargaPart1.VARGA_D10_DESC_FULL, "D10")
+        "D11" -> Triple(StringKeyVargaPart1.VARGA_D11_TITLE, StringKeyVargaPart1.VARGA_D11_DESC, "D11")
+        "D12" -> Triple(StringKeyVargaPart1.VARGA_D12_NAME, StringKeyVargaPart1.VARGA_D12_DESC_FULL, "D12")
+        "D16" -> Triple(StringKeyVargaPart1.VARGA_D16_NAME, StringKeyVargaPart1.VARGA_D16_DESC_FULL, "D16")
+        "D20" -> Triple(StringKeyVargaPart1.VARGA_D20_NAME, StringKeyVargaPart1.VARGA_D20_DESC_FULL, "D20")
+        "D24" -> Triple(StringKeyVargaPart2.VARGA_D24_NAME, StringKeyVargaPart2.VARGA_D24_DESC_FULL, "D24")
+        "D27" -> Triple(StringKeyVargaPart2.VARGA_D27_NAME, StringKeyVargaPart2.VARGA_D27_DESC_FULL, "D27")
+        "D30" -> Triple(StringKeyVargaPart2.VARGA_D30_NAME, StringKeyVargaPart2.VARGA_D30_DESC_FULL, "D30")
+        "D40" -> Triple(StringKeyVargaPart2.VARGA_D40_TITLE, StringKeyVargaPart2.VARGA_D40_DESC, "D40")
+        "D45" -> Triple(StringKeyVargaPart2.VARGA_D45_TITLE, StringKeyVargaPart2.VARGA_D45_DESC, "D45")
+        "D60" -> Triple(StringKeyVargaPart2.VARGA_D60_NAME, StringKeyVargaPart2.VARGA_D60_DESC_FULL, "D60")
+        "D81" -> Triple(StringKeyVargaPart2.VARGA_D81_TITLE, StringKeyVargaPart2.VARGA_D81_DESC, "D81")
+        "D108" -> Triple(StringKeyVargaPart1.VARGA_D108_TITLE, StringKeyVargaPart1.VARGA_D108_DESC, "D108")
+        "D144" -> Triple(StringKeyVargaPart1.VARGA_D144_TITLE, StringKeyVargaPart1.VARGA_D144_DESC, "D144")
         else -> Triple(null, null, type)
     }
 }
@@ -281,29 +281,29 @@ private data class ChartTypeChip(
 )
 
 private val chartTypeChips = listOf(
-    ChartTypeChip("D1", StringKeyVarga.VARGA_LAGNA),
-    ChartTypeChip("D2", StringKeyVarga.VARGA_HORA),
-    ChartTypeChip("D3", StringKeyVarga.VARGA_DREKKANA),
-    ChartTypeChip("D4", StringKeyVarga.VARGA_D4_NAME),
-    ChartTypeChip("D5", StringKeyVarga.VARGA_D5_TITLE),
-    ChartTypeChip("D6", StringKeyVarga.VARGA_D6_TITLE),
-    ChartTypeChip("D7", StringKeyVarga.VARGA_SAPTAMSA),
-    ChartTypeChip("D8", StringKeyVarga.VARGA_D8_TITLE),
-    ChartTypeChip("D9", StringKeyVarga.VARGA_NAVAMSA),
-    ChartTypeChip("D10", StringKeyVarga.VARGA_DASAMSA),
-    ChartTypeChip("D11", StringKeyVarga.VARGA_D11_TITLE),
-    ChartTypeChip("D12", StringKeyVarga.VARGA_D12_NAME),
-    ChartTypeChip("D16", StringKeyVarga.VARGA_D16_NAME),
-    ChartTypeChip("D20", StringKeyVarga.VARGA_D20_NAME),
-    ChartTypeChip("D24", StringKeyVarga.VARGA_D24_NAME),
-    ChartTypeChip("D27", StringKeyVarga.VARGA_BHAMSA),
-    ChartTypeChip("D30", StringKeyVarga.VARGA_D30_NAME),
-    ChartTypeChip("D40", StringKeyVarga.VARGA_D40_TITLE),
-    ChartTypeChip("D45", StringKeyVarga.VARGA_D45_TITLE),
-    ChartTypeChip("D60", StringKeyVarga.VARGA_D60_NAME),
-    ChartTypeChip("D81", StringKeyVarga.VARGA_D81_TITLE),
-    ChartTypeChip("D108", StringKeyVarga.VARGA_D108_TITLE),
-    ChartTypeChip("D144", StringKeyVarga.VARGA_D144_TITLE)
+    ChartTypeChip("D1", StringKeyVargaPart2.VARGA_LAGNA),
+    ChartTypeChip("D2", StringKeyVargaPart2.VARGA_HORA),
+    ChartTypeChip("D3", StringKeyVargaPart2.VARGA_DREKKANA),
+    ChartTypeChip("D4", StringKeyVargaPart2.VARGA_D4_NAME),
+    ChartTypeChip("D5", StringKeyVargaPart2.VARGA_D5_TITLE),
+    ChartTypeChip("D6", StringKeyVargaPart2.VARGA_D6_TITLE),
+    ChartTypeChip("D7", StringKeyVargaPart2.VARGA_SAPTAMSA),
+    ChartTypeChip("D8", StringKeyVargaPart2.VARGA_D8_TITLE),
+    ChartTypeChip("D9", StringKeyVargaPart2.VARGA_NAVAMSA),
+    ChartTypeChip("D10", StringKeyVargaPart2.VARGA_DASAMSA),
+    ChartTypeChip("D11", StringKeyVargaPart1.VARGA_D11_TITLE),
+    ChartTypeChip("D12", StringKeyVargaPart1.VARGA_D12_NAME),
+    ChartTypeChip("D16", StringKeyVargaPart1.VARGA_D16_NAME),
+    ChartTypeChip("D20", StringKeyVargaPart1.VARGA_D20_NAME),
+    ChartTypeChip("D24", StringKeyVargaPart2.VARGA_D24_NAME),
+    ChartTypeChip("D27", StringKeyVargaPart1.VARGA_BHAMSA),
+    ChartTypeChip("D30", StringKeyVargaPart2.VARGA_D30_NAME),
+    ChartTypeChip("D40", StringKeyVargaPart2.VARGA_D40_TITLE),
+    ChartTypeChip("D45", StringKeyVargaPart2.VARGA_D45_TITLE),
+    ChartTypeChip("D60", StringKeyVargaPart2.VARGA_D60_NAME),
+    ChartTypeChip("D81", StringKeyVargaPart2.VARGA_D81_TITLE),
+    ChartTypeChip("D108", StringKeyVargaPart1.VARGA_D108_TITLE),
+    ChartTypeChip("D144", StringKeyVargaPart1.VARGA_D144_TITLE)
 )
 
 @Composable
@@ -375,7 +375,7 @@ private fun MainChartCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Default.Fullscreen,
-                        contentDescription = stringResource(StringKeyUI.ACC_FULLSCREEN),
+                        contentDescription = stringResource(StringKeyUIPart1.ACC_FULLSCREEN),
                         tint = ChartDetailColors.TextMuted,
                         modifier = Modifier.size(20.dp)
                     )
@@ -432,7 +432,7 @@ private fun MainChartCard(
             ChartLegend()
 
             Text(
-                text = stringResource(StringKeyAnalysisPart1.CHART_TAP_FULLSCREEN),
+                text = stringResource(StringKeyGeneralPart3.CHART_TAP_FULLSCREEN),
                 fontSize = 11.sp,
                 color = ChartDetailColors.TextMuted,
                 textAlign = TextAlign.Center,
@@ -459,18 +459,18 @@ private fun ChartLegend() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                TextLegendItem(symbol = "*", label = stringResource(StringKeyAnalysisPart1.CHART_LEGEND_RETRO), color = ChartDetailColors.AccentGold)
-                TextLegendItem(symbol = "^", label = stringResource(StringKeyAnalysisPart1.CHART_LEGEND_COMBUST), color = ChartDetailColors.AccentGold)
-                TextLegendItem(symbol = "\u00A4", label = stringResource(StringKeyAnalysisPart1.CHART_LEGEND_VARGOTTAMA), color = ChartDetailColors.AccentGold)
+                TextLegendItem(symbol = "*", label = stringResource(StringKeyGeneralPart3.CHART_LEGEND_RETRO), color = ChartDetailColors.AccentGold)
+                TextLegendItem(symbol = "^", label = stringResource(StringKeyGeneralPart3.CHART_LEGEND_COMBUST), color = ChartDetailColors.AccentGold)
+                TextLegendItem(symbol = "\u00A4", label = stringResource(StringKeyGeneralPart3.CHART_LEGEND_VARGOTTAMA), color = ChartDetailColors.AccentGold)
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                ArrowLegendItem(isExalted = true, label = stringResource(StringKeyAnalysisPart1.CHART_LEGEND_EXALTED))
-                ArrowLegendItem(isExalted = false, label = stringResource(StringKeyAnalysisPart1.CHART_LEGEND_DEBILITATED))
-                ShapeLegendItem(isOwnSign = true, label = stringResource(StringKeyAnalysisPart1.CHART_LEGEND_OWN_SIGN))
-                ShapeLegendItem(isOwnSign = false, label = stringResource(StringKeyAnalysisPart1.CHART_LEGEND_MOOL_TRI))
+                ArrowLegendItem(isExalted = true, label = stringResource(StringKeyGeneralPart3.CHART_LEGEND_EXALTED))
+                ArrowLegendItem(isExalted = false, label = stringResource(StringKeyGeneralPart3.CHART_LEGEND_DEBILITATED))
+                ShapeLegendItem(isOwnSign = true, label = stringResource(StringKeyGeneralPart3.CHART_LEGEND_OWN_SIGN))
+                ShapeLegendItem(isOwnSign = false, label = stringResource(StringKeyGeneralPart3.CHART_LEGEND_MOOL_TRI))
             }
         }
     }
@@ -556,7 +556,7 @@ private fun BirthDetailsCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.CHART_BIRTH_DETAILS),
+                        text = stringResource(StringKeyGeneralPart3.CHART_BIRTH_DETAILS),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -565,9 +565,9 @@ private fun BirthDetailsCard(
                 Icon(
                     Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) 
-                        stringResource(StringKeyUI.ACC_COLLAPSE)
+                        stringResource(StringKeyUIPart1.ACC_COLLAPSE)
                     else 
-                        stringResource(StringKeyUI.ACC_EXPAND),
+                        stringResource(StringKeyUIPart1.ACC_EXPAND),
                     tint = ChartDetailColors.TextMuted,
                     modifier = Modifier.rotate(rotation)
                 )
@@ -589,12 +589,12 @@ private fun BirthDetailsCard(
                         ) {
                             BirthDataItem(
                                 icon = Icons.Outlined.CalendarMonth,
-                                label = stringResource(StringKeyAnalysisPart1.CHART_DATE),
+                                label = stringResource(StringKeyGeneralPart3.CHART_DATE),
                                 value = formattedDate
                             )
                             BirthDataItem(
                                 icon = Icons.Outlined.LocationOn,
-                                label = stringResource(StringKeyAnalysisPart1.LOCATION),
+                                label = stringResource(StringKeyGeneralPart6.LOCATION),
                                 value = formattedLocation
                             )
                         }
@@ -604,12 +604,12 @@ private fun BirthDetailsCard(
                         ) {
                             BirthDataItem(
                                 icon = Icons.Outlined.Schedule,
-                                label = stringResource(StringKeyAnalysisPart1.CHART_TIME),
+                                label = stringResource(StringKeyGeneralPart3.CHART_TIME),
                                 value = formattedTime
                             )
                             BirthDataItem(
                                 icon = Icons.Outlined.Star,
-                                label = stringResource(StringKeyAnalysisPart1.CHART_AYANAMSA),
+                                label = stringResource(StringKeyGeneralPart3.CHART_AYANAMSA),
                                 value = chart.ayanamsaName
                             )
                         }
@@ -773,14 +773,14 @@ private fun ChartDetailsCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyAnalysisPart1.CHART_PLANETARY_POSITIONS),
+                    text = stringResource(StringKeyGeneralPart3.CHART_PLANETARY_POSITIONS),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = stringResource(StringKeyAnalysisPart1.CHART_TAP_FOR_DETAILS),
+                    text = stringResource(StringKeyGeneralPart3.CHART_TAP_FOR_DETAILS),
                     fontSize = 11.sp,
                     color = ChartDetailColors.TextMuted
                 )
@@ -824,7 +824,7 @@ private fun AscendantRow(chart: VedicChart) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(StringKeyAnalysisPart1.CHART_ASCENDANT_LAGNA),
+                text = stringResource(StringKeyGeneralPart3.CHART_ASCENDANT_LAGNA),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
                 color = ChartDetailColors.AccentGold
@@ -928,7 +928,7 @@ private fun ClickablePlanetPositionRow(
 
             Icon(
                 Icons.Default.ChevronRight,
-                contentDescription = stringResource(StringKeyUI.ACC_VIEW_DETAILS),
+                contentDescription = stringResource(StringKeyUIPart1.ACC_VIEW_DETAILS),
                 tint = ChartDetailColors.TextMuted,
                 modifier = Modifier.size(16.dp)
             )
@@ -970,7 +970,7 @@ private fun HouseCuspsCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.CHART_HOUSE_CUSPS),
+                        text = stringResource(StringKeyGeneralPart3.CHART_HOUSE_CUSPS),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -978,7 +978,7 @@ private fun HouseCuspsCard(
                 }
                 Icon(
                     Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKeyUI.ACC_COLLAPSE) else stringResource(StringKeyUI.ACC_EXPAND),
+                    contentDescription = if (isExpanded) stringResource(StringKeyUIPart1.ACC_COLLAPSE) else stringResource(StringKeyUIPart1.ACC_EXPAND),
                     tint = ChartDetailColors.TextMuted,
                     modifier = Modifier.rotate(rotation)
                 )
@@ -1094,7 +1094,7 @@ private fun AstronomicalDataCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.CHART_ASTRONOMICAL_DATA),
+                        text = stringResource(StringKeyGeneralPart3.CHART_ASTRONOMICAL_DATA),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -1102,7 +1102,7 @@ private fun AstronomicalDataCard(
                 }
                 Icon(
                     Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKeyUI.ACC_COLLAPSE) else stringResource(StringKeyUI.ACC_EXPAND),
+                    contentDescription = if (isExpanded) stringResource(StringKeyUIPart1.ACC_COLLAPSE) else stringResource(StringKeyUIPart1.ACC_EXPAND),
                     tint = ChartDetailColors.TextMuted,
                     modifier = Modifier.rotate(rotation)
                 )
@@ -1114,11 +1114,11 @@ private fun AstronomicalDataCard(
                 exit = shrinkVertically() + fadeOut()
             ) {
                 Column(modifier = Modifier.padding(top = 12.dp)) {
-                    InfoRow(stringResource(StringKeyAnalysisPart1.CHART_JULIAN_DAY), String.format("%.6f", chart.julianDay))
-                    InfoRow(stringResource(StringKeyAnalysisPart1.CHART_AYANAMSA), "${chart.ayanamsaName} (${ChartDetailUtils.formatDegree(chart.ayanamsa)})")
-                    InfoRow(stringResource(StringKeyAnalysisPart1.ASCENDANT), ChartDetailUtils.formatDegree(chart.ascendant))
-                    InfoRow(stringResource(StringKeyAnalysisPart1.CHART_MIDHEAVEN), ChartDetailUtils.formatDegree(chart.midheaven))
-                    InfoRow(stringResource(StringKeyAnalysisPart1.CHART_HOUSE_SYSTEM), chart.houseSystem.displayName)
+                    InfoRow(stringResource(StringKeyGeneralPart3.CHART_JULIAN_DAY), String.format("%.6f", chart.julianDay))
+                    InfoRow(stringResource(StringKeyGeneralPart3.CHART_AYANAMSA), "${chart.ayanamsaName} (${ChartDetailUtils.formatDegree(chart.ayanamsa)})")
+                    InfoRow(stringResource(StringKeyGeneralPart1.ASCENDANT), ChartDetailUtils.formatDegree(chart.ascendant))
+                    InfoRow(stringResource(StringKeyGeneralPart3.CHART_MIDHEAVEN), ChartDetailUtils.formatDegree(chart.midheaven))
+                    InfoRow(stringResource(StringKeyGeneralPart3.CHART_HOUSE_SYSTEM), chart.houseSystem.displayName)
                 }
             }
         }

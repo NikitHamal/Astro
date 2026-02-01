@@ -190,7 +190,7 @@ private fun YogaSummaryCard(analysis: YogaAnalysis) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyYogaExpanded.YOGA_ANALYSIS_SUMMARY),
+                    text = stringResource(StringKeyPanchanga.YOGA_ANALYSIS_SUMMARY),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = ChartDetailColors.TextPrimary
@@ -203,17 +203,17 @@ private fun YogaSummaryCard(analysis: YogaAnalysis) {
             ) {
                 StatusBadge(
                     count = analysis.allYogas.size,
-                    label = stringResource(StringKeyYogaExpanded.YOGA_TOTAL),
+                    label = stringResource(StringKeyPanchanga.YOGA_TOTAL),
                     color = ChartDetailColors.AccentGold
                 )
                 StatusBadge(
                     count = positiveCount,
-                    label = stringResource(StringKeyYogaExpanded.YOGA_AUSPICIOUS),
+                    label = stringResource(StringKeyPanchanga.YOGA_AUSPICIOUS),
                     color = ChartDetailColors.SuccessColor
                 )
                 StatusBadge(
                     count = negativeCount,
-                    label = stringResource(StringKeyYogaExpanded.YOGA_CHALLENGING),
+                    label = stringResource(StringKeyPanchanga.YOGA_CHALLENGING),
                     color = ChartDetailColors.WarningColor
                 )
             }
@@ -250,7 +250,7 @@ private fun OverallStrengthBar(strength: Double, language: Language) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = stringResource(StringKeyYogaExpanded.YOGA_OVERALL_STRENGTH),
+                text = stringResource(StringKeyPanchanga.YOGA_OVERALL_STRENGTH),
                 fontSize = 13.sp,
                 color = ChartDetailColors.TextSecondary
             )
@@ -279,7 +279,7 @@ private fun TopYogasSection(topYogas: List<Yoga>, language: Language) {
     val theme = LocalAppThemeColors.current
     Column {
         Text(
-            text = stringResource(StringKeyYogaExpanded.YOGA_MOST_SIGNIFICANT),
+            text = stringResource(StringKeyPanchanga.YOGA_MOST_SIGNIFICANT),
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
             color = theme.AccentGold,
@@ -333,7 +333,7 @@ private fun YogaCategoryFilter(
             FilterChip(
                 selected = selectedCategory == null,
                 onClick = { onCategorySelected(null) },
-                label = { Text(stringResource(StringKeyYogaExpanded.YOGA_ALL), fontSize = 12.sp) },
+                label = { Text(stringResource(StringKeyPanchanga.YOGA_ALL), fontSize = 12.sp) },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = ChartDetailColors.AccentGold.copy(alpha = 0.2f),
                     selectedLabelColor = ChartDetailColors.AccentGold,
@@ -466,7 +466,7 @@ private fun YogaCard(
 
                     if (yoga.sanskritName.isNotEmpty() && yoga.sanskritName != yoga.name) {
                         Text(
-                            text = "${stringResource(StringKeyYogaExpanded.YOGA_SANSKRIT)}: ${yoga.sanskritName}",
+                            text = "${stringResource(StringKeyPanchanga.YOGA_SANSKRIT)}: ${yoga.sanskritName}",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium,
                             color = ChartDetailColors.AccentPurple,
@@ -506,7 +506,7 @@ private fun YogaCard(
                                 color = ChartDetailColors.AccentPurple.copy(alpha = 0.15f)
                             ) {
                                 Text(
-                                    text = "${stringResource(StringKeyYogaExpanded.YOGA_HOUSE_PREFIX)}${formatNumber(house, language)}",
+                                    text = "${stringResource(StringKeyPanchanga.YOGA_HOUSE_PREFIX)}${formatNumber(house, language)}",
                                     fontSize = 11.sp,
                                     color = ChartDetailColors.AccentPurple,
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -526,7 +526,7 @@ private fun YogaCard(
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(
-                                text = stringResource(StringKeyYogaExpanded.YOGA_EFFECTS),
+                                text = stringResource(StringKeyPanchanga.YOGA_EFFECTS),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = if (yoga.isAuspicious) ChartDetailColors.SuccessColor else ChartDetailColors.WarningColor
@@ -543,7 +543,7 @@ private fun YogaCard(
 
                     if (yoga.activationPeriod.isNotEmpty()) {
                         Text(
-                            text = "${stringResource(StringKeyYogaExpanded.YOGA_ACTIVATION)}: ${yoga.activationPeriod}",
+                            text = "${stringResource(StringKeyPanchanga.YOGA_ACTIVATION)}: ${yoga.activationPeriod}",
                             fontSize = 11.sp,
                             color = ChartDetailColors.AccentTeal,
                             modifier = Modifier.padding(top = 8.dp)
@@ -561,7 +561,7 @@ private fun YogaCard(
                             modifier = Modifier.padding(vertical = 8.dp)
                         )
                         Text(
-                            text = "${stringResource(StringKeyYogaExpanded.YOGA_CANCELLATION_FACTORS)}:",
+                            text = "${stringResource(StringKeyPanchanga.YOGA_CANCELLATION_FACTORS)}:",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = ChartDetailColors.SuccessColor,
@@ -628,9 +628,9 @@ private fun EmptyYogasMessage(category: YogaCategory?) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = if (category != null) {
-                    stringResource(StringKeyYogaExpanded.YOGA_NO_CATEGORY_FOUND, getCategoryDisplayName(category, language))
+                    stringResource(StringKeyPanchanga.YOGA_NO_CATEGORY_FOUND, getCategoryDisplayName(category, language))
                 } else {
-                    stringResource(StringKeyYogaExpanded.YOGA_NONE_DETECTED)
+                    stringResource(StringKeyPanchanga.YOGA_NONE_DETECTED)
                 },
                 fontSize = 16.sp,
                 color = ChartDetailColors.TextSecondary,
@@ -736,7 +736,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_DEEP_ANALYSIS),
+                    text = stringResource(com.astro.storm.core.common.StringKeyPanchanga.YOGA_DEEP_ANALYSIS),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
                     color = theme.TextPrimary,
@@ -744,7 +744,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                 )
 
                 Text(
-                    text = stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VIEW_MORE),
+                    text = stringResource(com.astro.storm.core.common.StringKeyPanchanga.YOGA_VIEW_MORE),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
                     color = theme.AccentGold,
@@ -759,29 +759,29 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
             val summaryText = when (result) {
                 is com.astro.storm.ephemeris.KemadrumaYogaCalculator.KemadrumaAnalysis -> {
                     String.format(
-                        stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STATUS_FMT),
+                        stringResource(com.astro.storm.core.common.StringKeyPanchanga.YOGA_STATUS_FMT),
                         result.effectiveStatus.getLocalizedName(language)
                     ) + ". " + String.format(
-                        stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_CANCELLATION_FMT),
+                        stringResource(com.astro.storm.core.common.StringKeyPanchanga.YOGA_CANCELLATION_FMT),
                         result.totalCancellationScore
                     )
                 }
                 is com.astro.storm.ephemeris.PanchMahapurushaYogaCalculator.MahapurushaYoga -> {
                     String.format(
-                        stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STATUS_FMT),
-                        if (result.isExalted) stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_DIGNITY_EXALTED)
-                        else stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_DIGNITY_OWN_SIGN)
+                        stringResource(com.astro.storm.core.common.StringKeyPanchanga.YOGA_STATUS_FMT),
+                        if (result.isExalted) stringResource(com.astro.storm.core.common.StringKeyPanchanga.YOGA_DIGNITY_EXALTED)
+                        else stringResource(com.astro.storm.core.common.StringKeyPanchanga.YOGA_DIGNITY_OWN_SIGN)
                     ) + ". " + String.format(
-                        stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_FMT),
+                        stringResource(com.astro.storm.core.common.StringKeyPanchanga.YOGA_STRENGTH_FMT),
                         result.strength
                     )
                 }
                 is com.astro.storm.ephemeris.VipareetaRajaYogaCalculator.VipareetaYoga -> {
                     String.format(
-                        stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STATUS_FMT),
+                        stringResource(com.astro.storm.core.common.StringKeyPanchanga.YOGA_STATUS_FMT),
                         stringResource(result.activationStatus.key)
                     ) + ". " + String.format(
-                        stringResource(com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_LEVEL_FMT),
+                        stringResource(com.astro.storm.core.common.StringKeyPanchanga.YOGA_STRENGTH_LEVEL_FMT),
                         stringResource(result.strength.key)
                     )
                 }
@@ -801,12 +801,12 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
 @Composable
 private fun getLocalizedStrength(strength: YogaStrength, language: Language): String {
     val key = when (strength) {
-        YogaStrength.EXTREMELY_STRONG -> StringKeyYogaExpanded.YOGA_STRENGTH_EXTREMELY_STRONG
-        YogaStrength.VERY_STRONG -> StringKeyYogaExpanded.YOGA_STRENGTH_VERY_STRONG
-        YogaStrength.STRONG -> StringKeyYogaExpanded.YOGA_STRENGTH_STRONG
-        YogaStrength.MODERATE -> StringKeyYogaExpanded.YOGA_STRENGTH_MODERATE
-        YogaStrength.WEAK -> StringKeyYogaExpanded.YOGA_STRENGTH_WEAK
-        YogaStrength.VERY_WEAK -> StringKeyYogaExpanded.YOGA_STRENGTH_VERY_WEAK
+        YogaStrength.EXTREMELY_STRONG -> StringKeyPanchanga.YOGA_STRENGTH_EXTREMELY_STRONG
+        YogaStrength.VERY_STRONG -> StringKeyPanchanga.YOGA_STRENGTH_VERY_STRONG
+        YogaStrength.STRONG -> StringKeyPanchanga.YOGA_STRENGTH_STRONG
+        YogaStrength.MODERATE -> StringKeyPanchanga.YOGA_STRENGTH_MODERATE
+        YogaStrength.WEAK -> StringKeyPanchanga.YOGA_STRENGTH_WEAK
+        YogaStrength.VERY_WEAK -> StringKeyPanchanga.YOGA_STRENGTH_VERY_WEAK
     }
     return stringResource(key)
 }

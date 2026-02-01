@@ -63,31 +63,31 @@ object PrashnaHelpers {
 
     fun getTithiName(tithiNumber: Int, language: Language): String {
         val tithiKey = when (tithiNumber) {
-            1, 16 -> StringKeyPrashnaPart2.PRASHNA_TITHI_PRATIPADA
-            2, 17 -> StringKeyPrashnaPart2.PRASHNA_TITHI_DWITIYA
-            3, 18 -> StringKeyPrashnaPart2.PRASHNA_TITHI_TRITIYA
-            4, 19 -> StringKeyPrashnaPart2.PRASHNA_TITHI_CHATURTHI
-            5, 20 -> StringKeyPrashnaPart2.PRASHNA_TITHI_PANCHAMI
-            6, 21 -> StringKeyPrashnaPart2.PRASHNA_TITHI_SHASHTHI
-            7, 22 -> StringKeyPrashnaPart2.PRASHNA_TITHI_SAPTAMI
-            8, 23 -> StringKeyPrashnaPart2.PRASHNA_TITHI_ASHTAMI
-            9, 24 -> StringKeyPrashnaPart2.PRASHNA_TITHI_NAVAMI
-            10, 25 -> StringKeyPrashnaPart2.PRASHNA_TITHI_DASHAMI
-            11, 26 -> StringKeyPrashnaPart2.PRASHNA_TITHI_EKADASHI
-            12, 27 -> StringKeyPrashnaPart2.PRASHNA_TITHI_DWADASHI
-            13, 28 -> StringKeyPrashnaPart2.PRASHNA_TITHI_TRAYODASHI
-            14, 29 -> StringKeyPrashnaPart2.PRASHNA_TITHI_CHATURDASHI
-            15 -> StringKeyPrashnaPart2.PRASHNA_TITHI_PURNIMA
-            30 -> StringKeyPrashnaPart2.PRASHNA_TITHI_AMAVASYA
-            else -> StringKeyPrashnaPart2.PRASHNA_TITHI_PRATIPADA
+            1, 16 -> StringKeyPrashnaPart1.PRASHNA_TITHI_PRATIPADA
+            2, 17 -> StringKeyPrashnaPart1.PRASHNA_TITHI_DWITIYA
+            3, 18 -> StringKeyPrashnaPart1.PRASHNA_TITHI_TRITIYA
+            4, 19 -> StringKeyPrashnaPart1.PRASHNA_TITHI_CHATURTHI
+            5, 20 -> StringKeyPrashnaPart1.PRASHNA_TITHI_PANCHAMI
+            6, 21 -> StringKeyPrashnaPart1.PRASHNA_TITHI_SHASHTHI
+            7, 22 -> StringKeyPrashnaPart1.PRASHNA_TITHI_SAPTAMI
+            8, 23 -> StringKeyPrashnaPart1.PRASHNA_TITHI_ASHTAMI
+            9, 24 -> StringKeyPrashnaPart1.PRASHNA_TITHI_NAVAMI
+            10, 25 -> StringKeyPrashnaPart1.PRASHNA_TITHI_DASHAMI
+            11, 26 -> StringKeyPrashnaPart1.PRASHNA_TITHI_EKADASHI
+            12, 27 -> StringKeyPrashnaPart1.PRASHNA_TITHI_DWADASHI
+            13, 28 -> StringKeyPrashnaPart1.PRASHNA_TITHI_TRAYODASHI
+            14, 29 -> StringKeyPrashnaPart1.PRASHNA_TITHI_CHATURDASHI
+            15 -> StringKeyPrashnaPart1.PRASHNA_TITHI_PURNIMA
+            30 -> StringKeyPrashnaPart1.PRASHNA_TITHI_AMAVASYA
+            else -> StringKeyPrashnaPart1.PRASHNA_TITHI_PRATIPADA
         }
 
         val name = StringResources.get(tithiKey, language)
         
         return when {
             tithiNumber == 15 || tithiNumber == 30 -> name
-            tithiNumber < 15 -> StringResources.get(StringKeyPrashnaPart2.PRASHNA_TITHI_SHUKLA, language).format(name)
-            else -> StringResources.get(StringKeyPrashnaPart2.PRASHNA_TITHI_KRISHNA, language).format(name)
+            tithiNumber < 15 -> StringResources.get(StringKeyPrashnaPart1.PRASHNA_TITHI_SHUKLA, language).format(name)
+            else -> StringResources.get(StringKeyPrashnaPart1.PRASHNA_TITHI_KRISHNA, language).format(name)
         }
     }
 

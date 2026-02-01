@@ -82,7 +82,7 @@ object MatchmakingReportUtils {
                 
                 appendLine("$status $gunaTypeName ($description)")
                 appendLine("  ${StringResources.get(StringKeyReport.REPORT_SCORE_LABEL, language)} ${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()}")
-                appendLine("  ${StringResources.get(StringKeyMatchPart1.BRIDE, language)}: ${guna.brideValue} | ${StringResources.get(StringKeyMatchPart1.GROOM, language)}: ${guna.groomValue}")
+                appendLine("  ${StringResources.get(StringKeyGeneralPart2.BRIDE, language)}: ${guna.brideValue} | ${StringResources.get(StringKeyGeneralPart4.GROOM, language)}: ${guna.groomValue}")
                 appendLine("  ${guna.analysis}")
                 appendLine()
             }
@@ -91,14 +91,14 @@ object MatchmakingReportUtils {
             appendLine("─────────────────────────────────────")
             appendLine("${StringResources.get(StringKeyReport.REPORT_COMPATIBILITY_LABEL, language)} ${result.manglikCompatibilityRecommendation}")
             appendLine()
-            appendLine("${StringResources.get(StringKeyMatchPart1.BRIDE, language)}: ${result.brideManglik.effectiveDosha.getLocalizedName(language)}")
+            appendLine("${StringResources.get(StringKeyGeneralPart2.BRIDE, language)}: ${result.brideManglik.effectiveDosha.getLocalizedName(language)}")
             if (result.brideManglik.marsHouse > 0) {
                 appendLine("  ${String.format(StringResources.get(StringKeyReport.REPORT_MARS_IN_HOUSE, language), result.brideManglik.marsHouse)}")
             }
             result.brideManglik.factors.forEach { appendLine("  • $it") }
             result.brideManglik.cancellations.forEach { appendLine("  ✓ $it $cancellationText") }
             appendLine()
-            appendLine("${StringResources.get(StringKeyMatchPart1.GROOM, language)}: ${result.groomManglik.effectiveDosha.getLocalizedName(language)}")
+            appendLine("${StringResources.get(StringKeyGeneralPart4.GROOM, language)}: ${result.groomManglik.effectiveDosha.getLocalizedName(language)}")
             if (result.groomManglik.marsHouse > 0) {
                 appendLine("  ${String.format(StringResources.get(StringKeyReport.REPORT_MARS_IN_HOUSE, language), result.groomManglik.marsHouse)}")
             }
@@ -143,8 +143,8 @@ object MatchmakingReportUtils {
         language: Language
     ): String {
         val naText = StringResources.get(StringKeyReport.REPORT_NA, language)
-        val brideLabel = StringResources.get(StringKeyMatchPart1.BRIDE, language)
-        val groomLabel = StringResources.get(StringKeyMatchPart1.GROOM, language)
+        val brideLabel = StringResources.get(StringKeyGeneralPart2.BRIDE, language)
+        val groomLabel = StringResources.get(StringKeyGeneralPart4.GROOM, language)
 
         return buildString {
             appendLine("🔮 ${StringResources.get(StringKeyReport.REPORT_KUNDLI_MILAN_SUMMARY, language)}")
@@ -214,7 +214,7 @@ object MatchmakingReportUtils {
      */
     fun getPada(chart: VedicChart, language: Language = Language.ENGLISH): String {
         val moonPosition = getMoonPosition(chart) ?: return StringResources.get(StringKeyReport.REPORT_NA, language)
-        return StringResources.get(StringKeyMatchmaking.MATCH_PADA_NUMBER, language, moonPosition.nakshatraPada)
+        return StringResources.get(StringKeyMatchmakingPart1.MATCH_PADA_NUMBER, language, moonPosition.nakshatraPada)
     }
 
     /**
@@ -234,11 +234,11 @@ fun MatchmakingResult.getManglikQuickStatus(language: Language = Language.ENGLIS
     val groomStatus = groomManglik.effectiveDosha
 
     return when {
-        brideStatus == ManglikDosha.NONE && groomStatus == ManglikDosha.NONE -> StringResources.get(StringKeyDoshaPart4.MANGLIK_QUICK_NONE, language)
-        brideStatus != ManglikDosha.NONE && groomStatus != ManglikDosha.NONE -> StringResources.get(StringKeyDoshaPart4.MANGLIK_QUICK_BOTH, language)
-        brideStatus != ManglikDosha.NONE -> StringResources.get(StringKeyDoshaPart4.MANGLIK_QUICK_BRIDE, language)
-        groomStatus != ManglikDosha.NONE -> StringResources.get(StringKeyDoshaPart4.MANGLIK_QUICK_GROOM, language)
-        else -> StringResources.get(StringKeyMatchPart1.DETAILS, language)
+        brideStatus == ManglikDosha.NONE && groomStatus == ManglikDosha.NONE -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_QUICK_NONE, language)
+        brideStatus != ManglikDosha.NONE && groomStatus != ManglikDosha.NONE -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_QUICK_BOTH, language)
+        brideStatus != ManglikDosha.NONE -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_QUICK_BRIDE, language)
+        groomStatus != ManglikDosha.NONE -> StringResources.get(StringKeyMatchmakingPart1.MANGLIK_QUICK_GROOM, language)
+        else -> StringResources.get(StringKeyGeneralPart3.DETAILS, language)
     }
 }
 

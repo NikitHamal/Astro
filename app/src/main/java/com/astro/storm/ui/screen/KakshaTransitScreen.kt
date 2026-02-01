@@ -847,7 +847,7 @@ private fun KakshaErrorContent(message: String, modifier: Modifier = Modifier, o
             Text(text = message, color = colors.TextPrimary, textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = onRetry) {
-                Text(text = stringResource(StringKeyUI.BTN_RETRY))
+                Text(text = stringResource(StringKeyUIPart1.BTN_RETRY))
             }
         }
     }

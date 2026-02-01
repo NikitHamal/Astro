@@ -48,7 +48,7 @@ object HoraAnalyzer {
     }
 
     private fun calculateWealthTimingFromHora(indicators: List<WealthIndicator>, language: Language): List<WealthTimingPeriod> {
-        return indicators.filter { it.strength > 60 }.map { WealthTimingPeriod(it.planet, it.type, StringResources.get(StringKeyPrediction.PRED_MAHADASHA_LABEL, language, it.planet.getLocalizedName(language)), it.strength > 65, it.sources) }
+        return indicators.filter { it.strength > 60 }.map { WealthTimingPeriod(it.planet, it.type, StringResources.get(StringKeyGeneralPart8.PRED_MAHADASHA_LABEL, language, it.planet.getLocalizedName(language)), it.strength > 65, it.sources) }
     }
 
     private fun generateHoraRecommendations(indicators: List<WealthIndicator>, potential: WealthPotential, language: Language): List<String> {

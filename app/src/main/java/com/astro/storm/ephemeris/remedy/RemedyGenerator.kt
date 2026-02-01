@@ -57,7 +57,7 @@ object RemedyGenerator {
     fun getMantraRemedy(planet: Planet, language: Language): Remedy? {
         val mantraInfo = planetaryMantras[planet] ?: return null
         val dirKeyName = "DIR_" + mantraInfo.direction.uppercase().replace("-", "_")
-        val dirKey = try { StringKeyRemedy.valueOf(dirKeyName) } catch(e: Exception) { StringKeyRemedy.DIR_EAST }
+        val dirKey = try { StringKeyRemedy.valueOf(dirKeyName) } catch(e: Exception) { StringKeyGeneralPart3.DIR_EAST }
         val localizedDirection = StringResources.get(dirKey, language)
         val method = StringResources.get(StringKeyRemedy.MANTRA_METHOD, language, localizedDirection, mantraInfo.minimumCount, mantraInfo.beejMantra, planet.getLocalizedName(language))
         return Remedy(
@@ -80,14 +80,14 @@ object RemedyGenerator {
         val special = StringResources.get(StringKeyRemedy.valueOf("CHARITY_${pName}_SPECIAL"), language)
         val dayString = charityInfo.day.uppercase().replace(" ", "_")
         val weekdayKey = try {
-            StringKeyRemedy.valueOf("WEEKDAY_$dayString")
+            StringKeyPanchanga.valueOf("WEEKDAY_$dayString")
         } catch (e: Exception) {
             try {
                 // Handle cases like "TUESDAY_OR_SATURDAY" by taking the first day
                 val firstDay = dayString.split("_OR_").firstOrNull() ?: "SUNDAY"
-                StringKeyRemedy.valueOf("WEEKDAY_$firstDay")
+                StringKeyPanchanga.valueOf("WEEKDAY_$firstDay")
             } catch (e2: Exception) {
-                StringKeyRemedy.WEEKDAY_SUNDAY
+                StringKeyPanchanga.WEEKDAY_SUNDAY
             }
         }
         val timing = StringResources.get(StringKeyRemedy.CHARITY_TIMING, language, StringResources.get(weekdayKey, language), getLocalizedCharityTiming(charityInfo.timing, language))
@@ -103,7 +103,7 @@ object RemedyGenerator {
     }
 
     fun getFastingRemedy(planet: Planet, language: Language): Remedy? {
-        val weekdayKey = StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}")
+        val weekdayKey = StringKeyPanchanga.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}")
         val localizedDay = StringResources.get(weekdayKey, language)
         val foodRec = StringResources.get(StringKeyRemedy.valueOf("FASTING_${planet.name}_FOOD"), language)
         return Remedy(
@@ -120,16 +120,16 @@ object RemedyGenerator {
     fun getColorRemedy(planet: Planet, language: Language): Remedy? {
         val colors = StringResources.get(StringKeyRemedy.valueOf("COLOR_${planet.name}_USE"), language)
         val avoid = StringResources.get(StringKeyRemedy.valueOf("COLOR_${planet.name}_AVOID"), language)
-        val localizedDay = StringResources.get(StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
+        val localizedDay = StringResources.get(StringKeyPanchanga.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
         return Remedy(
-            category = RemedyCategory.COLOR, title = "${planet.getLocalizedName(language)}${StringResources.get(StringKeyRemedy.COLOR_TITLE_SUFFIX, language)}",
-            description = StringResources.get(StringKeyRemedy.COLOR_DESC, language, planet.getLocalizedName(language)),
-            method = StringResources.get(StringKeyRemedy.COLOR_METHOD, language, colors, avoid, localizedDay),
-            timing = StringResources.get(StringKeyRemedy.COLOR_TIMING, language, localizedDay),
-            duration = StringResources.get(StringKeyRemedy.COLOR_DURATION, language, planet.getLocalizedName(language)),
+            category = RemedyCategory.COLOR, title = "${planet.getLocalizedName(language)}${StringResources.get(StringKeyUIPart1.COLOR_TITLE_SUFFIX, language)}",
+            description = StringResources.get(StringKeyUIPart1.COLOR_DESC, language, planet.getLocalizedName(language)),
+            method = StringResources.get(StringKeyUIPart1.COLOR_METHOD, language, colors, avoid, localizedDay),
+            timing = StringResources.get(StringKeyUIPart1.COLOR_TIMING, language, localizedDay),
+            duration = StringResources.get(StringKeyUIPart1.COLOR_DURATION, language, planet.getLocalizedName(language)),
             planet = planet, priority = RemedyPriority.OPTIONAL,
-            benefits = listOf(StringResources.get(StringKeyRemedy.COLOR_BENEFIT_SUBTLE, language), StringResources.get(StringKeyRemedy.COLOR_BENEFIT_EASY, language), StringResources.get(StringKeyRemedy.COLOR_BENEFIT_COST, language)),
-            cautions = listOf(StringResources.get(StringKeyRemedy.COLOR_CAUTION_BALANCE, language))
+            benefits = listOf(StringResources.get(StringKeyUIPart1.COLOR_BENEFIT_SUBTLE, language), StringResources.get(StringKeyUIPart1.COLOR_BENEFIT_EASY, language), StringResources.get(StringKeyUIPart1.COLOR_BENEFIT_COST, language)),
+            cautions = listOf(StringResources.get(StringKeyUIPart1.COLOR_CAUTION_BALANCE, language))
         )
     }
 
@@ -139,20 +139,20 @@ object RemedyGenerator {
         val avoidKey = try { StringKeyRemedy.valueOf("LIFESTYLE_${pName}_AVOID") } catch (e: Exception) { return null }
         val practices = StringResources.get(practicesKey, language).split("|")
         val avoid = StringResources.get(avoidKey, language).split("|")
-        val localizedDay = StringResources.get(StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
+        val localizedDay = StringResources.get(StringKeyPanchanga.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
         return Remedy(
-            category = RemedyCategory.LIFESTYLE, title = "${planet.getLocalizedName(language)}${StringResources.get(StringKeyRemedy.LIFESTYLE_TITLE_SUFFIX, language)}",
-            description = StringResources.get(StringKeyRemedy.LIFESTYLE_DESC, language, planet.getLocalizedName(language)),
+            category = RemedyCategory.LIFESTYLE, title = "${planet.getLocalizedName(language)}${StringResources.get(StringKeyGeneralPart6.LIFESTYLE_TITLE_SUFFIX, language)}",
+            description = StringResources.get(StringKeyGeneralPart6.LIFESTYLE_DESC, language, planet.getLocalizedName(language)),
             method = buildString {
-                appendLine(StringResources.get(StringKeyRemedy.LIFESTYLE_REC_PRACTICES, language))
+                appendLine(StringResources.get(StringKeyGeneralPart6.LIFESTYLE_REC_PRACTICES, language))
                 practices.forEachIndexed { index, practice -> appendLine("${index + 1}. $practice") }
                 appendLine()
-                appendLine(StringResources.get(StringKeyRemedy.LIFESTYLE_THINGS_AVOID, language))
+                appendLine(StringResources.get(StringKeyGeneralPart6.LIFESTYLE_THINGS_AVOID, language))
                 avoid.forEach { item -> appendLine("• $item") }
             },
-            timing = StringResources.get(StringKeyRemedy.LIFESTYLE_TIMING, language, localizedDay),
-            duration = StringResources.get(StringKeyRemedy.LIFESTYLE_DURATION, language), planet = planet, priority = RemedyPriority.RECOMMENDED,
-            benefits = listOf(StringResources.get(StringKeyRemedy.LIFESTYLE_BENEFIT_HOLISTIC, language), StringResources.get(StringKeyRemedy.LIFESTYLE_BENEFIT_COST, language), StringResources.get(StringKeyRemedy.LIFESTYLE_BENEFIT_KARMA, language), StringResources.get(StringKeyRemedy.LIFESTYLE_BENEFIT_ALIGN, language)),
+            timing = StringResources.get(StringKeyGeneralPart6.LIFESTYLE_TIMING, language, localizedDay),
+            duration = StringResources.get(StringKeyGeneralPart6.LIFESTYLE_DURATION, language), planet = planet, priority = RemedyPriority.RECOMMENDED,
+            benefits = listOf(StringResources.get(StringKeyGeneralPart6.LIFESTYLE_BENEFIT_HOLISTIC, language), StringResources.get(StringKeyGeneralPart6.LIFESTYLE_BENEFIT_COST, language), StringResources.get(StringKeyGeneralPart6.LIFESTYLE_BENEFIT_KARMA, language), StringResources.get(StringKeyGeneralPart6.LIFESTYLE_BENEFIT_ALIGN, language)),
             cautions = emptyList()
         )
     }
@@ -175,22 +175,22 @@ object RemedyGenerator {
         val deity = StringResources.get(deityKey, language)
         val benefitsKey = try { StringKeyRemedy.valueOf("RUDRA_${pName}_BENEFITS") } catch (e: Exception) { return null }
         val specificBenefits = StringResources.get(benefitsKey, language).split("|")
-        val localizedDay = StringResources.get(StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
+        val localizedDay = StringResources.get(StringKeyPanchanga.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
         return Remedy(
-            category = RemedyCategory.RUDRAKSHA, title = "$mukhiString ${StringResources.get(StringKeyRemedy.RUDRA_TITLE_SUFFIX, language)}",
-            description = StringResources.get(StringKeyRemedy.RUDRA_DESC, language, mukhi, planet.getLocalizedName(language), deity),
+            category = RemedyCategory.RUDRAKSHA, title = "$mukhiString ${StringResources.get(StringKeyGeneralPart9.RUDRA_TITLE_SUFFIX, language)}",
+            description = StringResources.get(StringKeyGeneralPart9.RUDRA_DESC, language, mukhi, planet.getLocalizedName(language), deity),
             method = buildString {
-                appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_1, language, mukhiString))
-                appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_2, language))
-                appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_3, language))
-                appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_4, language, planet.getLocalizedName(language)))
-                appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_5, language))
-                appendLine(StringResources.get(StringKeyRemedy.RUDRA_METHOD_6, language))
+                appendLine(StringResources.get(StringKeyGeneralPart9.RUDRA_METHOD_1, language, mukhiString))
+                appendLine(StringResources.get(StringKeyGeneralPart9.RUDRA_METHOD_2, language))
+                appendLine(StringResources.get(StringKeyGeneralPart9.RUDRA_METHOD_3, language))
+                appendLine(StringResources.get(StringKeyGeneralPart9.RUDRA_METHOD_4, language, planet.getLocalizedName(language)))
+                appendLine(StringResources.get(StringKeyGeneralPart9.RUDRA_METHOD_5, language))
+                appendLine(StringResources.get(StringKeyGeneralPart9.RUDRA_METHOD_6, language))
             },
-            timing = StringResources.get(StringKeyRemedy.RUDRA_TIMING, language, localizedDay, planet.getLocalizedName(language)),
-            duration = StringResources.get(StringKeyRemedy.RUDRA_DURATION, language), planet = planet, priority = RemedyPriority.RECOMMENDED,
-            benefits = specificBenefits + listOf(StringResources.get(StringKeyRemedy.RUDRA_BENEFIT_NATURAL, language), StringResources.get(StringKeyRemedy.RUDRA_BENEFIT_BALANCE, language, planet.getLocalizedName(language)), StringResources.get(StringKeyRemedy.RUDRA_BENEFIT_PROTECT, language), StringResources.get(StringKeyRemedy.RUDRA_BENEFIT_ANYONE, language)),
-            cautions = listOf(StringResources.get(StringKeyRemedy.RUDRA_CAUTION_AUTH, language), StringResources.get(StringKeyRemedy.RUDRA_CAUTION_SLEEP, language), StringResources.get(StringKeyRemedy.RUDRA_CAUTION_CLEAN, language), StringResources.get(StringKeyRemedy.RUDRA_CAUTION_EVENTS, language))
+            timing = StringResources.get(StringKeyGeneralPart9.RUDRA_TIMING, language, localizedDay, planet.getLocalizedName(language)),
+            duration = StringResources.get(StringKeyGeneralPart9.RUDRA_DURATION, language), planet = planet, priority = RemedyPriority.RECOMMENDED,
+            benefits = specificBenefits + listOf(StringResources.get(StringKeyGeneralPart9.RUDRA_BENEFIT_NATURAL, language), StringResources.get(StringKeyGeneralPart9.RUDRA_BENEFIT_BALANCE, language, planet.getLocalizedName(language)), StringResources.get(StringKeyGeneralPart9.RUDRA_BENEFIT_PROTECT, language), StringResources.get(StringKeyGeneralPart9.RUDRA_BENEFIT_ANYONE, language)),
+            cautions = listOf(StringResources.get(StringKeyGeneralPart9.RUDRA_CAUTION_AUTH, language), StringResources.get(StringKeyGeneralPart9.RUDRA_CAUTION_SLEEP, language), StringResources.get(StringKeyGeneralPart9.RUDRA_CAUTION_CLEAN, language), StringResources.get(StringKeyGeneralPart9.RUDRA_CAUTION_EVENTS, language))
         )
     }
 
@@ -209,24 +209,24 @@ object RemedyGenerator {
             Planet.KETU -> "Ketu Yantra" to "Ashtadhatu or Copper"
             else -> return null
         }
-        val localizedDay = StringResources.get(StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
+        val localizedDay = StringResources.get(StringKeyPanchanga.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
         return Remedy(
             category = RemedyCategory.YANTRA, title = yantraName, description = StringResources.get(descKey, language),
             method = buildString {
-                appendLine(StringResources.get(StringKeyRemedy.YANTRA_INSTALL_PROC, language))
-                appendLine(StringResources.get(StringKeyRemedy.YANTRA_METHOD_1, language, material, yantraName))
-                appendLine(StringResources.get(StringKeyRemedy.YANTRA_METHOD_2, language, localizedDay, planet.getLocalizedName(language)))
-                appendLine(StringResources.get(StringKeyRemedy.YANTRA_METHOD_3, language))
-                appendLine(StringResources.get(StringKeyRemedy.YANTRA_METHOD_4, language, planet.getLocalizedName(language)))
-                appendLine(StringResources.get(StringKeyRemedy.YANTRA_METHOD_5, language))
-                appendLine(StringResources.get(StringKeyRemedy.YANTRA_METHOD_6, language, planet.getLocalizedName(language)))
-                appendLine(StringResources.get(StringKeyRemedy.YANTRA_METHOD_7, language))
-                appendLine(StringResources.get(StringKeyRemedy.YANTRA_METHOD_8, language))
+                appendLine(StringResources.get(StringKeyGeneralPart12.YANTRA_INSTALL_PROC, language))
+                appendLine(StringResources.get(StringKeyGeneralPart12.YANTRA_METHOD_1, language, material, yantraName))
+                appendLine(StringResources.get(StringKeyGeneralPart12.YANTRA_METHOD_2, language, localizedDay, planet.getLocalizedName(language)))
+                appendLine(StringResources.get(StringKeyGeneralPart12.YANTRA_METHOD_3, language))
+                appendLine(StringResources.get(StringKeyGeneralPart12.YANTRA_METHOD_4, language, planet.getLocalizedName(language)))
+                appendLine(StringResources.get(StringKeyGeneralPart12.YANTRA_METHOD_5, language))
+                appendLine(StringResources.get(StringKeyGeneralPart12.YANTRA_METHOD_6, language, planet.getLocalizedName(language)))
+                appendLine(StringResources.get(StringKeyGeneralPart12.YANTRA_METHOD_7, language))
+                appendLine(StringResources.get(StringKeyGeneralPart12.YANTRA_METHOD_8, language))
             },
-            timing = StringResources.get(StringKeyRemedy.YANTRA_TIMING, language, localizedDay, planet.getLocalizedName(language)),
-            duration = StringResources.get(StringKeyRemedy.YANTRA_DURATION, language), planet = planet, priority = RemedyPriority.OPTIONAL,
-            benefits = listOf(StringResources.get(StringKeyRemedy.YANTRA_BENEFIT_FIELD, language), StringResources.get(StringKeyRemedy.YANTRA_BENEFIT_247, language), StringResources.get(StringKeyRemedy.YANTRA_BENEFIT_MEDITATION, language), StringResources.get(StringKeyRemedy.YANTRA_BENEFIT_PROTECT, language)),
-            cautions = listOf(StringResources.get(StringKeyRemedy.YANTRA_CAUTION_WORSHIP, language), StringResources.get(StringKeyRemedy.YANTRA_CAUTION_RITUALS, language), StringResources.get(StringKeyRemedy.YANTRA_CAUTION_CLEAN, language), StringResources.get(StringKeyRemedy.YANTRA_CAUTION_ALT, language))
+            timing = StringResources.get(StringKeyGeneralPart12.YANTRA_TIMING, language, localizedDay, planet.getLocalizedName(language)),
+            duration = StringResources.get(StringKeyGeneralPart12.YANTRA_DURATION, language), planet = planet, priority = RemedyPriority.OPTIONAL,
+            benefits = listOf(StringResources.get(StringKeyGeneralPart12.YANTRA_BENEFIT_FIELD, language), StringResources.get(StringKeyGeneralPart12.YANTRA_BENEFIT_247, language), StringResources.get(StringKeyGeneralPart12.YANTRA_BENEFIT_MEDITATION, language), StringResources.get(StringKeyGeneralPart12.YANTRA_BENEFIT_PROTECT, language)),
+            cautions = listOf(StringResources.get(StringKeyGeneralPart12.YANTRA_CAUTION_WORSHIP, language), StringResources.get(StringKeyGeneralPart12.YANTRA_CAUTION_RITUALS, language), StringResources.get(StringKeyGeneralPart12.YANTRA_CAUTION_CLEAN, language), StringResources.get(StringKeyGeneralPart12.YANTRA_CAUTION_ALT, language))
         )
     }
 
@@ -236,7 +236,7 @@ object RemedyGenerator {
         val secondaryDeities = StringResources.get(StringKeyRemedy.valueOf("DEITY_${pName}_SEC"), language)
         val temple = StringResources.get(StringKeyRemedy.valueOf("DEITY_${pName}_TEMPLES"), language)
         val offerings = StringResources.get(StringKeyRemedy.valueOf("DEITY_${pName}_OFFERINGS"), language)
-        val localizedDay = StringResources.get(StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
+        val localizedDay = StringResources.get(StringKeyPanchanga.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
         return Remedy(
             category = RemedyCategory.DEITY, title = "${planet.getLocalizedName(language)}${StringResources.get(StringKeyRemedy.DEITY_TITLE_SUFFIX, language)}",
             description = StringResources.get(StringKeyRemedy.DEITY_DESC, language, planet.getLocalizedName(language)),
@@ -273,8 +273,8 @@ object RemedyGenerator {
             description = StringResources.get(StringKeyRemedy.NAK_REMEDY_DESC, language, analysis.planet.getLocalizedName(language), nakshatra.displayName, deity),
             method = StringResources.get(remedyKey, language), timing = StringResources.get(StringKeyRemedy.NAK_REMEDY_TIMING, language, nakshatra.displayName),
             duration = StringResources.get(StringKeyRemedy.NAK_REMEDY_DURATION, language), planet = analysis.planet, priority = RemedyPriority.RECOMMENDED,
-            benefits = listOf(StringResources.get(StringKeyRemedy.NAK_BENEFIT_SPECIFIC, language), StringResources.get(StringKeyRemedy.NAK_BENEFIT_BLESSING, language), StringResources.get(StringKeyRemedy.NAK_BENEFIT_COMPLEMENT, language), StringResources.get(StringKeyRemedy.NAK_BENEFIT_FINE_TUNE, language)),
-            cautions = listOf(StringResources.get(StringKeyRemedy.NAK_CAUTION_COMBINE, language), StringResources.get(StringKeyRemedy.NAK_CAUTION_CHECK, language)),
+            benefits = listOf(StringResources.get(StringKeyGeneralPart7.NAK_BENEFIT_SPECIFIC, language), StringResources.get(StringKeyGeneralPart7.NAK_BENEFIT_BLESSING, language), StringResources.get(StringKeyGeneralPart7.NAK_BENEFIT_COMPLEMENT, language), StringResources.get(StringKeyGeneralPart7.NAK_BENEFIT_FINE_TUNE, language)),
+            cautions = listOf(StringResources.get(StringKeyGeneralPart7.NAK_CAUTION_COMBINE, language), StringResources.get(StringKeyGeneralPart7.NAK_CAUTION_CHECK, language)),
             nakshatraSpecific = true
         )
     }
@@ -287,31 +287,31 @@ object RemedyGenerator {
             ZodiacSign.PISCES, ZodiacSign.ARIES -> "Pisces-Aries"
             else -> return null
         }
-        val localizedDay = StringResources.get(StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(analysis.planet).uppercase()}"), language)
+        val localizedDay = StringResources.get(StringKeyPanchanga.valueOf("WEEKDAY_${getPlanetaryWeekday(analysis.planet).uppercase()}"), language)
         return Remedy(
-            category = RemedyCategory.DEITY, title = StringResources.get(StringKeyRemedy.GANDANTA_TITLE, language),
-            description = StringResources.get(StringKeyRemedy.GANDANTA_DESC, language, analysis.planet.getLocalizedName(language), gandantaType),
+            category = RemedyCategory.DEITY, title = StringResources.get(StringKeyGeneralPart4.GANDANTA_TITLE, language),
+            description = StringResources.get(StringKeyGeneralPart4.GANDANTA_DESC, language, analysis.planet.getLocalizedName(language), gandantaType),
             method = buildString {
-                appendLine(StringResources.get(StringKeyRemedy.GANDANTA_METHOD_TITLE, language))
-                appendLine(StringResources.get(StringKeyRemedy.GANDANTA_METHOD_1, language, analysis.planet.getLocalizedName(language)))
-                appendLine(StringResources.get(StringKeyRemedy.GANDANTA_METHOD_2, language, analysis.planet.getLocalizedName(language)))
-                appendLine(StringResources.get(StringKeyRemedy.GANDANTA_METHOD_3, language, analysis.planet.getLocalizedName(language)))
-                appendLine(StringResources.get(StringKeyRemedy.GANDANTA_METHOD_4, language))
-                appendLine(StringResources.get(StringKeyRemedy.GANDANTA_METHOD_5, language))
-                appendLine(StringResources.get(StringKeyRemedy.GANDANTA_METHOD_6, language, localizedDay))
-                appendLine(StringResources.get(StringKeyRemedy.GANDANTA_METHOD_7, language))
+                appendLine(StringResources.get(StringKeyGeneralPart4.GANDANTA_METHOD_TITLE, language))
+                appendLine(StringResources.get(StringKeyGeneralPart4.GANDANTA_METHOD_1, language, analysis.planet.getLocalizedName(language)))
+                appendLine(StringResources.get(StringKeyGeneralPart4.GANDANTA_METHOD_2, language, analysis.planet.getLocalizedName(language)))
+                appendLine(StringResources.get(StringKeyGeneralPart4.GANDANTA_METHOD_3, language, analysis.planet.getLocalizedName(language)))
+                appendLine(StringResources.get(StringKeyGeneralPart4.GANDANTA_METHOD_4, language))
+                appendLine(StringResources.get(StringKeyGeneralPart4.GANDANTA_METHOD_5, language))
+                appendLine(StringResources.get(StringKeyGeneralPart4.GANDANTA_METHOD_6, language, localizedDay))
+                appendLine(StringResources.get(StringKeyGeneralPart4.GANDANTA_METHOD_7, language))
                 appendLine()
-                appendLine(StringResources.get(StringKeyRemedy.GANDANTA_SPECIAL, language))
+                appendLine(StringResources.get(StringKeyGeneralPart4.GANDANTA_SPECIAL, language))
             },
-            timing = StringResources.get(StringKeyRemedy.GANDANTA_TIMING, language, localizedDay),
-            duration = StringResources.get(StringKeyRemedy.GANDANTA_DURATION, language, analysis.planet.getLocalizedName(language)), planet = analysis.planet, priority = RemedyPriority.ESSENTIAL,
-            benefits = listOf(StringResources.get(StringKeyRemedy.GANDANTA_BENEFIT_BLOCKAGE, language), StringResources.get(StringKeyRemedy.GANDANTA_BENEFIT_REDUCE, language, analysis.planet.getLocalizedName(language)), StringResources.get(StringKeyRemedy.GANDANTA_BENEFIT_TRANSFORM, language), StringResources.get(StringKeyRemedy.GANDANTA_BENEFIT_PROTECT, language)),
-            cautions = listOf(StringResources.get(StringKeyRemedy.GANDANTA_CAUTION_CONSISTENT, language), StringResources.get(StringKeyRemedy.GANDANTA_CAUTION_CONSULT, language), StringResources.get(StringKeyRemedy.GANDANTA_CAUTION_SKIP, language))
+            timing = StringResources.get(StringKeyGeneralPart4.GANDANTA_TIMING, language, localizedDay),
+            duration = StringResources.get(StringKeyGeneralPart4.GANDANTA_DURATION, language, analysis.planet.getLocalizedName(language)), planet = analysis.planet, priority = RemedyPriority.ESSENTIAL,
+            benefits = listOf(StringResources.get(StringKeyGeneralPart4.GANDANTA_BENEFIT_BLOCKAGE, language), StringResources.get(StringKeyGeneralPart4.GANDANTA_BENEFIT_REDUCE, language, analysis.planet.getLocalizedName(language)), StringResources.get(StringKeyGeneralPart4.GANDANTA_BENEFIT_TRANSFORM, language), StringResources.get(StringKeyGeneralPart4.GANDANTA_BENEFIT_PROTECT, language)),
+            cautions = listOf(StringResources.get(StringKeyGeneralPart4.GANDANTA_CAUTION_CONSISTENT, language), StringResources.get(StringKeyGeneralPart4.GANDANTA_CAUTION_CONSULT, language), StringResources.get(StringKeyGeneralPart4.GANDANTA_CAUTION_SKIP, language))
         )
     }
 
     private fun getLocalizedMantraTiming(planet: Planet, language: Language): String {
-        val day = StringResources.get(StringKeyRemedy.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
+        val day = StringResources.get(StringKeyPanchanga.valueOf("WEEKDAY_${getPlanetaryWeekday(planet).uppercase()}"), language)
         val part = when (planet) {
             Planet.SUN, Planet.MARS, Planet.MERCURY, Planet.JUPITER, Planet.VENUS -> StringResources.get(StringKeyRemedy.CHARITY_TIMING_MORNING, language)
             Planet.MOON, Planet.SATURN -> StringResources.get(StringKeyRemedy.CHARITY_TIMING_EVENING, language)

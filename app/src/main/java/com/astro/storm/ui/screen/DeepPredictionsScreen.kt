@@ -62,7 +62,7 @@ fun DeepPredictionsScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(StringKeyUI.BTN_BACK),
+                            stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -96,8 +96,8 @@ fun DeepPredictionsBody(
     }
     
     val tabs = listOf(
-        stringResource(StringKeyAnalysisPart1.ANALYSIS_TAB_DASHAS),
-        stringResource(StringKeyAnalysisPart1.ANALYSIS_TAB_TRANSITS),
+        stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS),
+        stringResource(StringKeyAnalysis.ANALYSIS_TAB_TRANSITS),
         stringResource(StringKeyDeepPrediction.SECTION_CRITICAL),
         stringResource(StringKeyDeepPrediction.SECTION_YEARLY),
         stringResource(StringKeyDeepPrediction.SECTION_REMEDIES)
@@ -179,7 +179,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "${mahadasha.planet.localizedName()} ${stringResource(StringKeyAnalysisPart1.ANALYSIS_TAB_DASHAS)}",
+                                text = "${mahadasha.planet.localizedName()} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.TextPrimary
@@ -301,7 +301,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
             
             items(dasha.upcomingDashas) { upcoming ->
                 TimelinePeriodCard(
-                    title = "${upcoming.planet.localizedName()} ${stringResource(StringKeyAnalysisPart1.ANALYSIS_TAB_DASHAS)}",
+                    title = "${upcoming.planet.localizedName()} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
                     dateRange = "${upcoming.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${upcoming.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
                     description = upcoming.briefPreview,
                     strength = com.astro.storm.ephemeris.deepanalysis.StrengthLevel.MODERATE
@@ -531,7 +531,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "${stringResource(StringKeyPart1.PLANET_JUPITER)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE).lowercase()} ${transit.jupiterTransit.currentTransitSign.localizedName()} (${stringResource(StringKeyAnalysisPart1.HOUSE)} ${transit.jupiterTransit.transitHouse.localized()})",
+                        text = "${stringResource(StringKeyGeneralPart8.PLANET_JUPITER)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE).lowercase()} ${transit.jupiterTransit.currentTransitSign.localizedName()} (${stringResource(StringKeyGeneralPart5.HOUSE)} ${transit.jupiterTransit.transitHouse.localized()})",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -579,7 +579,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "${stringResource(StringKeyPart1.PLANET_RAHU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.rahuTransitHouse.localized()} | ${stringResource(StringKeyPart1.PLANET_KETU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.ketuTransitHouse.localized()}",
+                        text = "${stringResource(StringKeyGeneralPart8.PLANET_RAHU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.rahuTransitHouse.localized()} | ${stringResource(StringKeyGeneralPart8.PLANET_KETU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.ketuTransitHouse.localized()}",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -622,7 +622,7 @@ private fun YearlyTab(predictions: DeepPredictions) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "${stringResource(StringKeyAnalysisPart1.CHART_DATE)} ${yearly.year.localized()}",
+                            text = "${stringResource(StringKeyGeneralPart3.CHART_DATE)} ${yearly.year.localized()}",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary

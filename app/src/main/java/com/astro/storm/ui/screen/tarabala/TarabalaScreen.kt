@@ -63,8 +63,8 @@ fun TarabalaScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyAnalysisPart2.TARABALA_TITLE),
-            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyGeneralPart11.TARABALA_TITLE),
+            message = stringResource(StringKeyGeneralPart7.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -76,9 +76,9 @@ fun TarabalaScreen(
     var expandedDays by remember { mutableStateOf(setOf<String>()) }
 
     val tabs = listOf(
-        stringResource(StringKeyAnalysisPart2.TARABALA_TODAY),
-        stringResource(StringKeyAnalysisPart2.TARABALA_WEEKLY),
-        stringResource(StringKeyAnalysisPart2.TARABALA_ALL_NAKSHATRAS)
+        stringResource(StringKeyGeneralPart11.TARABALA_TODAY),
+        stringResource(StringKeyGeneralPart11.TARABALA_WEEKLY),
+        stringResource(StringKeyGeneralPart11.TARABALA_ALL_NAKSHATRAS)
     )
 
     // Calculate Tarabala analysis
@@ -97,7 +97,7 @@ fun TarabalaScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyAnalysisPart2.TARABALA_TITLE),
+                            stringResource(StringKeyGeneralPart11.TARABALA_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
@@ -113,7 +113,7 @@ fun TarabalaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -122,7 +122,7 @@ fun TarabalaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyAnalysisPart2.TARABALA_WHAT_IS),
+                            contentDescription = stringResource(StringKeyGeneralPart11.TARABALA_WHAT_IS),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -141,7 +141,7 @@ fun TarabalaScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    stringResource(StringKeyAnalysisPart2.TARABALA_UNABLE_CALCULATE),
+                    stringResource(StringKeyGeneralPart11.TARABALA_UNABLE_CALCULATE),
                     color = AppTheme.TextMuted
                 )
             }
@@ -307,7 +307,7 @@ private fun DailyStrengthScoreCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                stringResource(StringKeyAnalysisPart2.TARABALA_TODAY_STRENGTH),
+                stringResource(StringKeyGeneralPart11.TARABALA_TODAY_STRENGTH),
                 style = MaterialTheme.typography.titleSmall,
                 color = AppTheme.TextMuted
             )
@@ -409,13 +409,13 @@ private fun TarabalaDetailCard(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            stringResource(StringKeyAnalysisPart2.TARABALA_LABEL),
+                            stringResource(StringKeyGeneralPart11.TARABALA_LABEL),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKeyAnalysisPart2.TARABALA_STAR_STRENGTH),
+                            stringResource(StringKeyGeneralPart11.TARABALA_STAR_STRENGTH),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -428,9 +428,9 @@ private fun TarabalaDetailCard(
                 ) {
                     Text(
                         if (tarabala.isFavorable)
-                            stringResource(StringKeyAnalysisPart2.TARABALA_FAVORABLE)
+                            stringResource(StringKeyGeneralPart11.TARABALA_FAVORABLE)
                         else
-                            stringResource(StringKeyAnalysisPart2.TARABALA_CHALLENGING),
+                            stringResource(StringKeyGeneralPart11.TARABALA_CHALLENGING),
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
@@ -447,11 +447,11 @@ private fun TarabalaDetailCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TaraInfoChip(
-                    label = stringResource(StringKeyAnalysisPart2.TARABALA_BIRTH_STAR),
+                    label = stringResource(StringKeyGeneralPart11.TARABALA_BIRTH_STAR),
                     value = birthNakshatra.getLocalizedName(language)
                 )
                 TaraInfoChip(
-                    label = stringResource(StringKeyAnalysisPart2.TARABALA_TRANSIT_STAR),
+                    label = stringResource(StringKeyGeneralPart11.TARABALA_TRANSIT_STAR),
                     value = tarabala.targetNakshatra.getLocalizedName(language)
                 )
             }
@@ -470,7 +470,7 @@ private fun TarabalaDetailCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            stringResource(StringKeyAnalysisPart2.TARABALA_TARA_TYPE),
+                            stringResource(StringKeyGeneralPart11.TARABALA_TARA_TYPE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -487,7 +487,7 @@ private fun TarabalaDetailCard(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            stringResource(StringKeyAnalysisPart2.TARABALA_CYCLE),
+                            stringResource(StringKeyGeneralPart11.TARABALA_CYCLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -586,13 +586,13 @@ private fun ChandrabalaDetailCard(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            stringResource(StringKeyAnalysisPart2.CHANDRABALA_LABEL),
+                            stringResource(StringKeyGeneralPart2.CHANDRABALA_LABEL),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKeyAnalysisPart2.CHANDRABALA_MOON_STRENGTH),
+                            stringResource(StringKeyGeneralPart2.CHANDRABALA_MOON_STRENGTH),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -621,15 +621,15 @@ private fun ChandrabalaDetailCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TaraInfoChip(
-                    label = stringResource(StringKeyAnalysisPart2.CHANDRABALA_NATAL_MOON),
+                    label = stringResource(StringKeyGeneralPart2.CHANDRABALA_NATAL_MOON),
                     value = chandrabala.natalMoonSign.getLocalizedName(language)
                 )
                 TaraInfoChip(
-                    label = stringResource(StringKeyAnalysisPart2.CHANDRABALA_TRANSIT_MOON),
+                    label = stringResource(StringKeyGeneralPart2.CHANDRABALA_TRANSIT_MOON),
                     value = chandrabala.transitMoonSign.getLocalizedName(language)
                 )
                 TaraInfoChip(
-                    label = stringResource(StringKeyAnalysisPart2.CHANDRABALA_HOUSE),
+                    label = stringResource(StringKeyGeneralPart2.CHANDRABALA_HOUSE),
                     value = "${chandrabala.houseFromMoon}H"
                 )
             }
@@ -644,7 +644,7 @@ private fun ChandrabalaDetailCard(
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
                     Text(
-                        stringResource(StringKeyAnalysisPart2.CHANDRABALA_SIGNIFICATIONS),
+                        stringResource(StringKeyGeneralPart2.CHANDRABALA_SIGNIFICATIONS),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextSubtle
                     )
@@ -695,7 +695,7 @@ private fun ActivityRecommendationsCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                stringResource(StringKeyAnalysisPart2.TARABALA_ACTIVITIES),
+                stringResource(StringKeyGeneralPart11.TARABALA_ACTIVITIES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -706,7 +706,7 @@ private fun ActivityRecommendationsCard(
             // Favorable activities
             if (todayStrength.favorableActivities.isNotEmpty()) {
                 Text(
-                    stringResource(StringKeyAnalysisPart2.TARABALA_FAVORABLE_ACTIVITIES),
+                    stringResource(StringKeyGeneralPart11.TARABALA_FAVORABLE_ACTIVITIES),
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.SuccessColor,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -725,7 +725,7 @@ private fun ActivityRecommendationsCard(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    stringResource(StringKeyAnalysisPart2.TARABALA_AVOID_ACTIVITIES),
+                    stringResource(StringKeyGeneralPart11.TARABALA_AVOID_ACTIVITIES),
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.WarningColor,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -806,7 +806,7 @@ private fun TarabalaWeeklyTab(
 
         // Daily breakdown
         Text(
-            stringResource(StringKeyAnalysisPart2.TARABALA_DAILY_BREAKDOWN),
+            stringResource(StringKeyGeneralPart11.TARABALA_DAILY_BREAKDOWN),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -843,7 +843,7 @@ private fun WeeklySummaryCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                stringResource(StringKeyAnalysisPart2.TARABALA_WEEKLY_OVERVIEW),
+                stringResource(StringKeyGeneralPart11.TARABALA_WEEKLY_OVERVIEW),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -857,7 +857,7 @@ private fun WeeklySummaryCard(
             ) {
                 // Best day
                 DayHighlightChip(
-                    label = stringResource(StringKeyAnalysisPart2.TARABALA_BEST_DAY),
+                    label = stringResource(StringKeyGeneralPart11.TARABALA_BEST_DAY),
                     dayName = weeklyForecast.bestDay.date.dayOfWeek.name.take(3),
                     score = weeklyForecast.bestDay.overallScore,
                     color = AppTheme.SuccessColor
@@ -865,7 +865,7 @@ private fun WeeklySummaryCard(
 
                 // Worst day
                 DayHighlightChip(
-                    label = stringResource(StringKeyAnalysisPart2.TARABALA_AVOID_DAY),
+                    label = stringResource(StringKeyGeneralPart11.TARABALA_AVOID_DAY),
                     dayName = weeklyForecast.worstDay.date.dayOfWeek.name.take(3),
                     score = weeklyForecast.worstDay.overallScore,
                     color = AppTheme.WarningColor
@@ -1009,7 +1009,7 @@ private fun DailyStrengthCard(
                                     color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
-                                        stringResource(StringKeyAnalysisPart2.TARABALA_BEST_LABEL),
+                                        stringResource(StringKeyGeneralPart11.TARABALA_BEST_LABEL),
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                                         style = MaterialTheme.typography.labelSmall,
                                         color = AppTheme.SuccessColor
@@ -1081,7 +1081,7 @@ private fun TarabalaAllNakshatrasTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
-            stringResource(StringKeyAnalysisPart2.TARABALA_ALL_27_DESC),
+            stringResource(StringKeyGeneralPart11.TARABALA_ALL_27_DESC),
             style = MaterialTheme.typography.bodySmall,
             color = AppTheme.TextMuted,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -1198,7 +1198,7 @@ private fun TarabalaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                stringResource(StringKeyAnalysisPart2.TARABALA_WHAT_IS),
+                stringResource(StringKeyGeneralPart11.TARABALA_WHAT_IS),
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
@@ -1206,14 +1206,14 @@ private fun TarabalaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Column {
                 Text(
-                    stringResource(StringKeyAnalysisPart2.TARABALA_EXPLANATION),
+                    stringResource(StringKeyGeneralPart11.TARABALA_EXPLANATION),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    stringResource(StringKeyAnalysisPart2.CHANDRABALA_EXPLANATION),
+                    stringResource(StringKeyGeneralPart2.CHANDRABALA_EXPLANATION),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
@@ -1222,7 +1222,7 @@ private fun TarabalaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyUI.BTN_CLOSE), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyUIPart1.BTN_CLOSE), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground

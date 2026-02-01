@@ -71,8 +71,8 @@ fun LalKitabRemediesScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDoshaPart3.LAL_KITAB_SCREEN_TITLE),
-            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyRemedy.LAL_KITAB_SCREEN_TITLE),
+            message = stringResource(StringKeyGeneralPart7.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -86,10 +86,10 @@ fun LalKitabRemediesScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     val tabs = listOf(
-        stringResource(StringKeyUI.SCREEN_OVERVIEW),
-        stringResource(StringKeyDoshaPart3.LAL_KITAB_SCREEN_KARMIC_DEBTS),
-        stringResource(StringKeyDoshaPart3.LAL_KITAB_WEEKLY_SCHEDULE),
-        stringResource(StringKeyDoshaPart3.LAL_KITAB_COLOR_THERAPY)
+        stringResource(StringKeyUIPart1.SCREEN_OVERVIEW),
+        stringResource(StringKeyRemedy.LAL_KITAB_SCREEN_KARMIC_DEBTS),
+        stringResource(StringKeyRemedy.LAL_KITAB_WEEKLY_SCHEDULE),
+        stringResource(StringKeyRemedy.LAL_KITAB_COLOR_THERAPY)
     )
 
     // Calculate analysis
@@ -117,11 +117,11 @@ fun LalKitabRemediesScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDoshaPart3.LAL_KITAB_SCREEN_TITLE),
+                            stringResource(StringKeyRemedy.LAL_KITAB_SCREEN_TITLE),
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            stringResource(StringKeyDoshaPart3.LAL_KITAB_SCREEN_SUBTITLE),
+                            stringResource(StringKeyRemedy.LAL_KITAB_SCREEN_SUBTITLE),
                             fontSize = 12.sp,
                             color = AppTheme.TextMuted
                         )
@@ -131,7 +131,7 @@ fun LalKitabRemediesScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -140,7 +140,7 @@ fun LalKitabRemediesScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDoshaPart3.LAL_KITAB_SCREEN_ABOUT),
+                            contentDescription = stringResource(StringKeyRemedy.LAL_KITAB_SCREEN_ABOUT),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -157,7 +157,7 @@ fun LalKitabRemediesScreen(
             isCalculating -> LoadingContent(paddingValues)
             analysisResult == null -> ErrorContent(
                 paddingValues = paddingValues,
-                message = errorMessage ?: stringResource(StringKeyUI.SCREEN_ERROR_CALCULATION)
+                message = errorMessage ?: stringResource(StringKeyUIPart1.SCREEN_ERROR_CALCULATION)
             )
             else -> {
                 Column(
@@ -190,7 +190,7 @@ fun LalKitabRemediesScreen(
             onDismissRequest = { showInfoDialog = false },
             title = {
                 Text(
-                    stringResource(StringKeyDoshaPart3.LAL_KITAB_SCREEN_ABOUT),
+                    stringResource(StringKeyRemedy.LAL_KITAB_SCREEN_ABOUT),
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
@@ -198,7 +198,7 @@ fun LalKitabRemediesScreen(
             text = {
                 Column {
                     Text(
-                        stringResource(StringKeyDoshaPart3.LAL_KITAB_SCREEN_ABOUT_DESC),
+                        stringResource(StringKeyRemedy.LAL_KITAB_SCREEN_ABOUT_DESC),
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
                     )
@@ -219,7 +219,7 @@ fun LalKitabRemediesScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                stringResource(StringKeyDoshaPart4.LAL_KITAB_NOTE_DISTINCT),
+                                stringResource(StringKeyRemedy.LAL_KITAB_NOTE_DISTINCT),
                                 fontSize = 12.sp,
                                 color = AppTheme.InfoColor,
                                 lineHeight = 16.sp
@@ -231,7 +231,7 @@ fun LalKitabRemediesScreen(
             confirmButton = {
                 TextButton(onClick = { showInfoDialog = false }) {
                     Text(
-                        stringResource(StringKeyUI.BTN_CLOSE),
+                        stringResource(StringKeyUIPart1.BTN_CLOSE),
                         color = AppTheme.AccentPrimary
                     )
                 }
@@ -254,7 +254,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKeyUI.SCREEN_CALCULATING),
+                stringResource(StringKeyUIPart1.SCREEN_CALCULATING),
                 color = AppTheme.TextMuted
             )
         }
@@ -357,7 +357,7 @@ private fun OverviewTab(analysis: LalKitabAnalysis, language: Language) {
         if (analysis.planetaryAfflictions.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = stringResource(StringKeyDoshaPart3.LAL_KITAB_SCREEN_PLANETARY_AFFLICTIONS),
+                    title = stringResource(StringKeyRemedy.LAL_KITAB_SCREEN_PLANETARY_AFFLICTIONS),
                     icon = Icons.Filled.Warning,
                     tint = AppTheme.WarningColor
                 )
@@ -372,7 +372,7 @@ private fun OverviewTab(analysis: LalKitabAnalysis, language: Language) {
         if (analysis.remedies.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = stringResource(StringKeyDoshaPart4.LAL_KITAB_RECOMMENDED_REMEDIES),
+                    title = stringResource(StringKeyRemedy.LAL_KITAB_RECOMMENDED_REMEDIES),
                     icon = Icons.Filled.Healing,
                     tint = AppTheme.SuccessColor
                 )
@@ -426,13 +426,13 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
     }
 
     val afflictionTypeName = when (affliction.afflictionType) {
-        AfflictionType.PITRU_DOSH -> stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_PITRU)
-        AfflictionType.MATRU_RIN -> stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_MATRU)
-        AfflictionType.STRI_RIN -> stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_STRI)
-        AfflictionType.KANYA_RIN -> stringResource(StringKeyDoshaPart4.LAL_KITAB_AFFLICTION_KANYA)
-        AfflictionType.GRAHAN_DOSH -> stringResource(StringKeyDoshaPart4.LAL_KITAB_AFFLICTION_GRAHAN)
-        AfflictionType.SHANI_PEEDA -> stringResource(StringKeyDoshaPart4.LAL_KITAB_AFFLICTION_SHANI)
-        AfflictionType.NONE -> stringResource(StringKeyDoshaPart4.LAL_KITAB_AFFLICTION_GENERAL)
+        AfflictionType.PITRU_DOSH -> stringResource(StringKeyRemedy.LAL_KITAB_DEBT_PITRU)
+        AfflictionType.MATRU_RIN -> stringResource(StringKeyRemedy.LAL_KITAB_DEBT_MATRU)
+        AfflictionType.STRI_RIN -> stringResource(StringKeyRemedy.LAL_KITAB_DEBT_STRI)
+        AfflictionType.KANYA_RIN -> stringResource(StringKeyRemedy.LAL_KITAB_AFFLICTION_KANYA)
+        AfflictionType.GRAHAN_DOSH -> stringResource(StringKeyRemedy.LAL_KITAB_AFFLICTION_GRAHAN)
+        AfflictionType.SHANI_PEEDA -> stringResource(StringKeyRemedy.LAL_KITAB_AFFLICTION_SHANI)
+        AfflictionType.NONE -> stringResource(StringKeyRemedy.LAL_KITAB_AFFLICTION_GENERAL)
     }
 
     Card(
@@ -499,7 +499,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
 
                     if (affliction.effects.isNotEmpty()) {
                         Text(
-                            stringResource(StringKeyDoshaPart3.EFFECTS_LABEL),
+                            stringResource(StringKeyGeneralPart4.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextPrimary
@@ -525,7 +525,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                     if (affliction.remedies.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKeyDoshaPart4.LAL_KITAB_SECTION_REMEDIES),
+                            stringResource(StringKeyRemedy.LAL_KITAB_SECTION_REMEDIES),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.SuccessColor
@@ -652,7 +652,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    stringResource(StringKeyDoshaPart4.LAL_KITAB_GENERAL_PRINCIPLES),
+                    stringResource(StringKeyRemedy.LAL_KITAB_GENERAL_PRINCIPLES),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary
@@ -698,14 +698,14 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        stringResource(StringKeyDoshaPart4.LAL_KITAB_RIN_TITLE),
+                        stringResource(StringKeyRemedy.LAL_KITAB_RIN_TITLE),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        stringResource(StringKeyDoshaPart4.LAL_KITAB_RIN_DESC),
+                        stringResource(StringKeyRemedy.LAL_KITAB_RIN_DESC),
                         fontSize = 13.sp,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
@@ -741,12 +741,12 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
                             Text(
-                                stringResource(StringKeyDoshaPart4.LAL_KITAB_RIN_NONE_TITLE),
+                                stringResource(StringKeyRemedy.LAL_KITAB_RIN_NONE_TITLE),
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
-                                stringResource(StringKeyDoshaPart4.LAL_KITAB_RIN_NONE_DESC),
+                                stringResource(StringKeyRemedy.LAL_KITAB_RIN_NONE_DESC),
                                 fontSize = 13.sp,
                                 color = AppTheme.TextMuted
                             )
@@ -768,10 +768,10 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
     var expanded by remember { mutableStateOf(false) }
 
     val (icon, color, title) = when (debt.type) {
-        DebtType.PITRU_RIN -> Triple(Icons.Filled.Elderly, AppTheme.AccentGold, stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_PITRU))
-        DebtType.MATRU_RIN -> Triple(Icons.Filled.Face, AppTheme.AccentTeal, stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_MATRU))
-        DebtType.STRI_RIN -> Triple(Icons.Filled.Favorite, AppTheme.ErrorColor.copy(alpha = 0.8f), stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_STRI))
-        DebtType.KANYA_RIN -> Triple(Icons.Filled.ChildCare, AppTheme.AccentPrimary, stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_KANYA))
+        DebtType.PITRU_RIN -> Triple(Icons.Filled.Elderly, AppTheme.AccentGold, stringResource(StringKeyRemedy.LAL_KITAB_DEBT_PITRU))
+        DebtType.MATRU_RIN -> Triple(Icons.Filled.Face, AppTheme.AccentTeal, stringResource(StringKeyRemedy.LAL_KITAB_DEBT_MATRU))
+        DebtType.STRI_RIN -> Triple(Icons.Filled.Favorite, AppTheme.ErrorColor.copy(alpha = 0.8f), stringResource(StringKeyRemedy.LAL_KITAB_DEBT_STRI))
+        DebtType.KANYA_RIN -> Triple(Icons.Filled.ChildCare, AppTheme.AccentPrimary, stringResource(StringKeyRemedy.LAL_KITAB_DEBT_KANYA))
     }
 
     Card(
@@ -831,7 +831,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
 
                     if (debt.indicators.isNotEmpty()) {
                         Text(
-                            stringResource(StringKeyDoshaPart3.LAL_KITAB_INDICATORS),
+                            stringResource(StringKeyRemedy.LAL_KITAB_INDICATORS),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextPrimary
@@ -861,7 +861,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                     if (debt.effects.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKeyDoshaPart3.EFFECTS_LABEL),
+                            stringResource(StringKeyGeneralPart4.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.WarningColor
@@ -886,7 +886,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                     if (debt.remedies.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKeyDoshaPart3.LAL_KITAB_REMEDIES_LABEL),
+                            stringResource(StringKeyRemedy.LAL_KITAB_REMEDIES_LABEL),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.SuccessColor
@@ -927,7 +927,7 @@ private fun DebtTypesReferenceCard() {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                stringResource(StringKeyDoshaPart3.LAL_KITAB_TYPES_TITLE),
+                stringResource(StringKeyRemedy.LAL_KITAB_TYPES_TITLE),
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 color = AppTheme.TextPrimary
@@ -936,10 +936,10 @@ private fun DebtTypesReferenceCard() {
             Spacer(modifier = Modifier.height(16.dp))
 
             val debtTypes = listOf(
-                Triple(stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_PITRU), stringResource(StringKeyDoshaPart3.LAL_KITAB_DESC_PITRU), AppTheme.AccentGold),
-                Triple(stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_MATRU), stringResource(StringKeyDoshaPart3.LAL_KITAB_DESC_MATRU), AppTheme.AccentTeal),
-                Triple(stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_STRI), stringResource(StringKeyDoshaPart3.LAL_KITAB_DESC_STRI), AppTheme.ErrorColor.copy(alpha = 0.8f)),
-                Triple(stringResource(StringKeyDoshaPart3.LAL_KITAB_DEBT_SELF), stringResource(StringKeyDoshaPart3.LAL_KITAB_DESC_SELF), AppTheme.AccentPrimary)
+                Triple(stringResource(StringKeyRemedy.LAL_KITAB_DEBT_PITRU), stringResource(StringKeyRemedy.LAL_KITAB_DESC_PITRU), AppTheme.AccentGold),
+                Triple(stringResource(StringKeyRemedy.LAL_KITAB_DEBT_MATRU), stringResource(StringKeyRemedy.LAL_KITAB_DESC_MATRU), AppTheme.AccentTeal),
+                Triple(stringResource(StringKeyRemedy.LAL_KITAB_DEBT_STRI), stringResource(StringKeyRemedy.LAL_KITAB_DESC_STRI), AppTheme.ErrorColor.copy(alpha = 0.8f)),
+                Triple(stringResource(StringKeyRemedy.LAL_KITAB_DEBT_SELF), stringResource(StringKeyRemedy.LAL_KITAB_DESC_SELF), AppTheme.AccentPrimary)
             )
 
             debtTypes.forEach { (name, desc, color) ->
@@ -982,14 +982,14 @@ private fun WeeklyScheduleTab(analysis: LalKitabAnalysis, language: Language) {
     ) {
         item {
             Text(
-                stringResource(StringKeyDoshaPart3.LAL_KITAB_WEEKLY_SCHEDULE),
+                stringResource(StringKeyRemedy.LAL_KITAB_WEEKLY_SCHEDULE),
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
-                stringResource(StringKeyDoshaPart3.LAL_KITAB_DAILY_REMEDIES_DESC),
+                stringResource(StringKeyRemedy.LAL_KITAB_DAILY_REMEDIES_DESC),
                 fontSize = 13.sp,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -1091,7 +1091,7 @@ private fun ColorDirectionTab(analysis: LalKitabAnalysis, language: Language) {
         // Color Remedies Section
         item {
             SectionHeader(
-                title = stringResource(StringKeyDoshaPart3.LAL_KITAB_COLOR_THERAPY),
+                title = stringResource(StringKeyRemedy.LAL_KITAB_COLOR_THERAPY),
                 icon = Icons.Filled.Palette,
                 tint = AppTheme.AccentPrimary
             )
@@ -1105,7 +1105,7 @@ private fun ColorDirectionTab(analysis: LalKitabAnalysis, language: Language) {
         item {
             Spacer(modifier = Modifier.height(8.dp))
             SectionHeader(
-                title = stringResource(StringKeyDoshaPart3.LAL_KITAB_DIRECTION_GUIDANCE),
+                title = stringResource(StringKeyRemedy.LAL_KITAB_DIRECTION_GUIDANCE),
                 icon = Icons.Filled.Explore,
                 tint = AppTheme.AccentTeal
             )
@@ -1156,7 +1156,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
             ) {
                 Column {
                     Text(
-                        stringResource(StringKeyDoshaPart3.LAL_KITAB_FAVORABLE),
+                        stringResource(StringKeyRemedy.LAL_KITAB_FAVORABLE),
                         fontSize = 11.sp,
                         color = AppTheme.SuccessColor,
                         fontWeight = FontWeight.Medium
@@ -1180,7 +1180,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        stringResource(StringKeyDoshaPart3.LAL_KITAB_AVOID),
+                        stringResource(StringKeyRemedy.LAL_KITAB_AVOID),
                         fontSize = 11.sp,
                         color = AppTheme.ErrorColor,
                         fontWeight = FontWeight.Medium

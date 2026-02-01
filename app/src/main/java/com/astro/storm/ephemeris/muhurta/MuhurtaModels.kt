@@ -20,67 +20,67 @@ enum class ActivityType(
     val avoidNakshatras: List<Nakshatra>
 ) {
     MARRIAGE(
-        StringKeyMatchPart1.ACTIVITY_MARRIAGE_NAME, StringKeyMatchPart1.ACTIVITY_MARRIAGE_DESC, "ring",
+        StringKeyGeneralPart1.ACTIVITY_MARRIAGE_NAME, StringKeyGeneralPart1.ACTIVITY_MARRIAGE_DESC, "ring",
         listOf(Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.MAGHA, Nakshatra.UTTARA_PHALGUNI, Nakshatra.HASTA, Nakshatra.SWATI, Nakshatra.ANURADHA, Nakshatra.MULA, Nakshatra.UTTARA_ASHADHA, Nakshatra.UTTARA_BHADRAPADA, Nakshatra.REVATI),
         listOf(2, 3, 5, 7, 10, 11, 12, 13), listOf(Vara.MONDAY, Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY),
         listOf(Nakshatra.BHARANI, Nakshatra.KRITTIKA, Nakshatra.ARDRA, Nakshatra.ASHLESHA, Nakshatra.PURVA_PHALGUNI, Nakshatra.VISHAKHA, Nakshatra.JYESHTHA, Nakshatra.PURVA_ASHADHA, Nakshatra.PURVA_BHADRAPADA)
     ),
     TRAVEL(
-        StringKeyMatchPart1.ACTIVITY_TRAVEL_NAME, StringKeyMatchPart1.ACTIVITY_TRAVEL_DESC, "flight",
+        StringKeyGeneralPart1.ACTIVITY_TRAVEL_NAME, StringKeyGeneralPart1.ACTIVITY_TRAVEL_DESC, "flight",
         listOf(Nakshatra.ASHWINI, Nakshatra.MRIGASHIRA, Nakshatra.PUNARVASU, Nakshatra.PUSHYA, Nakshatra.HASTA, Nakshatra.ANURADHA, Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.REVATI),
         listOf(2, 3, 5, 7, 10, 11, 12, 13), listOf(Vara.MONDAY, Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY),
         listOf(Nakshatra.ARDRA, Nakshatra.ASHLESHA, Nakshatra.JYESHTHA, Nakshatra.MULA, Nakshatra.BHARANI)
     ),
     BUSINESS(
-        StringKeyMatchPart1.ACTIVITY_BUSINESS_NAME, StringKeyMatchPart1.ACTIVITY_BUSINESS_DESC, "business",
+        StringKeyGeneralPart1.ACTIVITY_BUSINESS_NAME, StringKeyGeneralPart1.ACTIVITY_BUSINESS_DESC, "business",
         listOf(Nakshatra.ROHINI, Nakshatra.PUSHYA, Nakshatra.HASTA, Nakshatra.CHITRA, Nakshatra.SWATI, Nakshatra.ANURADHA, Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.REVATI, Nakshatra.UTTARA_PHALGUNI, Nakshatra.UTTARA_ASHADHA, Nakshatra.UTTARA_BHADRAPADA),
         listOf(1, 2, 3, 5, 7, 10, 11, 13), listOf(Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY),
         listOf(Nakshatra.BHARANI, Nakshatra.ASHLESHA, Nakshatra.MULA, Nakshatra.JYESHTHA, Nakshatra.ARDRA)
     ),
     PROPERTY(
-        StringKeyMatchPart1.ACTIVITY_PROPERTY_NAME, StringKeyMatchPart1.ACTIVITY_PROPERTY_DESC, "home",
+        StringKeyGeneralPart1.ACTIVITY_PROPERTY_NAME, StringKeyGeneralPart1.ACTIVITY_PROPERTY_DESC, "home",
         listOf(Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.UTTARA_PHALGUNI, Nakshatra.HASTA, Nakshatra.CHITRA, Nakshatra.SWATI, Nakshatra.ANURADHA, Nakshatra.UTTARA_ASHADHA, Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.SHATABHISHA, Nakshatra.UTTARA_BHADRAPADA, Nakshatra.REVATI),
         listOf(2, 3, 5, 7, 10, 11, 12, 13), listOf(Vara.MONDAY, Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY),
         listOf(Nakshatra.ARDRA, Nakshatra.ASHLESHA, Nakshatra.JYESHTHA, Nakshatra.MULA, Nakshatra.BHARANI, Nakshatra.KRITTIKA)
     ),
     EDUCATION(
-        StringKeyMatchPart1.ACTIVITY_EDUCATION_NAME, StringKeyMatchPart1.ACTIVITY_EDUCATION_DESC, "school",
+        StringKeyGeneralPart1.ACTIVITY_EDUCATION_NAME, StringKeyGeneralPart1.ACTIVITY_EDUCATION_DESC, "school",
         listOf(Nakshatra.ASHWINI, Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.PUNARVASU, Nakshatra.PUSHYA, Nakshatra.HASTA, Nakshatra.CHITRA, Nakshatra.SWATI, Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.SHATABHISHA, Nakshatra.REVATI),
         listOf(2, 3, 5, 7, 10, 11, 12), listOf(Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY, Vara.MONDAY),
         listOf(Nakshatra.KRITTIKA, Nakshatra.ARDRA, Nakshatra.ASHLESHA, Nakshatra.BHARANI, Nakshatra.MULA)
     ),
     MEDICAL(
-        StringKeyMatchPart1.ACTIVITY_MEDICAL_NAME, StringKeyMatchPart1.ACTIVITY_MEDICAL_DESC, "medical",
+        StringKeyGeneralPart1.ACTIVITY_MEDICAL_NAME, StringKeyGeneralPart1.ACTIVITY_MEDICAL_DESC, "medical",
         listOf(Nakshatra.ASHWINI, Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.PUNARVASU, Nakshatra.PUSHYA, Nakshatra.UTTARA_PHALGUNI, Nakshatra.HASTA, Nakshatra.CHITRA, Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.REVATI),
         listOf(2, 3, 5, 6, 7, 10, 11, 12), listOf(Vara.MONDAY, Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY),
         listOf(Nakshatra.BHARANI, Nakshatra.KRITTIKA, Nakshatra.ARDRA, Nakshatra.ASHLESHA, Nakshatra.JYESHTHA, Nakshatra.MULA)
     ),
     VEHICLE(
-        StringKeyMatchPart1.ACTIVITY_VEHICLE_NAME, StringKeyMatchPart1.ACTIVITY_VEHICLE_DESC, "car",
+        StringKeyGeneralPart1.ACTIVITY_VEHICLE_NAME, StringKeyGeneralPart1.ACTIVITY_VEHICLE_DESC, "car",
         listOf(Nakshatra.ASHWINI, Nakshatra.ROHINI, Nakshatra.PUSHYA, Nakshatra.HASTA, Nakshatra.SWATI, Nakshatra.ANURADHA, Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.REVATI),
         listOf(2, 3, 5, 7, 10, 11, 12, 13), listOf(Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY),
         listOf(Nakshatra.BHARANI, Nakshatra.MULA, Nakshatra.VISHAKHA, Nakshatra.ARDRA, Nakshatra.ASHLESHA)
     ),
     SPIRITUAL(
-        StringKeyMatchPart1.ACTIVITY_SPIRITUAL_NAME, StringKeyMatchPart1.ACTIVITY_SPIRITUAL_DESC, "temple",
+        StringKeyGeneralPart1.ACTIVITY_SPIRITUAL_NAME, StringKeyGeneralPart1.ACTIVITY_SPIRITUAL_DESC, "temple",
         listOf(Nakshatra.ASHWINI, Nakshatra.PUNARVASU, Nakshatra.PUSHYA, Nakshatra.HASTA, Nakshatra.SWATI, Nakshatra.ANURADHA, Nakshatra.SHRAVANA, Nakshatra.UTTARA_BHADRAPADA, Nakshatra.REVATI, Nakshatra.MRIGASHIRA, Nakshatra.CHITRA),
         listOf(2, 3, 5, 7, 10, 11, 12, 13, 15), listOf(Vara.MONDAY, Vara.THURSDAY, Vara.FRIDAY, Vara.SUNDAY),
         listOf(Nakshatra.KRITTIKA, Nakshatra.ARDRA, Nakshatra.ASHLESHA, Nakshatra.BHARANI, Nakshatra.MULA, Nakshatra.JYESHTHA)
     ),
     GRIHA_PRAVESHA(
-        StringKeyMatchPart1.ACTIVITY_GRIHA_PRAVESHA_NAME, StringKeyMatchPart1.ACTIVITY_GRIHA_PRAVESHA_DESC, "home_work",
+        StringKeyGeneralPart1.ACTIVITY_GRIHA_PRAVESHA_NAME, StringKeyGeneralPart1.ACTIVITY_GRIHA_PRAVESHA_DESC, "home_work",
         listOf(Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.UTTARA_PHALGUNI, Nakshatra.HASTA, Nakshatra.CHITRA, Nakshatra.SWATI, Nakshatra.ANURADHA, Nakshatra.UTTARA_ASHADHA, Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.UTTARA_BHADRAPADA, Nakshatra.REVATI),
         listOf(2, 3, 5, 7, 10, 11, 12, 13), listOf(Vara.MONDAY, Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY),
         listOf(Nakshatra.ARDRA, Nakshatra.ASHLESHA, Nakshatra.JYESHTHA, Nakshatra.MULA, Nakshatra.BHARANI, Nakshatra.KRITTIKA, Nakshatra.PURVA_PHALGUNI, Nakshatra.PURVA_ASHADHA, Nakshatra.PURVA_BHADRAPADA)
     ),
     NAMING_CEREMONY(
-        StringKeyMatchPart1.ACTIVITY_NAMING_NAME, StringKeyMatchPart1.ACTIVITY_NAMING_DESC, "child_care",
+        StringKeyGeneralPart1.ACTIVITY_NAMING_NAME, StringKeyGeneralPart1.ACTIVITY_NAMING_DESC, "child_care",
         listOf(Nakshatra.ASHWINI, Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.PUNARVASU, Nakshatra.PUSHYA, Nakshatra.UTTARA_PHALGUNI, Nakshatra.HASTA, Nakshatra.CHITRA, Nakshatra.SWATI, Nakshatra.ANURADHA, Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.SHATABHISHA, Nakshatra.UTTARA_BHADRAPADA, Nakshatra.REVATI),
         listOf(2, 3, 5, 7, 10, 11, 12, 13), listOf(Vara.MONDAY, Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY),
         listOf(Nakshatra.BHARANI, Nakshatra.KRITTIKA, Nakshatra.ARDRA, Nakshatra.ASHLESHA, Nakshatra.MULA, Nakshatra.JYESHTHA)
     ),
     GENERAL(
-        StringKeyMatchPart1.ACTIVITY_GENERAL_NAME, StringKeyMatchPart1.ACTIVITY_GENERAL_DESC, "star",
+        StringKeyGeneralPart1.ACTIVITY_GENERAL_NAME, StringKeyGeneralPart1.ACTIVITY_GENERAL_DESC, "star",
         listOf(Nakshatra.ASHWINI, Nakshatra.ROHINI, Nakshatra.MRIGASHIRA, Nakshatra.PUNARVASU, Nakshatra.PUSHYA, Nakshatra.UTTARA_PHALGUNI, Nakshatra.HASTA, Nakshatra.CHITRA, Nakshatra.SWATI, Nakshatra.ANURADHA, Nakshatra.SHRAVANA, Nakshatra.DHANISHTHA, Nakshatra.UTTARA_BHADRAPADA, Nakshatra.REVATI),
         listOf(2, 3, 5, 7, 10, 11, 12, 13), listOf(Vara.MONDAY, Vara.WEDNESDAY, Vara.THURSDAY, Vara.FRIDAY),
         listOf(Nakshatra.BHARANI, Nakshatra.KRITTIKA, Nakshatra.ARDRA, Nakshatra.ASHLESHA, Nakshatra.MULA, Nakshatra.JYESHTHA)
@@ -91,25 +91,25 @@ enum class ActivityType(
 }
 
 enum class Vara(val dayNumber: Int, val displayNameKey: StringKeyMatch, val lord: Planet) {
-    SUNDAY(0, StringKeyMatchPart1.VARA_SUNDAY, Planet.SUN),
-    MONDAY(1, StringKeyMatchPart1.VARA_MONDAY, Planet.MOON),
-    TUESDAY(2, StringKeyMatchPart1.VARA_TUESDAY, Planet.MARS),
-    WEDNESDAY(3, StringKeyMatchPart1.VARA_WEDNESDAY, Planet.MERCURY),
-    THURSDAY(4, StringKeyMatchPart1.VARA_THURSDAY, Planet.JUPITER),
-    FRIDAY(5, StringKeyMatchPart1.VARA_FRIDAY, Planet.VENUS),
-    SATURDAY(6, StringKeyMatchPart1.VARA_SATURDAY, Planet.SATURN);
+    SUNDAY(0, StringKeyPanchanga.VARA_SUNDAY, Planet.SUN),
+    MONDAY(1, StringKeyPanchanga.VARA_MONDAY, Planet.MOON),
+    TUESDAY(2, StringKeyPanchanga.VARA_TUESDAY, Planet.MARS),
+    WEDNESDAY(3, StringKeyPanchanga.VARA_WEDNESDAY, Planet.MERCURY),
+    THURSDAY(4, StringKeyPanchanga.VARA_THURSDAY, Planet.JUPITER),
+    FRIDAY(5, StringKeyPanchanga.VARA_FRIDAY, Planet.VENUS),
+    SATURDAY(6, StringKeyPanchanga.VARA_SATURDAY, Planet.SATURN);
 
     fun getLocalizedName(language: Language): String = StringResources.get(displayNameKey, language)
 }
 
 enum class Choghadiya(val displayNameKey: StringKeyMatch, val nature: ChoghadiyaNature, val lord: Planet) {
-    UDVEG(StringKeyMatchPart1.CHOGHADIYA_UDVEG, ChoghadiyaNature.INAUSPICIOUS, Planet.SUN),
-    CHAR(StringKeyMatchPart1.CHOGHADIYA_CHAR, ChoghadiyaNature.GOOD, Planet.VENUS),
-    LABH(StringKeyMatchPart1.CHOGHADIYA_LABH, ChoghadiyaNature.VERY_GOOD, Planet.MERCURY),
-    AMRIT(StringKeyMatchPart1.CHOGHADIYA_AMRIT, ChoghadiyaNature.EXCELLENT, Planet.MOON),
-    KAAL(StringKeyMatchPart1.CHOGHADIYA_KAAL, ChoghadiyaNature.INAUSPICIOUS, Planet.SATURN),
-    SHUBH(StringKeyMatchPart1.CHOGHADIYA_SHUBH, ChoghadiyaNature.VERY_GOOD, Planet.JUPITER),
-    ROG(StringKeyMatchPart1.CHOGHADIYA_ROG, ChoghadiyaNature.INAUSPICIOUS, Planet.MARS);
+    UDVEG(StringKeyGeneralPart3.CHOGHADIYA_UDVEG, ChoghadiyaNature.INAUSPICIOUS, Planet.SUN),
+    CHAR(StringKeyGeneralPart3.CHOGHADIYA_CHAR, ChoghadiyaNature.GOOD, Planet.VENUS),
+    LABH(StringKeyGeneralPart3.CHOGHADIYA_LABH, ChoghadiyaNature.VERY_GOOD, Planet.MERCURY),
+    AMRIT(StringKeyGeneralPart3.CHOGHADIYA_AMRIT, ChoghadiyaNature.EXCELLENT, Planet.MOON),
+    KAAL(StringKeyGeneralPart3.CHOGHADIYA_KAAL, ChoghadiyaNature.INAUSPICIOUS, Planet.SATURN),
+    SHUBH(StringKeyGeneralPart3.CHOGHADIYA_SHUBH, ChoghadiyaNature.VERY_GOOD, Planet.JUPITER),
+    ROG(StringKeyGeneralPart3.CHOGHADIYA_ROG, ChoghadiyaNature.INAUSPICIOUS, Planet.MARS);
 
     fun getLocalizedName(language: Language): String = StringResources.get(displayNameKey, language)
 }
@@ -117,7 +117,7 @@ enum class Choghadiya(val displayNameKey: StringKeyMatch, val nature: Choghadiya
 enum class ChoghadiyaNature(val displayName: String, val score: Int) {
     EXCELLENT("Excellent", 4), VERY_GOOD("Very Good", 3), GOOD("Good", 2), NEUTRAL("Neutral", 1), INAUSPICIOUS("Inauspicious", 0);
     fun getLocalizedName(language: Language): String {
-        val key = when (this) { EXCELLENT -> StringKeyAnalysisPart2.AUSPICIOUSNESS_HIGHLY_AUSPICIOUS; VERY_GOOD -> StringKeyAnalysisPart2.AUSPICIOUSNESS_AUSPICIOUS; GOOD, NEUTRAL -> StringKeyAnalysisPart2.AUSPICIOUSNESS_NEUTRAL; INAUSPICIOUS -> StringKeyAnalysisPart2.CHOGHADIYA_NATURE_INAUSPICIOUS }
+        val key = when (this) { EXCELLENT -> StringKeyGeneralPart2.AUSPICIOUSNESS_HIGHLY_AUSPICIOUS; VERY_GOOD -> StringKeyGeneralPart2.AUSPICIOUSNESS_AUSPICIOUS; GOOD, NEUTRAL -> StringKeyGeneralPart2.AUSPICIOUSNESS_NEUTRAL; INAUSPICIOUS -> StringKeyGeneralPart3.CHOGHADIYA_NATURE_INAUSPICIOUS }
         return StringResources.get(key, language)
     }
 }
@@ -129,7 +129,7 @@ data class Hora(val lord: Planet, val horaNumber: Int, val startTime: LocalTime,
 enum class HoraNature(val displayName: String) {
     BENEFIC("Benefic"), MALEFIC("Malefic"), NEUTRAL("Neutral");
     fun getLocalizedName(language: Language): String {
-        val key = when (this) { BENEFIC -> StringKeyVarga.HORA_NATURE_BENEFIC; MALEFIC -> StringKeyVarga.HORA_NATURE_MALEFIC; NEUTRAL -> StringKeyVarga.HORA_NATURE_NEUTRAL }
+        val key = when (this) { BENEFIC -> StringKeyVargaPart1.HORA_NATURE_BENEFIC; MALEFIC -> StringKeyVargaPart1.HORA_NATURE_MALEFIC; NEUTRAL -> StringKeyVargaPart1.HORA_NATURE_NEUTRAL }
         return StringResources.get(key, language)
     }
 }
@@ -147,7 +147,7 @@ data class TithiInfo(val number: Int, val displayNumber: Int, val name: String, 
 enum class TithiNature(val displayName: String) {
     NANDA("Nanda - Joy"), BHADRA("Bhadra - Auspicious"), JAYA("Jaya - Victory"), RIKTA("Rikta - Empty"), PURNA("Purna - Full");
     fun getLocalizedName(language: Language): String {
-        val key = when (this) { NANDA -> StringKeyAnalysisPart2.TITHI_NATURE_NANDA; BHADRA -> StringKeyAnalysisPart2.TITHI_NATURE_BHADRA; JAYA -> StringKeyAnalysisPart2.TITHI_NATURE_JAYA; RIKTA -> StringKeyAnalysisPart2.TITHI_NATURE_RIKTA; PURNA -> StringKeyAnalysisPart2.TITHI_NATURE_PURNA }
+        val key = when (this) { NANDA -> StringKeyPanchanga.TITHI_NATURE_NANDA; BHADRA -> StringKeyPanchanga.TITHI_NATURE_BHADRA; JAYA -> StringKeyPanchanga.TITHI_NATURE_JAYA; RIKTA -> StringKeyPanchanga.TITHI_NATURE_RIKTA; PURNA -> StringKeyPanchanga.TITHI_NATURE_PURNA }
         return StringResources.get(key, language)
     }
 }
@@ -157,7 +157,7 @@ data class NakshatraInfo(val nakshatra: Nakshatra, val pada: Int, val lord: Plan
 enum class NakshatraGana(val displayName: String) {
     DEVA("Divine"), MANUSHYA("Human"), RAKSHASA("Demonic");
     fun getLocalizedName(language: Language): String {
-        val key = when (this) { DEVA -> StringKeyNakshatra.NAKSHATRA_GANA_DEVA; MANUSHYA -> StringKeyNakshatra.NAKSHATRA_GANA_MANUSHYA; RAKSHASA -> StringKeyNakshatra.NAKSHATRA_GANA_RAKSHASA }
+        val key = when (this) { DEVA -> StringKeyPanchanga.NAKSHATRA_GANA_DEVA; MANUSHYA -> StringKeyPanchanga.NAKSHATRA_GANA_MANUSHYA; RAKSHASA -> StringKeyPanchanga.NAKSHATRA_GANA_RAKSHASA }
         return StringResources.get(key, language)
     }
 }
@@ -165,7 +165,7 @@ enum class NakshatraGana(val displayName: String) {
 enum class NakshatraElement(val displayName: String) {
     VAYU("Air"), AGNI("Fire"), PRITHVI("Earth"), JALA("Water"), AKASHA("Ether");
     fun getLocalizedName(language: Language): String {
-        val key = when (this) { VAYU -> StringKeyNakshatra.NAKSHATRA_ELEMENT_AIR; AGNI -> StringKeyNakshatra.NAKSHATRA_ELEMENT_FIRE; PRITHVI -> StringKeyNakshatra.NAKSHATRA_ELEMENT_EARTH; JALA -> StringKeyNakshatra.NAKSHATRA_ELEMENT_WATER; AKASHA -> StringKeyNakshatra.NAKSHATRA_ELEMENT_ETHER }
+        val key = when (this) { VAYU -> StringKeyPanchanga.NAKSHATRA_ELEMENT_AIR; AGNI -> StringKeyPanchanga.NAKSHATRA_ELEMENT_FIRE; PRITHVI -> StringKeyPanchanga.NAKSHATRA_ELEMENT_EARTH; JALA -> StringKeyPanchanga.NAKSHATRA_ELEMENT_WATER; AKASHA -> StringKeyPanchanga.NAKSHATRA_ELEMENT_ETHER }
         return StringResources.get(key, language)
     }
 }
@@ -177,7 +177,7 @@ data class KaranaInfo(val number: Int, val name: String, val type: KaranaType, v
 enum class KaranaType(val displayName: String) {
     STHIRA("Fixed"), CHARA("Movable");
     fun getLocalizedName(language: Language): String {
-        val key = when (this) { STHIRA -> StringKeyAnalysisPart2.KARANA_FIXED; CHARA -> StringKeyAnalysisPart2.KARANA_MOVABLE }
+        val key = when (this) { STHIRA -> StringKeyPanchanga.KARANA_FIXED; CHARA -> StringKeyPanchanga.KARANA_MOVABLE }
         return StringResources.get(key, language)
     }
 }

@@ -212,7 +212,7 @@ fun ProfileCard(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                chart?.birthData?.name ?: stringResource(StringKeyMatchmaking.MATCH_TAP_TO_SELECT),
+                chart?.birthData?.name ?: stringResource(StringKeyMatchmakingPart1.MATCH_TAP_TO_SELECT),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = if (chart != null) FontWeight.SemiBold else FontWeight.Normal,
                 color = if (chart != null) AppTheme.TextPrimary else AppTheme.TextSubtle,
@@ -256,7 +256,7 @@ fun ConnectionIndicator(
         if (isConnected) {
             Icon(
                 Icons.Filled.Favorite,
-                contentDescription = stringResource(StringKeyMatchmaking.MATCH_CONNECTED),
+                contentDescription = stringResource(StringKeyMatchmakingPart1.MATCH_CONNECTED),
                 tint = AppTheme.LifeAreaLove,
                 modifier = Modifier
                     .size(28.dp)
@@ -265,7 +265,7 @@ fun ConnectionIndicator(
         } else {
             Icon(
                 Icons.Outlined.FavoriteBorder,
-                contentDescription = stringResource(StringKeyMatchmaking.MATCH_NOT_CONNECTED),
+                contentDescription = stringResource(StringKeyMatchmakingPart1.MATCH_NOT_CONNECTED),
                 tint = AppTheme.TextSubtle,
                 modifier = Modifier.size(24.dp)
             )
@@ -337,7 +337,7 @@ fun CompatibilityScoreCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyMatchmaking.MATCH_OUT_OF, result.maxPoints.toInt()),
+                            text = stringResource(StringKeyMatchmakingPart1.MATCH_OUT_OF, result.maxPoints.toInt()),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -383,7 +383,7 @@ fun CompatibilityScoreCard(
                         )) {
                             append(String.format("%.1f%%", result.percentage))
                         }
-                        append(" ${stringResource(StringKeyMatchmaking.MATCH_COMPATIBILITY)}")
+                        append(" ${stringResource(StringKeyMatchmakingPart1.MATCH_COMPATIBILITY)}")
                     },
                     style = MaterialTheme.typography.bodyLarge,
                     color = AppTheme.TextSecondary
@@ -660,14 +660,14 @@ fun CalculatingState() {
             }
             Spacer(modifier = Modifier.height(20.dp))
             Text(
-                stringResource(StringKeyMatchmaking.MATCH_ANALYZING_COMPATIBILITY),
+                stringResource(StringKeyMatchmakingPart1.MATCH_ANALYZING_COMPATIBILITY),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                stringResource(StringKeyMatchmaking.MATCH_CALCULATING_DOSHAS),
+                stringResource(StringKeyMatchmakingPart1.MATCH_CALCULATING_DOSHAS),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -705,7 +705,7 @@ fun ErrorCard(
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    stringResource(StringKeyMatchmaking.MATCH_CALCULATION_ERROR),
+                    stringResource(StringKeyMatchmakingPart1.MATCH_CALCULATION_ERROR),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.ErrorColor
@@ -717,7 +717,7 @@ fun ErrorCard(
                 )
             }
             TextButton(onClick = onRetry) {
-                Text(stringResource(StringKeyUI.BTN_RETRY), color = AppTheme.ErrorColor)
+                Text(stringResource(StringKeyUIPart1.BTN_RETRY), color = AppTheme.ErrorColor)
             }
         }
     }
@@ -758,7 +758,7 @@ fun ManglikPersonCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            if (label == stringResource(StringKeyMatchmaking.MATCH_BRIDE)) Icons.Filled.Female else Icons.Filled.Male,
+                            if (label == stringResource(StringKeyMatchmakingPart1.MATCH_BRIDE)) Icons.Filled.Female else Icons.Filled.Male,
                             contentDescription = null,
                             tint = accentColor,
                             modifier = Modifier.size(22.dp)
@@ -774,7 +774,7 @@ fun ManglikPersonCard(
                         )
                         if (analysis.marsHouse > 0) {
                             Text(
-                                stringResource(StringKeyMatchmaking.MATCH_MARS_IN_HOUSE, analysis.marsHouse),
+                                stringResource(StringKeyMatchmakingPart1.MATCH_MARS_IN_HOUSE, analysis.marsHouse),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
@@ -807,7 +807,7 @@ fun ManglikPersonCard(
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(
-                            stringResource(StringKeyMatchmaking.MATCH_CONTRIBUTING_FACTORS),
+                            stringResource(StringKeyMatchmakingPart1.MATCH_CONTRIBUTING_FACTORS),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.WarningColor
@@ -834,7 +834,7 @@ fun ManglikPersonCard(
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(
-                            stringResource(StringKeyMatchmaking.MATCH_CANCELLATION_FACTORS),
+                            stringResource(StringKeyMatchmakingPart1.MATCH_CANCELLATION_FACTORS),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor

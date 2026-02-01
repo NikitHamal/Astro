@@ -77,8 +77,8 @@ class ChandraYogaEvaluator : YogaEvaluator {
                 detailedResult = kemadrumaAnalysis,
                 
                 // Add high-precision keys
-                nameKey = if (isFullyCancelled) com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_KEMADRUMA_BHANGA else com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_KEMADRUMA,
-                effectsKey = if (isFullyCancelled) com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_KEMADRUMA_BHANGA else com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_KEMADRUMA
+                nameKey = if (isFullyCancelled) com.astro.storm.core.common.StringKeyPanchanga.YOGA_KEMADRUMA_BHANGA else com.astro.storm.core.common.StringKeyPanchanga.YOGA_KEMADRUMA,
+                effectsKey = if (isFullyCancelled) com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_KEMADRUMA_BHANGA else com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_KEMADRUMA
             ))
         }
 
@@ -139,8 +139,8 @@ class ChandraYogaEvaluator : YogaEvaluator {
             isAuspicious = true,
             activationPeriod = "Moon and ${planets.first().displayName} periods",
             cancellationFactors = emptyList(),
-            nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SUNAFA,
-            effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SUNAFA
+            nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_SUNAFA,
+            effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_SUNAFA
         )
     }
 
@@ -174,8 +174,8 @@ class ChandraYogaEvaluator : YogaEvaluator {
             isAuspicious = true,
             activationPeriod = "Moon and ${planets.first().displayName} periods",
             cancellationFactors = emptyList(),
-            nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_ANAFA,
-            effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_ANAFA
+            nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_ANAFA,
+            effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_ANAFA
         )
     }
 
@@ -201,8 +201,8 @@ class ChandraYogaEvaluator : YogaEvaluator {
             isAuspicious = true,
             activationPeriod = "Moon periods especially",
             cancellationFactors = emptyList(),
-            nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_DURUDHARA,
-            effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_DURUDHARA
+            nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_DURUDHARA,
+            effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_DURUDHARA
         )
     }
 
@@ -238,8 +238,8 @@ class ChandraYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Jupiter and Moon periods",
                 cancellationFactors = cancellationReasons.ifEmpty { listOf("None - yoga is unafflicted") },
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_GAJA_KESARI,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_GAJA_KESARI
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_GAJA_KESARI,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_GAJA_KESARI
             )
         }
 
@@ -276,8 +276,8 @@ class ChandraYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Moon and benefic periods",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_ADHI,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_ADHI
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_ADHI,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_ADHI
             )
         }
 

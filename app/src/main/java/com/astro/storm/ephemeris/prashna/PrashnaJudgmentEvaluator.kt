@@ -103,7 +103,7 @@ object PrashnaJudgmentEvaluator {
         }
 
         for (yoga in specialYogas) {
-            val symbolKey = if (yoga.isPositive) StringKeyPrashnaPart1.PRASHNA_YOGA_SYMBOL_POSITIVE else StringKeyPrashnaPart1.PRASHNA_YOGA_SYMBOL_NEGATIVE
+            val symbolKey = if (yoga.isPositive) StringKeyPrashnaPart2.PRASHNA_YOGA_SYMBOL_POSITIVE else StringKeyPrashnaPart2.PRASHNA_YOGA_SYMBOL_NEGATIVE
             if (yoga.isPositive) {
                 score += yoga.strength * 4
                 supportingFactors.add(StringResources.get(symbolKey, language).format(yoga.name, yoga.interpretation))

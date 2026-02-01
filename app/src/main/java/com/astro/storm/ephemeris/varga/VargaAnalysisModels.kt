@@ -32,11 +32,11 @@ enum class WealthPotential {
     
     fun getLocalizedName(language: Language): String {
         val key = when(this) {
-            EXCEPTIONAL -> StringKeyVarga.HORA_POTENTIAL_EXCEPTIONAL
-            HIGH -> StringKeyVarga.HORA_POTENTIAL_HIGH
-            MODERATE -> StringKeyVarga.HORA_POTENTIAL_MODERATE
-            AVERAGE -> StringKeyVarga.HORA_POTENTIAL_AVERAGE
-            LOW -> StringKeyVarga.HORA_POTENTIAL_NEEDS_EFFORT
+            EXCEPTIONAL -> StringKeyVargaPart1.HORA_POTENTIAL_EXCEPTIONAL
+            HIGH -> StringKeyVargaPart1.HORA_POTENTIAL_HIGH
+            MODERATE -> StringKeyVargaPart1.HORA_POTENTIAL_MODERATE
+            AVERAGE -> StringKeyVargaPart1.HORA_POTENTIAL_AVERAGE
+            LOW -> StringKeyVargaPart1.HORA_POTENTIAL_NEEDS_EFFORT
         }
         return StringResources.get(key, language)
     }
@@ -99,11 +99,11 @@ enum class CourageLevel {
     
     fun getLocalizedName(language: Language): String {
         val key = when(this) {
-            EXCEPTIONAL -> StringKeyDoshaPart2.COURAGE_EXCEPTIONAL
-            HIGH -> StringKeyDoshaPart2.COURAGE_HIGH
-            MODERATE -> StringKeyDoshaPart2.COURAGE_MODERATE
-            LOW -> StringKeyDoshaPart2.COURAGE_DEVELOPING
-            VERY_LOW -> StringKeyDoshaPart2.COURAGE_NEEDS_WORK
+            EXCEPTIONAL -> StringKeyGeneralPart3.COURAGE_EXCEPTIONAL
+            HIGH -> StringKeyGeneralPart3.COURAGE_HIGH
+            MODERATE -> StringKeyGeneralPart3.COURAGE_MODERATE
+            LOW -> StringKeyGeneralPart3.COURAGE_DEVELOPING
+            VERY_LOW -> StringKeyGeneralPart3.COURAGE_NEEDS_WORK
         }
         return StringResources.get(key, language)
     }

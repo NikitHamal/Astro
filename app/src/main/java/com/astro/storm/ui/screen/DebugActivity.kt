@@ -66,7 +66,7 @@ fun DebugScreen(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(StringKeyError.DEBUG_UNHANDLED_EXCEPTION), color = AppTheme.TextPrimary) },
+                title = { Text(stringResource(StringKeyGeneralPart3.DEBUG_UNHANDLED_EXCEPTION), color = AppTheme.TextPrimary) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = AppTheme.CardBackground)
             )
         }
@@ -79,7 +79,7 @@ fun DebugScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(StringKeyError.DEBUG_ERROR_OCCURRED),
+                text = stringResource(StringKeyGeneralPart3.DEBUG_ERROR_OCCURRED),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
@@ -115,7 +115,7 @@ fun DebugScreen(
                         brush = androidx.compose.ui.graphics.SolidColor(AppTheme.AccentPrimary)
                     )
                 ) {
-                    Text(stringResource(StringKeyError.DEBUG_COPY_LOG))
+                    Text(stringResource(StringKeyGeneralPart3.DEBUG_COPY_LOG))
                 }
 
                 Button(
@@ -124,7 +124,7 @@ fun DebugScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = AppTheme.AccentSecondary)
                 ) {
                     Text(
-                        text = stringResource(StringKeyError.DEBUG_RESTART_APP),
+                        text = stringResource(StringKeyGeneralPart3.DEBUG_RESTART_APP),
                         color = Color.White
                     )
                 }

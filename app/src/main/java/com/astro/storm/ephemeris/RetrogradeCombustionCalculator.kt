@@ -77,11 +77,11 @@ object RetrogradeCombustionCalculator {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                DIRECT -> StringKeyAnalysisPart2.RETRO_DIRECT
-                RETROGRADE -> StringKeyAnalysisPart2.RETRO_RETROGRADE
-                STATIONARY_RETROGRADE -> StringKeyAnalysisPart2.RETRO_STATIONARY_RETRO
-                STATIONARY_DIRECT -> StringKeyAnalysisPart2.RETRO_STATIONARY_DIRECT
-                ALWAYS_RETROGRADE -> StringKeyAnalysisPart2.RETRO_ALWAYS_RETROGRADE
+                DIRECT -> StringKeyGeneralPart9.RETRO_DIRECT
+                RETROGRADE -> StringKeyGeneralPart9.RETRO_RETROGRADE
+                STATIONARY_RETROGRADE -> StringKeyGeneralPart9.RETRO_STATIONARY_RETRO
+                STATIONARY_DIRECT -> StringKeyGeneralPart9.RETRO_STATIONARY_DIRECT
+                ALWAYS_RETROGRADE -> StringKeyGeneralPart9.RETRO_ALWAYS_RETROGRADE
             }
             return StringResources.get(key, language)
         }
@@ -97,12 +97,12 @@ object RetrogradeCombustionCalculator {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                NOT_COMBUST -> StringKeyAnalysisPart2.COMBUST_NOT
-                APPROACHING -> StringKeyAnalysisPart2.COMBUST_APPROACHING
-                COMBUST -> StringKeyAnalysisPart2.COMBUST_COMBUST
-                DEEP_COMBUST -> StringKeyAnalysisPart2.COMBUST_DEEP
-                CAZIMI -> StringKeyAnalysisPart2.COMBUST_CAZIMI
-                SEPARATING -> StringKeyAnalysisPart2.COMBUST_SEPARATING
+                NOT_COMBUST -> StringKeyGeneralPart3.COMBUST_NOT
+                APPROACHING -> StringKeyGeneralPart3.COMBUST_APPROACHING
+                COMBUST -> StringKeyGeneralPart3.COMBUST_COMBUST
+                DEEP_COMBUST -> StringKeyGeneralPart3.COMBUST_DEEP
+                CAZIMI -> StringKeyGeneralPart3.COMBUST_CAZIMI
+                SEPARATING -> StringKeyGeneralPart3.COMBUST_SEPARATING
             }
             return StringResources.get(key, language)
         }
@@ -119,13 +119,13 @@ object RetrogradeCombustionCalculator {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                ATHI_SHEEGHRA -> StringKeyAnalysisPart2.SPEED_VERY_FAST
-                SHEEGHRA -> StringKeyAnalysisPart2.SPEED_FAST
-                SAMA -> StringKeyAnalysisPart2.SPEED_NORMAL
-                MANDA -> StringKeyAnalysisPart2.SPEED_SLOW
-                ATHI_MANDA -> StringKeyAnalysisPart2.SPEED_VERY_SLOW
-                STHIRA -> StringKeyAnalysisPart2.SPEED_STATIONARY
-                VAKRA -> StringKeyAnalysisPart2.SPEED_RETROGRADE_MOTION
+                ATHI_SHEEGHRA -> StringKeyGeneralPart10.SPEED_VERY_FAST
+                SHEEGHRA -> StringKeyGeneralPart10.SPEED_FAST
+                SAMA -> StringKeyGeneralPart10.SPEED_NORMAL
+                MANDA -> StringKeyGeneralPart10.SPEED_SLOW
+                ATHI_MANDA -> StringKeyGeneralPart10.SPEED_VERY_SLOW
+                STHIRA -> StringKeyGeneralPart10.SPEED_STATIONARY
+                VAKRA -> StringKeyGeneralPart10.SPEED_RETROGRADE_MOTION
             }
             return StringResources.get(key, language)
         }
@@ -139,10 +139,10 @@ object RetrogradeCombustionCalculator {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                NORTHERN_LATITUDE -> StringKeyAnalysisPart2.WAR_NORTHERN_LAT
-                BRIGHTNESS -> StringKeyAnalysisPart2.WAR_BRIGHTNESS
-                COMBINED -> StringKeyAnalysisPart2.WAR_COMBINED
-                INDETERMINATE -> StringKeyAnalysisPart2.WAR_INDETERMINATE
+                NORTHERN_LATITUDE -> StringKeyGeneralPart12.WAR_NORTHERN_LAT
+                BRIGHTNESS -> StringKeyGeneralPart12.WAR_BRIGHTNESS
+                COMBINED -> StringKeyGeneralPart12.WAR_COMBINED
+                INDETERMINATE -> StringKeyGeneralPart12.WAR_INDETERMINATE
             }
             return StringResources.get(key, language)
         }

@@ -137,28 +137,28 @@ object PrashnaOmenEvaluator {
 
     private fun getHoraLordIndication(lord: Planet, language: Language): String {
         val key = when (lord) {
-            Planet.SUN -> StringKeyVarshaphala.VARSHA_YEARLORD_SUN
-            Planet.MOON -> StringKeyVarshaphala.VARSHA_YEARLORD_MOON
-            Planet.MARS -> StringKeyVarshaphala.VARSHA_YEARLORD_MARS
-            Planet.MERCURY -> StringKeyVarshaphala.VARSHA_YEARLORD_MERCURY
-            Planet.JUPITER -> StringKeyVarshaphala.VARSHA_YEARLORD_JUPITER
-            Planet.VENUS -> StringKeyVarshaphala.VARSHA_YEARLORD_VENUS
-            Planet.SATURN -> StringKeyVarshaphala.VARSHA_YEARLORD_SATURN
-            else -> StringKeyVarshaphala.VARSHA_YEARLORD_GENERIC
+            Planet.SUN -> StringKeyGeneralPart12.VARSHA_YEARLORD_SUN
+            Planet.MOON -> StringKeyGeneralPart12.VARSHA_YEARLORD_MOON
+            Planet.MARS -> StringKeyGeneralPart12.VARSHA_YEARLORD_MARS
+            Planet.MERCURY -> StringKeyGeneralPart12.VARSHA_YEARLORD_MERCURY
+            Planet.JUPITER -> StringKeyGeneralPart12.VARSHA_YEARLORD_JUPITER
+            Planet.VENUS -> StringKeyGeneralPart12.VARSHA_YEARLORD_VENUS
+            Planet.SATURN -> StringKeyGeneralPart12.VARSHA_YEARLORD_SATURN
+            else -> StringKeyGeneralPart12.VARSHA_YEARLORD_GENERIC
         }
         return StringResources.get(key, language)
     }
 
     private fun getDayLordIndication(lord: Planet, language: Language): String {
         val key = when (lord) {
-            Planet.SUN -> StringKeyMatchPart1.VARA_SUNDAY
-            Planet.MOON -> StringKeyMatchPart1.VARA_MONDAY
-            Planet.MARS -> StringKeyMatchPart1.VARA_TUESDAY
-            Planet.MERCURY -> StringKeyMatchPart1.VARA_WEDNESDAY
-            Planet.JUPITER -> StringKeyMatchPart1.VARA_THURSDAY
-            Planet.VENUS -> StringKeyMatchPart1.VARA_FRIDAY
-            Planet.SATURN -> StringKeyMatchPart1.VARA_SATURDAY
-            else -> StringKeyAnalysisPart2.AUSPICIOUSNESS_NEUTRAL
+            Planet.SUN -> StringKeyPanchanga.VARA_SUNDAY
+            Planet.MOON -> StringKeyPanchanga.VARA_MONDAY
+            Planet.MARS -> StringKeyPanchanga.VARA_TUESDAY
+            Planet.MERCURY -> StringKeyPanchanga.VARA_WEDNESDAY
+            Planet.JUPITER -> StringKeyPanchanga.VARA_THURSDAY
+            Planet.VENUS -> StringKeyPanchanga.VARA_FRIDAY
+            Planet.SATURN -> StringKeyPanchanga.VARA_SATURDAY
+            else -> StringKeyGeneralPart2.AUSPICIOUSNESS_NEUTRAL
         }
         return StringResources.get(key, language)
     }

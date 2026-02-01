@@ -69,8 +69,8 @@ fun SudarshanaChakraScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_TITLE),
-            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyDashaPart2.SUDARSHANA_TITLE),
+            message = stringResource(StringKeyGeneralPart7.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -94,9 +94,9 @@ fun SudarshanaChakraScreen(
     }
 
     val tabs = listOf(
-        stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_TRIPLE_VIEW),
-        stringResource(StringKeyUI.SCREEN_TIMELINE),
-        stringResource(StringKeyUI.SCREEN_INTERPRETATION)
+        stringResource(StringKeyDashaPart2.SUDARSHANA_TRIPLE_VIEW),
+        stringResource(StringKeyUIPart1.SCREEN_TIMELINE),
+        stringResource(StringKeyUIPart1.SCREEN_INTERPRETATION)
     )
 
     // Calculate Sudarshana Chakra
@@ -125,7 +125,7 @@ fun SudarshanaChakraScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_TITLE),
+                            stringResource(StringKeyDashaPart2.SUDARSHANA_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
@@ -141,7 +141,7 @@ fun SudarshanaChakraScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -150,7 +150,7 @@ fun SudarshanaChakraScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_ABOUT),
+                            contentDescription = stringResource(StringKeyDashaPart2.SUDARSHANA_ABOUT),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -191,7 +191,7 @@ fun SudarshanaChakraScreen(
                 }
             }
         } else {
-            ErrorContent(paddingValues, stringResource(StringKeyUI.SCREEN_ERROR_CALCULATION))
+            ErrorContent(paddingValues, stringResource(StringKeyUIPart1.SCREEN_ERROR_CALCULATION))
         }
     }
 }
@@ -208,7 +208,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKeyUI.SCREEN_CALCULATING),
+                stringResource(StringKeyUIPart1.SCREEN_CALCULATING),
                 color = AppTheme.TextMuted
             )
         }
@@ -261,19 +261,19 @@ private fun AgeSelector(
             ) {
                 Column {
                     Text(
-                        stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_AGE),
+                        stringResource(StringKeyDashaPart2.SUDARSHANA_AGE),
                         color = AppTheme.TextMuted,
                         fontSize = 12.sp
                     )
                     Text(
-                        "${stringResource(StringKeyDoshaPart3.CURRENT_LABEL)}: $currentAge ${stringResource(StringKeyPart1.YEARS)}",
+                        "${stringResource(StringKeyGeneralPart3.CURRENT_LABEL)}: $currentAge ${stringResource(StringKeyGeneralPart12.YEARS)}",
                         color = AppTheme.AccentPrimary,
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Medium
                     )
                 }
                 Text(
-                    String.format(stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_YEAR_ANALYSIS), selectedAge),
+                    String.format(stringResource(StringKeyDashaPart2.SUDARSHANA_YEAR_ANALYSIS), selectedAge),
                     color = AppTheme.TextPrimary,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp
@@ -331,7 +331,7 @@ private fun AgeSelector(
                     enabled = selectedAge != (currentAge + 1)
                 ) {
                     Text(
-                        stringResource(StringKeyDoshaPart3.CURRENT_LABEL),
+                        stringResource(StringKeyGeneralPart3.CURRENT_LABEL),
                         fontSize = 12.sp
                     )
                 }
@@ -406,8 +406,8 @@ private fun TripleViewContent(result: SudarshanaChakraResult) {
         item {
             ChakraCard(
                 chakra = result.lagnaChakra,
-                title = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_LAGNA_CHAKRA),
-                subtitle = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_LAGNA_INFLUENCE),
+                title = stringResource(StringKeyDashaPart2.SUDARSHANA_LAGNA_CHAKRA),
+                subtitle = stringResource(StringKeyDashaPart2.SUDARSHANA_LAGNA_INFLUENCE),
                 color = Color(0xFF6366F1)
             )
         }
@@ -416,8 +416,8 @@ private fun TripleViewContent(result: SudarshanaChakraResult) {
         item {
             ChakraCard(
                 chakra = result.chandraChakra,
-                title = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_CHANDRA_CHAKRA),
-                subtitle = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_CHANDRA_INFLUENCE),
+                title = stringResource(StringKeyDashaPart2.SUDARSHANA_CHANDRA_CHAKRA),
+                subtitle = stringResource(StringKeyDashaPart2.SUDARSHANA_CHANDRA_INFLUENCE),
                 color = Color(0xFF4ECDC4)
             )
         }
@@ -426,8 +426,8 @@ private fun TripleViewContent(result: SudarshanaChakraResult) {
         item {
             ChakraCard(
                 chakra = result.suryaChakra,
-                title = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_SURYA_CHAKRA),
-                subtitle = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_SURYA_INFLUENCE),
+                title = stringResource(StringKeyDashaPart2.SUDARSHANA_SURYA_CHAKRA),
+                subtitle = stringResource(StringKeyDashaPart2.SUDARSHANA_SURYA_INFLUENCE),
                 color = Color(0xFFFF6B35)
             )
         }
@@ -464,7 +464,7 @@ private fun CurrentSignsCard(result: SudarshanaChakraResult) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_CURRENT_SIGNS),
+                    stringResource(StringKeyDashaPart2.SUDARSHANA_CURRENT_SIGNS),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary
@@ -478,19 +478,19 @@ private fun CurrentSignsCard(result: SudarshanaChakraResult) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 SignIndicator(
-                    label = stringResource(StringKeyDoshaPart3.LAGNA_LABEL),
+                    label = stringResource(StringKeyGeneralPart6.LAGNA_LABEL),
                     sign = result.lagnaChakra.activeSign,
                     house = result.lagnaChakra.activeHouse,
                     color = Color(0xFF6366F1)
                 )
                 SignIndicator(
-                    label = stringResource(StringKeyDoshaPart3.MOON_LABEL),
+                    label = stringResource(StringKeyGeneralPart7.MOON_LABEL),
                     sign = result.chandraChakra.activeSign,
                     house = result.chandraChakra.activeHouse,
                     color = Color(0xFF4ECDC4)
                 )
                 SignIndicator(
-                    label = stringResource(StringKeyDoshaPart3.SUN_LABEL),
+                    label = stringResource(StringKeyGeneralPart10.SUN_LABEL),
                     sign = result.suryaChakra.activeSign,
                     house = result.suryaChakra.activeHouse,
                     color = Color(0xFFFF6B35)
@@ -605,15 +605,15 @@ private fun ChakraCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 InfoColumn(
-                    label = stringResource(StringKeyDoshaPart3.SIGN_LABEL),
+                    label = stringResource(StringKeyGeneralPart10.SIGN_LABEL),
                     value = chakra.activeSign.getLocalizedName(language)
                 )
                 InfoColumn(
-                    label = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_SIGN_LORD),
+                    label = stringResource(StringKeyDashaPart2.SUDARSHANA_SIGN_LORD),
                     value = chakra.signLord.getLocalizedName(language)
                 )
                 InfoColumn(
-                    label = stringResource(StringKeyMatchPart1.HOUSE_LABEL),
+                    label = stringResource(StringKeyGeneralPart5.HOUSE_LABEL),
                     value = "H${chakra.activeHouse}"
                 )
             }
@@ -625,7 +625,7 @@ private fun ChakraCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKeyUI.STRENGTH_LABEL),
+                    stringResource(StringKeyUIPart1.STRENGTH_LABEL),
                     color = AppTheme.TextMuted,
                     fontSize = 12.sp
                 )
@@ -659,7 +659,7 @@ private fun ChakraCard(
 
                     // House Significance
                     Text(
-                        stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_HOUSE_SIGNIFICATIONS),
+                        stringResource(StringKeyDashaPart2.SUDARSHANA_HOUSE_SIGNIFICATIONS),
                         fontWeight = FontWeight.Medium,
                         fontSize = 13.sp,
                         color = AppTheme.TextSecondary
@@ -676,7 +676,7 @@ private fun ChakraCard(
                     if (chakra.planetsInSign.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_PLANETS_IN_SIGN),
+                            stringResource(StringKeyDashaPart2.SUDARSHANA_PLANETS_IN_SIGN),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextSecondary
@@ -695,7 +695,7 @@ private fun ChakraCard(
                     if (chakra.aspectingPlanets.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_ASPECTS_RECEIVED),
+                            stringResource(StringKeyDashaPart2.SUDARSHANA_ASPECTS_RECEIVED),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextSecondary
@@ -723,7 +723,7 @@ private fun ChakraCard(
                     if (chakra.signEffects.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            stringResource(StringKeyDoshaPart3.EFFECTS_LABEL),
+                            stringResource(StringKeyGeneralPart4.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp,
                             color = AppTheme.TextSecondary
@@ -784,11 +784,11 @@ private fun InfoColumn(label: String, value: String) {
 @Composable
 private fun StrengthBadge(level: StrengthLevel, color: Color) {
     val (text, badgeColor) = when (level) {
-        StrengthLevel.EXCELLENT -> stringResource(StringKeyAnalysisPart1.PANCHA_EXCELLENT) to AppTheme.SuccessColor
-        StrengthLevel.GOOD -> stringResource(StringKeyAnalysisPart1.PANCHA_GOOD) to AppTheme.SuccessColor.copy(alpha = 0.8f)
-        StrengthLevel.MODERATE -> stringResource(StringKeyAnalysisPart1.PANCHA_AVERAGE) to AppTheme.WarningColor
-        StrengthLevel.WEAK -> stringResource(StringKeyAnalysisPart1.PANCHA_BELOW_AVERAGE) to AppTheme.WarningColor.copy(alpha = 0.8f)
-        StrengthLevel.VERY_WEAK -> stringResource(StringKeyAnalysisPart1.PANCHA_WEAK) to AppTheme.ErrorColor
+        StrengthLevel.EXCELLENT -> stringResource(StringKeyGeneralPart7.PANCHA_EXCELLENT) to AppTheme.SuccessColor
+        StrengthLevel.GOOD -> stringResource(StringKeyGeneralPart7.PANCHA_GOOD) to AppTheme.SuccessColor.copy(alpha = 0.8f)
+        StrengthLevel.MODERATE -> stringResource(StringKeyGeneralPart7.PANCHA_AVERAGE) to AppTheme.WarningColor
+        StrengthLevel.WEAK -> stringResource(StringKeyGeneralPart7.PANCHA_BELOW_AVERAGE) to AppTheme.WarningColor.copy(alpha = 0.8f)
+        StrengthLevel.VERY_WEAK -> stringResource(StringKeyGeneralPart7.PANCHA_WEAK) to AppTheme.ErrorColor
     }
 
     Surface(
@@ -829,8 +829,8 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
     val synthesis = result.synthesis
 
     val convergenceStrength = when {
-        synthesis.combinedStrengthScore >= 65 -> stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_STRONG_CONVERGENCE)
-        else -> stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_WEAK_CONVERGENCE)
+        synthesis.combinedStrengthScore >= 65 -> stringResource(StringKeyDashaPart2.SUDARSHANA_STRONG_CONVERGENCE)
+        else -> stringResource(StringKeyDashaPart2.SUDARSHANA_WEAK_CONVERGENCE)
     }
 
     Card(
@@ -857,7 +857,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_CONVERGENCE),
+                    stringResource(StringKeyDashaPart2.SUDARSHANA_CONVERGENCE),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary
@@ -991,7 +991,7 @@ private fun TimelineYearCard(
                         color = if (isCurrent) AppTheme.AccentPrimary else AppTheme.TextPrimary
                     )
                     Text(
-                        stringResource(StringKeyPart1.YEARS),
+                        stringResource(StringKeyGeneralPart12.YEARS),
                         fontSize = 10.sp,
                         color = AppTheme.TextMuted
                     )
@@ -1080,7 +1080,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_COMBINED_ANALYSIS),
+                        stringResource(StringKeyDashaPart2.SUDARSHANA_COMBINED_ANALYSIS),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
@@ -1105,7 +1105,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_TRIPLE_VIEW),
+                        stringResource(StringKeyDashaPart2.SUDARSHANA_TRIPLE_VIEW),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
@@ -1114,19 +1114,19 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
                     ContributionRow(
                         color = Color(0xFF6366F1),
-                        label = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_LAGNA_CHAKRA),
+                        label = stringResource(StringKeyDashaPart2.SUDARSHANA_LAGNA_CHAKRA),
                         contribution = synthesis.lagnaContribution
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     ContributionRow(
                         color = Color(0xFF4ECDC4),
-                        label = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_CHANDRA_CHAKRA),
+                        label = stringResource(StringKeyDashaPart2.SUDARSHANA_CHANDRA_CHAKRA),
                         contribution = synthesis.chandraContribution
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     ContributionRow(
                         color = Color(0xFFFF6B35),
-                        label = stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_SURYA_CHAKRA),
+                        label = stringResource(StringKeyDashaPart2.SUDARSHANA_SURYA_CHAKRA),
                         contribution = synthesis.suryaContribution
                     )
                 }
@@ -1144,7 +1144,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        stringResource(StringKeyDoshaPart3.KEY_THEMES),
+                        stringResource(StringKeyGeneralPart6.KEY_THEMES),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
@@ -1153,7 +1153,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
                     Row(modifier = Modifier.padding(vertical = 4.dp)) {
                         Text(
-                            "${stringResource(StringKeyDoshaPart3.PRIMARY_LABEL)}: ",
+                            "${stringResource(StringKeyGeneralPart9.PRIMARY_LABEL)}: ",
                             color = AppTheme.AccentPrimary,
                             fontWeight = FontWeight.Medium,
                             fontSize = 13.sp
@@ -1168,7 +1168,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     if (synthesis.secondaryFocus.isNotBlank()) {
                         Row(modifier = Modifier.padding(vertical = 4.dp)) {
                             Text(
-                                "${stringResource(StringKeyDoshaPart3.SECONDARY_LABEL)}: ",
+                                "${stringResource(StringKeyGeneralPart10.SECONDARY_LABEL)}: ",
                                 color = AppTheme.AccentSecondary,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 13.sp
@@ -1204,7 +1204,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                stringResource(StringKeyUI.SCREEN_RECOMMENDATIONS),
+                                stringResource(StringKeyUIPart1.SCREEN_RECOMMENDATIONS),
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 16.sp,
                                 color = AppTheme.TextPrimary
@@ -1240,7 +1240,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        stringResource(StringKeyUI.SCREEN_TIMELINE),
+                        stringResource(StringKeyUIPart1.SCREEN_TIMELINE),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
@@ -1249,7 +1249,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
                     result.yearlyProgression.previousYearSummary?.let { prev ->
                         ProgressionRow(
-                            label = stringResource(StringKeyDoshaPart3.PREVIOUS_LABEL),
+                            label = stringResource(StringKeyGeneralPart9.PREVIOUS_LABEL),
                             summary = prev,
                             isPast = true
                         )
@@ -1257,7 +1257,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     }
 
                     ProgressionRow(
-                        label = stringResource(StringKeyDoshaPart3.CURRENT_LABEL),
+                        label = stringResource(StringKeyGeneralPart3.CURRENT_LABEL),
                         summary = result.yearlyProgression.currentYearSummary,
                         isCurrent = true
                     )
@@ -1265,7 +1265,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     Spacer(modifier = Modifier.height(8.dp))
 
                     ProgressionRow(
-                        label = stringResource(StringKeyDoshaPart3.NEXT_LABEL),
+                        label = stringResource(StringKeyGeneralPart7.NEXT_LABEL),
                         summary = result.yearlyProgression.nextYearSummary,
                         isFuture = true
                     )
@@ -1361,21 +1361,21 @@ private fun SudarshanaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground,
         title = {
             Text(
-                stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_ABOUT),
+                stringResource(StringKeyDashaPart2.SUDARSHANA_ABOUT),
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
         },
         text = {
             Text(
-                stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_ABOUT_DESC),
+                stringResource(StringKeyDashaPart2.SUDARSHANA_ABOUT_DESC),
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyUI.BTN_CLOSE), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyUIPart1.BTN_CLOSE), color = AppTheme.AccentPrimary)
             }
         }
     )

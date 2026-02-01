@@ -57,10 +57,10 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 enum class PredictionsTab(val stringKey: StringKey) {
-    OVERVIEW(StringKeyPart1.PREDICTIONS_TAB_OVERVIEW),
-    LIFE_AREAS(StringKeyPart1.PREDICTIONS_TAB_LIFE_AREAS),
-    TIMING(StringKeyPart1.PREDICTIONS_TAB_TIMING),
-    REMEDIES(StringKeyPart1.PREDICTIONS_TAB_REMEDIES);
+    OVERVIEW(StringKeyGeneralPart8.PREDICTIONS_TAB_OVERVIEW),
+    LIFE_AREAS(StringKeyGeneralPart8.PREDICTIONS_TAB_LIFE_AREAS),
+    TIMING(StringKeyGeneralPart8.PREDICTIONS_TAB_TIMING),
+    REMEDIES(StringKeyGeneralPart8.PREDICTIONS_TAB_REMEDIES);
 
     fun getLocalizedTitle(language: Language): String = StringResources.get(stringKey, language)
 }
@@ -89,7 +89,7 @@ fun PredictionsScreen(
                     calculatePredictions(chart, language)
                 }
             } catch (e: Exception) {
-                errorMessage = e.message ?: StringResources.get(StringKeyPart1.PREDICTIONS_CALC_FAILED, language)
+                errorMessage = e.message ?: StringResources.get(StringKeyGeneralPart8.PREDICTIONS_CALC_FAILED, language)
             } finally {
                 isLoading = false
             }
@@ -110,7 +110,7 @@ fun PredictionsScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.Default.ArrowBack,
-                            contentDescription = StringResources.get(StringKeyUI.BTN_BACK, language),
+                            contentDescription = StringResources.get(StringKeyUIPart1.BTN_BACK, language),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -138,7 +138,7 @@ fun PredictionsScreen(
                                     calculatePredictions(chart, language)
                                 }
                             } catch (e: Exception) {
-                                errorMessage = e.message ?: StringResources.get(StringKeyPart1.PREDICTIONS_CALC_FAILED, language)
+                                errorMessage = e.message ?: StringResources.get(StringKeyGeneralPart8.PREDICTIONS_CALC_FAILED, language)
                             } finally {
                                 isLoading = false
                             }
@@ -431,7 +431,7 @@ private fun LifePathCard(overview: LifeOverview) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKeyPart1.PREDICTIONS_YOUR_LIFE_PATH, language),
+                    StringResources.get(StringKeyGeneralPart8.PREDICTIONS_YOUR_LIFE_PATH, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -458,7 +458,7 @@ private fun LifePathCard(overview: LifeOverview) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                StringResources.get(StringKeyPart1.PREDICTIONS_KEY_STRENGTHS, language),
+                StringResources.get(StringKeyGeneralPart8.PREDICTIONS_KEY_STRENGTHS, language),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
@@ -504,7 +504,7 @@ private fun LifePathCard(overview: LifeOverview) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Column {
                         Text(
-                            StringResources.get(StringKeyPart1.PREDICTIONS_SPIRITUAL_PATH, language),
+                            StringResources.get(StringKeyGeneralPart8.PREDICTIONS_SPIRITUAL_PATH, language),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.LifeAreaSpiritual
@@ -548,7 +548,7 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        StringResources.get(StringKeyPart1.PREDICTIONS_CURRENT_PERIOD, language),
+                        StringResources.get(StringKeyGeneralPart8.PREDICTIONS_CURRENT_PERIOD, language),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -606,7 +606,7 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    StringResources.get(StringKeyPart1.PREDICTIONS_ACTIVE_TRANSITS, language),
+                    StringResources.get(StringKeyGeneralPart8.PREDICTIONS_ACTIVE_TRANSITS, language),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
@@ -694,7 +694,7 @@ private fun ActiveYogasSummaryCard(yogas: List<ActiveYoga>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKeyPart1.PREDICTIONS_ACTIVE_YOGAS, language),
+                    StringResources.get(StringKeyGeneralPart8.PREDICTIONS_ACTIVE_YOGAS, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -790,7 +790,7 @@ private fun ChallengesOpportunitiesCard(data: ChallengesOpportunities) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        StringResources.get(StringKeyPart1.PREDICTIONS_OPPORTUNITIES, language),
+                        StringResources.get(StringKeyGeneralPart8.PREDICTIONS_OPPORTUNITIES, language),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.SuccessColor
@@ -822,7 +822,7 @@ private fun ChallengesOpportunitiesCard(data: ChallengesOpportunities) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        StringResources.get(StringKeyPart1.PREDICTIONS_CURRENT_CHALLENGES, language),
+                        StringResources.get(StringKeyGeneralPart8.PREDICTIONS_CURRENT_CHALLENGES, language),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.WarningColor
@@ -925,7 +925,7 @@ private fun QuickLifeAreasSummary(areas: List<LifeAreaPrediction>) {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                StringResources.get(StringKeyPart1.PREDICTIONS_LIFE_AREAS_GLANCE, language),
+                StringResources.get(StringKeyGeneralPart8.PREDICTIONS_LIFE_AREAS_GLANCE, language),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
@@ -1047,19 +1047,19 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
             AnimatedVisibility(visible = expanded) {
                 Column(modifier = Modifier.padding(top = 12.dp)) {
                     PredictionTimeframe(
-                        StringResources.get(StringKeyPart1.PREDICTIONS_SHORT_TERM, language),
+                        StringResources.get(StringKeyGeneralPart8.PREDICTIONS_SHORT_TERM, language),
                         area.shortTerm,
                         areaColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     PredictionTimeframe(
-                        StringResources.get(StringKeyPart1.PREDICTIONS_MEDIUM_TERM, language),
+                        StringResources.get(StringKeyGeneralPart8.PREDICTIONS_MEDIUM_TERM, language),
                         area.mediumTerm,
                         areaColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     PredictionTimeframe(
-                        StringResources.get(StringKeyPart1.PREDICTIONS_LONG_TERM, language),
+                        StringResources.get(StringKeyGeneralPart8.PREDICTIONS_LONG_TERM, language),
                         area.longTerm,
                         areaColor
                     )
@@ -1070,7 +1070,7 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
                         Spacer(modifier = Modifier.height(12.dp))
 
                         Text(
-                            StringResources.get(StringKeyPrediction.PRED_LABEL_KEY_FACTORS, language),
+                            StringResources.get(StringKeyGeneralPart8.PRED_LABEL_KEY_FACTORS, language),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = areaColor
@@ -1110,7 +1110,7 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Column {
                                 Text(
-                                    StringResources.get(StringKeyPrediction.PRED_LABEL_ADVICE, language),
+                                    StringResources.get(StringKeyGeneralPart8.PRED_LABEL_ADVICE, language),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.SemiBold,
                                     color = areaColor
@@ -1171,7 +1171,7 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKeyPart1.PREDICTIONS_FAVORABLE_PERIODS, language),
+                    StringResources.get(StringKeyGeneralPart8.PREDICTIONS_FAVORABLE_PERIODS, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1201,7 +1201,7 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
                         if (period.bestFor.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                "${StringResources.get(StringKeyPart1.PREDICTIONS_BEST_FOR, language)}:",
+                                "${StringResources.get(StringKeyGeneralPart8.PREDICTIONS_BEST_FOR, language)}:",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1246,7 +1246,7 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKeyPart1.PREDICTIONS_CAUTION_PERIODS, language),
+                    StringResources.get(StringKeyGeneralPart8.PREDICTIONS_CAUTION_PERIODS, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1276,7 +1276,7 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
                         if (period.avoid.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                "${StringResources.get(StringKeyPart1.PREDICTIONS_CAUTION_FOR, language)}:",
+                                "${StringResources.get(StringKeyGeneralPart8.PREDICTIONS_CAUTION_FOR, language)}:",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1321,7 +1321,7 @@ private fun KeyDatesCard(dates: List<KeyDate>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKeyPart1.PREDICTIONS_IMPORTANT_DATES, language),
+                    StringResources.get(StringKeyGeneralPart8.PREDICTIONS_IMPORTANT_DATES, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1404,7 +1404,7 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    StringResources.get(StringKeyPart1.PREDICTIONS_REMEDIAL_SUGGESTIONS, language),
+                    StringResources.get(StringKeyGeneralPart8.PREDICTIONS_REMEDIAL_SUGGESTIONS, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1414,7 +1414,7 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                StringResources.get(StringKeyPrediction.PRED_REMEDY_FOR_PERIOD, language, currentPeriod),
+                StringResources.get(StringKeyGeneralPart8.PRED_REMEDY_FOR_PERIOD, language, currentPeriod),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -1479,12 +1479,12 @@ private fun EmptyPredictionsState(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                StringResources.get(StringKeyPart1.PREDICTIONS_NO_CHART_SELECTED, language),
+                StringResources.get(StringKeyGeneralPart8.PREDICTIONS_NO_CHART_SELECTED, language),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppTheme.TextMuted
             )
             Text(
-                StringResources.get(StringKeyPart1.PREDICTIONS_SELECT_CHART_MESSAGE, language),
+                StringResources.get(StringKeyGeneralPart8.PREDICTIONS_SELECT_CHART_MESSAGE, language),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSubtle
             )
@@ -1507,7 +1507,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                StringResources.get(StringKeyPart1.PREDICTIONS_CALCULATING, language),
+                StringResources.get(StringKeyGeneralPart8.PREDICTIONS_CALCULATING, language),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1536,7 +1536,7 @@ private fun ErrorState(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                StringResources.get(StringKeyPart1.PREDICTIONS_ERROR_LOADING, language),
+                StringResources.get(StringKeyGeneralPart8.PREDICTIONS_ERROR_LOADING, language),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppTheme.TextPrimary
             )
@@ -1561,7 +1561,7 @@ private fun ErrorState(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(StringResources.get(StringKeyUI.BTN_RETRY, language))
+                Text(StringResources.get(StringKeyUIPart1.BTN_RETRY, language))
             }
         }
     }
@@ -1614,31 +1614,31 @@ private fun calculateLifeOverview(chart: VedicChart, dashaTimeline: DashaCalcula
     val moonPath = getMoonPath(moonPosition?.sign, language)
     
     val overallPath = if (moonPosition?.sign != null) {
-        StringResources.get(StringKeyPrediction.PRED_PATH_TEMPLATE, language, 
+        StringResources.get(StringKeyGeneralPart8.PRED_PATH_TEMPLATE, language,
             ascendant.getLocalizedName(language), 
             ascendantPath, 
             moonPosition.sign.getLocalizedName(language), 
             moonPath
         )
     } else {
-        StringResources.get(StringKeyPrediction.PRED_PATH_TEMPLATE_UNKNOWN_MOON, language, 
+        StringResources.get(StringKeyGeneralPart8.PRED_PATH_TEMPLATE_UNKNOWN_MOON, language,
             ascendant.getLocalizedName(language), 
             ascendantPath
         )
     }
 
     val keyStrengths = listOf(
-        StringResources.get(StringKeyPrediction.PRED_STRENGTH_DETERMINATION, language),
-        StringResources.get(StringKeyPrediction.PRED_STRENGTH_SPIRITUAL, language),
-        StringResources.get(StringKeyPrediction.PRED_STRENGTH_EMOTIONAL, language),
-        StringResources.get(StringKeyPrediction.PRED_STRENGTH_PRACTICAL, language)
+        StringResources.get(StringKeyGeneralPart9.PRED_STRENGTH_DETERMINATION, language),
+        StringResources.get(StringKeyGeneralPart9.PRED_STRENGTH_SPIRITUAL, language),
+        StringResources.get(StringKeyGeneralPart9.PRED_STRENGTH_EMOTIONAL, language),
+        StringResources.get(StringKeyGeneralPart9.PRED_STRENGTH_PRACTICAL, language)
     )
 
-    val lifeTheme = StringResources.get(StringKeyPrediction.PRED_LIFE_THEME_TEMPLATE, language, getLifeTheme(ascendant, language))
+    val lifeTheme = StringResources.get(StringKeyGeneralPart8.PRED_LIFE_THEME_TEMPLATE, language, getLifeTheme(ascendant, language))
 
-    val spiritualPath = StringResources.get(StringKeyPrediction.PRED_SPIRIT_TEMPLATE, language, 
+    val spiritualPath = StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_TEMPLATE, language,
         getSpiritualPath(moonPosition?.sign, language),
-        dashaTimeline.currentMahadasha?.planet?.getLocalizedName(language) ?: StringResources.get(StringKeyPrediction.PRED_CURRENT, language)
+        dashaTimeline.currentMahadasha?.planet?.getLocalizedName(language) ?: StringResources.get(StringKeyGeneralPart8.PRED_CURRENT, language)
     )
 
     return LifeOverview(
@@ -1657,26 +1657,26 @@ private fun calculateCurrentPeriod(chart: VedicChart, dashaTimeline: DashaCalcul
         val mdName = md.planet.getLocalizedName(language)
         if (currentAntardasha != null) {
             val adName = currentAntardasha.planet.getLocalizedName(language)
-            StringResources.get(StringKeyPrediction.PRED_DASHA_INFO_TEMPLATE, language, mdName, adName)
+            StringResources.get(StringKeyGeneralPart8.PRED_DASHA_INFO_TEMPLATE, language, mdName, adName)
         } else {
-            StringResources.get(StringKeyPrediction.PRED_MAHADASHA_LABEL, language, mdName)
+            StringResources.get(StringKeyGeneralPart8.PRED_MAHADASHA_LABEL, language, mdName)
         }
-    } ?: StringResources.get(StringKeyPrediction.PRED_DASHA_PERIOD_DEFAULT, language)
+    } ?: StringResources.get(StringKeyGeneralPart8.PRED_DASHA_PERIOD_DEFAULT, language)
 
     val dashaEffect = currentMahadasha?.let { md ->
         val mdName = md.planet.getLocalizedName(language)
         val effect = getDashaEffect(md.planet, language)
-        val baseText = StringResources.get(StringKeyPrediction.PRED_DASHA_EFFECT_TEMPLATE, language, mdName, effect, "")
+        val baseText = StringResources.get(StringKeyGeneralPart8.PRED_DASHA_EFFECT_TEMPLATE, language, mdName, effect, "")
         
         if (currentAntardasha != null) {
             val adName = currentAntardasha.planet.getLocalizedName(language)
             val adEffect = getAntardashaEffect(currentAntardasha.planet, language)
-            val subText = StringResources.get(StringKeyPrediction.PRED_AD_EFFECT_SUB_TEMPLATE, language, adName, adEffect)
+            val subText = StringResources.get(StringKeyGeneralPart8.PRED_AD_EFFECT_SUB_TEMPLATE, language, adName, adEffect)
             "$baseText $subText"
         } else {
             baseText
         }
-    } ?: StringResources.get(StringKeyPrediction.PRED_CALC_PROGRESS, language)
+    } ?: StringResources.get(StringKeyGeneralPart8.PRED_CALC_PROGRESS, language)
 
     val transitHighlights = chart.planetPositions.take(5).map { pos ->
         TransitHighlight(
@@ -1689,7 +1689,7 @@ private fun calculateCurrentPeriod(chart: VedicChart, dashaTimeline: DashaCalcul
 
     val period = currentMahadasha?.let { md ->
         val remainingYears = md.getRemainingYears()
-        StringResources.get(StringKeyPrediction.PRED_YEARS_REMAINING, language, remainingYears)
+        StringResources.get(StringKeyGeneralPart9.PRED_YEARS_REMAINING, language, remainingYears)
     } ?: ""
 
     return CurrentPeriodAnalysis(
@@ -1718,17 +1718,17 @@ private fun calculateLifeAreasPredictions(chart: VedicChart, dashaTimeline: Dash
 private fun calculateActiveYogas(chart: VedicChart, language: Language): List<ActiveYoga> {
     return listOf(
         ActiveYoga(
-            name = StringResources.get(StringKeyPrediction.PRED_YOGA_DHANA_NAME, language),
-            description = StringResources.get(StringKeyPrediction.PRED_YOGA_DHANA_DESC, language),
+            name = StringResources.get(StringKeyGeneralPart9.PRED_YOGA_DHANA_NAME, language),
+            description = StringResources.get(StringKeyGeneralPart9.PRED_YOGA_DHANA_DESC, language),
             strength = 4,
-            effects = StringResources.get(StringKeyPrediction.PRED_YOGA_DHANA_EFFECT, language),
+            effects = StringResources.get(StringKeyGeneralPart9.PRED_YOGA_DHANA_EFFECT, language),
             planets = listOf(Planet.JUPITER, Planet.VENUS)
         ),
         ActiveYoga(
-            name = StringResources.get(StringKeyPrediction.PRED_YOGA_RAJA_NAME, language),
-            description = StringResources.get(StringKeyPrediction.PRED_YOGA_RAJA_DESC, language),
+            name = StringResources.get(StringKeyGeneralPart9.PRED_YOGA_RAJA_NAME, language),
+            description = StringResources.get(StringKeyGeneralPart9.PRED_YOGA_RAJA_DESC, language),
             strength = 3,
-            effects = StringResources.get(StringKeyPrediction.PRED_YOGA_RAJA_EFFECT, language),
+            effects = StringResources.get(StringKeyGeneralPart9.PRED_YOGA_RAJA_EFFECT, language),
             planets = listOf(Planet.SUN, Planet.JUPITER)
         )
     )
@@ -1737,25 +1737,25 @@ private fun calculateActiveYogas(chart: VedicChart, language: Language): List<Ac
 private fun calculateChallengesOpportunities(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): ChallengesOpportunities {
     val challenges = listOf(
         Challenge(
-            area = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_NAME, language),
-            description = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_DESC, language),
+            area = StringResources.get(StringKeyGeneralPart8.PRED_CHALLENGE_CAREER_TRANS_NAME, language),
+            description = StringResources.get(StringKeyGeneralPart8.PRED_CHALLENGE_CAREER_TRANS_DESC, language),
             severity = 3,
-            mitigation = StringResources.get(StringKeyPrediction.PRED_CHALLENGE_CAREER_TRANS_MIT, language)
+            mitigation = StringResources.get(StringKeyGeneralPart8.PRED_CHALLENGE_CAREER_TRANS_MIT, language)
         )
     )
 
     val opportunities = listOf(
         Opportunity(
-            area = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_NAME, language),
-            description = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_DESC, language),
-            timing = StringResources.get(StringKeyPrediction.PRED_OPP_TIMING_6M, language),
-            howToLeverage = StringResources.get(StringKeyPrediction.PRED_OPP_FINANCE_LEV, language)
+            area = StringResources.get(StringKeyGeneralPart8.PRED_OPP_FINANCE_NAME, language),
+            description = StringResources.get(StringKeyGeneralPart8.PRED_OPP_FINANCE_DESC, language),
+            timing = StringResources.get(StringKeyGeneralPart8.PRED_OPP_TIMING_6M, language),
+            howToLeverage = StringResources.get(StringKeyGeneralPart8.PRED_OPP_FINANCE_LEV, language)
         ),
         Opportunity(
-            area = StringResources.get(StringKeyPrediction.PRED_OPP_PERSONAL_NAME, language),
-            description = StringResources.get(StringKeyPrediction.PRED_OPP_PERSONAL_DESC, language),
-            timing = StringResources.get(StringKeyPrediction.PRED_CURRENT, language),
-            howToLeverage = StringResources.get(StringKeyPrediction.PRED_OPP_PERSONAL_LEV, language)
+            area = StringResources.get(StringKeyGeneralPart8.PRED_OPP_PERSONAL_NAME, language),
+            description = StringResources.get(StringKeyGeneralPart8.PRED_OPP_PERSONAL_DESC, language),
+            timing = StringResources.get(StringKeyGeneralPart8.PRED_CURRENT, language),
+            howToLeverage = StringResources.get(StringKeyGeneralPart8.PRED_OPP_PERSONAL_LEV, language)
         )
     )
 
@@ -1772,11 +1772,11 @@ private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.Da
         FavorablePeriod(
             startDate = today.plusDays(30),
             endDate = today.plusDays(90),
-            reason = StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_REASON, language),
+            reason = StringResources.get(StringKeyGeneralPart9.PRED_TIMING_JUPITER_REASON, language),
             bestFor = listOf(
-                StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_1, language),
-                StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_2, language),
-                StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_BEST_3, language)
+                StringResources.get(StringKeyGeneralPart9.PRED_TIMING_JUPITER_BEST_1, language),
+                StringResources.get(StringKeyGeneralPart9.PRED_TIMING_JUPITER_BEST_2, language),
+                StringResources.get(StringKeyGeneralPart9.PRED_TIMING_JUPITER_BEST_3, language)
             )
         )
     )
@@ -1785,11 +1785,11 @@ private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.Da
         UnfavorablePeriod(
             startDate = today.plusDays(120),
             endDate = today.plusDays(150),
-            reason = StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_REASON, language),
+            reason = StringResources.get(StringKeyGeneralPart9.PRED_TIMING_SATURN_REASON, language),
             avoid = listOf(
-                StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_1, language),
-                StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_2, language),
-                StringResources.get(StringKeyPrediction.PRED_TIMING_SATURN_AVOID_3, language)
+                StringResources.get(StringKeyGeneralPart9.PRED_TIMING_SATURN_AVOID_1, language),
+                StringResources.get(StringKeyGeneralPart9.PRED_TIMING_SATURN_AVOID_2, language),
+                StringResources.get(StringKeyGeneralPart9.PRED_TIMING_SATURN_AVOID_3, language)
             )
         )
     )
@@ -1797,8 +1797,8 @@ private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.Da
     val keyDates = listOf(
         KeyDate(
             date = today.plusDays(45),
-            event = StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_ASPECT_EVENT, language),
-            significance = StringResources.get(StringKeyPrediction.PRED_TIMING_JUPITER_ASPECT_SIG, language),
+            event = StringResources.get(StringKeyGeneralPart9.PRED_TIMING_JUPITER_ASPECT_EVENT, language),
+            significance = StringResources.get(StringKeyGeneralPart9.PRED_TIMING_JUPITER_ASPECT_SIG, language),
             isPositive = true
         )
     )
@@ -1816,201 +1816,201 @@ private fun calculateRemedies(chart: VedicChart, dashaTimeline: DashaCalculator.
     val planetNameOrChart = currentPlanet?.getLocalizedName(language) ?: "your chart"
 
     return listOf(
-        StringResources.get(StringKeyPrediction.PRED_REMEDY_MANTRA, language, planetName),
-        StringResources.get(StringKeyPrediction.PRED_REMEDY_DONATE, language, planetName),
-        StringResources.get(StringKeyPrediction.PRED_REMEDY_GEM, language, planetNameOrChart),
-        StringResources.get(StringKeyPrediction.PRED_REMEDY_YOGA, language),
-        StringResources.get(StringKeyPrediction.PRED_REMEDY_WORSHIP, language)
+        StringResources.get(StringKeyGeneralPart8.PRED_REMEDY_MANTRA, language, planetName),
+        StringResources.get(StringKeyGeneralPart8.PRED_REMEDY_DONATE, language, planetName),
+        StringResources.get(StringKeyGeneralPart8.PRED_REMEDY_GEM, language, planetNameOrChart),
+        StringResources.get(StringKeyGeneralPart8.PRED_REMEDY_YOGA, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_REMEDY_WORSHIP, language)
     )
 }
 
 // Helper utility functions
 private fun getAscendantPath(sign: ZodiacSign, language: Language): String = when (sign) {
-    ZodiacSign.ARIES -> StringResources.get(StringKeyPrediction.PRED_ASC_ARIES, language)
-    ZodiacSign.TAURUS -> StringResources.get(StringKeyPrediction.PRED_ASC_TAURUS, language)
-    ZodiacSign.GEMINI -> StringResources.get(StringKeyPrediction.PRED_ASC_GEMINI, language)
-    ZodiacSign.CANCER -> StringResources.get(StringKeyPrediction.PRED_ASC_CANCER, language)
-    ZodiacSign.LEO -> StringResources.get(StringKeyPrediction.PRED_ASC_LEO, language)
-    ZodiacSign.VIRGO -> StringResources.get(StringKeyPrediction.PRED_ASC_VIRGO, language)
-    ZodiacSign.LIBRA -> StringResources.get(StringKeyPrediction.PRED_ASC_LIBRA, language)
-    ZodiacSign.SCORPIO -> StringResources.get(StringKeyPrediction.PRED_ASC_SCORPIO, language)
-    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyPrediction.PRED_ASC_SAGITTARIUS, language)
-    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyPrediction.PRED_ASC_CAPRICORN, language)
-    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyPrediction.PRED_ASC_AQUARIUS, language)
-    ZodiacSign.PISCES -> StringResources.get(StringKeyPrediction.PRED_ASC_PISCES, language)
+    ZodiacSign.ARIES -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_ARIES, language)
+    ZodiacSign.TAURUS -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_TAURUS, language)
+    ZodiacSign.GEMINI -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_GEMINI, language)
+    ZodiacSign.CANCER -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_CANCER, language)
+    ZodiacSign.LEO -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_LEO, language)
+    ZodiacSign.VIRGO -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_VIRGO, language)
+    ZodiacSign.LIBRA -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_LIBRA, language)
+    ZodiacSign.SCORPIO -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_SCORPIO, language)
+    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_SAGITTARIUS, language)
+    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_CAPRICORN, language)
+    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_AQUARIUS, language)
+    ZodiacSign.PISCES -> StringResources.get(StringKeyGeneralPart8.PRED_ASC_PISCES, language)
 }
 
 private fun getMoonPath(sign: ZodiacSign?, language: Language): String = when (sign) {
-    ZodiacSign.ARIES -> StringResources.get(StringKeyPrediction.PRED_MOON_ARIES, language)
-    ZodiacSign.TAURUS -> StringResources.get(StringKeyPrediction.PRED_MOON_TAURUS, language)
-    ZodiacSign.GEMINI -> StringResources.get(StringKeyPrediction.PRED_MOON_GEMINI, language)
-    ZodiacSign.CANCER -> StringResources.get(StringKeyPrediction.PRED_MOON_CANCER, language)
-    ZodiacSign.LEO -> StringResources.get(StringKeyPrediction.PRED_MOON_LEO, language)
-    ZodiacSign.VIRGO -> StringResources.get(StringKeyPrediction.PRED_MOON_VIRGO, language)
-    ZodiacSign.LIBRA -> StringResources.get(StringKeyPrediction.PRED_MOON_LIBRA, language)
-    ZodiacSign.SCORPIO -> StringResources.get(StringKeyPrediction.PRED_MOON_SCORPIO, language)
-    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyPrediction.PRED_MOON_SAGITTARIUS, language)
-    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyPrediction.PRED_MOON_CAPRICORN, language)
-    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyPrediction.PRED_MOON_AQUARIUS, language)
-    ZodiacSign.PISCES -> StringResources.get(StringKeyPrediction.PRED_MOON_PISCES, language)
-    else -> StringResources.get(StringKeyPrediction.PRED_MOON_DEFAULT, language)
+    ZodiacSign.ARIES -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_ARIES, language)
+    ZodiacSign.TAURUS -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_TAURUS, language)
+    ZodiacSign.GEMINI -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_GEMINI, language)
+    ZodiacSign.CANCER -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_CANCER, language)
+    ZodiacSign.LEO -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_LEO, language)
+    ZodiacSign.VIRGO -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_VIRGO, language)
+    ZodiacSign.LIBRA -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_LIBRA, language)
+    ZodiacSign.SCORPIO -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_SCORPIO, language)
+    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_SAGITTARIUS, language)
+    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_CAPRICORN, language)
+    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_AQUARIUS, language)
+    ZodiacSign.PISCES -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_PISCES, language)
+    else -> StringResources.get(StringKeyGeneralPart8.PRED_MOON_DEFAULT, language)
 }
 
 private fun getLifeTheme(sign: ZodiacSign, language: Language): String = when (sign) {
-    ZodiacSign.ARIES -> StringResources.get(StringKeyPrediction.PRED_THEME_ARIES, language)
-    ZodiacSign.TAURUS -> StringResources.get(StringKeyPrediction.PRED_THEME_TAURUS, language)
-    ZodiacSign.GEMINI -> StringResources.get(StringKeyPrediction.PRED_THEME_GEMINI, language)
-    ZodiacSign.CANCER -> StringResources.get(StringKeyPrediction.PRED_THEME_CANCER, language)
-    ZodiacSign.LEO -> StringResources.get(StringKeyPrediction.PRED_THEME_LEO, language)
-    ZodiacSign.VIRGO -> StringResources.get(StringKeyPrediction.PRED_THEME_VIRGO, language)
-    ZodiacSign.LIBRA -> StringResources.get(StringKeyPrediction.PRED_THEME_LIBRA, language)
-    ZodiacSign.SCORPIO -> StringResources.get(StringKeyPrediction.PRED_THEME_SCORPIO, language)
-    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyPrediction.PRED_THEME_SAGITTARIUS, language)
-    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyPrediction.PRED_THEME_CAPRICORN, language)
-    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyPrediction.PRED_THEME_AQUARIUS, language)
-    ZodiacSign.PISCES -> StringResources.get(StringKeyPrediction.PRED_THEME_PISCES, language)
+    ZodiacSign.ARIES -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_ARIES, language)
+    ZodiacSign.TAURUS -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_TAURUS, language)
+    ZodiacSign.GEMINI -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_GEMINI, language)
+    ZodiacSign.CANCER -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_CANCER, language)
+    ZodiacSign.LEO -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_LEO, language)
+    ZodiacSign.VIRGO -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_VIRGO, language)
+    ZodiacSign.LIBRA -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_LIBRA, language)
+    ZodiacSign.SCORPIO -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_SCORPIO, language)
+    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_SAGITTARIUS, language)
+    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_CAPRICORN, language)
+    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_AQUARIUS, language)
+    ZodiacSign.PISCES -> StringResources.get(StringKeyGeneralPart9.PRED_THEME_PISCES, language)
 }
 
 private fun getSpiritualPath(sign: ZodiacSign?, language: Language): String = when (sign) {
-    ZodiacSign.ARIES -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_ARIES, language)
-    ZodiacSign.TAURUS -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_TAURUS, language)
-    ZodiacSign.GEMINI -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_GEMINI, language)
-    ZodiacSign.CANCER -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_CANCER, language)
-    ZodiacSign.LEO -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_LEO, language)
-    ZodiacSign.VIRGO -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_VIRGO, language)
-    ZodiacSign.LIBRA -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_LIBRA, language)
-    ZodiacSign.SCORPIO -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_SCORPIO, language)
-    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_SAGITTARIUS, language)
-    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_CAPRICORN, language)
-    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_AQUARIUS, language)
-    ZodiacSign.PISCES -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_PISCES, language)
-    else -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_DEFAULT, language)
+    ZodiacSign.ARIES -> StringResources.get(StringKeyGeneralPart8.PRED_SPIRIT_ARIES, language)
+    ZodiacSign.TAURUS -> StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_TAURUS, language)
+    ZodiacSign.GEMINI -> StringResources.get(StringKeyGeneralPart8.PRED_SPIRIT_GEMINI, language)
+    ZodiacSign.CANCER -> StringResources.get(StringKeyGeneralPart8.PRED_SPIRIT_CANCER, language)
+    ZodiacSign.LEO -> StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_LEO, language)
+    ZodiacSign.VIRGO -> StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_VIRGO, language)
+    ZodiacSign.LIBRA -> StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_LIBRA, language)
+    ZodiacSign.SCORPIO -> StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_SCORPIO, language)
+    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_SAGITTARIUS, language)
+    ZodiacSign.CAPRICORN -> StringResources.get(StringKeyGeneralPart8.PRED_SPIRIT_CAPRICORN, language)
+    ZodiacSign.AQUARIUS -> StringResources.get(StringKeyGeneralPart8.PRED_SPIRIT_AQUARIUS, language)
+    ZodiacSign.PISCES -> StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_PISCES, language)
+    else -> StringResources.get(StringKeyGeneralPart8.PRED_SPIRIT_DEFAULT, language)
 }
 
 private fun getDashaEffect(planet: Planet, language: Language): String = when (planet) {
-    Planet.SUN -> StringResources.get(StringKeyPrediction.PRED_DASHA_SUN, language)
-    Planet.MOON -> StringResources.get(StringKeyPrediction.PRED_DASHA_MOON, language)
-    Planet.MARS -> StringResources.get(StringKeyPrediction.PRED_DASHA_MARS, language)
-    Planet.MERCURY -> StringResources.get(StringKeyPrediction.PRED_DASHA_MERCURY, language)
-    Planet.JUPITER -> StringResources.get(StringKeyPrediction.PRED_DASHA_JUPITER, language)
-    Planet.VENUS -> StringResources.get(StringKeyPrediction.PRED_DASHA_VENUS, language)
-    Planet.SATURN -> StringResources.get(StringKeyPrediction.PRED_DASHA_SATURN, language)
-    Planet.RAHU -> StringResources.get(StringKeyPrediction.PRED_DASHA_RAHU, language)
-    Planet.KETU -> StringResources.get(StringKeyPrediction.PRED_DASHA_KETU, language)
-    else -> StringResources.get(StringKeyPrediction.PRED_DASHA_DEFAULT, language)
+    Planet.SUN -> StringResources.get(StringKeyGeneralPart8.PRED_DASHA_SUN, language)
+    Planet.MOON -> StringResources.get(StringKeyGeneralPart8.PRED_DASHA_MOON, language)
+    Planet.MARS -> StringResources.get(StringKeyGeneralPart8.PRED_DASHA_MARS, language)
+    Planet.MERCURY -> StringResources.get(StringKeyGeneralPart8.PRED_DASHA_MERCURY, language)
+    Planet.JUPITER -> StringResources.get(StringKeyGeneralPart8.PRED_DASHA_JUPITER, language)
+    Planet.VENUS -> StringResources.get(StringKeyGeneralPart8.PRED_DASHA_VENUS, language)
+    Planet.SATURN -> StringResources.get(StringKeyGeneralPart8.PRED_DASHA_SATURN, language)
+    Planet.RAHU -> StringResources.get(StringKeyGeneralPart8.PRED_DASHA_RAHU, language)
+    Planet.KETU -> StringResources.get(StringKeyGeneralPart8.PRED_DASHA_KETU, language)
+    else -> StringResources.get(StringKeyGeneralPart8.PRED_DASHA_DEFAULT, language)
 }
 
 private fun getAntardashaEffect(planet: Planet, language: Language): String = when (planet) {
-    Planet.SUN -> StringResources.get(StringKeyPrediction.PRED_AD_SUN, language)
-    Planet.MOON -> StringResources.get(StringKeyPrediction.PRED_AD_MOON, language)
-    Planet.MARS -> StringResources.get(StringKeyPrediction.PRED_AD_MARS, language)
-    Planet.MERCURY -> StringResources.get(StringKeyPrediction.PRED_AD_MERCURY, language)
-    Planet.JUPITER -> StringResources.get(StringKeyPrediction.PRED_AD_JUPITER, language)
-    Planet.VENUS -> StringResources.get(StringKeyPrediction.PRED_AD_VENUS, language)
-    Planet.SATURN -> StringResources.get(StringKeyPrediction.PRED_AD_SATURN, language)
-    Planet.RAHU -> StringResources.get(StringKeyPrediction.PRED_AD_RAHU, language)
-    Planet.KETU -> StringResources.get(StringKeyPrediction.PRED_AD_KETU, language)
-    else -> StringResources.get(StringKeyPrediction.PRED_AD_DEFAULT, language)
+    Planet.SUN -> StringResources.get(StringKeyGeneralPart8.PRED_AD_SUN, language)
+    Planet.MOON -> StringResources.get(StringKeyGeneralPart8.PRED_AD_MOON, language)
+    Planet.MARS -> StringResources.get(StringKeyGeneralPart8.PRED_AD_MARS, language)
+    Planet.MERCURY -> StringResources.get(StringKeyGeneralPart8.PRED_AD_MERCURY, language)
+    Planet.JUPITER -> StringResources.get(StringKeyGeneralPart8.PRED_AD_JUPITER, language)
+    Planet.VENUS -> StringResources.get(StringKeyGeneralPart8.PRED_AD_VENUS, language)
+    Planet.SATURN -> StringResources.get(StringKeyGeneralPart8.PRED_AD_SATURN, language)
+    Planet.RAHU -> StringResources.get(StringKeyGeneralPart8.PRED_AD_RAHU, language)
+    Planet.KETU -> StringResources.get(StringKeyGeneralPart8.PRED_AD_KETU, language)
+    else -> StringResources.get(StringKeyGeneralPart8.PRED_AD_DEFAULT, language)
 }
 
 private fun getTransitDescription(planet: Planet, language: Language): String = when (planet) {
-    Planet.SUN -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_SUN, language)
-    Planet.MOON -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_MOON, language)
-    Planet.MARS -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_MARS, language)
-    Planet.MERCURY -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_MERCURY, language)
-    Planet.JUPITER -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_JUPITER, language)
-    Planet.VENUS -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_VENUS, language)
-    Planet.SATURN -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_SATURN, language)
-    Planet.RAHU -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_RAHU, language)
-    Planet.KETU -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_KETU, language)
-    else -> StringResources.get(StringKeyPrediction.PRED_TRANSIT_DEFAULT, language)
+    Planet.SUN -> StringResources.get(StringKeyGeneralPart9.PRED_TRANSIT_SUN, language)
+    Planet.MOON -> StringResources.get(StringKeyGeneralPart9.PRED_TRANSIT_MOON, language)
+    Planet.MARS -> StringResources.get(StringKeyGeneralPart9.PRED_TRANSIT_MARS, language)
+    Planet.MERCURY -> StringResources.get(StringKeyGeneralPart9.PRED_TRANSIT_MERCURY, language)
+    Planet.JUPITER -> StringResources.get(StringKeyGeneralPart9.PRED_TRANSIT_JUPITER, language)
+    Planet.VENUS -> StringResources.get(StringKeyGeneralPart9.PRED_TRANSIT_VENUS, language)
+    Planet.SATURN -> StringResources.get(StringKeyGeneralPart9.PRED_TRANSIT_SATURN, language)
+    Planet.RAHU -> StringResources.get(StringKeyGeneralPart9.PRED_TRANSIT_RAHU, language)
+    Planet.KETU -> StringResources.get(StringKeyGeneralPart9.PRED_TRANSIT_KETU, language)
+    else -> StringResources.get(StringKeyGeneralPart9.PRED_TRANSIT_DEFAULT, language)
 }
 
 private fun getShortTermPrediction(area: LifeArea, language: Language): String = when (area) {
-    LifeArea.CAREER -> StringResources.get(StringKeyPrediction.PRED_CAREER_SHORT, language)
-    LifeArea.FINANCE -> StringResources.get(StringKeyPrediction.PRED_FINANCE_SHORT, language)
-    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyPrediction.PRED_REL_SHORT, language)
-    LifeArea.HEALTH -> StringResources.get(StringKeyPrediction.PRED_HEALTH_SHORT, language)
-    LifeArea.EDUCATION -> StringResources.get(StringKeyPrediction.PRED_EDU_SHORT, language)
-    LifeArea.FAMILY -> StringResources.get(StringKeyPrediction.PRED_FAMILY_SHORT, language)
-    LifeArea.SPIRITUAL -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_SHORT, language)
-    else -> StringResources.get(StringKeyPrediction.PRED_CAREER_SHORT, language)
+    LifeArea.CAREER -> StringResources.get(StringKeyGeneralPart8.PRED_CAREER_SHORT, language)
+    LifeArea.FINANCE -> StringResources.get(StringKeyGeneralPart8.PRED_FINANCE_SHORT, language)
+    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyGeneralPart8.PRED_REL_SHORT, language)
+    LifeArea.HEALTH -> StringResources.get(StringKeyGeneralPart8.PRED_HEALTH_SHORT, language)
+    LifeArea.EDUCATION -> StringResources.get(StringKeyGeneralPart8.PRED_EDU_SHORT, language)
+    LifeArea.FAMILY -> StringResources.get(StringKeyGeneralPart8.PRED_FAMILY_SHORT, language)
+    LifeArea.SPIRITUAL -> StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_SHORT, language)
+    else -> StringResources.get(StringKeyGeneralPart8.PRED_CAREER_SHORT, language)
 }
 
 private fun getMediumTermPrediction(area: LifeArea, language: Language): String = when (area) {
-    LifeArea.CAREER -> StringResources.get(StringKeyPrediction.PRED_CAREER_MED, language)
-    LifeArea.FINANCE -> StringResources.get(StringKeyPrediction.PRED_FINANCE_MED, language)
-    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyPrediction.PRED_REL_MED, language)
-    LifeArea.HEALTH -> StringResources.get(StringKeyPrediction.PRED_HEALTH_MED, language)
-    LifeArea.EDUCATION -> StringResources.get(StringKeyPrediction.PRED_EDU_MED, language)
-    LifeArea.FAMILY -> StringResources.get(StringKeyPrediction.PRED_FAMILY_MED, language)
-    LifeArea.SPIRITUAL -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_MED, language)
-    else -> StringResources.get(StringKeyPrediction.PRED_CAREER_MED, language)
+    LifeArea.CAREER -> StringResources.get(StringKeyGeneralPart8.PRED_CAREER_MED, language)
+    LifeArea.FINANCE -> StringResources.get(StringKeyGeneralPart8.PRED_FINANCE_MED, language)
+    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyGeneralPart8.PRED_REL_MED, language)
+    LifeArea.HEALTH -> StringResources.get(StringKeyGeneralPart8.PRED_HEALTH_MED, language)
+    LifeArea.EDUCATION -> StringResources.get(StringKeyGeneralPart8.PRED_EDU_MED, language)
+    LifeArea.FAMILY -> StringResources.get(StringKeyGeneralPart8.PRED_FAMILY_MED, language)
+    LifeArea.SPIRITUAL -> StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_MED, language)
+    else -> StringResources.get(StringKeyGeneralPart8.PRED_CAREER_MED, language)
 }
 
 private fun getLongTermPrediction(area: LifeArea, language: Language): String = when (area) {
-    LifeArea.CAREER -> StringResources.get(StringKeyPrediction.PRED_CAREER_LONG, language)
-    LifeArea.FINANCE -> StringResources.get(StringKeyPrediction.PRED_FINANCE_LONG, language)
-    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyPrediction.PRED_REL_LONG, language)
-    LifeArea.HEALTH -> StringResources.get(StringKeyPrediction.PRED_HEALTH_LONG, language)
-    LifeArea.EDUCATION -> StringResources.get(StringKeyPrediction.PRED_EDU_LONG, language)
-    LifeArea.FAMILY -> StringResources.get(StringKeyPrediction.PRED_FAMILY_LONG, language)
-    LifeArea.SPIRITUAL -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_LONG, language)
-    else -> StringResources.get(StringKeyPrediction.PRED_CAREER_LONG, language)
+    LifeArea.CAREER -> StringResources.get(StringKeyGeneralPart8.PRED_CAREER_LONG, language)
+    LifeArea.FINANCE -> StringResources.get(StringKeyGeneralPart8.PRED_FINANCE_LONG, language)
+    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyGeneralPart8.PRED_REL_LONG, language)
+    LifeArea.HEALTH -> StringResources.get(StringKeyGeneralPart8.PRED_HEALTH_LONG, language)
+    LifeArea.EDUCATION -> StringResources.get(StringKeyGeneralPart8.PRED_EDU_LONG, language)
+    LifeArea.FAMILY -> StringResources.get(StringKeyGeneralPart8.PRED_FAMILY_LONG, language)
+    LifeArea.SPIRITUAL -> StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_LONG, language)
+    else -> StringResources.get(StringKeyGeneralPart8.PRED_CAREER_LONG, language)
 }
 
 private fun getKeyFactors(area: LifeArea, language: Language): List<String> = when (area) {
     LifeArea.CAREER -> listOf(
-        StringResources.get(StringKeyPrediction.PRED_CAREER_KEY_1, language),
-        StringResources.get(StringKeyPrediction.PRED_CAREER_KEY_2, language),
-        StringResources.get(StringKeyPrediction.PRED_CAREER_KEY_3, language)
+        StringResources.get(StringKeyGeneralPart8.PRED_CAREER_KEY_1, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_CAREER_KEY_2, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_CAREER_KEY_3, language)
     )
     LifeArea.FINANCE -> listOf(
-        StringResources.get(StringKeyPrediction.PRED_FINANCE_KEY_1, language),
-        StringResources.get(StringKeyPrediction.PRED_FINANCE_KEY_2, language),
-        StringResources.get(StringKeyPrediction.PRED_FINANCE_KEY_3, language)
+        StringResources.get(StringKeyGeneralPart8.PRED_FINANCE_KEY_1, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_FINANCE_KEY_2, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_FINANCE_KEY_3, language)
     )
     LifeArea.RELATIONSHIPS -> listOf(
-        StringResources.get(StringKeyPrediction.PRED_REL_KEY_1, language),
-        StringResources.get(StringKeyPrediction.PRED_REL_KEY_2, language),
-        StringResources.get(StringKeyPrediction.PRED_REL_KEY_3, language)
+        StringResources.get(StringKeyGeneralPart8.PRED_REL_KEY_1, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_REL_KEY_2, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_REL_KEY_3, language)
     )
     LifeArea.HEALTH -> listOf(
-        StringResources.get(StringKeyPrediction.PRED_HEALTH_KEY_1, language),
-        StringResources.get(StringKeyPrediction.PRED_HEALTH_KEY_2, language),
-        StringResources.get(StringKeyPrediction.PRED_HEALTH_KEY_3, language)
+        StringResources.get(StringKeyGeneralPart8.PRED_HEALTH_KEY_1, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_HEALTH_KEY_2, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_HEALTH_KEY_3, language)
     )
     LifeArea.EDUCATION -> listOf(
-        StringResources.get(StringKeyPrediction.PRED_EDU_KEY_1, language),
-        StringResources.get(StringKeyPrediction.PRED_EDU_KEY_2, language),
-        StringResources.get(StringKeyPrediction.PRED_EDU_KEY_3, language)
+        StringResources.get(StringKeyGeneralPart8.PRED_EDU_KEY_1, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_EDU_KEY_2, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_EDU_KEY_3, language)
     )
     LifeArea.FAMILY -> listOf(
-        StringResources.get(StringKeyPrediction.PRED_FAMILY_KEY_1, language),
-        StringResources.get(StringKeyPrediction.PRED_FAMILY_KEY_2, language),
-        StringResources.get(StringKeyPrediction.PRED_FAMILY_KEY_3, language)
+        StringResources.get(StringKeyGeneralPart8.PRED_FAMILY_KEY_1, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_FAMILY_KEY_2, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_FAMILY_KEY_3, language)
     )
     LifeArea.SPIRITUAL -> listOf(
-        StringResources.get(StringKeyPrediction.PRED_SPIRIT_KEY_1, language),
-        StringResources.get(StringKeyPrediction.PRED_SPIRIT_KEY_2, language),
-        StringResources.get(StringKeyPrediction.PRED_SPIRIT_KEY_3, language)
+        StringResources.get(StringKeyGeneralPart8.PRED_SPIRIT_KEY_1, language),
+        StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_KEY_2, language),
+        StringResources.get(StringKeyGeneralPart9.PRED_SPIRIT_KEY_3, language)
     )
     else -> listOf(
-        StringResources.get(StringKeyPrediction.PRED_CAREER_KEY_1, language),
-        StringResources.get(StringKeyPrediction.PRED_CAREER_KEY_2, language),
-        StringResources.get(StringKeyPrediction.PRED_CAREER_KEY_3, language)
+        StringResources.get(StringKeyGeneralPart8.PRED_CAREER_KEY_1, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_CAREER_KEY_2, language),
+        StringResources.get(StringKeyGeneralPart8.PRED_CAREER_KEY_3, language)
     )
 }
 
 private fun getAdvice(area: LifeArea, language: Language): String = when (area) {
-    LifeArea.CAREER -> StringResources.get(StringKeyPrediction.PRED_CAREER_ADVICE, language)
-    LifeArea.FINANCE -> StringResources.get(StringKeyPrediction.PRED_FINANCE_ADVICE, language)
-    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyPrediction.PRED_REL_ADVICE, language)
-    LifeArea.HEALTH -> StringResources.get(StringKeyPrediction.PRED_HEALTH_ADVICE, language)
-    LifeArea.EDUCATION -> StringResources.get(StringKeyPrediction.PRED_EDU_ADVICE, language)
-    LifeArea.FAMILY -> StringResources.get(StringKeyPrediction.PRED_FAMILY_ADVICE, language)
-    LifeArea.SPIRITUAL -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_ADVICE, language)
-    else -> StringResources.get(StringKeyPrediction.PRED_CAREER_ADVICE, language)
+    LifeArea.CAREER -> StringResources.get(StringKeyGeneralPart8.PRED_CAREER_ADVICE, language)
+    LifeArea.FINANCE -> StringResources.get(StringKeyGeneralPart8.PRED_FINANCE_ADVICE, language)
+    LifeArea.RELATIONSHIPS -> StringResources.get(StringKeyGeneralPart8.PRED_REL_ADVICE, language)
+    LifeArea.HEALTH -> StringResources.get(StringKeyGeneralPart8.PRED_HEALTH_ADVICE, language)
+    LifeArea.EDUCATION -> StringResources.get(StringKeyGeneralPart8.PRED_EDU_ADVICE, language)
+    LifeArea.FAMILY -> StringResources.get(StringKeyGeneralPart8.PRED_FAMILY_ADVICE, language)
+    LifeArea.SPIRITUAL -> StringResources.get(StringKeyGeneralPart8.PRED_SPIRIT_ADVICE, language)
+    else -> StringResources.get(StringKeyGeneralPart8.PRED_CAREER_ADVICE, language)
 }
 
 @Composable

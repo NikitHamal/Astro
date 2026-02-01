@@ -907,7 +907,7 @@ private fun NavigationButtons(
             ) {
                 Text(
                     text = if (isLastPage) {
-                        stringResource(StringKeyUI.BTN_CREATE_CHART)
+                        stringResource(StringKeyUIPart1.BTN_CREATE_CHART)
                     } else {
                         stringResource(StringKeyFeature.ONBOARDING_BTN_NEXT)
                     },

@@ -39,14 +39,14 @@ object AspectCalculator {
         SATURN_10TH("Saturn 10th Aspect", 10, 270.0, AspectNature.CHALLENGING, "♄₁₀", 1.0);
 
         fun getLocalizedName(language: Language): String = when (this) {
-            CONJUNCTION -> StringResources.get(StringKeyAnalysisPart2.ASPECT_TYPE_CONJUNCTION, language)
-            SEVENTH_HOUSE -> StringResources.get(StringKeyAnalysisPart2.ASPECT_TYPE_7TH, language)
-            MARS_4TH -> StringResources.get(StringKeyAnalysisPart2.ASPECT_TYPE_MARS_4TH, language)
-            MARS_8TH -> StringResources.get(StringKeyAnalysisPart2.ASPECT_TYPE_MARS_8TH, language)
-            JUPITER_5TH -> StringResources.get(StringKeyAnalysisPart2.ASPECT_TYPE_JUPITER_5TH, language)
-            JUPITER_9TH -> StringResources.get(StringKeyAnalysisPart2.ASPECT_TYPE_JUPITER_9TH, language)
-            SATURN_3RD -> StringResources.get(StringKeyAnalysisPart2.ASPECT_TYPE_SATURN_3RD, language)
-            SATURN_10TH -> StringResources.get(StringKeyAnalysisPart2.ASPECT_TYPE_SATURN_10TH, language)
+            CONJUNCTION -> StringResources.get(StringKeyGeneralPart2.ASPECT_TYPE_CONJUNCTION, language)
+            SEVENTH_HOUSE -> StringResources.get(StringKeyGeneralPart2.ASPECT_TYPE_7TH, language)
+            MARS_4TH -> StringResources.get(StringKeyGeneralPart2.ASPECT_TYPE_MARS_4TH, language)
+            MARS_8TH -> StringResources.get(StringKeyGeneralPart2.ASPECT_TYPE_MARS_8TH, language)
+            JUPITER_5TH -> StringResources.get(StringKeyGeneralPart2.ASPECT_TYPE_JUPITER_5TH, language)
+            JUPITER_9TH -> StringResources.get(StringKeyGeneralPart2.ASPECT_TYPE_JUPITER_9TH, language)
+            SATURN_3RD -> StringResources.get(StringKeyGeneralPart2.ASPECT_TYPE_SATURN_3RD, language)
+            SATURN_10TH -> StringResources.get(StringKeyGeneralPart2.ASPECT_TYPE_SATURN_10TH, language)
         }
 
         companion object {
@@ -68,10 +68,10 @@ object AspectCalculator {
         SIGNIFICANT("Significant", null);
 
         fun getLocalizedName(language: Language): String = when (this) {
-            HARMONIOUS -> StringResources.get(StringKeyMatchPart1.ASPECT_NATURE_HARMONIOUS, language)
-            CHALLENGING -> StringResources.get(StringKeyMatchPart1.ASPECT_NATURE_CHALLENGING, language)
-            VARIABLE -> StringResources.get(StringKeyMatchPart1.ASPECT_NATURE_VARIABLE, language)
-            SIGNIFICANT -> StringResources.get(StringKeyMatchPart1.ASPECT_NATURE_SIGNIFICANT, language)
+            HARMONIOUS -> StringResources.get(StringKeyGeneralPart2.ASPECT_NATURE_HARMONIOUS, language)
+            CHALLENGING -> StringResources.get(StringKeyGeneralPart2.ASPECT_NATURE_CHALLENGING, language)
+            VARIABLE -> StringResources.get(StringKeyGeneralPart2.ASPECT_NATURE_VARIABLE, language)
+            SIGNIFICANT -> StringResources.get(StringKeyGeneralPart2.ASPECT_NATURE_SIGNIFICANT, language)
         }
     }
 
@@ -111,11 +111,11 @@ object AspectCalculator {
             }
 
         fun getLocalizedStrengthDescription(language: Language): String = when {
-            drishtiBala >= 0.95 -> StringResources.get(StringKeyAnalysisPart2.ASPECT_STRENGTH_EXACT, language)
-            drishtiBala >= 0.75 -> StringResources.get(StringKeyAnalysisPart2.ASPECT_STRENGTH_ADHIKA, language)
-            drishtiBala >= 0.50 -> StringResources.get(StringKeyAnalysisPart2.ASPECT_STRENGTH_MADHYA, language)
-            drishtiBala >= 0.25 -> StringResources.get(StringKeyAnalysisPart2.ASPECT_STRENGTH_ALPA, language)
-            else -> StringResources.get(StringKeyAnalysisPart2.ASPECT_STRENGTH_SUNYA, language)
+            drishtiBala >= 0.95 -> StringResources.get(StringKeyGeneralPart2.ASPECT_STRENGTH_EXACT, language)
+            drishtiBala >= 0.75 -> StringResources.get(StringKeyGeneralPart2.ASPECT_STRENGTH_ADHIKA, language)
+            drishtiBala >= 0.50 -> StringResources.get(StringKeyGeneralPart2.ASPECT_STRENGTH_MADHYA, language)
+            drishtiBala >= 0.25 -> StringResources.get(StringKeyGeneralPart2.ASPECT_STRENGTH_ALPA, language)
+            else -> StringResources.get(StringKeyGeneralPart2.ASPECT_STRENGTH_SUNYA, language)
         }
 
         val isFullAspect: Boolean

@@ -100,9 +100,9 @@ import java.time.format.DateTimeFormatter
  */
 
 enum class PanchangaViewType(val titleKey: StringKey) {
-    TODAY(StringKeyUI.TAB_TODAY),
-    BIRTH(StringKeyUI.TAB_BIRTH_DAY),
-    ELEMENTS(StringKeyUI.TAB_ELEMENTS)
+    TODAY(StringKeyUIPart1.TAB_TODAY),
+    BIRTH(StringKeyUIPart1.TAB_BIRTH_DAY),
+    ELEMENTS(StringKeyUIPart1.TAB_ELEMENTS)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -262,7 +262,7 @@ private fun PanchangaTopBar(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                        contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -1385,7 +1385,7 @@ private fun PanchangaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyUI.BTN_BACK), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyUIPart1.BTN_BACK), color = AppTheme.AccentPrimary)
             }
         },
         containerColor = AppTheme.CardBackground,

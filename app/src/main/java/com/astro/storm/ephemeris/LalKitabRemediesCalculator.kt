@@ -51,7 +51,7 @@ object LalKitabRemediesCalculator {
         val annualCalendar = generateAnnualRemedyCalendar(language)
 
         return LalKitabAnalysis(
-            systemNote = StringResources.get(StringKeyLalKitab.SYSTEM_NOTE, language),
+            systemNote = StringResources.get(StringKeyGeneralPart11.SYSTEM_NOTE, language),
             planetaryAfflictions = planetaryAfflictions,
             karmicDebts = debts,
             houseAnalysis = houseAnalysis,
@@ -170,34 +170,34 @@ object LalKitabRemediesCalculator {
         // Type-specific effects
         when (type) {
             AfflictionType.PITRU_DOSH -> effects.addAll(listOf(
-                StringResources.get(StringKeyLalKitab.AFFL_PITRU, language),
-                StringResources.get(StringKeyLalKitab.AFFL_PITRU_PROGENY, language),
-                StringResources.get(StringKeyLalKitab.AFFL_PITRU_HEALTH, language)
+                StringResources.get(StringKeyGeneralPart1.AFFL_PITRU, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_PITRU_PROGENY, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_PITRU_HEALTH, language)
             ))
             AfflictionType.MATRU_RIN -> effects.addAll(listOf(
-                StringResources.get(StringKeyLalKitab.AFFL_MATRU, language),
-                StringResources.get(StringKeyLalKitab.AFFL_MATRU_PROP, language),
-                StringResources.get(StringKeyLalKitab.AFFL_MATRU_PEACE, language)
+                StringResources.get(StringKeyGeneralPart1.AFFL_MATRU, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_MATRU_PROP, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_MATRU_PEACE, language)
             ))
             AfflictionType.STRI_RIN -> effects.addAll(listOf(
-                StringResources.get(StringKeyLalKitab.AFFL_STRI, language),
-                StringResources.get(StringKeyLalKitab.AFFL_STRI_MARR, language),
-                StringResources.get(StringKeyLalKitab.AFFL_STRI_FIN, language)
+                StringResources.get(StringKeyGeneralPart1.AFFL_STRI, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_STRI_MARR, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_STRI_FIN, language)
             ))
             AfflictionType.KANYA_RIN -> effects.addAll(listOf(
-                StringResources.get(StringKeyLalKitab.AFFL_KANYA, language),
-                StringResources.get(StringKeyLalKitab.AFFL_KANYA_CHILD, language),
-                StringResources.get(StringKeyLalKitab.AFFL_KANYA_EDU, language)
+                StringResources.get(StringKeyGeneralPart1.AFFL_KANYA, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_KANYA_CHILD, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_KANYA_EDU, language)
             ))
             AfflictionType.GRAHAN_DOSH -> effects.addAll(listOf(
-                StringResources.get(StringKeyLalKitab.AFFL_GRAHAN, language),
-                StringResources.get(StringKeyLalKitab.AFFL_GRAHAN_SUDDEN, language),
-                StringResources.get(StringKeyLalKitab.AFFL_GRAHAN_HIDDEN, language)
+                StringResources.get(StringKeyGeneralPart1.AFFL_GRAHAN, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_GRAHAN_SUDDEN, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_GRAHAN_HIDDEN, language)
             ))
             AfflictionType.SHANI_PEEDA -> effects.addAll(listOf(
-                StringResources.get(StringKeyLalKitab.AFFL_SHANI, language),
-                StringResources.get(StringKeyLalKitab.AFFL_SHANI_DELAY, language),
-                StringResources.get(StringKeyLalKitab.AFFL_SHANI_INTENSE, language)
+                StringResources.get(StringKeyGeneralPart1.AFFL_SHANI, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_SHANI_DELAY, language),
+                StringResources.get(StringKeyGeneralPart1.AFFL_SHANI_INTENSE, language)
             ))
             AfflictionType.NONE -> {}
         }
@@ -212,75 +212,75 @@ object LalKitabRemediesCalculator {
         return when (planet) {
             Planet.SUN -> when (house) {
                 6, 8, 12 -> listOf(
-                    StringResources.get(StringKeyLalKitab.EFFECT_SUN_AUTH, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_SUN_GOVT, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_SUN_FATHER, language)
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_SUN_AUTH, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_SUN_GOVT, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_SUN_FATHER, language)
                 )
-                else -> listOf(StringResources.get(StringKeyLalKitab.EFFECT_SUN_GEN, language))
+                else -> listOf(StringResources.get(StringKeyGeneralPart4.EFFECT_SUN_GEN, language))
             }
             Planet.MOON -> when (house) {
                 8, 12 -> listOf(
-                    StringResources.get(StringKeyLalKitab.EFFECT_MOON_PEACE, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_MOON_MOTHER, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_MOON_EMO, language)
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_MOON_PEACE, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_MOON_MOTHER, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_MOON_EMO, language)
                 )
-                else -> listOf(StringResources.get(StringKeyLalKitab.EFFECT_MOON_GEN, language))
+                else -> listOf(StringResources.get(StringKeyGeneralPart4.EFFECT_MOON_GEN, language))
             }
             Planet.MARS -> when (house) {
                 4, 7, 8 -> listOf(
-                    StringResources.get(StringKeyLalKitab.EFFECT_MARS_PROP, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_MARS_REL, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_MARS_ACC, language)
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_MARS_PROP, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_MARS_REL, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_MARS_ACC, language)
                 )
-                else -> listOf(StringResources.get(StringKeyLalKitab.EFFECT_MARS_GEN, language))
+                else -> listOf(StringResources.get(StringKeyGeneralPart4.EFFECT_MARS_GEN, language))
             }
             Planet.MERCURY -> when (house) {
                 8, 12 -> listOf(
-                    StringResources.get(StringKeyLalKitab.EFFECT_MERC_COMM, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_MERC_BIZ, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_MERC_EDU, language)
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_MERC_COMM, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_MERC_BIZ, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_MERC_EDU, language)
                 )
-                else -> listOf(StringResources.get(StringKeyLalKitab.EFFECT_MERC_GEN, language))
+                else -> listOf(StringResources.get(StringKeyGeneralPart4.EFFECT_MERC_GEN, language))
             }
             Planet.JUPITER -> when (house) {
                 8 -> listOf(
-                    StringResources.get(StringKeyLalKitab.EFFECT_JUP_WISDOM, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_JUP_CHILD, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_JUP_SPIRIT, language)
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_JUP_WISDOM, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_JUP_CHILD, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_JUP_SPIRIT, language)
                 )
-                else -> listOf(StringResources.get(StringKeyLalKitab.EFFECT_JUP_GEN, language))
+                else -> listOf(StringResources.get(StringKeyGeneralPart4.EFFECT_JUP_GEN, language))
             }
             Planet.VENUS -> when (house) {
                 6 -> listOf(
-                    StringResources.get(StringKeyLalKitab.EFFECT_VENUS_MARR, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_VENUS_REL, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_VENUS_LUXURY, language)
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_VENUS_MARR, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_VENUS_REL, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_VENUS_LUXURY, language)
                 )
-                else -> listOf(StringResources.get(StringKeyLalKitab.EFFECT_VENUS_GEN, language))
+                else -> listOf(StringResources.get(StringKeyGeneralPart4.EFFECT_VENUS_GEN, language))
             }
             Planet.SATURN -> when (house) {
                 1, 4, 7 -> listOf(
-                    StringResources.get(StringKeyLalKitab.EFFECT_SAT_HEALTH, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_SAT_HOME, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_SAT_PARTNER, language)
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_SAT_HEALTH, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_SAT_HOME, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_SAT_PARTNER, language)
                 )
-                else -> listOf(StringResources.get(StringKeyLalKitab.EFFECT_SAT_GEN, language))
+                else -> listOf(StringResources.get(StringKeyGeneralPart4.EFFECT_SAT_GEN, language))
             }
             Planet.RAHU -> when (house) {
                 1, 7 -> listOf(
-                    StringResources.get(StringKeyLalKitab.EFFECT_RAHU_ID, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_RAHU_SUDDEN, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_RAHU_FOREIGN, language)
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_RAHU_ID, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_RAHU_SUDDEN, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_RAHU_FOREIGN, language)
                 )
-                else -> listOf(StringResources.get(StringKeyLalKitab.EFFECT_RAHU_GEN, language))
+                else -> listOf(StringResources.get(StringKeyGeneralPart4.EFFECT_RAHU_GEN, language))
             }
             Planet.KETU -> when (house) {
                 2, 5 -> listOf(
-                    StringResources.get(StringKeyLalKitab.EFFECT_KETU_WEALTH, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_KETU_CHILD, language),
-                    StringResources.get(StringKeyLalKitab.EFFECT_KETU_KARMA, language)
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_KETU_WEALTH, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_KETU_CHILD, language),
+                    StringResources.get(StringKeyGeneralPart4.EFFECT_KETU_KARMA, language)
                 )
-                else -> listOf(StringResources.get(StringKeyLalKitab.EFFECT_KETU_GEN, language))
+                else -> listOf(StringResources.get(StringKeyGeneralPart4.EFFECT_KETU_GEN, language))
             }
             else -> emptyList()
         }
@@ -304,21 +304,21 @@ object LalKitabRemediesCalculator {
             debts.add(
                 KarmicDebt(
                     type = DebtType.PITRU_RIN,
-                    description = StringResources.get(StringKeyLalKitab.DEBT_PITRU_DESC, language),
+                    description = StringResources.get(StringKeyGeneralPart3.DEBT_PITRU_DESC, language),
                     indicators = listOf(
-                        StringResources.get(StringKeyLalKitab.INDIC_SUN_HOUSE, language, getOrdinal(sunHouse ?: 1, language)),
-                        if (jupiterHouse == 8) StringResources.get(StringKeyLalKitab.INDIC_JUP_8, language) else null
+                        StringResources.get(StringKeyGeneralPart5.INDIC_SUN_HOUSE, language, getOrdinal(sunHouse ?: 1, language)),
+                        if (jupiterHouse == 8) StringResources.get(StringKeyGeneralPart5.INDIC_JUP_8, language) else null
                     ).filterNotNull(),
                     effects = listOf(
-                        StringResources.get(StringKeyLalKitab.DEBT_PITRU_EFF_1, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_PITRU_EFF_2, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_PITRU_EFF_3, language)
+                        StringResources.get(StringKeyGeneralPart3.DEBT_PITRU_EFF_1, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_PITRU_EFF_2, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_PITRU_EFF_3, language)
                     ),
                     remedies = listOf(
-                        StringResources.get(StringKeyLalKitab.DEBT_PITRU_REM_1, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_PITRU_REM_2, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_PITRU_REM_3, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_PITRU_REM_4, language)
+                        StringResources.get(StringKeyGeneralPart3.DEBT_PITRU_REM_1, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_PITRU_REM_2, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_PITRU_REM_3, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_PITRU_REM_4, language)
                     )
                 )
             )
@@ -333,18 +333,18 @@ object LalKitabRemediesCalculator {
             debts.add(
                 KarmicDebt(
                     type = DebtType.MATRU_RIN,
-                    description = StringResources.get(StringKeyLalKitab.DEBT_MATRU_DESC, language),
-                    indicators = listOf(StringResources.get(StringKeyLalKitab.INDIC_MOON_HOUSE, language, getOrdinal(moonHouse ?: 1, language))),
+                    description = StringResources.get(StringKeyGeneralPart3.DEBT_MATRU_DESC, language),
+                    indicators = listOf(StringResources.get(StringKeyGeneralPart5.INDIC_MOON_HOUSE, language, getOrdinal(moonHouse ?: 1, language))),
                     effects = listOf(
-                        StringResources.get(StringKeyLalKitab.DEBT_MATRU_EFF_1, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_MATRU_EFF_2, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_MATRU_EFF_3, language)
+                        StringResources.get(StringKeyGeneralPart3.DEBT_MATRU_EFF_1, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_MATRU_EFF_2, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_MATRU_EFF_3, language)
                     ),
                     remedies = listOf(
-                        StringResources.get(StringKeyLalKitab.DEBT_MATRU_REM_1, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_MATRU_REM_2, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_MATRU_REM_3, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_MATRU_REM_4, language)
+                        StringResources.get(StringKeyGeneralPart3.DEBT_MATRU_REM_1, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_MATRU_REM_2, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_MATRU_REM_3, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_MATRU_REM_4, language)
                     )
                 )
             )
@@ -359,18 +359,18 @@ object LalKitabRemediesCalculator {
             debts.add(
                 KarmicDebt(
                     type = DebtType.STRI_RIN,
-                    description = StringResources.get(StringKeyLalKitab.DEBT_STRI_DESC, language),
-                    indicators = listOf(StringResources.get(StringKeyLalKitab.INDIC_VENUS_HOUSE, language, getOrdinal(venusHouse ?: 1, language))),
+                    description = StringResources.get(StringKeyGeneralPart3.DEBT_STRI_DESC, language),
+                    indicators = listOf(StringResources.get(StringKeyGeneralPart5.INDIC_VENUS_HOUSE, language, getOrdinal(venusHouse ?: 1, language))),
                     effects = listOf(
-                        StringResources.get(StringKeyLalKitab.DEBT_STRI_EFF_1, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_STRI_EFF_2, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_STRI_EFF_3, language)
+                        StringResources.get(StringKeyGeneralPart3.DEBT_STRI_EFF_1, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_STRI_EFF_2, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_STRI_EFF_3, language)
                     ),
                     remedies = listOf(
-                        StringResources.get(StringKeyLalKitab.DEBT_STRI_REM_1, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_STRI_REM_2, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_STRI_REM_3, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_STRI_REM_4, language)
+                        StringResources.get(StringKeyGeneralPart3.DEBT_STRI_REM_1, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_STRI_REM_2, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_STRI_REM_3, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_STRI_REM_4, language)
                     )
                 )
             )
@@ -385,18 +385,18 @@ object LalKitabRemediesCalculator {
             debts.add(
                 KarmicDebt(
                     type = DebtType.KANYA_RIN,
-                    description = StringResources.get(StringKeyLalKitab.DEBT_KANYA_DESC, language),
-                    indicators = listOf(StringResources.get(StringKeyLalKitab.INDIC_MERC_HOUSE, language, getOrdinal(mercuryHouse ?: 1, language))),
+                    description = StringResources.get(StringKeyGeneralPart3.DEBT_KANYA_DESC, language),
+                    indicators = listOf(StringResources.get(StringKeyGeneralPart5.INDIC_MERC_HOUSE, language, getOrdinal(mercuryHouse ?: 1, language))),
                     effects = listOf(
-                        StringResources.get(StringKeyLalKitab.DEBT_KANYA_EFF_1, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_KANYA_EFF_2, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_KANYA_EFF_3, language)
+                        StringResources.get(StringKeyGeneralPart3.DEBT_KANYA_EFF_1, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_KANYA_EFF_2, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_KANYA_EFF_3, language)
                     ),
                     remedies = listOf(
-                        StringResources.get(StringKeyLalKitab.DEBT_KANYA_REM_1, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_KANYA_REM_2, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_KANYA_REM_3, language),
-                        StringResources.get(StringKeyLalKitab.DEBT_KANYA_REM_4, language)
+                        StringResources.get(StringKeyGeneralPart3.DEBT_KANYA_REM_1, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_KANYA_REM_2, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_KANYA_REM_3, language),
+                        StringResources.get(StringKeyGeneralPart3.DEBT_KANYA_REM_4, language)
                     )
                 )
             )
@@ -437,19 +437,19 @@ object LalKitabRemediesCalculator {
 
     private fun getHouseLalKitabSignificance(house: Int, language: Language): String {
         val key = when (house) {
-            1 -> StringKeyLalKitab.SIG_1
-            2 -> StringKeyLalKitab.SIG_2
-            3 -> StringKeyLalKitab.SIG_3
-            4 -> StringKeyLalKitab.SIG_4
-            5 -> StringKeyLalKitab.SIG_5
-            6 -> StringKeyLalKitab.SIG_6
-            7 -> StringKeyLalKitab.SIG_7
-            8 -> StringKeyLalKitab.SIG_8
-            9 -> StringKeyLalKitab.SIG_9
-            10 -> StringKeyLalKitab.SIG_10
-            11 -> StringKeyLalKitab.SIG_11
-            12 -> StringKeyLalKitab.SIG_12
-            else -> StringKeyLalKitab.SIG_GEN
+            1 -> StringKeyGeneralPart10.SIG_1
+            2 -> StringKeyGeneralPart10.SIG_2
+            3 -> StringKeyGeneralPart10.SIG_3
+            4 -> StringKeyGeneralPart10.SIG_4
+            5 -> StringKeyGeneralPart10.SIG_5
+            6 -> StringKeyGeneralPart10.SIG_6
+            7 -> StringKeyGeneralPart10.SIG_7
+            8 -> StringKeyGeneralPart10.SIG_8
+            9 -> StringKeyGeneralPart10.SIG_9
+            10 -> StringKeyGeneralPart10.SIG_10
+            11 -> StringKeyGeneralPart10.SIG_11
+            12 -> StringKeyGeneralPart10.SIG_12
+            else -> StringKeyGeneralPart10.SIG_GEN
         }
         return StringResources.get(key, language)
     }
@@ -459,7 +459,7 @@ object LalKitabRemediesCalculator {
 
         if (planets.isEmpty()) {
             val lordName = LAL_KITAB_HOUSE_LORDS[house]?.getLocalizedName(language) ?: ""
-            recs.add(StringResources.get(StringKeyLalKitab.HOUSE_REC_STRENGTHEN, language, lordName, getOrdinal(house, language)))
+            recs.add(StringResources.get(StringKeyGeneralPart5.HOUSE_REC_STRENGTHEN, language, lordName, getOrdinal(house, language)))
         } else {
             planets.forEach { pos ->
                 recs.addAll(getPlanetaryRemedies(pos.planet, house, language).take(2))
@@ -492,9 +492,9 @@ object LalKitabRemediesCalculator {
                             remedy = remedy,
                             method = getRemedyMethod(remedy, language),
                             frequency = getRemedyFrequency(affliction.planet, language),
-                            duration = StringResources.get(StringKeyLalKitab.REM_DURATION_43, language),
+                            duration = StringResources.get(StringKeyGeneralPart9.REM_DURATION_43, language),
                             effectiveness = if (affliction.severity == AfflictionSeverity.SEVERE)
-                                StringResources.get(StringKeyLalKitab.REM_EFF_HIGH, language) else StringResources.get(StringKeyLalKitab.REM_EFF_MOD, language)
+                                StringResources.get(StringKeyGeneralPart9.REM_EFF_HIGH, language) else StringResources.get(StringKeyGeneralPart9.REM_EFF_MOD, language)
                         )
                     )
                 }
@@ -510,9 +510,9 @@ object LalKitabRemediesCalculator {
                         forHouse = null,
                         remedy = remedy,
                         method = getRemedyMethod(remedy, language),
-                        frequency = StringResources.get(StringKeyLalKitab.REM_FREQ_WEEKLY, language),
-                        duration = StringResources.get(StringKeyLalKitab.REM_DURATION_LONG, language),
-                        effectiveness = StringResources.get(StringKeyLalKitab.REM_EFF_ROOT, language)
+                        frequency = StringResources.get(StringKeyGeneralPart9.REM_FREQ_WEEKLY, language),
+                        duration = StringResources.get(StringKeyGeneralPart9.REM_DURATION_LONG, language),
+                        effectiveness = StringResources.get(StringKeyGeneralPart9.REM_EFF_ROOT, language)
                     )
                 )
             }
@@ -524,58 +524,58 @@ object LalKitabRemediesCalculator {
     private fun getPlanetaryRemedies(planet: Planet, house: Int, language: Language): List<String> {
         val baseRemedies = when (planet) {
             Planet.SUN -> listOf(
-                StringResources.get(StringKeyLalKitab.REM_SUN_WATER, language),
-                StringResources.get(StringKeyLalKitab.REM_SUN_FEED, language),
-                StringResources.get(StringKeyLalKitab.REM_SUN_SILVER, language),
-                StringResources.get(StringKeyLalKitab.REM_SUN_RUBY, language)
+                StringResources.get(StringKeyGeneralPart9.REM_SUN_WATER, language),
+                StringResources.get(StringKeyGeneralPart9.REM_SUN_FEED, language),
+                StringResources.get(StringKeyGeneralPart9.REM_SUN_SILVER, language),
+                StringResources.get(StringKeyGeneralPart9.REM_SUN_RUBY, language)
             )
             Planet.MOON -> listOf(
-                StringResources.get(StringKeyLalKitab.REM_MOON_SHIVA, language),
-                StringResources.get(StringKeyLalKitab.REM_MOON_SILVER, language),
-                StringResources.get(StringKeyLalKitab.REM_MOON_MOTHER, language),
-                StringResources.get(StringKeyLalKitab.REM_MOON_GLASS, language)
+                StringResources.get(StringKeyGeneralPart9.REM_MOON_SHIVA, language),
+                StringResources.get(StringKeyGeneralPart9.REM_MOON_SILVER, language),
+                StringResources.get(StringKeyGeneralPart9.REM_MOON_MOTHER, language),
+                StringResources.get(StringKeyGeneralPart9.REM_MOON_GLASS, language)
             )
             Planet.MARS -> listOf(
-                StringResources.get(StringKeyLalKitab.REM_MARS_HANUMAN, language),
-                StringResources.get(StringKeyLalKitab.REM_MARS_FEED, language),
-                StringResources.get(StringKeyLalKitab.REM_MARS_DEER, language),
-                StringResources.get(StringKeyLalKitab.REM_MARS_DONATE, language)
+                StringResources.get(StringKeyGeneralPart9.REM_MARS_HANUMAN, language),
+                StringResources.get(StringKeyGeneralPart9.REM_MARS_FEED, language),
+                StringResources.get(StringKeyGeneralPart9.REM_MARS_DEER, language),
+                StringResources.get(StringKeyGeneralPart9.REM_MARS_DONATE, language)
             )
             Planet.MERCURY -> listOf(
-                StringResources.get(StringKeyLalKitab.REM_MERC_FEED, language),
-                StringResources.get(StringKeyLalKitab.REM_MERC_BURY, language),
-                StringResources.get(StringKeyLalKitab.REM_MERC_DONATE, language),
-                StringResources.get(StringKeyLalKitab.REM_MERC_PARROT, language)
+                StringResources.get(StringKeyGeneralPart9.REM_MERC_FEED, language),
+                StringResources.get(StringKeyGeneralPart9.REM_MERC_BURY, language),
+                StringResources.get(StringKeyGeneralPart9.REM_MERC_DONATE, language),
+                StringResources.get(StringKeyGeneralPart9.REM_MERC_PARROT, language)
             )
             Planet.JUPITER -> listOf(
-                StringResources.get(StringKeyLalKitab.REM_JUP_TILAK, language),
-                StringResources.get(StringKeyLalKitab.REM_JUP_PEEPAL, language),
-                StringResources.get(StringKeyLalKitab.REM_JUP_DONATE, language),
-                StringResources.get(StringKeyLalKitab.REM_JUP_BRAHMIN, language)
+                StringResources.get(StringKeyGeneralPart9.REM_JUP_TILAK, language),
+                StringResources.get(StringKeyGeneralPart9.REM_JUP_PEEPAL, language),
+                StringResources.get(StringKeyGeneralPart9.REM_JUP_DONATE, language),
+                StringResources.get(StringKeyGeneralPart9.REM_JUP_BRAHMIN, language)
             )
             Planet.VENUS -> listOf(
-                StringResources.get(StringKeyLalKitab.REM_VENUS_DONATE, language),
-                StringResources.get(StringKeyLalKitab.REM_VENUS_FEED, language),
-                StringResources.get(StringKeyLalKitab.REM_VENUS_SILVER, language),
-                StringResources.get(StringKeyLalKitab.REM_VENUS_WOMEN, language)
+                StringResources.get(StringKeyGeneralPart9.REM_VENUS_DONATE, language),
+                StringResources.get(StringKeyGeneralPart9.REM_VENUS_FEED, language),
+                StringResources.get(StringKeyGeneralPart9.REM_VENUS_SILVER, language),
+                StringResources.get(StringKeyGeneralPart9.REM_VENUS_WOMEN, language)
             )
             Planet.SATURN -> listOf(
-                StringResources.get(StringKeyLalKitab.REM_SAT_DONATE, language),
-                StringResources.get(StringKeyLalKitab.REM_SAT_FEED, language),
-                StringResources.get(StringKeyLalKitab.REM_SAT_SERVE, language),
-                StringResources.get(StringKeyLalKitab.REM_SAT_OIL, language)
+                StringResources.get(StringKeyGeneralPart9.REM_SAT_DONATE, language),
+                StringResources.get(StringKeyGeneralPart9.REM_SAT_FEED, language),
+                StringResources.get(StringKeyGeneralPart9.REM_SAT_SERVE, language),
+                StringResources.get(StringKeyGeneralPart9.REM_SAT_OIL, language)
             )
             Planet.RAHU -> listOf(
-                StringResources.get(StringKeyLalKitab.REM_RAHU_DONATE, language),
-                StringResources.get(StringKeyLalKitab.REM_RAHU_BARLEY, language),
-                StringResources.get(StringKeyLalKitab.REM_RAHU_COCONUT, language),
-                StringResources.get(StringKeyLalKitab.REM_RAHU_DOGS, language)
+                StringResources.get(StringKeyGeneralPart9.REM_RAHU_DONATE, language),
+                StringResources.get(StringKeyGeneralPart9.REM_RAHU_BARLEY, language),
+                StringResources.get(StringKeyGeneralPart9.REM_RAHU_COCONUT, language),
+                StringResources.get(StringKeyGeneralPart9.REM_RAHU_DOGS, language)
             )
             Planet.KETU -> listOf(
-                StringResources.get(StringKeyLalKitab.REM_KETU_DONATE, language),
-                StringResources.get(StringKeyLalKitab.REM_KETU_DOGS, language),
-                StringResources.get(StringKeyLalKitab.REM_KETU_CLOTHES, language),
-                StringResources.get(StringKeyLalKitab.REM_KETU_SESAME, language)
+                StringResources.get(StringKeyGeneralPart9.REM_KETU_DONATE, language),
+                StringResources.get(StringKeyGeneralPart9.REM_KETU_DOGS, language),
+                StringResources.get(StringKeyGeneralPart9.REM_KETU_CLOTHES, language),
+                StringResources.get(StringKeyGeneralPart9.REM_KETU_SESAME, language)
             )
             else -> emptyList()
         }
@@ -583,8 +583,8 @@ object LalKitabRemediesCalculator {
         // Add house-specific remedies
         val houseRemedies = when (house) {
             6, 8, 12 -> listOf(
-                StringResources.get(StringKeyLalKitab.REM_HOUSE_CHARITY, language, getOrdinal(house, language)),
-                StringResources.get(StringKeyLalKitab.REM_HOUSE_PEACE, language)
+                StringResources.get(StringKeyGeneralPart9.REM_HOUSE_CHARITY, language, getOrdinal(house, language)),
+                StringResources.get(StringKeyGeneralPart9.REM_HOUSE_PEACE, language)
             )
             else -> emptyList()
         }
@@ -594,29 +594,29 @@ object LalKitabRemediesCalculator {
 
     private fun getRemedyMethod(remedy: String, language: Language): String {
         return when {
-            remedy.contains("feed", ignoreCase = true) || remedy.contains("भोजन", ignoreCase = true) || remedy.contains("खुवाउनु", ignoreCase = true) -> StringResources.get(StringKeyLalKitab.METHOD_FEEDING, language)
-            remedy.contains("donate", ignoreCase = true) || remedy.contains("दान", ignoreCase = true) -> StringResources.get(StringKeyLalKitab.METHOD_CHARITY, language)
-            remedy.contains("offer", ignoreCase = true) || remedy.contains("चढाउनु", ignoreCase = true) || remedy.contains("अर्पण", ignoreCase = true) -> StringResources.get(StringKeyLalKitab.METHOD_OFFERING, language)
-            remedy.contains("keep", ignoreCase = true) || remedy.contains("राख्नु", ignoreCase = true) -> StringResources.get(StringKeyLalKitab.METHOD_PROTECTIVE, language)
-            remedy.contains("recite", ignoreCase = true) || remedy.contains("पाठ", ignoreCase = true) || remedy.contains("जप", ignoreCase = true) -> StringResources.get(StringKeyLalKitab.METHOD_MANTRA, language)
-            remedy.contains("float", ignoreCase = true) || remedy.contains("बगाउनु", ignoreCase = true) -> StringResources.get(StringKeyLalKitab.METHOD_WATER, language)
-            remedy.contains("bury", ignoreCase = true) || remedy.contains("गाड्नु", ignoreCase = true) -> StringResources.get(StringKeyLalKitab.METHOD_EARTH, language)
-            else -> StringResources.get(StringKeyLalKitab.METHOD_GENERAL, language)
+            remedy.contains("feed", ignoreCase = true) || remedy.contains("भोजन", ignoreCase = true) || remedy.contains("खुवाउनु", ignoreCase = true) -> StringResources.get(StringKeyGeneralPart7.METHOD_FEEDING, language)
+            remedy.contains("donate", ignoreCase = true) || remedy.contains("दान", ignoreCase = true) -> StringResources.get(StringKeyGeneralPart7.METHOD_CHARITY, language)
+            remedy.contains("offer", ignoreCase = true) || remedy.contains("चढाउनु", ignoreCase = true) || remedy.contains("अर्पण", ignoreCase = true) -> StringResources.get(StringKeyGeneralPart7.METHOD_OFFERING, language)
+            remedy.contains("keep", ignoreCase = true) || remedy.contains("राख्नु", ignoreCase = true) -> StringResources.get(StringKeyGeneralPart7.METHOD_PROTECTIVE, language)
+            remedy.contains("recite", ignoreCase = true) || remedy.contains("पाठ", ignoreCase = true) || remedy.contains("जप", ignoreCase = true) -> StringResources.get(StringKeyGeneralPart7.METHOD_MANTRA, language)
+            remedy.contains("float", ignoreCase = true) || remedy.contains("बगाउनु", ignoreCase = true) -> StringResources.get(StringKeyGeneralPart7.METHOD_WATER, language)
+            remedy.contains("bury", ignoreCase = true) || remedy.contains("गाड्नु", ignoreCase = true) -> StringResources.get(StringKeyGeneralPart7.METHOD_EARTH, language)
+            else -> StringResources.get(StringKeyGeneralPart7.METHOD_GENERAL, language)
         }
     }
 
     private fun getRemedyFrequency(planet: Planet, language: Language): String {
         return when (planet) {
-            Planet.SUN -> StringResources.get(StringKeyLalKitab.FREQ_SUN, language)
-            Planet.MOON -> StringResources.get(StringKeyLalKitab.FREQ_MOON, language)
-            Planet.MARS -> StringResources.get(StringKeyLalKitab.FREQ_MARS, language)
-            Planet.MERCURY -> StringResources.get(StringKeyLalKitab.FREQ_MERC, language)
-            Planet.JUPITER -> StringResources.get(StringKeyLalKitab.FREQ_JUP, language)
-            Planet.VENUS -> StringResources.get(StringKeyLalKitab.FREQ_VENUS, language)
-            Planet.SATURN -> StringResources.get(StringKeyLalKitab.FREQ_SAT, language)
-            Planet.RAHU -> StringResources.get(StringKeyLalKitab.FREQ_RAHU, language)
-            Planet.KETU -> StringResources.get(StringKeyLalKitab.FREQ_KETU, language)
-            else -> StringResources.get(StringKeyLalKitab.FREQ_GEN, language)
+            Planet.SUN -> StringResources.get(StringKeyGeneralPart4.FREQ_SUN, language)
+            Planet.MOON -> StringResources.get(StringKeyGeneralPart4.FREQ_MOON, language)
+            Planet.MARS -> StringResources.get(StringKeyGeneralPart4.FREQ_MARS, language)
+            Planet.MERCURY -> StringResources.get(StringKeyGeneralPart4.FREQ_MERC, language)
+            Planet.JUPITER -> StringResources.get(StringKeyGeneralPart4.FREQ_JUP, language)
+            Planet.VENUS -> StringResources.get(StringKeyGeneralPart4.FREQ_VENUS, language)
+            Planet.SATURN -> StringResources.get(StringKeyGeneralPart4.FREQ_SAT, language)
+            Planet.RAHU -> StringResources.get(StringKeyGeneralPart4.FREQ_RAHU, language)
+            Planet.KETU -> StringResources.get(StringKeyGeneralPart4.FREQ_KETU, language)
+            else -> StringResources.get(StringKeyGeneralPart4.FREQ_GEN, language)
         }
     }
 
@@ -645,9 +645,9 @@ object LalKitabRemediesCalculator {
 
     private fun getPlanetColor(planet: Planet, language: Language): ColorData {
         return try {
-            val colorsKey = StringKeyLalKitab.valueOf("COLOR_${planet.name}_USE")
-            val avoidKey = StringKeyLalKitab.valueOf("COLOR_${planet.name}_AVOID")
-            val appKey = StringKeyLalKitab.valueOf("COLOR_APP_${planet.name}")
+            val colorsKey = StringKeyRemedy.valueOf("COLOR_${planet.name}_USE")
+            val avoidKey = StringKeyRemedy.valueOf("COLOR_${planet.name}_AVOID")
+            val appKey = StringKeyRemedy.valueOf("COLOR_APP_${planet.name}")
             
             ColorData(
                 favorable = StringResources.get(colorsKey, language).split(",").map { it.trim() },
@@ -683,16 +683,16 @@ object LalKitabRemediesCalculator {
     private fun getPlanetDirection(planet: Planet, language: Language): DirectionData {
         return try {
             val (favKeyAnal, avoidKeyAnal) = when(planet) {
-                Planet.SUN -> StringKeyPrashnaPart2.PRASHNA_DIR_EAST to StringKeyPrashnaPart2.PRASHNA_DIR_WEST
-                Planet.MOON -> StringKeyPrashnaPart2.PRASHNA_DIR_NORTH_WEST to StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH
-                Planet.MARS -> StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH to StringKeyPrashnaPart2.PRASHNA_DIR_NORTH
-                Planet.MERCURY -> StringKeyPrashnaPart2.PRASHNA_DIR_NORTH to StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH
-                Planet.JUPITER -> StringKeyPrashnaPart2.PRASHNA_DIR_NORTH_EAST to StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH_WEST
-                Planet.VENUS -> StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH_EAST to StringKeyPrashnaPart2.PRASHNA_DIR_NORTH_WEST
-                Planet.SATURN -> StringKeyPrashnaPart2.PRASHNA_DIR_WEST to StringKeyPrashnaPart2.PRASHNA_DIR_EAST
-                Planet.RAHU -> StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH_WEST to StringKeyPrashnaPart2.PRASHNA_DIR_NORTH_EAST
-                Planet.KETU -> StringKeyPrashnaPart2.PRASHNA_DIR_NORTH_WEST to StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH_EAST
-                else -> StringKeyPrashnaPart2.PRASHNA_DIR_EAST to StringKeyPrashnaPart2.PRASHNA_DIR_WEST
+                Planet.SUN -> StringKeyPrashnaPart1.PRASHNA_DIR_EAST to StringKeyPrashnaPart1.PRASHNA_DIR_WEST
+                Planet.MOON -> StringKeyPrashnaPart1.PRASHNA_DIR_NORTH_WEST to StringKeyPrashnaPart1.PRASHNA_DIR_SOUTH
+                Planet.MARS -> StringKeyPrashnaPart1.PRASHNA_DIR_SOUTH to StringKeyPrashnaPart1.PRASHNA_DIR_NORTH
+                Planet.MERCURY -> StringKeyPrashnaPart1.PRASHNA_DIR_NORTH to StringKeyPrashnaPart1.PRASHNA_DIR_SOUTH
+                Planet.JUPITER -> StringKeyPrashnaPart1.PRASHNA_DIR_NORTH_EAST to StringKeyPrashnaPart1.PRASHNA_DIR_SOUTH_WEST
+                Planet.VENUS -> StringKeyPrashnaPart1.PRASHNA_DIR_SOUTH_EAST to StringKeyPrashnaPart1.PRASHNA_DIR_NORTH_WEST
+                Planet.SATURN -> StringKeyPrashnaPart1.PRASHNA_DIR_WEST to StringKeyPrashnaPart1.PRASHNA_DIR_EAST
+                Planet.RAHU -> StringKeyPrashnaPart1.PRASHNA_DIR_SOUTH_WEST to StringKeyPrashnaPart1.PRASHNA_DIR_NORTH_EAST
+                Planet.KETU -> StringKeyPrashnaPart1.PRASHNA_DIR_NORTH_WEST to StringKeyPrashnaPart1.PRASHNA_DIR_SOUTH_EAST
+                else -> StringKeyPrashnaPart1.PRASHNA_DIR_EAST to StringKeyPrashnaPart1.PRASHNA_DIR_WEST
             }
             
             val appKey = StringKeyLalKitab.valueOf("DIR_APP_${planet.name}")
@@ -712,13 +712,13 @@ object LalKitabRemediesCalculator {
      */
     private fun generateAnnualRemedyCalendar(language: Language): List<AnnualRemedyEntry> {
         val weekDays = listOf(
-            Planet.SUN to StringResources.get(StringKeyRemedy.WEEKDAY_SUNDAY, language),
-            Planet.MOON to StringResources.get(StringKeyRemedy.WEEKDAY_MONDAY, language),
-            Planet.MARS to StringResources.get(StringKeyRemedy.WEEKDAY_TUESDAY, language),
-            Planet.MERCURY to StringResources.get(StringKeyRemedy.WEEKDAY_WEDNESDAY, language),
-            Planet.JUPITER to StringResources.get(StringKeyRemedy.WEEKDAY_THURSDAY, language),
-            Planet.VENUS to StringResources.get(StringKeyRemedy.WEEKDAY_FRIDAY, language),
-            Planet.SATURN to StringResources.get(StringKeyRemedy.WEEKDAY_SATURDAY, language)
+            Planet.SUN to StringResources.get(StringKeyPanchanga.WEEKDAY_SUNDAY, language),
+            Planet.MOON to StringResources.get(StringKeyPanchanga.WEEKDAY_MONDAY, language),
+            Planet.MARS to StringResources.get(StringKeyPanchanga.WEEKDAY_TUESDAY, language),
+            Planet.MERCURY to StringResources.get(StringKeyPanchanga.WEEKDAY_WEDNESDAY, language),
+            Planet.JUPITER to StringResources.get(StringKeyPanchanga.WEEKDAY_THURSDAY, language),
+            Planet.VENUS to StringResources.get(StringKeyPanchanga.WEEKDAY_FRIDAY, language),
+            Planet.SATURN to StringResources.get(StringKeyPanchanga.WEEKDAY_SATURDAY, language)
         )
 
         return weekDays.map { (planet, day) ->
@@ -732,13 +732,13 @@ object LalKitabRemediesCalculator {
 
     private fun generateGeneralRecommendations(chart: VedicChart, language: Language): List<String> {
         return listOf(
-            StringResources.get(StringKeyLalKitab.GEN_REC_1, language),
-            StringResources.get(StringKeyLalKitab.GEN_REC_2, language),
-            StringResources.get(StringKeyLalKitab.GEN_REC_3, language),
-            StringResources.get(StringKeyLalKitab.GEN_REC_4, language),
-            StringResources.get(StringKeyLalKitab.GEN_REC_5, language),
-            StringResources.get(StringKeyLalKitab.GEN_REC_6, language),
-            StringResources.get(StringKeyLalKitab.GEN_REC_7, language)
+            StringResources.get(StringKeyGeneralPart4.GEN_REC_1, language),
+            StringResources.get(StringKeyGeneralPart4.GEN_REC_2, language),
+            StringResources.get(StringKeyGeneralPart4.GEN_REC_3, language),
+            StringResources.get(StringKeyGeneralPart4.GEN_REC_4, language),
+            StringResources.get(StringKeyGeneralPart4.GEN_REC_5, language),
+            StringResources.get(StringKeyGeneralPart4.GEN_REC_6, language),
+            StringResources.get(StringKeyGeneralPart4.GEN_REC_7, language)
         )
     }
 

@@ -91,8 +91,8 @@ fun AshtottariDashaScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_TITLE),
-            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyDashaPart1.ASHTOTTARI_TITLE),
+            message = stringResource(StringKeyGeneralPart7.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -107,9 +107,9 @@ fun AshtottariDashaScreen(
     var expandedMahadashaIndex by remember { mutableIntStateOf(-1) }
 
     val tabs = listOf(
-        stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_ABOUT),
-        stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_TIMELINE),
-        stringResource(StringKeyUI.SCREEN_INTERPRETATION)
+        stringResource(StringKeyDashaPart1.ASHTOTTARI_ABOUT),
+        stringResource(StringKeyDashaPart1.ASHTOTTARI_TIMELINE),
+        stringResource(StringKeyUIPart1.SCREEN_INTERPRETATION)
     )
 
     // Calculate Ashtottari Dasha
@@ -137,7 +137,7 @@ fun AshtottariDashaScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_TITLE),
+                            stringResource(StringKeyDashaPart1.ASHTOTTARI_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
@@ -153,7 +153,7 @@ fun AshtottariDashaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -162,7 +162,7 @@ fun AshtottariDashaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_ABOUT),
+                            contentDescription = stringResource(StringKeyDashaPart1.ASHTOTTARI_ABOUT),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -200,7 +200,7 @@ fun AshtottariDashaScreen(
                 }
             }
         } else {
-            ErrorContent(paddingValues, stringResource(StringKeyUI.SCREEN_ERROR_CALCULATION))
+            ErrorContent(paddingValues, stringResource(StringKeyUIPart1.SCREEN_ERROR_CALCULATION))
         }
     }
 }
@@ -217,7 +217,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                stringResource(StringKeyUI.SCREEN_CALCULATING),
+                stringResource(StringKeyUIPart1.SCREEN_CALCULATING),
                 color = AppTheme.TextMuted
             )
         }
@@ -324,16 +324,16 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_APPLICABILITY),
+                        stringResource(StringKeyDashaPart1.ASHTOTTARI_APPLICABILITY),
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         if (isApplicable)
-                            stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_APPLICABLE)
+                            stringResource(StringKeyDashaPart1.ASHTOTTARI_APPLICABLE)
                         else
-                            stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_NOT_APPLICABLE),
+                            stringResource(StringKeyDashaPart1.ASHTOTTARI_NOT_APPLICABLE),
                         fontSize = 14.sp,
                         color = AppTheme.TextSecondary
                     )
@@ -365,7 +365,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
             modifier = Modifier.padding(20.dp)
         ) {
             Text(
-                stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_IDEAL_CONDITION),
+                stringResource(StringKeyDashaPart1.ASHTOTTARI_IDEAL_CONDITION),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
                 color = AppTheme.TextPrimary,
@@ -380,7 +380,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKeyDoshaPart3.BIRTH_NAKSHATRA),
+                    stringResource(StringKeyGeneralPart2.BIRTH_NAKSHATRA),
                     color = AppTheme.TextMuted,
                     fontSize = 13.sp
                 )
@@ -400,7 +400,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_STARTING_LORD),
+                    stringResource(StringKeyDashaPart1.ASHTOTTARI_STARTING_LORD),
                     color = AppTheme.TextMuted,
                     fontSize = 13.sp
                 )
@@ -420,12 +420,12 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_BALANCE),
+                    stringResource(StringKeyDashaPart1.ASHTOTTARI_BALANCE),
                     color = AppTheme.TextMuted,
                     fontSize = 13.sp
                 )
                 Text(
-                    String.format("%.2f %s", result.balanceAtBirth, stringResource(StringKeyPart1.YEARS)),
+                    String.format("%.2f %s", result.balanceAtBirth, stringResource(StringKeyGeneralPart12.YEARS)),
                     color = AppTheme.TextPrimary,
                     fontWeight = FontWeight.Medium,
                     fontSize = 13.sp
@@ -464,7 +464,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_CURRENT_PERIOD),
+                    stringResource(StringKeyDashaPart1.ASHTOTTARI_CURRENT_PERIOD),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary
@@ -487,7 +487,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
             ) {
                 Column {
                     Text(
-                        stringResource(StringKeyPart1.DASHA_MAHADASHA),
+                        stringResource(StringKeyDashaPart1.DASHA_MAHADASHA),
                         color = AppTheme.TextMuted,
                         fontSize = 12.sp
                     )
@@ -529,7 +529,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
                 ) {
                     Column {
                         Text(
-                            stringResource(StringKeyPart1.DASHA_ANTARDASHA),
+                            stringResource(StringKeyDashaPart1.DASHA_ANTARDASHA),
                             color = AppTheme.TextMuted,
                             fontSize = 12.sp
                         )
@@ -554,7 +554,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        stringResource(StringKeyPart1.DASHA_PROGRESS),
+                        stringResource(StringKeyDashaPart1.DASHA_PROGRESS),
                         color = AppTheme.TextMuted,
                         fontSize = 12.sp
                     )
@@ -584,10 +584,10 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
 private fun RelationshipChip(relationship: PlanetRelationship) {
     val language = currentLanguage()
     val (color, text) = when (relationship) {
-        PlanetRelationship.FRIEND -> AppTheme.SuccessColor to stringResource(StringKeyDoshaPart3.RELATIONSHIP_FRIEND)
-        PlanetRelationship.ENEMY -> AppTheme.ErrorColor to stringResource(StringKeyDoshaPart3.RELATIONSHIP_ENEMY)
-        PlanetRelationship.NEUTRAL -> AppTheme.WarningColor to stringResource(StringKeyDoshaPart3.RELATIONSHIP_NEUTRAL)
-        PlanetRelationship.SAME -> AppTheme.AccentPrimary to stringResource(StringKeyDoshaPart3.RELATIONSHIP_SAME)
+        PlanetRelationship.FRIEND -> AppTheme.SuccessColor to stringResource(StringKeyGeneralPart9.RELATIONSHIP_FRIEND)
+        PlanetRelationship.ENEMY -> AppTheme.ErrorColor to stringResource(StringKeyGeneralPart9.RELATIONSHIP_ENEMY)
+        PlanetRelationship.NEUTRAL -> AppTheme.WarningColor to stringResource(StringKeyGeneralPart9.RELATIONSHIP_NEUTRAL)
+        PlanetRelationship.SAME -> AppTheme.AccentPrimary to stringResource(StringKeyGeneralPart9.RELATIONSHIP_SAME)
     }
 
     Surface(
@@ -617,7 +617,7 @@ private fun SystemInfoCard() {
             modifier = Modifier.padding(20.dp)
         ) {
             Text(
-                stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_SUBTITLE),
+                stringResource(StringKeyDashaPart1.ASHTOTTARI_SUBTITLE),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
                 color = AppTheme.TextPrimary
@@ -627,14 +627,14 @@ private fun SystemInfoCard() {
 
             // Planet periods
             val periods = listOf(
-                StringKeyDashaInterpretationsPart1.ASHTOTTARI_SUN_DURATION,
-                StringKeyDashaInterpretationsPart1.ASHTOTTARI_MOON_DURATION,
-                StringKeyDashaInterpretationsPart1.ASHTOTTARI_MARS_DURATION,
-                StringKeyDashaInterpretationsPart1.ASHTOTTARI_MERCURY_DURATION,
-                StringKeyDashaInterpretationsPart1.ASHTOTTARI_SATURN_DURATION,
-                StringKeyDashaInterpretationsPart1.ASHTOTTARI_JUPITER_DURATION,
-                StringKeyDashaInterpretationsPart1.ASHTOTTARI_RAHU_DURATION,
-                StringKeyDashaInterpretationsPart1.ASHTOTTARI_VENUS_DURATION
+                StringKeyDashaPart1.ASHTOTTARI_SUN_DURATION,
+                StringKeyDashaPart1.ASHTOTTARI_MOON_DURATION,
+                StringKeyDashaPart1.ASHTOTTARI_MARS_DURATION,
+                StringKeyDashaPart1.ASHTOTTARI_MERCURY_DURATION,
+                StringKeyDashaPart1.ASHTOTTARI_SATURN_DURATION,
+                StringKeyDashaPart1.ASHTOTTARI_JUPITER_DURATION,
+                StringKeyDashaPart1.ASHTOTTARI_RAHU_DURATION,
+                StringKeyDashaPart1.ASHTOTTARI_VENUS_DURATION
             )
 
             periods.chunked(2).forEach { row ->
@@ -665,7 +665,7 @@ private fun SystemInfoCard() {
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_TOTAL_YEARS),
+                stringResource(StringKeyDashaPart1.ASHTOTTARI_TOTAL_YEARS),
                 color = AppTheme.AccentPrimary,
                 fontWeight = FontWeight.Medium,
                 fontSize = 14.sp
@@ -674,7 +674,7 @@ private fun SystemInfoCard() {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_PLANETS_USED),
+                stringResource(StringKeyDashaPart1.ASHTOTTARI_PLANETS_USED),
                 color = AppTheme.TextMuted,
                 fontSize = 12.sp
             )
@@ -776,7 +776,7 @@ private fun MahadashaTimelineCard(
                                     shape = RoundedCornerShape(4.dp)
                                 ) {
                                     Text(
-                                        stringResource(StringKeyDoshaPart3.CURRENT_LABEL),
+                                        stringResource(StringKeyGeneralPart3.CURRENT_LABEL),
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                                         color = AppTheme.SuccessColor,
                                         fontSize = 10.sp,
@@ -786,7 +786,7 @@ private fun MahadashaTimelineCard(
                             }
                         }
                         Text(
-                            "${String.format("%.1f", mahadasha.actualYears)} ${stringResource(StringKeyPart1.YEARS)}",
+                            "${String.format("%.1f", mahadasha.actualYears)} ${stringResource(StringKeyGeneralPart12.YEARS)}",
                             color = AppTheme.TextMuted,
                             fontSize = 12.sp
                         )
@@ -843,7 +843,7 @@ private fun MahadashaTimelineCard(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        stringResource(StringKeyPart1.DASHA_ANTARDASHA),
+                        stringResource(StringKeyDashaPart1.DASHA_ANTARDASHA),
                         fontWeight = FontWeight.Medium,
                         fontSize = 13.sp,
                         color = AppTheme.TextSecondary
@@ -924,7 +924,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Text(
-                            stringResource(StringKeyDoshaPart3.KEY_THEMES),
+                            stringResource(StringKeyGeneralPart6.KEY_THEMES),
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 16.sp,
                             color = AppTheme.TextPrimary
@@ -962,7 +962,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        stringResource(StringKeyDashaInterpretationsPart1.SUDARSHANA_COMBINED_ANALYSIS),
+                        stringResource(StringKeyDashaPart2.SUDARSHANA_COMBINED_ANALYSIS),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
@@ -982,7 +982,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
         if (interpretation.mahadashaEffects.isNotEmpty()) {
             item {
                 EffectsCard(
-                    title = stringResource(StringKeyPart1.DASHA_MAHADASHA) + " " + stringResource(StringKeyDoshaPart3.EFFECTS_LABEL),
+                    title = stringResource(StringKeyDashaPart1.DASHA_MAHADASHA) + " " + stringResource(StringKeyGeneralPart4.EFFECTS_LABEL),
                     effects = interpretation.mahadashaEffects,
                     icon = Icons.Filled.Star
                 )
@@ -993,7 +993,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
         if (interpretation.antardashaEffects.isNotEmpty()) {
             item {
                 EffectsCard(
-                    title = stringResource(StringKeyPart1.DASHA_ANTARDASHA) + " " + stringResource(StringKeyDoshaPart3.EFFECTS_LABEL),
+                    title = stringResource(StringKeyDashaPart1.DASHA_ANTARDASHA) + " " + stringResource(StringKeyGeneralPart4.EFFECTS_LABEL),
                     effects = interpretation.antardashaEffects,
                     icon = Icons.Outlined.StarBorder
                 )
@@ -1075,7 +1075,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyUI.SCREEN_RECOMMENDATIONS),
+                    stringResource(StringKeyUIPart1.SCREEN_RECOMMENDATIONS),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary
@@ -1113,21 +1113,21 @@ private fun AshtottariInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground,
         title = {
             Text(
-                stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_ABOUT),
+                stringResource(StringKeyDashaPart1.ASHTOTTARI_ABOUT),
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
         },
         text = {
             Text(
-                stringResource(StringKeyDashaInterpretationsPart1.ASHTOTTARI_ABOUT_DESC),
+                stringResource(StringKeyDashaPart1.ASHTOTTARI_ABOUT_DESC),
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyUI.BTN_CLOSE), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyUIPart1.BTN_CLOSE), color = AppTheme.AccentPrimary)
             }
         }
     )

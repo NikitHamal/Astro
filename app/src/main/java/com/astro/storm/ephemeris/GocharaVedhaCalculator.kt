@@ -113,11 +113,11 @@ class GocharaVedhaCalculator @Inject constructor(
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                COMPLETE -> StringKeyAnalysisPart2.VEDHA_COMPLETE
-                STRONG -> StringKeyAnalysisPart2.VEDHA_STRONG
-                MODERATE -> StringKeyAnalysisPart2.VEDHA_MODERATE
-                PARTIAL -> StringKeyAnalysisPart2.VEDHA_PARTIAL
-                NONE -> StringKeyAnalysisPart2.VEDHA_NONE
+                COMPLETE -> StringKeyGeneralPart12.VEDHA_COMPLETE
+                STRONG -> StringKeyGeneralPart12.VEDHA_STRONG
+                MODERATE -> StringKeyGeneralPart12.VEDHA_MODERATE
+                PARTIAL -> StringKeyGeneralPart12.VEDHA_PARTIAL
+                NONE -> StringKeyGeneralPart12.VEDHA_NONE
             }
             return StringResources.get(key, language)
         }
@@ -139,12 +139,12 @@ class GocharaVedhaCalculator @Inject constructor(
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                EXCELLENT -> StringKeyTransit.TRANSIT_EXCELLENT
-                GOOD -> StringKeyTransit.TRANSIT_GOOD
-                MODERATE -> StringKeyTransit.TRANSIT_MODERATE
-                WEAK -> StringKeyTransit.TRANSIT_WEAK
-                NULLIFIED -> StringKeyTransit.TRANSIT_NULLIFIED
-                UNFAVORABLE -> StringKeyTransit.TRANSIT_UNFAVORABLE
+                EXCELLENT -> StringKeyTransitPart1.TRANSIT_EXCELLENT
+                GOOD -> StringKeyTransitPart1.TRANSIT_GOOD
+                MODERATE -> StringKeyTransitPart1.TRANSIT_MODERATE
+                WEAK -> StringKeyTransitPart1.TRANSIT_WEAK
+                NULLIFIED -> StringKeyTransitPart1.TRANSIT_NULLIFIED
+                UNFAVORABLE -> StringKeyTransitPart1.TRANSIT_UNFAVORABLE
             }
             return StringResources.get(key, language)
         }
@@ -918,7 +918,7 @@ class GocharaVedhaCalculator @Inject constructor(
 
             appendLine()
             appendLine("─────────────────────────────────────────────────────────")
-            appendLine(StringResources.get(StringKeyUI.UI_KEY_INSIGHTS, language).uppercase())
+            appendLine(StringResources.get(StringKeyUIPart2.UI_KEY_INSIGHTS, language).uppercase())
             appendLine("─────────────────────────────────────────────────────────")
             analysis.keyInsights.forEach { insight ->
                 appendLine("• $insight")

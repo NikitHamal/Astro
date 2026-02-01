@@ -41,19 +41,19 @@ import com.astro.storm.ephemeris.remedy.RemedyCategory
  */
 fun Planet.getLocalizedName(language: Language): String {
     return when (this) {
-        Planet.SUN -> StringResources.get(StringKeyPart1.PLANET_SUN, language)
-        Planet.MOON -> StringResources.get(StringKeyPart1.PLANET_MOON, language)
-        Planet.MERCURY -> StringResources.get(StringKeyPart1.PLANET_MERCURY, language)
-        Planet.VENUS -> StringResources.get(StringKeyPart1.PLANET_VENUS, language)
-        Planet.MARS -> StringResources.get(StringKeyPart1.PLANET_MARS, language)
-        Planet.JUPITER -> StringResources.get(StringKeyPart1.PLANET_JUPITER, language)
-        Planet.SATURN -> StringResources.get(StringKeyPart1.PLANET_SATURN, language)
-        Planet.RAHU -> StringResources.get(StringKeyPart1.PLANET_RAHU, language)
-        Planet.KETU -> StringResources.get(StringKeyPart1.PLANET_KETU, language)
-        Planet.TRUE_NODE -> StringResources.get(StringKeyPart1.PLANET_RAHU, language) // Reuse Rahu key for now or add TRa
-        Planet.URANUS -> StringResources.get(StringKeyPart1.PLANET_URANUS, language)
-        Planet.NEPTUNE -> StringResources.get(StringKeyPart1.PLANET_NEPTUNE, language)
-        Planet.PLUTO -> StringResources.get(StringKeyPart1.PLANET_PLUTO, language)
+        Planet.SUN -> StringResources.get(StringKeyGeneralPart8.PLANET_SUN, language)
+        Planet.MOON -> StringResources.get(StringKeyGeneralPart8.PLANET_MOON, language)
+        Planet.MERCURY -> StringResources.get(StringKeyGeneralPart8.PLANET_MERCURY, language)
+        Planet.VENUS -> StringResources.get(StringKeyGeneralPart8.PLANET_VENUS, language)
+        Planet.MARS -> StringResources.get(StringKeyGeneralPart8.PLANET_MARS, language)
+        Planet.JUPITER -> StringResources.get(StringKeyGeneralPart8.PLANET_JUPITER, language)
+        Planet.SATURN -> StringResources.get(StringKeyGeneralPart8.PLANET_SATURN, language)
+        Planet.RAHU -> StringResources.get(StringKeyGeneralPart8.PLANET_RAHU, language)
+        Planet.KETU -> StringResources.get(StringKeyGeneralPart8.PLANET_KETU, language)
+        Planet.TRUE_NODE -> StringResources.get(StringKeyGeneralPart8.PLANET_RAHU, language) // Reuse Rahu key for now or add TRa
+        Planet.URANUS -> StringResources.get(StringKeyGeneralPart8.PLANET_URANUS, language)
+        Planet.NEPTUNE -> StringResources.get(StringKeyGeneralPart8.PLANET_NEPTUNE, language)
+        Planet.PLUTO -> StringResources.get(StringKeyGeneralPart8.PLANET_PLUTO, language)
     }
 }
 
@@ -62,18 +62,18 @@ fun Planet.getLocalizedName(language: Language): String {
  */
 fun ZodiacSign.getLocalizedName(language: Language): String {
     return when (this) {
-        ZodiacSign.ARIES -> StringResources.get(StringKeyPart1.SIGN_ARIES, language)
-        ZodiacSign.TAURUS -> StringResources.get(StringKeyPart1.SIGN_TAURUS, language)
-        ZodiacSign.GEMINI -> StringResources.get(StringKeyPart1.SIGN_GEMINI, language)
-        ZodiacSign.CANCER -> StringResources.get(StringKeyPart1.SIGN_CANCER, language)
-        ZodiacSign.LEO -> StringResources.get(StringKeyPart1.SIGN_LEO, language)
-        ZodiacSign.VIRGO -> StringResources.get(StringKeyPart1.SIGN_VIRGO, language)
-        ZodiacSign.LIBRA -> StringResources.get(StringKeyPart1.SIGN_LIBRA, language)
-        ZodiacSign.SCORPIO -> StringResources.get(StringKeyPart1.SIGN_SCORPIO, language)
-        ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyPart1.SIGN_SAGITTARIUS, language)
-        ZodiacSign.CAPRICORN -> StringResources.get(StringKeyPart1.SIGN_CAPRICORN, language)
-        ZodiacSign.AQUARIUS -> StringResources.get(StringKeyPart1.SIGN_AQUARIUS, language)
-        ZodiacSign.PISCES -> StringResources.get(StringKeyPart1.SIGN_PISCES, language)
+        ZodiacSign.ARIES -> StringResources.get(StringKeyGeneralPart10.SIGN_ARIES, language)
+        ZodiacSign.TAURUS -> StringResources.get(StringKeyGeneralPart10.SIGN_TAURUS, language)
+        ZodiacSign.GEMINI -> StringResources.get(StringKeyGeneralPart10.SIGN_GEMINI, language)
+        ZodiacSign.CANCER -> StringResources.get(StringKeyGeneralPart10.SIGN_CANCER, language)
+        ZodiacSign.LEO -> StringResources.get(StringKeyGeneralPart10.SIGN_LEO, language)
+        ZodiacSign.VIRGO -> StringResources.get(StringKeyGeneralPart10.SIGN_VIRGO, language)
+        ZodiacSign.LIBRA -> StringResources.get(StringKeyGeneralPart10.SIGN_LIBRA, language)
+        ZodiacSign.SCORPIO -> StringResources.get(StringKeyGeneralPart10.SIGN_SCORPIO, language)
+        ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyGeneralPart10.SIGN_SAGITTARIUS, language)
+        ZodiacSign.CAPRICORN -> StringResources.get(StringKeyGeneralPart10.SIGN_CAPRICORN, language)
+        ZodiacSign.AQUARIUS -> StringResources.get(StringKeyGeneralPart10.SIGN_AQUARIUS, language)
+        ZodiacSign.PISCES -> StringResources.get(StringKeyGeneralPart10.SIGN_PISCES, language)
     }
 }
 
@@ -82,33 +82,33 @@ fun ZodiacSign.getLocalizedName(language: Language): String {
  */
 fun Nakshatra.getLocalizedName(language: Language): String {
     return when (this) {
-        Nakshatra.ASHWINI -> StringResources.get(StringKeyNakshatra.NAKSHATRA_ASHWINI, language)
-        Nakshatra.BHARANI -> StringResources.get(StringKeyNakshatra.NAKSHATRA_BHARANI, language)
-        Nakshatra.KRITTIKA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_KRITTIKA, language)
-        Nakshatra.ROHINI -> StringResources.get(StringKeyNakshatra.NAKSHATRA_ROHINI, language)
-        Nakshatra.MRIGASHIRA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_MRIGASHIRA, language)
-        Nakshatra.ARDRA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_ARDRA, language)
-        Nakshatra.PUNARVASU -> StringResources.get(StringKeyNakshatra.NAKSHATRA_PUNARVASU, language)
-        Nakshatra.PUSHYA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_PUSHYA, language)
-        Nakshatra.ASHLESHA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_ASHLESHA, language)
-        Nakshatra.MAGHA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_MAGHA, language)
-        Nakshatra.PURVA_PHALGUNI -> StringResources.get(StringKeyNakshatra.NAKSHATRA_PURVA_PHALGUNI, language)
-        Nakshatra.UTTARA_PHALGUNI -> StringResources.get(StringKeyNakshatra.NAKSHATRA_UTTARA_PHALGUNI, language)
-        Nakshatra.HASTA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_HASTA, language)
-        Nakshatra.CHITRA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_CHITRA, language)
-        Nakshatra.SWATI -> StringResources.get(StringKeyNakshatra.NAKSHATRA_SWATI, language)
-        Nakshatra.VISHAKHA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_VISHAKHA, language)
-        Nakshatra.ANURADHA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_ANURADHA, language)
-        Nakshatra.JYESHTHA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_JYESHTHA, language)
-        Nakshatra.MULA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_MULA, language)
-        Nakshatra.PURVA_ASHADHA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_PURVA_ASHADHA, language)
-        Nakshatra.UTTARA_ASHADHA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_UTTARA_ASHADHA, language)
-        Nakshatra.SHRAVANA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_SHRAVANA, language)
-        Nakshatra.DHANISHTHA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_DHANISHTHA, language)
-        Nakshatra.SHATABHISHA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_SHATABHISHA, language)
-        Nakshatra.PURVA_BHADRAPADA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_PURVA_BHADRAPADA, language)
-        Nakshatra.UTTARA_BHADRAPADA -> StringResources.get(StringKeyNakshatra.NAKSHATRA_UTTARA_BHADRAPADA, language)
-        Nakshatra.REVATI -> StringResources.get(StringKeyNakshatra.NAKSHATRA_REVATI, language)
+        Nakshatra.ASHWINI -> StringResources.get(StringKeyPanchanga.NAKSHATRA_ASHWINI, language)
+        Nakshatra.BHARANI -> StringResources.get(StringKeyPanchanga.NAKSHATRA_BHARANI, language)
+        Nakshatra.KRITTIKA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_KRITTIKA, language)
+        Nakshatra.ROHINI -> StringResources.get(StringKeyPanchanga.NAKSHATRA_ROHINI, language)
+        Nakshatra.MRIGASHIRA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_MRIGASHIRA, language)
+        Nakshatra.ARDRA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_ARDRA, language)
+        Nakshatra.PUNARVASU -> StringResources.get(StringKeyPanchanga.NAKSHATRA_PUNARVASU, language)
+        Nakshatra.PUSHYA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_PUSHYA, language)
+        Nakshatra.ASHLESHA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_ASHLESHA, language)
+        Nakshatra.MAGHA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_MAGHA, language)
+        Nakshatra.PURVA_PHALGUNI -> StringResources.get(StringKeyPanchanga.NAKSHATRA_PURVA_PHALGUNI, language)
+        Nakshatra.UTTARA_PHALGUNI -> StringResources.get(StringKeyPanchanga.NAKSHATRA_UTTARA_PHALGUNI, language)
+        Nakshatra.HASTA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_HASTA, language)
+        Nakshatra.CHITRA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_CHITRA, language)
+        Nakshatra.SWATI -> StringResources.get(StringKeyPanchanga.NAKSHATRA_SWATI, language)
+        Nakshatra.VISHAKHA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_VISHAKHA, language)
+        Nakshatra.ANURADHA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_ANURADHA, language)
+        Nakshatra.JYESHTHA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_JYESHTHA, language)
+        Nakshatra.MULA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_MULA, language)
+        Nakshatra.PURVA_ASHADHA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_PURVA_ASHADHA, language)
+        Nakshatra.UTTARA_ASHADHA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_UTTARA_ASHADHA, language)
+        Nakshatra.SHRAVANA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_SHRAVANA, language)
+        Nakshatra.DHANISHTHA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_DHANISHTHA, language)
+        Nakshatra.SHATABHISHA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_SHATABHISHA, language)
+        Nakshatra.PURVA_BHADRAPADA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_PURVA_BHADRAPADA, language)
+        Nakshatra.UTTARA_BHADRAPADA -> StringResources.get(StringKeyPanchanga.NAKSHATRA_UTTARA_BHADRAPADA, language)
+        Nakshatra.REVATI -> StringResources.get(StringKeyPanchanga.NAKSHATRA_REVATI, language)
     }
 }
 
@@ -220,9 +220,9 @@ fun Paksha.getLocalizedName(language: Language): String {
  */
 fun Gender.getLocalizedName(language: Language): String {
     return when (this) {
-        Gender.MALE -> StringResources.get(StringKeyUI.GENDER_MALE, language)
-        Gender.FEMALE -> StringResources.get(StringKeyUI.GENDER_FEMALE, language)
-        Gender.OTHER -> StringResources.get(StringKeyUI.GENDER_OTHER, language)
+        Gender.MALE -> StringResources.get(StringKeyUIPart1.GENDER_MALE, language)
+        Gender.FEMALE -> StringResources.get(StringKeyUIPart1.GENDER_FEMALE, language)
+        Gender.OTHER -> StringResources.get(StringKeyUIPart1.GENDER_OTHER, language)
     }
 }
 
@@ -231,17 +231,17 @@ fun Gender.getLocalizedName(language: Language): String {
  */
 fun HouseSystem.getLocalizedName(language: Language): String {
     return when (this) {
-        HouseSystem.PLACIDUS -> StringResources.get(StringKeyPart1.HOUSE_PLACIDUS, language)
-        HouseSystem.KOCH -> StringResources.get(StringKeyPart1.HOUSE_KOCH, language)
-        HouseSystem.PORPHYRIUS -> StringResources.get(StringKeyPart1.HOUSE_PORPHYRIUS, language)
-        HouseSystem.REGIOMONTANUS -> StringResources.get(StringKeyPart1.HOUSE_REGIOMONTANUS, language)
-        HouseSystem.CAMPANUS -> StringResources.get(StringKeyPart1.HOUSE_CAMPANUS, language)
-        HouseSystem.EQUAL -> StringResources.get(StringKeyPart1.HOUSE_EQUAL, language)
-        HouseSystem.WHOLE_SIGN -> StringResources.get(StringKeyPart1.HOUSE_WHOLE_SIGN, language)
-        HouseSystem.VEHLOW -> StringResources.get(StringKeyPart1.HOUSE_VEHLOW, language)
-        HouseSystem.MERIDIAN -> StringResources.get(StringKeyPart1.HOUSE_MERIDIAN, language)
-        HouseSystem.MORINUS -> StringResources.get(StringKeyPart1.HOUSE_MORINUS, language)
-        HouseSystem.ALCABITUS -> StringResources.get(StringKeyPart1.HOUSE_ALCABITUS, language)
+        HouseSystem.PLACIDUS -> StringResources.get(StringKeyGeneralPart5.HOUSE_PLACIDUS, language)
+        HouseSystem.KOCH -> StringResources.get(StringKeyGeneralPart5.HOUSE_KOCH, language)
+        HouseSystem.PORPHYRIUS -> StringResources.get(StringKeyGeneralPart5.HOUSE_PORPHYRIUS, language)
+        HouseSystem.REGIOMONTANUS -> StringResources.get(StringKeyGeneralPart5.HOUSE_REGIOMONTANUS, language)
+        HouseSystem.CAMPANUS -> StringResources.get(StringKeyGeneralPart5.HOUSE_CAMPANUS, language)
+        HouseSystem.EQUAL -> StringResources.get(StringKeyGeneralPart5.HOUSE_EQUAL, language)
+        HouseSystem.WHOLE_SIGN -> StringResources.get(StringKeyGeneralPart5.HOUSE_WHOLE_SIGN, language)
+        HouseSystem.VEHLOW -> StringResources.get(StringKeyGeneralPart5.HOUSE_VEHLOW, language)
+        HouseSystem.MERIDIAN -> StringResources.get(StringKeyGeneralPart5.HOUSE_MERIDIAN, language)
+        HouseSystem.MORINUS -> StringResources.get(StringKeyGeneralPart5.HOUSE_MORINUS, language)
+        HouseSystem.ALCABITUS -> StringResources.get(StringKeyGeneralPart5.HOUSE_ALCABITUS, language)
     }
 }
 
@@ -250,9 +250,9 @@ fun HouseSystem.getLocalizedName(language: Language): String {
  */
 fun ThemeMode.getLocalizedName(language: Language): String {
     return when (this) {
-        ThemeMode.LIGHT -> StringResources.get(StringKeyPart1.THEME_LIGHT, language)
-        ThemeMode.DARK -> StringResources.get(StringKeyPart1.THEME_DARK, language)
-        ThemeMode.SYSTEM -> StringResources.get(StringKeyPart1.THEME_SYSTEM, language)
+        ThemeMode.LIGHT -> StringResources.get(StringKeyPrediction.THEME_LIGHT, language)
+        ThemeMode.DARK -> StringResources.get(StringKeyPrediction.THEME_DARK, language)
+        ThemeMode.SYSTEM -> StringResources.get(StringKeyPrediction.THEME_SYSTEM, language)
     }
 }
 
@@ -261,9 +261,9 @@ fun ThemeMode.getLocalizedName(language: Language): String {
  */
 fun ThemeMode.getLocalizedDescription(language: Language): String {
     return when (this) {
-        ThemeMode.LIGHT -> StringResources.get(StringKeyPart1.THEME_LIGHT_DESC, language)
-        ThemeMode.DARK -> StringResources.get(StringKeyPart1.THEME_DARK_DESC, language)
-        ThemeMode.SYSTEM -> StringResources.get(StringKeyPart1.THEME_SYSTEM_DESC, language)
+        ThemeMode.LIGHT -> StringResources.get(StringKeyPrediction.THEME_LIGHT_DESC, language)
+        ThemeMode.DARK -> StringResources.get(StringKeyPrediction.THEME_DARK_DESC, language)
+        ThemeMode.SYSTEM -> StringResources.get(StringKeyPrediction.THEME_SYSTEM_DESC, language)
     }
 }
 
@@ -272,14 +272,14 @@ fun ThemeMode.getLocalizedDescription(language: Language): String {
  */
 fun getDayName(dayOfWeek: Int, language: Language): String {
     return when (dayOfWeek) {
-        1 -> StringResources.get(StringKeyMatchPart1.DAY_MONDAY, language)
-        2 -> StringResources.get(StringKeyMatchPart1.DAY_TUESDAY, language)
-        3 -> StringResources.get(StringKeyMatchPart1.DAY_WEDNESDAY, language)
-        4 -> StringResources.get(StringKeyMatchPart1.DAY_THURSDAY, language)
-        5 -> StringResources.get(StringKeyMatchPart1.DAY_FRIDAY, language)
-        6 -> StringResources.get(StringKeyMatchPart1.DAY_SATURDAY, language)
-        7 -> StringResources.get(StringKeyMatchPart1.DAY_SUNDAY, language)
-        else -> StringResources.get(StringKeyMatchPart1.MISC_UNKNOWN, language)
+        1 -> StringResources.get(StringKeyGeneralPart3.DAY_MONDAY, language)
+        2 -> StringResources.get(StringKeyGeneralPart3.DAY_TUESDAY, language)
+        3 -> StringResources.get(StringKeyGeneralPart3.DAY_WEDNESDAY, language)
+        4 -> StringResources.get(StringKeyGeneralPart3.DAY_THURSDAY, language)
+        5 -> StringResources.get(StringKeyGeneralPart3.DAY_FRIDAY, language)
+        6 -> StringResources.get(StringKeyGeneralPart3.DAY_SATURDAY, language)
+        7 -> StringResources.get(StringKeyGeneralPart3.DAY_SUNDAY, language)
+        else -> StringResources.get(StringKeyGeneralPart7.MISC_UNKNOWN, language)
     }
 }
 
@@ -288,15 +288,15 @@ fun getDayName(dayOfWeek: Int, language: Language): String {
  */
 fun getEnergyDescription(energy: Int, language: Language): String {
     return when {
-        energy >= 9 -> StringResources.get(StringKeyPart1.ENERGY_EXCEPTIONAL, language)
-        energy >= 8 -> StringResources.get(StringKeyPart1.ENERGY_EXCELLENT, language)
-        energy >= 7 -> StringResources.get(StringKeyPart1.ENERGY_STRONG, language)
-        energy >= 6 -> StringResources.get(StringKeyPart1.ENERGY_FAVORABLE, language)
-        energy >= 5 -> StringResources.get(StringKeyPart1.ENERGY_BALANCED, language)
-        energy >= 4 -> StringResources.get(StringKeyPart1.ENERGY_MODERATE, language)
-        energy >= 3 -> StringResources.get(StringKeyPart1.ENERGY_LOWER, language)
-        energy >= 2 -> StringResources.get(StringKeyPart1.ENERGY_CHALLENGING, language)
-        else -> StringResources.get(StringKeyPart1.ENERGY_REST, language)
+        energy >= 9 -> StringResources.get(StringKeyGeneralPart4.ENERGY_EXCEPTIONAL, language)
+        energy >= 8 -> StringResources.get(StringKeyGeneralPart4.ENERGY_EXCELLENT, language)
+        energy >= 7 -> StringResources.get(StringKeyGeneralPart4.ENERGY_STRONG, language)
+        energy >= 6 -> StringResources.get(StringKeyGeneralPart4.ENERGY_FAVORABLE, language)
+        energy >= 5 -> StringResources.get(StringKeyGeneralPart4.ENERGY_BALANCED, language)
+        energy >= 4 -> StringResources.get(StringKeyGeneralPart4.ENERGY_MODERATE, language)
+        energy >= 3 -> StringResources.get(StringKeyGeneralPart4.ENERGY_LOWER, language)
+        energy >= 2 -> StringResources.get(StringKeyGeneralPart4.ENERGY_CHALLENGING, language)
+        else -> StringResources.get(StringKeyGeneralPart4.ENERGY_REST, language)
     }
 }
 
@@ -305,10 +305,10 @@ fun getEnergyDescription(energy: Int, language: Language): String {
  */
 fun getAyanamsaLocalizedName(ayanamsa: String, language: Language): String {
     return when (ayanamsa.lowercase()) {
-        "lahiri" -> StringResources.get(StringKeyPart1.AYANAMSA_LAHIRI, language)
-        "raman" -> StringResources.get(StringKeyPart1.AYANAMSA_RAMAN, language)
-        "krishnamurti" -> StringResources.get(StringKeyPart1.AYANAMSA_KRISHNAMURTI, language)
-        "true chitrapaksha" -> StringResources.get(StringKeyPart1.AYANAMSA_TRUE_CHITRAPAKSHA, language)
+        "lahiri" -> StringResources.get(StringKeyGeneralPart2.AYANAMSA_LAHIRI, language)
+        "raman" -> StringResources.get(StringKeyGeneralPart2.AYANAMSA_RAMAN, language)
+        "krishnamurti" -> StringResources.get(StringKeyGeneralPart2.AYANAMSA_KRISHNAMURTI, language)
+        "true chitrapaksha" -> StringResources.get(StringKeyGeneralPart2.AYANAMSA_TRUE_CHITRAPAKSHA, language)
         else -> ayanamsa
     }
 }
@@ -320,18 +320,18 @@ fun formatLocalizedDuration(days: Long, language: Language): String {
     if (days <= 0) return "0d"
 
     return when {
-        days < 7 -> StringResources.get(StringKeyMatchPart1.TIME_DAYS, language, days)
+        days < 7 -> StringResources.get(StringKeyGeneralPart11.TIME_DAYS, language, days)
         days < 30 -> {
             val weeks = days / 7
-            StringResources.get(StringKeyMatchPart1.TIME_WEEKS, language, weeks)
+            StringResources.get(StringKeyGeneralPart11.TIME_WEEKS, language, weeks)
         }
         days < 365 -> {
             val months = days / 30
-            StringResources.get(StringKeyMatchPart1.TIME_MONTHS, language, months)
+            StringResources.get(StringKeyGeneralPart11.TIME_MONTHS, language, months)
         }
         else -> {
             val years = days / 365
-            StringResources.get(StringKeyMatchPart1.TIME_YEARS, language, years)
+            StringResources.get(StringKeyGeneralPart11.TIME_YEARS, language, years)
         }
     }
 }
@@ -352,12 +352,12 @@ fun formatLocalizedDuration(days: Long, language: Language): String {
  */
 fun PlanetaryStrength.getLocalizedName(language: Language): String {
     return when (this) {
-        PlanetaryStrength.VERY_STRONG -> StringResources.get(StringKeyMatchPart1.PLANETARY_STRENGTH_VERY_STRONG, language)
-        PlanetaryStrength.STRONG -> StringResources.get(StringKeyMatchPart1.PLANETARY_STRENGTH_STRONG, language)
-        PlanetaryStrength.MODERATE -> StringResources.get(StringKeyMatchPart1.PLANETARY_STRENGTH_MODERATE, language)
-        PlanetaryStrength.WEAK -> StringResources.get(StringKeyMatchPart1.PLANETARY_STRENGTH_WEAK, language)
-        PlanetaryStrength.VERY_WEAK -> StringResources.get(StringKeyMatchPart1.PLANETARY_STRENGTH_VERY_WEAK, language)
-        PlanetaryStrength.AFFLICTED -> StringResources.get(StringKeyMatchPart1.PLANETARY_STRENGTH_AFFLICTED, language)
+        PlanetaryStrength.VERY_STRONG -> StringResources.get(StringKeyGeneralPart8.PLANETARY_STRENGTH_VERY_STRONG, language)
+        PlanetaryStrength.STRONG -> StringResources.get(StringKeyGeneralPart8.PLANETARY_STRENGTH_STRONG, language)
+        PlanetaryStrength.MODERATE -> StringResources.get(StringKeyGeneralPart8.PLANETARY_STRENGTH_MODERATE, language)
+        PlanetaryStrength.WEAK -> StringResources.get(StringKeyGeneralPart8.PLANETARY_STRENGTH_WEAK, language)
+        PlanetaryStrength.VERY_WEAK -> StringResources.get(StringKeyGeneralPart8.PLANETARY_STRENGTH_VERY_WEAK, language)
+        PlanetaryStrength.AFFLICTED -> StringResources.get(StringKeyGeneralPart8.PLANETARY_STRENGTH_AFFLICTED, language)
     }
 }
 
@@ -366,14 +366,14 @@ fun PlanetaryStrength.getLocalizedName(language: Language): String {
  */
 fun StrengthRating.getLocalizedName(language: Language): String {
     return when (this) {
-        StrengthRating.EXTREMELY_WEAK -> StringResources.get(StringKeyShadbala.SHADBALA_EXTREMELY_WEAK, language)
-        StrengthRating.WEAK -> StringResources.get(StringKeyShadbala.SHADBALA_WEAK, language)
-        StrengthRating.BELOW_AVERAGE -> StringResources.get(StringKeyShadbala.SHADBALA_BELOW_AVERAGE, language)
-        StrengthRating.AVERAGE -> StringResources.get(StringKeyShadbala.SHADBALA_AVERAGE, language)
-        StrengthRating.ABOVE_AVERAGE -> StringResources.get(StringKeyShadbala.SHADBALA_ABOVE_AVERAGE, language)
-        StrengthRating.STRONG -> StringResources.get(StringKeyShadbala.SHADBALA_STRONG, language)
-        StrengthRating.VERY_STRONG -> StringResources.get(StringKeyShadbala.SHADBALA_VERY_STRONG, language)
-        StrengthRating.EXTREMELY_STRONG -> StringResources.get(StringKeyShadbala.SHADBALA_EXTREMELY_STRONG, language)
+        StrengthRating.EXTREMELY_WEAK -> StringResources.get(StringKeyAnalysis.SHADBALA_EXTREMELY_WEAK, language)
+        StrengthRating.WEAK -> StringResources.get(StringKeyAnalysis.SHADBALA_WEAK, language)
+        StrengthRating.BELOW_AVERAGE -> StringResources.get(StringKeyAnalysis.SHADBALA_BELOW_AVERAGE, language)
+        StrengthRating.AVERAGE -> StringResources.get(StringKeyAnalysis.SHADBALA_AVERAGE, language)
+        StrengthRating.ABOVE_AVERAGE -> StringResources.get(StringKeyAnalysis.SHADBALA_ABOVE_AVERAGE, language)
+        StrengthRating.STRONG -> StringResources.get(StringKeyAnalysis.SHADBALA_STRONG, language)
+        StrengthRating.VERY_STRONG -> StringResources.get(StringKeyAnalysis.SHADBALA_VERY_STRONG, language)
+        StrengthRating.EXTREMELY_STRONG -> StringResources.get(StringKeyAnalysis.SHADBALA_EXTREMELY_STRONG, language)
     }
 }
 
@@ -382,12 +382,12 @@ fun StrengthRating.getLocalizedName(language: Language): String {
  */
 fun RetrogradeCombustionCalculator.CombustionStatus.getLocalizedName(language: Language): String {
     return when (this) {
-        RetrogradeCombustionCalculator.CombustionStatus.NOT_COMBUST -> StringResources.get(StringKeyAnalysisPart1.COMBUSTION_NOT_COMBUST, language)
-        RetrogradeCombustionCalculator.CombustionStatus.APPROACHING -> StringResources.get(StringKeyAnalysisPart1.COMBUSTION_APPROACHING, language)
-        RetrogradeCombustionCalculator.CombustionStatus.COMBUST -> StringResources.get(StringKeyAnalysisPart1.COMBUSTION_COMBUST, language)
-        RetrogradeCombustionCalculator.CombustionStatus.DEEP_COMBUST -> StringResources.get(StringKeyAnalysisPart1.COMBUSTION_DEEP_COMBUST, language)
-        RetrogradeCombustionCalculator.CombustionStatus.CAZIMI -> StringResources.get(StringKeyAnalysisPart1.COMBUSTION_CAZIMI, language)
-        RetrogradeCombustionCalculator.CombustionStatus.SEPARATING -> StringResources.get(StringKeyAnalysisPart1.COMBUSTION_SEPARATING, language)
+        RetrogradeCombustionCalculator.CombustionStatus.NOT_COMBUST -> StringResources.get(StringKeyGeneralPart3.COMBUSTION_NOT_COMBUST, language)
+        RetrogradeCombustionCalculator.CombustionStatus.APPROACHING -> StringResources.get(StringKeyGeneralPart3.COMBUSTION_APPROACHING, language)
+        RetrogradeCombustionCalculator.CombustionStatus.COMBUST -> StringResources.get(StringKeyGeneralPart3.COMBUSTION_COMBUST, language)
+        RetrogradeCombustionCalculator.CombustionStatus.DEEP_COMBUST -> StringResources.get(StringKeyGeneralPart3.COMBUSTION_DEEP_COMBUST, language)
+        RetrogradeCombustionCalculator.CombustionStatus.CAZIMI -> StringResources.get(StringKeyGeneralPart3.COMBUSTION_CAZIMI, language)
+        RetrogradeCombustionCalculator.CombustionStatus.SEPARATING -> StringResources.get(StringKeyGeneralPart3.COMBUSTION_SEPARATING, language)
     }
 }
 
@@ -456,18 +456,18 @@ fun getYoniLocalizedAnimalName(yoni: Yoni, language: Language): String {
  */
 fun getHouseSignification(house: Int, language: Language): String {
     return when (house) {
-        1 -> StringResources.get(StringKeyMatchPart1.HOUSE_1_SIGNIFICATION, language)
-        2 -> StringResources.get(StringKeyMatchPart1.HOUSE_2_SIGNIFICATION, language)
-        3 -> StringResources.get(StringKeyMatchPart1.HOUSE_3_SIGNIFICATION, language)
-        4 -> StringResources.get(StringKeyMatchPart1.HOUSE_4_SIGNIFICATION, language)
-        5 -> StringResources.get(StringKeyMatchPart1.HOUSE_5_SIGNIFICATION, language)
-        6 -> StringResources.get(StringKeyMatchPart1.HOUSE_6_SIGNIFICATION, language)
-        7 -> StringResources.get(StringKeyMatchPart1.HOUSE_7_SIGNIFICATION, language)
-        8 -> StringResources.get(StringKeyMatchPart1.HOUSE_8_SIGNIFICATION, language)
-        9 -> StringResources.get(StringKeyMatchPart1.HOUSE_9_SIGNIFICATION, language)
-        10 -> StringResources.get(StringKeyMatchPart1.HOUSE_10_SIGNIFICATION, language)
-        11 -> StringResources.get(StringKeyMatchPart1.HOUSE_11_SIGNIFICATION, language)
-        12 -> StringResources.get(StringKeyMatchPart1.HOUSE_12_SIGNIFICATION, language)
+        1 -> StringResources.get(StringKeyGeneralPart5.HOUSE_1_SIGNIFICATION, language)
+        2 -> StringResources.get(StringKeyGeneralPart5.HOUSE_2_SIGNIFICATION, language)
+        3 -> StringResources.get(StringKeyGeneralPart5.HOUSE_3_SIGNIFICATION, language)
+        4 -> StringResources.get(StringKeyGeneralPart5.HOUSE_4_SIGNIFICATION, language)
+        5 -> StringResources.get(StringKeyGeneralPart5.HOUSE_5_SIGNIFICATION, language)
+        6 -> StringResources.get(StringKeyGeneralPart5.HOUSE_6_SIGNIFICATION, language)
+        7 -> StringResources.get(StringKeyGeneralPart5.HOUSE_7_SIGNIFICATION, language)
+        8 -> StringResources.get(StringKeyGeneralPart5.HOUSE_8_SIGNIFICATION, language)
+        9 -> StringResources.get(StringKeyGeneralPart5.HOUSE_9_SIGNIFICATION, language)
+        10 -> StringResources.get(StringKeyGeneralPart5.HOUSE_10_SIGNIFICATION, language)
+        11 -> StringResources.get(StringKeyGeneralPart5.HOUSE_11_SIGNIFICATION, language)
+        12 -> StringResources.get(StringKeyGeneralPart5.HOUSE_12_SIGNIFICATION, language)
         else -> ""
     }
 }
@@ -477,13 +477,13 @@ fun getHouseSignification(house: Int, language: Language): String {
  */
 fun getChoghadiyaName(choghadiya: String, language: Language): String {
     return when (choghadiya.lowercase()) {
-        "amrit" -> StringResources.get(StringKeyMatchPart1.CHOGHADIYA_AMRIT, language)
-        "shubh" -> StringResources.get(StringKeyMatchPart1.CHOGHADIYA_SHUBH, language)
-        "labh" -> StringResources.get(StringKeyMatchPart1.CHOGHADIYA_LABH, language)
-        "char" -> StringResources.get(StringKeyMatchPart1.CHOGHADIYA_CHAR, language)
-        "rog" -> StringResources.get(StringKeyMatchPart1.CHOGHADIYA_ROG, language)
-        "kaal" -> StringResources.get(StringKeyMatchPart1.CHOGHADIYA_KAAL, language)
-        "udveg" -> StringResources.get(StringKeyMatchPart1.CHOGHADIYA_UDVEG, language)
+        "amrit" -> StringResources.get(StringKeyGeneralPart3.CHOGHADIYA_AMRIT, language)
+        "shubh" -> StringResources.get(StringKeyGeneralPart3.CHOGHADIYA_SHUBH, language)
+        "labh" -> StringResources.get(StringKeyGeneralPart3.CHOGHADIYA_LABH, language)
+        "char" -> StringResources.get(StringKeyGeneralPart3.CHOGHADIYA_CHAR, language)
+        "rog" -> StringResources.get(StringKeyGeneralPart3.CHOGHADIYA_ROG, language)
+        "kaal" -> StringResources.get(StringKeyGeneralPart3.CHOGHADIYA_KAAL, language)
+        "udveg" -> StringResources.get(StringKeyGeneralPart3.CHOGHADIYA_UDVEG, language)
         else -> choghadiya
     }
 }
@@ -497,12 +497,12 @@ fun getChoghadiyaName(choghadiya: String, language: Language): String {
  */
 fun com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.getLocalizedName(language: Language): String {
     return when (this) {
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.CAREER -> StringResources.get(StringKeyPart1.LIFE_AREA_CAREER, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.LOVE -> StringResources.get(StringKeyPart1.LIFE_AREA_LOVE, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.HEALTH -> StringResources.get(StringKeyPart1.LIFE_AREA_HEALTH, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FINANCE -> StringResources.get(StringKeyPart1.LIFE_AREA_FINANCE, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FAMILY -> StringResources.get(StringKeyPart1.LIFE_AREA_FAMILY, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.SPIRITUALITY -> StringResources.get(StringKeyPart1.LIFE_AREA_SPIRITUALITY, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.CAREER -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_CAREER, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.LOVE -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_LOVE, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.HEALTH -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_HEALTH, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FINANCE -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_FINANCE, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FAMILY -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_FAMILY, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.SPIRITUALITY -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_SPIRITUALITY, language)
     }
 }
 
@@ -511,12 +511,12 @@ fun com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.getLocalizedName(lang
  */
 fun com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.getLocalizedFullName(language: Language): String {
     return when (this) {
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.CAREER -> StringResources.get(StringKeyPart1.LIFE_AREA_CAREER_FULL, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.LOVE -> StringResources.get(StringKeyPart1.LIFE_AREA_LOVE_FULL, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.HEALTH -> StringResources.get(StringKeyPart1.LIFE_AREA_HEALTH_FULL, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FINANCE -> StringResources.get(StringKeyPart1.LIFE_AREA_FINANCE_FULL, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FAMILY -> StringResources.get(StringKeyPart1.LIFE_AREA_FAMILY_FULL, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.SPIRITUALITY -> StringResources.get(StringKeyPart1.LIFE_AREA_SPIRITUALITY_FULL, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.CAREER -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_CAREER_FULL, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.LOVE -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_LOVE_FULL, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.HEALTH -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_HEALTH_FULL, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FINANCE -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_FINANCE_FULL, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FAMILY -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_FAMILY_FULL, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.SPIRITUALITY -> StringResources.get(StringKeyGeneralPart6.LIFE_AREA_SPIRITUALITY_FULL, language)
     }
 }
 
@@ -525,15 +525,15 @@ fun com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.getLocalizedFullName(
  */
 fun Planet.getLocalizedGemstoneName(language: Language): String {
     return when (this) {
-        Planet.SUN -> StringResources.get(StringKeyUI.GEMSTONE_RUBY, language)
-        Planet.MOON -> StringResources.get(StringKeyUI.GEMSTONE_PEARL, language)
-        Planet.MARS -> StringResources.get(StringKeyUI.GEMSTONE_RED_CORAL, language)
-        Planet.MERCURY -> StringResources.get(StringKeyUI.GEMSTONE_EMERALD, language)
-        Planet.JUPITER -> StringResources.get(StringKeyUI.GEMSTONE_YELLOW_SAPPHIRE, language)
-        Planet.VENUS -> StringResources.get(StringKeyUI.GEMSTONE_DIAMOND, language)
-        Planet.SATURN -> StringResources.get(StringKeyUI.GEMSTONE_BLUE_SAPPHIRE, language)
-        Planet.RAHU -> StringResources.get(StringKeyUI.GEMSTONE_HESSONITE, language)
-        Planet.KETU -> StringResources.get(StringKeyUI.GEMSTONE_CATS_EYE, language)
+        Planet.SUN -> StringResources.get(StringKeyUIPart1.GEMSTONE_RUBY, language)
+        Planet.MOON -> StringResources.get(StringKeyUIPart1.GEMSTONE_PEARL, language)
+        Planet.MARS -> StringResources.get(StringKeyUIPart1.GEMSTONE_RED_CORAL, language)
+        Planet.MERCURY -> StringResources.get(StringKeyUIPart1.GEMSTONE_EMERALD, language)
+        Planet.JUPITER -> StringResources.get(StringKeyUIPart1.GEMSTONE_YELLOW_SAPPHIRE, language)
+        Planet.VENUS -> StringResources.get(StringKeyUIPart1.GEMSTONE_DIAMOND, language)
+        Planet.SATURN -> StringResources.get(StringKeyUIPart1.GEMSTONE_BLUE_SAPPHIRE, language)
+        Planet.RAHU -> StringResources.get(StringKeyUIPart1.GEMSTONE_HESSONITE, language)
+        Planet.KETU -> StringResources.get(StringKeyUIPart1.GEMSTONE_CATS_EYE, language)
         else -> this.displayName
     }
 }
@@ -543,14 +543,14 @@ fun Planet.getLocalizedGemstoneName(language: Language): String {
  */
 fun Planet.getLocalizedDirection(language: Language): String {
     return when (this) {
-        Planet.SUN, Planet.MARS -> StringResources.get(StringKeyPart1.LUCKY_DIRECTION_EAST, language)
-        Planet.MOON, Planet.KETU -> StringResources.get(StringKeyPart1.LUCKY_DIRECTION_NORTHWEST, language)
-        Planet.VENUS -> StringResources.get(StringKeyPart1.LUCKY_DIRECTION_SOUTHEAST, language)
-        Planet.MERCURY -> StringResources.get(StringKeyPart1.LUCKY_DIRECTION_NORTH, language)
-        Planet.JUPITER -> StringResources.get(StringKeyPart1.LUCKY_DIRECTION_NORTHEAST, language)
-        Planet.SATURN -> StringResources.get(StringKeyPart1.LUCKY_DIRECTION_WEST, language)
-        Planet.RAHU -> StringResources.get(StringKeyPart1.LUCKY_DIRECTION_SOUTHWEST, language)
-        else -> StringResources.get(StringKeyPart1.LUCKY_DIRECTION_EAST, language)
+        Planet.SUN, Planet.MARS -> StringResources.get(StringKeyGeneralPart6.LUCKY_DIRECTION_EAST, language)
+        Planet.MOON, Planet.KETU -> StringResources.get(StringKeyGeneralPart6.LUCKY_DIRECTION_NORTHWEST, language)
+        Planet.VENUS -> StringResources.get(StringKeyGeneralPart6.LUCKY_DIRECTION_SOUTHEAST, language)
+        Planet.MERCURY -> StringResources.get(StringKeyGeneralPart6.LUCKY_DIRECTION_NORTH, language)
+        Planet.JUPITER -> StringResources.get(StringKeyGeneralPart6.LUCKY_DIRECTION_NORTHEAST, language)
+        Planet.SATURN -> StringResources.get(StringKeyGeneralPart6.LUCKY_DIRECTION_WEST, language)
+        Planet.RAHU -> StringResources.get(StringKeyGeneralPart6.LUCKY_DIRECTION_SOUTHWEST, language)
+        else -> StringResources.get(StringKeyGeneralPart6.LUCKY_DIRECTION_EAST, language)
     }
 }
 
@@ -559,15 +559,15 @@ fun Planet.getLocalizedDirection(language: Language): String {
  */
 fun Planet.getLocalizedDashaRecommendation(language: Language): String {
     return when (this) {
-        Planet.SUN -> StringResources.get(StringKeyPart1.DASHA_REC_SUN, language)
-        Planet.MOON -> StringResources.get(StringKeyPart1.DASHA_REC_MOON, language)
-        Planet.MARS -> StringResources.get(StringKeyPart1.DASHA_REC_MARS, language)
-        Planet.MERCURY -> StringResources.get(StringKeyPart1.DASHA_REC_MERCURY, language)
-        Planet.JUPITER -> StringResources.get(StringKeyPart1.DASHA_REC_JUPITER, language)
-        Planet.VENUS -> StringResources.get(StringKeyPart1.DASHA_REC_VENUS, language)
-        Planet.SATURN -> StringResources.get(StringKeyPart1.DASHA_REC_SATURN, language)
-        Planet.RAHU -> StringResources.get(StringKeyPart1.DASHA_REC_RAHU, language)
-        Planet.KETU -> StringResources.get(StringKeyPart1.DASHA_REC_KETU, language)
+        Planet.SUN -> StringResources.get(StringKeyDashaPart1.DASHA_REC_SUN, language)
+        Planet.MOON -> StringResources.get(StringKeyDashaPart1.DASHA_REC_MOON, language)
+        Planet.MARS -> StringResources.get(StringKeyDashaPart1.DASHA_REC_MARS, language)
+        Planet.MERCURY -> StringResources.get(StringKeyDashaPart1.DASHA_REC_MERCURY, language)
+        Planet.JUPITER -> StringResources.get(StringKeyDashaPart1.DASHA_REC_JUPITER, language)
+        Planet.VENUS -> StringResources.get(StringKeyDashaPart1.DASHA_REC_VENUS, language)
+        Planet.SATURN -> StringResources.get(StringKeyDashaPart1.DASHA_REC_SATURN, language)
+        Planet.RAHU -> StringResources.get(StringKeyDashaPart1.DASHA_REC_RAHU, language)
+        Planet.KETU -> StringResources.get(StringKeyDashaPart1.DASHA_REC_KETU, language)
         else -> ""
     }
 }
@@ -577,15 +577,15 @@ fun Planet.getLocalizedDashaRecommendation(language: Language): String {
  */
 fun Planet.getLocalizedDashaAffirmation(language: Language): String {
     return when (this) {
-        Planet.SUN -> StringResources.get(StringKeyPart1.DASHA_AFF_SUN, language)
-        Planet.MOON -> StringResources.get(StringKeyPart1.DASHA_AFF_MOON, language)
-        Planet.MARS -> StringResources.get(StringKeyPart1.DASHA_AFF_MARS, language)
-        Planet.MERCURY -> StringResources.get(StringKeyPart1.DASHA_AFF_MERCURY, language)
-        Planet.JUPITER -> StringResources.get(StringKeyPart1.DASHA_AFF_JUPITER, language)
-        Planet.VENUS -> StringResources.get(StringKeyPart1.DASHA_AFF_VENUS, language)
-        Planet.SATURN -> StringResources.get(StringKeyPart1.DASHA_AFF_SATURN, language)
-        Planet.RAHU -> StringResources.get(StringKeyPart1.DASHA_AFF_RAHU, language)
-        Planet.KETU -> StringResources.get(StringKeyPart1.DASHA_AFF_KETU, language)
+        Planet.SUN -> StringResources.get(StringKeyDashaPart1.DASHA_AFF_SUN, language)
+        Planet.MOON -> StringResources.get(StringKeyDashaPart1.DASHA_AFF_MOON, language)
+        Planet.MARS -> StringResources.get(StringKeyDashaPart1.DASHA_AFF_MARS, language)
+        Planet.MERCURY -> StringResources.get(StringKeyDashaPart1.DASHA_AFF_MERCURY, language)
+        Planet.JUPITER -> StringResources.get(StringKeyDashaPart1.DASHA_AFF_JUPITER, language)
+        Planet.VENUS -> StringResources.get(StringKeyDashaPart1.DASHA_AFF_VENUS, language)
+        Planet.SATURN -> StringResources.get(StringKeyDashaPart1.DASHA_AFF_SATURN, language)
+        Planet.RAHU -> StringResources.get(StringKeyDashaPart1.DASHA_AFF_RAHU, language)
+        Planet.KETU -> StringResources.get(StringKeyDashaPart1.DASHA_AFF_KETU, language)
         else -> ""
     }
 }
@@ -595,10 +595,10 @@ fun Planet.getLocalizedDashaAffirmation(language: Language): String {
  */
 fun Planet.getLocalizedCaution(language: Language): String? {
     return when (this) {
-        Planet.SATURN -> StringResources.get(StringKeyPart1.CAUTION_SATURN, language)
-        Planet.MARS -> StringResources.get(StringKeyPart1.CAUTION_MARS, language)
-        Planet.RAHU -> StringResources.get(StringKeyPart1.CAUTION_RAHU, language)
-        Planet.KETU -> StringResources.get(StringKeyPart1.CAUTION_KETU, language)
+        Planet.SATURN -> StringResources.get(StringKeyGeneralPart2.CAUTION_SATURN, language)
+        Planet.MARS -> StringResources.get(StringKeyGeneralPart2.CAUTION_MARS, language)
+        Planet.RAHU -> StringResources.get(StringKeyGeneralPart2.CAUTION_RAHU, language)
+        Planet.KETU -> StringResources.get(StringKeyGeneralPart2.CAUTION_KETU, language)
         else -> null
     }
 }
@@ -608,11 +608,11 @@ fun Planet.getLocalizedCaution(language: Language): String? {
  */
 fun getLocalizedElementColor(element: String, language: Language): String {
     return when (element.lowercase()) {
-        "fire" -> StringResources.get(StringKeyPart1.LUCKY_COLOR_FIRE, language)
-        "earth" -> StringResources.get(StringKeyPart1.LUCKY_COLOR_EARTH, language)
-        "air" -> StringResources.get(StringKeyPart1.LUCKY_COLOR_AIR, language)
-        "water" -> StringResources.get(StringKeyPart1.LUCKY_COLOR_WATER, language)
-        else -> StringResources.get(StringKeyPart1.LUCKY_COLOR_EARTH, language)
+        "fire" -> StringResources.get(StringKeyPrediction.LUCKY_COLOR_FIRE, language)
+        "earth" -> StringResources.get(StringKeyPrediction.LUCKY_COLOR_EARTH, language)
+        "air" -> StringResources.get(StringKeyPrediction.LUCKY_COLOR_AIR, language)
+        "water" -> StringResources.get(StringKeyPrediction.LUCKY_COLOR_WATER, language)
+        else -> StringResources.get(StringKeyPrediction.LUCKY_COLOR_EARTH, language)
     }
 }
 
@@ -621,11 +621,11 @@ fun getLocalizedElementColor(element: String, language: Language): String {
  */
 fun getLocalizedElementRecommendation(element: String, language: Language): String {
     return when (element.lowercase()) {
-        "fire" -> StringResources.get(StringKeyPart1.ELEMENT_REC_FIRE, language)
-        "earth" -> StringResources.get(StringKeyPart1.ELEMENT_REC_EARTH, language)
-        "air" -> StringResources.get(StringKeyPart1.ELEMENT_REC_AIR, language)
-        "water" -> StringResources.get(StringKeyPart1.ELEMENT_REC_WATER, language)
-        else -> StringResources.get(StringKeyPart1.ELEMENT_REC_EARTH, language)
+        "fire" -> StringResources.get(StringKeyGeneralPart4.ELEMENT_REC_FIRE, language)
+        "earth" -> StringResources.get(StringKeyGeneralPart4.ELEMENT_REC_EARTH, language)
+        "air" -> StringResources.get(StringKeyGeneralPart4.ELEMENT_REC_AIR, language)
+        "water" -> StringResources.get(StringKeyGeneralPart4.ELEMENT_REC_WATER, language)
+        else -> StringResources.get(StringKeyGeneralPart4.ELEMENT_REC_EARTH, language)
     }
 }
 
@@ -634,12 +634,12 @@ fun getLocalizedElementRecommendation(element: String, language: Language): Stri
  */
 fun com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.getLocalizedRecommendation(language: Language): String {
     return when (this) {
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.CAREER -> StringResources.get(StringKeyPart1.AREA_REC_CAREER, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.LOVE -> StringResources.get(StringKeyPart1.AREA_REC_LOVE, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.HEALTH -> StringResources.get(StringKeyPart1.AREA_REC_HEALTH, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FINANCE -> StringResources.get(StringKeyPart1.AREA_REC_FINANCE, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FAMILY -> StringResources.get(StringKeyPart1.AREA_REC_FAMILY, language)
-        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.SPIRITUALITY -> StringResources.get(StringKeyPart1.AREA_REC_SPIRITUALITY, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.CAREER -> StringResources.get(StringKeyAnalysis.AREA_REC_CAREER, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.LOVE -> StringResources.get(StringKeyAnalysis.AREA_REC_LOVE, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.HEALTH -> StringResources.get(StringKeyAnalysis.AREA_REC_HEALTH, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FINANCE -> StringResources.get(StringKeyAnalysis.AREA_REC_FINANCE, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.FAMILY -> StringResources.get(StringKeyAnalysis.AREA_REC_FAMILY, language)
+        com.astro.storm.ephemeris.HoroscopeCalculator.LifeArea.SPIRITUALITY -> StringResources.get(StringKeyAnalysis.AREA_REC_SPIRITUALITY, language)
     }
 }
 
@@ -660,10 +660,10 @@ fun KakshaTransitCalculator.KakshaQuality.getLocalizedName(language: Language): 
  */
 fun UpachayaLevel.getLocalizedName(language: Language): String {
     return when (this) {
-        UpachayaLevel.EXCEPTIONAL -> StringResources.get(StringKeyUI.STRENGTH_EXCELLENT, language)
-        UpachayaLevel.HIGH -> StringResources.get(StringKeyUI.STRENGTH_STRONG, language)
-        UpachayaLevel.MODERATE -> StringResources.get(StringKeyUI.STRENGTH_AVERAGE, language)
-        UpachayaLevel.LOW -> StringResources.get(StringKeyUI.STRENGTH_WEAK, language)
+        UpachayaLevel.EXCEPTIONAL -> StringResources.get(StringKeyUIPart1.STRENGTH_EXCELLENT, language)
+        UpachayaLevel.HIGH -> StringResources.get(StringKeyUIPart1.STRENGTH_STRONG, language)
+        UpachayaLevel.MODERATE -> StringResources.get(StringKeyUIPart1.STRENGTH_AVERAGE, language)
+        UpachayaLevel.LOW -> StringResources.get(StringKeyUIPart1.STRENGTH_WEAK, language)
     }
 }
 
@@ -672,10 +672,10 @@ fun UpachayaLevel.getLocalizedName(language: Language): String {
  */
 fun UpachayaTransitQuality.getLocalizedName(language: Language): String {
     return when (this) {
-        UpachayaTransitQuality.EXCELLENT -> StringResources.get(StringKeyAnalysisPart1.QUALITY_EXCELLENT, language)
-        UpachayaTransitQuality.GOOD -> StringResources.get(StringKeyAnalysisPart1.QUALITY_GOOD, language)
-        UpachayaTransitQuality.FAVORABLE -> StringResources.get(StringKeyUI.UI_FAVORABLE_PERIOD, language)
-        UpachayaTransitQuality.NEUTRAL -> StringResources.get(StringKeyAnalysisPart1.QUALITY_NEUTRAL, language)
+        UpachayaTransitQuality.EXCELLENT -> StringResources.get(StringKeyGeneralPart9.QUALITY_EXCELLENT, language)
+        UpachayaTransitQuality.GOOD -> StringResources.get(StringKeyGeneralPart9.QUALITY_GOOD, language)
+        UpachayaTransitQuality.FAVORABLE -> StringResources.get(StringKeyUIPart1.UI_FAVORABLE_PERIOD, language)
+        UpachayaTransitQuality.NEUTRAL -> StringResources.get(StringKeyGeneralPart9.QUALITY_NEUTRAL, language)
     }
 }
 
@@ -684,8 +684,8 @@ fun UpachayaTransitQuality.getLocalizedName(language: Language): String {
  */
 fun TransitReference.getLocalizedName(language: Language): String {
     return when (this) {
-        TransitReference.MOON -> StringResources.get(StringKeyUI.UI_FROM_MOON, language)
-        TransitReference.LAGNA -> StringResources.get(StringKeyUI.UI_FROM_LAGNA, language)
+        TransitReference.MOON -> StringResources.get(StringKeyUIPart1.UI_FROM_MOON, language)
+        TransitReference.LAGNA -> StringResources.get(StringKeyUIPart1.UI_FROM_LAGNA, language)
     }
 }
 
@@ -694,11 +694,11 @@ fun TransitReference.getLocalizedName(language: Language): String {
  */
 fun HouseStrength.getLocalizedName(language: Language): String {
     return when (this) {
-        HouseStrength.VERY_STRONG -> StringResources.get(StringKeyUI.STRENGTH_VERY_STRONG, language)
-        HouseStrength.STRONG -> StringResources.get(StringKeyUI.STRENGTH_STRONG, language)
-        HouseStrength.MODERATE -> StringResources.get(StringKeyUI.STRENGTH_AVERAGE, language)
-        HouseStrength.MILD -> StringResources.get(StringKeyUI.STRENGTH_BELOW_AVERAGE, language)
-        HouseStrength.INACTIVE -> StringResources.get(StringKeyUI.UI_NONE, language)
+        HouseStrength.VERY_STRONG -> StringResources.get(StringKeyUIPart1.STRENGTH_VERY_STRONG, language)
+        HouseStrength.STRONG -> StringResources.get(StringKeyUIPart1.STRENGTH_STRONG, language)
+        HouseStrength.MODERATE -> StringResources.get(StringKeyUIPart1.STRENGTH_AVERAGE, language)
+        HouseStrength.MILD -> StringResources.get(StringKeyUIPart1.STRENGTH_BELOW_AVERAGE, language)
+        HouseStrength.INACTIVE -> StringResources.get(StringKeyUIPart2.UI_NONE, language)
     }
 }
 

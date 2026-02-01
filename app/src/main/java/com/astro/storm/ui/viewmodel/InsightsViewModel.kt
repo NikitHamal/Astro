@@ -167,7 +167,7 @@ class InsightsViewModel @Inject constructor(
                     } catch (e: Exception) {
                         if (e is CancellationException) throw e
                         Log.e(TAG, "Dasha calculation failed", e)
-                        errors.add(InsightError(InsightErrorType.DASHA, StringKeyPart1.DASHA_ERROR))
+                        errors.add(InsightError(InsightErrorType.DASHA, StringKeyDashaPart1.DASHA_ERROR))
                         null
                     }
                 }

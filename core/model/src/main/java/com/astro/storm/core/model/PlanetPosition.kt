@@ -46,7 +46,7 @@ data class PlanetPosition(
         fun formatNum(n: Int) = if (isNepali) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
         
         val retrograde = if (isRetrograde) {
-            " " + StringResources.get(com.astro.storm.core.common.StringKeyPart1.PLANET_RETROGRADE_SHORT, language)
+            " " + StringResources.get(com.astro.storm.core.common.StringKeyGeneralPart8.PLANET_RETROGRADE_SHORT, language)
         } else ""
         
         return "${planet.getLocalizedName(language)}: ${sign.abbreviation} ${formatNum(deg)}° ${formatNum(min)}' ${formatNum(sec)}\"$retrograde"
@@ -62,11 +62,11 @@ data class PlanetPosition(
         fun formatNum(n: Int) = if (isNepali) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
         
         val retrograde = if (isRetrograde) {
-            " [" + StringResources.get(com.astro.storm.core.common.StringKeyPart1.PLANET_RETROGRADE, language) + "]"
+            " [" + StringResources.get(com.astro.storm.core.common.StringKeyGeneralPart8.PLANET_RETROGRADE, language) + "]"
         } else ""
         
-        val houseText = StringResources.get(com.astro.storm.core.common.StringKeyPart1.CHART_HOUSE, language)
-        val padaText = StringResources.get(com.astro.storm.core.common.StringKeyNakshatra.NAKSHATRA_PADA, language)
+        val houseText = StringResources.get(com.astro.storm.core.common.StringKeyGeneralPart3.CHART_HOUSE, language)
+        val padaText = StringResources.get(com.astro.storm.core.common.StringKeyPanchanga.NAKSHATRA_PADA, language)
         
         return "${planet.getLocalizedName(language).padEnd(10)}: ${sign.getLocalizedName(language).padEnd(12)} ${formatNum(deg)}° ${formatNum(min)}' ${formatNum(sec)}\" | $houseText ${formatNum(house)} | ${nakshatra.getLocalizedName(language)} ($padaText ${formatNum(nakshatraPada)})$retrograde"
     }

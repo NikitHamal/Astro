@@ -92,8 +92,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                     isAuspicious = true,
                     activationPeriod = "Moon and Jupiter periods",
                     cancellationFactors = emptyList(),
-                    nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_KEMADRUMA_BHANGA,
-                    effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_KEMADRUMA_BHANGA
+                    nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_KEMADRUMA_BHANGA,
+                    effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_KEMADRUMA_BHANGA
                 )
             }
             
@@ -111,8 +111,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Moon and Jupiter periods",
                 cancellationFactors = listOf("Cancelled if Moon is in Kendra from Lagna"),
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SAKATA,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SAKATA
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_SAKATA,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_SAKATA
             )
         }
         
@@ -158,8 +158,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "${lord11.displayName} Mahadasha",
                 cancellationFactors = cancellationReasons.ifEmpty { listOf("Remedial measures recommended") },
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_DARIDRA,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_DARIDRA
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_DARIDRA,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_DARIDRA
             )
         }
 
@@ -202,8 +202,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Jupiter-Rahu or Rahu-Jupiter periods",
                 cancellationFactors = cancellationReasons.ifEmpty { listOf("Proper spiritual guidance recommended") },
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_GURU_CHANDAL,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_GURU_CHANDAL
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_GURU_CHANDAL,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_GURU_CHANDAL
             )
         }
 
@@ -236,8 +236,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Sun-Rahu periods",
                 cancellationFactors = listOf("Sun in Leo reduces effects", "Jupiter aspect protects"),
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SURYA_GRAHAN,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SURYA_GRAHAN
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_SURYA_GRAHAN,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_SURYA_GRAHAN
             ))
         }
 
@@ -257,8 +257,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Sun-Ketu periods",
                 cancellationFactors = listOf("Can lead to spiritual enlightenment if well-aspected"),
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SURYA_KETU_GRAHAN,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SURYA_KETU_GRAHAN
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_SURYA_KETU_GRAHAN,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_SURYA_KETU_GRAHAN
             ))
         }
 
@@ -278,8 +278,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Moon-Rahu periods",
                 cancellationFactors = listOf("Jupiter aspect calms the mind", "Strong Moon in Cancer reduces effects"),
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_CHANDRA_GRAHAN,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_CHANDRA_GRAHAN
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_CHANDRA_GRAHAN,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_CHANDRA_GRAHAN
             ))
         }
 
@@ -299,8 +299,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Moon-Ketu periods",
                 cancellationFactors = listOf("Good for spiritual pursuits", "Jupiter aspect stabilizes"),
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_CHANDRA_KETU,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_CHANDRA_KETU
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_CHANDRA_KETU,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_CHANDRA_KETU
             ))
         }
 
@@ -355,8 +355,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Mars-Rahu or Rahu-Mars periods",
                 cancellationFactors = cancellationReasons.ifEmpty { listOf("Channel energy through physical activity") },
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_ANGARAK,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_ANGARAK
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_ANGARAK,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_ANGARAK
             )
         }
 
@@ -398,8 +398,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Saturn-Rahu or Rahu-Saturn periods",
                 cancellationFactors = cancellationReasons.ifEmpty { listOf("Remedial measures and patience required") },
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SHRAPIT,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SHRAPIT
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_SHRAPIT,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_SHRAPIT
             )
         }
 
@@ -487,8 +487,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Throughout life, especially Rahu or Ketu periods",
                 cancellationFactors = cancellationReasons,
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_KALA_SARPA,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_KALA_SARPA
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_KALA_SARPA,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_KALA_SARPA
             )
         }
 
@@ -540,8 +540,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                     isAuspicious = false,
                     activationPeriod = "Throughout life",
                     cancellationFactors = listOf("Jupiter aspect on lagna provides relief"),
-                    nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_PAPAKARTARI,
-                    effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_PAPAKARTARI
+                    nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_PAPAKARTARI,
+                    effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_PAPAKARTARI
                 ))
             }
         }
@@ -562,8 +562,8 @@ class NegativeYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Moon periods especially",
                 cancellationFactors = listOf("Jupiter aspect calms the mind"),
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_PAPAKARTARI,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_PAPAKARTARI
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_PAPAKARTARI,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_PAPAKARTARI
             ))
         }
 

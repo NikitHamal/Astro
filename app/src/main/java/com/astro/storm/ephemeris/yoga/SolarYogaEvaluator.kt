@@ -96,8 +96,8 @@ class SolarYogaEvaluator : YogaEvaluator {
             isAuspicious = true,
             activationPeriod = "Sun and ${planets.first().displayName} periods",
             cancellationFactors = listOf("Planets should not be combust"),
-            nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VESI,
-            effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_VESI
+            nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_VESI,
+            effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_VESI
         )
     }
 
@@ -131,8 +131,8 @@ class SolarYogaEvaluator : YogaEvaluator {
             isAuspicious = true,
             activationPeriod = "Sun and ${planets.first().displayName} periods",
             cancellationFactors = emptyList(),
-            nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VOSI,
-            effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_VOSI
+            nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_VOSI,
+            effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_VOSI
         )
     }
 
@@ -158,8 +158,8 @@ class SolarYogaEvaluator : YogaEvaluator {
             isAuspicious = true,
             activationPeriod = "Sun periods especially",
             cancellationFactors = listOf("Flanking planets should not be combust"),
-            nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_UBHAYACHARI,
-            effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_UBHAYACHARI
+            nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_UBHAYACHARI,
+            effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_UBHAYACHARI
         )
     }
 
@@ -213,8 +213,8 @@ class SolarYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Sun-Mercury periods",
                 cancellationFactors = cancellationFactors.ifEmpty { listOf("None - yoga operates well") },
-                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_BUDHA_ADITYA,
-                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_BUDHA_ADITYA
+                nameKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_BUDHA_ADITYA,
+                effectsKey = com.astro.storm.core.common.StringKeyPanchanga.YOGA_EFFECT_BUDHA_ADITYA
             )
         }
 

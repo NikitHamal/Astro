@@ -142,7 +142,7 @@ private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.Ashtaka
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyAnalysisPart1.ASHTAK_SUMMARY),
+                    text = stringResource(StringKeyGeneralPart1.ASHTAK_SUMMARY),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = ChartDetailColors.TextPrimary
@@ -154,17 +154,17 @@ private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.Ashtaka
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 SummaryItem(
-                    label = stringResource(StringKeyAnalysisPart1.ASHTAK_TOTAL_SAV),
+                    label = stringResource(StringKeyGeneralPart1.ASHTAK_TOTAL_SAV),
                     value = ashtakavarga.sarvashtakavarga.totalBindus.toString(),
                     color = ChartDetailColors.AccentGold
                 )
                 SummaryItem(
-                    label = stringResource(StringKeyAnalysisPart1.ASHTAK_STRONGEST),
+                    label = stringResource(StringKeyGeneralPart1.ASHTAK_STRONGEST),
                     value = ashtakavarga.sarvashtakavarga.strongestSign.abbreviation,
                     color = ChartDetailColors.SuccessColor
                 )
                 SummaryItem(
-                    label = stringResource(StringKeyAnalysisPart1.ASHTAK_WEAKEST),
+                    label = stringResource(StringKeyGeneralPart2.ASHTAK_WEAKEST),
                     value = ashtakavarga.sarvashtakavarga.weakestSign.abbreviation,
                     color = ChartDetailColors.ErrorColor
                 )
@@ -176,7 +176,7 @@ private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.Ashtaka
             )
 
             Text(
-                text = stringResource(StringKeyAnalysisPart1.ASHTAK_QUICK_ANALYSIS),
+                text = stringResource(StringKeyGeneralPart1.ASHTAK_QUICK_ANALYSIS),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = ChartDetailColors.TextSecondary,
@@ -195,12 +195,12 @@ private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.Ashtaka
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(StringKeyAnalysisPart1.ASHTAK_FAVORABLE_SIGNS),
+                    text = stringResource(StringKeyGeneralPart1.ASHTAK_FAVORABLE_SIGNS),
                     fontSize = 13.sp,
                     color = ChartDetailColors.TextMuted
                 )
                 Text(
-                    text = stringResource(StringKeyAnalysisPart1.ASHTAK_SIGNS_COUNT, strongSignCount),
+                    text = stringResource(StringKeyGeneralPart1.ASHTAK_SIGNS_COUNT, strongSignCount),
                     fontSize = 13.sp,
                     color = ChartDetailColors.SuccessColor
                 )
@@ -211,12 +211,12 @@ private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.Ashtaka
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(StringKeyAnalysisPart1.ASHTAK_CHALLENGING_SIGNS),
+                    text = stringResource(StringKeyGeneralPart1.ASHTAK_CHALLENGING_SIGNS),
                     fontSize = 13.sp,
                     color = ChartDetailColors.TextMuted
                 )
                 Text(
-                    text = stringResource(StringKeyAnalysisPart1.ASHTAK_SIGNS_COUNT, weakSignCount),
+                    text = stringResource(StringKeyGeneralPart1.ASHTAK_SIGNS_COUNT, weakSignCount),
                     fontSize = 13.sp,
                     color = ChartDetailColors.WarningColor
                 )
@@ -283,7 +283,7 @@ private fun SarvashtakavargaCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.ASHTAK_SAV_TITLE),
+                        text = stringResource(StringKeyGeneralPart1.ASHTAK_SAV_TITLE),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -304,7 +304,7 @@ private fun SarvashtakavargaCard(
             ) {
                 Column(modifier = Modifier.padding(top = 12.dp)) {
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.ASHTAK_SAV_COMBINED_DESC),
+                        text = stringResource(StringKeyGeneralPart1.ASHTAK_SAV_COMBINED_DESC),
                         fontSize = 12.sp,
                         color = ChartDetailColors.TextMuted,
                         modifier = Modifier.padding(bottom = 12.dp)
@@ -382,19 +382,19 @@ private fun SAVLegend() {
     ) {
         LegendItem(
             color = ChartDetailColors.SuccessColor,
-            label = stringResource(StringKeyAnalysisPart1.ASHTAK_SAV_EXCELLENT)
+            label = stringResource(StringKeyGeneralPart1.ASHTAK_SAV_EXCELLENT)
         )
         LegendItem(
             color = ChartDetailColors.AccentTeal,
-            label = stringResource(StringKeyAnalysisPart1.ASHTAK_SAV_GOOD)
+            label = stringResource(StringKeyGeneralPart1.ASHTAK_SAV_GOOD)
         )
         LegendItem(
             color = ChartDetailColors.TextMuted,
-            label = stringResource(StringKeyAnalysisPart1.ASHTAK_SAV_AVERAGE)
+            label = stringResource(StringKeyGeneralPart1.ASHTAK_SAV_AVERAGE)
         )
         LegendItem(
             color = ChartDetailColors.ErrorColor,
-            label = stringResource(StringKeyAnalysisPart1.ASHTAK_SAV_WEAK)
+            label = stringResource(StringKeyGeneralPart1.ASHTAK_SAV_WEAK)
         )
     }
 }
@@ -453,7 +453,7 @@ private fun BhinnashtakavargaCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.ASHTAK_BAV_TITLE),
+                        text = stringResource(StringKeyGeneralPart1.ASHTAK_BAV_TITLE),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -474,7 +474,7 @@ private fun BhinnashtakavargaCard(
             ) {
                 Column(modifier = Modifier.padding(top = 12.dp)) {
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.ASHTAK_BAV_INDIVIDUAL_DESC),
+                        text = stringResource(StringKeyGeneralPart1.ASHTAK_BAV_INDIVIDUAL_DESC),
                         fontSize = 12.sp,
                         color = ChartDetailColors.TextMuted,
                         modifier = Modifier.padding(bottom = 12.dp)
@@ -535,7 +535,7 @@ private fun BAVTable(ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis) 
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(StringKeyAnalysisPart1.ASHTAK_TOTAL),
+                    text = stringResource(StringKeyGeneralPart1.ASHTAK_TOTAL),
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     color = ChartDetailColors.AccentGold
@@ -623,19 +623,19 @@ private fun BAVLegend() {
     ) {
         LegendItem(
             color = ChartDetailColors.SuccessColor,
-            label = stringResource(StringKeyAnalysisPart1.ASHTAK_BAV_STRONG)
+            label = stringResource(StringKeyGeneralPart1.ASHTAK_BAV_STRONG)
         )
         LegendItem(
             color = ChartDetailColors.AccentTeal,
-            label = stringResource(StringKeyAnalysisPart1.ASHTAK_BAV_GOOD)
+            label = stringResource(StringKeyGeneralPart1.ASHTAK_BAV_GOOD)
         )
         LegendItem(
             color = ChartDetailColors.TextMuted,
-            label = stringResource(StringKeyAnalysisPart1.ASHTAK_BAV_AVERAGE)
+            label = stringResource(StringKeyGeneralPart1.ASHTAK_BAV_AVERAGE)
         )
         LegendItem(
             color = ChartDetailColors.ErrorColor,
-            label = stringResource(StringKeyAnalysisPart1.ASHTAK_BAV_WEAK)
+            label = stringResource(StringKeyGeneralPart1.ASHTAK_BAV_WEAK)
         )
     }
 }
@@ -673,7 +673,7 @@ private fun InterpretationGuideCard(isExpanded: Boolean, onToggleExpand: (Boolea
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.ASHTAK_GUIDE_TITLE),
+                        text = stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_TITLE),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -694,36 +694,36 @@ private fun InterpretationGuideCard(isExpanded: Boolean, onToggleExpand: (Boolea
             ) {
                 Column(modifier = Modifier.padding(top = 12.dp)) {
                     GuideSection(
-                        title = stringResource(StringKeyAnalysisPart1.ASHTAK_SAV_TITLE),
+                        title = stringResource(StringKeyGeneralPart1.ASHTAK_SAV_TITLE),
                         points = listOf(
-                            stringResource(StringKeyAnalysisPart1.ASHTAK_GUIDE_SAV_30),
-                            stringResource(StringKeyAnalysisPart1.ASHTAK_GUIDE_SAV_28),
-                            stringResource(StringKeyAnalysisPart1.ASHTAK_GUIDE_SAV_25),
-                            stringResource(StringKeyAnalysisPart1.ASHTAK_GUIDE_SAV_BELOW)
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_SAV_30),
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_SAV_28),
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_SAV_25),
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_SAV_BELOW)
                         )
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
                     GuideSection(
-                        title = stringResource(StringKeyAnalysisPart1.ASHTAK_BAV_TITLE),
+                        title = stringResource(StringKeyGeneralPart1.ASHTAK_BAV_TITLE),
                         points = listOf(
-                            stringResource(StringKeyAnalysisPart1.ASHTAK_GUIDE_BAV_5),
-                            stringResource(StringKeyAnalysisPart1.ASHTAK_GUIDE_BAV_4),
-                            stringResource(StringKeyAnalysisPart1.ASHTAK_GUIDE_BAV_3),
-                            stringResource(StringKeyAnalysisPart1.ASHTAK_GUIDE_BAV_02)
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_BAV_5),
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_BAV_4),
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_BAV_3),
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_BAV_02)
                         )
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
                     GuideSection(
-                        title = stringResource(StringKeyAnalysisPart1.ASHTAK_GUIDE_TRANSIT_TITLE),
+                        title = stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_TRANSIT_TITLE),
                         points = listOf(
-                            stringResource(StringKeyAnalysisPart2.ASHTAK_GUIDE_TRANSIT_1),
-                            stringResource(StringKeyAnalysisPart2.ASHTAK_GUIDE_TRANSIT_2),
-                            stringResource(StringKeyAnalysisPart2.ASHTAK_GUIDE_TRANSIT_3),
-                            stringResource(StringKeyAnalysisPart2.ASHTAK_GUIDE_TRANSIT_4)
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_TRANSIT_1),
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_TRANSIT_2),
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_TRANSIT_3),
+                            stringResource(StringKeyGeneralPart1.ASHTAK_GUIDE_TRANSIT_4)
                         )
                     )
                 }

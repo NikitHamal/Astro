@@ -201,7 +201,7 @@ fun FullScreenChartDialog(
                 IconButton(onClick = onDismiss) {
                     Icon(
                         Icons.Default.Close,
-                        contentDescription = stringResource(StringKeyAnalysisPart1.DIALOG_CLOSE),
+                        contentDescription = stringResource(StringKeyUIPart1.DIALOG_CLOSE),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -220,7 +220,7 @@ fun FullScreenChartDialog(
                 // Reset zoom button
                 ActionButton(
                     icon = Icons.Default.CenterFocusStrong,
-                    label = stringResource(StringKeyAnalysisPart1.DIALOG_RESET),
+                    label = stringResource(StringKeyUIPart1.DIALOG_RESET),
                     onClick = {
                         scale = 1f
                         offsetX = 0f
@@ -231,21 +231,21 @@ fun FullScreenChartDialog(
                 // Zoom in button
                 ActionButton(
                     icon = Icons.Default.ZoomIn,
-                    label = stringResource(StringKeyAnalysisPart1.DIALOG_ZOOM_IN),
+                    label = stringResource(StringKeyUIPart1.DIALOG_ZOOM_IN),
                     onClick = { scale = (scale * 1.2f).coerceAtMost(3f) }
                 )
 
                 // Zoom out button
                 ActionButton(
                     icon = Icons.Default.ZoomOut,
-                    label = stringResource(StringKeyAnalysisPart1.DIALOG_ZOOM_OUT),
+                    label = stringResource(StringKeyUIPart1.DIALOG_ZOOM_OUT),
                     onClick = { scale = (scale / 1.2f).coerceAtLeast(0.5f) }
                 )
 
                 // Download button
                 ActionButton(
                     icon = if (isDownloading) Icons.Default.HourglassEmpty else Icons.Default.Download,
-                    label = if (isDownloading) stringResource(StringKeyAnalysisPart1.DIALOG_SAVING) else stringResource(StringKeyAnalysisPart1.DIALOG_DOWNLOAD),
+                    label = if (isDownloading) stringResource(StringKeyUIPart1.DIALOG_SAVING) else stringResource(StringKeyUIPart1.DIALOG_DOWNLOAD),
                     onClick = {
                         if (!isDownloading) {
                             isDownloading = true
@@ -268,9 +268,9 @@ fun FullScreenChartDialog(
                                     ).localizationManager()
                                     
                                     val message = if (success)
-                                        locManager.getString(StringKeyAnalysisPart1.DIALOG_CHART_SAVED)
+                                        locManager.getString(StringKeyUIPart1.DIALOG_CHART_SAVED)
                                     else
-                                        locManager.getString(StringKeyAnalysisPart1.DIALOG_SAVE_FAILED)
+                                        locManager.getString(StringKeyUIPart1.DIALOG_SAVE_FAILED)
                                         
                                     Toast.makeText(
                                         context,
@@ -531,14 +531,14 @@ private fun PlanetDialogHeader(
                         color = TextPrimary
                     )
                     Text(
-                        text = "${planetPosition.sign.getLocalizedName(language)} • ${stringResource(StringKeyAnalysisPart1.HOUSE)} ${planetPosition.house}",
+                        text = "${planetPosition.sign.getLocalizedName(language)} • ${stringResource(StringKeyGeneralPart5.HOUSE)} ${planetPosition.house}",
                         fontSize = 14.sp,
                         color = TextSecondary
                     )
                 }
             }
             IconButton(onClick = onDismiss) {
-                Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysisPart1.DIALOG_CLOSE), tint = TextPrimary)
+                Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyUIPart1.DIALOG_CLOSE), tint = TextPrimary)
             }
         }
     }
@@ -547,16 +547,16 @@ private fun PlanetDialogHeader(
 @Composable
 private fun PlanetPositionCard(position: PlanetPosition) {
     val language = LocalLanguage.current
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_POSITION_DETAILS), icon = Icons.Outlined.LocationOn) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_POSITION_DETAILS), icon = Icons.Outlined.LocationOn) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_ZODIAC_SIGN), position.sign.getLocalizedName(language), AccentTeal)
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_DEGREE), formatDegree(position.longitude), TextPrimary)
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE), "${stringResource(StringKeyAnalysisPart1.HOUSE)} ${position.house}", AccentGold)
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(language)} (${stringResource(StringKeyPanchanga.PANCHANGA_PADA)} ${position.nakshatraPada})", AccentPurple)
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.getLocalizedName(language), TextSecondary)
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NAKSHATRA_DEITY), position.nakshatra.deity, TextSecondary)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_ZODIAC_SIGN), position.sign.getLocalizedName(language), AccentTeal)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_DEGREE), formatDegree(position.longitude), TextPrimary)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_HOUSE), "${stringResource(StringKeyGeneralPart5.HOUSE)} ${position.house}", AccentGold)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(language)} (${stringResource(StringKeyPanchanga.PANCHANGA_PADA)} ${position.nakshatraPada})", AccentPurple)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.getLocalizedName(language), TextSecondary)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_NAKSHATRA_DEITY), position.nakshatra.deity, TextSecondary)
             if (position.isRetrograde) {
-                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_MOTION), stringResource(StringKeyAnalysisPart1.DIALOG_RETROGRADE), AccentOrange)
+                DetailRow(stringResource(StringKeyUIPart1.DIALOG_MOTION), stringResource(StringKeyUIPart1.DIALOG_RETROGRADE), AccentOrange)
             }
         }
     }
@@ -565,7 +565,7 @@ private fun PlanetPositionCard(position: PlanetPosition) {
 @Composable
 private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
     val language = LocalLanguage.current
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_STRENGTH_ANALYSIS), icon = Icons.Outlined.TrendingUp) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_STRENGTH_ANALYSIS), icon = Icons.Outlined.TrendingUp) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             // Overall strength bar
             val strengthPercentage = (shadbala.percentageOfRequired / 150.0).coerceIn(0.0, 1.0).toFloat()
@@ -575,7 +575,7 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.DIALOG_OVERALL, String.format("%.2f", shadbala.totalRupas), String.format("%.2f", shadbala.requiredRupas)),
+                        text = stringResource(StringKeyUIPart1.DIALOG_OVERALL, String.format("%.2f", shadbala.totalRupas), String.format("%.2f", shadbala.requiredRupas)),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = TextPrimary
@@ -607,7 +607,7 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = stringResource(StringKeyAnalysisPart1.DIALOG_PERCENT_OF_REQUIRED, String.format("%.1f", shadbala.percentageOfRequired)),
+                    text = stringResource(StringKeyUIPart1.DIALOG_PERCENT_OF_REQUIRED, String.format("%.1f", shadbala.percentageOfRequired)),
                     fontSize = 12.sp,
                     color = TextMuted
                 )
@@ -616,14 +616,14 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
             HorizontalDivider(color = DividerColor)
 
             // Breakdown
-            Text(stringResource(StringKeyAnalysisPart1.DIALOG_STRENGTH_BREAKDOWN), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
+            Text(stringResource(StringKeyUIPart1.DIALOG_STRENGTH_BREAKDOWN), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
 
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_STHANA_BALA), shadbala.sthanaBala.total, 180.0)
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_DIG_BALA), shadbala.digBala, 60.0)
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_KALA_BALA), shadbala.kalaBala.total, 180.0)
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_CHESTA_BALA), shadbala.chestaBala, 60.0)
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_NAISARGIKA_BALA), shadbala.naisargikaBala, 60.0)
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_DRIK_BALA), shadbala.drikBala, 60.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_STHANA_BALA), shadbala.sthanaBala.total, 180.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_DIG_BALA), shadbala.digBala, 60.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_KALA_BALA), shadbala.kalaBala.total, 180.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_CHESTA_BALA), shadbala.chestaBala, 60.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_NAISARGIKA_BALA), shadbala.naisargikaBala, 60.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_DRIK_BALA), shadbala.drikBala, 60.0)
         }
     }
 }
@@ -663,20 +663,20 @@ private fun StrengthRow(label: String, value: Double, maxValue: Double) {
 private fun SignificationsCard(planet: Planet, language: Language) {
     val significations = getPlanetSignifications(planet, language)
 
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_SIGNIFICATIONS), icon = Icons.Outlined.Info) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_SIGNIFICATIONS), icon = Icons.Outlined.Info) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             // Nature
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NATURE), significations.nature, when (significations.nature) {
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_NATURE), significations.nature, when (significations.nature) {
                 "Benefic", "शुभ" -> AccentGreen
                 "Malefic", "पापी" -> AccentRose
                 else -> AccentOrange
             })
 
             // Element
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_ELEMENT), significations.element, TextSecondary)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_ELEMENT), significations.element, TextSecondary)
 
             // Represents
-            Text(stringResource(StringKeyAnalysisPart1.DIALOG_REPRESENTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
+            Text(stringResource(StringKeyUIPart1.DIALOG_REPRESENTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
             significations.represents.forEach { item ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
@@ -690,11 +690,11 @@ private fun SignificationsCard(planet: Planet, language: Language) {
             }
 
             // Body Parts
-            Text(stringResource(StringKeyAnalysisPart1.DIALOG_BODY_PARTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
+            Text(stringResource(StringKeyUIPart1.DIALOG_BODY_PARTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
             Text(text = significations.bodyParts, fontSize = 13.sp, color = TextPrimary)
 
             // Professions
-            Text(stringResource(StringKeyAnalysisPart1.DIALOG_PROFESSIONS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
+            Text(stringResource(StringKeyUIPart1.DIALOG_PROFESSIONS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextSecondary)
             Text(text = significations.professions, fontSize = 13.sp, color = TextPrimary)
         }
     }
@@ -705,7 +705,7 @@ private fun HousePlacementCard(position: PlanetPosition) {
     val language = LocalLanguage.current
     val interpretation = getHousePlacementInterpretation(position.planet, position.house, language)
 
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE_PLACEMENT, position.house), icon = Icons.Outlined.Home) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_HOUSE_PLACEMENT, position.house), icon = Icons.Outlined.Home) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = interpretation.houseName,
@@ -737,12 +737,12 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
     }
     val planetCondition = conditions.getCondition(position.planet)
 
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_STATUS_CONDITIONS), icon = Icons.Outlined.FactCheck) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_STATUS_CONDITIONS), icon = Icons.Outlined.FactCheck) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             // Dignity
             val dignity = getDignity(position.planet, position.sign)
             StatusChip(
-                label = stringResource(StringKeyAnalysisPart1.DIALOG_DIGNITY),
+                label = stringResource(StringKeyUIPart1.DIALOG_DIGNITY),
                 value = dignity.status,
                 color = dignity.color
             )
@@ -750,8 +750,8 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
             // Retrograde
             if (position.isRetrograde) {
                 StatusChip(
-                    label = stringResource(StringKeyAnalysisPart1.DIALOG_MOTION),
-                    value = stringResource(StringKeyAnalysisPart1.DIALOG_RETROGRADE),
+                    label = stringResource(StringKeyUIPart1.DIALOG_MOTION),
+                    value = stringResource(StringKeyUIPart1.DIALOG_RETROGRADE),
                     color = AccentOrange
                 )
             }
@@ -760,7 +760,7 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
             planetCondition?.let { cond ->
                 if (cond.combustionStatus != RetrogradeCombustionCalculator.CombustionStatus.NOT_COMBUST) {
                     StatusChip(
-                        label = stringResource(StringKeyAnalysisPart1.DIALOG_COMBUSTION),
+                        label = stringResource(StringKeyUIPart1.DIALOG_COMBUSTION),
                         value = cond.combustionStatus.getLocalizedName(language),
                         color = AccentRose
                     )
@@ -769,8 +769,8 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
                 // Planetary War
                 if (cond.isInPlanetaryWar) {
                     StatusChip(
-                        label = stringResource(StringKeyAnalysisPart1.DIALOG_PLANETARY_WAR),
-                        value = stringResource(StringKeyAnalysisPart1.DIALOG_AT_WAR_WITH, cond.warData?.loser?.getLocalizedName(language) ?: ""),
+                        label = stringResource(StringKeyUIPart1.DIALOG_PLANETARY_WAR),
+                        value = stringResource(StringKeyUIPart1.DIALOG_AT_WAR_WITH, cond.warData?.loser?.getLocalizedName(language) ?: ""),
                         color = AccentPurple
                     )
                 }
@@ -787,7 +787,7 @@ private fun PredictionsCard(
 ) {
     val predictions = getPlanetPredictions(position, shadbala, chart)
 
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_INSIGHTS_PREDICTIONS), icon = Icons.Outlined.AutoAwesome) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_INSIGHTS_PREDICTIONS), icon = Icons.Outlined.AutoAwesome) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             predictions.forEach { prediction ->
                 Row(
@@ -948,7 +948,7 @@ fun NakshatraDetailDialog(
                             )
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysisPart1.DIALOG_CLOSE), tint = TextPrimary)
+                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyUIPart1.DIALOG_CLOSE), tint = TextPrimary)
                         }
                     }
                 }
@@ -960,36 +960,36 @@ fun NakshatraDetailDialog(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     item {
-                        DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_BASIC_INFO), icon = Icons.Outlined.Info) {
+                        DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_BASIC_INFO), icon = Icons.Outlined.Info) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NUMBER), "${nakshatra.number} / 27", TextPrimary)
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_DEGREE_RANGE), "${String.format("%.2f", nakshatra.startDegree)}° - ${String.format("%.2f", nakshatra.endDegree)}°", AccentTeal)
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_NUMBER), "${nakshatra.number} / 27", TextPrimary)
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_DEGREE_RANGE), "${String.format("%.2f", nakshatra.startDegree)}° - ${String.format("%.2f", nakshatra.endDegree)}°", AccentTeal)
                                 DetailRow(stringResource(StringKeyPanchanga.PANCHANGA_RULING_PLANET), nakshatra.ruler.getLocalizedName(language), AccentGold)
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NAKSHATRA_DEITY), nakshatra.deity, AccentPurple)
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_NAKSHATRA_DEITY), nakshatra.deity, AccentPurple)
                             }
                         }
                     }
 
                     item {
-                        DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_NAKSHATRA_NATURE), icon = Icons.Outlined.Psychology) {
+                        DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_NAKSHATRA_NATURE), icon = Icons.Outlined.Psychology) {
                             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 DetailRow(stringResource(StringKeyPanchanga.PANCHANGA_SYMBOL), details.symbol, TextPrimary)
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NATURE), details.nature, when(details.nature) {
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_NATURE), details.nature, when(details.nature) {
                                     "Fixed (Dhruva)" -> AccentBlue
                                     "Movable (Chara)" -> AccentGreen
                                     "Sharp (Tikshna)" -> AccentRose
                                     else -> TextSecondary
                                 })
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_GENDER), details.gender, TextSecondary)
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_GENDER), details.gender, TextSecondary)
                                 DetailRow(stringResource(StringKeyPanchanga.PANCHANGA_GANA), details.gana, TextSecondary)
                                 DetailRow(stringResource(StringKeyPanchanga.PANCHANGA_GUNA), details.guna, TextSecondary)
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_ELEMENT), details.element, TextSecondary)
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_ELEMENT), details.element, TextSecondary)
                             }
                         }
                     }
 
                     item {
-                        DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_PADA_CHARACTERISTICS, pada), icon = Icons.Outlined.Star) {
+                        DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_PADA_CHARACTERISTICS, pada), icon = Icons.Outlined.Star) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 val padaSign = when(pada) {
                                     1 -> nakshatra.pada1Sign
@@ -998,7 +998,7 @@ fun NakshatraDetailDialog(
                                     4 -> nakshatra.pada4Sign
                                     else -> nakshatra.pada1Sign
                                 }
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NAVAMSA_SIGN), padaSign.getLocalizedName(language), AccentTeal)
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_NAVAMSA_SIGN), padaSign.getLocalizedName(language), AccentTeal)
                                 Text(
                                     text = getPadaDescription(nakshatra, pada, language),
                                     fontSize = 14.sp,
@@ -1010,7 +1010,7 @@ fun NakshatraDetailDialog(
                     }
 
                     item {
-                        DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_GENERAL_CHARACTERISTICS), icon = Icons.Outlined.Description) {
+                        DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_GENERAL_CHARACTERISTICS), icon = Icons.Outlined.Description) {
                             Text(
                                 text = details.characteristics,
                                 fontSize = 14.sp,
@@ -1021,7 +1021,7 @@ fun NakshatraDetailDialog(
                     }
 
                     item {
-                        DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_CAREER_INDICATIONS), icon = Icons.Outlined.Work) {
+                        DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_CAREER_INDICATIONS), icon = Icons.Outlined.Work) {
                             Text(
                                 text = details.careers,
                                 fontSize = 14.sp,
@@ -1077,7 +1077,7 @@ fun HouseDetailDialog(
                     ) {
                         Column {
                             Text(
-                                text = "${stringResource(StringKeyAnalysisPart1.HOUSE)} $houseNumber",
+                                text = "${stringResource(StringKeyGeneralPart5.HOUSE)} $houseNumber",
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.TextPrimary
@@ -1089,7 +1089,7 @@ fun HouseDetailDialog(
                             )
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysisPart1.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
+                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyUIPart1.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
                         }
                     }
                 }
@@ -1101,18 +1101,18 @@ fun HouseDetailDialog(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     item {
-                        DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE_INFO), icon = Icons.Outlined.Home) {
+                        DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_HOUSE_INFO), icon = Icons.Outlined.Home) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_ZODIAC_SIGN), sign.getLocalizedName(language), AppTheme.AccentTeal)
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_CUSP_DEGREE), formatDegree(houseCusp), AppTheme.TextPrimary)
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_SIGN_LORD), sign.ruler.getLocalizedName(language), AppTheme.AccentPrimary)
-                                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE_TYPE), houseDetails.type, AppTheme.TextSecondary)
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_ZODIAC_SIGN), sign.getLocalizedName(language), AppTheme.AccentTeal)
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_CUSP_DEGREE), formatDegree(houseCusp), AppTheme.TextPrimary)
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_SIGN_LORD), sign.ruler.getLocalizedName(language), AppTheme.AccentPrimary)
+                                DetailRow(stringResource(StringKeyUIPart1.DIALOG_HOUSE_TYPE), houseDetails.type, AppTheme.TextSecondary)
                             }
                         }
                     }
 
                     item {
-                        DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_SIGNIFICATIONS), icon = Icons.Outlined.ListAlt) {
+                        DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_SIGNIFICATIONS), icon = Icons.Outlined.ListAlt) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 houseDetails.significations.forEach { signification ->
                                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1131,7 +1131,7 @@ fun HouseDetailDialog(
 
                     if (planetsInHouse.isNotEmpty()) {
                         item {
-                            DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_PLANETS_IN_HOUSE), icon = Icons.Outlined.Star) {
+                            DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_PLANETS_IN_HOUSE), icon = Icons.Outlined.Star) {
                                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                     planetsInHouse.forEach { planet ->
                                         Row(
@@ -1169,7 +1169,7 @@ fun HouseDetailDialog(
                     }
 
                     item {
-                        DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_DETAILED_INTERPRETATION), icon = Icons.Outlined.Description) {
+                        DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_DETAILED_INTERPRETATION), icon = Icons.Outlined.Description) {
                             Text(
                                 text = houseDetails.interpretation,
                                 fontSize = 14.sp,
@@ -1224,19 +1224,19 @@ fun ShadbalaDialog(
                     ) {
                         Column {
                             Text(
-                                text = stringResource(StringKeyAnalysisPart1.DIALOG_SHADBALA_ANALYSIS),
+                                text = stringResource(StringKeyUIPart1.DIALOG_SHADBALA_ANALYSIS),
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
-                                text = stringResource(StringKeyAnalysisPart1.DIALOG_SIXFOLD_STRENGTH),
+                                text = stringResource(StringKeyUIPart1.DIALOG_SIXFOLD_STRENGTH),
                                 fontSize = 14.sp,
                                 color = AppTheme.TextSecondary
                             )
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysisPart1.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
+                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyUIPart1.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
                         }
                     }
                 }
@@ -1249,14 +1249,14 @@ fun ShadbalaDialog(
                 ) {
                     // Overall summary
                     item {
-                        DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_OVERALL_SUMMARY), icon = Icons.Outlined.Analytics) {
+                        DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_OVERALL_SUMMARY), icon = Icons.Outlined.Analytics) {
                             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceEvenly
                                 ) {
                                     SummaryBadge(
-                                        label = stringResource(StringKeyAnalysisPart1.DIALOG_CHART_STRENGTH),
+                                        label = stringResource(StringKeyUIPart1.DIALOG_CHART_STRENGTH),
                                         value = "${String.format("%.1f", shadbalaAnalysis.overallStrengthScore)}%",
                                         color = when {
                                             shadbalaAnalysis.overallStrengthScore >= 100 -> AppTheme.SuccessColor
@@ -1265,12 +1265,12 @@ fun ShadbalaDialog(
                                         }
                                     )
                                     SummaryBadge(
-                                        label = stringResource(StringKeyAnalysisPart1.DIALOG_STRONGEST),
+                                        label = stringResource(StringKeyUIPart1.DIALOG_STRONGEST),
                                         value = shadbalaAnalysis.strongestPlanet.getLocalizedName(language),
                                         color = AppTheme.AccentPrimary
                                     )
                                     SummaryBadge(
-                                        label = stringResource(StringKeyAnalysisPart1.DIALOG_WEAKEST),
+                                        label = stringResource(StringKeyUIPart1.DIALOG_WEAKEST),
                                         value = shadbalaAnalysis.weakestPlanet.getLocalizedName(language),
                                         color = AppTheme.current.LifeAreaSpiritual
                                     )
@@ -1358,13 +1358,13 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = stringResource(StringKeyShadbala.SHADBALA_RUPAS_VALUE, String.format("%.2f", shadbala.totalRupas)),
+                        text = stringResource(StringKeyAnalysis.SHADBALA_RUPAS_VALUE, String.format("%.2f", shadbala.totalRupas)),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = stringResource(StringKeyUI.LABEL_REQUIRED_VALUE, String.format("%.2f", shadbala.requiredRupas)),
+                        text = stringResource(StringKeyUIPart1.LABEL_REQUIRED_VALUE, String.format("%.2f", shadbala.requiredRupas)),
                         fontSize = 11.sp,
                         color = AppTheme.TextMuted
                     )
@@ -1392,7 +1392,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = stringResource(StringKeyUI.LABEL_PERCENT_REQUIRED_VALUE, String.format("%.1f", shadbala.percentageOfRequired)),
+                text = stringResource(StringKeyUIPart1.LABEL_PERCENT_REQUIRED_VALUE, String.format("%.1f", shadbala.percentageOfRequired)),
                 fontSize = 11.sp,
                 color = AppTheme.TextMuted
             )
@@ -1466,121 +1466,121 @@ data class HouseDetails(
 private fun getPlanetSignifications(planet: Planet, language: Language): PlanetSignifications {
     return when (planet) {
         Planet.SUN -> PlanetSignifications(
-            nature = StringResources.get(StringKeyAnalysisPart2.PLANET_SUN_NATURE, language),
-            element = StringResources.get(StringKeyAnalysisPart2.PLANET_SUN_ELEMENT, language),
+            nature = StringResources.get(StringKeyGeneralPart8.PLANET_SUN_NATURE, language),
+            element = StringResources.get(StringKeyGeneralPart8.PLANET_SUN_ELEMENT, language),
             represents = listOf(
-                StringResources.get(StringKeyAnalysisPart2.PLANET_SUN_REPRESENTS_1, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_SUN_REPRESENTS_2, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_SUN_REPRESENTS_3, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_SUN_REPRESENTS_4, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_SUN_REPRESENTS_5, language)
+                StringResources.get(StringKeyGeneralPart8.PLANET_SUN_REPRESENTS_1, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_SUN_REPRESENTS_2, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_SUN_REPRESENTS_3, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_SUN_REPRESENTS_4, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_SUN_REPRESENTS_5, language)
             ),
-            bodyParts = StringResources.get(StringKeyAnalysisPart2.PLANET_SUN_BODY_PARTS, language),
-            professions = StringResources.get(StringKeyAnalysisPart2.PLANET_SUN_PROFESSIONS, language)
+            bodyParts = StringResources.get(StringKeyGeneralPart8.PLANET_SUN_BODY_PARTS, language),
+            professions = StringResources.get(StringKeyGeneralPart8.PLANET_SUN_PROFESSIONS, language)
         )
         Planet.MOON -> PlanetSignifications(
-            nature = StringResources.get(StringKeyAnalysisPart2.PLANET_MOON_NATURE, language),
-            element = StringResources.get(StringKeyAnalysisPart2.PLANET_MOON_ELEMENT, language),
+            nature = StringResources.get(StringKeyGeneralPart8.PLANET_MOON_NATURE, language),
+            element = StringResources.get(StringKeyGeneralPart8.PLANET_MOON_ELEMENT, language),
             represents = listOf(
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MOON_REPRESENTS_1, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MOON_REPRESENTS_2, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MOON_REPRESENTS_3, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MOON_REPRESENTS_4, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MOON_REPRESENTS_5, language)
+                StringResources.get(StringKeyGeneralPart8.PLANET_MOON_REPRESENTS_1, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MOON_REPRESENTS_2, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MOON_REPRESENTS_3, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MOON_REPRESENTS_4, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MOON_REPRESENTS_5, language)
             ),
-            bodyParts = StringResources.get(StringKeyAnalysisPart2.PLANET_MOON_BODY_PARTS, language),
-            professions = StringResources.get(StringKeyAnalysisPart2.PLANET_MOON_PROFESSIONS, language)
+            bodyParts = StringResources.get(StringKeyGeneralPart8.PLANET_MOON_BODY_PARTS, language),
+            professions = StringResources.get(StringKeyGeneralPart8.PLANET_MOON_PROFESSIONS, language)
         )
         Planet.MARS -> PlanetSignifications(
-            nature = StringResources.get(StringKeyAnalysisPart2.PLANET_MARS_NATURE, language),
-            element = StringResources.get(StringKeyAnalysisPart2.PLANET_MARS_ELEMENT, language),
+            nature = StringResources.get(StringKeyGeneralPart8.PLANET_MARS_NATURE, language),
+            element = StringResources.get(StringKeyGeneralPart8.PLANET_MARS_ELEMENT, language),
             represents = listOf(
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MARS_REPRESENTS_1, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MARS_REPRESENTS_2, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MARS_REPRESENTS_3, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MARS_REPRESENTS_4, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MARS_REPRESENTS_5, language)
+                StringResources.get(StringKeyGeneralPart8.PLANET_MARS_REPRESENTS_1, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MARS_REPRESENTS_2, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MARS_REPRESENTS_3, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MARS_REPRESENTS_4, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MARS_REPRESENTS_5, language)
             ),
-            bodyParts = StringResources.get(StringKeyAnalysisPart2.PLANET_MARS_BODY_PARTS, language),
-            professions = StringResources.get(StringKeyAnalysisPart2.PLANET_MARS_PROFESSIONS, language)
+            bodyParts = StringResources.get(StringKeyGeneralPart8.PLANET_MARS_BODY_PARTS, language),
+            professions = StringResources.get(StringKeyGeneralPart8.PLANET_MARS_PROFESSIONS, language)
         )
         Planet.MERCURY -> PlanetSignifications(
-            nature = StringResources.get(StringKeyAnalysisPart2.PLANET_MERCURY_NATURE, language),
-            element = StringResources.get(StringKeyAnalysisPart2.PLANET_MERCURY_ELEMENT, language),
+            nature = StringResources.get(StringKeyGeneralPart8.PLANET_MERCURY_NATURE, language),
+            element = StringResources.get(StringKeyGeneralPart8.PLANET_MERCURY_ELEMENT, language),
             represents = listOf(
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MERCURY_REPRESENTS_1, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MERCURY_REPRESENTS_2, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MERCURY_REPRESENTS_3, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MERCURY_REPRESENTS_4, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_MERCURY_REPRESENTS_5, language)
+                StringResources.get(StringKeyGeneralPart8.PLANET_MERCURY_REPRESENTS_1, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MERCURY_REPRESENTS_2, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MERCURY_REPRESENTS_3, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MERCURY_REPRESENTS_4, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_MERCURY_REPRESENTS_5, language)
             ),
-            bodyParts = StringResources.get(StringKeyAnalysisPart2.PLANET_MERCURY_BODY_PARTS, language),
-            professions = StringResources.get(StringKeyAnalysisPart2.PLANET_MERCURY_PROFESSIONS, language)
+            bodyParts = StringResources.get(StringKeyGeneralPart8.PLANET_MERCURY_BODY_PARTS, language),
+            professions = StringResources.get(StringKeyGeneralPart8.PLANET_MERCURY_PROFESSIONS, language)
         )
         Planet.JUPITER -> PlanetSignifications(
-            nature = StringResources.get(StringKeyAnalysisPart2.PLANET_JUPITER_NATURE, language),
-            element = StringResources.get(StringKeyAnalysisPart2.PLANET_JUPITER_ELEMENT, language),
+            nature = StringResources.get(StringKeyGeneralPart8.PLANET_JUPITER_NATURE, language),
+            element = StringResources.get(StringKeyGeneralPart8.PLANET_JUPITER_ELEMENT, language),
             represents = listOf(
-                StringResources.get(StringKeyAnalysisPart2.PLANET_JUPITER_REPRESENTS_1, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_JUPITER_REPRESENTS_2, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_JUPITER_REPRESENTS_3, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_JUPITER_REPRESENTS_4, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_JUPITER_REPRESENTS_5, language)
+                StringResources.get(StringKeyGeneralPart8.PLANET_JUPITER_REPRESENTS_1, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_JUPITER_REPRESENTS_2, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_JUPITER_REPRESENTS_3, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_JUPITER_REPRESENTS_4, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_JUPITER_REPRESENTS_5, language)
             ),
-            bodyParts = StringResources.get(StringKeyAnalysisPart2.PLANET_JUPITER_BODY_PARTS, language),
-            professions = StringResources.get(StringKeyAnalysisPart2.PLANET_JUPITER_PROFESSIONS, language)
+            bodyParts = StringResources.get(StringKeyGeneralPart8.PLANET_JUPITER_BODY_PARTS, language),
+            professions = StringResources.get(StringKeyGeneralPart8.PLANET_JUPITER_PROFESSIONS, language)
         )
         Planet.VENUS -> PlanetSignifications(
-            nature = StringResources.get(StringKeyAnalysisPart2.PLANET_VENUS_NATURE, language),
-            element = StringResources.get(StringKeyAnalysisPart2.PLANET_VENUS_ELEMENT, language),
+            nature = StringResources.get(StringKeyGeneralPart8.PLANET_VENUS_NATURE, language),
+            element = StringResources.get(StringKeyGeneralPart8.PLANET_VENUS_ELEMENT, language),
             represents = listOf(
-                StringResources.get(StringKeyAnalysisPart2.PLANET_VENUS_REPRESENTS_1, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_VENUS_REPRESENTS_2, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_VENUS_REPRESENTS_3, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_VENUS_REPRESENTS_4, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_VENUS_REPRESENTS_5, language)
+                StringResources.get(StringKeyGeneralPart8.PLANET_VENUS_REPRESENTS_1, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_VENUS_REPRESENTS_2, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_VENUS_REPRESENTS_3, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_VENUS_REPRESENTS_4, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_VENUS_REPRESENTS_5, language)
             ),
-            bodyParts = StringResources.get(StringKeyAnalysisPart2.PLANET_VENUS_BODY_PARTS, language),
-            professions = StringResources.get(StringKeyAnalysisPart2.PLANET_VENUS_PROFESSIONS, language)
+            bodyParts = StringResources.get(StringKeyGeneralPart8.PLANET_VENUS_BODY_PARTS, language),
+            professions = StringResources.get(StringKeyGeneralPart8.PLANET_VENUS_PROFESSIONS, language)
         )
         Planet.SATURN -> PlanetSignifications(
-            nature = StringResources.get(StringKeyAnalysisPart2.PLANET_SATURN_NATURE, language),
-            element = StringResources.get(StringKeyAnalysisPart2.PLANET_SATURN_ELEMENT, language),
+            nature = StringResources.get(StringKeyGeneralPart8.PLANET_SATURN_NATURE, language),
+            element = StringResources.get(StringKeyGeneralPart8.PLANET_SATURN_ELEMENT, language),
             represents = listOf(
-                StringResources.get(StringKeyAnalysisPart2.PLANET_SATURN_REPRESENTS_1, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_SATURN_REPRESENTS_2, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_SATURN_REPRESENTS_3, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_SATURN_REPRESENTS_4, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_SATURN_REPRESENTS_5, language)
+                StringResources.get(StringKeyGeneralPart8.PLANET_SATURN_REPRESENTS_1, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_SATURN_REPRESENTS_2, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_SATURN_REPRESENTS_3, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_SATURN_REPRESENTS_4, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_SATURN_REPRESENTS_5, language)
             ),
-            bodyParts = StringResources.get(StringKeyAnalysisPart2.PLANET_SATURN_BODY_PARTS, language),
-            professions = StringResources.get(StringKeyAnalysisPart2.PLANET_SATURN_PROFESSIONS, language)
+            bodyParts = StringResources.get(StringKeyGeneralPart8.PLANET_SATURN_BODY_PARTS, language),
+            professions = StringResources.get(StringKeyGeneralPart8.PLANET_SATURN_PROFESSIONS, language)
         )
         Planet.RAHU -> PlanetSignifications(
-            nature = StringResources.get(StringKeyAnalysisPart2.PLANET_RAHU_NATURE, language),
-            element = StringResources.get(StringKeyAnalysisPart2.PLANET_RAHU_ELEMENT, language),
+            nature = StringResources.get(StringKeyGeneralPart8.PLANET_RAHU_NATURE, language),
+            element = StringResources.get(StringKeyGeneralPart8.PLANET_RAHU_ELEMENT, language),
             represents = listOf(
-                StringResources.get(StringKeyAnalysisPart2.PLANET_RAHU_REPRESENTS_1, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_RAHU_REPRESENTS_2, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_RAHU_REPRESENTS_3, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_RAHU_REPRESENTS_4, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_RAHU_REPRESENTS_5, language)
+                StringResources.get(StringKeyGeneralPart8.PLANET_RAHU_REPRESENTS_1, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_RAHU_REPRESENTS_2, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_RAHU_REPRESENTS_3, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_RAHU_REPRESENTS_4, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_RAHU_REPRESENTS_5, language)
             ),
-            bodyParts = StringResources.get(StringKeyAnalysisPart2.PLANET_RAHU_BODY_PARTS, language),
-            professions = StringResources.get(StringKeyAnalysisPart2.PLANET_RAHU_PROFESSIONS, language)
+            bodyParts = StringResources.get(StringKeyGeneralPart8.PLANET_RAHU_BODY_PARTS, language),
+            professions = StringResources.get(StringKeyGeneralPart8.PLANET_RAHU_PROFESSIONS, language)
         )
         Planet.KETU -> PlanetSignifications(
-            nature = StringResources.get(StringKeyAnalysisPart2.PLANET_KETU_NATURE, language),
-            element = StringResources.get(StringKeyAnalysisPart2.PLANET_KETU_ELEMENT, language),
+            nature = StringResources.get(StringKeyGeneralPart8.PLANET_KETU_NATURE, language),
+            element = StringResources.get(StringKeyGeneralPart8.PLANET_KETU_ELEMENT, language),
             represents = listOf(
-                StringResources.get(StringKeyAnalysisPart2.PLANET_KETU_REPRESENTS_1, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_KETU_REPRESENTS_2, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_KETU_REPRESENTS_3, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_KETU_REPRESENTS_4, language),
-                StringResources.get(StringKeyAnalysisPart2.PLANET_KETU_REPRESENTS_5, language)
+                StringResources.get(StringKeyGeneralPart8.PLANET_KETU_REPRESENTS_1, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_KETU_REPRESENTS_2, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_KETU_REPRESENTS_3, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_KETU_REPRESENTS_4, language),
+                StringResources.get(StringKeyGeneralPart8.PLANET_KETU_REPRESENTS_5, language)
             ),
-            bodyParts = StringResources.get(StringKeyAnalysisPart2.PLANET_KETU_BODY_PARTS, language),
-            professions = StringResources.get(StringKeyAnalysisPart2.PLANET_KETU_PROFESSIONS, language)
+            bodyParts = StringResources.get(StringKeyGeneralPart8.PLANET_KETU_BODY_PARTS, language),
+            professions = StringResources.get(StringKeyGeneralPart8.PLANET_KETU_PROFESSIONS, language)
         )
         else -> PlanetSignifications("", "", emptyList(), "", "")
     }
@@ -1593,28 +1593,28 @@ private fun getHousePlacementInterpretation(planet: Planet, house: Int, language
     val houseSignification = houseDetails.significations.joinToString(", ")
 
     val interpretationKey = when {
-        planet == Planet.SUN && house == 1 -> StringKeyPrediction.PLACEMENT_INTERP_SUN_1
-        planet == Planet.SUN && house == 10 -> StringKeyPrediction.PLACEMENT_INTERP_SUN_10
-        planet == Planet.MOON && house == 4 -> StringKeyPrediction.PLACEMENT_INTERP_MOON_4
-        planet == Planet.MOON && house == 1 -> StringKeyPrediction.PLACEMENT_INTERP_MOON_1
-        planet == Planet.MARS && house == 10 -> StringKeyPrediction.PLACEMENT_INTERP_MARS_10
-        planet == Planet.MARS && house == 1 -> StringKeyPrediction.PLACEMENT_INTERP_MARS_1
-        planet == Planet.MERCURY && house == 1 -> StringKeyPrediction.PLACEMENT_INTERP_MERCURY_1
-        planet == Planet.MERCURY && house == 5 -> StringKeyPrediction.PLACEMENT_INTERP_MERCURY_5
-        planet == Planet.JUPITER && house == 1 -> StringKeyPrediction.PLACEMENT_INTERP_JUPITER_1
-        planet == Planet.JUPITER && house == 9 -> StringKeyPrediction.PLACEMENT_INTERP_JUPITER_9
-        planet == Planet.VENUS && house == 7 -> StringKeyPrediction.PLACEMENT_INTERP_VENUS_7
-        planet == Planet.VENUS && house == 4 -> StringKeyPrediction.PLACEMENT_INTERP_VENUS_4
-        planet == Planet.SATURN && house == 10 -> StringKeyPrediction.PLACEMENT_INTERP_SATURN_10
-        planet == Planet.SATURN && house == 7 -> StringKeyPrediction.PLACEMENT_INTERP_SATURN_7
-        planet == Planet.RAHU && house == 10 -> StringKeyPrediction.PLACEMENT_INTERP_RAHU_10
-        planet == Planet.KETU && house == 12 -> StringKeyPrediction.PLACEMENT_INTERP_KETU_12
-        else -> StringKeyPrediction.PLACEMENT_INTERP_DEFAULT
+        planet == Planet.SUN && house == 1 -> StringKeyGeneralPart8.PLACEMENT_INTERP_SUN_1
+        planet == Planet.SUN && house == 10 -> StringKeyGeneralPart8.PLACEMENT_INTERP_SUN_10
+        planet == Planet.MOON && house == 4 -> StringKeyGeneralPart7.PLACEMENT_INTERP_MOON_4
+        planet == Planet.MOON && house == 1 -> StringKeyGeneralPart7.PLACEMENT_INTERP_MOON_1
+        planet == Planet.MARS && house == 10 -> StringKeyGeneralPart7.PLACEMENT_INTERP_MARS_10
+        planet == Planet.MARS && house == 1 -> StringKeyGeneralPart7.PLACEMENT_INTERP_MARS_1
+        planet == Planet.MERCURY && house == 1 -> StringKeyGeneralPart7.PLACEMENT_INTERP_MERCURY_1
+        planet == Planet.MERCURY && house == 5 -> StringKeyGeneralPart7.PLACEMENT_INTERP_MERCURY_5
+        planet == Planet.JUPITER && house == 1 -> StringKeyGeneralPart7.PLACEMENT_INTERP_JUPITER_1
+        planet == Planet.JUPITER && house == 9 -> StringKeyGeneralPart7.PLACEMENT_INTERP_JUPITER_9
+        planet == Planet.VENUS && house == 7 -> StringKeyGeneralPart8.PLACEMENT_INTERP_VENUS_7
+        planet == Planet.VENUS && house == 4 -> StringKeyGeneralPart8.PLACEMENT_INTERP_VENUS_4
+        planet == Planet.SATURN && house == 10 -> StringKeyGeneralPart7.PLACEMENT_INTERP_SATURN_10
+        planet == Planet.SATURN && house == 7 -> StringKeyGeneralPart7.PLACEMENT_INTERP_SATURN_7
+        planet == Planet.RAHU && house == 10 -> StringKeyGeneralPart7.PLACEMENT_INTERP_RAHU_10
+        planet == Planet.KETU && house == 12 -> StringKeyGeneralPart7.PLACEMENT_INTERP_KETU_12
+        else -> StringKeyGeneralPart7.PLACEMENT_INTERP_DEFAULT
     }
 
-    val interpretation = if (interpretationKey == StringKeyPrediction.PLACEMENT_INTERP_DEFAULT) {
+    val interpretation = if (interpretationKey == StringKeyGeneralPart7.PLACEMENT_INTERP_DEFAULT) {
         StringResources.get(
-            StringKeyPrediction.PLACEMENT_INTERP_DEFAULT, 
+            StringKeyGeneralPart7.PLACEMENT_INTERP_DEFAULT,
             language, 
             planet.getLocalizedName(language), 
             house, 
@@ -1644,7 +1644,7 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.SATURN -> sign == ZodiacSign.LIBRA
         else -> false
     }
-    if (exalted) return Dignity(stringResource(StringKeyMatchPart1.PLANETARY_STATUS_EXALTED), AccentGreen)
+    if (exalted) return Dignity(stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_EXALTED), AccentGreen)
 
     // Debilitation check
     val debilitated = when (planet) {
@@ -1657,10 +1657,10 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.SATURN -> sign == ZodiacSign.ARIES
         else -> false
     }
-    if (debilitated) return Dignity(stringResource(StringKeyMatchPart1.PLANETARY_STATUS_DEBILITATED), AccentRose)
+    if (debilitated) return Dignity(stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_DEBILITATED), AccentRose)
 
     // Own sign check
-    if (sign.ruler == planet) return Dignity(stringResource(StringKeyMatchPart1.PLANETARY_STATUS_OWN_SIGN), AccentGold)
+    if (sign.ruler == planet) return Dignity(stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_OWN_SIGN), AccentGold)
 
     // Moolatrikona check
     val moolatrikona = when (planet) {
@@ -1673,9 +1673,9 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.SATURN -> sign == ZodiacSign.AQUARIUS
         else -> false
     }
-    if (moolatrikona) return Dignity(stringResource(StringKeyMatchPart1.PLANETARY_STATUS_MOOLATRIKONA), AccentTeal)
+    if (moolatrikona) return Dignity(stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_MOOLATRIKONA), AccentTeal)
 
-    return Dignity(stringResource(StringKeyMatchPart1.RELATION_NEUTRAL), TextSecondary)
+    return Dignity(stringResource(StringKeyGeneralPart9.RELATION_NEUTRAL), TextSecondary)
 }
 
 @Composable
@@ -1693,38 +1693,38 @@ private fun getPlanetPredictions(
     if (shadbala.isStrong) {
         predictions.add(Prediction(
             PredictionType.POSITIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_STRONG_PLANET, planetName),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_STRONG_DESC)
+            stringResource(StringKeyPrediction.PREDICTION_STRONG_PLANET, planetName),
+            stringResource(StringKeyPrediction.PREDICTION_STRONG_DESC)
         ))
     } else {
         predictions.add(Prediction(
             PredictionType.NEGATIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_WEAK_PLANET, planetName),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_WEAK_DESC)
+            stringResource(StringKeyPrediction.PREDICTION_WEAK_PLANET, planetName),
+            stringResource(StringKeyPrediction.PREDICTION_WEAK_DESC)
         ))
     }
 
     // Dignity-based predictions
     val dignity = getDignity(planet, position.sign)
-    val exaltedStatus = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_EXALTED)
-    val debilitatedStatus = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_DEBILITATED)
-    val ownSignStatus = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_OWN_SIGN)
+    val exaltedStatus = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_EXALTED)
+    val debilitatedStatus = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_DEBILITATED)
+    val ownSignStatus = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_OWN_SIGN)
 
     when (dignity.status) {
         exaltedStatus -> predictions.add(Prediction(
             PredictionType.POSITIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_EXALTED),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_EXALTED_DESC, planetName)
+            stringResource(StringKeyPrediction.PREDICTION_EXALTED),
+            stringResource(StringKeyPrediction.PREDICTION_EXALTED_DESC, planetName)
         ))
         debilitatedStatus -> predictions.add(Prediction(
             PredictionType.NEGATIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_DEBILITATED),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_DEBILITATED_DESC, planetName)
+            stringResource(StringKeyPrediction.PREDICTION_DEBILITATED),
+            stringResource(StringKeyPrediction.PREDICTION_DEBILITATED_DESC, planetName)
         ))
         ownSignStatus -> predictions.add(Prediction(
             PredictionType.POSITIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_OWN_SIGN),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_OWN_SIGN_DESC, planetName)
+            stringResource(StringKeyPrediction.PREDICTION_OWN_SIGN),
+            stringResource(StringKeyPrediction.PREDICTION_OWN_SIGN_DESC, planetName)
         ))
     }
 
@@ -1732,8 +1732,8 @@ private fun getPlanetPredictions(
     if (position.isRetrograde) {
         predictions.add(Prediction(
             PredictionType.NEUTRAL,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_RETROGRADE),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_RETROGRADE_DESC)
+            stringResource(StringKeyPrediction.PREDICTION_RETROGRADE),
+            stringResource(StringKeyPrediction.PREDICTION_RETROGRADE_DESC)
         ))
     }
 
@@ -1741,18 +1741,18 @@ private fun getPlanetPredictions(
     when (position.house) {
         1, 5, 9 -> predictions.add(Prediction(
             PredictionType.POSITIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_TRIKONA),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_TRIKONA_DESC, planetName, position.house)
+            stringResource(StringKeyPrediction.PREDICTION_TRIKONA),
+            stringResource(StringKeyPrediction.PREDICTION_TRIKONA_DESC, planetName, position.house)
         ))
         6, 8, 12 -> predictions.add(Prediction(
             PredictionType.NEUTRAL,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_DUSTHANA),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_DUSTHANA_DESC, planetName, position.house)
+            stringResource(StringKeyPrediction.PREDICTION_DUSTHANA),
+            stringResource(StringKeyPrediction.PREDICTION_DUSTHANA_DESC, planetName, position.house)
         ))
         4, 7, 10 -> predictions.add(Prediction(
             PredictionType.POSITIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_KENDRA),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_KENDRA_DESC, planetName, position.house)
+            stringResource(StringKeyPrediction.PREDICTION_KENDRA),
+            stringResource(StringKeyPrediction.PREDICTION_KENDRA_DESC, planetName, position.house)
         ))
     }
 
@@ -1762,44 +1762,44 @@ private fun getPlanetPredictions(
 private fun getNakshatraDetails(nakshatra: Nakshatra, language: Language): NakshatraDetails {
     return when (nakshatra) {
         Nakshatra.ASHWINI -> NakshatraDetails(
-            symbol = StringResources.get(StringKeyPrediction.NAK_ASHWINI_SYMBOL, language),
-            nature = StringResources.get(StringKeyNakshatra.NAKSHATRA_NATURE_SWIFT, language),
-            gender = StringResources.get(StringKeyUI.GENDER_MALE, language),
-            gana = StringResources.get(StringKeyNakshatra.NAKSHATRA_GANA_DEVA, language),
-            guna = StringResources.get(StringKeyAnalysisPart2.GUNA_RAJAS, language),
-            element = StringResources.get(StringKeyNakshatra.NAKSHATRA_ELEMENT_EARTH, language),
-            characteristics = StringResources.get(StringKeyPrediction.NAK_ASHWINI_CHARS, language),
-            careers = StringResources.get(StringKeyPrediction.NAK_ASHWINI_CAREERS, language)
+            symbol = StringResources.get(StringKeyGeneralPart7.NAK_ASHWINI_SYMBOL, language),
+            nature = StringResources.get(StringKeyPanchanga.NAKSHATRA_NATURE_SWIFT, language),
+            gender = StringResources.get(StringKeyUIPart1.GENDER_MALE, language),
+            gana = StringResources.get(StringKeyPanchanga.NAKSHATRA_GANA_DEVA, language),
+            guna = StringResources.get(StringKeyGeneralPart5.GUNA_RAJAS, language),
+            element = StringResources.get(StringKeyPanchanga.NAKSHATRA_ELEMENT_EARTH, language),
+            characteristics = StringResources.get(StringKeyGeneralPart7.NAK_ASHWINI_CHARS, language),
+            careers = StringResources.get(StringKeyGeneralPart7.NAK_ASHWINI_CAREERS, language)
         )
         Nakshatra.BHARANI -> NakshatraDetails(
-            symbol = StringResources.get(StringKeyPrediction.NAK_BHARANI_SYMBOL, language),
-            nature = StringResources.get(StringKeyNakshatra.NAKSHATRA_NATURE_FIERCE, language),
-            gender = StringResources.get(StringKeyUI.GENDER_FEMALE, language),
-            gana = StringResources.get(StringKeyNakshatra.NAKSHATRA_GANA_MANUSHYA, language),
-            guna = StringResources.get(StringKeyAnalysisPart2.GUNA_RAJAS, language),
-            element = StringResources.get(StringKeyNakshatra.NAKSHATRA_ELEMENT_EARTH, language),
-            characteristics = StringResources.get(StringKeyPrediction.NAK_BHARANI_CHARS, language),
-            careers = StringResources.get(StringKeyPrediction.NAK_BHARANI_CAREERS, language)
+            symbol = StringResources.get(StringKeyGeneralPart7.NAK_BHARANI_SYMBOL, language),
+            nature = StringResources.get(StringKeyPanchanga.NAKSHATRA_NATURE_FIERCE, language),
+            gender = StringResources.get(StringKeyUIPart1.GENDER_FEMALE, language),
+            gana = StringResources.get(StringKeyPanchanga.NAKSHATRA_GANA_MANUSHYA, language),
+            guna = StringResources.get(StringKeyGeneralPart5.GUNA_RAJAS, language),
+            element = StringResources.get(StringKeyPanchanga.NAKSHATRA_ELEMENT_EARTH, language),
+            characteristics = StringResources.get(StringKeyGeneralPart7.NAK_BHARANI_CHARS, language),
+            careers = StringResources.get(StringKeyGeneralPart7.NAK_BHARANI_CAREERS, language)
         )
         Nakshatra.ROHINI -> NakshatraDetails(
-            symbol = StringResources.get(StringKeyPrediction.NAK_ROHINI_SYMBOL, language),
-            nature = StringResources.get(StringKeyNakshatra.NAKSHATRA_NATURE_FIXED, language),
-            gender = StringResources.get(StringKeyUI.GENDER_FEMALE, language),
-            gana = StringResources.get(StringKeyNakshatra.NAKSHATRA_GANA_MANUSHYA, language),
-            guna = StringResources.get(StringKeyAnalysisPart2.GUNA_RAJAS, language),
-            element = StringResources.get(StringKeyNakshatra.NAKSHATRA_ELEMENT_EARTH, language),
-            characteristics = StringResources.get(StringKeyPrediction.NAK_ROHINI_CHARS, language),
-            careers = StringResources.get(StringKeyPrediction.NAK_ROHINI_CAREERS, language)
+            symbol = StringResources.get(StringKeyGeneralPart7.NAK_ROHINI_SYMBOL, language),
+            nature = StringResources.get(StringKeyPanchanga.NAKSHATRA_NATURE_FIXED, language),
+            gender = StringResources.get(StringKeyUIPart1.GENDER_FEMALE, language),
+            gana = StringResources.get(StringKeyPanchanga.NAKSHATRA_GANA_MANUSHYA, language),
+            guna = StringResources.get(StringKeyGeneralPart5.GUNA_RAJAS, language),
+            element = StringResources.get(StringKeyPanchanga.NAKSHATRA_ELEMENT_EARTH, language),
+            characteristics = StringResources.get(StringKeyGeneralPart7.NAK_ROHINI_CHARS, language),
+            careers = StringResources.get(StringKeyGeneralPart7.NAK_ROHINI_CAREERS, language)
         )
         else -> NakshatraDetails(
             symbol = nakshatra.deity,
-            nature = StringResources.get(StringKeyNakshatra.NAKSHATRA_NATURE_MIXED, language),
-            gender = StringResources.get(StringKeyNakshatra.NAKSHATRA_GENDER, language),
-            gana = StringResources.get(StringKeyNakshatra.NAKSHATRA_GANA, language),
+            nature = StringResources.get(StringKeyPanchanga.NAKSHATRA_NATURE_MIXED, language),
+            gender = StringResources.get(StringKeyPanchanga.NAKSHATRA_GENDER, language),
+            gana = StringResources.get(StringKeyPanchanga.NAKSHATRA_GANA, language),
             guna = StringResources.get(StringKeyPanchanga.PANCHANGA_GUNA, language),
             element = StringResources.get(StringKeyPanchanga.PANCHANGA_ELEMENT, language),
-            characteristics = StringResources.get(StringKeyPrediction.NAK_DEFAULT_CHARS, language, nakshatra.getLocalizedName(language), nakshatra.ruler.getLocalizedName(language), nakshatra.deity),
-            careers = StringResources.get(StringKeyPrediction.NAK_DEFAULT_CAREERS, language)
+            characteristics = StringResources.get(StringKeyGeneralPart7.NAK_DEFAULT_CHARS, language, nakshatra.getLocalizedName(language), nakshatra.ruler.getLocalizedName(language), nakshatra.deity),
+            careers = StringResources.get(StringKeyGeneralPart7.NAK_DEFAULT_CAREERS, language)
         )
     }
 }
@@ -1814,7 +1814,7 @@ private fun getPadaDescription(nakshatra: Nakshatra, pada: Int, language: Langua
     val padaSign = padaSigns[pada - 1]
 
     return StringResources.get(
-        StringKeyPrediction.PADA_DESC_TEMPLATE,
+        StringKeyGeneralPart7.PADA_DESC_TEMPLATE,
         language,
         pada,
         padaSign.getLocalizedName(language),
@@ -1827,35 +1827,35 @@ private fun getHouseDetails(house: Int, language: Language): HouseDetails {
     if (house !in 1..12) return HouseDetails("", "", emptyList(), "")
 
     val (nameKey, sigKey, interpKey) = when(house) {
-        1 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_1, StringKeyPrediction.HOUSE_DETAIL_SIG_1, StringKeyPrediction.HOUSE_DETAIL_INTERP_1)
-        2 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_2, StringKeyPrediction.HOUSE_DETAIL_SIG_2, StringKeyPrediction.HOUSE_DETAIL_INTERP_2)
-        3 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_3, StringKeyPrediction.HOUSE_DETAIL_SIG_3, StringKeyPrediction.HOUSE_DETAIL_INTERP_3)
-        4 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_4, StringKeyPrediction.HOUSE_DETAIL_SIG_4, StringKeyPrediction.HOUSE_DETAIL_INTERP_4)
-        5 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_5, StringKeyPrediction.HOUSE_DETAIL_SIG_5, StringKeyPrediction.HOUSE_DETAIL_INTERP_5)
-        6 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_6, StringKeyPrediction.HOUSE_DETAIL_SIG_6, StringKeyPrediction.HOUSE_DETAIL_INTERP_6)
-        7 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_7, StringKeyPrediction.HOUSE_DETAIL_SIG_7, StringKeyPrediction.HOUSE_DETAIL_INTERP_7)
-        8 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_8, StringKeyPrediction.HOUSE_DETAIL_SIG_8, StringKeyPrediction.HOUSE_DETAIL_INTERP_8)
-        9 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_9, StringKeyPrediction.HOUSE_DETAIL_SIG_9, StringKeyPrediction.HOUSE_DETAIL_INTERP_9)
-        10 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_10, StringKeyPrediction.HOUSE_DETAIL_SIG_10, StringKeyPrediction.HOUSE_DETAIL_INTERP_10)
-        11 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_11, StringKeyPrediction.HOUSE_DETAIL_SIG_11, StringKeyPrediction.HOUSE_DETAIL_INTERP_11)
-        12 -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_12, StringKeyPrediction.HOUSE_DETAIL_SIG_12, StringKeyPrediction.HOUSE_DETAIL_INTERP_12)
-        else -> Triple(StringKeyPrediction.HOUSE_DETAIL_NAME_1, StringKeyPrediction.HOUSE_DETAIL_SIG_1, StringKeyPrediction.HOUSE_DETAIL_INTERP_1)
+        1 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_1, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_1, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_1)
+        2 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_2, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_2, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_2)
+        3 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_3, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_3, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_3)
+        4 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_4, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_4, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_4)
+        5 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_5, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_5, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_5)
+        6 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_6, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_6, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_6)
+        7 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_7, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_7, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_7)
+        8 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_8, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_8, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_8)
+        9 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_9, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_9, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_9)
+        10 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_10, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_10, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_10)
+        11 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_11, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_11, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_11)
+        12 -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_12, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_12, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_12)
+        else -> Triple(StringKeyGeneralPart5.HOUSE_DETAIL_NAME_1, StringKeyGeneralPart5.HOUSE_DETAIL_SIG_1, StringKeyGeneralPart5.HOUSE_DETAIL_INTERP_1)
     }
 
     val typeKey = when(house) {
-        1 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_1
-        2 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_2
-        3 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_3
-        4 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_4
-        5 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_5
-        6 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_6
-        7 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_7
-        8 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_8
-        9 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_9
-        10 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_10
-        11 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_11
-        12 -> StringKeyPrediction.HOUSE_DETAIL_TYPE_12
-        else -> StringKeyPrediction.HOUSE_DETAIL_TYPE_1
+        1 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_1
+        2 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_2
+        3 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_3
+        4 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_4
+        5 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_5
+        6 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_6
+        7 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_7
+        8 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_8
+        9 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_9
+        10 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_10
+        11 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_11
+        12 -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_12
+        else -> StringKeyGeneralPart5.HOUSE_DETAIL_TYPE_1
     }
 
     return HouseDetails(

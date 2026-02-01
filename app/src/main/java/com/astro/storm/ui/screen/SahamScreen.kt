@@ -150,7 +150,7 @@ fun SahamScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(com.astro.storm.core.common.StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(com.astro.storm.core.common.StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -491,7 +491,7 @@ private fun SahamInsightsCard(insights: List<String>) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyUI.UI_KEY_INSIGHTS),
+                    text = stringResource(StringKeyUIPart2.UI_KEY_INSIGHTS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary

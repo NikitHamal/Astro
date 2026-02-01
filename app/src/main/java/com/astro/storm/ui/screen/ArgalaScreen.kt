@@ -64,8 +64,8 @@ fun ArgalaScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDoshaPart2.ARGALA_TITLE),
-            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyGeneralPart1.ARGALA_TITLE),
+            message = stringResource(StringKeyGeneralPart7.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -80,9 +80,9 @@ fun ArgalaScreen(
     var argalaAnalysis by remember { mutableStateOf<ArgalaAnalysis?>(null) }
 
     val tabs = listOf(
-        stringResource(StringKeyDoshaPart2.ARGALA_ABOUT),
-        stringResource(StringKeyUI.TAB_HOUSES),
-        stringResource(StringKeyUI.TAB_PLANETS)
+        stringResource(StringKeyGeneralPart1.ARGALA_ABOUT),
+        stringResource(StringKeyUIPart1.TAB_HOUSES),
+        stringResource(StringKeyUIPart1.TAB_PLANETS)
     )
 
     // Calculate Argala
@@ -110,7 +110,7 @@ fun ArgalaScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDoshaPart2.ARGALA_TITLE),
+                            stringResource(StringKeyGeneralPart1.ARGALA_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
@@ -126,7 +126,7 @@ fun ArgalaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.Default.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -135,7 +135,7 @@ fun ArgalaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDoshaPart2.ARGALA_ABOUT),
+                            contentDescription = stringResource(StringKeyGeneralPart1.ARGALA_ABOUT),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -161,7 +161,7 @@ fun ArgalaScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        stringResource(StringKeyAnalysisPart2.ARGALA_CALCULATING),
+                        stringResource(StringKeyGeneralPart1.ARGALA_CALCULATING),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted
                     )
@@ -175,7 +175,7 @@ fun ArgalaScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    stringResource(StringKeyAnalysisPart2.ARGALA_FAILED),
+                    stringResource(StringKeyGeneralPart1.ARGALA_FAILED),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.ErrorColor
                 )
@@ -297,13 +297,13 @@ private fun ArgalaOverviewTab(
                     Spacer(modifier = Modifier.width(16.dp))
                     Column {
                         Text(
-                            stringResource(StringKeyDoshaPart2.ARGALA_TITLE),
+                            stringResource(StringKeyGeneralPart1.ARGALA_TITLE),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKeyDoshaPart2.ARGALA_SUBTITLE),
+                            stringResource(StringKeyGeneralPart1.ARGALA_SUBTITLE),
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextMuted
                         )
@@ -313,7 +313,7 @@ private fun ArgalaOverviewTab(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    stringResource(StringKeyDoshaPart2.ARGALA_ABOUT_DESC),
+                    stringResource(StringKeyGeneralPart1.ARGALA_ABOUT_DESC),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
@@ -331,7 +331,7 @@ private fun ArgalaOverviewTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyAnalysisPart2.ARGALA_TYPES_TITLE),
+                    stringResource(StringKeyGeneralPart1.ARGALA_TYPES_TITLE),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -341,8 +341,8 @@ private fun ArgalaOverviewTab(
 
                 ArgalaTypeItem(
                     icon = Icons.Filled.Star,
-                    title = stringResource(StringKeyAnalysisPart2.ARGALA_TYPES_TITLE), // Mistake in previous thought, title was "Argala Types" generic title above
-                    description = stringResource(StringKeyAnalysisPart2.ARGALA_PRIMARY_DESC),
+                    title = stringResource(StringKeyGeneralPart1.ARGALA_TYPES_TITLE), // Mistake in previous thought, title was "Argala Types" generic title above
+                    description = stringResource(StringKeyGeneralPart1.ARGALA_PRIMARY_DESC),
                     color = AppTheme.AccentGold
                 )
 
@@ -350,8 +350,8 @@ private fun ArgalaOverviewTab(
 
                 ArgalaTypeItem(
                     icon = Icons.Filled.StarHalf,
-                    title = stringResource(StringKeyDoshaPart2.ARGALA_SECONDARY),
-                    description = stringResource(StringKeyAnalysisPart2.ARGALA_SECONDARY_DESC),
+                    title = stringResource(StringKeyGeneralPart1.ARGALA_SECONDARY),
+                    description = stringResource(StringKeyGeneralPart1.ARGALA_SECONDARY_DESC),
                     color = AppTheme.AccentTeal
                 )
 
@@ -359,8 +359,8 @@ private fun ArgalaOverviewTab(
 
                 ArgalaTypeItem(
                     icon = Icons.Filled.AutoAwesome,
-                    title = stringResource(StringKeyDoshaPart2.ARGALA_FIFTH_HOUSE),
-                    description = stringResource(StringKeyAnalysisPart2.ARGALA_FIFTH_HOUSE_DESC),
+                    title = stringResource(StringKeyGeneralPart1.ARGALA_FIFTH_HOUSE),
+                    description = stringResource(StringKeyGeneralPart1.ARGALA_FIFTH_HOUSE_DESC),
                     color = AppTheme.InfoColor
                 )
 
@@ -368,8 +368,8 @@ private fun ArgalaOverviewTab(
 
                 ArgalaTypeItem(
                     icon = Icons.Filled.Block,
-                    title = stringResource(StringKeyDoshaPart2.ARGALA_VIRODHA),
-                    description = stringResource(StringKeyAnalysisPart2.ARGALA_VIRODHA_DESC),
+                    title = stringResource(StringKeyGeneralPart1.ARGALA_VIRODHA),
+                    description = stringResource(StringKeyGeneralPart1.ARGALA_VIRODHA_DESC),
                     color = AppTheme.WarningColor
                 )
             }
@@ -452,7 +452,7 @@ private fun OverallArgalaCard(
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                stringResource(StringKeyAnalysisPart2.ARGALA_CHART_WIDE_PATTERNS),
+                stringResource(StringKeyGeneralPart1.ARGALA_CHART_WIDE_PATTERNS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -463,8 +463,8 @@ private fun OverallArgalaCard(
             // Strongest Benefic Argala
             analysis.overallAssessment.strongestBeneficArgala?.let { house ->
                 ArgalaHighlightRow(
-                    label = stringResource(StringKeyAnalysisPart2.ARGALA_STRONGEST_SUPPORT),
-                    value = stringResource(StringKeyMatchPart1.HOUSE_LABEL, house),
+                    label = stringResource(StringKeyGeneralPart1.ARGALA_STRONGEST_SUPPORT),
+                    value = stringResource(StringKeyGeneralPart5.HOUSE_LABEL, house),
                     icon = Icons.Filled.TrendingUp,
                     color = AppTheme.SuccessColor
                 )
@@ -474,8 +474,8 @@ private fun OverallArgalaCard(
             // Strongest Malefic Argala
             analysis.overallAssessment.strongestMaleficArgala?.let { house ->
                 ArgalaHighlightRow(
-                    label = stringResource(StringKeyAnalysisPart2.ARGALA_GREATEST_CHALLENGE),
-                    value = stringResource(StringKeyMatchPart1.HOUSE_LABEL, house),
+                    label = stringResource(StringKeyGeneralPart1.ARGALA_GREATEST_CHALLENGE),
+                    value = stringResource(StringKeyGeneralPart5.HOUSE_LABEL, house),
                     icon = Icons.Filled.TrendingDown,
                     color = AppTheme.WarningColor
                 )
@@ -485,8 +485,8 @@ private fun OverallArgalaCard(
             // Most Obstructed
             analysis.overallAssessment.mostObstructedHouse?.let { house ->
                 ArgalaHighlightRow(
-                    label = stringResource(StringKeyAnalysisPart2.ARGALA_MOST_OBSTRUCTED),
-                    value = stringResource(StringKeyMatchPart1.HOUSE_LABEL, house),
+                    label = stringResource(StringKeyGeneralPart1.ARGALA_MOST_OBSTRUCTED),
+                    value = stringResource(StringKeyGeneralPart5.HOUSE_LABEL, house),
                     icon = Icons.Filled.Block,
                     color = AppTheme.ErrorColor
                 )
@@ -496,8 +496,8 @@ private fun OverallArgalaCard(
             // Least Obstructed
             analysis.overallAssessment.leastObstructedHouse?.let { house ->
                 ArgalaHighlightRow(
-                    label = stringResource(StringKeyAnalysisPart2.ARGALA_LEAST_OBSTRUCTED),
-                    value = stringResource(StringKeyMatchPart1.HOUSE_LABEL, house),
+                    label = stringResource(StringKeyGeneralPart1.ARGALA_LEAST_OBSTRUCTED),
+                    value = stringResource(StringKeyGeneralPart5.HOUSE_LABEL, house),
                     icon = Icons.Filled.CheckCircle,
                     color = AppTheme.InfoColor
                 )
@@ -510,7 +510,7 @@ private fun OverallArgalaCard(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    stringResource(StringKeyUI.UI_RECOMMENDATIONS),
+                    stringResource(StringKeyUIPart2.UI_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -594,7 +594,7 @@ private fun KarmaPatternCard(analysis: ArgalaAnalysis) {
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    stringResource(StringKeyAnalysisPart2.ARGALA_KARMA_PATTERNS),
+                    stringResource(StringKeyGeneralPart1.ARGALA_KARMA_PATTERNS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -639,7 +639,7 @@ private fun SignificantArgalasCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                stringResource(StringKeyAnalysisPart2.ARGALA_SIGNIFICANT_ARGALAS),
+                stringResource(StringKeyGeneralPart1.ARGALA_SIGNIFICANT_ARGALAS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -708,11 +708,11 @@ private fun SignificantArgalaItem(
 @Composable
 private fun ArgalaStrengthBadge(strength: ArgalaStrength, color: Color) {
     val (label, bgColor) = when (strength) {
-        ArgalaStrength.VERY_STRONG -> stringResource(StringKeyAnalysisPart2.ARGALA_STRENGTH_VERY_STRONG) to color
-        ArgalaStrength.STRONG -> stringResource(StringKeyAnalysisPart2.ARGALA_STRENGTH_STRONG) to color
-        ArgalaStrength.MODERATE -> stringResource(StringKeyAnalysisPart2.ARGALA_STRENGTH_MODERATE) to color.copy(alpha = 0.7f)
-        ArgalaStrength.WEAK -> stringResource(StringKeyAnalysisPart2.ARGALA_STRENGTH_WEAK) to AppTheme.TextMuted
-        ArgalaStrength.OBSTRUCTED -> stringResource(StringKeyAnalysisPart2.ARGALA_STRENGTH_OBSTRUCTED) to AppTheme.ErrorColor
+        ArgalaStrength.VERY_STRONG -> stringResource(StringKeyGeneralPart1.ARGALA_STRENGTH_VERY_STRONG) to color
+        ArgalaStrength.STRONG -> stringResource(StringKeyGeneralPart1.ARGALA_STRENGTH_STRONG) to color
+        ArgalaStrength.MODERATE -> stringResource(StringKeyGeneralPart1.ARGALA_STRENGTH_MODERATE) to color.copy(alpha = 0.7f)
+        ArgalaStrength.WEAK -> stringResource(StringKeyGeneralPart1.ARGALA_STRENGTH_WEAK) to AppTheme.TextMuted
+        ArgalaStrength.OBSTRUCTED -> stringResource(StringKeyGeneralPart1.ARGALA_STRENGTH_OBSTRUCTED) to AppTheme.ErrorColor
     }
 
     Surface(
@@ -764,7 +764,7 @@ private fun ArgalaHousesTab(
     Column(modifier = Modifier.padding(16.dp)) {
         // House selector
         Text(
-            stringResource(StringKeyAnalysisPart2.ARGALA_HOUSE_SELECTOR_LABEL),
+            stringResource(StringKeyGeneralPart1.ARGALA_HOUSE_SELECTOR_LABEL),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -873,7 +873,7 @@ private fun HouseArgalaDetailCard(
                 ) {
                     Column {
                         Text(
-                            stringResource(StringKeyDoshaPart2.ARGALA_TO_HOUSE, house),
+                            stringResource(StringKeyGeneralPart1.ARGALA_TO_HOUSE, house),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
@@ -921,7 +921,7 @@ private fun HouseArgalaDetailCard(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            stringResource(com.astro.storm.core.common.StringKeyUI.UI_ARGALA_INFLUENCES),
+                            stringResource(com.astro.storm.core.common.StringKeyUIPart1.UI_ARGALA_INFLUENCES),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -957,7 +957,7 @@ private fun HouseArgalaDetailCard(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            stringResource(StringKeyDoshaPart2.ARGALA_VIRODHA),
+                            stringResource(StringKeyGeneralPart1.ARGALA_VIRODHA),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -1051,9 +1051,9 @@ private fun ArgalaInfluenceItem(
                 ) {
                     Text(
                         when (argala.nature) {
-                            ArgalaNature.SHUBHA -> stringResource(StringKeyDoshaPart2.ARGALA_SHUBHA)
-                            ArgalaNature.ASHUBHA -> stringResource(StringKeyDoshaPart2.ARGALA_ASHUBHA)
-                            ArgalaNature.MIXED -> stringResource(StringKeyDoshaPart2.ARGALA_MIXED)
+                            ArgalaNature.SHUBHA -> stringResource(StringKeyGeneralPart1.ARGALA_SHUBHA)
+                            ArgalaNature.ASHUBHA -> stringResource(StringKeyGeneralPart1.ARGALA_ASHUBHA)
+                            ArgalaNature.MIXED -> stringResource(StringKeyGeneralPart1.ARGALA_MIXED)
                         },
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
@@ -1066,7 +1066,7 @@ private fun ArgalaInfluenceItem(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                stringResource(StringKeyDoshaPart2.ARGALA_FROM_HOUSE, argala.argalaHouse),
+                stringResource(StringKeyGeneralPart1.ARGALA_FROM_HOUSE, argala.argalaHouse),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -1202,7 +1202,7 @@ private fun NetEffectCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyDoshaPart2.ARGALA_NET_EFFECT),
+                    stringResource(StringKeyGeneralPart1.ARGALA_NET_EFFECT),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1294,7 +1294,7 @@ private fun ArgalaPlanetsTab(
     Column(modifier = Modifier.padding(16.dp)) {
         // Planet selector
         Text(
-            stringResource(StringKeyDoshaPart2.ARGALA_PLANET_CAUSES),
+            stringResource(StringKeyGeneralPart1.ARGALA_PLANET_CAUSES),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -1521,7 +1521,7 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                stringResource(StringKeyDoshaPart2.ARGALA_ABOUT),
+                stringResource(StringKeyGeneralPart1.ARGALA_ABOUT),
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
@@ -1529,7 +1529,7 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Column {
                 Text(
-                    stringResource(StringKeyDoshaPart2.ARGALA_ABOUT_DESC),
+                    stringResource(StringKeyGeneralPart1.ARGALA_ABOUT_DESC),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary
                 )
@@ -1573,7 +1573,7 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyUI.BTN_CLOSE), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyUIPart1.BTN_CLOSE), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground
@@ -1586,18 +1586,18 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
 
 private fun getHouseName(house: Int, language: Language): String {
     val key = when (house) {
-        1 -> StringKeyAnalysisPart1.HOUSE_1_NAME
-        2 -> StringKeyAnalysisPart1.HOUSE_2_NAME
-        3 -> StringKeyAnalysisPart1.HOUSE_3_NAME
-        4 -> StringKeyAnalysisPart1.HOUSE_4_NAME
-        5 -> StringKeyAnalysisPart1.HOUSE_5_NAME
-        6 -> StringKeyAnalysisPart1.HOUSE_6_NAME
-        7 -> StringKeyAnalysisPart1.HOUSE_7_NAME
-        8 -> StringKeyAnalysisPart1.HOUSE_8_NAME
-        9 -> StringKeyAnalysisPart1.HOUSE_9_NAME
-        10 -> StringKeyAnalysisPart1.HOUSE_10_NAME
-        11 -> StringKeyAnalysisPart1.HOUSE_11_NAME
-        12 -> StringKeyAnalysisPart1.HOUSE_12_NAME
+        1 -> StringKeyGeneralPart5.HOUSE_1_NAME
+        2 -> StringKeyGeneralPart5.HOUSE_2_NAME
+        3 -> StringKeyGeneralPart5.HOUSE_3_NAME
+        4 -> StringKeyGeneralPart5.HOUSE_4_NAME
+        5 -> StringKeyGeneralPart5.HOUSE_5_NAME
+        6 -> StringKeyGeneralPart5.HOUSE_6_NAME
+        7 -> StringKeyGeneralPart5.HOUSE_7_NAME
+        8 -> StringKeyGeneralPart5.HOUSE_8_NAME
+        9 -> StringKeyGeneralPart5.HOUSE_9_NAME
+        10 -> StringKeyGeneralPart5.HOUSE_10_NAME
+        11 -> StringKeyGeneralPart5.HOUSE_11_NAME
+        12 -> StringKeyGeneralPart5.HOUSE_12_NAME
         else -> null
     }
     return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: ""

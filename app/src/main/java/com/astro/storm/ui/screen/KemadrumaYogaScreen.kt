@@ -108,9 +108,9 @@ fun KemadrumaYogaScreen(
 
     val tabs = listOf(
         "Overview",
-        stringResource(StringKeyDoshaPart4.KEMA_MOON),
-        stringResource(StringKeyDoshaPart4.KEMA_CANCELLATIONS),
-        stringResource(StringKeyDoshaPart4.KEMA_IMPACTS),
+        stringResource(StringKeyGeneralPart6.KEMA_MOON),
+        stringResource(StringKeyGeneralPart6.KEMA_CANCELLATIONS),
+        stringResource(StringKeyGeneralPart6.KEMA_IMPACTS),
         stringResource(StringKeyFeature.FEATURE_REMEDIES)
     )
 
@@ -139,13 +139,13 @@ fun KemadrumaYogaScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDoshaPart4.KEMA_SCREEN_TITLE),
+                            text = stringResource(StringKeyGeneralPart6.KEMA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDoshaPart4.KEMA_SUBTITLE),
+                            text = stringResource(StringKeyGeneralPart6.KEMA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -330,9 +330,9 @@ private fun KemadrumaStatusCard(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
 
             Text(
                 text = if (analysis.isKemadrumaFormed) {
-                    stringResource(StringKeyDoshaPart4.KEMA_FORMED)
+                    stringResource(StringKeyGeneralPart6.KEMA_FORMED)
                 } else {
-                    stringResource(StringKeyDoshaPart4.KEMA_NOT_FORMED)
+                    stringResource(StringKeyGeneralPart6.KEMA_NOT_FORMED)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
@@ -357,7 +357,7 @@ private fun KemadrumaStatusCard(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                             modifier = Modifier.size(16.dp)
                         )
                         Text(
-                            text = stringResource(StringKeyDoshaPart4.KEMA_CANCELLATIONS_FOUND, analysis.cancellations.size),
+                            text = stringResource(StringKeyGeneralPart6.KEMA_CANCELLATIONS_FOUND, analysis.cancellations.size),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor
@@ -469,17 +469,17 @@ private fun InterpretationCard(interpretation: String) {
 @Composable
 private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFormation) {
     val formationDescription = buildString {
-        append(stringResource(StringKeyDoshaPart4.KEMA_FORMATION_MAIN))
-        if (formation.hasSecondHouseEmpty) append(" " + stringResource(StringKeyDoshaPart4.KEMA_FORMATION_2ND_EMPTY))
-        if (formation.hasTwelfthHouseEmpty) append(" " + stringResource(StringKeyDoshaPart4.KEMA_FORMATION_12TH_EMPTY))
-        if (formation.isMoonUnaspected) append(" " + stringResource(StringKeyDoshaPart4.KEMA_FORMATION_UNASPECTED))
+        append(stringResource(StringKeyGeneralPart6.KEMA_FORMATION_MAIN))
+        if (formation.hasSecondHouseEmpty) append(" " + stringResource(StringKeyGeneralPart6.KEMA_FORMATION_2ND_EMPTY))
+        if (formation.hasTwelfthHouseEmpty) append(" " + stringResource(StringKeyGeneralPart6.KEMA_FORMATION_12TH_EMPTY))
+        if (formation.isMoonUnaspected) append(" " + stringResource(StringKeyGeneralPart6.KEMA_FORMATION_UNASPECTED))
     }
 
     val reasons = buildList {
-        if (formation.hasSecondHouseEmpty) add(stringResource(StringKeyDoshaPart4.KEMA_REASON_2ND))
-        if (formation.hasTwelfthHouseEmpty) add(stringResource(StringKeyDoshaPart4.KEMA_REASON_12TH))
-        if (formation.isMoonUnaspected) add(stringResource(StringKeyDoshaPart4.KEMA_REASON_CONJUNCT))
-        if (formation.formationStrength > 70) add(stringResource(StringKeyDoshaPart4.KEMA_FORMATION_STRENGTH, formation.formationStrength))
+        if (formation.hasSecondHouseEmpty) add(stringResource(StringKeyGeneralPart6.KEMA_REASON_2ND))
+        if (formation.hasTwelfthHouseEmpty) add(stringResource(StringKeyGeneralPart6.KEMA_REASON_12TH))
+        if (formation.isMoonUnaspected) add(stringResource(StringKeyGeneralPart6.KEMA_REASON_CONJUNCT))
+        if (formation.formationStrength > 70) add(stringResource(StringKeyGeneralPart6.KEMA_FORMATION_STRENGTH, formation.formationStrength))
     }
 
     Card(
@@ -489,7 +489,7 @@ private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFor
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = stringResource(StringKeyDoshaPart4.KEMA_FORMATION_DETAILS),
+                text = stringResource(StringKeyGeneralPart6.KEMA_FORMATION_DETAILS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -563,13 +563,13 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                     }
                     Column {
                         Text(
-                            text = stringResource(StringKeyDoshaPart4.KEMA_MOON_POSITION),
+                            text = stringResource(StringKeyGeneralPart6.KEMA_MOON_POSITION),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${moonAnalysis.sign.getLocalizedName(language)} in ${stringResource(StringKeyPart1.VARSHAPHALA_HOUSE)} ${moonAnalysis.house}",
+                            text = "${moonAnalysis.sign.getLocalizedName(language)} in ${stringResource(StringKeyVarshaphala.VARSHAPHALA_HOUSE)} ${moonAnalysis.house}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextMuted
                         )
@@ -582,9 +582,9 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
 
                 // Moon details
                 MoonDetailRow(label = "Degree", value = String.format("%.2f°", moonAnalysis.degree))
-                MoonDetailRow(label = stringResource(StringKeyDoshaPart4.KEMA_NAKSHATRA), value = moonAnalysis.nakshatra)
-                MoonDetailRow(label = stringResource(StringKeyDoshaPart4.KEMA_PAKSHA), value = moonAnalysis.paksha.name.replace("_", " "))
-                MoonDetailRow(label = stringResource(StringKeyDoshaPart4.KEMA_BRIGHTNESS), value = moonAnalysis.brightness.name.replace("_", " "))
+                MoonDetailRow(label = stringResource(StringKeyGeneralPart6.KEMA_NAKSHATRA), value = moonAnalysis.nakshatra)
+                MoonDetailRow(label = stringResource(StringKeyGeneralPart6.KEMA_PAKSHA), value = moonAnalysis.paksha.name.replace("_", " "))
+                MoonDetailRow(label = stringResource(StringKeyGeneralPart6.KEMA_BRIGHTNESS), value = moonAnalysis.brightness.name.replace("_", " "))
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -594,7 +594,7 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = stringResource(StringKeyDoshaPart4.KEMA_MOON_STRENGTH),
+                        text = stringResource(StringKeyGeneralPart6.KEMA_MOON_STRENGTH),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -660,7 +660,7 @@ private fun SurroundingHousesCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = stringResource(StringKeyDoshaPart4.KEMA_SURROUNDING_HOUSES),
+                text = stringResource(StringKeyGeneralPart6.KEMA_SURROUNDING_HOUSES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -676,19 +676,19 @@ private fun SurroundingHousesCard(
             ) {
                 HouseStatusBox(
                     house = houseBefore,
-                    label = stringResource(StringKeyDoshaPart4.KEMA_BEFORE_MOON),
+                    label = stringResource(StringKeyGeneralPart6.KEMA_BEFORE_MOON),
                     hasplanets = formationDetails.planetsInTwelfthFromMoon.isEmpty(),
                     isKendra = false
                 )
                 HouseStatusBox(
                     house = moonAnalysis.house,
-                    label = stringResource(StringKeyDoshaPart4.KEMA_MOON_HOUSE),
+                    label = stringResource(StringKeyGeneralPart6.KEMA_MOON_HOUSE),
                     hasplanets = true,
                     isKendra = true
                 )
                 HouseStatusBox(
                     house = houseAfter,
-                    label = stringResource(StringKeyDoshaPart4.KEMA_AFTER_MOON),
+                    label = stringResource(StringKeyGeneralPart6.KEMA_AFTER_MOON),
                     hasplanets = formationDetails.planetsInSecondFromMoon.isEmpty(),
                     isKendra = false
                 )
@@ -702,7 +702,7 @@ private fun SurroundingHousesCard(
                     color = AppTheme.WarningColor.copy(alpha = 0.1f)
                 ) {
                     Text(
-                        text = stringResource(StringKeyDoshaPart4.KEMA_CONDITION_MET),
+                        text = stringResource(StringKeyGeneralPart6.KEMA_CONDITION_MET),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.WarningColor,
                         textAlign = TextAlign.Center,
@@ -782,7 +782,7 @@ private fun CancellationsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnal
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = if (analysis.isKemadrumaFormed) stringResource(StringKeyDoshaPart4.KEMA_NO_CANCELLATIONS) else stringResource(StringKeyDoshaPart4.KEMA_NA),
+                        text = if (analysis.isKemadrumaFormed) stringResource(StringKeyGeneralPart6.KEMA_NO_CANCELLATIONS) else stringResource(StringKeyGeneralPart6.KEMA_NA),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -790,7 +790,7 @@ private fun CancellationsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnal
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = if (analysis.isKemadrumaFormed) {
-                            stringResource(StringKeyDoshaPart4.KEMA_NO_CANCELLATIONS_DESC)
+                            stringResource(StringKeyGeneralPart6.KEMA_NO_CANCELLATIONS_DESC)
                         } else {
                             "Kemadruma Yoga is not formed, so cancellations are not applicable."
                         },
@@ -985,7 +985,7 @@ private fun ImpactsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis) 
     ) {
         // Emotional Impact
         ImpactCard(
-            title = stringResource(StringKeyDoshaPart3.KEMADRUMA_EMOTIONAL),
+            title = stringResource(StringKeyGeneralPart6.KEMADRUMA_EMOTIONAL),
             icon = Icons.Outlined.Psychology,
             impact = analysis.emotionalImpact,
             color = AppTheme.LifeAreaLove
@@ -993,7 +993,7 @@ private fun ImpactsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis) 
 
         // Financial Impact
         ImpactCard(
-            title = stringResource(StringKeyDoshaPart3.KEMADRUMA_FINANCIAL),
+            title = stringResource(StringKeyGeneralPart6.KEMADRUMA_FINANCIAL),
             icon = Icons.Outlined.TipsAndUpdates,
             impact = analysis.financialImpact,
             color = AppTheme.LifeAreaFinance
@@ -1001,7 +1001,7 @@ private fun ImpactsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis) 
 
         // Social Impact
         ImpactCard(
-            title = stringResource(StringKeyDoshaPart3.KEMADRUMA_SOCIAL),
+            title = stringResource(StringKeyGeneralPart6.KEMADRUMA_SOCIAL),
             icon = Icons.Outlined.Brightness2,
             impact = analysis.socialImpact,
             color = AppTheme.AccentTeal
@@ -1168,7 +1168,7 @@ private fun ActivationPeriodsCard(periods: List<KemadrumaYogaCalculator.Activati
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDoshaPart3.KEMADRUMA_ACTIVATION),
+                    text = stringResource(StringKeyGeneralPart5.KEMADRUMA_ACTIVATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1258,7 +1258,7 @@ private fun RemediesSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = stringResource(StringKeyAnalysisPart2.KEMADRUMA_FULLY_CANCELLED),
+                        text = stringResource(StringKeyGeneralPart6.KEMADRUMA_FULLY_CANCELLED),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -1267,7 +1267,7 @@ private fun RemediesSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis)
             }
         } else {
             Text(
-                text = stringResource(StringKeyDoshaPart1.DOSHA_REMEDIES_SECTION),
+                text = stringResource(StringKeyDosha.DOSHA_REMEDIES_SECTION),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
@@ -1491,7 +1491,7 @@ private fun KemadrumaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyUIPart1.BTN_GOT_IT), color = AppTheme.AccentPrimary)
             }
         },
         containerColor = AppTheme.CardBackground

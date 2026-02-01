@@ -144,8 +144,8 @@ fun HomeTab(
         // Chart Analysis Section
         item(key = "chart_analysis_header") {
             SectionHeader(
-                title = stringResource(StringKeyPart1.HOME_CHART_ANALYSIS),
-                subtitle = stringResource(StringKeyPart2.HOME_EXPLORE_FEATURES),
+                title = stringResource(StringKeyGeneralPart5.HOME_CHART_ANALYSIS),
+                subtitle = stringResource(StringKeyGeneralPart5.HOME_EXPLORE_FEATURES),
                 modifier = Modifier.padding(horizontal = HomeDesignTokens.ScreenPadding)
             )
         }
@@ -153,8 +153,8 @@ fun HomeTab(
         // Feature Categories
         item(key = "category_core") {
             FeatureCategoryCard(
-                title = stringResource(StringKeyPart2.CATEGORY_CORE_ANALYSIS),
-                subtitle = stringResource(StringKeyPart2.CATEGORY_CORE_DESC),
+                title = stringResource(StringKeyGeneralPart2.CATEGORY_CORE_ANALYSIS),
+                subtitle = stringResource(StringKeyGeneralPart2.CATEGORY_CORE_DESC),
                 icon = Icons.Outlined.GridView,
                 accentColor = colors.AccentPrimary,
                 features = FeatureCategory.CORE.features,
@@ -165,8 +165,8 @@ fun HomeTab(
 
         item(key = "category_dashas") {
             FeatureCategoryCard(
-                title = stringResource(StringKeyPart2.CATEGORY_TIMING_SYSTEMS),
-                subtitle = stringResource(StringKeyPart2.CATEGORY_TIMING_DESC),
+                title = stringResource(StringKeyGeneralPart2.CATEGORY_TIMING_SYSTEMS),
+                subtitle = stringResource(StringKeyGeneralPart2.CATEGORY_TIMING_DESC),
                 icon = Icons.Outlined.Timeline,
                 accentColor = colors.LifeAreaSpiritual,
                 features = FeatureCategory.TIMING_SYSTEMS.features,
@@ -177,8 +177,8 @@ fun HomeTab(
 
         item(key = "category_predictions") {
             FeatureCategoryCard(
-                title = stringResource(StringKeyPart2.CATEGORY_PREDICTIONS),
-                subtitle = stringResource(StringKeyPart2.CATEGORY_PREDICTIONS_DESC),
+                title = stringResource(StringKeyGeneralPart2.CATEGORY_PREDICTIONS),
+                subtitle = stringResource(StringKeyGeneralPart2.CATEGORY_PREDICTIONS_DESC),
                 icon = Icons.Outlined.AutoAwesome,
                 accentColor = colors.AccentGold,
                 features = FeatureCategory.PREDICTIONS.features,
@@ -189,8 +189,8 @@ fun HomeTab(
 
         item(key = "category_strength") {
             FeatureCategoryCard(
-                title = stringResource(StringKeyPart2.CATEGORY_STRENGTH_ANALYSIS),
-                subtitle = stringResource(StringKeyPart2.CATEGORY_STRENGTH_DESC),
+                title = stringResource(StringKeyGeneralPart2.CATEGORY_STRENGTH_ANALYSIS),
+                subtitle = stringResource(StringKeyGeneralPart2.CATEGORY_STRENGTH_DESC),
                 icon = Icons.Outlined.Speed,
                 accentColor = colors.SuccessColor,
                 features = FeatureCategory.STRENGTH_ANALYSIS.features,
@@ -201,8 +201,8 @@ fun HomeTab(
 
         item(key = "category_advanced") {
             FeatureCategoryCard(
-                title = stringResource(StringKeyPart2.CATEGORY_ADVANCED),
-                subtitle = stringResource(StringKeyPart2.CATEGORY_ADVANCED_DESC),
+                title = stringResource(StringKeyGeneralPart2.CATEGORY_ADVANCED),
+                subtitle = stringResource(StringKeyGeneralPart2.CATEGORY_ADVANCED_DESC),
                 icon = Icons.Outlined.Psychology,
                 accentColor = colors.AccentTeal,
                 features = FeatureCategory.ADVANCED.features,
@@ -213,8 +213,8 @@ fun HomeTab(
 
         item(key = "category_remedial") {
             FeatureCategoryCard(
-                title = stringResource(StringKeyPart2.CATEGORY_REMEDIAL),
-                subtitle = stringResource(StringKeyPart2.CATEGORY_REMEDIAL_DESC),
+                title = stringResource(StringKeyGeneralPart2.CATEGORY_REMEDIAL),
+                subtitle = stringResource(StringKeyGeneralPart2.CATEGORY_REMEDIAL_DESC),
                 icon = Icons.Outlined.Spa,
                 accentColor = colors.LifeAreaHealth,
                 features = FeatureCategory.REMEDIAL.features,
@@ -306,7 +306,7 @@ private fun HeroDashaCard(
                         color = planetColor.copy(alpha = 0.15f)
                     ) {
                         Text(
-                            text = stringResource(StringKeyPart2.CURRENT_MAHA_DASHA),
+                            text = stringResource(StringKeyGeneralPart3.CURRENT_MAHA_DASHA),
                             style = MaterialTheme.typography.labelMedium,
                             color = planetColor,
                             fontWeight = FontWeight.SemiBold,
@@ -316,7 +316,7 @@ private fun HeroDashaCard(
                     
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowRight,
-                        contentDescription = stringResource(StringKeyUI.BTN_VIEW_DETAILS),
+                        contentDescription = stringResource(StringKeyUIPart1.BTN_VIEW_DETAILS),
                         tint = colors.TextMuted
                     )
                 }
@@ -348,7 +348,7 @@ private fun HeroDashaCard(
                         
                         Column {
                             Text(
-                                text = "${currentDasha.planet.getLocalizedName(language)} ${stringResource(StringKeyPart2.HOME_DASHA_LABEL)}",
+                                text = "${currentDasha.planet.getLocalizedName(language)} ${stringResource(StringKeyGeneralPart5.HOME_DASHA_LABEL)}",
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = colors.TextPrimary
@@ -363,9 +363,9 @@ private fun HeroDashaCard(
                             
                             Text(
                                 text = if (years > 0) {
-                                    stringResource(StringKeyPart2.REMAINING_PERIOD_YEARS, years.toString(), months.toString())
+                                    stringResource(StringKeyGeneralPart9.REMAINING_PERIOD_YEARS, years.toString(), months.toString())
                                 } else {
-                                    stringResource(StringKeyPart2.REMAINING_PERIOD_MONTHS, months.toString())
+                                    stringResource(StringKeyGeneralPart9.REMAINING_PERIOD_MONTHS, months.toString())
                                 },
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = colors.TextMuted
@@ -412,7 +412,7 @@ private fun HeroDashaCard(
                 } else {
                     // No dasha data available
                     Text(
-                        text = stringResource(StringKeyPart2.TAP_TO_VIEW_DASHAS),
+                        text = stringResource(StringKeyGeneralPart11.TAP_TO_VIEW_DASHAS),
                         style = MaterialTheme.typography.bodyLarge,
                         color = colors.TextMuted
                     )
@@ -445,7 +445,7 @@ private fun QuickActionsSection(
         modifier = Modifier.padding(horizontal = HomeDesignTokens.ScreenPadding)
     ) {
         SectionHeader(
-            title = stringResource(StringKeyPart2.QUICK_ACTIONS),
+            title = stringResource(StringKeyGeneralPart9.QUICK_ACTIONS),
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -553,7 +553,7 @@ private fun TodaySnapshotSection(
         modifier = Modifier.padding(horizontal = HomeDesignTokens.ScreenPadding)
     ) {
         SectionHeader(
-            title = stringResource(StringKeyPart2.TODAYS_SNAPSHOT),
+            title = stringResource(StringKeyGeneralPart11.TODAYS_SNAPSHOT),
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -593,7 +593,7 @@ private fun TodaySnapshotSection(
                 onClick = onTransitsClick
             ) {
                 Text(
-                    text = stringResource(StringKeyPart2.VIEW_CURRENT_TRANSITS),
+                    text = stringResource(StringKeyGeneralPart12.VIEW_CURRENT_TRANSITS),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = colors.TextSecondary
@@ -974,7 +974,7 @@ private fun EmptyHomeState(
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = stringResource(StringKeyPart1.NO_PROFILE_SELECTED),
+                text = stringResource(StringKeyGeneralPart7.NO_PROFILE_SELECTED),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = colors.TextPrimary,
@@ -984,7 +984,7 @@ private fun EmptyHomeState(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
+                text = stringResource(StringKeyGeneralPart7.NO_PROFILE_MESSAGE),
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.TextMuted,
                 textAlign = TextAlign.Center,
@@ -1016,7 +1016,7 @@ private fun EmptyHomeState(
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = stringResource(StringKeyUI.BTN_CREATE_CHART),
+                    text = stringResource(StringKeyUIPart1.BTN_CREATE_CHART),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold
                 )

@@ -377,13 +377,13 @@ private fun convertToNepaliNumerals(text: String): String {
  */
 private fun getWeekdayKey(dayOfWeek: java.time.DayOfWeek): StringKeyInterface {
     return when (dayOfWeek) {
-        java.time.DayOfWeek.SUNDAY -> StringKeyMatchPart1.DAY_SUNDAY
-        java.time.DayOfWeek.MONDAY -> StringKeyMatchPart1.DAY_MONDAY
-        java.time.DayOfWeek.TUESDAY -> StringKeyMatchPart1.DAY_TUESDAY
-        java.time.DayOfWeek.WEDNESDAY -> StringKeyMatchPart1.DAY_WEDNESDAY
-        java.time.DayOfWeek.THURSDAY -> StringKeyMatchPart1.DAY_THURSDAY
-        java.time.DayOfWeek.FRIDAY -> StringKeyMatchPart1.DAY_FRIDAY
-        java.time.DayOfWeek.SATURDAY -> StringKeyMatchPart1.DAY_SATURDAY
+        java.time.DayOfWeek.SUNDAY -> StringKeyGeneralPart3.DAY_SUNDAY
+        java.time.DayOfWeek.MONDAY -> StringKeyGeneralPart3.DAY_MONDAY
+        java.time.DayOfWeek.TUESDAY -> StringKeyGeneralPart3.DAY_TUESDAY
+        java.time.DayOfWeek.WEDNESDAY -> StringKeyGeneralPart3.DAY_WEDNESDAY
+        java.time.DayOfWeek.THURSDAY -> StringKeyGeneralPart3.DAY_THURSDAY
+        java.time.DayOfWeek.FRIDAY -> StringKeyGeneralPart3.DAY_FRIDAY
+        java.time.DayOfWeek.SATURDAY -> StringKeyGeneralPart3.DAY_SATURDAY
     }
 }
 

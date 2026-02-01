@@ -438,9 +438,9 @@ object VedicAstrologyUtils {
      */
     fun getGanaName(gana: Gana, language: Language): String {
         return when (gana) {
-            Gana.DEVA -> StringResources.get(StringKeyMatchmaking.GANA_DEVA, language)
-            Gana.MANUSHYA -> StringResources.get(StringKeyMatchmaking.GANA_MANUSHYA, language)
-            Gana.RAKSHASA -> StringResources.get(StringKeyMatchmaking.GANA_RAKSHASA, language)
+            Gana.DEVA -> StringResources.get(StringKeyMatchmakingPart1.GANA_DEVA, language)
+            Gana.MANUSHYA -> StringResources.get(StringKeyMatchmakingPart1.GANA_MANUSHYA, language)
+            Gana.RAKSHASA -> StringResources.get(StringKeyMatchmakingPart1.GANA_RAKSHASA, language)
         }
     }
 
@@ -457,33 +457,33 @@ object VedicAstrologyUtils {
     enum class Gender { MALE, FEMALE }
 
     private val nakshatraYoniMap = mapOf(
-        Nakshatra.ASHWINI to YoniInfo("Horse", StringKeyMatchmaking.YONI_ANIMAL_HORSE, Gender.MALE, 1),
-        Nakshatra.BHARANI to YoniInfo("Elephant", StringKeyMatchmaking.YONI_ANIMAL_ELEPHANT, Gender.MALE, 2),
-        Nakshatra.KRITTIKA to YoniInfo("Sheep", StringKeyMatchmaking.YONI_ANIMAL_SHEEP, Gender.FEMALE, 3),
-        Nakshatra.ROHINI to YoniInfo("Serpent", StringKeyMatchmaking.YONI_ANIMAL_SERPENT, Gender.MALE, 4),
-        Nakshatra.MRIGASHIRA to YoniInfo("Serpent", StringKeyMatchmaking.YONI_ANIMAL_SERPENT, Gender.FEMALE, 4),
-        Nakshatra.ARDRA to YoniInfo("Dog", StringKeyMatchmaking.YONI_ANIMAL_DOG, Gender.FEMALE, 5),
-        Nakshatra.PUNARVASU to YoniInfo("Cat", StringKeyMatchmaking.YONI_ANIMAL_CAT, Gender.FEMALE, 6),
-        Nakshatra.PUSHYA to YoniInfo("Sheep", StringKeyMatchmaking.YONI_ANIMAL_SHEEP, Gender.MALE, 3),
-        Nakshatra.ASHLESHA to YoniInfo("Cat", StringKeyMatchmaking.YONI_ANIMAL_CAT, Gender.MALE, 6),
-        Nakshatra.MAGHA to YoniInfo("Rat", StringKeyMatchmaking.YONI_ANIMAL_RAT, Gender.MALE, 7),
-        Nakshatra.PURVA_PHALGUNI to YoniInfo("Rat", StringKeyMatchmaking.YONI_ANIMAL_RAT, Gender.FEMALE, 7),
-        Nakshatra.UTTARA_PHALGUNI to YoniInfo("Cow", StringKeyMatchmaking.YONI_ANIMAL_COW, Gender.MALE, 8),
-        Nakshatra.HASTA to YoniInfo("Buffalo", StringKeyMatchmaking.YONI_ANIMAL_BUFFALO, Gender.FEMALE, 9),
-        Nakshatra.CHITRA to YoniInfo("Tiger", StringKeyMatchmaking.YONI_ANIMAL_TIGER, Gender.FEMALE, 10),
-        Nakshatra.SWATI to YoniInfo("Buffalo", StringKeyMatchmaking.YONI_ANIMAL_BUFFALO, Gender.MALE, 9),
-        Nakshatra.VISHAKHA to YoniInfo("Tiger", StringKeyMatchmaking.YONI_ANIMAL_TIGER, Gender.MALE, 10),
-        Nakshatra.ANURADHA to YoniInfo("Deer", StringKeyMatchmaking.YONI_ANIMAL_DEER, Gender.FEMALE, 11),
-        Nakshatra.JYESHTHA to YoniInfo("Deer", StringKeyMatchmaking.YONI_ANIMAL_DEER, Gender.MALE, 11),
-        Nakshatra.MULA to YoniInfo("Dog", StringKeyMatchmaking.YONI_ANIMAL_DOG, Gender.MALE, 5),
-        Nakshatra.PURVA_ASHADHA to YoniInfo("Monkey", StringKeyMatchmaking.YONI_ANIMAL_MONKEY, Gender.MALE, 12),
-        Nakshatra.UTTARA_ASHADHA to YoniInfo("Mongoose", StringKeyMatchmaking.YONI_ANIMAL_MONGOOSE, Gender.MALE, 13),
-        Nakshatra.SHRAVANA to YoniInfo("Monkey", StringKeyMatchmaking.YONI_ANIMAL_MONKEY, Gender.FEMALE, 12),
-        Nakshatra.DHANISHTHA to YoniInfo("Lion", StringKeyMatchmaking.YONI_ANIMAL_LION, Gender.FEMALE, 14),
-        Nakshatra.SHATABHISHA to YoniInfo("Horse", StringKeyMatchmaking.YONI_ANIMAL_HORSE, Gender.FEMALE, 1),
-        Nakshatra.PURVA_BHADRAPADA to YoniInfo("Lion", StringKeyMatchmaking.YONI_ANIMAL_LION, Gender.MALE, 14),
-        Nakshatra.UTTARA_BHADRAPADA to YoniInfo("Cow", StringKeyMatchmaking.YONI_ANIMAL_COW, Gender.FEMALE, 8),
-        Nakshatra.REVATI to YoniInfo("Elephant", StringKeyMatchmaking.YONI_ANIMAL_ELEPHANT, Gender.FEMALE, 2)
+        Nakshatra.ASHWINI to YoniInfo("Horse", StringKeyMatchmakingPart1.YONI_ANIMAL_HORSE, Gender.MALE, 1),
+        Nakshatra.BHARANI to YoniInfo("Elephant", StringKeyMatchmakingPart1.YONI_ANIMAL_ELEPHANT, Gender.MALE, 2),
+        Nakshatra.KRITTIKA to YoniInfo("Sheep", StringKeyMatchmakingPart1.YONI_ANIMAL_SHEEP, Gender.FEMALE, 3),
+        Nakshatra.ROHINI to YoniInfo("Serpent", StringKeyMatchmakingPart1.YONI_ANIMAL_SERPENT, Gender.MALE, 4),
+        Nakshatra.MRIGASHIRA to YoniInfo("Serpent", StringKeyMatchmakingPart1.YONI_ANIMAL_SERPENT, Gender.FEMALE, 4),
+        Nakshatra.ARDRA to YoniInfo("Dog", StringKeyMatchmakingPart1.YONI_ANIMAL_DOG, Gender.FEMALE, 5),
+        Nakshatra.PUNARVASU to YoniInfo("Cat", StringKeyMatchmakingPart1.YONI_ANIMAL_CAT, Gender.FEMALE, 6),
+        Nakshatra.PUSHYA to YoniInfo("Sheep", StringKeyMatchmakingPart1.YONI_ANIMAL_SHEEP, Gender.MALE, 3),
+        Nakshatra.ASHLESHA to YoniInfo("Cat", StringKeyMatchmakingPart1.YONI_ANIMAL_CAT, Gender.MALE, 6),
+        Nakshatra.MAGHA to YoniInfo("Rat", StringKeyMatchmakingPart1.YONI_ANIMAL_RAT, Gender.MALE, 7),
+        Nakshatra.PURVA_PHALGUNI to YoniInfo("Rat", StringKeyMatchmakingPart1.YONI_ANIMAL_RAT, Gender.FEMALE, 7),
+        Nakshatra.UTTARA_PHALGUNI to YoniInfo("Cow", StringKeyMatchmakingPart1.YONI_ANIMAL_COW, Gender.MALE, 8),
+        Nakshatra.HASTA to YoniInfo("Buffalo", StringKeyMatchmakingPart1.YONI_ANIMAL_BUFFALO, Gender.FEMALE, 9),
+        Nakshatra.CHITRA to YoniInfo("Tiger", StringKeyMatchmakingPart1.YONI_ANIMAL_TIGER, Gender.FEMALE, 10),
+        Nakshatra.SWATI to YoniInfo("Buffalo", StringKeyMatchmakingPart1.YONI_ANIMAL_BUFFALO, Gender.MALE, 9),
+        Nakshatra.VISHAKHA to YoniInfo("Tiger", StringKeyMatchmakingPart1.YONI_ANIMAL_TIGER, Gender.MALE, 10),
+        Nakshatra.ANURADHA to YoniInfo("Deer", StringKeyMatchmakingPart1.YONI_ANIMAL_DEER, Gender.FEMALE, 11),
+        Nakshatra.JYESHTHA to YoniInfo("Deer", StringKeyMatchmakingPart1.YONI_ANIMAL_DEER, Gender.MALE, 11),
+        Nakshatra.MULA to YoniInfo("Dog", StringKeyMatchmakingPart1.YONI_ANIMAL_DOG, Gender.MALE, 5),
+        Nakshatra.PURVA_ASHADHA to YoniInfo("Monkey", StringKeyMatchmakingPart1.YONI_ANIMAL_MONKEY, Gender.MALE, 12),
+        Nakshatra.UTTARA_ASHADHA to YoniInfo("Mongoose", StringKeyMatchmakingPart1.YONI_ANIMAL_MONGOOSE, Gender.MALE, 13),
+        Nakshatra.SHRAVANA to YoniInfo("Monkey", StringKeyMatchmakingPart1.YONI_ANIMAL_MONKEY, Gender.FEMALE, 12),
+        Nakshatra.DHANISHTHA to YoniInfo("Lion", StringKeyMatchmakingPart1.YONI_ANIMAL_LION, Gender.FEMALE, 14),
+        Nakshatra.SHATABHISHA to YoniInfo("Horse", StringKeyMatchmakingPart1.YONI_ANIMAL_HORSE, Gender.FEMALE, 1),
+        Nakshatra.PURVA_BHADRAPADA to YoniInfo("Lion", StringKeyMatchmakingPart1.YONI_ANIMAL_LION, Gender.MALE, 14),
+        Nakshatra.UTTARA_BHADRAPADA to YoniInfo("Cow", StringKeyMatchmakingPart1.YONI_ANIMAL_COW, Gender.FEMALE, 8),
+        Nakshatra.REVATI to YoniInfo("Elephant", StringKeyMatchmakingPart1.YONI_ANIMAL_ELEPHANT, Gender.FEMALE, 2)
     )
 
     /**
@@ -509,9 +509,9 @@ object VedicAstrologyUtils {
         val yoni = nakshatraYoniMap[nakshatra] ?: return "Unknown"
         val animalName = StringResources.get(yoni.animalKey, language)
         val genderStr = if (yoni.gender == Gender.MALE)
-            StringResources.get(StringKeyUI.GENDER_MALE, language)
+            StringResources.get(StringKeyUIPart1.GENDER_MALE, language)
         else
-            StringResources.get(StringKeyUI.GENDER_FEMALE, language)
+            StringResources.get(StringKeyUIPart1.GENDER_FEMALE, language)
         return "$animalName ($genderStr)"
     }
 

@@ -74,7 +74,7 @@ fun SettingsTab(
     ) {
         // Profile Section
         item {
-            SettingsSectionHeader(titleKey = StringKeyPart1.SETTINGS_PROFILE)
+            SettingsSectionHeader(titleKey = StringKeyGeneralPart10.SETTINGS_PROFILE)
         }
 
         item {
@@ -89,15 +89,15 @@ fun SettingsTab(
             if (currentChart != null && selectedChartId != null) {
                 SettingsItem(
                     icon = Icons.Outlined.Edit,
-                    titleKey = StringKeyPart1.SETTINGS_EDIT_PROFILE,
-                    subtitleKey = StringKeyPart1.SETTINGS_EDIT_PROFILE_DESC,
+                    titleKey = StringKeyGeneralPart10.SETTINGS_EDIT_PROFILE,
+                    subtitleKey = StringKeyGeneralPart10.SETTINGS_EDIT_PROFILE_DESC,
                     onClick = { onEditProfile(selectedChartId) }
                 )
             } else {
                 SettingsItem(
                     icon = Icons.Outlined.People,
-                    titleKey = StringKeyPart1.SETTINGS_MANAGE_PROFILES,
-                    subtitleKey = StringKeyPart1.SETTINGS_NO_PROFILE,
+                    titleKey = StringKeyGeneralPart10.SETTINGS_MANAGE_PROFILES,
+                    subtitleKey = StringKeyGeneralPart10.SETTINGS_NO_PROFILE,
                     onClick = onManageProfiles
                 )
             }
@@ -107,14 +107,14 @@ fun SettingsTab(
         if (currentChart != null) {
             item {
                 Spacer(modifier = Modifier.height(8.dp))
-                SettingsSectionHeader(titleKey = StringKeyPart1.SETTINGS_EXPORT)
+                SettingsSectionHeader(titleKey = StringKeyGeneralPart10.SETTINGS_EXPORT)
             }
 
             item {
                 SettingsItem(
                     icon = Icons.Outlined.PictureAsPdf,
-                    titleKey = StringKeyPart1.SETTINGS_EXPORT_PDF,
-                    subtitleKey = StringKeyPart1.SETTINGS_EXPORT_PDF_DESC,
+                    titleKey = StringKeyGeneralPart10.SETTINGS_EXPORT_PDF,
+                    subtitleKey = StringKeyGeneralPart10.SETTINGS_EXPORT_PDF_DESC,
                     onClick = { onExportChart(ExportFormat.PDF) }
                 )
             }
@@ -123,14 +123,14 @@ fun SettingsTab(
         // AI & Chat Section
         item {
             Spacer(modifier = Modifier.height(8.dp))
-            SettingsSectionHeader(titleKey = StringKeyPart1.SETTINGS_AI_CHAT)
+            SettingsSectionHeader(titleKey = StringKeyGeneralPart10.SETTINGS_AI_CHAT)
         }
 
         item {
             SettingsItem(
                 icon = Icons.Outlined.Psychology,
-                titleKey = StringKeyPart1.SETTINGS_AI_MODELS,
-                subtitleKey = StringKeyPart1.SETTINGS_AI_MODELS_DESC,
+                titleKey = StringKeyGeneralPart10.SETTINGS_AI_MODELS,
+                subtitleKey = StringKeyGeneralPart10.SETTINGS_AI_MODELS_DESC,
                 onClick = onNavigateToAiModels
             )
         }
@@ -138,7 +138,7 @@ fun SettingsTab(
         // Preferences Section
         item {
             Spacer(modifier = Modifier.height(8.dp))
-            SettingsSectionHeader(titleKey = StringKeyPart1.SETTINGS_PREFERENCES)
+            SettingsSectionHeader(titleKey = StringKeyGeneralPart10.SETTINGS_PREFERENCES)
         }
 
         item {
@@ -167,14 +167,14 @@ fun SettingsTab(
         // About Section
         item {
             Spacer(modifier = Modifier.height(8.dp))
-            SettingsSectionHeader(titleKey = StringKeyPart1.SETTINGS_ABOUT)
+            SettingsSectionHeader(titleKey = StringKeyGeneralPart10.SETTINGS_ABOUT)
         }
 
         item {
             SettingsItem(
                 icon = Icons.Outlined.Info,
-                titleKey = StringKeyPart1.SETTINGS_ABOUT_APP,
-                subtitleKey = StringKeyPart1.SETTINGS_VERSION,
+                titleKey = StringKeyGeneralPart10.SETTINGS_ABOUT_APP,
+                subtitleKey = StringKeyGeneralPart10.SETTINGS_VERSION,
                 subtitleArgs = arrayOf("1.0.0"),
                 onClick = { /* Show about dialog */ }
             )
@@ -183,8 +183,8 @@ fun SettingsTab(
         item {
             SettingsItem(
                 icon = Icons.Outlined.Science,
-                titleKey = StringKeyPart1.SETTINGS_CALC_ENGINE,
-                subtitleKey = StringKeyPart1.SETTINGS_CALC_ENGINE_DESC,
+                titleKey = StringKeyGeneralPart10.SETTINGS_CALC_ENGINE,
+                subtitleKey = StringKeyGeneralPart10.SETTINGS_CALC_ENGINE_DESC,
                 onClick = { /* Show calculation info */ }
             )
         }
@@ -201,9 +201,9 @@ fun SettingsTab(
             containerColor = AppTheme.CardBackground,
             titleContentColor = AppTheme.TextPrimary,
             textContentColor = AppTheme.TextSecondary,
-            title = { Text(stringResource(StringKeyPart1.DIALOG_DELETE_PROFILE)) },
+            title = { Text(stringResource(StringKeyUIPart1.DIALOG_DELETE_PROFILE)) },
             text = {
-                Text(stringResource(StringKeyPart1.DIALOG_DELETE_CONFIRM, chartToDelete?.name ?: ""))
+                Text(stringResource(StringKeyUIPart1.DIALOG_DELETE_CONFIRM, chartToDelete?.name ?: ""))
             },
             confirmButton = {
                 TextButton(
@@ -213,12 +213,12 @@ fun SettingsTab(
                         chartToDelete = null
                     }
                 ) {
-                    Text(stringResource(StringKeyUI.BTN_DELETE), color = AppTheme.ErrorColor)
+                    Text(stringResource(StringKeyUIPart1.BTN_DELETE), color = AppTheme.ErrorColor)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text(stringResource(StringKeyUI.BTN_CANCEL), color = AppTheme.AccentPrimary)
+                    Text(stringResource(StringKeyUIPart1.BTN_CANCEL), color = AppTheme.AccentPrimary)
                 }
             }
         )
@@ -326,19 +326,19 @@ private fun CurrentProfileCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 ChartDetailItem(
-                    labelKey = StringKeyPart1.CHART_ASCENDANT,
+                    labelKey = StringKeyGeneralPart3.CHART_ASCENDANT,
                     value = chart.planetPositions.find { it.planet == com.astro.storm.core.model.Planet.SUN }?.sign?.getLocalizedName(language)
                         ?: com.astro.storm.core.model.ZodiacSign.fromLongitude(chart.ascendant).getLocalizedName(language)
                 )
                 ChartDetailItem(
-                    labelKey = StringKeyPart1.CHART_MOON_SIGN,
+                    labelKey = StringKeyGeneralPart3.CHART_MOON_SIGN,
                     value = chart.planetPositions.find { it.planet == com.astro.storm.core.model.Planet.MOON }?.sign?.getLocalizedName(language)
-                        ?: stringResource(StringKeyUI.LABEL_DASH)
+                        ?: stringResource(StringKeyUIPart1.LABEL_DASH)
                 )
                 ChartDetailItem(
-                    labelKey = StringKeyPart1.CHART_NAKSHATRA,
+                    labelKey = StringKeyGeneralPart3.CHART_NAKSHATRA,
                     value = chart.planetPositions.find { it.planet == com.astro.storm.core.model.Planet.MOON }?.nakshatra?.getLocalizedName(language)?.take(8)
-                        ?: stringResource(StringKeyUI.LABEL_DASH)
+                        ?: stringResource(StringKeyUIPart1.LABEL_DASH)
                 )
             }
         }
@@ -391,14 +391,14 @@ private fun EmptyProfileCard(onManageProfiles: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = stringResource(StringKeyPart1.SETTINGS_NO_PROFILE),
+                text = stringResource(StringKeyGeneralPart10.SETTINGS_NO_PROFILE),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(StringKeyPart1.SETTINGS_TAP_TO_SELECT),
+                text = stringResource(StringKeyGeneralPart10.SETTINGS_TAP_TO_SELECT),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -521,7 +521,7 @@ private fun HouseSystemSetting() {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(StringKeyPart1.SETTINGS_HOUSE_SYSTEM),
+                        text = stringResource(StringKeyGeneralPart10.SETTINGS_HOUSE_SYSTEM),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -620,7 +620,7 @@ private fun LanguageSetting(localizationManager: LocalizationManager?) {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(StringKeyPart1.SETTINGS_LANGUAGE),
+                        text = stringResource(StringKeyGeneralPart10.SETTINGS_LANGUAGE),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -694,9 +694,9 @@ private fun ThemeSetting(themeManager: ThemeManager) {
     var expanded by remember { mutableStateOf(false) }
 
     val themeModes = listOf(
-        ThemeMode.LIGHT to Triple(Icons.Outlined.LightMode, StringKeyPart1.THEME_LIGHT, StringKeyPart1.THEME_LIGHT_DESC),
-        ThemeMode.DARK to Triple(Icons.Outlined.DarkMode, StringKeyPart1.THEME_DARK, StringKeyPart1.THEME_DARK_DESC),
-        ThemeMode.SYSTEM to Triple(Icons.Outlined.Brightness6, StringKeyPart1.THEME_SYSTEM, StringKeyPart1.THEME_SYSTEM_DESC)
+        ThemeMode.LIGHT to Triple(Icons.Outlined.LightMode, StringKeyPrediction.THEME_LIGHT, StringKeyPrediction.THEME_LIGHT_DESC),
+        ThemeMode.DARK to Triple(Icons.Outlined.DarkMode, StringKeyPrediction.THEME_DARK, StringKeyPrediction.THEME_DARK_DESC),
+        ThemeMode.SYSTEM to Triple(Icons.Outlined.Brightness6, StringKeyPrediction.THEME_SYSTEM, StringKeyPrediction.THEME_SYSTEM_DESC)
     )
 
     Card(
@@ -738,7 +738,7 @@ private fun ThemeSetting(themeManager: ThemeManager) {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(StringKeyPart1.SETTINGS_THEME),
+                        text = stringResource(StringKeyGeneralPart10.SETTINGS_THEME),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -815,10 +815,10 @@ private fun ThemeSetting(themeManager: ThemeManager) {
 private fun AyanamsaSetting() {
     val language = LocalLanguage.current
     val ayanamsaKeys = listOf(
-        StringKeyPart1.AYANAMSA_LAHIRI,
-        StringKeyPart1.AYANAMSA_RAMAN,
-        StringKeyPart1.AYANAMSA_KRISHNAMURTI,
-        StringKeyPart1.AYANAMSA_TRUE_CHITRAPAKSHA
+        StringKeyGeneralPart2.AYANAMSA_LAHIRI,
+        StringKeyGeneralPart2.AYANAMSA_RAMAN,
+        StringKeyGeneralPart2.AYANAMSA_KRISHNAMURTI,
+        StringKeyGeneralPart2.AYANAMSA_TRUE_CHITRAPAKSHA
     )
     var expanded by remember { mutableStateOf(false) }
     var selectedAyanamsaKey by remember { mutableStateOf(ayanamsaKeys[0]) }
@@ -857,7 +857,7 @@ private fun AyanamsaSetting() {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(StringKeyPart1.SETTINGS_AYANAMSA),
+                        text = stringResource(StringKeyGeneralPart10.SETTINGS_AYANAMSA),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -955,15 +955,15 @@ private fun NodeSetting() {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(StringKeyPart1.SETTINGS_NODE_CALCULATION),
+                        text = stringResource(StringKeyGeneralPart10.SETTINGS_NODE_CALCULATION),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = if (currentNodeMode == com.astro.storm.data.preferences.NodeCalculationMode.TRUE) 
-                            stringResource(StringKeyPart1.SETTINGS_NODE_TRUE)
-                        else stringResource(StringKeyPart1.SETTINGS_NODE_MEAN),
+                            stringResource(StringKeyGeneralPart10.SETTINGS_NODE_TRUE)
+                        else stringResource(StringKeyGeneralPart10.SETTINGS_NODE_MEAN),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.AccentPrimary
                     )
@@ -981,7 +981,7 @@ private fun NodeSetting() {
 
                 com.astro.storm.data.preferences.NodeCalculationMode.entries.forEach { mode ->
                     val nameKey = if (mode == com.astro.storm.data.preferences.NodeCalculationMode.TRUE) 
-                        StringKeyPart1.SETTINGS_NODE_TRUE else StringKeyPart1.SETTINGS_NODE_MEAN
+                        StringKeyGeneralPart10.SETTINGS_NODE_TRUE else StringKeyGeneralPart10.SETTINGS_NODE_MEAN
                     
                     Row(
                         modifier = Modifier
@@ -1042,7 +1042,7 @@ private fun AboutCard() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = stringResource(StringKeyPart1.SETTINGS_APP_TAGLINE),
+                text = stringResource(StringKeyGeneralPart10.SETTINGS_APP_TAGLINE),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary
             )
@@ -1050,7 +1050,7 @@ private fun AboutCard() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = stringResource(StringKeyPart1.SETTINGS_APP_DESC),
+                text = stringResource(StringKeyGeneralPart10.SETTINGS_APP_DESC),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
@@ -1062,8 +1062,8 @@ private fun AboutCard() {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                FeatureBadge(textKey = StringKeyPart1.SETTINGS_LAHIRI)
-                FeatureBadge(textKey = StringKeyPart1.SETTINGS_PLACIDUS)
+                FeatureBadge(textKey = StringKeyGeneralPart10.SETTINGS_LAHIRI)
+                FeatureBadge(textKey = StringKeyGeneralPart10.SETTINGS_PLACIDUS)
             }
         }
     }
@@ -1098,10 +1098,10 @@ enum class ExportFormat(
     val descriptionKey: StringKey,
     val icon: ImageVector
 ) {
-    PDF(StringKeyPart1.SETTINGS_EXPORT_PDF, StringKeyPart1.SETTINGS_EXPORT_PDF_DESC, Icons.Outlined.PictureAsPdf),
-    IMAGE(StringKeyPart1.SETTINGS_EXPORT_IMAGE, StringKeyPart1.SETTINGS_EXPORT_IMAGE_DESC, Icons.Outlined.Image),
-    JSON(StringKeyPart1.SETTINGS_EXPORT_JSON, StringKeyPart1.SETTINGS_EXPORT_JSON_DESC, Icons.Outlined.Code),
-    CSV(StringKeyPart1.SETTINGS_EXPORT_CSV, StringKeyPart1.SETTINGS_EXPORT_CSV_DESC, Icons.Outlined.TableChart);
+    PDF(StringKeyGeneralPart10.SETTINGS_EXPORT_PDF, StringKeyGeneralPart10.SETTINGS_EXPORT_PDF_DESC, Icons.Outlined.PictureAsPdf),
+    IMAGE(StringKeyGeneralPart10.SETTINGS_EXPORT_IMAGE, StringKeyGeneralPart10.SETTINGS_EXPORT_IMAGE_DESC, Icons.Outlined.Image),
+    JSON(StringKeyGeneralPart10.SETTINGS_EXPORT_JSON, StringKeyGeneralPart10.SETTINGS_EXPORT_JSON_DESC, Icons.Outlined.Code),
+    CSV(StringKeyGeneralPart10.SETTINGS_EXPORT_CSV, StringKeyGeneralPart10.SETTINGS_EXPORT_CSV_DESC, Icons.Outlined.TableChart);
 
     fun getLocalizedTitle(language: Language): String = StringResources.get(titleKey, language)
     fun getLocalizedDescription(language: Language): String = StringResources.get(descriptionKey, language)

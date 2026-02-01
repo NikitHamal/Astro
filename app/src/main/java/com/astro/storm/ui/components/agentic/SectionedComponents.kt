@@ -470,10 +470,10 @@ private fun IndividualToolCard(
                         // Status text
                         Text(
                             text = when (tool.status) {
-                                ToolExecutionStatus.PENDING -> stringResource(StringKeyDoshaPart3.TOOL_STATUS_PENDING)
-                                ToolExecutionStatus.EXECUTING -> stringResource(StringKeyDoshaPart3.TOOL_STATUS_RUNNING)
-                                ToolExecutionStatus.COMPLETED -> stringResource(StringKeyDoshaPart3.TOOL_STATUS_COMPLETED_IN, tool.durationDisplay)
-                                ToolExecutionStatus.FAILED -> stringResource(StringKeyDoshaPart3.TOOL_STATUS_FAILED)
+                                ToolExecutionStatus.PENDING -> stringResource(StringKeyGeneralPart11.TOOL_STATUS_PENDING)
+                                ToolExecutionStatus.EXECUTING -> stringResource(StringKeyGeneralPart11.TOOL_STATUS_RUNNING)
+                                ToolExecutionStatus.COMPLETED -> stringResource(StringKeyGeneralPart11.TOOL_STATUS_COMPLETED_IN, tool.durationDisplay)
+                                ToolExecutionStatus.FAILED -> stringResource(StringKeyGeneralPart11.TOOL_STATUS_FAILED)
                             },
                             style = MaterialTheme.typography.labelSmall,
                             color = statusColor
@@ -904,7 +904,7 @@ fun AskUserSection(
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(StringKeyDoshaPart3.STORMY_NEEDS_INPUT),
+                        text = stringResource(StringKeyGeneralPart10.STORMY_NEEDS_INPUT),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.AccentGold
@@ -962,7 +962,7 @@ fun AskUserSection(
                             Box {
                                 if (customInput.isEmpty()) {
                                     Text(
-                                        text = stringResource(StringKeyDoshaPart3.PLACEHOLDER_TYPE_RESPONSE),
+                                        text = stringResource(StringKeyGeneralPart7.PLACEHOLDER_TYPE_RESPONSE),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = colors.TextMuted
                                     )
@@ -982,7 +982,7 @@ fun AskUserSection(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Send,
-                            contentDescription = stringResource(StringKeyDoshaPart3.CHAT_SEND),
+                            contentDescription = stringResource(StringKeyGeneralPart3.CHAT_SEND),
                             tint = if (customInput.isNotBlank())
                                 colors.AccentPrimary
                             else
@@ -1012,7 +1012,7 @@ fun AskUserSection(
                         Text(
                             text = section.customResponse
                                 ?: section.options.find { it.id == section.selectedOptionId }?.label
-                                ?: stringResource(StringKeyDoshaPart3.RESPONSE_SUBMITTED),
+                                ?: stringResource(StringKeyGeneralPart9.RESPONSE_SUBMITTED),
                             style = MaterialTheme.typography.bodySmall,
                             color = colors.TextPrimary
                         )
@@ -1293,7 +1293,7 @@ private fun TodoItemRow(item: TodoItem) {
                 shape = RoundedCornerShape(4.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyDoshaPart3.TODO_IN_PROGRESS),
+                    text = stringResource(StringKeyGeneralPart11.TODO_IN_PROGRESS),
                     style = MaterialTheme.typography.labelSmall,
                     color = colors.AccentTeal,
                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -1327,17 +1327,17 @@ fun ProfileOperationSection(
     }
 
     val statusText = when (section.status) {
-        ProfileOperationStatus.PENDING -> stringResource(StringKeyDoshaPart3.PROFILE_STATUS_PENDING)
-        ProfileOperationStatus.IN_PROGRESS -> stringResource(StringKeyDoshaPart3.PROFILE_STATUS_IN_PROGRESS)
-        ProfileOperationStatus.SUCCESS -> stringResource(StringKeyDoshaPart3.PROFILE_STATUS_SUCCESS)
-        ProfileOperationStatus.FAILED -> stringResource(StringKeyDoshaPart3.PROFILE_STATUS_FAILED)
+        ProfileOperationStatus.PENDING -> stringResource(StringKeyGeneralPart9.PROFILE_STATUS_PENDING)
+        ProfileOperationStatus.IN_PROGRESS -> stringResource(StringKeyGeneralPart9.PROFILE_STATUS_IN_PROGRESS)
+        ProfileOperationStatus.SUCCESS -> stringResource(StringKeyGeneralPart9.PROFILE_STATUS_SUCCESS)
+        ProfileOperationStatus.FAILED -> stringResource(StringKeyGeneralPart9.PROFILE_STATUS_FAILED)
     }
 
     val operationText = when (section.operation) {
-        ProfileOperationType.CREATE -> stringResource(StringKeyDoshaPart3.PROFILE_OP_CREATING)
-        ProfileOperationType.UPDATE -> stringResource(StringKeyDoshaPart3.PROFILE_OP_UPDATING)
-        ProfileOperationType.DELETE -> stringResource(StringKeyDoshaPart3.PROFILE_OP_DELETING)
-        ProfileOperationType.VIEW -> stringResource(StringKeyDoshaPart3.PROFILE_OP_VIEWING)
+        ProfileOperationType.CREATE -> stringResource(StringKeyGeneralPart9.PROFILE_OP_CREATING)
+        ProfileOperationType.UPDATE -> stringResource(StringKeyGeneralPart9.PROFILE_OP_UPDATING)
+        ProfileOperationType.DELETE -> stringResource(StringKeyGeneralPart9.PROFILE_OP_DELETING)
+        ProfileOperationType.VIEW -> stringResource(StringKeyGeneralPart9.PROFILE_OP_VIEWING)
     }
 
     Surface(
@@ -1418,7 +1418,7 @@ fun ProfileOperationSection(
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
-                        text = stringResource(StringKeyDoshaPart3.PROFILE_ID_LABEL, section.profileId),
+                        text = stringResource(StringKeyGeneralPart9.PROFILE_ID_LABEL, section.profileId),
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.TextSubtle,
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)

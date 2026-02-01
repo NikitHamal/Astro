@@ -132,7 +132,7 @@ fun YoginiDashaScreen(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
             YoginiDashaTopBar(
-                chartName = chart?.birthData?.name ?: stringResource(StringKeyMatchPart1.MISC_UNKNOWN),
+                chartName = chart?.birthData?.name ?: stringResource(StringKeyGeneralPart7.MISC_UNKNOWN),
                 currentPeriodInfo = currentPeriodInfo,
                 onBack = onBack
             )
@@ -238,7 +238,7 @@ private fun YoginiDashaTopBar(
             title = {
                 Column(modifier = Modifier.fillMaxWidth(0.85f)) {
                     Text(
-                        text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_TITLE),
+                        text = stringResource(StringKeyDashaPart3.YOGINI_DASHA_TITLE),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
@@ -256,7 +256,7 @@ private fun YoginiDashaTopBar(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                        contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -287,7 +287,7 @@ private fun TopBarSubtitle(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = stringResource(StringKeyPart1.DASHA_CALCULATING),
+                    text = stringResource(StringKeyDashaPart1.DASHA_CALCULATING),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
                     fontSize = 12.sp
@@ -295,7 +295,7 @@ private fun TopBarSubtitle(
             }
             periodInfo.hasError -> {
                 Text(
-                    text = "${stringResource(StringKeyPart1.DASHA_ERROR)} • $chartName",
+                    text = "${stringResource(StringKeyDashaPart1.DASHA_ERROR)} • $chartName",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error,
                     fontSize = 12.sp,
@@ -337,9 +337,9 @@ private fun YoginiDashaTabRow(
     onTabSelected: (Int) -> Unit
 ) {
     val tabs = listOf(
-        TabItem(title = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_CURRENT)),
-        TabItem(title = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_TIMELINE)),
-        TabItem(title = stringResource(StringKeyMatchPart1.DETAILS))
+        TabItem(title = stringResource(StringKeyDashaPart3.YOGINI_DASHA_CURRENT)),
+        TabItem(title = stringResource(StringKeyDashaPart3.YOGINI_DASHA_TIMELINE)),
+        TabItem(title = stringResource(StringKeyGeneralPart3.DETAILS))
     )
 
     ModernPillTabRow(
@@ -491,14 +491,14 @@ private fun CurrentYoginiPeriodCard(result: YoginiDashaCalculator.YoginiDashaRes
                 Spacer(modifier = Modifier.width(14.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_CURRENT),
+                        text = stringResource(StringKeyDashaPart3.YOGINI_DASHA_CURRENT),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_SUBTITLE),
+                        text = stringResource(StringKeyDashaPart3.YOGINI_DASHA_SUBTITLE),
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -508,7 +508,7 @@ private fun CurrentYoginiPeriodCard(result: YoginiDashaCalculator.YoginiDashaRes
 
             if (currentMahadasha != null) {
                 YoginiPeriodRow(
-                    label = stringResource(StringKeyPart1.DASHA_MAHADASHA),
+                    label = stringResource(StringKeyDashaPart1.DASHA_MAHADASHA),
                     yogini = currentMahadasha.yogini,
                     startDate = currentMahadasha.startDate,
                     endDate = currentMahadasha.endDate,
@@ -524,7 +524,7 @@ private fun CurrentYoginiPeriodCard(result: YoginiDashaCalculator.YoginiDashaRes
                 currentAntardasha?.let { ad ->
                     Spacer(modifier = Modifier.height(14.dp))
                     YoginiPeriodRow(
-                        label = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_ANTARDASHA),
+                        label = stringResource(StringKeyDashaPart3.YOGINI_DASHA_ANTARDASHA),
                         yogini = ad.yogini,
                         startDate = ad.startDate,
                         endDate = ad.endDate,
@@ -678,7 +678,7 @@ private fun CurrentYoginiEffects(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_GENERAL_EFFECTS),
+                    text = stringResource(StringKeyDashaPart3.YOGINI_GENERAL_EFFECTS),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.AccentGold
@@ -735,7 +735,7 @@ private fun BirthBalanceCard(
                 }
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_BALANCE),
+                    text = stringResource(StringKeyDashaPart3.YOGINI_DASHA_BALANCE),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -749,12 +749,12 @@ private fun BirthBalanceCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 InfoItem(
-                    label = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_CURRENT),
+                    label = stringResource(StringKeyDashaPart3.YOGINI_DASHA_CURRENT),
                     value = balance.yogini.getLocalizedName(language),
                     color = getYoginiColor(balance.yogini)
                 )
                 InfoItem(
-                    label = stringResource(StringKeyPart1.DASHA_DURATION),
+                    label = stringResource(StringKeyDashaPart1.DASHA_DURATION),
                     value = formatYearsLocalized(balance.totalYears, language),
                     color = AppTheme.TextSecondary
                 )
@@ -767,12 +767,12 @@ private fun BirthBalanceCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 InfoItem(
-                    label = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_BALANCE),
-                    value = "${formatNumber(balance.balanceDays.toInt(), language)} ${stringResource(StringKeyPart1.DAYS)}",
+                    label = stringResource(StringKeyDashaPart3.YOGINI_DASHA_BALANCE),
+                    value = "${formatNumber(balance.balanceDays.toInt(), language)} ${stringResource(StringKeyGeneralPart3.DAYS)}",
                     color = AppTheme.AccentTeal
                 )
                 InfoItem(
-                    label = stringResource(StringKeyPart1.DASHA_PROGRESS),
+                    label = stringResource(StringKeyDashaPart1.DASHA_PROGRESS),
                     value = String.format("%.1f%%", (balance.elapsed / balance.totalYears) * 100),
                     color = AppTheme.TextMuted
                 )
@@ -805,7 +805,7 @@ private fun ApplicabilityCard(
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_APPLICABILITY),
+                    text = stringResource(StringKeyDashaPart3.YOGINI_DASHA_APPLICABILITY),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -816,7 +816,7 @@ private fun ApplicabilityCard(
 
             if (applicability.isRecommended) {
                 Text(
-                    text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_RECOMMENDED),
+                    text = stringResource(StringKeyDashaPart3.YOGINI_DASHA_RECOMMENDED),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.SuccessColor
@@ -847,7 +847,7 @@ private fun ApplicabilityCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "${stringResource(StringKeyMuhurta.MUHURTA_SCORE)}: ${String.format("%.0f", applicability.applicabilityScore * 100)}%",
+                text = "${stringResource(StringKeyGeneralPart7.MUHURTA_SCORE)}: ${String.format("%.0f", applicability.applicabilityScore * 100)}%",
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextMuted
@@ -870,7 +870,7 @@ private fun YoginiSequenceCard(
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
-                text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_SEQUENCE),
+                text = stringResource(StringKeyDashaPart3.YOGINI_DASHA_SEQUENCE),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -970,13 +970,13 @@ private fun TimelineHeaderCard(
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_TIMELINE),
+                        text = stringResource(StringKeyDashaPart3.YOGINI_DASHA_TIMELINE),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = "${result.mahadashas.size} ${stringResource(StringKeyPart1.DASHA_PERIOD)}",
+                        text = "${result.mahadashas.size} ${stringResource(StringKeyDashaPart1.DASHA_PERIOD)}",
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted
                     )
@@ -1067,7 +1067,7 @@ private fun YoginiMahadashaCard(
                                     color = yoginiColor.copy(alpha = 0.2f)
                                 ) {
                                     Text(
-                                        text = stringResource(StringKeyPart1.DASHA_ACTIVE),
+                                        text = stringResource(StringKeyDashaPart1.DASHA_ACTIVE),
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = yoginiColor,
@@ -1119,7 +1119,7 @@ private fun YoginiMahadashaCard(
                         modifier = Modifier.padding(bottom = 12.dp)
                     ) {
                         Text(
-                            text = stringResource(StringKeyPart1.DASHA_ANTARDASHA),
+                            text = stringResource(StringKeyDashaPart1.DASHA_ANTARDASHA),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextSecondary
@@ -1130,7 +1130,7 @@ private fun YoginiMahadashaCard(
                             color = AppTheme.CardBackgroundElevated
                         ) {
                             Text(
-                                text = "${mahadasha.antardashas.size} ${stringResource(StringKeyPart1.DASHA_PERIOD)}",
+                                text = "${mahadasha.antardashas.size} ${stringResource(StringKeyDashaPart1.DASHA_PERIOD)}",
                                 fontSize = 10.sp,
                                 color = AppTheme.TextMuted,
                                 fontWeight = FontWeight.Medium,
@@ -1240,7 +1240,7 @@ private fun YoginiAntardashaRow(
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = String.format("%.1f", antardasha.durationMonths) + " " + stringResource(StringKeyPart1.UNIT_MONTHS),
+                text = String.format("%.1f", antardasha.durationMonths) + " " + stringResource(StringKeyGeneralPart12.UNIT_MONTHS),
                 fontSize = 10.sp,
                 color = AppTheme.TextMuted.copy(alpha = 0.8f)
             )
@@ -1365,22 +1365,22 @@ private fun YoginiDetailCard(
                     }
 
                     EffectSection(
-                        title = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_CAREER_EFFECTS),
+                        title = stringResource(StringKeyDashaPart2.YOGINI_CAREER_EFFECTS),
                         text = interpretation.careerEffects
                     )
 
                     EffectSection(
-                        title = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_RELATIONSHIP_EFFECTS),
+                        title = stringResource(StringKeyDashaPart3.YOGINI_RELATIONSHIP_EFFECTS),
                         text = interpretation.relationshipEffects
                     )
 
                     EffectSection(
-                        title = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_HEALTH_EFFECTS),
+                        title = stringResource(StringKeyDashaPart3.YOGINI_HEALTH_EFFECTS),
                         text = interpretation.healthEffects
                     )
 
                     EffectSection(
-                        title = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_SPIRITUAL_EFFECTS),
+                        title = stringResource(StringKeyDashaPart3.YOGINI_SPIRITUAL_EFFECTS),
                         text = interpretation.spiritualEffects
                     )
 
@@ -1389,7 +1389,7 @@ private fun YoginiDetailCard(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = stringResource(StringKeyMatchPart2.DASHA_RECOMMENDATIONS),
+                        text = stringResource(StringKeyDashaPart1.DASHA_RECOMMENDATIONS),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.AccentGold
@@ -1410,7 +1410,7 @@ private fun YoginiDetailCard(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_CAUTION_AREAS),
+                        text = stringResource(StringKeyDashaPart2.YOGINI_CAUTION_AREAS),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.WarningColor
@@ -1498,7 +1498,7 @@ private fun AboutYoginiDashaCard() {
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_ABOUT),
+                        text = stringResource(StringKeyDashaPart2.YOGINI_DASHA_ABOUT),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1521,7 +1521,7 @@ private fun AboutYoginiDashaCard() {
             ) {
                 Column(modifier = Modifier.padding(top = 18.dp)) {
                     Text(
-                        text = stringResource(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_ABOUT_DESC),
+                        text = stringResource(StringKeyDashaPart2.YOGINI_DASHA_ABOUT_DESC),
                         fontSize = 13.sp,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
@@ -1570,7 +1570,7 @@ private fun EmptyYoginiState() {
             )
             Spacer(modifier = Modifier.height(14.dp))
             Text(
-                text = stringResource(StringKeyPart1.DASHA_NO_ACTIVE_PERIOD),
+                text = stringResource(StringKeyDashaPart1.DASHA_NO_ACTIVE_PERIOD),
                 fontSize = 14.sp,
                 color = AppTheme.TextMuted
             )
@@ -1611,14 +1611,14 @@ private fun YoginiDashaLoadingContent() {
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(StringKeyPart1.DASHA_CALCULATING_TIMELINE),
+                text = stringResource(StringKeyDashaPart1.DASHA_CALCULATING_TIMELINE),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyPart1.DASHA_CALCULATING_DESC),
+                text = stringResource(StringKeyDashaPart1.DASHA_CALCULATING_DESC),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
@@ -1658,7 +1658,7 @@ private fun YoginiDashaErrorContent(
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(StringKeyPart1.DASHA_CALCULATION_FAILED),
+                text = stringResource(StringKeyDashaPart1.DASHA_CALCULATION_FAILED),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1680,7 +1680,7 @@ private fun YoginiDashaErrorContent(
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyUI.BTN_TRY_AGAIN),
+                    text = stringResource(StringKeyUIPart1.BTN_TRY_AGAIN),
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                 )
@@ -1716,14 +1716,14 @@ private fun YoginiDashaEmptyContent(onBack: () -> Unit) {
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(StringKeyPart1.DASHA_NO_CHART_SELECTED),
+                text = stringResource(StringKeyDashaPart1.DASHA_NO_CHART_SELECTED),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyPart1.DASHA_NO_CHART_MESSAGE),
+                text = stringResource(StringKeyDashaPart1.DASHA_NO_CHART_MESSAGE),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
@@ -1735,7 +1735,7 @@ private fun YoginiDashaEmptyContent(onBack: () -> Unit) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyUI.BTN_GO_BACK),
+                    text = stringResource(StringKeyUIPart1.BTN_GO_BACK),
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                 )

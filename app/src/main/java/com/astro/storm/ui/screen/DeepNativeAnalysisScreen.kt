@@ -67,7 +67,7 @@ fun DeepNativeAnalysisScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(StringKeyUI.BTN_BACK),
+                            stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -262,7 +262,7 @@ private fun CharacterSection(
     DeepSectionHeader(title = stringResource(StringKeyDeepCharacter.SECTION_ASCENDANT_ANALYSIS), icon = Icons.Default.Person)
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyAnalysisPart1.ASCENDANT)}: ${character.ascendantAnalysis.sign.localizedName()}",
+        title = "${stringResource(StringKeyGeneralPart1.ASCENDANT)}: ${character.ascendantAnalysis.sign.localizedName()}",
         subtitle = stringResource(StringKeyDeepCharacter.FIRST_IMPRESSION_TITLE),
         strength = character.ascendantAnalysis.overallAscendantStrength,
         isExpanded = "char_ascendant" in expandedCards,
@@ -278,7 +278,7 @@ private fun CharacterSection(
     }
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyAnalysisPart1.EXPORT_MOON_SIGN)}: ${character.moonAnalysis.moonSign.localizedName()}",
+        title = "${stringResource(StringKeyReport.EXPORT_MOON_SIGN)}: ${character.moonAnalysis.moonSign.localizedName()}",
         subtitle = stringResource(StringKeyDeepCharacter.SECTION_EMOTIONAL_PROFILE),
         strength = character.moonAnalysis.overallEmotionalStrength,
         isExpanded = "char_moon" in expandedCards,
@@ -286,7 +286,7 @@ private fun CharacterSection(
     ) {
         Column {
             Text(
-                text = "${stringResource(StringKeyAnalysisPart1.DIALOG_NAKSHATRA)}: ${character.moonAnalysis.nakshatra.localizedName()} (${stringResource(StringKeyPanchanga.PANCHANGA_PADA)} ${character.moonAnalysis.nakshatraPada.localized()})",
+                text = "${stringResource(StringKeyUIPart1.DIALOG_NAKSHATRA)}: ${character.moonAnalysis.nakshatra.localizedName()} (${stringResource(StringKeyPanchanga.PANCHANGA_PADA)} ${character.moonAnalysis.nakshatraPada.localized()})",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Medium
             )
@@ -298,7 +298,7 @@ private fun CharacterSection(
     }
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyAnalysisPart1.EXPORT_SUN_SIGN)}: ${character.sunAnalysis.sunSign.localizedName()}",
+        title = "${stringResource(StringKeyReport.EXPORT_SUN_SIGN)}: ${character.sunAnalysis.sunSign.localizedName()}",
         subtitle = stringResource(StringKeyDeepCharacter.SUN_CORE_IDENTITY),
         strength = character.sunAnalysis.sunStrength,
         isExpanded = "char_sun" in expandedCards,
@@ -357,7 +357,7 @@ private fun CareerSection(
     
     ExpandableAnalysisCard(
         title = "${stringResource(StringKeyDeepCareer.TENTH_HOUSE_LORD)}: ${career.tenthLordAnalysis.lord.localizedName()}",
-        subtitle = "${stringResource(StringKeyAnalysisPart1.HOUSE)} ${career.tenthLordAnalysis.housePosition.localized()} ${stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE_PLACEMENT)}",
+        subtitle = "${stringResource(StringKeyGeneralPart5.HOUSE)} ${career.tenthLordAnalysis.housePosition.localized()} ${stringResource(StringKeyUIPart1.DIALOG_HOUSE_PLACEMENT)}",
         strength = career.tenthLordAnalysis.strengthLevel,
         isExpanded = "career_lord" in expandedCards,
         onToggle = { onToggleCard("career_lord") }
@@ -703,7 +703,7 @@ private fun EducationSection(
     }
     
     ExpandableAnalysisCard(
-        title = "${stringResource(StringKeyPart1.PLANET_MERCURY)}: ${education.mercuryAnalysis.sign.localizedName()}",
+        title = "${stringResource(StringKeyGeneralPart8.PLANET_MERCURY)}: ${education.mercuryAnalysis.sign.localizedName()}",
         subtitle = stringResource(StringKeyDeepEducation.ANALYTICAL_ABILITY),
         strength = education.mercuryAnalysis.strengthLevel,
         isExpanded = "edu_mercury" in expandedCards,

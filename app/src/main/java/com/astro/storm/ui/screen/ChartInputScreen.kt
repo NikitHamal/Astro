@@ -217,8 +217,8 @@ fun ChartInputScreen(
                     longitude = String.format(java.util.Locale.US, "%.6f", lon)
                 },
                 onSearch = viewModel::searchLocation,
-                label = stringResource(StringKeyPart1.INPUT_LOCATION),
-                placeholder = stringResource(StringKeyPart1.INPUT_SEARCH_LOCATION)
+                label = stringResource(StringKeyGeneralPart5.INPUT_LOCATION),
+                placeholder = stringResource(StringKeyGeneralPart5.INPUT_SEARCH_LOCATION)
             )
 
             Spacer(modifier = Modifier.height(28.dp))
@@ -256,7 +256,7 @@ fun ChartInputScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             // Extract localized string outside the lambda (stringResource is @Composable)
-            val unknownText = stringResource(StringKeyMatchPart1.MISC_UNKNOWN)
+            val unknownText = stringResource(StringKeyGeneralPart7.MISC_UNKNOWN)
 
             GenerateButton(
                 isCalculating = isCalculating,
@@ -371,7 +371,7 @@ fun ChartInputScreen(
                     showErrorDialog = false
                     errorKey = null
                 }) {
-                    Text(stringResource(StringKeyUI.BTN_OK), color = colors.AccentPrimary)
+                    Text(stringResource(StringKeyUIPart1.BTN_OK), color = colors.AccentPrimary)
                 }
             },
             containerColor = colors.CardBackground,
@@ -477,7 +477,7 @@ private fun ChartInputHeader(
     isEditMode: Boolean = false
 ) {
     val colors = LocalAppThemeColors.current
-    val goBackText = stringResource(StringKeyUI.BTN_BACK)
+    val goBackText = stringResource(StringKeyUIPart1.BTN_BACK)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -497,7 +497,7 @@ private fun ChartInputHeader(
         }
         Spacer(Modifier.width(12.dp))
         Text(
-            text = if (isEditMode) stringResource(StringKeyPart1.INPUT_EDIT_CHART) else stringResource(StringKeyPart1.INPUT_NEW_CHART),
+            text = if (isEditMode) stringResource(StringKeyGeneralPart5.INPUT_EDIT_CHART) else stringResource(StringKeyGeneralPart5.INPUT_NEW_CHART),
             fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold,
             color = colors.TextPrimary,
@@ -517,13 +517,13 @@ private fun IdentitySection(
     val colors = LocalAppThemeColors.current
     val language = LocalLanguage.current
     Column {
-        SectionTitle(stringResource(StringKeyPart1.INPUT_IDENTITY))
+        SectionTitle(stringResource(StringKeyGeneralPart5.INPUT_IDENTITY))
         Spacer(modifier = Modifier.height(12.dp))
 
         ChartOutlinedTextField(
             value = name,
             onValueChange = onNameChange,
-            label = stringResource(StringKeyPart1.INPUT_FULL_NAME),
+            label = stringResource(StringKeyGeneralPart5.INPUT_FULL_NAME),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { onFocusNext() })
         )
@@ -531,7 +531,7 @@ private fun IdentitySection(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(StringKeyPart1.INPUT_GENDER),
+            text = stringResource(StringKeyGeneralPart5.INPUT_GENDER),
             fontSize = 14.sp,
             color = colors.TextSecondary,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -575,8 +575,8 @@ private fun DateTimeSection(
         }
     }
 
-    val selectDateText = stringResource(StringKeyPart1.INPUT_SELECT_DATE)
-    val selectTimeText = stringResource(StringKeyPart1.INPUT_SELECT_TIME)
+    val selectDateText = stringResource(StringKeyGeneralPart5.INPUT_SELECT_DATE)
+    val selectTimeText = stringResource(StringKeyGeneralPart5.INPUT_SELECT_TIME)
 
     Column {
         Row(
@@ -584,7 +584,7 @@ private fun DateTimeSection(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            SectionTitle(stringResource(StringKeyPart1.INPUT_DATE_TIME))
+            SectionTitle(stringResource(StringKeyGeneralPart5.INPUT_DATE_TIME))
 
             // Date System Toggle (AD / BS)
             DateSystemToggle(
@@ -634,8 +634,8 @@ private fun DateSystemToggle(
     onToggle: () -> Unit
 ) {
     val colors = LocalAppThemeColors.current
-    val adLabel = stringResource(StringKeyUI.LABEL_AD)
-    val bsLabel = stringResource(StringKeyUI.LABEL_BS)
+    val adLabel = stringResource(StringKeyUIPart1.LABEL_AD)
+    val bsLabel = stringResource(StringKeyUIPart1.LABEL_BS)
 
     Surface(
         onClick = onToggle,
@@ -691,7 +691,7 @@ private fun CoordinatesSection(
     onDone: () -> Unit
 ) {
     Column {
-        SectionTitle(stringResource(StringKeyPart1.INPUT_COORDINATES))
+        SectionTitle(stringResource(StringKeyGeneralPart5.INPUT_COORDINATES))
         Spacer(modifier = Modifier.height(12.dp))
 
         Row(
@@ -701,7 +701,7 @@ private fun CoordinatesSection(
             ChartOutlinedTextField(
                 value = latitude,
                 onValueChange = onLatitudeChange,
-                label = stringResource(StringKeyPart1.INPUT_LATITUDE),
+                label = stringResource(StringKeyGeneralPart5.INPUT_LATITUDE),
                 modifier = Modifier
                     .weight(1f)
                     .focusRequester(latitudeFocusRequester),
@@ -717,7 +717,7 @@ private fun CoordinatesSection(
             ChartOutlinedTextField(
                 value = longitude,
                 onValueChange = onLongitudeChange,
-                label = stringResource(StringKeyPart1.INPUT_LONGITUDE),
+                label = stringResource(StringKeyGeneralPart5.INPUT_LONGITUDE),
                 modifier = Modifier
                     .weight(1f)
                     .focusRequester(longitudeFocusRequester),
@@ -740,7 +740,7 @@ private fun GenerateButton(
     onClick: () -> Unit
 ) {
     val colors = LocalAppThemeColors.current
-    val buttonText = if (isEditMode) stringResource(StringKeyUI.BTN_UPDATE_SAVE) else stringResource(StringKeyUI.BTN_GENERATE_SAVE)
+    val buttonText = if (isEditMode) stringResource(StringKeyUIPart1.BTN_UPDATE_SAVE) else stringResource(StringKeyUIPart1.BTN_GENERATE_SAVE)
     val buttonContentDesc = buttonText
     Button(
         onClick = onClick,
@@ -804,12 +804,12 @@ private fun ChartDatePickerDialog(
                     datePickerState.selectedDateMillis?.let(onConfirm)
                 }
             ) {
-                Text(stringResource(StringKeyUI.BTN_OK), color = colors.AccentPrimary)
+                Text(stringResource(StringKeyUIPart1.BTN_OK), color = colors.AccentPrimary)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyUI.BTN_CANCEL), color = colors.TextSecondary)
+                Text(stringResource(StringKeyUIPart1.BTN_CANCEL), color = colors.TextSecondary)
             }
         },
         colors = DatePickerDefaults.colors(containerColor = colors.CardBackground)
@@ -863,7 +863,7 @@ private fun ChartTimePickerDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(StringKeyPart1.INPUT_SELECT_TIME),
+                    text = stringResource(StringKeyGeneralPart5.INPUT_SELECT_TIME),
                     color = colors.TextSecondary,
                     fontSize = 14.sp,
                     modifier = Modifier
@@ -898,13 +898,13 @@ private fun ChartTimePickerDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = onDismiss) {
-                        Text(stringResource(StringKeyUI.BTN_CANCEL), color = colors.TextSecondary)
+                        Text(stringResource(StringKeyUIPart1.BTN_CANCEL), color = colors.TextSecondary)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     TextButton(
                         onClick = { onConfirm(timePickerState.hour, timePickerState.minute) }
                     ) {
-                        Text(stringResource(StringKeyUI.BTN_OK), color = colors.AccentPrimary)
+                        Text(stringResource(StringKeyUIPart1.BTN_OK), color = colors.AccentPrimary)
                     }
                 }
             }

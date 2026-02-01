@@ -18,18 +18,18 @@ enum class ZodiacSign(
     val symbol: String,
     val stringKey: com.astro.storm.core.common.StringKeyInterface
 ) {
-    ARIES(1, "Aries", "Ar", "Fire", Planet.MARS, Quality.CARDINAL, "♈", StringKeyPart1.SIGN_ARIES),
-    TAURUS(2, "Taurus", "Ta", "Earth", Planet.VENUS, Quality.FIXED, "♉", StringKeyPart1.SIGN_TAURUS),
-    GEMINI(3, "Gemini", "Ge", "Air", Planet.MERCURY, Quality.MUTABLE, "♊", StringKeyPart1.SIGN_GEMINI),
-    CANCER(4, "Cancer", "Ca", "Water", Planet.MOON, Quality.CARDINAL, "♋", StringKeyPart1.SIGN_CANCER),
-    LEO(5, "Leo", "Le", "Fire", Planet.SUN, Quality.FIXED, "♌", StringKeyPart1.SIGN_LEO),
-    VIRGO(6, "Virgo", "Vi", "Earth", Planet.MERCURY, Quality.MUTABLE, "♍", StringKeyPart1.SIGN_VIRGO),
-    LIBRA(7, "Libra", "Li", "Air", Planet.VENUS, Quality.CARDINAL, "♎", StringKeyPart1.SIGN_LIBRA),
-    SCORPIO(8, "Scorpio", "Sc", "Water", Planet.MARS, Quality.FIXED, "♏", StringKeyPart1.SIGN_SCORPIO),
-    SAGITTARIUS(9, "Sagittarius", "Sg", "Fire", Planet.JUPITER, Quality.MUTABLE, "♐", StringKeyPart1.SIGN_SAGITTARIUS),
-    CAPRICORN(10, "Capricorn", "Cp", "Earth", Planet.SATURN, Quality.CARDINAL, "♑", StringKeyPart1.SIGN_CAPRICORN),
-    AQUARIUS(11, "Aquarius", "Aq", "Air", Planet.SATURN, Quality.FIXED, "♒", StringKeyPart1.SIGN_AQUARIUS),
-    PISCES(12, "Pisces", "Pi", "Water", Planet.JUPITER, Quality.MUTABLE, "♓", StringKeyPart1.SIGN_PISCES);
+    ARIES(1, "Aries", "Ar", "Fire", Planet.MARS, Quality.CARDINAL, "♈", StringKeyGeneralPart10.SIGN_ARIES),
+    TAURUS(2, "Taurus", "Ta", "Earth", Planet.VENUS, Quality.FIXED, "♉", StringKeyGeneralPart10.SIGN_TAURUS),
+    GEMINI(3, "Gemini", "Ge", "Air", Planet.MERCURY, Quality.MUTABLE, "♊", StringKeyGeneralPart10.SIGN_GEMINI),
+    CANCER(4, "Cancer", "Ca", "Water", Planet.MOON, Quality.CARDINAL, "♋", StringKeyGeneralPart10.SIGN_CANCER),
+    LEO(5, "Leo", "Le", "Fire", Planet.SUN, Quality.FIXED, "♌", StringKeyGeneralPart10.SIGN_LEO),
+    VIRGO(6, "Virgo", "Vi", "Earth", Planet.MERCURY, Quality.MUTABLE, "♍", StringKeyGeneralPart10.SIGN_VIRGO),
+    LIBRA(7, "Libra", "Li", "Air", Planet.VENUS, Quality.CARDINAL, "♎", StringKeyGeneralPart10.SIGN_LIBRA),
+    SCORPIO(8, "Scorpio", "Sc", "Water", Planet.MARS, Quality.FIXED, "♏", StringKeyGeneralPart10.SIGN_SCORPIO),
+    SAGITTARIUS(9, "Sagittarius", "Sg", "Fire", Planet.JUPITER, Quality.MUTABLE, "♐", StringKeyGeneralPart10.SIGN_SAGITTARIUS),
+    CAPRICORN(10, "Capricorn", "Cp", "Earth", Planet.SATURN, Quality.CARDINAL, "♑", StringKeyGeneralPart10.SIGN_CAPRICORN),
+    AQUARIUS(11, "Aquarius", "Aq", "Air", Planet.SATURN, Quality.FIXED, "♒", StringKeyGeneralPart10.SIGN_AQUARIUS),
+    PISCES(12, "Pisces", "Pi", "Water", Planet.JUPITER, Quality.MUTABLE, "♓", StringKeyGeneralPart10.SIGN_PISCES);
 
     val startDegree: Double get() = (number - 1) * ZODIAC_SIGN_SPAN
     val endDegree: Double get() = number * ZODIAC_SIGN_SPAN

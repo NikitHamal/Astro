@@ -13,15 +13,15 @@ import com.astro.storm.core.common.StringResources
  * Common Life Areas for Astrological Analysis
  */
 enum class LifeArea(val stringKey: com.astro.storm.core.common.StringKeyInterface) {
-    CAREER(StringKeyRemedy.LIFE_AREA_CAREER),
-    RELATIONSHIPS(StringKeyRemedy.LIFE_AREA_RELATIONSHIPS),
-    HEALTH(StringKeyRemedy.LIFE_AREA_HEALTH),
-    FINANCE(StringKeyRemedy.LIFE_AREA_WEALTH),
-    EDUCATION(StringKeyRemedy.LIFE_AREA_EDUCATION),
-    SPIRITUAL(StringKeyRemedy.LIFE_AREA_SPIRITUAL),
-    FAMILY(StringKeyRemedy.LIFE_AREA_FAMILY),
-    PROPERTY(StringKeyRemedy.LIFE_AREA_PROPERTY),
-    FOREIGN(StringKeyRemedy.LIFE_AREA_FOREIGN);
+    CAREER(StringKeyGeneralPart6.LIFE_AREA_CAREER),
+    RELATIONSHIPS(StringKeyGeneralPart6.LIFE_AREA_RELATIONSHIPS),
+    HEALTH(StringKeyGeneralPart6.LIFE_AREA_HEALTH),
+    FINANCE(StringKeyGeneralPart6.LIFE_AREA_WEALTH),
+    EDUCATION(StringKeyGeneralPart6.LIFE_AREA_EDUCATION),
+    SPIRITUAL(StringKeyGeneralPart6.LIFE_AREA_SPIRITUAL),
+    FAMILY(StringKeyGeneralPart6.LIFE_AREA_FAMILY),
+    PROPERTY(StringKeyGeneralPart6.LIFE_AREA_PROPERTY),
+    FOREIGN(StringKeyGeneralPart6.LIFE_AREA_FOREIGN);
 
     fun getLocalizedName(language: Language): String = StringResources.get(stringKey, language)
 

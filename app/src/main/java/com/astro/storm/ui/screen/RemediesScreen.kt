@@ -77,9 +77,9 @@ fun RemediesScreen(
     var isSearchVisible by rememberSaveable { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyUI.TAB_OVERVIEW),
-        stringResource(StringKeyUI.TAB_REMEDIES),
-        stringResource(StringKeyUI.TAB_PLANETS)
+        stringResource(StringKeyUIPart1.TAB_OVERVIEW),
+        stringResource(StringKeyUIPart1.TAB_REMEDIES),
+        stringResource(StringKeyUIPart1.TAB_PLANETS)
     )
 
     val overviewListState = rememberLazyListState()
@@ -148,7 +148,7 @@ fun RemediesScreen(
                     ) {
                         Icon(
                             Icons.Default.ArrowBack,
-                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUIPart1.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -306,7 +306,7 @@ private fun SearchTextField(
                 IconButton(onClick = onClear) {
                     Icon(
                         Icons.Filled.Close,
-                        contentDescription = stringResource(StringKeyMatchPart2.ACTION_CLEAR_SEARCH),
+                        contentDescription = stringResource(StringKeyGeneralPart1.ACTION_CLEAR_SEARCH),
                         tint = AppTheme.TextMuted
                     )
                 }
@@ -692,13 +692,13 @@ private fun EssentialRemedyRow(remedy: Remedy) {
 @Composable
 private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
     val weekDays = listOf(
-        Triple(Planet.SUN, "Sunday", stringResource(StringKeyMatchPart1.DAY_SUNDAY)),
-        Triple(Planet.MOON, "Monday", stringResource(StringKeyMatchPart1.DAY_MONDAY)),
-        Triple(Planet.MARS, "Tuesday", stringResource(StringKeyMatchPart1.DAY_TUESDAY)),
-        Triple(Planet.MERCURY, "Wednesday", stringResource(StringKeyMatchPart1.DAY_WEDNESDAY)),
-        Triple(Planet.JUPITER, "Thursday", stringResource(StringKeyMatchPart1.DAY_THURSDAY)),
-        Triple(Planet.VENUS, "Friday", stringResource(StringKeyMatchPart1.DAY_FRIDAY)),
-        Triple(Planet.SATURN, "Saturday", stringResource(StringKeyMatchPart1.DAY_SATURDAY))
+        Triple(Planet.SUN, "Sunday", stringResource(StringKeyGeneralPart3.DAY_SUNDAY)),
+        Triple(Planet.MOON, "Monday", stringResource(StringKeyGeneralPart3.DAY_MONDAY)),
+        Triple(Planet.MARS, "Tuesday", stringResource(StringKeyGeneralPart3.DAY_TUESDAY)),
+        Triple(Planet.MERCURY, "Wednesday", stringResource(StringKeyGeneralPart3.DAY_WEDNESDAY)),
+        Triple(Planet.JUPITER, "Thursday", stringResource(StringKeyGeneralPart3.DAY_THURSDAY)),
+        Triple(Planet.VENUS, "Friday", stringResource(StringKeyGeneralPart3.DAY_FRIDAY)),
+        Triple(Planet.SATURN, "Saturday", stringResource(StringKeyGeneralPart3.DAY_SATURDAY))
     )
 
     val remediesByPlanet = remember(result) {
@@ -1260,7 +1260,7 @@ private fun RemedyCard(
             ) {
                 Icon(
                     Icons.Filled.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKeyMatchPart1.MISC_COLLAPSE) else stringResource(StringKeyMatchPart1.MISC_EXPAND),
+                    contentDescription = if (isExpanded) stringResource(StringKeyGeneralPart7.MISC_COLLAPSE) else stringResource(StringKeyGeneralPart7.MISC_EXPAND),
                     tint = AppTheme.TextSubtle,
                     modifier = Modifier
                         .size(20.dp)
@@ -1484,7 +1484,7 @@ private fun PlanetAnalysisCard(analysis: PlanetaryAnalysis) {
                             )
                             Text(" • ", color = AppTheme.TextMuted)
                             Text(
-                                stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE) + " ${analysis.housePosition}",
+                                stringResource(StringKeyUIPart1.DIALOG_HOUSE) + " ${analysis.housePosition}",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
@@ -1505,13 +1505,13 @@ private fun PlanetAnalysisCard(analysis: PlanetaryAnalysis) {
                 )
             }
 
-            val exaltedLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_EXALTED)
-            val debilitatedLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_DEBILITATED)
-            val retrogradeLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_RETROGRADE)
-            val combustLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_COMBUST)
-            val ownSignLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_OWN_SIGN)
-            val friendlyLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_FRIENDLY)
-            val enemySignLabel = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_ENEMY_SIGN)
+            val exaltedLabel = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_EXALTED)
+            val debilitatedLabel = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_DEBILITATED)
+            val retrogradeLabel = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_RETROGRADE)
+            val combustLabel = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_COMBUST)
+            val ownSignLabel = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_OWN_SIGN)
+            val friendlyLabel = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_FRIENDLY)
+            val enemySignLabel = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_ENEMY_SIGN)
 
             val statusIndicators = buildList {
                 if (analysis.isExalted) add(exaltedLabel to AppTheme.SuccessColor)
@@ -1797,7 +1797,7 @@ private fun ErrorState(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(StringKeyUI.BTN_RETRY))
+                Text(stringResource(StringKeyUIPart1.BTN_RETRY))
             }
         }
     }
@@ -1888,15 +1888,15 @@ private fun getEnergyColor(energy: Int): Color = when {
 @Composable
 private fun getWeekdayForPlanet(planet: Planet): String {
     return when (planet) {
-        Planet.SUN -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_SUNDAY)
-        Planet.MOON -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_MONDAY)
-        Planet.MARS -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_TUESDAY)
-        Planet.MERCURY -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_WEDNESDAY)
-        Planet.JUPITER -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_THURSDAY)
-        Planet.VENUS -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_FRIDAY)
-        Planet.SATURN -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_SATURDAY)
-        Planet.RAHU -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_SATURDAY)
-        Planet.KETU -> stringResource(com.astro.storm.core.common.StringKeyRemedy.WEEKDAY_TUESDAY)
+        Planet.SUN -> stringResource(com.astro.storm.core.common.StringKeyPanchanga.WEEKDAY_SUNDAY)
+        Planet.MOON -> stringResource(com.astro.storm.core.common.StringKeyPanchanga.WEEKDAY_MONDAY)
+        Planet.MARS -> stringResource(com.astro.storm.core.common.StringKeyPanchanga.WEEKDAY_TUESDAY)
+        Planet.MERCURY -> stringResource(com.astro.storm.core.common.StringKeyPanchanga.WEEKDAY_WEDNESDAY)
+        Planet.JUPITER -> stringResource(com.astro.storm.core.common.StringKeyPanchanga.WEEKDAY_THURSDAY)
+        Planet.VENUS -> stringResource(com.astro.storm.core.common.StringKeyPanchanga.WEEKDAY_FRIDAY)
+        Planet.SATURN -> stringResource(com.astro.storm.core.common.StringKeyPanchanga.WEEKDAY_SATURDAY)
+        Planet.RAHU -> stringResource(com.astro.storm.core.common.StringKeyPanchanga.WEEKDAY_SATURDAY)
+        Planet.KETU -> stringResource(com.astro.storm.core.common.StringKeyPanchanga.WEEKDAY_TUESDAY)
         else -> ""
     }
 }

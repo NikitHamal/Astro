@@ -221,7 +221,7 @@ private fun AgentIdentityHeader(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyDoshaPart3.STORMY_TITLE),
+                    text = stringResource(StringKeyGeneralPart10.STORMY_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
@@ -236,11 +236,11 @@ private fun AgentIdentityHeader(
             val statusText = when (aiStatus) {
                 is AiStatus.Idle -> null
                 is AiStatus.Complete -> null
-                is AiStatus.Thinking -> stringResource(StringKeyDoshaPart3.AI_ANALYZING_QUESTION)
-                is AiStatus.Reasoning -> stringResource(StringKeyDoshaPart3.STORMY_REASONING_VEDIC)
-                is AiStatus.CallingTool -> stringResource(StringKeyDoshaPart3.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
-                is AiStatus.ExecutingTools -> stringResource(StringKeyDoshaPart3.STORMY_GATHERING_DATA)
-                is AiStatus.Typing -> stringResource(StringKeyDoshaPart3.STORMY_COMPOSING)
+                is AiStatus.Thinking -> stringResource(StringKeyGeneralPart1.AI_ANALYZING_QUESTION)
+                is AiStatus.Reasoning -> stringResource(StringKeyGeneralPart10.STORMY_REASONING_VEDIC)
+                is AiStatus.CallingTool -> stringResource(StringKeyGeneralPart10.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
+                is AiStatus.ExecutingTools -> stringResource(StringKeyGeneralPart10.STORMY_GATHERING_DATA)
+                is AiStatus.Typing -> stringResource(StringKeyGeneralPart10.STORMY_COMPOSING)
             }
 
             statusText?.let {
@@ -736,11 +736,11 @@ private fun StatusIndicatorInline(aiStatus: AiStatus) {
 
     val (statusText, statusIcon) = when (aiStatus) {
         is AiStatus.Idle, is AiStatus.Complete -> return
-        is AiStatus.Thinking -> stringResource(StringKeyDoshaPart3.AI_ANALYZING_QUESTION) to Icons.Outlined.Psychology
-        is AiStatus.Reasoning -> stringResource(StringKeyDoshaPart3.STORMY_APPLYING_VEDIC) to Icons.Outlined.Lightbulb
-        is AiStatus.CallingTool -> stringResource(StringKeyDoshaPart3.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName)) to Icons.Outlined.Build
-        is AiStatus.ExecutingTools -> stringResource(StringKeyDoshaPart3.STORMY_GATHERING_DATA) to Icons.Outlined.Build
-        is AiStatus.Typing -> stringResource(StringKeyDoshaPart3.STORMY_COMPOSING) to Icons.Outlined.Edit
+        is AiStatus.Thinking -> stringResource(StringKeyGeneralPart1.AI_ANALYZING_QUESTION) to Icons.Outlined.Psychology
+        is AiStatus.Reasoning -> stringResource(StringKeyGeneralPart10.STORMY_APPLYING_VEDIC) to Icons.Outlined.Lightbulb
+        is AiStatus.CallingTool -> stringResource(StringKeyGeneralPart10.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName)) to Icons.Outlined.Build
+        is AiStatus.ExecutingTools -> stringResource(StringKeyGeneralPart10.STORMY_GATHERING_DATA) to Icons.Outlined.Build
+        is AiStatus.Typing -> stringResource(StringKeyGeneralPart10.STORMY_COMPOSING) to Icons.Outlined.Edit
     }
 
     Row(
@@ -810,7 +810,7 @@ fun TypingDots() {
 private fun ToolsUsedBadge(tools: List<String>) {
     val colors = AppTheme.current
     val toolsText = tools.take(3).joinToString(", ") { ToolDisplayUtils.formatToolName(it) }
-    val moreText = if (tools.size > 3) stringResource(StringKeyDoshaPart3.TOOLS_MORE_COUNT, tools.size - 3) else ""
+    val moreText = if (tools.size > 3) stringResource(StringKeyGeneralPart11.TOOLS_MORE_COUNT, tools.size - 3) else ""
 
     Surface(
         color = colors.ChipBackground,
@@ -828,7 +828,7 @@ private fun ToolsUsedBadge(tools: List<String>) {
                 modifier = Modifier.size(12.dp)
             )
             Text(
-                text = stringResource(StringKeyDoshaPart3.TOOLS_USED_LABEL, toolsText) + moreText,
+                text = stringResource(StringKeyGeneralPart11.TOOLS_USED_LABEL, toolsText) + moreText,
                 style = MaterialTheme.typography.labelSmall,
                 color = colors.TextSubtle
             )
@@ -901,7 +901,7 @@ fun CompletedAiMessageCard(
             }
 
             Text(
-                text = stringResource(StringKeyDoshaPart3.STORMY_TITLE),
+                text = stringResource(StringKeyGeneralPart10.STORMY_TITLE),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.TextPrimary
@@ -1017,7 +1017,7 @@ fun CompletedAiMessageCard(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(StringKeyUI.BTN_REGENERATE),
+                    text = stringResource(StringKeyUIPart1.BTN_REGENERATE),
                     style = MaterialTheme.typography.labelSmall
                 )
             }

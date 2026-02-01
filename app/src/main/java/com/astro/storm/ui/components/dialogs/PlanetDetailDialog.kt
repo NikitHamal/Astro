@@ -147,14 +147,14 @@ private fun PlanetDialogHeader(
                         color = DialogColors.TextPrimary
                     )
                     Text(
-                        text = "${planetPosition.sign.getLocalizedName(LocalLanguage.current)} • ${stringResource(StringKeyAnalysisPart1.HOUSE)} ${planetPosition.house}",
+                        text = "${planetPosition.sign.getLocalizedName(LocalLanguage.current)} • ${stringResource(StringKeyGeneralPart5.HOUSE)} ${planetPosition.house}",
                         fontSize = 14.sp,
                         color = DialogColors.TextSecondary
                     )
                 }
             }
             IconButton(onClick = onDismiss) {
-                Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysisPart1.DIALOG_CLOSE), tint = DialogColors.TextPrimary)
+                Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyUIPart1.DIALOG_CLOSE), tint = DialogColors.TextPrimary)
             }
         }
     }
@@ -162,16 +162,16 @@ private fun PlanetDialogHeader(
 
 @Composable
 private fun PlanetPositionCard(position: PlanetPosition) {
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_POSITION_DETAILS), icon = Icons.Outlined.LocationOn) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_POSITION_DETAILS), icon = Icons.Outlined.LocationOn) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_ZODIAC_SIGN), position.sign.getLocalizedName(LocalLanguage.current), DialogColors.AccentTeal)
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_DEGREE), formatDegree(position.longitude), DialogColors.TextPrimary)
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE), "${stringResource(StringKeyAnalysisPart1.HOUSE)} ${position.house}", DialogColors.AccentGold)
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(LocalLanguage.current)} (${stringResource(StringKeyPanchanga.PANCHANGA_PADA)} ${position.nakshatraPada})", DialogColors.AccentPurple)
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.getLocalizedName(LocalLanguage.current), DialogColors.TextSecondary)
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NAKSHATRA_DEITY), position.nakshatra.deity, DialogColors.TextSecondary)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_ZODIAC_SIGN), position.sign.getLocalizedName(LocalLanguage.current), DialogColors.AccentTeal)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_DEGREE), formatDegree(position.longitude), DialogColors.TextPrimary)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_HOUSE), "${stringResource(StringKeyGeneralPart5.HOUSE)} ${position.house}", DialogColors.AccentGold)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(LocalLanguage.current)} (${stringResource(StringKeyPanchanga.PANCHANGA_PADA)} ${position.nakshatraPada})", DialogColors.AccentPurple)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.getLocalizedName(LocalLanguage.current), DialogColors.TextSecondary)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_NAKSHATRA_DEITY), position.nakshatra.deity, DialogColors.TextSecondary)
             if (position.isRetrograde) {
-                DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_MOTION), stringResource(StringKeyAnalysisPart1.DIALOG_RETROGRADE), DialogColors.AccentOrange)
+                DetailRow(stringResource(StringKeyUIPart1.DIALOG_MOTION), stringResource(StringKeyUIPart1.DIALOG_RETROGRADE), DialogColors.AccentOrange)
             }
         }
     }
@@ -179,7 +179,7 @@ private fun PlanetPositionCard(position: PlanetPosition) {
 
 @Composable
 private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_STRENGTH_ANALYSIS), icon = Icons.Outlined.TrendingUp) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_STRENGTH_ANALYSIS), icon = Icons.Outlined.TrendingUp) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             val strengthPercentage = (shadbala.percentageOfRequired / 150.0).coerceIn(0.0, 1.0).toFloat()
             val color = DialogColors.getStrengthColor(shadbala.percentageOfRequired)
@@ -190,7 +190,7 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = stringResource(StringKeyAnalysisPart1.DIALOG_OVERALL, String.format("%.2f", shadbala.totalRupas), String.format("%.2f", shadbala.requiredRupas)),
+                        text = stringResource(StringKeyUIPart1.DIALOG_OVERALL, String.format("%.2f", shadbala.totalRupas), String.format("%.2f", shadbala.requiredRupas)),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = DialogColors.TextPrimary
@@ -214,7 +214,7 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = stringResource(StringKeyAnalysisPart1.DIALOG_PERCENT_OF_REQUIRED, String.format("%.1f", shadbala.percentageOfRequired)),
+                    text = stringResource(StringKeyUIPart1.DIALOG_PERCENT_OF_REQUIRED, String.format("%.1f", shadbala.percentageOfRequired)),
                     fontSize = 12.sp,
                     color = DialogColors.TextMuted
                 )
@@ -222,14 +222,14 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
 
             HorizontalDivider(color = DialogColors.DividerColor)
 
-            Text(stringResource(StringKeyAnalysisPart1.DIALOG_STRENGTH_BREAKDOWN), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
+            Text(stringResource(StringKeyUIPart1.DIALOG_STRENGTH_BREAKDOWN), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
 
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_STHANA_BALA), shadbala.sthanaBala.total, 180.0)
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_DIG_BALA), shadbala.digBala, 60.0)
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_KALA_BALA), shadbala.kalaBala.total, 180.0)
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_CHESTA_BALA), shadbala.chestaBala, 60.0)
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_NAISARGIKA_BALA), shadbala.naisargikaBala, 60.0)
-            StrengthRow(stringResource(StringKeyAnalysisPart1.DIALOG_DRIK_BALA), shadbala.drikBala, 60.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_STHANA_BALA), shadbala.sthanaBala.total, 180.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_DIG_BALA), shadbala.digBala, 60.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_KALA_BALA), shadbala.kalaBala.total, 180.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_CHESTA_BALA), shadbala.chestaBala, 60.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_NAISARGIKA_BALA), shadbala.naisargikaBala, 60.0)
+            StrengthRow(stringResource(StringKeyUIPart1.DIALOG_DRIK_BALA), shadbala.drikBala, 60.0)
         }
     }
 }
@@ -238,16 +238,16 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
 private fun SignificationsCard(planet: Planet) {
     val significations = getPlanetSignifications(planet)
 
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_SIGNIFICATIONS), icon = Icons.Outlined.Info) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_SIGNIFICATIONS), icon = Icons.Outlined.Info) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_NATURE), significations.nature, when (significations.nature) {
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_NATURE), significations.nature, when (significations.nature) {
                 "Benefic" -> DialogColors.AccentGreen
                 "Malefic" -> DialogColors.AccentRose
                 else -> DialogColors.AccentOrange
             })
-            DetailRow(stringResource(StringKeyAnalysisPart1.DIALOG_ELEMENT), significations.element, DialogColors.TextSecondary)
+            DetailRow(stringResource(StringKeyUIPart1.DIALOG_ELEMENT), significations.element, DialogColors.TextSecondary)
 
-            Text(stringResource(StringKeyAnalysisPart1.DIALOG_REPRESENTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
+            Text(stringResource(StringKeyUIPart1.DIALOG_REPRESENTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
             significations.represents.forEach { item ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
@@ -260,10 +260,10 @@ private fun SignificationsCard(planet: Planet) {
                 }
             }
 
-            Text(stringResource(StringKeyAnalysisPart1.DIALOG_BODY_PARTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
+            Text(stringResource(StringKeyUIPart1.DIALOG_BODY_PARTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
             Text(text = significations.bodyParts, fontSize = 13.sp, color = DialogColors.TextPrimary)
 
-            Text(stringResource(StringKeyAnalysisPart1.DIALOG_PROFESSIONS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
+            Text(stringResource(StringKeyUIPart1.DIALOG_PROFESSIONS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
             Text(text = significations.professions, fontSize = 13.sp, color = DialogColors.TextPrimary)
         }
     }
@@ -273,7 +273,7 @@ private fun SignificationsCard(planet: Planet) {
 private fun HousePlacementCard(position: PlanetPosition) {
     val interpretation = getHousePlacementInterpretation(position.planet, position.house)
 
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE_PLACEMENT, position.house), icon = Icons.Outlined.Home) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_HOUSE_PLACEMENT, position.house), icon = Icons.Outlined.Home) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = interpretation.houseName,
@@ -305,19 +305,19 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
     }
     val planetCondition = conditions.getCondition(position.planet)
 
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_STATUS_CONDITIONS), icon = Icons.Outlined.FactCheck) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_STATUS_CONDITIONS), icon = Icons.Outlined.FactCheck) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             val dignity = getDignity(position.planet, position.sign)
-            StatusChip(label = stringResource(StringKeyAnalysisPart1.DIALOG_DIGNITY), value = dignity.status, color = dignity.color)
+            StatusChip(label = stringResource(StringKeyUIPart1.DIALOG_DIGNITY), value = dignity.status, color = dignity.color)
 
             if (position.isRetrograde) {
-                StatusChip(label = stringResource(StringKeyAnalysisPart1.DIALOG_MOTION), value = stringResource(StringKeyAnalysisPart1.DIALOG_RETROGRADE), color = DialogColors.AccentOrange)
+                StatusChip(label = stringResource(StringKeyUIPart1.DIALOG_MOTION), value = stringResource(StringKeyUIPart1.DIALOG_RETROGRADE), color = DialogColors.AccentOrange)
             }
 
             planetCondition?.let { cond ->
                 if (cond.combustionStatus != RetrogradeCombustionCalculator.CombustionStatus.NOT_COMBUST) {
                     StatusChip(
-                        label = stringResource(StringKeyAnalysisPart1.DIALOG_COMBUSTION),
+                        label = stringResource(StringKeyUIPart1.DIALOG_COMBUSTION),
                         value = cond.combustionStatus.displayName,
                         color = DialogColors.AccentRose
                     )
@@ -325,8 +325,8 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
 
                 if (cond.isInPlanetaryWar) {
                     StatusChip(
-                        label = stringResource(StringKeyAnalysisPart1.DIALOG_PLANETARY_WAR),
-                        value = stringResource(StringKeyAnalysisPart1.DIALOG_AT_WAR_WITH, cond.warData?.loser?.getLocalizedName(LocalLanguage.current) ?: ""),
+                        label = stringResource(StringKeyUIPart1.DIALOG_PLANETARY_WAR),
+                        value = stringResource(StringKeyUIPart1.DIALOG_AT_WAR_WITH, cond.warData?.loser?.getLocalizedName(LocalLanguage.current) ?: ""),
                         color = DialogColors.AccentPurple
                     )
                 }
@@ -342,7 +342,7 @@ private fun PredictionsCard(
 ) {
     val predictions = getPlanetPredictions(position, shadbala)
 
-    DialogCard(title = stringResource(StringKeyAnalysisPart1.DIALOG_INSIGHTS_PREDICTIONS), icon = Icons.Outlined.AutoAwesome) {
+    DialogCard(title = stringResource(StringKeyUIPart1.DIALOG_INSIGHTS_PREDICTIONS), icon = Icons.Outlined.AutoAwesome) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             predictions.forEach { prediction ->
                 Row(
@@ -422,121 +422,121 @@ private fun formatDegree(degree: Double): String {
 private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
     return when (planet) {
         Planet.SUN -> PlanetSignifications(
-            nature = stringResource(StringKeyAnalysisPart2.PLANET_SUN_NATURE),
-            element = stringResource(StringKeyAnalysisPart2.PLANET_SUN_ELEMENT),
+            nature = stringResource(StringKeyGeneralPart8.PLANET_SUN_NATURE),
+            element = stringResource(StringKeyGeneralPart8.PLANET_SUN_ELEMENT),
             represents = listOf(
-                stringResource(StringKeyAnalysisPart2.PLANET_SUN_REPRESENTS_1),
-                stringResource(StringKeyAnalysisPart2.PLANET_SUN_REPRESENTS_2),
-                stringResource(StringKeyAnalysisPart2.PLANET_SUN_REPRESENTS_3),
-                stringResource(StringKeyAnalysisPart2.PLANET_SUN_REPRESENTS_4),
-                stringResource(StringKeyAnalysisPart2.PLANET_SUN_REPRESENTS_5)
+                stringResource(StringKeyGeneralPart8.PLANET_SUN_REPRESENTS_1),
+                stringResource(StringKeyGeneralPart8.PLANET_SUN_REPRESENTS_2),
+                stringResource(StringKeyGeneralPart8.PLANET_SUN_REPRESENTS_3),
+                stringResource(StringKeyGeneralPart8.PLANET_SUN_REPRESENTS_4),
+                stringResource(StringKeyGeneralPart8.PLANET_SUN_REPRESENTS_5)
             ),
-            bodyParts = stringResource(StringKeyAnalysisPart2.PLANET_SUN_BODY_PARTS),
-            professions = stringResource(StringKeyAnalysisPart2.PLANET_SUN_PROFESSIONS)
+            bodyParts = stringResource(StringKeyGeneralPart8.PLANET_SUN_BODY_PARTS),
+            professions = stringResource(StringKeyGeneralPart8.PLANET_SUN_PROFESSIONS)
         )
         Planet.MOON -> PlanetSignifications(
-            nature = stringResource(StringKeyAnalysisPart2.PLANET_MOON_NATURE),
-            element = stringResource(StringKeyAnalysisPart2.PLANET_MOON_ELEMENT),
+            nature = stringResource(StringKeyGeneralPart8.PLANET_MOON_NATURE),
+            element = stringResource(StringKeyGeneralPart8.PLANET_MOON_ELEMENT),
             represents = listOf(
-                stringResource(StringKeyAnalysisPart2.PLANET_MOON_REPRESENTS_1),
-                stringResource(StringKeyAnalysisPart2.PLANET_MOON_REPRESENTS_2),
-                stringResource(StringKeyAnalysisPart2.PLANET_MOON_REPRESENTS_3),
-                stringResource(StringKeyAnalysisPart2.PLANET_MOON_REPRESENTS_4),
-                stringResource(StringKeyAnalysisPart2.PLANET_MOON_REPRESENTS_5)
+                stringResource(StringKeyGeneralPart8.PLANET_MOON_REPRESENTS_1),
+                stringResource(StringKeyGeneralPart8.PLANET_MOON_REPRESENTS_2),
+                stringResource(StringKeyGeneralPart8.PLANET_MOON_REPRESENTS_3),
+                stringResource(StringKeyGeneralPart8.PLANET_MOON_REPRESENTS_4),
+                stringResource(StringKeyGeneralPart8.PLANET_MOON_REPRESENTS_5)
             ),
-            bodyParts = stringResource(StringKeyAnalysisPart2.PLANET_MOON_BODY_PARTS),
-            professions = stringResource(StringKeyAnalysisPart2.PLANET_MOON_PROFESSIONS)
+            bodyParts = stringResource(StringKeyGeneralPart8.PLANET_MOON_BODY_PARTS),
+            professions = stringResource(StringKeyGeneralPart8.PLANET_MOON_PROFESSIONS)
         )
         Planet.MARS -> PlanetSignifications(
-            nature = stringResource(StringKeyAnalysisPart2.PLANET_MARS_NATURE),
-            element = stringResource(StringKeyAnalysisPart2.PLANET_MARS_ELEMENT),
+            nature = stringResource(StringKeyGeneralPart8.PLANET_MARS_NATURE),
+            element = stringResource(StringKeyGeneralPart8.PLANET_MARS_ELEMENT),
             represents = listOf(
-                stringResource(StringKeyAnalysisPart2.PLANET_MARS_REPRESENTS_1),
-                stringResource(StringKeyAnalysisPart2.PLANET_MARS_REPRESENTS_2),
-                stringResource(StringKeyAnalysisPart2.PLANET_MARS_REPRESENTS_3),
-                stringResource(StringKeyAnalysisPart2.PLANET_MARS_REPRESENTS_4),
-                stringResource(StringKeyAnalysisPart2.PLANET_MARS_REPRESENTS_5)
+                stringResource(StringKeyGeneralPart8.PLANET_MARS_REPRESENTS_1),
+                stringResource(StringKeyGeneralPart8.PLANET_MARS_REPRESENTS_2),
+                stringResource(StringKeyGeneralPart8.PLANET_MARS_REPRESENTS_3),
+                stringResource(StringKeyGeneralPart8.PLANET_MARS_REPRESENTS_4),
+                stringResource(StringKeyGeneralPart8.PLANET_MARS_REPRESENTS_5)
             ),
-            bodyParts = stringResource(StringKeyAnalysisPart2.PLANET_MARS_BODY_PARTS),
-            professions = stringResource(StringKeyAnalysisPart2.PLANET_MARS_PROFESSIONS)
+            bodyParts = stringResource(StringKeyGeneralPart8.PLANET_MARS_BODY_PARTS),
+            professions = stringResource(StringKeyGeneralPart8.PLANET_MARS_PROFESSIONS)
         )
         Planet.MERCURY -> PlanetSignifications(
-            nature = stringResource(StringKeyAnalysisPart2.PLANET_MERCURY_NATURE),
-            element = stringResource(StringKeyAnalysisPart2.PLANET_MERCURY_ELEMENT),
+            nature = stringResource(StringKeyGeneralPart8.PLANET_MERCURY_NATURE),
+            element = stringResource(StringKeyGeneralPart8.PLANET_MERCURY_ELEMENT),
             represents = listOf(
-                stringResource(StringKeyAnalysisPart2.PLANET_MERCURY_REPRESENTS_1),
-                stringResource(StringKeyAnalysisPart2.PLANET_MERCURY_REPRESENTS_2),
-                stringResource(StringKeyAnalysisPart2.PLANET_MERCURY_REPRESENTS_3),
-                stringResource(StringKeyAnalysisPart2.PLANET_MERCURY_REPRESENTS_4),
-                stringResource(StringKeyAnalysisPart2.PLANET_MERCURY_REPRESENTS_5)
+                stringResource(StringKeyGeneralPart8.PLANET_MERCURY_REPRESENTS_1),
+                stringResource(StringKeyGeneralPart8.PLANET_MERCURY_REPRESENTS_2),
+                stringResource(StringKeyGeneralPart8.PLANET_MERCURY_REPRESENTS_3),
+                stringResource(StringKeyGeneralPart8.PLANET_MERCURY_REPRESENTS_4),
+                stringResource(StringKeyGeneralPart8.PLANET_MERCURY_REPRESENTS_5)
             ),
-            bodyParts = stringResource(StringKeyAnalysisPart2.PLANET_MERCURY_BODY_PARTS),
-            professions = stringResource(StringKeyAnalysisPart2.PLANET_MERCURY_PROFESSIONS)
+            bodyParts = stringResource(StringKeyGeneralPart8.PLANET_MERCURY_BODY_PARTS),
+            professions = stringResource(StringKeyGeneralPart8.PLANET_MERCURY_PROFESSIONS)
         )
         Planet.JUPITER -> PlanetSignifications(
-            nature = stringResource(StringKeyAnalysisPart2.PLANET_JUPITER_NATURE),
-            element = stringResource(StringKeyAnalysisPart2.PLANET_JUPITER_ELEMENT),
+            nature = stringResource(StringKeyGeneralPart8.PLANET_JUPITER_NATURE),
+            element = stringResource(StringKeyGeneralPart8.PLANET_JUPITER_ELEMENT),
             represents = listOf(
-                stringResource(StringKeyAnalysisPart2.PLANET_JUPITER_REPRESENTS_1),
-                stringResource(StringKeyAnalysisPart2.PLANET_JUPITER_REPRESENTS_2),
-                stringResource(StringKeyAnalysisPart2.PLANET_JUPITER_REPRESENTS_3),
-                stringResource(StringKeyAnalysisPart2.PLANET_JUPITER_REPRESENTS_4),
-                stringResource(StringKeyAnalysisPart2.PLANET_JUPITER_REPRESENTS_5)
+                stringResource(StringKeyGeneralPart8.PLANET_JUPITER_REPRESENTS_1),
+                stringResource(StringKeyGeneralPart8.PLANET_JUPITER_REPRESENTS_2),
+                stringResource(StringKeyGeneralPart8.PLANET_JUPITER_REPRESENTS_3),
+                stringResource(StringKeyGeneralPart8.PLANET_JUPITER_REPRESENTS_4),
+                stringResource(StringKeyGeneralPart8.PLANET_JUPITER_REPRESENTS_5)
             ),
-            bodyParts = stringResource(StringKeyAnalysisPart2.PLANET_JUPITER_BODY_PARTS),
-            professions = stringResource(StringKeyAnalysisPart2.PLANET_JUPITER_PROFESSIONS)
+            bodyParts = stringResource(StringKeyGeneralPart8.PLANET_JUPITER_BODY_PARTS),
+            professions = stringResource(StringKeyGeneralPart8.PLANET_JUPITER_PROFESSIONS)
         )
         Planet.VENUS -> PlanetSignifications(
-            nature = stringResource(StringKeyAnalysisPart2.PLANET_VENUS_NATURE),
-            element = stringResource(StringKeyAnalysisPart2.PLANET_VENUS_ELEMENT),
+            nature = stringResource(StringKeyGeneralPart8.PLANET_VENUS_NATURE),
+            element = stringResource(StringKeyGeneralPart8.PLANET_VENUS_ELEMENT),
             represents = listOf(
-                stringResource(StringKeyAnalysisPart2.PLANET_VENUS_REPRESENTS_1),
-                stringResource(StringKeyAnalysisPart2.PLANET_VENUS_REPRESENTS_2),
-                stringResource(StringKeyAnalysisPart2.PLANET_VENUS_REPRESENTS_3),
-                stringResource(StringKeyAnalysisPart2.PLANET_VENUS_REPRESENTS_4),
-                stringResource(StringKeyAnalysisPart2.PLANET_VENUS_REPRESENTS_5)
+                stringResource(StringKeyGeneralPart8.PLANET_VENUS_REPRESENTS_1),
+                stringResource(StringKeyGeneralPart8.PLANET_VENUS_REPRESENTS_2),
+                stringResource(StringKeyGeneralPart8.PLANET_VENUS_REPRESENTS_3),
+                stringResource(StringKeyGeneralPart8.PLANET_VENUS_REPRESENTS_4),
+                stringResource(StringKeyGeneralPart8.PLANET_VENUS_REPRESENTS_5)
             ),
-            bodyParts = stringResource(StringKeyAnalysisPart2.PLANET_VENUS_BODY_PARTS),
-            professions = stringResource(StringKeyAnalysisPart2.PLANET_VENUS_PROFESSIONS)
+            bodyParts = stringResource(StringKeyGeneralPart8.PLANET_VENUS_BODY_PARTS),
+            professions = stringResource(StringKeyGeneralPart8.PLANET_VENUS_PROFESSIONS)
         )
         Planet.SATURN -> PlanetSignifications(
-            nature = stringResource(StringKeyAnalysisPart2.PLANET_SATURN_NATURE),
-            element = stringResource(StringKeyAnalysisPart2.PLANET_SATURN_ELEMENT),
+            nature = stringResource(StringKeyGeneralPart8.PLANET_SATURN_NATURE),
+            element = stringResource(StringKeyGeneralPart8.PLANET_SATURN_ELEMENT),
             represents = listOf(
-                stringResource(StringKeyAnalysisPart2.PLANET_SATURN_REPRESENTS_1),
-                stringResource(StringKeyAnalysisPart2.PLANET_SATURN_REPRESENTS_2),
-                stringResource(StringKeyAnalysisPart2.PLANET_SATURN_REPRESENTS_3),
-                stringResource(StringKeyAnalysisPart2.PLANET_SATURN_REPRESENTS_4),
-                stringResource(StringKeyAnalysisPart2.PLANET_SATURN_REPRESENTS_5)
+                stringResource(StringKeyGeneralPart8.PLANET_SATURN_REPRESENTS_1),
+                stringResource(StringKeyGeneralPart8.PLANET_SATURN_REPRESENTS_2),
+                stringResource(StringKeyGeneralPart8.PLANET_SATURN_REPRESENTS_3),
+                stringResource(StringKeyGeneralPart8.PLANET_SATURN_REPRESENTS_4),
+                stringResource(StringKeyGeneralPart8.PLANET_SATURN_REPRESENTS_5)
             ),
-            bodyParts = stringResource(StringKeyAnalysisPart2.PLANET_SATURN_BODY_PARTS),
-            professions = stringResource(StringKeyAnalysisPart2.PLANET_SATURN_PROFESSIONS)
+            bodyParts = stringResource(StringKeyGeneralPart8.PLANET_SATURN_BODY_PARTS),
+            professions = stringResource(StringKeyGeneralPart8.PLANET_SATURN_PROFESSIONS)
         )
         Planet.RAHU -> PlanetSignifications(
-            nature = stringResource(StringKeyAnalysisPart2.PLANET_RAHU_NATURE),
-            element = stringResource(StringKeyAnalysisPart2.PLANET_RAHU_ELEMENT),
+            nature = stringResource(StringKeyGeneralPart8.PLANET_RAHU_NATURE),
+            element = stringResource(StringKeyGeneralPart8.PLANET_RAHU_ELEMENT),
             represents = listOf(
-                stringResource(StringKeyAnalysisPart2.PLANET_RAHU_REPRESENTS_1),
-                stringResource(StringKeyAnalysisPart2.PLANET_RAHU_REPRESENTS_2),
-                stringResource(StringKeyAnalysisPart2.PLANET_RAHU_REPRESENTS_3),
-                stringResource(StringKeyAnalysisPart2.PLANET_RAHU_REPRESENTS_4),
-                stringResource(StringKeyAnalysisPart2.PLANET_RAHU_REPRESENTS_5)
+                stringResource(StringKeyGeneralPart8.PLANET_RAHU_REPRESENTS_1),
+                stringResource(StringKeyGeneralPart8.PLANET_RAHU_REPRESENTS_2),
+                stringResource(StringKeyGeneralPart8.PLANET_RAHU_REPRESENTS_3),
+                stringResource(StringKeyGeneralPart8.PLANET_RAHU_REPRESENTS_4),
+                stringResource(StringKeyGeneralPart8.PLANET_RAHU_REPRESENTS_5)
             ),
-            bodyParts = stringResource(StringKeyAnalysisPart2.PLANET_RAHU_BODY_PARTS),
-            professions = stringResource(StringKeyAnalysisPart2.PLANET_RAHU_PROFESSIONS)
+            bodyParts = stringResource(StringKeyGeneralPart8.PLANET_RAHU_BODY_PARTS),
+            professions = stringResource(StringKeyGeneralPart8.PLANET_RAHU_PROFESSIONS)
         )
         Planet.KETU -> PlanetSignifications(
-            nature = stringResource(StringKeyAnalysisPart2.PLANET_KETU_NATURE),
-            element = stringResource(StringKeyAnalysisPart2.PLANET_KETU_ELEMENT),
+            nature = stringResource(StringKeyGeneralPart8.PLANET_KETU_NATURE),
+            element = stringResource(StringKeyGeneralPart8.PLANET_KETU_ELEMENT),
             represents = listOf(
-                stringResource(StringKeyAnalysisPart2.PLANET_KETU_REPRESENTS_1),
-                stringResource(StringKeyAnalysisPart2.PLANET_KETU_REPRESENTS_2),
-                stringResource(StringKeyAnalysisPart2.PLANET_KETU_REPRESENTS_3),
-                stringResource(StringKeyAnalysisPart2.PLANET_KETU_REPRESENTS_4),
-                stringResource(StringKeyAnalysisPart2.PLANET_KETU_REPRESENTS_5)
+                stringResource(StringKeyGeneralPart8.PLANET_KETU_REPRESENTS_1),
+                stringResource(StringKeyGeneralPart8.PLANET_KETU_REPRESENTS_2),
+                stringResource(StringKeyGeneralPart8.PLANET_KETU_REPRESENTS_3),
+                stringResource(StringKeyGeneralPart8.PLANET_KETU_REPRESENTS_4),
+                stringResource(StringKeyGeneralPart8.PLANET_KETU_REPRESENTS_5)
             ),
-            bodyParts = stringResource(StringKeyAnalysisPart2.PLANET_KETU_BODY_PARTS),
-            professions = stringResource(StringKeyAnalysisPart2.PLANET_KETU_PROFESSIONS)
+            bodyParts = stringResource(StringKeyGeneralPart8.PLANET_KETU_BODY_PARTS),
+            professions = stringResource(StringKeyGeneralPart8.PLANET_KETU_PROFESSIONS)
         )
         else -> PlanetSignifications("", "", emptyList(), "", "")
     }
@@ -545,22 +545,22 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
 @Composable
 private fun getHousePlacementInterpretation(planet: Planet, house: Int): HousePlacementInterpretation {
     val houseNameKeys = listOf(
-        null, StringKeyAnalysisPart1.HOUSE_1_NAME, StringKeyAnalysisPart1.HOUSE_2_NAME, StringKeyAnalysisPart1.HOUSE_3_NAME,
-        StringKeyAnalysisPart1.HOUSE_4_NAME, StringKeyAnalysisPart1.HOUSE_5_NAME, StringKeyAnalysisPart1.HOUSE_6_NAME,
-        StringKeyAnalysisPart1.HOUSE_7_NAME, StringKeyAnalysisPart1.HOUSE_8_NAME, StringKeyAnalysisPart1.HOUSE_9_NAME,
-        StringKeyAnalysisPart1.HOUSE_10_NAME, StringKeyAnalysisPart1.HOUSE_11_NAME, StringKeyAnalysisPart1.HOUSE_12_NAME
+        null, StringKeyGeneralPart5.HOUSE_1_NAME, StringKeyGeneralPart5.HOUSE_2_NAME, StringKeyGeneralPart5.HOUSE_3_NAME,
+        StringKeyGeneralPart5.HOUSE_4_NAME, StringKeyGeneralPart5.HOUSE_5_NAME, StringKeyGeneralPart5.HOUSE_6_NAME,
+        StringKeyGeneralPart5.HOUSE_7_NAME, StringKeyGeneralPart5.HOUSE_8_NAME, StringKeyGeneralPart5.HOUSE_9_NAME,
+        StringKeyGeneralPart5.HOUSE_10_NAME, StringKeyGeneralPart5.HOUSE_11_NAME, StringKeyGeneralPart5.HOUSE_12_NAME
     )
 
     val houseSigKeys = listOf(
-        null, StringKeyAnalysisPart1.HOUSE_1_SIG, StringKeyAnalysisPart1.HOUSE_2_SIG, StringKeyAnalysisPart1.HOUSE_3_SIG,
-        StringKeyAnalysisPart1.HOUSE_4_SIG, StringKeyAnalysisPart1.HOUSE_5_SIG, StringKeyAnalysisPart1.HOUSE_6_SIG,
-        StringKeyAnalysisPart1.HOUSE_7_SIG, StringKeyAnalysisPart1.HOUSE_8_SIG, StringKeyAnalysisPart1.HOUSE_9_SIG,
-        StringKeyAnalysisPart1.HOUSE_10_SIG, StringKeyAnalysisPart1.HOUSE_11_SIG, StringKeyAnalysisPart1.HOUSE_12_SIG
+        null, StringKeyGeneralPart5.HOUSE_1_SIG, StringKeyGeneralPart5.HOUSE_2_SIG, StringKeyGeneralPart5.HOUSE_3_SIG,
+        StringKeyGeneralPart5.HOUSE_4_SIG, StringKeyGeneralPart5.HOUSE_5_SIG, StringKeyGeneralPart5.HOUSE_6_SIG,
+        StringKeyGeneralPart5.HOUSE_7_SIG, StringKeyGeneralPart5.HOUSE_8_SIG, StringKeyGeneralPart5.HOUSE_9_SIG,
+        StringKeyGeneralPart5.HOUSE_10_SIG, StringKeyGeneralPart5.HOUSE_11_SIG, StringKeyGeneralPart5.HOUSE_12_SIG
     )
 
-    val houseName = houseNameKeys.getOrNull(house)?.let { stringResource(it) } ?: "${stringResource(StringKeyAnalysisPart1.HOUSE)} $house"
+    val houseName = houseNameKeys.getOrNull(house)?.let { stringResource(it) } ?: "${stringResource(StringKeyGeneralPart5.HOUSE)} $house"
     val houseSignification = houseSigKeys.getOrNull(house)?.let { stringResource(it) } ?: ""
-    val interpretation = "${planet.getLocalizedName(LocalLanguage.current)} ${stringResource(StringKeyAnalysisPart1.DIALOG_HOUSE)} $house"
+    val interpretation = "${planet.getLocalizedName(LocalLanguage.current)} ${stringResource(StringKeyUIPart1.DIALOG_HOUSE)} $house"
 
     return HousePlacementInterpretation(
         houseName = houseName,
@@ -580,7 +580,7 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.VENUS to ZodiacSign.PISCES,
         Planet.SATURN to ZodiacSign.LIBRA
     )
-    if (exalted[planet] == sign) return Dignity(stringResource(StringKeyMatchPart1.PLANETARY_STATUS_EXALTED), DialogColors.AccentGreen)
+    if (exalted[planet] == sign) return Dignity(stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_EXALTED), DialogColors.AccentGreen)
 
     val debilitated = mapOf(
         Planet.SUN to ZodiacSign.LIBRA,
@@ -591,11 +591,11 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.VENUS to ZodiacSign.VIRGO,
         Planet.SATURN to ZodiacSign.ARIES
     )
-    if (debilitated[planet] == sign) return Dignity(stringResource(StringKeyMatchPart1.PLANETARY_STATUS_DEBILITATED), DialogColors.AccentRose)
+    if (debilitated[planet] == sign) return Dignity(stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_DEBILITATED), DialogColors.AccentRose)
 
-    if (sign.ruler == planet) return Dignity(stringResource(StringKeyMatchPart1.PLANETARY_STATUS_OWN_SIGN), DialogColors.AccentGold)
+    if (sign.ruler == planet) return Dignity(stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_OWN_SIGN), DialogColors.AccentGold)
 
-    return Dignity(stringResource(StringKeyMatchPart1.RELATION_NEUTRAL), DialogColors.TextSecondary)
+    return Dignity(stringResource(StringKeyGeneralPart9.RELATION_NEUTRAL), DialogColors.TextSecondary)
 }
 
 @Composable
@@ -609,45 +609,45 @@ private fun getPlanetPredictions(
     if (shadbala.isStrong) {
         predictions.add(Prediction(
             PredictionType.POSITIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_STRONG_PLANET, planet.getLocalizedName(LocalLanguage.current)),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_STRONG_DESC)
+            stringResource(StringKeyPrediction.PREDICTION_STRONG_PLANET, planet.getLocalizedName(LocalLanguage.current)),
+            stringResource(StringKeyPrediction.PREDICTION_STRONG_DESC)
         ))
     } else {
         predictions.add(Prediction(
             PredictionType.NEGATIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_WEAK_PLANET, planet.getLocalizedName(LocalLanguage.current)),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_WEAK_DESC)
+            stringResource(StringKeyPrediction.PREDICTION_WEAK_PLANET, planet.getLocalizedName(LocalLanguage.current)),
+            stringResource(StringKeyPrediction.PREDICTION_WEAK_DESC)
         ))
     }
 
     val dignity = getDignity(planet, position.sign)
-    val exaltedStatus = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_EXALTED)
-    val debilitatedStatus = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_DEBILITATED)
-    val ownSignStatus = stringResource(StringKeyMatchPart1.PLANETARY_STATUS_OWN_SIGN)
+    val exaltedStatus = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_EXALTED)
+    val debilitatedStatus = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_DEBILITATED)
+    val ownSignStatus = stringResource(StringKeyGeneralPart8.PLANETARY_STATUS_OWN_SIGN)
 
     when (dignity.status) {
         exaltedStatus -> predictions.add(Prediction(
             PredictionType.POSITIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_EXALTED),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_EXALTED_DESC, planet.getLocalizedName(LocalLanguage.current))
+            stringResource(StringKeyPrediction.PREDICTION_EXALTED),
+            stringResource(StringKeyPrediction.PREDICTION_EXALTED_DESC, planet.getLocalizedName(LocalLanguage.current))
         ))
         debilitatedStatus -> predictions.add(Prediction(
             PredictionType.NEGATIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_DEBILITATED),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_DEBILITATED_DESC, planet.getLocalizedName(LocalLanguage.current))
+            stringResource(StringKeyPrediction.PREDICTION_DEBILITATED),
+            stringResource(StringKeyPrediction.PREDICTION_DEBILITATED_DESC, planet.getLocalizedName(LocalLanguage.current))
         ))
         ownSignStatus -> predictions.add(Prediction(
             PredictionType.POSITIVE,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_OWN_SIGN),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_OWN_SIGN_DESC, planet.getLocalizedName(LocalLanguage.current))
+            stringResource(StringKeyPrediction.PREDICTION_OWN_SIGN),
+            stringResource(StringKeyPrediction.PREDICTION_OWN_SIGN_DESC, planet.getLocalizedName(LocalLanguage.current))
         ))
     }
 
     if (position.isRetrograde) {
         predictions.add(Prediction(
             PredictionType.NEUTRAL,
-            stringResource(StringKeyAnalysisPart1.PREDICTION_RETROGRADE),
-            stringResource(StringKeyAnalysisPart1.PREDICTION_RETROGRADE_DESC)
+            stringResource(StringKeyPrediction.PREDICTION_RETROGRADE),
+            stringResource(StringKeyPrediction.PREDICTION_RETROGRADE_DESC)
         ))
     }
 
