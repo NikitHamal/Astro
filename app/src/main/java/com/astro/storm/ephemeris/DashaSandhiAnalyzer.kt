@@ -64,11 +64,11 @@ object DashaSandhiAnalyzer {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                CRITICAL -> StringKeyAnalysis.SANDHI_INTENSITY_CRITICAL
-                HIGH -> StringKeyAnalysis.SANDHI_INTENSITY_HIGH
-                MODERATE -> StringKeyAnalysis.SANDHI_INTENSITY_MODERATE
-                MILD -> StringKeyAnalysis.SANDHI_INTENSITY_MILD
-                MINIMAL -> StringKeyAnalysis.SANDHI_INTENSITY_MINIMAL
+                CRITICAL -> StringKeyDasha.SANDHI_INTENSITY_CRITICAL
+                HIGH -> StringKeyDasha.SANDHI_INTENSITY_HIGH
+                MODERATE -> StringKeyDasha.SANDHI_INTENSITY_MODERATE
+                MILD -> StringKeyDasha.SANDHI_INTENSITY_MILD
+                MINIMAL -> StringKeyDasha.SANDHI_INTENSITY_MINIMAL
             }
             return StringResources.get(key, language)
         }
@@ -90,15 +90,15 @@ object DashaSandhiAnalyzer {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                FRIEND_TO_FRIEND -> StringKeyAnalysis.TRANSITION_FRIEND_FRIEND
-                FRIEND_TO_NEUTRAL -> StringKeyAnalysis.TRANSITION_FRIEND_NEUTRAL
-                FRIEND_TO_ENEMY -> StringKeyAnalysis.TRANSITION_FRIEND_ENEMY
-                NEUTRAL_TO_FRIEND -> StringKeyAnalysis.TRANSITION_NEUTRAL_FRIEND
-                NEUTRAL_TO_NEUTRAL -> StringKeyAnalysis.TRANSITION_NEUTRAL_NEUTRAL
-                NEUTRAL_TO_ENEMY -> StringKeyAnalysis.TRANSITION_NEUTRAL_ENEMY
-                ENEMY_TO_FRIEND -> StringKeyAnalysis.TRANSITION_ENEMY_FRIEND
-                ENEMY_TO_NEUTRAL -> StringKeyAnalysis.TRANSITION_ENEMY_NEUTRAL
-                ENEMY_TO_ENEMY -> StringKeyAnalysis.TRANSITION_ENEMY_ENEMY
+                FRIEND_TO_FRIEND -> StringKeyAnalysisPart2.TRANSITION_FRIEND_FRIEND
+                FRIEND_TO_NEUTRAL -> StringKeyAnalysisPart2.TRANSITION_FRIEND_NEUTRAL
+                FRIEND_TO_ENEMY -> StringKeyAnalysisPart2.TRANSITION_FRIEND_ENEMY
+                NEUTRAL_TO_FRIEND -> StringKeyAnalysisPart2.TRANSITION_NEUTRAL_FRIEND
+                NEUTRAL_TO_NEUTRAL -> StringKeyAnalysisPart2.TRANSITION_NEUTRAL_NEUTRAL
+                NEUTRAL_TO_ENEMY -> StringKeyAnalysisPart2.TRANSITION_NEUTRAL_ENEMY
+                ENEMY_TO_FRIEND -> StringKeyAnalysisPart2.TRANSITION_ENEMY_FRIEND
+                ENEMY_TO_NEUTRAL -> StringKeyAnalysisPart2.TRANSITION_ENEMY_NEUTRAL
+                ENEMY_TO_ENEMY -> StringKeyAnalysisPart2.TRANSITION_ENEMY_ENEMY
             }
             return StringResources.get(key, language)
         }

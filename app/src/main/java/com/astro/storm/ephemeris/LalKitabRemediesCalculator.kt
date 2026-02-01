@@ -683,16 +683,16 @@ object LalKitabRemediesCalculator {
     private fun getPlanetDirection(planet: Planet, language: Language): DirectionData {
         return try {
             val (favKeyAnal, avoidKeyAnal) = when(planet) {
-                Planet.SUN -> StringKeyAnalysis.PRASHNA_DIR_EAST to StringKeyAnalysis.PRASHNA_DIR_WEST
-                Planet.MOON -> StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST to StringKeyAnalysis.PRASHNA_DIR_SOUTH
-                Planet.MARS -> StringKeyAnalysis.PRASHNA_DIR_SOUTH to StringKeyAnalysis.PRASHNA_DIR_NORTH
-                Planet.MERCURY -> StringKeyAnalysis.PRASHNA_DIR_NORTH to StringKeyAnalysis.PRASHNA_DIR_SOUTH
-                Planet.JUPITER -> StringKeyAnalysis.PRASHNA_DIR_NORTH_EAST to StringKeyAnalysis.PRASHNA_DIR_SOUTH_WEST
-                Planet.VENUS -> StringKeyAnalysis.PRASHNA_DIR_SOUTH_EAST to StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST
-                Planet.SATURN -> StringKeyAnalysis.PRASHNA_DIR_WEST to StringKeyAnalysis.PRASHNA_DIR_EAST
-                Planet.RAHU -> StringKeyAnalysis.PRASHNA_DIR_SOUTH_WEST to StringKeyAnalysis.PRASHNA_DIR_NORTH_EAST
-                Planet.KETU -> StringKeyAnalysis.PRASHNA_DIR_NORTH_WEST to StringKeyAnalysis.PRASHNA_DIR_SOUTH_EAST
-                else -> StringKeyAnalysis.PRASHNA_DIR_EAST to StringKeyAnalysis.PRASHNA_DIR_WEST
+                Planet.SUN -> StringKeyPrashnaPart2.PRASHNA_DIR_EAST to StringKeyPrashnaPart2.PRASHNA_DIR_WEST
+                Planet.MOON -> StringKeyPrashnaPart2.PRASHNA_DIR_NORTH_WEST to StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH
+                Planet.MARS -> StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH to StringKeyPrashnaPart2.PRASHNA_DIR_NORTH
+                Planet.MERCURY -> StringKeyPrashnaPart2.PRASHNA_DIR_NORTH to StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH
+                Planet.JUPITER -> StringKeyPrashnaPart2.PRASHNA_DIR_NORTH_EAST to StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH_WEST
+                Planet.VENUS -> StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH_EAST to StringKeyPrashnaPart2.PRASHNA_DIR_NORTH_WEST
+                Planet.SATURN -> StringKeyPrashnaPart2.PRASHNA_DIR_WEST to StringKeyPrashnaPart2.PRASHNA_DIR_EAST
+                Planet.RAHU -> StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH_WEST to StringKeyPrashnaPart2.PRASHNA_DIR_NORTH_EAST
+                Planet.KETU -> StringKeyPrashnaPart2.PRASHNA_DIR_NORTH_WEST to StringKeyPrashnaPart2.PRASHNA_DIR_SOUTH_EAST
+                else -> StringKeyPrashnaPart2.PRASHNA_DIR_EAST to StringKeyPrashnaPart2.PRASHNA_DIR_WEST
             }
             
             val appKey = StringKeyLalKitab.valueOf("DIR_APP_${planet.name}")

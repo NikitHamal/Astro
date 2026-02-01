@@ -23,19 +23,19 @@ enum class Planet(
     val stringKey: com.astro.storm.core.common.StringKeyInterface,
     val abbrKey: com.astro.storm.core.common.StringKeyInterface
 ) {
-    SUN(0, "Sun", "Su", StringKey.PLANET_SUN, StringKeyAnalysis.PLANET_SUN_ABBR),
-    MOON(1, "Moon", "Mo", StringKey.PLANET_MOON, StringKeyAnalysis.PLANET_MOON_ABBR),
-    MERCURY(2, "Mercury", "Me", StringKey.PLANET_MERCURY, StringKeyAnalysis.PLANET_MERCURY_ABBR),
-    VENUS(3, "Venus", "Ve", StringKey.PLANET_VENUS, StringKeyAnalysis.PLANET_VENUS_ABBR),
-    MARS(4, "Mars", "Ma", StringKey.PLANET_MARS, StringKeyAnalysis.PLANET_MARS_ABBR),
-    JUPITER(5, "Jupiter", "Ju", StringKey.PLANET_JUPITER, StringKeyAnalysis.PLANET_JUPITER_ABBR),
-    SATURN(6, "Saturn", "Sa", StringKey.PLANET_SATURN, StringKeyAnalysis.PLANET_SATURN_ABBR),
-    RAHU(10, "Rahu", "Ra", StringKey.PLANET_RAHU, StringKeyAnalysis.PLANET_RAHU_ABBR),  // Mean node (North Node)
-    KETU(-1, "Ketu", "Ke", StringKey.PLANET_KETU, StringKeyAnalysis.PLANET_KETU_ABBR),  // 180° from Rahu (South Node)
-    TRUE_NODE(11, "True Rahu", "TRa", StringKey.PLANET_RAHU, StringKeyAnalysis.PLANET_RAHU_ABBR), // True node
-    URANUS(7, "Uranus", "Ur", StringKey.PLANET_URANUS, StringKeyAnalysis.PLANET_URANUS_ABBR),
-    NEPTUNE(8, "Neptune", "Ne", StringKey.PLANET_NEPTUNE, StringKeyAnalysis.PLANET_NEPTUNE_ABBR),
-    PLUTO(9, "Pluto", "Pl", StringKey.PLANET_PLUTO, StringKeyAnalysis.PLANET_PLUTO_ABBR);
+    SUN(0, "Sun", "Su", StringKeyPart1.PLANET_SUN, StringKeyAnalysisPart2.PLANET_SUN_ABBR),
+    MOON(1, "Moon", "Mo", StringKeyPart1.PLANET_MOON, StringKeyAnalysisPart2.PLANET_MOON_ABBR),
+    MERCURY(2, "Mercury", "Me", StringKeyPart1.PLANET_MERCURY, StringKeyAnalysisPart2.PLANET_MERCURY_ABBR),
+    VENUS(3, "Venus", "Ve", StringKeyPart1.PLANET_VENUS, StringKeyAnalysisPart2.PLANET_VENUS_ABBR),
+    MARS(4, "Mars", "Ma", StringKeyPart1.PLANET_MARS, StringKeyAnalysisPart2.PLANET_MARS_ABBR),
+    JUPITER(5, "Jupiter", "Ju", StringKeyPart1.PLANET_JUPITER, StringKeyAnalysisPart2.PLANET_JUPITER_ABBR),
+    SATURN(6, "Saturn", "Sa", StringKeyPart1.PLANET_SATURN, StringKeyAnalysisPart2.PLANET_SATURN_ABBR),
+    RAHU(10, "Rahu", "Ra", StringKeyPart1.PLANET_RAHU, StringKeyAnalysisPart2.PLANET_RAHU_ABBR),  // Mean node (North Node)
+    KETU(-1, "Ketu", "Ke", StringKeyPart1.PLANET_KETU, StringKeyAnalysisPart2.PLANET_KETU_ABBR),  // 180° from Rahu (South Node)
+    TRUE_NODE(11, "True Rahu", "TRa", StringKeyPart1.PLANET_RAHU, StringKeyAnalysisPart2.PLANET_RAHU_ABBR), // True node
+    URANUS(7, "Uranus", "Ur", StringKeyPart1.PLANET_URANUS, StringKeyAnalysisPart2.PLANET_URANUS_ABBR),
+    NEPTUNE(8, "Neptune", "Ne", StringKeyPart1.PLANET_NEPTUNE, StringKeyAnalysisPart2.PLANET_NEPTUNE_ABBR),
+    PLUTO(9, "Pluto", "Pl", StringKeyPart1.PLANET_PLUTO, StringKeyAnalysisPart2.PLANET_PLUTO_ABBR);
 
     /**
      * Get localized planet name based on current language

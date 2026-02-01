@@ -86,13 +86,13 @@ class YoginiDashaViewModel @Inject constructor() : ViewModel() {
             } catch (e: Exception) {
                 val errorMessage = when {
                     e.message?.contains("Moon", ignoreCase = true) == true ->
-                        StringResources.get(StringKeyDosha.YOGINI_ERROR_MOON, language)
+                        StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ERROR_MOON, language)
                     e.message?.contains("birth", ignoreCase = true) == true ->
-                        StringResources.get(StringKeyDosha.YOGINI_ERROR_BIRTH, language)
+                        StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ERROR_BIRTH, language)
                     e.message?.contains("nakshatra", ignoreCase = true) == true ->
-                        StringResources.get(StringKeyDosha.YOGINI_ERROR_NAKSHATRA, language)
+                        StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ERROR_NAKSHATRA, language)
                     else ->
-                        e.message ?: StringResources.get(StringKeyDosha.YOGINI_ERROR_GENERIC, language)
+                        e.message ?: StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ERROR_GENERIC, language)
                 }
                 _uiState.value = YoginiDashaUiState.Error(errorMessage)
             }

@@ -221,7 +221,7 @@ class DhanaYogaEvaluator : YogaEvaluator {
                             cancellationFactors = listOf("Combustion", "Debilitation without cancellation"),
                             
                             // Add high-precision keys
-                            effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_CAT_DHANA
+                            effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_CAT_DHANA
                         )
                     )
                 }

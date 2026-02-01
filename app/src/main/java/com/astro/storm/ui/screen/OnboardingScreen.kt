@@ -231,7 +231,7 @@ private fun WelcomePage(
         Spacer(modifier = Modifier.height(if (isSmallScreen) 20.dp else 32.dp))
 
         Text(
-            text = stringResource(StringKey.ONBOARDING_WELCOME_TITLE),
+            text = stringResource(StringKeyFeature.ONBOARDING_WELCOME_TITLE),
             fontSize = if (isSmallScreen) 24.sp else 28.sp,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary,
@@ -242,7 +242,7 @@ private fun WelcomePage(
 
         // Brief tagline only - no lengthy description
         Text(
-            text = stringResource(StringKey.ONBOARDING_TAGLINE),
+            text = stringResource(StringKeyFeature.ONBOARDING_TAGLINE),
             fontSize = if (isSmallScreen) 14.sp else 16.sp,
             color = colors.AccentGold,
             fontWeight = FontWeight.Medium,
@@ -265,10 +265,10 @@ private fun CompactFeatureGrid(
     isSmallScreen: Boolean
 ) {
     val features = listOf(
-        Icons.Outlined.AutoGraph to stringResource(StringKey.ONBOARDING_FEATURE_CHARTS),
-        Icons.Outlined.Timeline to stringResource(StringKey.ONBOARDING_FEATURE_DASHAS),
-        Icons.Outlined.Sync to stringResource(StringKey.ONBOARDING_FEATURE_TRANSITS),
-        Icons.Outlined.Stars to stringResource(StringKey.FEATURE_YOGAS)
+        Icons.Outlined.AutoGraph to stringResource(StringKeyFeature.ONBOARDING_FEATURE_CHARTS),
+        Icons.Outlined.Timeline to stringResource(StringKeyFeature.ONBOARDING_FEATURE_DASHAS),
+        Icons.Outlined.Sync to stringResource(StringKeyFeature.ONBOARDING_FEATURE_TRANSITS),
+        Icons.Outlined.Stars to stringResource(StringKeyFeature.FEATURE_YOGAS)
     )
 
     Row(
@@ -324,7 +324,7 @@ private fun FeaturesPage(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(StringKey.ONBOARDING_FEATURES_OVERVIEW_TITLE),
+            text = stringResource(StringKeyFeature.ONBOARDING_FEATURES_OVERVIEW_TITLE),
             fontSize = if (isSmallScreen) 20.sp else 24.sp,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary,
@@ -336,8 +336,8 @@ private fun FeaturesPage(
         // Feature categories
         FeatureCategory(
             icon = Icons.Outlined.GridView,
-            title = stringResource(StringKey.ONBOARDING_FEATURE_CAT_CHART),
-            items = stringResource(StringKey.ONBOARDING_FEATURE_CAT_CHART_ITEMS).split(" • "),
+            title = stringResource(StringKeyFeature.ONBOARDING_FEATURE_CAT_CHART),
+            items = stringResource(StringKeyFeature.ONBOARDING_FEATURE_CAT_CHART_ITEMS).split(" • "),
             colors = colors,
             isSmallScreen = isSmallScreen
         )
@@ -346,8 +346,8 @@ private fun FeaturesPage(
 
         FeatureCategory(
             icon = Icons.Outlined.Timeline,
-            title = stringResource(StringKey.ONBOARDING_FEATURE_CAT_DASHA),
-            items = stringResource(StringKey.ONBOARDING_FEATURE_CAT_DASHA_ITEMS).split(" • "),
+            title = stringResource(StringKeyFeature.ONBOARDING_FEATURE_CAT_DASHA),
+            items = stringResource(StringKeyFeature.ONBOARDING_FEATURE_CAT_DASHA_ITEMS).split(" • "),
             colors = colors,
             isSmallScreen = isSmallScreen
         )
@@ -356,8 +356,8 @@ private fun FeaturesPage(
 
         FeatureCategory(
             icon = Icons.Outlined.AutoAwesome,
-            title = stringResource(StringKey.ONBOARDING_FEATURE_CAT_PREDICTION),
-            items = stringResource(StringKey.ONBOARDING_FEATURE_CAT_PREDICTION_ITEMS).split(" • "),
+            title = stringResource(StringKeyFeature.ONBOARDING_FEATURE_CAT_PREDICTION),
+            items = stringResource(StringKeyFeature.ONBOARDING_FEATURE_CAT_PREDICTION_ITEMS).split(" • "),
             colors = colors,
             isSmallScreen = isSmallScreen
         )
@@ -366,8 +366,8 @@ private fun FeaturesPage(
 
         FeatureCategory(
             icon = Icons.Outlined.Spa,
-            title = stringResource(StringKey.ONBOARDING_FEATURE_CAT_REMEDY),
-            items = stringResource(StringKey.ONBOARDING_FEATURE_CAT_REMEDY_ITEMS).split(" • "),
+            title = stringResource(StringKeyFeature.ONBOARDING_FEATURE_CAT_REMEDY),
+            items = stringResource(StringKeyFeature.ONBOARDING_FEATURE_CAT_REMEDY_ITEMS).split(" • "),
             colors = colors,
             isSmallScreen = isSmallScreen
         )
@@ -472,7 +472,7 @@ private fun LanguagePage(
         Spacer(modifier = Modifier.height(if (isSmallScreen) 16.dp else 24.dp))
 
         Text(
-            text = stringResource(StringKey.ONBOARDING_LANGUAGE_TITLE),
+            text = stringResource(StringKeyFeature.ONBOARDING_LANGUAGE_TITLE),
             fontSize = if (isSmallScreen) 20.sp else 24.sp,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary,
@@ -600,7 +600,7 @@ private fun ThemePage(
         Spacer(modifier = Modifier.height(if (isSmallScreen) 16.dp else 24.dp))
 
         Text(
-            text = stringResource(StringKey.ONBOARDING_THEME_TITLE),
+            text = stringResource(StringKeyFeature.ONBOARDING_THEME_TITLE),
             fontSize = if (isSmallScreen) 20.sp else 24.sp,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary,
@@ -646,7 +646,7 @@ private fun ThemePage(
         Spacer(modifier = Modifier.height(if (isSmallScreen) 16.dp else 24.dp))
 
         Text(
-            text = stringResource(StringKey.ONBOARDING_THEME_DESC),
+            text = stringResource(StringKeyFeature.ONBOARDING_THEME_DESC),
             fontSize = if (isSmallScreen) 11.sp else 12.sp,
             color = colors.TextMuted,
             textAlign = TextAlign.Center
@@ -668,9 +668,9 @@ private fun ThemeOptionCardCompact(
     isSmallScreen: Boolean
 ) {
     val displayName = when (themeMode) {
-        ThemeMode.LIGHT -> stringResource(StringKey.ONBOARDING_THEME_LIGHT)
-        ThemeMode.DARK -> stringResource(StringKey.ONBOARDING_THEME_DARK)
-        ThemeMode.SYSTEM -> stringResource(StringKey.ONBOARDING_THEME_SYSTEM)
+        ThemeMode.LIGHT -> stringResource(StringKeyFeature.ONBOARDING_THEME_LIGHT)
+        ThemeMode.DARK -> stringResource(StringKeyFeature.ONBOARDING_THEME_DARK)
+        ThemeMode.SYSTEM -> stringResource(StringKeyFeature.ONBOARDING_THEME_SYSTEM)
     }
 
     Surface(
@@ -761,7 +761,7 @@ private fun ReadyPage(
         Spacer(modifier = Modifier.height(if (isSmallScreen) 24.dp else 32.dp))
 
         Text(
-            text = stringResource(StringKey.ONBOARDING_READY_TITLE),
+            text = stringResource(StringKeyFeature.ONBOARDING_READY_TITLE),
             fontSize = if (isSmallScreen) 22.sp else 26.sp,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary,
@@ -771,7 +771,7 @@ private fun ReadyPage(
         Spacer(modifier = Modifier.height(if (isSmallScreen) 8.dp else 12.dp))
 
         Text(
-            text = stringResource(StringKey.ONBOARDING_CREATE_FIRST_CHART),
+            text = stringResource(StringKeyFeature.ONBOARDING_CREATE_FIRST_CHART),
             fontSize = if (isSmallScreen) 14.sp else 16.sp,
             color = colors.AccentGold,
             fontWeight = FontWeight.Medium,
@@ -802,7 +802,7 @@ private fun ReadyPage(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKey.ONBOARDING_QUICK_START_TITLE),
+                        text = stringResource(StringKeyFeature.ONBOARDING_QUICK_START_TITLE),
                         fontSize = if (isSmallScreen) 13.sp else 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = colors.TextPrimary
@@ -812,9 +812,9 @@ private fun ReadyPage(
                 Column(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    QuickStartItem(stringResource(StringKey.ONBOARDING_QUICK_START_1), colors, isSmallScreen)
-                    QuickStartItem(stringResource(StringKey.ONBOARDING_QUICK_START_2), colors, isSmallScreen)
-                    QuickStartItem(stringResource(StringKey.ONBOARDING_QUICK_START_3), colors, isSmallScreen)
+                    QuickStartItem(stringResource(StringKeyFeature.ONBOARDING_QUICK_START_1), colors, isSmallScreen)
+                    QuickStartItem(stringResource(StringKeyFeature.ONBOARDING_QUICK_START_2), colors, isSmallScreen)
+                    QuickStartItem(stringResource(StringKeyFeature.ONBOARDING_QUICK_START_3), colors, isSmallScreen)
                 }
             }
         }
@@ -880,7 +880,7 @@ private fun NavigationButtons(
                 )
             ) {
                 Text(
-                    text = stringResource(StringKey.ONBOARDING_BTN_BACK),
+                    text = stringResource(StringKeyFeature.ONBOARDING_BTN_BACK),
                     fontSize = if (isSmallScreen) 14.sp else 15.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -907,9 +907,9 @@ private fun NavigationButtons(
             ) {
                 Text(
                     text = if (isLastPage) {
-                        stringResource(StringKey.BTN_CREATE_CHART)
+                        stringResource(StringKeyUI.BTN_CREATE_CHART)
                     } else {
-                        stringResource(StringKey.ONBOARDING_BTN_NEXT)
+                        stringResource(StringKeyFeature.ONBOARDING_BTN_NEXT)
                     },
                     fontSize = if (isSmallScreen) 14.sp else 15.sp,
                     fontWeight = FontWeight.SemiBold

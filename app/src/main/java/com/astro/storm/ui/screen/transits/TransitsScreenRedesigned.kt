@@ -102,10 +102,10 @@ import java.time.format.DateTimeFormatter
  */
 
 enum class TransitViewType(val titleKey: StringKey) {
-    CURRENT(StringKey.TAB_CURRENT_POSITIONS),
-    BY_HOUSE(StringKey.TAB_BY_HOUSE),
-    UPCOMING(StringKey.TAB_UPCOMING),
-    ASPECTS(StringKey.TAB_ASPECTS)
+    CURRENT(StringKeyUI.TAB_CURRENT_POSITIONS),
+    BY_HOUSE(StringKeyUI.TAB_BY_HOUSE),
+    UPCOMING(StringKeyUI.TAB_UPCOMING),
+    ASPECTS(StringKeyUI.TAB_ASPECTS)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -233,7 +233,7 @@ private fun TransitsTopBar(
             title = {
                 Column {
                     Text(
-                        text = stringResource(StringKey.FEATURE_TRANSITS),
+                        text = stringResource(StringKeyFeature.FEATURE_TRANSITS),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -241,7 +241,7 @@ private fun TransitsTopBar(
                     if (chartName.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = stringResource(StringKey.TRANSIT_CURRENT_MOVEMENTS, chartName),
+                            text = stringResource(StringKeyTransit.TRANSIT_CURRENT_MOVEMENTS, chartName),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -252,7 +252,7 @@ private fun TransitsTopBar(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKey.BTN_BACK),
+                        contentDescription = stringResource(StringKeyUI.BTN_BACK),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -292,7 +292,7 @@ private fun CurrentTransitsContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(StringKey.TRANSIT_PLANET_POSITIONS),
+                    text = stringResource(StringKeyTransit.TRANSIT_PLANET_POSITIONS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -373,14 +373,14 @@ private fun TransitSummaryCard(
                 Spacer(modifier = Modifier.width(14.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKey.TRANSIT_OVERVIEW),
+                        text = stringResource(StringKeyTransit.TRANSIT_OVERVIEW),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
                         letterSpacing = (-0.3).sp
                     )
                     Text(
-                        text = stringResource(StringKey.TRANSIT_CURRENT_INFLUENCES),
+                        text = stringResource(StringKeyTransit.TRANSIT_CURRENT_INFLUENCES),
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -395,19 +395,19 @@ private fun TransitSummaryCard(
             ) {
                 TransitStatItem(
                     value = "${analysis.transitPositions.size}",
-                    label = stringResource(StringKey.TRANSIT_PLANETS_COUNT),
+                    label = stringResource(StringKeyTransit.TRANSIT_PLANETS_COUNT),
                     color = AppTheme.AccentPrimary,
                     modifier = Modifier.weight(1f)
                 )
                 TransitStatItem(
                     value = "${majorTransits.size}",
-                    label = stringResource(StringKey.TRANSIT_MAJOR_TRANSITS),
+                    label = stringResource(StringKeyTransit.TRANSIT_MAJOR_TRANSITS),
                     color = AppTheme.AccentGold,
                     modifier = Modifier.weight(1f)
                 )
                 TransitStatItem(
                     value = "${analysis.overallAssessment.score.toInt()}%",
-                    label = stringResource(StringKey.TRANSIT_QUALITY_LABEL),
+                    label = stringResource(StringKeyTransit.TRANSIT_QUALITY_LABEL),
                     color = getStrengthColor(analysis.overallAssessment.score),
                     modifier = Modifier.weight(1f)
                 )
@@ -431,7 +431,7 @@ private fun TransitSummaryCard(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = stringResource(StringKey.TRANSIT_OVERALL_ASSESSMENT),
+                                text = stringResource(StringKeyTransit.TRANSIT_OVERALL_ASSESSMENT),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.AccentGold
@@ -562,7 +562,7 @@ private fun TransitPlanetCard(
                                     color = AppTheme.WarningColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
-                                        text = stringResource(StringKey.TRANSIT_RETROGRADE_SYMBOL),
+                                        text = stringResource(StringKeyTransit.TRANSIT_RETROGRADE_SYMBOL),
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = AppTheme.WarningColor,
@@ -603,7 +603,7 @@ private fun TransitPlanetCard(
                             color = planetColor
                         )
                         Text(
-                            text = stringResource(StringKey.TRANSIT_HOUSE_LABEL),
+                            text = stringResource(StringKeyTransit.TRANSIT_HOUSE_LABEL),
                             fontSize = 9.sp,
                             color = AppTheme.TextMuted
                         )
@@ -614,7 +614,7 @@ private fun TransitPlanetCard(
 
                 Icon(
                     Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKeyAnalysis.TRANSIT_COLLAPSE) else stringResource(StringKeyAnalysis.TRANSIT_EXPAND),
+                    contentDescription = if (isExpanded) stringResource(StringKeyTransit.TRANSIT_COLLAPSE) else stringResource(StringKeyTransit.TRANSIT_EXPAND),
                     tint = AppTheme.TextMuted,
                     modifier = Modifier
                         .size(24.dp)
@@ -643,7 +643,7 @@ private fun TransitPlanetCard(
                         ) {
                             Column(modifier = Modifier.padding(12.dp)) {
                                 Text(
-                                    text = stringResource(StringKey.TRANSIT_LABEL),
+                                    text = stringResource(StringKeyTransit.TRANSIT_LABEL),
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Medium,
                                     color = AppTheme.TextMuted,
@@ -673,7 +673,7 @@ private fun TransitPlanetCard(
                             ) {
                                 Column(modifier = Modifier.padding(12.dp)) {
                                     Text(
-                                        text = stringResource(StringKey.TRANSIT_NATAL_LABEL),
+                                        text = stringResource(StringKeyTransit.TRANSIT_NATAL_LABEL),
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Medium,
                                         color = AppTheme.TextMuted,
@@ -781,7 +781,7 @@ private fun HouseTransitCard(
                 )
                 if (transits.isEmpty()) {
                     Text(
-                        text = stringResource(StringKey.TRANSIT_NO_PLANETS_TRANSITING),
+                        text = stringResource(StringKeyTransit.TRANSIT_NO_PLANETS_TRANSITING),
                         fontSize = 11.sp,
                         color = AppTheme.TextMuted
                     )
@@ -827,7 +827,7 @@ private fun UpcomingTransitsContent(
         // Significant transits header
         item(key = "significant_header") {
             Text(
-                text = stringResource(StringKey.TRANSIT_UPCOMING),
+                text = stringResource(StringKeyTransit.TRANSIT_UPCOMING),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -849,7 +849,7 @@ private fun UpcomingTransitsContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = stringResource(StringKey.TRANSIT_NO_UPCOMING),
+                        text = stringResource(StringKeyTransit.TRANSIT_NO_UPCOMING),
                         fontSize = 14.sp,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -928,9 +928,9 @@ private fun UpcomingTransitCard(
                 )
                 Text(
                     text = when (daysUntil) {
-                        0 -> stringResource(StringKey.PERIOD_TODAY)
-                        1 -> stringResource(StringKey.PERIOD_TOMORROW)
-                        else -> String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_IN_DAYS_FMT), daysUntil)
+                        0 -> stringResource(StringKeyPart1.PERIOD_TODAY)
+                        1 -> stringResource(StringKeyPart1.PERIOD_TOMORROW)
+                        else -> String.format(stringResource(com.astro.storm.core.common.StringKeyUI.UI_IN_DAYS_FMT), daysUntil)
                     },
                     fontSize = 11.sp,
                     color = AppTheme.TextMuted
@@ -953,7 +953,7 @@ private fun TransitAspectsContent(
     ) {
         item(key = "aspects_header") {
             Text(
-                text = stringResource(StringKey.TRANSIT_TO_NATAL_ASPECTS),
+                text = stringResource(StringKeyTransit.TRANSIT_TO_NATAL_ASPECTS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -969,7 +969,7 @@ private fun TransitAspectsContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = stringResource(StringKey.TRANSIT_NO_ASPECTS),
+                        text = stringResource(StringKeyTransit.TRANSIT_NO_ASPECTS),
                         fontSize = 14.sp,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -1065,7 +1065,7 @@ private fun TransitAspectCard(
                     color = AppTheme.CardBackgroundElevated
                 ) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.TRANSIT_ORB_VALUE, aspect.orb.toInt()),
+                        text = stringResource(StringKeyTransit.TRANSIT_ORB_VALUE, aspect.orb.toInt()),
                         fontSize = 11.sp,
                         color = AppTheme.TextMuted,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -1077,7 +1077,7 @@ private fun TransitAspectCard(
 
             Text(
                 text = stringResource(
-                    StringKeyAnalysis.TRANSIT_PHRASE,
+                    StringKeyTransit.TRANSIT_PHRASE,
                     aspect.transitingPlanet.getLocalizedName(language),
                     aspect.aspectType.lowercase(),
                     aspect.natalPlanet.getLocalizedName(language)
@@ -1117,14 +1117,14 @@ private fun EmptyTransitsContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKey.TRANSIT_NO_DATA),
+                text = stringResource(StringKeyTransit.TRANSIT_NO_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKey.TRANSIT_SELECT_CHART),
+                text = stringResource(StringKeyTransit.TRANSIT_SELECT_CHART),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1135,18 +1135,18 @@ private fun EmptyTransitsContent(modifier: Modifier = Modifier) {
 
 private fun getHouseSignification(house: Int, language: com.astro.storm.core.common.Language): String {
     val key = when (house) {
-        1 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_1
-        2 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_2
-        3 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_3
-        4 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_4
-        5 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_5
-        6 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_6
-        7 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_7
-        8 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_8
-        9 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_9
-        10 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_10
-        11 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_11
-        12 -> com.astro.storm.core.common.StringKeyDosha.HOUSE_SIG_12
+        1 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_1
+        2 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_2
+        3 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_3
+        4 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_4
+        5 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_5
+        6 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_6
+        7 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_7
+        8 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_8
+        9 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_9
+        10 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_10
+        11 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_11
+        12 -> com.astro.storm.core.common.StringKeyDoshaPart4.HOUSE_SIG_12
         else -> null
     }
     return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: ""

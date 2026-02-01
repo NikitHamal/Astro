@@ -46,14 +46,14 @@ enum class YogaCategory(val displayName: String, val description: String) {
      */
     fun getLocalizedName(language: Language): String {
         val key: StringKeyInterface = when (this) {
-            RAJA_YOGA -> StringKeyMatch.YOGA_CAT_RAJA
-            DHANA_YOGA -> StringKeyMatch.YOGA_CAT_DHANA
-            MAHAPURUSHA_YOGA -> StringKeyMatch.YOGA_CAT_PANCHA_MAHAPURUSHA
-            NABHASA_YOGA -> StringKeyMatch.YOGA_CAT_NABHASA
-            CHANDRA_YOGA -> StringKeyMatch.YOGA_CAT_CHANDRA
-            SOLAR_YOGA -> StringKeyMatch.YOGA_CAT_SOLAR
-            NEGATIVE_YOGA -> StringKeyMatch.YOGA_CAT_NEGATIVE
-            SPECIAL_YOGA -> StringKeyMatch.YOGA_CAT_SPECIAL
+            RAJA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_RAJA
+            DHANA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_DHANA
+            MAHAPURUSHA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_PANCHA_MAHAPURUSHA
+            NABHASA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_NABHASA
+            CHANDRA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CHANDRA
+            SOLAR_YOGA -> StringKeyYogaExpanded.YOGA_CAT_SOLAR
+            NEGATIVE_YOGA -> StringKeyYogaExpanded.YOGA_CAT_NEGATIVE
+            SPECIAL_YOGA -> StringKeyYogaExpanded.YOGA_CAT_SPECIAL
             BHAVA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_BHAVA
             CONJUNCTION_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CONJUNCTION
         }
@@ -65,14 +65,14 @@ enum class YogaCategory(val displayName: String, val description: String) {
      */
     fun getLocalizedDescription(language: Language): String {
         val key: StringKeyInterface = when (this) {
-            RAJA_YOGA -> StringKeyMatch.YOGA_CAT_RAJA_DESC
-            DHANA_YOGA -> StringKeyMatch.YOGA_CAT_DHANA_DESC
-            MAHAPURUSHA_YOGA -> StringKeyMatch.YOGA_CAT_PANCHA_MAHAPURUSHA_DESC
-            NABHASA_YOGA -> StringKeyMatch.YOGA_CAT_NABHASA_DESC
-            CHANDRA_YOGA -> StringKeyMatch.YOGA_CAT_CHANDRA_DESC
-            SOLAR_YOGA -> StringKeyMatch.YOGA_CAT_SOLAR_DESC
-            NEGATIVE_YOGA -> StringKeyMatch.YOGA_CAT_NEGATIVE_DESC
-            SPECIAL_YOGA -> StringKeyMatch.YOGA_CAT_SPECIAL_DESC
+            RAJA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_RAJA_DESC
+            DHANA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_DHANA_DESC
+            MAHAPURUSHA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_PANCHA_MAHAPURUSHA_DESC
+            NABHASA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_NABHASA_DESC
+            CHANDRA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CHANDRA_DESC
+            SOLAR_YOGA -> StringKeyYogaExpanded.YOGA_CAT_SOLAR_DESC
+            NEGATIVE_YOGA -> StringKeyYogaExpanded.YOGA_CAT_NEGATIVE_DESC
+            SPECIAL_YOGA -> StringKeyYogaExpanded.YOGA_CAT_SPECIAL_DESC
             BHAVA_YOGA -> StringKeyYogaExpanded.YOGA_CAT_BHAVA_DESC
             CONJUNCTION_YOGA -> StringKeyYogaExpanded.YOGA_CAT_CONJUNCTION_DESC
         }
@@ -96,12 +96,12 @@ enum class YogaStrength(val displayName: String, val value: Int) {
      */
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            EXTREMELY_STRONG -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_EXTREMELY_STRONG
-            VERY_STRONG -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_VERY_STRONG
-            STRONG -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_STRONG
-            MODERATE -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_MODERATE
-            WEAK -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_WEAK
-            VERY_WEAK -> com.astro.storm.core.common.StringKey.YOGA_STRENGTH_VERY_WEAK
+            EXTREMELY_STRONG -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_EXTREMELY_STRONG
+            VERY_STRONG -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_VERY_STRONG
+            STRONG -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_STRONG
+            MODERATE -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_MODERATE
+            WEAK -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_WEAK
+            VERY_WEAK -> com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_STRENGTH_VERY_WEAK
         }
         return StringResources.get(key, language)
     }
@@ -172,19 +172,19 @@ data class YogaAnalysis(
      * Generate plain text report of yoga analysis
      */
     fun toPlainText(language: Language = Language.ENGLISH): String = buildString {
-        val reportTitle = StringResources.get(StringKeyMatch.REPORT_YOGA_ANALYSIS, language)
-        val totalYogasLabel = StringResources.get(StringKeyMatch.REPORT_TOTAL_YOGAS, language)
-        val overallStrengthLabel = StringResources.get(StringKeyMatch.REPORT_OVERALL_STRENGTH, language)
-        val dominantCategoryLabel = StringResources.get(StringKeyMatch.REPORT_DOMINANT_CATEGORY, language)
-        val planetsLabel = StringResources.get(StringKeyMatch.REPORT_PLANETS, language)
-        val housesLabel = StringResources.get(StringKeyMatch.REPORT_HOUSES, language)
-        val strengthLabel = StringResources.get(StringKeyMatch.TAB_STRENGTH, language)
-        val effectsLabel = StringResources.get(StringKeyMatch.REPORT_EFFECTS, language)
-        val activationLabel = StringResources.get(StringKeyMatch.REPORT_ACTIVATION, language)
-        val patternLabel = StringResources.get(StringKeyMatch.REPORT_PATTERN, language)
-        val cancellationLabel = StringResources.get(StringKeyMatch.REPORT_CANCELLATION_FACTORS, language)
-        val auspiciousText = StringResources.get(StringKeyMatch.REPORT_AUSPICIOUS, language)
-        val inauspiciousText = StringResources.get(StringKeyMatch.REPORT_INAUSPICIOUS, language)
+        val reportTitle = StringResources.get(StringKeyReport.REPORT_YOGA_ANALYSIS, language)
+        val totalYogasLabel = StringResources.get(StringKeyReport.REPORT_TOTAL_YOGAS, language)
+        val overallStrengthLabel = StringResources.get(StringKeyReport.REPORT_OVERALL_STRENGTH, language)
+        val dominantCategoryLabel = StringResources.get(StringKeyReport.REPORT_DOMINANT_CATEGORY, language)
+        val planetsLabel = StringResources.get(StringKeyReport.REPORT_PLANETS, language)
+        val housesLabel = StringResources.get(StringKeyReport.REPORT_HOUSES, language)
+        val strengthLabel = StringResources.get(StringKeyUI.TAB_STRENGTH, language)
+        val effectsLabel = StringResources.get(StringKeyReport.REPORT_EFFECTS, language)
+        val activationLabel = StringResources.get(StringKeyReport.REPORT_ACTIVATION, language)
+        val patternLabel = StringResources.get(StringKeyReport.REPORT_PATTERN, language)
+        val cancellationLabel = StringResources.get(StringKeyReport.REPORT_CANCELLATION_FACTORS, language)
+        val auspiciousText = StringResources.get(StringKeyReport.REPORT_AUSPICIOUS, language)
+        val inauspiciousText = StringResources.get(StringKeyReport.REPORT_INAUSPICIOUS, language)
 
         appendLine("═══════════════════════════════════════════════════════════")
         appendLine("                    $reportTitle")

@@ -441,22 +441,22 @@ enum class MainTab(
     val unselectedIcon: ImageVector
 ) {
     HOME(
-        titleKey = StringKey.TAB_HOME,
+        titleKey = StringKeyUI.TAB_HOME,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home
     ),
     INSIGHTS(
-        titleKey = StringKey.TAB_INSIGHTS,
+        titleKey = StringKeyUI.TAB_INSIGHTS,
         selectedIcon = Icons.Filled.Insights,
         unselectedIcon = Icons.Outlined.Insights
     ),
     CHAT(
-        titleKey = StringKey.TAB_CHAT,
+        titleKey = StringKeyUI.TAB_CHAT,
         selectedIcon = Icons.Filled.Chat,
         unselectedIcon = Icons.Outlined.Chat
     ),
     SETTINGS(
-        titleKey = StringKey.TAB_SETTINGS,
+        titleKey = StringKeyUI.TAB_SETTINGS,
         selectedIcon = Icons.Filled.Settings,
         unselectedIcon = Icons.Outlined.Settings
     );

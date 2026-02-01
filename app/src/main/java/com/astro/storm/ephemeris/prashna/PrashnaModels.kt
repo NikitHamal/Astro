@@ -32,42 +32,42 @@ enum class PrashnaCategory(val displayName: String, val description: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            YES_NO -> StringKeyAnalysis.PRASHNA_CAT_YES_NO
-            CAREER -> StringKeyAnalysis.PRASHNA_CAT_CAREER
-            MARRIAGE -> StringKeyAnalysis.PRASHNA_CAT_MARRIAGE
-            CHILDREN -> StringKeyAnalysis.PRASHNA_CAT_CHILDREN
-            HEALTH -> StringKeyAnalysis.PRASHNA_CAT_HEALTH
-            WEALTH -> StringKeyAnalysis.PRASHNA_CAT_WEALTH
-            PROPERTY -> StringKeyAnalysis.PRASHNA_CAT_PROPERTY
-            TRAVEL -> StringKeyAnalysis.PRASHNA_CAT_TRAVEL
-            EDUCATION -> StringKeyAnalysis.PRASHNA_CAT_EDUCATION
-            LEGAL -> StringKeyAnalysis.PRASHNA_CAT_LEGAL
-            LOST_OBJECT -> StringKeyAnalysis.PRASHNA_CAT_LOST_OBJECT
-            RELATIONSHIP -> StringKeyAnalysis.PRASHNA_CAT_RELATIONSHIP
-            BUSINESS -> StringKeyAnalysis.PRASHNA_CAT_BUSINESS
-            SPIRITUAL -> StringKeyAnalysis.PRASHNA_CAT_SPIRITUAL
-            GENERAL -> StringKeyAnalysis.PRASHNA_CAT_GENERAL
+            YES_NO -> StringKeyPrashnaPart1.PRASHNA_CAT_YES_NO
+            CAREER -> StringKeyPrashnaPart2.PRASHNA_CAT_CAREER
+            MARRIAGE -> StringKeyPrashnaPart1.PRASHNA_CAT_MARRIAGE
+            CHILDREN -> StringKeyPrashnaPart1.PRASHNA_CAT_CHILDREN
+            HEALTH -> StringKeyPrashnaPart2.PRASHNA_CAT_HEALTH
+            WEALTH -> StringKeyPrashnaPart1.PRASHNA_CAT_WEALTH
+            PROPERTY -> StringKeyPrashnaPart2.PRASHNA_CAT_PROPERTY
+            TRAVEL -> StringKeyPrashnaPart2.PRASHNA_CAT_TRAVEL
+            EDUCATION -> StringKeyPrashnaPart2.PRASHNA_CAT_EDUCATION
+            LEGAL -> StringKeyPrashnaPart2.PRASHNA_CAT_LEGAL
+            LOST_OBJECT -> StringKeyPrashnaPart1.PRASHNA_CAT_LOST_OBJECT
+            RELATIONSHIP -> StringKeyPrashnaPart2.PRASHNA_CAT_RELATIONSHIP
+            BUSINESS -> StringKeyPrashnaPart1.PRASHNA_CAT_BUSINESS
+            SPIRITUAL -> StringKeyPrashnaPart1.PRASHNA_CAT_SPIRITUAL
+            GENERAL -> StringKeyPrashnaPart2.PRASHNA_CAT_GENERAL
         }
         return StringResources.get(key, language)
     }
 
     fun getLocalizedDescription(language: Language): String {
         val key = when (this) {
-            YES_NO -> StringKeyAnalysis.PRASHNA_CAT_YES_NO_DESC
-            CAREER -> StringKeyAnalysis.PRASHNA_CAT_CAREER_DESC
-            MARRIAGE -> StringKeyAnalysis.PRASHNA_CAT_MARRIAGE_DESC
-            CHILDREN -> StringKeyAnalysis.PRASHNA_CAT_CHILDREN_DESC
-            HEALTH -> StringKeyAnalysis.PRASHNA_CAT_HEALTH_DESC
-            WEALTH -> StringKeyAnalysis.PRASHNA_CAT_WEALTH_DESC
-            PROPERTY -> StringKeyAnalysis.PRASHNA_CAT_PROPERTY_DESC
-            TRAVEL -> StringKeyAnalysis.PRASHNA_CAT_TRAVEL_DESC
-            EDUCATION -> StringKeyAnalysis.PRASHNA_CAT_EDUCATION_DESC
-            LEGAL -> StringKeyAnalysis.PRASHNA_CAT_LEGAL_DESC
-            LOST_OBJECT -> StringKeyAnalysis.PRASHNA_CAT_LOST_OBJECT_DESC
-            RELATIONSHIP -> StringKeyAnalysis.PRASHNA_CAT_RELATIONSHIP_DESC
-            BUSINESS -> StringKeyAnalysis.PRASHNA_CAT_BUSINESS_DESC
-            SPIRITUAL -> StringKeyAnalysis.PRASHNA_CAT_SPIRITUAL_DESC
-            GENERAL -> StringKeyAnalysis.PRASHNA_CAT_GENERAL_DESC
+            YES_NO -> StringKeyPrashnaPart1.PRASHNA_CAT_YES_NO_DESC
+            CAREER -> StringKeyPrashnaPart1.PRASHNA_CAT_CAREER_DESC
+            MARRIAGE -> StringKeyPrashnaPart1.PRASHNA_CAT_MARRIAGE_DESC
+            CHILDREN -> StringKeyPrashnaPart1.PRASHNA_CAT_CHILDREN_DESC
+            HEALTH -> StringKeyPrashnaPart1.PRASHNA_CAT_HEALTH_DESC
+            WEALTH -> StringKeyPrashnaPart1.PRASHNA_CAT_WEALTH_DESC
+            PROPERTY -> StringKeyPrashnaPart1.PRASHNA_CAT_PROPERTY_DESC
+            TRAVEL -> StringKeyPrashnaPart1.PRASHNA_CAT_TRAVEL_DESC
+            EDUCATION -> StringKeyPrashnaPart1.PRASHNA_CAT_EDUCATION_DESC
+            LEGAL -> StringKeyPrashnaPart1.PRASHNA_CAT_LEGAL_DESC
+            LOST_OBJECT -> StringKeyPrashnaPart1.PRASHNA_CAT_LOST_OBJECT_DESC
+            RELATIONSHIP -> StringKeyPrashnaPart1.PRASHNA_CAT_RELATIONSHIP_DESC
+            BUSINESS -> StringKeyPrashnaPart1.PRASHNA_CAT_BUSINESS_DESC
+            SPIRITUAL -> StringKeyPrashnaPart1.PRASHNA_CAT_SPIRITUAL_DESC
+            GENERAL -> StringKeyPrashnaPart1.PRASHNA_CAT_GENERAL_DESC
         }
         return StringResources.get(key, language)
     }
@@ -77,11 +77,11 @@ enum class PrashnaCategory(val displayName: String, val description: String) {
  * Five elements/Tattvas in Prashna
  */
 enum class Tattva(val nameKey: StringKeyAnalysis, val signsKey: StringKeyAnalysis) {
-    FIRE(StringKeyAnalysis.PRASHNA_TATTVA_FIRE, StringKeyAnalysis.PRASHNA_TATTVA_FIRE_SIGNS),
-    EARTH(StringKeyAnalysis.PRASHNA_TATTVA_EARTH, StringKeyAnalysis.PRASHNA_TATTVA_EARTH_SIGNS),
-    AIR(StringKeyAnalysis.PRASHNA_TATTVA_AIR, StringKeyAnalysis.PRASHNA_TATTVA_AIR_SIGNS),
-    WATER(StringKeyAnalysis.PRASHNA_TATTVA_WATER, StringKeyAnalysis.PRASHNA_TATTVA_WATER_SIGNS),
-    ETHER(StringKeyAnalysis.PRASHNA_TATTVA_ETHER, StringKeyAnalysis.PRASHNA_TATTVA_ETHER_SIGNS);
+    FIRE(StringKeyPrashnaPart1.PRASHNA_TATTVA_FIRE, StringKeyPrashnaPart1.PRASHNA_TATTVA_FIRE_SIGNS),
+    EARTH(StringKeyPrashnaPart1.PRASHNA_TATTVA_EARTH, StringKeyPrashnaPart1.PRASHNA_TATTVA_EARTH_SIGNS),
+    AIR(StringKeyPrashnaPart1.PRASHNA_TATTVA_AIR, StringKeyPrashnaPart1.PRASHNA_TATTVA_AIR_SIGNS),
+    WATER(StringKeyPrashnaPart1.PRASHNA_TATTVA_WATER, StringKeyPrashnaPart1.PRASHNA_TATTVA_WATER_SIGNS),
+    ETHER(StringKeyPrashnaPart1.PRASHNA_TATTVA_ETHER, StringKeyPrashnaPart1.PRASHNA_TATTVA_ETHER_SIGNS);
 
     fun getLocalizedName(language: Language): String = StringResources.get(nameKey, language)
     fun getLocalizedSignIndicator(language: Language): String = StringResources.get(signsKey, language)
@@ -99,11 +99,11 @@ enum class TimingUnit(val displayName: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            HOURS -> StringKeyAnalysis.PRASHNA_TIMING_HOURS
-            DAYS -> StringKeyAnalysis.PRASHNA_TIMING_DAYS
-            WEEKS -> StringKeyAnalysis.PRASHNA_TIMING_WEEKS
-            MONTHS -> StringKeyAnalysis.PRASHNA_TIMING_MONTHS
-            YEARS -> StringKeyAnalysis.PRASHNA_TIMING_YEARS
+            HOURS -> StringKeyPrashnaPart1.PRASHNA_TIMING_HOURS
+            DAYS -> StringKeyPrashnaPart1.PRASHNA_TIMING_DAYS
+            WEEKS -> StringKeyPrashnaPart1.PRASHNA_TIMING_WEEKS
+            MONTHS -> StringKeyPrashnaPart1.PRASHNA_TIMING_MONTHS
+            YEARS -> StringKeyPrashnaPart1.PRASHNA_TIMING_YEARS
         }
         return StringResources.get(key, language)
     }
@@ -175,14 +175,14 @@ enum class PrashnaVerdict(val displayName: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            STRONGLY_YES -> StringKeyAnalysis.PRASHNA_VERDICT_STRONGLY_YES
-            YES -> StringKeyAnalysis.PRASHNA_VERDICT_YES
-            LIKELY_YES -> StringKeyAnalysis.PRASHNA_VERDICT_LIKELY_YES
-            UNCERTAIN -> StringKeyAnalysis.PRASHNA_VERDICT_UNCERTAIN
-            LIKELY_NO -> StringKeyAnalysis.PRASHNA_VERDICT_LIKELY_NO
-            NO -> StringKeyAnalysis.PRASHNA_VERDICT_NO
-            STRONGLY_NO -> StringKeyAnalysis.PRASHNA_VERDICT_STRONGLY_NO
-            TIMING_DEPENDENT -> StringKeyAnalysis.PRASHNA_VERDICT_TIMING_DEPENDENT
+            STRONGLY_YES -> StringKeyPrashnaPart1.PRASHNA_VERDICT_STRONGLY_YES
+            YES -> StringKeyPrashnaPart1.PRASHNA_VERDICT_YES
+            LIKELY_YES -> StringKeyPrashnaPart1.PRASHNA_VERDICT_LIKELY_YES
+            UNCERTAIN -> StringKeyPrashnaPart1.PRASHNA_VERDICT_UNCERTAIN
+            LIKELY_NO -> StringKeyPrashnaPart1.PRASHNA_VERDICT_LIKELY_NO
+            NO -> StringKeyPrashnaPart1.PRASHNA_VERDICT_NO
+            STRONGLY_NO -> StringKeyPrashnaPart1.PRASHNA_VERDICT_STRONGLY_NO
+            TIMING_DEPENDENT -> StringKeyPrashnaPart1.PRASHNA_VERDICT_TIMING_DEPENDENT
         }
         return StringResources.get(key, language)
     }
@@ -197,11 +197,11 @@ enum class CertaintyLevel(val displayName: String, val percentage: IntRange) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            VERY_HIGH -> StringKeyAnalysis.PRASHNA_CERTAINTY_VERY_HIGH
-            HIGH -> StringKeyAnalysis.PRASHNA_CERTAINTY_HIGH
-            MODERATE -> StringKeyAnalysis.PRASHNA_CERTAINTY_MODERATE
-            LOW -> StringKeyAnalysis.PRASHNA_CERTAINTY_LOW
-            VERY_LOW -> StringKeyAnalysis.PRASHNA_CERTAINTY_VERY_LOW
+            VERY_HIGH -> StringKeyPrashnaPart1.PRASHNA_CERTAINTY_VERY_HIGH
+            HIGH -> StringKeyPrashnaPart1.PRASHNA_CERTAINTY_HIGH
+            MODERATE -> StringKeyPrashnaPart1.PRASHNA_CERTAINTY_MODERATE
+            LOW -> StringKeyPrashnaPart1.PRASHNA_CERTAINTY_LOW
+            VERY_LOW -> StringKeyPrashnaPart1.PRASHNA_CERTAINTY_VERY_LOW
         }
         return StringResources.get(key, language)
     }
@@ -239,12 +239,12 @@ enum class MoonStrength(val displayName: String, val score: Int) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            EXCELLENT -> StringKeyAnalysis.PRASHNA_MOON_EXCELLENT
-            GOOD -> StringKeyAnalysis.PRASHNA_MOON_GOOD
-            AVERAGE -> StringKeyAnalysis.PRASHNA_MOON_AVERAGE
-            WEAK -> StringKeyAnalysis.PRASHNA_MOON_WEAK
-            VERY_WEAK -> StringKeyAnalysis.PRASHNA_MOON_VERY_WEAK
-            AFFLICTED -> StringKeyAnalysis.PRASHNA_MOON_AFFLICTED
+            EXCELLENT -> StringKeyPrashnaPart1.PRASHNA_MOON_EXCELLENT
+            GOOD -> StringKeyPrashnaPart1.PRASHNA_MOON_GOOD
+            AVERAGE -> StringKeyPrashnaPart1.PRASHNA_MOON_AVERAGE
+            WEAK -> StringKeyPrashnaPart1.PRASHNA_MOON_WEAK
+            VERY_WEAK -> StringKeyPrashnaPart1.PRASHNA_MOON_VERY_WEAK
+            AFFLICTED -> StringKeyPrashnaPart1.PRASHNA_MOON_AFFLICTED
         }
         return StringResources.get(key, language)
     }
@@ -275,11 +275,11 @@ enum class LagnaCondition(val displayName: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            STRONG -> StringKeyAnalysis.PRASHNA_LAGNA_STRONG
-            MODERATE -> StringKeyAnalysis.PRASHNA_LAGNA_MODERATE
-            WEAK -> StringKeyAnalysis.PRASHNA_LAGNA_WEAK
-            COMBUST -> StringKeyAnalysis.PRASHNA_LAGNA_COMBUST
-            RETROGRADE_LORD -> StringKeyAnalysis.PRASHNA_LAGNA_RETROGRADE_LORD
+            STRONG -> StringKeyPrashnaPart1.PRASHNA_LAGNA_STRONG
+            MODERATE -> StringKeyPrashnaPart1.PRASHNA_LAGNA_MODERATE
+            WEAK -> StringKeyPrashnaPart1.PRASHNA_LAGNA_WEAK
+            COMBUST -> StringKeyPrashnaPart1.PRASHNA_LAGNA_COMBUST
+            RETROGRADE_LORD -> StringKeyPrashnaPart1.PRASHNA_LAGNA_RETROGRADE_LORD
         }
         return StringResources.get(key, language)
     }
@@ -307,12 +307,12 @@ enum class StrengthLevel(val displayName: String, val value: Int) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            VERY_STRONG -> StringKeyAnalysis.PRASHNA_STRENGTH_VERY_STRONG
-            STRONG -> StringKeyAnalysis.PRASHNA_STRENGTH_STRONG
-            MODERATE -> StringKeyAnalysis.PRASHNA_STRENGTH_MODERATE
-            WEAK -> StringKeyAnalysis.PRASHNA_STRENGTH_WEAK
-            VERY_WEAK -> StringKeyAnalysis.PRASHNA_STRENGTH_VERY_WEAK
-            DEBILITATED -> StringKeyAnalysis.PRASHNA_STRENGTH_DEBILITATED
+            VERY_STRONG -> StringKeyPrashnaPart1.PRASHNA_STRENGTH_VERY_STRONG
+            STRONG -> StringKeyPrashnaPart1.PRASHNA_STRENGTH_STRONG
+            MODERATE -> StringKeyPrashnaPart1.PRASHNA_STRENGTH_MODERATE
+            WEAK -> StringKeyPrashnaPart1.PRASHNA_STRENGTH_WEAK
+            VERY_WEAK -> StringKeyPrashnaPart1.PRASHNA_STRENGTH_VERY_WEAK
+            DEBILITATED -> StringKeyPrashnaPart1.PRASHNA_STRENGTH_DEBILITATED
         }
         return StringResources.get(key, language)
     }
@@ -346,17 +346,17 @@ enum class AspectType(val displayName: String, val angle: Int) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            CONJUNCTION -> StringKeyAnalysis.PRASHNA_ASPECT_CONJUNCTION
-            SEXTILE -> StringKeyAnalysis.PRASHNA_ASPECT_SEXTILE
-            SQUARE -> StringKeyAnalysis.PRASHNA_ASPECT_SQUARE
-            TRINE -> StringKeyAnalysis.PRASHNA_ASPECT_TRINE
-            OPPOSITION -> StringKeyAnalysis.PRASHNA_ASPECT_OPPOSITION
-            MARS_4TH -> StringKeyAnalysis.PRASHNA_ASPECT_MARS_4TH
-            MARS_8TH -> StringKeyAnalysis.PRASHNA_ASPECT_MARS_8TH
-            JUPITER_5TH -> StringKeyAnalysis.PRASHNA_ASPECT_JUPITER_5TH
-            JUPITER_9TH -> StringKeyAnalysis.PRASHNA_ASPECT_JUPITER_9TH
-            SATURN_3RD -> StringKeyAnalysis.PRASHNA_ASPECT_SATURN_3RD
-            SATURN_10TH -> StringKeyAnalysis.PRASHNA_ASPECT_SATURN_10TH
+            CONJUNCTION -> StringKeyPrashnaPart1.PRASHNA_ASPECT_CONJUNCTION
+            SEXTILE -> StringKeyPrashnaPart1.PRASHNA_ASPECT_SEXTILE
+            SQUARE -> StringKeyPrashnaPart1.PRASHNA_ASPECT_SQUARE
+            TRINE -> StringKeyPrashnaPart1.PRASHNA_ASPECT_TRINE
+            OPPOSITION -> StringKeyPrashnaPart1.PRASHNA_ASPECT_OPPOSITION
+            MARS_4TH -> StringKeyPrashnaPart1.PRASHNA_ASPECT_MARS_4TH
+            MARS_8TH -> StringKeyPrashnaPart1.PRASHNA_ASPECT_MARS_8TH
+            JUPITER_5TH -> StringKeyPrashnaPart1.PRASHNA_ASPECT_JUPITER_5TH
+            JUPITER_9TH -> StringKeyPrashnaPart1.PRASHNA_ASPECT_JUPITER_9TH
+            SATURN_3RD -> StringKeyPrashnaPart1.PRASHNA_ASPECT_SATURN_3RD
+            SATURN_10TH -> StringKeyPrashnaPart1.PRASHNA_ASPECT_SATURN_10TH
         }
         return StringResources.get(key, language)
     }
@@ -392,11 +392,11 @@ enum class HouseStrength(val displayName: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            EXCELLENT -> StringKeyAnalysis.PRASHNA_HOUSE_EXCELLENT
-            GOOD -> StringKeyAnalysis.PRASHNA_HOUSE_GOOD
-            MODERATE -> StringKeyAnalysis.PRASHNA_HOUSE_MODERATE
-            POOR -> StringKeyAnalysis.PRASHNA_HOUSE_POOR
-            AFFLICTED -> StringKeyAnalysis.PRASHNA_HOUSE_AFFLICTED
+            EXCELLENT -> StringKeyPrashnaPart1.PRASHNA_HOUSE_EXCELLENT
+            GOOD -> StringKeyPrashnaPart1.PRASHNA_HOUSE_GOOD
+            MODERATE -> StringKeyPrashnaPart1.PRASHNA_HOUSE_MODERATE
+            POOR -> StringKeyPrashnaPart1.PRASHNA_HOUSE_POOR
+            AFFLICTED -> StringKeyPrashnaPart1.PRASHNA_HOUSE_AFFLICTED
         }
         return StringResources.get(key, language)
     }
@@ -426,13 +426,13 @@ enum class TimingMethod(val displayName: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            MOON_TRANSIT -> StringKeyAnalysis.PRASHNA_METHOD_MOON_TRANSIT
-            MOON_NAKSHATRA -> StringKeyAnalysis.PRASHNA_METHOD_MOON_NAKSHATRA
-            HOUSE_LORD_DEGREES -> StringKeyAnalysis.PRASHNA_METHOD_HOUSE_LORD_DEGREES
-            LAGNA_DEGREES -> StringKeyAnalysis.PRASHNA_METHOD_LAGNA_DEGREES
-            PLANETARY_CONJUNCTION -> StringKeyAnalysis.PRASHNA_METHOD_PLANETARY_CONJUNCTION
-            DASHA_BASED -> StringKeyAnalysis.PRASHNA_METHOD_DASHA_BASED
-            MIXED -> StringKeyAnalysis.PRASHNA_METHOD_MIXED
+            MOON_TRANSIT -> StringKeyPrashnaPart1.PRASHNA_METHOD_MOON_TRANSIT
+            MOON_NAKSHATRA -> StringKeyPrashnaPart1.PRASHNA_METHOD_MOON_NAKSHATRA
+            HOUSE_LORD_DEGREES -> StringKeyPrashnaPart1.PRASHNA_METHOD_HOUSE_LORD_DEGREES
+            LAGNA_DEGREES -> StringKeyPrashnaPart1.PRASHNA_METHOD_LAGNA_DEGREES
+            PLANETARY_CONJUNCTION -> StringKeyPrashnaPart1.PRASHNA_METHOD_PLANETARY_CONJUNCTION
+            DASHA_BASED -> StringKeyPrashnaPart1.PRASHNA_METHOD_DASHA_BASED
+            MIXED -> StringKeyPrashnaPart1.PRASHNA_METHOD_MIXED
         }
         return StringResources.get(key, language)
     }
@@ -473,16 +473,16 @@ enum class OmenType(val displayName: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            PRASHNA_LAGNA -> StringKeyAnalysis.PRASHNA_OMEN_LAGNA
-            MOON_PLACEMENT -> StringKeyAnalysis.PRASHNA_OMEN_MOON_PLACEMENT
-            HORA_LORD -> StringKeyAnalysis.PRASHNA_OMEN_HORA_LORD
-            DAY_LORD -> StringKeyAnalysis.PRASHNA_OMEN_DAY_LORD
-            NAKSHATRA -> StringKeyAnalysis.PRASHNA_OMEN_NAKSHATRA
-            PLANETARY_WAR -> StringKeyAnalysis.PRASHNA_OMEN_PLANETARY_WAR
-            COMBUSTION -> StringKeyAnalysis.PRASHNA_OMEN_COMBUSTION
-            RETROGRADE -> StringKeyAnalysis.PRASHNA_OMEN_RETROGRADE
-            GANDANTA -> StringKeyAnalysis.PRASHNA_OMEN_GANDANTA
-            PUSHKARA -> StringKeyAnalysis.PRASHNA_PUSHKARA
+            PRASHNA_LAGNA -> StringKeyPrashnaPart1.PRASHNA_OMEN_LAGNA
+            MOON_PLACEMENT -> StringKeyPrashnaPart1.PRASHNA_OMEN_MOON_PLACEMENT
+            HORA_LORD -> StringKeyPrashnaPart1.PRASHNA_OMEN_HORA_LORD
+            DAY_LORD -> StringKeyPrashnaPart1.PRASHNA_OMEN_DAY_LORD
+            NAKSHATRA -> StringKeyPrashnaPart1.PRASHNA_OMEN_NAKSHATRA
+            PLANETARY_WAR -> StringKeyPrashnaPart1.PRASHNA_OMEN_PLANETARY_WAR
+            COMBUSTION -> StringKeyPrashnaPart1.PRASHNA_OMEN_COMBUSTION
+            RETROGRADE -> StringKeyPrashnaPart1.PRASHNA_OMEN_RETROGRADE
+            GANDANTA -> StringKeyPrashnaPart1.PRASHNA_OMEN_GANDANTA
+            PUSHKARA -> StringKeyPrashnaPart1.PRASHNA_PUSHKARA
         }
         return StringResources.get(key, language)
     }

@@ -44,7 +44,7 @@ object YoginiDashaCalculator {
             displayName = "Mangala",
             sanskrit = "मंगला",
             nature = YoginiNature.AUSPICIOUS,
-            descriptionKey = StringKeyDosha.YOGINI_MANGALA_DESC
+            descriptionKey = StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_DESC
         ),
         PINGALA(
             planet = Planet.SUN,
@@ -52,7 +52,7 @@ object YoginiDashaCalculator {
             displayName = "Pingala",
             sanskrit = "पिंगला",
             nature = YoginiNature.MIXED,
-            descriptionKey = StringKeyDosha.YOGINI_PINGALA_DESC
+            descriptionKey = StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_DESC
         ),
         DHANYA(
             planet = Planet.JUPITER,
@@ -60,7 +60,7 @@ object YoginiDashaCalculator {
             displayName = "Dhanya",
             sanskrit = "धान्या",
             nature = YoginiNature.HIGHLY_AUSPICIOUS,
-            descriptionKey = StringKeyDosha.YOGINI_DHANYA_DESC
+            descriptionKey = StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_DESC
         ),
         BHRAMARI(
             planet = Planet.MARS,
@@ -68,7 +68,7 @@ object YoginiDashaCalculator {
             displayName = "Bhramari",
             sanskrit = "भ्रामरी",
             nature = YoginiNature.CHALLENGING,
-            descriptionKey = StringKeyDosha.YOGINI_BHRAMARI_DESC
+            descriptionKey = StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_DESC
         ),
         BHADRIKA(
             planet = Planet.MERCURY,
@@ -76,7 +76,7 @@ object YoginiDashaCalculator {
             displayName = "Bhadrika",
             sanskrit = "भद्रिका",
             nature = YoginiNature.AUSPICIOUS,
-            descriptionKey = StringKeyDosha.YOGINI_BHADRIKA_DESC
+            descriptionKey = StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_DESC
         ),
         ULKA(
             planet = Planet.SATURN,
@@ -84,7 +84,7 @@ object YoginiDashaCalculator {
             displayName = "Ulka",
             sanskrit = "उल्का",
             nature = YoginiNature.CHALLENGING,
-            descriptionKey = StringKeyDosha.YOGINI_ULKA_DESC
+            descriptionKey = StringKeyDashaInterpretationsPart1.YOGINI_ULKA_DESC
         ),
         SIDDHA(
             planet = Planet.VENUS,
@@ -92,7 +92,7 @@ object YoginiDashaCalculator {
             displayName = "Siddha",
             sanskrit = "सिद्धा",
             nature = YoginiNature.HIGHLY_AUSPICIOUS,
-            descriptionKey = StringKeyDosha.YOGINI_SIDDHA_DESC
+            descriptionKey = StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_DESC
         ),
         SANKATA(
             planet = Planet.RAHU,
@@ -100,7 +100,7 @@ object YoginiDashaCalculator {
             displayName = "Sankata",
             sanskrit = "संकटा",
             nature = YoginiNature.DIFFICULT,
-            descriptionKey = StringKeyDosha.YOGINI_SANKATA_DESC
+            descriptionKey = StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_DESC
         );
 
         fun getDescription(language: Language): String {
@@ -145,11 +145,11 @@ object YoginiDashaCalculator {
 
         fun getLocalizedName(language: Language): String {
             return when (this) {
-                HIGHLY_AUSPICIOUS -> StringResources.get(StringKeyDosha.YOGINI_NATURE_HIGHLY_AUSPICIOUS, language)
-                AUSPICIOUS -> StringResources.get(StringKeyDosha.YOGINI_NATURE_AUSPICIOUS, language)
-                MIXED -> StringResources.get(StringKeyDosha.YOGINI_NATURE_MIXED, language)
-                CHALLENGING -> StringResources.get(StringKeyDosha.YOGINI_NATURE_CHALLENGING, language)
-                DIFFICULT -> StringResources.get(StringKeyDosha.YOGINI_NATURE_DIFFICULT, language)
+                HIGHLY_AUSPICIOUS -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_NATURE_HIGHLY_AUSPICIOUS, language)
+                AUSPICIOUS -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_NATURE_AUSPICIOUS, language)
+                MIXED -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_NATURE_MIXED, language)
+                CHALLENGING -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_NATURE_CHALLENGING, language)
+                DIFFICULT -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_NATURE_DIFFICULT, language)
             }
         }
     }
@@ -545,140 +545,140 @@ object YoginiDashaCalculator {
         val generalEffects = yogini.getDescription(language)
 
         val careerEffects = when (yogini) {
-            Yogini.MANGALA -> StringResources.get(StringKeyDosha.YOGINI_MANGALA_CAREER, language)
-            Yogini.PINGALA -> StringResources.get(StringKeyDosha.YOGINI_PINGALA_CAREER, language)
-            Yogini.DHANYA -> StringResources.get(StringKeyDosha.YOGINI_DHANYA_CAREER, language)
-            Yogini.BHRAMARI -> StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_CAREER, language)
-            Yogini.BHADRIKA -> StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_CAREER, language)
-            Yogini.ULKA -> StringResources.get(StringKeyDosha.YOGINI_ULKA_CAREER, language)
-            Yogini.SIDDHA -> StringResources.get(StringKeyDosha.YOGINI_SIDDHA_CAREER, language)
-            Yogini.SANKATA -> StringResources.get(StringKeyDosha.YOGINI_SANKATA_CAREER, language)
+            Yogini.MANGALA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_CAREER, language)
+            Yogini.PINGALA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_CAREER, language)
+            Yogini.DHANYA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_CAREER, language)
+            Yogini.BHRAMARI -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_CAREER, language)
+            Yogini.BHADRIKA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_CAREER, language)
+            Yogini.ULKA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_CAREER, language)
+            Yogini.SIDDHA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_CAREER, language)
+            Yogini.SANKATA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_CAREER, language)
         }
 
         val relationshipEffects = when (yogini) {
-            Yogini.MANGALA -> StringResources.get(StringKeyDosha.YOGINI_MANGALA_RELATIONSHIP, language)
-            Yogini.PINGALA -> StringResources.get(StringKeyDosha.YOGINI_PINGALA_RELATIONSHIP, language)
-            Yogini.DHANYA -> StringResources.get(StringKeyDosha.YOGINI_DHANYA_RELATIONSHIP, language)
-            Yogini.BHRAMARI -> StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_RELATIONSHIP, language)
-            Yogini.BHADRIKA -> StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_RELATIONSHIP, language)
-            Yogini.ULKA -> StringResources.get(StringKeyDosha.YOGINI_ULKA_RELATIONSHIP, language)
-            Yogini.SIDDHA -> StringResources.get(StringKeyDosha.YOGINI_SIDDHA_RELATIONSHIP, language)
-            Yogini.SANKATA -> StringResources.get(StringKeyDosha.YOGINI_SANKATA_RELATIONSHIP, language)
+            Yogini.MANGALA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_RELATIONSHIP, language)
+            Yogini.PINGALA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_RELATIONSHIP, language)
+            Yogini.DHANYA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_RELATIONSHIP, language)
+            Yogini.BHRAMARI -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_RELATIONSHIP, language)
+            Yogini.BHADRIKA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_RELATIONSHIP, language)
+            Yogini.ULKA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_RELATIONSHIP, language)
+            Yogini.SIDDHA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_RELATIONSHIP, language)
+            Yogini.SANKATA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_RELATIONSHIP, language)
         }
 
         val healthEffects = when (yogini) {
-            Yogini.MANGALA -> StringResources.get(StringKeyDosha.YOGINI_MANGALA_HEALTH, language)
-            Yogini.PINGALA -> StringResources.get(StringKeyDosha.YOGINI_PINGALA_HEALTH, language)
-            Yogini.DHANYA -> StringResources.get(StringKeyDosha.YOGINI_DHANYA_HEALTH, language)
-            Yogini.BHRAMARI -> StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_HEALTH, language)
-            Yogini.BHADRIKA -> StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_HEALTH, language)
-            Yogini.ULKA -> StringResources.get(StringKeyDosha.YOGINI_ULKA_HEALTH, language)
-            Yogini.SIDDHA -> StringResources.get(StringKeyDosha.YOGINI_SIDDHA_HEALTH, language)
-            Yogini.SANKATA -> StringResources.get(StringKeyDosha.YOGINI_SANKATA_HEALTH, language)
+            Yogini.MANGALA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_HEALTH, language)
+            Yogini.PINGALA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_HEALTH, language)
+            Yogini.DHANYA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_HEALTH, language)
+            Yogini.BHRAMARI -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_HEALTH, language)
+            Yogini.BHADRIKA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_HEALTH, language)
+            Yogini.ULKA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_HEALTH, language)
+            Yogini.SIDDHA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_HEALTH, language)
+            Yogini.SANKATA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_HEALTH, language)
         }
 
         val spiritualEffects = when (yogini) {
-            Yogini.MANGALA -> StringResources.get(StringKeyDosha.YOGINI_MANGALA_SPIRITUAL, language)
-            Yogini.PINGALA -> StringResources.get(StringKeyDosha.YOGINI_PINGALA_SPIRITUAL, language)
-            Yogini.DHANYA -> StringResources.get(StringKeyDosha.YOGINI_DHANYA_SPIRITUAL, language)
-            Yogini.BHRAMARI -> StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_SPIRITUAL, language)
-            Yogini.BHADRIKA -> StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_SPIRITUAL, language)
-            Yogini.ULKA -> StringResources.get(StringKeyDosha.YOGINI_ULKA_SPIRITUAL, language)
-            Yogini.SIDDHA -> StringResources.get(StringKeyDosha.YOGINI_SIDDHA_SPIRITUAL, language)
-            Yogini.SANKATA -> StringResources.get(StringKeyDosha.YOGINI_SANKATA_SPIRITUAL, language)
+            Yogini.MANGALA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_SPIRITUAL, language)
+            Yogini.PINGALA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_SPIRITUAL, language)
+            Yogini.DHANYA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_SPIRITUAL, language)
+            Yogini.BHRAMARI -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_SPIRITUAL, language)
+            Yogini.BHADRIKA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_SPIRITUAL, language)
+            Yogini.ULKA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_SPIRITUAL, language)
+            Yogini.SIDDHA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_SPIRITUAL, language)
+            Yogini.SANKATA -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_SPIRITUAL, language)
         }
 
         val recommendations = when (yogini) {
             Yogini.MANGALA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_MANGALA_REC_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_MANGALA_REC_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_MANGALA_REC_3, language),
-                StringResources.get(StringKeyDosha.YOGINI_MANGALA_REC_4, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_REC_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_REC_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_REC_3, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_REC_4, language)
             )
             Yogini.PINGALA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_PINGALA_REC_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_PINGALA_REC_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_PINGALA_REC_3, language),
-                StringResources.get(StringKeyDosha.YOGINI_PINGALA_REC_4, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_REC_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_REC_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_REC_3, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_REC_4, language)
             )
             Yogini.DHANYA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_DHANYA_REC_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_DHANYA_REC_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_DHANYA_REC_3, language),
-                StringResources.get(StringKeyDosha.YOGINI_DHANYA_REC_4, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_REC_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_REC_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_REC_3, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_REC_4, language)
             )
             Yogini.BHRAMARI -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_REC_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_REC_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_REC_3, language),
-                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_REC_4, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_REC_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_REC_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_REC_3, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_REC_4, language)
             )
             Yogini.BHADRIKA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_REC_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_REC_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_REC_3, language),
-                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_REC_4, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_REC_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_REC_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_REC_3, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_REC_4, language)
             )
             Yogini.ULKA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_ULKA_REC_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_ULKA_REC_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_ULKA_REC_3, language),
-                StringResources.get(StringKeyDosha.YOGINI_ULKA_REC_4, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_REC_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_REC_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_REC_3, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_REC_4, language)
             )
             Yogini.SIDDHA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_REC_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_REC_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_REC_3, language),
-                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_REC_4, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_REC_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_REC_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_REC_3, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_REC_4, language)
             )
             Yogini.SANKATA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_SANKATA_REC_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_SANKATA_REC_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_SANKATA_REC_3, language),
-                StringResources.get(StringKeyDosha.YOGINI_SANKATA_REC_4, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_REC_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_REC_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_REC_3, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_REC_4, language)
             )
         }
 
         val cautionAreas = when (yogini) {
             Yogini.MANGALA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_MANGALA_CAUTION_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_MANGALA_CAUTION_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_MANGALA_CAUTION_3, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_CAUTION_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_CAUTION_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_MANGALA_CAUTION_3, language)
             )
             Yogini.PINGALA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_PINGALA_CAUTION_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_PINGALA_CAUTION_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_PINGALA_CAUTION_3, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_CAUTION_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_CAUTION_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_PINGALA_CAUTION_3, language)
             )
             Yogini.DHANYA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_DHANYA_CAUTION_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_DHANYA_CAUTION_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_DHANYA_CAUTION_3, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_CAUTION_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_CAUTION_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DHANYA_CAUTION_3, language)
             )
             Yogini.BHRAMARI -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_CAUTION_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_CAUTION_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_BHRAMARI_CAUTION_3, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_CAUTION_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_CAUTION_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHRAMARI_CAUTION_3, language)
             )
             Yogini.BHADRIKA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_CAUTION_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_CAUTION_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_BHADRIKA_CAUTION_3, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_CAUTION_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_CAUTION_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_BHADRIKA_CAUTION_3, language)
             )
             Yogini.ULKA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_ULKA_CAUTION_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_ULKA_CAUTION_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_ULKA_CAUTION_3, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_CAUTION_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_CAUTION_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_ULKA_CAUTION_3, language)
             )
             Yogini.SIDDHA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_CAUTION_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_CAUTION_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_SIDDHA_CAUTION_3, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_CAUTION_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_CAUTION_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SIDDHA_CAUTION_3, language)
             )
             Yogini.SANKATA -> listOf(
-                StringResources.get(StringKeyDosha.YOGINI_SANKATA_CAUTION_1, language),
-                StringResources.get(StringKeyDosha.YOGINI_SANKATA_CAUTION_2, language),
-                StringResources.get(StringKeyDosha.YOGINI_SANKATA_CAUTION_3, language)
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_CAUTION_1, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_CAUTION_2, language),
+                StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_SANKATA_CAUTION_3, language)
             )
         }
 
@@ -721,19 +721,19 @@ object YoginiDashaCalculator {
 
         return when {
             isFriendly -> StringResources.get(
-                StringKeyDosha.YOGINI_ANTAR_FRIENDLY,
+                StringKeyDashaInterpretationsPart1.YOGINI_ANTAR_FRIENDLY,
                 language,
                 mahaName, antarName, // %s-%s (Header)
                 antarPlanetName, mahaPlanetName // %s's significations blend with %s's
             )
             isHostile -> StringResources.get(
-                StringKeyDosha.YOGINI_ANTAR_HOSTILE,
+                StringKeyDashaInterpretationsPart1.YOGINI_ANTAR_HOSTILE,
                 language,
                 mahaName, antarName,
                 antarPlanetName, mahaPlanetName
             )
             else -> StringResources.get(
-                StringKeyDosha.YOGINI_ANTAR_NEUTRAL,
+                StringKeyDashaInterpretationsPart1.YOGINI_ANTAR_NEUTRAL,
                 language,
                 mahaName, antarName,
                 antarPlanetName, mahaPlanetName
@@ -758,7 +758,7 @@ object YoginiDashaCalculator {
             return Applicability(
                 isRecommended = true,
                 applicabilityScore = 0.7,
-                reasons = listOf(StringResources.get(StringKeyDosha.YOGINI_APP_UNIVERSAL, language))
+                reasons = listOf(StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_APP_UNIVERSAL, language))
             )
         }
 
@@ -768,7 +768,7 @@ object YoginiDashaCalculator {
         // Check gender (if available - traditionally more applicable for females)
         if (chart.birthData.gender == com.astro.storm.core.model.Gender.FEMALE) {
             score += 0.2
-            reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_FEMALE, language))
+            reasons.add(StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_APP_FEMALE, language))
         }
 
         // Check Moon strength
@@ -778,7 +778,7 @@ object YoginiDashaCalculator {
             // Moon strong in Taurus (exalted) or Cancer (own sign)
             if (moonSign == ZodiacSign.TAURUS || moonSign == ZodiacSign.CANCER) {
                 score += 0.15
-                reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_STRONG_MOON, language, moonSign.getLocalizedName(language)))
+                reasons.add(StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_APP_STRONG_MOON, language, moonSign.getLocalizedName(language)))
             }
         }
 
@@ -787,14 +787,14 @@ object YoginiDashaCalculator {
         val birthHour = chart.birthData.dateTime.hour
         if (birthHour < 6 || birthHour >= 18) {
             score += 0.1
-            reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_NIGHT_BIRTH, language))
+            reasons.add(StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_APP_NIGHT_BIRTH, language))
         }
 
         // Always applicable for relationship timing
-        reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_RELATIONSHIP, language))
+        reasons.add(StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_APP_RELATIONSHIP, language))
 
         // Add general applicability statement
-        reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_VALIDATION, language))
+        reasons.add(StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_APP_VALIDATION, language))
 
         return Applicability(
             isRecommended = score >= 0.6,
@@ -811,7 +811,7 @@ object YoginiDashaCalculator {
      * Get current Yogini period summary
      */
     fun getCurrentPeriodSummary(result: YoginiDashaResult, language: Language = Language.ENGLISH): String {
-        val maha = result.currentMahadasha ?: return StringResources.get(StringKey.DASHA_NO_ACTIVE_PERIOD, language)
+        val maha = result.currentMahadasha ?: return StringResources.get(StringKeyPart1.DASHA_NO_ACTIVE_PERIOD, language)
         val antar = result.currentAntardasha
 
         // Helper to format days
@@ -825,17 +825,17 @@ object YoginiDashaCalculator {
         }
 
         return buildString {
-            appendLine("${StringResources.get(StringKeyDosha.YOGINI_DASHA_TITLE, language)}: ${maha.yogini.getLocalizedName(language)}")
-            appendLine("${StringResources.get(StringKey.PLANET, language)}: ${maha.yogini.planet.getLocalizedName(language)}")
-            appendLine("${StringResources.get(StringKey.DASHA_DURATION, language)}: ${maha.durationYears} ${StringResources.get(StringKey.YEARS, language)}")
-            appendLine("${StringResources.get(StringKey.DASHA_PROGRESS, language)}: ${String.format("%.1f", maha.getProgressPercent())}%")
-            appendLine("${StringResources.get(StringKey.DASHA_REMAINING, language)}: ${formatDays(maha.getRemainingDays())}")
+            appendLine("${StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_DASHA_TITLE, language)}: ${maha.yogini.getLocalizedName(language)}")
+            appendLine("${StringResources.get(StringKeyPart1.PLANET, language)}: ${maha.yogini.planet.getLocalizedName(language)}")
+            appendLine("${StringResources.get(StringKeyPart1.DASHA_DURATION, language)}: ${maha.durationYears} ${StringResources.get(StringKeyPart1.YEARS, language)}")
+            appendLine("${StringResources.get(StringKeyPart1.DASHA_PROGRESS, language)}: ${String.format("%.1f", maha.getProgressPercent())}%")
+            appendLine("${StringResources.get(StringKeyPart1.DASHA_REMAINING, language)}: ${formatDays(maha.getRemainingDays())}")
 
             if (antar != null) {
                 appendLine()
-                appendLine("${StringResources.get(StringKey.DASHA_ANTARDASHA, language)}: ${antar.yogini.getLocalizedName(language)}")
-                appendLine("${StringResources.get(StringKey.DASHA_PROGRESS, language)}: ${String.format("%.1f", antar.getProgressPercent())}%")
-                append("${StringResources.get(StringKey.DASHA_REMAINING, language)}: ${formatDays(antar.getRemainingDays())}")
+                appendLine("${StringResources.get(StringKeyPart1.DASHA_ANTARDASHA, language)}: ${antar.yogini.getLocalizedName(language)}")
+                appendLine("${StringResources.get(StringKeyPart1.DASHA_PROGRESS, language)}: ${String.format("%.1f", antar.getProgressPercent())}%")
+                append("${StringResources.get(StringKeyPart1.DASHA_REMAINING, language)}: ${formatDays(antar.getRemainingDays())}")
             }
         }
     }

@@ -104,11 +104,11 @@ fun PanchMahapurushaScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyDosha.UI_OVERVIEW),
-        stringResource(StringKeyDosha.UI_YOGAS),
-        stringResource(StringKeyDosha.UI_EFFECTS),
-        stringResource(StringKeyDosha.UI_TIMING),
-        stringResource(StringKeyDosha.UI_REMEDIES)
+        stringResource(StringKeyUI.UI_OVERVIEW),
+        stringResource(StringKeyUI.UI_YOGAS),
+        stringResource(StringKeyUI.UI_EFFECTS),
+        stringResource(StringKeyUI.UI_TIMING),
+        stringResource(StringKeyUI.UI_REMEDIES)
     )
 
     // Calculate analysis
@@ -136,13 +136,13 @@ fun PanchMahapurushaScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.PANCHA_SCREEN_TITLE),
+                            text = stringResource(StringKeyDoshaPart4.PANCHA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.PANCHA_SUBTITLE),
+                            text = stringResource(StringKeyDoshaPart4.PANCHA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -152,7 +152,7 @@ fun PanchMahapurushaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -317,8 +317,8 @@ private fun StatusCard(analysis: PanchMahapurushaYogaCalculator.PanchMahapurusha
             Text(
                 text = if (hasYogas) {
                      // Note: Handled dynamically, but title is "Yoga(s) Found!" or "No Yogas Formed"
-                     if(analysis.yogaCount > 0) stringResource(StringKeyDosha.PANCHA_STATUS_FOUND) else stringResource(StringKeyDosha.PANCHA_NO_YOGAS)
-                } else stringResource(StringKeyDosha.PANCHA_NO_YOGAS),
+                     if(analysis.yogaCount > 0) stringResource(StringKeyDoshaPart4.PANCHA_STATUS_FOUND) else stringResource(StringKeyMatchPart1.PANCHA_NO_YOGAS)
+                } else stringResource(StringKeyMatchPart1.PANCHA_NO_YOGAS),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = statusColor
@@ -328,9 +328,9 @@ private fun StatusCard(analysis: PanchMahapurushaYogaCalculator.PanchMahapurusha
 
             Text(
                 text = if (hasYogas) {
-                    String.format(stringResource(StringKeyDosha.PANCHA_STATUS_FOUND_DESC), analysis.yogaCount)
+                    String.format(stringResource(StringKeyDoshaPart4.PANCHA_STATUS_FOUND_DESC), analysis.yogaCount)
                 } else {
-                    stringResource(StringKeyDosha.PANCHA_STATUS_NONE_DESC)
+                    stringResource(StringKeyDoshaPart4.PANCHA_STATUS_NONE_DESC)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
@@ -369,19 +369,19 @@ private fun QuickStatsRow(analysis: PanchMahapurushaYogaCalculator.PanchMahapuru
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         StatCard(
-            title = stringResource(StringKeyDosha.UI_YOGAS),
+            title = stringResource(StringKeyUI.UI_YOGAS),
             value = "${analysis.yogaCount}/5",
             color = AppTheme.AccentGold,
             modifier = Modifier.weight(1f)
         )
         StatCard(
-            title = stringResource(StringKeyDosha.PANCHA_STRENGTH),
+            title = stringResource(StringKeyDoshaPart4.PANCHA_STRENGTH),
             value = "${analysis.overallYogaStrength}%",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
         StatCard(
-            title = stringResource(StringKeyDosha.PANCHA_PERIODS),
+            title = stringResource(StringKeyDoshaPart4.PANCHA_PERIODS),
             value = "${analysis.activationPeriods.size}",
             color = AppTheme.AccentTeal,
             modifier = Modifier.weight(1f)
@@ -442,7 +442,7 @@ private fun InterpretationCard(interpretation: PanchMahapurushaYogaCalculator.Ov
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.UI_INTERPRETATION),
+                    text = stringResource(StringKeyUI.UI_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -499,7 +499,7 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.PANCHA_COMBINED),
+                    text = stringResource(StringKeyDoshaPart4.PANCHA_COMBINED),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -527,7 +527,7 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
             if (combined.synergies.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.PANCHA_SYNERGIES),
+                    text = stringResource(StringKeyDoshaPart4.PANCHA_SYNERGIES),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -579,14 +579,14 @@ private fun YogasSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapurus
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.PANCHA_NO_YOGAS_DISPLAY),
+                        text = stringResource(StringKeyDoshaPart4.PANCHA_NO_YOGAS_DISPLAY),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.PANCHA_NO_YOGAS_DESC),
+                        text = stringResource(StringKeyDoshaPart4.PANCHA_NO_YOGAS_DESC),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -768,7 +768,7 @@ private fun EffectsCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                     color = yogaColor
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.PANCHA_EFFECTS_TITLE, yoga.type.displayName),
+                    text = stringResource(StringKeyDoshaPart4.PANCHA_EFFECTS_TITLE, yoga.type.displayName),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -777,11 +777,11 @@ private fun EffectsCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            EffectRow(label = stringResource(StringKeyDosha.PANCHA_PHYSICAL), value = yoga.effects.physicalTraits)
-            EffectRow(label = stringResource(StringKeyDosha.PANCHA_MENTAL), value = yoga.effects.mentalTraits)
-            EffectRow(label = stringResource(StringKeyDosha.PANCHA_CAREER), value = yoga.effects.careerIndications)
-            EffectRow(label = stringResource(StringKeyDosha.PANCHA_SPIRITUAL), value = yoga.effects.spiritualGrowth)
-            EffectRow(label = stringResource(StringKeyDosha.PANCHA_RELATIONSHIPS), value = yoga.effects.relationshipImpact)
+            EffectRow(label = stringResource(StringKeyDoshaPart4.PANCHA_PHYSICAL), value = yoga.effects.physicalTraits)
+            EffectRow(label = stringResource(StringKeyDoshaPart4.PANCHA_MENTAL), value = yoga.effects.mentalTraits)
+            EffectRow(label = stringResource(StringKeyDoshaPart4.PANCHA_CAREER), value = yoga.effects.careerIndications)
+            EffectRow(label = stringResource(StringKeyDoshaPart4.PANCHA_SPIRITUAL), value = yoga.effects.spiritualGrowth)
+            EffectRow(label = stringResource(StringKeyDoshaPart4.PANCHA_RELATIONSHIPS), value = yoga.effects.relationshipImpact)
 
             Spacer(modifier = Modifier.height(8.dp))
             Surface(
@@ -851,7 +851,7 @@ private fun TimingSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapuru
                             modifier = Modifier.size(20.dp)
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.PANCHA_ACTIVATION_PERIODS),
+                            text = stringResource(StringKeyDoshaPart4.PANCHA_ACTIVATION_PERIODS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -959,7 +959,7 @@ private fun RemedyCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.PANCHA_RECOMMENDATIONS_TITLE, yoga.type.displayName),
+                    text = stringResource(StringKeyDoshaPart4.PANCHA_RECOMMENDATIONS_TITLE, yoga.type.displayName),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1005,7 +1005,7 @@ private fun RemedyCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                             color = AppTheme.TextMuted
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.PANCHA_TIMING_LABEL, recommendation.timing),
+                            text = stringResource(StringKeyDoshaPart4.PANCHA_TIMING_LABEL, recommendation.timing),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextSecondary
                         )
@@ -1030,14 +1030,14 @@ private fun EmptyYogasMessage() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(StringKeyDosha.PANCHA_NO_YOGAS_DISPLAY),
+                text = stringResource(StringKeyDoshaPart4.PANCHA_NO_YOGAS_DISPLAY),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.PANCHA_DETAILS_EMPTY_DESC),
+                text = stringResource(StringKeyDoshaPart4.PANCHA_DETAILS_EMPTY_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1056,7 +1056,7 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentGold)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.PANCHA_ANALYZING),
+                text = stringResource(StringKeyDoshaPart4.PANCHA_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1082,14 +1082,14 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+                text = stringResource(StringKeyUI.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.PANCHA_NO_CHART_DESC),
+                text = stringResource(StringKeyDoshaPart4.PANCHA_NO_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1104,14 +1104,14 @@ private fun InfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(StringKeyDosha.PANCHA_ABOUT_TITLE),
+                text = stringResource(StringKeyDoshaPart4.PANCHA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = stringResource(StringKeyDosha.PANCHA_ABOUT_DESC),
+                text = stringResource(StringKeyDoshaPart4.PANCHA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
@@ -1119,7 +1119,7 @@ private fun InfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground

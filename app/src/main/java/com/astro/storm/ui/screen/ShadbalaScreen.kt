@@ -69,8 +69,8 @@ fun ShadbalaScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDosha.SHADBALA_TITLE),
-            message = stringResource(StringKey.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyShadbala.SHADBALA_TITLE),
+            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -85,9 +85,9 @@ fun ShadbalaScreen(
     var shadbalaAnalysis by remember { mutableStateOf<ShadbalaAnalysis?>(null) }
 
     val tabs = listOf(
-        stringResource(StringKeyDosha.SHADBALA_OVERVIEW),
-        stringResource(StringKeyDosha.SHADBALA_DETAILS),
-        stringResource(StringKeyDosha.SHADBALA_COMPARISON)
+        stringResource(StringKeyShadbala.SHADBALA_OVERVIEW),
+        stringResource(StringKeyShadbala.SHADBALA_DETAILS),
+        stringResource(StringKeyShadbala.SHADBALA_COMPARISON)
     )
 
     // Calculate Shadbala
@@ -115,7 +115,7 @@ fun ShadbalaScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDosha.SHADBALA_TITLE),
+                            stringResource(StringKeyShadbala.SHADBALA_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
@@ -131,7 +131,7 @@ fun ShadbalaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -140,7 +140,7 @@ fun ShadbalaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDosha.SHADBALA_INFO_TITLE),
+                            contentDescription = stringResource(StringKeyShadbala.SHADBALA_INFO_TITLE),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -166,7 +166,7 @@ fun ShadbalaScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        stringResource(StringKeyDosha.SHADBALA_CALCULATING),
+                        stringResource(StringKeyShadbala.SHADBALA_CALCULATING),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted
                     )
@@ -180,7 +180,7 @@ fun ShadbalaScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_CALCULATION_ERROR),
+                    stringResource(StringKeyShadbala.SHADBALA_CALCULATION_ERROR),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.ErrorColor
                 )
@@ -291,7 +291,7 @@ private fun ShadbalaOverviewTab(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_OVERALL_STRENGTH),
+                    stringResource(StringKeyShadbala.SHADBALA_OVERALL_STRENGTH),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -341,12 +341,12 @@ private fun ShadbalaOverviewTab(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     StrengthCountChip(
-                        label = stringResource(StringKeyDosha.SHADBALA_STRONG_COUNT, analysis.getStrongPlanets().size),
+                        label = stringResource(StringKeyShadbala.SHADBALA_STRONG_COUNT, analysis.getStrongPlanets().size),
                         count = analysis.getStrongPlanets().size,
                         color = AppTheme.SuccessColor
                     )
                     StrengthCountChip(
-                        label = stringResource(StringKeyDosha.SHADBALA_WEAK_COUNT, analysis.getWeakPlanets().size),
+                        label = stringResource(StringKeyShadbala.SHADBALA_WEAK_COUNT, analysis.getWeakPlanets().size),
                         count = analysis.getWeakPlanets().size,
                         color = AppTheme.WarningColor
                     )
@@ -359,7 +359,7 @@ private fun ShadbalaOverviewTab(
         // Strongest and Weakest Planet
         Row(modifier = Modifier.fillMaxWidth()) {
             StrongestWeakestCard(
-                title = stringResource(StringKeyDosha.SHADBALA_STRONGEST_PLANET),
+                title = stringResource(StringKeyShadbala.SHADBALA_STRONGEST_PLANET),
                 planet = analysis.strongestPlanet,
                 strength = analysis.planetaryStrengths[analysis.strongestPlanet],
                 isStrong = true,
@@ -368,7 +368,7 @@ private fun ShadbalaOverviewTab(
             )
             Spacer(modifier = Modifier.width(12.dp))
             StrongestWeakestCard(
-                title = stringResource(StringKeyDosha.SHADBALA_WEAKEST_PLANET),
+                title = stringResource(StringKeyShadbala.SHADBALA_WEAKEST_PLANET),
                 planet = analysis.weakestPlanet,
                 strength = analysis.planetaryStrengths[analysis.weakestPlanet],
                 isStrong = false,
@@ -387,7 +387,7 @@ private fun ShadbalaOverviewTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_CHART_ANALYSIS),
+                    stringResource(StringKeyShadbala.SHADBALA_CHART_ANALYSIS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -436,7 +436,7 @@ private fun StrengthCountChip(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                if (count == 1) stringResource(StringKey.REPORT_PLANET).lowercase() else stringResource(StringKey.FEATURE_PLANETS).lowercase(),
+                if (count == 1) stringResource(StringKeyReport.REPORT_PLANET).lowercase() else stringResource(StringKeyFeature.FEATURE_PLANETS).lowercase(),
                 style = MaterialTheme.typography.bodySmall,
                 color = color.copy(alpha = 0.8f)
             )
@@ -677,7 +677,7 @@ private fun PlanetShadbalaDetailCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKeyDosha.SHADBALA_PLANET_ANALYSIS, planet.getLocalizedName(language)),
+                            stringResource(StringKeyShadbala.SHADBALA_PLANET_ANALYSIS, planet.getLocalizedName(language)),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -713,7 +713,7 @@ private fun PlanetShadbalaDetailCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKeyDosha.SHADBALA_RUPAS),
+                            stringResource(StringKeyShadbala.SHADBALA_RUPAS),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -732,7 +732,7 @@ private fun PlanetShadbalaDetailCard(
                             color = AppTheme.TextMuted
                         )
                         Text(
-                            stringResource(StringKeyDosha.SHADBALA_REQUIRED),
+                            stringResource(StringKeyShadbala.SHADBALA_REQUIRED),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -751,7 +751,7 @@ private fun PlanetShadbalaDetailCard(
                             color = getStrengthColor(shadbala.percentageOfRequired)
                         )
                         Text(
-                            stringResource(StringKeyDosha.SHADBALA_PERCENTAGE),
+                            stringResource(StringKeyShadbala.SHADBALA_PERCENTAGE),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -797,7 +797,7 @@ private fun PlanetShadbalaDetailCard(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_BREAKDOWN),
+                    stringResource(StringKeyShadbala.SHADBALA_BREAKDOWN),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -807,8 +807,8 @@ private fun PlanetShadbalaDetailCard(
 
                 // 1. Sthana Bala
                 BalaBreakdownItem(
-                    title = stringResource(StringKeyDosha.SHADBALA_STHANA_BALA),
-                    subtitle = stringResource(StringKeyDosha.SHADBALA_STHANA_BALA_DESC),
+                    title = stringResource(StringKeyShadbala.SHADBALA_STHANA_BALA),
+                    subtitle = stringResource(StringKeyShadbala.SHADBALA_STHANA_BALA_DESC),
                     value = shadbala.sthanaBala.total,
                     icon = Icons.Filled.Place
                 )
@@ -817,8 +817,8 @@ private fun PlanetShadbalaDetailCard(
 
                 // 2. Dig Bala
                 BalaBreakdownItem(
-                    title = stringResource(StringKeyDosha.SHADBALA_DIG_BALA),
-                    subtitle = stringResource(StringKeyDosha.SHADBALA_DIG_BALA_DESC),
+                    title = stringResource(StringKeyShadbala.SHADBALA_DIG_BALA),
+                    subtitle = stringResource(StringKeyShadbala.SHADBALA_DIG_BALA_DESC),
                     value = shadbala.digBala,
                     icon = Icons.Filled.Explore
                 )
@@ -827,8 +827,8 @@ private fun PlanetShadbalaDetailCard(
 
                 // 3. Kala Bala
                 BalaBreakdownItem(
-                    title = stringResource(StringKeyDosha.SHADBALA_KALA_BALA),
-                    subtitle = stringResource(StringKeyDosha.SHADBALA_KALA_BALA_DESC),
+                    title = stringResource(StringKeyShadbala.SHADBALA_KALA_BALA),
+                    subtitle = stringResource(StringKeyShadbala.SHADBALA_KALA_BALA_DESC),
                     value = shadbala.kalaBala.total,
                     icon = Icons.Filled.Schedule
                 )
@@ -837,8 +837,8 @@ private fun PlanetShadbalaDetailCard(
 
                 // 4. Chesta Bala
                 BalaBreakdownItem(
-                    title = stringResource(StringKeyDosha.SHADBALA_CHESTA_BALA),
-                    subtitle = stringResource(StringKeyDosha.SHADBALA_CHESTA_BALA_DESC),
+                    title = stringResource(StringKeyShadbala.SHADBALA_CHESTA_BALA),
+                    subtitle = stringResource(StringKeyShadbala.SHADBALA_CHESTA_BALA_DESC),
                     value = shadbala.chestaBala,
                     icon = Icons.Filled.TrendingUp
                 )
@@ -847,8 +847,8 @@ private fun PlanetShadbalaDetailCard(
 
                 // 5. Naisargika Bala
                 BalaBreakdownItem(
-                    title = stringResource(StringKeyDosha.SHADBALA_NAISARGIKA_BALA),
-                    subtitle = stringResource(StringKeyDosha.SHADBALA_NAISARGIKA_BALA_DESC),
+                    title = stringResource(StringKeyShadbala.SHADBALA_NAISARGIKA_BALA),
+                    subtitle = stringResource(StringKeyShadbala.SHADBALA_NAISARGIKA_BALA_DESC),
                     value = shadbala.naisargikaBala,
                     icon = Icons.Filled.Nature
                 )
@@ -857,8 +857,8 @@ private fun PlanetShadbalaDetailCard(
 
                 // 6. Drik Bala
                 BalaBreakdownItem(
-                    title = stringResource(StringKeyDosha.SHADBALA_DRIK_BALA),
-                    subtitle = stringResource(StringKeyDosha.SHADBALA_DRIK_BALA_DESC),
+                    title = stringResource(StringKeyShadbala.SHADBALA_DRIK_BALA),
+                    subtitle = stringResource(StringKeyShadbala.SHADBALA_DRIK_BALA_DESC),
                     value = shadbala.drikBala,
                     icon = Icons.Filled.Visibility
                 )
@@ -875,7 +875,7 @@ private fun PlanetShadbalaDetailCard(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "${stringResource(StringKeyDosha.SHADBALA_STHANA_BALA)} ${stringResource(StringKeyDosha.SHADBALA_BREAKDOWN)}",
+                    "${stringResource(StringKeyShadbala.SHADBALA_STHANA_BALA)} ${stringResource(StringKeyShadbala.SHADBALA_BREAKDOWN)}",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -883,11 +883,11 @@ private fun PlanetShadbalaDetailCard(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_UCCHA_BALA), shadbala.sthanaBala.ucchaBala)
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_SAPTAVARGAJA_BALA), shadbala.sthanaBala.saptavargajaBala)
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_OJHAYUGMA_BALA), shadbala.sthanaBala.ojhayugmarasyamsaBala)
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_KENDRADI_BALA), shadbala.sthanaBala.kendradiBala)
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_DREKKANA_BALA), shadbala.sthanaBala.drekkanaBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_UCCHA_BALA), shadbala.sthanaBala.ucchaBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_SAPTAVARGAJA_BALA), shadbala.sthanaBala.saptavargajaBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_OJHAYUGMA_BALA), shadbala.sthanaBala.ojhayugmarasyamsaBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_KENDRADI_BALA), shadbala.sthanaBala.kendradiBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_DREKKANA_BALA), shadbala.sthanaBala.drekkanaBala)
             }
         }
 
@@ -901,7 +901,7 @@ private fun PlanetShadbalaDetailCard(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "${stringResource(StringKeyDosha.SHADBALA_KALA_BALA)} ${stringResource(StringKeyDosha.SHADBALA_BREAKDOWN)}",
+                    "${stringResource(StringKeyShadbala.SHADBALA_KALA_BALA)} ${stringResource(StringKeyShadbala.SHADBALA_BREAKDOWN)}",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -909,12 +909,12 @@ private fun PlanetShadbalaDetailCard(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_NATHONNATHA_BALA), shadbala.kalaBala.nathonnathaBala)
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_PAKSHA_BALA), shadbala.kalaBala.pakshaBala)
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_TRIBHAGA_BALA), shadbala.kalaBala.tribhagaBala)
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_HORA_BALA), shadbala.kalaBala.horaAdiBala)
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_AYANA_BALA), shadbala.kalaBala.ayanaBala)
-                SubBalaRow(stringResource(StringKeyDosha.SHADBALA_YUDDHA_BALA), shadbala.kalaBala.yuddhaBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_NATHONNATHA_BALA), shadbala.kalaBala.nathonnathaBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_PAKSHA_BALA), shadbala.kalaBala.pakshaBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_TRIBHAGA_BALA), shadbala.kalaBala.tribhagaBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_HORA_BALA), shadbala.kalaBala.horaAdiBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_AYANA_BALA), shadbala.kalaBala.ayanaBala)
+                SubBalaRow(stringResource(StringKeyShadbala.SHADBALA_YUDDHA_BALA), shadbala.kalaBala.yuddhaBala)
             }
         }
     }
@@ -1007,7 +1007,7 @@ private fun ShadbalaComparisonTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_TOTAL_STRENGTH),
+                    stringResource(StringKeyShadbala.SHADBALA_TOTAL_STRENGTH),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1053,17 +1053,17 @@ private fun ShadbalaComparisonTab(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        stringResource(StringKey.REPORT_PLANET),
+                        stringResource(StringKeyReport.REPORT_PLANET),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextMuted,
                         modifier = Modifier.width(60.dp)
                     )
-                    Text(stringResource(StringKeyDosha.SHADBALA_STHANA), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                    Text(stringResource(StringKeyDosha.SHADBALA_DIG), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                    Text(stringResource(StringKeyDosha.SHADBALA_KALA), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                    Text(stringResource(StringKeyDosha.SHADBALA_CHESTA), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                    Text(stringResource(StringKeyDosha.SHADBALA_TOTAL), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                    Text(stringResource(StringKeyShadbala.SHADBALA_STHANA), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                    Text(stringResource(StringKeyShadbala.SHADBALA_DIG), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                    Text(stringResource(StringKeyShadbala.SHADBALA_KALA), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                    Text(stringResource(StringKeyShadbala.SHADBALA_CHESTA), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                    Text(stringResource(StringKeyShadbala.SHADBALA_TOTAL), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -1208,7 +1208,7 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                stringResource(StringKeyDosha.SHADBALA_INFO_TITLE),
+                stringResource(StringKeyShadbala.SHADBALA_INFO_TITLE),
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
@@ -1216,7 +1216,7 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Column {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_INFO_DESC),
+                    stringResource(StringKeyShadbala.SHADBALA_INFO_DESC),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary
                 )
@@ -1224,7 +1224,7 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_INFO_INTRO),
+                    stringResource(StringKeyShadbala.SHADBALA_INFO_INTRO),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1233,12 +1233,12 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 listOf(
-                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_1),
-                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_2),
-                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_3),
-                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_4),
-                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_5),
-                    stringResource(StringKeyDosha.SHADBALA_INFO_ITEM_6)
+                    stringResource(StringKeyShadbala.SHADBALA_INFO_ITEM_1),
+                    stringResource(StringKeyShadbala.SHADBALA_INFO_ITEM_2),
+                    stringResource(StringKeyShadbala.SHADBALA_INFO_ITEM_3),
+                    stringResource(StringKeyShadbala.SHADBALA_INFO_ITEM_4),
+                    stringResource(StringKeyShadbala.SHADBALA_INFO_ITEM_5),
+                    stringResource(StringKeyShadbala.SHADBALA_INFO_ITEM_6)
                 ).forEach { item ->
                     Text(
                         item,
@@ -1251,7 +1251,7 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyUI.BTN_CLOSE), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground

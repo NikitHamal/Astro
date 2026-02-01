@@ -76,8 +76,8 @@ fun BhriguBinduScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDosha.BHRIGU_BINDU_TITLE),
-            message = stringResource(StringKey.NO_PROFILE_MESSAGE),
+            title = stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_TITLE),
+            message = stringResource(StringKeyPart1.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
@@ -90,10 +90,10 @@ fun BhriguBinduScreen(
     var expandedLifeArea by remember { mutableStateOf<LifeArea?>(null) }
 
     val tabs = listOf(
-        stringResource(StringKeyMatch.TAB_OVERVIEW),
-        stringResource(StringKeyMatch.TAB_ANALYSIS),
-        stringResource(StringKeyDosha.BHRIGU_BINDU_TRANSITS),
-        stringResource(StringKeyDosha.BHRIGU_BINDU_REMEDIES)
+        stringResource(StringKeyUI.TAB_OVERVIEW),
+        stringResource(StringKeyUI.TAB_ANALYSIS),
+        stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_TRANSITS),
+        stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_REMEDIES)
     )
 
     // Calculate Bhrigu Bindu analysis
@@ -107,8 +107,8 @@ fun BhriguBinduScreen(
 
     if (bbAnalysis == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDosha.BHRIGU_BINDU_TITLE),
-            message = stringResource(StringKeyDosha.BHRIGU_BINDU_CALC_ERROR),
+            title = stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_TITLE),
+            message = stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_CALC_ERROR),
             onBack = onBack
         )
         return
@@ -125,7 +125,7 @@ fun BhriguBinduScreen(
                 title = {
                     Column {
                         Text(
-                            stringResource(StringKeyDosha.BHRIGU_BINDU_TITLE),
+                            stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             fontSize = 18.sp
@@ -141,7 +141,7 @@ fun BhriguBinduScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -150,7 +150,7 @@ fun BhriguBinduScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDosha.BHRIGU_BINDU_ABOUT),
+                            contentDescription = stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_ABOUT),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -271,7 +271,7 @@ private fun BhriguBinduOverviewTab(
             ) {
                 // Title
                 Text(
-                    stringResource(StringKeyDosha.BHRIGU_BINDU_SUBTITLE),
+                    stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_SUBTITLE),
                     style = MaterialTheme.typography.titleSmall,
                     color = AppTheme.TextMuted
                 )
@@ -302,7 +302,7 @@ private fun BhriguBinduOverviewTab(
                             color = AppTheme.AccentGold
                         )
                         Text(
-                            stringResource(StringKeyDosha.BHRIGU_BINDU_LONGITUDE),
+                            stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_LONGITUDE),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -321,7 +321,7 @@ private fun BhriguBinduOverviewTab(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            stringResource(StringKeyDosha.BHRIGU_BINDU_CALCULATION),
+                            stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_CALCULATION),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.AccentTeal
@@ -347,12 +347,12 @@ private fun BhriguBinduOverviewTab(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     BBInfoChip(
-                        label = stringResource(StringKeyDosha.BHRIGU_BINDU_SIGN),
+                        label = stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_SIGN),
                         value = analysis.bhriguBinduSign.getLocalizedName(language),
                         icon = Icons.Filled.Star
                     )
                     BBInfoChip(
-                        label = stringResource(StringKeyDosha.BHRIGU_BINDU_HOUSE),
+                        label = stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_HOUSE),
                         value = analysis.bhriguBinduHouse.toString(),
                         icon = Icons.Filled.Home
                     )
@@ -370,7 +370,7 @@ private fun BhriguBinduOverviewTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.BHRIGU_BINDU_NAKSHATRA),
+                    stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_NAKSHATRA),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -378,17 +378,17 @@ private fun BhriguBinduOverviewTab(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 BBDetailRow(
-                    label = stringResource(StringKeyDosha.BHRIGU_BINDU_NAKSHATRA),
+                    label = stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_NAKSHATRA),
                     value = analysis.bhriguBinduNakshatra.getLocalizedName(language)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 BBDetailRow(
-                    label = stringResource(StringKeyDosha.BHRIGU_BINDU_PADA),
+                    label = stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_PADA),
                     value = analysis.bhriguBinduPada.toString()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 BBDetailRow(
-                    label = stringResource(StringKeyDosha.BHRIGU_BINDU_NAKSHATRA_LORD),
+                    label = stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_NAKSHATRA_LORD),
                     value = analysis.nakshatraLord.getLocalizedName(language)
                 )
             }
@@ -412,7 +412,7 @@ private fun BhriguBinduOverviewTab(
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            stringResource(StringKeyDosha.BHRIGU_BINDU_STRENGTH),
+                            stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_STRENGTH),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -442,12 +442,12 @@ private fun BhriguBinduOverviewTab(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     InfluenceIndicator(
-                        label = stringResource(StringKeyAnalysis.BENEFIC),
+                        label = stringResource(StringKeyAnalysisPart2.BENEFIC),
                         value = analysis.strengthAssessment.beneficInfluence,
                         color = AppTheme.SuccessColor
                     )
                     InfluenceIndicator(
-                        label = stringResource(StringKeyAnalysis.MALEFIC),
+                        label = stringResource(StringKeyAnalysisPart2.MALEFIC),
                         value = analysis.strengthAssessment.maleficInfluence,
                         color = AppTheme.WarningColor
                     )
@@ -465,7 +465,7 @@ private fun BhriguBinduOverviewTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyAnalysis.LORDS),
+                    stringResource(StringKeyAnalysisPart2.LORDS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -473,13 +473,13 @@ private fun BhriguBinduOverviewTab(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 PlanetLordRow(
-                    label = stringResource(StringKeyDosha.BHRIGU_BINDU_LORD),
+                    label = stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_LORD),
                     planet = analysis.bhriguBinduLord,
                     language = language
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 PlanetLordRow(
-                    label = stringResource(StringKeyDosha.BHRIGU_BINDU_NAKSHATRA_LORD),
+                    label = stringResource(StringKeyDoshaPart1.BHRIGU_BINDU_NAKSHATRA_LORD),
                     planet = analysis.nakshatraLord,
                     language = language
                 )
@@ -504,7 +504,7 @@ private fun BhriguBinduOverviewTab(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            stringResource(StringKeyDosha.BHRIGU_BINDU_CONJUNCTIONS),
+                            stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_CONJUNCTIONS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -549,7 +549,7 @@ private fun BhriguBinduAnalysisTab(
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        stringResource(StringKeyDosha.BHRIGU_BINDU_KARMIC_SIGNIFICANCE),
+                        stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_KARMIC_SIGNIFICANCE),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -577,7 +577,7 @@ private fun BhriguBinduAnalysisTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.POSITION_INTERPRETATION),
+                    stringResource(StringKeyDoshaPart2.POSITION_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -596,7 +596,7 @@ private fun BhriguBinduAnalysisTab(
 
         // Strength Factors
         Text(
-            stringResource(StringKeyDosha.STRENGTH_FACTORS),
+            stringResource(StringKeyUI.STRENGTH_FACTORS),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = AppTheme.TextPrimary,
@@ -616,7 +616,7 @@ private fun BhriguBinduAnalysisTab(
 
         // Life Area Influences
         Text(
-            stringResource(StringKeyDosha.BHRIGU_BINDU_LIFE_AREAS),
+            stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_LIFE_AREAS),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = AppTheme.TextPrimary,
@@ -637,7 +637,7 @@ private fun BhriguBinduAnalysisTab(
         // Aspecting Planets
         if (analysis.aspectingPlanets.isNotEmpty()) {
             Text(
-                stringResource(StringKeyDosha.BHRIGU_BINDU_ASPECTS),
+                stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_ASPECTS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary,
@@ -690,7 +690,7 @@ private fun BhriguBinduTransitsTab(
 
         // Current Transits
         Text(
-            stringResource(StringKeyDosha.CURRENT_PLANETARY_POSITIONS),
+            stringResource(StringKeyDoshaPart2.CURRENT_PLANETARY_POSITIONS),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = AppTheme.TextPrimary,
@@ -707,7 +707,7 @@ private fun BhriguBinduTransitsTab(
         // Upcoming Transits
         if (analysis.transitAnalysis.upcomingTransits.isNotEmpty()) {
             Text(
-                stringResource(StringKeyDosha.UPCOMING_TRANSITS),
+                stringResource(StringKeyDoshaPart2.UPCOMING_TRANSITS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary,
@@ -746,7 +746,7 @@ private fun BhriguBinduTransitsTab(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                text = stringResource(StringKeyDosha.TRANSIT_TIMING_DESC),
+                text = stringResource(StringKeyTransit.TRANSIT_TIMING_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary,
                     lineHeight = 18.sp
@@ -764,7 +764,7 @@ private fun BhriguBinduRemediesTab(
     Column(modifier = Modifier.padding(16.dp)) {
         // Recommendations
         Text(
-            stringResource(StringKeyDosha.BHRIGU_BINDU_RECOMMENDATIONS),
+            stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_RECOMMENDATIONS),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = AppTheme.TextPrimary,
@@ -780,7 +780,7 @@ private fun BhriguBinduRemediesTab(
 
         // Remedial Measures
         Text(
-            stringResource(StringKeyDosha.BHRIGU_BINDU_REMEDIES),
+            stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_REMEDIES),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = AppTheme.TextPrimary,
@@ -810,7 +810,7 @@ private fun BhriguBinduRemediesTab(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        stringResource(StringKeyDosha.BHRIGU_BINDU_AUSPICIOUS_DAYS),
+                        stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_AUSPICIOUS_DAYS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1209,7 +1209,7 @@ private fun AspectingPlanetCard(
                 )
                 if (aspectingPlanet.isApplying) {
                     Text(
-                        stringResource(StringKeyDosha.APPLYING),
+                        stringResource(StringKeyDoshaPart2.APPLYING),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.AccentTeal
                     )
@@ -1276,7 +1276,7 @@ private fun TransitCard(
                         shape = RoundedCornerShape(6.dp)
                     ) {
                         Text(
-                            stringResource(StringKeyDosha.CONJUNCT),
+                            stringResource(StringKeyDoshaPart2.CONJUNCT),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.AccentGold,
@@ -1438,7 +1438,7 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                stringResource(StringKeyDosha.BHRIGU_BINDU_ABOUT),
+                stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_ABOUT),
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
@@ -1446,7 +1446,7 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
         text = {
             Column {
                 Text(
-                    stringResource(StringKeyDosha.BHRIGU_BINDU_ABOUT_DESC),
+                    stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_ABOUT_DESC),
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary,
                     lineHeight = 20.sp
@@ -1458,14 +1458,14 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(
-                            stringResource(StringKeyDosha.BHRIGU_BINDU_CALCULATION),
+                            stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_CALCULATION),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.AccentTeal
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            stringResource(StringKeyDosha.BHRIGU_BINDU_ABOUT_DESC),
+                            stringResource(StringKeyDoshaPart2.BHRIGU_BINDU_ABOUT_DESC),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary,
                             lineHeight = 16.sp
@@ -1476,7 +1476,7 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyUI.BTN_CLOSE), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground
@@ -1489,11 +1489,11 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
 
 @Composable
 private fun getStrengthText(strength: OverallStrength): String = when (strength) {
-    OverallStrength.EXCELLENT -> stringResource(StringKeyAnalysis.STRENGTH_EXCELLENT)
-    OverallStrength.GOOD -> stringResource(StringKeyAnalysis.STRENGTH_GOOD)
-    OverallStrength.MODERATE -> stringResource(StringKeyAnalysis.STRENGTH_MODERATE)
-    OverallStrength.CHALLENGING -> stringResource(StringKeyAnalysis.STRENGTH_CHALLENGING)
-    OverallStrength.DIFFICULT -> stringResource(StringKeyAnalysis.STRENGTH_DIFFICULT)
+    OverallStrength.EXCELLENT -> stringResource(StringKeyUI.STRENGTH_EXCELLENT)
+    OverallStrength.GOOD -> stringResource(StringKeyUI.STRENGTH_GOOD)
+    OverallStrength.MODERATE -> stringResource(StringKeyUI.STRENGTH_MODERATE)
+    OverallStrength.CHALLENGING -> stringResource(StringKeyUI.STRENGTH_CHALLENGING)
+    OverallStrength.DIFFICULT -> stringResource(StringKeyUI.STRENGTH_DIFFICULT)
 }
 
 @Composable
@@ -1543,11 +1543,11 @@ private fun getAreaInfluenceColor(influence: AreaInfluence): Color = when (influ
 
 @Composable
 private fun getAreaInfluenceName(influence: AreaInfluence): String = when (influence) {
-    AreaInfluence.VERY_FAVORABLE -> stringResource(StringKeyAnalysis.INFLUENCE_VERY_FAVORABLE)
-    AreaInfluence.FAVORABLE -> stringResource(StringKeyAnalysis.INFLUENCE_FAVORABLE)
-    AreaInfluence.NEUTRAL -> stringResource(StringKeyAnalysis.INFLUENCE_NEUTRAL)
-    AreaInfluence.CHALLENGING -> stringResource(StringKeyAnalysis.STRENGTH_CHALLENGING)
-    AreaInfluence.NEEDS_ATTENTION -> stringResource(StringKeyAnalysis.INFLUENCE_NEEDS_ATTENTION)
+    AreaInfluence.VERY_FAVORABLE -> stringResource(StringKeyAnalysisPart2.INFLUENCE_VERY_FAVORABLE)
+    AreaInfluence.FAVORABLE -> stringResource(StringKeyAnalysisPart2.INFLUENCE_FAVORABLE)
+    AreaInfluence.NEUTRAL -> stringResource(StringKeyAnalysisPart2.INFLUENCE_NEUTRAL)
+    AreaInfluence.CHALLENGING -> stringResource(StringKeyUI.STRENGTH_CHALLENGING)
+    AreaInfluence.NEEDS_ATTENTION -> stringResource(StringKeyAnalysisPart2.INFLUENCE_NEEDS_ATTENTION)
 }
 
 private fun getLifeAreaIcon(area: LifeArea): ImageVector = when (area) {
@@ -1563,22 +1563,22 @@ private fun getLifeAreaIcon(area: LifeArea): ImageVector = when (area) {
 
 @Composable
 private fun getLifeAreaName(area: LifeArea): String = when (area) {
-    LifeArea.CAREER -> stringResource(StringKeyAnalysis.AREA_CAREER)
-    LifeArea.RELATIONSHIPS -> stringResource(StringKeyAnalysis.AREA_RELATIONSHIPS)
-    LifeArea.HEALTH -> stringResource(StringKeyAnalysis.AREA_HEALTH)
-    LifeArea.SPIRITUALITY -> stringResource(StringKeyAnalysis.AREA_SPIRITUALITY)
-    LifeArea.WEALTH -> stringResource(StringKeyAnalysis.AREA_WEALTH)
-    LifeArea.FAMILY -> stringResource(StringKeyAnalysis.AREA_FAMILY)
-    LifeArea.EDUCATION -> stringResource(StringKeyAnalysis.AREA_EDUCATION)
-    LifeArea.FOREIGN_CONNECTIONS -> stringResource(StringKeyAnalysis.AREA_FOREIGN_CONNECTIONS)
+    LifeArea.CAREER -> stringResource(StringKeyAnalysisPart2.AREA_CAREER)
+    LifeArea.RELATIONSHIPS -> stringResource(StringKeyAnalysisPart2.AREA_RELATIONSHIPS)
+    LifeArea.HEALTH -> stringResource(StringKeyAnalysisPart2.AREA_HEALTH)
+    LifeArea.SPIRITUALITY -> stringResource(StringKeyAnalysisPart2.AREA_SPIRITUALITY)
+    LifeArea.WEALTH -> stringResource(StringKeyAnalysisPart2.AREA_WEALTH)
+    LifeArea.FAMILY -> stringResource(StringKeyAnalysisPart2.AREA_FAMILY)
+    LifeArea.EDUCATION -> stringResource(StringKeyAnalysisPart2.AREA_EDUCATION)
+    LifeArea.FOREIGN_CONNECTIONS -> stringResource(StringKeyAnalysisPart2.AREA_FOREIGN_CONNECTIONS)
 }
 
 @Composable
 private fun getAspectTypeName(aspectType: AspectType): String = when (aspectType) {
-    AspectType.CONJUNCTION -> stringResource(StringKeyAnalysis.ASPECT_CONJUNCTION)
-    AspectType.OPPOSITION -> stringResource(StringKeyAnalysis.ASPECT_OPPOSITION)
-    AspectType.TRINE -> stringResource(StringKeyAnalysis.ASPECT_TRINE)
-    AspectType.SQUARE -> stringResource(StringKeyAnalysis.ASPECT_SQUARE)
+    AspectType.CONJUNCTION -> stringResource(StringKeyMatchPart1.ASPECT_CONJUNCTION)
+    AspectType.OPPOSITION -> stringResource(StringKeyAnalysisPart2.ASPECT_OPPOSITION)
+    AspectType.TRINE -> stringResource(StringKeyAnalysisPart2.ASPECT_TRINE)
+    AspectType.SQUARE -> stringResource(StringKeyAnalysisPart2.ASPECT_SQUARE)
     AspectType.SEXTILE -> "Sextile"
     AspectType.SPECIAL_ASPECT -> "Special Aspect"
 }

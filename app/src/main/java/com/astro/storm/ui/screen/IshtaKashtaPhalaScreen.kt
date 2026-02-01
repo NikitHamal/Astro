@@ -108,11 +108,11 @@ fun IshtaKashtaPhalaScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyDosha.UI_OVERVIEW),
-        stringResource(StringKeyDosha.ISHTA_KASHTA_TAB_PLANETS),
-        stringResource(StringKeyDosha.ISHTA_KASHTA_TAB_LIFE_AREAS),
-        stringResource(StringKeyDosha.UI_TIMING),
-        stringResource(StringKeyDosha.UI_RECOMMENDATIONS)
+        stringResource(StringKeyUI.UI_OVERVIEW),
+        stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_TAB_PLANETS),
+        stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_TAB_LIFE_AREAS),
+        stringResource(StringKeyUI.UI_TIMING),
+        stringResource(StringKeyUI.UI_RECOMMENDATIONS)
     )
 
     LaunchedEffect(chart) {
@@ -137,13 +137,13 @@ fun IshtaKashtaPhalaScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_SCREEN_TITLE),
+                            text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_SUBTITLE),
+                            text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -314,13 +314,13 @@ private fun OverallDispositionCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_ISHTA),
+                    text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_ISHTA),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.SuccessColor,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_KASHTA),
+                    text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_KASHTA),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.ErrorColor,
                     fontWeight = FontWeight.SemiBold
@@ -371,19 +371,19 @@ private fun IshtaKashtaQuickStats(analysis: IshtaKashtaPhalaCalculator.IshtaKash
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         IshtaKashtaStatCard(
-            title = stringResource(StringKeyDosha.ISHTA_KASHTA_BENEFIC),
+            title = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_BENEFIC),
             value = "${analysis.beneficPlanets.size}",
             color = AppTheme.SuccessColor,
             modifier = Modifier.weight(1f)
         )
         IshtaKashtaStatCard(
-            title = stringResource(StringKeyDosha.ISHTA_KASHTA_NEUTRAL),
+            title = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_NEUTRAL),
             value = "${analysis.neutralPlanets.size}",
             color = AppTheme.AccentGold,
             modifier = Modifier.weight(1f)
         )
         IshtaKashtaStatCard(
-            title = stringResource(StringKeyDosha.ISHTA_KASHTA_MALEFIC),
+            title = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_MALEFIC),
             value = "${analysis.maleficPlanets.size}",
             color = AppTheme.ErrorColor,
             modifier = Modifier.weight(1f)
@@ -445,7 +445,7 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.UI_INTERPRETATION),
+                    text = stringResource(StringKeyUI.UI_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -479,7 +479,7 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                             color = AppTheme.SuccessColor
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_MOST_BENEFIC),
+                            text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_MOST_BENEFIC),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted,
                             textAlign = TextAlign.Center
@@ -501,7 +501,7 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                             color = AppTheme.ErrorColor
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_MOST_MALEFIC),
+                            text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_MOST_MALEFIC),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted,
                             textAlign = TextAlign.Center
@@ -705,7 +705,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_UCCHA_BALA),
+                                    text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_UCCHA_BALA),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = AppTheme.TextMuted
                                 )
@@ -727,7 +727,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_CHESTA_BALA),
+                                    text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_CHESTA_BALA),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = AppTheme.TextMuted
                                 )
@@ -752,7 +752,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                     if (phala.affectedAreas.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_AFFECTS),
+                            text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_AFFECTS),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -807,7 +807,7 @@ private fun LifeAreaImpactSection(analysis: IshtaKashtaPhalaCalculator.IshtaKash
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.ISHTA_KASHTA_LIFE_AREAS),
+                        text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_LIFE_AREAS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -909,7 +909,7 @@ private fun LifeAreaImpactRow(impact: IshtaKashtaPhalaCalculator.LifeAreaImpact)
                         Spacer(modifier = Modifier.height(4.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(
-                                text = stringResource(StringKeyDosha.ISHTA_KASHTA_INFLUENCED_BY),
+                                text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_INFLUENCED_BY),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -953,7 +953,7 @@ private fun PeriodPredictionSection(analysis: IshtaKashtaPhalaCalculator.IshtaKa
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.ISHTA_KASHTA_PERIOD_PREDICTIONS),
+                        text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_PERIOD_PREDICTIONS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1037,7 +1037,7 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
 
                     if (period.expectedBenefits.isNotEmpty()) {
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_BENEFITS),
+                            text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_BENEFITS),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor
@@ -1054,7 +1054,7 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
                     if (period.expectedChallenges.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_CHALLENGES),
+                            text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_CHALLENGES),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.WarningColor
@@ -1098,7 +1098,7 @@ private fun RecommendationsSection(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
+                        text = stringResource(StringKeyUI.UI_RECOMMENDATIONS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1169,7 +1169,7 @@ private fun IshtaKashtaLoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.ISHTA_KASHTA_ANALYZING),
+                text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1195,14 +1195,14 @@ private fun IshtaKashtaEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+                text = stringResource(StringKeyUI.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.ISHTA_KASHTA_NO_CHART_DESC),
+                text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_NO_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1217,14 +1217,14 @@ private fun IshtaKashtaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(StringKeyDosha.ISHTA_KASHTA_ABOUT_TITLE),
+                text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = stringResource(StringKeyDosha.ISHTA_KASHTA_ABOUT_DESC),
+                text = stringResource(StringKeyDoshaPart4.ISHTA_KASHTA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
@@ -1232,7 +1232,7 @@ private fun IshtaKashtaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.AccentPrimary)
             }
         },
         containerColor = AppTheme.CardBackground

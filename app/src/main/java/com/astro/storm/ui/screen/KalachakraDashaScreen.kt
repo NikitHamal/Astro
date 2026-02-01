@@ -154,7 +154,7 @@ fun KalachakraDashaScreen(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
             KalachakraDashaTopBar(
-                chartName = chart?.birthData?.name ?: stringResource(StringKeyMatch.MISC_UNKNOWN),
+                chartName = chart?.birthData?.name ?: stringResource(StringKeyMatchPart1.MISC_UNKNOWN),
                 currentPeriodInfo = currentPeriodInfo,
                 onBack = onBack
             )
@@ -250,7 +250,7 @@ private fun KalachakraDashaTopBar(
             title = {
                 Column(modifier = Modifier.fillMaxWidth(0.85f)) {
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_DASHA_TITLE),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_DASHA_TITLE),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
@@ -268,7 +268,7 @@ private fun KalachakraDashaTopBar(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKey.BTN_BACK),
+                        contentDescription = stringResource(StringKeyUI.BTN_BACK),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -299,7 +299,7 @@ private fun TopBarSubtitleContent(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = stringResource(StringKey.DASHA_CALCULATING),
+                    text = stringResource(StringKeyPart1.DASHA_CALCULATING),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
                     fontSize = 12.sp
@@ -307,7 +307,7 @@ private fun TopBarSubtitleContent(
             }
             periodInfo.hasError -> {
                 Text(
-                    text = "${stringResource(StringKey.DASHA_ERROR)} • $chartName",
+                    text = "${stringResource(StringKeyPart1.DASHA_ERROR)} • $chartName",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error,
                     fontSize = 12.sp,
@@ -349,9 +349,9 @@ private fun KalachakraTabRow(
     onTabSelected: (Int) -> Unit
 ) {
     val tabs = listOf(
-        TabItem(title = stringResource(StringKeyDosha.KALACHAKRA_CURRENT)),
-        TabItem(title = stringResource(StringKeyDosha.KALACHAKRA_DEHA_JEEVA)),
-        TabItem(title = stringResource(StringKeyDosha.KALACHAKRA_TIMELINE))
+        TabItem(title = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_CURRENT)),
+        TabItem(title = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_DEHA_JEEVA)),
+        TabItem(title = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_TIMELINE))
     )
 
     ModernPillTabRow(
@@ -452,14 +452,14 @@ private fun CurrentPeriodCard(
                 Spacer(modifier = Modifier.width(14.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_CURRENT),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_CURRENT),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_DASHA_SUBTITLE),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_DASHA_SUBTITLE),
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -469,7 +469,7 @@ private fun CurrentPeriodCard(
 
             if (currentMahadasha != null) {
                 SignPeriodRow(
-                    label = stringResource(StringKey.DASHA_MAHADASHA),
+                    label = stringResource(StringKeyPart1.DASHA_MAHADASHA),
                     sign = currentMahadasha.sign,
                     startDate = currentMahadasha.startDate,
                     endDate = currentMahadasha.endDate,
@@ -485,7 +485,7 @@ private fun CurrentPeriodCard(
                 currentAntardasha?.let { ad ->
                     Spacer(modifier = Modifier.height(14.dp))
                     SignPeriodRow(
-                        label = stringResource(StringKey.DASHA_ANTARDASHA),
+                        label = stringResource(StringKeyPart1.DASHA_ANTARDASHA),
                         sign = ad.sign,
                         startDate = ad.startDate,
                         endDate = ad.endDate,
@@ -593,7 +593,7 @@ private fun SignPeriodRow(
                                 color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                             ) {
                                 Text(
-                                    text = stringResource(StringKeyDosha.KALACHAKRA_DEHA),
+                                    text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_DEHA),
                                     fontSize = 9.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = AppTheme.SuccessColor,
@@ -607,7 +607,7 @@ private fun SignPeriodRow(
                                 color = AppTheme.InfoColor.copy(alpha = 0.15f)
                             ) {
                                 Text(
-                                    text = stringResource(StringKeyDosha.KALACHAKRA_JEEVA),
+                                    text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_JEEVA),
                                     fontSize = 9.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = AppTheme.InfoColor,
@@ -684,7 +684,7 @@ private fun CurrentEffectsSection(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.KALACHAKRA_EFFECTS),
+                    text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_EFFECTS),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.AccentGold
@@ -734,7 +734,7 @@ private fun NakshatraGroupCard(
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_NAKSHATRA_GROUP),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_NAKSHATRA_GROUP),
                         fontSize = 14.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -756,12 +756,12 @@ private fun NakshatraGroupCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 InfoItem(
-                    label = stringResource(StringKeyDosha.KALACHAKRA_BIRTH_NAKSHATRA),
+                    label = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_BIRTH_NAKSHATRA),
                     value = result.birthNakshatra.localizedName(),
                     color = AppTheme.TextPrimary
                 )
                 InfoItem(
-                    label = stringResource(StringKeyDosha.KALACHAKRA_PADA),
+                    label = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_PADA),
                     value = result.birthNakshatraPada.localized(),
                     color = AppTheme.TextSecondary
                 )
@@ -785,7 +785,7 @@ private fun NakshatraGroupCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(StringKeyDosha.KALACHAKRA_APPLICABILITY),
+                    text = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_APPLICABILITY),
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
@@ -838,7 +838,7 @@ private fun HealthIndicatorCard(
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_HEALTH_INDICATOR),
+                        text = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_HEALTH_INDICATOR),
                         fontSize = 14.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -879,7 +879,7 @@ private fun HealthIndicatorCard(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = stringResource(StringKeyDosha.KALACHAKRA_PARAMA_AYUSH),
+                            text = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_PARAMA_AYUSH),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.SuccessColor
@@ -940,7 +940,7 @@ private fun InterpretationCard(
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_INTERPRETATION),
+                        text = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_INTERPRETATION),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -974,7 +974,7 @@ private fun InterpretationCard(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_GUIDANCE),
+                        text = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_GUIDANCE),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.AccentGold
@@ -1044,7 +1044,7 @@ private fun AboutKalachakraCard() {
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_DASHA_ABOUT),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_DASHA_ABOUT),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1067,7 +1067,7 @@ private fun AboutKalachakraCard() {
             ) {
                 Column(modifier = Modifier.padding(top = 18.dp)) {
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_DASHA_ABOUT_DESC),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_DASHA_ABOUT_DESC),
                         fontSize = 13.sp,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
@@ -1141,14 +1141,14 @@ private fun DehaJeevaOverviewCard(
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = stringResource(StringKeyDosha.KALACHAKRA_DEHA_JEEVA_TITLE),
+                text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_DEHA_JEEVA_TITLE),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(StringKeyDosha.KALACHAKRA_DEHA_JEEVA_SUBTITLE),
+                text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_DEHA_JEEVA_SUBTITLE),
                 fontSize = 12.sp,
                 color = AppTheme.TextMuted
             )
@@ -1180,7 +1180,7 @@ private fun DehaJeevaOverviewCard(
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_DEHA),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_DEHA),
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -1192,7 +1192,7 @@ private fun DehaJeevaOverviewCard(
                         color = dehaColor
                     )
                     Text(
-                        text = "(${stringResource(StringKeyDosha.KALACHAKRA_BODY)})",
+                        text = "(${stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_BODY)})",
                         fontSize = 11.sp,
                         color = AppTheme.TextMuted
                     )
@@ -1233,7 +1233,7 @@ private fun DehaJeevaOverviewCard(
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_JEEVA),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_JEEVA),
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -1245,7 +1245,7 @@ private fun DehaJeevaOverviewCard(
                         color = jeevaColor
                     )
                     Text(
-                        text = "(${stringResource(StringKeyDosha.KALACHAKRA_SOUL)})",
+                        text = "(${stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_SOUL)})",
                         fontSize = 11.sp,
                         color = AppTheme.TextMuted
                     )
@@ -1277,7 +1277,7 @@ private fun DehaAnalysisCard(
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.KALACHAKRA_DEHA_ANALYSIS),
+                    text = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_DEHA_ANALYSIS),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1291,12 +1291,12 @@ private fun DehaAnalysisCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 InfoItem(
-                    label = stringResource(StringKeyDosha.KALACHAKRA_DEHA_LORD),
+                    label = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_DEHA_LORD),
                     value = analysis.dehaLord.getLocalizedName(language),
                     color = AppTheme.TextPrimary
                 )
                 InfoItem(
-                    label = stringResource(StringKeyDosha.KALACHAKRA_STRENGTH),
+                    label = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_STRENGTH),
                     value = analysis.dehaLordStrength.split(" - ").firstOrNull() ?: analysis.dehaLordStrength,
                     color = AppTheme.TextSecondary
                 )
@@ -1336,7 +1336,7 @@ private fun JeevaAnalysisCard(
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.KALACHAKRA_JEEVA_ANALYSIS),
+                    text = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_JEEVA_ANALYSIS),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1350,12 +1350,12 @@ private fun JeevaAnalysisCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 InfoItem(
-                    label = stringResource(StringKeyDosha.KALACHAKRA_JEEVA_LORD),
+                    label = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_JEEVA_LORD),
                     value = analysis.jeevaLord.getLocalizedName(language),
                     color = AppTheme.TextPrimary
                 )
                 InfoItem(
-                    label = stringResource(StringKeyDosha.KALACHAKRA_STRENGTH),
+                    label = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_STRENGTH),
                     value = analysis.jeevaLordStrength.split(" - ").firstOrNull() ?: analysis.jeevaLordStrength,
                     color = AppTheme.TextSecondary
                 )
@@ -1404,7 +1404,7 @@ private fun RelationshipCard(
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_RELATIONSHIP),
+                        text = stringResource(StringKeyDashaInterpretationsPart2.KALACHAKRA_RELATIONSHIP),
                         fontSize = 14.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -1444,7 +1444,7 @@ private fun RecommendationsCard(
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
-                text = stringResource(StringKeyMatch.DASHA_RECOMMENDATIONS),
+                text = stringResource(StringKeyMatchPart2.DASHA_RECOMMENDATIONS),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentGold
@@ -1542,13 +1542,13 @@ private fun TimelineHeaderCard(
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_TIMELINE),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_TIMELINE),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = "${result.mahadashas.size} ${stringResource(StringKey.DASHA_PERIOD)}",
+                        text = "${result.mahadashas.size} ${stringResource(StringKeyPart1.DASHA_PERIOD)}",
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted
                     )
@@ -1641,7 +1641,7 @@ private fun MahadashaCard(
                                     color = signColor.copy(alpha = 0.2f)
                                 ) {
                                     Text(
-                                        text = stringResource(StringKey.DASHA_ACTIVE),
+                                        text = stringResource(StringKeyPart1.DASHA_ACTIVE),
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = signColor,
@@ -1718,7 +1718,7 @@ private fun MahadashaCard(
                         modifier = Modifier.padding(bottom = 12.dp)
                     ) {
                         Text(
-                            text = stringResource(StringKey.DASHA_ANTARDASHA),
+                            text = stringResource(StringKeyPart1.DASHA_ANTARDASHA),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextSecondary
@@ -1729,7 +1729,7 @@ private fun MahadashaCard(
                             color = AppTheme.CardBackgroundElevated
                         ) {
                             Text(
-                                text = "${mahadasha.antardashas.size} ${stringResource(StringKey.DASHA_PERIOD)}",
+                                text = "${mahadasha.antardashas.size} ${stringResource(StringKeyPart1.DASHA_PERIOD)}",
                                 fontSize = 10.sp,
                                 color = AppTheme.TextMuted,
                                 fontWeight = FontWeight.Medium,
@@ -1833,7 +1833,7 @@ private fun AntardashaRow(
                                 color = AppTheme.SuccessColor.copy(alpha = 0.2f)
                             ) {
                                 Text(
-                                    text = stringResource(StringKeyDosha.KALACHAKRA_DEHA),
+                                    text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_DEHA),
                                     fontSize = 8.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = AppTheme.SuccessColor,
@@ -1847,7 +1847,7 @@ private fun AntardashaRow(
                                 color = AppTheme.InfoColor.copy(alpha = 0.2f)
                             ) {
                                 Text(
-                                    text = stringResource(StringKeyDosha.KALACHAKRA_JEEVA),
+                                    text = stringResource(StringKeyDashaInterpretationsPart1.KALACHAKRA_JEEVA),
                                     fontSize = 8.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = AppTheme.InfoColor,
@@ -1868,7 +1868,7 @@ private fun AntardashaRow(
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = "${antardasha.durationMonths.localized(1)} ${stringResource(StringKey.UNIT_MONTHS)}",
+                text = "${antardasha.durationMonths.localized(1)} ${stringResource(StringKeyPart1.UNIT_MONTHS)}",
                 fontSize = 10.sp,
                 color = AppTheme.TextMuted.copy(alpha = 0.8f)
             )
@@ -1918,7 +1918,7 @@ private fun EmptyPeriodState() {
             )
             Spacer(modifier = Modifier.height(14.dp))
             Text(
-                text = stringResource(StringKey.DASHA_NO_ACTIVE_PERIOD),
+                text = stringResource(StringKeyPart1.DASHA_NO_ACTIVE_PERIOD),
                 fontSize = 14.sp,
                 color = AppTheme.TextMuted
             )
@@ -1959,14 +1959,14 @@ private fun LoadingContent() {
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(StringKey.DASHA_CALCULATING_TIMELINE),
+                text = stringResource(StringKeyPart1.DASHA_CALCULATING_TIMELINE),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKey.DASHA_CALCULATING_DESC),
+                text = stringResource(StringKeyPart1.DASHA_CALCULATING_DESC),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
@@ -2006,7 +2006,7 @@ private fun ErrorContent(
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(StringKey.DASHA_CALCULATION_FAILED),
+                text = stringResource(StringKeyPart1.DASHA_CALCULATION_FAILED),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -2028,7 +2028,7 @@ private fun ErrorContent(
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = stringResource(StringKey.BTN_TRY_AGAIN),
+                    text = stringResource(StringKeyUI.BTN_TRY_AGAIN),
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                 )
@@ -2064,14 +2064,14 @@ private fun EmptyContent(onBack: () -> Unit) {
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(StringKey.DASHA_NO_CHART_SELECTED),
+                text = stringResource(StringKeyPart1.DASHA_NO_CHART_SELECTED),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKey.DASHA_NO_CHART_MESSAGE),
+                text = stringResource(StringKeyPart1.DASHA_NO_CHART_MESSAGE),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
@@ -2083,7 +2083,7 @@ private fun EmptyContent(onBack: () -> Unit) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = stringResource(StringKey.BTN_GO_BACK),
+                    text = stringResource(StringKeyUI.BTN_GO_BACK),
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                 )
@@ -2135,11 +2135,11 @@ private fun getApplicabilityColor(score: Int): Color {
  */
 private fun getHealthLocalizedName(health: KalachakraDashaCalculator.HealthIndicator, language: Language): String {
     return when (health) {
-        KalachakraDashaCalculator.HealthIndicator.EXCELLENT -> StringResources.get(StringKeyDosha.STRENGTH_EXCELLENT, language)
-        KalachakraDashaCalculator.HealthIndicator.GOOD -> StringResources.get(StringKeyDosha.STRENGTH_GOOD, language)
-        KalachakraDashaCalculator.HealthIndicator.MODERATE -> StringResources.get(StringKeyDosha.STRENGTH_AVERAGE, language)
-        KalachakraDashaCalculator.HealthIndicator.CHALLENGING -> StringResources.get(StringKeyDosha.YOGINI_NATURE_CHALLENGING, language)
-        KalachakraDashaCalculator.HealthIndicator.CRITICAL -> StringResources.get(StringKeyDosha.STRENGTH_VERY_WEAK, language)
+        KalachakraDashaCalculator.HealthIndicator.EXCELLENT -> StringResources.get(StringKeyUI.STRENGTH_EXCELLENT, language)
+        KalachakraDashaCalculator.HealthIndicator.GOOD -> StringResources.get(StringKeyUI.STRENGTH_GOOD, language)
+        KalachakraDashaCalculator.HealthIndicator.MODERATE -> StringResources.get(StringKeyUI.STRENGTH_AVERAGE, language)
+        KalachakraDashaCalculator.HealthIndicator.CHALLENGING -> StringResources.get(StringKeyDashaInterpretationsPart1.YOGINI_NATURE_CHALLENGING, language)
+        KalachakraDashaCalculator.HealthIndicator.CRITICAL -> StringResources.get(StringKeyUI.STRENGTH_VERY_WEAK, language)
     }
 }
 

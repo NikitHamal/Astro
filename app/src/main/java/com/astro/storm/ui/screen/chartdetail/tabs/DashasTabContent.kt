@@ -277,7 +277,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
                 Spacer(modifier = Modifier.width(14.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyMatch.DASHA_CURRENT_DASHA_PERIOD),
+                        text = stringResource(StringKeyMatchPart1.DASHA_CURRENT_DASHA_PERIOD),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.TextPrimary,
@@ -300,7 +300,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
             if (currentMahadasha != null) {
                 Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
                     DashaPeriodRow(
-                        label = stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA),
+                        label = stringResource(StringKeyMatchPart1.DASHA_LEVEL_MAHADASHA),
                         planet = currentMahadasha.planet,
                         startDate = currentMahadasha.startDate.toLocalDate(),
                         endDate = currentMahadasha.endDate.toLocalDate(),
@@ -311,7 +311,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
 
                     currentAntardasha?.let { ad ->
                         DashaPeriodRow(
-                            label = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA),
+                            label = stringResource(StringKeyMatchPart1.DASHA_LEVEL_ANTARDASHA),
                             planet = ad.planet,
                             startDate = ad.startDate.toLocalDate(),
                             endDate = ad.endDate.toLocalDate(),
@@ -323,7 +323,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
 
                     currentPratyantardasha?.let { pd ->
                         DashaPeriodRow(
-                            label = stringResource(StringKeyMatch.DASHA_LEVEL_PRATYANTARDASHA),
+                            label = stringResource(StringKeyMatchPart1.DASHA_LEVEL_PRATYANTARDASHA),
                             planet = pd.planet,
                             startDate = pd.startDate.toLocalDate(),
                             endDate = pd.endDate.toLocalDate(),
@@ -335,7 +335,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
 
                     currentSookshmadasha?.let { sd ->
                         DashaPeriodRow(
-                            label = stringResource(StringKeyMatch.DASHA_LEVEL_SOOKSHMADASHA),
+                            label = stringResource(StringKeyMatchPart1.DASHA_LEVEL_SOOKSHMADASHA),
                             planet = sd.planet,
                             startDate = sd.startDate.toLocalDate(),
                             endDate = sd.endDate.toLocalDate(),
@@ -347,7 +347,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
 
                     currentPranadasha?.let { prd ->
                         DashaPeriodRow(
-                            label = stringResource(StringKeyMatch.DASHA_LEVEL_PRANADASHA),
+                            label = stringResource(StringKeyMatchPart1.DASHA_LEVEL_PRANADASHA),
                             planet = prd.planet,
                             startDate = prd.startDate.toLocalDate(),
                             endDate = prd.endDate.toLocalDate(),
@@ -359,7 +359,7 @@ private fun CurrentPeriodCard(timeline: DashaCalculator.DashaTimeline) {
 
                     currentDehadasha?.let { dd ->
                         DashaPeriodRow(
-                            label = stringResource(StringKeyMatch.DASHA_LEVEL_DEHADASHA),
+                            label = stringResource(StringKeyMatchPart1.DASHA_LEVEL_DEHADASHA),
                             planet = dd.planet,
                             startDate = dd.startDate.toLocalDate(),
                             endDate = dd.endDate.toLocalDate(),
@@ -426,7 +426,7 @@ private fun BirthNakshatraInfo(timeline: DashaCalculator.DashaTimeline) {
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(StringKeyMatch.DASHA_BIRTH_NAKSHATRA),
+                    text = stringResource(StringKeyMatchPart1.DASHA_BIRTH_NAKSHATRA),
                     fontSize = 11.sp,
                     color = ChartDetailColors.TextMuted,
                     fontWeight = FontWeight.Medium,
@@ -434,7 +434,7 @@ private fun BirthNakshatraInfo(timeline: DashaCalculator.DashaTimeline) {
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "${timeline.birthNakshatra.getLocalizedName(language)} (${stringResource(StringKeyMatch.DASHA_PADA)} ${formatNumber(timeline.birthNakshatraPada, language)})",
+                    text = "${timeline.birthNakshatra.getLocalizedName(language)} (${stringResource(StringKeyMatchPart1.DASHA_PADA)} ${formatNumber(timeline.birthNakshatraPada, language)})",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
@@ -443,7 +443,7 @@ private fun BirthNakshatraInfo(timeline: DashaCalculator.DashaTimeline) {
 
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = stringResource(StringKeyMatch.DASHA_LORD),
+                    text = stringResource(StringKeyMatchPart1.DASHA_LORD),
                     fontSize = 11.sp,
                     color = ChartDetailColors.TextMuted,
                     fontWeight = FontWeight.Medium
@@ -513,7 +513,7 @@ private fun SandhiAlertsCard(
                     Spacer(modifier = Modifier.width(14.dp))
                     Column {
                         Text(
-                            text = stringResource(StringKeyMatch.DASHA_SANDHI_ALERTS),
+                            text = stringResource(StringKeyMatchPart1.DASHA_SANDHI_ALERTS),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = ChartDetailColors.TextPrimary,
@@ -521,7 +521,7 @@ private fun SandhiAlertsCard(
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = stringResource(StringKeyMatch.DASHA_UPCOMING_TRANSITIONS, sandhis.size, 90),
+                            text = stringResource(StringKeyMatchPart1.DASHA_UPCOMING_TRANSITIONS, sandhis.size, 90),
                             fontSize = 12.sp,
                             color = ChartDetailColors.TextMuted
                         )
@@ -530,7 +530,7 @@ private fun SandhiAlertsCard(
 
                 Icon(
                     Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKeyMatch.DASHA_COLLAPSE) else stringResource(StringKeyMatch.DASHA_EXPAND),
+                    contentDescription = if (isExpanded) stringResource(StringKeyMatchPart1.DASHA_COLLAPSE) else stringResource(StringKeyMatchPart1.DASHA_EXPAND),
                     tint = ChartDetailColors.TextMuted,
                     modifier = Modifier
                         .size(24.dp)
@@ -545,7 +545,7 @@ private fun SandhiAlertsCard(
             ) {
                 Column(modifier = Modifier.padding(top = 16.dp)) {
                     Text(
-                        text = stringResource(StringKeyMatch.DASHA_SANDHI_EXPLANATION),
+                        text = stringResource(StringKeyMatchPart1.DASHA_SANDHI_EXPLANATION),
                         fontSize = 12.sp,
                         color = ChartDetailColors.TextSecondary,
                         lineHeight = 18.sp,
@@ -642,7 +642,7 @@ private fun SandhiAlertRow(
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
-                    text = "$levelLabel ${stringResource(StringKeyMatch.DASHA_TRANSITION)}",
+                    text = "$levelLabel ${stringResource(StringKeyMatchPart1.DASHA_TRANSITION)}",
                     fontSize = 11.sp,
                     color = ChartDetailColors.TextMuted
                 )
@@ -651,10 +651,10 @@ private fun SandhiAlertRow(
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = when {
-                        isWithinSandhi -> stringResource(StringKeyMatch.DASHA_ACTIVE_NOW)
-                        daysUntil == 0L -> stringResource(StringKeyMatch.DASHA_TODAY)
-                        daysUntil == 1L -> stringResource(StringKeyMatch.DASHA_TOMORROW)
-                        isImminent -> stringResource(StringKeyMatch.DASHA_IN_DAYS, daysUntil.toInt())
+                        isWithinSandhi -> stringResource(StringKeyMatchPart1.DASHA_ACTIVE_NOW)
+                        daysUntil == 0L -> stringResource(StringKeyMatchPart1.DASHA_TODAY)
+                        daysUntil == 1L -> stringResource(StringKeyMatchPart1.DASHA_TOMORROW)
+                        isImminent -> stringResource(StringKeyMatchPart1.DASHA_IN_DAYS, daysUntil.toInt())
                         else -> formatDate(sandhi.transitionDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)
                     },
                     fontSize = 12.sp,
@@ -697,7 +697,7 @@ private fun EmptyDashaState() {
             )
             Spacer(modifier = Modifier.height(14.dp))
             Text(
-                text = stringResource(StringKeyMatch.DASHA_UNABLE_CALCULATE),
+                text = stringResource(StringKeyMatchPart1.DASHA_UNABLE_CALCULATE),
                 fontSize = 14.sp,
                 color = ChartDetailColors.TextMuted
             )
@@ -928,7 +928,7 @@ private fun CurrentPeriodSummary(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyMatch.DASHA_PERIOD_INSIGHTS),
+                    text = stringResource(StringKeyMatchPart1.DASHA_PERIOD_INSIGHTS),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.AccentGold
@@ -985,7 +985,7 @@ private fun DashaTimelineCard(timeline: DashaCalculator.DashaTimeline) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyMatch.DASHA_TIMELINE),
+                        text = stringResource(StringKeyMatchPart1.DASHA_TIMELINE),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary,
@@ -993,7 +993,7 @@ private fun DashaTimelineCard(timeline: DashaCalculator.DashaTimeline) {
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = stringResource(StringKeyMatch.DASHA_COMPLETE_CYCLE),
+                        text = stringResource(StringKeyMatchPart1.DASHA_COMPLETE_CYCLE),
                         fontSize = 12.sp,
                         color = ChartDetailColors.TextMuted
                     )
@@ -1175,7 +1175,7 @@ private fun MahadashaCard(
                         val language = LocalLanguage.current
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "${mahadasha.planet.getLocalizedName(language)} ${stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA)}",
+                                text = "${mahadasha.planet.getLocalizedName(language)} ${stringResource(StringKeyMatchPart1.DASHA_LEVEL_MAHADASHA)}",
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = ChartDetailColors.TextPrimary,
@@ -1188,7 +1188,7 @@ private fun MahadashaCard(
                                     color = planetColor.copy(alpha = 0.2f)
                                 ) {
                                     Text(
-                                        text = stringResource(StringKey.DASHA_ACTIVE),
+                                        text = stringResource(StringKeyPart1.DASHA_ACTIVE),
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = planetColor,
@@ -1209,7 +1209,7 @@ private fun MahadashaCard(
                             Spacer(modifier = Modifier.height(3.dp))
                             val percentComplete = String.format(java.util.Locale.ENGLISH, "%.1f", mahadasha.getProgressPercent())
                             Text(
-                                text = "${stringResource(StringKeyMatch.DASHA_PERCENT_COMPLETE, percentComplete)} • ${formatRemainingYearsLocalized(mahadasha.getRemainingYears(), language)}",
+                                text = "${stringResource(StringKeyMatchPart1.DASHA_PERCENT_COMPLETE, percentComplete)} • ${formatRemainingYearsLocalized(mahadasha.getRemainingYears(), language)}",
                                 fontSize = 10.sp,
                                 color = ChartDetailColors.AccentTeal,
                                 fontWeight = FontWeight.Medium
@@ -1222,7 +1222,7 @@ private fun MahadashaCard(
 
                 Icon(
                     Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKeyMatch.DASHA_COLLAPSE) else stringResource(StringKeyMatch.DASHA_EXPAND),
+                    contentDescription = if (isExpanded) stringResource(StringKeyMatchPart1.DASHA_COLLAPSE) else stringResource(StringKeyMatchPart1.DASHA_EXPAND),
                     tint = ChartDetailColors.TextMuted,
                     modifier = Modifier
                         .size(26.dp)
@@ -1246,7 +1246,7 @@ private fun MahadashaCard(
                         modifier = Modifier.padding(bottom = 12.dp)
                     ) {
                         Text(
-                            text = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA),
+                            text = stringResource(StringKeyMatchPart1.DASHA_LEVEL_ANTARDASHA),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = ChartDetailColors.TextSecondary
@@ -1257,7 +1257,7 @@ private fun MahadashaCard(
                             color = ChartDetailColors.CardBackgroundElevated
                         ) {
                             Text(
-                                text = stringResource(StringKeyMatch.DASHA_SUB_PERIODS, mahadasha.antardashas.size),
+                                text = stringResource(StringKeyMatchPart1.DASHA_SUB_PERIODS, mahadasha.antardashas.size),
                                 fontSize = 10.sp,
                                 color = ChartDetailColors.TextMuted,
                                 fontWeight = FontWeight.Medium,
@@ -1435,7 +1435,7 @@ private fun DashaInfoCard(
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = stringResource(StringKeyMatch.DASHA_ABOUT_VIMSHOTTARI),
+                        text = stringResource(StringKeyMatchPart1.DASHA_ABOUT_VIMSHOTTARI),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary,
@@ -1444,7 +1444,7 @@ private fun DashaInfoCard(
                 }
                 Icon(
                     Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKeyMatch.DASHA_COLLAPSE) else stringResource(StringKeyMatch.DASHA_EXPAND),
+                    contentDescription = if (isExpanded) stringResource(StringKeyMatchPart1.DASHA_COLLAPSE) else stringResource(StringKeyMatchPart1.DASHA_EXPAND),
                     tint = ChartDetailColors.TextMuted,
                     modifier = Modifier
                         .size(24.dp)
@@ -1459,7 +1459,7 @@ private fun DashaInfoCard(
             ) {
                 Column(modifier = Modifier.padding(top = 18.dp)) {
                     Text(
-                        text = stringResource(StringKeyMatch.DASHA_VIMSHOTTARI_DESC),
+                        text = stringResource(StringKeyMatchPart1.DASHA_VIMSHOTTARI_DESC),
                         fontSize = 13.sp,
                         color = ChartDetailColors.TextSecondary,
                         lineHeight = 20.sp
@@ -1473,7 +1473,7 @@ private fun DashaInfoCard(
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(
-                                text = stringResource(StringKeyMatch.DASHA_PERIODS_SEQUENCE),
+                                text = stringResource(StringKeyMatchPart1.DASHA_PERIODS_SEQUENCE),
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = ChartDetailColors.TextSecondary
@@ -1513,7 +1513,7 @@ private fun DashaInfoCard(
                                 horizontalArrangement = Arrangement.Center
                             ) {
                                 Text(
-                                    text = stringResource(StringKeyMatch.DASHA_TOTAL_CYCLE),
+                                    text = stringResource(StringKeyMatchPart1.DASHA_TOTAL_CYCLE),
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = ChartDetailColors.AccentGold
@@ -1529,7 +1529,7 @@ private fun DashaInfoCard(
                     Spacer(modifier = Modifier.height(14.dp))
 
                     Text(
-                        text = stringResource(StringKeyMatch.DASHA_SANDHI_NOTE),
+                        text = stringResource(StringKeyMatchPart1.DASHA_SANDHI_NOTE),
                         fontSize = 12.sp,
                         color = ChartDetailColors.TextMuted,
                         lineHeight = 18.sp
@@ -1550,7 +1550,7 @@ private fun DashaLevelsInfo() {
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             Text(
-                text = stringResource(StringKeyMatch.DASHA_HIERARCHY),
+                text = stringResource(StringKeyMatchPart1.DASHA_HIERARCHY),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = ChartDetailColors.TextSecondary,
@@ -1558,12 +1558,12 @@ private fun DashaLevelsInfo() {
             )
 
             val levels = listOf(
-                stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA) to stringResource(StringKeyMatch.DASHA_MAJOR_PERIOD_YEARS),
-                "${stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA)} (${stringResource(StringKey.DASHA_BHUKTI)})" to stringResource(StringKeyMatch.DASHA_SUB_PERIOD_MONTHS),
-                stringResource(StringKeyMatch.DASHA_LEVEL_PRATYANTARDASHA) to stringResource(StringKeyMatch.DASHA_SUB_SUB_PERIOD_WEEKS),
-                stringResource(StringKeyMatch.DASHA_LEVEL_SOOKSHMADASHA) to stringResource(StringKeyMatch.DASHA_SUBTLE_PERIOD_DAYS),
-                stringResource(StringKeyMatch.DASHA_LEVEL_PRANADASHA) to stringResource(StringKeyMatch.DASHA_BREATH_PERIOD_HOURS),
-                stringResource(StringKeyMatch.DASHA_LEVEL_DEHADASHA) to stringResource(StringKeyMatch.DASHA_BODY_PERIOD_MINUTES)
+                stringResource(StringKeyMatchPart1.DASHA_LEVEL_MAHADASHA) to stringResource(StringKeyMatchPart1.DASHA_MAJOR_PERIOD_YEARS),
+                "${stringResource(StringKeyMatchPart1.DASHA_LEVEL_ANTARDASHA)} (${stringResource(StringKeyPart1.DASHA_BHUKTI)})" to stringResource(StringKeyMatchPart1.DASHA_SUB_PERIOD_MONTHS),
+                stringResource(StringKeyMatchPart1.DASHA_LEVEL_PRATYANTARDASHA) to stringResource(StringKeyMatchPart1.DASHA_SUB_SUB_PERIOD_WEEKS),
+                stringResource(StringKeyMatchPart1.DASHA_LEVEL_SOOKSHMADASHA) to stringResource(StringKeyMatchPart1.DASHA_SUBTLE_PERIOD_DAYS),
+                stringResource(StringKeyMatchPart1.DASHA_LEVEL_PRANADASHA) to stringResource(StringKeyMatchPart1.DASHA_BREATH_PERIOD_HOURS),
+                stringResource(StringKeyMatchPart1.DASHA_LEVEL_DEHADASHA) to stringResource(StringKeyMatchPart1.DASHA_BODY_PERIOD_MINUTES)
             )
 
             levels.forEachIndexed { index, (name, description) ->
@@ -1639,7 +1639,7 @@ private fun DashaDurationRow(planet: Planet, years: Int) {
             modifier = Modifier.weight(1f)
         )
         Text(
-            text = "${formatNumber(years, language)} ${stringResource(StringKeyMatch.DASHA_YEARS_ABBR)}",
+            text = "${formatNumber(years, language)} ${stringResource(StringKeyMatchPart1.DASHA_YEARS_ABBR)}",
             fontSize = 12.sp,
             fontWeight = FontWeight.Medium,
             color = ChartDetailColors.TextMuted

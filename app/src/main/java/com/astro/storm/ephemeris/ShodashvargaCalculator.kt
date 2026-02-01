@@ -161,44 +161,44 @@ object ShodashvargaCalculator {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                D1_RASHI -> StringKeyDosha.VARGA_D1_TITLE
-                D2_HORA -> StringKeyDosha.VARGA_D2_TITLE
-                D3_DREKKANA -> StringKeyDosha.VARGA_D3_TITLE
-                D4_CHATURTHAMSHA -> StringKeyDosha.VARGA_D4_TITLE
-                D7_SAPTAMSHA -> StringKeyDosha.VARGA_D7_TITLE
-                D9_NAVAMSA -> StringKeyDosha.VARGA_D9_TITLE
-                D10_DASHAMSHA -> StringKeyDosha.VARGA_D10_TITLE
-                D12_DWADASHAMSHA -> StringKeyDosha.VARGA_D12_TITLE
-                D16_SHODASHAMSHA -> StringKeyDosha.VARGA_D16_TITLE
-                D20_VIMSHAMSHA -> StringKeyDosha.VARGA_D20_TITLE
-                D24_CHATURVIMSHAMSHA -> StringKeyDosha.VARGA_D24_TITLE
-                D27_SAPTAVIMSHAMSHA -> StringKeyDosha.VARGA_D27_TITLE
-                D30_TRIMSHAMSHA -> StringKeyDosha.VARGA_D30_TITLE
-                D40_KHAVEDAMSHA -> StringKeyDosha.VARGA_D40_TITLE
-                D45_AKSHAVEDAMSHA -> StringKeyDosha.VARGA_D45_TITLE
-                D60_SHASHTIAMSHA -> StringKeyDosha.VARGA_D60_TITLE
+                D1_RASHI -> StringKeyVarga.VARGA_D1_TITLE
+                D2_HORA -> StringKeyVarga.VARGA_D2_TITLE
+                D3_DREKKANA -> StringKeyVarga.VARGA_D3_TITLE
+                D4_CHATURTHAMSHA -> StringKeyVarga.VARGA_D4_TITLE
+                D7_SAPTAMSHA -> StringKeyVarga.VARGA_D7_TITLE
+                D9_NAVAMSA -> StringKeyVarga.VARGA_D9_TITLE
+                D10_DASHAMSHA -> StringKeyVarga.VARGA_D10_TITLE
+                D12_DWADASHAMSHA -> StringKeyVarga.VARGA_D12_TITLE
+                D16_SHODASHAMSHA -> StringKeyVarga.VARGA_D16_TITLE
+                D20_VIMSHAMSHA -> StringKeyVarga.VARGA_D20_TITLE
+                D24_CHATURVIMSHAMSHA -> StringKeyVarga.VARGA_D24_TITLE
+                D27_SAPTAVIMSHAMSHA -> StringKeyVarga.VARGA_D27_TITLE
+                D30_TRIMSHAMSHA -> StringKeyVarga.VARGA_D30_TITLE
+                D40_KHAVEDAMSHA -> StringKeyVarga.VARGA_D40_TITLE
+                D45_AKSHAVEDAMSHA -> StringKeyVarga.VARGA_D45_TITLE
+                D60_SHASHTIAMSHA -> StringKeyVarga.VARGA_D60_TITLE
             }
             return StringResources.get(key, language)
         }
 
         fun getLocalizedDomain(language: Language): String {
             val key = when (this) {
-                D1_RASHI -> StringKeyDosha.VARGA_D1_DESC
-                D2_HORA -> StringKeyDosha.VARGA_D2_DESC
-                D3_DREKKANA -> StringKeyDosha.VARGA_D3_DESC
-                D4_CHATURTHAMSHA -> StringKeyDosha.VARGA_D4_DESC
-                D7_SAPTAMSHA -> StringKeyDosha.VARGA_D7_DESC
-                D9_NAVAMSA -> StringKeyDosha.VARGA_D9_DESC
-                D10_DASHAMSHA -> StringKeyDosha.VARGA_D10_DESC
-                D12_DWADASHAMSHA -> StringKeyDosha.VARGA_D12_DESC
-                D16_SHODASHAMSHA -> StringKeyDosha.VARGA_D16_DESC
-                D20_VIMSHAMSHA -> StringKeyDosha.VARGA_D20_DESC
-                D24_CHATURVIMSHAMSHA -> StringKeyDosha.VARGA_D24_DESC
-                D27_SAPTAVIMSHAMSHA -> StringKeyDosha.VARGA_D27_DESC
-                D30_TRIMSHAMSHA -> StringKeyDosha.VARGA_D30_DESC
-                D40_KHAVEDAMSHA -> StringKeyDosha.VARGA_D40_DESC
-                D45_AKSHAVEDAMSHA -> StringKeyDosha.VARGA_D45_DESC
-                D60_SHASHTIAMSHA -> StringKeyDosha.VARGA_D60_DESC
+                D1_RASHI -> StringKeyVarga.VARGA_D1_DESC
+                D2_HORA -> StringKeyVarga.VARGA_D2_DESC
+                D3_DREKKANA -> StringKeyVarga.VARGA_D3_DESC
+                D4_CHATURTHAMSHA -> StringKeyVarga.VARGA_D4_DESC
+                D7_SAPTAMSHA -> StringKeyVarga.VARGA_D7_DESC
+                D9_NAVAMSA -> StringKeyVarga.VARGA_D9_DESC
+                D10_DASHAMSHA -> StringKeyVarga.VARGA_D10_DESC
+                D12_DWADASHAMSHA -> StringKeyVarga.VARGA_D12_DESC
+                D16_SHODASHAMSHA -> StringKeyVarga.VARGA_D16_DESC
+                D20_VIMSHAMSHA -> StringKeyVarga.VARGA_D20_DESC
+                D24_CHATURVIMSHAMSHA -> StringKeyVarga.VARGA_D24_DESC
+                D27_SAPTAVIMSHAMSHA -> StringKeyVarga.VARGA_D27_DESC
+                D30_TRIMSHAMSHA -> StringKeyVarga.VARGA_D30_DESC
+                D40_KHAVEDAMSHA -> StringKeyVarga.VARGA_D40_DESC
+                D45_AKSHAVEDAMSHA -> StringKeyVarga.VARGA_D45_DESC
+                D60_SHASHTIAMSHA -> StringKeyVarga.VARGA_D60_DESC
             }
             return StringResources.get(key, language)
         }
@@ -710,7 +710,7 @@ object ShodashvargaCalculator {
                 appendLine()
             }
 
-            appendLine(StringResources.get(StringKeyAnalysis.UI_KEY_INSIGHTS, language).uppercase())
+            appendLine(StringResources.get(StringKeyUI.UI_KEY_INSIGHTS, language).uppercase())
             appendLine("────────────")
             analysis.overallAssessment.keyInsights.forEach { insight ->
                 appendLine("• $insight")

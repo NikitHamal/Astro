@@ -34,7 +34,7 @@ object VipareetaRajaYogaCalculator {
             "हर्ष योग",
             6,
             "6th lord in dusthana - Victory over enemies, good health, happiness from overcoming obstacles",
-            com.astro.storm.core.common.StringKeyMatch.YOGA_VIPARITA, // Shared or specific
+            com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VIPARITA, // Shared or specific
             com.astro.storm.core.common.StringKeyYogaExpanded.VIP_DESC_HARSHA
         ),
         SARALA(
@@ -42,7 +42,7 @@ object VipareetaRajaYogaCalculator {
             "सरल योग",
             8,
             "8th lord in dusthana - Fearlessness, longevity, gains through inheritance, occult knowledge",
-            com.astro.storm.core.common.StringKeyMatch.YOGA_VIPARITA,
+            com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VIPARITA,
             com.astro.storm.core.common.StringKeyYogaExpanded.VIP_DESC_SARALA
         ),
         VIMALA(
@@ -50,7 +50,7 @@ object VipareetaRajaYogaCalculator {
             "विमल योग",
             12,
             "12th lord in dusthana - Reduced losses, spiritual advancement, liberation, fame after death",
-            com.astro.storm.core.common.StringKeyMatch.YOGA_VIPARITA,
+            com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VIPARITA,
             com.astro.storm.core.common.StringKeyYogaExpanded.VIP_DESC_VIMALA
         )
     }

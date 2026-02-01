@@ -173,7 +173,7 @@ private fun TransitOverviewCard(analysis: TransitAnalyzer.TransitAnalysis) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyAnalysis.TRANSIT_OVERVIEW),
+                    text = stringResource(StringKeyTransit.TRANSIT_OVERVIEW),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = ChartDetailColors.TextPrimary
@@ -186,17 +186,17 @@ private fun TransitOverviewCard(analysis: TransitAnalyzer.TransitAnalysis) {
             ) {
                 OverviewBadge(
                     count = favorableCount,
-                    label = stringResource(StringKeyAnalysis.TRANSIT_FAVORABLE),
+                    label = stringResource(StringKeyTransit.TRANSIT_FAVORABLE),
                     color = ChartDetailColors.SuccessColor
                 )
                 OverviewBadge(
                     count = challengingCount,
-                    label = stringResource(StringKeyAnalysis.TRANSIT_CHALLENGING),
+                    label = stringResource(StringKeyTransit.TRANSIT_CHALLENGING),
                     color = ChartDetailColors.WarningColor
                 )
                 OverviewBadge(
                     count = analysis.transitAspects.size,
-                    label = stringResource(StringKeyAnalysis.TRANSIT_ASPECTS),
+                    label = stringResource(StringKeyTransit.TRANSIT_ASPECTS),
                     color = ChartDetailColors.AccentBlue
                 )
             }
@@ -253,7 +253,7 @@ private fun OverallTransitAssessment(analysis: TransitAnalyzer.TransitAnalysis) 
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = stringResource(StringKeyAnalysis.TRANSIT_OVERALL_SCORE),
+                text = stringResource(StringKeyTransit.TRANSIT_OVERALL_SCORE),
                 fontSize = 13.sp,
                 color = ChartDetailColors.TextSecondary
             )
@@ -294,7 +294,7 @@ private fun CurrentTransitsCard(analysis: TransitAnalyzer.TransitAnalysis) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = stringResource(StringKeyAnalysis.TRANSIT_CURRENT_POSITIONS),
+                text = stringResource(StringKeyTransit.TRANSIT_CURRENT_POSITIONS),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = ChartDetailColors.TextSecondary,
@@ -397,7 +397,7 @@ private fun GocharaResultsCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyAnalysis.TRANSIT_GOCHARA_ANALYSIS),
+                        text = stringResource(StringKeyTransit.TRANSIT_GOCHARA_ANALYSIS),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -468,14 +468,14 @@ private fun GocharaResultRow(result: TransitAnalyzer.GocharaResult) {
                         color = ChartDetailColors.TextPrimary
                     )
                     Text(
-                        text = " • ${stringResource(StringKeyAnalysis.TRANSIT_HOUSE_FROM_MOON, result.houseFromMoon)}",
+                        text = " • ${stringResource(StringKeyTransit.TRANSIT_HOUSE_FROM_MOON, result.houseFromMoon)}",
                         fontSize = 11.sp,
                         color = ChartDetailColors.TextMuted
                     )
                 }
                 if (result.isVedhaAffected) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.TRANSIT_VEDHA_FROM, result.vedhaSource?.displayName ?: stringResource(StringKeyMatch.MISC_UNKNOWN)),
+                        text = stringResource(StringKeyTransit.TRANSIT_VEDHA_FROM, result.vedhaSource?.displayName ?: stringResource(StringKeyMatchPart1.MISC_UNKNOWN)),
                         fontSize = 10.sp,
                         color = ChartDetailColors.WarningColor
                     )
@@ -540,7 +540,7 @@ private fun TransitAspectsCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyAnalysis.TRANSIT_ASPECTS_TO_NATAL),
+                        text = stringResource(StringKeyTransit.TRANSIT_ASPECTS_TO_NATAL),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
@@ -573,7 +573,7 @@ private fun TransitAspectsCard(
 private fun TransitAspectRow(aspect: TransitAnalyzer.TransitAspect) {
     val transitPlanetColor = ChartDetailColors.getPlanetColor(aspect.transitingPlanet)
     val natalPlanetColor = ChartDetailColors.getPlanetColor(aspect.natalPlanet)
-    val applyingText = if (aspect.isApplying) stringResource(StringKeyAnalysis.TRANSIT_APPLYING) else stringResource(StringKeyAnalysis.TRANSIT_SEPARATING)
+    val applyingText = if (aspect.isApplying) stringResource(StringKeyTransit.TRANSIT_APPLYING) else stringResource(StringKeyTransit.TRANSIT_SEPARATING)
 
     Row(
         modifier = Modifier
@@ -618,7 +618,7 @@ private fun TransitAspectRow(aspect: TransitAnalyzer.TransitAspect) {
 
         Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = stringResource(StringKeyAnalysis.TRANSIT_ORB, String.format("%.1f", aspect.orb)),
+                text = stringResource(StringKeyTransit.TRANSIT_ORB, String.format("%.1f", aspect.orb)),
                 fontSize = 10.sp,
                 color = ChartDetailColors.TextMuted
             )
@@ -651,7 +651,7 @@ private fun SignificantPeriodsCard(analysis: TransitAnalyzer.TransitAnalysis) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyAnalysis.TRANSIT_SIGNIFICANT_PERIODS),
+                    text = stringResource(StringKeyTransit.TRANSIT_SIGNIFICANT_PERIODS),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
@@ -696,7 +696,7 @@ private fun SignificantPeriodRow(period: TransitAnalyzer.SignificantPeriod) {
                 color = intensityColor.copy(alpha = 0.15f)
             ) {
                 Text(
-                    text = stringResource(StringKeyAnalysis.TRANSIT_INTENSITY, period.intensity),
+                    text = stringResource(StringKeyTransit.TRANSIT_INTENSITY, period.intensity),
                     fontSize = 10.sp,
                     color = intensityColor,
                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)

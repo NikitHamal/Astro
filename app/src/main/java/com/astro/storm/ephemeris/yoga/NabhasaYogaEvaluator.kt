@@ -89,9 +89,9 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = occupiedHouses.first() in listOf(1, 2, 5, 9, 10, 11),
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SANKHYA_GOLA,
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SANKHYA_GOLA,
                 descriptionKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_CAT_NABHASA, // Placeholder or specific
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SANKHYA_GOLA
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SANKHYA_GOLA
             )
             2 -> Yoga(
                 name = "Yuga Sankhya Yoga",
@@ -106,8 +106,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SANKHYA_YUGA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SANKHYA_YUGA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SANKHYA_YUGA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SANKHYA_YUGA
             )
             3 -> Yoga(
                 name = "Shoola Sankhya Yoga",
@@ -122,8 +122,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SANKHYA_SHOOLA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SANKHYA_SHOOLA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SANKHYA_SHOOLA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SANKHYA_SHOOLA
             )
             4 -> Yoga(
                 name = "Kedara Sankhya Yoga",
@@ -138,8 +138,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SANKHYA_KEDARA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SANKHYA_KEDARA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SANKHYA_KEDARA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SANKHYA_KEDARA
             )
             5 -> Yoga(
                 name = "Pasa Sankhya Yoga",
@@ -154,8 +154,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SANKHYA_PASA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SANKHYA_PASA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SANKHYA_PASA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SANKHYA_PASA
             )
             6 -> Yoga(
                 name = "Damini Sankhya Yoga",
@@ -170,8 +170,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SANKHYA_DAMINI,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SANKHYA_DAMINI
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SANKHYA_DAMINI,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SANKHYA_DAMINI
             )
             7 -> Yoga(
                 name = "Vallaki Sankhya Yoga",
@@ -186,8 +186,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SANKHYA_VALLAKI,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SANKHYA_VALLAKI
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SANKHYA_VALLAKI,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SANKHYA_VALLAKI
             )
             else -> null
         }
@@ -219,8 +219,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_YAVA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_YAVA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_YAVA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_YAVA
             )
         }
 
@@ -251,8 +251,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SHRINGATAKA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SHRINGATAKA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SHRINGATAKA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SHRINGATAKA
             )
         }
 
@@ -270,8 +270,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Throughout life",
                 cancellationFactors = listOf("Strong benefics can mitigate"),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SHRINGATAKA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SHRINGATAKA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SHRINGATAKA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SHRINGATAKA
             )
         }
 
@@ -302,8 +302,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                     isAuspicious = true,
                     activationPeriod = "Throughout life",
                     cancellationFactors = emptyList(),
-                    nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_GADA,
-                    effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_GADA
+                    nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_GADA,
+                    effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_GADA
                 )
             }
         }
@@ -329,8 +329,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = false,
                 activationPeriod = "Throughout life",
                 cancellationFactors = listOf("Jupiter aspect can stabilize"),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SHAKATA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SHAKATA_NABHASA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SHAKATA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SHAKATA_NABHASA
             )
         }
 
@@ -362,8 +362,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_SHOOLA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_SHOOLA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_SHOOLA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_SHOOLA
             )
         }
 
@@ -399,8 +399,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_VEENA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_VEENA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_VEENA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_VEENA
             )
         }
 
@@ -460,8 +460,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_RAJJU,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_RAJJU
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_RAJJU,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_RAJJU
             ))
         }
 
@@ -480,8 +480,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_MUSALA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_MUSALA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_MUSALA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_MUSALA
             ))
         }
 
@@ -500,8 +500,8 @@ class NabhasaYogaEvaluator : YogaEvaluator {
                 isAuspicious = true,
                 activationPeriod = "Throughout life",
                 cancellationFactors = emptyList(),
-                nameKey = com.astro.storm.core.common.StringKeyMatch.YOGA_NALA,
-                effectsKey = com.astro.storm.core.common.StringKeyMatch.YOGA_EFFECT_NALA
+                nameKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_NALA,
+                effectsKey = com.astro.storm.core.common.StringKeyYogaExpanded.YOGA_EFFECT_NALA
             ))
         }
 

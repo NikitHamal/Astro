@@ -107,12 +107,12 @@ fun AvasthaScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyAnalysis.AVASTHA_TAB_OVERVIEW),
-        stringResource(StringKeyAnalysis.AVASTHA_TAB_PLANETS),
-        stringResource(StringKeyAnalysis.AVASTHA_TAB_BALADI),
-        stringResource(StringKeyAnalysis.AVASTHA_TAB_JAGRADADI),
-        stringResource(StringKeyAnalysis.AVASTHA_TAB_DEEPTADI),
-        stringResource(StringKeyAnalysis.AVASTHA_TAB_LAJJITADI)
+        stringResource(StringKeyAnalysisPart2.AVASTHA_TAB_OVERVIEW),
+        stringResource(StringKeyAnalysisPart2.AVASTHA_TAB_PLANETS),
+        stringResource(StringKeyAnalysisPart2.AVASTHA_TAB_BALADI),
+        stringResource(StringKeyAnalysisPart2.AVASTHA_TAB_JAGRADADI),
+        stringResource(StringKeyAnalysisPart2.AVASTHA_TAB_DEEPTADI),
+        stringResource(StringKeyAnalysisPart2.AVASTHA_TAB_LAJJITADI)
     )
 
     // Calculate analysis
@@ -140,13 +140,13 @@ fun AvasthaScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.AVASTHA_SCREEN_TITLE),
+                            text = stringResource(StringKeyDoshaPart4.AVASTHA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.AVASTHA_SUBTITLE),
+                            text = stringResource(StringKeyDoshaPart4.AVASTHA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -156,7 +156,7 @@ fun AvasthaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
+                            contentDescription = stringResource(StringKeyUI.BTN_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -165,7 +165,7 @@ fun AvasthaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKey.MISC_INFO),
+                            contentDescription = stringResource(StringKeyPart1.MISC_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -322,7 +322,7 @@ private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = stringResource(StringKeyDosha.AVASTHA_OVERALL_STRENGTH),
+                text = stringResource(StringKeyDoshaPart4.AVASTHA_OVERALL_STRENGTH),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -354,9 +354,9 @@ private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
 
             Text(
                 text = when {
-                    analysis.overallStrength >= 70 -> stringResource(StringKeyAnalysis.AVASTHA_STRONG_CONFIG)
-                    analysis.overallStrength >= 50 -> stringResource(StringKeyAnalysis.AVASTHA_MODERATE_STRENGTH)
-                    else -> stringResource(StringKeyAnalysis.AVASTHA_NEEDS_MEASURES)
+                    analysis.overallStrength >= 70 -> stringResource(StringKeyAnalysisPart2.AVASTHA_STRONG_CONFIG)
+                    analysis.overallStrength >= 50 -> stringResource(StringKeyAnalysisPart2.AVASTHA_MODERATE_STRENGTH)
+                    else -> stringResource(StringKeyAnalysisPart2.AVASTHA_NEEDS_MEASURES)
                 },
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
@@ -408,7 +408,7 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
                         color = AppTheme.SuccessColor
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.AVASTHA_STRONGEST),
+                        text = stringResource(StringKeyDoshaPart4.AVASTHA_STRONGEST),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -452,7 +452,7 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
                         color = AppTheme.WarningColor
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.AVASTHA_NEEDS_ATTENTION),
+                        text = stringResource(StringKeyDoshaPart4.AVASTHA_NEEDS_ATTENTION),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -473,19 +473,19 @@ private fun AvasthaQuickStatsRow(analysis: AvasthaCalculator.AvasthaAnalysis) {
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         AvasthaStatCard(
-            title = stringResource(StringKeyAnalysis.STRENGTH_STRONG),
+            title = stringResource(StringKeyUI.STRENGTH_STRONG),
             value = "$strongCount",
             color = AppTheme.SuccessColor,
             modifier = Modifier.weight(1f)
         )
         AvasthaStatCard(
-            title = stringResource(StringKeyAnalysis.STRENGTH_AVERAGE),
+            title = stringResource(StringKeyUI.STRENGTH_AVERAGE),
             value = "$moderateCount",
             color = AppTheme.AccentGold,
             modifier = Modifier.weight(1f)
         )
         AvasthaStatCard(
-            title = stringResource(StringKeyAnalysis.STRENGTH_WEAK),
+            title = stringResource(StringKeyUI.STRENGTH_WEAK),
             value = "$weakCount",
             color = AppTheme.WarningColor,
             modifier = Modifier.weight(1f)
@@ -546,7 +546,7 @@ private fun AvasthaInterpretationCard(analysis: AvasthaCalculator.AvasthaAnalysi
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.UI_INTERPRETATION),
+                    text = stringResource(StringKeyUI.UI_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -572,7 +572,7 @@ private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.A
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
+                text = stringResource(StringKeyUI.UI_RECOMMENDATIONS),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -755,25 +755,25 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
 
                     // All four avasthas with descriptions
                     AvasthaDetailRow(
-                        title = stringResource(StringKeyAnalysis.AVASTHA_AGE_STATE),
+                        title = stringResource(StringKeyAnalysisPart3.AVASTHA_AGE_STATE),
                         value = avastha.baladiAvastha.getLocalizedName(language),
                         description = avastha.baladiAvastha.getLocalizedDescription(language),
                         color = getBaladiColor(avastha.baladiAvastha)
                     )
                     AvasthaDetailRow(
-                        title = stringResource(StringKeyAnalysis.AVASTHA_ALERTNESS),
+                        title = stringResource(StringKeyAnalysisPart3.AVASTHA_ALERTNESS),
                         value = avastha.jagradadiAvastha.getLocalizedName(language),
                         description = avastha.jagradadiAvastha.getLocalizedDescription(language),
                         color = getJagradadiColor(avastha.jagradadiAvastha)
                     )
                     AvasthaDetailRow(
-                        title = stringResource(StringKeyAnalysis.AVASTHA_DIGNITY),
+                        title = stringResource(StringKeyAnalysisPart3.AVASTHA_DIGNITY),
                         value = avastha.deeptadiAvastha.getLocalizedName(language),
                         description = avastha.deeptadiAvastha.getLocalizedDescription(language),
                         color = getDeeptadiColor(avastha.deeptadiAvastha)
                     )
                     AvasthaDetailRow(
-                        title = stringResource(StringKeyAnalysis.AVASTHA_EMOTIONAL),
+                        title = stringResource(StringKeyAnalysisPart3.AVASTHA_EMOTIONAL),
                         value = avastha.lajjitadiAvastha.getLocalizedName(language),
                         description = avastha.lajjitadiAvastha.getLocalizedDescription(language),
                         color = getLajjitadiColor(avastha.lajjitadiAvastha)
@@ -1300,14 +1300,14 @@ private fun AvasthaEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+                text = stringResource(StringKeyUI.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.AVASTHA_NO_CHART_DESC),
+                text = stringResource(StringKeyDoshaPart4.AVASTHA_NO_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1322,14 +1322,14 @@ private fun AvasthaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(StringKeyDosha.AVASTHA_ABOUT_TITLE),
+                text = stringResource(StringKeyDoshaPart4.AVASTHA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = stringResource(StringKeyDosha.AVASTHA_ABOUT_DESC),
+                text = stringResource(StringKeyDoshaPart4.AVASTHA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
@@ -1337,7 +1337,7 @@ private fun AvasthaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground

@@ -134,7 +134,7 @@ object AvasthaCalculator {
         }
 
         val interpretation = StringResources.get(
-            StringKeyAnalysis.AVASTHA_NODE_POS,
+            StringKeyAnalysisPart3.AVASTHA_NODE_POS,
             language,
             sign.getLocalizedName(language),
             deeptadiAvastha.getLocalizedDescription(language)
@@ -454,11 +454,11 @@ object AvasthaCalculator {
         language: com.astro.storm.core.common.Language
     ): String {
         return buildString {
-            append(StringResources.get(StringKeyAnalysis.AVASTHA_PLANET_ANALYSIS, language, planet.getLocalizedName(language)))
+            append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_PLANET_ANALYSIS, language, planet.getLocalizedName(language)))
             append(":\n\n")
 
             append("• ")
-            append(StringResources.get(StringKeyAnalysis.AVASTHA_AGE_STATE, language))
+            append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_AGE_STATE, language))
             append(": ")
             append(baladi.getLocalizedName(language))
             append("\n  ")
@@ -466,7 +466,7 @@ object AvasthaCalculator {
             append("\n\n")
 
             append("• ")
-            append(StringResources.get(StringKeyAnalysis.AVASTHA_ALERTNESS, language))
+            append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_ALERTNESS, language))
             append(": ")
             append(jagradadi.getLocalizedName(language))
             append("\n  ")
@@ -474,7 +474,7 @@ object AvasthaCalculator {
             append("\n\n")
 
             append("• ")
-            append(StringResources.get(StringKeyAnalysis.AVASTHA_DIGNITY, language))
+            append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_DIGNITY, language))
             append(": ")
             append(deeptadi.getLocalizedName(language))
             append("\n  ")
@@ -482,21 +482,21 @@ object AvasthaCalculator {
             append("\n\n")
 
             append("• ")
-            append(StringResources.get(StringKeyAnalysis.AVASTHA_EMOTIONAL, language))
+            append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_EMOTIONAL, language))
             append(": ")
             append(lajjitadi.getLocalizedName(language))
             append("\n  ")
             append(lajjitadi.getLocalizedDescription(language))
             append("\n\n")
 
-            append(StringResources.get(StringKeyAnalysis.AVASTHA_OVERALL_STRENGTH_LABEL, language, strength))
+            append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_OVERALL_STRENGTH_LABEL, language, strength))
             append("\n")
             append(when {
-                strength >= 80 -> StringResources.get(StringKeyAnalysis.AVASTHA_VERY_POWERFUL, language)
-                strength >= 60 -> StringResources.get(StringKeyAnalysis.AVASTHA_STRONG_RESULTS, language)
-                strength >= 40 -> StringResources.get(StringKeyAnalysis.AVASTHA_MODERATE_RESULTS, language)
-                strength >= 20 -> StringResources.get(StringKeyAnalysis.AVASTHA_WEAK_RESULTS, language)
-                else -> StringResources.get(StringKeyAnalysis.AVASTHA_VERY_WEAK_RESULTS, language)
+                strength >= 80 -> StringResources.get(StringKeyAnalysisPart3.AVASTHA_VERY_POWERFUL, language)
+                strength >= 60 -> StringResources.get(StringKeyAnalysisPart3.AVASTHA_STRONG_RESULTS, language)
+                strength >= 40 -> StringResources.get(StringKeyAnalysisPart3.AVASTHA_MODERATE_RESULTS, language)
+                strength >= 20 -> StringResources.get(StringKeyAnalysisPart3.AVASTHA_WEAK_RESULTS, language)
+                else -> StringResources.get(StringKeyAnalysisPart3.AVASTHA_VERY_WEAK_RESULTS, language)
             })
         }
     }
@@ -518,19 +518,19 @@ object AvasthaCalculator {
 
         return buildString {
             if (strong.isNotEmpty()) {
-                append(StringResources.get(StringKeyAnalysis.AVASTHA_STRONG_PLANETS, language, strong.joinToString(", ") { it.planet.getLocalizedName(language) }))
+                append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_STRONG_PLANETS, language, strong.joinToString(", ") { it.planet.getLocalizedName(language) }))
                 append("\n")
-                append(StringResources.get(StringKeyAnalysis.AVASTHA_STRONG_PLANETS_NOTE, language))
+                append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_STRONG_PLANETS_NOTE, language))
                 append("\n\n")
             }
             if (weak.isNotEmpty()) {
-                append(StringResources.get(StringKeyAnalysis.AVASTHA_WEAK_PLANETS, language, weak.joinToString(", ") { it.planet.getLocalizedName(language) }))
+                append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_WEAK_PLANETS, language, weak.joinToString(", ") { it.planet.getLocalizedName(language) }))
                 append("\n")
-                append(StringResources.get(StringKeyAnalysis.AVASTHA_WEAK_PLANETS_NOTE, language))
+                append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_WEAK_PLANETS_NOTE, language))
                 append("\n\n")
             }
             if (strong.isEmpty() && weak.isEmpty()) {
-                append(StringResources.get(StringKeyAnalysis.AVASTHA_MODERATE_PLANETS_NOTE, language))
+                append(StringResources.get(StringKeyAnalysisPart3.AVASTHA_MODERATE_PLANETS_NOTE, language))
                 append("\n")
             }
         }
@@ -546,8 +546,8 @@ object AvasthaCalculator {
             if (avastha.effectiveStrength < 50) {
                 recommendations.add(AvasthaRecommendation(
                     planet = avastha.planet,
-                    issue = StringResources.get(StringKeyAnalysis.AVASTHA_REC_LOW_STRENGTH, language, avastha.effectiveStrength),
-                    remedy = StringResources.get(StringKeyAnalysis.AVASTHA_REC_STRENGTHEN, language, avastha.planet.getLocalizedName(language)),
+                    issue = StringResources.get(StringKeyAnalysisPart3.AVASTHA_REC_LOW_STRENGTH, language, avastha.effectiveStrength),
+                    remedy = StringResources.get(StringKeyAnalysisPart3.AVASTHA_REC_STRENGTHEN, language, avastha.planet.getLocalizedName(language)),
                     priority = if (avastha.effectiveStrength < 30) RemedyPriority.HIGH else RemedyPriority.MEDIUM
                 ))
             }
@@ -741,11 +741,11 @@ object AvasthaCalculator {
         val descKey: com.astro.storm.core.common.StringKeyAnalysis,
         val resultPercentage: Int
     ) {
-        BALA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_BALA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_BALA_DESC, 20),
-        KUMARA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KUMARA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KUMARA_DESC, 50),
-        YUVA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_YUVA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_YUVA_DESC, 100),
-        VRIDDHA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_VRIDDHA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_VRIDDHA_DESC, 30),
-        MRITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_MRITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_MRITA_DESC, 10);
+        BALA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_BALA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_BALA_DESC, 20),
+        KUMARA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_KUMARA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_KUMARA_DESC, 50),
+        YUVA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_YUVA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_YUVA_DESC, 100),
+        VRIDDHA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_VRIDDHA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_VRIDDHA_DESC, 30),
+        MRITA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_MRITA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_MRITA_DESC, 10);
 
         fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(nameKey, language)
         fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(descKey, language)
@@ -756,9 +756,9 @@ object AvasthaCalculator {
         val descKey: com.astro.storm.core.common.StringKeyAnalysis,
         val resultPercentage: Int
     ) {
-        JAGRAT(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_JAGRAT_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_JAGRAT_DESC, 100),
-        SWAPNA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SWAPNA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SWAPNA_DESC, 50),
-        SUSHUPTI(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SUSHUPTI_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SUSHUPTI_DESC, 25);
+        JAGRAT(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_JAGRAT_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_JAGRAT_DESC, 100),
+        SWAPNA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_SWAPNA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_SWAPNA_DESC, 50),
+        SUSHUPTI(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_SUSHUPTI_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_SUSHUPTI_DESC, 25);
 
         fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(nameKey, language)
         fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(descKey, language)
@@ -768,15 +768,15 @@ object AvasthaCalculator {
         val nameKey: com.astro.storm.core.common.StringKeyAnalysis,
         val descKey: com.astro.storm.core.common.StringKeyAnalysis
     ) {
-        DEEPTA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_DEEPTA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_DEEPTA_DESC),
-        SWASTHA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SWASTHA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SWASTHA_DESC),
-        MUDITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_MUDITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_MUDITA_DESC),
-        SHANTA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SHANTA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_SHANTA_DESC),
-        DINA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_DINA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_DINA_DESC),
-        VIKALA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_VIKALA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_VIKALA_DESC),
-        KHALA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KHALA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KHALA_DESC),
-        KOPA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KOPA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KOPA_DESC),
-        BHITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_BHITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_BHITA_DESC);
+        DEEPTA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_DEEPTA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_DEEPTA_DESC),
+        SWASTHA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_SWASTHA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_SWASTHA_DESC),
+        MUDITA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_MUDITA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_MUDITA_DESC),
+        SHANTA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_SHANTA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_SHANTA_DESC),
+        DINA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_DINA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_DINA_DESC),
+        VIKALA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_VIKALA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_VIKALA_DESC),
+        KHALA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_KHALA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_KHALA_DESC),
+        KOPA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_KOPA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_KOPA_DESC),
+        BHITA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_BHITA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_BHITA_DESC);
 
         fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(nameKey, language)
         fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(descKey, language)
@@ -786,12 +786,12 @@ object AvasthaCalculator {
         val nameKey: com.astro.storm.core.common.StringKeyAnalysis,
         val descKey: com.astro.storm.core.common.StringKeyAnalysis
     ) {
-        LAJJITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_LAJJITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_LAJJITA_DESC),
-        GARVITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_GARVITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_GARVITA_DESC),
-        KSHUDITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KSHUDITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KSHUDITA_DESC),
-        TRUSHITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_TRUSHITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_TRUSHITA_DESC),
-        MUDITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_MUDITA_LAJ_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_MUDITA_LAJ_DESC),
-        KSHOBHITA(com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KSHOBHITA_NAME, com.astro.storm.core.common.StringKeyAnalysis.AVASTHA_KSHOBHITA_DESC);
+        LAJJITA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_LAJJITA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_LAJJITA_DESC),
+        GARVITA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_GARVITA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_GARVITA_DESC),
+        KSHUDITA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_KSHUDITA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_KSHUDITA_DESC),
+        TRUSHITA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_TRUSHITA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_TRUSHITA_DESC),
+        MUDITA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_MUDITA_LAJ_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_MUDITA_LAJ_DESC),
+        KSHOBHITA(com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_KSHOBHITA_NAME, com.astro.storm.core.common.StringKeyAnalysisPart3.AVASTHA_KSHOBHITA_DESC);
 
         fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(nameKey, language)
         fun getLocalizedDescription(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(descKey, language)
@@ -806,9 +806,9 @@ object AvasthaCalculator {
     }
 
     enum class RemedyPriority(val displayNameKey: com.astro.storm.core.common.StringKeyAnalysis) {
-        HIGH(com.astro.storm.core.common.StringKeyAnalysis.PRIORITY_HIGH),
-        MEDIUM(com.astro.storm.core.common.StringKeyAnalysis.PRIORITY_MEDIUM),
-        LOW(com.astro.storm.core.common.StringKeyAnalysis.PRIORITY_LOW);
+        HIGH(com.astro.storm.core.common.StringKeyAnalysisPart3.PRIORITY_HIGH),
+        MEDIUM(com.astro.storm.core.common.StringKeyAnalysisPart3.PRIORITY_MEDIUM),
+        LOW(com.astro.storm.core.common.StringKeyAnalysisPart3.PRIORITY_LOW);
 
         fun getLocalizedName(language: com.astro.storm.core.common.Language): String = com.astro.storm.core.common.StringResources.get(displayNameKey, language)
     }

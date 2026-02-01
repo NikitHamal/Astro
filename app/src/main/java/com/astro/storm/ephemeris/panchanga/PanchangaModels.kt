@@ -52,22 +52,22 @@ enum class TithiGroup(val displayName: String, val nature: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            NANDA -> StringKeyAnalysis.TITHI_GROUP_NANDA
-            BHADRA -> StringKeyAnalysis.TITHI_GROUP_BHADRA
-            JAYA -> StringKeyAnalysis.TITHI_GROUP_JAYA
-            RIKTA -> StringKeyAnalysis.TITHI_GROUP_RIKTA
-            PURNA -> StringKeyAnalysis.TITHI_GROUP_PURNA
+            NANDA -> StringKeyAnalysisPart2.TITHI_GROUP_NANDA
+            BHADRA -> StringKeyAnalysisPart2.TITHI_GROUP_BHADRA
+            JAYA -> StringKeyAnalysisPart2.TITHI_GROUP_JAYA
+            RIKTA -> StringKeyAnalysisPart2.TITHI_GROUP_RIKTA
+            PURNA -> StringKeyAnalysisPart2.TITHI_GROUP_PURNA
         }
         return StringResources.get(key, language)
     }
 
     fun getLocalizedNature(language: Language): String {
         val key = when (this) {
-            NANDA -> StringKeyAnalysis.TITHI_GROUP_NANDA_NATURE
-            BHADRA -> StringKeyAnalysis.TITHI_GROUP_BHADRA_NATURE
-            JAYA -> StringKeyAnalysis.TITHI_GROUP_JAYA_NATURE
-            RIKTA -> StringKeyAnalysis.TITHI_GROUP_RIKTA_NATURE
-            PURNA -> StringKeyAnalysis.TITHI_GROUP_PURNA_NATURE
+            NANDA -> StringKeyAnalysisPart2.TITHI_GROUP_NANDA_NATURE
+            BHADRA -> StringKeyAnalysisPart2.TITHI_GROUP_BHADRA_NATURE
+            JAYA -> StringKeyAnalysisPart2.TITHI_GROUP_JAYA_NATURE
+            RIKTA -> StringKeyAnalysisPart2.TITHI_GROUP_RIKTA_NATURE
+            PURNA -> StringKeyAnalysisPart2.TITHI_GROUP_PURNA_NATURE
         }
         return StringResources.get(key, language)
     }
@@ -117,9 +117,9 @@ enum class YogaNature(val displayName: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            AUSPICIOUS -> StringKeyAnalysis.YOGA_NATURE_AUSPICIOUS
-            INAUSPICIOUS -> StringKeyAnalysis.YOGA_NATURE_INAUSPICIOUS
-            MIXED -> StringKeyAnalysis.YOGA_NATURE_MIXED
+            AUSPICIOUS -> StringKeyYogaExpanded.YOGA_NATURE_AUSPICIOUS
+            INAUSPICIOUS -> StringKeyYogaExpanded.YOGA_NATURE_INAUSPICIOUS
+            MIXED -> StringKeyYogaExpanded.YOGA_NATURE_MIXED
         }
         return StringResources.get(key, language)
     }
@@ -163,8 +163,8 @@ enum class Paksha(val displayName: String, val sanskrit: String) {
 
     fun getLocalizedName(language: Language): String {
         val key = when (this) {
-            SHUKLA -> StringKeyAnalysis.PAKSHA_SHUKLA
-            KRISHNA -> StringKeyAnalysis.PAKSHA_KRISHNA
+            SHUKLA -> StringKeyAnalysisPart2.PAKSHA_SHUKLA
+            KRISHNA -> StringKeyAnalysisPart2.PAKSHA_KRISHNA
         }
         return StringResources.get(key, language)
     }

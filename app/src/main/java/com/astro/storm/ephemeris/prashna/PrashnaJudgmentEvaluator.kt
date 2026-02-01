@@ -25,63 +25,63 @@ object PrashnaJudgmentEvaluator {
         when (moonAnalysis.moonStrength) {
             MoonStrength.EXCELLENT -> {
                 score += 25
-                supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_EXCELLENT, language))
+                supportingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_MOON_EXCELLENT, language))
             }
             MoonStrength.GOOD -> {
                 score += 18
-                supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_GOOD, language))
+                supportingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_MOON_GOOD, language))
             }
             MoonStrength.AVERAGE -> {
                 score += 8
-                supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_AVERAGE, language))
+                supportingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_MOON_AVERAGE, language))
             }
             MoonStrength.WEAK -> {
                 score -= 10
-                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_WEAK, language))
+                opposingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_MOON_WEAK, language))
             }
             MoonStrength.VERY_WEAK -> {
                 score -= 18
-                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_VERY_WEAK, language))
+                opposingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_MOON_VERY_WEAK, language))
             }
             MoonStrength.AFFLICTED -> {
                 score -= 25
-                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_AFFLICTED, language))
+                opposingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_MOON_AFFLICTED, language))
             }
         }
 
         if (moonAnalysis.isWaxing) {
             score += 10
-            supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_WAXING, language))
+            supportingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_MOON_WAXING, language))
         } else {
             score -= 5
-            opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_WANING, language))
+            opposingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_MOON_WANING, language))
         }
 
         if (moonAnalysis.isVoidOfCourse) {
             score -= 15
-            opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_MOON_VOID, language))
+            opposingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_MOON_VOID, language))
         }
 
         when (lagnaAnalysis.lagnaCondition) {
             LagnaCondition.STRONG -> {
                 score += 20
-                supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_LAGNA_STRONG, language))
+                supportingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_LAGNA_STRONG, language))
             }
             LagnaCondition.MODERATE -> {
                 score += 10
-                supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_LAGNA_MODERATE, language))
+                supportingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_LAGNA_MODERATE, language))
             }
             LagnaCondition.WEAK -> {
                 score -= 10
-                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_LAGNA_WEAK, language))
+                opposingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_LAGNA_WEAK, language))
             }
             LagnaCondition.COMBUST -> {
                 score -= 15
-                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_LAGNA_COMBUST, language))
+                opposingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_LAGNA_COMBUST, language))
             }
             LagnaCondition.RETROGRADE_LORD -> {
                 score -= 5
-                opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_LAGNA_RETRO, language))
+                opposingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_LAGNA_RETRO, language))
             }
         }
 
@@ -97,13 +97,13 @@ object PrashnaJudgmentEvaluator {
         }
         score += (relevantHouseScore * 15) / (houseAnalysis.relevantHouses.size * 5)
         if (relevantHouseScore > 0) {
-            supportingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_HOUSES_FAVORABLE, language))
+            supportingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_HOUSES_FAVORABLE, language))
         } else if (relevantHouseScore < 0) {
-            opposingFactors.add(StringResources.get(StringKeyAnalysis.PRASHNA_FACTOR_HOUSES_AFFLICTED, language))
+            opposingFactors.add(StringResources.get(StringKeyPrashnaPart1.PRASHNA_FACTOR_HOUSES_AFFLICTED, language))
         }
 
         for (yoga in specialYogas) {
-            val symbolKey = if (yoga.isPositive) StringKeyAnalysis.PRASHNA_YOGA_SYMBOL_POSITIVE else StringKeyAnalysis.PRASHNA_YOGA_SYMBOL_NEGATIVE
+            val symbolKey = if (yoga.isPositive) StringKeyPrashnaPart1.PRASHNA_YOGA_SYMBOL_POSITIVE else StringKeyPrashnaPart1.PRASHNA_YOGA_SYMBOL_NEGATIVE
             if (yoga.isPositive) {
                 score += yoga.strength * 4
                 supportingFactors.add(StringResources.get(symbolKey, language).format(yoga.name, yoga.interpretation))
@@ -135,11 +135,11 @@ object PrashnaJudgmentEvaluator {
         }
 
         val primaryReason = when {
-            score >= 50 -> StringResources.get(StringKeyAnalysis.PRASHNA_REASON_STRONGLY_YES, language)
-            score >= 20 -> StringResources.get(StringKeyAnalysis.PRASHNA_REASON_YES, language)
-            score >= -20 -> StringResources.get(StringKeyAnalysis.PRASHNA_REASON_UNCERTAIN, language)
-            score >= -50 -> StringResources.get(StringKeyAnalysis.PRASHNA_REASON_CHALLENGES, language)
-            else -> StringResources.get(StringKeyAnalysis.PRASHNA_REASON_STRONGLY_NO, language)
+            score >= 50 -> StringResources.get(StringKeyPrashnaPart1.PRASHNA_REASON_STRONGLY_YES, language)
+            score >= 20 -> StringResources.get(StringKeyPrashnaPart1.PRASHNA_REASON_YES, language)
+            score >= -20 -> StringResources.get(StringKeyPrashnaPart1.PRASHNA_REASON_UNCERTAIN, language)
+            score >= -50 -> StringResources.get(StringKeyPrashnaPart1.PRASHNA_REASON_CHALLENGES, language)
+            else -> StringResources.get(StringKeyPrashnaPart1.PRASHNA_REASON_STRONGLY_NO, language)
         }
 
         val certaintyValue = abs(score)

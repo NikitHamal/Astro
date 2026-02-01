@@ -81,12 +81,12 @@ object PrashnaHouseAnalyzer {
     ): String {
         val houseDescs = relevantHouses.map { house ->
             val condition = conditions[house]
-            StringResources.get(StringKeyAnalysis.PRASHNA_HOUSE_ITEM_TEMPLATE, language).format(
+            StringResources.get(StringKeyPrashnaPart1.PRASHNA_HOUSE_ITEM_TEMPLATE, language).format(
                 house.localized(language),
                 condition?.condition?.getLocalizedName(language) ?: ""
             )
         }
-        return StringResources.get(StringKeyAnalysis.PRASHNA_HOUSE_INTERP_TEMPLATE, language).format(
+        return StringResources.get(StringKeyPrashnaPart1.PRASHNA_HOUSE_INTERP_TEMPLATE, language).format(
             category.getLocalizedName(language),
             houseDescs.joinToString(". ")
         )

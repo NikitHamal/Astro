@@ -127,7 +127,7 @@ fun CharaDashaScreen(
     var isCalculating by remember { mutableStateOf(false) }
     var calculationError by remember { mutableStateOf<String?>(null) }
     var charaDashaResult by remember { mutableStateOf<CharaDashaCalculator.CharaDashaResult?>(null) }
-    val errorString = stringResource(StringKeyAnalysis.CHARA_DASHA_CALC_ERROR)
+    val errorString = stringResource(StringKeyDashaInterpretationsPart2.CHARA_DASHA_CALC_ERROR)
 
     // Calculate Chara Dasha on chart change
     LaunchedEffect(chart) {
@@ -151,7 +151,7 @@ fun CharaDashaScreen(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
             CharaDashaTopBar(
-                chartName = chart?.birthData?.name ?: stringResource(StringKeyMatch.MISC_UNKNOWN),
+                chartName = chart?.birthData?.name ?: stringResource(StringKeyMatchPart1.MISC_UNKNOWN),
                 currentSign = charaDashaResult?.currentMahadasha?.sign,
                 language = language,
                 onBack = onBack
@@ -202,9 +202,9 @@ fun CharaDashaScreen(
                         Column(modifier = Modifier.fillMaxSize()) {
                             // Tabs
                             val tabItems = listOf(
-                                TabItem(title = stringResource(StringKeyDosha.CHARA_DASHA_CURRENT), accentColor = AppTheme.AccentPrimary),
-                                TabItem(title = stringResource(StringKeyDosha.KARAKA_TITLE), accentColor = AppTheme.AccentPrimary),
-                                TabItem(title = stringResource(StringKeyDosha.CHARA_DASHA_TIMELINE), accentColor = AppTheme.AccentPrimary)
+                                TabItem(title = stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_CURRENT), accentColor = AppTheme.AccentPrimary),
+                                TabItem(title = stringResource(StringKeyDoshaPart2.KARAKA_TITLE), accentColor = AppTheme.AccentPrimary),
+                                TabItem(title = stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_TIMELINE), accentColor = AppTheme.AccentPrimary)
                             )
                             
                             ModernPillTabRow(
@@ -246,7 +246,7 @@ private fun CharaDashaTopBar(
             title = {
                 Column(modifier = Modifier.fillMaxWidth(0.85f)) {
                     Text(
-                        text = stringResource(StringKeyDosha.CHARA_DASHA_TITLE),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_TITLE),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
@@ -272,7 +272,7 @@ private fun CharaDashaTopBar(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKey.BTN_BACK),
+                        contentDescription = stringResource(StringKeyUI.BTN_BACK),
                         tint = AppTheme.TextPrimary
                     )
                 }
@@ -460,7 +460,7 @@ private fun CurrentCharaDashaPeriodCard(
                 Spacer(modifier = Modifier.width(14.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyDosha.CHARA_DASHA_CURRENT),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_CURRENT),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
@@ -468,7 +468,7 @@ private fun CurrentCharaDashaPeriodCard(
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.CHARA_DASHA_SUBTITLE),
+                        text = stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_SUBTITLE),
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -479,13 +479,13 @@ private fun CurrentCharaDashaPeriodCard(
             if (currentMaha != null) {
                 // Mahadasha
                 SignDashaRow(
-                    label = stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA),
+                    label = stringResource(StringKeyMatchPart1.DASHA_LEVEL_MAHADASHA),
                     sign = currentMaha.sign,
                     lord = currentMaha.signLord,
                     startDate = currentMaha.startDate,
                     endDate = currentMaha.endDate,
                     progress = currentMaha.getProgressPercent().toFloat() / 100f,
-                    remainingText = "${currentMaha.getRemainingDays()} ${stringResource(StringKeyMatch.MISC_DAYS_LEFT)}",
+                    remainingText = "${currentMaha.getRemainingDays()} ${stringResource(StringKeyMatchPart2.MISC_DAYS_LEFT)}",
                     language = language,
                     dateSystem = dateSystem,
                     isLarger = true
@@ -494,13 +494,13 @@ private fun CurrentCharaDashaPeriodCard(
                 currentAntar?.let { antar ->
                     Spacer(modifier = Modifier.height(12.dp))
                     SignDashaRow(
-                        label = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA),
+                        label = stringResource(StringKeyMatchPart1.DASHA_LEVEL_ANTARDASHA),
                         sign = antar.sign,
                         lord = antar.signLord,
                         startDate = antar.startDate,
                         endDate = antar.endDate,
                         progress = antar.getProgressPercent().toFloat() / 100f,
-                        remainingText = "${antar.durationMonths.toInt()} ${stringResource(StringKeyMatch.MISC_MONTHS)}",
+                        remainingText = "${antar.durationMonths.toInt()} ${stringResource(StringKeyMatchPart2.MISC_MONTHS)}",
                         language = language,
                         dateSystem = dateSystem,
                         isLarger = false
@@ -508,7 +508,7 @@ private fun CurrentCharaDashaPeriodCard(
                 }
             } else {
                 Text(
-                    text = stringResource(StringKeyMatch.DASHA_NO_CURRENT_PERIOD),
+                    text = stringResource(StringKeyMatchPart2.DASHA_NO_CURRENT_PERIOD),
                     color = AppTheme.TextMuted,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(vertical = 8.dp)
@@ -608,7 +608,7 @@ private fun CharaDashaSystemInfoCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.CHARA_DASHA_ABOUT),
+                    text = stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_ABOUT),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -618,23 +618,23 @@ private fun CharaDashaSystemInfoCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             InfoRow(
-                label = stringResource(StringKeyAnalysis.CHART_LAGNA),
+                label = stringResource(StringKeyMatchPart2.CHART_LAGNA),
                 value = result.lagnaSign.getLocalizedName(language)
             )
             InfoRow(
-                label = stringResource(StringKeyDosha.CHARA_DASHA_DIRECTION),
+                label = stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_DIRECTION),
                 value = if (result.isOddLagna) {
-                    stringResource(StringKeyDosha.CHARA_DASHA_DIRECT)
+                    stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_DIRECT)
                 } else {
-                    stringResource(StringKeyDosha.CHARA_DASHA_REVERSE)
+                    stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_REVERSE)
                 }
             )
             InfoRow(
-                label = stringResource(StringKeyAnalysis.CHARA_DASHA_TYPE),
+                label = stringResource(StringKeyDashaInterpretationsPart2.CHARA_DASHA_TYPE),
                 value = if (result.isOddLagna) {
-                    stringResource(StringKeyDosha.CHARA_DASHA_ODD_LAGNA)
+                    stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_ODD_LAGNA)
                 } else {
-                    stringResource(StringKeyDosha.CHARA_DASHA_EVEN_LAGNA)
+                    stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_EVEN_LAGNA)
                 }
             )
         }
@@ -703,7 +703,7 @@ private fun CharaDashaInterpretationCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(StringKeyMatch.INTERPRETATION_TITLE),
+                        text = stringResource(StringKeyMatchPart2.INTERPRETATION_TITLE),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -727,34 +727,34 @@ private fun CharaDashaInterpretationCard(
                     )
 
                     InterpretationSection(
-                        title = stringResource(StringKeyMatch.INTERPRETATION_GENERAL),
+                        title = stringResource(StringKeyMatchPart2.INTERPRETATION_GENERAL),
                         content = mahadasha.interpretation.generalEffects
                     )
 
                     InterpretationSection(
-                        title = stringResource(StringKeyMatch.INTERPRETATION_LORD_EFFECTS),
+                        title = stringResource(StringKeyMatchPart2.INTERPRETATION_LORD_EFFECTS),
                         content = mahadasha.interpretation.signLordEffects
                     )
 
                     if (mahadasha.interpretation.karakaActivation.isNotEmpty()) {
                         InterpretationSection(
-                            title = stringResource(StringKeyAnalysis.KARAKA_ACTIVATION),
+                            title = stringResource(StringKeyAnalysisPart2.KARAKA_ACTIVATION),
                             items = mahadasha.interpretation.karakaActivation
                         )
                     }
 
                     InterpretationSection(
-                        title = stringResource(StringKeyMatch.INTERPRETATION_FAVORABLE),
+                        title = stringResource(StringKeyMatchPart2.INTERPRETATION_FAVORABLE),
                         items = mahadasha.interpretation.favorableAreas
                     )
 
                     InterpretationSection(
-                        title = stringResource(StringKeyMatch.INTERPRETATION_CHALLENGES),
+                        title = stringResource(StringKeyMatchPart2.INTERPRETATION_CHALLENGES),
                         items = mahadasha.interpretation.challengingAreas
                     )
 
                     InterpretationSection(
-                        title = stringResource(StringKeyMatch.INTERPRETATION_RECOMMENDATIONS),
+                        title = stringResource(StringKeyMatchPart2.INTERPRETATION_RECOMMENDATIONS),
                         items = mahadasha.interpretation.recommendations
                     )
                 }
@@ -837,7 +837,7 @@ private fun KarakamshaCard(
                 Spacer(modifier = Modifier.width(10.dp))
                 Column {
                     Text(
-                        text = stringResource(StringKeyDosha.KARAKAMSHA_TITLE),
+                        text = stringResource(StringKeyDoshaPart2.KARAKAMSHA_TITLE),
                         fontSize = 15.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -852,7 +852,7 @@ private fun KarakamshaCard(
 
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = stringResource(StringKeyDosha.KARAKAMSHA_DESC),
+                text = stringResource(StringKeyDoshaPart2.KARAKAMSHA_DESC),
                 fontSize = 12.sp,
                 color = AppTheme.TextSecondary,
                 lineHeight = 16.sp
@@ -886,7 +886,7 @@ private fun AboutKarakasCard(language: Language) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.KARAKA_ABOUT),
+                    text = stringResource(StringKeyDoshaPart2.KARAKA_ABOUT),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -894,7 +894,7 @@ private fun AboutKarakasCard(language: Language) {
             }
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = stringResource(StringKeyDosha.KARAKA_ABOUT_DESC),
+                text = stringResource(StringKeyDoshaPart2.KARAKA_ABOUT_DESC),
                 fontSize = 13.sp,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
@@ -909,14 +909,14 @@ private fun KarakaCard(
     language: Language
 ) {
     val (karakaKey, descKey) = when (karaka.karakaType) {
-        CharaDashaCalculator.KarakaType.ATMAKARAKA -> StringKeyDosha.KARAKA_AK to StringKeyDosha.KARAKA_AK_DESC
-        CharaDashaCalculator.KarakaType.AMATYAKARAKA -> StringKeyDosha.KARAKA_AMK to StringKeyDosha.KARAKA_AMK_DESC
-        CharaDashaCalculator.KarakaType.BHRATRIKARAKA -> StringKeyDosha.KARAKA_BK to StringKeyDosha.KARAKA_BK_DESC
-        CharaDashaCalculator.KarakaType.MATRIKARAKA -> StringKeyDosha.KARAKA_MK to StringKeyDosha.KARAKA_MK_DESC
-        CharaDashaCalculator.KarakaType.PITRIKARAKA -> StringKeyDosha.KARAKA_PIK to StringKeyDosha.KARAKA_PIK_DESC
-        CharaDashaCalculator.KarakaType.PUTRAKARAKA -> StringKeyDosha.KARAKA_PUK to StringKeyDosha.KARAKA_PUK_DESC
-        CharaDashaCalculator.KarakaType.GNATIKARAKA -> StringKeyDosha.KARAKA_GK to StringKeyDosha.KARAKA_GK_DESC
-        CharaDashaCalculator.KarakaType.DARAKARAKA -> StringKeyDosha.KARAKA_DK to StringKeyDosha.KARAKA_DK_DESC
+        CharaDashaCalculator.KarakaType.ATMAKARAKA -> StringKeyDoshaPart2.KARAKA_AK to StringKeyDoshaPart2.KARAKA_AK_DESC
+        CharaDashaCalculator.KarakaType.AMATYAKARAKA -> StringKeyDoshaPart2.KARAKA_AMK to StringKeyDoshaPart2.KARAKA_AMK_DESC
+        CharaDashaCalculator.KarakaType.BHRATRIKARAKA -> StringKeyDoshaPart2.KARAKA_BK to StringKeyDoshaPart2.KARAKA_BK_DESC
+        CharaDashaCalculator.KarakaType.MATRIKARAKA -> StringKeyDoshaPart2.KARAKA_MK to StringKeyDoshaPart2.KARAKA_MK_DESC
+        CharaDashaCalculator.KarakaType.PITRIKARAKA -> StringKeyDoshaPart2.KARAKA_PIK to StringKeyDoshaPart2.KARAKA_PIK_DESC
+        CharaDashaCalculator.KarakaType.PUTRAKARAKA -> StringKeyDoshaPart2.KARAKA_PUK to StringKeyDoshaPart2.KARAKA_PUK_DESC
+        CharaDashaCalculator.KarakaType.GNATIKARAKA -> StringKeyDoshaPart2.KARAKA_GK to StringKeyDoshaPart2.KARAKA_GK_DESC
+        CharaDashaCalculator.KarakaType.DARAKARAKA -> StringKeyDoshaPart2.KARAKA_DK to StringKeyDoshaPart2.KARAKA_DK_DESC
     }
 
     Surface(
@@ -1033,7 +1033,7 @@ private fun CharaDashaTimelineOverviewCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.CHARA_DASHA_TIMELINE),
+                    text = stringResource(StringKeyDashaInterpretationsPart1.CHARA_DASHA_TIMELINE),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1130,7 +1130,7 @@ private fun CharaMahadashaCard(
                                         .padding(horizontal = 6.dp, vertical = 2.dp)
                                 ) {
                                     Text(
-                                        text = stringResource(StringKeyMatch.MISC_CURRENT),
+                                        text = stringResource(StringKeyMatchPart2.MISC_CURRENT),
                                         fontSize = 9.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = AppTheme.ScreenBackground
@@ -1139,7 +1139,7 @@ private fun CharaMahadashaCard(
                             }
                         }
                         Text(
-                            text = "${mahadasha.signLord.getLocalizedName(language)} • ${mahadasha.durationYears} ${stringResource(StringKeyMatch.MISC_YEARS)}",
+                            text = "${mahadasha.signLord.getLocalizedName(language)} • ${mahadasha.durationYears} ${stringResource(StringKeyMatchPart2.MISC_YEARS)}",
                             fontSize = 12.sp,
                             color = AppTheme.TextMuted
                         )
@@ -1205,7 +1205,7 @@ private fun CharaMahadashaCard(
                     // Antardashas
                     if (mahadasha.antardashas.isNotEmpty()) {
                         Text(
-                            text = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHAS),
+                            text = stringResource(StringKeyMatchPart2.DASHA_LEVEL_ANTARDASHAS),
                             fontSize = 13.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.AccentSecondary,
@@ -1323,7 +1323,7 @@ private fun CharaDashaLoadingContent() {
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(StringKey.DASHA_CALCULATING),
+                text = stringResource(StringKeyPart1.DASHA_CALCULATING),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1370,7 +1370,7 @@ private fun CharaDashaErrorContent(
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(StringKey.DASHA_CALCULATION_FAILED),
+                text = stringResource(StringKeyPart1.DASHA_CALCULATION_FAILED),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -1392,7 +1392,7 @@ private fun CharaDashaErrorContent(
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = stringResource(StringKey.BTN_TRY_AGAIN),
+                    text = stringResource(StringKeyUI.BTN_TRY_AGAIN),
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                 )
@@ -1428,14 +1428,14 @@ private fun CharaDashaEmptyContent(onBack: () -> Unit) {
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(StringKey.DASHA_NO_CHART_SELECTED),
+                text = stringResource(StringKeyPart1.DASHA_NO_CHART_SELECTED),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKey.DASHA_NO_CHART_MESSAGE),
+                text = stringResource(StringKeyPart1.DASHA_NO_CHART_MESSAGE),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
@@ -1447,7 +1447,7 @@ private fun CharaDashaEmptyContent(onBack: () -> Unit) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = stringResource(StringKey.BTN_GO_BACK),
+                    text = stringResource(StringKeyUI.BTN_GO_BACK),
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                 )

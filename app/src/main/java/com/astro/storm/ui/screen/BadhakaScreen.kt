@@ -102,11 +102,11 @@ fun BadhakaScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyDosha.UI_OVERVIEW),
-        stringResource(StringKeyDosha.BADHAKA_TAB_PLANETS),
-        stringResource(StringKeyDosha.BADHAKA_TAB_OBSTACLES),
-        stringResource(StringKeyDosha.UI_TIMING),
-        stringResource(StringKeyDosha.UI_REMEDIES)
+        stringResource(StringKeyUI.UI_OVERVIEW),
+        stringResource(StringKeyDoshaPart4.BADHAKA_TAB_PLANETS),
+        stringResource(StringKeyDoshaPart4.BADHAKA_TAB_OBSTACLES),
+        stringResource(StringKeyUI.UI_TIMING),
+        stringResource(StringKeyUI.UI_REMEDIES)
     )
 
     LaunchedEffect(chart) {
@@ -131,13 +131,13 @@ fun BadhakaScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.BADHAKA_SCREEN_TITLE),
+                            text = stringResource(StringKeyDoshaPart4.BADHAKA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.BADHAKA_SUBTITLE),
+                            text = stringResource(StringKeyDoshaPart4.BADHAKA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -293,7 +293,7 @@ private fun BadhakaSthanaCard(analysis: BadhakaCalculator.BadhakaAnalysis) {
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "${stringResource(StringKeyDosha.BADHAKA_STHANA)}: ${analysis.badhakaHouse}${getOrdinalSuffix(analysis.badhakaHouse)} House",
+                text = "${stringResource(StringKeyDoshaPart4.BADHAKA_STHANA)}: ${analysis.badhakaHouse}${getOrdinalSuffix(analysis.badhakaHouse)} House",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = modalityColor
@@ -356,19 +356,19 @@ private fun BadhakaQuickStats(analysis: BadhakaCalculator.BadhakaAnalysis) {
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         BadhakaStatCard(
-            title = stringResource(StringKeyDosha.BADHAKA_PRIMARY),
+            title = stringResource(StringKeyDoshaPart4.BADHAKA_PRIMARY),
             value = "1", // Badhakesh is always 1
             color = AppTheme.ErrorColor,
             modifier = Modifier.weight(1f)
         )
         BadhakaStatCard(
-            title = stringResource(StringKeyDosha.BADHAKA_SECONDARY),
+            title = stringResource(StringKeyDoshaPart4.BADHAKA_SECONDARY),
             value = "${analysis.planetsInBadhakaHouse.size}",
             color = AppTheme.WarningColor,
             modifier = Modifier.weight(1f)
         )
         BadhakaStatCard(
-            title = stringResource(StringKeyDosha.BADHAKA_SEVERITY),
+            title = stringResource(StringKeyDoshaPart4.BADHAKA_SEVERITY),
             value = "${analysis.overallSeverity.level * 20}%",
             color = getSeverityColor(analysis.overallSeverity.level * 20),
             modifier = Modifier.weight(1f)
@@ -440,7 +440,7 @@ private fun BadhakaInterpretationCard(analysis: BadhakaCalculator.BadhakaAnalysi
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.UI_INTERPRETATION),
+                    text = stringResource(StringKeyUI.UI_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -456,7 +456,7 @@ private fun BadhakaInterpretationCard(analysis: BadhakaCalculator.BadhakaAnalysi
             if (analysis.protectiveFactors.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = stringResource(StringKeyDosha.BADHAKA_MITIGATING),
+                    text = stringResource(StringKeyDoshaPart4.BADHAKA_MITIGATING),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.SuccessColor
@@ -491,7 +491,7 @@ private fun BadhakaPlanetsSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
     ) {
         // Primary Badhakesh
         Text(
-            text = stringResource(StringKeyDosha.BADHAKA_PRIMARY_TITLE),
+            text = stringResource(StringKeyDoshaPart4.BADHAKA_PRIMARY_TITLE),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.ErrorColor
@@ -502,7 +502,7 @@ private fun BadhakaPlanetsSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
         if (analysis.planetsInBadhakaHouse.isNotEmpty()) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.BADHAKA_SECONDARY_TITLE),
+                text = stringResource(StringKeyDoshaPart4.BADHAKA_SECONDARY_TITLE),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.WarningColor
@@ -616,7 +616,7 @@ private fun BadhakaPlanetCard(
                             modifier = Modifier.padding(bottom = 8.dp)
                         ) {
                             Text(
-                                text = stringResource(StringKeyDosha.BADHAKA_LORD),
+                                text = stringResource(StringKeyDoshaPart4.BADHAKA_LORD),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.ErrorColor,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -634,7 +634,7 @@ private fun BadhakaPlanetCard(
                     if (false) { // badhaka.obstacleTypes property does not exist in BadhakaPlanet
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = stringResource(StringKeyDosha.BADHAKA_OBSTACLE_TYPES),
+                            text = stringResource(StringKeyDoshaPart4.BADHAKA_OBSTACLE_TYPES),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -672,7 +672,7 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.BADHAKA_AFFECTED_AREAS),
+                        text = stringResource(StringKeyDoshaPart4.BADHAKA_AFFECTED_AREAS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -682,7 +682,7 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
 
                 if (analysis.affectedLifeAreas.isEmpty()) {
                     Text(
-                        text = stringResource(StringKeyDosha.BADHAKA_NO_AREAS),
+                        text = stringResource(StringKeyDoshaPart4.BADHAKA_NO_AREAS),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted
                     )
@@ -703,7 +703,7 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = stringResource(StringKeyDosha.BADHAKA_NATURE),
+                        text = stringResource(StringKeyDoshaPart4.BADHAKA_NATURE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -832,7 +832,7 @@ private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.BADHAKA_NO_CRITICAL),
+                        text = stringResource(StringKeyDoshaPart4.BADHAKA_NO_CRITICAL),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary,
@@ -858,7 +858,7 @@ private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                             modifier = Modifier.size(20.dp)
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.BADHAKA_CRITICAL_PERIODS),
+                            text = stringResource(StringKeyDoshaPart4.BADHAKA_CRITICAL_PERIODS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -955,7 +955,7 @@ private fun BadhakaRemediesSection(analysis: BadhakaCalculator.BadhakaAnalysis) 
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = stringResource(StringKeyDosha.BADHAKA_NO_REMEDIES),
+                        text = stringResource(StringKeyDoshaPart4.BADHAKA_NO_REMEDIES),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -1027,7 +1027,7 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
             )
             if (!remedy.ritual.isNullOrEmpty()) {
                 Text(
-                    text = "${stringResource(StringKeyDosha.UI_TIMING)}: ${remedy.ritual}",
+                    text = "${stringResource(StringKeyUI.UI_TIMING)}: ${remedy.ritual}",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted,
                     modifier = Modifier.padding(top = 4.dp)
@@ -1047,7 +1047,7 @@ private fun BadhakaLoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentTeal)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.BADHAKA_ANALYZING),
+                text = stringResource(StringKeyDoshaPart4.BADHAKA_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1073,14 +1073,14 @@ private fun BadhakaEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+                text = stringResource(StringKeyUI.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.BADHAKA_NO_CHART_DESC),
+                text = stringResource(StringKeyDoshaPart4.BADHAKA_NO_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1095,14 +1095,14 @@ private fun BadhakaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(StringKeyDosha.BADHAKA_ABOUT_TITLE),
+                text = stringResource(StringKeyDoshaPart4.BADHAKA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = stringResource(StringKeyDosha.BADHAKA_ABOUT_DESC),
+                text = stringResource(StringKeyDoshaPart4.BADHAKA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
@@ -1110,7 +1110,7 @@ private fun BadhakaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentTeal)
+                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.AccentTeal)
             }
         },
         containerColor = AppTheme.CardBackground

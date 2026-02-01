@@ -111,10 +111,10 @@ fun GocharaVedhaScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyDosha.UI_OVERVIEW),
-        stringResource(StringKeyDosha.UI_TRANSITS),
-        stringResource(StringKeyDosha.GOCHARA_VEDHAS),
-        stringResource(StringKeyDosha.GOCHARA_FORECAST)
+        stringResource(StringKeyUI.UI_OVERVIEW),
+        stringResource(StringKeyUI.UI_TRANSITS),
+        stringResource(StringKeyDoshaPart4.GOCHARA_VEDHAS),
+        stringResource(StringKeyDoshaPart4.GOCHARA_FORECAST)
     )
 
     // Calculate Vedha analysis
@@ -142,13 +142,13 @@ fun GocharaVedhaScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.GOCHARA_SCREEN_TITLE),
+                            text = stringResource(StringKeyDoshaPart4.GOCHARA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.GOCHARA_SUBTITLE),
+                            text = stringResource(StringKeyDoshaPart4.GOCHARA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -315,7 +315,7 @@ private fun TransitScoreCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(StringKeyDosha.GOCHARA_SCORE),
+                text = stringResource(StringKeyDoshaPart4.GOCHARA_SCORE),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -380,7 +380,7 @@ private fun TransitScoreCard(
                         )
                     }
                     Text(
-                        text = stringResource(StringKeyDosha.GOCHARA_FAVORABLE),
+                        text = stringResource(StringKeyDoshaPart4.GOCHARA_FAVORABLE),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -402,7 +402,7 @@ private fun TransitScoreCard(
                         )
                     }
                     Text(
-                        text = stringResource(StringKeyDosha.GOCHARA_OBSTRUCTED),
+                        text = stringResource(StringKeyDoshaPart4.GOCHARA_OBSTRUCTED),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -441,7 +441,7 @@ private fun MoonSignCard(moonSign: String) {
             }
             Column {
                 Text(
-                    text = stringResource(StringKeyDosha.GOCHARA_MOON_SIGN),
+                    text = stringResource(StringKeyDoshaPart4.GOCHARA_MOON_SIGN),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -463,16 +463,16 @@ private fun VedhaQuickStatsRow(analysis: GocharaVedhaCalculator.CompleteVedhaAna
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         VedhaStatCard(
-            title = stringResource(StringKeyDosha.SANDHI_ACTIVE), // Reuse "Active" or define GOCHARA_ACTIVE
+            title = stringResource(StringKeyDasha.SANDHI_ACTIVE), // Reuse "Active" or define GOCHARA_ACTIVE
             value = "${analysis.activeVedhas.size}",
-            subtitle = stringResource(StringKeyDosha.GOCHARA_VEDHAS),
+            subtitle = stringResource(StringKeyDoshaPart4.GOCHARA_VEDHAS),
             color = if (analysis.activeVedhas.isNotEmpty()) AppTheme.WarningColor else AppTheme.SuccessColor,
             modifier = Modifier.weight(1f)
         )
         VedhaStatCard(
-            title = stringResource(StringKeyDosha.UI_TRANSITS),
+            title = stringResource(StringKeyUI.UI_TRANSITS),
             value = "${analysis.planetTransits.size}",
-            subtitle = stringResource(StringKeyDosha.GOCHARA_TRANSITS_TRACKED),
+            subtitle = stringResource(StringKeyDoshaPart4.GOCHARA_TRANSITS_TRACKED),
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
@@ -537,7 +537,7 @@ private fun KeyInsightsCard(insights: List<String>) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.UI_KEY_INSIGHTS),
+                    text = stringResource(StringKeyUI.UI_KEY_INSIGHTS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -585,7 +585,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
+                    text = stringResource(StringKeyUI.UI_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -626,7 +626,7 @@ private fun TransitsSection(analysis: GocharaVedhaCalculator.CompleteVedhaAnalys
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = stringResource(StringKeyDosha.GOCHARA_CURRENT_TRANSITS),
+            text = stringResource(StringKeyDoshaPart4.GOCHARA_CURRENT_TRANSITS),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -731,7 +731,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                     modifier = Modifier.size(14.dp)
                 )
                 Text(
-                    text = if (transit.isNaturallyFavorable) stringResource(StringKeyDosha.GOCHARA_NATURALLY_FAVORABLE) else stringResource(StringKeyDosha.GOCHARA_NATURALLY_UNFAVORABLE),
+                    text = if (transit.isNaturallyFavorable) stringResource(StringKeyDoshaPart4.GOCHARA_NATURALLY_FAVORABLE) else stringResource(StringKeyDoshaPart4.GOCHARA_NATURALLY_UNFAVORABLE),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -742,7 +742,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                         color = AppTheme.ErrorColor.copy(alpha = 0.15f)
                     ) {
                         Text(
-                            text = stringResource(StringKeyDosha.GOCHARA_VEDHA_LABEL),
+                            text = stringResource(StringKeyDoshaPart4.GOCHARA_VEDHA_LABEL),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.ErrorColor,
@@ -764,7 +764,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
 
                     // Transit effects
                     Text(
-                        text = stringResource(StringKeyDosha.GOCHARA_TRANSIT_EFFECTS),
+                        text = stringResource(StringKeyDoshaPart4.GOCHARA_TRANSIT_EFFECTS),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -789,19 +789,19 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                         ) {
                             Column(modifier = Modifier.padding(12.dp)) {
                                 Text(
-                                    text = stringResource(StringKeyDosha.GOCHARA_VEDHA_OBSTRUCTION),
+                                    text = stringResource(StringKeyDoshaPart4.GOCHARA_VEDHA_OBSTRUCTION),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.SemiBold,
                                     color = AppTheme.ErrorColor
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
-                                    text = "${stringResource(StringKeyDosha.GOCHARA_FROM)} ${transit.vedhaSourcePlanets.joinToString { it.getLocalizedName(language) }}",
+                                    text = "${stringResource(StringKeyDoshaPart4.GOCHARA_FROM)} ${transit.vedhaSourcePlanets.joinToString { it.getLocalizedName(language) }}",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = AppTheme.TextSecondary
                                 )
                                 Text(
-                                    text = "${stringResource(StringKeyDosha.GOCHARA_SEVERITY)} ${transit.vedhaSeverity.displayName}",
+                                    text = "${stringResource(StringKeyDoshaPart4.GOCHARA_SEVERITY)} ${transit.vedhaSeverity.displayName}",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = AppTheme.TextSecondary
                                 )
@@ -1162,14 +1162,14 @@ private fun EmptyContentVedha(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+                text = stringResource(StringKeyUI.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.GOCHARA_NO_CHART_DESC),
+                text = stringResource(StringKeyDoshaPart4.GOCHARA_NO_CHART_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1184,14 +1184,14 @@ private fun VedhaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(StringKeyDosha.GOCHARA_ABOUT_TITLE),
+                text = stringResource(StringKeyDoshaPart4.GOCHARA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = stringResource(StringKeyDosha.GOCHARA_ABOUT_DESC),
+                text = stringResource(StringKeyDoshaPart4.GOCHARA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
@@ -1199,7 +1199,7 @@ private fun VedhaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.AccentPrimary)
             }
         },
         containerColor = AppTheme.CardBackground

@@ -771,11 +771,11 @@ object NityaYogaCalculator {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                HIGHLY_AUSPICIOUS -> StringKeyAnalysis.AUSPICIOUSNESS_HIGHLY_AUSPICIOUS
-                AUSPICIOUS -> StringKeyAnalysis.AUSPICIOUSNESS_AUSPICIOUS
-                NEUTRAL -> StringKeyAnalysis.AUSPICIOUSNESS_NEUTRAL
-                INAUSPICIOUS -> StringKeyAnalysis.AUSPICIOUSNESS_INAUSPICIOUS
-                HIGHLY_INAUSPICIOUS -> StringKeyAnalysis.AUSPICIOUSNESS_HIGHLY_INAUSPICIOUS
+                HIGHLY_AUSPICIOUS -> StringKeyAnalysisPart2.AUSPICIOUSNESS_HIGHLY_AUSPICIOUS
+                AUSPICIOUS -> StringKeyAnalysisPart2.AUSPICIOUSNESS_AUSPICIOUS
+                NEUTRAL -> StringKeyAnalysisPart2.AUSPICIOUSNESS_NEUTRAL
+                INAUSPICIOUS -> StringKeyAnalysisPart2.AUSPICIOUSNESS_INAUSPICIOUS
+                HIGHLY_INAUSPICIOUS -> StringKeyAnalysisPart2.AUSPICIOUSNESS_HIGHLY_INAUSPICIOUS
             }
             return StringResources.get(key, language)
         }
@@ -790,11 +790,11 @@ object NityaYogaCalculator {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                VERY_STRONG -> StringKeyAnalysis.NITYA_STRENGTH_VERY_STRONG
-                STRONG -> StringKeyAnalysis.NITYA_STRENGTH_STRONG
-                MODERATE -> StringKeyAnalysis.NITYA_STRENGTH_MODERATE
-                WEAK -> StringKeyAnalysis.NITYA_STRENGTH_WEAK
-                VERY_WEAK -> StringKeyAnalysis.NITYA_STRENGTH_VERY_WEAK
+                VERY_STRONG -> StringKeyAnalysisPart2.NITYA_STRENGTH_VERY_STRONG
+                STRONG -> StringKeyAnalysisPart2.NITYA_STRENGTH_STRONG
+                MODERATE -> StringKeyAnalysisPart2.NITYA_STRENGTH_MODERATE
+                WEAK -> StringKeyAnalysisPart2.NITYA_STRENGTH_WEAK
+                VERY_WEAK -> StringKeyAnalysisPart2.NITYA_STRENGTH_VERY_WEAK
             }
             return StringResources.get(key, language)
         }
@@ -809,11 +809,11 @@ object NityaYogaCalculator {
 
         fun getLocalizedName(language: Language): String {
             val key = when (this) {
-                SPIRITUAL -> StringKeyAnalysis.RECOMMEND_SPIRITUAL
-                ACTIVITY -> StringKeyAnalysis.RECOMMEND_ACTIVITY
-                MANTRA -> StringKeyAnalysis.RECOMMEND_MANTRA
-                TIMING -> StringKeyAnalysis.RECOMMEND_TIMING
-                GENERAL -> StringKeyAnalysis.RECOMMEND_GENERAL
+                SPIRITUAL -> StringKeyAnalysisPart2.RECOMMEND_SPIRITUAL
+                ACTIVITY -> StringKeyAnalysisPart2.RECOMMEND_ACTIVITY
+                MANTRA -> StringKeyAnalysisPart2.RECOMMEND_MANTRA
+                TIMING -> StringKeyAnalysisPart2.RECOMMEND_TIMING
+                GENERAL -> StringKeyAnalysisPart2.RECOMMEND_GENERAL
             }
             return StringResources.get(key, language)
         }

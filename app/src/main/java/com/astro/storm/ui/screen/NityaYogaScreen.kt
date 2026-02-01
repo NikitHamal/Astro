@@ -108,10 +108,10 @@ fun NityaYogaScreen(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val tabs = listOf(
-        stringResource(StringKeyAnalysis.PANCHANGA_BIRTH_INSIGHT),
-        stringResource(StringKeyAnalysis.PANCHANGA_FAVORABLE_ACTIVITIES),
-        stringResource(StringKeyAnalysis.UI_TIMING_GUIDANCE),
-        stringResource(StringKeyAnalysis.ANALYSIS_TAB_YOGAS)
+        stringResource(StringKeyPanchanga.PANCHANGA_BIRTH_INSIGHT),
+        stringResource(StringKeyPanchanga.PANCHANGA_FAVORABLE_ACTIVITIES),
+        stringResource(StringKeyUI.UI_TIMING_GUIDANCE),
+        stringResource(StringKeyAnalysisPart1.ANALYSIS_TAB_YOGAS)
     )
 
     // Calculate analysis
@@ -139,13 +139,13 @@ fun NityaYogaScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.NITYA_SCREEN_TITLE),
+                            text = stringResource(StringKeyDoshaPart4.NITYA_SCREEN_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.NITYA_SUBTITLE),
+                            text = stringResource(StringKeyDoshaPart4.NITYA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -383,19 +383,19 @@ private fun NityaQuickStatsRow(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         NityaStatCard(
-            title = stringResource(StringKeyDosha.NITYA_PROGRESS),
+            title = stringResource(StringKeyDoshaPart4.NITYA_PROGRESS),
             value = "${analysis.percentComplete.toInt()}%",
             color = AppTheme.AccentGold,
             modifier = Modifier.weight(1f)
         )
         NityaStatCard(
-            title = stringResource(StringKeyDosha.NITYA_POSITION),
+            title = stringResource(StringKeyDoshaPart4.NITYA_POSITION),
             value = "${analysis.yogaIndex}/27",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
         NityaStatCard(
-            title = stringResource(StringKeyDosha.NITYA_NATURE),
+            title = stringResource(StringKeyDoshaPart4.NITYA_NATURE),
             value = analysis.yoga.nature,
             color = getAuspiciousnessColor(analysis.yoga.auspiciousness),
             modifier = Modifier.weight(1f)
@@ -451,7 +451,7 @@ private fun NextYogaProgressCard(analysis: NityaYogaCalculator.NityaYogaAnalysis
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(StringKeyDosha.NITYA_CURRENT_PROGRESS),
+                    text = stringResource(StringKeyDoshaPart4.NITYA_CURRENT_PROGRESS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -485,12 +485,12 @@ private fun NextYogaProgressCard(analysis: NityaYogaCalculator.NityaYogaAnalysis
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "${stringResource(StringKeyDosha.NITYA_NEXT)} ${nextYoga.displayName}",
+                        text = "${stringResource(StringKeyDoshaPart4.NITYA_NEXT)} ${nextYoga.displayName}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )
                     Text(
-                        text = "${String.format("%.1f", analysis.degreesToNextYoga)}° ${stringResource(StringKeyDosha.NITYA_REMAINING)}",
+                        text = "${String.format("%.1f", analysis.degreesToNextYoga)}° ${stringResource(StringKeyDoshaPart4.NITYA_REMAINING)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )
@@ -519,7 +519,7 @@ private fun NityaInterpretationCard(analysis: NityaYogaCalculator.NityaYogaAnaly
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.UI_INTERPRETATION),
+                    text = stringResource(StringKeyUI.UI_INTERPRETATION),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -550,7 +550,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // General Nature
         EffectCard(
             icon = Icons.Outlined.AutoAwesome,
-            title = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_GENERAL_NATURE),
+            title = stringResource(com.astro.storm.core.common.StringKeyUI.UI_GENERAL_NATURE),
             content = effects.generalNature,
             color = getAuspiciousnessColor(effects.auspiciousness)
         )
@@ -558,7 +558,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // Health Effects
         EffectCard(
             icon = Icons.Outlined.SelfImprovement,
-            title = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_HEALTH_INDICATIONS),
+            title = stringResource(com.astro.storm.core.common.StringKeyUI.UI_HEALTH_INDICATIONS),
             content = effects.healthIndications,
             color = AppTheme.AccentTeal
         )
@@ -566,7 +566,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // Financial Effects
         EffectCard(
             icon = Icons.Outlined.TrendingUp,
-            title = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_FINANCIAL_INDICATIONS),
+            title = stringResource(com.astro.storm.core.common.StringKeyUI.UI_FINANCIAL_INDICATIONS),
             content = effects.financialIndications,
             color = AppTheme.AccentGold
         )
@@ -574,7 +574,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // Relationship Effects
         EffectCard(
             icon = Icons.Outlined.Star,
-            title = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_RELATIONSHIP_INDICATIONS),
+            title = stringResource(com.astro.storm.core.common.StringKeyUI.UI_RELATIONSHIP_INDICATIONS),
             content = effects.relationshipIndications,
             color = AppTheme.PlanetVenus
         )
@@ -651,7 +651,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.NITYA_SUITABLE),
+                        text = stringResource(StringKeyDoshaPart4.NITYA_SUITABLE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -697,7 +697,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.NITYA_AVOID),
+                        text = stringResource(StringKeyDoshaPart4.NITYA_AVOID),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -733,7 +733,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
+                    text = stringResource(StringKeyUI.UI_RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -818,7 +818,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_TIMING_GUIDANCE),
+                        text = stringResource(com.astro.storm.core.common.StringKeyUI.UI_TIMING_GUIDANCE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -852,7 +852,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_BEST_HOURS),
+                        text = stringResource(com.astro.storm.core.common.StringKeyUI.UI_BEST_HOURS),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -897,7 +897,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_HOURS_TO_AVOID),
+                        text = stringResource(com.astro.storm.core.common.StringKeyUI.UI_HOURS_TO_AVOID),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1104,7 +1104,7 @@ private fun NityaEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(StringKeyDosha.NITYA_NO_DATA_DESC),
+                text = stringResource(StringKeyDoshaPart4.NITYA_NO_DATA_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1119,14 +1119,14 @@ private fun NityaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(StringKeyDosha.NITYA_ABOUT_TITLE),
+                text = stringResource(StringKeyDoshaPart4.NITYA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = stringResource(StringKeyDosha.NITYA_ABOUT_DESC),
+                text = stringResource(StringKeyDoshaPart4.NITYA_ABOUT_DESC),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
@@ -1134,7 +1134,7 @@ private fun NityaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyUI.BTN_GOT_IT), color = AppTheme.AccentGold)
             }
         },
         containerColor = AppTheme.CardBackground

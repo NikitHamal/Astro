@@ -183,134 +183,134 @@ object SudarshanaChakraDashaCalculator {
             1 -> HouseSignificance(
                 house = 1,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H1_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H1_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H1_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H1_2, language),
                     "Personality", "New beginnings"
                 ),
                 secondaryThemes = listOf("Health", "Appearance", "Character"),
                 karakas = listOf(Planet.SUN),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_1_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_1_DESC, language)
             )
             2 -> HouseSignificance(
                 house = 2,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H2_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H2_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H2_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H2_2, language),
                     "Speech", "Values"
                 ),
                 secondaryThemes = listOf("Food", "Face", "Early education"),
                 karakas = listOf(Planet.JUPITER, Planet.VENUS),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_2_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_2_DESC, language)
             )
             3 -> HouseSignificance(
                 house = 3,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H3_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H3_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H3_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H3_2, language),
                     "Communication", "Short journeys"
                 ),
                 secondaryThemes = listOf("Skills", "Neighbors", "Hands"),
                 karakas = listOf(Planet.MARS, Planet.MERCURY),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_3_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_3_DESC, language)
             )
             4 -> HouseSignificance(
                 house = 4,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H4_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H4_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H4_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H4_2, language),
                     "Property", "Emotions"
                 ),
                 secondaryThemes = listOf("Vehicles", "Education", "Peace of mind"),
                 karakas = listOf(Planet.MOON),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_4_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_4_DESC, language)
             )
             5 -> HouseSignificance(
                 house = 5,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H5_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H5_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H5_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H5_2, language),
                     "Creativity", "Intelligence"
                 ),
                 secondaryThemes = listOf("Speculation", "Past-life merit", "Mantras"),
                 karakas = listOf(Planet.JUPITER),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_5_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_5_DESC, language)
             )
             6 -> HouseSignificance(
                 house = 6,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H6_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H6_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H6_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H6_2, language),
                     "Service", "Daily work"
                 ),
                 secondaryThemes = listOf("Debts", "Litigation", "Pets"),
                 karakas = listOf(Planet.MARS, Planet.SATURN),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_6_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_6_DESC, language)
             )
             7 -> HouseSignificance(
                 house = 7,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H7_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H7_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H7_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H7_2, language),
                     "Business", "Foreign travel"
                 ),
                 secondaryThemes = listOf("Public life", "Contracts", "Others"),
                 karakas = listOf(Planet.VENUS),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_7_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_7_DESC, language)
             )
             8 -> HouseSignificance(
                 house = 8,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H8_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H8_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H8_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H8_2, language),
                     "Occult", "Inheritance"
                 ),
                 secondaryThemes = listOf("Research", "Insurance", "In-laws"),
                 karakas = listOf(Planet.SATURN),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_8_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_8_DESC, language)
             )
             9 -> HouseSignificance(
                 house = 9,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H9_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H9_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H9_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H9_2, language),
                     "Dharma", "Higher education"
                 ),
                 secondaryThemes = listOf("Long journeys", "Religion", "Guru"),
                 karakas = listOf(Planet.JUPITER, Planet.SUN),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_9_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_9_DESC, language)
             )
             10 -> HouseSignificance(
                 house = 10,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H10_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H10_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H10_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H10_2, language),
                     "Karma", "Authority"
                 ),
                 secondaryThemes = listOf("Government", "Fame", "Father's profession"),
                 karakas = listOf(Planet.SUN, Planet.SATURN, Planet.MERCURY),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_10_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_10_DESC, language)
             )
             11 -> HouseSignificance(
                 house = 11,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H11_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H11_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H11_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H11_2, language),
                     "Friends", "Aspirations"
                 ),
                 secondaryThemes = listOf("Elder siblings", "Social networks", "Fulfillment"),
                 karakas = listOf(Planet.JUPITER),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_11_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_11_DESC, language)
             )
             12 -> HouseSignificance(
                 house = 12,
                 primaryThemes = listOf(
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H12_1, language),
-                    StringResources.get(StringKeyDosha.SUDARSHANA_THEME_H12_2, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H12_1, language),
+                    StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_H12_2, language),
                     "Foreign lands", "Liberation"
                 ),
                 secondaryThemes = listOf("Sleep", "Bed pleasures", "Hidden matters"),
                 karakas = listOf(Planet.SATURN, Planet.KETU),
-                description = StringResources.get(StringKeyDosha.SUDARSHANA_HOUSE_12_DESC, language)
+                description = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_HOUSE_12_DESC, language)
             )
             else -> HouseSignificance(
                 house = house,
@@ -328,7 +328,7 @@ object SudarshanaChakraDashaCalculator {
 
         effects.add(
             StringResources.get(
-                StringKeyDosha.SUDARSHANA_EFFECT_ACTIVATED, language,
+                StringKeyDashaInterpretationsPart2.SUDARSHANA_EFFECT_ACTIVATED, language,
                 sign.getLocalizedName(language),
                 sign.element.toString().lowercase() // Element names ideally localized too but okay for now
             )
@@ -336,29 +336,29 @@ object SudarshanaChakraDashaCalculator {
 
         when (sign.quality) {
             Quality.CARDINAL ->
-                effects.add(StringResources.get(StringKeyDosha.SUDARSHANA_EFFECT_MOVABLE, language))
+                effects.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_EFFECT_MOVABLE, language))
             Quality.FIXED ->
-                effects.add(StringResources.get(StringKeyDosha.SUDARSHANA_EFFECT_FIXED, language))
+                effects.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_EFFECT_FIXED, language))
             Quality.MUTABLE ->
-                effects.add(StringResources.get(StringKeyDosha.SUDARSHANA_EFFECT_DUAL, language))
+                effects.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_EFFECT_DUAL, language))
         }
 
         lordPosition?.let { pos ->
             val houseFromSign = ((pos.sign.ordinal - sign.ordinal + 12) % 12) + 1
             effects.add(
                 StringResources.get(
-                    StringKeyDosha.SUDARSHANA_EFFECT_LORD_POS, language,
+                    StringKeyDashaInterpretationsPart2.SUDARSHANA_EFFECT_LORD_POS, language,
                     lord.getLocalizedName(language),
                     houseFromSign
                 )
             )
 
             if (AstrologicalConstants.isExalted(lord, pos.sign)) {
-                effects.add(StringResources.get(StringKeyDosha.SUDARSHANA_EFFECT_EXALTED, language))
+                effects.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_EFFECT_EXALTED, language))
             } else if (AstrologicalConstants.isDebilitated(lord, pos.sign)) {
-                effects.add(StringResources.get(StringKeyDosha.SUDARSHANA_EFFECT_DEBILITATED, language))
+                effects.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_EFFECT_DEBILITATED, language))
             } else {
-                effects.add(StringResources.get(StringKeyDosha.SUDARSHANA_EFFECT_NORMAL, language))
+                effects.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_EFFECT_NORMAL, language))
             }
         }
 
@@ -387,7 +387,7 @@ object SudarshanaChakraDashaCalculator {
         planetsInSign.forEach { pos ->
             effects.add(
                 StringResources.get(
-                    StringKeyDosha.SUDARSHANA_INFLUENCE_PRESENT, language,
+                    StringKeyDashaInterpretationsPart2.SUDARSHANA_INFLUENCE_PRESENT, language,
                     pos.planet.getLocalizedName(language)
                 )
             )
@@ -395,7 +395,7 @@ object SudarshanaChakraDashaCalculator {
         aspectingPlanets.forEach { asp ->
             effects.add(
                 StringResources.get(
-                    StringKeyDosha.SUDARSHANA_INFLUENCE_ASPECT, language,
+                    StringKeyDashaInterpretationsPart2.SUDARSHANA_INFLUENCE_ASPECT, language,
                     asp.planet.getLocalizedName(language),
                     asp.fromSign.getLocalizedName(language)
                 )
@@ -455,7 +455,7 @@ object SudarshanaChakraDashaCalculator {
             factors = buildList {
                 add(
                     StringResources.get(
-                        StringKeyDosha.SUDARSHANA_FACTOR_DIGNITY, language,
+                        StringKeyDashaInterpretationsPart2.SUDARSHANA_FACTOR_DIGNITY, language,
                         signLord.getLocalizedName(language),
                         lordPosition?.let { getDignitySummary(signLord, it.sign, language) } ?: "Unknown"
                     )
@@ -463,7 +463,7 @@ object SudarshanaChakraDashaCalculator {
                 if (planetsInSign.isNotEmpty()) {
                     add(
                         String.format(
-                            StringResources.get(StringKeyDosha.SUDARSHANA_FACTOR_PLANETS, language),
+                            StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_FACTOR_PLANETS, language),
                             planetsInSign.size
                         )
                     )
@@ -471,7 +471,7 @@ object SudarshanaChakraDashaCalculator {
                 if (aspectingPlanets.isNotEmpty()) {
                     add(
                         String.format(
-                            StringResources.get(StringKeyDosha.SUDARSHANA_FACTOR_ASPECTS, language),
+                            StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_FACTOR_ASPECTS, language),
                             aspectingPlanets.size
                         )
                     )
@@ -482,10 +482,10 @@ object SudarshanaChakraDashaCalculator {
 
     private fun getDignitySummary(planet: Planet, sign: ZodiacSign, language: Language): String {
         return when {
-            AstrologicalConstants.isExalted(planet, sign) -> StringResources.get(StringKeyDosha.SUDARSHANA_DIG_EXALTED, language)
-            AstrologicalConstants.isInOwnSign(planet, sign) -> StringResources.get(StringKeyDosha.SUDARSHANA_DIG_OWN, language)
-            AstrologicalConstants.isDebilitated(planet, sign) -> StringResources.get(StringKeyDosha.SUDARSHANA_DIG_DEBILITATED, language)
-            else -> StringResources.get(StringKeyDosha.SUDARSHANA_DIG_NORMAL, language)
+            AstrologicalConstants.isExalted(planet, sign) -> StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_DIG_EXALTED, language)
+            AstrologicalConstants.isInOwnSign(planet, sign) -> StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_DIG_OWN, language)
+            AstrologicalConstants.isDebilitated(planet, sign) -> StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_DIG_DEBILITATED, language)
+            else -> StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_DIG_NORMAL, language)
         }
     }
 
@@ -505,13 +505,13 @@ object SudarshanaChakraDashaCalculator {
 
         val overallAssessment = when {
             combinedStrength >= 65 && conflictingThemes.isEmpty() ->
-                StringResources.get(StringKeyDosha.SUDARSHANA_ASSESSMENT_HIGHLY_FAVORABLE, language)
+                StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_ASSESSMENT_HIGHLY_FAVORABLE, language)
             combinedStrength >= 55 ->
-                StringResources.get(StringKeyDosha.SUDARSHANA_ASSESSMENT_POSITIVE, language)
+                StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_ASSESSMENT_POSITIVE, language)
             combinedStrength >= 45 ->
-                StringResources.get(StringKeyDosha.SUDARSHANA_ASSESSMENT_MIXED, language)
+                StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_ASSESSMENT_MIXED, language)
             else ->
-                StringResources.get(StringKeyDosha.SUDARSHANA_ASSESSMENT_CHALLENGING, language)
+                StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_ASSESSMENT_CHALLENGING, language)
         }
 
         val primaryFocus = determinePrimaryFocus(lagnaChakra, moonChakra, sunChakra, language)
@@ -524,9 +524,9 @@ object SudarshanaChakraDashaCalculator {
             conflictingThemes = conflictingThemes,
             primaryFocus = primaryFocus,
             secondaryFocus = secondaryFocus,
-            lagnaContribution = StringResources.get(StringKeyDosha.SUDARSHANA_CONTRIB_LAGNA, language, lagnaChakra.strength.level.name),
-            chandraContribution = StringResources.get(StringKeyDosha.SUDARSHANA_CONTRIB_CHANDRA, language, moonChakra.strength.level.name),
-            suryaContribution = StringResources.get(StringKeyDosha.SUDARSHANA_CONTRIB_SURYA, language, sunChakra.strength.level.name)
+            lagnaContribution = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_CONTRIB_LAGNA, language, lagnaChakra.strength.level.name),
+            chandraContribution = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_CONTRIB_CHANDRA, language, moonChakra.strength.level.name),
+            suryaContribution = StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_CONTRIB_SURYA, language, sunChakra.strength.level.name)
         )
     }
 
@@ -542,7 +542,7 @@ object SudarshanaChakraDashaCalculator {
             moon.activeHouse == sun.activeHouse) {
             allThemes.add(
                 StringResources.get(
-                    StringKeyDosha.SUDARSHANA_THEME_MULTIPLE, language,
+                    StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_MULTIPLE, language,
                     getHouseName(lagna.activeHouse)
                 )
             )
@@ -555,7 +555,7 @@ object SudarshanaChakraDashaCalculator {
         commonKarakas.forEach { (planet, _) ->
             allThemes.add(
                 StringResources.get(
-                    StringKeyDosha.SUDARSHANA_THEME_ACTIVATED, language,
+                    StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_ACTIVATED, language,
                     planet.getLocalizedName(language)
                 )
             )
@@ -579,7 +579,7 @@ object SudarshanaChakraDashaCalculator {
         )
 
         if (strengthDiff > 30) {
-            conflicts.add(StringResources.get(StringKeyDosha.SUDARSHANA_THEME_VARIATION, language))
+            conflicts.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_THEME_VARIATION, language))
         }
 
         return conflicts
@@ -594,8 +594,8 @@ object SudarshanaChakraDashaCalculator {
         val strongest = listOf(lagna, moon, sun).maxByOrNull { it.strength.score }
         return strongest?.let {
             StringResources.get(
-                StringKeyDosha.SUDARSHANA_FOCUS_FROM, language,
-                it.houseSignificance.primaryThemes.firstOrNull() ?: StringResources.get(StringKeyDosha.SUDARSHANA_FOCUS_GENERAL, language),
+                StringKeyDashaInterpretationsPart2.SUDARSHANA_FOCUS_FROM, language,
+                it.houseSignificance.primaryThemes.firstOrNull() ?: StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_FOCUS_GENERAL, language),
                 it.reference.name
             )
         } ?: "Balanced focus across all areas"
@@ -662,7 +662,7 @@ object SudarshanaChakraDashaCalculator {
 
     private fun summarizeYear(data: InternalChakraData, language: Language): String {
         return StringResources.get(
-            StringKeyDosha.SUDARSHANA_YEAR_SUMMARY, language,
+            StringKeyDashaInterpretationsPart2.SUDARSHANA_YEAR_SUMMARY, language,
             data.age,
             getHouseName(data.lagnaHouse),
             getHouseSignificance(data.lagnaHouse, language).primaryThemes.take(2).joinToString(", ")
@@ -678,9 +678,9 @@ object SudarshanaChakraDashaCalculator {
         val currentHouse = current.lagnaHouse
 
         return when {
-            currentHouse in listOf(1, 5, 9, 10, 11) -> StringResources.get(StringKeyDosha.SUDARSHANA_TREND_FAVORABLE, language)
-            currentHouse in listOf(6, 8, 12) -> StringResources.get(StringKeyDosha.SUDARSHANA_TREND_CHALLENGING, language)
-            else -> StringResources.get(StringKeyDosha.SUDARSHANA_TREND_NEUTRAL, language)
+            currentHouse in listOf(1, 5, 9, 10, 11) -> StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_TREND_FAVORABLE, language)
+            currentHouse in listOf(6, 8, 12) -> StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_TREND_CHALLENGING, language)
+            else -> StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_TREND_NEUTRAL, language)
         }
     }
 
@@ -689,20 +689,20 @@ object SudarshanaChakraDashaCalculator {
 
         when {
             synthesis.combinedStrengthScore >= 65 -> {
-                recommendations.add(StringResources.get(StringKeyDosha.SUDARSHANA_REC_FAVORABLE, language, synthesis.primaryFocus))
-                recommendations.add(StringResources.get(StringKeyDosha.SUDARSHANA_REC_EXPAND, language, synthesis.secondaryFocus))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_REC_FAVORABLE, language, synthesis.primaryFocus))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_REC_EXPAND, language, synthesis.secondaryFocus))
             }
             synthesis.combinedStrengthScore >= 45 -> {
-                recommendations.add(StringResources.get(StringKeyDosha.SUDARSHANA_REC_BALANCED, language, synthesis.primaryFocus))
-                recommendations.add(StringResources.get(StringKeyDosha.SUDARSHANA_REC_PATIENCE, language, synthesis.conflictingThemes.firstOrNull() ?: "challenges"))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_REC_BALANCED, language, synthesis.primaryFocus))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_REC_PATIENCE, language, synthesis.conflictingThemes.firstOrNull() ?: "challenges"))
             }
             else -> {
-                recommendations.add(StringResources.get(StringKeyDosha.SUDARSHANA_REC_CHALLENGING, language))
-                recommendations.add(StringResources.get(StringKeyDosha.SUDARSHANA_REC_SPIRITUAL, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_REC_CHALLENGING, language))
+                recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_REC_SPIRITUAL, language))
             }
         }
 
-        recommendations.add(StringResources.get(StringKeyDosha.SUDARSHANA_REC_REVIEW, language))
+        recommendations.add(StringResources.get(StringKeyDashaInterpretationsPart2.SUDARSHANA_REC_REVIEW, language))
 
         return recommendations
     }
