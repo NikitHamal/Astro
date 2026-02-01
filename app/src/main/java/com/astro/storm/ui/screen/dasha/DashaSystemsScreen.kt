@@ -47,6 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyDoshaChat
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import java.time.LocalDateTime
@@ -511,7 +512,7 @@ private fun ErrorContent(message: String, onRetry: () -> Unit) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyDosha.AI_MODELS_RETRY),
+                    text = stringResource(StringKeyDoshaChat.AI_MODELS_RETRY),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.ButtonText,

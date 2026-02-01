@@ -44,6 +44,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyDoshaChat
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
@@ -2532,7 +2533,7 @@ private fun MatchmakingAiInsightCard(
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(
-                                stringResource(StringKeyDosha.STORMY_ANALYZING_COMPATIBILITY),
+                                stringResource(StringKeyDoshaChat.STORMY_ANALYZING_COMPATIBILITY),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
@@ -2565,7 +2566,7 @@ private fun MatchmakingAiInsightCard(
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Text(
-                                            stringResource(StringKeyDosha.AI_GENERATING),
+                                            stringResource(StringKeyDoshaChat.AI_GENERATING),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = AppTheme.TextMuted
                                         )

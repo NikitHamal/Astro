@@ -125,6 +125,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyDoshaChat
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.ai.agent.AgentResponse
@@ -2049,7 +2050,7 @@ private fun AiInsightCard(result: PrashnaResult) {
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(
-                                stringResource(StringKeyDosha.STORMY_ANALYZING),
+                                stringResource(StringKeyDoshaChat.STORMY_ANALYZING),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
@@ -2082,7 +2083,7 @@ private fun AiInsightCard(result: PrashnaResult) {
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Text(
-                                            stringResource(StringKeyDosha.AI_GENERATING),
+                                            stringResource(StringKeyDoshaChat.AI_GENERATING),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = AppTheme.TextMuted
                                         )

@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyDoshaChat
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.MarkdownText
@@ -223,7 +223,7 @@ private fun SectionedAgentHeader(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyDosha.STORMY_TITLE),
+                    text = stringResource(StringKeyDoshaChat.STORMY_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
@@ -310,7 +310,7 @@ private fun ErrorBanner(message: String) {
 @Composable
 private fun ProcessingIndicator(aiStatus: AiStatus) {
     val colors = AppTheme.current
-    val statusText = getStatusText(aiStatus) ?: stringResource(StringKeyDosha.STORMY_PROCESSING)
+    val statusText = getStatusText(aiStatus) ?: stringResource(StringKeyDoshaChat.STORMY_PROCESSING)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -338,11 +338,11 @@ private fun getStatusText(aiStatus: AiStatus): String? {
     return when (aiStatus) {
         is AiStatus.Idle -> null
         is AiStatus.Complete -> null
-        is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION)
-        is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_REASONING_VEDIC)
-        is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
-        is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_GATHERING_DATA)
-        is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING)
+        is AiStatus.Thinking -> stringResource(StringKeyDoshaChat.AI_ANALYZING_QUESTION)
+        is AiStatus.Reasoning -> stringResource(StringKeyDoshaChat.STORMY_REASONING_VEDIC)
+        is AiStatus.CallingTool -> stringResource(StringKeyDoshaChat.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
+        is AiStatus.ExecutingTools -> stringResource(StringKeyDoshaChat.STORMY_GATHERING_DATA)
+        is AiStatus.Typing -> stringResource(StringKeyDoshaChat.STORMY_COMPOSING)
     }
 }
 

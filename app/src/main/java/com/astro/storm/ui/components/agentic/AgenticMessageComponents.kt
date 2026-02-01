@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyDoshaChat
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.MarkdownText
@@ -221,7 +221,7 @@ private fun AgentIdentityHeader(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyDosha.STORMY_TITLE),
+                    text = stringResource(StringKeyDoshaChat.STORMY_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
@@ -236,11 +236,11 @@ private fun AgentIdentityHeader(
             val statusText = when (aiStatus) {
                 is AiStatus.Idle -> null
                 is AiStatus.Complete -> null
-                is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION)
-                is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_REASONING_VEDIC)
-                is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
-                is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_GATHERING_DATA)
-                is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING)
+                is AiStatus.Thinking -> stringResource(StringKeyDoshaChat.AI_ANALYZING_QUESTION)
+                is AiStatus.Reasoning -> stringResource(StringKeyDoshaChat.STORMY_REASONING_VEDIC)
+                is AiStatus.CallingTool -> stringResource(StringKeyDoshaChat.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
+                is AiStatus.ExecutingTools -> stringResource(StringKeyDoshaChat.STORMY_GATHERING_DATA)
+                is AiStatus.Typing -> stringResource(StringKeyDoshaChat.STORMY_COMPOSING)
             }
 
             statusText?.let {
@@ -364,7 +364,7 @@ fun ToolExecutionPanel(
 
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.SECTION_ASTROLOGICAL_TOOLS),
+                            text = stringResource(StringKeyDoshaChat.SECTION_ASTROLOGICAL_TOOLS),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.TextPrimary
@@ -381,9 +381,9 @@ fun ToolExecutionPanel(
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded)
-                        stringResource(StringKeyDosha.SECTION_COLLAPSE)
+                        stringResource(StringKeyDoshaChat.SECTION_COLLAPSE)
                     else
-                        stringResource(StringKeyDosha.SECTION_EXPAND),
+                        stringResource(StringKeyDoshaChat.SECTION_EXPAND),
                     tint = colors.TextMuted,
                     modifier = Modifier.size(22.dp)
                 )
@@ -588,7 +588,7 @@ fun ReasoningPanel(
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             Text(
-                                text = stringResource(StringKeyDosha.SECTION_REASONING),
+                                text = stringResource(StringKeyDoshaChat.SECTION_REASONING),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color = colors.AccentPrimary
@@ -599,9 +599,9 @@ fun ReasoningPanel(
                         }
                         Text(
                             text = if (isExpanded)
-                                stringResource(StringKeyDosha.SECTION_VEDIC_ANALYSIS)
+                                stringResource(StringKeyDoshaChat.SECTION_VEDIC_ANALYSIS)
                             else
-                                stringResource(StringKeyDosha.SECTION_TAP_TO_VIEW_REASONING),
+                                stringResource(StringKeyDoshaChat.SECTION_TAP_TO_VIEW_REASONING),
                             style = MaterialTheme.typography.labelSmall,
                             color = colors.TextMuted
                         )
@@ -611,9 +611,9 @@ fun ReasoningPanel(
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded)
-                        stringResource(StringKeyDosha.SECTION_COLLAPSE)
+                        stringResource(StringKeyDoshaChat.SECTION_COLLAPSE)
                     else
-                        stringResource(StringKeyDosha.SECTION_EXPAND),
+                        stringResource(StringKeyDoshaChat.SECTION_EXPAND),
                     tint = colors.AccentPrimary,
                     modifier = Modifier.size(22.dp)
                 )
@@ -736,11 +736,11 @@ private fun StatusIndicatorInline(aiStatus: AiStatus) {
 
     val (statusText, statusIcon) = when (aiStatus) {
         is AiStatus.Idle, is AiStatus.Complete -> return
-        is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION) to Icons.Outlined.Psychology
-        is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_APPLYING_VEDIC) to Icons.Outlined.Lightbulb
-        is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName)) to Icons.Outlined.Build
-        is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_GATHERING_DATA) to Icons.Outlined.Build
-        is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING) to Icons.Outlined.Edit
+        is AiStatus.Thinking -> stringResource(StringKeyDoshaChat.AI_ANALYZING_QUESTION) to Icons.Outlined.Psychology
+        is AiStatus.Reasoning -> stringResource(StringKeyDoshaChat.STORMY_APPLYING_VEDIC) to Icons.Outlined.Lightbulb
+        is AiStatus.CallingTool -> stringResource(StringKeyDoshaChat.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName)) to Icons.Outlined.Build
+        is AiStatus.ExecutingTools -> stringResource(StringKeyDoshaChat.STORMY_GATHERING_DATA) to Icons.Outlined.Build
+        is AiStatus.Typing -> stringResource(StringKeyDoshaChat.STORMY_COMPOSING) to Icons.Outlined.Edit
     }
 
     Row(
@@ -810,7 +810,7 @@ fun TypingDots() {
 private fun ToolsUsedBadge(tools: List<String>) {
     val colors = AppTheme.current
     val toolsText = tools.take(3).joinToString(", ") { ToolDisplayUtils.formatToolName(it) }
-    val moreText = if (tools.size > 3) stringResource(StringKeyDosha.TOOLS_MORE_COUNT, tools.size - 3) else ""
+    val moreText = if (tools.size > 3) stringResource(StringKeyDoshaChat.TOOLS_MORE_COUNT, tools.size - 3) else ""
 
     Surface(
         color = colors.ChipBackground,
@@ -828,7 +828,7 @@ private fun ToolsUsedBadge(tools: List<String>) {
                 modifier = Modifier.size(12.dp)
             )
             Text(
-                text = stringResource(StringKeyDosha.TOOLS_USED_LABEL, toolsText) + moreText,
+                text = stringResource(StringKeyDoshaChat.TOOLS_USED_LABEL, toolsText) + moreText,
                 style = MaterialTheme.typography.labelSmall,
                 color = colors.TextSubtle
             )
@@ -901,7 +901,7 @@ fun CompletedAiMessageCard(
             }
 
             Text(
-                text = stringResource(StringKeyDosha.STORMY_TITLE),
+                text = stringResource(StringKeyDoshaChat.STORMY_TITLE),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.TextPrimary
@@ -933,7 +933,7 @@ fun CompletedAiMessageCard(
                                 modifier = Modifier.size(16.dp)
                             )
                             Text(
-                                text = stringResource(StringKeyDosha.SECTION_REASONING),
+                                text = stringResource(StringKeyDoshaChat.SECTION_REASONING),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Medium,
                                 color = colors.AccentPrimary
@@ -942,9 +942,9 @@ fun CompletedAiMessageCard(
                         Icon(
                             imageVector = if (showReasoning) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                             contentDescription = if (showReasoning)
-                                stringResource(StringKeyDosha.SECTION_COLLAPSE)
+                                stringResource(StringKeyDoshaChat.SECTION_COLLAPSE)
                             else
-                                stringResource(StringKeyDosha.SECTION_EXPAND),
+                                stringResource(StringKeyDoshaChat.SECTION_EXPAND),
                             tint = colors.AccentPrimary,
                             modifier = Modifier.size(20.dp)
                         )
