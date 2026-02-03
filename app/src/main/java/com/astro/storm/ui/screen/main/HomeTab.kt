@@ -1041,7 +1041,8 @@ enum class FeatureCategory(val features: List<InsightFeature>) {
             InsightFeature.ASHTOTTARI_DASHA,
             InsightFeature.KALACHAKRA_DASHA,
             InsightFeature.SHOOLA_DASHA,
-            InsightFeature.DASHA_SANDHI
+            InsightFeature.DASHA_SANDHI,
+            InsightFeature.DRIG_DASHA
         )
     ),
     PREDICTIONS(
@@ -1052,7 +1053,8 @@ enum class FeatureCategory(val features: List<InsightFeature>) {
             InsightFeature.VARSHAPHALA,
             InsightFeature.PRASHNA,
             InsightFeature.MUHURTA,
-            InsightFeature.NATIVE_ANALYSIS
+            InsightFeature.NATIVE_ANALYSIS,
+            InsightFeature.SAPTAMSA
         )
     ),
     STRENGTH_ANALYSIS(
@@ -1080,7 +1082,8 @@ enum class FeatureCategory(val features: List<InsightFeature>) {
             InsightFeature.TARABALA,
             InsightFeature.UPACHAYA_TRANSIT,
             InsightFeature.ASHTAVARGA_TRANSIT,
-            InsightFeature.KAKSHYA_TRANSIT
+            InsightFeature.KAKSHYA_TRANSIT,
+            InsightFeature.JAIMINI_KARAKA
         )
     ),
     REMEDIAL(
@@ -1484,6 +1487,27 @@ enum class InsightFeature(
         descriptionKey = StringKey.FEATURE_NATIVE_ANALYSIS_DESC,
         icon = Icons.Outlined.Person,
         color = DarkAppThemeColors.AccentPrimary,
+        isImplemented = true
+    ),
+    JAIMINI_KARAKA(
+        titleKey = StringKey.FEATURE_JAIMINI_KARAKA,
+        descriptionKey = StringKey.FEATURE_JAIMINI_KARAKA_DESC,
+        icon = Icons.Outlined.Stars,
+        color = DarkAppThemeColors.LifeAreaSpiritual,
+        isImplemented = true
+    ),
+    DRIG_DASHA(
+        titleKey = StringKey.FEATURE_DRIG_DASHA,
+        descriptionKey = StringKey.FEATURE_DRIG_DASHA_DESC,
+        icon = Icons.Outlined.HealthAndSafety,
+        color = DarkAppThemeColors.WarningColor,
+        isImplemented = true
+    ),
+    SAPTAMSA(
+        titleKey = StringKey.FEATURE_SAPTAMSA,
+        descriptionKey = StringKey.FEATURE_SAPTAMSA_DESC,
+        icon = Icons.Outlined.ChildCare,
+        color = DarkAppThemeColors.LifeAreaLove,
         isImplemented = true
     );
 

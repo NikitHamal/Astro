@@ -235,6 +235,7 @@ data class VarshaphalaResult(
     val triPatakiChakra: TriPatakiChakra,
     val sahams: List<SahamResult>,
     val tajikaAspects: List<TajikaAspectResult>,
+    val tajikaYogas: TajikaYogaCalculator.TajikaYogaAnalysis,
     val muddaDasha: List<MuddaDashaPeriod>,
     val housePredictions: List<HousePrediction>,
     val majorThemes: List<String>,

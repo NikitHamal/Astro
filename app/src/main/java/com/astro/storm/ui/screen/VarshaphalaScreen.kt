@@ -56,6 +56,7 @@ import com.astro.storm.ephemeris.varshaphala.VarshaphalaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ephemeris.varshaphala.TajikaYogaCalculator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
@@ -1646,6 +1647,9 @@ private fun TajikaAspectsTab(result: VarshaphalaResult) {
         contentPadding = PaddingValues(bottom = 32.dp)
     ) {
         item {
+            TajikaYogasCard(result.tajikaYogas)
+        }
+        item {
             TajikaAspectsHeader(result.tajikaAspects)
         }
 
@@ -2416,6 +2420,134 @@ private fun getMonthName(month: Int): String {
         11 -> stringResource(StringKeyAnalysis.MONTH_NOV)
         12 -> stringResource(StringKeyAnalysis.MONTH_DEC)
         else -> ""
+    }
+}
+
+@Composable
+private fun TajikaYogasCard(analysis: TajikaYogaCalculator.TajikaYogaAnalysis) {
+    var isExpanded by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable { isExpanded = !isExpanded },
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Outlined.Stars,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Text(
+                            "Tajika Yogas",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = AppTheme.TextPrimary
+                        )
+                        Text(
+                            if (analysis.yogasFound.isEmpty()) "No major yogas found" else "${analysis.yogasFound.size} Yogas active",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = AppTheme.TextMuted
+                        )
+                    }
+                }
+                Icon(
+                     if (isExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                     contentDescription = null,
+                     tint = AppTheme.TextMuted
+                )
+            }
+            
+            if (!isExpanded && analysis.yogasFound.isNotEmpty()) {
+                 Spacer(modifier = Modifier.height(12.dp))
+                 val topYoga = analysis.yogasFound.maxByOrNull { it.strength }
+                 topYoga?.let { yoga ->
+                     Text(
+                         "${yoga.yogaType.displayName} (${String.format("%.0f", yoga.strength)})",
+                         style = MaterialTheme.typography.bodySmall,
+                         color = AppTheme.AccentPrimary
+                     )
+                 }
+            }
+
+            AnimatedVisibility(visible = isExpanded) {
+                Column {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    if (analysis.yogasFound.isEmpty()) {
+                        Text(
+                            "No significant Tajika yogas formed in this year's chart.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = AppTheme.TextSecondary,
+                            fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                        )
+                    } else {
+                        analysis.yogasFound.sortedByDescending { it.strength }.forEachIndexed { index, yoga ->
+                            TajikaYogaItem(yoga)
+                            if (index < analysis.yogasFound.size - 1) {
+                                HorizontalDivider(
+                                     modifier = Modifier.padding(vertical = 12.dp),
+                                     color = AppTheme.DividerColor.copy(alpha = 0.3f)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TajikaYogaItem(yoga: TajikaYogaCalculator.TajikaYoga) {
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                yoga.yogaType.displayName,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                color = if (yoga.strength >= 7) AppTheme.SuccessColor else AppTheme.TextPrimary
+            )
+            Surface(
+                color = AppTheme.SurfaceColor,
+                shape = RoundedCornerShape(4.dp)
+            ) {
+                 Text(
+                     "Str: ${String.format("%.1f", yoga.strength)}",
+                     style = MaterialTheme.typography.labelSmall,
+                     modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                     color = AppTheme.TextSecondary
+                 )
+            }
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+             "${yoga.primaryPlanet.symbol} ${yoga.aspect.displayName} ${yoga.secondaryPlanet.symbol}",   
+             style = MaterialTheme.typography.bodySmall,
+             color = AppTheme.TextMuted
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(
+            yoga.interpretation,
+            style = MaterialTheme.typography.bodyMedium,
+            color = AppTheme.TextSecondary,
+            lineHeight = 18.sp
+        )
     }
 }
 

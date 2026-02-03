@@ -14,6 +14,10 @@ import com.astro.storm.ephemeris.varshaphala.VarshaphalaEvaluator.determineYearL
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.evaluatePlanetStrengthDescription
 import swisseph.SwissEph
 import java.time.LocalDateTime
+import com.astro.storm.core.model.PlanetPosition
+import com.astro.storm.core.model.Nakshatra
+import com.astro.storm.core.model.HouseSystem
+import com.astro.storm.ephemeris.varshaphala.TajikaYogaCalculator
 
 class VarshaphalaCalculator(context: Context) {
 
@@ -42,6 +46,8 @@ class VarshaphalaCalculator(context: Context) {
         val triPatakiChakra = calculateTriPatakiChakra(solarReturnChart, language)
         val sahams = SahamCalculator.calculateSahams(solarReturnChart, language)
         val tajikaAspects = TajikaAspectAnalyzer.calculateTajikaAspects(solarReturnChart, language)
+        val solarReturnVedicChart = createVedicChartFromSolarReturn(solarReturnChart, natalChart)
+        val tajikaYogas = TajikaYogaCalculator.calculateTajikaYogas(solarReturnVedicChart, natalChart)
         val muddaDasha = MuddaDashaCalculator.calculateMuddaDasha(solarReturnChart, solarReturnTime.toLocalDate(), language)
         val housePredictions = VarshaphalaInterpretationGenerator.generateHousePredictions(solarReturnChart, muntha, yearLord, language)
         val majorThemes = VarshaphalaInterpretationGenerator.identifyMajorThemes(solarReturnChart, muntha, yearLord, housePredictions, triPatakiChakra, tajikaAspects, language)
@@ -52,7 +58,7 @@ class VarshaphalaCalculator(context: Context) {
 
         return VarshaphalaResult(
             natalChart, year, age, solarReturnChart, yearLord, yearLordStrength, yearLordHouse, yearLordDignity,
-            muntha, panchaVargiyaBala, triPatakiChakra, sahams, tajikaAspects, muddaDasha, housePredictions,
+            muntha, panchaVargiyaBala, triPatakiChakra, sahams, tajikaAspects, tajikaYogas, muddaDasha, housePredictions,
             majorThemes, favorableMonths, challengingMonths, overallPrediction, yearRating, keyDates
         )
     }
@@ -81,6 +87,37 @@ class VarshaphalaCalculator(context: Context) {
     }
 
     fun close() { swissEph.swe_close() }
+
+    private fun createVedicChartFromSolarReturn(srChart: SolarReturnChart, natalChart: VedicChart): VedicChart {
+        val mappedPositions = srChart.planetPositions.map { (planet, pos) ->
+            PlanetPosition(
+                planet = planet,
+                longitude = pos.longitude,
+                latitude = 0.0,
+                distance = 0.0,
+                speed = pos.speed,
+                house = pos.house,
+                sign = pos.sign,
+                isRetrograde = pos.isRetrograde,
+                nakshatra = Nakshatra.getNakshatra(pos.longitude),
+                nakshatraPada = pos.nakshatraPada,
+                isCombust = false
+            )
+        }
+        
+        return VedicChart(
+            id = 0,
+            birthData = natalChart.birthData.copy(dateTime = srChart.solarReturnTime),
+            julianDay = srChart.julianDay,
+            ayanamsa = srChart.ayanamsa,
+            ayanamsaName = "Lahiri",
+            ascendant = srChart.ascendantDegree + (srChart.ascendant.ordinal * 30.0),
+            midheaven = srChart.midheaven,
+            planetPositions = mappedPositions,
+            houseCusps = srChart.houseCusps,
+            houseSystem = HouseSystem.PORPHYRIUS
+        )
+    }
 }
 
 

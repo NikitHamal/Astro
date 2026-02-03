@@ -140,7 +140,8 @@ private sealed interface MuhurtaUiState {
     data object Loading : MuhurtaUiState
     data class Success(
         val muhurta: MuhurtaDetails,
-        val choghadiyaList: List<ChoghadiyaInfo>
+        val choghadiyaList: List<ChoghadiyaInfo>,
+        val panchakaAnalysis: PanchakaAnalyzer.PanchakaAnalysis
     ) : MuhurtaUiState
     data class Error(val message: String) : MuhurtaUiState
 }
@@ -196,7 +197,8 @@ fun MuhurtaScreen(
                     val now = LocalDateTime.of(date, LocalTime.now())
                     val muhurta = calculator.calculateMuhurta(now, latitude, longitude, timezone)
                     val (dayChoghadiyas, _) = calculator.getDailyChoghadiya(date, latitude, longitude, timezone)
-                    uiState = MuhurtaUiState.Success(muhurta, dayChoghadiyas)
+                    val panchaka = PanchakaAnalyzer.analyzePanchaka(muhurta)
+                    uiState = MuhurtaUiState.Success(muhurta, dayChoghadiyas, panchaka)
                 }
             } catch (e: CancellationException) {
                 throw e
@@ -493,7 +495,11 @@ private fun TodayTabContent(
     when (uiState) {
         is MuhurtaUiState.Loading -> LoadingContent()
         is MuhurtaUiState.Error -> ErrorContent(message = uiState.message, onRetry = onRetry)
-        is MuhurtaUiState.Success -> TodayTabList(muhurta = uiState.muhurta, choghadiyaList = uiState.choghadiyaList)
+        is MuhurtaUiState.Success -> TodayTabList(
+            muhurta = uiState.muhurta,
+            choghadiyaList = uiState.choghadiyaList,
+            panchaka = uiState.panchakaAnalysis
+        )
     }
 }
 
@@ -568,7 +574,8 @@ private fun ErrorContent(
 @Composable
 private fun TodayTabList(
     muhurta: MuhurtaDetails,
-    choghadiyaList: List<ChoghadiyaInfo>
+    choghadiyaList: List<ChoghadiyaInfo>,
+    panchaka: PanchakaAnalyzer.PanchakaAnalysis
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -577,6 +584,7 @@ private fun TodayTabList(
     ) {
         item(key = "current_muhurta") { CurrentMuhurtaCard(muhurta) }
         item(key = "panchanga") { PanchangaCard(muhurta) }
+        item(key = "panchaka") { PanchakaCard(panchaka) }
         item(key = "inauspicious") { InauspiciousPeriodsCard(muhurta) }
         item(key = "choghadiya") { ChoghadiyaCard(choghadiyaList, muhurta.choghadiya) }
         if (muhurta.suitableActivities.isNotEmpty()) {
@@ -767,6 +775,79 @@ private fun PanchangaItem(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
+        }
+    }
+}
+
+@Composable
+private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
+    val isPanchaka = panchaka.isPanchakaActive
+    val severityColor = if (isPanchaka) {
+        when (panchaka.severity) {
+            4, 5 -> AppTheme.ErrorColor
+            2, 3 -> AppTheme.WarningColor
+            else -> AppTheme.TextPrimary
+        }
+    } else {
+        AppTheme.SuccessColor
+    }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    Icons.Outlined.Warning,
+                    contentDescription = null,
+                    tint = if (isPanchaka) AppTheme.WarningColor else AppTheme.SuccessColor,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    "Panchaka",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.TextPrimary
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                if (isPanchaka) "${panchaka.panchakaType.displayName} Active" else "No Panchaka Dosha",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = severityColor
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+            
+            if (isPanchaka) {
+                Text(
+                    "Severity: ${panchaka.panchakaType.getSeverityDescription()}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextMuted
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                if (panchaka.avoidActivities.isNotEmpty()) {
+                    Text(
+                        "Avoid: ${panchaka.avoidActivities.take(2).joinToString(", ")}...",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.ErrorColor
+                    )
+                }
+            } else {
+                Text(
+                    "Time is generally favorable.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextSecondary
+                )
+            }
         }
     }
 }
