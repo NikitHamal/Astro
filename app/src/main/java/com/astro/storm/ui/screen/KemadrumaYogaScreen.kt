@@ -79,6 +79,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -1579,6 +1580,16 @@ private fun getPriorityLabelFromInt(priority: Int): String {
         2 -> stringResource(StringKeyDosha.KEMA_PRIORITY_RECOMMENDED)
         3 -> stringResource(StringKeyDosha.KEMA_PRIORITY_OPTIONAL)
         else -> stringResource(StringKeyDosha.KEMA_PRIORITY_OPTIONAL)
+    }
+}
+
+@Composable
+private fun getPriorityColorFromInt(priority: Int): Color {
+    return when (priority) {
+        1 -> AppTheme.ErrorColor // Essential
+        2 -> AppTheme.WarningColor // Recommended
+        3 -> AppTheme.AccentTeal // Optional
+        else -> AppTheme.TextMuted
     }
 }
 

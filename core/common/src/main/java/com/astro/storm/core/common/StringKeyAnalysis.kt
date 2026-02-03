@@ -2673,5 +2673,12 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     YOGA_STRENGTH_LEVEL_FMT("Strength: %s", "बल: %s"),
     YOGA_DIGNITY_EXALTED("Exalted", "उच्च"),
     YOGA_DIGNITY_OWN_SIGN("Own Sign", "स्वराशि"),
+
+    // Moon Brightness
+    MOON_BRIGHTNESS_FULL("Full Moon (Purnima)", "पूर्ण चन्द्र"),
+    MOON_BRIGHTNESS_BRIGHT("Bright", "चम्किलो"),
+    MOON_BRIGHTNESS_AVERAGE("Average", "औसत"),
+    MOON_BRIGHTNESS_DIM("Dim", "धमिलो"),
+    MOON_BRIGHTNESS_NEW("New Moon (Amavasya)", "नयाँ चन्द्र"),
 ;
 }

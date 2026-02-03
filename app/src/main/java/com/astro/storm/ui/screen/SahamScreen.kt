@@ -70,6 +70,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeySaham
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyShadbala

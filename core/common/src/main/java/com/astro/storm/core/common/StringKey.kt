@@ -17,6 +17,11 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     TAB_SETTINGS("Settings", "सेटिङ्स"),
 
     // ============================================
+    // APP BRANDING
+    // ============================================
+    APP_NAME_KEY("AstroStorm", "एस्ट्रो-स्टोर्म"),
+
+    // ============================================
     // HOME TAB - SECTION HEADERS
     // ============================================
     HOME_CHART_ANALYSIS("Chart Analysis", "कुण्डली विश्लेषण"),

@@ -2210,7 +2210,7 @@ class ChartExporter @Inject constructor(
         paint.textAlign = Paint.Align.CENTER
         paint.color = COLOR_ACCENT
         paint.typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC)
-        canvas.drawText(locManager.getString(com.astro.storm.core.common.StringKey.APP_NAME_KEY), pageSize.width / 2f, footerY, paint)
+        canvas.drawText(locManager.getString(StringKey.APP_NAME_KEY), pageSize.width / 2f, footerY, paint)
 
         // Right: Page number
         paint.textAlign = Paint.Align.RIGHT
