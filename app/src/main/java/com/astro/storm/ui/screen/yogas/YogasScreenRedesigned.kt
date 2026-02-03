@@ -788,6 +788,7 @@ private fun YogaCard(
                     // Integrated Detailed Analysis Summary
                     if (yoga.detailedResult != null) {
                         DetailedAnalysisSummary(yoga.detailedResult, onViewDeepAnalysis)
+                        Spacer(modifier = Modifier.height(12.dp))
                     }
 
                     // Strength indicator

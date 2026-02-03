@@ -451,7 +451,7 @@ private fun QuickActionsSection(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             quickActions.forEach { action ->
                 QuickActionItem(
@@ -480,29 +480,23 @@ private fun QuickActionItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(20.dp))
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple(color = accentColor),
                 onClick = onClick
             )
-            .padding(8.dp)
+            .padding(horizontal = 4.dp, vertical = 8.dp)
     ) {
+        // Card-like square container with subtle background
         Box(
             modifier = Modifier
-                .size(HomeDesignTokens.QuickActionSize)
+                .size(72.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(
-                    Brush.linearGradient(
-                        colors = listOf(
-                            accentColor.copy(alpha = 0.2f),
-                            accentColor.copy(alpha = 0.1f)
-                        )
-                    )
-                )
+                .background(accentColor.copy(alpha = 0.12f))
                 .border(
                     width = 1.dp,
-                    color = accentColor.copy(alpha = 0.3f),
+                    color = accentColor.copy(alpha = 0.25f),
                     shape = RoundedCornerShape(20.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -511,11 +505,11 @@ private fun QuickActionItem(
                 imageVector = icon,
                 contentDescription = feature.getLocalizedTitle(language),
                 tint = accentColor,
-                modifier = Modifier.size(HomeDesignTokens.QuickActionIconSize)
+                modifier = Modifier.size(28.dp)
             )
         }
         
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         
         Text(
             text = feature.getLocalizedTitle(language),
@@ -525,7 +519,7 @@ private fun QuickActionItem(
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(HomeDesignTokens.QuickActionSize)
+            modifier = Modifier.width(80.dp)
         )
     }
 }
