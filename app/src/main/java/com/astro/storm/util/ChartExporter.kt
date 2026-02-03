@@ -2172,16 +2172,16 @@ class ChartExporter @Inject constructor(
         paint.textSize = 12f
         paint.color = COLOR_PRIMARY
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-        canvas.drawText("Lucky Elements", PDF_MARGIN.toFloat() + 16f, yPos + 20f, paint)
+        canvas.drawText(locManager.getString(StringKeyAnalysis.EXPORT_LUCKY_ELEMENTS), PDF_MARGIN.toFloat() + 16f, yPos + 20f, paint)
 
         paint.textSize = 10f
         paint.color = COLOR_TEXT
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
 
-        canvas.drawText("Ascendant: ${remedies.ascendantSign.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 16f, yPos + 40f, paint)
-        canvas.drawText("Moon Sign: ${remedies.moonSign.getLocalizedName(locManager.currentLanguage)}", PDF_MARGIN.toFloat() + 16f, yPos + 56f, paint)
-        canvas.drawText("Total Remedies: ${remedies.totalRemediesCount}", pageWidth / 2f, yPos + 40f, paint)
-        canvas.drawText("Essential: ${remedies.essentialRemediesCount}", pageWidth / 2f, yPos + 56f, paint)
+        canvas.drawText(locManager.getString(StringKeyAnalysis.EXPORT_ASCENDANT_VAL, remedies.ascendantSign.getLocalizedName(locManager.currentLanguage)), PDF_MARGIN.toFloat() + 16f, yPos + 40f, paint)
+        canvas.drawText(locManager.getString(StringKeyAnalysis.EXPORT_MOON_SIGN_VAL, remedies.moonSign.getLocalizedName(locManager.currentLanguage)), PDF_MARGIN.toFloat() + 16f, yPos + 56f, paint)
+        canvas.drawText(locManager.getString(StringKeyAnalysis.EXPORT_TOTAL_REMEDIES_VAL, remedies.totalRemediesCount), pageWidth / 2f, yPos + 40f, paint)
+        canvas.drawText(locManager.getString(StringKeyAnalysis.EXPORT_ESSENTIAL_REMEDIES_VAL, remedies.essentialRemediesCount), pageWidth / 2f, yPos + 56f, paint)
 
         addPageFooter(canvas, options.pageSize, pageNumber, paint)
         document.finishPage(page)
@@ -2210,7 +2210,7 @@ class ChartExporter @Inject constructor(
         paint.textAlign = Paint.Align.CENTER
         paint.color = COLOR_ACCENT
         paint.typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC)
-        canvas.drawText("AstroStorm", pageSize.width / 2f, footerY, paint)
+        canvas.drawText(locManager.getString(com.astro.storm.core.common.StringKey.APP_NAME_KEY), pageSize.width / 2f, footerY, paint)
 
         // Right: Page number
         paint.textAlign = Paint.Align.RIGHT

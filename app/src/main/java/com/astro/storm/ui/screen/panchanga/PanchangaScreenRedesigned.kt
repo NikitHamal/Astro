@@ -711,7 +711,7 @@ private fun TimingRow(
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = if (isInauspicious) "Avoid important activities" else "Auspicious timing",
+                    text = if (isInauspicious) stringResource(StringKeyAnalysis.UI_AVOID_ACTIVITIES) else stringResource(StringKeyAnalysis.UI_AUSPICIOUS_TIMING),
                     fontSize = 10.sp,
                     color = AppTheme.TextMuted
                 )
@@ -898,7 +898,7 @@ private fun BirthSummaryCard(
             ) {
                 Column {
                     Text(
-                        text = "Birth Panchanga",
+                        text = stringResource(StringKeyAnalysis.UI_BIRTH_PANCHANGA),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -949,7 +949,7 @@ private fun BirthSummaryCard(
                     ) {
                         Column {
                             Text(
-                                text = "DATE",
+                                text = stringResource(StringKey.LABEL_DATE),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.TextMuted,
@@ -966,7 +966,7 @@ private fun BirthSummaryCard(
                         }
                         Column(horizontalAlignment = Alignment.End) {
                             Text(
-                                text = "TIME",
+                                text = stringResource(StringKey.LABEL_TIME),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.TextMuted,
@@ -1015,7 +1015,7 @@ private fun BirthDayInterpretationCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Birth Day Significance",
+                    text = stringResource(StringKeyAnalysis.UI_BIRTH_DAY_SIGNIFICANCE),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1231,7 +1231,7 @@ private fun ElementDetailCard(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = "TODAY",
+                                    text = stringResource(StringKey.LABEL_TODAY),
                                     fontSize = 9.sp,
                                     fontWeight = FontWeight.Medium,
                                     color = AppTheme.TextMuted,
@@ -1261,7 +1261,7 @@ private fun ElementDetailCard(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = "BIRTH",
+                                    text = stringResource(StringKey.LABEL_BIRTH),
                                     fontSize = 9.sp,
                                     fontWeight = FontWeight.Medium,
                                     color = AppTheme.TextMuted,
@@ -1304,14 +1304,14 @@ private fun EmptyPanchangaContent() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Panchanga Unavailable",
+                text = stringResource(StringKeyAnalysis.UI_PANCHANGA_UNAVAILABLE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Unable to calculate Panchanga for today",
+                text = stringResource(StringKeyAnalysis.UI_UNABLE_CALC_PANCHANGA),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
@@ -1338,14 +1338,14 @@ private fun EmptyBirthPanchangaContent() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "No Birth Chart",
+                text = stringResource(StringKeyAnalysis.UI_NO_BIRTH_CHART),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Please select a birth chart to view birth Panchanga",
+                text = stringResource(StringKeyAnalysis.UI_SELECT_CHART_PANCHANGA),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center

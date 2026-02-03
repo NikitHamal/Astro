@@ -280,6 +280,10 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     // ============================================
     LABEL_AD("AD", "ई.सं."),
     LABEL_BS("BS", "वि.सं."),
+    LABEL_DATE("DATE", "मिति"),
+    LABEL_TIME("TIME", "समय"),
+    LABEL_TODAY("TODAY", "आज"),
+    LABEL_BIRTH("BIRTH", "जन्म"),
 
     // ============================================
     // INSIGHTS TAB

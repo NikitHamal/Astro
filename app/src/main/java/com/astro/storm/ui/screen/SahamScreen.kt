@@ -331,7 +331,7 @@ private fun SahamScoreCard(analysis: SahamCalculator.SahamAnalysis) {
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "Strongest",
+                            text = stringResource(StringKeySaham.STRONGEST),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -535,7 +535,7 @@ private fun SahamRecommendationsCard(recommendations: List<String>) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Recommendations",
+                    text = stringResource(StringKeySaham.RECOMMENDATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -584,7 +584,7 @@ private fun SahamListSection(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "No $sectionTitle Sahams found",
+                        text = stringResource(StringKeySaham.NO_SAHAMS_TYPE_FOUND, sectionTitle),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -701,7 +701,7 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                         )
                         DetailItem(
                             label = stringResource(StringKeyShadbala.SAHAM_HOUSE),
-                            value = "H${saham.house}"
+                            value = "${stringResource(StringKey.YOGA_HOUSE_PREFIX)}${saham.house}"
                         )
                         DetailItem(
                             label = stringResource(StringKeyShadbala.SAHAM_LORD),
@@ -783,7 +783,7 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                             ) {
                                 Text("✓", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                                 Text(
-                                    text = "Currently Activated",
+                                    text = stringResource(StringKeySaham.ACTIVATED),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = AppTheme.SuccessColor
                                 )
@@ -895,7 +895,7 @@ private fun SahamEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Please select a chart to analyze Sahams",
+                text = stringResource(StringKeySaham.SELECT_CHART_MESSAGE),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center

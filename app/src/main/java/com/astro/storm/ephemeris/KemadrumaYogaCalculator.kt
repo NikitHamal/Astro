@@ -166,8 +166,29 @@ object KemadrumaYogaCalculator {
         val dispositorStrengthKey: com.astro.storm.core.common.StringKeyInterface? = null
     )
 
-    enum class LunarPaksha { SHUKLA, KRISHNA }
-    enum class MoonBrightness { FULL, BRIGHT, AVERAGE, DIM, NEW }
+    enum class LunarPaksha { 
+        SHUKLA, KRISHNA;
+        
+        fun getLocalizedName(language: Language): String {
+            val key = if (this == SHUKLA) StringKeyAnalysis.PAKSHA_SHUKLA else StringKeyAnalysis.PAKSHA_KRISHNA
+            return StringResources.get(key, language)
+        }
+    }
+    
+    enum class MoonBrightness { 
+        FULL, BRIGHT, AVERAGE, DIM, NEW;
+        
+        fun getLocalizedName(language: Language): String {
+            val key = when (this) {
+                FULL -> StringKeyAnalysis.MOON_BRIGHTNESS_FULL
+                BRIGHT -> StringKeyAnalysis.MOON_BRIGHTNESS_BRIGHT
+                AVERAGE -> StringKeyAnalysis.MOON_BRIGHTNESS_AVERAGE
+                DIM -> StringKeyAnalysis.MOON_BRIGHTNESS_DIM
+                NEW -> StringKeyAnalysis.MOON_BRIGHTNESS_NEW
+            }
+            return StringResources.get(key, language)
+        }
+    }
 
     /**
      * Kemadruma formation details

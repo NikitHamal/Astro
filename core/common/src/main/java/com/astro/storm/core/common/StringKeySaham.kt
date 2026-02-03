@@ -138,5 +138,8 @@ enum class StringKeySaham(override val en: String, override val ne: String) : St
     NEEDS_FOCUS("Needs Focus", "ध्यान दिनुपर्ने"),
     ACTIVATED("Activated", "सक्रिय"),
     FORMULA_ADJUSTED_DESC("Formulas adjusted per Tajika tradition", "ताजिक परम्परा अनुसार सूत्रहरू समायोजित"),
+    STRONGEST("Strongest", "सबैभन्दा बलियो"),
+    RECOMMENDATIONS("Recommendations", "सिफारिसहरू"),
+    NO_SAHAMS_TYPE_FOUND("No %s Sahams found", "कुनै %s सहम फेला परेन"),
 ;
 }
