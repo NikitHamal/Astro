@@ -15,6 +15,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,15 +33,14 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer
-import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.*
-import com.astro.storm.ephemeris.varga.SaptamsaAnalysis
-import com.astro.storm.ephemeris.varga.ChildCountFactors
-import com.astro.storm.ephemeris.varga.ChildIndication
-import com.astro.storm.ephemeris.varga.FertilityAnalysis
-import com.astro.storm.ephemeris.varga.SanthanaYoga
-import com.astro.storm.ephemeris.varga.D7LagnaAnalysis
-import com.astro.storm.ephemeris.varga.FifthHouseAnalysis
-import com.astro.storm.ephemeris.varga.JupiterAnalysis
+import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.SaptamsaAnalysis
+import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.ChildCountFactors
+import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.ChildIndication
+import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.FertilityAnalysis
+import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.SanthanaYoga
+import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.D7LagnaAnalysis
+import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.FifthHouseAnalysis
+import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.JupiterAnalysis
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
@@ -1193,7 +1194,7 @@ private fun SanthanaYogaCard(
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextMuted
                 )
-                yoga.effects.forEach { effect ->
+                yoga.effects.toList().forEach { effect ->
                     Text(
                         text = "• $effect",
                         style = MaterialTheme.typography.bodySmall,
@@ -1211,7 +1212,7 @@ private fun SanthanaYogaCard(
                     fontWeight = FontWeight.SemiBold,
                     color = DarkAppThemeColors.AccentGold
                 )
-                yoga.remedies.forEach { remedy ->
+                yoga.remedies.toList().forEach { remedy ->
                     Text(
                         text = "• $remedy",
                         style = MaterialTheme.typography.bodySmall,

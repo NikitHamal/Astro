@@ -468,7 +468,7 @@ private fun SwamshaDetailCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = swamsha.sign.getLocalizedName(language).take(2),
+                        text = swamsha.karakamshaSign.getLocalizedName(language).take(2),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = DarkAppThemeColors.LifeAreaSpiritual
@@ -484,7 +484,7 @@ private fun SwamshaDetailCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = swamsha.sign.getLocalizedName(language),
+                        text = swamsha.karakamshaSign.getLocalizedName(language),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -846,7 +846,7 @@ private fun AtmakarakaAnalysisCard(
                         color = planetColor
                     )
                     Text(
-                        text = "in ${ak.sign.getLocalizedName(language)} at ${String.format("%.2f", ak.degree)}°",
+                        text = "in ${ak.sign.getLocalizedName(language)} at ${String.format("%.2f", ak.degreeInSign)}°",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )

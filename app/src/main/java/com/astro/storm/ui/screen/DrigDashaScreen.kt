@@ -192,7 +192,7 @@ private fun OverviewTab(
         analysis.currentDasha?.let { currentDasha ->
             item {
                 CurrentPeriodCard(
-                    period = currentPeriod,
+                    period = currentDasha,
                     language = language,
                     dateFormatter = dateFormatter
                 )
@@ -242,7 +242,8 @@ private fun OverviewTab(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = analysis.interpretation,
+                        text = "Your Drig Dasha analysis indicates a ${analysis.longevitySpan.displayName} longevity span (${analysis.longevitySpan.minYears}-${analysis.longevitySpan.maxYears} years). " +
+                                "The current period is ruled by ${analysis.currentDasha?.signLord?.displayName ?: "Unknown"}, focusing on ${analysis.currentDasha?.interpretation ?: "general themes"}.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
@@ -259,9 +260,9 @@ private fun LongevityCard(
 ) {
     val spanColor = when (longevitySpan) {
         AyurSpan.BALA_ARISHTA -> DarkAppThemeColors.ErrorColor
-        AyurSpan.ALPA_AYUR -> DarkAppThemeColors.WarningColor
-        AyurSpan.MADHYA_AYUR -> DarkAppThemeColors.AccentGold
-        AyurSpan.PURNA_AYUR -> DarkAppThemeColors.SuccessColor
+        AyurSpan.ALPAYU -> DarkAppThemeColors.WarningColor
+        AyurSpan.MADHYAYU -> DarkAppThemeColors.AccentGold
+        AyurSpan.PURNAYU -> DarkAppThemeColors.SuccessColor
     }
 
     Card(

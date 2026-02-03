@@ -585,6 +585,7 @@ object DrigDashaCalculator {
      */
     private fun calculateEstimatedLongevity(analysis: LongevityAnalysis, chart: VedicChart): Double {
         val baseYears = when (analysis.finalSpan) {
+            AyurSpan.BALA_ARISHTA -> 8.0
             AyurSpan.ALPAYU -> 24.0
             AyurSpan.MADHYAYU -> 48.0
             AyurSpan.PURNAYU -> 72.0
