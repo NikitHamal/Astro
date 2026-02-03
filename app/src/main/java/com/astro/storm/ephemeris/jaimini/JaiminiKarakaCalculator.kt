@@ -1031,7 +1031,8 @@ object JaiminiKarakaCalculator {
                 isOnHouseCusp = false,
                 nakshatra = com.astro.storm.core.model.Nakshatra.ASHWINI,
                 nakshatraPada = 1,
-                isRetrograde = false
+                isRetrograde = false,
+                distance = 0.0
             ),
             planetsInKarakamsha = emptyList(),
             karakamshaLord = Planet.MARS,

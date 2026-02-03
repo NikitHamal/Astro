@@ -33,11 +33,11 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator
-import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaAnalysis
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.AyurSpan
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaPeriod
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigAntardasha
+import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.SthiraKarakaInfo
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
@@ -189,7 +189,7 @@ private fun OverviewTab(
         }
 
         // Current Period Card
-        analysis.currentPeriod?.let { currentPeriod ->
+        analysis.currentDasha?.let { currentDasha ->
             item {
                 CurrentPeriodCard(
                     period = currentPeriod,
@@ -615,13 +615,13 @@ private fun DashaPeriodTab(
             )
         }
 
-        itemsIndexed(analysis.dashaSequence) { index, period ->
+        itemsIndexed(analysis.drigDashaSequence) { index, period ->
             DashaPeriodCard(
                 period = period,
                 language = language,
                 dateFormatter = dateFormatter,
                 isExpanded = expandedIndex == index,
-                isCurrentPeriod = period == analysis.currentPeriod,
+                isCurrentPeriod = period == analysis.currentDasha,
                 onExpandClick = {
                     expandedIndex = if (expandedIndex == index) null else index
                 }
@@ -1072,18 +1072,18 @@ private fun SthiraKarakasTab(
             }
         }
 
-        items(analysis.sthiraKarakas) { karaka ->
-            SthiraKarakaCard(karaka, language)
+        items(analysis.sthiraKarakas) { karakaInfo ->
+            SthiraKarakaCard(karakaInfo, language)
         }
     }
 }
 
 @Composable
 private fun SthiraKarakaCard(
-    karaka: SthiraKaraka,
+    karakaInfo: SthiraKarakaInfo,
     language: Language
 ) {
-    val signColor = getSignColor(karaka.sign)
+    val signColor = getSignColor(karakaInfo.position.sign)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -1104,7 +1104,7 @@ private fun SthiraKarakaCard(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = karaka.sign.getLocalizedName(language).take(2),
+                    text = karakaInfo.position.sign.getLocalizedName(language).take(2),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
                     color = signColor
@@ -1115,18 +1115,18 @@ private fun SthiraKarakaCard(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = karaka.type.name.replace("_", " "),
+                    text = karakaInfo.sthiraKaraka.name.replace("_", " "),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = karaka.sign.getLocalizedName(language),
+                    text = "${karakaInfo.position.sign.getLocalizedName(language)} (${karakaInfo.position.planet.displayName})",
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    text = karaka.signification,
+                    text = karakaInfo.sthiraKaraka.signification,
                     style = MaterialTheme.typography.bodySmall,
                     color = signColor,
                     modifier = Modifier.padding(top = 4.dp)
@@ -1183,9 +1183,10 @@ private fun ErrorStateDD(message: String, modifier: Modifier = Modifier) {
 
 private fun getSignColor(sign: ZodiacSign): Color {
     return when (sign.element) {
-        com.astro.storm.core.model.Element.FIRE -> DarkAppThemeColors.PlanetMars
-        com.astro.storm.core.model.Element.EARTH -> DarkAppThemeColors.PlanetMercury
-        com.astro.storm.core.model.Element.AIR -> DarkAppThemeColors.PlanetVenus
-        com.astro.storm.core.model.Element.WATER -> DarkAppThemeColors.PlanetMoon
+        "Fire" -> DarkAppThemeColors.PlanetMars
+        "Earth" -> DarkAppThemeColors.PlanetMercury
+        "Air" -> DarkAppThemeColors.PlanetVenus
+        "Water" -> DarkAppThemeColors.PlanetMoon
+        else -> DarkAppThemeColors.PlanetMars
     }
 }

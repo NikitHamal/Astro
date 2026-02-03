@@ -32,6 +32,14 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer
 import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.*
+import com.astro.storm.ephemeris.varga.SaptamsaAnalysis
+import com.astro.storm.ephemeris.varga.ChildCountFactors
+import com.astro.storm.ephemeris.varga.ChildIndication
+import com.astro.storm.ephemeris.varga.FertilityAnalysis
+import com.astro.storm.ephemeris.varga.SanthanaYoga
+import com.astro.storm.ephemeris.varga.D7LagnaAnalysis
+import com.astro.storm.ephemeris.varga.FifthHouseAnalysis
+import com.astro.storm.ephemeris.varga.JupiterAnalysis
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers

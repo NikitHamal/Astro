@@ -63,7 +63,8 @@ object DrigDashaCalculator {
         val maxYears: Int,
         val description: String
     ) {
-        ALPAYU("Short Life", "Alpayu", 0, 32, "Life span up to 32 years"),
+        BALA_ARISHTA("Infant Mortality", "Bala Arishta", 0, 8, "Critical period in early childhood"),
+        ALPAYU("Short Life", "Alpayu", 8, 32, "Life span up to 32 years"),
         MADHYAYU("Medium Life", "Madhyayu", 32, 64, "Life span between 32-64 years"),
         PURNAYU("Full Life", "Purnayu", 64, 120, "Life span beyond 64 years")
     }
@@ -89,6 +90,16 @@ object DrigDashaCalculator {
         ELEVENTH(11, Planet.JUPITER, "Gains, Elder Siblings, Desires"),
         TWELFTH(12, Planet.SATURN, "Loss, Liberation, Foreign")
     }
+
+    /**
+     * Sthira Karaka Info for Analysis
+     */
+    data class SthiraKarakaInfo(
+        val sthiraKaraka: SthiraKaraka,
+        val position: PlanetPosition,
+        val dignity: VedicAstrologyUtils.PlanetaryDignity,
+        val strength: String
+    )
 
     /**
      * Drig Dasha period for a sign
@@ -143,6 +154,7 @@ object DrigDashaCalculator {
         val maheshwaraSign: ZodiacSign,
         val criticalPeriods: List<CriticalPeriod>,
         val longevityAnalysis: LongevityAnalysis,
+        val sthiraKarakas: List<SthiraKarakaInfo> = emptyList(),
         val timestamp: Long = System.currentTimeMillis()
     )
 

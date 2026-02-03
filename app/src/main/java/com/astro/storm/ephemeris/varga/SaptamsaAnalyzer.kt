@@ -611,8 +611,8 @@ object SaptamsaAnalyzer {
             fertilityStatus = status,
             supportingFactors = supportingFactors,
             challengingFactors = challengingFactors,
-            timingForConception = conceptionTimings,
-            remedies = remedies
+            timingForConception = emptyList(), // TODO: Implement conception timing logic
+            remedies = emptyList() // TODO: Implement specific remedies
         )
     }
 

@@ -200,7 +200,7 @@ private fun KarakasTab(
         item {
             InfoCard(
                 title = "Karaka System",
-                content = "Using ${analysis.system.name.replace("_", " ")} system",
+                content = "Using ${analysis.karakaSystem.name.replace("_", " ")} system",
                 icon = Icons.Outlined.Info
             )
         }
@@ -269,14 +269,14 @@ private fun KarakaCard(
 
                 // Degree
                 Text(
-                    text = "Degree: ${String.format("%.2f", assignment.degree)}°",
+                    text = "Degree: ${String.format("%.2f", assignment.degreeInSign)}°",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
 
                 // Signification
                 Text(
-                    text = karakaType.signification,
+                    text = karakaType.primarySignification,
                     style = MaterialTheme.typography.bodySmall,
                     color = planetColor,
                     modifier = Modifier.padding(top = 4.dp)
@@ -292,7 +292,7 @@ private fun KarakaCard(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "${assignment.rank}",
+                    text = "${assignment.karakaType.rank}",
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold,
                     color = planetColor
@@ -371,7 +371,7 @@ private fun KarakamshaDetailCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = karakamsha.sign.getLocalizedName(language).take(2),
+                        text = karakamsha.karakamshaSign.getLocalizedName(language).take(2),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.AccentPrimary
@@ -387,7 +387,7 @@ private fun KarakamshaDetailCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = karakamsha.sign.getLocalizedName(language),
+                        text = karakamsha.karakamshaSign.getLocalizedName(language),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -617,7 +617,7 @@ private fun KarakenshiYogaCard(
     language: Language
 ) {
     val yogaColor = when {
-        yoga.isBenefic -> DarkAppThemeColors.SuccessColor
+        yoga.isAuspicious -> DarkAppThemeColors.SuccessColor
         else -> DarkAppThemeColors.WarningColor
     }
 
@@ -675,7 +675,7 @@ private fun KarakenshiYogaCard(
                     color = yogaColor.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = if (yoga.isBenefic) "Benefic" else "Challenging",
+                        text = if (yoga.isAuspicious) "Benefic" else "Challenging",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = yogaColor,
@@ -688,7 +688,7 @@ private fun KarakenshiYogaCard(
 
             // Description
             Text(
-                text = yoga.description,
+                text = yoga.effects,
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
@@ -712,7 +712,7 @@ private fun KarakenshiYogaCard(
             }
 
             // Results
-            if (yoga.results.isNotEmpty()) {
+            if (yoga.effects.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = "Results:",
@@ -720,14 +720,12 @@ private fun KarakenshiYogaCard(
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextMuted
                 )
-                yoga.results.forEach { result ->
-                    Text(
-                        text = "• $result",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextSecondary,
-                        modifier = Modifier.padding(start = 8.dp, top = 2.dp)
-                    )
-                }
+                Text(
+                    text = "• ${yoga.effects}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextSecondary,
+                    modifier = Modifier.padding(start = 8.dp, top = 2.dp)
+                )
             }
         }
     }
@@ -764,7 +762,7 @@ private fun InterpretationTab(
                         .padding(20.dp)
                 ) {
                     Text(
-                        text = analysis.interpretation,
+                        text = analysis.keyInsights.joinToString("\n\n"),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary,
                         lineHeight = 24.sp
@@ -781,9 +779,9 @@ private fun InterpretationTab(
         }
 
         // Gemstone Recommendations
-        if (analysis.gemstoneRecommendations.isNotEmpty()) {
+        if (analysis.recommendations.isNotEmpty()) {
             item {
-                GemstoneRecommendationsCard(analysis.gemstoneRecommendations)
+                GemstoneRecommendationsCard(analysis.recommendations)
             }
         }
     }
