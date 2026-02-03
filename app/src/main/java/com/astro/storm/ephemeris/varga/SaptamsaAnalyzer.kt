@@ -7,6 +7,7 @@ import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.DivisionalChartCalculator
 import com.astro.storm.ephemeris.DivisionalChartType
 import com.astro.storm.ephemeris.VedicAstrologyUtils
+import com.astro.storm.ephemeris.DivisionalChartData
 
 /**
  * SaptamsaAnalyzer - Comprehensive D7 (Saptamsa) Chart Analysis
@@ -103,6 +104,9 @@ object SaptamsaAnalyzer {
      */
     data class FertilityAnalysis(
         val overallScore: Double, // 0-100
+        val fifthHouseScore: Double,
+        val jupiterScore: Double,
+        val moonScore: Double,
         val fertilityStatus: FertilityStatus,
         val supportingFactors: List<String>,
         val challengingFactors: List<String>,
@@ -157,7 +161,7 @@ object SaptamsaAnalyzer {
      */
     data class SaptamsaAnalysis(
         val chartId: String,
-        val d7Chart: VedicChart?,
+        val d7Chart: DivisionalChartData?,
         val d7LagnaAnalysis: D7LagnaAnalysis,
         val fifthHouseAnalysis: FifthHouseAnalysis,
         val jupiterAnalysis: JupiterAnalysis,
@@ -213,6 +217,10 @@ object SaptamsaAnalyzer {
         val divisionalCharts = DivisionalChartCalculator.calculateAllDivisionalCharts(chart)
         val d7Chart = divisionalCharts.find { it.chartType == DivisionalChartType.D7_SAPTAMSA }
 
+        val positions = d7Chart?.planetPositions ?: chart.planetPositions
+        val ascendant = d7Chart?.ascendantLongitude ?: chart.ascendant
+        val ascSign = ZodiacSign.fromLongitude(ascendant)
+
         // D7 Lagna analysis
         val d7LagnaAnalysis = analyzeD7Lagna(d7Chart, chart)
 
@@ -226,14 +234,14 @@ object SaptamsaAnalyzer {
         val childCountEstimate = estimateChildCount(d7Chart, chart, fifthHouseAnalysis, jupiterAnalysis)
 
         // Individual child indications
-        val childIndications = getChildIndications(d7Chart, chart, fifthHouseAnalysis)
+        val childIndications = getChildIndications(positions, ascSign, fifthHouseAnalysis)
 
         // Fertility analysis
-        val fertilityAnalysis = analyzeFertility(d7Chart, chart, jupiterAnalysis)
+        val fertilityAnalysis = analyzeFertility(positions, jupiterAnalysis)
 
         // Identify Santhana Yogas
-        val santhanaYogas = identifySanthanaYogas(d7Chart, chart)
-        val challengingYogas = identifyChallengingYogas(d7Chart, chart)
+        val santhanaYogas = identifySanthanaYogas(positions, ascSign)
+        val challengingYogas = identifyChallengingYogas(positions, ascSign)
 
         // Calculate overall score
         val overallScore = calculateOverallScore(
@@ -270,12 +278,12 @@ object SaptamsaAnalyzer {
     /**
      * Analyze D7 Lagna
      */
-    private fun analyzeD7Lagna(d7Chart: VedicChart?, rasiChart: VedicChart): D7LagnaAnalysis {
+    private fun analyzeD7Lagna(d7Chart: DivisionalChartData?, rasiChart: VedicChart): D7LagnaAnalysis {
         if (d7Chart == null) {
             return createDefaultD7LagnaAnalysis(rasiChart)
         }
 
-        val lagnaSign = d7Chart.ascendantSign
+        val lagnaSign = ZodiacSign.fromLongitude(d7Chart.ascendantLongitude)
         val lagnaLord = lagnaSign.ruler
         val lagnaLordPos = d7Chart.planetPositions.find { it.planet == lagnaLord }
         val lagnaLordDignity = lagnaLordPos?.let { VedicAstrologyUtils.getDignity(it) }
@@ -298,22 +306,24 @@ object SaptamsaAnalyzer {
     /**
      * Analyze Fifth House in D7
      */
-    private fun analyzeFifthHouse(d7Chart: VedicChart?, rasiChart: VedicChart): FifthHouseAnalysis {
-        val chart = d7Chart ?: rasiChart
-        val lagnaSign = chart.ascendantSign
+    private fun analyzeFifthHouse(d7Chart: DivisionalChartData?, rasiChart: VedicChart): FifthHouseAnalysis {
+        val positions = d7Chart?.planetPositions ?: rasiChart.planetPositions
+        val ascendant = d7Chart?.ascendantLongitude ?: rasiChart.ascendant
+        val lagnaSign = ZodiacSign.fromLongitude(ascendant)
+        
         val fifthSign = ZodiacSign.entries[(lagnaSign.ordinal + 4) % 12]
         val fifthLord = fifthSign.ruler
 
-        val fifthLordPos = chart.planetPositions.find { it.planet == fifthLord }
+        val fifthLordPos = positions.find { it.planet == fifthLord }
         val fifthLordDignity = fifthLordPos?.let { VedicAstrologyUtils.getDignity(it) }
-        val planetsInFifth = chart.planetPositions.filter { it.house == 5 }
+        val planetsInFifth = positions.filter { it.house == 5 }
 
-        val aspectsOnFifth = chart.planetPositions
+        val aspectsOnFifth = positions
             .filter { it.house != 5 }
             .filter { VedicAstrologyUtils.aspectsHouse(it.planet, it.house, 5) }
             .map { it.planet }
 
-        val childIndications = determineChildIndications(planetsInFifth, fifthLordPos, chart)
+        val childIndications = determineChildIndications(planetsInFifth, fifthLordPos, positions, lagnaSign)
 
         val interpretation = buildFifthHouseInterpretation(
             fifthSign, fifthLordPos, planetsInFifth, aspectsOnFifth
@@ -334,10 +344,10 @@ object SaptamsaAnalyzer {
     /**
      * Analyze Jupiter (Putrakaraka)
      */
-    private fun analyzeJupiter(d7Chart: VedicChart?, rasiChart: VedicChart): JupiterAnalysis {
-        val chart = d7Chart ?: rasiChart
-        val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
-        val sunPos = chart.planetPositions.find { it.planet == Planet.SUN }
+    private fun analyzeJupiter(d7Chart: DivisionalChartData?, rasiChart: VedicChart): JupiterAnalysis {
+        val positions = d7Chart?.planetPositions ?: rasiChart.planetPositions
+        val jupiterPos = positions.find { it.planet == Planet.JUPITER }
+        val sunPos = positions.find { it.planet == Planet.SUN }
 
         if (jupiterPos == null) {
             return createDefaultJupiterAnalysis()
@@ -349,7 +359,7 @@ object SaptamsaAnalyzer {
             VedicAstrologyUtils.isCombust(Planet.JUPITER, jupiterPos.longitude, it.longitude, false)
         } ?: false
 
-        val aspectingPlanets = chart.planetPositions
+        val aspectingPlanets = positions
             .filter { it.planet != Planet.JUPITER }
             .filter { VedicAstrologyUtils.aspectsHouse(it.planet, it.house, jupiterPos.house) }
             .map { it.planet }
@@ -374,12 +384,12 @@ object SaptamsaAnalyzer {
      * Estimate number of children
      */
     private fun estimateChildCount(
-        d7Chart: VedicChart?,
+        d7Chart: DivisionalChartData?,
         rasiChart: VedicChart,
         fifthHouseAnalysis: FifthHouseAnalysis,
         jupiterAnalysis: JupiterAnalysis
     ): ChildCountFactors {
-        val chart = d7Chart ?: rasiChart
+        val positions = d7Chart?.planetPositions ?: rasiChart.planetPositions
         val planetsInFifth = fifthHouseAnalysis.planetsInFifth.size
         val fifthLordStrength = fifthHouseAnalysis.fifthLordDignity?.let { dignityToStrength(it) } ?: 50.0
         val jupiterStrength = jupiterAnalysis.strength
@@ -452,35 +462,34 @@ object SaptamsaAnalyzer {
      * Get individual child indications
      */
     private fun getChildIndications(
-        d7Chart: VedicChart?,
-        rasiChart: VedicChart,
+        positions: List<PlanetPosition>,
+        ascSign: ZodiacSign,
         fifthHouseAnalysis: FifthHouseAnalysis
     ): List<ChildIndication> {
-        val chart = d7Chart ?: rasiChart
         val indications = mutableListOf<ChildIndication>()
 
         // First child - 5th house
         val firstChildPlanet = fifthHouseAnalysis.planetsInFifth.firstOrNull()?.planet
             ?: fifthHouseAnalysis.fifthLord
-        indications.add(createChildIndication(1, firstChildPlanet, chart))
+        indications.add(createChildIndication(1, firstChildPlanet, positions))
 
         // Second child - 7th from 5th (11th house)
-        val eleventhPlanets = chart.planetPositions.filter { it.house == 11 }
+        val eleventhPlanets = positions.filter { it.house == 11 }
         val secondChildPlanet = eleventhPlanets.firstOrNull()?.planet
-            ?: ZodiacSign.entries[(chart.ascendantSign.ordinal + 10) % 12].ruler
-        indications.add(createChildIndication(2, secondChildPlanet, chart))
+            ?: ZodiacSign.entries[(ascSign.ordinal + 10) % 12].ruler
+        indications.add(createChildIndication(2, secondChildPlanet, positions))
 
         // Third child - 3rd from 5th (7th house)
-        val seventhPlanets = chart.planetPositions.filter { it.house == 7 }
+        val seventhPlanets = positions.filter { it.house == 7 }
         val thirdChildPlanet = seventhPlanets.firstOrNull()?.planet
-            ?: ZodiacSign.entries[(chart.ascendantSign.ordinal + 6) % 12].ruler
-        indications.add(createChildIndication(3, thirdChildPlanet, chart))
+            ?: ZodiacSign.entries[(ascSign.ordinal + 6) % 12].ruler
+        indications.add(createChildIndication(3, thirdChildPlanet, positions))
 
         return indications
     }
 
-    private fun createChildIndication(orderNumber: Int, planet: Planet, chart: VedicChart): ChildIndication {
-        val planetPos = chart.planetPositions.find { it.planet == planet }
+    private fun createChildIndication(orderNumber: Int, planet: Planet, positions: List<PlanetPosition>): ChildIndication {
+        val planetPos = positions.find { it.planet == planet }
 
         // Determine gender based on planet nature
         val (gender, confidence) = when (planet) {
@@ -494,7 +503,7 @@ object SaptamsaAnalyzer {
         }
 
         val characteristics = getChildCharacteristics(planet, planetPos)
-        val relationship = getRelationshipQuality(planet, planetPos, chart)
+        val relationship = getRelationshipQuality(planet, planetPos)
         val healthIndicators = getHealthIndicatorsForChild(planet, planetPos)
         val careerIndicators = getCareerIndicatorsForChild(planet, planetPos)
         val timingIndicators = getTimingIndicators(planet, orderNumber)
@@ -516,16 +525,19 @@ object SaptamsaAnalyzer {
      * Analyze fertility factors
      */
     private fun analyzeFertility(
-        d7Chart: VedicChart?,
-        rasiChart: VedicChart,
+        positions: List<PlanetPosition>,
         jupiterAnalysis: JupiterAnalysis
     ): FertilityAnalysis {
-        val chart = d7Chart ?: rasiChart
         val supportingFactors = mutableListOf<String>()
         val challengingFactors = mutableListOf<String>()
+        
+        // Initialize component scores
+        var fifthHouseScore = 50.0
+        var jupiterScore = jupiterAnalysis.strength
+        var moonScore = 50.0
         var score = 50.0
 
-        // Jupiter strength
+        // Jupiter strength logic
         if (jupiterAnalysis.strength > 70) {
             score += 15
             supportingFactors.add("Strong Jupiter supports fertility")
@@ -535,21 +547,23 @@ object SaptamsaAnalyzer {
         }
 
         // 5th house condition
-        val fifthPlanets = chart.planetPositions.filter { it.house == 5 }
+        val fifthPlanets = positions.filter { it.house == 5 }
         val beneficsInFifth = fifthPlanets.count { VedicAstrologyUtils.isNaturalBenefic(it.planet) }
         val maleficsInFifth = fifthPlanets.count { VedicAstrologyUtils.isNaturalMalefic(it.planet) }
 
         if (beneficsInFifth >= 1) {
             score += 10
+            fifthHouseScore += 20 // Boost specific score
             supportingFactors.add("Benefic planets in 5th house support conception")
         }
         if (maleficsInFifth >= 2) {
             score -= 15
+            fifthHouseScore -= 20
             challengingFactors.add("Multiple malefics in 5th may delay children")
         }
 
         // Moon's condition (important for conception)
-        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
+        val moonPos = positions.find { it.planet == Planet.MOON }
         if (moonPos != null) {
             val moonDignity = VedicAstrologyUtils.getDignity(moonPos)
             if (moonDignity in listOf(
@@ -558,16 +572,18 @@ object SaptamsaAnalyzer {
                 )
             ) {
                 score += 10
+                moonScore += 25
                 supportingFactors.add("Strong Moon supports reproductive health")
             }
             if (moonDignity == VedicAstrologyUtils.PlanetaryDignity.DEBILITATED) {
                 score -= 10
+                moonScore -= 25
                 challengingFactors.add("Debilitated Moon may need attention")
             }
         }
 
-        // Venus condition
-        val venusPos = chart.planetPositions.find { it.planet == Planet.VENUS }
+        // Venus condition (general fertility)
+        val venusPos = positions.find { it.planet == Planet.VENUS }
         if (venusPos != null) {
             if (venusPos.house in listOf(5, 7, 1, 9)) {
                 score += 8
@@ -587,27 +603,11 @@ object SaptamsaAnalyzer {
             else -> FertilityStatus.NEEDS_ATTENTION
         }
 
-        // Conception timing based on Jupiter dasha/antardasha
-        val conceptionTimings = listOf(
-            ConceptionTiming("Jupiter Dasha/Antardasha", Planet.JUPITER, 85.0, "Most favorable for conception"),
-            ConceptionTiming("Venus Dasha/Antardasha", Planet.VENUS, 75.0, "Good for conception"),
-            ConceptionTiming("Moon Dasha/Antardasha", Planet.MOON, 70.0, "Emotionally favorable period")
-        )
-
-        val remedies = if (status == FertilityStatus.CHALLENGING || status == FertilityStatus.NEEDS_ATTENTION) {
-            listOf(
-                "Worship Santan Gopal (form of Krishna)",
-                "Chant Santan Gopala Mantra",
-                "Observe Putra Kameshti Vrat",
-                "Donate to orphanages",
-                "Strengthen Jupiter through Guru Beej Mantra"
-            )
-        } else {
-            listOf("Maintain spiritual practices", "Regular health check-ups")
-        }
-
         return FertilityAnalysis(
-            overallScore = score.coerceIn(0.0, 100.0),
+            overallScore = score.coerceIn(0.0, 100.0) / 100.0,
+            fifthHouseScore = fifthHouseScore.coerceIn(0.0, 100.0) / 100.0,
+            jupiterScore = jupiterScore.coerceIn(0.0, 100.0) / 100.0,
+            moonScore = moonScore.coerceIn(0.0, 100.0) / 100.0,
             fertilityStatus = status,
             supportingFactors = supportingFactors,
             challengingFactors = challengingFactors,
@@ -619,15 +619,14 @@ object SaptamsaAnalyzer {
     /**
      * Identify Santhana Yogas (favorable progeny yogas)
      */
-    private fun identifySanthanaYogas(d7Chart: VedicChart?, rasiChart: VedicChart): List<SanthanaYoga> {
+    private fun identifySanthanaYogas(positions: List<PlanetPosition>, ascSign: ZodiacSign): List<SanthanaYoga> {
         val yogas = mutableListOf<SanthanaYoga>()
-        val chart = d7Chart ?: rasiChart
 
-        val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
-        val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
-        val venusPos = chart.planetPositions.find { it.planet == Planet.VENUS }
-        val fifthLord = ZodiacSign.entries[(chart.ascendantSign.ordinal + 4) % 12].ruler
-        val fifthLordPos = chart.planetPositions.find { it.planet == fifthLord }
+        val jupiterPos = positions.find { it.planet == Planet.JUPITER }
+        val moonPos = positions.find { it.planet == Planet.MOON }
+        val venusPos = positions.find { it.planet == Planet.VENUS }
+        val fifthLord = ZodiacSign.entries[(ascSign.ordinal + 4) % 12].ruler
+        val fifthLordPos = positions.find { it.planet == fifthLord }
 
         // 1. Jupiter in Kendra or Trikona
         if (jupiterPos != null && jupiterPos.house in (VedicAstrologyUtils.KENDRA_HOUSES + VedicAstrologyUtils.TRIKONA_HOUSES)) {
@@ -704,17 +703,16 @@ object SaptamsaAnalyzer {
     /**
      * Identify challenging yogas for progeny
      */
-    private fun identifyChallengingYogas(d7Chart: VedicChart?, rasiChart: VedicChart): List<String> {
+    private fun identifyChallengingYogas(positions: List<PlanetPosition>, ascSign: ZodiacSign): List<String> {
         val challenges = mutableListOf<String>()
-        val chart = d7Chart ?: rasiChart
 
-        val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
-        val fifthPlanets = chart.planetPositions.filter { it.house == 5 }
-        val sunPos = chart.planetPositions.find { it.planet == Planet.SUN }
+        val jupiterPos = positions.find { it.planet == Planet.JUPITER }
+        val fifthPlanets = positions.filter { it.house == 5 }
+        val sunPos = positions.find { it.planet == Planet.SUN }
 
         // Saturn in 5th without benefic aspect
         if (fifthPlanets.any { it.planet == Planet.SATURN }) {
-            val saturnHasBeneficAspect = chart.planetPositions.any { pos ->
+            val saturnHasBeneficAspect = positions.any { pos ->
                 VedicAstrologyUtils.isNaturalBenefic(pos.planet) &&
                         VedicAstrologyUtils.aspectsHouse(pos.planet, pos.house, 5)
             }
@@ -744,8 +742,8 @@ object SaptamsaAnalyzer {
         }
 
         // Fifth lord in dusthana
-        val fifthLord = ZodiacSign.entries[(chart.ascendantSign.ordinal + 4) % 12].ruler
-        val fifthLordPos = chart.planetPositions.find { it.planet == fifthLord }
+        val fifthLord = ZodiacSign.entries[(ascSign.ordinal + 4) % 12].ruler
+        val fifthLordPos = positions.find { it.planet == fifthLord }
         if (fifthLordPos != null && fifthLordPos.house in VedicAstrologyUtils.DUSTHANA_HOUSES) {
             challenges.add("Fifth lord in dusthana (6th/8th/12th) may create obstacles")
         }
@@ -848,7 +846,7 @@ object SaptamsaAnalyzer {
         return characteristics
     }
 
-    private fun getRelationshipQuality(planet: Planet, pos: PlanetPosition?, chart: VedicChart): RelationshipQuality {
+    private fun getRelationshipQuality(planet: Planet, pos: PlanetPosition?): RelationshipQuality {
         if (pos == null) return RelationshipQuality.MODERATE
 
         val dignity = VedicAstrologyUtils.getDignity(pos)
@@ -913,11 +911,21 @@ object SaptamsaAnalyzer {
     private fun determineChildIndications(
         planetsInFifth: List<PlanetPosition>,
         fifthLordPos: PlanetPosition?,
-        chart: VedicChart
+        positions: List<PlanetPosition>,
+        ascSign: ZodiacSign
     ): List<ChildIndication> {
-        return getChildIndications(null, chart, FifthHouseAnalysis(
-            ZodiacSign.ARIES, Planet.MARS, null, null, emptyList(), emptyList(), emptyList(), ""
-        ))
+        val fifthLord = fifthLordPos?.planet ?: ZodiacSign.entries[(ascSign.ordinal + 4) % 12].ruler
+        val dummyAnalysis = FifthHouseAnalysis(
+            fifthSign = ZodiacSign.ARIES,
+            fifthLord = fifthLord,
+            fifthLordPosition = fifthLordPos,
+            fifthLordDignity = null,
+            planetsInFifth = planetsInFifth,
+            aspectsOnFifth = emptyList(),
+            childIndications = emptyList(),
+            interpretation = ""
+        )
+        return getChildIndications(positions, ascSign, dummyAnalysis)
     }
 
     // ============================================

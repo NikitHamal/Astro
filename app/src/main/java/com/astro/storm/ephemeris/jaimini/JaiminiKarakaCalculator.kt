@@ -1025,6 +1025,10 @@ object JaiminiKarakaCalculator {
                 speed = 0.0,
                 sign = ZodiacSign.ARIES,
                 house = 1,
+                degree = 0.0,
+                minutes = 0.0,
+                seconds = 0.0,
+                isOnHouseCusp = false,
                 nakshatra = com.astro.storm.core.model.Nakshatra.ASHWINI,
                 nakshatraPada = 1,
                 isRetrograde = false

@@ -90,18 +90,27 @@ class VarshaphalaCalculator(context: Context) {
 
     private fun createVedicChartFromSolarReturn(srChart: SolarReturnChart, natalChart: VedicChart): VedicChart {
         val mappedPositions = srChart.planetPositions.map { (planet, pos) ->
+            val (nakshatra, _) = Nakshatra.fromLongitude(pos.longitude)
+            val degreeInSign = pos.longitude % 30.0
+            val d = degreeInSign.toInt().toDouble()
+            val m = ((degreeInSign - d) * 60).toInt().toDouble()
+            val s = ((((degreeInSign - d) * 60) - m) * 60).toInt().toDouble()
+
             PlanetPosition(
                 planet = planet,
                 longitude = pos.longitude,
                 latitude = 0.0,
                 distance = 0.0,
                 speed = pos.speed,
-                house = pos.house,
                 sign = pos.sign,
+                degree = d,
+                minutes = m,
+                seconds = s,
                 isRetrograde = pos.isRetrograde,
-                nakshatra = Nakshatra.getNakshatra(pos.longitude),
+                nakshatra = nakshatra,
                 nakshatraPada = pos.nakshatraPada,
-                isCombust = false
+                house = pos.house,
+                isOnHouseCusp = false
             )
         }
         

@@ -234,9 +234,10 @@ private fun OverviewTabSS(
 private fun ChildCountSummaryCard(
     estimate: ChildCountFactors
 ) {
+    val displayCount = estimate.estimatedRange.last
     val countColor = when {
-        estimate.estimatedCount >= 3 -> DarkAppThemeColors.SuccessColor
-        estimate.estimatedCount >= 1 -> DarkAppThemeColors.AccentGold
+        displayCount >= 3 -> DarkAppThemeColors.SuccessColor
+        displayCount >= 1 -> DarkAppThemeColors.AccentGold
         else -> DarkAppThemeColors.WarningColor
     }
 
@@ -293,13 +294,13 @@ private fun ChildCountSummaryCard(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "${estimate.estimatedCount}",
+                        text = "$displayCount",
                         style = MaterialTheme.typography.headlineLarge,
                         fontWeight = FontWeight.Bold,
                         color = countColor
                     )
                     Text(
-                        text = if (estimate.estimatedCount == 1) "child" else "children",
+                        text = if (displayCount == 1) "child" else "children",
                         style = MaterialTheme.typography.labelSmall,
                         color = countColor.copy(alpha = 0.8f)
                     )
@@ -407,7 +408,7 @@ private fun D7LagnaCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = analysis.d7Lagna.getLocalizedName(language).take(2),
+                        text = analysis.d7LagnaAnalysis.lagnaSign.getLocalizedName(language).take(2),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.AccentPrimary
@@ -423,7 +424,7 @@ private fun D7LagnaCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = analysis.d7Lagna.getLocalizedName(language),
+                        text = analysis.d7LagnaAnalysis.lagnaSign.getLocalizedName(language),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -447,7 +448,7 @@ private fun D7LagnaCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = analysis.d7LagnaLord.getLocalizedName(language),
+                        text = analysis.d7LagnaAnalysis.lagnaLord.getLocalizedName(language),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -461,7 +462,7 @@ private fun D7LagnaCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = analysis.d7LagnaLordSign.getLocalizedName(language),
+                        text = (analysis.d7LagnaAnalysis.lagnaLordPosition?.sign ?: ZodiacSign.ARIES).getLocalizedName(language),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -514,20 +515,20 @@ private fun FifthHouseCard(
             ) {
                 InfoItem(
                     label = "Sign",
-                    value = analysis.fifthHouseSign.getLocalizedName(language),
+                    value = analysis.fifthHouseAnalysis.fifthSign.getLocalizedName(language),
                     color = DarkAppThemeColors.AccentGold
                 )
                 InfoItem(
                     label = "Lord",
-                    value = analysis.fifthHouseLord.getLocalizedName(language),
-                    color = getPlanetColorSS(analysis.fifthHouseLord)
+                    value = analysis.fifthHouseAnalysis.fifthLord.getLocalizedName(language),
+                    color = getPlanetColorSS(analysis.fifthHouseAnalysis.fifthLord)
                 )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             // Planets in Fifth House
-            if (analysis.planetsInFifthHouse.isNotEmpty()) {
+            if (analysis.fifthHouseAnalysis.planetsInFifth.isNotEmpty()) {
                 Text(
                     text = "Planets in Fifth House",
                     style = MaterialTheme.typography.labelMedium,
@@ -539,8 +540,8 @@ private fun FifthHouseCard(
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(analysis.planetsInFifthHouse) { planet ->
-                        PlanetChip(planet, language)
+                    items(analysis.fifthHouseAnalysis.planetsInFifth) { position ->
+                        PlanetChip(position.planet, language)
                     }
                 }
             }
@@ -630,7 +631,7 @@ private fun ChildIndicationCard(
     indication: ChildIndication,
     language: Language
 ) {
-    val genderColor = when (indication.genderIndication) {
+    val genderColor = when (indication.gender.displayName) {
         "Male" -> DarkAppThemeColors.AccentPrimary
         "Female" -> DarkAppThemeColors.LifeAreaLove
         else -> DarkAppThemeColors.AccentTeal
@@ -679,7 +680,7 @@ private fun ChildIndicationCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = indication.genderIndication,
+                            text = indication.gender.displayName,
                             style = MaterialTheme.typography.bodySmall,
                             color = genderColor
                         )
@@ -689,13 +690,13 @@ private fun ChildIndicationCard(
                 // Strength Badge
                 Surface(
                     shape = RoundedCornerShape(8.dp),
-                    color = getStrengthColor(indication.strength).copy(alpha = 0.15f)
+                    color = getStrengthColor(indication.genderConfidence).copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = "${(indication.strength * 100).toInt()}%",
+                        text = "${(indication.genderConfidence * 100).toInt()}%",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
-                        color = getStrengthColor(indication.strength),
+                        color = getStrengthColor(indication.genderConfidence),
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                     )
                 }
@@ -717,21 +718,21 @@ private fun ChildIndicationCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = indication.significator.getLocalizedName(language),
+                        text = indication.indicatingPlanet.getLocalizedName(language),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = getPlanetColorSS(indication.significator)
+                        color = getPlanetColorSS(indication.indicatingPlanet)
                     )
                 }
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = "House Position",
+                        text = "Relationship",
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = "House ${indication.housePosition}",
+                        text = indication.relationshipQuality.displayName,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -743,7 +744,7 @@ private fun ChildIndicationCard(
 
             // Description
             Text(
-                text = indication.description,
+                text = indication.characteristics.firstOrNull() ?: "No specific description",
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
@@ -864,7 +865,7 @@ private fun FertilityOverviewCard(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = fertility.fertilityLevel,
+                        text = fertility.fertilityStatus.displayName,
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = overallColor

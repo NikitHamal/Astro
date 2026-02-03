@@ -33,7 +33,12 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator
-import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.*
+import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.JaiminiKarakaAnalysis
+import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.KarakaType
+import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.KarakaAssignment
+import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.KarakamshaAnalysis
+import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.SwamshaAnalysis
+import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.KarakenshiYoga
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers

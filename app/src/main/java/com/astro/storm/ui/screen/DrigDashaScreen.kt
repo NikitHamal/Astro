@@ -33,7 +33,11 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator
-import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.*
+import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator
+import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaAnalysis
+import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.AyurSpan
+import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaPeriod
+import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigAntardasha
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
@@ -776,7 +780,7 @@ private fun DashaPeriodCard(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    period.antardashas.forEach { antardasha ->
+                    period.criticalSubPeriods.forEach { antardasha ->
                         AntardashaRow(antardasha, language)
                     }
                 }
