@@ -228,7 +228,8 @@ private fun OverviewTabSS(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = analysis.interpretation,
+                        text = "The Saptamsa chart reveals ${analysis.childCountFactors.estimatedRange} potential children. " +
+                                "Fertility status is ${analysis.fertilityAnalysis.fertilityStatus.replace("_", " ")}.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
@@ -320,7 +321,7 @@ private fun ChildCountSummaryCard(
 
             // Range indicator
             Text(
-                text = "Range: ${estimate.minimumCount} - ${estimate.maximumCount}",
+                text = "Range: ${estimate.estimatedRange.first} - ${estimate.estimatedRange.last}",
                 style = MaterialTheme.typography.labelMedium,
                 color = AppTheme.TextMuted
             )
@@ -334,7 +335,7 @@ private fun ChildCountSummaryCard(
             ) {
                 StrengthIndicator(
                     label = "Fifth House",
-                    strength = estimate.fifthHouseStrength,
+                    strength = estimate.fifthLordStrength,
                     color = DarkAppThemeColors.AccentGold
                 )
                 StrengthIndicator(
@@ -344,7 +345,7 @@ private fun ChildCountSummaryCard(
                 )
                 StrengthIndicator(
                     label = "D7 Lagna",
-                    strength = estimate.d7LagnaStrength,
+                    strength = estimate.d7LagnaStrength, // Assuming this property exists or is intended
                     color = AppTheme.AccentPrimary
                 )
             }
@@ -460,7 +461,7 @@ private fun D7LagnaCard(
                         text = analysis.d7LagnaAnalysis.lagnaLord.getLocalizedName(language),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
+                        color = getPlanetColorSS(analysis.d7LagnaAnalysis.lagnaLord)
                     )
                 }
 
@@ -787,6 +788,60 @@ private fun ChildIndicationCard(
                     }
                 }
             }
+
+            if (indication.timingIndicators.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                SectionHeaderSS(
+                    title = "Timing Indicators",
+                    subtitle = "Periods related to this child's arrival",
+                    icon = Icons.Outlined.CalendarMonth
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                indication.timingIndicators.forEach { timing ->
+                    Text(
+                        text = "• $timing",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextSecondary,
+                        modifier = Modifier.padding(start = 8.dp, top = 2.dp)
+                    )
+                }
+            }
+
+            if (indication.careerIndications.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                SectionHeaderSS(
+                    title = "Career Indications",
+                    subtitle = "Potential career paths or talents",
+                    icon = Icons.Outlined.Work
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                indication.careerIndications.forEach { career ->
+                    Text(
+                        text = "• $career",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextSecondary,
+                        modifier = Modifier.padding(start = 8.dp, top = 2.dp)
+                    )
+                }
+            }
+
+            if (indication.healthIndications.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                SectionHeaderSS(
+                    title = "Health Indications",
+                    subtitle = "Potential health considerations",
+                    icon = Icons.Outlined.FavoriteBorder
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                indication.healthIndications.forEach { health ->
+                    Text(
+                        text = "• $health",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextSecondary,
+                        modifier = Modifier.padding(start = 8.dp, top = 2.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -815,7 +870,7 @@ private fun FertilityTab(
         }
 
         // Favorable Periods
-        if (analysis.fertilityAnalysis.favorablePeriods.isNotEmpty()) {
+        if (analysis.fertilityAnalysis.timingIndicators.isNotEmpty()) {
             item {
                 Text(
                     text = "Favorable Periods",
@@ -825,7 +880,7 @@ private fun FertilityTab(
                 )
             }
 
-            items(analysis.fertilityAnalysis.favorablePeriods) { period ->
+            items(analysis.fertilityAnalysis.timingIndicators) { period ->
                 FavorablePeriodCard(period)
             }
         }
@@ -1179,12 +1234,14 @@ private fun SanthanaYogaCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Text(
-                text = yoga.description,
-                style = MaterialTheme.typography.bodySmall,
-                color = AppTheme.TextSecondary,
-                lineHeight = 18.sp
-            )
+            if (yoga.effects.isNotEmpty()) {
+                Text(
+                    text = yoga.effects.firstOrNull() ?: "",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextSecondary,
+                    lineHeight = 18.sp
+                )
+            }
 
             if (yoga.effects.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
@@ -1194,7 +1251,7 @@ private fun SanthanaYogaCard(
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextMuted
                 )
-                yoga.effects.toList().forEach { effect ->
+                yoga.effects.drop(1).forEach { effect ->
                     Text(
                         text = "• $effect",
                         style = MaterialTheme.typography.bodySmall,
@@ -1212,7 +1269,7 @@ private fun SanthanaYogaCard(
                     fontWeight = FontWeight.SemiBold,
                     color = DarkAppThemeColors.AccentGold
                 )
-                yoga.remedies.toList().forEach { remedy ->
+                yoga.remedies.forEach { remedy ->
                     Text(
                         text = "• $remedy",
                         style = MaterialTheme.typography.bodySmall,
