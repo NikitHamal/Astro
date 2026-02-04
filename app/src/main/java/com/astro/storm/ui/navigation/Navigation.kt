@@ -65,6 +65,9 @@ import com.astro.storm.ui.screen.SthanaBalaScreen
 import com.astro.storm.ui.screen.KalaBalaScreen
 import com.astro.storm.ui.screen.SahamScreen
 import com.astro.storm.ui.screen.DeepNativeAnalysisScreen
+import com.astro.storm.ui.screen.JaiminiKarakaScreen
+import com.astro.storm.ui.screen.DrigDashaScreen
+import com.astro.storm.ui.screen.SaptamsaScreen
 import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
@@ -285,6 +288,21 @@ sealed class Screen(val route: String) {
         fun createRoute(chartId: Long) = "kaksha_transit/$chartId"
     }
 
+    // Jaimini Karaka (Chara Karaka Analysis) screen
+    object JaiminiKaraka : Screen("jaimini_karaka/{chartId}") {
+        fun createRoute(chartId: Long) = "jaimini_karaka/$chartId"
+    }
+
+    // Drig Dasha (Jaimini Longevity system) screen
+    object DrigDasha : Screen("drig_dasha/{chartId}") {
+        fun createRoute(chartId: Long) = "drig_dasha/$chartId"
+    }
+
+    // Saptamsa (D7 Children/Progeny Analysis) screen
+    object Saptamsa : Screen("saptamsa/{chartId}") {
+        fun createRoute(chartId: Long) = "saptamsa/$chartId"
+    }
+
     // AI Models configuration screen
     object AiModels : Screen("ai_models")
 
@@ -418,6 +436,9 @@ fun AstroStormNavigation(
                 onNavigateToKalaBala = { navigateWithId(Screen.KalaBala) },
                 onNavigateToSaham = { navigateWithId(Screen.Saham) },
                 onNavigateToNativeAnalysis = { navigateWithId(Screen.NativeAnalysis) },
+                onNavigateToJaiminiKaraka = { navigateWithId(Screen.JaiminiKaraka) },
+                onNavigateToDrigDasha = { navigateWithId(Screen.DrigDasha) },
+                onNavigateToSaptamsa = { navigateWithId(Screen.Saptamsa) },
                 onNavigateToAiModels = { navigateToFeature(Screen.AiModels.route) },
                 onNavigateToChat = { conversationId ->
                     if (conversationId != null) {
@@ -1430,6 +1451,36 @@ fun AstroStormNavigation(
             LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
             val chart = currentChart ?: return@composable
             DeepNativeAnalysisScreen(chart = chart, onBack = { navController.popBackStack() })
+        }
+
+        // Jaimini Karaka (Chara Karaka Analysis) screen
+        composable(
+            route = Screen.JaiminiKaraka.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            JaiminiKarakaScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // Drig Dasha (Jaimini Longevity system) screen
+        composable(
+            route = Screen.DrigDasha.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            DrigDashaScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // Saptamsa (D7 Children/Progeny Analysis) screen
+        composable(
+            route = Screen.Saptamsa.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            SaptamsaScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
         // AI Models configuration screen

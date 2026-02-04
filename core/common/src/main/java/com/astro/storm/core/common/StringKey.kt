@@ -194,6 +194,15 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     FEATURE_NATIVE_ANALYSIS("Native Analysis", "जातक विश्लेषण"),
     FEATURE_NATIVE_ANALYSIS_DESC("Complete life profile & personality", "सम्पूर्ण जीवन प्रोफाइल र व्यक्तित्व"),
 
+    FEATURE_JAIMINI_KARAKA("Jaimini Karaka", "जैमिनी कारक"),
+    FEATURE_JAIMINI_KARAKA_DESC("Chara Karaka Analysis", "चर कारक विश्लेषण"),
+
+    FEATURE_DRIG_DASHA("Drig Dasha", "दृग् दशा"),
+    FEATURE_DRIG_DASHA_DESC("Jaimini Longevity System", "जैमिनी आयुर्दाय प्रणाली"),
+
+    FEATURE_SAPTAMSA("Saptamsa (D7)", "सप्तांश (D7)"),
+    FEATURE_SAPTAMSA_DESC("Progeny & Fertility Analysis", "सन्तान र प्रजनन विश्लेषण"),
+
     // Predictions Screen - Tabs
     PREDICTIONS_TAB_OVERVIEW("Overview", "सारांश"),
     PREDICTIONS_TAB_LIFE_AREAS("Life Areas", "जीवन क्षेत्रहरू"),

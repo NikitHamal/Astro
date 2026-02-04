@@ -451,7 +451,7 @@ private fun QuickActionsSection(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             quickActions.forEach { action ->
                 QuickActionItem(
@@ -459,7 +459,8 @@ private fun QuickActionsSection(
                     icon = action.icon,
                     accentColor = action.color,
                     language = language,
-                    onClick = { onFeatureClick(action.feature) }
+                    onClick = { onFeatureClick(action.feature) },
+                    modifier = Modifier.weight(1f)
                 )
             }
         }
@@ -472,26 +473,29 @@ private fun QuickActionItem(
     icon: ImageVector,
     accentColor: Color,
     language: Language,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
     val interactionSource = remember { MutableInteractionSource() }
     
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
+        modifier = modifier
+            .clip(RoundedCornerShape(HomeDesignTokens.SmallCardCornerRadius))
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple(color = accentColor),
                 onClick = onClick
             )
-            .padding(horizontal = 4.dp, vertical = 8.dp)
+            .padding(vertical = 8.dp)
     ) {
-        // Card-like square container with subtle background
+        // Card-like square container with subtle background - responsive width with max cap
         Box(
             modifier = Modifier
-                .size(72.dp)
+                .widthIn(max = HomeDesignTokens.QuickActionSize)
+                .fillMaxWidth(0.85f)
+                .aspectRatio(1f)
                 .clip(RoundedCornerShape(20.dp))
                 .background(accentColor.copy(alpha = 0.12f))
                 .border(
@@ -505,7 +509,7 @@ private fun QuickActionItem(
                 imageVector = icon,
                 contentDescription = feature.getLocalizedTitle(language),
                 tint = accentColor,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(HomeDesignTokens.QuickActionIconSize)
             )
         }
         
@@ -517,9 +521,12 @@ private fun QuickActionItem(
             color = colors.TextSecondary,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
-            maxLines = 1,
+            maxLines = 2,
+            minLines = 2,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(80.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 4.dp)
         )
     }
 }
@@ -1041,7 +1048,8 @@ enum class FeatureCategory(val features: List<InsightFeature>) {
             InsightFeature.ASHTOTTARI_DASHA,
             InsightFeature.KALACHAKRA_DASHA,
             InsightFeature.SHOOLA_DASHA,
-            InsightFeature.DASHA_SANDHI
+            InsightFeature.DASHA_SANDHI,
+            InsightFeature.DRIG_DASHA
         )
     ),
     PREDICTIONS(
@@ -1052,7 +1060,8 @@ enum class FeatureCategory(val features: List<InsightFeature>) {
             InsightFeature.VARSHAPHALA,
             InsightFeature.PRASHNA,
             InsightFeature.MUHURTA,
-            InsightFeature.NATIVE_ANALYSIS
+            InsightFeature.NATIVE_ANALYSIS,
+            InsightFeature.SAPTAMSA
         )
     ),
     STRENGTH_ANALYSIS(
@@ -1080,7 +1089,8 @@ enum class FeatureCategory(val features: List<InsightFeature>) {
             InsightFeature.TARABALA,
             InsightFeature.UPACHAYA_TRANSIT,
             InsightFeature.ASHTAVARGA_TRANSIT,
-            InsightFeature.KAKSHYA_TRANSIT
+            InsightFeature.KAKSHYA_TRANSIT,
+            InsightFeature.JAIMINI_KARAKA
         )
     ),
     REMEDIAL(
@@ -1484,6 +1494,27 @@ enum class InsightFeature(
         descriptionKey = StringKey.FEATURE_NATIVE_ANALYSIS_DESC,
         icon = Icons.Outlined.Person,
         color = DarkAppThemeColors.AccentPrimary,
+        isImplemented = true
+    ),
+    JAIMINI_KARAKA(
+        titleKey = StringKey.FEATURE_JAIMINI_KARAKA,
+        descriptionKey = StringKey.FEATURE_JAIMINI_KARAKA_DESC,
+        icon = Icons.Outlined.Stars,
+        color = DarkAppThemeColors.LifeAreaSpiritual,
+        isImplemented = true
+    ),
+    DRIG_DASHA(
+        titleKey = StringKey.FEATURE_DRIG_DASHA,
+        descriptionKey = StringKey.FEATURE_DRIG_DASHA_DESC,
+        icon = Icons.Outlined.HealthAndSafety,
+        color = DarkAppThemeColors.WarningColor,
+        isImplemented = true
+    ),
+    SAPTAMSA(
+        titleKey = StringKey.FEATURE_SAPTAMSA,
+        descriptionKey = StringKey.FEATURE_SAPTAMSA_DESC,
+        icon = Icons.Outlined.ChildCare,
+        color = DarkAppThemeColors.LifeAreaLove,
         isImplemented = true
     );
 

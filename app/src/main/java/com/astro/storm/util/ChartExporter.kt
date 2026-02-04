@@ -484,7 +484,7 @@ class ChartExporter @Inject constructor(
         paint.textSize = 12f
         paint.color = COLOR_PRIMARY
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-        canvas.drawText(ascSign.displayName, item1X, valueY, paint)
+        canvas.drawText(ascSign.getLocalizedName(locManager.currentLanguage), item1X, valueY, paint)
 
         // Item 2: Moon Sign
         val item2X = cardLeft + itemWidth * 1.5f
@@ -495,7 +495,7 @@ class ChartExporter @Inject constructor(
         paint.textSize = 12f
         paint.color = COLOR_PRIMARY
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-        canvas.drawText(moonPos?.sign?.displayName ?: "-", item2X, valueY, paint)
+        canvas.drawText(moonPos?.sign?.getLocalizedName(locManager.currentLanguage) ?: "-", item2X, valueY, paint)
 
         // Item 3: Sun Sign
         val item3X = cardLeft + itemWidth * 2.5f
@@ -506,7 +506,7 @@ class ChartExporter @Inject constructor(
         paint.textSize = 12f
         paint.color = COLOR_PRIMARY
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-        canvas.drawText(sunPos?.sign?.displayName ?: "-", item3X, valueY, paint)
+        canvas.drawText(sunPos?.sign?.getLocalizedName(locManager.currentLanguage) ?: "-", item3X, valueY, paint)
 
         // Item 4: Nakshatra
         val item4X = cardLeft + itemWidth * 3.5f
@@ -517,7 +517,7 @@ class ChartExporter @Inject constructor(
         paint.textSize = 12f
         paint.color = COLOR_PRIMARY
         paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-        val nakshatra = moonPos?.nakshatra?.displayName?.take(8) ?: "-"
+        val nakshatra = moonPos?.nakshatra?.getLocalizedName(locManager.currentLanguage)?.take(8) ?: "-"
         canvas.drawText(nakshatra, item4X, valueY, paint)
 
         paint.textAlign = Paint.Align.LEFT
