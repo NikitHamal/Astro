@@ -230,7 +230,7 @@ private fun OverviewTabSS(
 
                     Text(
                         text = "The Saptamsa chart reveals ${analysis.childCountEstimate.estimatedRange} potential children. " +
-                                "Fertility status is ${analysis.fertilityAnalysis.fertilityStatus.replace("_", " ")}.",
+                                "Fertility status is ${analysis.fertilityAnalysis.fertilityStatus.displayName}.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
