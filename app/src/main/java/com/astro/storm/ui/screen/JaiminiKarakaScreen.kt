@@ -468,7 +468,7 @@ private fun SwamshaDetailCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = swamsha.karakamshaSign.getLocalizedName(language).take(2),
+                        text = swamsha.swamshaSign.getLocalizedName(language).take(2),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = DarkAppThemeColors.LifeAreaSpiritual
@@ -484,7 +484,7 @@ private fun SwamshaDetailCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = swamsha.karakamshaSign.getLocalizedName(language),
+                        text = swamsha.swamshaSign.getLocalizedName(language),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary

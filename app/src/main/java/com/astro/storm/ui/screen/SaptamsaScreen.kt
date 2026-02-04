@@ -31,6 +31,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer
 import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.SaptamsaAnalysis
@@ -228,7 +229,7 @@ private fun OverviewTabSS(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "The Saptamsa chart reveals ${analysis.childCountFactors.estimatedRange} potential children. " +
+                        text = "The Saptamsa chart reveals ${analysis.childCountEstimate.estimatedRange} potential children. " +
                                 "Fertility status is ${analysis.fertilityAnalysis.fertilityStatus.replace("_", " ")}.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary,
@@ -344,8 +345,8 @@ private fun ChildCountSummaryCard(
                     color = DarkAppThemeColors.PlanetJupiter
                 )
                 StrengthIndicator(
-                    label = "D7 Lagna",
-                    strength = estimate.d7LagnaStrength, // Assuming this property exists or is intended
+                    label = "Jupiter",
+                    strength = estimate.jupiterStrength,
                     color = AppTheme.AccentPrimary
                 )
             }
@@ -881,7 +882,7 @@ private fun FertilityTab(
             }
 
             items(analysis.fertilityAnalysis.timingForConception) { period ->
-                FavorablePeriodCard(period)
+                FavorablePeriodCard(period.toString())
             }
         }
 
@@ -1148,8 +1149,18 @@ private fun YogasTabSS(
                 )
             }
 
-            items(analysis.challengingYogas) { yoga ->
-                SanthanaYogaCard(yoga, isPositive = false)
+            items(analysis.challengingYogas) { challenge ->
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+                ) {
+                    Text(
+                        text = challenge,
+                        modifier = Modifier.padding(16.dp),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = AppTheme.TextSecondary
+                    )
+                }
             }
         }
     }
@@ -1234,50 +1245,12 @@ private fun SanthanaYogaCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            if (yoga.effects.isNotEmpty()) {
-                Text(
-                    text = yoga.effects.firstOrNull() ?: "",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextSecondary,
-                    lineHeight = 18.sp
-                )
-            }
-
-            if (yoga.effects.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "Effects:",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextMuted
-                )
-                yoga.effects.toList().drop(1).forEach { effect ->
-                    Text(
-                        text = "• $effect",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextSecondary,
-                        modifier = Modifier.padding(start = 8.dp, top = 2.dp)
-                    )
-                }
-            }
-
-            if (yoga.remedies.isNotEmpty() && !isPositive) {
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "Remedies:",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = DarkAppThemeColors.AccentGold
-                )
-                yoga.remedies.toList().forEach { remedy ->
-                    Text(
-                        text = "• $remedy",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = DarkAppThemeColors.AccentGold.copy(alpha = 0.8f),
-                        modifier = Modifier.padding(start = 8.dp, top = 2.dp)
-                    )
-                }
-            }
+            Text(
+                text = yoga.effect,
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextSecondary,
+                lineHeight = 18.sp
+            )
         }
     }
 }

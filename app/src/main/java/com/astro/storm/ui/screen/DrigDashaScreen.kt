@@ -886,7 +886,7 @@ private fun MarakaAnalysisTab(
         }
 
         // Maraka Periods
-        val marakaPeriods = analysis.dashaSequence.filter { it.isMarakaPeriod }
+        val marakaPeriods = analysis.drigDashaSequence.filter { it.isMarakaPeriod }
         if (marakaPeriods.isEmpty()) {
             item {
                 Card(
