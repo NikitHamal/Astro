@@ -870,7 +870,7 @@ private fun FertilityTab(
         }
 
         // Favorable Periods
-        if (analysis.fertilityAnalysis.timingIndicators.isNotEmpty()) {
+        if (analysis.fertilityAnalysis.timingForConception.isNotEmpty()) {
             item {
                 Text(
                     text = "Favorable Periods",
@@ -880,15 +880,15 @@ private fun FertilityTab(
                 )
             }
 
-            items(analysis.fertilityAnalysis.timingIndicators) { period ->
+            items(analysis.fertilityAnalysis.timingForConception) { period ->
                 FavorablePeriodCard(period)
             }
         }
 
         // Recommendations
-        if (analysis.fertilityAnalysis.recommendations.isNotEmpty()) {
+        if (analysis.fertilityAnalysis.remedies.isNotEmpty()) {
             item {
-                RecommendationsCard(analysis.fertilityAnalysis.recommendations)
+                RecommendationsCard(analysis.fertilityAnalysis.remedies)
             }
         }
     }
@@ -1251,7 +1251,7 @@ private fun SanthanaYogaCard(
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextMuted
                 )
-                yoga.effects.drop(1).forEach { effect ->
+                yoga.effects.toList().drop(1).forEach { effect ->
                     Text(
                         text = "• $effect",
                         style = MaterialTheme.typography.bodySmall,
@@ -1269,7 +1269,7 @@ private fun SanthanaYogaCard(
                     fontWeight = FontWeight.SemiBold,
                     color = DarkAppThemeColors.AccentGold
                 )
-                yoga.remedies.forEach { remedy ->
+                yoga.remedies.toList().forEach { remedy ->
                     Text(
                         text = "• $remedy",
                         style = MaterialTheme.typography.bodySmall,
