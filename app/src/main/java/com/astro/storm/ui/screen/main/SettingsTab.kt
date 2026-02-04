@@ -327,8 +327,7 @@ private fun CurrentProfileCard(
             ) {
                 ChartDetailItem(
                     labelKey = StringKey.CHART_ASCENDANT,
-                    value = chart.planetPositions.find { it.planet == com.astro.storm.core.model.Planet.SUN }?.sign?.getLocalizedName(language)
-                        ?: com.astro.storm.core.model.ZodiacSign.fromLongitude(chart.ascendant).getLocalizedName(language)
+                    value = com.astro.storm.core.model.ZodiacSign.fromLongitude(chart.ascendant).getLocalizedName(language)
                 )
                 ChartDetailItem(
                     labelKey = StringKey.CHART_MOON_SIGN,

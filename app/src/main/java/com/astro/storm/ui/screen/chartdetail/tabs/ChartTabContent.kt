@@ -806,6 +806,7 @@ private fun ChartDetailsCard(
 
 @Composable
 private fun AscendantRow(chart: VedicChart) {
+    val language = LocalLanguage.current
     val ascSign = ZodiacSign.fromLongitude(chart.ascendant)
     val ascDegree = chart.ascendant % 30.0
 
@@ -831,7 +832,7 @@ private fun AscendantRow(chart: VedicChart) {
             )
             Row {
                 Text(
-                    text = ascSign.displayName,
+                    text = ascSign.getLocalizedName(language),
                     fontSize = 13.sp,
                     color = ChartDetailColors.AccentTeal
                 )
@@ -851,6 +852,7 @@ private fun ClickablePlanetPositionRow(
     position: PlanetPosition,
     onClick: () -> Unit
 ) {
+    val language = LocalLanguage.current
     val color = ChartDetailColors.getPlanetColor(position.planet)
 
     Surface(
@@ -879,7 +881,7 @@ private fun ClickablePlanetPositionRow(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = position.planet.displayName,
+                    text = position.planet.getLocalizedName(language),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
                     color = color,
@@ -903,7 +905,7 @@ private fun ClickablePlanetPositionRow(
             }
 
             Text(
-                text = position.sign.displayName,
+                text = position.sign.getLocalizedName(language),
                 fontSize = 13.sp,
                 color = ChartDetailColors.AccentTeal,
                 modifier = Modifier.width(80.dp),
