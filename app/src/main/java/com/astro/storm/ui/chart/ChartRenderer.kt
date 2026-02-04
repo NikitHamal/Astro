@@ -386,7 +386,7 @@ class ChartRenderer(
         drawScope: DrawScope,
         chart: VedicChart,
         size: Float,
-        chartTitle: String = "Lagna",
+        chartTitle: String = "",
         language: Language = Language.ENGLISH
     ) {
         with(drawScope) {
@@ -1109,7 +1109,7 @@ class ChartRenderer(
         drawScope: DrawScope,
         chart: VedicChart,
         size: Float,
-        chartTitle: String = "Lagna",
+        chartTitle: String = "",
         showLegend: Boolean = true,
         language: Language = Language.ENGLISH
     ) {

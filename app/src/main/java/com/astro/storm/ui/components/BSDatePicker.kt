@@ -345,10 +345,7 @@ private fun BSDatePickerHeader(
             color = colors.accentColor.copy(alpha = 0.1f),
             modifier = Modifier.semantics {
                 role = Role.Button
-                contentDescription = when (language) {
-                    Language.ENGLISH -> "Go to today"
-                    Language.NEPALI -> "आज मा जानुहोस्"
-                }
+                contentDescription = stringResource(StringKeyMatch.BS_GO_TO_TODAY)
             }
         ) {
             Row(
@@ -363,10 +360,7 @@ private fun BSDatePickerHeader(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = when (language) {
-                        Language.ENGLISH -> "Today"
-                        Language.NEPALI -> "आज"
-                    },
+                    text = stringResource(StringKeyMatch.BS_TODAY),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     color = colors.accentColor
@@ -520,10 +514,7 @@ private fun MonthYearNavigator(
                 .size(40.dp)
                 .semantics {
                     role = Role.Button
-                    contentDescription = when (language) {
-                        Language.ENGLISH -> "Previous month"
-                        Language.NEPALI -> "अघिल्लो महिना"
-                    }
+                    contentDescription = stringResource(StringKeyMatch.BS_PREVIOUS_MONTH)
                 }
         ) {
             Icon(
@@ -569,10 +560,7 @@ private fun MonthYearNavigator(
                 .size(40.dp)
                 .semantics {
                     role = Role.Button
-                    contentDescription = when (language) {
-                        Language.ENGLISH -> "Next month"
-                        Language.NEPALI -> "अर्को महिना"
-                    }
+                    contentDescription = stringResource(StringKeyMatch.BS_NEXT_MONTH)
                 }
         ) {
             Icon(
@@ -689,10 +677,7 @@ private fun YearSelector(
             expanded = expanded,
             onExpandedChange = { expanded = it },
             colors = colors,
-            contentDescription = when (language) {
-                Language.ENGLISH -> "Year selector, current: $selectedYear"
-                Language.NEPALI -> "वर्ष छान्नुहोस्, हाल: ${BikramSambatConverter.toNepaliNumerals(selectedYear)}"
-            }
+            contentDescription = stringResource(StringKeyMatch.BS_YEAR_SELECTOR_DESC, selectedYearText)
         ) {
             val listState = rememberLazyListState(initialFirstVisibleItemIndex = selectedIndex)
 
@@ -754,10 +739,7 @@ private fun MonthSelector(
             expanded = expanded,
             onExpandedChange = { expanded = it },
             colors = colors,
-            contentDescription = when (language) {
-                Language.ENGLISH -> "Month selector, current: $selectedMonthText"
-                Language.NEPALI -> "महिना छान्नुहोस्, हाल: $selectedMonthText"
-            }
+            contentDescription = stringResource(StringKeyMatch.BS_MONTH_SELECTOR_DESC, selectedMonthText)
         ) {
             val listState = rememberLazyListState(
                 initialFirstVisibleItemIndex = (selectedMonth - 1).coerceIn(0, 11)
@@ -1021,18 +1003,16 @@ private fun DayCell(
         else -> colors.textPrimary
     }
 
-    val accessibilityLabel = remember(day, isSelected, isToday, isSaturday, language) {
+    val selectedSuffix = stringResource(StringKeyMatch.BS_SELECTED)
+    val todaySuffix = stringResource(StringKeyMatch.BS_TODAY_LABEL)
+    val saturdaySuffix = stringResource(StringKeyMatch.BS_SATURDAY_LABEL)
+
+    val accessibilityLabel = remember(displayDay, isSelected, isToday, isSaturday, selectedSuffix, todaySuffix, saturdaySuffix) {
         buildString {
             append(displayDay)
-            if (isSelected) {
-                append(if (language == Language.ENGLISH) ", selected" else ", चयन गरिएको")
-            }
-            if (isToday) {
-                append(if (language == Language.ENGLISH) ", today" else ", आज")
-            }
-            if (isSaturday) {
-                append(if (language == Language.ENGLISH) ", Saturday" else ", शनिबार")
-            }
+            if (isSelected) append(selectedSuffix)
+            if (isToday) append(todaySuffix)
+            if (isSaturday) append(saturdaySuffix)
         }
     }
 
@@ -1100,11 +1080,7 @@ fun BSDateSelector(
         enabled = enabled,
         modifier = modifier.semantics {
             role = Role.Button
-            contentDescription = when (language) {
-                Language.ENGLISH -> "Date selector. Current date: $displayText"
-                Language.NEPALI -> "मिति छान्नुहोस्। हालको मिति: $displayText"
-                else -> "Date selector. Current date: $displayText"
-            }
+            contentDescription = stringResource(StringKeyMatch.BS_DATE_SELECTOR_DESC, displayText)
         },
         shape = RoundedCornerShape(12.dp),
         color = colors.chipBackground,

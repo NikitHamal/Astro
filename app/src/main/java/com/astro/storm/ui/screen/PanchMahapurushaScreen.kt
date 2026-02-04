@@ -647,7 +647,11 @@ private fun YogaDetailCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga)
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${yoga.planet.displayName} in ${yoga.sign.getLocalizedName(language)}, House ${yoga.house}",
+                            text = stringResource(
+                                StringKeyUICommon.PLANET_IN_SIGN_ACCESSIBILITY,
+                                yoga.planet.getLocalizedName(language),
+                                yoga.sign.getLocalizedName(language)
+                            ) + ", " + stringResource(StringKeyUICommon.HOUSE) + " " + yoga.house.localized(),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -697,7 +701,7 @@ private fun YogaDetailCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga)
                             else AppTheme.AccentTeal.copy(alpha = 0.15f)
                         ) {
                             Text(
-                                text = if (yoga.isExalted) "Exalted" else "Own Sign",
+                                text = if (yoga.isExalted) stringResource(StringKeyUICommon.EXALTED) else stringResource(StringKeyUICommon.OWN_SIGN),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (yoga.isExalted) AppTheme.SuccessColor else AppTheme.AccentTeal,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -809,7 +813,7 @@ private fun EffectRow(label: String, value: String) {
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = "$label:",
+            text = label + stringResource(StringKeyUICommon.COLON),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextMuted,

@@ -1,5 +1,8 @@
 package com.astro.storm.ephemeris.deepanalysis.career
 
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyDeepAnalysisInterp
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.deepanalysis.*
@@ -47,8 +50,8 @@ object CareerTextGenerator {
             ne = "दशौं भावमा केतुले आध्यात्मिक क्यारियर, प्रसिद्धिबाट विरक्ति, वा अनुसन्धान-आधारित कार्य संकेत गर्छ।"
         )
         else -> LocalizedParagraph(
-            en = "${planet.displayName} in 10th house shapes your public role and career expression in a unique way.",
-            ne = "दशौं भावमा ${planet.displayName}ले तपाईंको सार्वजनिक भूमिका र क्यारियर अभिव्यक्तिलाई अद्वितीय तरिकाले आकार दिन्छ।"
+            en = StringResources.get(StringKeyDeepAnalysisInterp.PLANET_IN_10TH_TEMPLATE, Language.ENGLISH, planet.getLocalizedName(Language.ENGLISH)),
+            ne = StringResources.get(StringKeyDeepAnalysisInterp.PLANET_IN_10TH_TEMPLATE, Language.NEPALI, planet.getLocalizedName(Language.NEPALI))
         )
     }
     
@@ -69,9 +72,20 @@ object CareerTextGenerator {
         }
         
         return LocalizedParagraph(
-            en = "The public perceives you as a $signQuality. Your professional image is ${strength.displayName.lowercase()}, " +
-                "creating ${if (strength >= StrengthLevel.STRONG) "strong opportunities" else "room for growth"}.",
-            ne = "सार्वजनिकले तपाईंलाई एक $signQuality को रूपमा बुझ्छ।"
+            en = StringResources.get(
+                StringKeyDeepAnalysisInterp.PUBLIC_IMAGE_TEMPLATE,
+                Language.ENGLISH,
+                signQuality,
+                strength.displayName.lowercase(),
+                if (strength >= StrengthLevel.STRONG) StringResources.get(StringKeyDeepAnalysisInterp.OPPORTUNITIES_STRONG, Language.ENGLISH) else StringResources.get(StringKeyDeepAnalysisInterp.OPPORTUNITIES_GROWTH, Language.ENGLISH)
+            ),
+            ne = StringResources.get(
+                StringKeyDeepAnalysisInterp.PUBLIC_IMAGE_TEMPLATE,
+                Language.NEPALI,
+                signQuality,
+                strength.displayNameNe,
+                if (strength >= StrengthLevel.STRONG) StringResources.get(StringKeyDeepAnalysisInterp.OPPORTUNITIES_STRONG, Language.NEPALI) else StringResources.get(StringKeyDeepAnalysisInterp.OPPORTUNITIES_GROWTH, Language.NEPALI)
+            )
         )
     }
     
@@ -89,8 +103,8 @@ object CareerTextGenerator {
             ne = "तपाईं संरचित, पदानुक्रमित वातावरणमा उत्कृष्ट प्रदर्शन गर्नुहुन्छ जहाँ अनुशासन र उपलब्धिलाई मूल्य दिइन्छ।"
         )
         else -> LocalizedParagraph(
-            en = "Your ideal work environment reflects ${sign.displayName}'s qualities, supporting your natural professional style.",
-            ne = "तपाईंको आदर्श कार्य वातावरणले ${sign.displayName}का गुणहरू प्रतिबिम्बित गर्छ।"
+            en = StringResources.get(StringKeyDeepAnalysisInterp.CAREER_ENVIRONMENT_TEMPLATE, Language.ENGLISH, sign.getLocalizedName(Language.ENGLISH)),
+            ne = StringResources.get(StringKeyDeepAnalysisInterp.CAREER_ENVIRONMENT_TEMPLATE, Language.NEPALI, sign.getLocalizedName(Language.NEPALI))
         )
     }
     

@@ -40,12 +40,9 @@ sealed class AgentSection {
         val durationMs: Long = 0,
         val isExpanded: Boolean = false
     ) : AgentSection() {
-        val durationDisplay: String
-            get() = when {
-                durationMs < 1000 -> "${durationMs}ms"
-                durationMs < 60000 -> "${durationMs / 1000}s"
-                else -> "${durationMs / 60000}m ${(durationMs % 60000) / 1000}s"
-            }
+        fun getLocalizedDuration(language: com.astro.storm.core.common.Language): String {
+            return ToolDisplayUtils.formatReasoningDuration(durationMs, language)
+        }
     }
 
     /**
@@ -82,15 +79,11 @@ sealed class AgentSection {
         val totalCount: Int
             get() = tools.size
 
-        val statusSummary: String
-            get() = when {
-                runningCount > 0 && completedCount > 0 -> "$completedCount/$totalCount completed, $runningCount running"
-                runningCount > 0 -> "$runningCount tool${if (runningCount > 1) "s" else ""} running"
-                failedCount > 0 && completedCount > 0 -> "$completedCount completed, $failedCount failed"
-                failedCount > 0 -> "$failedCount tool${if (failedCount > 1) "s" else ""} failed"
-                completedCount == totalCount && totalCount > 0 -> "$completedCount tool${if (completedCount > 1) "s" else ""} completed"
-                else -> "$completedCount/$totalCount completed"
-            }
+        fun getLocalizedStatusSummary(language: com.astro.storm.core.common.Language): String {
+            return ToolDisplayUtils.buildToolStatusSummary(
+                completedCount, runningCount, failedCount, totalCount, language
+            )
+        }
     }
 
     /**
@@ -130,8 +123,11 @@ sealed class AgentSection {
             get() = items.size
         val progress: Float
             get() = if (totalCount > 0) completedCount.toFloat() / totalCount else 0f
-        val progressText: String
-            get() = "$completedCount/$totalCount completed"
+
+        fun getLocalizedProgressText(language: com.astro.storm.core.common.Language): String {
+            val completedKey = com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyUICommon.COMPLETED, language)
+            return "$completedCount/$totalCount $completedKey"
+        }
     }
 
     /**

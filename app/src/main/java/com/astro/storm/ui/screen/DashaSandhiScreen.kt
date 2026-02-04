@@ -159,7 +159,7 @@ fun DashaSandhiScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                                contentDescription = stringResource(com.astro.storm.core.common.StringKeyUICommon.NAV_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }

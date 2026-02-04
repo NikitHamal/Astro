@@ -569,7 +569,7 @@ private fun CompletedAgentHeader() {
         }
 
         Text(
-            text = "Stormy",
+            text = stringResource(StringKeyDosha.STORMY_TITLE),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = colors.TextPrimary

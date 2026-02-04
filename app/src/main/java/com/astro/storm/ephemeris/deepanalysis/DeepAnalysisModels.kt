@@ -1,7 +1,10 @@
 package com.astro.storm.ephemeris.deepanalysis
 
 import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyCareer
 import com.astro.storm.core.common.StringKeyInterface
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.core.model.Nakshatra
@@ -54,14 +57,17 @@ data class TimingPeriod(
 /**
  * Strength level enumeration
  */
-enum class StrengthLevel(val value: Int, val displayName: String, val displayNameNe: String) {
-    EXCELLENT(5, "Excellent", "उत्कृष्ट"),
-    VERY_STRONG(4, "Very Strong", "धेरै बलियो"),
-    STRONG(3, "Strong", "बलियो"),
-    MODERATE(2, "Moderate", "मध्यम"),
-    WEAK(1, "Weak", "कमजोर"),
-    EXTREMELY_STRONG(6, "Extremely Strong", "अत्यधिक बलियो"),
-    AFFLICTED(0, "Afflicted", "पीडित");
+enum class StrengthLevel(val value: Int, val stringKey: StringKeyInterface) {
+    EXCELLENT(5, StringKeyUICommon.STRENGTH_EXCELLENT),
+    VERY_STRONG(4, StringKeyUICommon.STRENGTH_VERY_STRONG),
+    STRONG(3, StringKeyUICommon.STRENGTH_STRONG),
+    MODERATE(2, StringKeyUICommon.STRENGTH_MODERATE),
+    WEAK(1, StringKeyUICommon.STRENGTH_WEAK),
+    EXTREMELY_STRONG(6, StringKeyUICommon.STRENGTH_EXTREMELY_STRONG),
+    AFFLICTED(0, StringKeyUICommon.STRENGTH_AFFLICTED);
+
+    val displayName: String get() = stringKey.en
+    val displayNameNe: String get() = stringKey.ne
 
     companion object {
         fun fromInt(value: Int): StrengthLevel = entries.find { it.value == value } ?: MODERATE
@@ -470,27 +476,31 @@ data class ProfessionMatch(
 /**
  * Profession categories
  */
-enum class ProfessionCategory(val displayName: String) {
-    GOVERNMENT_ADMINISTRATION("Government & Administration"),
-    MILITARY_POLICE("Military & Police"),
-    MEDICINE_HEALTHCARE("Medicine & Healthcare"),
-    LAW_JUDICIARY("Law & Judiciary"),
-    EDUCATION_TEACHING("Education & Teaching"),
-    FINANCE_BANKING("Finance & Banking"),
-    TECHNOLOGY_IT("Technology & IT"),
-    ARTS_ENTERTAINMENT("Arts & Entertainment"),
-    MEDIA_JOURNALISM("Media & Journalism"),
-    BUSINESS_COMMERCE("Business & Commerce"),
-    ENGINEERING_TECHNICAL("Engineering & Technical"),
-    SCIENCE_RESEARCH("Science & Research"),
-    HOSPITALITY_SERVICE("Hospitality & Service"),
-    REAL_ESTATE_CONSTRUCTION("Real Estate & Construction"),
-    AGRICULTURE_FARMING("Agriculture & Farming"),
-    SPIRITUALITY_RELIGIOUS("Spirituality & Religious"),
-    SPORTS_FITNESS("Sports & Fitness"),
-    TRANSPORTATION_LOGISTICS("Transportation & Logistics"),
-    FOREIGN_SERVICES("Foreign Services"),
-    FREELANCE_CONSULTING("Freelance & Consulting")
+enum class ProfessionCategory(val stringKey: StringKeyInterface) {
+    GOVERNMENT_ADMINISTRATION(StringKeyCareer.CAT_GOV_ADMIN),
+    MILITARY_POLICE(StringKeyCareer.CAT_MILITARY_POLICE),
+    MEDICINE_HEALTHCARE(StringKeyCareer.CAT_MEDICINE_HEALTHCARE),
+    LAW_JUDICIARY(StringKeyCareer.CAT_LAW_JUDICIARY),
+    EDUCATION_TEACHING(StringKeyCareer.CAT_EDUCATION_TEACHING),
+    FINANCE_BANKING(StringKeyCareer.CAT_FINANCE_BANKING),
+    TECHNOLOGY_IT(StringKeyCareer.CAT_TECHNOLOGY_IT),
+    ARTS_ENTERTAINMENT(StringKeyCareer.CAT_ARTS_ENTERTAINMENT),
+    MEDIA_JOURNALISM(StringKeyCareer.CAT_MEDIA_JOURNALISM),
+    BUSINESS_COMMERCE(StringKeyCareer.CAT_BUSINESS_COMMERCE),
+    ENGINEERING_TECHNICAL(StringKeyCareer.CAT_ENGINEERING_TECHNICAL),
+    SCIENCE_RESEARCH(StringKeyCareer.CAT_SCIENCE_RESEARCH),
+    HOSPITALITY_SERVICE(StringKeyCareer.CAT_HOSPITALITY_SERVICE),
+    REAL_ESTATE_CONSTRUCTION(StringKeyCareer.CAT_REAL_ESTATE_CONSTRUCTION),
+    AGRICULTURE_FARMING(StringKeyCareer.CAT_AGRICULTURE_FARMING),
+    SPIRITUALITY_RELIGIOUS(StringKeyCareer.CAT_SPIRITUALITY_RELIGIOUS),
+    SPORTS_FITNESS(StringKeyCareer.CAT_SPORTS_FITNESS),
+    TRANSPORTATION_LOGISTICS(StringKeyCareer.CAT_TRANSPORTATION_LOGISTICS),
+    FOREIGN_SERVICES(StringKeyCareer.CAT_FOREIGN_SERVICES),
+    FREELANCE_CONSULTING(StringKeyCareer.CAT_FREELANCE_CONSULTING);
+
+    val displayName: String get() = stringKey.en
+
+    fun getLocalizedName(language: Language): String = StringResources.get(stringKey, language)
 }
 
 /**
@@ -803,8 +813,12 @@ data class ConstitutionAnalysis(
     val balancingAdvice: LocalizedParagraph
 )
 
-enum class AyurvedicDosha {
-    VATA, PITTA, KAPHA
+enum class AyurvedicDosha(val en: String, val ne: String) {
+    VATA("Vata", "वात"),
+    PITTA("Pitta", "पित्त"),
+    KAPHA("Kapha", "कफ");
+
+    fun getLocalizedName(language: Language): String = if (language == Language.NEPALI) ne else en
 }
 
 typealias DoshaType = AyurvedicDosha
@@ -1515,20 +1529,26 @@ enum class PlanetaryDignityLevel {
 /**
  * Element enumeration
  */
-enum class Element(val displayName: String, val displayNameNe: String) {
+enum class Element(val en: String, val ne: String) {
     FIRE("Fire", "अग्नि"),
     EARTH("Earth", "पृथ्वी"),
     AIR("Air", "वायु"),
-    WATER("Water", "जल")
+    WATER("Water", "जल");
+
+    val displayName: String get() = en
+    val displayNameNe: String get() = ne
 }
 
 /**
  * Modality enumeration
  */
-enum class Modality(val displayName: String, val displayNameNe: String) {
+enum class Modality(val en: String, val ne: String) {
     CARDINAL("Cardinal", "चर"),
     FIXED("Fixed", "स्थिर"),
-    MUTABLE("Mutable", "द्विस्वभाव")
+    MUTABLE("Mutable", "द्विस्वभाव");
+
+    val displayName: String get() = en
+    val displayNameNe: String get() = ne
 }
 
 /**

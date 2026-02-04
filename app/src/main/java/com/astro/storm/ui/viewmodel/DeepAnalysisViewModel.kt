@@ -2,6 +2,7 @@ package com.astro.storm.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.astro.storm.core.common.StringKeyPredictionsInterp
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.deepanalysis.*
 import com.astro.storm.ephemeris.deepanalysis.predictions.DeepPredictions
@@ -56,7 +57,7 @@ class DeepAnalysisViewModel @Inject constructor(
                 cachedResult = result
                 _uiState.value = DeepAnalysisUiState.Success(result)
             } catch (e: Exception) {
-                val errorMsg = e.message ?: "Analysis failed"
+                val errorMsg = e.message ?: StringKeyPredictionsInterp.ANALYSIS_FAILED.en
                 _uiState.value = DeepAnalysisUiState.Error(errorMsg)
             }
         }
@@ -148,7 +149,7 @@ class DeepPredictionsViewModel @Inject constructor(
                 cachedPredictions = predictions
                 _uiState.value = DeepPredictionsUiState.Success(predictions)
             } catch (e: Exception) {
-                val errorMsg = e.message ?: "Prediction failed"
+                val errorMsg = e.message ?: StringKeyPredictionsInterp.PREDICTION_FAILED.en
                 _uiState.value = DeepPredictionsUiState.Error(errorMsg)
             }
         }

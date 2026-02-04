@@ -1,5 +1,8 @@
 package com.astro.storm.ephemeris.deepanalysis.character
 
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyDeepAnalysisInterp
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.ZodiacSign
@@ -19,22 +22,16 @@ object AscendantTextGenerator {
         
         return when (degreeRange) {
             "early" -> LocalizedParagraph(
-                en = "Rising in the early degrees of ${sign.displayName}, you express this sign's qualities " +
-                    "with youthful energy and pure manifestation. The beginner's enthusiasm marks your approach to life.",
-                ne = "${sign.displayName}को प्रारम्भिक अंशहरूमा उदय हुँदा, तपाईंले यो राशिको गुणहरू " +
-                    "युवा ऊर्जा र शुद्ध अभिव्यक्तिको साथ व्यक्त गर्नुहुन्छ।"
+                en = StringResources.get(StringKeyDeepAnalysisInterp.ASC_EARLY_DEGREES, Language.ENGLISH, sign.getLocalizedName(Language.ENGLISH)),
+                ne = StringResources.get(StringKeyDeepAnalysisInterp.ASC_EARLY_DEGREES, Language.NEPALI, sign.getLocalizedName(Language.NEPALI))
             )
             "middle" -> LocalizedParagraph(
-                en = "Rising in the middle degrees of ${sign.displayName}, you express this sign's qualities " +
-                    "in their fullest, most stable form. Maturity and balance characterize your personality.",
-                ne = "${sign.displayName}को मध्य अंशहरूमा उदय हुँदा, तपाईंले यो राशिको गुणहरू " +
-                    "तिनीहरूको पूर्ण, सबैभन्दा स्थिर रूपमा व्यक्त गर्नुहुन्छ।"
+                en = StringResources.get(StringKeyDeepAnalysisInterp.ASC_MIDDLE_DEGREES, Language.ENGLISH, sign.getLocalizedName(Language.ENGLISH)),
+                ne = StringResources.get(StringKeyDeepAnalysisInterp.ASC_MIDDLE_DEGREES, Language.NEPALI, sign.getLocalizedName(Language.NEPALI))
             )
             else -> LocalizedParagraph(
-                en = "Rising in the late degrees of ${sign.displayName}, you blend this sign's qualities " +
-                    "with hints of the next sign. Wisdom and completion energy mark your approach.",
-                ne = "${sign.displayName}को अन्तिम अंशहरूमा उदय हुँदा, तपाईंले यो राशिको गुणहरू " +
-                    "अर्को राशिको संकेतहरूसँग मिलाउनुहुन्छ।"
+                en = StringResources.get(StringKeyDeepAnalysisInterp.ASC_LATE_DEGREES, Language.ENGLISH, sign.getLocalizedName(Language.ENGLISH)),
+                ne = StringResources.get(StringKeyDeepAnalysisInterp.ASC_LATE_DEGREES, Language.NEPALI, sign.getLocalizedName(Language.NEPALI))
             )
         }
     }
@@ -241,12 +238,22 @@ object AscendantTextGenerator {
         }
         
         return LocalizedParagraph(
-            en = "Your ${sign.displayName} Ascendant, ruled by ${lord.displayName} which is $strengthDesc, " +
-                "shapes your entire life experience. ${getLifeApproach(sign).en} " +
-                "This rising sign colors how others perceive you and how you instinctively respond to new situations.",
-            ne = "तपाईंको ${sign.displayName} लग्न, ${lord.displayName} द्वारा शासित जुन ${lordStrength.displayNameNe} छ, " +
-                "तपाईंको सम्पूर्ण जीवन अनुभव आकार दिन्छ। " +
-                "यो उदय राशिले अरूले तपाईंलाई कसरी बुझ्छन् र तपाईं नयाँ परिस्थितिहरूमा कसरी प्रतिक्रिया दिनुहुन्छ भनेर रंग दिन्छ।"
+            en = StringResources.get(
+                StringKeyDeepAnalysisInterp.OVERALL_INTERP_TEMPLATE,
+                Language.ENGLISH,
+                sign.getLocalizedName(Language.ENGLISH),
+                lord.getLocalizedName(Language.ENGLISH),
+                strengthDesc,
+                getLifeApproach(sign).en
+            ),
+            ne = StringResources.get(
+                StringKeyDeepAnalysisInterp.OVERALL_INTERP_TEMPLATE,
+                Language.NEPALI,
+                sign.getLocalizedName(Language.NEPALI),
+                lord.getLocalizedName(Language.NEPALI),
+                lordStrength.displayNameNe,
+                getLifeApproach(sign).ne
+            )
         )
     }
 }

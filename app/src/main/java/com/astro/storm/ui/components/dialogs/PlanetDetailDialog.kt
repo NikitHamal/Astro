@@ -167,7 +167,7 @@ private fun PlanetPositionCard(position: PlanetPosition) {
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), position.sign.getLocalizedName(LocalLanguage.current), DialogColors.AccentTeal)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_DEGREE), formatDegree(position.longitude), DialogColors.TextPrimary)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE), "${stringResource(StringKeyAnalysis.HOUSE)} ${position.house}", DialogColors.AccentGold)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(LocalLanguage.current)} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${position.nakshatraPada})", DialogColors.AccentPurple)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(LocalLanguage.current)} (${stringResource(StringKeyMatch.PANCHANGA_PADA)} ${position.nakshatraPada})", DialogColors.AccentPurple)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.getLocalizedName(LocalLanguage.current), DialogColors.TextSecondary)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_DEITY), position.nakshatra.deity, DialogColors.TextSecondary)
             if (position.isRetrograde) {
@@ -240,11 +240,19 @@ private fun SignificationsCard(planet: Planet) {
 
     DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_SIGNIFICATIONS), icon = Icons.Outlined.Info) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NATURE), significations.nature, when (significations.nature) {
-                "Benefic" -> DialogColors.AccentGreen
-                "Malefic" -> DialogColors.AccentRose
+            val natureColor = when (significations.natureKey) {
+                StringKeyAnalysis.PLANET_SUN_NATURE,
+                StringKeyAnalysis.PLANET_MARS_NATURE,
+                StringKeyAnalysis.PLANET_SATURN_NATURE,
+                StringKeyAnalysis.PLANET_RAHU_NATURE,
+                StringKeyAnalysis.PLANET_KETU_NATURE -> DialogColors.AccentRose
+                StringKeyAnalysis.PLANET_MOON_NATURE,
+                StringKeyAnalysis.PLANET_JUPITER_NATURE,
+                StringKeyAnalysis.PLANET_VENUS_NATURE -> DialogColors.AccentGreen
+                StringKeyAnalysis.PLANET_MERCURY_NATURE -> DialogColors.AccentOrange
                 else -> DialogColors.AccentOrange
-            })
+            }
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NATURE), significations.nature, natureColor)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_ELEMENT), significations.element, DialogColors.TextSecondary)
 
             Text(stringResource(StringKeyAnalysis.DIALOG_REPRESENTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
@@ -308,7 +316,7 @@ private fun PlanetStatusCard(position: PlanetPosition, chart: VedicChart) {
     DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_STATUS_CONDITIONS), icon = Icons.Outlined.FactCheck) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             val dignity = getDignity(position.planet, position.sign)
-            StatusChip(label = stringResource(StringKeyAnalysis.DIALOG_DIGNITY), value = dignity.status, color = dignity.color)
+            StatusChip(label = stringResource(StringKeyAnalysis.DIALOG_DIGNITY), value = stringResource(dignity.statusKey), color = dignity.color)
 
             if (position.isRetrograde) {
                 StatusChip(label = stringResource(StringKeyAnalysis.DIALOG_MOTION), value = stringResource(StringKeyAnalysis.DIALOG_RETROGRADE), color = DialogColors.AccentOrange)
@@ -388,6 +396,7 @@ private fun PredictionsCard(
 
 data class PlanetSignifications(
     val nature: String,
+    val natureKey: com.astro.storm.core.common.StringKeyInterface,
     val element: String,
     val represents: List<String>,
     val bodyParts: String,
@@ -400,7 +409,7 @@ data class HousePlacementInterpretation(
     val interpretation: String
 )
 
-data class Dignity(val status: String, val color: Color)
+data class Dignity(val statusKey: com.astro.storm.core.common.StringKeyInterface, val color: Color)
 
 data class Prediction(
     val type: PredictionType,
@@ -423,6 +432,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
     return when (planet) {
         Planet.SUN -> PlanetSignifications(
             nature = stringResource(StringKeyAnalysis.PLANET_SUN_NATURE),
+            natureKey = StringKeyAnalysis.PLANET_SUN_NATURE,
             element = stringResource(StringKeyAnalysis.PLANET_SUN_ELEMENT),
             represents = listOf(
                 stringResource(StringKey.PLANET_SUN_REPRESENTS_1),
@@ -436,6 +446,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
         )
         Planet.MOON -> PlanetSignifications(
             nature = stringResource(StringKeyAnalysis.PLANET_MOON_NATURE),
+            natureKey = StringKeyAnalysis.PLANET_MOON_NATURE,
             element = stringResource(StringKeyAnalysis.PLANET_MOON_ELEMENT),
             represents = listOf(
                 stringResource(StringKey.PLANET_MOON_REPRESENTS_1),
@@ -449,6 +460,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
         )
         Planet.MARS -> PlanetSignifications(
             nature = stringResource(StringKeyAnalysis.PLANET_MARS_NATURE),
+            natureKey = StringKeyAnalysis.PLANET_MARS_NATURE,
             element = stringResource(StringKeyAnalysis.PLANET_MARS_ELEMENT),
             represents = listOf(
                 stringResource(StringKey.PLANET_MARS_REPRESENTS_1),
@@ -462,6 +474,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
         )
         Planet.MERCURY -> PlanetSignifications(
             nature = stringResource(StringKeyAnalysis.PLANET_MERCURY_NATURE),
+            natureKey = StringKeyAnalysis.PLANET_MERCURY_NATURE,
             element = stringResource(StringKeyAnalysis.PLANET_MERCURY_ELEMENT),
             represents = listOf(
                 stringResource(StringKey.PLANET_MERCURY_REPRESENTS_1),
@@ -475,6 +488,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
         )
         Planet.JUPITER -> PlanetSignifications(
             nature = stringResource(StringKeyAnalysis.PLANET_JUPITER_NATURE),
+            natureKey = StringKeyAnalysis.PLANET_JUPITER_NATURE,
             element = stringResource(StringKeyAnalysis.PLANET_JUPITER_ELEMENT),
             represents = listOf(
                 stringResource(StringKey.PLANET_JUPITER_REPRESENTS_1),
@@ -488,6 +502,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
         )
         Planet.VENUS -> PlanetSignifications(
             nature = stringResource(StringKeyAnalysis.PLANET_VENUS_NATURE),
+            natureKey = StringKeyAnalysis.PLANET_VENUS_NATURE,
             element = stringResource(StringKeyAnalysis.PLANET_VENUS_ELEMENT),
             represents = listOf(
                 stringResource(StringKey.PLANET_VENUS_REPRESENTS_1),
@@ -501,6 +516,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
         )
         Planet.SATURN -> PlanetSignifications(
             nature = stringResource(StringKeyAnalysis.PLANET_SATURN_NATURE),
+            natureKey = StringKeyAnalysis.PLANET_SATURN_NATURE,
             element = stringResource(StringKeyAnalysis.PLANET_SATURN_ELEMENT),
             represents = listOf(
                 stringResource(StringKey.PLANET_SATURN_REPRESENTS_1),
@@ -514,6 +530,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
         )
         Planet.RAHU -> PlanetSignifications(
             nature = stringResource(StringKeyAnalysis.PLANET_RAHU_NATURE),
+            natureKey = StringKeyAnalysis.PLANET_RAHU_NATURE,
             element = stringResource(StringKeyAnalysis.PLANET_RAHU_ELEMENT),
             represents = listOf(
                 stringResource(StringKey.PLANET_RAHU_REPRESENTS_1),
@@ -527,6 +544,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
         )
         Planet.KETU -> PlanetSignifications(
             nature = stringResource(StringKeyAnalysis.PLANET_KETU_NATURE),
+            natureKey = StringKeyAnalysis.PLANET_KETU_NATURE,
             element = stringResource(StringKeyAnalysis.PLANET_KETU_ELEMENT),
             represents = listOf(
                 stringResource(StringKey.PLANET_KETU_REPRESENTS_1),
@@ -538,7 +556,7 @@ private fun getPlanetSignifications(planet: Planet): PlanetSignifications {
             bodyParts = stringResource(StringKeyAnalysis.PLANET_KETU_BODY_PARTS),
             professions = stringResource(StringKeyAnalysis.PLANET_KETU_PROFESSIONS)
         )
-        else -> PlanetSignifications("", "", emptyList(), "", "")
+        else -> PlanetSignifications("", com.astro.storm.core.common.StringKeyAnalysis.UI_NONE, "", emptyList(), "", "")
     }
 }
 
@@ -580,7 +598,7 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.VENUS to ZodiacSign.PISCES,
         Planet.SATURN to ZodiacSign.LIBRA
     )
-    if (exalted[planet] == sign) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_EXALTED), DialogColors.AccentGreen)
+    if (exalted[planet] == sign) return Dignity(StringKeyMatch.PLANETARY_STATUS_EXALTED, DialogColors.AccentGreen)
 
     val debilitated = mapOf(
         Planet.SUN to ZodiacSign.LIBRA,
@@ -591,11 +609,11 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.VENUS to ZodiacSign.VIRGO,
         Planet.SATURN to ZodiacSign.ARIES
     )
-    if (debilitated[planet] == sign) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_DEBILITATED), DialogColors.AccentRose)
+    if (debilitated[planet] == sign) return Dignity(StringKeyMatch.PLANETARY_STATUS_DEBILITATED, DialogColors.AccentRose)
 
-    if (sign.ruler == planet) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_OWN_SIGN), DialogColors.AccentGold)
+    if (sign.ruler == planet) return Dignity(StringKeyMatch.PLANETARY_STATUS_OWN_SIGN, DialogColors.AccentGold)
 
-    return Dignity(stringResource(StringKeyMatch.RELATION_NEUTRAL), DialogColors.TextSecondary)
+    return Dignity(StringKeyMatch.RELATION_NEUTRAL, DialogColors.TextSecondary)
 }
 
 @Composable
@@ -621,22 +639,19 @@ private fun getPlanetPredictions(
     }
 
     val dignity = getDignity(planet, position.sign)
-    val exaltedStatus = stringResource(StringKeyMatch.PLANETARY_STATUS_EXALTED)
-    val debilitatedStatus = stringResource(StringKeyMatch.PLANETARY_STATUS_DEBILITATED)
-    val ownSignStatus = stringResource(StringKeyMatch.PLANETARY_STATUS_OWN_SIGN)
 
-    when (dignity.status) {
-        exaltedStatus -> predictions.add(Prediction(
+    when (dignity.statusKey) {
+        StringKeyMatch.PLANETARY_STATUS_EXALTED -> predictions.add(Prediction(
             PredictionType.POSITIVE,
             stringResource(StringKeyAnalysis.PREDICTION_EXALTED),
             stringResource(StringKeyAnalysis.PREDICTION_EXALTED_DESC, planet.getLocalizedName(LocalLanguage.current))
         ))
-        debilitatedStatus -> predictions.add(Prediction(
+        StringKeyMatch.PLANETARY_STATUS_DEBILITATED -> predictions.add(Prediction(
             PredictionType.NEGATIVE,
             stringResource(StringKeyAnalysis.PREDICTION_DEBILITATED),
             stringResource(StringKeyAnalysis.PREDICTION_DEBILITATED_DESC, planet.getLocalizedName(LocalLanguage.current))
         ))
-        ownSignStatus -> predictions.add(Prediction(
+        StringKeyMatch.PLANETARY_STATUS_OWN_SIGN -> predictions.add(Prediction(
             PredictionType.POSITIVE,
             stringResource(StringKeyAnalysis.PREDICTION_OWN_SIGN),
             stringResource(StringKeyAnalysis.PREDICTION_OWN_SIGN_DESC, planet.getLocalizedName(LocalLanguage.current))

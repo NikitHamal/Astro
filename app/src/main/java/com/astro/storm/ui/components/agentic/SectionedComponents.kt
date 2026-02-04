@@ -32,7 +32,9 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.ui.components.MarkdownText
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.data.localization.stringResource
+import com.astro.storm.data.localization.LocalLanguage
 
 /**
  * Sectioned UI Components for Dynamic Agentic Message Layout
@@ -240,7 +242,7 @@ fun ReasoningSection(
                         // Duration or status
                         Text(
                             text = if (section.isComplete && section.durationMs > 0)
-                                stringResource(StringKeyDosha.SECTION_REASONED_FOR, section.durationDisplay)
+                                section.getLocalizedDuration(LocalLanguage.current)
                             else if (isActive)
                                 stringResource(StringKeyDosha.SECTION_ANALYZING)
                             else
@@ -472,7 +474,7 @@ private fun IndividualToolCard(
                             text = when (tool.status) {
                                 ToolExecutionStatus.PENDING -> stringResource(StringKeyDosha.TOOL_STATUS_PENDING)
                                 ToolExecutionStatus.EXECUTING -> stringResource(StringKeyDosha.TOOL_STATUS_RUNNING)
-                                ToolExecutionStatus.COMPLETED -> stringResource(StringKeyDosha.TOOL_STATUS_COMPLETED_IN, tool.durationDisplay)
+                                ToolExecutionStatus.COMPLETED -> stringResource(StringKeyDosha.TOOL_STATUS_COMPLETED_IN, ToolDisplayUtils.formatDuration(tool.duration, LocalLanguage.current))
                                 ToolExecutionStatus.FAILED -> stringResource(StringKeyDosha.TOOL_STATUS_FAILED)
                             },
                             style = MaterialTheme.typography.labelSmall,
@@ -618,7 +620,7 @@ fun ToolGroupSectionGrouped(
                             color = colors.TextPrimary
                         )
                         Text(
-                            text = section.statusSummary,
+                            text = section.getLocalizedStatusSummary(LocalLanguage.current),
                             style = MaterialTheme.typography.labelSmall,
                             color = statusColor
                         )
@@ -765,7 +767,7 @@ private fun ToolExecutionRow(tool: ToolExecution) {
                 shape = RoundedCornerShape(4.dp)
             ) {
                 Text(
-                    text = tool.durationDisplay,
+                    text = ToolDisplayUtils.formatDuration(tool.duration, LocalLanguage.current),
                     style = MaterialTheme.typography.labelSmall,
                     color = colors.TextSubtle,
                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -1154,13 +1156,13 @@ fun TodoListSection(
 
                     Column {
                         Text(
-                            text = section.title,
+                            text = if (section.title == "Tasks") stringResource(StringKeyUICommon.TASKS) else section.title,
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.TextPrimary
                         )
                         Text(
-                            text = section.progressText,
+                            text = section.getLocalizedProgressText(LocalLanguage.current),
                             style = MaterialTheme.typography.labelSmall,
                             color = progressColor
                         )
