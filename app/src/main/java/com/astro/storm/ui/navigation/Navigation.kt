@@ -436,6 +436,9 @@ fun AstroStormNavigation(
                 onNavigateToKalaBala = { navigateWithId(Screen.KalaBala) },
                 onNavigateToSaham = { navigateWithId(Screen.Saham) },
                 onNavigateToNativeAnalysis = { navigateWithId(Screen.NativeAnalysis) },
+                onNavigateToJaiminiKaraka = { navigateWithId(Screen.JaiminiKaraka) },
+                onNavigateToDrigDasha = { navigateWithId(Screen.DrigDasha) },
+                onNavigateToSaptamsa = { navigateWithId(Screen.Saptamsa) },
                 onNavigateToAiModels = { navigateToFeature(Screen.AiModels.route) },
                 onNavigateToChat = { conversationId ->
                     if (conversationId != null) {

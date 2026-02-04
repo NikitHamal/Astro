@@ -451,7 +451,7 @@ private fun QuickActionsSection(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             quickActions.forEach { action ->
                 QuickActionItem(
@@ -459,7 +459,8 @@ private fun QuickActionsSection(
                     icon = action.icon,
                     accentColor = action.color,
                     language = language,
-                    onClick = { onFeatureClick(action.feature) }
+                    onClick = { onFeatureClick(action.feature) },
+                    modifier = Modifier.weight(1f)
                 )
             }
         }
@@ -472,26 +473,29 @@ private fun QuickActionItem(
     icon: ImageVector,
     accentColor: Color,
     language: Language,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
     val interactionSource = remember { MutableInteractionSource() }
     
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
+        modifier = modifier
+            .clip(RoundedCornerShape(HomeDesignTokens.SmallCardCornerRadius))
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple(color = accentColor),
                 onClick = onClick
             )
-            .padding(horizontal = 4.dp, vertical = 8.dp)
+            .padding(vertical = 8.dp)
     ) {
-        // Card-like square container with subtle background
+        // Card-like square container with subtle background - responsive width with max cap
         Box(
             modifier = Modifier
-                .size(72.dp)
+                .widthIn(max = HomeDesignTokens.QuickActionSize)
+                .fillMaxWidth(0.85f)
+                .aspectRatio(1f)
                 .clip(RoundedCornerShape(20.dp))
                 .background(accentColor.copy(alpha = 0.12f))
                 .border(
@@ -505,7 +509,7 @@ private fun QuickActionItem(
                 imageVector = icon,
                 contentDescription = feature.getLocalizedTitle(language),
                 tint = accentColor,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(HomeDesignTokens.QuickActionIconSize)
             )
         }
         
@@ -517,9 +521,12 @@ private fun QuickActionItem(
             color = colors.TextSecondary,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
-            maxLines = 1,
+            maxLines = 2,
+            minLines = 2,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(80.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 4.dp)
         )
     }
 }
