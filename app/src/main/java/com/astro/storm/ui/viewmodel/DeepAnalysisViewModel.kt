@@ -22,7 +22,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class DeepAnalysisViewModel @Inject constructor(
-    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context
+    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
+    private val deepAnalysisAnalyzer: com.astro.storm.ephemeris.deepanalysis.DeepAnalysisAnalyzer
 ) : ViewModel() {
     
     private val _uiState = MutableStateFlow<DeepAnalysisUiState>(DeepAnalysisUiState.Initial)
@@ -52,7 +53,7 @@ class DeepAnalysisViewModel @Inject constructor(
             _uiState.value = DeepAnalysisUiState.Loading
             
             try {
-                val result = DeepAnalysisEngine.analyzeNative(chart, context)
+                val result = deepAnalysisAnalyzer.analyzeNative(chart)
                 cachedChart = chart
                 cachedResult = result
                 _uiState.value = DeepAnalysisUiState.Success(result)
