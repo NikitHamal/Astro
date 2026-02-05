@@ -88,6 +88,8 @@ import com.astro.storm.data.localization.LocalDateSystem
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyUIExtra
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.data.localization.formatLocalized
@@ -274,6 +276,7 @@ private fun TopBarSubtitle(
     chartName: String,
     periodInfo: CurrentYoginiPeriodInfo
 ) {
+    val language = LocalLanguage.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
@@ -295,7 +298,7 @@ private fun TopBarSubtitle(
             }
             periodInfo.hasError -> {
                 Text(
-                    text = "${stringResource(StringKey.DASHA_ERROR)} • $chartName",
+                    text = stringResource(StringKey.DASHA_ERROR) + stringResource(StringKeyUIExtra.BULLET_SPACE) + chartName,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error,
                     fontSize = 12.sp,
@@ -307,8 +310,8 @@ private fun TopBarSubtitle(
                 Text(
                     text = buildString {
                         append(periodInfo.mahadasha)
-                        periodInfo.antardasha?.let { append(" → $it") }
-                        append(" • $chartName")
+                        periodInfo.antardasha?.let { append(StringResources.get(StringKeyUIExtra.ARROW, language) + it) }
+                        append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language) + chartName)
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
@@ -639,7 +642,7 @@ private fun YoginiPeriodRow(
             modifier = Modifier.width(70.dp)
         ) {
             Text(
-                text = "$percentComplete%",
+                text = percentComplete.toString() + stringResource(StringKeyUIExtra.PERCENT),
                 fontSize = subFontSize,
                 fontWeight = FontWeight.Bold,
                 color = yoginiColor
@@ -773,7 +776,7 @@ private fun BirthBalanceCard(
                 )
                 InfoItem(
                     label = stringResource(StringKey.DASHA_PROGRESS),
-                    value = String.format("%.1f%%", (balance.elapsed / balance.totalYears) * 100),
+                    value = String.format("%.1f", (balance.elapsed / balance.totalYears) * 100) + stringResource(StringKeyUIExtra.PERCENT),
                     color = AppTheme.TextMuted
                 )
             }
@@ -830,7 +833,7 @@ private fun ApplicabilityCard(
                     verticalAlignment = Alignment.Top
                 ) {
                     Text(
-                        text = "•",
+                        text = stringResource(StringKeyUIExtra.BULLET),
                         fontSize = 12.sp,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(end = 8.dp)
@@ -847,7 +850,7 @@ private fun ApplicabilityCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "${stringResource(StringKeyMatch.MUHURTA_SCORE)}: ${String.format("%.0f", applicability.applicabilityScore * 100)}%",
+                text = stringResource(StringKeyMatch.MUHURTA_SCORE) + stringResource(StringKeyUIExtra.COLON_SPACE) + String.format("%.0f", applicability.applicabilityScore * 100) + stringResource(StringKeyUIExtra.PERCENT),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextMuted
@@ -1078,7 +1081,7 @@ private fun YoginiMahadashaCard(
                         }
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
-                            text = "${formatYearsLocalized(mahadasha.durationYears, language)} • ${mahadasha.startDate.formatLocalized(DateFormat.YEAR_ONLY)} – ${mahadasha.endDate.formatLocalized(DateFormat.YEAR_ONLY)}",
+                            text = formatYearsLocalized(mahadasha.durationYears, language) + stringResource(StringKeyUIExtra.BULLET_SPACE) + mahadasha.startDate.formatLocalized(DateFormat.YEAR_ONLY) + stringResource(StringKeyUIExtra.DASH_SPACE).trim() + mahadasha.endDate.formatLocalized(DateFormat.YEAR_ONLY),
                             fontSize = 11.sp,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
@@ -1087,7 +1090,7 @@ private fun YoginiMahadashaCard(
                         if (isCurrent) {
                             Spacer(modifier = Modifier.height(3.dp))
                             Text(
-                                text = "${String.format("%.1f", mahadasha.getProgressPercent())}% • ${formatRemainingYearsLocalized(mahadasha.getRemainingDays() / 365.25, language)}",
+                                text = String.format("%.1f", mahadasha.getProgressPercent()) + stringResource(StringKeyUIExtra.PERCENT) + stringResource(StringKeyUIExtra.BULLET_SPACE) + formatRemainingYearsLocalized(mahadasha.getRemainingDays() / 365.25, language),
                                 fontSize = 10.sp,
                                 color = AppTheme.AccentTeal,
                                 fontWeight = FontWeight.Medium
@@ -1210,7 +1213,7 @@ private fun YoginiAntardashaRow(
                     if (isCurrent) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "${String.format("%.0f", antardasha.getProgressPercent())}%",
+                            text = String.format("%.0f", antardasha.getProgressPercent()) + stringResource(StringKeyUIExtra.PERCENT),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = yoginiColor.copy(alpha = 0.9f)
@@ -1315,7 +1318,7 @@ private fun YoginiDetailCard(
                                 color = AppTheme.TextMuted
                             )
                             Text(
-                                text = " • ",
+                                text = stringResource(StringKeyUIExtra.BULLET_SPACE),
                                 fontSize = 12.sp,
                                 color = AppTheme.TextMuted
                             )
@@ -1397,7 +1400,7 @@ private fun YoginiDetailCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     interpretation.recommendations.forEach { rec ->
                         Row(modifier = Modifier.padding(vertical = 3.dp)) {
-                            Text("• ", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                            Text(stringResource(StringKeyUIExtra.BULLET_SPACE), fontSize = 12.sp, color = AppTheme.TextSecondary)
                             Text(
                                 text = rec,
                                 fontSize = 12.sp,
@@ -1418,7 +1421,7 @@ private fun YoginiDetailCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     interpretation.cautionAreas.forEach { caution ->
                         Row(modifier = Modifier.padding(vertical = 3.dp)) {
-                            Text("• ", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                            Text(stringResource(StringKeyUIExtra.BULLET_SPACE), fontSize = 12.sp, color = AppTheme.TextSecondary)
                             Text(
                                 text = caution,
                                 fontSize = 12.sp,

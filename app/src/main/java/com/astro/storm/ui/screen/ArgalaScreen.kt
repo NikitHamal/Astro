@@ -29,6 +29,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
@@ -341,7 +342,7 @@ private fun ArgalaOverviewTab(
 
                 ArgalaTypeItem(
                     icon = Icons.Filled.Star,
-                    title = stringResource(StringKeyAnalysis.ARGALA_TYPES_TITLE), // Mistake in previous thought, title was "Argala Types" generic title above
+                    title = stringResource(StringKeyUIExtra.ARGALA_TYPES_TITLE),
                     description = stringResource(StringKeyAnalysis.ARGALA_PRIMARY_DESC),
                     color = AppTheme.AccentGold
                 )
@@ -1088,7 +1089,7 @@ private fun ArgalaInfluenceItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Strength:",
+                stringResource(StringKeyUIExtra.ARGALA_STRENGTH_LABEL),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -1122,7 +1123,7 @@ private fun VirodhaArgalaItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "House ${virodha.obstructingHouse}",
+                    stringResource(StringKeyUIExtra.ARGALA_HOUSE_PREFIX, virodha.obstructingHouse),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1133,7 +1134,7 @@ private fun VirodhaArgalaItem(
                         shape = RoundedCornerShape(6.dp)
                     ) {
                         Text(
-                            "Effective",
+                            stringResource(StringKeyUIExtra.ARGALA_EFFECTIVE),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.WarningColor,
@@ -1168,7 +1169,7 @@ private fun VirodhaArgalaItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Obstruction:",
+                    stringResource(StringKeyUIExtra.ARGALA_OBSTRUCTION_LABEL),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -1226,7 +1227,7 @@ private fun NetEffectCard(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        "Benefic Strength",
+                        stringResource(StringKeyUIExtra.ARGALA_BENEFIC_STRENGTH),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary
                     )
@@ -1256,7 +1257,7 @@ private fun NetEffectCard(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        "Malefic Strength",
+                        stringResource(StringKeyUIExtra.ARGALA_MALEFIC_STRENGTH),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary
                     )
@@ -1398,7 +1399,7 @@ private fun PlanetArgalaDetailCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            "In House $planetHouse",
+                            stringResource(StringKey.TRANSIT_HOUSE_LABEL) + " $planetHouse",
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextMuted
                         )
@@ -1449,7 +1450,7 @@ private fun PlanetArgalaDetailCard(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            "Net Strength: ${String.format("%.2f", result.netStrength)}",
+                            stringResource(StringKeyUIExtra.ARGALA_NET_STRENGTH_FMT, String.format("%.2f", result.netStrength)),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = if (result.netStrength > 0) AppTheme.SuccessColor else AppTheme.WarningColor
@@ -1470,7 +1471,7 @@ private fun PlanetArgalaDetailCard(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        "Argala Influences Received",
+                        stringResource(StringKeyUIExtra.ARGALA_INFLUENCES_RECEIVED),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1497,7 +1498,7 @@ private fun PlanetArgalaDetailCard(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        "Obstructions Received",
+                        stringResource(StringKeyUIExtra.ARGALA_OBSTRUCTIONS_RECEIVED),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1537,7 +1538,7 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    "Key Concepts:",
+                    stringResource(StringKeyUIExtra.ARGALA_KEY_CONCEPTS),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1546,12 +1547,12 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 listOf(
-                    "• 2nd, 4th, 11th, 5th houses create Argala",
-                    "• 12th, 10th, 3rd, 9th houses obstruct Argala",
-                    "• Benefic planets = Shubha (auspicious) Argala",
-                    "• Malefic planets = Ashubha (inauspicious) Argala",
-                    "• More planets = stronger intervention",
-                    "• Net effect = Primary Argala - Virodha"
+                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_1),
+                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_2),
+                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_3),
+                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_4),
+                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_5),
+                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_6)
                 ).forEach { item ->
                     Text(
                         item,
@@ -1564,7 +1565,7 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    "Source: Jaimini Sutras (Chapter 1, Pada 1, Sutras 5-8)",
+                    stringResource(StringKeyUIExtra.ARGALA_SOURCE),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic

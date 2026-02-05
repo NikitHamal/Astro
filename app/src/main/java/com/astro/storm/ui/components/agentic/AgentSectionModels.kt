@@ -1,5 +1,7 @@
 package com.astro.storm.ui.components.agentic
 
+import com.astro.storm.core.common.StringKeyUIExtra
+import com.astro.storm.core.common.StringResources
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.UUID
@@ -40,12 +42,9 @@ sealed class AgentSection {
         val durationMs: Long = 0,
         val isExpanded: Boolean = false
     ) : AgentSection() {
-        val durationDisplay: String
-            get() = when {
-                durationMs < 1000 -> "${durationMs}ms"
-                durationMs < 60000 -> "${durationMs / 1000}s"
-                else -> "${durationMs / 60000}m ${(durationMs % 60000) / 1000}s"
-            }
+        fun getLocalizedDuration(language: com.astro.storm.core.common.Language): String {
+            return ToolDisplayUtils.formatReasoningDuration(durationMs, language)
+        }
     }
 
     /**
@@ -82,15 +81,11 @@ sealed class AgentSection {
         val totalCount: Int
             get() = tools.size
 
-        val statusSummary: String
-            get() = when {
-                runningCount > 0 && completedCount > 0 -> "$completedCount/$totalCount completed, $runningCount running"
-                runningCount > 0 -> "$runningCount tool${if (runningCount > 1) "s" else ""} running"
-                failedCount > 0 && completedCount > 0 -> "$completedCount completed, $failedCount failed"
-                failedCount > 0 -> "$failedCount tool${if (failedCount > 1) "s" else ""} failed"
-                completedCount == totalCount && totalCount > 0 -> "$completedCount tool${if (completedCount > 1) "s" else ""} completed"
-                else -> "$completedCount/$totalCount completed"
-            }
+        fun getLocalizedStatusSummary(language: com.astro.storm.core.common.Language): String {
+            return ToolDisplayUtils.buildToolStatusSummary(
+                completedCount, runningCount, failedCount, totalCount, language
+            )
+        }
     }
 
     /**
@@ -130,8 +125,12 @@ sealed class AgentSection {
             get() = items.size
         val progress: Float
             get() = if (totalCount > 0) completedCount.toFloat() / totalCount else 0f
-        val progressText: String
-            get() = "$completedCount/$totalCount completed"
+
+        fun getLocalizedProgressText(language: com.astro.storm.core.common.Language): String {
+            val completedKey = StringResources.get(com.astro.storm.core.common.StringKeyUICommon.COMPLETED, language)
+            val slash = StringResources.get(StringKeyUIExtra.SLASH, language)
+            return "$completedCount$slash$totalCount $completedKey"
+        }
     }
 
     /**
@@ -198,12 +197,9 @@ data class ToolExecution(
     val duration: Long
         get() = (endTime ?: System.currentTimeMillis()) - startTime
 
-    val durationDisplay: String
-        get() = when {
-            duration < 1000 -> "${duration}ms"
-            duration < 60000 -> "${duration / 1000}.${(duration % 1000) / 100}s"
-            else -> "${duration / 60000}m ${(duration % 60000) / 1000}s"
-        }
+    fun getDurationDisplay(language: com.astro.storm.core.common.Language): String {
+        return ToolDisplayUtils.formatDuration(duration, language)
+    }
 }
 
 enum class ToolExecutionStatus {

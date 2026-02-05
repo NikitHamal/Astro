@@ -31,6 +31,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyDeepAnalysisInterp
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.deepanalysis.*
 import com.astro.storm.ui.theme.AppTheme
@@ -190,7 +192,7 @@ fun ExpandableAnalysisCard(
                 
                 Icon(
                     imageVector = Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (isExpanded) stringResource(StringKey.A11Y_COLLAPSE) else stringResource(StringKey.A11Y_EXPAND),
                     tint = AppTheme.TextMuted,
                     modifier = Modifier
                         .size(24.dp)
@@ -556,11 +558,7 @@ fun DeepAnalysisLoading(
     modifier: Modifier = Modifier
 ) {
     val language = com.astro.storm.data.localization.LocalLanguage.current
-    val loadingText = if (language == com.astro.storm.core.common.Language.NEPALI) {
-        "तपाईंको कुण्डलीको गहन विश्लेषण गर्दै..."
-    } else {
-        "Analyzing your chart deeply..."
-    }
+    val loadingText = stringResource(StringKeyDeepAnalysisInterp.ANALYZING_DEEPLY)
 
     Box(
         modifier = modifier.fillMaxSize(),

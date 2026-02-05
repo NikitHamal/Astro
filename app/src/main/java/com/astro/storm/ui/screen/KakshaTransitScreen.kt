@@ -33,6 +33,7 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyAdvanced
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
@@ -368,7 +369,7 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
                             color = colors.TextPrimary
                         )
                         Text(
-                            text = "${position.sign.displayName} (${position.degreeInSign.toInt()}°${((position.degreeInSign % 1) * 60).toInt()}')",
+                            text = position.sign.displayName + stringResource(StringKeyUIExtra.PAREN_START) + position.degreeInSign.toInt() + stringResource(StringKeyUIExtra.DEGREE) + ((position.degreeInSign % 1) * 60).toInt() + stringResource(StringKeyUIExtra.ARC_MINUTE) + stringResource(StringKeyUIExtra.PAREN_END),
                             style = MaterialTheme.typography.bodySmall,
                             color = colors.TextMuted
                         )

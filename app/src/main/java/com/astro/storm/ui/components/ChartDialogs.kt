@@ -666,11 +666,19 @@ private fun SignificationsCard(planet: Planet, language: Language) {
     DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_SIGNIFICATIONS), icon = Icons.Outlined.Info) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             // Nature
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NATURE), significations.nature, when (significations.nature) {
-                "Benefic", "शुभ" -> AccentGreen
-                "Malefic", "पापी" -> AccentRose
+            val natureColor = when (significations.natureKey) {
+                StringKeyAnalysis.PLANET_SUN_NATURE,
+                StringKeyAnalysis.PLANET_MARS_NATURE,
+                StringKeyAnalysis.PLANET_SATURN_NATURE,
+                StringKeyAnalysis.PLANET_RAHU_NATURE,
+                StringKeyAnalysis.PLANET_KETU_NATURE -> AccentRose
+                StringKeyAnalysis.PLANET_MOON_NATURE,
+                StringKeyAnalysis.PLANET_JUPITER_NATURE,
+                StringKeyAnalysis.PLANET_VENUS_NATURE -> AccentGreen
+                StringKeyAnalysis.PLANET_MERCURY_NATURE -> AccentOrange
                 else -> AccentOrange
-            })
+            }
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NATURE), significations.nature, natureColor)
 
             // Element
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_ELEMENT), significations.element, TextSecondary)
@@ -974,12 +982,13 @@ fun NakshatraDetailDialog(
                         DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_NATURE), icon = Icons.Outlined.Psychology) {
                             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_SYMBOL), details.symbol, TextPrimary)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_NATURE), details.nature, when(details.nature) {
-                                    "Fixed (Dhruva)" -> AccentBlue
-                                    "Movable (Chara)" -> AccentGreen
-                                    "Sharp (Tikshna)" -> AccentRose
+                                val natureColor = when(details.natureKey) {
+                                    StringKeyAnalysis.NAKSHATRA_NATURE_FIXED -> AccentBlue
+                                    StringKeyAnalysis.NAKSHATRA_NATURE_MOVABLE, StringKeyAnalysis.NAKSHATRA_NATURE_SWIFT -> AccentGreen
+                                    StringKeyAnalysis.NAKSHATRA_NATURE_FIERCE, StringKeyAnalysis.NAKSHATRA_NATURE_SHARP -> AccentRose
                                     else -> TextSecondary
-                                })
+                                }
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_NATURE), details.nature, natureColor)
                                 DetailRow(stringResource(StringKeyAnalysis.DIALOG_GENDER), details.gender, TextSecondary)
                                 DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_GANA), details.gana, TextSecondary)
                                 DetailRow(stringResource(StringKeyAnalysis.PANCHANGA_GUNA), details.guna, TextSecondary)
@@ -1419,6 +1428,7 @@ private fun formatDegreeInSign(longitude: Double): String {
 // Data classes for interpretations
 data class PlanetSignifications(
     val nature: String,
+    val natureKey: com.astro.storm.core.common.StringKeyInterface,
     val element: String,
     val represents: List<String>,
     val bodyParts: String,
@@ -1433,7 +1443,8 @@ data class HousePlacementInterpretation(
 
 data class Dignity(
     val status: String,
-    val color: Color
+    val color: Color,
+    val statusKey: com.astro.storm.core.common.StringKeyInterface
 )
 
 data class Prediction(
@@ -1447,6 +1458,7 @@ enum class PredictionType { POSITIVE, NEGATIVE, NEUTRAL }
 data class NakshatraDetails(
     val symbol: String,
     val nature: String,
+    val natureKey: com.astro.storm.core.common.StringKeyInterface,
     val gender: String,
     val gana: String,
     val guna: String,
@@ -1467,6 +1479,7 @@ private fun getPlanetSignifications(planet: Planet, language: Language): PlanetS
     return when (planet) {
         Planet.SUN -> PlanetSignifications(
             nature = StringResources.get(StringKeyAnalysis.PLANET_SUN_NATURE, language),
+            natureKey = StringKeyAnalysis.PLANET_SUN_NATURE,
             element = StringResources.get(StringKeyAnalysis.PLANET_SUN_ELEMENT, language),
             represents = listOf(
                 StringResources.get(StringKeyAnalysis.PLANET_SUN_REPRESENTS_1, language),
@@ -1480,6 +1493,7 @@ private fun getPlanetSignifications(planet: Planet, language: Language): PlanetS
         )
         Planet.MOON -> PlanetSignifications(
             nature = StringResources.get(StringKeyAnalysis.PLANET_MOON_NATURE, language),
+            natureKey = StringKeyAnalysis.PLANET_MOON_NATURE,
             element = StringResources.get(StringKeyAnalysis.PLANET_MOON_ELEMENT, language),
             represents = listOf(
                 StringResources.get(StringKeyAnalysis.PLANET_MOON_REPRESENTS_1, language),
@@ -1493,6 +1507,7 @@ private fun getPlanetSignifications(planet: Planet, language: Language): PlanetS
         )
         Planet.MARS -> PlanetSignifications(
             nature = StringResources.get(StringKeyAnalysis.PLANET_MARS_NATURE, language),
+            natureKey = StringKeyAnalysis.PLANET_MARS_NATURE,
             element = StringResources.get(StringKeyAnalysis.PLANET_MARS_ELEMENT, language),
             represents = listOf(
                 StringResources.get(StringKeyAnalysis.PLANET_MARS_REPRESENTS_1, language),
@@ -1506,6 +1521,7 @@ private fun getPlanetSignifications(planet: Planet, language: Language): PlanetS
         )
         Planet.MERCURY -> PlanetSignifications(
             nature = StringResources.get(StringKeyAnalysis.PLANET_MERCURY_NATURE, language),
+            natureKey = StringKeyAnalysis.PLANET_MERCURY_NATURE,
             element = StringResources.get(StringKeyAnalysis.PLANET_MERCURY_ELEMENT, language),
             represents = listOf(
                 StringResources.get(StringKeyAnalysis.PLANET_MERCURY_REPRESENTS_1, language),
@@ -1519,6 +1535,7 @@ private fun getPlanetSignifications(planet: Planet, language: Language): PlanetS
         )
         Planet.JUPITER -> PlanetSignifications(
             nature = StringResources.get(StringKeyAnalysis.PLANET_JUPITER_NATURE, language),
+            natureKey = StringKeyAnalysis.PLANET_JUPITER_NATURE,
             element = StringResources.get(StringKeyAnalysis.PLANET_JUPITER_ELEMENT, language),
             represents = listOf(
                 StringResources.get(StringKeyAnalysis.PLANET_JUPITER_REPRESENTS_1, language),
@@ -1532,6 +1549,7 @@ private fun getPlanetSignifications(planet: Planet, language: Language): PlanetS
         )
         Planet.VENUS -> PlanetSignifications(
             nature = StringResources.get(StringKeyAnalysis.PLANET_VENUS_NATURE, language),
+            natureKey = StringKeyAnalysis.PLANET_VENUS_NATURE,
             element = StringResources.get(StringKeyAnalysis.PLANET_VENUS_ELEMENT, language),
             represents = listOf(
                 StringResources.get(StringKeyAnalysis.PLANET_VENUS_REPRESENTS_1, language),
@@ -1545,6 +1563,7 @@ private fun getPlanetSignifications(planet: Planet, language: Language): PlanetS
         )
         Planet.SATURN -> PlanetSignifications(
             nature = StringResources.get(StringKeyAnalysis.PLANET_SATURN_NATURE, language),
+            natureKey = StringKeyAnalysis.PLANET_SATURN_NATURE,
             element = StringResources.get(StringKeyAnalysis.PLANET_SATURN_ELEMENT, language),
             represents = listOf(
                 StringResources.get(StringKeyAnalysis.PLANET_SATURN_REPRESENTS_1, language),
@@ -1558,6 +1577,7 @@ private fun getPlanetSignifications(planet: Planet, language: Language): PlanetS
         )
         Planet.RAHU -> PlanetSignifications(
             nature = StringResources.get(StringKeyAnalysis.PLANET_RAHU_NATURE, language),
+            natureKey = StringKeyAnalysis.PLANET_RAHU_NATURE,
             element = StringResources.get(StringKeyAnalysis.PLANET_RAHU_ELEMENT, language),
             represents = listOf(
                 StringResources.get(StringKeyAnalysis.PLANET_RAHU_REPRESENTS_1, language),
@@ -1571,6 +1591,7 @@ private fun getPlanetSignifications(planet: Planet, language: Language): PlanetS
         )
         Planet.KETU -> PlanetSignifications(
             nature = StringResources.get(StringKeyAnalysis.PLANET_KETU_NATURE, language),
+            natureKey = StringKeyAnalysis.PLANET_KETU_NATURE,
             element = StringResources.get(StringKeyAnalysis.PLANET_KETU_ELEMENT, language),
             represents = listOf(
                 StringResources.get(StringKeyAnalysis.PLANET_KETU_REPRESENTS_1, language),
@@ -1582,7 +1603,7 @@ private fun getPlanetSignifications(planet: Planet, language: Language): PlanetS
             bodyParts = StringResources.get(StringKeyAnalysis.PLANET_KETU_BODY_PARTS, language),
             professions = StringResources.get(StringKeyAnalysis.PLANET_KETU_PROFESSIONS, language)
         )
-        else -> PlanetSignifications("", "", emptyList(), "", "")
+        else -> PlanetSignifications("", StringKeyAnalysis.UI_NONE, "", emptyList(), "", "")
     }
 }
 
@@ -1633,6 +1654,12 @@ private fun getHousePlacementInterpretation(planet: Planet, house: Int, language
 
 @Composable
 private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
+    val exaltedStatusKey = StringKeyMatch.PLANETARY_STATUS_EXALTED
+    val debilitatedStatusKey = StringKeyMatch.PLANETARY_STATUS_DEBILITATED
+    val ownSignStatusKey = StringKeyMatch.PLANETARY_STATUS_OWN_SIGN
+    val moolatrikonaStatusKey = StringKeyMatch.PLANETARY_STATUS_MOOLATRIKONA
+    val neutralStatusKey = StringKeyMatch.RELATION_NEUTRAL
+
     // Exaltation check
     val exalted = when (planet) {
         Planet.SUN -> sign == ZodiacSign.ARIES
@@ -1644,7 +1671,7 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.SATURN -> sign == ZodiacSign.LIBRA
         else -> false
     }
-    if (exalted) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_EXALTED), AccentGreen)
+    if (exalted) return Dignity(stringResource(exaltedStatusKey), AccentGreen, exaltedStatusKey)
 
     // Debilitation check
     val debilitated = when (planet) {
@@ -1657,10 +1684,10 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.SATURN -> sign == ZodiacSign.ARIES
         else -> false
     }
-    if (debilitated) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_DEBILITATED), AccentRose)
+    if (debilitated) return Dignity(stringResource(debilitatedStatusKey), AccentRose, debilitatedStatusKey)
 
     // Own sign check
-    if (sign.ruler == planet) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_OWN_SIGN), AccentGold)
+    if (sign.ruler == planet) return Dignity(stringResource(ownSignStatusKey), AccentGold, ownSignStatusKey)
 
     // Moolatrikona check
     val moolatrikona = when (planet) {
@@ -1673,9 +1700,9 @@ private fun getDignity(planet: Planet, sign: ZodiacSign): Dignity {
         Planet.SATURN -> sign == ZodiacSign.AQUARIUS
         else -> false
     }
-    if (moolatrikona) return Dignity(stringResource(StringKeyMatch.PLANETARY_STATUS_MOOLATRIKONA), AccentTeal)
+    if (moolatrikona) return Dignity(stringResource(moolatrikonaStatusKey), AccentTeal, moolatrikonaStatusKey)
 
-    return Dignity(stringResource(StringKeyMatch.RELATION_NEUTRAL), TextSecondary)
+    return Dignity(stringResource(neutralStatusKey), TextSecondary, neutralStatusKey)
 }
 
 @Composable
@@ -1706,22 +1733,19 @@ private fun getPlanetPredictions(
 
     // Dignity-based predictions
     val dignity = getDignity(planet, position.sign)
-    val exaltedStatus = stringResource(StringKeyMatch.PLANETARY_STATUS_EXALTED)
-    val debilitatedStatus = stringResource(StringKeyMatch.PLANETARY_STATUS_DEBILITATED)
-    val ownSignStatus = stringResource(StringKeyMatch.PLANETARY_STATUS_OWN_SIGN)
 
-    when (dignity.status) {
-        exaltedStatus -> predictions.add(Prediction(
+    when (dignity.statusKey) {
+        StringKeyMatch.PLANETARY_STATUS_EXALTED -> predictions.add(Prediction(
             PredictionType.POSITIVE,
             stringResource(StringKeyAnalysis.PREDICTION_EXALTED),
             stringResource(StringKeyAnalysis.PREDICTION_EXALTED_DESC, planetName)
         ))
-        debilitatedStatus -> predictions.add(Prediction(
+        StringKeyMatch.PLANETARY_STATUS_DEBILITATED -> predictions.add(Prediction(
             PredictionType.NEGATIVE,
             stringResource(StringKeyAnalysis.PREDICTION_DEBILITATED),
             stringResource(StringKeyAnalysis.PREDICTION_DEBILITATED_DESC, planetName)
         ))
-        ownSignStatus -> predictions.add(Prediction(
+        StringKeyMatch.PLANETARY_STATUS_OWN_SIGN -> predictions.add(Prediction(
             PredictionType.POSITIVE,
             stringResource(StringKeyAnalysis.PREDICTION_OWN_SIGN),
             stringResource(StringKeyAnalysis.PREDICTION_OWN_SIGN_DESC, planetName)
@@ -1764,6 +1788,7 @@ private fun getNakshatraDetails(nakshatra: Nakshatra, language: Language): Naksh
         Nakshatra.ASHWINI -> NakshatraDetails(
             symbol = StringResources.get(StringKeyPrediction.NAK_ASHWINI_SYMBOL, language),
             nature = StringResources.get(StringKeyAnalysis.NAKSHATRA_NATURE_SWIFT, language),
+            natureKey = StringKeyAnalysis.NAKSHATRA_NATURE_SWIFT,
             gender = StringResources.get(StringKey.GENDER_MALE, language),
             gana = StringResources.get(StringKeyAnalysis.NAKSHATRA_GANA_DEVA, language),
             guna = StringResources.get(StringKeyAnalysis.GUNA_RAJAS, language),
@@ -1774,6 +1799,7 @@ private fun getNakshatraDetails(nakshatra: Nakshatra, language: Language): Naksh
         Nakshatra.BHARANI -> NakshatraDetails(
             symbol = StringResources.get(StringKeyPrediction.NAK_BHARANI_SYMBOL, language),
             nature = StringResources.get(StringKeyAnalysis.NAKSHATRA_NATURE_FIERCE, language),
+            natureKey = StringKeyAnalysis.NAKSHATRA_NATURE_FIERCE,
             gender = StringResources.get(StringKey.GENDER_FEMALE, language),
             gana = StringResources.get(StringKeyAnalysis.NAKSHATRA_GANA_MANUSHYA, language),
             guna = StringResources.get(StringKeyAnalysis.GUNA_RAJAS, language),
@@ -1784,6 +1810,7 @@ private fun getNakshatraDetails(nakshatra: Nakshatra, language: Language): Naksh
         Nakshatra.ROHINI -> NakshatraDetails(
             symbol = StringResources.get(StringKeyPrediction.NAK_ROHINI_SYMBOL, language),
             nature = StringResources.get(StringKeyAnalysis.NAKSHATRA_NATURE_FIXED, language),
+            natureKey = StringKeyAnalysis.NAKSHATRA_NATURE_FIXED,
             gender = StringResources.get(StringKey.GENDER_FEMALE, language),
             gana = StringResources.get(StringKeyAnalysis.NAKSHATRA_GANA_MANUSHYA, language),
             guna = StringResources.get(StringKeyAnalysis.GUNA_RAJAS, language),
@@ -1794,6 +1821,7 @@ private fun getNakshatraDetails(nakshatra: Nakshatra, language: Language): Naksh
         else -> NakshatraDetails(
             symbol = nakshatra.deity,
             nature = StringResources.get(StringKeyAnalysis.NAKSHATRA_NATURE_MIXED, language),
+            natureKey = StringKeyAnalysis.NAKSHATRA_NATURE_MIXED,
             gender = StringResources.get(StringKeyAnalysis.NAKSHATRA_GENDER, language),
             gana = StringResources.get(StringKeyAnalysis.NAKSHATRA_GANA, language),
             guna = StringResources.get(StringKeyAnalysis.PANCHANGA_GUNA, language),

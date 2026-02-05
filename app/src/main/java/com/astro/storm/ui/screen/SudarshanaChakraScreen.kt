@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -343,7 +345,7 @@ private fun AgeSelector(
                     enabled = selectedAge != 1
                 ) {
                     Text(
-                        "Birth (1st Yr)",
+                        stringResource(StringKeyUIExtra.BIRTH_1ST_YR),
                         fontSize = 12.sp
                     )
                 }
@@ -538,7 +540,7 @@ private fun SignIndicator(
             color = AppTheme.TextPrimary
         )
         Text(
-            "H${house}",
+            stringResource(StringKeyUIExtra.HOUSE_PREFIX_SHORT) + house,
             fontSize = 11.sp,
             color = color
         )
@@ -614,7 +616,7 @@ private fun ChakraCard(
                 )
                 InfoColumn(
                     label = stringResource(StringKeyDosha.HOUSE_LABEL),
-                    value = "H${chakra.activeHouse}"
+                    value = stringResource(StringKeyUIExtra.HOUSE_PREFIX_SHORT) + chakra.activeHouse
                 )
             }
 
@@ -706,12 +708,12 @@ private fun ChakraCard(
                                 modifier = Modifier.padding(vertical = 2.dp)
                             ) {
                                 Text(
-                                    "• ${aspect.planet.getLocalizedName(language)} ",
+                                    stringResource(StringKeyUIExtra.BULLET_SPACE) + aspect.planet.getLocalizedName(language),
                                     color = AppTheme.TextMuted,
                                     fontSize = 12.sp
                                 )
                                 Text(
-                                    "from ${aspect.fromSign.getLocalizedName(language)}",
+                                    stringResource(StringKeyUIExtra.LABEL_FROM_COLON) + aspect.fromSign.getLocalizedName(language),
                                     color = AppTheme.TextMuted,
                                     fontSize = 12.sp
                                 )
@@ -733,7 +735,7 @@ private fun ChakraCard(
                             Row(
                                 modifier = Modifier.padding(vertical = 2.dp)
                             ) {
-                                Text("• ", color = color)
+                                Text(stringResource(StringKeyUIExtra.BULLET_SPACE), color = color)
                                 Text(
                                     effect,
                                     color = AppTheme.TextMuted,
@@ -891,7 +893,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
             if (synthesis.commonThemes.isNotEmpty()) {
                 synthesis.commonThemes.forEach { theme ->
                     Row(modifier = Modifier.padding(vertical = 2.dp)) {
-                        Text("✓ ", color = AppTheme.SuccessColor)
+                        Text(stringResource(StringKeyUIExtra.CHECKMARK_SPACE), color = AppTheme.SuccessColor)
                         Text(
                             theme,
                             color = AppTheme.TextSecondary,
@@ -906,7 +908,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
                 Spacer(modifier = Modifier.height(8.dp))
                 synthesis.conflictingThemes.forEach { theme ->
                     Row(modifier = Modifier.padding(vertical = 2.dp)) {
-                        Text("⚠ ", color = AppTheme.WarningColor)
+                        Text(stringResource(StringKeyUIExtra.WARNING_SPACE), color = AppTheme.WarningColor)
                         Text(
                             theme,
                             color = AppTheme.TextSecondary,
@@ -1048,7 +1050,7 @@ private fun SignSmall(prefix: String, sign: ZodiacSign, color: Color) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            ":",
+            stringResource(StringKeyUICommon.COLON),
             fontSize = 10.sp,
             color = AppTheme.TextMuted
         )

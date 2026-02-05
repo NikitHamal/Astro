@@ -44,6 +44,8 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyRemedy
+import com.astro.storm.core.common.StringKeyUIExtra
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
@@ -94,7 +96,7 @@ fun RemediesScreen(
                 remediesResult = RemediesCalculator.calculateRemedies(chartData, lang)
             }
         } catch (e: Exception) {
-            errorMessage = e.message ?: "Unknown error"
+            errorMessage = e.message ?: StringResources.get(StringKeyUIExtra.REMEDIES_UNKNOWN_ERROR, lang)
         } finally {
             isLoading = false
         }
@@ -221,7 +223,7 @@ fun RemediesScreen(
                                     )
                                 },
                                 modifier = Modifier.semantics {
-                                    contentDescription = "$title tab"
+                                    contentDescription = StringResources.get(StringKeyUIExtra.REMEDIES_TAB_A11Y, language, title)
                                 }
                             )
                         }
@@ -561,11 +563,12 @@ private fun WeakPlanetsCard(weakPlanets: List<Planet>) {
 private fun PlanetChip(planet: Planet) {
     val planetColor = getPlanetColor(planet)
 
+    val attentionDesc = stringResource(StringKeyUIExtra.REMEDIES_REQUIRES_ATTENTION, planet.displayName)
     Surface(
         color = planetColor.copy(alpha = 0.15f),
         shape = RoundedCornerShape(20.dp),
         modifier = Modifier.semantics {
-            contentDescription = "${planet.displayName} requires attention"
+            contentDescription = attentionDesc
         }
     ) {
         Row(

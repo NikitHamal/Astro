@@ -3,6 +3,10 @@ package com.astro.storm.ui.components.agentic
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyUIExtra
+import com.astro.storm.core.common.StringResources
 
 /**
  * Centralized Tool Display Utilities
@@ -116,11 +120,19 @@ object ToolDisplayUtils {
      * @param durationMs Duration in milliseconds
      * @return Formatted duration string (e.g., "250ms", "2.3s", "1m 15s")
      */
-    fun formatDuration(durationMs: Long): String {
+    fun formatDuration(durationMs: Long, language: Language = Language.ENGLISH): String {
+        val msKey = StringResources.get(StringKeyUICommon.DURATION_MS, language)
+        val sKey = StringResources.get(StringKeyUICommon.DURATION_S, language)
+        val mKey = StringResources.get(StringKeyUICommon.DURATION_M, language)
+
         return when {
-            durationMs < 1000 -> "${durationMs}ms"
-            durationMs < 60000 -> "${durationMs / 1000}.${(durationMs % 1000) / 100}s"
-            else -> "${durationMs / 60000}m ${(durationMs % 60000) / 1000}s"
+            durationMs < 1000 -> "${durationMs}$msKey"
+            durationMs < 60000 -> {
+                val sec = durationMs / 1000
+                val dec = (durationMs % 1000) / 100
+                "${sec}.${dec}${sKey}"
+            }
+            else -> "${durationMs / 60000}$mKey " + "${(durationMs % 60000) / 1000}$sKey"
         }
     }
 
@@ -132,11 +144,13 @@ object ToolDisplayUtils {
      * @param durationMs Duration in milliseconds
      * @return Formatted duration string (e.g., "for 250ms", "for 2s", "for 1m 15s")
      */
-    fun formatReasoningDuration(durationMs: Long): String {
-        return when {
-            durationMs < 1000 -> "for ${durationMs}ms"
-            durationMs < 60000 -> "for ${durationMs / 1000}s"
-            else -> "for ${durationMs / 60000}m ${(durationMs % 60000) / 1000}s"
+    fun formatReasoningDuration(durationMs: Long, language: Language = Language.ENGLISH): String {
+        val forTemplate = StringResources.get(StringKeyUICommon.FOR, language)
+        val duration = formatDuration(durationMs, language)
+        return if (forTemplate.contains("%s")) {
+            forTemplate.replace("%s", duration)
+        } else {
+            "$forTemplate $duration"
         }
     }
 
@@ -153,15 +167,25 @@ object ToolDisplayUtils {
         completed: Int,
         executing: Int,
         failed: Int,
-        total: Int
+        total: Int,
+        language: Language = Language.ENGLISH
     ): String {
+        val completedKey = StringResources.get(StringKeyUICommon.COMPLETED, language)
+        val runningKey = StringResources.get(StringKeyUICommon.RUNNING, language)
+        val failedKey = StringResources.get(StringKeyUICommon.FAILED, language)
+        val toolsKey = StringResources.get(if (executing > 1 || completed > 1 || failed > 1) StringKeyUICommon.TOOL_PLURAL else StringKeyUICommon.TOOL_SINGULAR, language)
+
+        val slash = StringResources.get(StringKeyUIExtra.SLASH, language)
+        val comma = StringResources.get(StringKeyUIExtra.COMMA_SPACE, language)
+        val ellipsis = StringResources.get(StringKeyUIExtra.ELLIPSIS, language)
+
         return when {
-            executing > 0 && completed > 0 -> "$completed/$total completed, $executing running"
-            executing > 0 -> "$executing tool${if (executing > 1) "s" else ""} running..."
-            failed > 0 && completed > 0 -> "$completed completed, $failed failed"
-            failed > 0 -> "$failed tool${if (failed > 1) "s" else ""} failed"
-            completed == total && total > 0 -> "$completed tool${if (completed > 1) "s" else ""} completed"
-            else -> "$completed/$total completed"
+            executing > 0 && completed > 0 -> "$completed$slash$total $completedKey$comma$executing $runningKey"
+            executing > 0 -> "$executing $toolsKey $runningKey$ellipsis"
+            failed > 0 && completed > 0 -> "$completed $completedKey$comma$failed $failedKey"
+            failed > 0 -> "$failed $toolsKey $failedKey"
+            completed == total && total > 0 -> "$completed $toolsKey $completedKey"
+            else -> "$completed$slash$total $completedKey"
         }
     }
 

@@ -332,5 +332,7 @@ enum class StringKeyPrediction(override val en: String, override val ne: String)
     PRED_STRENGTH_PRACTICAL("Practical approach to life's challenges", "जीवनका चुनौतीहरूप्रति व्यावहारिक दृष्टिकोण"),
     
     PRED_LIFE_THEME_TEMPLATE("Path of %s", "%s को मार्ग"),
-    PRED_MAHADASHA_LABEL("%s Mahadasha", "%s महादशा")
+    PRED_MAHADASHA_LABEL("%s Mahadasha", "%s महादशा"),
+    PRED_PLANETARY("planetary", "ग्रहीय"),
+    PRED_YOUR_CHART("your chart", "तपाईंको कुण्डली")
 }

@@ -333,6 +333,16 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     BS_YEAR("Year", "वर्ष"),
     BS_MONTH("Month", "महिना"),
     BS_DAY("Day", "दिन"),
+    BS_GO_TO_TODAY("Go to today", "आज मा जानुहोस्"),
+    BS_TODAY("Today", "आज"),
+    BS_PREVIOUS_MONTH("Previous month", "अघिल्लो महिना"),
+    BS_NEXT_MONTH("Next month", "अर्को महिना"),
+    BS_YEAR_SELECTOR_DESC("Year selector, current: %s", "वर्ष छान्नुहोस्, हाल: %s"),
+    BS_MONTH_SELECTOR_DESC("Month selector, current: %s", "महिना छान्नुहोस्, हाल: %s"),
+    BS_DATE_SELECTOR_DESC("Date selector. Current date: %s", "मिति छान्नुहोस्। हालको मिति: %s"),
+    BS_SELECTED(", selected", ", चयन गरिएको"),
+    BS_TODAY_LABEL(", today", ", आज"),
+    BS_SATURDAY_LABEL(", Saturday", ", शनिबार"),
 
     // BS Months
     BS_MONTH_BAISHAKH("Baishakh", "बैशाख"),

@@ -35,7 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyPrediction
 import com.astro.storm.data.localization.currentLanguage
@@ -1201,13 +1203,13 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
                         if (period.bestFor.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                "${StringResources.get(StringKey.PREDICTIONS_BEST_FOR, language)}:",
+                                StringResources.get(StringKey.PREDICTIONS_BEST_FOR, language) + stringResource(StringKeyUICommon.COLON),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
                             period.bestFor.forEach { item ->
                                 Row {
-                                    Text("• ", color = AppTheme.SuccessColor)
+                                    Text(stringResource(StringKeyUICommon.BULLET) + " ", color = AppTheme.SuccessColor)
                                     Text(
                                         item,
                                         style = MaterialTheme.typography.bodySmall,
@@ -1276,13 +1278,13 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
                         if (period.avoid.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                "${StringResources.get(StringKey.PREDICTIONS_CAUTION_FOR, language)}:",
+                                StringResources.get(StringKey.PREDICTIONS_CAUTION_FOR, language) + stringResource(StringKeyUICommon.COLON),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
                             period.avoid.forEach { item ->
                                 Row {
-                                    Text("• ", color = AppTheme.WarningColor)
+                                    Text(stringResource(StringKeyUICommon.BULLET) + " ", color = AppTheme.WarningColor)
                                     Text(
                                         item,
                                         style = MaterialTheme.typography.bodySmall,
@@ -1812,8 +1814,8 @@ private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.Da
 
 private fun calculateRemedies(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): List<String> {
     val currentPlanet = dashaTimeline.currentMahadasha?.planet
-    val planetName = currentPlanet?.getLocalizedName(language) ?: "planetary"
-    val planetNameOrChart = currentPlanet?.getLocalizedName(language) ?: "your chart"
+    val planetName = currentPlanet?.getLocalizedName(language) ?: StringResources.get(StringKeyPrediction.PRED_PLANETARY, language)
+    val planetNameOrChart = currentPlanet?.getLocalizedName(language) ?: StringResources.get(StringKeyPrediction.PRED_YOUR_CHART, language)
 
     return listOf(
         StringResources.get(StringKeyPrediction.PRED_REMEDY_MANTRA, language, planetName),
