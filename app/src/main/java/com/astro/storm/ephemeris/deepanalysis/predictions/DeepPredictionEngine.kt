@@ -42,7 +42,7 @@ object DeepPredictionEngine {
                 planet = it.planet,
                 startDate = it.startDate.toLocalDate(),
                 endDate = it.endDate.toLocalDate(),
-                overallTheme = PredictionTextGenerator.getDashaTheme(it.planet),
+                overallTheme = PredictionTextGenerator.getDashaTheme(it.planet, context),
                 lifeAreaEffects = getLifeAreaEffectsForPlanet(it.planet, context),
                 strengths = getDashaStrengths(it.planet, context),
                 challenges = getDashaChallenges(it.planet, context),
@@ -55,7 +55,7 @@ object DeepPredictionEngine {
                 planet = it.planet,
                 startDate = it.startDate.toLocalDate(),
                 endDate = it.endDate.toLocalDate(),
-                refinedTheme = PredictionTextGenerator.getAntardashaTheme(current?.planet ?: it.planet, it.planet),
+                refinedTheme = PredictionTextGenerator.getAntardashaTheme(current?.planet ?: it.planet, it.planet, context),
                 shortTermEffects = getShortTermEffects(it.planet, context),
                 activatedYogas = getActivatedYogas(current?.planet ?: it.planet, it.planet, context)
             )
@@ -276,10 +276,11 @@ object DeepPredictionEngine {
         
         return YearlyPrediction(
             year = year,
-            overallTheme = LocalizedParagraph(
-                "Year $year brings ${dasha?.planet?.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH) ?: "planetary"} energy themes to the forefront.",
-                "वर्ष $year ले ${dasha?.planet?.getLocalizedName(com.astro.storm.core.common.Language.NEPALI) ?: "ग्रहीय"} ऊर्जा विषयहरूलाई अगाडि ल्याउँछ।"
-            ),
+            overallTheme = dasha?.let { PredictionTextGenerator.getDashaTheme(it.planet, context) }
+                ?: LocalizedParagraph(
+                    "Year $year highlights planetary themes for growth.",
+                    "वर्ष $year ले ग्रहगत विषयहरूलाई प्रमुख बनाउँछ।"
+                ),
             overallRating = context.getPlanetStrengthLevel(dasha?.planet ?: Planet.JUPITER),
             careerOutlook = generateAreaOutlook(LifeArea.CAREER, context),
             relationshipOutlook = generateAreaOutlook(LifeArea.RELATIONSHIP, context),
@@ -304,10 +305,10 @@ object DeepPredictionEngine {
         return LifeAreaOutlook(
             area = area,
             rating = strength,
-            summary = PredictionTextGenerator.getAreaOutlookSummary(area, strength),
-            opportunities = PredictionTextGenerator.getAreaOpportunities(area, strength),
-            challenges = PredictionTextGenerator.getAreaChallenges(area, strength),
-            advice = PredictionTextGenerator.getAreaAdvice(area, strength)
+            summary = PredictionTextGenerator.getAreaOutlookSummary(area, strength, context),
+            opportunities = PredictionTextGenerator.getAreaOpportunities(area, strength, context),
+            challenges = PredictionTextGenerator.getAreaChallenges(area, strength, context),
+            advice = PredictionTextGenerator.getAreaAdvice(area, strength, context)
         )
     }
     
@@ -397,16 +398,30 @@ object DeepPredictionEngine {
     
     private fun getYogaActivationTimeline(context: AnalysisContext): List<YogaActivationEvent> {
         return context.yogaAnalysis.allYogas.take(5).map { yoga ->
+            val sign = yoga.planets.firstOrNull()?.let { context.getPlanetPosition(it)?.sign } ?: context.ascendantSign
+            val category = when (yoga.category) {
+                com.astro.storm.ephemeris.yoga.YogaCategory.RAJA_YOGA -> com.astro.storm.data.templates.YogaCategory.RAJA
+                com.astro.storm.ephemeris.yoga.YogaCategory.DHANA_YOGA -> com.astro.storm.data.templates.YogaCategory.DHANA
+                com.astro.storm.ephemeris.yoga.YogaCategory.MAHAPURUSHA_YOGA -> com.astro.storm.data.templates.YogaCategory.MAHAPURUSHA
+                com.astro.storm.ephemeris.yoga.YogaCategory.NABHASA_YOGA -> com.astro.storm.data.templates.YogaCategory.NABHASA
+                com.astro.storm.ephemeris.yoga.YogaCategory.NEGATIVE_YOGA -> com.astro.storm.data.templates.YogaCategory.ARISHTA
+                com.astro.storm.ephemeris.yoga.YogaCategory.BHAVA_YOGA -> com.astro.storm.data.templates.YogaCategory.BHAVA
+                com.astro.storm.ephemeris.yoga.YogaCategory.CONJUNCTION_YOGA -> com.astro.storm.data.templates.YogaCategory.PARIVARTANA
+                else -> com.astro.storm.data.templates.YogaCategory.GENERAL
+            }
+            val yogaEffect = com.astro.storm.data.templates.TemplateSelector.selectYogaEffect(
+                category = category,
+                sign = sign,
+                strength = yoga.strength.toStrengthLevel()
+            )
+
             YogaActivationEvent(
                 yogaName = yoga.name,
                 activationPeriod = LocalizedParagraph(
                     "During ${yoga.planets.firstOrNull()?.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH) ?: "planetary"} dasha periods.",
                     "${yoga.planets.firstOrNull()?.getLocalizedName(com.astro.storm.core.common.Language.NEPALI) ?: "ग्रहीय"} दशा अवधिहरूमा।"
                 ),
-                expectedResults = LocalizedParagraph(
-                    "${yoga.name} brings ${yoga.category.name.lowercase().replace("_", " ")} results.",
-                    "${yoga.name}ले ${yoga.category.name} परिणामहरू ल्याउँछ।"
-                ),
+                expectedResults = yogaEffect,
                 activationStrength = yoga.strength.toStrengthLevel()
             )
         }

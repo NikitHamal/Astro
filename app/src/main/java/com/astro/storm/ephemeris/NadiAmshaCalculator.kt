@@ -1,13 +1,13 @@
 package com.astro.storm.ephemeris
 
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.StringKeyAdvanced
-import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.data.templates.TemplateDatabase
+import com.astro.storm.data.templates.TemplateSelector
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.abs
@@ -47,6 +47,8 @@ object NadiAmshaCalculator {
         val nadiLord: Planet, // Ruler of the Nadi sign
         val description: String,
         val descriptionNe: String,
+        val prediction: String,
+        val predictionNe: String,
         val energyType: NadiEnergyType
     )
 
@@ -125,6 +127,11 @@ object NadiAmshaCalculator {
         // Let's use simple odd/even nadi number mapping for variety
         val energyType = if (nadiNumber % 2 != 0) NadiAmshaCalculator.NadiEnergyType.MALE else NadiAmshaCalculator.NadiEnergyType.FEMALE
 
+        val nadiPrediction = TemplateSelector.selectNadiPrediction(sign, nadiNumber)
+        val (startDeg, endDeg) = TemplateDatabase.nadiDegreeRange(sign, nadiNumber)
+        val degreeRangeEn = "${TemplateDatabase.formatDegree(startDeg)}°-${TemplateDatabase.formatDegree(endDeg)}°"
+        val degreeRangeNe = "${TemplateDatabase.formatDegree(startDeg)}°-${TemplateDatabase.formatDegree(endDeg)}°"
+
         return NadiPosition(
             planet = planet,
             startSign = sign,
@@ -132,8 +139,10 @@ object NadiAmshaCalculator {
             nadiNumber = nadiNumber,
             nadiSign = nadiSign,
             nadiLord = nadiLord,
-            description = "Nadi #$nadiNumber in ${sign.displayName}", // Placeholder for specific Nadi name
-            descriptionNe = "${sign.getLocalizedName(Language.NEPALI)} मा नाडी #$nadiNumber",
+            description = "Nadi #$nadiNumber (${sign.getLocalizedName(Language.ENGLISH)} $degreeRangeEn) ruled by ${nadiLord.getLocalizedName(Language.ENGLISH)}",
+            descriptionNe = "${sign.getLocalizedName(Language.NEPALI)} $degreeRangeNe मा नाडी #$nadiNumber, स्वामी ${nadiLord.getLocalizedName(Language.NEPALI)}",
+            prediction = nadiPrediction.en,
+            predictionNe = nadiPrediction.ne,
             energyType = energyType
         )
     }
@@ -186,8 +195,4 @@ object NadiAmshaCalculator {
         return candidates
     }
 
-    // Reference data for Nadi names could be added here in future
-    // private val NADI_NAMES = listOf(...)
 }
-
-

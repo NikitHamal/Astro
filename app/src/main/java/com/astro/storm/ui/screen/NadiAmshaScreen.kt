@@ -249,10 +249,25 @@ private fun NadiSummaryCard(result: NadiAmshaResult) {
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
-            // Example summary logic
+            val lang = LocalLanguage.current
+            val ascPrediction = if (lang == com.astro.storm.core.common.Language.NEPALI) result.ascendantNadi.predictionNe else result.ascendantNadi.prediction
+            val ascDescription = if (lang == com.astro.storm.core.common.Language.NEPALI) result.ascendantNadi.descriptionNe else result.ascendantNadi.description
+
             Text(
-                "Ascendant Nadi is ruled by ${result.ascendantNadi.nadiLord.getLocalizedName(LocalLanguage.current)}. " +
-                "This indicates ${result.ascendantNadi.energyType.displayName} dominance in the chart's finest division.",
+                ascDescription,
+                color = AppTheme.TextSecondary,
+                fontSize = 13.sp,
+                lineHeight = 19.sp
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                stringResource(StringKeyAdvanced.NADI_PREDICTION_TITLE),
+                fontWeight = FontWeight.Medium,
+                color = AppTheme.TextPrimary
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                ascPrediction,
                 color = AppTheme.TextSecondary,
                 fontSize = 14.sp,
                 lineHeight = 20.sp
@@ -295,6 +310,14 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
                     "Nadi #${position.nadiNumber} (${position.nadiSign.getLocalizedName(LocalLanguage.current)})",
                     fontSize = 12.sp,
                     color = AppTheme.TextSecondary
+                )
+                val lang = LocalLanguage.current
+                val prediction = if (lang == com.astro.storm.core.common.Language.NEPALI) position.predictionNe else position.prediction
+                Text(
+                    prediction,
+                    fontSize = 12.sp,
+                    color = AppTheme.TextMuted,
+                    maxLines = 2
                 )
             }
             Text(
@@ -371,4 +394,3 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
         }
     }
 }
-

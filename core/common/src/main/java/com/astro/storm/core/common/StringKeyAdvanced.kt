@@ -248,6 +248,7 @@ enum class StringKeyAdvanced(override val en: String, override val ne: String) :
     NADI_NUMBER("Nadi Number (1-150)", "नाडी नम्बर (१-१५०)"),
     NADI_LORD("Nadi Lord", "नाडी स्वामी"),
     NADI_SUB_LORD("Nadi Sub-Lord", "नाडी उप-स्वामी"),
+    NADI_PREDICTION_TITLE("Nadi Prediction", "नाडी भविष्यवाणी"),
 
     // Timing
     NADI_PRECISE_TIMING("Precise Event Timing", "सटीक घटना समय"),
