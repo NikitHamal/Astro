@@ -55,7 +55,6 @@ fun NadiAmshaScreen(
 
     val uiState by viewModel.uiState.collectAsState()
     val selectedTab by viewModel.selectedTab.collectAsState()
-    val nadiAnalysis by viewModel.nadiAnalysis.collectAsState()
     val language = LocalLanguage.current
     var showInfoDialog by remember { mutableStateOf(false) }
 
@@ -120,7 +119,6 @@ fun NadiAmshaScreen(
                 is NadiAmshaUiState.Success -> {
                     NadiAmshaContent(
                         result = state.result,
-                        analysis = nadiAnalysis,
                         selectedTab = selectedTab,
                         onTabSelected = { viewModel.setSelectedTab(it) }
                     )
@@ -147,7 +145,6 @@ fun NadiAmshaScreen(
 @Composable
 private fun NadiAmshaContent(
     result: NadiAmshaResult,
-    analysis: com.astro.storm.ephemeris.nadi.NadiAmshaAnalyzer.NadiAnalysis?,
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
@@ -172,8 +169,8 @@ private fun NadiAmshaContent(
         ) {
             when (selectedTab) {
                 0 -> {
-                    item { NadiLagnaCard(result.ascendantNadi, analysis) }
-                    item { NadiSummaryCard(result, analysis) }
+                    item { NadiLagnaCard(result.ascendantNadi) }
+                    item { NadiSummaryCard(result) }
                 }
                 1 -> {
                     items(result.planetNadis) { position ->
@@ -181,7 +178,7 @@ private fun NadiAmshaContent(
                     }
                 }
                 2 -> {
-                    item { RectificationHeader(result.chart, analysis) }
+                    item { RectificationHeader(result.chart) }
                     items(result.rectificationCandidates) { candidate ->
                         RectificationCandidateCard(candidate)
                     }
@@ -192,10 +189,7 @@ private fun NadiAmshaContent(
 }
 
 @Composable
-private fun NadiLagnaCard(
-    nadi: NadiAmshaCalculator.NadiPosition,
-    analysis: com.astro.storm.ephemeris.nadi.NadiAmshaAnalyzer.NadiAnalysis?
-) {
+private fun NadiLagnaCard(nadi: NadiAmshaCalculator.NadiPosition) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)),
@@ -212,12 +206,12 @@ private fun NadiLagnaCard(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
-                        stringResource(StringKeyAdvanced.NADI_NAME),
+                        stringResource(StringKeyAdvanced.NADI_LORD),
                         fontSize = 12.sp,
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        analysis?.nadiName ?: "Nadi #${nadi.nadiNumber}",
+                        nadi.nadiLord.getLocalizedName(LocalLanguage.current),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -227,7 +221,7 @@ private fun NadiLagnaCard(
             Spacer(modifier = Modifier.height(16.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 NadiInfoItem(stringResource(StringKeyAdvanced.NADI_NUMBER), "#${nadi.nadiNumber}")
-                NadiInfoItem(stringResource(StringKeyAdvanced.NADI_LORD), nadi.nadiLord.getLocalizedName(LocalLanguage.current))
+                NadiInfoItem(stringResource(StringKeyAdvanced.KAKSHYA_SIGN), nadi.nadiSign.getLocalizedName(LocalLanguage.current))
             }
         }
     }
@@ -242,11 +236,7 @@ private fun NadiInfoItem(label: String, value: String) {
 }
 
 @Composable
-private fun NadiSummaryCard(
-    result: NadiAmshaResult,
-    analysis: com.astro.storm.ephemeris.nadi.NadiAmshaAnalyzer.NadiAnalysis?
-) {
-    val language = LocalLanguage.current
+private fun NadiSummaryCard(result: NadiAmshaResult) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -259,15 +249,9 @@ private fun NadiSummaryCard(
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
-            
-            val prediction = if (language == com.astro.storm.core.common.Language.NEPALI) {
-                analysis?.predictionNe
-            } else {
-                analysis?.predictionEn
-            }
-            
+            // Example summary logic
             Text(
-                prediction ?: "Ascendant Nadi is ruled by ${result.ascendantNadi.nadiLord.getLocalizedName(language)}. " +
+                "Ascendant Nadi is ruled by ${result.ascendantNadi.nadiLord.getLocalizedName(LocalLanguage.current)}. " +
                 "This indicates ${result.ascendantNadi.energyType.displayName} dominance in the chart's finest division.",
                 color = AppTheme.TextSecondary,
                 fontSize = 14.sp,
@@ -324,11 +308,7 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
 }
 
 @Composable
-private fun RectificationHeader(
-    chart: VedicChart,
-    analysis: com.astro.storm.ephemeris.nadi.NadiAmshaAnalyzer.NadiAnalysis?
-) {
-    val language = LocalLanguage.current
+private fun RectificationHeader(chart: VedicChart) {
     Column {
         Text(
             stringResource(StringKeyAdvanced.NADI_RECTIFICATION_TITLE),
@@ -341,35 +321,6 @@ private fun RectificationHeader(
             fontSize = 12.sp,
             color = AppTheme.TextMuted
         )
-        Spacer(modifier = Modifier.height(12.dp))
-        
-        Surface(
-            color = AppTheme.AccentPrimary.copy(alpha = 0.05f),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.Top) {
-                Icon(
-                    Icons.Filled.History,
-                    contentDescription = null,
-                    tint = AppTheme.AccentPrimary,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                val advice = if (language == com.astro.storm.core.common.Language.NEPALI) {
-                    analysis?.rectificationAdviceNe
-                } else {
-                    analysis?.rectificationAdviceEn
-                }
-                Text(
-                    advice ?: stringResource(StringKeyAdvanced.NADI_RECTIFICATION_DESC),
-                    fontSize = 13.sp,
-                    color = AppTheme.TextPrimary,
-                    lineHeight = 18.sp
-                )
-            }
-        }
-        
         Spacer(modifier = Modifier.height(16.dp))
     }
 }

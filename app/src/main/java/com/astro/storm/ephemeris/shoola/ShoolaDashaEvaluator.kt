@@ -340,7 +340,7 @@ object ShoolaDashaEvaluator {
                     challengingEn.add("Saturn in dusthana (house $house)")
                     challengingNe.add("शनि दुःस्थानमा (भाव $house)")
                 }
-                else -> Unit
+                else -> {}
             }
         }
 
@@ -397,7 +397,6 @@ object ShoolaDashaEvaluator {
                     weight = -12.0
                 ))
             }
-            else -> Unit
         }
 
         return FactorResult(supportingEn, supportingNe, challengingEn, challengingNe)
@@ -464,7 +463,6 @@ object ShoolaDashaEvaluator {
                     weight = -10.0
                 ))
             }
-            else -> Unit
         }
 
         return FactorResult(supportingEn, supportingNe, challengingEn, challengingNe)
