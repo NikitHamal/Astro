@@ -38,7 +38,9 @@ class DailyTransitCalculator @Inject constructor(
                 dateTime = date.atTime(12, 0),
                 latitude = chart.birthData.latitude,
                 longitude = chart.birthData.longitude,
-                timezone = chart.birthData.timezone
+            timezone = chart.birthData.timezone,
+            location = chart.birthData.location,
+            gender = chart.birthData.gender
             )
         )
 
