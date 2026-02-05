@@ -340,6 +340,7 @@ object ShoolaDashaEvaluator {
                     challengingEn.add("Saturn in dusthana (house $house)")
                     challengingNe.add("शनि दुःस्थानमा (भाव $house)")
                 }
+                else -> {}
             }
         }
 

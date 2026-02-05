@@ -145,7 +145,7 @@ class DeepPredictionEngine @Inject constructor(
     private fun getShortTermEffects(planet: Planet, context: AnalysisContext): List<LocalizedParagraph> {
         return listOf(
             PredictionTextGenerator.getShortTermEffect(planet, LifeArea.CAREER, context),
-            PredictionTextGenerator.getShortTermEffect(planet, LifeArea.RELATIONSHIP, context),
+            PredictionTextGenerator.getShortTermEffect(planet, LifeArea.RELATIONSHIPS, context),
             PredictionTextGenerator.getShortTermEffect(planet, LifeArea.HEALTH, context)
         )
     }
@@ -271,8 +271,8 @@ class DeepPredictionEngine @Inject constructor(
     private fun getJupiterFavorableAreas(house: Int): List<LifeArea> {
         return when (house) {
             1, 5, 9 -> listOf(LifeArea.GENERAL, LifeArea.EDUCATION, LifeArea.SPIRITUAL)
-            2, 11 -> listOf(LifeArea.WEALTH, LifeArea.CAREER)
-            7 -> listOf(LifeArea.RELATIONSHIP)
+            2, 11 -> listOf(LifeArea.FINANCE, LifeArea.CAREER)
+            7 -> listOf(LifeArea.RELATIONSHIPS)
             4 -> listOf(LifeArea.HEALTH, LifeArea.GENERAL)
             else -> listOf(LifeArea.GENERAL)
         }
@@ -308,22 +308,31 @@ class DeepPredictionEngine @Inject constructor(
             ),
             overallRating = context.getPlanetStrengthLevel(dasha?.planet ?: Planet.JUPITER),
             careerOutlook = generateAreaOutlook(LifeArea.CAREER, context),
-            relationshipOutlook = generateAreaOutlook(LifeArea.RELATIONSHIP, context),
+            relationshipOutlook = generateAreaOutlook(LifeArea.RELATIONSHIPS, context),
             healthOutlook = generateAreaOutlook(LifeArea.HEALTH, context),
-            wealthOutlook = generateAreaOutlook(LifeArea.WEALTH, context),
+            wealthOutlook = generateAreaOutlook(LifeArea.FINANCE, context),
             keyMonths = emptyList(),
             yearlyAdvice = PredictionTextGenerator.getYearlyAdvice(dasha?.planet ?: Planet.JUPITER, context)
         )
     }
     
     private fun generateAreaOutlook(area: LifeArea, context: AnalysisContext): LifeAreaOutlook {
+        val strength = when (area) {
+            LifeArea.CAREER -> context.getHouseStrength(10)
+            LifeArea.RELATIONSHIPS -> context.getHouseStrength(7)
+            LifeArea.HEALTH -> context.getPlanetStrengthLevel(context.ascendantLord)
+            LifeArea.FINANCE -> context.getHouseStrength(2)
+            LifeArea.EDUCATION -> context.getHouseStrength(5)
+            LifeArea.SPIRITUAL -> context.getHouseStrength(9)
+            else -> StrengthLevel.MODERATE
+        }
         return LifeAreaOutlook(
             area = area,
-            rating = StrengthLevel.MODERATE,
-            summary = PredictionTextGenerator.getAreaOutlookSummary(area, StrengthLevel.MODERATE),
-            opportunities = PredictionTextGenerator.getAreaOpportunities(area, StrengthLevel.MODERATE),
-            challenges = PredictionTextGenerator.getAreaChallenges(area, StrengthLevel.MODERATE),
-            advice = PredictionTextGenerator.getAreaAdvice(area, StrengthLevel.MODERATE)
+            rating = strength,
+            summary = PredictionTextGenerator.getAreaOutlookSummary(area, strength),
+            opportunities = PredictionTextGenerator.getAreaOpportunities(area, strength),
+            challenges = PredictionTextGenerator.getAreaChallenges(area, strength),
+            advice = PredictionTextGenerator.getAreaAdvice(area, strength)
         )
     }
     

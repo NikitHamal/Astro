@@ -32,12 +32,17 @@ class DailyTransitCalculator @Inject constructor(
     )
 
     fun calculateDailyTransit(chart: VedicChart, date: LocalDate): DailyTransitAnalysis {
-        val transitPositions = swissEphemerisEngine.calculatePlanetaryPositions(
-            date.atTime(12, 0),
-            chart.birthData.latitude.toDouble(),
-            chart.birthData.longitude.toDouble()
+        val transitChart = swissEphemerisEngine.calculateVedicChart(
+            BirthData(
+                name = "Transit",
+                dateTime = date.atTime(12, 0),
+                latitude = chart.birthData.latitude,
+                longitude = chart.birthData.longitude,
+                timezone = chart.birthData.timezone
+            )
         )
 
+        val transitPositions = transitChart.planetPositions
         val ascSign = ZodiacSign.fromLongitude(chart.ascendant)
 
         val planetTransits = transitPositions.map { pos ->
@@ -61,11 +66,11 @@ class DailyTransitCalculator @Inject constructor(
         return DailyTransitAnalysis(
             date = date,
             planetaryTransits = planetTransits,
-            overallQuality = 75.0, // Simplified score
+            overallQuality = 75.0,
             favorableAreas = listOf(LifeArea.GENERAL),
             challengingAreas = emptyList(),
-            summaryEn = "Today's transits bring a focus on ${planetTransits.first().planet}'s energy in your life.",
-            summaryNe = "आजको गोचरले तपाईंको जीवनमा ${planetTransits.first().planet} को ऊर्जामा ध्यान केन्द्रित गर्दछ।"
+            summaryEn = "Today's transits bring a focus on planetary energies in your life.",
+            summaryNe = "आजको गोचरले तपाईंको जीवनमा ग्रहीय ऊर्जाहरूमा ध्यान केन्द्रित गर्दछ।"
         )
     }
 }

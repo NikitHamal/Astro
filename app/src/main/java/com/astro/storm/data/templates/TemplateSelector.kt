@@ -1,6 +1,7 @@
 package com.astro.storm.data.templates
 
 import com.astro.storm.core.model.*
+import com.astro.storm.ephemeris.deepanalysis.PlanetaryDignityLevel
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -41,15 +42,18 @@ class TemplateSelector @Inject constructor(
 
             // Match degree range
             if (degree != null) {
-                if (cond.degreeMin != null && degree < cond.degreeMin) return@filter false
-                if (cond.degreeMax != null && degree > cond.degreeMax) return@filter false
+                val dMin = cond.degreeMin
+                val dMax = cond.degreeMax
+                if (dMin != null && degree < dMin) return@filter false
+                if (dMax != null && degree > dMax) return@filter false
             }
 
             // Match dignity
             if (cond.dignity != null && cond.dignity != dignity?.name) return@filter false
 
             // Match Shadbala
-            if (cond.minShadbala != null && minShadbala != null && minShadbala < cond.minShadbala) return@filter false
+            val mShadbala = cond.minShadbala
+            if (mShadbala != null && minShadbala != null && minShadbala < mShadbala) return@filter false
 
             // Match Ascendant
             if (cond.ascendant != null && cond.ascendant != ascendant?.name) return@filter false

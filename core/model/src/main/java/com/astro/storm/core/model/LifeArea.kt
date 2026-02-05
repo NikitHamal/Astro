@@ -13,6 +13,7 @@ import com.astro.storm.core.common.StringResources
  * Common Life Areas for Astrological Analysis
  */
 enum class LifeArea(val stringKey: com.astro.storm.core.common.StringKeyInterface) {
+    GENERAL(StringKeyRemedy.REMEDY_GENERAL_TITLE),
     CAREER(StringKeyRemedy.LIFE_AREA_CAREER),
     RELATIONSHIPS(StringKeyRemedy.LIFE_AREA_RELATIONSHIPS),
     HEALTH(StringKeyRemedy.LIFE_AREA_HEALTH),
@@ -26,6 +27,7 @@ enum class LifeArea(val stringKey: com.astro.storm.core.common.StringKeyInterfac
     fun getLocalizedName(language: Language): String = StringResources.get(stringKey, language)
 
     val icon: ImageVector get() = when (this) {
+        GENERAL -> Icons.Outlined.Public
         CAREER -> Icons.Outlined.Work
         RELATIONSHIPS -> Icons.Outlined.Favorite
         HEALTH -> Icons.Outlined.Healing
@@ -38,6 +40,7 @@ enum class LifeArea(val stringKey: com.astro.storm.core.common.StringKeyInterfac
     }
 
     val color: Color get() = when (this) {
+        GENERAL -> Color(0xFF9E9E9E)
         CAREER -> Color(0xFF2196F3)
         RELATIONSHIPS -> Color(0xFFE91E63)
         HEALTH -> Color(0xFF4CAF50)
