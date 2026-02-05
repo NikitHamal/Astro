@@ -3,6 +3,7 @@ import java.net.URL
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -54,6 +55,7 @@ val downloadSwissEph = tasks.register("downloadSwissEph") {
 
 dependencies {
     implementation(project(":core:common"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
     implementation("androidx.core:core-ktx:1.12.0")
 
     // Compose

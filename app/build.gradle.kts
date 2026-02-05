@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -126,6 +127,9 @@ dependencies {
 
     // Permissions
     implementation("com.google.accompanist:accompanist-permissions:0.34.0")
+
+    // Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.51")
