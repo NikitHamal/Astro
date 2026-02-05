@@ -197,8 +197,9 @@ data class ToolExecution(
     val duration: Long
         get() = (endTime ?: System.currentTimeMillis()) - startTime
 
-    val durationDisplay: String
-        get() = ToolDisplayUtils.formatDuration(duration, com.astro.storm.data.localization.currentLanguage())
+    fun getDurationDisplay(language: com.astro.storm.core.common.Language): String {
+        return ToolDisplayUtils.formatDuration(duration, language)
+    }
 }
 
 enum class ToolExecutionStatus {

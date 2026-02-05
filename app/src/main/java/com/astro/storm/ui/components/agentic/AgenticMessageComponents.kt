@@ -742,7 +742,7 @@ private fun StatusIndicatorInline(aiStatus: AiStatus) {
         is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION) to Icons.Outlined.Psychology
         is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_APPLYING_VEDIC) to Icons.Outlined.Lightbulb
         is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName)) to Icons.Outlined.Build
-        is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_USING_TOOLS, tools.take(3).joinToString(stringResource(StringKeyUIExtra.COMMA_SPACE)) { ToolDisplayUtils.formatToolName(it) }) to Icons.Outlined.Build
+        is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_USING_TOOLS, aiStatus.tools.take(3).joinToString(stringResource(StringKeyUIExtra.COMMA_SPACE)) { ToolDisplayUtils.formatToolName(it) }) to Icons.Outlined.Build
         is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING) to Icons.Outlined.Edit
     }
 

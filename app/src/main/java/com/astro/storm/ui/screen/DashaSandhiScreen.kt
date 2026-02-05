@@ -169,7 +169,7 @@ fun DashaSandhiScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(com.astro.storm.core.common.StringKeyAnalysis.INFO_TITLE),
+                            contentDescription = stringResource(StringKeyUIExtra.SANDHI_ABOUT_TITLE),
                             tint = AppTheme.TextSecondary
                         )
                     }

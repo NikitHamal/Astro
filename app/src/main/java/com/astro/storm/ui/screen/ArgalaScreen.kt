@@ -1399,7 +1399,7 @@ private fun PlanetArgalaDetailCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKeyMatch.TRANSIT_HOUSE_LABEL) + " $planetHouse",
+                            stringResource(StringKey.TRANSIT_HOUSE_LABEL) + " $planetHouse",
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextMuted
                         )

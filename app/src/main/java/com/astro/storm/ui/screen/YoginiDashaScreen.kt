@@ -276,6 +276,7 @@ private fun TopBarSubtitle(
     chartName: String,
     periodInfo: CurrentYoginiPeriodInfo
 ) {
+    val language = LocalLanguage.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()

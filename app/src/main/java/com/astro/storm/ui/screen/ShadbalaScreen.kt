@@ -327,7 +327,7 @@ private fun ShadbalaOverviewTab(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = stringResource(com.astro.storm.core.common.StringKeyUICommon.PERCENT),
+                            text = stringResource(StringKeyUIExtra.PERCENT),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
