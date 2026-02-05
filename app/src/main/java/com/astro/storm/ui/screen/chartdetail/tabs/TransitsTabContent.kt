@@ -82,7 +82,8 @@ fun TransitsTabContent(chart: VedicChart) {
         val analyzer = TransitAnalyzer(
             context = context,
             localizationManager = entryPoint.localizationManager(),
-            ephemerisEngine = entryPoint.ephemerisEngine()
+            ephemerisEngine = entryPoint.ephemerisEngine(),
+            templateSelector = entryPoint.templateSelector()
         )
         try {
             analyzer.analyzeTransits(chart, language = language)

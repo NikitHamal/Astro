@@ -1154,7 +1154,8 @@ class GetTransitsTool : AstrologyTool {
             val transitCalculator = TransitCalculatorWrapper(
                 context.context,
                 context.localizationManager,
-                context.ephemerisEngine
+                context.ephemerisEngine,
+                context.templateSelector
             )
             val transits = transitCalculator.calculateCurrentTransits(chart)
             val data = JSONObject().apply {

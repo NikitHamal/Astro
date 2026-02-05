@@ -236,6 +236,8 @@ enum class StringKeyAdvanced(override val en: String, override val ne: String) :
     NADI_TAB_RECTIFICATION("Rectification", "शुद्धिकरण"),
 
     // Nadi Types
+    NADI_NAME("Nadi Name", "नाडीको नाम"),
+    NADI_RECTIFICATION_DESC("Detailed rectification guidance based on your specific Nadi Amsha degree and traditional markers.", "तपाईंको विशिष्ट नाडी अंश अंश र परम्परागत सूचकहरूको आधारमा विस्तृत शुद्धिकरण मार्गदर्शन।"),
     NADI_ADI("Adi Nadi", "आदि नाडी"),
     NADI_MADHYA("Madhya Nadi", "मध्य नाडी"),
     NADI_ANTYA("Antya Nadi", "अन्त्य नाडी"),

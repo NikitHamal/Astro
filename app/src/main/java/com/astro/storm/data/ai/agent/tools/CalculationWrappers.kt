@@ -314,7 +314,8 @@ class PanchangaCalculatorWrapper(private val context: android.content.Context) {
 class TransitCalculatorWrapper(
     private val context: android.content.Context,
     private val localizationManager: com.astro.storm.data.localization.LocalizationManager,
-    private val ephemerisEngine: com.astro.storm.ephemeris.SwissEphemerisEngine
+    private val ephemerisEngine: com.astro.storm.ephemeris.SwissEphemerisEngine,
+    private val templateSelector: com.astro.storm.data.templates.TemplateSelector
 ) {
 
     data class TransitResult(
@@ -334,7 +335,8 @@ class TransitCalculatorWrapper(
             val analyzer = com.astro.storm.ephemeris.TransitAnalyzer(
                 context = context,
                 localizationManager = localizationManager,
-                ephemerisEngine = ephemerisEngine
+                ephemerisEngine = ephemerisEngine,
+                templateSelector = templateSelector
             )
             val analysis = analyzer.analyzeTransits(chart)
 

@@ -23,7 +23,8 @@ class AstrologyToolRegistry @Inject constructor(
     @ApplicationContext private val context: Context,
     private val astrologySettingsManager: AstrologySettingsManager,
     private val localizationManager: LocalizationManager,
-    private val ephemerisEngine: SwissEphemerisEngine
+    private val ephemerisEngine: SwissEphemerisEngine,
+    private val templateSelector: com.astro.storm.data.templates.TemplateSelector
 ) {
     private val tools = mutableMapOf<String, AstrologyTool>()
 
@@ -95,7 +96,8 @@ class AstrologyToolRegistry @Inject constructor(
                     context.applicationContext,
                     com.astro.storm.data.preferences.AstrologySettingsManager.getInstance(context),
                     com.astro.storm.data.localization.LocalizationManager.getInstance(context),
-                    com.astro.storm.ephemeris.SwissEphemerisEngine.getInstance(context)
+                    com.astro.storm.ephemeris.SwissEphemerisEngine.getInstance(context),
+                    com.astro.storm.data.templates.TemplateManager(context).let { com.astro.storm.data.templates.TemplateSelector(it) }
                 ).also {
                     instance = it
                 }
@@ -206,7 +208,8 @@ class AstrologyToolRegistry @Inject constructor(
                 database = ChartDatabase.getInstance(context),
                 astrologySettingsManager = astrologySettingsManager,
                 localizationManager = localizationManager,
-                ephemerisEngine = ephemerisEngine
+                ephemerisEngine = ephemerisEngine,
+                templateSelector = templateSelector
             )
 
             // Execute with timeout protection (30 seconds max)
@@ -401,7 +404,8 @@ data class ToolContext(
     val database: ChartDatabase,
     val astrologySettingsManager: AstrologySettingsManager,
     val localizationManager: LocalizationManager,
-    val ephemerisEngine: SwissEphemerisEngine
+    val ephemerisEngine: SwissEphemerisEngine,
+    val templateSelector: com.astro.storm.data.templates.TemplateSelector
 )
 
 /**
