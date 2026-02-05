@@ -298,6 +298,7 @@ enum class StringKeyRemedy(override val en: String, override val ne: String) : S
     DASHA_SPECIFIC_CAUTION("Be especially careful during Sade Sati (Saturn's 7.5 year transit over Moon)", "साढे साती (शनिको साढे ७ वर्षे गोचर) को समयमा विशेष सावधान रहनुहोस्"),
 
     // Life Areas
+    LIFE_AREA_GENERAL("General Life", "सामान्य जीवन"),
     LIFE_AREA_CAREER("Career & Authority", "करियर र अधिकार"),
     LIFE_AREA_RELATIONSHIPS("Relationships & Marriage", "सम्बन्ध र विवाह"),
     LIFE_AREA_HEALTH("Health & Vitality", "स्वास्थ्य र जीवनशक्ति"),

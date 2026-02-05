@@ -13,7 +13,7 @@ import com.astro.storm.core.common.StringResources
  * Common Life Areas for Astrological Analysis
  */
 enum class LifeArea(val stringKey: com.astro.storm.core.common.StringKeyInterface) {
-    GENERAL(StringKeyRemedy.REMEDY_GENERAL_TITLE),
+    GENERAL(StringKeyRemedy.LIFE_AREA_GENERAL),
     CAREER(StringKeyRemedy.LIFE_AREA_CAREER),
     RELATIONSHIPS(StringKeyRemedy.LIFE_AREA_RELATIONSHIPS),
     HEALTH(StringKeyRemedy.LIFE_AREA_HEALTH),
