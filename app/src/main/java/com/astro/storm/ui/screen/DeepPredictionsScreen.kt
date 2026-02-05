@@ -27,6 +27,7 @@ import com.astro.storm.data.localization.localizedName
 import com.astro.storm.data.localization.localized
 import com.astro.storm.data.localization.formatLocalized
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.LifeArea
 import com.astro.storm.ephemeris.deepanalysis.predictions.*
 import com.astro.storm.ui.components.deepanalysis.*
 import com.astro.storm.ui.viewmodel.DeepPredictionsUiState
@@ -548,11 +549,14 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                                 val key = when(it) {
                                     LifeArea.GENERAL -> StringKeyDeepPrediction.AREA_GENERAL
                                     LifeArea.CAREER -> StringKeyDeepPrediction.AREA_CAREER
-                                    LifeArea.RELATIONSHIP -> StringKeyDeepPrediction.AREA_RELATIONSHIP
+                                    LifeArea.RELATIONSHIPS -> StringKeyDeepPrediction.AREA_RELATIONSHIP
                                     LifeArea.HEALTH -> StringKeyDeepPrediction.AREA_HEALTH
-                                    LifeArea.WEALTH -> StringKeyDeepPrediction.AREA_WEALTH
+                                    LifeArea.FINANCE -> StringKeyDeepPrediction.AREA_WEALTH
                                     LifeArea.EDUCATION -> StringKeyDeepPrediction.AREA_EDUCATION
                                     LifeArea.SPIRITUAL -> StringKeyDeepPrediction.AREA_SPIRITUAL
+                                    LifeArea.FAMILY -> StringKeyDeepPrediction.AREA_GENERAL
+                                    LifeArea.PROPERTY -> StringKeyDeepPrediction.AREA_GENERAL
+                                    LifeArea.FOREIGN -> StringKeyDeepPrediction.AREA_GENERAL
                                 }
                                 StringResources.get(key, language)
                             },

@@ -1,6 +1,7 @@
 package com.astro.storm.ephemeris.deepanalysis.predictions
 
 import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.LifeArea
 import com.astro.storm.ephemeris.deepanalysis.*
 
 /**
@@ -153,16 +154,17 @@ object PredictionTextGenerator {
     internal fun getAreaName(area: LifeArea, language: com.astro.storm.core.common.Language): String = when(area) {
         LifeArea.GENERAL -> if (language == com.astro.storm.core.common.Language.NEPALI) "सामान्य जीवन" else "general life"
         LifeArea.CAREER -> if (language == com.astro.storm.core.common.Language.NEPALI) "क्यारियर" else "career"
-        LifeArea.RELATIONSHIP -> if (language == com.astro.storm.core.common.Language.NEPALI) "सम्बन्ध" else "relationship"
+        LifeArea.RELATIONSHIPS -> if (language == com.astro.storm.core.common.Language.NEPALI) "सम्बन्ध" else "relationship"
         LifeArea.HEALTH -> if (language == com.astro.storm.core.common.Language.NEPALI) "स्वास्थ्य" else "health"
-        LifeArea.WEALTH -> if (language == com.astro.storm.core.common.Language.NEPALI) "धन" else "wealth"
+        LifeArea.FINANCE -> if (language == com.astro.storm.core.common.Language.NEPALI) "धन" else "wealth"
         LifeArea.EDUCATION -> if (language == com.astro.storm.core.common.Language.NEPALI) "शिक्षा" else "education"
         LifeArea.SPIRITUAL -> if (language == com.astro.storm.core.common.Language.NEPALI) "आध्यात्मिकता" else "spirituality"
+        else -> area.getLocalizedName(com.astro.storm.core.common.Language.valueOf(language.name))
     }
     
     private fun getEffectQuality(planet: Planet, area: LifeArea): String = when {
         planet == Planet.JUPITER && area in listOf(LifeArea.EDUCATION, LifeArea.SPIRITUAL) -> "brings excellent growth"
-        planet == Planet.VENUS && area == LifeArea.RELATIONSHIP -> "enhances harmony and love"
+        planet == Planet.VENUS && area == LifeArea.RELATIONSHIPS -> "enhances harmony and love"
         planet == Planet.SATURN && area == LifeArea.CAREER -> "demands discipline for success"
         planet == Planet.SUN && area == LifeArea.CAREER -> "brings authority and recognition"
         else -> "creates unique developments"

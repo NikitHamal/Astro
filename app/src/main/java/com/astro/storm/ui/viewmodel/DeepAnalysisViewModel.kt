@@ -22,7 +22,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class DeepAnalysisViewModel @Inject constructor(
-    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context
+    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
+    private val deepAnalysisAnalyzer: com.astro.storm.ephemeris.deepanalysis.DeepAnalysisAnalyzer
 ) : ViewModel() {
     
     private val _uiState = MutableStateFlow<DeepAnalysisUiState>(DeepAnalysisUiState.Initial)
@@ -52,7 +53,7 @@ class DeepAnalysisViewModel @Inject constructor(
             _uiState.value = DeepAnalysisUiState.Loading
             
             try {
-                val result = DeepAnalysisEngine.analyzeNative(chart, context)
+                val result = deepAnalysisAnalyzer.analyzeNative(chart)
                 cachedChart = chart
                 cachedResult = result
                 _uiState.value = DeepAnalysisUiState.Success(result)
@@ -120,7 +121,8 @@ enum class DeepAnalysisSection {
  */
 @HiltViewModel
 class DeepPredictionsViewModel @Inject constructor(
-    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context
+    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
+    private val deepPredictionEngine: com.astro.storm.ephemeris.deepanalysis.predictions.DeepPredictionEngine
 ) : ViewModel() {
     
     private val _uiState = MutableStateFlow<DeepPredictionsUiState>(DeepPredictionsUiState.Initial)
@@ -142,9 +144,8 @@ class DeepPredictionsViewModel @Inject constructor(
             _uiState.value = DeepPredictionsUiState.Loading
             
             try {
-                val context = AnalysisContext(chart, context)
-                val predictions = com.astro.storm.ephemeris.deepanalysis.predictions.DeepPredictionEngine
-                    .generatePredictions(chart, context)
+                val analysisContext = AnalysisContext(chart, context)
+                val predictions = deepPredictionEngine.generatePredictions(chart, analysisContext)
                 cachedChart = chart
                 cachedPredictions = predictions
                 _uiState.value = DeepPredictionsUiState.Success(predictions)

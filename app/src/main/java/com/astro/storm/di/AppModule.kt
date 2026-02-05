@@ -80,4 +80,5 @@ interface CoreEntryPoint {
     fun astrologySettingsManager(): AstrologySettingsManager
     fun themeManager(): ThemeManager
     fun onboardingManager(): OnboardingManager
+    fun templateSelector(): com.astro.storm.data.templates.TemplateSelector
 }

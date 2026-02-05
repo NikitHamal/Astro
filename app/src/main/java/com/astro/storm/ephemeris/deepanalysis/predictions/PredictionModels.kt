@@ -1,6 +1,7 @@
 package com.astro.storm.ephemeris.deepanalysis.predictions
 
 import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.LifeArea
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.deepanalysis.*
 import java.time.LocalDate
@@ -152,10 +153,6 @@ data class MonthlyPrediction(
     val favorableDates: List<Int>,
     val challengingDates: List<Int>
 )
-
-enum class LifeArea {
-    GENERAL, CAREER, RELATIONSHIP, HEALTH, WEALTH, EDUCATION, SPIRITUAL
-}
 
 data class LifeAreaPrediction(
     val area: LifeArea,
