@@ -69,6 +69,7 @@ enum class StringKeyUICommon(override val en: String, override val ne: String) :
     NO_TIMEZONES_FOUND("No timezones found", "कुनै समय क्षेत्र फेला परेन"),
     CLEAR_SEARCH("Clear search", "खोज हटाउनुहोस्"),
     CHANGE_TIMEZONE("Change timezone", "समय क्षेत्र परिवर्तन गर्नुहोस्"),
+    NAV_BACK("Back", "पछाडि"),
 
     // Agentic UI Status
     TASKS("Tasks", "कार्यहरू"),

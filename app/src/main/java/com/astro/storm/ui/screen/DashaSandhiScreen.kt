@@ -75,6 +75,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -168,7 +169,7 @@ fun DashaSandhiScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(com.astro.storm.core.common.StringKeyAnalysis.INFO_TITLE),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -226,23 +227,30 @@ fun DashaSandhiScreen(
     // Info Dialog
     if (showInfoDialog) {
         InfoDialog(
-            title = "About Dasha Sandhi",
-            content = """
-                Dasha Sandhi refers to the junction or transition point between two planetary periods (Dashas) in Vedic astrology.
-
-                These transition periods are considered sensitive times when:
-                • The energy shifts from one planetary influence to another
-                • Both planets' effects may be felt simultaneously
-                • Major life changes often occur
-                • Careful planning is advised
-
-                The intensity of a Sandhi depends on:
-                • The nature of the transitioning planets
-                • Their relationship in your chart
-                • Current transits and aspects
-
-                Understanding your Sandhi periods helps you prepare for and navigate these significant life transitions.
-            """.trimIndent(),
+            title = stringResource(StringKeyUIExtra.SANDHI_ABOUT_TITLE),
+            content = buildString {
+                append(stringResource(StringKeyUIExtra.SANDHI_ABOUT_DESC))
+                append("\n\n")
+                append(stringResource(StringKeyUIExtra.SANDHI_DESC_P1))
+                append("\n")
+                append(stringResource(StringKeyUIExtra.SANDHI_DESC_P1_ITEM1))
+                append("\n")
+                append(stringResource(StringKeyUIExtra.SANDHI_DESC_P1_ITEM2))
+                append("\n")
+                append(stringResource(StringKeyUIExtra.SANDHI_DESC_P1_ITEM3))
+                append("\n")
+                append(stringResource(StringKeyUIExtra.SANDHI_DESC_P1_ITEM4))
+                append("\n\n")
+                append(stringResource(StringKeyUIExtra.SANDHI_DESC_P2))
+                append("\n")
+                append(stringResource(StringKeyUIExtra.SANDHI_DESC_P2_ITEM1))
+                append("\n")
+                append(stringResource(StringKeyUIExtra.SANDHI_DESC_P2_ITEM2))
+                append("\n")
+                append(stringResource(StringKeyUIExtra.SANDHI_DESC_P2_ITEM3))
+                append("\n\n")
+                append(stringResource(StringKeyUIExtra.SANDHI_DESC_FOOTER))
+            },
             onDismiss = { showInfoDialog = false }
         )
     }
@@ -354,7 +362,7 @@ private fun VolatilityScoreCard(score: Int) {
                 )
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "$score%",
+                        text = score.toString() + stringResource(StringKeyUIExtra.PERCENT),
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = getVolatilityColor(score)
@@ -387,7 +395,7 @@ private fun QuickStatsRow(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis) 
     ) {
         StatCard(
             title = stringResource(StringKeyDosha.SANDHI_ACTIVE),
-            value = if (analysis.currentSandhi != null) "Yes" else "No",
+            value = if (analysis.currentSandhi != null) stringResource(StringKeyUIExtra.LABEL_YES) else stringResource(StringKeyUIExtra.LABEL_NO),
             color = if (analysis.currentSandhi != null) AppTheme.WarningColor else AppTheme.SuccessColor,
             modifier = Modifier.weight(1f)
         )
@@ -515,7 +523,7 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "${sandhi.sandhi.fromPlanet.getLocalizedName(language)} → ${sandhi.sandhi.toPlanet.getLocalizedName(language)}",
+                text = sandhi.sandhi.fromPlanet.getLocalizedName(language) + stringResource(StringKeyUIExtra.ARROW) + sandhi.sandhi.toPlanet.getLocalizedName(language),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
@@ -632,7 +640,7 @@ private fun SandhiDetailCard(
                     )
                     Column {
                         Text(
-                            text = "${sandhi.sandhi.fromPlanet.getLocalizedName(language)} → ${sandhi.sandhi.toPlanet.getLocalizedName(language)}",
+                            text = sandhi.sandhi.fromPlanet.getLocalizedName(language) + stringResource(StringKeyUIExtra.ARROW) + sandhi.sandhi.toPlanet.getLocalizedName(language),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
@@ -981,7 +989,7 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = "${entry.fromPlanet.displayName} → ${entry.toPlanet.displayName}",
+                    text = entry.fromPlanet.displayName + stringResource(StringKeyUIExtra.ARROW) + entry.toPlanet.displayName,
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary,
                     maxLines = 2,
@@ -1017,7 +1025,7 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Analyzing Dasha Sandhis...",
+                text = stringResource(StringKeyUIExtra.SANDHI_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1103,13 +1111,14 @@ private fun getVolatilityColor(score: Int): Color {
     }
 }
 
+@Composable
 private fun getVolatilityLabel(score: Int): String {
     return when {
-        score >= 80 -> "Very High"
-        score >= 60 -> "High"
-        score >= 40 -> "Moderate"
-        score >= 20 -> "Low"
-        else -> "Minimal"
+        score >= 80 -> stringResource(StringKeyUIExtra.SANDHI_VOL_VERY_HIGH)
+        score >= 60 -> stringResource(StringKeyUIExtra.SANDHI_VOL_HIGH)
+        score >= 40 -> stringResource(StringKeyUIExtra.SANDHI_VOL_MODERATE)
+        score >= 20 -> stringResource(StringKeyUIExtra.SANDHI_VOL_LOW)
+        else -> stringResource(StringKeyUIExtra.SANDHI_VOL_MINIMAL)
     }
 }
 

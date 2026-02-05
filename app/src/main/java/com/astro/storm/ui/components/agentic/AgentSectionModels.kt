@@ -1,5 +1,7 @@
 package com.astro.storm.ui.components.agentic
 
+import com.astro.storm.core.common.StringKeyUIExtra
+import com.astro.storm.core.common.StringResources
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.UUID
@@ -125,8 +127,9 @@ sealed class AgentSection {
             get() = if (totalCount > 0) completedCount.toFloat() / totalCount else 0f
 
         fun getLocalizedProgressText(language: com.astro.storm.core.common.Language): String {
-            val completedKey = com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyUICommon.COMPLETED, language)
-            return "$completedCount/$totalCount $completedKey"
+            val completedKey = StringResources.get(com.astro.storm.core.common.StringKeyUICommon.COMPLETED, language)
+            val slash = StringResources.get(StringKeyUIExtra.SLASH, language)
+            return "$completedCount$slash$totalCount $completedKey"
         }
     }
 
@@ -195,11 +198,7 @@ data class ToolExecution(
         get() = (endTime ?: System.currentTimeMillis()) - startTime
 
     val durationDisplay: String
-        get() = when {
-            duration < 1000 -> "${duration}ms"
-            duration < 60000 -> "${duration / 1000}.${(duration % 1000) / 100}s"
-            else -> "${duration / 60000}m ${(duration % 60000) / 1000}s"
-        }
+        get() = ToolDisplayUtils.formatDuration(duration, com.astro.storm.data.localization.currentLanguage())
 }
 
 enum class ToolExecutionStatus {

@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.api.GeocodingService
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.FlowPreview
@@ -264,8 +265,9 @@ private fun LocationResultItem(
         Column(modifier = Modifier.weight(1f)) {
             val parts = result.displayName.split(",").map { it.trim() }
             val mainName = parts.firstOrNull() ?: result.displayName
+            val comma = stringResource(StringKeyUIExtra.COMMA_SPACE)
             val details = if (parts.size > 1) {
-                parts.drop(1).take(2).joinToString(", ")
+                parts.drop(1).take(2).joinToString(comma)
             } else ""
 
             Text(
@@ -292,9 +294,11 @@ private fun LocationResultItem(
             Text(
                 text = String.format(
                     Locale.US,
-                    "%.4f°, %.4f°",
+                    "%.4f%s, %.4f%s",
                     result.latitude,
-                    result.longitude
+                    stringResource(StringKeyUIExtra.DEGREE),
+                    result.longitude,
+                    stringResource(StringKeyUIExtra.DEGREE)
                 ),
                 color = AppTheme.TextSubtle,
                 fontSize = 11.sp,

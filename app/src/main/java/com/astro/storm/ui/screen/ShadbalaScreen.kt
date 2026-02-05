@@ -33,6 +33,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.localizedAbbr
@@ -326,7 +327,7 @@ private fun ShadbalaOverviewTab(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "%",
+                            text = stringResource(com.astro.storm.core.common.StringKeyUICommon.PERCENT),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1039,7 +1040,7 @@ private fun ShadbalaComparisonTab(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "Six-fold Strength Comparison",
+                    stringResource(StringKeyUIExtra.SHADBALA_SIXFOLD_COMP_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary

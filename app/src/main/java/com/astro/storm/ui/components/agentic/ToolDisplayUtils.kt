@@ -5,6 +5,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringResources
 
 /**
@@ -126,8 +127,12 @@ object ToolDisplayUtils {
 
         return when {
             durationMs < 1000 -> "${durationMs}$msKey"
-            durationMs < 60000 -> "${durationMs / 1000}.${(durationMs % 1000) / 100}$sKey"
-            else -> "${durationMs / 60000}$mKey ${(durationMs % 60000) / 1000}$sKey"
+            durationMs < 60000 -> {
+                val sec = durationMs / 1000
+                val dec = (durationMs % 1000) / 100
+                "${sec}.${dec}${sKey}"
+            }
+            else -> "${durationMs / 60000}$mKey " + "${(durationMs % 60000) / 1000}$sKey"
         }
     }
 
@@ -170,13 +175,17 @@ object ToolDisplayUtils {
         val failedKey = StringResources.get(StringKeyUICommon.FAILED, language)
         val toolsKey = StringResources.get(if (executing > 1 || completed > 1 || failed > 1) StringKeyUICommon.TOOL_PLURAL else StringKeyUICommon.TOOL_SINGULAR, language)
 
+        val slash = StringResources.get(StringKeyUIExtra.SLASH, language)
+        val comma = StringResources.get(StringKeyUIExtra.COMMA_SPACE, language)
+        val ellipsis = StringResources.get(StringKeyUIExtra.ELLIPSIS, language)
+
         return when {
-            executing > 0 && completed > 0 -> "$completed/$total $completedKey, $executing $runningKey"
-            executing > 0 -> "$executing $toolsKey $runningKey..."
-            failed > 0 && completed > 0 -> "$completed $completedKey, $failed $failedKey"
+            executing > 0 && completed > 0 -> "$completed$slash$total $completedKey$comma$executing $runningKey"
+            executing > 0 -> "$executing $toolsKey $runningKey$ellipsis"
+            failed > 0 && completed > 0 -> "$completed $completedKey$comma$failed $failedKey"
             failed > 0 -> "$failed $toolsKey $failedKey"
             completed == total && total > 0 -> "$completed $toolsKey $completedKey"
-            else -> "$completed/$total $completedKey"
+            else -> "$completed$slash$total $completedKey"
         }
     }
 

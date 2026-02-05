@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAshtamangala
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -535,7 +536,7 @@ private fun CowrieShell(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = if (isOpen) "○" else "●",
+                text = if (isOpen) stringResource(StringKeyUIExtra.OPEN_CIRCLE) else stringResource(StringKeyUIExtra.CLOSED_CIRCLE),
                 color = color,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
@@ -550,15 +551,16 @@ private fun CowrieShell(
     }
 }
 
+@Composable
 private fun getPositionLabel(index: Int): String = when (index) {
-    0 -> "N"
-    1 -> "NE"
-    2 -> "E"
-    3 -> "SE"
-    4 -> "S"
-    5 -> "SW"
-    6 -> "W"
-    7 -> "NW"
+    0 -> stringResource(StringKeyUIExtra.DIR_N)
+    1 -> stringResource(StringKeyUIExtra.DIR_NE)
+    2 -> stringResource(StringKeyUIExtra.DIR_E)
+    3 -> stringResource(StringKeyUIExtra.DIR_SE)
+    4 -> stringResource(StringKeyUIExtra.DIR_S)
+    5 -> stringResource(StringKeyUIExtra.DIR_SW)
+    6 -> stringResource(StringKeyUIExtra.DIR_W)
+    7 -> stringResource(StringKeyUIExtra.DIR_NW)
     else -> ""
 }
 
@@ -700,7 +702,7 @@ private fun ShellResultCard(cowrieThrow: CowrieThrowResult) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = if (isOpen) "○" else "●",
+                            text = if (isOpen) stringResource(StringKeyUIExtra.OPEN_CIRCLE) else stringResource(StringKeyUIExtra.CLOSED_CIRCLE),
                             color = if (isOpen) openColor else closedColor,
                             fontWeight = FontWeight.Bold
                         )
@@ -1090,7 +1092,7 @@ private fun AnalysisTab(reading: AshtamangalaReading) {
                         )
                         reading.secondaryInfluences.forEach { influence ->
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Text("•", color = AppTheme.AccentPrimary)
+                                Text(stringResource(StringKeyUIExtra.BULLET), color = AppTheme.AccentPrimary)
                                 Text(
                                     text = influence,
                                     style = MaterialTheme.typography.bodySmall,

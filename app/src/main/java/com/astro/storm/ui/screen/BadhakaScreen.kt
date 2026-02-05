@@ -69,7 +69,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -293,7 +295,7 @@ private fun BadhakaSthanaCard(analysis: BadhakaCalculator.BadhakaAnalysis) {
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "${stringResource(StringKeyDosha.BADHAKA_STHANA)}: ${analysis.badhakaHouse}${getOrdinalSuffix(analysis.badhakaHouse)} House",
+                text = stringResource(StringKeyDosha.BADHAKA_STHANA) + stringResource(StringKeyUIExtra.COLON_SPACE) + analysis.badhakaHouse + getOrdinalSuffix(analysis.badhakaHouse) + " " + stringResource(StringKeyAnalysis.EXPORT_HOUSE),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = modalityColor
@@ -331,21 +333,23 @@ private fun BadhakaSthanaCard(analysis: BadhakaCalculator.BadhakaAnalysis) {
     }
 }
 
+@Composable
 private fun getOrdinalSuffix(number: Int): String {
     return when {
-        number in 11..13 -> "th"
-        number % 10 == 1 -> "st"
-        number % 10 == 2 -> "nd"
-        number % 10 == 3 -> "rd"
-        else -> "th"
+        number in 11..13 -> stringResource(StringKeyUIExtra.ORDINAL_TH)
+        number % 10 == 1 -> stringResource(StringKeyUIExtra.ORDINAL_ST)
+        number % 10 == 2 -> stringResource(StringKeyUIExtra.ORDINAL_ND)
+        number % 10 == 3 -> stringResource(StringKeyUIExtra.ORDINAL_RD)
+        else -> stringResource(StringKeyUIExtra.ORDINAL_TH)
     }
 }
 
+@Composable
 private fun getBadhakaSthanaExplanation(modality: BadhakaCalculator.SignModality): String {
     return when (modality) {
-        BadhakaCalculator.SignModality.MOVABLE -> "For Movable (Chara) signs, the 11th house is Badhaka Sthana"
-        BadhakaCalculator.SignModality.FIXED -> "For Fixed (Sthira) signs, the 9th house is Badhaka Sthana"
-        BadhakaCalculator.SignModality.DUAL -> "For Dual (Dvisvabhava) signs, the 7th house is Badhaka Sthana"
+        BadhakaCalculator.SignModality.MOVABLE -> stringResource(StringKeyUIExtra.BADHAKA_EXPL_MOVABLE)
+        BadhakaCalculator.SignModality.FIXED -> stringResource(StringKeyUIExtra.BADHAKA_EXPL_FIXED)
+        BadhakaCalculator.SignModality.DUAL -> stringResource(StringKeyUIExtra.BADHAKA_EXPL_DUAL)
     }
 }
 
@@ -369,7 +373,7 @@ private fun BadhakaQuickStats(analysis: BadhakaCalculator.BadhakaAnalysis) {
         )
         BadhakaStatCard(
             title = stringResource(StringKeyDosha.BADHAKA_SEVERITY),
-            value = "${analysis.overallSeverity.level * 20}%",
+            value = (analysis.overallSeverity.level * 20).toString() + stringResource(StringKeyUIExtra.PERCENT),
             color = getSeverityColor(analysis.overallSeverity.level * 20),
             modifier = Modifier.weight(1f)
         )

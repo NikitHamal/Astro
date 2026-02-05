@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyUIExtra
+import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.MarkdownText
@@ -411,15 +413,16 @@ fun ToolExecutionPanel(
 /**
  * Build status summary text based on tool execution states
  */
+@Composable
 private fun buildStatusSummary(completed: Int, executing: Int, failed: Int, total: Int): String {
-    return when {
-        executing > 0 && completed > 0 -> "$completed/$total completed, $executing running"
-        executing > 0 -> "$executing tool${if (executing > 1) "s" else ""} running..."
-        failed > 0 && completed > 0 -> "$completed completed, $failed failed"
-        failed > 0 -> "$failed tool${if (failed > 1) "s" else ""} failed"
-        completed == total && total > 0 -> "$completed tool${if (completed > 1) "s" else ""} completed"
-        else -> "$completed/$total completed"
-    }
+    val language = currentLanguage()
+    return ToolDisplayUtils.buildToolStatusSummary(
+        completed = completed,
+        executing = executing,
+        failed = failed,
+        total = total,
+        language = language
+    )
 }
 
 /**
@@ -524,7 +527,7 @@ private fun ToolStepRow(step: ToolExecutionStep) {
                 shape = RoundedCornerShape(4.dp)
             ) {
                 Text(
-                    text = ToolDisplayUtils.formatDuration(duration),
+                    text = ToolDisplayUtils.formatDuration(duration, currentLanguage()),
                     style = MaterialTheme.typography.labelSmall,
                     color = colors.TextSubtle,
                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -739,7 +742,7 @@ private fun StatusIndicatorInline(aiStatus: AiStatus) {
         is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION) to Icons.Outlined.Psychology
         is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_APPLYING_VEDIC) to Icons.Outlined.Lightbulb
         is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName)) to Icons.Outlined.Build
-        is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_GATHERING_DATA) to Icons.Outlined.Build
+        is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_USING_TOOLS, tools.take(3).joinToString(stringResource(StringKeyUIExtra.COMMA_SPACE)) { ToolDisplayUtils.formatToolName(it) }) to Icons.Outlined.Build
         is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING) to Icons.Outlined.Edit
     }
 

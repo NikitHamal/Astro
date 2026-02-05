@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyNative
 import com.astro.storm.core.common.StringKeyDeepPrediction
@@ -187,7 +188,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                         }
                         
                         Text(
-                            text = "${mahadasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${mahadasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
+                            text = mahadasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR) + stringResource(StringKeyUIExtra.DASH_SPACE) + mahadasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
@@ -241,7 +242,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                         )
                         
                         Text(
-                            text = "${antardasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${antardasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
+                            text = antardasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR) + stringResource(StringKeyUIExtra.DASH_SPACE) + antardasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
@@ -301,8 +302,8 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
             
             items(dasha.upcomingDashas) { upcoming ->
                 TimelinePeriodCard(
-                    title = "${upcoming.planet.localizedName()} ${stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS)}",
-                    dateRange = "${upcoming.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)} - ${upcoming.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR)}",
+                    title = upcoming.planet.localizedName() + " " + stringResource(StringKeyAnalysis.ANALYSIS_TAB_DASHAS),
+                    dateRange = upcoming.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR) + stringResource(StringKeyUIExtra.DASH_SPACE) + upcoming.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.MONTH_YEAR),
                     description = upcoming.briefPreview,
                     strength = com.astro.storm.ephemeris.deepanalysis.StrengthLevel.MODERATE
                 )
@@ -351,7 +352,7 @@ private fun PredictionsOverviewTab(predictions: DeepPredictions) {
                         }
                         
                         Text(
-                            text = "${period.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)} - ${period.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)}",
+                            text = period.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT) + stringResource(StringKeyUIExtra.DASH_SPACE) + period.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -401,7 +402,7 @@ private fun PredictionsOverviewTab(predictions: DeepPredictions) {
                         )
                         
                         Text(
-                            text = "${window.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)} - ${window.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT)}",
+                            text = window.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT) + stringResource(StringKeyUIExtra.DASH_SPACE) + window.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.SHORT),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -451,7 +452,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                         }
                         
                         Text(
-                            text = "${stringResource(StringKeyDeepPrediction.SADE_SATI_PHASE)}: ${
+                            text = stringResource(StringKeyDeepPrediction.SADE_SATI_PHASE) + stringResource(StringKeyUIExtra.COLON_SPACE) +
                                 when(transit.saturnSadeSati.phase) {
                                     SadeSatiPhase.RISING -> stringResource(StringKeyDeepPrediction.SADE_SATI_RISING)
                                     SadeSatiPhase.PEAK -> stringResource(StringKeyDeepPrediction.SADE_SATI_PEAK)
@@ -541,9 +542,9 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                     
                     if (transit.jupiterTransit.favorableForAreas.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text("${stringResource(StringKeyDeepPrediction.JUPITER_FAVORABLE_AREAS)}: ", fontWeight = FontWeight.Medium)
+                        Text(stringResource(StringKeyDeepPrediction.JUPITER_FAVORABLE_AREAS) + stringResource(StringKeyUIExtra.COLON_SPACE), fontWeight = FontWeight.Medium)
                         Text(
-                            text = transit.jupiterTransit.favorableForAreas.joinToString(", ") { 
+                            text = transit.jupiterTransit.favorableForAreas.joinToString(stringResource(StringKeyUIExtra.COMMA_SPACE)) {
                                 val key = when(it) {
                                     LifeArea.GENERAL -> StringKeyDeepPrediction.AREA_GENERAL
                                     LifeArea.CAREER -> StringKeyDeepPrediction.AREA_CAREER
@@ -579,7 +580,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "${stringResource(StringKey.PLANET_RAHU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.rahuTransitHouse.localized()} | ${stringResource(StringKey.PLANET_KETU)} ${stringResource(StringKeyNative.LABEL_IN_HOUSE)} ${transit.rahuKetuTransit.ketuTransitHouse.localized()}",
+                        text = stringResource(StringKey.PLANET_RAHU) + " " + stringResource(StringKeyNative.LABEL_IN_HOUSE) + " " + transit.rahuKetuTransit.rahuTransitHouse.localized() + stringResource(StringKeyUIExtra.PIPE_SPACE) + stringResource(StringKey.PLANET_KETU) + " " + stringResource(StringKeyNative.LABEL_IN_HOUSE) + " " + transit.rahuKetuTransit.ketuTransitHouse.localized(),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -782,7 +783,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         
                         Row {
                             Text(
-                                text = "${stringResource(StringKeyDeepPrediction.ALTERNATIVE_GEMSTONE)}: ",
+                            text = stringResource(StringKeyDeepPrediction.ALTERNATIVE_GEMSTONE) + stringResource(StringKeyUIExtra.COLON_SPACE),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -829,7 +830,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "${mantra.planet.localizedName()} ${stringResource(StringKeyDeepPrediction.MANTRA_REMEDIES)}",        
+                            text = mantra.planet.localizedName() + " " + stringResource(StringKeyDeepPrediction.MANTRA_REMEDIES),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -845,7 +846,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         Spacer(modifier = Modifier.height(4.dp))
                         
                         Text(
-                            text = "${stringResource(StringKeyDeepPrediction.CHANT_COUNT)}: ${mantra.chantCount.localized()}",
+                            text = stringResource(StringKeyDeepPrediction.CHANT_COUNT) + stringResource(StringKeyUIExtra.COLON_SPACE) + mantra.chantCount.localized(),
                             style = MaterialTheme.typography.bodySmall
                         )
                         
@@ -883,7 +884,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         
                         Row {
                             Text(
-                                text = "${stringResource(StringKeyDeepPrediction.DONATION_ITEMS)}: ",
+                                text = stringResource(StringKeyDeepPrediction.DONATION_ITEMS) + stringResource(StringKeyUIExtra.COLON_SPACE),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                             LocalizedParagraphText(
@@ -894,7 +895,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         
                         Row {
                             Text(
-                                text = "${stringResource(StringKeyDeepPrediction.BEST_DAY)}: ",
+                                text = stringResource(StringKeyDeepPrediction.BEST_DAY) + stringResource(StringKeyUIExtra.COLON_SPACE),
                                 style = MaterialTheme.typography.bodySmall
                             )
                             LocalizedParagraphText(
@@ -934,7 +935,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         
                         Row {
                             Text(
-                                text = "${stringResource(StringKeyDeepPrediction.FASTING_DAY)}: ",
+                                text = stringResource(StringKeyDeepPrediction.FASTING_DAY) + stringResource(StringKeyUIExtra.COLON_SPACE),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                             LocalizedParagraphText(
@@ -973,7 +974,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                         )
                         
                         Text(
-                            text = "${stringResource(StringKeyDeepPrediction.TARGET_PLANET)}: ${yoga.targetPlanet.localizedName()}",     
+                            text = stringResource(StringKeyDeepPrediction.TARGET_PLANET) + stringResource(StringKeyUIExtra.COLON_SPACE) + yoga.targetPlanet.localizedName(),
                             style = MaterialTheme.typography.bodySmall
                         )
                         

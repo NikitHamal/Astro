@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
@@ -381,7 +382,8 @@ fun CompatibilityScoreCard(
                             fontWeight = FontWeight.SemiBold,
                             color = getRatingColor(result.rating)
                         )) {
-                            append(String.format("%.1f%%", result.percentage))
+                            append(String.format("%.1f", result.percentage))
+                            append(StringResources.get(StringKeyUIExtra.PERCENT, currentLanguage()))
                         }
                         append(" ${stringResource(StringKeyMatch.MATCH_COMPATIBILITY)}")
                     },

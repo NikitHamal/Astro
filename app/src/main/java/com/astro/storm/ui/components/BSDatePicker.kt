@@ -339,13 +339,14 @@ private fun BSDatePickerHeader(
             fontSize = 18.sp
         )
 
+        val goToTodayDesc = stringResource(StringKeyMatch.BS_GO_TO_TODAY)
         Surface(
             onClick = onTodayClick,
             shape = RoundedCornerShape(8.dp),
             color = colors.accentColor.copy(alpha = 0.1f),
             modifier = Modifier.semantics {
                 role = Role.Button
-                contentDescription = stringResource(StringKeyMatch.BS_GO_TO_TODAY)
+                contentDescription = goToTodayDesc
             }
         ) {
             Row(
@@ -502,6 +503,9 @@ private fun MonthYearNavigator(
         }
     }
 
+    val prevMonthDesc = stringResource(StringKeyMatch.BS_PREVIOUS_MONTH)
+    val nextMonthDesc = stringResource(StringKeyMatch.BS_NEXT_MONTH)
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -514,7 +518,7 @@ private fun MonthYearNavigator(
                 .size(40.dp)
                 .semantics {
                     role = Role.Button
-                    contentDescription = stringResource(StringKeyMatch.BS_PREVIOUS_MONTH)
+                    contentDescription = prevMonthDesc
                 }
         ) {
             Icon(
@@ -560,7 +564,7 @@ private fun MonthYearNavigator(
                 .size(40.dp)
                 .semantics {
                     role = Role.Button
-                    contentDescription = stringResource(StringKeyMatch.BS_NEXT_MONTH)
+                    contentDescription = nextMonthDesc
                 }
         ) {
             Icon(
@@ -1075,12 +1079,14 @@ fun BSDateSelector(
         selectedDate.weekday?.getName(language)
     }
 
+    val dateSelectorDesc = stringResource(StringKeyMatch.BS_DATE_SELECTOR_DESC, displayText)
+
     Surface(
         onClick = { if (enabled) showPicker = true },
         enabled = enabled,
         modifier = modifier.semantics {
             role = Role.Button
-            contentDescription = stringResource(StringKeyMatch.BS_DATE_SELECTOR_DESC, displayText)
+            contentDescription = dateSelectorDesc
         },
         shape = RoundedCornerShape(12.dp),
         color = colors.chipBackground,

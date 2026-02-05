@@ -50,6 +50,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.astro.storm.core.common.StringKeyAnalysis as StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.core.model.Planet
@@ -167,7 +168,7 @@ private fun PlanetPositionCard(position: PlanetPosition) {
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), position.sign.getLocalizedName(LocalLanguage.current), DialogColors.AccentTeal)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_DEGREE), formatDegree(position.longitude), DialogColors.TextPrimary)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE), "${stringResource(StringKeyAnalysis.HOUSE)} ${position.house}", DialogColors.AccentGold)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(LocalLanguage.current)} (${stringResource(StringKeyMatch.PANCHANGA_PADA)} ${position.nakshatraPada})", DialogColors.AccentPurple)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(LocalLanguage.current)} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${position.nakshatraPada})", DialogColors.AccentPurple)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.getLocalizedName(LocalLanguage.current), DialogColors.TextSecondary)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_DEITY), position.nakshatra.deity, DialogColors.TextSecondary)
             if (position.isRetrograde) {
@@ -419,12 +420,18 @@ data class Prediction(
 
 enum class PredictionType { POSITIVE, NEGATIVE, NEUTRAL }
 
+@Composable
 private fun formatDegree(degree: Double): String {
     val normalizedDegree = (degree % 360.0 + 360.0) % 360.0
     val deg = normalizedDegree.toInt()
     val min = ((normalizedDegree - deg) * 60).toInt()
     val sec = ((((normalizedDegree - deg) * 60) - min) * 60).toInt()
-    return "$deg° $min' $sec\""
+
+    val degSym = stringResource(StringKeyUIExtra.DEGREE)
+    val minSym = stringResource(StringKeyUIExtra.ARC_MINUTE)
+    val secSym = stringResource(StringKeyUIExtra.ARC_SECOND)
+
+    return "$deg$degSym $min$minSym $sec$secSym"
 }
 
 @Composable

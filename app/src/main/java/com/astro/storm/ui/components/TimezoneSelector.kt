@@ -68,6 +68,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AppTheme
 import java.time.ZoneId
@@ -282,9 +283,9 @@ fun TimezonePickerDialog(
                 ) {
                     Text(
                         text = if (language == Language.NEPALI) {
-                            "${com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(filteredTimezones.size)} समयक्षेत्रहरू"
+                                    stringResource(StringKeyUIExtra.TIMEZONES_COUNT_FMT, com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(filteredTimezones.size))
                         } else {
-                            "${filteredTimezones.size} timezones"
+                                    stringResource(StringKeyUIExtra.TIMEZONES_COUNT_FMT, filteredTimezones.size)
                         },
                         style = MaterialTheme.typography.bodySmall,
                         color = TimezoneSelectorTheme.TextSecondary
@@ -544,7 +545,7 @@ private fun TimezoneItem(
                     )
                     if (timezone.region.isNotEmpty()) {
                         Text(
-                            text = " • ",
+                                text = stringResource(StringKeyUIExtra.BULLET_SPACE),
                             style = MaterialTheme.typography.bodySmall,
                             color = TimezoneSelectorTheme.TextSecondary
                         )
