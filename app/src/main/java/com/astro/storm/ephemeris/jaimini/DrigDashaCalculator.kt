@@ -997,8 +997,9 @@ object DrigDashaCalculator {
         val totalWeight = weightedCounts.values.sum()
 
         // Find span with highest weight
-        val (finalSpan, maxWeight) = weightedCounts.maxByOrNull { it.value }
-            ?: (AyurSpan.MADHYAYU to 0.0)
+        val maxEntry = weightedCounts.maxByOrNull { it.value }
+        val finalSpan = maxEntry?.key ?: AyurSpan.MADHYAYU
+        val maxWeight = maxEntry?.value ?: 0.0
 
         val percentage = (maxWeight / totalWeight * 100).toInt()
 
