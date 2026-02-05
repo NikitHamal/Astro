@@ -3573,12 +3573,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     HOUSE_SUFFIX_DEFAULT("th", "औं"),
 
     // Dignity Terms
-    DIGNITY_EXALTED("exalted", "उच्च"),
-    DIGNITY_OWN_SIGN("own sign", "स्वराशि"),
-    DIGNITY_DEBILITATED("debilitated", "नीच"),
     DIGNITY_FRIEND_SIGN("friend sign", "मित्र राशि"),
     DIGNITY_ENEMY_SIGN("enemy sign", "शत्रु राशि"),
-    DIGNITY_NEUTRAL("neutral", "तटस्थ"),
 
     // Longevity Categories (ensure all are present)
     LONGEVITY_BALARISHTA("Balarishta", "बालारिष्ट"),
@@ -3597,7 +3593,6 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // Health Severity
     SEVERITY_CRITICAL("Critical", "गम्भीर"),
     SEVERITY_HIGH("High", "उच्च"),
-    SEVERITY_MODERATE("Moderate", "मध्यम"),
     SEVERITY_LOW("Low", "न्यून"),
     SEVERITY_MINIMAL("Minimal", "न्यूनतम"),
     SEVERITY_NONE("None", "छैन"),
