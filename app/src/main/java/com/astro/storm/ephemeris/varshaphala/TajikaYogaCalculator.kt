@@ -1041,10 +1041,11 @@ object TajikaYogaCalculator {
 
         // Simplified monthly trend calculation based on Moon's nakshatra cycle
         val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
-        val basePlanet = moonPos?.sign?.ruler ?: Planet.MOON
 
+        val startIndex = moonPos?.sign?.ordinal ?: 0
         for (month in 1..12) {
-            val dominantPlanet = ZodiacSign.entries[(moonPos?.sign?.ordinal ?: 0) + month - 1].ruler
+            val signIndex = (startIndex + month - 1) % ZodiacSign.entries.size
+            val dominantPlanet = ZodiacSign.entries[signIndex].ruler
             val activeYogas = yogas
                 .filter { it.primaryPlanet == dominantPlanet || it.secondaryPlanet == dominantPlanet }
                 .map { it.yogaType }
