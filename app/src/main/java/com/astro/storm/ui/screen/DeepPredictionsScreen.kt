@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyNative
 import com.astro.storm.core.common.StringKeyDeepPrediction
 import com.astro.storm.core.common.StringKeyDeepRelationship
@@ -458,8 +459,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                                     SadeSatiPhase.PEAK -> stringResource(StringKeyDeepPrediction.SADE_SATI_PEAK)
                                     SadeSatiPhase.SETTING -> stringResource(StringKeyDeepPrediction.SADE_SATI_SETTING)
                                     else -> transit.saturnSadeSati.phase.name
-                                }
-                            }",
+                                },
                             style = MaterialTheme.typography.bodyMedium
                         )
                         
@@ -554,7 +554,7 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
                                     LifeArea.EDUCATION -> StringKeyDeepPrediction.AREA_EDUCATION
                                     LifeArea.SPIRITUAL -> StringKeyDeepPrediction.AREA_SPIRITUAL
                                 }
-                                com.astro.storm.core.common.StringResources.get(key, language)
+                                StringResources.get(key, language)
                             },
                             style = MaterialTheme.typography.bodySmall
                         )

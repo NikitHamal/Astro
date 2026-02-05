@@ -574,7 +574,7 @@ private fun BadhakaPlanetCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${badhaka.position.sign.getLocalizedName(language)} • H${badhaka.position.house}",
+                            text = badhaka.position.sign.getLocalizedName(language) + stringResource(StringKeyUIExtra.BULLET_SPACE) + stringResource(StringKeyUIExtra.HOUSE_PREFIX_SHORT) + badhaka.position.house,
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1031,7 +1031,7 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
             )
             if (!remedy.ritual.isNullOrEmpty()) {
                 Text(
-                    text = "${stringResource(StringKeyDosha.UI_TIMING)}: ${remedy.ritual}",
+                    text = stringResource(StringKeyDosha.UI_TIMING) + stringResource(StringKeyUIExtra.COLON_SPACE) + remedy.ritual,
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted,
                     modifier = Modifier.padding(top = 4.dp)
