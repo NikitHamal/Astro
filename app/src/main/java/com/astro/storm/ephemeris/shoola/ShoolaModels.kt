@@ -55,13 +55,72 @@ enum class DashaDirection(val displayName: String, val displayNameNe: String) {
 }
 
 data class LongevityAssessment(
-    val category: LongevityCategory, val estimatedRange: String, val estimatedRangeNe: String,
-    val supportingFactors: List<String>, val supportingFactorsNe: List<String>, val challengingFactors: List<String>,
-    val challengingFactorsNe: List<String>, val interpretation: String, val interpretationNe: String
+    val category: LongevityCategory,
+    val estimatedRange: String,
+    val estimatedRangeNe: String,
+    val supportingFactors: List<String>,
+    val supportingFactorsNe: List<String>,
+    val challengingFactors: List<String>,
+    val challengingFactorsNe: List<String>,
+    val interpretation: String,
+    val interpretationNe: String,
+    val appliedRules: List<ShoolaRuleApplication> = emptyList()
+) {
+    /**
+     * Generate detailed explanation of longevity calculation
+     */
+    fun generateExplanation(): String = buildString {
+        appendLine("═══════════════════════════════════════════")
+        appendLine("SHOOLA DASHA LONGEVITY ANALYSIS")
+        appendLine("═══════════════════════════════════════════")
+        appendLine()
+        appendLine("Final Longevity Category: ${category.displayName} (${category.displayNameNe})")
+        appendLine("Estimated Range: ${category.yearsRange} years")
+        appendLine()
+        appendLine("Classical Rules Applied:")
+        appendLine()
+
+        appliedRules.forEachIndexed { index, rule ->
+            appendLine("${index + 1}. ${rule.ruleName}")
+            if (rule.sutraReference.isNotBlank()) {
+                appendLine("   Reference: ${rule.sutraReference}")
+            }
+            appendLine("   Observation: ${rule.observation}")
+            appendLine("   Result: ${rule.result}")
+            appendLine()
+        }
+
+        if (supportingFactors.isNotEmpty()) {
+            appendLine("Supporting Factors:")
+            supportingFactors.forEach { appendLine("• $it") }
+            appendLine()
+        }
+
+        if (challengingFactors.isNotEmpty()) {
+            appendLine("Challenging Factors:")
+            challengingFactors.forEach { appendLine("• $it") }
+        }
+    }
+}
+
+/**
+ * Rule application record for Shoola Dasha explainability
+ */
+data class ShoolaRuleApplication(
+    val ruleName: String,
+    val sutraReference: String,
+    val condition: String,
+    val observation: String,
+    val result: String,
+    val weight: Double
 )
 
 enum class LongevityCategory(val displayName: String, val displayNameNe: String, val yearsRange: String) {
-    BALARISHTA("Balarishta", "बालारिष्ट", "0-8"), ALPAYU("Alpayu (Short)", "अल्पायु", "8-32"), MADHYAYU("Madhyayu (Medium)", "मध्यायु", "32-70"), POORNAYU("Poornayu (Full)", "पूर्णायु", "70-100"), AMITAYU("Amitayu (Extended)", "अमितायु", "100+")
+    BALARISHTA("Balarishta", "बालारिष्ट", "0-8"),
+    ALPAYU("Alpayu (Short)", "अल्पायु", "8-32"),
+    MADHYAYU("Madhyayu (Medium)", "मध्यायु", "32-70"),
+    POORNAYU("Poornayu (Full)", "पूर्णायु", "70-100"),
+    AMITAYU("Amitayu (Extended)", "अमितायु", "100+")
 }
 
 data class ShoolaRemedy(

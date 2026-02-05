@@ -3400,5 +3400,228 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     PANCHA_TIMING_LABEL("Timing: %s", "समय: %s"),
     PANCHA_DETAILS_EMPTY_DESC("This section will show details when Mahapurusha Yogas are present in the chart.", "यस खण्डले कुण्डलीमा महापुरुष योगहरू उपस्थित हुँदा विवरणहरू देखाउनेछ।"),
     PANCHA_ANALYZING("Analyzing Panch Mahapurusha Yogas...", "पञ्च महापुरुष योगहरू विश्लेषण गर्दै..."),
+
+    // ============================================
+    // DRIG DASHA - JAIMINI LONGEVITY SYSTEM
+    // ============================================
+    DRIG_DASHA_TITLE("Jaimini Drig Dasha Longevity Analysis", "जैमिनी दृग् दशा आयु विश्लेषण"),
+    DRIG_DASHA_SUBTITLE("Classical Jaimini Sthira Dasha System", "शास्त्रीय जैमिनी स्थिर दशा प्रणाली"),
+    DRIG_FINAL_LONGEVITY_SPAN("Final Longevity Span", "अन्तिम आयु अवधि"),
+    DRIG_ESTIMATED_RANGE("Estimated Range", "अनुमानित सीमा"),
+    DRIG_YEARS("years", "वर्ष"),
+    DRIG_ADJUSTMENT("Adjustment", "समायोजन"),
+    DRIG_CLASSICAL_RULES_APPLIED("Classical Rules Applied", "लागू गरिएका शास्त्रीय नियमहरू"),
+    DRIG_SUPPORTING_FACTORS("Supporting Factors", "सहयोगी कारकहरू"),
+    DRIG_SUTRA_REFERENCE("Reference", "सन्दर्भ"),
+    DRIG_CONDITION("Condition", "शर्त"),
+    DRIG_OBSERVATION("Observation", "अवलोकन"),
+    DRIG_RESULT("Result", "परिणाम"),
+
+    // Drig Dasha Rule Names
+    DRIG_RULE_LAGNA_8TH_PLACEMENT("Lagna-8th Lord Placement", "लग्न-अष्टमेश स्थिति"),
+    DRIG_RULE_MOON_SATURN_PLACEMENT("Moon-Saturn Mutual Placement", "चन्द्र-शनि पारस्परिक स्थिति"),
+    DRIG_RULE_SATURN_AYUSHKARAKA("Saturn (Ayushkaraka) Analysis", "शनि (आयुकारक) विश्लेषण"),
+    DRIG_RULE_HORA_LAGNA("Hora Lagna Position", "होरा लग्न स्थिति"),
+    DRIG_RULE_BENEFIC_MALEFIC("Benefic-Malefic Balance", "शुभ-अशुभ सन्तुलन"),
+    DRIG_RULE_FINAL_DETERMINATION("Final Longevity Determination", "अन्तिम आयु निर्धारण"),
+
+    // Drig Dasha Sutra References
+    DRIG_SUTRA_2_4_1_3("Jaimini 2.4.1-3", "जैमिनी २.४.१-३"),
+    DRIG_SUTRA_2_4_4_6("Jaimini 2.4.4-6", "जैमिनी २.४.४-६"),
+    DRIG_SUTRA_2_4_7_9("Jaimini 2.4.7-9", "जैमिनी २.४.७-९"),
+    DRIG_SUTRA_2_4_10_12("Jaimini 2.4.10-12", "जैमिनी २.४.१०-१२"),
+    DRIG_SUTRA_2_4_13_15("Jaimini 2.4.13-15", "जैमिनी २.४.१३-१५"),
+    DRIG_SUTRA_MAJORITY("Jaimini 2.4 - Majority Method", "जैमिनी २.४ - बहुमत विधि"),
+
+    // Drig Dasha Conclusions
+    DRIG_CONCLUSION_PURPAYU("Full longevity indicated", "पूर्ण आयु संकेत गरिएको"),
+    DRIG_CONCLUSION_MADHYAYU("Medium longevity indicated", "मध्यम आयु संकेत गरिएको"),
+    DRIG_CONCLUSION_ALPAYU("Reduced longevity indicated", "कम आयु संकेत गरिएको"),
+    DRIG_CONCLUSION_BOTH_KENDRA_TRIKONA("Both lords in Kendra/Trikona", "दुवै स्वामी केन्द्र/त्रिकोणमा"),
+    DRIG_CONCLUSION_BOTH_APOKLIMA("Both lords in Apoklima", "दुवै स्वामी अपोक्लिमामा"),
+    DRIG_CONCLUSION_MOON_SATURN_CONJUNCTION("Moon-Saturn conjunction - severe affliction", "चन्द्र-शनि युति - गम्भीर पीडा"),
+    DRIG_CONCLUSION_MOON_SATURN_KENDRA("Moon-Saturn in Kendra - reduced longevity", "चन्द्र-शनि केन्द्रमा - कम आयु"),
+    DRIG_CONCLUSION_MOON_SATURN_TRIKONA("Moon-Saturn in Trikona - full longevity", "चन्द्र-शनि त्रिकोणमा - पूर्ण आयु"),
+    DRIG_CONCLUSION_SATURN_STRONG("Saturn strong in Kendra/Trikona - excellent longevity", "शनि केन्द्र/त्रिकोणमा बलियो - उत्कृष्ट आयु"),
+    DRIG_CONCLUSION_SATURN_WEAK("Saturn weak - reduced longevity", "शनि कमजोर - कम आयु"),
+    DRIG_CONCLUSION_HORA_KENDRA("Hora Lagna in Kendra - full longevity", "होरा लग्न केन्द्रमा - पूर्ण आयु"),
+    DRIG_CONCLUSION_HORA_TRIKONA("Hora Lagna in Trikona - medium longevity", "होरा लग्न त्रिकोणमा - मध्यम आयु"),
+    DRIG_CONCLUSION_HORA_DUSTHANA("Hora Lagna in 3rd/6th/11th - reduced longevity", "होरा लग्न ३/६/११ मा - कम आयु"),
+    DRIG_CONCLUSION_BENEFIC_STRONG("Strong benefic influence on longevity houses", "आयु भावमा बलियो शुभ प्रभाव"),
+    DRIG_CONCLUSION_MALEFIC_STRONG("Strong malefic influence on longevity houses", "आयु भावमा बलियो अशुभ प्रभाव"),
+    DRIG_CONCLUSION_NEUTRAL("Neutral influence", "तटस्थ प्रभाव"),
+
+    // Drig Dasha Observations
+    DRIG_OBS_LAGNA_LORD_HOUSE("Lagna lord in house", "लग्नेश भावमा"),
+    DRIG_OBS_8TH_LORD_HOUSE("8th lord in house", "अष्टमेश भावमा"),
+    DRIG_OBS_MOON_HOUSE("Moon in house", "चन्द्र भावमा"),
+    DRIG_OBS_SATURN_HOUSE("Saturn in house", "शनि भावमा"),
+    DRIG_OBS_DISTANCE("Distance", "दूरी"),
+    DRIG_OBS_HOUSES("houses", "भावहरू"),
+    DRIG_OBS_WITH_DIGNITY("with dignity", "गरिमासाथ"),
+    DRIG_OBS_NO_PLANETS("No planets in longevity houses", "आयु भावमा कुनै ग्रह छैन"),
+
+    // ============================================
+    // SHOOLA DASHA - LONGEVITY ANALYSIS STRINGS
+    // ============================================
+    SHOOLA_DASHA_TITLE("Shoola Dasha Analysis", "शूल दशा विश्लेषण"),
+    SHOOLA_DASHA_SUBTITLE("Classical Parashari Longevity System", "शास्त्रीय पाराशरी आयु प्रणाली"),
+    SHOOLA_LONGEVITY("Longevity", "आयु"),
+    SHOOLA_LONGEVITY_CATEGORY("Longevity Category", "आयु वर्ग"),
+    SHOOLA_YEARS_RANGE("years", "वर्ष"),
+
+    // Shoola Dasha Rule Names
+    SHOOLA_RULE_LAGNA_LORD_EXALTATION("Lagna Lord Exaltation", "लग्नेश उच्चता"),
+    SHOOLA_RULE_LAGNA_LORD_OWN_SIGN("Lagna Lord Own Sign", "लग्नेश स्वराशि"),
+    SHOOLA_RULE_LAGNA_LORD_DEBILITATED("Lagna Lord Debilitated", "लग्नेश नीचता"),
+    SHOOLA_RULE_LAGNA_LORD_KENDRA("Lagna Lord in Kendra", "लग्नेश केन्द्रमा"),
+    SHOOLA_RULE_LAGNA_LORD_TRIKONA("Lagna Lord in Trikona", "लग्नेश त्रिकोणमा"),
+    SHOOLA_RULE_LAGNA_LORD_DUSTHANA("Lagna Lord in Dusthana", "लग्नेश दुःस्थानमा"),
+    SHOOLA_RULE_8TH_LORD_KENDRA("8th Lord in Kendra", "अष्टमेश केन्द्रमा"),
+    SHOOLA_RULE_8TH_LORD_TRIKONA("8th Lord in Trikona", "अष्टमेश त्रिकोणमा"),
+    SHOOLA_RULE_8TH_LORD_DUSTHANA("8th Lord in Dusthana", "अष्टमेश दुःस्थानमा"),
+    SHOOLA_RULE_SATURN_EXALTED("Saturn Exalted (Ayushkaraka)", "शनि उच्च (आयुकारक)"),
+    SHOOLA_RULE_SATURN_OWN_SIGN("Saturn in Own Sign", "शनि स्वराशिमा"),
+    SHOOLA_RULE_SATURN_DEBILITATED("Saturn Debilitated", "शनि नीच"),
+    SHOOLA_RULE_BRAHMA_STRONG("Strong Brahma (Jaimini)", "बलियो ब्रह्मा (जैमिनी)"),
+    SHOOLA_RULE_RUDRA_POWERFUL("Powerful Rudra (Jaimini)", "शक्तिशाली रुद्र (जैमिनी)"),
+    SHOOLA_RULE_RUDRA_MODERATE("Moderate Rudra", "मध्यम रुद्र"),
+    SHOOLA_RULE_BENEFIC_DOMINANCE("Benefic Dominance on Longevity Houses", "आयु भावमा शुभ प्रभाव"),
+    SHOOLA_RULE_MALEFIC_DOMINANCE("Malefic Dominance on Longevity Houses", "आयु भावमा अशुभ प्रभाव"),
+
+    // Shoola Dasha BPHS References
+    SHOOLA_SUTRA_BPHS_AYURDAYA("BPHS Ayurdaya Chapter", "बृहत्पाराशर होरा शास्त्र आयुर्दाय अध्याय"),
+    SHOOLA_SUTRA_BPHS_CH_45("BPHS Chapter 45", "बृहत्पाराशर होरा शास्त्र अध्याय ४५"),
+    SHOOLA_SUTRA_BPHS_CH_46("BPHS Chapter 46", "बृहत्पाराशर होरा शास्त्र अध्याय ४६"),
+    SHOOLA_SUTRA_BPHS_CH_47("BPHS Chapter 47", "बृहत्पाराशर होरा शास्त्र अध्याय ४७"),
+    SHOOLA_SUTRA_JAIMINI_2_4("Jaimini Sutras 2.4", "जैमिनी सूत्र २.४"),
+    SHOOLA_SUTRA_BPHS_GENERAL("BPHS General Principles", "बृहत्पाराशर होरा शास्त्र सामान्य सिद्धान्तहरू"),
+
+    // Shoola Dasha Supporting Factors
+    SHOOLA_FACTOR_EXALTED_LAGNA_LORD("Exalted Lagna lord", "उच्च लग्नेश"),
+    SHOOLA_FACTOR_OWN_SIGN_LAGNA_LORD("Lagna lord in own sign", "लग्नेश स्वराशिमा"),
+    SHOOLA_FACTOR_LAGNA_LORD_KENDRA("Lagna lord in Kendra", "लग्नेश केन्द्रमा"),
+    SHOOLA_FACTOR_LAGNA_LORD_TRIKONA("Lagna lord in Trikona", "लग्नेश त्रिकोणमा"),
+    SHOOLA_FACTOR_8TH_LORD_KENDRA("8th lord in Kendra - excellent for longevity", "अष्टमेश केन्द्रमा - उत्कृष्ट आयु"),
+    SHOOLA_FACTOR_8TH_LORD_TRIKONA("8th lord in Trikona", "अष्टमेश त्रिकोणमा"),
+    SHOOLA_FACTOR_SATURN_EXALTED("Saturn exalted (Libra) - Ayushkaraka strong", "शनि उच्च (तुला) - बलियो आयुकारक"),
+    SHOOLA_FACTOR_SATURN_OWN_SIGN("Saturn in own sign (Capricorn/Aquarius)", "शनि स्वराशिमा (मकर/कुम्भ)"),
+    SHOOLA_FACTOR_SATURN_KENDRA("Saturn in Kendra", "शनि केन्द्रमा"),
+    SHOOLA_FACTOR_SATURN_TRIKONA("Saturn in Trikona", "शनि त्रिकोणमा"),
+    SHOOLA_FACTOR_STRONG_BRAHMA("Strong Brahma - protective", "बलियो ब्रह्मा - सुरक्षात्मक"),
+    SHOOLA_FACTOR_BENEFIC_INFLUENCE("Strong benefic influence", "बलियो शुभ प्रभाव"),
+
+    // Shoola Dasha Challenging Factors
+    SHOOLA_FACTOR_DEBILITATED_LAGNA_LORD("Debilitated Lagna lord", "नीच लग्नेश"),
+    SHOOLA_FACTOR_LAGNA_LORD_DUSTHANA("Lagna lord in dusthana - reduced vitality", "लग्नेश दुःस्थानमा - कमजोर जीवनशक्ति"),
+    SHOOLA_FACTOR_8TH_LORD_DUSTHANA("8th lord in dusthana - vulnerable period", "अष्टमेश दुःस्थानमा - जोखिमपूर्ण"),
+    SHOOLA_FACTOR_SATURN_DEBILITATED("Saturn debilitated (Aries) - weak Ayushkaraka", "शनि नीच (मेष) - कमजोर आयुकारक"),
+    SHOOLA_FACTOR_SATURN_DUSTHANA("Saturn in dusthana", "शनि दुःस्थानमा"),
+    SHOOLA_FACTOR_POWERFUL_RUDRA("Very powerful Rudra - danger period", "अत्यन्त शक्तिशाली रुद्र - खतराको अवधि"),
+    SHOOLA_FACTOR_STRONG_RUDRA("Strong Rudra - caution needed", "बलियो रुद्र - सावधानी आवश्यक"),
+    SHOOLA_FACTOR_MALEFIC_INFLUENCE("Strong malefic influence", "बलियो अशुभ प्रभाव"),
+    SHOOLA_FACTOR_MALEFICS_IN_HOUSES("Malefics in longevity houses", "आयु भावमा पाप ग्रहहरू"),
+
+    // Shoola Dasha Rule Results
+    SHOOLA_RESULT_PURPAYU_INDICATOR("Purnayu indicator", "पूर्णायु संकेतक"),
+    SHOOLA_RESULT_PURPAYU_INDICATOR_STRONG("Purnayu indicator (+strong)", "पूर्णायु संकेतक (+बलियो)"),
+    SHOOLA_RESULT_PURPAYU_INDICATOR_MODERATE("Purnayu indicator (+moderate)", "पूर्णायु संकेतक (+मध्यम)"),
+    SHOOLA_RESULT_ALPAYU_INDICATOR("Alpayu indicator", "अल्पायु संकेतक"),
+    SHOOLA_RESULT_ALPAYU_INDICATOR_STRONG("Alpayu indicator (-strong)", "अल्पायु संकेतक (-बलियो)"),
+    SHOOLA_RESULT_MADHYAYU_TO_PURPAYU("Madhyayu to Purnayu", "मध्यायु देखि पूर्णायु"),
+    SHOOLA_RESULT_MADHYAYU_TO_ALPAYU("Madhyayu to Alpayu", "मध्यायु देखि अल्पायु"),
+    SHOOLA_RESULT_SUPPORTS_PURPAYU("Supports Purnayu", "पूर्णायु समर्थन गर्छ"),
+    SHOOLA_RESULT_8TH_LORD_STRONG("Purnayu - 8th lord strong in angle", "पूर्णायु - अष्टमेश कोणमा बलियो"),
+    SHOOLA_RESULT_8TH_LORD_AFFLICTED("Alpayu - 8th lord afflicted", "अल्पायु - अष्टमेश पीडित"),
+    SHOOLA_RESULT_AYUSHKARAKA_EXALTED("Purnayu - Ayushkaraka exalted", "पूर्णायु - आयुकारक उच्च"),
+    SHOOLA_RESULT_AYUSHKARAKA_STRONG("Purnayu - Ayushkaraka strong", "पूर्णायु - आयुकारक बलियो"),
+    SHOOLA_RESULT_AYUSHKARAKA_WEAK("Alpayu - Ayushkaraka weak", "अल्पायु - आयुकारक कमजोर"),
+
+    // Shoola Dasha Observations
+    SHOOLA_OBS_LAGNA_LORD_EXALTED_IN("Lagna lord exalted in", "लग्नेश उच्च"),
+    SHOOLA_OBS_LAGNA_LORD_IN_OWN_SIGN("Lagna lord in own sign", "लग्नेश स्वराशिमा"),
+    SHOOLA_OBS_LAGNA_LORD_DEBILITATED("Lagna lord debilitated", "लग्नेश नीच"),
+    SHOOLA_OBS_LAGNA_LORD_IN_HOUSE("Lagna lord in house", "लग्नेश भावमा"),
+    SHOOLA_OBS_8TH_LORD_IN_HOUSE("8th lord in house", "अष्टमेश भावमा"),
+    SHOOLA_OBS_SATURN_EXALTED_IN("Saturn exalted in", "शनि उच्च"),
+    SHOOLA_OBS_SATURN_DEBILITATED("Saturn debilitated", "शनि नीच"),
+    SHOOLA_OBS_SATURN_IN("Saturn in", "शनि"),
+    SHOOLA_OBS_BRAHMA_IS("Brahma is", "ब्रह्मा हो"),
+    SHOOLA_OBS_WITH_STRENGTH("with strength", "शक्तिसाथ"),
+    SHOOLA_OBS_RUDRA_IS("Rudra is", "रुद्र हो"),
+    SHOOLA_OBS_RUDRA_STRENGTH("Rudra strength", "रुद्र शक्ति"),
+    SHOOLA_OBS_BENEFIC_RATIO("Benefic ratio", "शुभ अनुपात"),
+    SHOOLA_OBS_NO_PLANETS_LONGEVITY("No planets in longevity houses (1,8,10)", "आयु भावहरू (१,८,१०) मा कुनै ग्रह छैन"),
+
+    // General Analysis Strings
+    ANALYSIS_CLASSICAL_RULES("Classical Rules", "शास्त्रीय नियमहरू"),
+    ANALYSIS_EXPLANATION("Explanation", "व्याख्या"),
+    ANALYSIS_CONDITION_CHECKED("Condition checked", "जाँच गरिएको शर्त"),
+    ANALYSIS_BENEFIC_RATIO_FORMAT("Benefic ratio: %d%% in longevity houses", "शुभ अनुपात: %d%% आयु भावहरूमा"),
+    ANALYSIS_WEIGHTED_MAJORITY("Weighted majority of all longevity indicators", "सबै आयु संकेतकहरूको तौलिएको बहुमत"),
+    ANALYSIS_TOTAL_WEIGHT("Total weight", "कुल तौल"),
+    ANALYSIS_WINNING_SPAN("Winning span", "विजेता अवधि"),
+
+    // Separator Lines
+    SEPARATOR_LINE("═══════════════════════════════════════════", "═══════════════════════════════════════════"),
+
+    // House Names for Analysis
+    HOUSE_PREFIX("House", "भाव"),
+    HOUSE_SUFFIX_1("st", "औं"),
+    HOUSE_SUFFIX_2("nd", "औं"),
+    HOUSE_SUFFIX_3("rd", "औं"),
+    HOUSE_SUFFIX_DEFAULT("th", "औं"),
+
+    // Dignity Terms
+    DIGNITY_EXALTED("exalted", "उच्च"),
+    DIGNITY_OWN_SIGN("own sign", "स्वराशि"),
+    DIGNITY_DEBILITATED("debilitated", "नीच"),
+    DIGNITY_FRIEND_SIGN("friend sign", "मित्र राशि"),
+    DIGNITY_ENEMY_SIGN("enemy sign", "शत्रु राशि"),
+    DIGNITY_NEUTRAL("neutral", "तटस्थ"),
+
+    // Longevity Categories (ensure all are present)
+    LONGEVITY_BALARISHTA("Balarishta", "बालारिष्ट"),
+    LONGEVITY_ALPAYU("Alpayu (Short)", "अल्पायु"),
+    LONGEVITY_MADHYAYU("Madhyayu (Medium)", "मध्यायु"),
+    LONGEVITY_POORNAYU("Poornayu (Full)", "पूर्णायु"),
+    LONGEVITY_AMITAYU("Amitayu (Extended)", "अमितायु"),
+
+    // Period Nature
+    PERIOD_VERY_CHALLENGING("Very Challenging", "अत्यन्त चुनौतीपूर्ण"),
+    PERIOD_CHALLENGING("Challenging", "चुनौतीपूर्ण"),
+    PERIOD_MIXED("Mixed", "मिश्रित"),
+    PERIOD_SUPPORTIVE("Supportive", "सहायक"),
+    PERIOD_FAVORABLE("Favorable", "अनुकूल"),
+
+    // Health Severity
+    SEVERITY_CRITICAL("Critical", "गम्भीर"),
+    SEVERITY_HIGH("High", "उच्च"),
+    SEVERITY_MODERATE("Moderate", "मध्यम"),
+    SEVERITY_LOW("Low", "न्यून"),
+    SEVERITY_MINIMAL("Minimal", "न्यूनतम"),
+    SEVERITY_NONE("None", "छैन"),
+
+    // Rudra Types
+    RUDRA_PRIMARY("Primary Rudra - Most malefic influence", "प्राथमिक रुद्र - सबैभन्दा अशुभ प्रभाव"),
+    RUDRA_SECONDARY("Secondary Rudra - Supporting malefic", "द्वितीयक रुद्र - सहायक अशुभ"),
+
+    // Dash Direction
+    DASHA_DIRECTION_DIRECT("Direct (Zodiacal)", "प्रत्यक्ष (राशिक्रम)"),
+    DASHA_DIRECTION_REVERSE("Reverse (Anti-zodiacal)", "विपरीत (राशिविरुद्ध)"),
+
+    // Sthira Karaka Significations
+    KARAKA_1_SIGNIFICATION("Self, Vitality, Soul", "आत्मा, जीवनशक्ति, चेतना"),
+    KARAKA_2_SIGNIFICATION("Wealth, Family, Speech", "धन, परिवार, वाणी"),
+    KARAKA_3_SIGNIFICATION("Siblings, Courage, Arms", "भाइबहिनी, साहस, बाहु"),
+    KARAKA_4_SIGNIFICATION("Mother, Mind, Home", "आमा, मन, घर"),
+    KARAKA_5_SIGNIFICATION("Children, Intelligence, Merit", "सन्तान, बुद्धि, पुण्य"),
+    KARAKA_6_SIGNIFICATION("Enemies, Disease, Service", "शत्रु, रोग, सेवा"),
+    KARAKA_7_SIGNIFICATION("Spouse, Partnership, Desire", "जीवनसाथी, साझेदारी, इच्छा"),
+    KARAKA_8_SIGNIFICATION("Longevity, Hidden, Occult", "आयु, गुप्त, तन्त्र"),
+    KARAKA_9_SIGNIFICATION("Father, Dharma, Fortune", "बुबा, धर्म, भाग्य"),
+    KARAKA_10_SIGNIFICATION("Karma, Profession, Status", "कर्म, पेशा, मर्यादा"),
+    KARAKA_11_SIGNIFICATION("Gains, Elder Siblings, Desires", "लाभ, जेठा भाइबहिनी, इच्छाहरू"),
+    KARAKA_12_SIGNIFICATION("Loss, Liberation, Foreign", "हानि, मोक्ष, विदेश"),
 ;
 }

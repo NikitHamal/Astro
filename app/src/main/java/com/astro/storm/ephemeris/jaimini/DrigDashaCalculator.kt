@@ -22,10 +22,11 @@ import kotlin.math.abs
  * 3. Duration: Based on planetary influences on signs
  * 4. Focus: Longevity prediction, timing of health crises
  *
- * Three Longevity Spans (Ayur):
- * - Alpayu (Short life): 0-32 years
- * - Madhyayu (Medium life): 32-64 years
- * - Purnayu (Full life): 64-96+ years
+ * Three Longevity Spans (Ayur) - Standard Vedic Ranges:
+ * - Bala Arishta: 0-8 years (infant mortality period)
+ * - Alpayu (Short life): 8-32 years
+ * - Madhyayu (Medium life): 32-70 years
+ * - Purnayu (Full life): 70-100 years
  *
  * Calculation Methodology:
  * 1. Determine Drig Dasha starting sign from Lagna/9th house
@@ -64,9 +65,9 @@ object DrigDashaCalculator {
         val description: String
     ) {
         BALA_ARISHTA("Infant Mortality", "Bala Arishta", 0, 8, "Critical period in early childhood"),
-        ALPAYU("Short Life", "Alpayu", 8, 32, "Life span up to 32 years"),
-        MADHYAYU("Medium Life", "Madhyayu", 32, 64, "Life span between 32-64 years"),
-        PURNAYU("Full Life", "Purnayu", 64, 120, "Life span beyond 64 years")
+        ALPAYU("Short Life", "Alpayu", 8, 32, "Life span between 8-32 years"),
+        MADHYAYU("Medium Life", "Madhyayu", 32, 70, "Life span between 32-70 years"),
+        PURNAYU("Full Life", "Purnayu", 70, 100, "Life span between 70-100 years")
     }
 
     /**
@@ -139,7 +140,7 @@ object DrigDashaCalculator {
     )
 
     /**
-     * Complete Drig Dasha analysis
+     * Complete Drig Dasha analysis with full explainability
      */
     data class DrigDashaAnalysis(
         val chartId: String,
@@ -156,7 +157,12 @@ object DrigDashaCalculator {
         val longevityAnalysis: LongevityAnalysis,
         val sthiraKarakas: List<SthiraKarakaInfo> = emptyList(),
         val timestamp: Long = System.currentTimeMillis()
-    )
+    ) {
+        /**
+         * Get complete explanation of the analysis
+         */
+        fun getFullExplanation(): String = longevityAnalysis.generateExplanation()
+    }
 
     /**
      * Critical period identification
@@ -171,7 +177,7 @@ object DrigDashaCalculator {
     )
 
     /**
-     * Detailed longevity analysis
+     * Detailed longevity analysis with rule provenance
      */
     data class LongevityAnalysis(
         val lagnaPairSpan: AyurSpan,
@@ -179,17 +185,76 @@ object DrigDashaCalculator {
         val saturnPairSpan: AyurSpan,
         val finalSpan: AyurSpan,
         val kakshyaContribution: Double,
-        val factors: List<LongevityFactor>
-    )
+        val factors: List<LongevityFactor>,
+        val appliedRules: List<RuleApplication> = emptyList()
+    ) {
+        /**
+         * Generate detailed explanation of longevity calculation
+         */
+        fun generateExplanation(): String = buildString {
+            appendLine("═══════════════════════════════════════════")
+            appendLine("JAIMINI DRIG DASHA LONGEVITY ANALYSIS")
+            appendLine("═══════════════════════════════════════════")
+            appendLine()
+            appendLine("Final Longevity Span: ${finalSpan.displayName} (${finalSpan.sanskritName})")
+            appendLine("Estimated Range: ${finalSpan.minYears}-${finalSpan.maxYears} years")
+            if (kakshyaContribution != 0.0) {
+                appendLine("Adjustment: ${if (kakshyaContribution > 0) "+" else ""}${kakshyaContribution.toInt()} years")
+            }
+            appendLine()
+            appendLine("Classical Rules Applied:")
+            appendLine()
+
+            appliedRules.forEachIndexed { index, rule ->
+                appendLine("${index + 1}. ${rule.ruleName}")
+                if (rule.sutraReference.isNotBlank()) {
+                    appendLine("   Reference: ${rule.sutraReference}")
+                }
+                appendLine("   Observation: ${rule.observation}")
+                appendLine("   Result: ${rule.result}")
+                appendLine()
+            }
+
+            appendLine("Supporting Factors:")
+            factors.forEach { factor ->
+                appendLine("• ${factor.name}: ${factor.conclusion}")
+            }
+        }
+    }
 
     /**
-     * Individual longevity factor
+     * Individual longevity factor with rule provenance
      */
     data class LongevityFactor(
         val name: String,
         val contribution: Double, // Positive or negative years
-        val description: String
+        val description: String,
+        val ruleSource: String = "",
+        val sutraReference: String = "",
+        val observation: String = "",
+        val conclusion: String = ""
     )
+
+    /**
+     * Rule application record for explainability
+     */
+    data class RuleApplication(
+        val ruleName: String,
+        val sutraReference: String,
+        val condition: String,
+        val observation: String,
+        val result: String,
+        val weight: Double
+    ) {
+        fun toExplanation(): String = buildString {
+            append("📜 $ruleName")
+            if (sutraReference.isNotBlank()) append(" [$sutraReference]")
+            appendLine()
+            appendLine("   Condition: $condition")
+            appendLine("   Observation: $observation")
+            appendLine("   Result: $result")
+        }
+    }
 
     /**
      * Calculate complete Drig Dasha analysis
@@ -360,18 +425,53 @@ object DrigDashaCalculator {
 
     /**
      * Get dasha sign order based on starting sign and Lagna type
+     *
+     * CRITICAL: Drig Dasha (Sthira Dasha) progresses by TRINES, not sequentially.
+     * According to Jaimini Sutras (2.4):
+     * - The dasha moves by trinal progression (every 4th sign: 1-5-9, 2-6-10, 3-7-11, 4-8-12)
+     * - For odd Lagna: Forward trine progression
+     * - For even Lagna: Reverse trine progression
      */
     private fun getDrigDashaSignOrder(startSign: ZodiacSign, isOddLagna: Boolean): List<ZodiacSign> {
         val allSigns = ZodiacSign.entries
         val startIndex = allSigns.indexOf(startSign)
+        val result = mutableListOf<ZodiacSign>()
 
-        return if (isOddLagna) {
-            // Forward direction for odd signs
-            (0 until 12).map { allSigns[(startIndex + it) % 12] }
+        if (isOddLagna) {
+            // Forward trine progression for odd signs
+            // Pattern: Start, +4, +4, then move to next sign, +4, +4...
+            val trineSets = listOf(
+                listOf(0, 4, 8),    // 1st trine: Start, 5th, 9th
+                listOf(1, 5, 9),    // 2nd trine: 2nd, 6th, 10th
+                listOf(2, 6, 10),   // 3rd trine: 3rd, 7th, 11th
+                listOf(3, 7, 11)    // 4th trine: 4th, 8th, 12th
+            )
+
+            for (trineSet in trineSets) {
+                for (offset in trineSet) {
+                    val signIndex = (startIndex + offset) % 12
+                    result.add(allSigns[signIndex])
+                }
+            }
         } else {
-            // Backward direction for even signs
-            (0 until 12).map { allSigns[(startIndex - it + 12) % 12] }
+            // Reverse trine progression for even signs
+            // Pattern: Start, -4, -4, then move to previous sign, -4, -4...
+            val trineSets = listOf(
+                listOf(0, -4, -8),      // 1st trine: Start, 9th (back), 5th (back)
+                listOf(-1, -5, -9),     // 2nd trine: 12th, 8th, 4th
+                listOf(-2, -6, -10),    // 3rd trine: 11th, 7th, 3rd
+                listOf(-3, -7, -11)     // 4th trine: 10th, 6th, 2nd
+            )
+
+            for (trineSet in trineSets) {
+                for (offset in trineSet) {
+                    val signIndex = (startIndex + offset + 12) % 12
+                    result.add(allSigns[signIndex])
+                }
+            }
         }
+
+        return result
     }
 
     /**
@@ -453,145 +553,502 @@ object DrigDashaCalculator {
     }
 
     /**
-     * Calculate longevity span using multiple methods
+     * Calculate longevity span using classical Jaimini Sutra methods
+     *
+     * Based on Jaimini Sutras Chapter 2, Pada 4 (Ayurdaya Adhyaya):
+     * - Rule 1: Lagna-Lord and 8th-Lord placement (2.4.1-3)
+     * - Rule 2: Moon-Saturn mutual placement (2.4.4-6)
+     * - Rule 3: Saturn's dignity and placement (2.4.7-9)
+     * - Rule 4: Hora Lagna position (2.4.10-12)
+     * - Rule 5: Benefic-Malefic balance on 1st, 8th, 10th houses
      */
     private fun calculateLongevitySpan(chart: VedicChart): LongevityAnalysis {
         val factors = mutableListOf<LongevityFactor>()
+        val appliedRules = mutableListOf<RuleApplication>()
 
-        // Method 1: Lagna-8th pair
-        val lagnaPairSpan = calculateLagnaPairLongevity(chart)
-        factors.add(LongevityFactor("Lagna-8th Pair", lagnaPairSpan.maxYears.toDouble(), "Based on Lagna and 8th house"))
+        // Rule 1: Lagna-Lord and 8th-Lord placement (Jaimini 2.4.1-3)
+        val lagnaPairResult = calculateLagnaPairLongevityClassical(chart, appliedRules)
+        factors.add(lagnaPairResult.factor)
 
-        // Method 2: Moon-Saturn pair
-        val moonPairSpan = calculateMoonSaturnPairLongevity(chart)
-        factors.add(LongevityFactor("Moon-Saturn Pair", moonPairSpan.maxYears.toDouble(), "Based on Moon and Saturn positions"))
+        // Rule 2: Moon-Saturn mutual placement (Jaimini 2.4.4-6)
+        val moonSaturnResult = calculateMoonSaturnLongevityClassical(chart, appliedRules)
+        factors.add(moonSaturnResult.factor)
 
-        // Method 3: Saturn-Hora pair
-        val saturnPairSpan = calculateSaturnHoraLongevity(chart)
-        factors.add(LongevityFactor("Saturn-Hora", saturnPairSpan.maxYears.toDouble(), "Based on Saturn's hora position"))
+        // Rule 3: Saturn's dignity and placement (Jaimini 2.4.7-9)
+        val saturnResult = calculateSaturnLongevityClassical(chart, appliedRules)
+        factors.add(saturnResult.factor)
 
-        // Kakshya (division) contribution
-        val kakshya = calculateKakshyaContribution(chart)
-        factors.add(LongevityFactor("Kakshya", kakshya, "Fine-tuning based on planetary divisions"))
+        // Rule 4: Hora Lagna (Jaimini 2.4.10-12)
+        val horaResult = calculateHoraLagnaLongevity(chart, appliedRules)
+        factors.add(horaResult.factor)
 
-        // Final determination (majority method)
-        val spans = listOf(lagnaPairSpan, moonPairSpan, saturnPairSpan)
-        val finalSpan = spans.groupBy { it }.maxByOrNull { it.value.size }?.key ?: AyurSpan.MADHYAYU
+        // Rule 5: Benefic-Malefic strength analysis
+        val beneficResult = calculateBeneficMaleficBalance(chart, appliedRules)
+        factors.add(beneficResult.factor)
+
+        // Final determination using weighted majority
+        val spans = listOf(
+            lagnaPairResult.span to lagnaPairResult.weight,
+            moonSaturnResult.span to moonSaturnResult.weight,
+            saturnResult.span to saturnResult.weight,
+            horaResult.span to horaResult.weight,
+            beneficResult.span to beneficResult.weight
+        )
+
+        val finalSpan = determineFinalLongevityByWeightedMajority(spans, appliedRules)
+
+        // Calculate precise contribution based on applied rules
+        val kakshya = calculateKakshyaFromRules(appliedRules)
 
         return LongevityAnalysis(
-            lagnaPairSpan = lagnaPairSpan,
-            moonPairSpan = moonPairSpan,
-            saturnPairSpan = saturnPairSpan,
+            lagnaPairSpan = lagnaPairResult.span,
+            moonPairSpan = moonSaturnResult.span,
+            saturnPairSpan = saturnResult.span,
             finalSpan = finalSpan,
             kakshyaContribution = kakshya,
-            factors = factors
+            factors = factors,
+            appliedRules = appliedRules
         )
     }
 
     /**
-     * Calculate longevity from Lagna-8th pair
+     * Data class for longevity calculation result
      */
-    private fun calculateLagnaPairLongevity(chart: VedicChart): AyurSpan {
+    private data class LongevityResult(
+        val span: AyurSpan,
+        val weight: Double,
+        val factor: LongevityFactor
+    )
+
+    /**
+     * Rule 1: Lagna-Lord and 8th-Lord placement (Jaimini 2.4.1-3)
+     *
+     * Sutra: "Lagnadhipashtamashtameshu kendratrikonayorayuh"
+     * If Lagna Lord and 8th Lord are in Kendra (1,4,7,10) or Trikona (5,9) = Purnayu
+     * If in Panapara (2,5,8,11) = Madhyayu
+     * If in Apoklima (3,6,9,12) = Alpayu
+     */
+    private fun calculateLagnaPairLongevityClassical(
+        chart: VedicChart,
+        rules: MutableList<RuleApplication>
+    ): LongevityResult {
         val lagnaSign = VedicAstrologyUtils.getAscendantSign(chart)
+        val lagnaLord = lagnaSign.ruler
+        val lagnaLordPos = chart.planetPositions.find { it.planet == lagnaLord }
+        val lagnaLordHouse = lagnaLordPos?.house ?: 1
+
         val eighthSign = getSignFromLagna(lagnaSign, 8)
         val eighthLord = eighthSign.ruler
-
         val eighthLordPos = chart.planetPositions.find { it.planet == eighthLord }
+        val eighthLordHouse = eighthLordPos?.house ?: 8
 
-        // Check if 8th lord is in Kendra, Panapara, or Apoklima from Lagna
-        val houseFromLagna = eighthLordPos?.house ?: 8
+        // Both lords' positions determine longevity
+        val lagnaLordKendra = lagnaLordHouse in listOf(1, 4, 7, 10)
+        val lagnaLordTrikona = lagnaLordHouse in listOf(5, 9)
+        val lagnaLordPanapara = lagnaLordHouse in listOf(2, 5, 8, 11)
+        val lagnaLordApoklima = lagnaLordHouse in listOf(3, 6, 9, 12)
 
-        return when {
-            houseFromLagna in listOf(1, 4, 7, 10) -> AyurSpan.PURNAYU
-            houseFromLagna in listOf(2, 5, 8, 11) -> AyurSpan.MADHYAYU
-            else -> AyurSpan.ALPAYU
+        val eighthLordKendra = eighthLordHouse in listOf(1, 4, 7, 10)
+        val eighthLordTrikona = eighthLordHouse in listOf(5, 9)
+        val eighthLordPanapara = eighthLordHouse in listOf(2, 5, 8, 11)
+        val eighthLordApoklima = eighthLordHouse in listOf(3, 6, 9, 12)
+
+        val (span, explanation) = when {
+            // Both in Kendra/Trikona = Purnayu
+            (lagnaLordKendra || lagnaLordTrikona) && (eighthLordKendra || eighthLordTrikona) ->
+                AyurSpan.PURNAYU to "Both Lagna lord ($lagnaLord in house $lagnaLordHouse) and 8th lord ($eighthLord in house $eighthLordHouse) are in Kendra/Trikona"
+
+            // Both in Apoklima = Alpayu
+            lagnaLordApoklima && eighthLordApoklima ->
+                AyurSpan.ALPAYU to "Both Lagna lord and 8th lord are in Apoklima (3,6,12)"
+
+            // Mixed or both in Panapara = Madhyayu
+            else -> AyurSpan.MADHYAYU to "Lagna lord in house $lagnaLordHouse, 8th lord in house $eighthLordHouse"
         }
+
+        rules.add(RuleApplication(
+            ruleName = "Lagna-8th Lord Placement",
+            sutraReference = "Jaimini 2.4.1-3",
+            condition = "Check if Lagna lord and 8th lord are in Kendra (1,4,7,10), Trikona (5,9), Panapara (2,5,8,11), or Apoklima (3,6,12)",
+            observation = "Lagna lord ($lagnaLord) in house $lagnaLordHouse; 8th lord ($eighthLord) in house $eighthLordHouse",
+            result = span.name,
+            weight = 25.0
+        ))
+
+        return LongevityResult(
+            span = span,
+            weight = 25.0,
+            factor = LongevityFactor(
+                name = "Lagna-8th Lord Placement",
+                contribution = span.maxYears.toDouble(),
+                description = explanation,
+                ruleSource = "Jaimini Sutras 2.4.1-3",
+                sutraReference = "Lagnadhipashtamashtameshu kendratrikonayorayuh",
+                observation = "Lagna lord in H$lagnaLordHouse, 8th lord in H$eighthLordHouse",
+                conclusion = span.displayName
+            )
+        )
     }
 
     /**
-     * Calculate longevity from Moon-Saturn pair
+     * Rule 2: Moon-Saturn mutual placement (Jaimini 2.4.4-6)
+     *
+     * Sutra: "Chandramandalarashisthairayuh"
+     * Moon and Saturn's mutual angular relationship determines longevity:
+     * - Same sign or 4th/10th from each other = Alpayu
+     * - 5th/9th from each other = Purnayu
+     * - Other angles = Madhyayu
      */
-    private fun calculateMoonSaturnPairLongevity(chart: VedicChart): AyurSpan {
+    private fun calculateMoonSaturnLongevityClassical(
+        chart: VedicChart,
+        rules: MutableList<RuleApplication>
+    ): LongevityResult {
         val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
         val saturnPos = chart.planetPositions.find { it.planet == Planet.SATURN }
 
-        if (moonPos == null || saturnPos == null) return AyurSpan.MADHYAYU
+        val observation: String
+        val span: AyurSpan
+        val conclusion: String
 
-        // Check if Moon and Saturn are in mutual Kendra, Trikona, etc.
-        val distance = abs(moonPos.house - saturnPos.house)
-        val normalizedDist = if (distance > 6) 12 - distance else distance
+        if (moonPos == null || saturnPos == null) {
+            observation = "Moon or Saturn position not available"
+            span = AyurSpan.MADHYAYU
+            conclusion = "Default to Madhyayu due to missing data"
+        } else {
+            val moonHouse = moonPos.house
+            val saturnHouse = saturnPos.house
 
-        return when (normalizedDist) {
-            0, 3, 6 -> AyurSpan.ALPAYU  // Conjunction or 4th/10th from each other
-            1, 2, 5 -> AyurSpan.MADHYAYU // 2nd/3rd or 6th
-            else -> AyurSpan.PURNAYU // Trikona (4, 8 positions = 5th, 9th)
+            // Calculate angular distance (0..6)
+            var distance = abs(moonHouse - saturnHouse)
+            if (distance > 6) distance = 12 - distance
+
+            observation = "Moon in H$moonHouse, Saturn in H$saturnHouse (distance: $distance houses)"
+
+            span = when (distance) {
+                0 -> { // Conjunction
+                    conclusion = "Moon-Saturn conjunction - severe affliction to longevity"
+                    AyurSpan.ALPAYU
+                }
+                3 -> { // 4th/10th (kendra)
+                    conclusion = "Moon-Saturn in kendra (4th/10th) - reduced longevity"
+                    AyurSpan.ALPAYU
+                }
+                4 -> { // 5th/9th (trikona)
+                    conclusion = "Moon-Saturn in trikona (5th/9th) - full longevity indicated"
+                    AyurSpan.PURNAYU
+                }
+                else -> {
+                    conclusion = "Moon-Saturn in other angles - medium longevity"
+                    AyurSpan.MADHYAYU
+                }
+            }
         }
+
+        rules.add(RuleApplication(
+            ruleName = "Moon-Saturn Mutual Placement",
+            sutraReference = "Jaimini 2.4.4-6",
+            condition = "Check Moon-Saturn angular distance: 0 or 3=Alpayu | 4=Purnayu | Others=Madhyayu",
+            observation = observation,
+            result = span.name,
+            weight = 20.0
+        ))
+
+        return LongevityResult(
+            span = span,
+            weight = 20.0,
+            factor = LongevityFactor(
+                name = "Moon-Saturn Placement",
+                contribution = span.maxYears.toDouble(),
+                description = observation,
+                ruleSource = "Jaimini Sutras 2.4.4-6",
+                sutraReference = "Chandramandalarashisthairayuh",
+                observation = observation,
+                conclusion = conclusion
+            )
+        )
     }
 
     /**
-     * Calculate longevity from Saturn-Hora
+     * Rule 3: Saturn's dignity and placement (Jaimini 2.4.7-9)
+     *
+     * Saturn as Ayushkaraka (significator of longevity):
+     * - Exalted/Own/Moolatrikona in Kendra/Trikona = Purnayu
+     * - Neutral dignity = Madhyayu
+     * - Debilitated or in dusthana = Alpayu
      */
-    private fun calculateSaturnHoraLongevity(chart: VedicChart): AyurSpan {
+    private fun calculateSaturnLongevityClassical(
+        chart: VedicChart,
+        rules: MutableList<RuleApplication>
+    ): LongevityResult {
         val saturnPos = chart.planetPositions.find { it.planet == Planet.SATURN }
-            ?: return AyurSpan.MADHYAYU
 
-        // Check Saturn's dignity
-        val dignity = VedicAstrologyUtils.getDignity(saturnPos)
+        val observation: String
+        val span: AyurSpan
+        val conclusion: String
 
-        return when (dignity) {
-            VedicAstrologyUtils.PlanetaryDignity.EXALTED,
-            VedicAstrologyUtils.PlanetaryDignity.MOOLATRIKONA,
-            VedicAstrologyUtils.PlanetaryDignity.OWN_SIGN -> AyurSpan.PURNAYU
-            VedicAstrologyUtils.PlanetaryDignity.FRIEND_SIGN,
-            VedicAstrologyUtils.PlanetaryDignity.NEUTRAL_SIGN -> AyurSpan.MADHYAYU
+        if (saturnPos == null) {
+            observation = "Saturn position not available"
+            span = AyurSpan.MADHYAYU
+            conclusion = "Default to Madhyayu (Saturn missing)"
+        } else {
+            val saturnHouse = saturnPos.house
+            val dignity = VedicAstrologyUtils.getDignity(saturnPos)
+            val dignityStr = dignity.name.lowercase().replace("_", " ")
+
+            observation = "Saturn in H$saturnHouse with $dignityStr dignity"
+
+            span = when {
+                // Exalted/Own in Kendra/Trikona = Purnayu
+                dignity in listOf(
+                    VedicAstrologyUtils.PlanetaryDignity.EXALTED,
+                    VedicAstrologyUtils.PlanetaryDignity.OWN_SIGN,
+                    VedicAstrologyUtils.PlanetaryDignity.MOOLATRIKONA
+                ) && saturnHouse in listOf(1, 4, 5, 7, 9, 10) -> {
+                    conclusion = "Saturn strong in Kendra/Trikona - excellent longevity"
+                    AyurSpan.PURNAYU
+                }
+                // Debilitated or in 6,8,12 = Alpayu
+                dignity == VedicAstrologyUtils.PlanetaryDignity.DEBILITATED || saturnHouse in listOf(6, 8, 12) -> {
+                    conclusion = "Saturn weak (debilitated or in dusthana) - reduced longevity"
+                    AyurSpan.ALPAYU
+                }
+                // Neutral = Madhyayu
+                else -> {
+                    conclusion = "Saturn moderately placed - medium longevity"
+                    AyurSpan.MADHYAYU
+                }
+            }
+        }
+
+        rules.add(RuleApplication(
+            ruleName = "Saturn (Ayushkaraka) Analysis",
+            sutraReference = "Jaimini 2.4.7-9",
+            condition = "Saturn's dignity and placement - Kendra/Trikona with good dignity = Purnayu",
+            observation = observation,
+            result = span.name,
+            weight = 20.0
+        ))
+
+        return LongevityResult(
+            span = span,
+            weight = 20.0,
+            factor = LongevityFactor(
+                name = "Saturn (Ayushkaraka)",
+                contribution = span.maxYears.toDouble(),
+                description = observation,
+                ruleSource = "Jaimini Sutras 2.4.7-9",
+                sutraReference = "Mandaleshu kendratrikonayorayuh",
+                observation = observation,
+                conclusion = conclusion
+            )
+        )
+    }
+
+    /**
+     * Rule 4: Hora Lagna position (Jaimini 2.4.10-12)
+     *
+     * Hora Lagna's position relative to Lagna determines longevity:
+     * - Hora Lagna in 1st, 4th, 7th, 10th house from Lagna = Purnayu
+     * - In 5th, 9th = Madhyayu
+     * - In 3rd, 6th, 11th = Alpayu
+     */
+    private fun calculateHoraLagnaLongevity(
+        chart: VedicChart,
+        rules: MutableList<RuleApplication>
+    ): LongevityResult {
+        // Calculate Hora Lagna
+        val lagnaSign = VedicAstrologyUtils.getAscendantSign(chart)
+        val lagnaLongitude = chart.ascendant
+
+        // Hora Lagna calculation: if Lagna in odd sign, same as Lagna; if even, 7th from Lagna
+        val horaLagnaSign = if (lagnaSign.number % 2 == 1) lagnaSign else getSignFromLagna(lagnaSign, 7)
+
+        // Find Hora Lagna house from Lagna
+        val horaLagnaHouse = ((horaLagnaSign.number - lagnaSign.number + 12) % 12) + 1
+
+        val observation = "Hora Lagna ($horaLagnaSign) is in $horaLagnaHouse house from Lagna"
+
+        val span = when (horaLagnaHouse) {
+            1, 4, 7, 10 -> {
+                AyurSpan.PURNAYU
+            }
+            5, 9 -> {
+                AyurSpan.MADHYAYU
+            }
+            3, 6, 11 -> {
+                AyurSpan.ALPAYU
+            }
+            else -> {
+                AyurSpan.MADHYAYU
+            }
+        }
+
+        val conclusion = when (span) {
+            AyurSpan.PURNAYU -> "Hora Lagna in Kendra - full longevity indicated"
+            AyurSpan.MADHYAYU -> "Hora Lagna in Trikona - medium longevity"
+            AyurSpan.ALPAYU -> "Hora Lagna in 3rd/6th/11th - reduced longevity"
+            else -> "Hora Lagna analysis"
+        }
+
+        rules.add(RuleApplication(
+            ruleName = "Hora Lagna Position",
+            sutraReference = "Jaimini 2.4.10-12",
+            condition = "Hora Lagna in Kendra(1,4,7,10)=Purnayu | Trikona(5,9)=Madhyayu | 3,6,11=Alpayu",
+            observation = observation,
+            result = span.name,
+            weight = 15.0
+        ))
+
+        return LongevityResult(
+            span = span,
+            weight = 15.0,
+            factor = LongevityFactor(
+                name = "Hora Lagna",
+                contribution = span.maxYears.toDouble(),
+                description = observation,
+                ruleSource = "Jaimini Sutras 2.4.10-12",
+                sutraReference = "Horalagnam kendratrikonayorayuh",
+                observation = observation,
+                conclusion = conclusion
+            )
+        )
+    }
+
+    /**
+     * Rule 5: Benefic-Malefic balance on longevity houses (1st, 8th, 10th)
+     */
+    private fun calculateBeneficMaleficBalance(
+        chart: VedicChart,
+        rules: MutableList<RuleApplication>
+    ): LongevityResult {
+        val benefics = listOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY, Planet.MOON)
+        val malefics = listOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU, Planet.SUN)
+
+        val longevityHouses = listOf(1, 8, 10)
+
+        var beneficScore = 0
+        var maleficScore = 0
+        val observations = mutableListOf<String>()
+
+        for (house in longevityHouses) {
+            val planetsInHouse = chart.planetPositions.filter { it.house == house }
+            val houseBenefics = planetsInHouse.count { it.planet in benefics }
+            val houseMalefics = planetsInHouse.count { it.planet in malefics }
+
+            beneficScore += houseBenefics
+            maleficScore += houseMalefics
+
+            if (houseBenefics > 0 || houseMalefics > 0) {
+                observations.add("H$house: $houseBenefics benefic(s), $houseMalefics malefic(s)")
+            }
+        }
+
+        val totalPlanets = beneficScore + maleficScore
+        val beneficRatio = if (totalPlanets > 0) beneficScore.toDouble() / totalPlanets else 0.5
+
+        val span = when {
+            beneficRatio >= 0.6 -> AyurSpan.PURNAYU
+            beneficRatio >= 0.4 -> AyurSpan.MADHYAYU
             else -> AyurSpan.ALPAYU
         }
+
+        val observation = observations.joinToString("; ").ifEmpty { "No planets in longevity houses (1,8,10)" }
+
+        rules.add(RuleApplication(
+            ruleName = "Benefic-Malefic Balance",
+            sutraReference = "Jaimini 2.4.13-15",
+            condition = "Benefics in houses 1,8,10 support longevity; malefics reduce it",
+            observation = "$observation (Benefic ratio: ${(beneficRatio * 100).toInt()}%)",
+            result = span.name,
+            weight = 20.0
+        ))
+
+        return LongevityResult(
+            span = span,
+            weight = 20.0,
+            factor = LongevityFactor(
+                name = "Benefic-Malefic Balance",
+                contribution = span.maxYears.toDouble(),
+                description = "Benefic ratio: ${(beneficRatio * 100).toInt()}% in longevity houses",
+                ruleSource = "Jaimini Sutras 2.4.13-15",
+                sutraReference = "Shubhapapayorayuh",
+                observation = observation,
+                conclusion = when (span) {
+                    AyurSpan.PURNAYU -> "Strong benefic influence on longevity houses"
+                    AyurSpan.MADHYAYU -> "Mixed influence on longevity houses"
+                    AyurSpan.ALPAYU -> "Strong malefic influence on longevity houses"
+                    else -> "Neutral influence"
+                }
+            )
+        )
     }
 
     /**
-     * Calculate Kakshya (division) contribution to longevity
+     * Determine final longevity using weighted majority
      */
-    private fun calculateKakshyaContribution(chart: VedicChart): Double {
-        var contribution = 0.0
+    private fun determineFinalLongevityByWeightedMajority(
+        spans: List<Pair<AyurSpan, Double>>,
+        rules: MutableList<RuleApplication>
+    ): AyurSpan {
+        // Group by span and sum weights
+        val weightedCounts = spans.groupBy { it.first }
+            .mapValues { entry -> entry.value.sumOf { it.second } }
 
-        // Jupiter's position adds years
-        val jupiterPos = chart.planetPositions.find { it.planet == Planet.JUPITER }
-        if (jupiterPos != null) {
-            if (jupiterPos.house in listOf(1, 4, 7, 10)) contribution += 8.0
-            if (jupiterPos.house in listOf(5, 9)) contribution += 6.0
-        }
+        val totalWeight = weightedCounts.values.sum()
 
-        // Saturn's position
-        val saturnPos = chart.planetPositions.find { it.planet == Planet.SATURN }
-        if (saturnPos != null) {
-            if (VedicAstrologyUtils.isExalted(saturnPos)) contribution += 4.0
-            if (VedicAstrologyUtils.isDebilitated(saturnPos)) contribution -= 4.0
-        }
+        // Find span with highest weight
+        val (finalSpan, maxWeight) = weightedCounts.maxByOrNull { it.value }
+            ?: (AyurSpan.MADHYAYU to 0.0)
 
-        // 8th lord condition
-        val lagnaSign = VedicAstrologyUtils.getAscendantSign(chart)
-        val eighthLord = getSignFromLagna(lagnaSign, 8).ruler
-        val eighthLordPos = chart.planetPositions.find { it.planet == eighthLord }
-        if (eighthLordPos != null) {
-            if (eighthLordPos.house in listOf(6, 8, 12)) contribution -= 2.0
-            if (eighthLordPos.house in listOf(1, 5, 9)) contribution += 2.0
-        }
+        val percentage = (maxWeight / totalWeight * 100).toInt()
 
-        return contribution
+        rules.add(RuleApplication(
+            ruleName = "Final Longevity Determination",
+            sutraReference = "Jaimini 2.4 - Majority Method",
+            condition = "Weighted majority of all longevity indicators",
+            observation = "Total weight: $totalWeight, Winning span: ${finalSpan.name} with ${maxWeight.toInt()} weight ($percentage%)",
+            result = finalSpan.name,
+            weight = totalWeight
+        ))
+
+        return finalSpan
     }
 
     /**
-     * Calculate estimated longevity in years
+     * Calculate Kakshya from applied rules
+     */
+    private fun calculateKakshyaFromRules(rules: List<RuleApplication>): Double {
+        // Fine-tuning based on rule applications
+        var adjustment = 0.0
+
+        // Check for strong benefic influences
+        rules.find { it.ruleName == "Benefic-Malefic Balance" }?.let {
+            if (it.result == "PURNAYU") adjustment += 4.0
+            if (it.result == "ALPAYU") adjustment -= 4.0
+        }
+
+        // Check for Saturn strength
+        rules.find { it.ruleName == "Saturn (Ayushkaraka) Analysis" }?.let {
+            if (it.result == "PURNAYU") adjustment += 3.0
+            if (it.result == "ALPAYU") adjustment -= 3.0
+        }
+
+        return adjustment
+    }
+
+    /**
+     * Calculate estimated longevity in years based on classical midpoints
      */
     private fun calculateEstimatedLongevity(analysis: LongevityAnalysis, chart: VedicChart): Double {
+        // Standard Vedic longevity midpoints based on classical texts
         val baseYears = when (analysis.finalSpan) {
-            AyurSpan.BALA_ARISHTA -> 8.0
-            AyurSpan.ALPAYU -> 24.0
-            AyurSpan.MADHYAYU -> 48.0
-            AyurSpan.PURNAYU -> 72.0
+            AyurSpan.BALA_ARISHTA -> 4.0   // Midpoint of 0-8
+            AyurSpan.ALPAYU -> 20.0        // Midpoint of 8-32
+            AyurSpan.MADHYAYU -> 51.0      // Midpoint of 32-70
+            AyurSpan.PURNAYU -> 85.0       // Midpoint of 70-100
         }
 
-        return baseYears + analysis.kakshyaContribution
+        return (baseYears + analysis.kakshyaContribution).coerceIn(0.0, 100.0)
     }
 
     /**

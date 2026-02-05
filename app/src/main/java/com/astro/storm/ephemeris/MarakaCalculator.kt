@@ -56,8 +56,8 @@ object MarakaCalculator {
      */
     enum class LongevityCategory(val displayName: String, val description: String, val yearsRange: String) {
         BALARISHTA("Balarishta", "Early childhood affliction (0-8 years)", "0-8"),
-        ALPAYU("Alpayu", "Short lifespan", "32-40"),
-        MADHYAYU("Madhyayu", "Medium lifespan", "40-70"),
+        ALPAYU("Alpayu", "Short lifespan", "8-32"),
+        MADHYAYU("Madhyayu", "Medium lifespan", "32-70"),
         PURNAYU("Purnayu", "Full lifespan", "70-100"),
         AMITAYU("Amitayu", "Long lifespan (100+ years)", "100+")
     }
