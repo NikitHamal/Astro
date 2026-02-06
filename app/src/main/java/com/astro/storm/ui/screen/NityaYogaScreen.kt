@@ -350,23 +350,24 @@ private fun CurrentYogaCard(analysis: NityaYogaCalculator.NityaYogaAnalysis) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                val language = LocalLanguage.current
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Yoga #${analysis.yogaIndex}",
+                        text = stringResource(StringKeyDosha.NITYA_YOGA_NUM, analysis.yogaIndex),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Ruling: ${yoga.rulingPlanet.displayName}",
+                        text = stringResource(StringKeyDosha.NITYA_RULING, yoga.rulingPlanet.getLocalizedName(language)),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "${analysis.strength.displayName}",
+                        text = analysis.strength.displayName,
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -778,7 +779,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
                                 color = AppTheme.TextMuted
                             )
                             Text(
-                                text = "Timing: ${recommendation.timing}",
+                                text = stringResource(StringKeyDosha.NITYA_TIMING_LABEL, recommendation.timing),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextSecondary
                             )
@@ -935,7 +936,7 @@ private fun AllYogasSection() {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = "All 27 Nitya Yogas",
+            text = stringResource(StringKeyDosha.NITYA_ALL_YOGAS_TITLE),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -1044,13 +1045,14 @@ private fun YogaListItem(yoga: NityaYogaCalculator.NityaYogaType) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
+                        val language = LocalLanguage.current
                         Text(
-                            text = "Ruler: ${yoga.rulingPlanet.displayName}",
+                            text = stringResource(StringKeyDosha.NITYA_RULER, yoga.rulingPlanet.getLocalizedName(language)),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
                         Text(
-                            text = "Nature: ${yoga.nature}",
+                            text = "${stringResource(StringKeyDosha.NITYA_NATURE)} ${yoga.nature}",
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -1071,7 +1073,7 @@ private fun NityaLoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentGold)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Calculating Nitya Yoga...",
+                text = stringResource(StringKeyDosha.NITYA_CALCULATING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1097,7 +1099,7 @@ private fun NityaEmptyContent(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "No Chart Data",
+                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary

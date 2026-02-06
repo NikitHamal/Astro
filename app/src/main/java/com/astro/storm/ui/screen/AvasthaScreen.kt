@@ -864,7 +864,7 @@ private fun BaladiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "Baladi Avastha (Age States)",
+                        text = stringResource(StringKeyDosha.AVASTHA_AGE_TITLE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -872,7 +872,7 @@ private fun BaladiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Based on the planet's degree within a sign. Determines the maturity and capability of the planet to deliver results.",
+                    text = stringResource(StringKeyDosha.AVASTHA_AGE_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -919,7 +919,7 @@ private fun BaladiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = "${avastha.baladiAvastha.resultPercentage}% result capacity",
+                        text = stringResource(StringKeyDosha.AVASTHA_RESULT_CAPACITY, avastha.baladiAvastha.resultPercentage),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -968,7 +968,7 @@ private fun JagradadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "Jagradadi Avastha (Alertness States)",
+                        text = stringResource(StringKeyDosha.AVASTHA_ALERTNESS_TITLE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -976,7 +976,7 @@ private fun JagradadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Based on planet's relationship with sign lord. Determines how alert and active the planet is.",
+                    text = stringResource(StringKeyDosha.AVASTHA_ALERTNESS_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -1023,7 +1023,7 @@ private fun JagradadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = "${avastha.jagradadiAvastha.resultPercentage}% result capacity",
+                        text = stringResource(StringKeyDosha.AVASTHA_RESULT_CAPACITY, avastha.jagradadiAvastha.resultPercentage),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1072,7 +1072,7 @@ private fun DeeptadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "Deeptadi Avastha (Dignity States)",
+                        text = stringResource(StringKeyDosha.AVASTHA_DIGNITY_TITLE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1080,7 +1080,7 @@ private fun DeeptadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Nine states based on exaltation, own sign, friends/enemies, and combustion. Determines overall dignity.",
+                    text = stringResource(StringKeyDosha.AVASTHA_DIGNITY_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -1181,7 +1181,7 @@ private fun LajjitadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "Lajjitadi Avastha (Emotional States)",
+                        text = stringResource(StringKeyDosha.AVASTHA_EMOTIONAL_TITLE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1189,7 +1189,7 @@ private fun LajjitadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Based on conjunctions and aspects. Determines the emotional state and how the planet feels in its position.",
+                    text = stringResource(StringKeyDosha.AVASTHA_EMOTIONAL_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -1274,7 +1274,7 @@ private fun AvasthaLoadingContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentGold)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Analyzing Planetary States...",
+                text = stringResource(StringKeyDosha.AVASTHA_ANALYZING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )

@@ -607,6 +607,11 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     VARSHAPHALA_NO_PLANETS("No planets", "कुनै ग्रह छैन"),
     VARSHAPHALA_HOUSES_PREFIX("Houses: ", "भावहरू: "),
     VARSHAPHALA_SPECIFIC_INDICATIONS("Specific Indications:", "विशिष्ट संकेतहरू:"),
+    VARSHAPHALA_TAJIKA_YOGAS("Tajika Yogas", "ताजिक योग"),
+    VARSHAPHALA_NO_MAJOR_YOGAS("No major yogas found", "कुनै मुख्य योग फेला परेन"),
+    VARSHAPHALA_YOGAS_ACTIVE_FMT("%d Yogas active", "%d योग सक्रिय छन्"),
+    VARSHAPHALA_NO_YOGAS_DESC("No significant Tajika yogas formed in this year's chart.", "यस वर्षको कुण्डलीमा कुनै महत्त्वपूर्ण ताजिक योग बनेको छैन।"),
+    VARSHAPHALA_STRENGTH_SHORT("Str:", "बल:"),
     VARSHAPHALA_LORD_PREFIX("Lord: %s", "स्वामी: %s"),
 
     // ============================================
@@ -1144,6 +1149,8 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     // Bhinnashtakavarga
     ASHTAK_BAV_TITLE("Bhinnashtakavarga (BAV)", "भिन्नाष्टकवर्ग (BAV)"),
     ASHTAK_BAV_INDIVIDUAL_DESC("Individual planet strength in each sign (0-8 bindus)", "प्रत्येक राशिमा व्यक्तिगत ग्रहको बल (०-८ बिन्दु)"),
+    ASHTAK_SAV_ABBR("SAV", "SAV"),
+    ASHTAK_BAV_ABBR("BAV", "BAV"),
     ASHTAK_TOTAL("Total", "कुल"),
 
     // SAV Legend

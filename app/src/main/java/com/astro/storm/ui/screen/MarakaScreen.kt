@@ -922,16 +922,11 @@ private fun MarakaDashaPeriodRow(period: MarakaCalculator.MarakaDashaPeriod) {
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "${period.planet.displayName} Period",
+                    text = stringResource(StringKeyDosha.MARAKA_PERIOD_FMT, period.planet.getLocalizedName(language)),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
-//                Text(
-//                    text = period.dateRange,
-//                    style = MaterialTheme.typography.labelSmall,
-//                    color = AppTheme.TextMuted
-//                )
             }
             Surface(
                 shape = RoundedCornerShape(6.dp),
@@ -1018,6 +1013,17 @@ private fun MarakaRemedyCard(remedy: MarakaCalculator.MarakaRemedy) {
         else -> AppTheme.TextSecondary
     }
 
+    val categoryName = when (remedy.remedyType) {
+        "Mantra" -> stringResource(StringKeyRemedy.CAT_MANTRA)
+        "Gemstone" -> stringResource(StringKeyRemedy.CAT_GEMSTONE)
+        "Charity" -> stringResource(StringKeyRemedy.CAT_CHARITY)
+        "Fasting" -> stringResource(StringKeyRemedy.CAT_FASTING)
+        "Worship" -> stringResource(StringKeyRemedy.CAT_DEITY)
+        "Yantra" -> stringResource(StringKeyRemedy.CAT_YANTRA)
+        "Lifestyle" -> stringResource(StringKeyRemedy.CAT_LIFESTYLE)
+        else -> remedy.remedyType
+    }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
@@ -1033,14 +1039,14 @@ private fun MarakaRemedyCard(remedy: MarakaCalculator.MarakaRemedy) {
                     color = categoryColor.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = remedy.remedyType,
+                        text = categoryName,
                         style = MaterialTheme.typography.labelSmall,
                         color = categoryColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
                 Text(
-                    text = remedy.planet?.displayName ?: "General",
+                    text = remedy.planet?.getLocalizedName(language) ?: stringResource(StringKeyAnalysis.TRANSIT_QUALITY_UNKNOWN),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )

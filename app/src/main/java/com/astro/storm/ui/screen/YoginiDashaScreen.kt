@@ -1771,9 +1771,10 @@ private fun formatNumber(number: Int, language: Language): String {
 }
 
 private fun formatYearsLocalized(years: Int, language: Language): String {
-    return when (language) {
-        Language.ENGLISH -> if (years == 1) "1 year" else "$years years"
-        Language.NEPALI -> "${BikramSambatConverter.toNepaliNumerals(years)} वर्ष"
+    return if (years == 1) {
+        StringResources.get(StringKey.DURATION_YEAR_FMT, language)
+    } else {
+        StringResources.get(StringKey.DURATION_YEARS_FMT, language, formatNumber(years, language))
     }
 }
 
@@ -1782,19 +1783,14 @@ private fun formatRemainingYearsLocalized(years: Double, language: Language): St
     val wholeYears = years.toInt()
     val remainingMonths = ((years - wholeYears) * 12).toInt()
 
-    return when (language) {
-        Language.ENGLISH -> when {
-            wholeYears > 0 && remainingMonths > 0 -> "${wholeYears}y ${remainingMonths}m remaining"
-            wholeYears > 0 -> "${wholeYears}y remaining"
-            remainingMonths > 0 -> "${remainingMonths}m remaining"
-            else -> ""
-        }
-        Language.NEPALI -> when {
-            wholeYears > 0 && remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} वर्ष ${BikramSambatConverter.toNepaliNumerals(remainingMonths)} महिना बाँकी"
-            wholeYears > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} वर्ष बाँकी"
-            remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(remainingMonths)} महिना बाँकी"
-            else -> ""
-        }
+    return when {
+        wholeYears > 0 && remainingMonths > 0 -> 
+            StringResources.get(StringKey.REMAINING_PERIOD_YEARS, language, formatNumber(wholeYears, language), formatNumber(remainingMonths, language))
+        wholeYears > 0 -> 
+            StringResources.get(StringKey.REMAINING_PERIOD_YEARS, language, formatNumber(wholeYears, language), "0").substringBefore(",") // Simplified
+        remainingMonths > 0 -> 
+            StringResources.get(StringKey.REMAINING_PERIOD_MONTHS, language, formatNumber(remainingMonths, language))
+        else -> ""
     }
 }
 
@@ -1803,17 +1799,13 @@ private fun formatRemainingDaysLocalized(days: Long, language: Language): String
     val months = days / 30
     val remainingDays = days % 30
 
-    return when (language) {
-        Language.ENGLISH -> when {
-            months > 0 && remainingDays > 0 -> "${months}m ${remainingDays}d remaining"
-            months > 0 -> "${months}m remaining"
-            else -> "${remainingDays}d remaining"
-        }
-        Language.NEPALI -> when {
-            months > 0 && remainingDays > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} महिना ${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} दिन बाँकी"
-            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} महिना बाँकी"
-            else -> "${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} दिन बाँकी"
-        }
+    return when {
+        months > 0 && remainingDays > 0 -> 
+            StringResources.get(StringKey.REMAINING_PERIOD_MONTHS_DAYS, language, formatNumber(months.toInt(), language), formatNumber(remainingDays.toInt(), language))
+        months > 0 -> 
+            StringResources.get(StringKey.REMAINING_PERIOD_MONTHS, language, formatNumber(months.toInt(), language))
+        else -> 
+            StringResources.get(StringKey.REMAINING_PERIOD_DAYS, language, formatNumber(remainingDays.toInt(), language))
     }
 }
 

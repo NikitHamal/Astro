@@ -261,7 +261,7 @@ private fun WarStatusCard(analysis: GrahaYuddhaAnalysis) {
         Triple(
             AppTheme.WarningColor,
             Icons.Outlined.Warning,
-            "$warCount Planetary War${if (warCount > 1) "s" else ""} Detected"
+            stringResource(StringKeyDosha.GRAHA_WARS_DETECTED_FMT, warCount)
         )
     } else {
         Triple(
@@ -307,7 +307,7 @@ private fun WarStatusCard(analysis: GrahaYuddhaAnalysis) {
                 )
                 Text(
                     text = if (hasWar)
-                        "Wars affect planetary significations significantly"
+                        stringResource(StringKeyDosha.GRAHA_WAR_AFFECTS_DESC)
                     else
                         stringResource(StringKeyDosha.GRAHA_NO_WARS_DESC),
                     style = MaterialTheme.typography.bodySmall,
@@ -831,21 +831,21 @@ private fun WarCard(war: GrahaYuddhaResult) {
 
                     // Winner effects
                     EffectsSection(
-                        title = "${war.winner.displayName} (Winner)",
+                        title = stringResource(StringKeyDosha.GRAHA_WINNER_SUFFIX, war.winner.getLocalizedName(language)),
                         color = AppTheme.SuccessColor,
                         content = war.winnerEffects.overallBenefit
                     )
 
                     // Loser effects
                     EffectsSection(
-                        title = "${war.loser.displayName} (Loser)",
+                        title = stringResource(StringKeyDosha.GRAHA_LOSER_SUFFIX, war.loser.getLocalizedName(language)),
                         color = AppTheme.ErrorColor,
                         content = war.loserEffects.overallDeficit
                     )
 
                     // Weakness areas
                     Text(
-                        text = "Weakness Areas:",
+                        text = stringResource(StringKeyDosha.GRAHA_WEAKNESS_AREAS),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -996,14 +996,18 @@ private fun DashaEffectCard(effect: DashaWarEffect) {
                     )
                 }
                 Column {
+                    val language = currentLanguage()
                     Text(
-                        text = "${effect.planet.displayName} Periods",
+                        text = stringResource(StringKeyDosha.GRAHA_PERIODS_LABEL_FMT, effect.planet.getLocalizedName(language)),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = if (effect.isWinner) "War Victor" else "War Defeated",
+                        text = if (effect.isWinner) 
+                            stringResource(StringKeyDosha.GRAHA_VICTOR_LABEL) 
+                        else 
+                            stringResource(StringKeyDosha.GRAHA_DEFEATED_LABEL),
                         style = MaterialTheme.typography.labelSmall,
                         color = color
                     )
@@ -1013,21 +1017,21 @@ private fun DashaEffectCard(effect: DashaWarEffect) {
             // Mahadasha
             DashaEffectRow(
                 icon = Icons.Outlined.Timeline,
-                title = "Mahadasha",
+                title = stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA),
                 content = effect.mahadashaEffect
             )
 
             // Antardasha
             DashaEffectRow(
                 icon = Icons.Outlined.Schedule,
-                title = "Antardasha",
+                title = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA),
                 content = effect.antardashaEffect
             )
 
             // Transit
             DashaEffectRow(
                 icon = Icons.Outlined.Sync,
-                title = "Transit",
+                title = stringResource(StringKeyAnalysis.TRANSIT_LABEL),
                 content = effect.transitEffect
             )
         }
@@ -1111,8 +1115,9 @@ private fun RemediesTab(analysis: GrahaYuddhaAnalysis) {
 
             groupedRemedies.forEach { (planet, remedies) ->
                 item {
+                    val language = currentLanguage()
                     Text(
-                        text = planet?.displayName ?: "General Remedies",
+                        text = planet?.getLocalizedName(language) ?: stringResource(StringKeyDosha.GRAHA_GENERAL_REMEDIES),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary,
@@ -1136,6 +1141,14 @@ private fun RemedyCard(remedy: WarRemedy) {
         RemedyType.WORSHIP -> Icons.Outlined.SelfImprovement
         RemedyType.GEMSTONE -> Icons.Outlined.Diamond
         RemedyType.GENERAL -> Icons.Outlined.AutoAwesome
+    }
+
+    val typeName = when (remedy.type) {
+        RemedyType.MANTRA -> stringResource(StringKeyRemedy.CAT_MANTRA)
+        RemedyType.CHARITY -> stringResource(StringKeyRemedy.CAT_CHARITY)
+        RemedyType.WORSHIP -> stringResource(StringKeyRemedy.CAT_DEITY)
+        RemedyType.GEMSTONE -> stringResource(StringKeyRemedy.CAT_GEMSTONE)
+        RemedyType.GENERAL -> stringResource(StringKeyRemedy.CAT_LIFESTYLE)
     }
 
     Card(
@@ -1169,7 +1182,7 @@ private fun RemedyCard(remedy: WarRemedy) {
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = remedy.type.displayName,
+                    text = typeName,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.AccentGold

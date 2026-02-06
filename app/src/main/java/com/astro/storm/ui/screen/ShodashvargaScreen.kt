@@ -1047,7 +1047,7 @@ private fun VimsopakaTab(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    "Vimsopaka Bala assigns different weights to the 16 vargas based on their importance. Three classical schemes (Poorva, Madhya, Para) are used.",
+                    stringResource(StringKeyDosha.VIMSOPAKA_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
                     lineHeight = 18.sp

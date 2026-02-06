@@ -987,6 +987,19 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     BHRIGU_BINDU_RAHU_POSITION("Rahu Position", "राहु स्थिति"),
     BHRIGU_BINDU_MOON_POSITION("Moon Position", "चन्द्र स्थिति"),
 
+    // Bhrigu Bindu Additional
+    BHRIGU_BINDU_TRANSITS("Transits", "गोचर"),
+    BHRIGU_BINDU_REMEDIES("Remedies", "उपाय"),
+    BHRIGU_BINDU_TRANSIT_NOT_AVAILABLE("Transit data not available", "गोचर डेटा उपलब्ध छैन"),
+    BHRIGU_BINDU_TRANSIT_TIMING("Transit Timing", "गोचर समय"),
+
+    // Aspect Types
+    ASPECT_SEXTILE("Sextile", "षष्ठ"),
+    ASPECT_SPECIAL("Special Aspect", "विशेष दृष्टि"),
+
+    // Transit Types
+    TRANSIT_ENTERING_SIGN("Entering Sign", "राशि प्रवेश"),
+
     // ============================================
     // YOGINI DASHA SYSTEM
     // ============================================
@@ -1259,6 +1272,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     VIMSOPAKA_POORVA("Poorva Scheme", "पूर्व योजना"),
     VIMSOPAKA_MADHYA("Madhya Scheme", "मध्य योजना"),
     VIMSOPAKA_PARA("Para Scheme", "पर योजना"),
+    VIMSOPAKA_DESC("Vimsopaka Bala assigns different weights to the 16 vargas based on their importance. Three classical schemes (Poorva, Madhya, Para) are used.", "विंशोपक बलले १६ वर्गहरूलाई तिनीहरूको महत्त्वको आधारमा फरक भार दिन्छ। तीन शास्त्रीय योजनाहरू (पूर्व, मध्य, पर) प्रयोग गरिन्छ।"),
     VARGOTTAMA_TITLE("Vargottama Planets", "वर्गोत्तम ग्रहहरू"),
     VARGOTTAMA_DESC("Planet in same sign in D1 and divisional chart", "D1 र विभाजन चार्टमा समान राशिमा ग्रह"),
     VARGOTTAMA_NAVAMSA("Navamsa Vargottama", "नवांश वर्गोत्तम"),
@@ -2721,7 +2735,28 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     ARUDHA_RECOMMENDATIONS("Recommendations", "सिफारिसहरू"),
     ARUDHA_CALCULATING("Calculating Arudha Padas...", "आरुढ पद गणना गर्दै..."),
     ARUDHA_ABOUT_BTN("About Arudha Pada", "आरुढ पदको बारेमा"),
-    
+
+    // Arudha Pada Tabs
+    ARUDHA_TAB_OVERVIEW("Overview", "सिंहावलोकन"),
+    ARUDHA_TAB_ALL("All Arudhas", "सबै आरुढ"),
+    ARUDHA_TAB_YOGAS("Yogas", "योगहरू"),
+    ARUDHA_TAB_RELATIONSHIPS("Relationships", "सम्बन्धहरू"),
+
+    // Arudha Pada Labels
+    ARUDHA_STRENGTH_LABEL("Strength:", "बल:"),
+    ARUDHA_PLANETS_IN_LABEL("Planets in %s: ", "%s मा ग्रहहरू: "),
+    ARUDHA_SIGNIFICATIONS_LABEL("Significations:", "कारक तत्वहरू:"),
+
+    // Arudha Pada Info
+    ARUDHA_INFO_TITLE("About Arudha Pada", "आरुढ पदको बारेमा"),
+    ARUDHA_WHAT_IS_TITLE("What is Arudha Pada?", "आरुढ पद के हो?"),
+    ARUDHA_WHAT_IS_DESC("Arudha means 'mount' or 'image'. In Jaimini astrology, Arudha Padas show how the matters of each house manifest and are perceived in the material world. They reveal the maya (illusion) or external image of various life areas.", "आरुढको अर्थ 'प्रवाह' वा 'छवि' हो। जैमिनी ज्योतिषमा, आरुढ पदहरूले प्रत्येक भावका मामिलाहरू भौतिक संसारमा कसरी प्रकट हुन्छन् र देखिन्छन् भनेर देखाउँछन्। तिनीहरूले विभिन्न जीवन क्षेत्रहरूको माया (भ्रम) वा बाह्य छविलाई प्रकट गर्छन्।"),
+    ARUDHA_KEY_ARUDHAS_TITLE("Key Arudhas", "मुख्य आरुढहरू"),
+    ARUDHA_CALC_METHOD_TITLE("Calculation Method", "गणना विधि"),
+    ARUDHA_CALC_METHOD_DESC("1. Find the lord of the house\n2. Count from house to lord's position\n3. Count same distance from lord\n4. That sign is the Arudha Pada\n\nException: If Arudha falls in same or 7th house, move 10 signs forward.", "१. भावको स्वामी पत्ता लगाउनुहोस्\n२. भावदेखि स्वामीको स्थिति सम्म गणना गर्नुहोस्\n३. स्वामीदेखि त्यति नै दूरी गणना गर्नुहोस्\n४. त्यो राशि आरुढ पद हो\n\nअपवाद: यदि आरुढ उही वा ७औं भावमा पर्छ भने, १० राशि अगाडि बढ्नुहोस्।"),
+    ARUDHA_REFERENCES_TITLE("References", "सन्दर्भहरू"),
+    ARUDHA_REFERENCES_DESC("• Jaimini Sutras (Chapter 1, Pada 1)\n• BPHS Chapters 29-30\n• Sanjay Rath's 'Crux of Vedic Astrology'", "• जैमिनी सूत्र (अध्याय १, पाद १)\n• BPHS अध्याय २९-३०\n• संजय रथको 'क्रक्स अफ वैदिक एस्ट्रोलोजी'"),
+
     // ============================================
     // ASHTAKAVARGA SCREEN
     // ============================================
@@ -2764,7 +2799,25 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     AVASTHA_OVERALL_STRENGTH("Overall Planetary Strength", "समग्र ग्रह बल"),
     AVASTHA_STRONGEST("Strongest", "सबैभन्दा बलियो"),
     AVASTHA_NEEDS_ATTENTION("Needs Attention", "ध्यान दिनुपर्ने"),
-    
+
+    // Avastha Tabs
+    AVASTHA_TAB_BALADI("Baladi", "बालादि"),
+    AVASTHA_TAB_JAGRADADI("Jagradadi", "जाग्रदादि"),
+    AVASTHA_TAB_DEEPTADI("Deeptadi", "दीप्तादि"),
+    AVASTHA_TAB_LAJJITADI("Lajjitadi", "लज्जितादि"),
+
+    // Avastha Titles & Descs
+    AVASTHA_AGE_TITLE("Baladi Avastha (Age States)", "बालादि अवस्था (उमेर अवस्था)"),
+    AVASTHA_AGE_DESC("Based on the planet's degree within a sign. Determines the maturity and capability of the planet to deliver results.", "राशिको अंशमा आधारित। यसले ग्रहको नतिजा दिने परिपक्वता र क्षमता निर्धारण गर्दछ।"),
+    AVASTHA_ALERTNESS_TITLE("Jagradadi Avastha (Alertness States)", "जाग्रदादि अवस्था (सजगता अवस्था)"),
+    AVASTHA_ALERTNESS_DESC("Based on planet's relationship with sign lord. Determines how alert and active the planet is.", "राशि स्वामीसँगको सम्बन्धमा आधारित। यसले ग्रह कत्तिको सजग र सक्रिय छ भनेर निर्धारण गर्दछ।"),
+    AVASTHA_DIGNITY_TITLE("Deeptadi Avastha (Dignity States)", "दीप्तादि अवस्था (मर्यादा अवस्था)"),
+    AVASTHA_DIGNITY_DESC("Nine states based on exaltation, own sign, friends/enemies, and combustion. Determines overall dignity.", "उच्च, स्वराशि, मित्र/शत्रु र अस्तमा आधारित नौ अवस्थाहरू। यसले समग्र मर्यादा निर्धारण गर्दछ।"),
+    AVASTHA_EMOTIONAL_TITLE("Lajjitadi Avastha (Emotional States)", "लज्जितादि अवस्था (भावनात्मक अवस्था)"),
+    AVASTHA_EMOTIONAL_DESC("Based on conjunctions and aspects. Determines the emotional state and how the planet feels in its position.", "युति र दृष्टिमा आधारित। यसले ग्रहको भावनात्मक अवस्था निर्धारण गर्दछ।"),
+    AVASTHA_ANALYZING("Analyzing Planetary States...", "ग्रह अवस्थाहरू विश्लेषण गर्दै..."),
+    AVASTHA_RESULT_CAPACITY("%s%% result capacity", "%s%% परिणाम क्षमता"),
+
     // ============================================
     // NITYA YOGA SCREEN
     // ============================================
@@ -2782,6 +2835,12 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     NITYA_AVOID("Activities to Avoid", "बच्नुपर्ने गतिविधिहरू"),
     NITYA_NEXT("Next:", "अर्को:"),
     NITYA_REMAINING("remaining", "बाँकी"),
+    NITYA_YOGA_NUM("Yoga #%d", "योग #%d"),
+    NITYA_RULING("Ruling: %s", "शासक: %s"),
+    NITYA_RULER("Ruler: %s", "स्वामी: %s"),
+    NITYA_ALL_YOGAS_TITLE("All 27 Nitya Yogas", "सबै २७ नित्य योगहरू"),
+    NITYA_CALCULATING("Calculating Nitya Yoga...", "नित्य योग गणना गर्दै..."),
+    NITYA_TIMING_LABEL("Timing: %s", "समय: %s"),
     
     // Common
     UI_INTERPRETATION("Interpretation", "व्याख्या"),
@@ -2953,6 +3012,13 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     GOCHARA_VEDHA_OBSTRUCTION("Vedha Obstruction", "वेध अवरोध"),
     GOCHARA_FROM("From:", "बाट:"),
     GOCHARA_SEVERITY("Severity:", "गम्भीरता:"),
+    GOCHARA_ACTIVE_OBSTRUCTIONS("Active Obstructions", "सक्रिय अवरोधहरू"),
+    GOCHARA_EFFECT_REDUCTION("Effect Reduction:", "प्रभाव न्यूनीकरण:"),
+    GOCHARA_FORECAST_ANALYSIS("Forecast Analysis", "पूर्वानुमान विश्लेषण"),
+    GOCHARA_PLANET_SUMMARY("Planet-wise Transit Summary", "ग्रह-अनुसार गोचर सारांश"),
+    GOCHARA_ANALYZING("Analyzing Transit Vedhas...", "गोचर वेध विश्लेषण गर्दै..."),
+    GOCHARA_NO_VEDHAS_TITLE("No Active Vedhas", "कुनै सक्रिय वेध छैन"),
+    GOCHARA_NO_VEDHAS_DESC("Your current transits are flowing without obstruction. This is a favorable period for utilizing planetary energies.", "तपाईंका वर्तमान गोचरहरू अवरोध बिना प्रवाहित भइरहेका छन्। यो ग्रह उर्जाहरू उपयोग गर्नको लागि एक अनुकूल अवधि हो।"),
     GOCHARA_NO_CHART_DESC("Create or select a birth chart to analyze Gochara Vedha effects.", "गोचर वेध प्रभावहरू विश्लेषण गर्न जन्म कुण्डली सिर्जना गर्नुहोस् वा छान्नुहोस्।"),
     GOCHARA_VEDHAS("Vedhas", "वेधहरू"),
     GOCHARA_FORECAST("Forecast", "पूर्वानुमान"),
@@ -2997,7 +3063,16 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     GRAHA_NO_DASHA_EFFECTS("No War-Related Dasha Effects", "कुनै युद्ध-सम्बन्धित दशा प्रभावहरू छैनन्"),
     GRAHA_NO_REMEDIES("No Specific Remedies Needed", "कुनै विशेष उपाय आवश्यक छैन"),
     GRAHA_NO_DASHA_DESC("Planets in War not currently activated in Dasha/Antardasha.", "युद्धमा रहेका ग्रहहरू हाल दशा/अन्तर्दशामा सक्रिय छैनन्।"),
-    GRAHA_NO_REMEDIES_DESC("Since there are no active planetary wars, remedial measures are not required.", "कुनै सक्रिय ग्रह युद्ध नभएकोले, उपायहरू आवश्यक छैनन्।"),
+    GRAHA_NO_REMEDIES_DESC("Since there are no active planetary wars, remedial measures are not required.", "कुनै सक्रिय ग्रह युद्ध नभएकोले, उपचारात्मक उपायहरू आवश्यक छैनन्।"),
+    GRAHA_WARS_DETECTED_FMT("%d Planetary War(s) Detected", "%d ग्रह युद्ध(हरू) फेला परे"),
+    GRAHA_WAR_AFFECTS_DESC("Wars affect planetary significations significantly", "युद्धले ग्रहका कारक तत्वहरूलाई उल्लेखनीय रूपमा असर गर्छ"),
+    GRAHA_VICTOR_LABEL("War Victor", "युद्ध विजेता"),
+    GRAHA_DEFEATED_LABEL("War Defeated", "युद्ध पराजित"),
+    GRAHA_WEAKNESS_AREAS("Weakness Areas:", "कमजोरी क्षेत्रहरू:"),
+    GRAHA_WINNER_SUFFIX("%s (Winner)", "%s (विजेता)"),
+    GRAHA_LOSER_SUFFIX("%s (Loser)", "%s (पराजित)"),
+    GRAHA_PERIODS_LABEL_FMT("%s Periods", "%s अवधिहरू"),
+    GRAHA_GENERAL_REMEDIES("General Remedies", "सामान्य उपायहरू"),
     GRAHA_ABOUT_TITLE("About Graha Yuddha", "ग्रह युद्धको बारेमा"),
     GRAHA_ABOUT_DESC("Graha Yuddha (Planetary War) occurs when two planets (excluding Sun and Moon) are within 1 degree of each other.\n\nThe planet with the lower longitude is usually considered the winner, while the one with higher longitude is the loser.\n\nImpacts:\n• The losing planet's significations may suffer\n• If the losing planet rules important houses, those areas may be affected\n• The war is most intense during close conjunctions", "ग्रह युद्ध तब हुन्छ जब दुई ग्रहहरू (सूर्य र चन्द्रमा बाहेक) एक अर्काको १ डिग्री भित्र हुन्छन्।\n\nकम देशान्तर भएको ग्रहलाई सामान्यतया विजेता मानिन्छ, जबकि उच्च देशान्तर भएको ग्रहलाई पराजित मानिन्छ।\n\nप्रभावहरू:\n• पराजित ग्रहका कारकत्वहरूमा असर पर्न सक्छ\n• यदि पराजित ग्रहले महत्त्वपूर्ण भावहरूको स्वामी हो भने, ती क्षेत्रहरू प्रभावित हुन सक्छन्\n• नजिकको युतिमा युद्ध सबैभन्दा तीव्र हुन्छ"),
     GRAHA_DEFEATS_MSG("%1\$2 defeats %2\$2", "%1\$2 ले %2\$2 लाई जित्छ"),
@@ -3275,6 +3350,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     MARAKA_CRITICAL_PERIODS("Critical Dasha Periods", "महत्त्वपूर्ण दशा अवधि"),
     MARAKA_NO_CRITICAL("No Critical Periods Identified", "कुनै महत्त्वपूर्ण अवधि पहिचान गरिएको छैन"),
     MARAKA_NO_REMEDIES("No specific remedies needed at this time.", "यस समयमा कुनै विशेष उपाय आवश्यक छैन।"),
+    MARAKA_PERIOD_FMT("%s Period", "%s अवधि"),
     MARAKA_ANALYZING("Analyzing Maraka influences...", "मारक प्रभाव विश्लेषण गर्दै..."),
     MARAKA_NO_CHART_DESC("Please generate a chart to view Maraka analysis.", "मारक विश्लेषण हेर्न कृपया कुण्डली बनाउनुहोस्।"),
     MARAKA_ABOUT_TITLE("About Maraka Analysis", "मारक विश्लेषणको बारेमा"),
@@ -3336,6 +3412,10 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     VIPAREETA_NO_CHART_DESC("Please generate a chart to view Vipareeta Raja Yoga analysis.", "विपरीत राजयोग विश्लेषण हेर्न कृपया कुण्डली बनाउनुहोस्।"),
     VIPAREETA_ABOUT_TITLE("About Vipareeta Raja Yoga", "विपरीत राजयोगको बारेमा"),
     VIPAREETA_ABOUT_DESC("Vipareeta Raja Yogas are formed when lords of dusthana houses (6th, 8th, 12th) are placed in other dusthana houses. The three yogas are: Harsha (6th lord in 6/8/12), Sarala (8th lord in 6/8/12), and Vimala (12th lord in 6/8/12). These yogas operate on the principle that 'negative times negative equals positive', transforming adversity into success and gains from unexpected sources.", "विपरीत राजयोग दुस्थान भावका स्वामी (६, ८, १२) अन्य दुस्थान भावमा रहेमा बन्दछन्। तीन योगहरू: हर्ष (६औंको स्वामी ६/८/१२मा), सरल (८औंको स्वामी ६/८/१२मा), र विमल (१२औंको स्वामी ६/८/१२मा)। यी योगहरू 'नकारात्मक गुणा नकारात्मक बराबर सकारात्मक' सिद्धान्तमा काम गर्दछन्, प्रतिकूलतालाई सफलतामा र अप्रत्याशित स्रोतबाट लाभमा रूपान्तरण गर्दछन्।"),
+    VIPAREETA_WINNER_SUFFIX("(Winner)", "(विजेता)"),
+    VIPAREETA_LOSER_SUFFIX("(Loser)", "(पराजित)"),
+    VIPAREETA_DUSTHANA_LORD_FMT("%dth Lord: %s", "%d औं भावको स्वामी: %s"),
+    VIPAREETA_PRINCIPLE("negative times negative equals positive", "नकारात्मक गुणा नकारात्मक बराबर सकारात्मक"),
 
     // ============================================
     // ISHTA KASHTA PHALA SCREEN
@@ -3406,6 +3486,34 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // ============================================
     DRIG_DASHA_TITLE("Jaimini Drig Dasha Longevity Analysis", "जैमिनी दृग् दशा आयु विश्लेषण"),
     DRIG_DASHA_SUBTITLE("Classical Jaimini Sthira Dasha System", "शास्त्रीय जैमिनी स्थिर दशा प्रणाली"),
+    DRIG_LONGEVITY_SYSTEM("Jaimini Longevity System", "जैमिनी आयु प्रणाली"),
+    DRIG_TAB_OVERVIEW("Overview", "सिंहावलोकन"),
+    DRIG_TAB_PERIODS("Dasha Periods", "दशा अवधिहरू"),
+    DRIG_TAB_MARAKA("Maraka Analysis", "मारक विश्लेषण"),
+    DRIG_TAB_KARAKAS("Sthira Karakas", "स्थिर कारकहरू"),
+    DRIG_LONGEVITY_CLASSIFICATION("Longevity Classification", "आयु वर्गीकरण"),
+    DRIG_CURRENT_DASHA("Current Dasha", "हालको दशा"),
+    DRIG_MARAKA("Maraka", "मारक"),
+    DRIG_NORMAL("Normal", "सामान्य"),
+    DRIG_YEARS_REMAINING("%d years, %d months remaining", "%d वर्ष, %d महिना बाँकी"),
+    DRIG_MONTHS_REMAINING("%d months remaining", "%d महिना बाँकी"),
+    DRIG_TRIMURTI_SIGNS("Trimurti Signs (Brahma-Rudra-Maheshwara)", "त्रिमूर्ति राशिहरू (ब्रह्मा-रुद्र-महेश्वर)"),
+    DRIG_BRAHMA("Brahma", "ब्रह्मा"),
+    DRIG_BRAHMA_DESC("Creator - Birth", "सृष्टिकर्ता - जन्म"),
+    DRIG_RUDRA("Rudra", "रुद्र"),
+    DRIG_RUDRA_DESC("Destroyer - Death", "विनाशक - मृत्यु"),
+    DRIG_MAHESHWARA("Maheshwara", "महेश्वर"),
+    DRIG_MAHESHWARA_DESC("Preserver - Life", "रक्षक - जीवन"),
+    DRIG_DASHA_SEQUENCE("Dasha Sequence", "दशा क्रम"),
+    DRIG_ANTARDASHAS("Antardashas", "अन्तर्दशाहरू"),
+    DRIG_MARAKA_ANALYSIS_TITLE("Maraka Period Analysis", "मारक अवधि विश्लेषण"),
+    DRIG_MARAKA_ANALYSIS_DESC("Periods associated with health challenges and longevity concerns", "स्वास्थ्य चुनौती र आयु चिन्तासँग सम्बन्धित अवधिहरू"),
+    DRIG_NO_MARAKA_DETECTED("No significant Maraka periods detected", "कुनै महत्त्वपूर्ण मारक अवधि फेला परेन"),
+    DRIG_RUDRA_SIGN_ANALYSIS("Rudra Sign Analysis", "रुद्र राशि विश्लेषण"),
+    DRIG_RUDRA_SIGN_DESC("The Rudra sign is %s. This sign represents the destroyer principle in the chart and its dasha period requires careful attention to health matters.", "रुद्र राशि %s हो। यो राशिले कुण्डलीमा विनाशक सिद्धान्तलाई प्रतिनिधित्व गर्दछ र यसको दशा अवधिमा स्वास्थ्य मामिलामा सावधानीपूर्वक ध्यान दिनु आवश्यक छ।"),
+    DRIG_STHIRA_KARAKAS_TITLE("Sthira Karakas", "स्थिर कारकहरू"),
+    DRIG_STHIRA_KARAKAS_DESC("Fixed significators based on house ownership", "भाव स्वामित्वमा आधारित स्थिर कारकहरू"),
+    DRIG_CALCULATING("Calculating Drig Dasha...", "दृग् दशा गणना गर्दै..."),
     DRIG_FINAL_LONGEVITY_SPAN("Final Longevity Span", "अन्तिम आयु अवधि"),
     DRIG_ESTIMATED_RANGE("Estimated Range", "अनुमानित सीमा"),
     DRIG_YEARS("years", "वर्ष"),
