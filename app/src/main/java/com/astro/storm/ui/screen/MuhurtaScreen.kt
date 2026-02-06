@@ -27,6 +27,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import com.astro.storm.core.common.StringKeyMuhurta
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.LocalLanguage
 import androidx.compose.foundation.lazy.LazyColumn
@@ -197,7 +199,7 @@ fun MuhurtaScreen(
                                 val now = LocalDateTime.of(date, LocalTime.now())
                                 val muhurta = calculator.calculateMuhurta(now, latitude, longitude, timezone)
                                 val (dayChoghadiyas, _) = calculator.getDailyChoghadiya(date, latitude, longitude, timezone)
-                                val panchaka = PanchakaAnalyzer.analyzePanchaka(muhurta, LocalLanguage.current)
+                                val panchaka = PanchakaAnalyzer.analyzePanchaka(muhurta)
                                 uiState = MuhurtaUiState.Success(muhurta, dayChoghadiyas, panchaka)
                             }
                         }

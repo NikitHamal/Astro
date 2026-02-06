@@ -19,6 +19,8 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.repository.ChatRepository
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.core.common.Language
+import StringKeyAgent
+import StringResources
 import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.agentic.AgentSection
 import com.astro.storm.ui.components.agentic.AskUserOption
@@ -292,8 +294,8 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             val model = _selectedModel.value ?: providerRegistry.getDefaultModel()
             if (model == null) {
-                val language = com.astro.storm.data.localization.currentLanguage()
-                _uiState.value = ChatUiState.Error(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAgent.CHAT_NO_MODEL, language))
+                val language = Language.ENGLISH
+                _uiState.value = ChatUiState.Error(StringResources.get(StringKeyAgent.CHAT_NO_MODEL, language))
                 return@launch
             }
 
@@ -467,17 +469,17 @@ class ChatViewModel @Inject constructor(
                 val conversationId = _currentConversationId.value ?: run {
                     val context = pendingConversationContext
                     if (context == null) {
-                        val language = com.astro.storm.data.localization.currentLanguage()
-                        _uiState.value = ChatUiState.Error(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAgent.CHAT_CONTEXT_ERROR, language))
+                        val language = Language.ENGLISH
+                        _uiState.value = ChatUiState.Error(StringResources.get(StringKeyAgent.CHAT_CONTEXT_ERROR, language))
                         _isStreaming.value = false
                         _aiStatus.value = AiStatus.Idle
                         return@launch
                     }
 
                     // Create conversation in database now that we have a message
-                    val language = com.astro.storm.data.localization.currentLanguage()
+                    val language = Language.ENGLISH
                     val newConversationId = chatRepository.createConversation(
-                        title = com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAgent.NEW_CHAT, language),
+                        title = StringResources.get(StringKeyAgent.NEW_CHAT, language),
                         modelId = model.id,
                         providerId = model.providerId,
                         profileId = context.selectedChartId
@@ -2068,8 +2070,8 @@ class ChatViewModel @Inject constructor(
         // Mark current message as incomplete (no sectionsJson for cancelled messages)
         viewModelScope.launch {
             currentMessageId?.let { msgId ->
-                val language = com.astro.storm.data.localization.currentLanguage()
-        val content = _streamingContent.value.ifEmpty { com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAgent.RESPONSE_CANCELLED, language) }
+                val language = Language.ENGLISH
+        val content = _streamingContent.value.ifEmpty { StringResources.get(StringKeyAgent.RESPONSE_CANCELLED, language) }
                 chatRepository.finalizeAssistantMessage(
                     messageId = msgId,
                     content = content,

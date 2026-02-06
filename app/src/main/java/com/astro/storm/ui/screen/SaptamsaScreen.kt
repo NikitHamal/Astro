@@ -46,6 +46,7 @@ import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeySaptamsa
 import com.astro.storm.core.common.StringResources
 
@@ -108,7 +109,7 @@ fun SaptamsaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = StringResources.get(StringKeySaptamsa.BTN_BACK, language)
+                            contentDescription = StringResources.get(StringKey.BTN_BACK, language)
                         )
                     }
                 },
@@ -190,7 +191,7 @@ private fun OverviewTabSS(
     ) {
         // Child Count Summary Card
         item {
-            ChildCountSummaryCard(analysis.childCountEstimate)
+            ChildCountSummaryCard(analysis.childCountEstimate, language)
         }
 
         // D7 Lagna Card
@@ -978,7 +979,7 @@ private fun FertilityOverviewCard(
                     icon = Icons.Outlined.Stars
                 )
                 FertilityFactorItem(
-                    label = StringResources.get(StringKey.PLANET_MOON, language),
+                    label = StringResources.get(StringKeySaptamsa.MOON, language),
                     score = fertility.moonScore,
                     icon = Icons.Outlined.NightsStay
                 )

@@ -109,7 +109,7 @@ fun JaiminiKarakaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = StringResources.get(StringKey.NAV_BACK, language)
+                            contentDescription = StringResources.get(StringKey.BTN_BACK, language)
                         )
                     }
                 },

@@ -1,5 +1,9 @@
 package com.astro.storm.ephemeris.varga
 
+import Language
+import StringKeyInterface
+import com.astro.storm.core.common.StringKeySaptamsa
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
@@ -67,7 +71,7 @@ object SaptamsaAnalyzer {
         val beneficInfluence: Int,
         val maleficInfluence: Int,
         val estimatedRange: IntRange,
-        val modifyingFactors: List<com.astro.storm.core.common.StringKeyInterface>
+        val modifyingFactors: List<StringKeyInterface>
     )
 
     /**
@@ -78,10 +82,10 @@ object SaptamsaAnalyzer {
         val indicatingPlanet: Planet,
         val gender: ChildGender,
         val genderConfidence: Double,
-        val characteristics: List<com.astro.storm.core.common.StringKeyInterface>,
+        val characteristics: List<StringKeyInterface>,
         val relationshipQuality: RelationshipQuality,
-        val healthIndications: List<com.astro.storm.core.common.StringKeyInterface>,
-        val careerIndications: List<com.astro.storm.core.common.StringKeyInterface>,
+        val healthIndications: List<StringKeyInterface>,
+        val careerIndications: List<StringKeyInterface>,
         val timingIndicators: List<String>
     )
 
@@ -112,10 +116,10 @@ object SaptamsaAnalyzer {
         val jupiterScore: Double,
         val moonScore: Double,
         val fertilityStatus: FertilityStatus,
-        val supportingFactors: List<com.astro.storm.core.common.StringKeyInterface>,
-        val challengingFactors: List<com.astro.storm.core.common.StringKeyInterface>,
+        val supportingFactors: List<StringKeyInterface>,
+        val challengingFactors: List<StringKeyInterface>,
         val timingForConception: List<ConceptionTiming>,
-        val remedies: List<com.astro.storm.core.common.StringKeyInterface>
+        val remedies: List<StringKeyInterface>
     )
 
     enum class FertilityStatus(val key: com.astro.storm.core.common.StringKeySaptamsa) {
@@ -145,7 +149,7 @@ object SaptamsaAnalyzer {
         val lagnaLordDignity: VedicAstrologyUtils.PlanetaryDignity?,
         val planetsInLagna: List<PlanetPosition>,
         val interpretation: String,
-        val approachToChildren: com.astro.storm.core.common.StringKeyInterface
+        val approachToChildren: StringKeyInterface
     )
 
     /**
@@ -175,7 +179,7 @@ object SaptamsaAnalyzer {
         val childIndications: List<ChildIndication>,
         val fertilityAnalysis: FertilityAnalysis,
         val santhanaYogas: List<SanthanaYoga>,
-        val challengingYogas: List<com.astro.storm.core.common.StringKeyInterface>,
+        val challengingYogas: List<StringKeyInterface>,
         val overallScore: Double,
         val keyInsights: List<String>,
         val recommendations: List<String>,
@@ -221,7 +225,7 @@ object SaptamsaAnalyzer {
      * @param chart The birth chart (Rasi/D1)
      * @return Complete SaptamsaAnalysis
      */
-    fun analyzeSaptamsa(chart: VedicChart, language: com.astro.storm.core.common.Language = com.astro.storm.core.common.Language.ENGLISH): SaptamsaAnalysis {
+    fun analyzeSaptamsa(chart: VedicChart, language: Language = Language.ENGLISH): SaptamsaAnalysis {
         // Get D7 chart
         val divisionalCharts = DivisionalChartCalculator.calculateAllDivisionalCharts(chart)
         val d7Chart = divisionalCharts.find { it.chartType == DivisionalChartType.D7_SAPTAMSA }
@@ -287,7 +291,7 @@ object SaptamsaAnalyzer {
     /**
      * Analyze D7 Lagna
      */
-    private fun analyzeD7Lagna(d7Chart: DivisionalChartData?, rasiChart: VedicChart, language: com.astro.storm.core.common.Language): D7LagnaAnalysis {
+    private fun analyzeD7Lagna(d7Chart: DivisionalChartData?, rasiChart: VedicChart, language: Language): D7LagnaAnalysis {
         if (d7Chart == null) {
             return createDefaultD7LagnaAnalysis(rasiChart, language)
         }
@@ -315,7 +319,7 @@ object SaptamsaAnalyzer {
     /**
      * Analyze Fifth House in D7
      */
-    private fun analyzeFifthHouse(d7Chart: DivisionalChartData?, rasiChart: VedicChart, language: com.astro.storm.core.common.Language): FifthHouseAnalysis {
+    private fun analyzeFifthHouse(d7Chart: DivisionalChartData?, rasiChart: VedicChart, language: Language): FifthHouseAnalysis {
         val positions = d7Chart?.planetPositions ?: rasiChart.planetPositions
         val ascendant = d7Chart?.ascendantLongitude ?: rasiChart.ascendant
         val lagnaSign = ZodiacSign.fromLongitude(ascendant)
@@ -353,7 +357,7 @@ object SaptamsaAnalyzer {
     /**
      * Analyze Jupiter (Putrakaraka)
      */
-    private fun analyzeJupiter(d7Chart: DivisionalChartData?, rasiChart: VedicChart, language: com.astro.storm.core.common.Language): JupiterAnalysis {
+    private fun analyzeJupiter(d7Chart: DivisionalChartData?, rasiChart: VedicChart, language: Language): JupiterAnalysis {
         val positions = d7Chart?.planetPositions ?: rasiChart.planetPositions
         val jupiterPos = positions.find { it.planet == Planet.JUPITER }
         val sunPos = positions.find { it.planet == Planet.SUN }
@@ -451,7 +455,7 @@ object SaptamsaAnalyzer {
         minChildren = minChildren.coerceAtLeast(0)
         maxChildren = maxChildren.coerceIn(minChildren, 5)
 
-        val modifyingFactors = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
+        val modifyingFactors = mutableListOf<StringKeyInterface>()
         if (jupiterStrength > 70) modifyingFactors.add(StringKeySaptamsa.FACTOR_STRONG_JUPITER)
         if (benefics >= 2) modifyingFactors.add(StringKeySaptamsa.FACTOR_BENEFIC_5TH)
         if (malefics >= 2) modifyingFactors.add(StringKeySaptamsa.FACTOR_MALEFIC_5TH)
@@ -537,8 +541,8 @@ object SaptamsaAnalyzer {
         positions: List<PlanetPosition>,
         jupiterAnalysis: JupiterAnalysis
     ): FertilityAnalysis {
-        val supportingFactors = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
-        val challengingFactors = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
+        val supportingFactors = mutableListOf<StringKeyInterface>()
+        val challengingFactors = mutableListOf<StringKeyInterface>()
         
         // Initialize component scores
         var fifthHouseScore = 50.0
@@ -724,8 +728,8 @@ object SaptamsaAnalyzer {
     /**
      * Identify challenging yogas for progeny
      */
-    private fun identifyChallengingYogas(positions: List<PlanetPosition>, ascSign: ZodiacSign): List<com.astro.storm.core.common.StringKeyInterface> {
-        val challenges = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
+    private fun identifyChallengingYogas(positions: List<PlanetPosition>, ascSign: ZodiacSign): List<StringKeyInterface> {
+        val challenges = mutableListOf<StringKeyInterface>()
 
         val jupiterPos = positions.find { it.planet == Planet.JUPITER }
         val fifthPlanets = positions.filter { it.house == 5 }
@@ -812,8 +816,8 @@ object SaptamsaAnalyzer {
         return strength.coerceIn(0.0, 100.0)
     }
 
-    private fun getChildCharacteristicKeys(planet: Planet): List<com.astro.storm.core.common.StringKeyInterface> {
-        val characteristics = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
+    private fun getChildCharacteristicKeys(planet: Planet): List<StringKeyInterface> {
+        val characteristics = mutableListOf<StringKeyInterface>()
 
         when (planet) {
             Planet.SUN -> {
@@ -883,8 +887,8 @@ object SaptamsaAnalyzer {
         }
     }
 
-    private fun getHealthIndicatorKeysForChild(planet: Planet): List<com.astro.storm.core.common.StringKeyInterface> {
-        val indicators = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
+    private fun getHealthIndicatorKeysForChild(planet: Planet): List<StringKeyInterface> {
+        val indicators = mutableListOf<StringKeyInterface>()
 
         when (planet) {
             Planet.SUN -> indicators.add(StringKeySaptamsa.HEALTH_HEART_BONE)
@@ -902,8 +906,8 @@ object SaptamsaAnalyzer {
         return indicators
     }
 
-    private fun getCareerIndicatorKeysForChild(planet: Planet): List<com.astro.storm.core.common.StringKeyInterface> {
-        val indicators = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
+    private fun getCareerIndicatorKeysForChild(planet: Planet): List<StringKeyInterface> {
+        val indicators = mutableListOf<StringKeyInterface>()
 
         when (planet) {
             Planet.SUN -> indicators.add(StringKeySaptamsa.CAREER_GOVT)
@@ -957,7 +961,7 @@ object SaptamsaAnalyzer {
         lagnaSign: ZodiacSign,
         lagnaLordPos: PlanetPosition?,
         planetsInLagna: List<PlanetPosition>,
-        language: com.astro.storm.core.common.Language
+        language: Language
     ): String {
         return buildString {
             append(StringResources.get(StringKeySaptamsa.SUMMARY_LAGNA, language, lagnaSign.getLocalizedName(language)))
@@ -992,7 +996,7 @@ object SaptamsaAnalyzer {
         fifthLordPos: PlanetPosition?,
         planetsInFifth: List<PlanetPosition>,
         aspectsOnFifth: List<Planet>,
-        language: com.astro.storm.core.common.Language
+        language: Language
     ): String {
         return buildString {
             append(StringResources.get(StringKeySaptamsa.INTERP_FIFTH_HOUSE, language, fifthSign.getLocalizedName(language)))
@@ -1017,7 +1021,7 @@ object SaptamsaAnalyzer {
         isRetrograde: Boolean,
         isCombust: Boolean,
         strength: Double,
-        language: com.astro.storm.core.common.Language
+        language: Language
     ): String {
         return buildString {
             append(StringResources.get(StringKeySaptamsa.INTERP_JUPITER_POS, language, pos.sign.getLocalizedName(language), pos.house))
@@ -1098,7 +1102,7 @@ object SaptamsaAnalyzer {
         jupiter: JupiterAnalysis,
         childCount: ChildCountFactors,
         yogas: List<SanthanaYoga>,
-        language: com.astro.storm.core.common.Language
+        language: Language
     ): List<String> {
         val insights = mutableListOf<String>()
 
@@ -1121,9 +1125,9 @@ object SaptamsaAnalyzer {
 
     private fun generateRecommendations(
         fertility: FertilityAnalysis,
-        challenges: List<com.astro.storm.core.common.StringKeyInterface>,
+        challenges: List<StringKeyInterface>,
         jupiter: JupiterAnalysis,
-        language: com.astro.storm.core.common.Language
+        language: Language
     ): List<String> {
         val recommendations = mutableListOf<String>()
 
@@ -1148,7 +1152,7 @@ object SaptamsaAnalyzer {
     // DEFAULT/EMPTY CREATORS
     // ============================================
 
-    private fun createDefaultD7LagnaAnalysis(chart: VedicChart, language: com.astro.storm.core.common.Language): D7LagnaAnalysis {
+    private fun createDefaultD7LagnaAnalysis(chart: VedicChart, language: Language): D7LagnaAnalysis {
         val lagnaSign = VedicAstrologyUtils.getAscendantSign(chart)
         return D7LagnaAnalysis(
             lagnaSign = lagnaSign,
@@ -1161,7 +1165,7 @@ object SaptamsaAnalyzer {
         )
     }
 
-    private fun createDefaultJupiterAnalysis(language: com.astro.storm.core.common.Language): JupiterAnalysis {
+    private fun createDefaultJupiterAnalysis(language: Language): JupiterAnalysis {
         return JupiterAnalysis(
             position = null,
             dignity = null,
@@ -1182,7 +1186,7 @@ object SaptamsaAnalyzer {
     /**
      * Get summary text for display
      */
-    fun getSummary(analysis: SaptamsaAnalysis, language: com.astro.storm.core.common.Language = com.astro.storm.core.common.Language.ENGLISH): String {
+    fun getSummary(analysis: SaptamsaAnalysis, language: Language = Language.ENGLISH): String {
         return buildString {
             appendLine("═══════════════════════════════════════")
             appendLine(StringResources.get(StringKeySaptamsa.SUMMARY_HEADER, language))
@@ -1214,5 +1218,169 @@ object SaptamsaAnalyzer {
                 }
             }
         }
+    }
+
+    // ============================================
+    // HELPER FUNCTIONS FOR CHILD ANALYSIS
+    // ============================================
+
+    private fun getChildCharacteristics(planet: Planet, position: PlanetPosition?): List<StringKeyInterface> {
+        val characteristics = mutableListOf<StringKeyInterface>()
+        
+        when (planet) {
+            Planet.SUN -> {
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_LEADER)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_CONFIDENT)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_AUTHORITATIVE)
+            }
+            Planet.MOON -> {
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_CARING)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_INTUITIVE)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_EMOTIONAL)
+            }
+            Planet.MARS -> {
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_ENERGETIC)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_DETERMINED)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_COURAGEOUS)
+            }
+            Planet.MERCURY -> {
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_INTELLIGENT)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_COMMUNICATIVE)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_ADAPTABLE)
+            }
+            Planet.JUPITER -> {
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_WISE)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_GENEROUS)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_SPIRITUAL)
+            }
+            Planet.VENUS -> {
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_ARTISTIC)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_CHARMING)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_HARMONIOUS)
+            }
+            Planet.SATURN -> {
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_DISCIPLINED)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_RESPONSIBLE)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_PRACTICAL)
+            }
+            Planet.RAHU -> {
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_UNCONVENTIONAL)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_AMBITIOUS)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_MYSTERIOUS)
+            }
+            Planet.KETU -> {
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_SPIRITUAL)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_DETACHED)
+                characteristics.add(StringKeySaptamsa.CHILD_CHAR_INTUITIVE)
+            }
+        }
+        
+        // Add position-based characteristics
+        position?.let { pos ->
+            when (pos.house) {
+                1 -> characteristics.add(StringKeySaptamsa.CHILD_POS_INDEPENDENT)
+                4 -> characteristics.add(StringKeySaptamsa.CHILD_POS_FAMILY_ORIENTED)
+                5 -> characteristics.add(StringKeySaptamsa.CHILD_POS_CREATIVE)
+                7 -> characteristics.add(StringKeySaptamsa.CHILD_POS_PARTNERSHIP_MINDED)
+                9 -> characteristics.add(StringKeySaptamsa.CHILD_POS_FORTUNATE)
+                10 -> characteristics.add(StringKeySaptamsa.CHILD_POS_AMBITIOUS)
+            }
+        }
+        
+        return characteristics
+    }
+
+    private fun getHealthIndicatorsForChild(planet: Planet, position: PlanetPosition?): List<StringKeyInterface> {
+        val indicators = mutableListOf<StringKeyInterface>()
+        
+        // Basic health indicators based on planet
+        when (planet) {
+            Planet.SUN -> indicators.add(StringKeySaptamsa.HEALTH_STRONG_VITALITY)
+            Planet.MOON -> indicators.add(StringKeySaptamsa.HEALTH_EMOTIONAL_WELLNESS)
+            Planet.MARS -> indicators.add(StringKeySaptamsa.HEALTH_PHYSICAL_STRENGTH)
+            Planet.MERCURY -> indicators.add(StringKeySaptamsa.HEALTH_NERVOUS_SYSTEM)
+            Planet.JUPITER -> indicators.add(StringKeySaptamsa.HEALTH_OVERALL_GOOD)
+            Planet.VENUS -> indicators.add(StringKeySaptamsa.HEALTH_REPRODUCTIVE_HEALTH)
+            Planet.SATURN -> indicators.add(StringKeySaptamsa.HEALTH_RESILIENT)
+            Planet.RAHU -> indicators.add(StringKeySaptamsa.HEALTH_UNUSUAL_CONDITIONS)
+            Planet.KETU -> indicators.add(StringKeySaptamsa.HEALTH_CHRONIC_TENDENCIES)
+        }
+        
+        return indicators
+    }
+
+    private fun getCareerIndicatorsForChild(planet: Planet, position: PlanetPosition?): List<StringKeyInterface> {
+        val indicators = mutableListOf<StringKeyInterface>()
+        
+        when (planet) {
+            Planet.SUN -> {
+                indicators.add(StringKeySaptamsa.CAREER_LEADERSHIP)
+                indicators.add(StringKeySaptamsa.CAREER_GOVERNMENT)
+            }
+            Planet.MOON -> {
+                indicators.add(StringKeySaptamsa.CAREER_CARING_PROFESSIONS)
+                indicators.add(StringKeySaptamsa.CAREER_PUBLIC_SERVICE)
+            }
+            Planet.MARS -> {
+                indicators.add(StringKeySaptamsa.CAREER_MILITARY)
+                indicators.add(StringKeySaptamsa.CAREER_ENGINEERING)
+                indicators.add(StringKeySaptamsa.CAREER_SPORTS)
+            }
+            Planet.MERCURY -> {
+                indicators.add(StringKeySaptamsa.CAREER_COMMUNICATION)
+                indicators.add(StringKeySaptamsa.CAREER_BUSINESS)
+                indicators.add(StringKeySaptamsa.CAREER_TECHNOLOGY)
+            }
+            Planet.JUPITER -> {
+                indicators.add(StringKeySaptamsa.CAREER_TEACHING)
+                indicators.add(StringKeySaptamsa.CAREER_LAW)
+                indicators.add(StringKeySaptamsa.CAREER_SPIRITUAL)
+            }
+            Planet.VENUS -> {
+                indicators.add(StringKeySaptamsa.CAREER_ARTS)
+                indicators.add(StringKeySaptamsa.CAREER_ENTERTAINMENT)
+                indicators.add(StringKeySaptamsa.CAREER_DESIGN)
+            }
+            Planet.SATURN -> {
+                indicators.add(StringKeySaptamsa.CAREER_ADMINISTRATION)
+                indicators.add(StringKeySaptamsa.CAREER_INFRASTRUCTURE)
+                indicators.add(StringKeySaptamsa.CAREER_RESEARCH)
+            }
+            Planet.RAHU -> {
+                indicators.add(StringKeySaptamsa.CAREER_INTERNATIONAL)
+                indicators.add(StringKeySaptamsa.CAREER_RESEARCH)
+                indicators.add(StringKeySaptamsa.CAREER_TECHNOLOGY)
+            }
+            Planet.KETU -> {
+                indicators.add(StringKeySaptamsa.CAREER_RESEARCH)
+                indicators.add(StringKeySaptamsa.CAREER_SPIRITUAL)
+                indicators.add(StringKeySaptamsa.CAREER_HEALING)
+            }
+        }
+        
+        return indicators
+    }
+
+    private fun getTimingIndicators(planet: Planet, childNumber: Int): List<String> {
+        val indicators = mutableListOf<String>()
+        
+        // Calculate approximate timing based on child number
+        val baseAge = 25 + (childNumber - 1) * 3
+        
+        indicators.add("Possible conception around age $baseAge-${baseAge + 3}")
+        
+        when (planet) {
+            Planet.JUPITER -> indicators.add("Favorable during Jupiter dasha/bhukti")
+            Planet.VENUS -> indicators.add("Favorable during Venus dasha/bhukti")
+            Planet.MERCURY -> indicators.add("Favorable during Mercury dasha/bhukti")
+            Planet.SUN -> indicators.add("Favorable during Sun dasha/bhukti")
+            Planet.MOON -> indicators.add("Favorable during Moon dasha/bhukti")
+            Planet.MARS -> indicators.add("Favorable during Mars dasha/bhukti")
+            Planet.SATURN -> indicators.add("May have delays - check Saturn periods")
+            Planet.RAHU -> indicators.add("Unexpected timing possible")
+            Planet.KETU -> indicators.add("Spiritual significance in timing")
+        }
+        
+        return indicators
     }
 }

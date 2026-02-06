@@ -312,7 +312,8 @@ object PanchakaAnalyzer {
         nakshatraPada: Int,
         weekday: Vara,
         tithiNumber: Int,
-        dateTime: LocalDateTime
+        dateTime: LocalDateTime,
+        language: Language = Language.ENGLISH
     ): PanchakaAnalysis {
         // Check if nakshatra is in Panchaka group
         val nakshatraInPanchaka = isNakshatraInPanchaka(nakshatra, nakshatraPada)
@@ -333,7 +334,7 @@ object PanchakaAnalyzer {
                 avoidActivities = emptyList(),
                 remedies = emptyList(),
                 interpretation = "No Panchaka dosha is present. The time is auspicious for most activities.",
-                detailedAnalysis = buildNoopanchakaAnalysis(nakshatra, weekday)
+                detailedAnalysis = buildNoopanchakaAnalysis(nakshatra, weekday, language)
             )
         }
 
@@ -350,9 +351,9 @@ object PanchakaAnalyzer {
         val directionToAvoid = PanchakaDirection.fromNakshatra(nakshatra)
 
         // Build interpretation
-        val interpretation = buildPanchakaInterpretation(panchakaType, nakshatra, weekday, tithiNumber)
+        val interpretation = buildPanchakaInterpretation(panchakaType, nakshatra, weekday, tithiNumber, language)
         val detailedAnalysis = buildDetailedPanchakaAnalysis(
-            panchakaType, nakshatra, nakshatraPada, weekday, tithiNumber, directionToAvoid
+            panchakaType, nakshatra, nakshatraPada, weekday, tithiNumber, directionToAvoid, language
         )
 
         return PanchakaAnalysis(

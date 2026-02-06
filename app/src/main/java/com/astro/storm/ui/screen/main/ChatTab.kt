@@ -1063,15 +1063,29 @@ private fun UserMessageBubble(message: ChatMessageModel) {
 private fun AiStatusIndicator(aiStatus: AiStatus) {
     val colors = AppTheme.current
 
+    if (aiStatus is AiStatus.Idle || aiStatus is AiStatus.Complete) return
+
+    val lang = LocalLanguage.current
+
     // Determine status text and icon based on current AI status
-    val (statusText, statusIcon) = when (aiStatus) {
-        is AiStatus.Idle -> return // Don't show anything for idle
-        is AiStatus.Thinking -> stringResource(StringKeyDosha.STORMY_THINKING) to Icons.Outlined.Psychology
-        is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_REASONING) to Icons.Outlined.Lightbulb
-        is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_CALLING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName, LocalLanguage.current)) to Icons.Outlined.Build
-        is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_USING_TOOLS, aiStatus.tools.joinToString(", ") { ToolDisplayUtils.formatToolName(it, LocalLanguage.current) }) to Icons.Outlined.Build
-        is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_TYPING) to Icons.Outlined.Edit
-        is AiStatus.Complete -> return // Don't show anything for complete
+    val statusText = when (aiStatus) {
+        is AiStatus.Thinking -> stringResource(StringKeyDosha.STORMY_THINKING)
+        is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_REASONING)
+        is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_CALLING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName, lang))
+        is AiStatus.ExecutingTools -> {
+            val toolsList = aiStatus.tools.joinToString(", ") { ToolDisplayUtils.formatToolName(it, lang) }
+            stringResource(StringKeyDosha.STORMY_USING_TOOLS, toolsList)
+        }
+        is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_TYPING)
+        else -> ""
+    }
+
+    val statusIcon = when (aiStatus) {
+        is AiStatus.Thinking -> Icons.Outlined.Psychology
+        is AiStatus.Reasoning -> Icons.Outlined.Lightbulb
+        is AiStatus.CallingTool, is AiStatus.ExecutingTools -> Icons.Outlined.Build
+        is AiStatus.Typing -> Icons.Outlined.Edit
+        else -> Icons.Outlined.Info
     }
 
     Column(
