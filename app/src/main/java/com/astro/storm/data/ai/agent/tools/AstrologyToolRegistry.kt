@@ -97,7 +97,7 @@ class AstrologyToolRegistry @Inject constructor(
                     com.astro.storm.data.preferences.AstrologySettingsManager.getInstance(context),
                     com.astro.storm.data.localization.LocalizationManager.getInstance(context),
                     com.astro.storm.ephemeris.SwissEphemerisEngine.getInstance(context),
-                    com.astro.storm.data.templates.TemplateManager(context).let { com.astro.storm.data.templates.TemplateSelector(it) }
+                    com.astro.storm.data.templates.TemplateSelector(com.astro.storm.data.templates.TemplateManager(context.applicationContext))
                 ).also {
                     instance = it
                 }
