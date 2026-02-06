@@ -75,8 +75,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyAshtavarga
 import com.astro.storm.core.common.StringKeyNative
 import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -111,16 +113,6 @@ import java.time.temporal.ChronoUnit
 
 /**
  * Ashtavarga Transit Predictions Screen
- *
- * Comprehensive transit analysis based on Ashtakavarga bindu scores.
- * Shows current transits, upcoming predictions, and planetary analysis.
- *
- * Features:
- * - Overview tab with transit summary
- * - Current transit positions with BAV/SAV scores
- * - 12-month upcoming transit forecast
- * - Planet-wise transit analysis
- * - Favorable/unfavorable sign rankings
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -136,7 +128,7 @@ fun AshtavargaTransitScreen(
     val planetDetails by viewModel.planetDetails.collectAsState()
 
     // Calculate transits when chart changes
-    LaunchedEffect(chart) {
+    LaunchedEffect(chart, language) {
         viewModel.calculateTransits(chart, language)
     }
 
@@ -176,7 +168,7 @@ fun AshtavargaTransitScreen(
         when (val state = uiState) {
             is AshtavargaTransitUiState.Initial,
             is AshtavargaTransitUiState.Loading -> {
-                LoadingState(
+                LoadingStateSS(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
@@ -185,7 +177,7 @@ fun AshtavargaTransitScreen(
             }
 
             is AshtavargaTransitUiState.NoChart -> {
-                NoChartState(
+                NoChartStateSS(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
@@ -194,7 +186,7 @@ fun AshtavargaTransitScreen(
             }
 
             is AshtavargaTransitUiState.Error -> {
-                ErrorState(
+                ErrorStateSS(
                     message = if (language == Language.NEPALI) state.messageNe else state.message,
                     modifier = Modifier
                         .fillMaxSize()
@@ -309,8 +301,6 @@ private fun OverviewTab(
     summary: TransitSummary?,
     language: Language
 ) {
-    val colors = AppTheme.current
-
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -334,7 +324,7 @@ private fun OverviewTab(
 
         // Interpretation Card
         item {
-            InterpretationCard(
+            InterpretationCardSS(
                 interpretation = if (language == Language.NEPALI) result.interpretationNe else result.interpretation,
                 language = language
             )
@@ -343,7 +333,7 @@ private fun OverviewTab(
         // Recommendations
         if (result.recommendations.isNotEmpty()) {
             item {
-                RecommendationsCard(
+                RecommendationsCardSS(
                     recommendations = if (language == Language.NEPALI) result.recommendationsNe else result.recommendations,
                     language = language
                 )
@@ -352,7 +342,7 @@ private fun OverviewTab(
 
         // Current Transit Highlights
         item {
-            SectionHeader(
+            SectionHeaderSS(
                 title = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_HIGHLIGHTS, language),
                 language = language
             )
@@ -371,7 +361,7 @@ private fun OverallScoreCard(
     language: Language
 ) {
     val colors = AppTheme.current
-    val qualityColor = getQualityColor(quality, colors)
+    val qualityColor = getQualityColorSS(quality, colors)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -494,17 +484,17 @@ private fun SummaryStatisticsCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                StatItem(
+                StatItemSS(
                     value = summary.favorableCount.toString(),
                     label = StringResources.get(StringKeyAnalysis.TRANSIT_FAVORABLE, language),
                     color = colors.SuccessColor
                 )
-                StatItem(
+                StatItemSS(
                     value = summary.averageCount.toString(),
                     label = StringResources.get(com.astro.storm.core.common.StringKeyMatch.MATCH_AVERAGE, language),
                     color = colors.WarningColor
                 )
-                StatItem(
+                StatItemSS(
                     value = summary.challengingCount.toString(),
                     label = StringResources.get(StringKeyAnalysis.TRANSIT_CHALLENGING, language),
                     color = colors.ErrorColor
@@ -529,7 +519,7 @@ private fun SummaryStatisticsCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     summary.dominantLifeAreas.forEach { area ->
-                        LifeAreaChip(area = area, language = language)
+                        LifeAreaChipSS(area = area, language = language)
                     }
                 }
             }
@@ -563,7 +553,7 @@ private fun SummaryStatisticsCard(
                                 color = colors.TextMuted
                             )
                             Text(
-                                text = "${next.planet.displayName} → ${next.toSign.displayName}",
+                                text = "${next.planet.getLocalizedName(language)} → ${next.toSign.getLocalizedName(language)}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
                                 color = colors.TextPrimary
@@ -582,7 +572,7 @@ private fun SummaryStatisticsCard(
 }
 
 @Composable
-private fun StatItem(
+private fun StatItemSS(
     value: String,
     label: String,
     color: Color
@@ -603,7 +593,7 @@ private fun StatItem(
 }
 
 @Composable
-private fun LifeAreaChip(area: LifeArea, language: Language) {
+private fun LifeAreaChipSS(area: LifeArea, language: Language) {
     val colors = AppTheme.current
 
     Surface(
@@ -620,7 +610,7 @@ private fun LifeAreaChip(area: LifeArea, language: Language) {
 }
 
 @Composable
-private fun InterpretationCard(
+private fun InterpretationCardSS(
     interpretation: String,
     language: Language
 ) {
@@ -665,7 +655,7 @@ private fun InterpretationCard(
 }
 
 @Composable
-private fun RecommendationsCard(
+private fun RecommendationsCardSS(
     recommendations: List<String>,
     language: Language
 ) {
@@ -682,7 +672,7 @@ private fun RecommendationsCard(
                 .padding(16.dp)
         ) {
             Text(
-                text = stringResource(StringKeyAnalysis.PANCHANGA_AVOID).substringAfter(" "), // Using Activities to Avoid key but just Recommendations title if available, otherwise just use key
+                text = stringResource(StringKeyAnalysis.PANCHANGA_AVOID).substringAfter(" "),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.TextPrimary
@@ -731,7 +721,7 @@ private fun CurrentTransitsTab(
     ) {
         // Sort Options
         item {
-            SortOptionsRow(
+            SortOptionsRowSS(
                 currentSort = sortCriteria,
                 onSortSelected = { sortCriteria = it },
                 language = language
@@ -747,7 +737,7 @@ private fun CurrentTransitsTab(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SortOptionsRow(
+private fun SortOptionsRowSS(
     currentSort: TransitSortCriteria,
     onSortSelected: (TransitSortCriteria) -> Unit,
     language: Language
@@ -781,8 +771,8 @@ private fun SortOptionsRow(
         ) {
             val options = listOf(
                 TransitSortCriteria.BY_QUALITY_DESC to StringResources.get(StringKeyAnalysis.TRANSIT_QUALITY_LABEL, language),
-                TransitSortCriteria.BY_BAV_DESC to "BAV",
-                TransitSortCriteria.BY_SAV_DESC to "SAV",
+                TransitSortCriteria.BY_BAV_DESC to StringResources.get(StringKeyAshtavarga.BAV_LABEL, language),
+                TransitSortCriteria.BY_SAV_DESC to StringResources.get(StringKeyAshtavarga.SAV_LABEL, language),
                 TransitSortCriteria.BY_EXIT_DATE to StringResources.get(StringKeyAnalysis.UI_EXIT_DATE, language)
             )
 
@@ -808,7 +798,7 @@ private fun CurrentTransitCard(
     expanded: Boolean = false
 ) {
     val colors = AppTheme.current
-    val qualityColor = getQualityColor(transit.quality, colors)
+    val qualityColor = getQualityColorSS(transit.quality, colors)
     var isExpanded by remember { mutableStateOf(expanded) }
 
     Card(
@@ -839,7 +829,7 @@ private fun CurrentTransitCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = transit.planet.displayName.take(2),
+                            text = transit.planet.getLocalizedName(language).take(2),
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold,
                             color = qualityColor
@@ -848,13 +838,13 @@ private fun CurrentTransitCard(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = transit.planet.displayName,
+                            text = transit.planet.getLocalizedName(language),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.TextPrimary
                         )
                         Text(
-                            text = "in ${transit.currentSign.displayName}",
+                            text = StringResources.get(StringKeyAshtavarga.TRANSIT_IN_SIGN, language, transit.currentSign.getLocalizedName(language)),
                             style = MaterialTheme.typography.bodySmall,
                             color = colors.TextMuted
                         )
@@ -863,8 +853,8 @@ private fun CurrentTransitCard(
 
                 // Scores
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    ScoreBadge(label = "BAV", value = transit.bavScore, maxValue = 8)
-                    ScoreBadge(label = "SAV", value = transit.savScore, maxValue = 56)
+                    ScoreBadgeSS(label = StringResources.get(StringKeyAshtavarga.BAV_LABEL, language), value = transit.bavScore, maxValue = 8)
+                    ScoreBadgeSS(label = StringResources.get(StringKeyAshtavarga.SAV_LABEL, language), value = transit.savScore, maxValue = 56)
                 }
             }
 
@@ -935,11 +925,11 @@ private fun CurrentTransitCard(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        InfoItem(
+                        InfoItemSS(
                             label = StringResources.get(StringKeyAnalysis.UI_FROM_MOON, language),
                             value = "${transit.houseFromMoon}"
                         )
-                        InfoItem(
+                        InfoItemSS(
                             label = StringResources.get(StringKeyAnalysis.UI_FROM_LAGNA, language),
                             value = "${transit.houseFromAsc}"
                         )
@@ -971,7 +961,7 @@ private fun CurrentTransitCard(
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (isExpanded) StringResources.get(StringKeyAshtavarga.COLLAPSE, language) else StringResources.get(StringKeyAshtavarga.EXPAND, language),
                     tint = colors.TextMuted,
                     modifier = Modifier
                         .size(24.dp)
@@ -983,7 +973,7 @@ private fun CurrentTransitCard(
 }
 
 @Composable
-private fun ScoreBadge(label: String, value: Int, maxValue: Int) {
+private fun ScoreBadgeSS(label: String, value: Int, maxValue: Int) {
     val colors = AppTheme.current
     val ratio = value.toFloat() / maxValue
     val color = when {
@@ -1016,7 +1006,7 @@ private fun ScoreBadge(label: String, value: Int, maxValue: Int) {
 }
 
 @Composable
-private fun InfoItem(label: String, value: String) {
+private fun InfoItemSS(label: String, value: String) {
     val colors = AppTheme.current
 
     Column {
@@ -1073,7 +1063,7 @@ private fun UpcomingTransitsTab(
                     onClick = { showOnlySignificant = !showOnlySignificant },
                     label = {
                         Text(
-                            text = StringResources.get(StringKeyAnalysis.UI_SIGNIFICANT_ONLY, language),
+                            text = StringResources.get(StringKeyAshtavarga.SIGNIFICANT_ONLY, language),
                             fontSize = 12.sp
                         )
                     },
@@ -1101,7 +1091,7 @@ private fun UpcomingTransitCard(
     language: Language
 ) {
     val colors = AppTheme.current
-    val qualityColor = getQualityColor(transit.quality, colors)
+    val qualityColor = getQualityColorSS(transit.quality, colors)
     val daysUntil = ChronoUnit.DAYS.between(java.time.LocalDate.now(), transit.transitDate).toInt()
 
     Card(
@@ -1147,7 +1137,7 @@ private fun UpcomingTransitCard(
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = transit.planet.displayName,
+                            text = transit.planet.getLocalizedName(language),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.TextPrimary
@@ -1156,20 +1146,20 @@ private fun UpcomingTransitCard(
                             Spacer(modifier = Modifier.width(4.dp))
                             Icon(
                                 imageVector = Icons.Default.Star,
-                                contentDescription = "Significant",
+                                contentDescription = StringResources.get(StringKeyAshtavarga.SIGNIFICANT, language),
                                 tint = colors.AccentGold,
                                 modifier = Modifier.size(16.dp)
                             )
                         }
                     }
                     Text(
-                        text = "${transit.fromSign.displayName} → ${transit.toSign.displayName}",
+                        text = "${transit.fromSign.getLocalizedName(language)} → ${transit.toSign.getLocalizedName(language)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.TextMuted
                     )
                     Text(
                         text = if (daysUntil == 0) {
-                            stringResource(StringKey.FEATURE_PREDICTIONS) // Placeholder for Today if not found, but let's check for specific Today key
+                            StringResources.get(StringKey.PERIOD_TODAY, language)
                         } else {
                             String.format(stringResource(StringKeyAnalysis.UI_IN_DAYS_FMT), daysUntil)
                         },
@@ -1194,7 +1184,7 @@ private fun UpcomingTransitCard(
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "BAV: ${transit.bavScore} | SAV: ${transit.savScore}",
+                    text = "${StringResources.get(StringKeyAshtavarga.BAV_LABEL, language)}: ${transit.bavScore} | ${StringResources.get(StringKeyAshtavarga.SAV_LABEL, language)}: ${transit.savScore}",
                     style = MaterialTheme.typography.labelSmall,
                     color = colors.TextMuted
                 )
@@ -1221,7 +1211,8 @@ private fun PlanetsTab(
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(planetDetails.keys.toList()) { planet ->
+                val sortedPlanets = planetDetails.keys.sortedBy { it.ordinal }
+                items(sortedPlanets) { planet ->
                     val isSelected = selectedPlanet == planet
                     val details = planetDetails[planet]
 
@@ -1230,14 +1221,14 @@ private fun PlanetsTab(
                         onClick = {
                             selectedPlanet = if (isSelected) null else planet
                         },
-                        label = { Text(planet.displayName) },
+                        label = { Text(planet.getLocalizedName(language)) },
                         leadingIcon = details?.currentTransit?.let {
                             {
                                 Box(
                                     modifier = Modifier
                                         .size(8.dp)
                                         .clip(CircleShape)
-                                        .background(getQualityColor(it.quality, colors))
+                                        .background(getQualityColorSS(it.quality, colors))
                                 )
                             }
                         },
@@ -1254,19 +1245,19 @@ private fun PlanetsTab(
         val planetsToShow = if (selectedPlanet != null) {
             listOf(selectedPlanet!!)
         } else {
-            planetDetails.keys.toList()
+            planetDetails.keys.toList().sortedBy { it.ordinal }
         }
 
         items(planetsToShow) { planet ->
             planetDetails[planet]?.let { details ->
-                PlanetDetailCard(planet = planet, details = details, language = language)
+                PlanetDetailCardSS(planet = planet, details = details, language = language)
             }
         }
     }
 }
 
 @Composable
-private fun PlanetDetailCard(
+private fun PlanetDetailCardSS(
     planet: Planet,
     details: PlanetTransitDetails,
     language: Language
@@ -1294,7 +1285,7 @@ private fun PlanetDetailCard(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = planet.displayName,
+                        text = planet.getLocalizedName(language),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = colors.TextPrimary
@@ -1302,7 +1293,7 @@ private fun PlanetDetailCard(
                     details.currentTransit?.let { transit ->
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "in ${transit.currentSign.displayName}",
+                            text = StringResources.get(StringKeyAshtavarga.TRANSIT_IN_SIGN, language, transit.currentSign.getLocalizedName(language)),
                             style = MaterialTheme.typography.bodyMedium,
                             color = colors.TextMuted
                         )
@@ -1312,13 +1303,13 @@ private fun PlanetDetailCard(
                 details.currentTransit?.let { transit ->
                     Surface(
                         shape = RoundedCornerShape(8.dp),
-                        color = getQualityColor(transit.quality, colors).copy(alpha = 0.15f)
+                        color = getQualityColorSS(transit.quality, colors).copy(alpha = 0.15f)
                     ) {
                         Text(
-                            text = "BAV: ${transit.bavScore}",
+                            text = "${StringResources.get(StringKeyAshtavarga.BAV_LABEL, language)}: ${transit.bavScore}",
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Medium,
-                            color = getQualityColor(transit.quality, colors),
+                            color = getQualityColorSS(transit.quality, colors),
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
                         )
                     }
@@ -1348,7 +1339,7 @@ private fun PlanetDetailCard(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = sign.displayName,
+                                text = sign.getLocalizedName(language),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
                                 color = colors.TextPrimary
@@ -1360,7 +1351,7 @@ private fun PlanetDetailCard(
                 details.worstSign?.let { sign ->
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_WEAK_SIGN),
+                            text = StringResources.get(StringKeyAshtavarga.WEAK_SIGN, language),
                             style = MaterialTheme.typography.labelSmall,
                             color = colors.TextMuted
                         )
@@ -1373,7 +1364,7 @@ private fun PlanetDetailCard(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = sign.displayName,
+                                text = sign.getLocalizedName(language),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
                                 color = colors.TextPrimary
@@ -1407,12 +1398,12 @@ private fun PlanetDetailCard(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = "${fav.rank}. ${fav.sign.displayName}",
+                                    text = "${fav.rank}. ${fav.sign.getLocalizedName(language)}",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = colors.TextPrimary
                                 )
                                 Text(
-                                    text = "BAV: ${fav.bavScore} | SAV: ${fav.savScore}",
+                                    text = "${StringResources.get(StringKeyAshtavarga.BAV_LABEL, language)}: ${fav.bavScore} | ${StringResources.get(StringKeyAshtavarga.SAV_LABEL, language)}: ${fav.savScore}",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = colors.TextMuted
                                 )
@@ -1438,12 +1429,12 @@ private fun PlanetDetailCard(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = "${unfav.rank}. ${unfav.sign.displayName}",
+                                    text = "${unfav.rank}. ${unfav.sign.getLocalizedName(language)}",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = colors.TextPrimary
                                 )
                                 Text(
-                                    text = "BAV: ${unfav.bavScore} | SAV: ${unfav.savScore}",
+                                    text = "${StringResources.get(StringKeyAshtavarga.BAV_LABEL, language)}: ${unfav.bavScore} | ${StringResources.get(StringKeyAshtavarga.SAV_LABEL, language)}: ${unfav.savScore}",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = colors.TextMuted
                                 )
@@ -1469,7 +1460,7 @@ private fun PlanetDetailCard(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = "→ ${transit.toSign.displayName}",
+                                    text = "→ ${transit.toSign.getLocalizedName(language)}",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = colors.TextPrimary
                                 )
@@ -1556,7 +1547,7 @@ private fun AnalysisTab(
                                 color = colors.TextSecondary
                             )
                             Text(
-                                text = stringResource(StringKeyAnalysis.ARGALA_VIRODHA_DESC), // Using a descriptive key for reduction
+                                text = stringResource(StringKeyAnalysis.ARGALA_VIRODHA_DESC),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = colors.TextMuted
                             )
@@ -1577,12 +1568,12 @@ private fun AnalysisTab(
                     ) {
                         Column {
                             Text(
-                                text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_EKADHIPATYA, language),
+                                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_EKADHIPATYA, language),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = colors.TextSecondary
                             )
                             Text(
-                                text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_DESC), // Using a descriptive key
+                                text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_DESC),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = colors.TextMuted
                             )
@@ -1619,7 +1610,7 @@ private fun AnalysisTab(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     affectedAreas.forEach { (area, impact) ->
-                        LifeAreaImpactRow(
+                        LifeAreaImpactRowSS(
                             area = area,
                             impact = impact,
                             language = language
@@ -1650,12 +1641,13 @@ private fun AnalysisTab(
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                                            Text(
-                                                text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_ABOUT),
-                                                style = MaterialTheme.typography.titleMedium,
-                                                fontWeight = FontWeight.SemiBold,
-                                                color = colors.TextPrimary
-                                            )                    }
+                        Text(
+                            text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_ABOUT),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = colors.TextPrimary
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(12.dp))
 
@@ -1672,7 +1664,7 @@ private fun AnalysisTab(
 }
 
 @Composable
-private fun LifeAreaImpactRow(
+private fun LifeAreaImpactRowSS(
     area: LifeArea,
     impact: Int,
     language: Language
@@ -1723,7 +1715,7 @@ private fun LifeAreaImpactRow(
 }
 
 @Composable
-private fun SectionHeader(title: String, language: Language) {
+private fun SectionHeaderSS(title: String, language: Language) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleMedium,
@@ -1734,7 +1726,7 @@ private fun SectionHeader(title: String, language: Language) {
 }
 
 @Composable
-private fun LoadingState(modifier: Modifier = Modifier, language: Language) {
+private fun LoadingStateSS(modifier: Modifier = Modifier, language: Language) {
     val colors = AppTheme.current
 
     Box(
@@ -1754,7 +1746,7 @@ private fun LoadingState(modifier: Modifier = Modifier, language: Language) {
 }
 
 @Composable
-private fun NoChartState(modifier: Modifier = Modifier, language: Language) {
+private fun NoChartStateSS(modifier: Modifier = Modifier, language: Language) {
     val colors = AppTheme.current
 
     Box(
@@ -1790,7 +1782,7 @@ private fun NoChartState(modifier: Modifier = Modifier, language: Language) {
 }
 
 @Composable
-private fun ErrorState(
+private fun ErrorStateSS(
     message: String,
     modifier: Modifier = Modifier,
     onRetry: () -> Unit
@@ -1835,9 +1827,7 @@ private fun ErrorState(
     }
 }
 
-private data class TabInfo(val title: String, val icon: ImageVector)
-
-private fun getQualityColor(quality: TransitQuality, colors: com.astro.storm.ui.theme.AppThemeColors): Color {
+private fun getQualityColorSS(quality: TransitQuality, colors: com.astro.storm.ui.theme.AppThemeColors): Color {
     return when (quality) {
         TransitQuality.EXCELLENT -> colors.SuccessColor
         TransitQuality.VERY_GOOD -> colors.SuccessColor.copy(alpha = 0.85f)
@@ -1849,3 +1839,4 @@ private fun getQualityColor(quality: TransitQuality, colors: com.astro.storm.ui.
     }
 }
 
+private data class TabInfo(val title: String, val icon: ImageVector)

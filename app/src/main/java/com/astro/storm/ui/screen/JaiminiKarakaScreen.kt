@@ -3,9 +3,12 @@ package com.astro.storm.ui.screen
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -27,6 +30,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyJaimini
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
@@ -62,10 +68,10 @@ fun JaiminiKarakaScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     // Calculate Jaimini Karaka Analysis
-    LaunchedEffect(chart) {
+    LaunchedEffect(chart, language) {
         if (chart == null) {
             isLoading = false
-            errorMessage = "No chart available"
+            errorMessage = StringResources.get(StringKeyJaimini.NO_CHART_AVAILABLE, language)
             return@LaunchedEffect
         }
 
@@ -76,7 +82,7 @@ fun JaiminiKarakaScreen(
             try {
                 analysis = JaiminiKarakaCalculator.calculateKarakas(chart)
             } catch (e: Exception) {
-                errorMessage = e.message ?: "Error calculating Jaimini Karakas"
+                errorMessage = e.message ?: StringResources.get(StringKeyJaimini.ERROR_JAIMINI, language)
             }
         }
         isLoading = false
@@ -88,12 +94,12 @@ fun JaiminiKarakaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Jaimini Karakas",
+                            text = StringResources.get(StringKeyJaimini.TITLE, language),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Chara Karaka Analysis",
+                            text = StringResources.get(StringKeyJaimini.SUBTITLE, language),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -103,7 +109,7 @@ fun JaiminiKarakaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = StringResources.get(StringKey.NAV_BACK, language)
                         )
                     }
                 },
@@ -116,8 +122,8 @@ fun JaiminiKarakaScreen(
         containerColor = AppTheme.ScreenBackground
     ) { padding ->
         when {
-            isLoading -> LoadingState(modifier = Modifier.padding(padding))
-            errorMessage != null -> ErrorState(errorMessage!!, modifier = Modifier.padding(padding))
+            isLoading -> LoadingStateSS(modifier = Modifier.padding(padding))
+            errorMessage != null -> ErrorStateSS(errorMessage!!, modifier = Modifier.padding(padding))
             analysis != null -> JaiminiKarakaContent(
                 analysis = analysis!!,
                 language = language,
@@ -134,7 +140,12 @@ private fun JaiminiKarakaContent(
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(0) }
-    val tabs = listOf("Karakas", "Karakamsha", "Yogas", "Interpretation")
+    val tabs = listOf(
+        StringResources.get(StringKeyJaimini.TAB_KARAKAS, language),
+        StringResources.get(StringKeyJaimini.TAB_KARAKAMSHA, language),
+        StringResources.get(StringKeyJaimini.TAB_YOGAS, language),
+        StringResources.get(StringKeyJaimini.TAB_INTERPRETATION, language)
+    )
 
     Column(modifier = modifier.fillMaxSize()) {
         // Tabs
@@ -181,8 +192,8 @@ private fun KarakasTab(
         // Header Card
         item {
             HeaderCard(
-                title = "7 Chara Karakas",
-                subtitle = "Variable significators based on planetary degrees",
+                title = StringResources.get(StringKeyJaimini.HEADER_7_KARAKAS, language),
+                subtitle = StringResources.get(StringKeyJaimini.SUBTITLE_7_KARAKAS, language),
                 icon = Icons.Outlined.Stars
             )
         }
@@ -199,8 +210,8 @@ private fun KarakasTab(
         // System Info
         item {
             InfoCard(
-                title = "Karaka System",
-                content = "Using ${analysis.karakaSystem.name.replace("_", " ")} system",
+                title = StringResources.get(StringKeyJaimini.SYSTEM_INFO_TITLE, language),
+                content = StringResources.get(StringKeyJaimini.SYSTEM_INFO_CONTENT, language, analysis.karakaSystem.name.replace("_", " ")),
                 icon = Icons.Outlined.Info
             )
         }
@@ -213,7 +224,7 @@ private fun KarakaCard(
     assignment: KarakaAssignment,
     language: Language
 ) {
-    val planetColor = getPlanetColor(assignment.planet)
+    val planetColor = getPlanetColorSS(assignment.planet)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -269,7 +280,7 @@ private fun KarakaCard(
 
                 // Degree
                 Text(
-                    text = "Degree: ${String.format("%.2f", assignment.degreeInSign)}°",
+                    text = StringResources.get(StringKeyJaimini.DEGREE_LABEL, language, String.format("%.2f", assignment.degreeInSign)),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -316,8 +327,8 @@ private fun KarakamshaTab(
         analysis.karakamsha?.let { karakamsha ->
             item {
                 HeaderCard(
-                    title = "Karakamsha",
-                    subtitle = "Atmakaraka's position in Navamsa determines soul's direction",
+                    title = StringResources.get(StringKeyJaimini.KARAKAMSHA_TITLE, language),
+                    subtitle = StringResources.get(StringKeyJaimini.KARAKAMSHA_SUBTITLE, language),
                     icon = Icons.Outlined.Explore
                 )
             }
@@ -331,8 +342,8 @@ private fun KarakamshaTab(
         analysis.swamsha?.let { swamsha ->
             item {
                 HeaderCard(
-                    title = "Swamsha",
-                    subtitle = "Navamsa Lagna - the spiritual manifestation point",
+                    title = StringResources.get(StringKeyJaimini.SWAMSHA_TITLE, language),
+                    subtitle = StringResources.get(StringKeyJaimini.SWAMSHA_SUBTITLE, language),
                     icon = Icons.Outlined.SelfImprovement
                 )
             }
@@ -382,7 +393,7 @@ private fun KarakamshaDetailCard(
 
                 Column {
                     Text(
-                        text = "Karakamsha Sign",
+                        text = StringResources.get(StringKeyJaimini.SIGN_LABEL, language),
                         style = MaterialTheme.typography.labelMedium,
                         color = AppTheme.TextMuted
                     )
@@ -401,7 +412,7 @@ private fun KarakamshaDetailCard(
 
             // Indicators
             Text(
-                text = "Life Path Indicators",
+                text = StringResources.get(StringKeyJaimini.LIFE_PATH_INDICATORS, language),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -411,8 +422,8 @@ private fun KarakamshaDetailCard(
 
             // Career Indicators
             if (karakamsha.careerIndicators.isNotEmpty()) {
-                IndicatorSection(
-                    title = "Career",
+                IndicatorSectionSS(
+                    title = StringResources.get(StringKeyJaimini.INDICATOR_CAREER, language),
                     indicators = karakamsha.careerIndicators,
                     icon = Icons.Outlined.Work,
                     color = DarkAppThemeColors.LifeAreaCareer
@@ -421,8 +432,8 @@ private fun KarakamshaDetailCard(
 
             // Spiritual Indicators
             if (karakamsha.spiritualIndicators.isNotEmpty()) {
-                IndicatorSection(
-                    title = "Spiritual",
+                IndicatorSectionSS(
+                    title = StringResources.get(StringKeyJaimini.INDICATOR_SPIRITUAL, language),
                     indicators = karakamsha.spiritualIndicators,
                     icon = Icons.Outlined.SelfImprovement,
                     color = DarkAppThemeColors.LifeAreaSpiritual
@@ -431,8 +442,8 @@ private fun KarakamshaDetailCard(
 
             // Relationship Indicators
             if (karakamsha.relationshipIndicators.isNotEmpty()) {
-                IndicatorSection(
-                    title = "Relationships",
+                IndicatorSectionSS(
+                    title = StringResources.get(StringKeyJaimini.INDICATOR_RELATIONSHIPS, language),
                     indicators = karakamsha.relationshipIndicators,
                     icon = Icons.Outlined.Favorite,
                     color = DarkAppThemeColors.LifeAreaLove
@@ -479,7 +490,7 @@ private fun SwamshaDetailCard(
 
                 Column {
                     Text(
-                        text = "Swamsha (Navamsa Lagna)",
+                        text = StringResources.get(StringKeyJaimini.SWAMSHA_LAGNA_LABEL, language),
                         style = MaterialTheme.typography.labelMedium,
                         color = AppTheme.TextMuted
                     )
@@ -506,7 +517,7 @@ private fun SwamshaDetailCard(
 }
 
 @Composable
-private fun IndicatorSection(
+private fun IndicatorSectionSS(
     title: String,
     indicators: List<String>,
     icon: ImageVector,
@@ -568,8 +579,8 @@ private fun YogasTab(
     ) {
         item {
             HeaderCard(
-                title = "Karakenshi Yogas",
-                subtitle = "Special combinations formed by Chara Karakas",
+                title = StringResources.get(StringKeyJaimini.YOGAS_TITLE, language),
+                subtitle = StringResources.get(StringKeyJaimini.YOGAS_SUBTITLE, language),
                 icon = Icons.Outlined.AutoAwesome
             )
         }
@@ -595,7 +606,7 @@ private fun YogasTab(
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = "No special Karakenshi Yogas detected",
+                            text = StringResources.get(StringKeyJaimini.NO_YOGAS_FOUND, language),
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextMuted,
                             textAlign = TextAlign.Center
@@ -662,7 +673,7 @@ private fun KarakenshiYogaCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Strength: ${String.format("%.0f", yoga.strength * 100)}%",
+                            text = StringResources.get(StringKeyJaimini.STRENGTH_LABEL, language, String.format("%.0f", yoga.strength * 100)),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -675,7 +686,7 @@ private fun KarakenshiYogaCard(
                     color = yogaColor.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = if (yoga.isAuspicious) "Benefic" else "Challenging",
+                        text = if (yoga.isAuspicious) StringResources.get(StringKeyJaimini.YOGA_BENEFIC, language) else StringResources.get(StringKeyJaimini.YOGA_CHALLENGING, language),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = yogaColor,
@@ -699,7 +710,7 @@ private fun KarakenshiYogaCard(
             // Involved Planets
             Row {
                 Text(
-                    text = "Planets: ",
+                    text = StringResources.get(StringKeyJaimini.PLANETS_LABEL, language),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -715,7 +726,7 @@ private fun KarakenshiYogaCard(
             if (yoga.effects.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Results:",
+                    text = StringResources.get(StringKeyJaimini.RESULTS_LABEL, language),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextMuted
@@ -743,8 +754,8 @@ private fun InterpretationTab(
     ) {
         item {
             HeaderCard(
-                title = "Complete Interpretation",
-                subtitle = "Comprehensive Jaimini analysis summary",
+                title = StringResources.get(StringKeyJaimini.INTERP_TITLE, language),
+                subtitle = StringResources.get(StringKeyJaimini.INTERP_SUBTITLE, language),
                 icon = Icons.Outlined.Description
             )
         }
@@ -781,7 +792,7 @@ private fun InterpretationTab(
         // Gemstone Recommendations
         if (analysis.recommendations.isNotEmpty()) {
             item {
-                GemstoneRecommendationsCard(analysis.recommendations)
+                GemstoneRecommendationsCard(analysis.recommendations, language)
             }
         }
     }
@@ -792,7 +803,7 @@ private fun AtmakarakaAnalysisCard(
     ak: KarakaAssignment,
     language: Language
 ) {
-    val planetColor = getPlanetColor(ak.planet)
+    val planetColor = getPlanetColorSS(ak.planet)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -805,7 +816,7 @@ private fun AtmakarakaAnalysisCard(
                 .padding(20.dp)
         ) {
             Text(
-                text = "🌟 Atmakaraka Analysis",
+                text = StringResources.get(StringKeyJaimini.ATMAKARAKA_ANALYSIS_TITLE, language),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
@@ -835,7 +846,7 @@ private fun AtmakarakaAnalysisCard(
 
                 Column {
                     Text(
-                        text = "Your Soul Planet (Atmakaraka)",
+                        text = StringResources.get(StringKeyJaimini.AK_SOUL_PLANET_LABEL, language),
                         style = MaterialTheme.typography.labelMedium,
                         color = AppTheme.TextMuted
                     )
@@ -858,7 +869,7 @@ private fun AtmakarakaAnalysisCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "The Atmakaraka is the planet with the highest degree in your chart. It represents your soul's deepest desires and the lessons you need to learn in this lifetime.",
+                text = StringResources.get(StringKeyJaimini.AK_DESC, language),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
@@ -869,7 +880,8 @@ private fun AtmakarakaAnalysisCard(
 
 @Composable
 private fun GemstoneRecommendationsCard(
-    recommendations: List<String>
+    recommendations: List<String>,
+    language: Language
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -892,7 +904,7 @@ private fun GemstoneRecommendationsCard(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = "Gemstone Recommendations",
+                    text = StringResources.get(StringKeyJaimini.GEMSTONE_REC_TITLE, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
@@ -1009,7 +1021,8 @@ private fun InfoCard(
 }
 
 @Composable
-private fun LoadingState(modifier: Modifier = Modifier) {
+private fun LoadingStateSS(modifier: Modifier = Modifier) {
+    val language = LocalLanguage.current
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -1018,7 +1031,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Calculating Jaimini Karakas...",
+                text = StringResources.get(StringKeyJaimini.LOADING_JAIMINI, language),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )
@@ -1027,7 +1040,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ErrorState(message: String, modifier: Modifier = Modifier) {
+private fun ErrorStateSS(message: String, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -1053,7 +1066,7 @@ private fun ErrorState(message: String, modifier: Modifier = Modifier) {
     }
 }
 
-private fun getPlanetColor(planet: Planet): Color {
+private fun getPlanetColorSS(planet: Planet): Color {
     return when (planet) {
         Planet.SUN -> DarkAppThemeColors.PlanetSun
         Planet.MOON -> DarkAppThemeColors.PlanetMoon

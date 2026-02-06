@@ -26,21 +26,37 @@ object ToolDisplayUtils {
     /**
      * Format tool name for user-friendly display
      *
-     * Converts snake_case tool names to Title Case display names.
-     * Removes common prefixes like "get_" and "calculate_" for cleaner display.
-     *
-     * Examples:
-     * - get_planet_positions -> Planet Positions
-     * - get_current_dasha -> Current Dasha
-     * - calculate_muhurta -> Muhurta
-     * - get_birth_chart_summary -> Birth Chart Summary
-     * - get_yogas -> Yogas
-     * - get_transits -> Transits
+     * Converts snake_case tool names to localized display names using StringKeyAgent.
+     * Fallback to Title Case if key not found.
      *
      * @param toolName The raw tool name from the agent
+     * @param language The current language
      * @return Formatted display name for the UI
      */
-    fun formatToolName(toolName: String): String {
+    fun formatToolName(toolName: String, language: Language = Language.ENGLISH): String {
+        val key = when (toolName) {
+            "get_planet_positions" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_PLANET_POSITIONS
+            "get_house_positions" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_HOUSE_POSITIONS
+            "get_nakshatra_info" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_NAKSHATRA_INFO
+            "get_dasha_info" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_DASHA_INFO
+            "get_current_dasha" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_CURRENT_DASHA
+            "get_yogas" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_YOGAS
+            "get_ashtakavarga" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_ASHTAKAVARGA
+            "get_transits" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_TRANSITS
+            "get_remedies" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_REMEDIES
+            "get_strength_analysis" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_STRENGTH_ANALYSIS
+            "get_divisional_chart" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_DIVISIONAL_CHART
+            "calculate_muhurta" -> com.astro.storm.core.common.StringKeyAgent.TOOL_CALCULATE_MUHURTA
+            "get_bhrigu_bindu" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_BHRIGU_BINDU
+            "get_argala" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_ARGALA
+            "get_prashna_analysis" -> com.astro.storm.core.common.StringKeyAgent.TOOL_GET_PRASHNA_ANALYSIS
+            else -> null
+        }
+
+        if (key != null) {
+            return StringResources.get(key, language)
+        }
+
         return toolName
             .removePrefix("get_")
             .removePrefix("calculate_")

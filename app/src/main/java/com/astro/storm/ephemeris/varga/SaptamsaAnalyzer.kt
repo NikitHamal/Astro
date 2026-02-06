@@ -46,15 +46,15 @@ object SaptamsaAnalyzer {
      * Planetary significance for progeny
      */
     private val PROGENY_KARAKAS = mapOf(
-        Planet.JUPITER to "Putrakaraka (Primary significator of children)",
-        Planet.MOON to "Nourishment and emotional connection with children",
-        Planet.VENUS to "Fertility and creative expression",
-        Planet.MERCURY to "Education and communication with children",
-        Planet.SUN to "Father, authority over children",
-        Planet.MARS to "Courage and protection of children",
-        Planet.SATURN to "Discipline and karmic children",
-        Planet.RAHU to "Unconventional or adopted children",
-        Planet.KETU to "Spiritual children, past-life connections"
+        Planet.JUPITER to StringKeySaptamsa.KARAKA_JUPITER,
+        Planet.MOON to StringKeySaptamsa.KARAKA_MOON,
+        Planet.VENUS to StringKeySaptamsa.KARAKA_VENUS,
+        Planet.MERCURY to StringKeySaptamsa.KARAKA_MERCURY,
+        Planet.SUN to StringKeySaptamsa.KARAKA_SUN,
+        Planet.MARS to StringKeySaptamsa.KARAKA_MARS,
+        Planet.SATURN to StringKeySaptamsa.KARAKA_SATURN,
+        Planet.RAHU to StringKeySaptamsa.KARAKA_RAHU,
+        Planet.KETU to StringKeySaptamsa.KARAKA_KETU
     )
 
     /**
@@ -67,7 +67,7 @@ object SaptamsaAnalyzer {
         val beneficInfluence: Int,
         val maleficInfluence: Int,
         val estimatedRange: IntRange,
-        val modifyingFactors: List<String>
+        val modifyingFactors: List<com.astro.storm.core.common.StringKeyInterface>
     )
 
     /**
@@ -78,25 +78,29 @@ object SaptamsaAnalyzer {
         val indicatingPlanet: Planet,
         val gender: ChildGender,
         val genderConfidence: Double,
-        val characteristics: List<String>,
+        val characteristics: List<com.astro.storm.core.common.StringKeyInterface>,
         val relationshipQuality: RelationshipQuality,
-        val healthIndications: List<String>,
-        val careerIndications: List<String>,
+        val healthIndications: List<com.astro.storm.core.common.StringKeyInterface>,
+        val careerIndications: List<com.astro.storm.core.common.StringKeyInterface>,
         val timingIndicators: List<String>
     )
 
-    enum class ChildGender(val displayName: String) {
-        MALE("Male"),
-        FEMALE("Female"),
-        UNCERTAIN("Uncertain")
+    enum class ChildGender(val key: com.astro.storm.core.common.StringKeySaptamsa) {
+        MALE(com.astro.storm.core.common.StringKeySaptamsa.GENDER_MALE),
+        FEMALE(com.astro.storm.core.common.StringKeySaptamsa.GENDER_FEMALE),
+        UNCERTAIN(com.astro.storm.core.common.StringKeySaptamsa.GENDER_UNCERTAIN);
+
+        val displayName: String get() = key.en
     }
 
-    enum class RelationshipQuality(val displayName: String, val score: Int) {
-        EXCELLENT("Excellent", 90),
-        GOOD("Good", 75),
-        MODERATE("Moderate", 60),
-        CHALLENGING("Challenging", 40),
-        DIFFICULT("Difficult", 25)
+    enum class RelationshipQuality(val key: com.astro.storm.core.common.StringKeySaptamsa, val score: Int) {
+        EXCELLENT(com.astro.storm.core.common.StringKeySaptamsa.QUAL_EXCELLENT, 90),
+        GOOD(com.astro.storm.core.common.StringKeySaptamsa.QUAL_GOOD, 75),
+        MODERATE(com.astro.storm.core.common.StringKeySaptamsa.QUAL_MODERATE, 60),
+        CHALLENGING(com.astro.storm.core.common.StringKeySaptamsa.QUAL_CHALLENGING, 40),
+        DIFFICULT(com.astro.storm.core.common.StringKeySaptamsa.QUAL_DIFFICULT, 25);
+
+        val displayName: String get() = key.en
     }
 
     /**
@@ -108,18 +112,20 @@ object SaptamsaAnalyzer {
         val jupiterScore: Double,
         val moonScore: Double,
         val fertilityStatus: FertilityStatus,
-        val supportingFactors: List<String>,
-        val challengingFactors: List<String>,
+        val supportingFactors: List<com.astro.storm.core.common.StringKeyInterface>,
+        val challengingFactors: List<com.astro.storm.core.common.StringKeyInterface>,
         val timingForConception: List<ConceptionTiming>,
-        val remedies: List<String>
+        val remedies: List<com.astro.storm.core.common.StringKeyInterface>
     )
 
-    enum class FertilityStatus(val displayName: String) {
-        HIGHLY_FAVORABLE("Highly Favorable"),
-        FAVORABLE("Favorable"),
-        MODERATE("Moderate"),
-        CHALLENGING("Challenging"),
-        NEEDS_ATTENTION("Needs Special Attention")
+    enum class FertilityStatus(val key: com.astro.storm.core.common.StringKeySaptamsa) {
+        HIGHLY_FAVORABLE(com.astro.storm.core.common.StringKeySaptamsa.STATUS_HIGHLY_FAVORABLE),
+        FAVORABLE(com.astro.storm.core.common.StringKeySaptamsa.STATUS_FAVORABLE),
+        MODERATE(com.astro.storm.core.common.StringKeySaptamsa.STATUS_MODERATE),
+        CHALLENGING(com.astro.storm.core.common.StringKeySaptamsa.STATUS_CHALLENGING),
+        NEEDS_ATTENTION(com.astro.storm.core.common.StringKeySaptamsa.STATUS_NEEDS_ATTENTION);
+
+        val displayName: String get() = key.en
     }
 
     data class ConceptionTiming(
@@ -139,7 +145,7 @@ object SaptamsaAnalyzer {
         val lagnaLordDignity: VedicAstrologyUtils.PlanetaryDignity?,
         val planetsInLagna: List<PlanetPosition>,
         val interpretation: String,
-        val approachToChildren: String
+        val approachToChildren: com.astro.storm.core.common.StringKeyInterface
     )
 
     /**
@@ -169,7 +175,7 @@ object SaptamsaAnalyzer {
         val childIndications: List<ChildIndication>,
         val fertilityAnalysis: FertilityAnalysis,
         val santhanaYogas: List<SanthanaYoga>,
-        val challengingYogas: List<String>,
+        val challengingYogas: List<com.astro.storm.core.common.StringKeyInterface>,
         val overallScore: Double,
         val keyInsights: List<String>,
         val recommendations: List<String>,
@@ -199,7 +205,10 @@ object SaptamsaAnalyzer {
         val involvedPlanets: List<Planet>,
         val type: YogaType,
         val effect: String,
-        val strength: Double
+        val strength: Double,
+        val nameKey: com.astro.storm.core.common.StringKeySaptamsa,
+        val sanskritKey: com.astro.storm.core.common.StringKeySaptamsa,
+        val effectKey: com.astro.storm.core.common.StringKeySaptamsa
     )
 
     enum class YogaType {
@@ -212,7 +221,7 @@ object SaptamsaAnalyzer {
      * @param chart The birth chart (Rasi/D1)
      * @return Complete SaptamsaAnalysis
      */
-    fun analyzeSaptamsa(chart: VedicChart): SaptamsaAnalysis {
+    fun analyzeSaptamsa(chart: VedicChart, language: com.astro.storm.core.common.Language = com.astro.storm.core.common.Language.ENGLISH): SaptamsaAnalysis {
         // Get D7 chart
         val divisionalCharts = DivisionalChartCalculator.calculateAllDivisionalCharts(chart)
         val d7Chart = divisionalCharts.find { it.chartType == DivisionalChartType.D7_SAPTAMSA }
@@ -222,13 +231,13 @@ object SaptamsaAnalyzer {
         val ascSign = ZodiacSign.fromLongitude(ascendant)
 
         // D7 Lagna analysis
-        val d7LagnaAnalysis = analyzeD7Lagna(d7Chart, chart)
+        val d7LagnaAnalysis = analyzeD7Lagna(d7Chart, chart, language)
 
         // Fifth house analysis
-        val fifthHouseAnalysis = analyzeFifthHouse(d7Chart, chart)
+        val fifthHouseAnalysis = analyzeFifthHouse(d7Chart, chart, language)
 
         // Jupiter analysis
-        val jupiterAnalysis = analyzeJupiter(d7Chart, chart)
+        val jupiterAnalysis = analyzeJupiter(d7Chart, chart, language)
 
         // Child count estimation
         val childCountEstimate = estimateChildCount(d7Chart, chart, fifthHouseAnalysis, jupiterAnalysis)
@@ -252,10 +261,10 @@ object SaptamsaAnalyzer {
         // Generate insights and recommendations
         val keyInsights = generateInsights(
             d7LagnaAnalysis, fifthHouseAnalysis, jupiterAnalysis,
-            childCountEstimate, santhanaYogas
+            childCountEstimate, santhanaYogas, language
         )
         val recommendations = generateRecommendations(
-            fertilityAnalysis, challengingYogas, jupiterAnalysis
+            fertilityAnalysis, challengingYogas, jupiterAnalysis, language
         )
 
         return SaptamsaAnalysis(
@@ -278,9 +287,9 @@ object SaptamsaAnalyzer {
     /**
      * Analyze D7 Lagna
      */
-    private fun analyzeD7Lagna(d7Chart: DivisionalChartData?, rasiChart: VedicChart): D7LagnaAnalysis {
+    private fun analyzeD7Lagna(d7Chart: DivisionalChartData?, rasiChart: VedicChart, language: com.astro.storm.core.common.Language): D7LagnaAnalysis {
         if (d7Chart == null) {
-            return createDefaultD7LagnaAnalysis(rasiChart)
+            return createDefaultD7LagnaAnalysis(rasiChart, language)
         }
 
         val lagnaSign = ZodiacSign.fromLongitude(d7Chart.ascendantLongitude)
@@ -289,8 +298,8 @@ object SaptamsaAnalyzer {
         val lagnaLordDignity = lagnaLordPos?.let { VedicAstrologyUtils.getDignity(it) }
         val planetsInLagna = d7Chart.planetPositions.filter { it.house == 1 }
 
-        val interpretation = buildD7LagnaInterpretation(lagnaSign, lagnaLordPos, planetsInLagna)
-        val approach = getApproachToChildren(lagnaSign, planetsInLagna)
+        val interpretation = buildD7LagnaInterpretation(lagnaSign, lagnaLordPos, planetsInLagna, language)
+        val approach = getApproachToChildrenKey(lagnaSign)
 
         return D7LagnaAnalysis(
             lagnaSign = lagnaSign,
@@ -306,7 +315,7 @@ object SaptamsaAnalyzer {
     /**
      * Analyze Fifth House in D7
      */
-    private fun analyzeFifthHouse(d7Chart: DivisionalChartData?, rasiChart: VedicChart): FifthHouseAnalysis {
+    private fun analyzeFifthHouse(d7Chart: DivisionalChartData?, rasiChart: VedicChart, language: com.astro.storm.core.common.Language): FifthHouseAnalysis {
         val positions = d7Chart?.planetPositions ?: rasiChart.planetPositions
         val ascendant = d7Chart?.ascendantLongitude ?: rasiChart.ascendant
         val lagnaSign = ZodiacSign.fromLongitude(ascendant)
@@ -326,7 +335,7 @@ object SaptamsaAnalyzer {
         val childIndications = determineChildIndications(planetsInFifth, fifthLordPos, positions, lagnaSign)
 
         val interpretation = buildFifthHouseInterpretation(
-            fifthSign, fifthLordPos, planetsInFifth, aspectsOnFifth
+            fifthSign, fifthLordPos, planetsInFifth, aspectsOnFifth, language
         )
 
         return FifthHouseAnalysis(
@@ -344,13 +353,13 @@ object SaptamsaAnalyzer {
     /**
      * Analyze Jupiter (Putrakaraka)
      */
-    private fun analyzeJupiter(d7Chart: DivisionalChartData?, rasiChart: VedicChart): JupiterAnalysis {
+    private fun analyzeJupiter(d7Chart: DivisionalChartData?, rasiChart: VedicChart, language: com.astro.storm.core.common.Language): JupiterAnalysis {
         val positions = d7Chart?.planetPositions ?: rasiChart.planetPositions
         val jupiterPos = positions.find { it.planet == Planet.JUPITER }
         val sunPos = positions.find { it.planet == Planet.SUN }
 
         if (jupiterPos == null) {
-            return createDefaultJupiterAnalysis()
+            return createDefaultJupiterAnalysis(language)
         }
 
         val dignity = VedicAstrologyUtils.getDignity(jupiterPos)
@@ -366,7 +375,7 @@ object SaptamsaAnalyzer {
 
         val strength = calculateJupiterStrength(jupiterPos, dignity, isRetrograde, isCombust, aspectingPlanets)
 
-        val interpretation = buildJupiterInterpretation(jupiterPos, dignity, isRetrograde, isCombust, strength)
+        val interpretation = buildJupiterInterpretation(jupiterPos, dignity, isRetrograde, isCombust, strength, language)
 
         return JupiterAnalysis(
             position = jupiterPos,
@@ -442,10 +451,10 @@ object SaptamsaAnalyzer {
         minChildren = minChildren.coerceAtLeast(0)
         maxChildren = maxChildren.coerceIn(minChildren, 5)
 
-        val modifyingFactors = mutableListOf<String>()
-        if (jupiterStrength > 70) modifyingFactors.add("Strong Jupiter increases progeny potential")
-        if (benefics >= 2) modifyingFactors.add("Benefic influence on 5th house is favorable")
-        if (malefics >= 2) modifyingFactors.add("Malefic influence may reduce or delay children")
+        val modifyingFactors = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
+        if (jupiterStrength > 70) modifyingFactors.add(StringKeySaptamsa.FACTOR_STRONG_JUPITER)
+        if (benefics >= 2) modifyingFactors.add(StringKeySaptamsa.FACTOR_BENEFIC_5TH)
+        if (malefics >= 2) modifyingFactors.add(StringKeySaptamsa.FACTOR_MALEFIC_5TH)
 
         return ChildCountFactors(
             fifthHousePlanets = planetsInFifth,
@@ -528,8 +537,8 @@ object SaptamsaAnalyzer {
         positions: List<PlanetPosition>,
         jupiterAnalysis: JupiterAnalysis
     ): FertilityAnalysis {
-        val supportingFactors = mutableListOf<String>()
-        val challengingFactors = mutableListOf<String>()
+        val supportingFactors = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
+        val challengingFactors = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
         
         // Initialize component scores
         var fifthHouseScore = 50.0
@@ -540,10 +549,10 @@ object SaptamsaAnalyzer {
         // Jupiter strength logic
         if (jupiterAnalysis.strength > 70) {
             score += 15
-            supportingFactors.add("Strong Jupiter supports fertility")
+            supportingFactors.add(StringKeySaptamsa.FERTILITY_JUP_STRONG)
         } else if (jupiterAnalysis.strength < 40) {
             score -= 15
-            challengingFactors.add("Weak Jupiter may affect fertility")
+            challengingFactors.add(StringKeySaptamsa.FERTILITY_JUP_WEAK)
         }
 
         // 5th house condition
@@ -554,12 +563,12 @@ object SaptamsaAnalyzer {
         if (beneficsInFifth >= 1) {
             score += 10
             fifthHouseScore += 20 // Boost specific score
-            supportingFactors.add("Benefic planets in 5th house support conception")
+            supportingFactors.add(StringKeySaptamsa.FERTILITY_BENEFIC_5TH)
         }
         if (maleficsInFifth >= 2) {
             score -= 15
             fifthHouseScore -= 20
-            challengingFactors.add("Multiple malefics in 5th may delay children")
+            challengingFactors.add(StringKeySaptamsa.FERTILITY_MALEFIC_5TH)
         }
 
         // Moon's condition (important for conception)
@@ -573,12 +582,12 @@ object SaptamsaAnalyzer {
             ) {
                 score += 10
                 moonScore += 25
-                supportingFactors.add("Strong Moon supports reproductive health")
+                supportingFactors.add(StringKeySaptamsa.FERTILITY_MOON_STRONG)
             }
             if (moonDignity == VedicAstrologyUtils.PlanetaryDignity.DEBILITATED) {
                 score -= 10
                 moonScore -= 25
-                challengingFactors.add("Debilitated Moon may need attention")
+                challengingFactors.add(StringKeySaptamsa.FERTILITY_MOON_WEAK)
             }
         }
 
@@ -587,11 +596,11 @@ object SaptamsaAnalyzer {
         if (venusPos != null) {
             if (venusPos.house in listOf(5, 7, 1, 9)) {
                 score += 8
-                supportingFactors.add("Venus in favorable house supports fertility")
+                supportingFactors.add(StringKeySaptamsa.FERTILITY_VENUS_FAV)
             }
             if (venusPos.isRetrograde) {
                 score -= 5
-                challengingFactors.add("Retrograde Venus may indicate timing issues")
+                challengingFactors.add(StringKeySaptamsa.FERTILITY_VENUS_RETRO)
             }
         }
 
@@ -637,7 +646,10 @@ object SaptamsaAnalyzer {
                     involvedPlanets = listOf(Planet.JUPITER),
                     type = YogaType.FAVORABLE,
                     effect = "Jupiter in Kendra/Trikona blesses with children",
-                    strength = 80.0
+                    strength = 80.0,
+                    nameKey = StringKeySaptamsa.YOGA_GURU_NAME,
+                    sanskritKey = StringKeySaptamsa.YOGA_GURU_SANSKRIT,
+                    effectKey = StringKeySaptamsa.YOGA_GURU_EFFECT
                 )
             )
         }
@@ -657,7 +669,10 @@ object SaptamsaAnalyzer {
                         involvedPlanets = listOf(fifthLord),
                         type = YogaType.FAVORABLE,
                         effect = "Fifth lord in strength ensures progeny happiness",
-                        strength = 75.0
+                        strength = 75.0,
+                        nameKey = StringKeySaptamsa.YOGA_5TH_LORD_NAME,
+                        sanskritKey = StringKeySaptamsa.YOGA_5TH_LORD_SANSKRIT,
+                        effectKey = StringKeySaptamsa.YOGA_5TH_LORD_EFFECT
                     )
                 )
             }
@@ -674,7 +689,10 @@ object SaptamsaAnalyzer {
                         involvedPlanets = listOf(Planet.JUPITER, Planet.MOON),
                         type = YogaType.FAVORABLE,
                         effect = "Jupiter-Moon relationship blesses with intelligent children",
-                        strength = 85.0
+                        strength = 85.0,
+                        nameKey = StringKeySaptamsa.YOGA_GAJA_KESARI_NAME,
+                        sanskritKey = StringKeySaptamsa.YOGA_GAJA_KESARI_SANSKRIT,
+                        effectKey = StringKeySaptamsa.YOGA_GAJA_KESARI_EFFECT
                     )
                 )
             }
@@ -691,7 +709,10 @@ object SaptamsaAnalyzer {
                         involvedPlanets = listOf(Planet.JUPITER, Planet.VENUS),
                         type = YogaType.FAVORABLE,
                         effect = "Artistic and prosperous children",
-                        strength = 70.0
+                        strength = 70.0,
+                        nameKey = StringKeySaptamsa.YOGA_VEN_JUP_NAME,
+                        sanskritKey = StringKeySaptamsa.YOGA_VEN_JUP_SANSKRIT,
+                        effectKey = StringKeySaptamsa.YOGA_VEN_JUP_EFFECT
                     )
                 )
             }
@@ -703,8 +724,8 @@ object SaptamsaAnalyzer {
     /**
      * Identify challenging yogas for progeny
      */
-    private fun identifyChallengingYogas(positions: List<PlanetPosition>, ascSign: ZodiacSign): List<String> {
-        val challenges = mutableListOf<String>()
+    private fun identifyChallengingYogas(positions: List<PlanetPosition>, ascSign: ZodiacSign): List<com.astro.storm.core.common.StringKeyInterface> {
+        val challenges = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
 
         val jupiterPos = positions.find { it.planet == Planet.JUPITER }
         val fifthPlanets = positions.filter { it.house == 5 }
@@ -717,18 +738,18 @@ object SaptamsaAnalyzer {
                         VedicAstrologyUtils.aspectsHouse(pos.planet, pos.house, 5)
             }
             if (!saturnHasBeneficAspect) {
-                challenges.add("Saturn in 5th without benefic aspect may delay children")
+                challenges.add(StringKeySaptamsa.CHALLENGE_SATURN_5TH)
             }
         }
 
         // Rahu in 5th
         if (fifthPlanets.any { it.planet == Planet.RAHU }) {
-            challenges.add("Rahu in 5th may indicate unconventional paths to parenthood")
+            challenges.add(StringKeySaptamsa.CHALLENGE_RAHU_5TH)
         }
 
         // Ketu in 5th
         if (fifthPlanets.any { it.planet == Planet.KETU }) {
-            challenges.add("Ketu in 5th may indicate past-life karma related to children")
+            challenges.add(StringKeySaptamsa.CHALLENGE_KETU_5TH)
         }
 
         // Jupiter combust
@@ -737,7 +758,7 @@ object SaptamsaAnalyzer {
                 Planet.JUPITER, jupiterPos.longitude, sunPos.longitude, jupiterPos.isRetrograde
             )
             if (isCombust) {
-                challenges.add("Combust Jupiter weakens progeny significations")
+                challenges.add(StringKeySaptamsa.CHALLENGE_JUP_COMBUST)
             }
         }
 
@@ -745,7 +766,7 @@ object SaptamsaAnalyzer {
         val fifthLord = ZodiacSign.entries[(ascSign.ordinal + 4) % 12].ruler
         val fifthLordPos = positions.find { it.planet == fifthLord }
         if (fifthLordPos != null && fifthLordPos.house in VedicAstrologyUtils.DUSTHANA_HOUSES) {
-            challenges.add("Fifth lord in dusthana (6th/8th/12th) may create obstacles")
+            challenges.add(StringKeySaptamsa.CHALLENGE_5TH_LORD_DUSTHANA)
         }
 
         return challenges
@@ -791,54 +812,54 @@ object SaptamsaAnalyzer {
         return strength.coerceIn(0.0, 100.0)
     }
 
-    private fun getChildCharacteristics(planet: Planet, pos: PlanetPosition?): List<String> {
-        val characteristics = mutableListOf<String>()
+    private fun getChildCharacteristicKeys(planet: Planet): List<com.astro.storm.core.common.StringKeyInterface> {
+        val characteristics = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
 
         when (planet) {
             Planet.SUN -> {
-                characteristics.add("Confident and authoritative")
-                characteristics.add("Natural leadership qualities")
-                characteristics.add("Strong willpower")
+                characteristics.add(StringKeySaptamsa.TRAIT_CONFIDENT)
+                characteristics.add(StringKeySaptamsa.TRAIT_LEADERSHIP)
+                characteristics.add(StringKeySaptamsa.TRAIT_WILLPOWER)
             }
             Planet.MOON -> {
-                characteristics.add("Emotionally sensitive")
-                characteristics.add("Nurturing nature")
-                characteristics.add("Intuitive and caring")
+                characteristics.add(StringKeySaptamsa.TRAIT_SENSITIVE)
+                characteristics.add(StringKeySaptamsa.TRAIT_NURTURING)
+                characteristics.add(StringKeySaptamsa.TRAIT_INTUITIVE)
             }
             Planet.MARS -> {
-                characteristics.add("Energetic and active")
-                characteristics.add("Competitive spirit")
-                characteristics.add("Physically strong")
+                characteristics.add(StringKeySaptamsa.TRAIT_ENERGETIC)
+                characteristics.add(StringKeySaptamsa.TRAIT_COMPETITIVE)
+                characteristics.add(StringKeySaptamsa.TRAIT_STRONG)
             }
             Planet.MERCURY -> {
-                characteristics.add("Intelligent and communicative")
-                characteristics.add("Good at studies")
-                characteristics.add("Quick learner")
+                characteristics.add(StringKeySaptamsa.TRAIT_INTELLIGENT)
+                characteristics.add(StringKeySaptamsa.TRAIT_STUDIES)
+                characteristics.add(StringKeySaptamsa.TRAIT_LEARNER)
             }
             Planet.JUPITER -> {
-                characteristics.add("Wise and learned")
-                characteristics.add("Righteous nature")
-                characteristics.add("Optimistic outlook")
+                characteristics.add(StringKeySaptamsa.TRAIT_WISE)
+                characteristics.add(StringKeySaptamsa.TRAIT_RIGHTEOUS)
+                characteristics.add(StringKeySaptamsa.TRAIT_OPTIMISTIC)
             }
             Planet.VENUS -> {
-                characteristics.add("Artistic and creative")
-                characteristics.add("Charming personality")
-                characteristics.add("Appreciation for beauty")
+                characteristics.add(StringKeySaptamsa.TRAIT_ARTISTIC)
+                characteristics.add(StringKeySaptamsa.TRAIT_CHARMING)
+                characteristics.add(StringKeySaptamsa.TRAIT_BEAUTY)
             }
             Planet.SATURN -> {
-                characteristics.add("Disciplined and hardworking")
-                characteristics.add("Mature for their age")
-                characteristics.add("Responsible nature")
+                characteristics.add(StringKeySaptamsa.TRAIT_DISCIPLINED)
+                characteristics.add(StringKeySaptamsa.TRAIT_MATURE)
+                characteristics.add(StringKeySaptamsa.TRAIT_RESPONSIBLE)
             }
             Planet.RAHU -> {
-                characteristics.add("Unconventional thinking")
-                characteristics.add("Ambitious nature")
-                characteristics.add("Innovative mind")
+                characteristics.add(StringKeySaptamsa.TRAIT_UNCONVENTIONAL)
+                characteristics.add(StringKeySaptamsa.TRAIT_AMBITIOUS)
+                characteristics.add(StringKeySaptamsa.TRAIT_INNOVATIVE)
             }
             Planet.KETU -> {
-                characteristics.add("Spiritually inclined")
-                characteristics.add("Detached nature")
-                characteristics.add("Intuitive abilities")
+                characteristics.add(StringKeySaptamsa.TRAIT_SPIRITUAL)
+                characteristics.add(StringKeySaptamsa.TRAIT_DETACHED)
+                characteristics.add(StringKeySaptamsa.TRAIT_INTUITIVE_ABILITIES)
             }
             else -> {}
         }
@@ -862,45 +883,45 @@ object SaptamsaAnalyzer {
         }
     }
 
-    private fun getHealthIndicatorsForChild(planet: Planet, pos: PlanetPosition?): List<String> {
-        val indicators = mutableListOf<String>()
+    private fun getHealthIndicatorKeysForChild(planet: Planet): List<com.astro.storm.core.common.StringKeyInterface> {
+        val indicators = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
 
         when (planet) {
-            Planet.SUN -> indicators.add("Watch for heart and bone health")
-            Planet.MOON -> indicators.add("Emotional well-being important")
-            Planet.MARS -> indicators.add("Prone to injuries and inflammations")
-            Planet.MERCURY -> indicators.add("Nervous system health")
-            Planet.JUPITER -> indicators.add("Generally good health, watch weight")
-            Planet.VENUS -> indicators.add("Reproductive health, diabetes")
-            Planet.SATURN -> indicators.add("Chronic conditions, bones")
-            Planet.RAHU -> indicators.add("Unusual health conditions")
-            Planet.KETU -> indicators.add("Mysterious ailments")
+            Planet.SUN -> indicators.add(StringKeySaptamsa.HEALTH_HEART_BONE)
+            Planet.MOON -> indicators.add(StringKeySaptamsa.HEALTH_EMOTIONAL)
+            Planet.MARS -> indicators.add(StringKeySaptamsa.HEALTH_INJURIES)
+            Planet.MERCURY -> indicators.add(StringKeySaptamsa.HEALTH_NERVOUS)
+            Planet.JUPITER -> indicators.add(StringKeySaptamsa.HEALTH_GENERAL)
+            Planet.VENUS -> indicators.add(StringKeySaptamsa.HEALTH_REPRODUCTIVE)
+            Planet.SATURN -> indicators.add(StringKeySaptamsa.HEALTH_CHRONIC)
+            Planet.RAHU -> indicators.add(StringKeySaptamsa.HEALTH_UNUSUAL)
+            Planet.KETU -> indicators.add(StringKeySaptamsa.HEALTH_MYSTERIOUS)
             else -> {}
         }
 
         return indicators
     }
 
-    private fun getCareerIndicatorsForChild(planet: Planet, pos: PlanetPosition?): List<String> {
-        val indicators = mutableListOf<String>()
+    private fun getCareerIndicatorKeysForChild(planet: Planet): List<com.astro.storm.core.common.StringKeyInterface> {
+        val indicators = mutableListOf<com.astro.storm.core.common.StringKeyInterface>()
 
         when (planet) {
-            Planet.SUN -> indicators.addAll(listOf("Government", "Medicine", "Leadership"))
-            Planet.MOON -> indicators.addAll(listOf("Hospitality", "Psychology", "Public service"))
-            Planet.MARS -> indicators.addAll(listOf("Military", "Engineering", "Sports"))
-            Planet.MERCURY -> indicators.addAll(listOf("Business", "Writing", "Teaching"))
-            Planet.JUPITER -> indicators.addAll(listOf("Education", "Law", "Finance"))
-            Planet.VENUS -> indicators.addAll(listOf("Arts", "Entertainment", "Fashion"))
-            Planet.SATURN -> indicators.addAll(listOf("Engineering", "Mining", "Labor"))
-            Planet.RAHU -> indicators.addAll(listOf("Technology", "Foreign", "Politics"))
-            Planet.KETU -> indicators.addAll(listOf("Research", "Spiritual", "Healing"))
+            Planet.SUN -> indicators.add(StringKeySaptamsa.CAREER_GOVT)
+            Planet.MOON -> indicators.add(StringKeySaptamsa.CAREER_HOSPITALITY)
+            Planet.MARS -> indicators.add(StringKeySaptamsa.CAREER_MILITARY)
+            Planet.MERCURY -> indicators.add(StringKeySaptamsa.CAREER_BUSINESS)
+            Planet.JUPITER -> indicators.add(StringKeySaptamsa.CAREER_EDUCATION)
+            Planet.VENUS -> indicators.add(StringKeySaptamsa.CAREER_ARTS)
+            Planet.SATURN -> indicators.add(StringKeySaptamsa.CAREER_MINING)
+            Planet.RAHU -> indicators.add(StringKeySaptamsa.CAREER_TECH)
+            Planet.KETU -> indicators.add(StringKeySaptamsa.CAREER_RESEARCH)
             else -> {}
         }
 
         return indicators
     }
 
-    private fun getTimingIndicators(planet: Planet, orderNumber: Int): List<String> {
+    private fun getTimingIndicatorStrings(planet: Planet, orderNumber: Int): List<String> {
         return listOf(
             "Birth likely during ${planet.displayName} Dasha or Antardasha",
             "Age ${if (orderNumber == 1) "25-30" else if (orderNumber == 2) "28-35" else "30-40"} typically favorable",
@@ -935,29 +956,33 @@ object SaptamsaAnalyzer {
     private fun buildD7LagnaInterpretation(
         lagnaSign: ZodiacSign,
         lagnaLordPos: PlanetPosition?,
-        planetsInLagna: List<PlanetPosition>
+        planetsInLagna: List<PlanetPosition>,
+        language: com.astro.storm.core.common.Language
     ): String {
         return buildString {
-            append("D7 Lagna in ${lagnaSign.displayName} indicates ")
+            append(StringResources.get(StringKeySaptamsa.SUMMARY_LAGNA, language, lagnaSign.getLocalizedName(language)))
+            append(" ")
             append(
                 when (lagnaSign) {
-                    ZodiacSign.ARIES -> "active and independent approach to parenting."
-                    ZodiacSign.TAURUS -> "stable and nurturing approach to children."
-                    ZodiacSign.GEMINI -> "communicative and educationally focused parenting."
-                    ZodiacSign.CANCER -> "deeply nurturing and protective nature."
-                    ZodiacSign.LEO -> "proud and generous with children."
-                    ZodiacSign.VIRGO -> "practical and health-conscious approach."
-                    ZodiacSign.LIBRA -> "balanced and fair parenting style."
-                    ZodiacSign.SCORPIO -> "intense and transformative relationships."
-                    ZodiacSign.SAGITTARIUS -> "philosophical and freedom-giving nature."
-                    ZodiacSign.CAPRICORN -> "disciplined and responsible approach."
-                    ZodiacSign.AQUARIUS -> "unconventional and progressive parenting."
-                    ZodiacSign.PISCES -> "compassionate and spiritual connection."
+                    ZodiacSign.ARIES -> StringResources.get(StringKeySaptamsa.APPROACH_ENTHUSIASTIC, language)
+                    ZodiacSign.TAURUS -> StringResources.get(StringKeySaptamsa.APPROACH_STABLE, language)
+                    ZodiacSign.GEMINI -> StringResources.get(StringKeySaptamsa.APPROACH_COMMUNICATIVE, language)
+                    ZodiacSign.CANCER -> StringResources.get(StringKeySaptamsa.APPROACH_NURTURING, language)
+                    ZodiacSign.LEO -> StringResources.get(StringKeySaptamsa.APPROACH_PROUD, language)
+                    ZodiacSign.VIRGO -> StringResources.get(StringKeySaptamsa.APPROACH_PRACTICAL, language)
+                    ZodiacSign.LIBRA -> StringResources.get(StringKeySaptamsa.APPROACH_BALANCED, language)
+                    ZodiacSign.SCORPIO -> StringResources.get(StringKeySaptamsa.APPROACH_INTENSE, language)
+                    ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeySaptamsa.APPROACH_PHILOSOPHICAL, language)
+                    ZodiacSign.CAPRICORN -> StringResources.get(StringKeySaptamsa.APPROACH_DISCIPLINED, language)
+                    ZodiacSign.AQUARIUS -> StringResources.get(StringKeySaptamsa.APPROACH_UNCONVENTIONAL, language)
+                    ZodiacSign.PISCES -> StringResources.get(StringKeySaptamsa.APPROACH_COMPASSIONATE, language)
                 }
             )
 
             if (planetsInLagna.isNotEmpty()) {
-                append(" ${planetsInLagna.joinToString { it.planet.displayName }} in D7 Lagna colors the parenting style.")
+                append(" ")
+                append(planetsInLagna.joinToString { it.planet.getLocalizedName(language) })
+                append(" in D7 Lagna colors the parenting style.")
             }
         }
     }
@@ -966,21 +991,22 @@ object SaptamsaAnalyzer {
         fifthSign: ZodiacSign,
         fifthLordPos: PlanetPosition?,
         planetsInFifth: List<PlanetPosition>,
-        aspectsOnFifth: List<Planet>
+        aspectsOnFifth: List<Planet>,
+        language: com.astro.storm.core.common.Language
     ): String {
         return buildString {
-            append("Fifth house in ${fifthSign.displayName}. ")
+            append(StringResources.get(StringKeySaptamsa.INTERP_FIFTH_HOUSE, language, fifthSign.getLocalizedName(language)))
 
             if (planetsInFifth.isNotEmpty()) {
-                append("Occupied by ${planetsInFifth.joinToString { it.planet.displayName }}. ")
+                append(StringResources.get(StringKeySaptamsa.INTERP_OCCUPIED_BY, language, planetsInFifth.joinToString { it.planet.getLocalizedName(language) }))
             }
 
             if (aspectsOnFifth.isNotEmpty()) {
-                append("Aspected by ${aspectsOnFifth.joinToString { it.displayName }}. ")
+                append(StringResources.get(StringKeySaptamsa.INTERP_ASPECTED_BY, language, aspectsOnFifth.joinToString { it.getLocalizedName(language) }))
             }
 
             fifthLordPos?.let { pos ->
-                append("Fifth lord ${pos.planet.displayName} placed in house ${pos.house}.")
+                append(StringResources.get(StringKeySaptamsa.INTERP_LORD_PLACED, language, pos.planet.getLocalizedName(language), pos.house))
             }
         }
     }
@@ -990,44 +1016,43 @@ object SaptamsaAnalyzer {
         dignity: VedicAstrologyUtils.PlanetaryDignity,
         isRetrograde: Boolean,
         isCombust: Boolean,
-        strength: Double
+        strength: Double,
+        language: com.astro.storm.core.common.Language
     ): String {
         return buildString {
-            append("Jupiter (Putrakaraka) is in ${pos.sign.displayName} in house ${pos.house}. ")
-            append("Dignity: ${dignity.name.lowercase().replace("_", " ")}. ")
+            append(StringResources.get(StringKeySaptamsa.INTERP_JUPITER_POS, language, pos.sign.getLocalizedName(language), pos.house))
+            append(StringResources.get(StringKeySaptamsa.INTERP_DIGNITY, language, dignity.name.lowercase().replace("_", " ")))
 
-            if (isRetrograde) append("Retrograde status may indicate delayed but karmic children. ")
-            if (isCombust) append("Combustion weakens Jupiter's significations. ")
+            if (isRetrograde) append(StringResources.get(StringKeySaptamsa.INTERP_RETROGRADE, language))
+            if (isCombust) append(StringResources.get(StringKeySaptamsa.INTERP_COMBUST, language))
 
-            append("Overall strength: ${String.format("%.1f", strength)}%. ")
+            append(StringResources.get(StringKeySaptamsa.INTERP_STRENGTH, language, String.format("%.1f", strength)))
 
             append(
                 when {
-                    strength >= 75 -> "Excellent for progeny matters."
-                    strength >= 50 -> "Moderate support for children."
-                    else -> "May need attention for progeny happiness."
+                    strength >= 75 -> StringResources.get(StringKeySaptamsa.INTERP_PROGENY_EXCELLENT, language)
+                    strength >= 50 -> StringResources.get(StringKeySaptamsa.INTERP_PROGENY_MODERATE, language)
+                    else -> StringResources.get(StringKeySaptamsa.INTERP_PROGENY_ATTENTION, language)
                 }
             )
         }
     }
 
-    private fun getApproachToChildren(lagnaSign: ZodiacSign, planetsInLagna: List<PlanetPosition>): String {
-        val baseApproach = when (lagnaSign) {
-            ZodiacSign.ARIES -> "Enthusiastic and encouraging"
-            ZodiacSign.TAURUS -> "Patient and providing material security"
-            ZodiacSign.GEMINI -> "Intellectual and communicative"
-            ZodiacSign.CANCER -> "Emotionally nurturing and protective"
-            ZodiacSign.LEO -> "Proud and generous with recognition"
-            ZodiacSign.VIRGO -> "Practical and health-focused"
-            ZodiacSign.LIBRA -> "Balanced and aesthetically oriented"
-            ZodiacSign.SCORPIO -> "Deeply bonded and transformative"
-            ZodiacSign.SAGITTARIUS -> "Philosophical and freedom-giving"
-            ZodiacSign.CAPRICORN -> "Disciplined and responsibility-focused"
-            ZodiacSign.AQUARIUS -> "Unconventional and socially conscious"
-            ZodiacSign.PISCES -> "Compassionate and spiritually nurturing"
+    private fun getApproachToChildrenKey(lagnaSign: ZodiacSign): StringKeySaptamsa {
+        return when (lagnaSign) {
+            ZodiacSign.ARIES -> StringKeySaptamsa.PARENT_STYLE_ENTHUSIASTIC
+            ZodiacSign.TAURUS -> StringKeySaptamsa.PARENT_STYLE_PATIENT
+            ZodiacSign.GEMINI -> StringKeySaptamsa.PARENT_STYLE_INTELLECTUAL
+            ZodiacSign.CANCER -> StringKeySaptamsa.PARENT_STYLE_PROTECTIVE
+            ZodiacSign.LEO -> StringKeySaptamsa.PARENT_STYLE_CHARISMATIC
+            ZodiacSign.VIRGO -> StringKeySaptamsa.PARENT_STYLE_HEALTH_CONSCIOUS
+            ZodiacSign.LIBRA -> StringKeySaptamsa.PARENT_STYLE_BALANCED
+            ZodiacSign.SCORPIO -> StringKeySaptamsa.PARENT_STYLE_BONDED
+            ZodiacSign.SAGITTARIUS -> StringKeySaptamsa.PARENT_STYLE_FREE
+            ZodiacSign.CAPRICORN -> StringKeySaptamsa.PARENT_STYLE_RESPONSIBLE
+            ZodiacSign.AQUARIUS -> StringKeySaptamsa.PARENT_STYLE_SOCIAL
+            ZodiacSign.PISCES -> StringKeySaptamsa.PARENT_STYLE_SPIRITUAL
         }
-
-        return baseApproach
     }
 
     // ============================================
@@ -1072,22 +1097,23 @@ object SaptamsaAnalyzer {
         fifthHouse: FifthHouseAnalysis,
         jupiter: JupiterAnalysis,
         childCount: ChildCountFactors,
-        yogas: List<SanthanaYoga>
+        yogas: List<SanthanaYoga>,
+        language: com.astro.storm.core.common.Language
     ): List<String> {
         val insights = mutableListOf<String>()
 
-        insights.add("D7 Lagna in ${d7Lagna.lagnaSign.displayName} - ${d7Lagna.approachToChildren}")
+        insights.add(StringResources.get(StringKeySaptamsa.INSIGHT_LAGNA, language, d7Lagna.lagnaSign.getLocalizedName(language), StringResources.get(d7Lagna.approachToChildren, language)))
 
         if (jupiter.strength >= 70) {
-            insights.add("Strong Jupiter is excellent for progeny matters")
+            insights.add(StringResources.get(StringKeySaptamsa.INSIGHT_STRONG_JUPITER, language))
         }
 
         if (childCount.estimatedRange.first > 0) {
-            insights.add("Estimated ${childCount.estimatedRange.first}-${childCount.estimatedRange.last} children based on chart factors")
+            insights.add(StringResources.get(StringKeySaptamsa.INSIGHT_CHILD_ESTIMATE, language, childCount.estimatedRange.first, childCount.estimatedRange.last))
         }
 
         if (yogas.isNotEmpty()) {
-            insights.add("${yogas.first().name} present - ${yogas.first().effect}")
+            insights.add(StringResources.get(StringKeySaptamsa.INSIGHT_YOGA_PRESENT, language, StringResources.get(yogas.first().nameKey, language), StringResources.get(yogas.first().effectKey, language)))
         }
 
         return insights.take(5)
@@ -1095,23 +1121,24 @@ object SaptamsaAnalyzer {
 
     private fun generateRecommendations(
         fertility: FertilityAnalysis,
-        challenges: List<String>,
-        jupiter: JupiterAnalysis
+        challenges: List<com.astro.storm.core.common.StringKeyInterface>,
+        jupiter: JupiterAnalysis,
+        language: com.astro.storm.core.common.Language
     ): List<String> {
         val recommendations = mutableListOf<String>()
 
         if (fertility.fertilityStatus == FertilityStatus.CHALLENGING ||
             fertility.fertilityStatus == FertilityStatus.NEEDS_ATTENTION
         ) {
-            recommendations.addAll(fertility.remedies.take(3))
+            recommendations.addAll(fertility.remedies.take(3).map { StringResources.get(it, language) })
         }
 
         if (jupiter.isCombust) {
-            recommendations.add("Strengthen Jupiter through Guru mantra jaap")
+            recommendations.add(StringResources.get(StringKeySaptamsa.REC_STRENGTHEN_JUPITER, language))
         }
 
         if (challenges.isNotEmpty()) {
-            recommendations.add("Address challenges through appropriate remedies")
+            recommendations.add(StringResources.get(StringKeySaptamsa.REC_ADDRESS_CHALLENGES, language))
         }
 
         return recommendations.take(5)
@@ -1121,7 +1148,7 @@ object SaptamsaAnalyzer {
     // DEFAULT/EMPTY CREATORS
     // ============================================
 
-    private fun createDefaultD7LagnaAnalysis(chart: VedicChart): D7LagnaAnalysis {
+    private fun createDefaultD7LagnaAnalysis(chart: VedicChart, language: com.astro.storm.core.common.Language): D7LagnaAnalysis {
         val lagnaSign = VedicAstrologyUtils.getAscendantSign(chart)
         return D7LagnaAnalysis(
             lagnaSign = lagnaSign,
@@ -1129,12 +1156,12 @@ object SaptamsaAnalyzer {
             lagnaLordPosition = null,
             lagnaLordDignity = null,
             planetsInLagna = emptyList(),
-            interpretation = "D7 chart data unavailable, using Rasi chart reference",
-            approachToChildren = getApproachToChildren(lagnaSign, emptyList())
+            interpretation = StringResources.get(StringKeySaptamsa.ERROR_DATA_UNAVAILABLE, language),
+            approachToChildren = getApproachToChildrenKey(lagnaSign)
         )
     }
 
-    private fun createDefaultJupiterAnalysis(): JupiterAnalysis {
+    private fun createDefaultJupiterAnalysis(language: com.astro.storm.core.common.Language): JupiterAnalysis {
         return JupiterAnalysis(
             position = null,
             dignity = null,
@@ -1143,7 +1170,7 @@ object SaptamsaAnalyzer {
             isCombust = false,
             aspects = emptyList(),
             strength = 50.0,
-            interpretation = "Jupiter position unavailable"
+            interpretation = StringResources.get(StringKeySaptamsa.ERROR_JUPITER_UNAVAILABLE, language)
         )
     }
 
@@ -1155,35 +1182,35 @@ object SaptamsaAnalyzer {
     /**
      * Get summary text for display
      */
-    fun getSummary(analysis: SaptamsaAnalysis): String {
+    fun getSummary(analysis: SaptamsaAnalysis, language: com.astro.storm.core.common.Language = com.astro.storm.core.common.Language.ENGLISH): String {
         return buildString {
             appendLine("═══════════════════════════════════════")
-            appendLine("SAPTAMSA (D7) - PROGENY ANALYSIS")
+            appendLine(StringResources.get(StringKeySaptamsa.SUMMARY_HEADER, language))
             appendLine("═══════════════════════════════════════")
             appendLine()
-            appendLine("D7 Lagna: ${analysis.d7LagnaAnalysis.lagnaSign.displayName}")
-            appendLine("Fifth House: ${analysis.fifthHouseAnalysis.fifthSign.displayName}")
+            appendLine(StringResources.get(StringKeySaptamsa.SUMMARY_LAGNA, language, analysis.d7LagnaAnalysis.lagnaSign.getLocalizedName(language)))
+            appendLine(StringResources.get(StringKeySaptamsa.SUMMARY_FIFTH_HOUSE, language, analysis.fifthHouseAnalysis.fifthSign.getLocalizedName(language)))
             appendLine()
-            appendLine("Jupiter Strength: ${String.format("%.1f", analysis.jupiterAnalysis.strength)}%")
-            appendLine("Fertility Status: ${analysis.fertilityAnalysis.fertilityStatus.displayName}")
+            appendLine(StringResources.get(StringKeySaptamsa.SUMMARY_JUPITER_STRENGTH, language, String.format("%.1f", analysis.jupiterAnalysis.strength)))
+            appendLine(StringResources.get(StringKeySaptamsa.SUMMARY_FERTILITY_STATUS, language, StringResources.get(analysis.fertilityAnalysis.fertilityStatus.key, language)))
             appendLine()
-            appendLine("Estimated Children: ${analysis.childCountEstimate.estimatedRange}")
+            appendLine(StringResources.get(StringKeySaptamsa.SUMMARY_ESTIMATED_CHILDREN, language, analysis.childCountEstimate.estimatedRange.toString()))
             appendLine()
-            appendLine("Overall Score: ${String.format("%.1f", analysis.overallScore)}%")
+            appendLine(StringResources.get(StringKeySaptamsa.SUMMARY_OVERALL_SCORE, language, String.format("%.1f", analysis.overallScore)))
             appendLine()
 
             if (analysis.santhanaYogas.isNotEmpty()) {
-                appendLine("Favorable Yogas:")
+                appendLine(StringResources.get(StringKeySaptamsa.SUMMARY_FAVORABLE_YOGAS, language))
                 analysis.santhanaYogas.take(2).forEach { yoga ->
-                    appendLine("  ✓ ${yoga.name}")
+                    appendLine("  ✓ ${StringResources.get(yoga.nameKey, language)}")
                 }
             }
 
             if (analysis.challengingYogas.isNotEmpty()) {
                 appendLine()
-                appendLine("Challenges:")
+                appendLine(StringResources.get(StringKeySaptamsa.SUMMARY_CHALLENGES, language))
                 analysis.challengingYogas.take(2).forEach { challenge ->
-                    appendLine("  ⚠ $challenge")
+                    appendLine("  ⚠ ${StringResources.get(challenge, language)}")
                 }
             }
         }

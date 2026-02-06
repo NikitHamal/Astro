@@ -16,6 +16,8 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyAgent
+import com.astro.storm.core.common.StringResources
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -374,7 +376,7 @@ class StormyAgent @Inject constructor(
                 val assistantContent = iterationContentBuilder.toString().cleanToolCallBlocks()
                 fullMessages.add(ChatMessage(
                     role = MessageRole.ASSISTANT,
-                    content = assistantContent.ifEmpty { "I'll use some tools to help answer your question." },
+                    content = assistantContent.ifEmpty { StringResources.get(StringKeyAgent.STATUS_THINKING, language) },
                     toolCalls = pendingToolCalls.map { call ->
                         ToolCall(
                             id = call.id,

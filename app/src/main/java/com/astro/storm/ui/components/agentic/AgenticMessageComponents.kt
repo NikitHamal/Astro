@@ -240,7 +240,7 @@ private fun AgentIdentityHeader(
                 is AiStatus.Complete -> null
                 is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION)
                 is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_REASONING_VEDIC)
-                is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
+                is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName, currentLanguage()))
                 is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_GATHERING_DATA)
                 is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING)
             }
@@ -741,8 +741,8 @@ private fun StatusIndicatorInline(aiStatus: AiStatus) {
         is AiStatus.Idle, is AiStatus.Complete -> return
         is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION) to Icons.Outlined.Psychology
         is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_APPLYING_VEDIC) to Icons.Outlined.Lightbulb
-        is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName)) to Icons.Outlined.Build
-        is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_USING_TOOLS, aiStatus.tools.take(3).joinToString(stringResource(StringKeyUIExtra.COMMA_SPACE)) { ToolDisplayUtils.formatToolName(it) }) to Icons.Outlined.Build
+        is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName, currentLanguage())) to Icons.Outlined.Build
+        is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_USING_TOOLS, aiStatus.tools.take(3).joinToString(stringResource(StringKeyUIExtra.COMMA_SPACE)) { ToolDisplayUtils.formatToolName(it, currentLanguage()) }) to Icons.Outlined.Build
         is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING) to Icons.Outlined.Edit
     }
 
@@ -812,7 +812,7 @@ fun TypingDots() {
 @Composable
 private fun ToolsUsedBadge(tools: List<String>) {
     val colors = AppTheme.current
-    val toolsText = tools.take(3).joinToString(", ") { ToolDisplayUtils.formatToolName(it) }
+    val toolsText = tools.take(3).joinToString(", ") { ToolDisplayUtils.formatToolName(it, currentLanguage()) }
     val moreText = if (tools.size > 3) stringResource(StringKeyDosha.TOOLS_MORE_COUNT, tools.size - 3) else ""
 
     Surface(

@@ -292,7 +292,8 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             val model = _selectedModel.value ?: providerRegistry.getDefaultModel()
             if (model == null) {
-                _uiState.value = ChatUiState.Error("No AI model available. Please configure models in settings.")
+                val language = com.astro.storm.data.localization.currentLanguage()
+                _uiState.value = ChatUiState.Error(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAgent.CHAT_NO_MODEL, language))
                 return@launch
             }
 
@@ -466,15 +467,17 @@ class ChatViewModel @Inject constructor(
                 val conversationId = _currentConversationId.value ?: run {
                     val context = pendingConversationContext
                     if (context == null) {
-                        _uiState.value = ChatUiState.Error("No conversation context")
+                        val language = com.astro.storm.data.localization.currentLanguage()
+                        _uiState.value = ChatUiState.Error(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAgent.CHAT_CONTEXT_ERROR, language))
                         _isStreaming.value = false
                         _aiStatus.value = AiStatus.Idle
                         return@launch
                     }
 
                     // Create conversation in database now that we have a message
+                    val language = com.astro.storm.data.localization.currentLanguage()
                     val newConversationId = chatRepository.createConversation(
-                        title = "New Chat",
+                        title = com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAgent.NEW_CHAT, language),
                         modelId = model.id,
                         providerId = model.providerId,
                         profileId = context.selectedChartId
@@ -2065,7 +2068,8 @@ class ChatViewModel @Inject constructor(
         // Mark current message as incomplete (no sectionsJson for cancelled messages)
         viewModelScope.launch {
             currentMessageId?.let { msgId ->
-                val content = _streamingContent.value.ifEmpty { "Response cancelled" }
+                val language = com.astro.storm.data.localization.currentLanguage()
+        val content = _streamingContent.value.ifEmpty { com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAgent.RESPONSE_CANCELLED, language) }
                 chatRepository.finalizeAssistantMessage(
                     messageId = msgId,
                     content = content,

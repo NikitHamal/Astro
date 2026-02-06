@@ -62,7 +62,7 @@ object PanchakaAnalyzer {
      * Panchaka Dosha Type with severity and remedies
      */
     enum class PanchakaType(
-        val displayName: String,
+        val key: com.astro.storm.core.common.StringKeyMuhurta,
         val sanskritName: String,
         val severity: Int,  // 1-5, 5 being most severe
         val element: String,
@@ -71,7 +71,7 @@ object PanchakaAnalyzer {
         val remedialMeasures: List<String>
     ) {
         MRITYU_PANCHAKA(
-            "Death Panchaka",
+            com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_MRITYU,
             "Mrityu Panchaka",
             5,
             "Death/Mortality",
@@ -92,7 +92,7 @@ object PanchakaAnalyzer {
             )
         ),
         AGNI_PANCHAKA(
-            "Fire Panchaka",
+            com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_AGNI,
             "Agni Panchaka",
             4,
             "Fire",
@@ -113,7 +113,7 @@ object PanchakaAnalyzer {
             )
         ),
         RAJA_PANCHAKA(
-            "King/Authority Panchaka",
+            com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_RAJA,
             "Raja Panchaka",
             3,
             "Authority",
@@ -134,7 +134,7 @@ object PanchakaAnalyzer {
             )
         ),
         CHORA_PANCHAKA(
-            "Thief Panchaka",
+            com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_CHORA,
             "Chora Panchaka",
             4,
             "Theft/Loss",
@@ -155,7 +155,7 @@ object PanchakaAnalyzer {
             )
         ),
         ROGA_PANCHAKA(
-            "Disease Panchaka",
+            com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_ROGA,
             "Roga Panchaka",
             3,
             "Disease/Health",
@@ -176,7 +176,7 @@ object PanchakaAnalyzer {
             )
         ),
         NO_PANCHAKA(
-            "No Panchaka",
+            com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_NONE,
             "Shunya Panchaka",
             0,
             "None",
@@ -185,28 +185,32 @@ object PanchakaAnalyzer {
             emptyList()
         );
 
+        val displayName: String get() = key.en
+
         /**
          * Get severity description
          */
-        fun getSeverityDescription(): String = when (severity) {
-            5 -> "Extremely Severe - Avoid all important activities"
-            4 -> "Severe - Exercise extreme caution"
-            3 -> "Moderate - Proceed with caution"
-            2 -> "Mild - Minor obstacles possible"
-            1 -> "Very Mild - Usually negligible"
-            else -> "None - No dosha present"
+        fun getSeverityDescription(language: Language = Language.ENGLISH): String = when (severity) {
+            5 -> com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.SEVERITY_EXTREME, language)
+            4 -> com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.SEVERITY_SEVERE, language)
+            3 -> com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.SEVERITY_MODERATE, language)
+            2 -> com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.SEVERITY_MILD, language)
+            1 -> com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.SEVERITY_VERY_MILD, language)
+            else -> com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.SEVERITY_NONE, language)
         }
     }
 
     /**
      * Direction associated with Panchaka (for directional avoidance)
      */
-    enum class PanchakaDirection(val displayName: String, val degrees: IntRange) {
-        EAST("East", 67..113),
-        SOUTH("South", 157..203),
-        WEST("West", 247..293),
-        NORTH("North", 337..360),
-        NORTH_CONT("North", 0..23);
+    enum class PanchakaDirection(val key: com.astro.storm.core.common.StringKeyMuhurta, val degrees: IntRange) {
+        EAST(com.astro.storm.core.common.StringKeyMuhurta.DIR_EAST, 67..113),
+        SOUTH(com.astro.storm.core.common.StringKeyMuhurta.DIR_SOUTH, 157..203),
+        WEST(com.astro.storm.core.common.StringKeyMuhurta.DIR_WEST, 247..293),
+        NORTH(com.astro.storm.core.common.StringKeyMuhurta.DIR_NORTH, 337..360),
+        NORTH_CONT(com.astro.storm.core.common.StringKeyMuhurta.DIR_NORTH, 0..23);
+
+        val displayName: String get() = key.en
 
         companion object {
             fun fromNakshatra(nakshatra: Nakshatra): PanchakaDirection {
@@ -273,12 +277,14 @@ object PanchakaAnalyzer {
     /**
      * Overall risk level for the day
      */
-    enum class PanchakaRiskLevel(val displayName: String, val score: Int) {
-        SAFE("Safe - No Panchaka", 0),
-        LOW("Low Risk - Minor Panchaka", 1),
-        MODERATE("Moderate Risk", 2),
-        HIGH("High Risk", 3),
-        SEVERE("Severe - Full Panchaka", 4);
+    enum class PanchakaRiskLevel(val key: com.astro.storm.core.common.StringKeyMuhurta, val score: Int) {
+        SAFE(com.astro.storm.core.common.StringKeyMuhurta.SAFE, 0),
+        LOW(com.astro.storm.core.common.StringKeyMuhurta.RISK_LOW, 1),
+        MODERATE(com.astro.storm.core.common.StringKeyMuhurta.RISK_MODERATE, 2),
+        HIGH(com.astro.storm.core.common.StringKeyMuhurta.RISK_HIGH, 3),
+        SEVERE(com.astro.storm.core.common.StringKeyMuhurta.RISK_SEVERE, 4);
+
+        val displayName: String get() = key.en
 
         companion object {
             fun fromSeverity(severity: Int): PanchakaRiskLevel = when {
@@ -584,13 +590,15 @@ object PanchakaAnalyzer {
         panchakaType: PanchakaType,
         nakshatra: Nakshatra,
         weekday: Vara,
-        tithiNumber: Int
+        tithiNumber: Int,
+        language: Language
     ): String {
         return buildString {
-            append("${panchakaType.displayName} (${panchakaType.sanskritName}) is active. ")
+            append(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_ACTIVE, language, com.astro.storm.core.common.StringResources.get(panchakaType.key, language)))
+            append(" (${panchakaType.sanskritName}) is active. ")
             append("Moon is in ${nakshatra.displayName} on ${weekday.getLocalizedName(Language.ENGLISH)}, Tithi $tithiNumber. ")
             append(panchakaType.description)
-            append(" Severity: ${panchakaType.getSeverityDescription()}.")
+            append(" ${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_SEVERITY, language, panchakaType.getSeverityDescription(language))}.")
         }
     }
 
@@ -600,22 +608,23 @@ object PanchakaAnalyzer {
         pada: Int,
         weekday: Vara,
         tithiNumber: Int,
-        direction: PanchakaDirection
+        direction: PanchakaDirection,
+        language: Language
     ): String {
         return buildString {
             appendLine("═══════════════════════════════════════")
-            appendLine("PANCHAKA DOSHA ANALYSIS")
+            appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_TITLE, language).uppercase() + " DOSHA ANALYSIS")
             appendLine("═══════════════════════════════════════")
             appendLine()
-            appendLine("Type: ${panchakaType.displayName} (${panchakaType.sanskritName})")
-            appendLine("Severity: ${panchakaType.severity}/5 - ${panchakaType.getSeverityDescription()}")
+            appendLine("Type: ${com.astro.storm.core.common.StringResources.get(panchakaType.key, language)} (${panchakaType.sanskritName})")
+            appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_SEVERITY, language, panchakaType.severity.toString())}/5 - ${panchakaType.getSeverityDescription(language)}")
             appendLine()
             appendLine("Contributing Factors:")
             appendLine("───────────────────────────────────────")
             appendLine("• Nakshatra: ${nakshatra.displayName} (Pada $pada)")
             appendLine("• Weekday: ${weekday.getLocalizedName(Language.ENGLISH)}")
             appendLine("• Tithi: $tithiNumber")
-            appendLine("• Direction to Avoid: ${direction.displayName}")
+            appendLine("• Direction to Avoid: ${com.astro.storm.core.common.StringResources.get(direction.key, language)}")
             appendLine()
             appendLine("Element: ${panchakaType.element}")
             appendLine()
@@ -639,10 +648,10 @@ object PanchakaAnalyzer {
         }
     }
 
-    private fun buildNoopanchakaAnalysis(nakshatra: Nakshatra, weekday: Vara): String {
+    private fun buildNoopanchakaAnalysis(nakshatra: Nakshatra, weekday: Vara, language: Language): String {
         return buildString {
             appendLine("═══════════════════════════════════════")
-            appendLine("PANCHAKA STATUS: CLEAR")
+            appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_TITLE, language).uppercase() + " STATUS: CLEAR")
             appendLine("═══════════════════════════════════════")
             appendLine()
             appendLine("Moon Nakshatra: ${nakshatra.displayName}")
@@ -651,8 +660,7 @@ object PanchakaAnalyzer {
             appendLine("The current nakshatra (${nakshatra.displayName}) is not part of")
             appendLine("the Panchaka group. No Panchaka dosha restrictions apply.")
             appendLine()
-            appendLine("The time is generally favorable for activities,")
-            appendLine("subject to other muhurta considerations.")
+            appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_FAVORABLE, language))
         }
     }
 
@@ -661,10 +669,10 @@ object PanchakaAnalyzer {
      */
     fun getSummaryText(analysis: PanchakaAnalysis, language: Language = Language.ENGLISH): String {
         return if (analysis.isPanchakaActive) {
-            "${analysis.panchakaType.displayName} active (Severity: ${analysis.severity}/5). " +
+            "${com.astro.storm.core.common.StringResources.get(analysis.panchakaType.key, language)} active (Severity: ${analysis.severity}/5). " +
                     "Avoid: ${analysis.avoidActivities.take(2).joinToString(", ")}..."
         } else {
-            "No Panchaka dosha. Time is favorable."
+            com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyMuhurta.PANCHAKA_FAVORABLE, language)
         }
     }
 

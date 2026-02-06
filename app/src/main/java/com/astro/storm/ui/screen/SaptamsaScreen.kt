@@ -54,6 +54,9 @@ import kotlinx.coroutines.withContext
  * children indications, fertility analysis, and Santhana Yogas.
  */
 @OptIn(ExperimentalMaterial3Api::class)
+import com.astro.storm.core.common.StringKeySaptamsa
+import com.astro.storm.core.common.StringResources
+...
 @Composable
 fun SaptamsaScreen(
     chart: VedicChart?,
@@ -65,10 +68,10 @@ fun SaptamsaScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     // Calculate Saptamsa Analysis
-    LaunchedEffect(chart) {
+    LaunchedEffect(chart, language) {
         if (chart == null) {
             isLoading = false
-            errorMessage = "No chart available"
+            errorMessage = StringResources.get(StringKeySaptamsa.NO_CHART_AVAILABLE, language)
             return@LaunchedEffect
         }
 
@@ -77,9 +80,9 @@ fun SaptamsaScreen(
 
         withContext(Dispatchers.Default) {
             try {
-                analysis = SaptamsaAnalyzer.analyzeSaptamsa(chart)
+                analysis = SaptamsaAnalyzer.analyzeSaptamsa(chart, language)
             } catch (e: Exception) {
-                errorMessage = e.message ?: "Error analyzing Saptamsa"
+                errorMessage = e.message ?: StringResources.get(StringKeySaptamsa.ERROR_ANALYZING, language)
             }
         }
         isLoading = false
@@ -91,12 +94,12 @@ fun SaptamsaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Saptamsa (D7)",
+                            text = StringResources.get(StringKeySaptamsa.TITLE, language),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Children & Progeny Analysis",
+                            text = StringResources.get(StringKeySaptamsa.SUBTITLE, language),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -106,7 +109,7 @@ fun SaptamsaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = StringResources.get(StringKeySaptamsa.BTN_BACK, language)
                         )
                     }
                 },
@@ -137,7 +140,12 @@ private fun SaptamsaContent(
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(0) }
-    val tabs = listOf("Overview", "Children", "Fertility", "Yogas")
+    val tabs = listOf(
+        StringResources.get(StringKeySaptamsa.TAB_OVERVIEW, language),
+        StringResources.get(StringKeySaptamsa.TAB_CHILDREN, language),
+        StringResources.get(StringKeySaptamsa.TAB_FERTILITY, language),
+        StringResources.get(StringKeySaptamsa.TAB_YOGAS, language)
+    )
 
     Column(modifier = modifier.fillMaxSize()) {
         // Tabs
@@ -219,7 +227,7 @@ private fun OverviewTabSS(
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = "Interpretation",
+                            text = StringResources.get(StringKeySaptamsa.INTERPRETATION, language),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
@@ -229,8 +237,8 @@ private fun OverviewTabSS(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "The Saptamsa chart reveals ${analysis.childCountEstimate.estimatedRange} potential children. " +
-                                "Fertility status is ${analysis.fertilityAnalysis.fertilityStatus.displayName}.",
+                        text = StringResources.get(StringKeySaptamsa.RANGE, language, analysis.childCountEstimate.estimatedRange.first, analysis.childCountEstimate.estimatedRange.last) + ". " +
+                                StringResources.get(StringKeySaptamsa.SUMMARY_FERTILITY_STATUS, language, StringResources.get(analysis.fertilityAnalysis.fertilityStatus.key, language)),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
@@ -243,7 +251,8 @@ private fun OverviewTabSS(
 
 @Composable
 private fun ChildCountSummaryCard(
-    estimate: ChildCountFactors
+    estimate: ChildCountFactors,
+    language: Language
 ) {
     val displayCount = estimate.estimatedRange.last
     val countColor = when {
@@ -276,7 +285,7 @@ private fun ChildCountSummaryCard(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = "Estimated Children",
+                    text = StringResources.get(StringKeySaptamsa.ESTIMATED_CHILDREN, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
@@ -311,7 +320,7 @@ private fun ChildCountSummaryCard(
                         color = countColor
                     )
                     Text(
-                        text = if (displayCount == 1) "child" else "children",
+                        text = if (displayCount == 1) StringResources.get(StringKeySaptamsa.CHILD, language) else StringResources.get(StringKeySaptamsa.CHILDREN, language),
                         style = MaterialTheme.typography.labelSmall,
                         color = countColor.copy(alpha = 0.8f)
                     )
@@ -322,7 +331,7 @@ private fun ChildCountSummaryCard(
 
             // Range indicator
             Text(
-                text = "Range: ${estimate.estimatedRange.first} - ${estimate.estimatedRange.last}",
+                text = StringResources.get(StringKeySaptamsa.RANGE, language, estimate.estimatedRange.first, estimate.estimatedRange.last),
                 style = MaterialTheme.typography.labelMedium,
                 color = AppTheme.TextMuted
             )
@@ -335,19 +344,14 @@ private fun ChildCountSummaryCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 StrengthIndicator(
-                    label = "Fifth House",
+                    label = StringResources.get(StringKeySaptamsa.FIFTH_HOUSE, language),
                     strength = estimate.fifthLordStrength,
                     color = DarkAppThemeColors.AccentGold
                 )
                 StrengthIndicator(
-                    label = "Jupiter",
+                    label = StringResources.get(StringKeySaptamsa.JUPITER, language),
                     strength = estimate.jupiterStrength,
                     color = DarkAppThemeColors.PlanetJupiter
-                )
-                StrengthIndicator(
-                    label = "Jupiter",
-                    strength = estimate.jupiterStrength,
-                    color = AppTheme.AccentPrimary
                 )
             }
         }
@@ -430,7 +434,7 @@ private fun D7LagnaCard(
 
                 Column {
                     Text(
-                        text = "D7 Lagna (Saptamsa Ascendant)",
+                        text = StringResources.get(StringKeySaptamsa.D7_LAGNA_TITLE, language),
                         style = MaterialTheme.typography.labelMedium,
                         color = AppTheme.TextMuted
                     )
@@ -454,7 +458,7 @@ private fun D7LagnaCard(
             ) {
                 Column {
                     Text(
-                        text = "Lagna Lord",
+                        text = StringResources.get(StringKeySaptamsa.LAGNA_LORD, language),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -468,7 +472,7 @@ private fun D7LagnaCard(
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = "Lord Position",
+                        text = StringResources.get(StringKeySaptamsa.LORD_POSITION, language),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -510,7 +514,7 @@ private fun FifthHouseCard(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = "Fifth House Analysis",
+                    text = StringResources.get(StringKeySaptamsa.FIFTH_HOUSE_ANALYSIS, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
@@ -525,12 +529,12 @@ private fun FifthHouseCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 InfoItem(
-                    label = "Sign",
+                    label = StringResources.get(StringKeySaptamsa.SIGN, language),
                     value = analysis.fifthHouseAnalysis.fifthSign.getLocalizedName(language),
                     color = DarkAppThemeColors.AccentGold
                 )
                 InfoItem(
-                    label = "Lord",
+                    label = StringResources.get(StringKeySaptamsa.LORD, language),
                     value = analysis.fifthHouseAnalysis.fifthLord.getLocalizedName(language),
                     color = getPlanetColorSS(analysis.fifthHouseAnalysis.fifthLord)
                 )
@@ -541,7 +545,7 @@ private fun FifthHouseCard(
             // Planets in Fifth House
             if (analysis.fifthHouseAnalysis.planetsInFifth.isNotEmpty()) {
                 Text(
-                    text = "Planets in Fifth House",
+                    text = StringResources.get(StringKeySaptamsa.PLANETS_IN_FIFTH, language),
                     style = MaterialTheme.typography.labelMedium,
                     color = AppTheme.TextMuted
                 )
@@ -614,15 +618,15 @@ private fun ChildrenTab(
     ) {
         item {
             SectionHeaderSS(
-                title = "Individual Child Indications",
-                subtitle = "Detailed analysis of each child's potential characteristics",
+                title = StringResources.get(StringKeySaptamsa.INDIVIDUAL_CHILD_INDICATIONS, language),
+                subtitle = StringResources.get(StringKeySaptamsa.CHILD_CHARACTERISTICS_DESC, language),
                 icon = Icons.Outlined.ChildCare
             )
         }
 
         if (analysis.childIndications.isEmpty()) {
             item {
-                EmptyStateSS("No specific child indications available")
+                EmptyStateSS(StringResources.get(StringKeySaptamsa.EMPTY_CHILD_INDICATIONS, language))
             }
         } else {
             itemsIndexed(analysis.childIndications) { index, indication ->
@@ -642,9 +646,9 @@ private fun ChildIndicationCard(
     indication: ChildIndication,
     language: Language
 ) {
-    val genderColor = when (indication.gender.displayName) {
-        "Male" -> DarkAppThemeColors.AccentPrimary
-        "Female" -> DarkAppThemeColors.LifeAreaLove
+    val genderColor = when (indication.gender) {
+        SaptamsaAnalyzer.ChildGender.MALE -> DarkAppThemeColors.AccentPrimary
+        SaptamsaAnalyzer.ChildGender.FEMALE -> DarkAppThemeColors.LifeAreaLove
         else -> DarkAppThemeColors.AccentTeal
     }
 
@@ -685,13 +689,13 @@ private fun ChildIndicationCard(
 
                     Column {
                         Text(
-                            text = "Child #$childNumber",
+                            text = StringResources.get(StringKeySaptamsa.CHILD_NUMBER, language, childNumber),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = indication.gender.displayName,
+                            text = StringResources.get(indication.gender.key, language),
                             style = MaterialTheme.typography.bodySmall,
                             color = genderColor
                         )
@@ -724,7 +728,7 @@ private fun ChildIndicationCard(
             ) {
                 Column {
                     Text(
-                        text = "Significator",
+                        text = StringResources.get(StringKeySaptamsa.SIGNIFICATOR, language),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -738,12 +742,12 @@ private fun ChildIndicationCard(
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = "Relationship",
+                        text = StringResources.get(StringKeySaptamsa.RELATIONSHIP, language),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = indication.relationshipQuality.displayName,
+                        text = StringResources.get(indication.relationshipQuality.key, language),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -755,7 +759,7 @@ private fun ChildIndicationCard(
 
             // Description
             Text(
-                text = indication.characteristics.firstOrNull() ?: "No specific description",
+                text = indication.characteristics.firstOrNull()?.let { StringResources.get(it, language) } ?: StringResources.get(StringKeySaptamsa.ERROR_NO_SPECIFIC_DESC, language),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
@@ -765,7 +769,7 @@ private fun ChildIndicationCard(
             if (indication.characteristics.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Characteristics:",
+                    text = StringResources.get(StringKeySaptamsa.CHARACTERISTICS_LABEL, language),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextMuted
@@ -780,7 +784,7 @@ private fun ChildIndicationCard(
                             color = AppTheme.ChipBackground
                         ) {
                             Text(
-                                text = trait,
+                                text = StringResources.get(trait, language),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextSecondary,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -793,8 +797,8 @@ private fun ChildIndicationCard(
             if (indication.timingIndicators.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 SectionHeaderSS(
-                    title = "Timing Indicators",
-                    subtitle = "Periods related to this child's arrival",
+                    title = StringResources.get(StringKeySaptamsa.TIMING_INDICATORS, language),
+                    subtitle = StringResources.get(StringKeySaptamsa.TIMING_SUBTITLE, language),
                     icon = Icons.Outlined.CalendarMonth
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -811,14 +815,14 @@ private fun ChildIndicationCard(
             if (indication.careerIndications.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 SectionHeaderSS(
-                    title = "Career Indications",
-                    subtitle = "Potential career paths or talents",
+                    title = StringResources.get(StringKeySaptamsa.CAREER_INDICATIONS, language),
+                    subtitle = StringResources.get(StringKeySaptamsa.CAREER_SUBTITLE, language),
                     icon = Icons.Outlined.Work
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 indication.careerIndications.forEach { career ->
                     Text(
-                        text = "• $career",
+                        text = "• ${StringResources.get(career, language)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
@@ -829,14 +833,14 @@ private fun ChildIndicationCard(
             if (indication.healthIndications.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 SectionHeaderSS(
-                    title = "Health Indications",
-                    subtitle = "Potential health considerations",
+                    title = StringResources.get(StringKeySaptamsa.HEALTH_INDICATIONS, language),
+                    subtitle = StringResources.get(StringKeySaptamsa.HEALTH_SUBTITLE, language),
                     icon = Icons.Outlined.FavoriteBorder
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 indication.healthIndications.forEach { health ->
                     Text(
-                        text = "• $health",
+                        text = "• ${StringResources.get(health, language)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
@@ -859,22 +863,22 @@ private fun FertilityTab(
     ) {
         item {
             SectionHeaderSS(
-                title = "Fertility Analysis",
-                subtitle = "Assessment of conception and childbirth prospects",
+                title = StringResources.get(StringKeySaptamsa.FERTILITY_ANALYSIS, language),
+                subtitle = StringResources.get(StringKeySaptamsa.FERTILITY_SUBTITLE, language),
                 icon = Icons.Outlined.FavoriteBorder
             )
         }
 
         // Fertility Overview Card
         item {
-            FertilityOverviewCard(analysis.fertilityAnalysis)
+            FertilityOverviewCard(analysis.fertilityAnalysis, language)
         }
 
         // Favorable Periods
         if (analysis.fertilityAnalysis.timingForConception.isNotEmpty()) {
             item {
                 Text(
-                    text = "Favorable Periods",
+                    text = StringResources.get(StringKeySaptamsa.FAVORABLE_PERIODS, language),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
@@ -889,7 +893,7 @@ private fun FertilityTab(
         // Recommendations
         if (analysis.fertilityAnalysis.remedies.isNotEmpty()) {
             item {
-                RecommendationsCard(analysis.fertilityAnalysis.remedies)
+                RecommendationsCard(analysis.fertilityAnalysis.remedies.map { StringResources.get(it, language) }, language)
             }
         }
     }
@@ -897,7 +901,8 @@ private fun FertilityTab(
 
 @Composable
 private fun FertilityOverviewCard(
-    fertility: FertilityAnalysis
+    fertility: FertilityAnalysis,
+    language: Language
 ) {
     val overallColor = when {
         fertility.overallScore >= 0.7 -> DarkAppThemeColors.SuccessColor
@@ -924,13 +929,13 @@ private fun FertilityOverviewCard(
             ) {
                 Column {
                     Text(
-                        text = "Overall Fertility Score",
+                        text = StringResources.get(StringKeySaptamsa.OVERALL_FERTILITY_SCORE, language),
                         style = MaterialTheme.typography.labelMedium,
                         color = AppTheme.TextMuted
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = fertility.fertilityStatus.displayName,
+                        text = StringResources.get(fertility.fertilityStatus.key, language),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = overallColor
@@ -964,17 +969,17 @@ private fun FertilityOverviewCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 FertilityFactorItem(
-                    label = "5th House",
+                    label = StringResources.get(StringKeySaptamsa.FIFTH_HOUSE, language),
                     score = fertility.fifthHouseScore,
                     icon = Icons.Outlined.Home
                 )
                 FertilityFactorItem(
-                    label = "Jupiter",
+                    label = StringResources.get(StringKeySaptamsa.JUPITER, language),
                     score = fertility.jupiterScore,
                     icon = Icons.Outlined.Stars
                 )
                 FertilityFactorItem(
-                    label = "Moon",
+                    label = StringResources.get(StringKey.PLANET_MOON, language),
                     score = fertility.moonScore,
                     icon = Icons.Outlined.NightsStay
                 )
@@ -1052,7 +1057,8 @@ private fun FavorablePeriodCard(
 
 @Composable
 private fun RecommendationsCard(
-    recommendations: List<String>
+    recommendations: List<String>,
+    language: Language
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -1075,7 +1081,7 @@ private fun RecommendationsCard(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = "Recommendations",
+                    text = StringResources.get(StringKeySaptamsa.RECOMMENDATIONS, language),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
@@ -1122,19 +1128,19 @@ private fun YogasTabSS(
         // Santhana Yogas (Positive)
         item {
             SectionHeaderSS(
-                title = "Santhana Yogas",
-                subtitle = "Positive combinations for children",
+                title = StringResources.get(StringKeySaptamsa.SANTHANA_YOGAS, language),
+                subtitle = StringResources.get(StringKeySaptamsa.SANTHANA_YOGAS_SUBTITLE, language),
                 icon = Icons.Outlined.Stars
             )
         }
 
         if (analysis.santhanaYogas.isEmpty()) {
             item {
-                EmptyStateSS("No Santhana Yogas detected")
+                EmptyStateSS(StringResources.get(StringKeySaptamsa.EMPTY_SANTHANA_YOGAS, language))
             }
         } else {
             items(analysis.santhanaYogas) { yoga ->
-                SanthanaYogaCard(yoga, isPositive = true)
+                SanthanaYogaCard(yoga, isPositive = true, language = language)
             }
         }
 
@@ -1143,8 +1149,8 @@ private fun YogasTabSS(
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 SectionHeaderSS(
-                    title = "Challenging Yogas",
-                    subtitle = "Factors requiring attention",
+                    title = StringResources.get(StringKeySaptamsa.CHALLENGING_YOGAS, language),
+                    subtitle = StringResources.get(StringKeySaptamsa.CHALLENGING_YOGAS_SUBTITLE, language),
                     icon = Icons.Outlined.Warning
                 )
             }
@@ -1155,7 +1161,7 @@ private fun YogasTabSS(
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
                 ) {
                     Text(
-                        text = challenge,
+                        text = StringResources.get(challenge, language),
                         modifier = Modifier.padding(16.dp),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary
@@ -1169,7 +1175,8 @@ private fun YogasTabSS(
 @Composable
 private fun SanthanaYogaCard(
     yoga: SanthanaYoga,
-    isPositive: Boolean
+    isPositive: Boolean,
+    language: Language
 ) {
     val yogaColor = if (isPositive)
         DarkAppThemeColors.SuccessColor
@@ -1216,13 +1223,13 @@ private fun SanthanaYogaCard(
 
                     Column {
                         Text(
-                            text = yoga.name,
+                            text = StringResources.get(yoga.nameKey, language),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Strength: ${(yoga.strength * 100).toInt()}%",
+                            text = StringResources.get(StringKeySaptamsa.YOGA_STRENGTH, language, (yoga.strength * 100).toInt()),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1234,7 +1241,7 @@ private fun SanthanaYogaCard(
                     color = yogaColor.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = if (isPositive) "Positive" else "Caution",
+                        text = if (isPositive) StringResources.get(StringKeySaptamsa.YOGA_POSITIVE, language) else StringResources.get(StringKeySaptamsa.YOGA_CAUTION, language),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = yogaColor,
@@ -1246,7 +1253,7 @@ private fun SanthanaYogaCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = yoga.effect,
+                text = StringResources.get(yoga.effectKey, language),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
@@ -1330,6 +1337,7 @@ private fun EmptyStateSS(message: String) {
 
 @Composable
 private fun LoadingStateSS(modifier: Modifier = Modifier) {
+    val language = LocalLanguage.current
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -1338,7 +1346,7 @@ private fun LoadingStateSS(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Analyzing Saptamsa (D7)...",
+                text = StringResources.get(StringKeySaptamsa.ANALYZING_SAPTAMSA, language),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )

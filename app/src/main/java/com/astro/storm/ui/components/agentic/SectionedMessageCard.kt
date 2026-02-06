@@ -340,7 +340,7 @@ private fun getStatusText(aiStatus: AiStatus): String? {
         is AiStatus.Complete -> null
         is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION)
         is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_REASONING_VEDIC)
-        is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
+        is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName, com.astro.storm.data.localization.currentLanguage()))
         is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_GATHERING_DATA)
         is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING)
     }
@@ -480,11 +480,12 @@ fun CompletedSectionedMessageCard(
 
             // Tools used
             if (!toolsUsed.isNullOrEmpty()) {
+                val language = com.astro.storm.data.localization.currentLanguage()
                 val toolGroup = AgentSection.ToolGroup(
                     tools = toolsUsed.map { toolName ->
                         ToolExecution(
                             toolName = toolName,
-                            displayName = ToolDisplayUtils.formatToolName(toolName),
+                            displayName = ToolDisplayUtils.formatToolName(toolName, language),
                             status = ToolExecutionStatus.COMPLETED
                         )
                     },
