@@ -16,6 +16,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.templates.TemplateSelector
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -43,7 +44,7 @@ class TransitAnalyzer @Inject constructor(
     @dagger.hilt.android.qualifiers.ApplicationContext private val context: Context,
     private val localizationManager: LocalizationManager,
     private val ephemerisEngine: SwissEphemerisEngine,
-    private val templateSelector: com.astro.storm.data.templates.TemplateSelector
+    private val templateSelector: TemplateSelector
 ) {
 
     private fun getString(key: StringKeyInterface): String = localizationManager.getString(key)
@@ -500,7 +501,7 @@ class TransitAnalyzer @Inject constructor(
                 baseEffect
             }
 
-            val interpretation = generateGocharaInterpretation(planet, houseFromMoon, finalEffect, isVedhaAffected, language, transitPos.sign)
+            val interpretation = generateGocharaInterpretation(planet, houseFromMoon, finalEffect, isVedhaAffected, language)
 
             results.add(
                 GocharaResult(
@@ -781,55 +782,43 @@ class TransitAnalyzer @Inject constructor(
         houseFromMoon: Int,
         effect: TransitEffect,
         isVedhaAffected: Boolean,
-        language: Language,
-        transitSign: ZodiacSign? = null
+        language: Language
     ): String {
-        val template = templateSelector.findBestTemplate(
-            category = "transit",
-            transitPlanet = planet,
-            house = houseFromMoon,
-            sign = transitSign
-        )
-
         val planetName = planet.getLocalizedName(language)
         val isFavorable = effect in listOf(TransitEffect.EXCELLENT, TransitEffect.GOOD)
         
-        val baseInterpretation = if (template != null) {
-            if (language == Language.NEPALI) template.ne else template.en
+        val effectKey = if (isFavorable) {
+            GOCHARA_FAVORABLE_KEYS[planet]?.get(houseFromMoon)
         } else {
-            val effectKey = if (isFavorable) {
-                GOCHARA_FAVORABLE_KEYS[planet]?.get(houseFromMoon)
-            } else {
-                GOCHARA_UNFAVORABLE_KEYS[planet]?.get(houseFromMoon)
-            }
+            GOCHARA_UNFAVORABLE_KEYS[planet]?.get(houseFromMoon)
+        }
 
-            effectKey?.let { getString(it) } ?: run {
-                // Fallback if key missing
-                val houseMattersKey = when (houseFromMoon) {
-                    1 -> StringKeyTransit.GOCHARA_MATTERS_1
-                    2 -> StringKeyTransit.GOCHARA_MATTERS_2
-                    3 -> StringKeyTransit.GOCHARA_MATTERS_3
-                    4 -> StringKeyTransit.GOCHARA_MATTERS_4
-                    5 -> StringKeyTransit.GOCHARA_MATTERS_5
-                    6 -> StringKeyTransit.GOCHARA_MATTERS_6
-                    7 -> StringKeyTransit.GOCHARA_MATTERS_7
-                    8 -> StringKeyTransit.GOCHARA_MATTERS_8
-                    9 -> StringKeyTransit.GOCHARA_MATTERS_9
-                    10 -> StringKeyTransit.GOCHARA_MATTERS_10
-                    11 -> StringKeyTransit.GOCHARA_MATTERS_11
-                    12 -> StringKeyTransit.GOCHARA_MATTERS_12
-                    else -> StringKeyTransit.GOCHARA_MATTERS_GENERAL
-                }
-                val houseMatters = StringResources.get(houseMattersKey, language)
-                val templateKey = when (effect) {
-                    TransitEffect.EXCELLENT -> StringKeyTransit.GOCHARA_EFFECT_EXCELLENT
-                    TransitEffect.GOOD -> StringKeyTransit.GOCHARA_EFFECT_GOOD
-                    TransitEffect.NEUTRAL -> StringKeyTransit.GOCHARA_EFFECT_NEUTRAL
-                    TransitEffect.CHALLENGING -> StringKeyTransit.GOCHARA_EFFECT_CHALLENGING
-                    TransitEffect.DIFFICULT -> StringKeyTransit.GOCHARA_EFFECT_DIFFICULT
-                }
-                StringResources.get(templateKey, language, planetName, houseFromMoon, houseMatters, "")
+        val baseInterpretation = effectKey?.let { getString(it) } ?: run {
+            // Fallback if key missing
+            val houseMattersKey = when (houseFromMoon) {
+                1 -> StringKeyTransit.GOCHARA_MATTERS_1
+                2 -> StringKeyTransit.GOCHARA_MATTERS_2
+                3 -> StringKeyTransit.GOCHARA_MATTERS_3
+                4 -> StringKeyTransit.GOCHARA_MATTERS_4
+                5 -> StringKeyTransit.GOCHARA_MATTERS_5
+                6 -> StringKeyTransit.GOCHARA_MATTERS_6
+                7 -> StringKeyTransit.GOCHARA_MATTERS_7
+                8 -> StringKeyTransit.GOCHARA_MATTERS_8
+                9 -> StringKeyTransit.GOCHARA_MATTERS_9
+                10 -> StringKeyTransit.GOCHARA_MATTERS_10
+                11 -> StringKeyTransit.GOCHARA_MATTERS_11
+                12 -> StringKeyTransit.GOCHARA_MATTERS_12
+                else -> StringKeyTransit.GOCHARA_MATTERS_GENERAL
             }
+            val houseMatters = StringResources.get(houseMattersKey, language)
+            val templateKey = when (effect) {
+                TransitEffect.EXCELLENT -> StringKeyTransit.GOCHARA_EFFECT_EXCELLENT
+                TransitEffect.GOOD -> StringKeyTransit.GOCHARA_EFFECT_GOOD
+                TransitEffect.NEUTRAL -> StringKeyTransit.GOCHARA_EFFECT_NEUTRAL
+                TransitEffect.CHALLENGING -> StringKeyTransit.GOCHARA_EFFECT_CHALLENGING
+                TransitEffect.DIFFICULT -> StringKeyTransit.GOCHARA_EFFECT_DIFFICULT
+            }
+            StringResources.get(templateKey, language, planetName, houseFromMoon, houseMatters, "")
         }
 
         return if (isVedhaAffected) {

@@ -240,7 +240,7 @@ private fun AgentIdentityHeader(
                 is AiStatus.Complete -> null
                 is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION)
                 is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_REASONING_VEDIC)
-                is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName))
+                is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName, currentLanguage()))
                 is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_GATHERING_DATA)
                 is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING)
             }
@@ -737,13 +737,27 @@ fun ContentPanel(
 private fun StatusIndicatorInline(aiStatus: AiStatus) {
     val colors = AppTheme.current
 
-    val (statusText, statusIcon) = when (aiStatus) {
-        is AiStatus.Idle, is AiStatus.Complete -> return
-        is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION) to Icons.Outlined.Psychology
-        is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_APPLYING_VEDIC) to Icons.Outlined.Lightbulb
-        is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName)) to Icons.Outlined.Build
-        is AiStatus.ExecutingTools -> stringResource(StringKeyDosha.STORMY_USING_TOOLS, aiStatus.tools.take(3).joinToString(stringResource(StringKeyUIExtra.COMMA_SPACE)) { ToolDisplayUtils.formatToolName(it) }) to Icons.Outlined.Build
-        is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING) to Icons.Outlined.Edit
+    if (aiStatus is AiStatus.Idle || aiStatus is AiStatus.Complete) return
+
+    val statusText = when (aiStatus) {
+        is AiStatus.Thinking -> stringResource(StringKeyDosha.AI_ANALYZING_QUESTION)
+        is AiStatus.Reasoning -> stringResource(StringKeyDosha.STORMY_APPLYING_VEDIC)
+        is AiStatus.CallingTool -> stringResource(StringKeyDosha.STORMY_USING_TOOL, ToolDisplayUtils.formatToolName(aiStatus.toolName, currentLanguage()))
+        is AiStatus.ExecutingTools -> {
+            val lang = currentLanguage()
+            val toolsList = aiStatus.tools.take(3).joinToString(", ") { ToolDisplayUtils.formatToolName(it, lang) }
+            stringResource(StringKeyDosha.STORMY_USING_TOOLS, toolsList)
+        }
+        is AiStatus.Typing -> stringResource(StringKeyDosha.STORMY_COMPOSING)
+        else -> ""
+    }
+
+    val statusIcon = when (aiStatus) {
+        is AiStatus.Thinking -> Icons.Outlined.Psychology
+        is AiStatus.Reasoning -> Icons.Outlined.Lightbulb
+        is AiStatus.CallingTool, is AiStatus.ExecutingTools -> Icons.Outlined.Build
+        is AiStatus.Typing -> Icons.Outlined.Edit
+        else -> Icons.Outlined.Info
     }
 
     Row(
@@ -812,7 +826,8 @@ fun TypingDots() {
 @Composable
 private fun ToolsUsedBadge(tools: List<String>) {
     val colors = AppTheme.current
-    val toolsText = tools.take(3).joinToString(", ") { ToolDisplayUtils.formatToolName(it) }
+    val lang = currentLanguage()
+    val toolsText = tools.take(3).joinToString(", ") { ToolDisplayUtils.formatToolName(it, lang) }
     val moreText = if (tools.size > 3) stringResource(StringKeyDosha.TOOLS_MORE_COUNT, tools.size - 3) else ""
 
     Surface(

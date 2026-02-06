@@ -27,6 +27,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import com.astro.storm.core.common.StringKeyMuhurta
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.LocalLanguage
 import androidx.compose.foundation.lazy.LazyColumn
@@ -192,15 +194,16 @@ fun MuhurtaScreen(
     val loadMuhurtaData: suspend (LocalDate) -> Unit = remember(calculator, latitude, longitude, timezone) {
         { date ->
             uiState = MuhurtaUiState.Loading
-            try {
-                withContext(Dispatchers.IO) {
-                    val now = LocalDateTime.of(date, LocalTime.now())
-                    val muhurta = calculator.calculateMuhurta(now, latitude, longitude, timezone)
-                    val (dayChoghadiyas, _) = calculator.getDailyChoghadiya(date, latitude, longitude, timezone)
-                    val panchaka = PanchakaAnalyzer.analyzePanchaka(muhurta)
-                    uiState = MuhurtaUiState.Success(muhurta, dayChoghadiyas, panchaka)
-                }
-            } catch (e: CancellationException) {
+                        try {
+                            withContext(Dispatchers.IO) {
+                                val now = LocalDateTime.of(date, LocalTime.now())
+                                val muhurta = calculator.calculateMuhurta(now, latitude, longitude, timezone)
+                                val (dayChoghadiyas, _) = calculator.getDailyChoghadiya(date, latitude, longitude, timezone)
+                                val panchaka = PanchakaAnalyzer.analyzePanchaka(muhurta)
+                                uiState = MuhurtaUiState.Success(muhurta, dayChoghadiyas, panchaka)
+                            }
+                        }
+             catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 uiState = MuhurtaUiState.Error(e.message ?: "Failed to calculate muhurta")
@@ -781,6 +784,7 @@ private fun PanchangaItem(
 
 @Composable
 private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
+    val language = LocalLanguage.current
     val isPanchaka = panchaka.isPanchakaActive
     val severityColor = if (isPanchaka) {
         when (panchaka.severity) {
@@ -809,7 +813,7 @@ private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    "Panchaka",
+                    StringResources.get(StringKeyMuhurta.PANCHAKA_TITLE, language),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -819,7 +823,7 @@ private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                if (isPanchaka) "${panchaka.panchakaType.displayName} Active" else "No Panchaka Dosha",
+                if (isPanchaka) StringResources.get(StringKeyMuhurta.PANCHAKA_ACTIVE, language, StringResources.get(panchaka.panchakaType.key, language)) else StringResources.get(StringKeyMuhurta.PANCHAKA_NONE, language),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = severityColor
@@ -829,21 +833,21 @@ private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
             
             if (isPanchaka) {
                 Text(
-                    "Severity: ${panchaka.panchakaType.getSeverityDescription()}",
+                    StringResources.get(StringKeyMuhurta.PANCHAKA_SEVERITY, language, panchaka.panchakaType.getSeverityDescription(language)),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 if (panchaka.avoidActivities.isNotEmpty()) {
                     Text(
-                        "Avoid: ${panchaka.avoidActivities.take(2).joinToString(", ")}...",
+                        StringResources.get(StringKeyMuhurta.PANCHAKA_AVOID, language, panchaka.avoidActivities.take(2).joinToString(", ")),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.ErrorColor
                     )
                 }
             } else {
                 Text(
-                    "Time is generally favorable.",
+                    StringResources.get(StringKeyMuhurta.PANCHAKA_FAVORABLE, language),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )

@@ -179,4 +179,8 @@ enum class StringKeyDeepPrediction(override val en: String, override val ne: Str
     NEUTRAL("Neutral", "तटस्थ"),
     CHALLENGING("Challenging", "चुनौतीपूर्ण"),
     VERY_FAVORABLE("Very Favorable", "धेरै अनुकूल"),
+
+    // Nadi Amsha
+    NADI_NAME("Nadi Amsha Name", "नाडी अंश नाम"),
+    NADI_RECTIFICATION_DESC("Nadi Rectification Description", "नाडी शुद्धिकरण विवरण"),
 }

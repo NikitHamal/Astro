@@ -19,18 +19,13 @@ import javax.inject.Inject
  * ViewModel for Nadi Amsha (D-150) Analysis Screen
  */
 @HiltViewModel
-class NadiAmshaViewModel @Inject constructor(
-    private val nadiAmshaAnalyzer: com.astro.storm.ephemeris.nadi.NadiAmshaAnalyzer
-) : ViewModel() {
+class NadiAmshaViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow<NadiAmshaUiState>(NadiAmshaUiState.Loading)
     val uiState: StateFlow<NadiAmshaUiState> = _uiState.asStateFlow()
 
     private val _selectedTab = MutableStateFlow(0)
     val selectedTab: StateFlow<Int> = _selectedTab.asStateFlow()
-
-    private val _nadiAnalysis = MutableStateFlow<com.astro.storm.ephemeris.nadi.NadiAmshaAnalyzer.NadiAnalysis?>(null)
-    val nadiAnalysis: StateFlow<com.astro.storm.ephemeris.nadi.NadiAmshaAnalyzer.NadiAnalysis?> = _nadiAnalysis.asStateFlow()
 
     fun setSelectedTab(index: Int) {
         _selectedTab.value = index
@@ -43,10 +38,6 @@ class NadiAmshaViewModel @Inject constructor(
                 val result = withContext(Dispatchers.Default) {
                     NadiAmshaCalculator.calculateNadiAmsha(chart)
                 }
-                val analysis = withContext(Dispatchers.Default) {
-                    nadiAmshaAnalyzer.analyzeNadi(chart)
-                }
-                _nadiAnalysis.value = analysis
                 _uiState.value = NadiAmshaUiState.Success(result)
             } catch (e: Exception) {
                 _uiState.value = NadiAmshaUiState.Error(e.message ?: "Unknown error")

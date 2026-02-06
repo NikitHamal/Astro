@@ -43,16 +43,7 @@ import javax.inject.Inject
  * Uses atomic caching to prevent redundant calculations when the chart hasn't changed.
  */
 @HiltViewModel
-class AshtavargaTransitViewModel @Inject constructor(
-    private val dailyTransitCalculator: com.astro.storm.ephemeris.transit.DailyTransitCalculator,
-    private val hourlyGocharaCalculator: com.astro.storm.ephemeris.transit.HourlyGocharaCalculator
-) : ViewModel() {
-
-    private val _dailyAnalysis = MutableStateFlow<com.astro.storm.ephemeris.transit.DailyTransitCalculator.DailyTransitAnalysis?>(null)
-    val dailyAnalysis: StateFlow<com.astro.storm.ephemeris.transit.DailyTransitCalculator.DailyTransitAnalysis?> = _dailyAnalysis.asStateFlow()
-
-    private val _hourlyAnalysis = MutableStateFlow<com.astro.storm.ephemeris.transit.HourlyGocharaCalculator.HourlyGochara?>(null)
-    val hourlyAnalysis: StateFlow<com.astro.storm.ephemeris.transit.HourlyGocharaCalculator.HourlyGochara?> = _hourlyAnalysis.asStateFlow()
+class AshtavargaTransitViewModel @Inject constructor() : ViewModel() {
 
     /**
      * UI State for Ashtavarga Transit Screen
@@ -188,13 +179,6 @@ class AshtavargaTransitViewModel @Inject constructor(
                 )
 
                 if (result != null) {
-                    // Calculate extra analyses
-                    val daily = dailyTransitCalculator.calculateDailyTransit(chart, currentDate)
-                    val hourly = hourlyGocharaCalculator.calculateHourlyGochara(chart, LocalDateTime.now())
-                    
-                    _dailyAnalysis.value = daily
-                    _hourlyAnalysis.value = hourly
-
                     // Cache the result
                     cachedResult.set(cacheKey to result)
 
