@@ -1068,7 +1068,7 @@ object SaptamsaAnalyzer {
         fifthHouse: FifthHouseAnalysis,
         jupiter: JupiterAnalysis,
         yogas: List<SanthanaYoga>,
-        challenges: List<String>
+        challenges: List<StringKeyInterface>
     ): Double {
         var score = 50.0
 
