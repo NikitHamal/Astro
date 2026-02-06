@@ -47,6 +47,7 @@ import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringKeySaptamsa
 import com.astro.storm.core.common.StringResources
 
@@ -979,7 +980,7 @@ private fun FertilityOverviewCard(
                     icon = Icons.Outlined.Stars
                 )
                 FertilityFactorItem(
-                    label = StringResources.get(StringKeySaptamsa.MOON, language),
+                    label = StringResources.get(StringKey.PLANET_MOON, language),
                     score = fertility.moonScore,
                     icon = Icons.Outlined.NightsStay
                 )

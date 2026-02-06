@@ -1,7 +1,7 @@
 package com.astro.storm.ephemeris.varga
 
-import Language
-import StringKeyInterface
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringKeySaptamsa
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
@@ -1229,62 +1229,51 @@ object SaptamsaAnalyzer {
         
         when (planet) {
             Planet.SUN -> {
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_LEADER)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_CONFIDENT)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_AUTHORITATIVE)
+                characteristics.add(StringKeySaptamsa.TRAIT_CONFIDENT)
+                characteristics.add(StringKeySaptamsa.TRAIT_LEADERSHIP)
+                characteristics.add(StringKeySaptamsa.TRAIT_WILLPOWER)
             }
             Planet.MOON -> {
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_CARING)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_INTUITIVE)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_EMOTIONAL)
+                characteristics.add(StringKeySaptamsa.TRAIT_SENSITIVE)
+                characteristics.add(StringKeySaptamsa.TRAIT_NURTURING)
+                characteristics.add(StringKeySaptamsa.TRAIT_INTUITIVE)
             }
             Planet.MARS -> {
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_ENERGETIC)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_DETERMINED)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_COURAGEOUS)
+                characteristics.add(StringKeySaptamsa.TRAIT_ENERGETIC)
+                characteristics.add(StringKeySaptamsa.TRAIT_COMPETITIVE)
+                characteristics.add(StringKeySaptamsa.TRAIT_STRONG)
             }
             Planet.MERCURY -> {
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_INTELLIGENT)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_COMMUNICATIVE)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_ADAPTABLE)
+                characteristics.add(StringKeySaptamsa.TRAIT_INTELLIGENT)
+                characteristics.add(StringKeySaptamsa.TRAIT_STUDIES)
+                characteristics.add(StringKeySaptamsa.TRAIT_LEARNER)
             }
             Planet.JUPITER -> {
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_WISE)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_GENEROUS)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_SPIRITUAL)
+                characteristics.add(StringKeySaptamsa.TRAIT_WISE)
+                characteristics.add(StringKeySaptamsa.TRAIT_RIGHTEOUS)
+                characteristics.add(StringKeySaptamsa.TRAIT_OPTIMISTIC)
             }
             Planet.VENUS -> {
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_ARTISTIC)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_CHARMING)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_HARMONIOUS)
+                characteristics.add(StringKeySaptamsa.TRAIT_ARTISTIC)
+                characteristics.add(StringKeySaptamsa.TRAIT_CHARMING)
+                characteristics.add(StringKeySaptamsa.TRAIT_BEAUTY)
             }
             Planet.SATURN -> {
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_DISCIPLINED)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_RESPONSIBLE)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_PRACTICAL)
+                characteristics.add(StringKeySaptamsa.TRAIT_DISCIPLINED)
+                characteristics.add(StringKeySaptamsa.TRAIT_MATURE)
+                characteristics.add(StringKeySaptamsa.TRAIT_RESPONSIBLE)
             }
             Planet.RAHU -> {
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_UNCONVENTIONAL)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_AMBITIOUS)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_MYSTERIOUS)
+                characteristics.add(StringKeySaptamsa.TRAIT_UNCONVENTIONAL)
+                characteristics.add(StringKeySaptamsa.TRAIT_AMBITIOUS)
+                characteristics.add(StringKeySaptamsa.TRAIT_INNOVATIVE)
             }
             Planet.KETU -> {
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_SPIRITUAL)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_DETACHED)
-                characteristics.add(StringKeySaptamsa.CHILD_CHAR_INTUITIVE)
+                characteristics.add(StringKeySaptamsa.TRAIT_SPIRITUAL)
+                characteristics.add(StringKeySaptamsa.TRAIT_DETACHED)
+                characteristics.add(StringKeySaptamsa.TRAIT_INTUITIVE_ABILITIES)
             }
-        }
-        
-        // Add position-based characteristics
-        position?.let { pos ->
-            when (pos.house) {
-                1 -> characteristics.add(StringKeySaptamsa.CHILD_POS_INDEPENDENT)
-                4 -> characteristics.add(StringKeySaptamsa.CHILD_POS_FAMILY_ORIENTED)
-                5 -> characteristics.add(StringKeySaptamsa.CHILD_POS_CREATIVE)
-                7 -> characteristics.add(StringKeySaptamsa.CHILD_POS_PARTNERSHIP_MINDED)
-                9 -> characteristics.add(StringKeySaptamsa.CHILD_POS_FORTUNATE)
-                10 -> characteristics.add(StringKeySaptamsa.CHILD_POS_AMBITIOUS)
-            }
+            else -> {} // Handle other planets
         }
         
         return characteristics
@@ -1295,15 +1284,16 @@ object SaptamsaAnalyzer {
         
         // Basic health indicators based on planet
         when (planet) {
-            Planet.SUN -> indicators.add(StringKeySaptamsa.HEALTH_STRONG_VITALITY)
-            Planet.MOON -> indicators.add(StringKeySaptamsa.HEALTH_EMOTIONAL_WELLNESS)
-            Planet.MARS -> indicators.add(StringKeySaptamsa.HEALTH_PHYSICAL_STRENGTH)
-            Planet.MERCURY -> indicators.add(StringKeySaptamsa.HEALTH_NERVOUS_SYSTEM)
-            Planet.JUPITER -> indicators.add(StringKeySaptamsa.HEALTH_OVERALL_GOOD)
-            Planet.VENUS -> indicators.add(StringKeySaptamsa.HEALTH_REPRODUCTIVE_HEALTH)
-            Planet.SATURN -> indicators.add(StringKeySaptamsa.HEALTH_RESILIENT)
-            Planet.RAHU -> indicators.add(StringKeySaptamsa.HEALTH_UNUSUAL_CONDITIONS)
-            Planet.KETU -> indicators.add(StringKeySaptamsa.HEALTH_CHRONIC_TENDENCIES)
+            Planet.SUN -> indicators.add(StringKeySaptamsa.HEALTH_HEART_BONE)
+            Planet.MOON -> indicators.add(StringKeySaptamsa.HEALTH_EMOTIONAL)
+            Planet.MARS -> indicators.add(StringKeySaptamsa.HEALTH_INJURIES)
+            Planet.MERCURY -> indicators.add(StringKeySaptamsa.HEALTH_NERVOUS)
+            Planet.JUPITER -> indicators.add(StringKeySaptamsa.HEALTH_GENERAL)
+            Planet.VENUS -> indicators.add(StringKeySaptamsa.HEALTH_REPRODUCTIVE)
+            Planet.SATURN -> indicators.add(StringKeySaptamsa.HEALTH_CHRONIC)
+            Planet.RAHU -> indicators.add(StringKeySaptamsa.HEALTH_UNUSUAL)
+            Planet.KETU -> indicators.add(StringKeySaptamsa.HEALTH_MYSTERIOUS)
+            else -> {} // Handle other planets
         }
         
         return indicators
@@ -1313,49 +1303,16 @@ object SaptamsaAnalyzer {
         val indicators = mutableListOf<StringKeyInterface>()
         
         when (planet) {
-            Planet.SUN -> {
-                indicators.add(StringKeySaptamsa.CAREER_LEADERSHIP)
-                indicators.add(StringKeySaptamsa.CAREER_GOVERNMENT)
-            }
-            Planet.MOON -> {
-                indicators.add(StringKeySaptamsa.CAREER_CARING_PROFESSIONS)
-                indicators.add(StringKeySaptamsa.CAREER_PUBLIC_SERVICE)
-            }
-            Planet.MARS -> {
-                indicators.add(StringKeySaptamsa.CAREER_MILITARY)
-                indicators.add(StringKeySaptamsa.CAREER_ENGINEERING)
-                indicators.add(StringKeySaptamsa.CAREER_SPORTS)
-            }
-            Planet.MERCURY -> {
-                indicators.add(StringKeySaptamsa.CAREER_COMMUNICATION)
-                indicators.add(StringKeySaptamsa.CAREER_BUSINESS)
-                indicators.add(StringKeySaptamsa.CAREER_TECHNOLOGY)
-            }
-            Planet.JUPITER -> {
-                indicators.add(StringKeySaptamsa.CAREER_TEACHING)
-                indicators.add(StringKeySaptamsa.CAREER_LAW)
-                indicators.add(StringKeySaptamsa.CAREER_SPIRITUAL)
-            }
-            Planet.VENUS -> {
-                indicators.add(StringKeySaptamsa.CAREER_ARTS)
-                indicators.add(StringKeySaptamsa.CAREER_ENTERTAINMENT)
-                indicators.add(StringKeySaptamsa.CAREER_DESIGN)
-            }
-            Planet.SATURN -> {
-                indicators.add(StringKeySaptamsa.CAREER_ADMINISTRATION)
-                indicators.add(StringKeySaptamsa.CAREER_INFRASTRUCTURE)
-                indicators.add(StringKeySaptamsa.CAREER_RESEARCH)
-            }
-            Planet.RAHU -> {
-                indicators.add(StringKeySaptamsa.CAREER_INTERNATIONAL)
-                indicators.add(StringKeySaptamsa.CAREER_RESEARCH)
-                indicators.add(StringKeySaptamsa.CAREER_TECHNOLOGY)
-            }
-            Planet.KETU -> {
-                indicators.add(StringKeySaptamsa.CAREER_RESEARCH)
-                indicators.add(StringKeySaptamsa.CAREER_SPIRITUAL)
-                indicators.add(StringKeySaptamsa.CAREER_HEALING)
-            }
+            Planet.SUN -> indicators.add(StringKeySaptamsa.CAREER_GOVT)
+            Planet.MOON -> indicators.add(StringKeySaptamsa.CAREER_HOSPITALITY)
+            Planet.MARS -> indicators.add(StringKeySaptamsa.CAREER_MILITARY)
+            Planet.MERCURY -> indicators.add(StringKeySaptamsa.CAREER_BUSINESS)
+            Planet.JUPITER -> indicators.add(StringKeySaptamsa.CAREER_EDUCATION)
+            Planet.VENUS -> indicators.add(StringKeySaptamsa.CAREER_ARTS)
+            Planet.SATURN -> indicators.add(StringKeySaptamsa.CAREER_MINING)
+            Planet.RAHU -> indicators.add(StringKeySaptamsa.CAREER_TECH)
+            Planet.KETU -> indicators.add(StringKeySaptamsa.CAREER_RESEARCH)
+            else -> {} // Handle other planets
         }
         
         return indicators
@@ -1379,6 +1336,7 @@ object SaptamsaAnalyzer {
             Planet.SATURN -> indicators.add("May have delays - check Saturn periods")
             Planet.RAHU -> indicators.add("Unexpected timing possible")
             Planet.KETU -> indicators.add("Spiritual significance in timing")
+            else -> {} // Handle other planets
         }
         
         return indicators

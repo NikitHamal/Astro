@@ -19,8 +19,8 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.repository.ChatRepository
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.core.common.Language
-import StringKeyAgent
-import StringResources
+import com.astro.storm.core.common.StringKeyAgent
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.agentic.AgentSection
 import com.astro.storm.ui.components.agentic.AskUserOption
