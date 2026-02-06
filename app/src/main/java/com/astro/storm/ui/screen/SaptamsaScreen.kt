@@ -46,6 +46,8 @@ import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.astro.storm.core.common.StringKeySaptamsa
+import com.astro.storm.core.common.StringResources
 
 /**
  * SaptamsaScreen - D7 (Saptamsa) Children/Progeny Analysis Screen
@@ -54,9 +56,6 @@ import kotlinx.coroutines.withContext
  * children indications, fertility analysis, and Santhana Yogas.
  */
 @OptIn(ExperimentalMaterial3Api::class)
-import com.astro.storm.core.common.StringKeySaptamsa
-import com.astro.storm.core.common.StringResources
-...
 @Composable
 fun SaptamsaScreen(
     chart: VedicChart?,
