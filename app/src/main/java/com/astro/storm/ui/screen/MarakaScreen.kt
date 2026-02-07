@@ -71,6 +71,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyRemedy
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -899,6 +901,7 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
 
 @Composable
 private fun MarakaDashaPeriodRow(period: MarakaCalculator.MarakaDashaPeriod) {
+    val language = LocalLanguage.current
     val riskColor = when {
         period.riskLevel.level >= 4 -> AppTheme.ErrorColor
         period.riskLevel.level >= 3 -> AppTheme.WarningColor
@@ -1002,6 +1005,7 @@ private fun MarakaRemediesSection(analysis: MarakaCalculator.MarakaAnalysis) {
 
 @Composable
 private fun MarakaRemedyCard(remedy: MarakaCalculator.MarakaRemedy) {
+    val language = LocalLanguage.current
     val categoryColor = when (remedy.remedyType) {
         "Mantra" -> AppTheme.AccentGold
         "Gemstone" -> AppTheme.AccentPrimary

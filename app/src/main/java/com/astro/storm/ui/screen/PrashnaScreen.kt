@@ -123,6 +123,8 @@ import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAdvanced
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch

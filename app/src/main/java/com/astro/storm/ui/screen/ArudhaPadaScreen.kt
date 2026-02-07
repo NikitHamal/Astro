@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -829,7 +830,7 @@ private fun ArudhaPadaCard(
                                 color = AppTheme.TextPrimary
                             )
                             Text(
-                                text = arudha.planetsInArudha.joinToString { it.planet.getLocalizedName(language) },
+                                text = arudha.planetsInArudha.joinToString { it.planet.getLocalizedName(LocalLanguage.current) },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextSecondary
                             )

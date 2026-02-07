@@ -29,12 +29,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.data.localization.currentLanguage
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.core.model.Planet
-import com.astro.storm.core.model.VedicChart
-import com.astro.storm.ephemeris.GrahaYuddhaCalculator
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyRemedy
+import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.ephemeris.GrahaYuddhaCalculator.GrahaYuddhaAnalysis
 import com.astro.storm.ephemeris.GrahaYuddhaCalculator.GrahaYuddhaResult
 import com.astro.storm.ephemeris.GrahaYuddhaCalculator.DashaWarEffect
@@ -464,6 +463,7 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
 
 @Composable
 private fun PlanetChip(planet: Planet, isWinner: Boolean) {
+    val language = currentLanguage()
     val color = if (isWinner) AppTheme.SuccessColor else AppTheme.ErrorColor
 
     Surface(
@@ -830,6 +830,7 @@ private fun WarCard(war: GrahaYuddhaResult) {
                     )
 
                     // Winner effects
+                    val language = currentLanguage()
                     EffectsSection(
                         title = stringResource(StringKeyDosha.GRAHA_WINNER_SUFFIX, war.winner.getLocalizedName(language)),
                         color = AppTheme.SuccessColor,
