@@ -160,7 +160,7 @@ fun GocharaVedhaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.NAV_BACK),
+                            contentDescription = stringResource(StringKeyUICommon.NAV_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }

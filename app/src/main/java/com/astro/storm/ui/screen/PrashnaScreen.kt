@@ -2222,66 +2222,66 @@ private sealed interface AiInsightState {
  * Format Prashna result as context for AI interpretation
  */
 private fun formatPrashnaForAi(result: PrashnaResult): String {
-    val language = Language.ENGLISH // AI prompts are usually better in English for these models
+    val language = com.astro.storm.core.common.Language.ENGLISH // AI prompts are usually better in English for these models
     return buildString {
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_PROMPT_INTRO, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_PROMPT_INTRO, language))
         appendLine()
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_QUESTION, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_QUESTION, language))
         appendLine("\"${result.question}\"")
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_CATEGORY, language, result.category.displayName))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_TIME, language, result.questionTime))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_CATEGORY, language, result.category.displayName))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_TIME, language, result.questionTime))
         appendLine()
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_VERDICT, language))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_VERDICT_LABEL, language, result.judgment.verdict.displayName))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_CONFIDENCE, language, result.confidence))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_CERTAINTY, language, result.judgment.certaintyLevel.displayName))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_VERDICT, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_VERDICT_LABEL, language, result.judgment.verdict.displayName))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_CONFIDENCE, language, result.confidence))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_CERTAINTY, language, result.judgment.certaintyLevel.displayName))
         appendLine()
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_MOON, language))
-        appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_SIGN, language)}: ${result.moonAnalysis.moonSign.displayName}")
-        appendLine("${StringResources.get(StringKey.VARSHAPHALA_HOUSE, language)}: ${result.moonAnalysis.moonHouse}")
-        appendLine("${StringResources.get(StringKey.CHART_NAKSHATRA, language)}: ${result.moonAnalysis.nakshatra.displayName} (Pada ${result.moonAnalysis.nakshatraPada})")
-        appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_REPORT_STRENGTH, language)}: ${result.moonAnalysis.moonStrength.displayName}")
-        appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_PHASE, language)}: ${if (result.moonAnalysis.isWaxing) StringResources.get(StringKeyAnalysis.UI_WAXING, language) else StringResources.get(StringKeyAnalysis.UI_WANING, language)}")
-        appendLine("${StringResources.get(StringKeyAnalysis.PRASHNA_MOON_VOID, language)}: ${if (result.moonAnalysis.isVoidOfCourse) StringResources.get(StringKeyAnalysis.UI_YES, language) else StringResources.get(StringKeyAnalysis.UI_NO, language)}")
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_MOON, language))
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.PRASHNA_SIGN, language)}: ${result.moonAnalysis.moonSign.displayName}")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKey.VARSHAPHALA_HOUSE, language)}: ${result.moonAnalysis.moonHouse}")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKey.CHART_NAKSHATRA, language)}: ${result.moonAnalysis.nakshatra.displayName} (Pada ${result.moonAnalysis.nakshatraPada})")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.PRASHNA_REPORT_STRENGTH, language)}: ${result.moonAnalysis.moonStrength.displayName}")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.PRASHNA_PHASE, language)}: ${if (result.moonAnalysis.isWaxing) com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_WAXING, language) else com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_WANING, language)}")
+        appendLine("${com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.PRASHNA_MOON_VOID, language)}: ${if (result.moonAnalysis.isVoidOfCourse) com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_YES, language) else com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAnalysis.UI_NO, language)}")
         appendLine()
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_LAGNA, language))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_RISING_SIGN, language, result.lagnaAnalysis.lagnaSign.displayName))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_LAGNA_LORD, language, result.lagnaAnalysis.lagnaLord.displayName))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_LORD_POS, language, result.lagnaAnalysis.lagnaLordPosition.house))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_CONDITION, language, result.lagnaAnalysis.lagnaCondition.displayName))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_LAGNA, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_RISING_SIGN, language, result.lagnaAnalysis.lagnaSign.displayName))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_LAGNA_LORD, language, result.lagnaAnalysis.lagnaLord.displayName))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_LORD_POS, language, result.lagnaAnalysis.lagnaLordPosition.house))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_CONDITION, language, result.lagnaAnalysis.lagnaCondition.displayName))
         if (result.lagnaAnalysis.planetsInLagna.isNotEmpty()) {
-            appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_PLANETS_LAGNA, language, result.lagnaAnalysis.planetsInLagna.joinToString { it.planet.displayName }))
+            appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_PLANETS_LAGNA, language, result.lagnaAnalysis.planetsInLagna.joinToString { it.planet.displayName }))
         }
         appendLine()
         if (result.timingPrediction.willEventOccur) {
-            appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_TIMING, language))
-            appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_EST_TIME, language, result.timingPrediction.estimatedTime))
-            appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_METHOD, language, result.timingPrediction.timingMethod.displayName))
-            appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_CONFIDENCE, language, result.timingPrediction.confidence))
+            appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_TIMING, language))
+            appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_EST_TIME, language, result.timingPrediction.estimatedTime))
+            appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_METHOD, language, result.timingPrediction.timingMethod.displayName))
+            appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_CONFIDENCE, language, result.timingPrediction.confidence))
             appendLine()
         }
         if (result.specialYogas.isNotEmpty()) {
-            appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_YOGAS, language))
+            appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_YOGAS, language))
             result.specialYogas.forEach { yoga ->
                 val sign = if (yoga.isPositive) "+" else "-"
                 appendLine("$sign ${yoga.name}: ${yoga.description}")
             }
             appendLine()
         }
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_FACTORS, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_FACTORS, language))
         result.judgment.supportingFactors.forEach { appendLine("- $it") }
         appendLine()
         if (result.judgment.opposingFactors.isNotEmpty()) {
-            appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_CHALLENGES, language))
+            appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_CHALLENGES, language))
             result.judgment.opposingFactors.forEach { appendLine("- $it") }
             appendLine()
         }
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_PROVIDE, language))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_PROVIDE_1, language))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_PROVIDE_2, language))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_PROVIDE_3, language))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_PROVIDE_4, language))
-        appendLine(StringResources.get(StringKeyAdvanced.PRASHNA_AI_PROVIDE_5, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_PROVIDE, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_PROVIDE_1, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_PROVIDE_2, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_PROVIDE_3, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_PROVIDE_4, language))
+        appendLine(com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyAdvanced.PRASHNA_AI_PROVIDE_5, language))
     }
 }
 

@@ -29,14 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.core.model.VedicChart
-import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaAnalysis
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.AyurSpan
@@ -72,7 +74,7 @@ fun DrigDashaScreen(
     LaunchedEffect(chart) {
         if (chart == null) {
             isLoading = false
-            errorMessage = StringResources.get(StringKeyDosha.NO_DATA, language)
+            errorMessage = com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyUICommon.NO_DATA, language)
             return@LaunchedEffect
         }
 
@@ -83,7 +85,7 @@ fun DrigDashaScreen(
             try {
                 analysis = DrigDashaCalculator.calculateDrigDasha(chart)
             } catch (e: Exception) {
-                errorMessage = e.message ?: StringResources.get(StringKeyDosha.ERROR_CALCULATION, language)
+                errorMessage = e.message ?: com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyDosha.ERROR_CALCULATION, language)
             }
         }
         isLoading = false
@@ -95,12 +97,12 @@ fun DrigDashaScreen(
                 title = {
                     Column {
                         Text(
-                            text = stringResource(StringKeyDosha.DRIG_DASHA_TITLE),
+                            text = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_DASHA_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.DRIG_LONGEVITY_SYSTEM),
+                            text = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_LONGEVITY_SYSTEM),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -110,7 +112,7 @@ fun DrigDashaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(StringKey.NAV_BACK)
+                            contentDescription = stringResource(com.astro.storm.core.common.StringKeyUICommon.NAV_BACK)
                         )
                     }
                 },
@@ -141,11 +143,16 @@ private fun DrigDashaContent(
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(0) }
+    val overviewTabTitle = stringResource(StringKeyDosha.DRIG_TAB_OVERVIEW)
+    val periodsTabTitle = stringResource(StringKeyDosha.DRIG_TAB_PERIODS)
+    val marakaTabTitle = stringResource(StringKeyDosha.DRIG_TAB_MARAKA)
+    val karakasTabTitle = stringResource(StringKeyDosha.DRIG_TAB_KARAKAS)
+
     val tabs = listOf(
-        stringResource(StringKeyDosha.DRIG_TAB_OVERVIEW),
-        stringResource(StringKeyDosha.DRIG_TAB_PERIODS),
-        stringResource(StringKeyDosha.DRIG_TAB_MARAKA),
-        stringResource(StringKeyDosha.DRIG_TAB_KARAKAS)
+        overviewTabTitle,
+        periodsTabTitle,
+        marakaTabTitle,
+        karakasTabTitle
     )
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -253,11 +260,11 @@ private fun OverviewTab(
 
                     Text(
                         text = stringResource(
-                            StringKeyDosha.DRIG_RUDRA_SIGN_DESC,
+                            com.astro.storm.core.common.StringKeyDosha.DRIG_RUDRA_SIGN_DESC,
                             analysis.longevitySpan.displayName
-                        ) + " (${analysis.longevitySpan.minYears}-${analysis.longevitySpan.maxYears} " + stringResource(StringKeyDosha.DRIG_YEARS) + "). " +
-                                stringResource(StringKeyDosha.DRIG_CURRENT_DASHA) + " is ruled by ${analysis.currentDasha?.signLord?.getLocalizedName(language) ?: stringResource(StringKeyDosha.MISC_UNKNOWN)}, " +
-                                stringResource(StringKeyUICommon.FOR) + " ${analysis.currentDasha?.interpretation ?: stringResource(StringKeyDosha.DASHA_KW_GENERAL)}.",
+                        ) + " (${analysis.longevitySpan.minYears}-${analysis.longevitySpan.maxYears} " + stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_YEARS) + "). " +
+                                stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_CURRENT_DASHA) + " is ruled by ${analysis.currentDasha?.signLord?.getLocalizedName(language) ?: stringResource(com.astro.storm.core.common.StringKeyMatch.MISC_UNKNOWN)}, " +
+                                stringResource(com.astro.storm.core.common.StringKeyUICommon.FOR) + " ${analysis.currentDasha?.interpretation ?: stringResource(com.astro.storm.core.common.StringKeyAnalysis.DASHA_KW_GENERAL)}.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
@@ -771,9 +778,9 @@ private fun DashaPeriodCard(
                         else
                             Icons.Default.KeyboardArrowDown,
                         contentDescription = if (isExpanded) 
-                            stringResource(StringKeyMatch.MISC_COLLAPSE) 
+                            stringResource(com.astro.storm.core.common.StringKeyMatch.MISC_COLLAPSE) 
                         else 
-                            stringResource(StringKeyMatch.MISC_EXPAND),
+                            stringResource(com.astro.storm.core.common.StringKeyMatch.MISC_EXPAND),
                         tint = AppTheme.TextMuted,
                         modifier = Modifier.size(20.dp)
                     )

@@ -28,12 +28,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyRemedy
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
+import com.astro.storm.data.localization.currentLanguage
+import com.astro.storm.data.localization.stringResource
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.ephemeris.GrahaYuddhaCalculator
 import com.astro.storm.ephemeris.GrahaYuddhaCalculator.GrahaYuddhaAnalysis
 import com.astro.storm.ephemeris.GrahaYuddhaCalculator.GrahaYuddhaResult
 import com.astro.storm.ephemeris.GrahaYuddhaCalculator.DashaWarEffect
@@ -63,29 +72,34 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GrahaYuddhaScreen(
-    chart: VedicChart?,
+    chart: com.astro.storm.core.model.VedicChart?,
     onBack: () -> Unit
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKeyDosha.GRAHA_SCREEN_TITLE),
-            message = stringResource(StringKey.NO_PROFILE_MESSAGE),
+            title = com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyDosha.GRAHA_SCREEN_TITLE),
+            message = com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKey.NO_PROFILE_MESSAGE),
             onBack = onBack
         )
         return
     }
 
-    val language = currentLanguage()
+    val language = com.astro.storm.data.localization.currentLanguage()
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var isCalculating by remember { mutableStateOf(true) }
-    var yuddhaAnalysis by remember { mutableStateOf<GrahaYuddhaAnalysis?>(null) }
+    var yuddhaAnalysis by remember { mutableStateOf<com.astro.storm.ephemeris.GrahaYuddhaCalculator.GrahaYuddhaAnalysis?>(null) }
+
+    val overviewTabTitle = com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyDosha.UI_OVERVIEW)
+    val activeWarsTabTitle = com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyDosha.GRAHA_ACTIVE_WARS)
+    val dashaEffectsTabTitle = com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyDosha.GRAHA_DASHA_EFFECTS)
+    val remediesTabTitle = com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyDosha.UI_REMEDIES)
 
     val tabs = listOf(
-        stringResource(StringKeyDosha.UI_OVERVIEW),
-        stringResource(StringKeyDosha.GRAHA_ACTIVE_WARS),
-        stringResource(StringKeyDosha.GRAHA_DASHA_EFFECTS),
-        stringResource(StringKeyDosha.UI_REMEDIES)
+        overviewTabTitle,
+        activeWarsTabTitle,
+        dashaEffectsTabTitle,
+        remediesTabTitle
     )
 
     // Calculate Graha Yuddha
@@ -158,9 +172,12 @@ fun GrahaYuddhaScreen(
                     .padding(paddingValues)
             ) {
                 // Tab row
-                val tabItems = tabs.map { TabItem(title = it, accentColor = AppTheme.AccentPrimary) }
+                val accentColor = com.astro.storm.ui.theme.AppTheme.AccentPrimary
+                val tabItems = remember(tabs, accentColor) {
+                    tabs.map { tabTitle -> com.astro.storm.ui.components.common.TabItem(title = tabTitle, accentColor = accentColor) }
+                }
                 
-                ModernPillTabRow(
+                com.astro.storm.ui.components.common.ModernPillTabRow(
                     tabs = tabItems,
                     selectedIndex = selectedTab,
                     onTabSelected = { selectedTab = it },
@@ -306,9 +323,9 @@ private fun WarStatusCard(analysis: GrahaYuddhaAnalysis) {
                 )
                 Text(
                     text = if (hasWar)
-                        stringResource(StringKeyDosha.GRAHA_WAR_AFFECTS_DESC)
+                        stringResource(com.astro.storm.core.common.StringKeyDosha.GRAHA_WAR_AFFECTS_DESC)
                     else
-                        stringResource(StringKeyDosha.GRAHA_NO_WARS_DESC),
+                        stringResource(com.astro.storm.core.common.StringKeyDosha.GRAHA_NO_WARS_DESC),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -462,9 +479,9 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
 }
 
 @Composable
-private fun PlanetChip(planet: Planet, isWinner: Boolean) {
-    val language = currentLanguage()
-    val color = if (isWinner) AppTheme.SuccessColor else AppTheme.ErrorColor
+private fun PlanetChip(planet: com.astro.storm.core.model.Planet, isWinner: Boolean) {
+    val language = com.astro.storm.data.localization.currentLanguage()
+    val color = if (isWinner) com.astro.storm.ui.theme.AppTheme.SuccessColor else com.astro.storm.ui.theme.AppTheme.ErrorColor
 
     Surface(
         color = color.copy(alpha = 0.1f),

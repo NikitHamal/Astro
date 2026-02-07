@@ -702,7 +702,7 @@ private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaE
                     color = AppTheme.AccentGold.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = "${stringResource(StringKeyUIExtra.HOUSE_PREFIX_SHORT)}${exchange.house1}-${stringResource(StringKeyUIExtra.HOUSE_PREFIX_SHORT)}${exchange.house2}",
+                        text = "${com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyUIExtra.HOUSE_PREFIX_SHORT)}${exchange.house1}-${com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyUIExtra.HOUSE_PREFIX_SHORT)}${exchange.house2}",
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.AccentGold,
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)

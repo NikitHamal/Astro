@@ -829,8 +829,9 @@ private fun ArudhaPadaCard(
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.TextPrimary
                             )
+                            val language = LocalLanguage.current
                             Text(
-                                text = arudha.planetsInArudha.joinToString { it.planet.getLocalizedName(LocalLanguage.current) },
+                                text = arudha.planetsInArudha.joinToString { it.planet.getLocalizedName(language) },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextSecondary
                             )
