@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -83,10 +84,10 @@ fun ArudhaPadaScreen(
     var arudhaAnalysis by remember { mutableStateOf<ArudhaPadaAnalysis?>(null) }
 
     val tabs = listOf(
-        "Overview",
-        "All Arudhas",
-        "Yogas",
-        "Relationships"
+        stringResource(StringKeyDosha.ARUDHA_TAB_OVERVIEW),
+        stringResource(StringKeyDosha.ARUDHA_TAB_ALL),
+        stringResource(StringKeyDosha.ARUDHA_TAB_YOGAS),
+        stringResource(StringKeyDosha.ARUDHA_TAB_RELATIONSHIPS)
     )
 
     // Calculate Arudha Padas
@@ -766,7 +767,7 @@ private fun ArudhaPadaCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Strength:",
+                    text = stringResource(StringKeyDosha.ARUDHA_STRENGTH_LABEL),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -823,13 +824,14 @@ private fun ArudhaPadaCard(
                                 modifier = Modifier.size(16.dp)
                             )
                             Text(
-                                text = "Planets in ${arudha.name}: ",
+                                text = stringResource(StringKeyDosha.ARUDHA_PLANETS_IN_LABEL, arudha.name),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.TextPrimary
                             )
+                            val language = LocalLanguage.current
                             Text(
-                                text = arudha.planetsInArudha.joinToString { it.planet.displayName },
+                                text = arudha.planetsInArudha.joinToString { it.planet.getLocalizedName(language) },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextSecondary
                             )
@@ -838,7 +840,7 @@ private fun ArudhaPadaCard(
 
                     // Significations
                     Text(
-                        text = "Significations:",
+                        text = stringResource(StringKeyDosha.ARUDHA_SIGNIFICATIONS_LABEL),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -1190,7 +1192,7 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "About Arudha Pada",
+                text = stringResource(StringKeyDosha.ARUDHA_INFO_TITLE),
                 fontWeight = FontWeight.SemiBold
             )
         },
@@ -1200,13 +1202,13 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
             ) {
                 item {
                     Text(
-                        text = "What is Arudha Pada?",
+                        text = stringResource(StringKeyDosha.ARUDHA_WHAT_IS_TITLE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = "Arudha means 'mount' or 'image'. In Jaimini astrology, Arudha Padas show how the matters of each house manifest and are perceived in the material world. They reveal the maya (illusion) or external image of various life areas.",
+                        text = stringResource(StringKeyDosha.ARUDHA_WHAT_IS_DESC),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )
@@ -1214,7 +1216,7 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
 
                 item {
                     Text(
-                        text = "Key Arudhas",
+                        text = stringResource(StringKeyDosha.ARUDHA_KEY_ARUDHAS_TITLE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1246,13 +1248,13 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
 
                 item {
                     Text(
-                        text = "Calculation Method",
+                        text = stringResource(StringKeyDosha.ARUDHA_CALC_METHOD_TITLE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = "1. Find the lord of the house\n2. Count from house to lord's position\n3. Count same distance from lord\n4. That sign is the Arudha Pada\n\nException: If Arudha falls in same or 7th house, move 10 signs forward.",
+                        text = stringResource(StringKeyDosha.ARUDHA_CALC_METHOD_DESC),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )
@@ -1260,13 +1262,13 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
 
                 item {
                     Text(
-                        text = "References",
+                        text = stringResource(StringKeyDosha.ARUDHA_REFERENCES_TITLE),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = "• Jaimini Sutras (Chapter 1, Pada 1)\n• BPHS Chapters 29-30\n• Sanjay Rath's 'Crux of Vedic Astrology'",
+                        text = stringResource(StringKeyDosha.ARUDHA_REFERENCES_DESC),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )

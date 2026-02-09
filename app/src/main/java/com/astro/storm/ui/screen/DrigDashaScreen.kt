@@ -29,9 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.data.localization.stringResource
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
-import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaAnalysis
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.AyurSpan
@@ -67,7 +74,7 @@ fun DrigDashaScreen(
     LaunchedEffect(chart) {
         if (chart == null) {
             isLoading = false
-            errorMessage = "No chart available"
+            errorMessage = com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyUICommon.NO_DATA, language)
             return@LaunchedEffect
         }
 
@@ -78,7 +85,7 @@ fun DrigDashaScreen(
             try {
                 analysis = DrigDashaCalculator.calculateDrigDasha(chart)
             } catch (e: Exception) {
-                errorMessage = e.message ?: "Error calculating Drig Dasha"
+                errorMessage = e.message ?: com.astro.storm.core.common.StringResources.get(com.astro.storm.core.common.StringKeyDosha.ERROR_CALCULATION, language)
             }
         }
         isLoading = false
@@ -90,12 +97,12 @@ fun DrigDashaScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Drig Dasha",
+                            text = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_DASHA_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Jaimini Longevity System",
+                            text = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_LONGEVITY_SYSTEM),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -105,7 +112,7 @@ fun DrigDashaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(com.astro.storm.core.common.StringKeyUICommon.NAV_BACK)
                         )
                     }
                 },
@@ -136,7 +143,17 @@ private fun DrigDashaContent(
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(0) }
-    val tabs = listOf("Overview", "Dasha Periods", "Maraka Analysis", "Sthira Karakas")
+    val overviewTabTitle = stringResource(StringKeyDosha.DRIG_TAB_OVERVIEW)
+    val periodsTabTitle = stringResource(StringKeyDosha.DRIG_TAB_PERIODS)
+    val marakaTabTitle = stringResource(StringKeyDosha.DRIG_TAB_MARAKA)
+    val karakasTabTitle = stringResource(StringKeyDosha.DRIG_TAB_KARAKAS)
+
+    val tabs = listOf(
+        overviewTabTitle,
+        periodsTabTitle,
+        marakaTabTitle,
+        karakasTabTitle
+    )
 
     Column(modifier = modifier.fillMaxSize()) {
         // Tabs
@@ -232,7 +249,7 @@ private fun OverviewTab(
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = "Interpretation",
+                            text = stringResource(StringKeyDosha.UI_INTERPRETATION),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
@@ -242,8 +259,12 @@ private fun OverviewTab(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "Your Drig Dasha analysis indicates a ${analysis.longevitySpan.displayName} longevity span (${analysis.longevitySpan.minYears}-${analysis.longevitySpan.maxYears} years). " +
-                                "The current period is ruled by ${analysis.currentDasha?.signLord?.displayName ?: "Unknown"}, focusing on ${analysis.currentDasha?.interpretation ?: "general themes"}.",
+                        text = stringResource(
+                            com.astro.storm.core.common.StringKeyDosha.DRIG_RUDRA_SIGN_DESC,
+                            analysis.longevitySpan.displayName
+                        ) + " (${analysis.longevitySpan.minYears}-${analysis.longevitySpan.maxYears} " + stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_YEARS) + "). " +
+                                stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_CURRENT_DASHA) + " is ruled by ${analysis.currentDasha?.signLord?.getLocalizedName(language) ?: stringResource(com.astro.storm.core.common.StringKeyMatch.MISC_UNKNOWN)}, " +
+                                stringResource(com.astro.storm.core.common.StringKeyUICommon.FOR) + " ${analysis.currentDasha?.interpretation ?: stringResource(com.astro.storm.core.common.StringKeyAnalysis.DASHA_KW_GENERAL)}.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
@@ -304,7 +325,7 @@ private fun LongevityCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Longevity Classification",
+                text = stringResource(StringKeyDosha.DRIG_LONGEVITY_CLASSIFICATION),
                 style = MaterialTheme.typography.labelMedium,
                 color = AppTheme.TextMuted
             )
@@ -321,7 +342,7 @@ private fun LongevityCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "${longevitySpan.minYears}-${longevitySpan.maxYears} years",
+                text = "${longevitySpan.minYears}-${longevitySpan.maxYears} " + stringResource(StringKeyDosha.DRIG_YEARS),
                 style = MaterialTheme.typography.titleMedium,
                 color = AppTheme.TextSecondary
             )
@@ -388,7 +409,7 @@ private fun CurrentPeriodCard(
 
                     Column {
                         Text(
-                            text = "Current Dasha",
+                            text = stringResource(StringKeyDosha.DRIG_CURRENT_DASHA),
                             style = MaterialTheme.typography.labelMedium,
                             color = AppTheme.TextMuted
                         )
@@ -410,7 +431,10 @@ private fun CurrentPeriodCard(
                         DarkAppThemeColors.SuccessColor.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = if (period.isMarakaPeriod) "Maraka" else "Normal",
+                        text = if (period.isMarakaPeriod)
+                            stringResource(StringKeyDosha.DRIG_MARAKA)
+                        else
+                            stringResource(StringKeyDosha.DRIG_NORMAL),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = if (period.isMarakaPeriod)
@@ -435,7 +459,7 @@ private fun CurrentPeriodCard(
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    text = "${period.durationYears} years",
+                    text = "${period.durationYears} " + stringResource(StringKeyDosha.DRIG_YEARS),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = signColor
@@ -451,7 +475,7 @@ private fun CurrentPeriodCard(
 
             // Progress Bar
             LinearProgressIndicator(
-                progress = { progress },
+                progress = progress,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
@@ -469,9 +493,9 @@ private fun CurrentPeriodCard(
 
             Text(
                 text = if (remainingYears > 0)
-                    "$remainingYears years, $remainingMonths months remaining"
+                    stringResource(StringKeyDosha.DRIG_YEARS_REMAINING, remainingYears, remainingMonths)
                 else
-                    "$remainingMonths months remaining",
+                    stringResource(StringKeyDosha.DRIG_MONTHS_REMAINING, remainingMonths),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 textAlign = TextAlign.Center,
@@ -499,7 +523,7 @@ private fun KeySignsCard(
                 .padding(20.dp)
         ) {
             Text(
-                text = "Trimurti Signs (Brahma-Rudra-Maheshwara)",
+                text = stringResource(StringKeyDosha.DRIG_TRIMURTI_SIGNS),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
@@ -512,28 +536,28 @@ private fun KeySignsCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TrimurtiSignItem(
-                    title = "Brahma",
+                    title = stringResource(StringKeyDosha.DRIG_BRAHMA),
                     sign = brahmaSign,
                     language = language,
                     icon = Icons.Outlined.AutoAwesome,
                     color = DarkAppThemeColors.AccentGold,
-                    description = "Creator - Birth"
+                    description = stringResource(StringKeyDosha.DRIG_BRAHMA_DESC)
                 )
                 TrimurtiSignItem(
-                    title = "Rudra",
+                    title = stringResource(StringKeyDosha.DRIG_RUDRA),
                     sign = rudraSign,
                     language = language,
                     icon = Icons.Outlined.Warning,
                     color = DarkAppThemeColors.WarningColor,
-                    description = "Destroyer - Death"
+                    description = stringResource(StringKeyDosha.DRIG_RUDRA_DESC)
                 )
                 TrimurtiSignItem(
-                    title = "Maheshwara",
+                    title = stringResource(StringKeyDosha.DRIG_MAHESHWARA),
                     sign = maheshwaraSign,
                     language = language,
                     icon = Icons.Outlined.SelfImprovement,
                     color = DarkAppThemeColors.LifeAreaSpiritual,
-                    description = "Preserver - Life"
+                    description = stringResource(StringKeyDosha.DRIG_MAHESHWARA_DESC)
                 )
             }
         }
@@ -608,7 +632,7 @@ private fun DashaPeriodTab(
     ) {
         item {
             Text(
-                text = "Dasha Sequence",
+                text = stringResource(StringKeyDosha.DRIG_DASHA_SEQUENCE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary,
@@ -707,7 +731,7 @@ private fun DashaPeriodCard(
                                 color = AppTheme.AccentPrimary.copy(alpha = 0.2f)
                             ) {
                                 Text(
-                                    text = "Current",
+                                    text = stringResource(StringKeyDosha.UI_CURRENT),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = AppTheme.AccentPrimary,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -733,7 +757,7 @@ private fun DashaPeriodCard(
                             color = DarkAppThemeColors.WarningColor.copy(alpha = 0.15f)
                         ) {
                             Text(
-                                text = "Maraka",
+                                text = stringResource(StringKeyDosha.DRIG_MARAKA),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = DarkAppThemeColors.WarningColor,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -753,7 +777,10 @@ private fun DashaPeriodCard(
                             Icons.Default.KeyboardArrowUp
                         else
                             Icons.Default.KeyboardArrowDown,
-                        contentDescription = if (isExpanded) "Collapse" else "Expand",
+                        contentDescription = if (isExpanded) 
+                            stringResource(com.astro.storm.core.common.StringKeyMatch.MISC_COLLAPSE) 
+                        else 
+                            stringResource(com.astro.storm.core.common.StringKeyMatch.MISC_EXPAND),
                         tint = AppTheme.TextMuted,
                         modifier = Modifier.size(20.dp)
                     )
@@ -773,7 +800,7 @@ private fun DashaPeriodCard(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = "Antardashas",
+                        text = stringResource(StringKeyDosha.DRIG_ANTARDASHAS),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextMuted
@@ -870,13 +897,13 @@ private fun MarakaAnalysisTab(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = "Maraka Period Analysis",
+                            text = stringResource(StringKeyDosha.DRIG_MARAKA_ANALYSIS_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Periods associated with health challenges and longevity concerns",
+                            text = stringResource(StringKeyDosha.DRIG_MARAKA_ANALYSIS_DESC),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
@@ -908,7 +935,7 @@ private fun MarakaAnalysisTab(
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = "No significant Maraka periods detected",
+                            text = stringResource(StringKeyDosha.DRIG_NO_MARAKA_DETECTED),
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextSecondary,
                             textAlign = TextAlign.Center
@@ -945,7 +972,7 @@ private fun MarakaAnalysisTab(
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = "Rudra Sign Analysis",
+                            text = stringResource(StringKeyDosha.DRIG_RUDRA_SIGN_ANALYSIS),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
@@ -955,7 +982,10 @@ private fun MarakaAnalysisTab(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "The Rudra sign is ${analysis.rudraSign.getLocalizedName(language)}. This sign represents the destroyer principle in the chart and its dasha period requires careful attention to health matters.",
+                        text = stringResource(
+                            StringKeyDosha.DRIG_RUDRA_SIGN_DESC,
+                            analysis.rudraSign.getLocalizedName(language)
+                        ),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
@@ -1058,13 +1088,13 @@ private fun SthiraKarakasTab(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = "Sthira Karakas",
+                            text = stringResource(StringKeyDosha.DRIG_STHIRA_KARAKAS_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "Fixed significators based on house ownership",
+                            text = stringResource(StringKeyDosha.DRIG_STHIRA_KARAKAS_DESC),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
@@ -1147,7 +1177,7 @@ private fun LoadingStateDD(modifier: Modifier = Modifier) {
             CircularProgressIndicator(color = AppTheme.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Calculating Drig Dasha...",
+                text = stringResource(StringKeyDosha.DRIG_CALCULATING),
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted
             )

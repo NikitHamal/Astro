@@ -1074,6 +1074,10 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     HOME_DASHA_LABEL("Dasha", "दशा"),
     REMAINING_PERIOD_YEARS("%s years, %s months remaining", "%s वर्ष, %s महिना बाँकी"),
     REMAINING_PERIOD_MONTHS("%s months remaining", "%s महिना बाँकी"),
+    REMAINING_PERIOD_DAYS("%s days remaining", "%s दिन बाँकी"),
+    REMAINING_PERIOD_MONTHS_DAYS("%s months, %s days remaining", "%s महिना, %s दिन बाँकी"),
+    DURATION_YEARS_FMT("%d years", "%d वर्ष"),
+    DURATION_YEAR_FMT("1 year", "१ वर्ष"),
     TAP_TO_VIEW_DASHAS("Tap to view your Dasha timeline", "आफ्नो दशा समयरेखा हेर्न ट्याप गर्नुहोस्"),
     
     // Feature Categories

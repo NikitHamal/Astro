@@ -35,6 +35,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyRemedy
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -678,7 +679,7 @@ private fun BhriguBinduTransitsTab(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        "Transit data not available",
+                        stringResource(StringKeyDosha.BHRIGU_BINDU_TRANSIT_NOT_AVAILABLE),
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
@@ -738,7 +739,7 @@ private fun BhriguBinduTransitsTab(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        "Transit Timing",
+                        stringResource(StringKeyDosha.BHRIGU_BINDU_TRANSIT_TIMING),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1579,8 +1580,8 @@ private fun getAspectTypeName(aspectType: AspectType): String = when (aspectType
     AspectType.OPPOSITION -> stringResource(StringKeyAnalysis.ASPECT_OPPOSITION)
     AspectType.TRINE -> stringResource(StringKeyAnalysis.ASPECT_TRINE)
     AspectType.SQUARE -> stringResource(StringKeyAnalysis.ASPECT_SQUARE)
-    AspectType.SEXTILE -> "Sextile"
-    AspectType.SPECIAL_ASPECT -> "Special Aspect"
+    AspectType.SEXTILE -> stringResource(StringKeyDosha.ASPECT_SEXTILE)
+    AspectType.SPECIAL_ASPECT -> stringResource(StringKeyDosha.ASPECT_SPECIAL)
 }
 
 @Composable
@@ -1593,12 +1594,13 @@ private fun getAspectTypeColor(aspectType: AspectType): Color = when (aspectType
     AspectType.SPECIAL_ASPECT -> AppTheme.AccentPrimary
 }
 
+@Composable
 private fun getTransitTypeName(transitType: BhriguBinduCalculator.TransitType): String = when (transitType) {
-    BhriguBinduCalculator.TransitType.CONJUNCTION -> "Conjunction"
-    BhriguBinduCalculator.TransitType.OPPOSITION -> "Opposition"
-    BhriguBinduCalculator.TransitType.TRINE -> "Trine"
-    BhriguBinduCalculator.TransitType.SQUARE -> "Square"
-    BhriguBinduCalculator.TransitType.ENTERING_SIGN -> "Entering Sign"
+    BhriguBinduCalculator.TransitType.CONJUNCTION -> stringResource(StringKeyAnalysis.ASPECT_CONJUNCTION)
+    BhriguBinduCalculator.TransitType.OPPOSITION -> stringResource(StringKeyAnalysis.ASPECT_OPPOSITION)
+    BhriguBinduCalculator.TransitType.TRINE -> stringResource(StringKeyAnalysis.ASPECT_TRINE)
+    BhriguBinduCalculator.TransitType.SQUARE -> stringResource(StringKeyAnalysis.ASPECT_SQUARE)
+    BhriguBinduCalculator.TransitType.ENTERING_SIGN -> stringResource(StringKeyDosha.TRANSIT_ENTERING_SIGN)
 }
 
 @Composable
@@ -1618,13 +1620,14 @@ private fun getRemedyCategoryIcon(category: RemedyCategory): ImageVector = when 
     RemedyCategory.LIFESTYLE -> Icons.Filled.Spa
 }
 
+@Composable
 private fun getRemedyCategoryName(category: RemedyCategory): String = when (category) {
-    RemedyCategory.MANTRA -> "Mantra"
-    RemedyCategory.CHARITY -> "Charity"
-    RemedyCategory.GEMSTONE -> "Gemstone"
-    RemedyCategory.FASTING -> "Fasting"
-    RemedyCategory.PILGRIMAGE -> "Pilgrimage"
-    RemedyCategory.LIFESTYLE -> "Lifestyle"
+    RemedyCategory.MANTRA -> stringResource(StringKeyRemedy.CAT_MANTRA)
+    RemedyCategory.CHARITY -> stringResource(StringKeyRemedy.CAT_CHARITY)
+    RemedyCategory.GEMSTONE -> stringResource(StringKeyRemedy.CAT_GEMSTONE)
+    RemedyCategory.FASTING -> stringResource(StringKeyRemedy.CAT_FASTING)
+    RemedyCategory.PILGRIMAGE -> stringResource(StringKeyRemedy.CAT_DEITY) // Using Deity for Pilgrimage
+    RemedyCategory.LIFESTYLE -> stringResource(StringKeyRemedy.CAT_LIFESTYLE)
 }
 
 @Composable

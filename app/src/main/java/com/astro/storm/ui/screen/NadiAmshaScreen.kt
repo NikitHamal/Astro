@@ -251,8 +251,11 @@ private fun NadiSummaryCard(result: NadiAmshaResult) {
             Spacer(modifier = Modifier.height(8.dp))
             // Example summary logic
             Text(
-                "Ascendant Nadi is ruled by ${result.ascendantNadi.nadiLord.getLocalizedName(LocalLanguage.current)}. " +
-                "This indicates ${result.ascendantNadi.energyType.displayName} dominance in the chart's finest division.",
+                stringResource(
+                    StringKeyAdvanced.NADI_SUMMARY_FMT,
+                    result.ascendantNadi.nadiLord.getLocalizedName(LocalLanguage.current),
+                    result.ascendantNadi.energyType.displayName
+                ),
                 color = AppTheme.TextSecondary,
                 fontSize = 14.sp,
                 lineHeight = 20.sp
@@ -292,7 +295,11 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    "Nadi #${position.nadiNumber} (${position.nadiSign.getLocalizedName(LocalLanguage.current)})",
+                    stringResource(
+                        StringKeyAdvanced.NADI_PLANET_FMT,
+                        position.nadiNumber,
+                        position.nadiSign.getLocalizedName(LocalLanguage.current)
+                    ),
                     fontSize = 12.sp,
                     color = AppTheme.TextSecondary
                 )
@@ -346,7 +353,7 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
             Column(modifier = Modifier.weight(1f)) {
                 val sign = if(candidate.timeAdjustmentMinutes > 0) "+" else ""
                 Text(
-                    "${sign}${candidate.timeAdjustmentMinutes} min  (${candidate.adjustedTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))})",
+                    "${sign}${candidate.timeAdjustmentMinutes} ${stringResource(StringKeyAdvanced.MIN_LABEL)}  (${candidate.adjustedTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))})",
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )

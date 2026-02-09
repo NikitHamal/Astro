@@ -2451,13 +2451,16 @@ private fun TajikaYogasCard(analysis: TajikaYogaCalculator.TajikaYogaAnalysis) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            "Tajika Yogas",
+                            stringResource(StringKeyAnalysis.VARSHAPHALA_TAJIKA_YOGAS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            if (analysis.yogasFound.isEmpty()) "No major yogas found" else "${analysis.yogasFound.size} Yogas active",
+                            if (analysis.yogasFound.isEmpty()) 
+                                stringResource(StringKeyAnalysis.VARSHAPHALA_NO_MAJOR_YOGAS) 
+                            else 
+                                stringResource(StringKeyAnalysis.VARSHAPHALA_YOGAS_ACTIVE_FMT, analysis.yogasFound.size),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -2487,7 +2490,7 @@ private fun TajikaYogasCard(analysis: TajikaYogaCalculator.TajikaYogaAnalysis) {
                     Spacer(modifier = Modifier.height(16.dp))
                     if (analysis.yogasFound.isEmpty()) {
                         Text(
-                            "No significant Tajika yogas formed in this year's chart.",
+                            stringResource(StringKeyAnalysis.VARSHAPHALA_NO_YOGAS_DESC),
                             style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextSecondary,
                             fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
@@ -2528,7 +2531,7 @@ private fun TajikaYogaItem(yoga: TajikaYogaCalculator.TajikaYoga) {
                 shape = RoundedCornerShape(4.dp)
             ) {
                  Text(
-                     "Str: ${String.format("%.1f", yoga.strength)}",
+                     "${stringResource(StringKeyAnalysis.VARSHAPHALA_STRENGTH_SHORT)} ${String.format("%.1f", yoga.strength)}",
                      style = MaterialTheme.typography.labelSmall,
                      modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
                      color = AppTheme.TextSecondary

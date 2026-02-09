@@ -74,6 +74,7 @@ import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -322,19 +323,19 @@ private fun VipareetaStatusCard(analysis: VipareetaRajaYogaCalculator.VipareetaR
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     if (analysis.harshaYoga.isFormed) {
                         YogaBadge(
-                            name = "Harsha",
+                            name = stringResource(VipareetaRajaYogaCalculator.VipareetaYogaType.HARSHA.nameKey).split(" ").first(),
                             color = getYogaTypeColor(VipareetaRajaYogaCalculator.VipareetaYogaType.HARSHA)
                         )
                     }
                     if (analysis.saralaYoga.isFormed) {
                         YogaBadge(
-                            name = "Sarala",
+                            name = stringResource(VipareetaRajaYogaCalculator.VipareetaYogaType.SARALA.nameKey).split(" ").first(),
                             color = getYogaTypeColor(VipareetaRajaYogaCalculator.VipareetaYogaType.SARALA)
                         )
                     }
                     if (analysis.vimalaYoga.isFormed) {
                         YogaBadge(
-                            name = "Vimala",
+                            name = stringResource(VipareetaRajaYogaCalculator.VipareetaYogaType.VIMALA.nameKey).split(" ").first(),
                             color = getYogaTypeColor(VipareetaRajaYogaCalculator.VipareetaYogaType.VIMALA)
                         )
                     }
@@ -554,7 +555,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                             )
                         }
                         Text(
-                            text = "${yoga.yogaType.houseLord}th Lord: ${yoga.dusthanaLord.displayName}",
+                            text = stringResource(StringKeyDosha.VIPAREETA_DUSTHANA_LORD_FMT, yoga.yogaType.houseLord, yoga.dusthanaLord.getLocalizedName(language)),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -701,7 +702,7 @@ private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaE
                     color = AppTheme.AccentGold.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = "H${exchange.house1}-H${exchange.house2}",
+                        text = "${com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyUIExtra.HOUSE_PREFIX_SHORT)}${exchange.house1}-${com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyUIExtra.HOUSE_PREFIX_SHORT)}${exchange.house2}",
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.AccentGold,
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -927,7 +928,7 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
                         color = yogaColor.copy(alpha = 0.15f)
                     ) {
                         Text(
-                            text = type.displayName.split(" ").first(),
+                            text = stringResource(type.nameKey).split(" ").first(),
                             style = MaterialTheme.typography.labelSmall,
                             color = yogaColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)

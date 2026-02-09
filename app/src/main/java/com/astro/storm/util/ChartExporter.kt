@@ -22,6 +22,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyExport
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
@@ -731,7 +732,8 @@ class ChartExporter @Inject constructor(
 
             paint.color = COLOR_ACCENT
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
-            canvas.drawText("H$houseNum", cellX, cellY, paint)
+            val houseAbbr = locManager.getString(StringKeyUIExtra.HOUSE_PREFIX_SHORT)
+            canvas.drawText("$houseAbbr$houseNum", cellX, cellY, paint)
 
             paint.color = COLOR_TEXT
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
@@ -1244,7 +1246,7 @@ class ChartExporter @Inject constructor(
         // SAV Values row
         xPos = PDF_MARGIN.toFloat() + 8f
         paint.color = COLOR_ACCENT
-        canvas.drawText("SAV", xPos, yPos + 38f, paint)
+        canvas.drawText(locManager.getString(StringKeyAnalysis.ASHTAK_SAV_ABBR), xPos, yPos + 38f, paint)
         xPos = PDF_MARGIN.toFloat() + 35f
 
         paint.textSize = 10f
@@ -1286,7 +1288,7 @@ class ChartExporter @Inject constructor(
             canvas.drawText(sign.abbreviation, xPos + 2f, yPos + 14f, paint)
             xPos += signWidth
         }
-        canvas.drawText("Tot", xPos + 2f, yPos + 14f, paint)
+        canvas.drawText(locManager.getString(StringKeyAnalysis.ASHTAK_TOTAL), xPos + 2f, yPos + 14f, paint)
 
         yPos += 18f
 
@@ -2045,7 +2047,7 @@ class ChartExporter @Inject constructor(
         var yPos = PDF_MARGIN_TOP.toFloat()
 
         // Title
-        drawPageHeader(canvas, paint, pageWidth, yPos, "Vedic Remedies & Recommendations")
+        drawPageHeader(canvas, paint, pageWidth, yPos, locManager.getString(StringKeyExport.EXPORT_REMEDIES_TITLE))
         yPos += 48f
 
         // Calculate remedies
