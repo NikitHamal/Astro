@@ -66,6 +66,8 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringKeyShadbala
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -139,7 +141,7 @@ fun SthanaBalaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKeyUICommon.BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -148,7 +150,7 @@ fun SthanaBalaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKeyUICommon.INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -284,7 +286,7 @@ private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysi
                 color = scoreColor
             )
             Text(
-                text = "/100",
+                text = stringResource(StringKeyUIExtra.SLASH) + "100",
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -424,7 +426,7 @@ private fun SthanaBalaInsightsCard(analysis: SthanaBalaCalculator.SthanaBalaAnal
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(text = "•", color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(StringKeyUICommon.BULLET), color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
                     Text(
                         text = insight,
                         style = MaterialTheme.typography.bodySmall,
@@ -447,7 +449,7 @@ private fun SthanaBalaRecommendationsCard(analysis: SthanaBalaCalculator.SthanaB
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Recommendations",
+                text = stringResource(StringKeyUICommon.REMEDIES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentPrimary
@@ -458,7 +460,7 @@ private fun SthanaBalaRecommendationsCard(analysis: SthanaBalaCalculator.SthanaB
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(text = "→", color = AppTheme.AccentPrimary, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(StringKeyUIExtra.ARROW), color = AppTheme.AccentPrimary, fontWeight = FontWeight.Bold)
                     Text(
                         text = rec,
                         style = MaterialTheme.typography.bodySmall,

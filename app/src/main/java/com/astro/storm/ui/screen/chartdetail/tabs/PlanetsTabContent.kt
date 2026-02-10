@@ -300,10 +300,11 @@ private fun ConditionStatBadge(
     label: String,
     color: Color
 ) {
+    val planetsCountA11y = stringResource(StringKeyUIExtra.PLANETS_COUNT_A11Y, count, label)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.semantics(mergeDescendants = true) {
-            contentDescription = "$count planets $label"
+            contentDescription = planetsCountA11y
         }
     ) {
         Box(

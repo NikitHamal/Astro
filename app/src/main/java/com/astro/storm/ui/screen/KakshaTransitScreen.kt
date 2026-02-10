@@ -33,6 +33,7 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyAdvanced
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -93,7 +94,7 @@ fun KakshaTransitScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKeyUICommon.BACK),
                             tint = colors.TextPrimary
                         )
                     }

@@ -81,6 +81,7 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.NityaYogaCalculator
@@ -155,7 +156,7 @@ fun NityaYogaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKeyUICommon.BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -164,7 +165,7 @@ fun NityaYogaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKeyUICommon.INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }

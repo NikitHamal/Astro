@@ -70,6 +70,8 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKeyShadbala
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.KalaBalaCalculator
@@ -143,7 +145,7 @@ fun KalaBalaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKeyUICommon.BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -152,7 +154,7 @@ fun KalaBalaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKeyUICommon.INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -288,12 +290,12 @@ private fun BirthContextCard(context: KalaBalaCalculator.BirthContext) {
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = "${context.pakshaType.displayName} • Tithi ${context.tithiNumber}",
+                    text = "${context.pakshaType.displayName} " + stringResource(StringKeyUICommon.BULLET) + " Tithi ${context.tithiNumber}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    text = "Hora: ${context.horaLord.displayName} • Day: ${context.dayLord.displayName}",
+                    text = "Hora: ${context.horaLord.displayName} " + stringResource(StringKeyUICommon.BULLET) + " Day: ${context.dayLord.displayName}",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -335,7 +337,7 @@ private fun KalaBalaScoreCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) {
                 color = scoreColor
             )
             Text(
-                text = "/100",
+                text = stringResource(StringKeyUIExtra.SLASH) + "100",
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -473,7 +475,7 @@ private fun KalaBalaInsightsCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) 
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(text = "•", color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(StringKeyUICommon.BULLET), color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
                     Text(
                         text = insight,
                         style = MaterialTheme.typography.bodySmall,
@@ -496,7 +498,7 @@ private fun KalaBalaRecommendationsCard(analysis: KalaBalaCalculator.KalaBalaAna
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Recommendations",
+                text = stringResource(StringKeyUICommon.REMEDIES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentPrimary
@@ -507,7 +509,7 @@ private fun KalaBalaRecommendationsCard(analysis: KalaBalaCalculator.KalaBalaAna
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(text = "→", color = AppTheme.AccentPrimary, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(StringKeyUIExtra.ARROW), color = AppTheme.AccentPrimary, fontWeight = FontWeight.Bold)
                     Text(
                         text = rec,
                         style = MaterialTheme.typography.bodySmall,
@@ -582,7 +584,7 @@ private fun KalaBalaComponentCard(component: KalaBalaCalculator.ComponentSummary
                         color = scoreColor
                     )
                     Text(
-                        text = "/ ${String.format("%.0f", component.maxVirupas)}",
+                        text = stringResource(StringKeyUIExtra.SLASH) + " ${String.format("%.0f", component.maxVirupas)}",
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -746,7 +748,7 @@ private fun KalaBalaBreakdownRow(name: String, value: Double, max: Double) {
             color = AppTheme.TextSecondary
         )
         Text(
-            text = "${String.format("%.1f", value)} / ${String.format("%.0f", max)}",
+            text = "${String.format("%.1f", value)} " + stringResource(StringKeyUIExtra.SLASH) + " ${String.format("%.0f", max)}",
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextPrimary

@@ -18,10 +18,13 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import com.astro.storm.data.localization.LocalizationManager
+import com.astro.storm.core.common.BikramSambatConverter
+import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyExport
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
@@ -654,7 +657,12 @@ class ChartExporter @Inject constructor(
                 } else {
                     Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
                 }
-                canvas.drawText(value, xPos + 4f, yPos + 12f, paint)
+
+                val displayValue = if (locManager.currentLanguage == Language.NEPALI && index in listOf(2, 4, 5)) {
+                    BikramSambatConverter.toNepaliNumerals(value)
+                } else value
+
+                canvas.drawText(displayValue, xPos + 4f, yPos + 12f, paint)
                 xPos += columnWidths[index]
             }
 
@@ -843,11 +851,11 @@ class ChartExporter @Inject constructor(
 
                     paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
                     paint.color = COLOR_TEXT_MUTED
-                    canvas.drawText("($planets)", PDF_MARGIN.toFloat() + 16f + paint.measureText("${yoga.name} "), yPos + 10f, paint)
+                    canvas.drawText("${locManager.getString(StringKeyUIExtra.PAREN_START)}$planets${locManager.getString(StringKeyUIExtra.PAREN_END)}", PDF_MARGIN.toFloat() + 16f + paint.measureText("${yoga.name} "), yPos + 10f, paint)
                     yPos += 14f
 
                     val effectText = if (yoga.effects.length > 90) yoga.effects.substring(0, 87) + "..." else yoga.effects
-                    canvas.drawText("${yoga.strength.displayName}: $effectText", PDF_MARGIN.toFloat() + 16f, yPos + 10f, paint)
+                    canvas.drawText("${yoga.strength.displayName}${locManager.getString(StringKeyUIExtra.COLON_SPACE)}$effectText", PDF_MARGIN.toFloat() + 16f, yPos + 10f, paint)
                     yPos += 18f
 
                     if (yPos > options.pageSize.height - 100) return@forEach
@@ -2865,24 +2873,38 @@ class ChartExporter @Inject constructor(
     // ==================== HELPER FUNCTIONS ====================
 
     private fun formatCoordinate(value: Double, isLatitude: Boolean): String {
+        val language = locManager.currentLanguage
         val abs = kotlin.math.abs(value)
         val degrees = abs.toInt()
         val minutes = ((abs - degrees) * 60).toInt()
         val seconds = ((((abs - degrees) * 60) - minutes) * 60).toInt()
         val direction = if (isLatitude) {
-            if (value >= 0) "N" else "S"
+            if (value >= 0) locManager.getString(StringKeyUIExtra.DIR_N) else locManager.getString(StringKeyUIExtra.DIR_S)
         } else {
-            if (value >= 0) "E" else "W"
+            if (value >= 0) locManager.getString(StringKeyUIExtra.DIR_E) else locManager.getString(StringKeyUIExtra.DIR_W)
         }
-        return "$degrees° $minutes' $seconds\" $direction"
+
+        val degSign = locManager.getString(StringKeyUIExtra.DEGREE)
+        val minSign = locManager.getString(StringKeyUIExtra.ARC_MINUTE)
+        val secSign = locManager.getString(StringKeyUIExtra.ARC_SECOND)
+
+        val result = "$degrees$degSign $minutes$minSign $seconds$secSign $direction"
+        return if (language == Language.NEPALI) BikramSambatConverter.toNepaliNumerals(result) else result
     }
 
     private fun formatDegree(degree: Double): String {
+        val language = locManager.currentLanguage
         val normalizedDegree = (degree % 360.0 + 360.0) % 360.0
         val deg = normalizedDegree.toInt()
         val min = ((normalizedDegree - deg) * 60).toInt()
         val sec = ((((normalizedDegree - deg) * 60) - min) * 60).toInt()
-        return "$deg° $min' $sec\""
+
+        val degSign = locManager.getString(StringKeyUIExtra.DEGREE)
+        val minSign = locManager.getString(StringKeyUIExtra.ARC_MINUTE)
+        val secSign = locManager.getString(StringKeyUIExtra.ARC_SECOND)
+
+        val result = "$deg$degSign $min$minSign $sec$secSign"
+        return if (language == Language.NEPALI) BikramSambatConverter.toNepaliNumerals(result) else result
     }
 
     private fun isExalted(planet: Planet, sign: ZodiacSign): Boolean {

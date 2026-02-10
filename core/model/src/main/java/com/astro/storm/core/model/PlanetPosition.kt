@@ -2,6 +2,7 @@ package com.astro.storm.core.model
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.common.StringKeyUIExtra
 
 /**
  * Position of a planet in the chart
@@ -49,7 +50,12 @@ data class PlanetPosition(
             " " + StringResources.get(com.astro.storm.core.common.StringKey.PLANET_RETROGRADE_SHORT, language)
         } else ""
         
-        return "${planet.getLocalizedName(language)}: ${sign.abbreviation} ${formatNum(deg)}° ${formatNum(min)}' ${formatNum(sec)}\"$retrograde"
+        val degSign = StringResources.get(StringKeyUIExtra.DEGREE, language)
+        val minSign = StringResources.get(StringKeyUIExtra.ARC_MINUTE, language)
+        val secSign = StringResources.get(StringKeyUIExtra.ARC_SECOND, language)
+        val colon = StringResources.get(StringKeyUIExtra.COLON_SPACE, language)
+
+        return "${planet.getLocalizedName(language)}$colon${sign.abbreviation} ${formatNum(deg)}$degSign ${formatNum(min)}$minSign ${formatNum(sec)}$secSign$retrograde"
     }
 
     fun toLLMString(language: Language = Language.ENGLISH): String {
@@ -61,14 +67,24 @@ data class PlanetPosition(
         val isNepali = language == Language.NEPALI
         fun formatNum(n: Int) = if (isNepali) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
         
+        val degSign = StringResources.get(StringKeyUIExtra.DEGREE, language)
+        val minSign = StringResources.get(StringKeyUIExtra.ARC_MINUTE, language)
+        val secSign = StringResources.get(StringKeyUIExtra.ARC_SECOND, language)
+        val pipe = StringResources.get(StringKeyUIExtra.PIPE_SEP, language)
+        val colon = StringResources.get(StringKeyUIExtra.COLON_SPACE, language)
+        val pStart = StringResources.get(StringKeyUIExtra.PAREN_START, language)
+        val pEnd = StringResources.get(StringKeyUIExtra.PAREN_END, language)
+        val bStart = StringResources.get(StringKeyUIExtra.BRACKET_START, language)
+        val bEnd = StringResources.get(StringKeyUIExtra.BRACKET_END, language)
+
         val retrograde = if (isRetrograde) {
-            " [" + StringResources.get(com.astro.storm.core.common.StringKey.PLANET_RETROGRADE, language) + "]"
+            " $bStart" + StringResources.get(com.astro.storm.core.common.StringKey.PLANET_RETROGRADE, language) + bEnd
         } else ""
         
         val houseText = StringResources.get(com.astro.storm.core.common.StringKey.CHART_HOUSE, language)
         val padaText = StringResources.get(com.astro.storm.core.common.StringKey.NAKSHATRA_PADA, language)
         
-        return "${planet.getLocalizedName(language).padEnd(10)}: ${sign.getLocalizedName(language).padEnd(12)} ${formatNum(deg)}° ${formatNum(min)}' ${formatNum(sec)}\" | $houseText ${formatNum(house)} | ${nakshatra.getLocalizedName(language)} ($padaText ${formatNum(nakshatraPada)})$retrograde"
+        return "${planet.getLocalizedName(language).padEnd(10)}$colon${sign.getLocalizedName(language).padEnd(12)} ${formatNum(deg)}$degSign ${formatNum(min)}$minSign ${formatNum(sec)}$secSign $pipe $houseText ${formatNum(house)} $pipe ${nakshatra.getLocalizedName(language)} $pStart$padaText ${formatNum(nakshatraPada)}$pEnd$retrograde"
     }
 }
 

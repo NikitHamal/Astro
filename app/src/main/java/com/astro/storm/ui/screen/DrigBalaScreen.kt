@@ -71,6 +71,8 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKeyShadbala
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
@@ -147,7 +149,7 @@ fun DrigBalaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKeyUICommon.BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -156,7 +158,7 @@ fun DrigBalaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKeyUICommon.INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -293,7 +295,7 @@ private fun OverallScoreCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
                 color = scoreColor
             )
             Text(
-                text = "/100",
+                text = stringResource(StringKeyUIExtra.SLASH) + "100",
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -434,7 +436,7 @@ private fun DrigBalaInsightsCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) 
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "•",
+                        text = stringResource(StringKeyUICommon.BULLET),
                         color = AppTheme.AccentGold,
                         fontWeight = FontWeight.Bold
                     )
@@ -460,7 +462,7 @@ private fun DrigBalaRecommendationsCard(analysis: DrigBalaCalculator.DrigBalaAna
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Recommendations",
+                text = stringResource(StringKeyUICommon.REMEDIES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentPrimary
@@ -472,7 +474,7 @@ private fun DrigBalaRecommendationsCard(analysis: DrigBalaCalculator.DrigBalaAna
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "→",
+                        text = stringResource(StringKeyUIExtra.ARROW),
                         color = AppTheme.AccentPrimary,
                         fontWeight = FontWeight.Bold
                     )
@@ -556,7 +558,7 @@ private fun AspectGroupCard(planet: Planet, aspects: List<DrigBalaCalculator.Asp
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${aspects.size} aspects cast",
+                            text = stringResource(StringKeyAnalysis.TRANSIT_ASPECTS_TO_NATAL) + " (${aspects.size})",
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -871,7 +873,7 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
                 }
                 Column {
                     Text(
-                        text = "House ${houseAspect.houseNumber}",
+                        text = stringResource(StringKeyAnalysis.TRANSIT_HOUSE_LABEL) + " ${houseAspect.houseNumber}",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary

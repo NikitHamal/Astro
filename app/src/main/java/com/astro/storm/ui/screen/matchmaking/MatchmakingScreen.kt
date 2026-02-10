@@ -45,6 +45,7 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.currentLanguage
@@ -887,7 +888,7 @@ private fun EnhancedGunaScoreBar(guna: GunaAnalysis) {
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    "(${guna.description})",
+                    stringResource(StringKeyUIExtra.PAREN_START) + guna.description + stringResource(StringKeyUIExtra.PAREN_END),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
                     maxLines = 1,
@@ -901,7 +902,7 @@ private fun EnhancedGunaScoreBar(guna: GunaAnalysis) {
                 shape = RoundedCornerShape(4.dp)
             ) {
                 Text(
-                    "${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()}",
+                    "${guna.obtainedPoints.toInt()}${stringResource(StringKeyUIExtra.SLASH)}${guna.maxPoints.toInt()}",
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold,
                     color = if (guna.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor,
@@ -1431,7 +1432,7 @@ private fun EnhancedManglikPersonCard(
                         Spacer(modifier = Modifier.height(6.dp))
                         analysis.factors.forEach { factor ->
                             Text(
-                                "• $factor",
+                                stringResource(StringKeyUIExtra.BULLET_SPACE) + factor,
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.WarningColor.copy(alpha = 0.9f)
                             )
@@ -1457,7 +1458,7 @@ private fun EnhancedManglikPersonCard(
                         Spacer(modifier = Modifier.height(6.dp))
                         analysis.cancellations.forEach { cancellation ->
                             Text(
-                                "✓ $cancellation",
+                                stringResource(StringKeyUIExtra.CHECKMARK_SPACE) + cancellation,
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.SuccessColor.copy(alpha = 0.9f)
                             )
@@ -2743,8 +2744,8 @@ private fun formatMatchmakingForAi(
         }
 
         appendLine("## Manglik (Kuja Dosha) Analysis")
-        appendLine("- Bride Manglik Status: ${if (result.brideManglik.effectiveDosha != ManglikDosha.NONE) "Yes (Manglik)" else "No"}")
-        appendLine("- Groom Manglik Status: ${if (result.groomManglik.effectiveDosha != ManglikDosha.NONE) "Yes (Manglik)" else "No"}")
+        appendLine("- Bride Manglik Status: ${if (result.brideManglik.effectiveDosha != ManglikDosha.NONE) StringResources.get(StringKeyUICommon.YES_MANGLIK, Language.ENGLISH) else StringResources.get(StringKeyUICommon.NO, Language.ENGLISH)}")
+        appendLine("- Groom Manglik Status: ${if (result.groomManglik.effectiveDosha != ManglikDosha.NONE) StringResources.get(StringKeyUICommon.YES_MANGLIK, Language.ENGLISH) else StringResources.get(StringKeyUICommon.NO, Language.ENGLISH)}")
         appendLine("- Compatibility: ${result.manglikCompatibilityLevel}")
         appendLine()
 

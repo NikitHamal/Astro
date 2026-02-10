@@ -49,6 +49,7 @@ enum class StringKeyExport(override val en: String, override val ne: String) : S
     EXPORT_HOUSE("House", "भाव"),
     EXPORT_NAKSHATRA("Nakshatra", "नक्षत्र"),
     EXPORT_PADA("Pada", "पद"),
+    EXPORT_PADA_PREFIX("Pada ", "पद "),
     EXPORT_RULER("Ruler", "स्वामी"),
     EXPORT_DEITY("Deity", "देवता"),
     

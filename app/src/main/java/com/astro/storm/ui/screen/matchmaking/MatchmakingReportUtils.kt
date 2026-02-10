@@ -2,6 +2,8 @@ package com.astro.storm.ui.screen.matchmaking
 
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.CompatibilityRating
 import com.astro.storm.core.model.ManglikDosha
@@ -76,7 +78,7 @@ object MatchmakingReportUtils {
             appendLine(StringResources.get(StringKeyMatch.REPORT_ASHTAKOOTA_8_GUNA, language))
             appendLine("─────────────────────────────────────")
             result.gunaAnalyses.forEach { guna ->
-                val status = if (guna.isPositive) "✓" else "✗"
+                val status = if (guna.isPositive) StringResources.get(StringKeyUIExtra.CHECK_MARK, language) else StringResources.get(StringKeyUIExtra.X_MARK, language)
                 val gunaTypeName = guna.gunaType.getLocalizedName(language)
                 val description = com.astro.storm.ephemeris.MatchmakingCalculator.getGunaDescription(guna.gunaType.displayName, language)
                 
@@ -95,21 +97,21 @@ object MatchmakingReportUtils {
             if (result.brideManglik.marsHouse > 0) {
                 appendLine("  ${String.format(StringResources.get(StringKeyMatch.REPORT_MARS_IN_HOUSE, language), result.brideManglik.marsHouse)}")
             }
-            result.brideManglik.factors.forEach { appendLine("  • $it") }
-            result.brideManglik.cancellations.forEach { appendLine("  ✓ $it $cancellationText") }
+            result.brideManglik.factors.forEach { appendLine("  ${StringResources.get(StringKeyUICommon.BULLET)} $it") }
+            result.brideManglik.cancellations.forEach { appendLine("  ${StringResources.get(StringKeyUIExtra.CHECK_MARK)} $it $cancellationText") }
             appendLine()
             appendLine("${StringResources.get(StringKeyMatch.GROOM, language)}: ${result.groomManglik.effectiveDosha.getLocalizedName(language)}")
             if (result.groomManglik.marsHouse > 0) {
                 appendLine("  ${String.format(StringResources.get(StringKeyMatch.REPORT_MARS_IN_HOUSE, language), result.groomManglik.marsHouse)}")
             }
-            result.groomManglik.factors.forEach { appendLine("  • $it") }
-            result.groomManglik.cancellations.forEach { appendLine("  ✓ $it $cancellationText") }
+            result.groomManglik.factors.forEach { appendLine("  ${StringResources.get(StringKeyUICommon.BULLET)} $it") }
+            result.groomManglik.cancellations.forEach { appendLine("  ${StringResources.get(StringKeyUIExtra.CHECK_MARK)} $it $cancellationText") }
             appendLine()
 
             if (result.specialConsiderations.isNotEmpty()) {
                 appendLine(StringResources.get(StringKeyMatch.REPORT_SPECIAL_CONSIDERATIONS, language))
                 appendLine("─────────────────────────────────────")
-                result.specialConsiderations.forEach { appendLine("• $it") }
+                result.specialConsiderations.forEach { appendLine("${StringResources.get(StringKeyUICommon.BULLET)} $it") }
                 appendLine()
             }
 
@@ -147,17 +149,17 @@ object MatchmakingReportUtils {
         val groomLabel = StringResources.get(StringKeyMatch.GROOM, language)
 
         return buildString {
-            appendLine("🔮 ${StringResources.get(StringKeyMatch.REPORT_KUNDLI_MILAN_SUMMARY, language)}")
+            appendLine("${StringResources.get(StringKeyUIExtra.EMOJI_REPORT, language)} ${StringResources.get(StringKeyMatch.REPORT_KUNDLI_MILAN_SUMMARY, language)}")
             appendLine()
-            brideChart?.let { appendLine("👰 $brideLabel: ${it.birthData.name ?: naText}") }
-            groomChart?.let { appendLine("🤵 $groomLabel: ${it.birthData.name ?: naText}") }
+            brideChart?.let { appendLine("${StringResources.get(StringKeyUIExtra.EMOJI_BRIDE, language)} $brideLabel: ${it.birthData.name ?: naText}") }
+            groomChart?.let { appendLine("${StringResources.get(StringKeyUIExtra.EMOJI_GROOM, language)} $groomLabel: ${it.birthData.name ?: naText}") }
             appendLine()
-            appendLine("⭐ ${StringResources.get(StringKeyMatch.REPORT_SCORE_LABEL, language)} ${String.format("%.1f", result.totalPoints)}/${result.maxPoints.toInt()} (${String.format("%.1f", result.percentage)}%)")
-            appendLine("📊 ${StringResources.get(StringKeyMatch.REPORT_RATING_LABEL, language)} ${result.rating.getLocalizedName(language)}")
+            appendLine("${StringResources.get(StringKeyUIExtra.EMOJI_STAR, language)} ${StringResources.get(StringKeyMatch.REPORT_SCORE_LABEL, language)} ${String.format("%.1f", result.totalPoints)}/${result.maxPoints.toInt()} (${String.format("%.1f", result.percentage)}%)")
+            appendLine("${StringResources.get(StringKeyUIExtra.EMOJI_CHART, language)} ${StringResources.get(StringKeyMatch.REPORT_RATING_LABEL, language)} ${result.rating.getLocalizedName(language)}")
             appendLine()
             appendLine("${result.rating.getLocalizedDescription(language)}")
             appendLine()
-            appendLine("🔴 ${StringResources.get(StringKeyMatch.REPORT_MANGLIK_LABEL, language)} ${result.manglikCompatibilityRecommendation}")
+            appendLine("${StringResources.get(StringKeyUIExtra.EMOJI_ALERT, language)} ${StringResources.get(StringKeyMatch.REPORT_MANGLIK_LABEL, language)} ${result.manglikCompatibilityRecommendation}")
             appendLine()
             appendLine("— ${StringResources.get(StringKeyMatch.REPORT_GENERATED_BY, language)}")
         }
@@ -176,7 +178,7 @@ object MatchmakingReportUtils {
             appendLine(StringResources.get(StringKeyMatch.REPORT_ASHTAKOOTA_GUNA_SCORES, language))
             appendLine("━━━━━━━━━━━━━━━━━━━━━━")
             result.gunaAnalyses.forEach { guna ->
-                val emoji = if (guna.isPositive) "✅" else "⚠️"
+                val emoji = if (guna.isPositive) StringResources.get(StringKeyUIExtra.SYMBOL_SUCCESS, language) else StringResources.get(StringKeyUIExtra.SYMBOL_WARNING, language)
                 appendLine("$emoji ${guna.gunaType.getLocalizedName(language)}: ${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()}")
             }
             appendLine("━━━━━━━━━━━━━━━━━━━━━━")
