@@ -306,6 +306,7 @@ private fun BirthContextCard(context: KalaBalaCalculator.BirthContext) {
 
 @Composable
 private fun KalaBalaScoreCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) {
+    val language = LocalLanguage.current
     val scoreColor = when {
         analysis.overallScore >= 70 -> AppTheme.SuccessColor
         analysis.overallScore >= 50 -> AppTheme.AccentGold
@@ -359,6 +360,7 @@ private fun KalaBalaScoreCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) {
 
 @Composable
 private fun KalaBalaStrongestWeakestRow(analysis: KalaBalaCalculator.KalaBalaAnalysis) {
+    val language = LocalLanguage.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -548,6 +550,7 @@ private fun KalaBalaComponentsSection(analysis: KalaBalaCalculator.KalaBalaAnaly
 
 @Composable
 private fun KalaBalaComponentCard(component: KalaBalaCalculator.ComponentSummary) {
+    val language = LocalLanguage.current
     val scoreColor = when {
         component.percentage >= 70 -> AppTheme.SuccessColor
         component.percentage >= 50 -> AppTheme.AccentGold
@@ -742,6 +745,7 @@ private fun PlanetKalaBalaCard(planetBala: KalaBalaCalculator.PlanetKalaBala) {
 
 @Composable
 private fun KalaBalaBreakdownRow(name: String, value: Double, max: Double) {
+    val language = LocalLanguage.current
     Row(
         modifier = Modifier
             .fillMaxWidth()

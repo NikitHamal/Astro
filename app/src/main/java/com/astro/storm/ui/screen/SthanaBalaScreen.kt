@@ -256,6 +256,7 @@ private fun SthanaBalaOverviewSection(analysis: SthanaBalaCalculator.SthanaBalaA
 
 @Composable
 private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
+    val language = LocalLanguage.current
     val scoreColor = when {
         analysis.overallScore >= 70 -> AppTheme.SuccessColor
         analysis.overallScore >= 50 -> AppTheme.AccentGold
@@ -309,6 +310,7 @@ private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysi
 
 @Composable
 private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
+    val language = LocalLanguage.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
