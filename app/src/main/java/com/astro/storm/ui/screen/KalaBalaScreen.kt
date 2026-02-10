@@ -330,8 +330,9 @@ private fun KalaBalaScoreCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) {
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(8.dp))
+            val scoreText = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(analysis.overallScore.toInt()) else String.format("%.0f", analysis.overallScore)
             Text(
-                text = String.format("%.0f", analysis.overallScore),
+                text = scoreText,
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
@@ -392,8 +393,9 @@ private fun KalaBalaStrongestWeakestRow(analysis: KalaBalaCalculator.KalaBalaAna
                 )
                 val strongestBala = analysis.planetaryKalaBala[analysis.strongestPlanet]
                 strongestBala?.let {
+                    val perc = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it.percentageOfRequired.toInt()) else String.format("%.0f", it.percentageOfRequired)
                     Text(
-                        text = "${String.format("%.0f", it.percentageOfRequired)}%",
+                        text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.SuccessColor
                     )
@@ -431,8 +433,9 @@ private fun KalaBalaStrongestWeakestRow(analysis: KalaBalaCalculator.KalaBalaAna
                 )
                 val weakestBala = analysis.planetaryKalaBala[analysis.weakestPlanet]
                 weakestBala?.let {
+                    val perc = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it.percentageOfRequired.toInt()) else String.format("%.0f", it.percentageOfRequired)
                     Text(
-                        text = "${String.format("%.0f", it.percentageOfRequired)}%",
+                        text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.ErrorColor
                     )
@@ -679,15 +682,18 @@ private fun PlanetKalaBalaCard(planetBala: KalaBalaCalculator.PlanetKalaBala) {
                     }
                 }
 
+                val language = LocalLanguage.current
                 Column(horizontalAlignment = Alignment.End) {
+                    val perc = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(planetBala.percentageOfRequired.toInt()) else String.format("%.0f", planetBala.percentageOfRequired)
                     Text(
-                        text = "${String.format("%.0f", planetBala.percentageOfRequired)}%",
+                        text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = scoreColor
                     )
+                    val rupas = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(String.format("%.1f", planetBala.totalRupas)) else String.format("%.1f", planetBala.totalRupas)
                     Text(
-                        text = "${String.format("%.1f", planetBala.totalRupas)} ${stringResource(StringKeyShadbala.COMMON_RUPAS)}",
+                        text = "$rupas ${stringResource(StringKeyShadbala.COMMON_RUPAS)}",
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )

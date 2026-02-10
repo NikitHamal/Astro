@@ -72,6 +72,7 @@ import com.astro.storm.core.common.StringKeyShadbala
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.data.localization.stringResource
@@ -516,6 +517,7 @@ private fun DrigBalaAspectsSection(analysis: DrigBalaCalculator.DrigBalaAnalysis
 
 @Composable
 private fun AspectGroupCard(planet: Planet, aspects: List<DrigBalaCalculator.AspectInfo>) {
+    val language = LocalLanguage.current
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -836,6 +838,7 @@ private fun DrigBalaHousesSection(analysis: DrigBalaCalculator.DrigBalaAnalysis)
 
 @Composable
 private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
+    val language = LocalLanguage.current
     val netColor = when (houseAspect.netEffect) {
         DrigBalaCalculator.AspectEffect.BENEFIC -> AppTheme.SuccessColor
         DrigBalaCalculator.AspectEffect.MALEFIC -> AppTheme.ErrorColor

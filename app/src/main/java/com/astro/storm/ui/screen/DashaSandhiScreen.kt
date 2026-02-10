@@ -73,6 +73,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyUICommon
@@ -361,9 +362,11 @@ private fun VolatilityScoreCard(score: Int) {
                     strokeWidth = 10.dp,
                     strokeCap = StrokeCap.Round
                 )
+                val language = LocalLanguage.current
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    val scoreText = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(score) else score.toString()
                     Text(
-                        text = score.toString() + stringResource(StringKeyUIExtra.PERCENT),
+                        text = scoreText + stringResource(StringKeyUIExtra.PERCENT),
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = getVolatilityColor(score)
@@ -390,6 +393,7 @@ private fun VolatilityScoreCard(score: Int) {
 
 @Composable
 private fun QuickStatsRow(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis) {
+    val language = LocalLanguage.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -400,15 +404,17 @@ private fun QuickStatsRow(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis) 
             color = if (analysis.currentSandhi != null) AppTheme.WarningColor else AppTheme.SuccessColor,
             modifier = Modifier.weight(1f)
         )
+        val upcoming = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(analysis.upcomingSandhis.size) else analysis.upcomingSandhis.size.toString()
         StatCard(
             title = stringResource(StringKeyDosha.SANDHI_UPCOMING),
-            value = "${analysis.upcomingSandhis.size}",
+            value = upcoming,
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
+        val recent = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(analysis.recentPastSandhis.size) else analysis.recentPastSandhis.size.toString()
         StatCard(
             title = stringResource(StringKeyDosha.SANDHI_RECENT),
-            value = "${analysis.recentPastSandhis.size}",
+            value = recent,
             color = AppTheme.TextMuted,
             modifier = Modifier.weight(1f)
         )
@@ -959,6 +965,7 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Date badge
+            val language = LocalLanguage.current
             Surface(
                 shape = RoundedCornerShape(8.dp),
                 color = AppTheme.CardBackground
@@ -967,8 +974,9 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    val dayStr = entry.date.format(DateTimeFormatter.ofPattern("d"))
                     Text(
-                        text = entry.date.format(DateTimeFormatter.ofPattern("d")),
+                        text = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(dayStr.toInt()) else dayStr,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
