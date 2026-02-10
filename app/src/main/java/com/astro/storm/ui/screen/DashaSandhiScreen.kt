@@ -75,6 +75,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
@@ -160,7 +161,7 @@ fun DashaSandhiScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(com.astro.storm.core.common.StringKeyUICommon.NAV_BACK),
+                            contentDescription = stringResource(StringKeyUICommon.NAV_BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }

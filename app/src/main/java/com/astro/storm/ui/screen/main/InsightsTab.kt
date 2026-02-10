@@ -807,9 +807,7 @@ private fun EnergyCard(overallEnergy: Int) {
     val energyColor = getEnergyColor(overallEnergy)
     val energyDescription = remember(overallEnergy, language) { getEnergyDescription(overallEnergy, language) }
     
-    val localizedScore = remember(overallEnergy, language) {
-        stringResource(StringKeyUIExtra.ENERGY_SCORE_FMT, overallEnergy)
-    }
+    val localizedScore = stringResource(StringKeyUIExtra.ENERGY_SCORE_FMT, overallEnergy)
 
     Card(
         modifier = Modifier

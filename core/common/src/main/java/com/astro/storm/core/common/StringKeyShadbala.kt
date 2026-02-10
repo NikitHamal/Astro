@@ -197,6 +197,9 @@ enum class StringKeyShadbala(override val en: String, override val ne: String) :
     KALA_NIGHT_BIRTH("Night Birth", "रात जन्म"),
     KALA_SHUKLA_PAKSHA("Shukla Paksha", "शुक्ल पक्ष"),
     KALA_KRISHNA_PAKSHA("Krishna Paksha", "कृष्ण पक्ष"),
+    KALA_HORA_LABEL("Hora", "होरा"),
+    KALA_DAY_LABEL("Day", "वार"),
+    KALA_TITHI_LABEL("Tithi", "तिथि"),
 
     // Info
     KALA_INFO_TITLE("About Kala Bala", "कालबलको बारेमा"),

@@ -52,6 +52,7 @@ import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.stringResource
+import com.astro.storm.data.localization.localized
 import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
@@ -167,8 +168,8 @@ private fun PlanetPositionCard(position: PlanetPosition) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), position.sign.getLocalizedName(LocalLanguage.current), DialogColors.AccentTeal)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_DEGREE), formatDegree(position.longitude), DialogColors.TextPrimary)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE), "${stringResource(StringKeyAnalysis.HOUSE)} ${position.house}", DialogColors.AccentGold)
-            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(LocalLanguage.current)} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${position.nakshatraPada})", DialogColors.AccentPurple)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE), "${stringResource(StringKeyAnalysis.HOUSE)} ${position.house.localized()}", DialogColors.AccentGold)
+            DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA), "${position.nakshatra.getLocalizedName(LocalLanguage.current)} (${stringResource(StringKeyAnalysis.PANCHANGA_PADA)} ${position.nakshatraPada.localized()})", DialogColors.AccentPurple)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_LORD), position.nakshatra.ruler.getLocalizedName(LocalLanguage.current), DialogColors.TextSecondary)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_NAKSHATRA_DEITY), position.nakshatra.deity, DialogColors.TextSecondary)
             if (position.isRetrograde) {

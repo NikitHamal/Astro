@@ -58,13 +58,13 @@ object MatchmakingReportUtils {
             appendLine("─────────────────────────────────────")
             brideChart?.let {
                 appendLine("$brideLabel ${it.birthData.name ?: naText}")
-                appendLine("  $moonSignLabel ${getRashiName(it)}")
-                appendLine("  $nakshatraLabel ${getNakshatraName(it)} (${getPada(it)})")
+                appendLine("  $moonSignLabel ${getRashiName(it, language)}")
+                appendLine("  $nakshatraLabel ${getNakshatraName(it, language)} (${getPada(it, language)})")
             }
             groomChart?.let {
                 appendLine("$groomLabel ${it.birthData.name ?: naText}")
-                appendLine("  $moonSignLabel ${getRashiName(it)}")
-                appendLine("  $nakshatraLabel ${getNakshatraName(it)} (${getPada(it)})")
+                appendLine("  $moonSignLabel ${getRashiName(it, language)}")
+                appendLine("  $nakshatraLabel ${getNakshatraName(it, language)} (${getPada(it, language)})")
             }
             appendLine()
 
@@ -97,28 +97,29 @@ object MatchmakingReportUtils {
             if (result.brideManglik.marsHouse > 0) {
                 appendLine("  ${String.format(StringResources.get(StringKeyMatch.REPORT_MARS_IN_HOUSE, language), result.brideManglik.marsHouse)}")
             }
-            result.brideManglik.factors.forEach { appendLine("  ${StringResources.get(StringKeyUICommon.BULLET)} $it") }
-            result.brideManglik.cancellations.forEach { appendLine("  ${StringResources.get(StringKeyUIExtra.CHECK_MARK)} $it $cancellationText") }
+            result.brideManglik.factors.forEach { appendLine("  ${StringResources.get(StringKeyUICommon.BULLET, language)} $it") }
+            result.brideManglik.cancellations.forEach { appendLine("  ${StringResources.get(StringKeyUIExtra.CHECK_MARK, language)} $it $cancellationText") }
             appendLine()
             appendLine("${StringResources.get(StringKeyMatch.GROOM, language)}: ${result.groomManglik.effectiveDosha.getLocalizedName(language)}")
             if (result.groomManglik.marsHouse > 0) {
                 appendLine("  ${String.format(StringResources.get(StringKeyMatch.REPORT_MARS_IN_HOUSE, language), result.groomManglik.marsHouse)}")
             }
-            result.groomManglik.factors.forEach { appendLine("  ${StringResources.get(StringKeyUICommon.BULLET)} $it") }
-            result.groomManglik.cancellations.forEach { appendLine("  ${StringResources.get(StringKeyUIExtra.CHECK_MARK)} $it $cancellationText") }
+            result.groomManglik.factors.forEach { appendLine("  ${StringResources.get(StringKeyUICommon.BULLET, language)} $it") }
+            result.groomManglik.cancellations.forEach { appendLine("  ${StringResources.get(StringKeyUIExtra.CHECK_MARK, language)} $it $cancellationText") }
             appendLine()
 
             if (result.specialConsiderations.isNotEmpty()) {
                 appendLine(StringResources.get(StringKeyMatch.REPORT_SPECIAL_CONSIDERATIONS, language))
                 appendLine("─────────────────────────────────────")
-                result.specialConsiderations.forEach { appendLine("${StringResources.get(StringKeyUICommon.BULLET)} $it") }
+                result.specialConsiderations.forEach { appendLine("${StringResources.get(StringKeyUICommon.BULLET, language)} $it") }
                 appendLine()
             }
 
             appendLine(StringResources.get(StringKeyMatch.REPORT_SUGGESTED_REMEDIES, language))
             appendLine("─────────────────────────────────────")
             result.remedies.forEachIndexed { index, remedy ->
-                appendLine("${index + 1}. $remedy")
+                val pos = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(index + 1) else (index + 1).toString()
+                appendLine("$pos. $remedy")
             }
             appendLine()
 

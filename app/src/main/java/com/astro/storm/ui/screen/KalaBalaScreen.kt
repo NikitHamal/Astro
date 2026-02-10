@@ -290,12 +290,12 @@ private fun BirthContextCard(context: KalaBalaCalculator.BirthContext) {
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = "${context.pakshaType.displayName} " + stringResource(StringKeyUICommon.BULLET) + " Tithi ${context.tithiNumber}",
+                    text = "${context.pakshaType.displayName} " + stringResource(StringKeyUICommon.BULLET) + " " + stringResource(StringKeyShadbala.KALA_TITHI_LABEL) + " ${context.tithiNumber}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    text = "Hora: ${context.horaLord.displayName} " + stringResource(StringKeyUICommon.BULLET) + " Day: ${context.dayLord.displayName}",
+                    text = stringResource(StringKeyShadbala.KALA_HORA_LABEL) + stringResource(StringKeyUICommon.COLON) + " ${context.horaLord.displayName} " + stringResource(StringKeyUICommon.BULLET) + " " + stringResource(StringKeyShadbala.KALA_DAY_LABEL) + stringResource(StringKeyUICommon.COLON) + " ${context.dayLord.displayName}",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )

@@ -557,8 +557,9 @@ private fun AspectGroupCard(planet: Planet, aspects: List<DrigBalaCalculator.Asp
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
+                        val aspectsCount = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(aspects.size) else aspects.size.toString()
                         Text(
-                            text = stringResource(StringKeyAnalysis.TRANSIT_ASPECTS_TO_NATAL) + " (${aspects.size})",
+                            text = stringResource(StringKeyAnalysis.TRANSIT_ASPECTS_TO_NATAL) + " " + stringResource(StringKeyUIExtra.PAREN_START) + aspectsCount + stringResource(StringKeyUIExtra.PAREN_END),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -857,6 +858,7 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                val houseNum = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(houseAspect.houseNumber) else houseAspect.houseNumber.toString()
                 Box(
                     modifier = Modifier
                         .size(40.dp)
@@ -865,7 +867,7 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "${houseAspect.houseNumber}",
+                        text = houseNum,
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
                         color = netColor
@@ -873,7 +875,7 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
                 }
                 Column {
                     Text(
-                        text = stringResource(StringKeyAnalysis.TRANSIT_HOUSE_LABEL) + " ${houseAspect.houseNumber}",
+                        text = stringResource(StringKeyAnalysis.TRANSIT_HOUSE_LABEL) + " $houseNum",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
