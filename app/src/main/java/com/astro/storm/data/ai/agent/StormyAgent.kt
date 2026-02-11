@@ -234,7 +234,12 @@ class StormyAgent @Inject constructor(
                     when (response) {
                         is ChatResponse.Content -> {
                             val rawChunk = response.text
-                            val newContent = normalizeStreamingDelta(rawChunk, lastContentSnapshot)
+                            val currentState = stateRef.get()
+                            val newContent = normalizeStreamingDelta(
+                                rawChunk = rawChunk,
+                                alreadyEmitted = currentState.totalEmittedContent,
+                                previousSnapshot = lastContentSnapshot
+                            )
                             if (newContent.isEmpty()) continue
                             iterationContentBuilder.append(newContent)
                             lastContentSnapshot = rawChunk
@@ -243,7 +248,6 @@ class StormyAgent @Inject constructor(
                                 // Thread-safe deduplication check
                                 if (!contentDeduplicator.isDuplicate(newContent)) {
                                     // Update atomic state
-                                    val currentState = stateRef.get()
                                     stateRef.set(currentState.withAppendedContent(newContent))
                                     send(AgentResponse.ContentChunk(newContent))
                                 }
@@ -253,14 +257,18 @@ class StormyAgent @Inject constructor(
                         is ChatResponse.Reasoning -> {
                             if (response.text.isNotEmpty()) {
                                 val rawChunk = response.text
-                                val newReasoning = normalizeStreamingDelta(rawChunk, lastReasoningSnapshot)
+                                val currentState = stateRef.get()
+                                val newReasoning = normalizeStreamingDelta(
+                                    rawChunk = rawChunk,
+                                    alreadyEmitted = currentState.totalEmittedReasoning,
+                                    previousSnapshot = lastReasoningSnapshot
+                                )
                                 if (newReasoning.isEmpty()) continue
                                 iterationReasoningBuilder.append(newReasoning)
                                 lastReasoningSnapshot = rawChunk
 
                                 // Thread-safe deduplication check
                                 if (!reasoningDeduplicator.isDuplicate(newReasoning)) {
-                                    val currentState = stateRef.get()
                                     stateRef.set(currentState.withAppendedReasoning(newReasoning))
                                     send(AgentResponse.ReasoningChunk(newReasoning))
                                 }
@@ -568,8 +576,23 @@ class StormyAgent @Inject constructor(
      * Some providers emit cumulative streaming chunks (full text-so-far) while others emit deltas.
      * Normalize both into a delta to prevent duplicated message content.
      */
-    private fun normalizeStreamingDelta(rawChunk: String, previousSnapshot: String): String {
+    private fun normalizeStreamingDelta(
+        rawChunk: String,
+        alreadyEmitted: String,
+        previousSnapshot: String
+    ): String {
         if (rawChunk.isEmpty()) return ""
+
+        // Cross-iteration safety: some models repeat full prior content/reasoning.
+        if (alreadyEmitted.isNotEmpty()) {
+            if (rawChunk.startsWith(alreadyEmitted)) {
+                return rawChunk.substring(alreadyEmitted.length)
+            }
+            if (alreadyEmitted.startsWith(rawChunk) || alreadyEmitted.contains(rawChunk)) {
+                return ""
+            }
+        }
+
         if (previousSnapshot.isEmpty()) return rawChunk
 
         return when {
@@ -690,16 +713,73 @@ class StormyAgent @Inject constructor(
         // Try to extract tool name even from malformed JSON
         val toolNameMatch = Regex(""""tool"\s*:\s*"([^"]+)"""").find(jsonStr)
             ?: Regex(""""name"\s*:\s*"([^"]+)"""").find(jsonStr)
+            ?: Regex(""""function"\s*:\s*"([^"]+)"""").find(jsonStr)
 
         if (toolNameMatch != null) {
             val toolName = toolNameMatch.groupValues[1]
 
-            // Try to extract arguments
-            val argsMatch = Regex(""""arguments"\s*:\s*(\{[^}]*\})"""").find(jsonStr)
-                ?: Regex(""""parameters"\s*:\s*(\{[^}]*\})"""").find(jsonStr)
+            // Try to extract arguments as JSON object first
+            val argsMatch = Regex(""""arguments"\s*:\s*(\{[\s\S]*?\})""").find(jsonStr)
+                ?: Regex(""""parameters"\s*:\s*(\{[\s\S]*?\})""").find(jsonStr)
 
-            val arguments = argsMatch?.groupValues?.get(1) ?: "{}"
-            addToolCallIfNotExists(toolName, arguments, toolCalls, processedIds)
+            if (argsMatch != null) {
+                addToolCallIfNotExists(toolName, argsMatch.groupValues[1], toolCalls, processedIds)
+                return
+            }
+
+            // Fallback: reconstruct likely arguments from malformed payload
+            val reconstructedArgs = JSONObject()
+            val scalarPairs = Regex(
+                """"([a-zA-Z_][a-zA-Z0-9_]*)"\s*:\s*("([^"]*)"|[-]?\d+(?:\.\d+)?|true|false|null)"""
+            )
+            val excludedKeys = setOf("tool", "name", "function", "arguments", "parameters", "args")
+
+            scalarPairs.findAll(jsonStr).forEach { match ->
+                val key = match.groupValues[1]
+                if (key in excludedKeys) return@forEach
+                val rawValue = match.groupValues[2]
+                when {
+                    rawValue.equals("true", ignoreCase = true) -> reconstructedArgs.put(key, true)
+                    rawValue.equals("false", ignoreCase = true) -> reconstructedArgs.put(key, false)
+                    rawValue.equals("null", ignoreCase = true) -> reconstructedArgs.put(key, JSONObject.NULL)
+                    rawValue.startsWith("\"") && rawValue.endsWith("\"") -> reconstructedArgs.put(
+                        key,
+                        rawValue.substring(1, rawValue.length - 1)
+                    )
+                    rawValue.contains(".") -> rawValue.toDoubleOrNull()?.let { reconstructedArgs.put(key, it) }
+                        ?: reconstructedArgs.put(key, rawValue)
+                    else -> rawValue.toLongOrNull()?.let { reconstructedArgs.put(key, it) }
+                        ?: reconstructedArgs.put(key, rawValue)
+                }
+            }
+
+            // Handle highly malformed variants like profile_id12 (missing colon)
+            if (!reconstructedArgs.has("profile_id")) {
+                Regex("""profile_id\s*[:=]?\s*"?(\d+)""", RegexOption.IGNORE_CASE)
+                    .find(jsonStr)
+                    ?.groupValues
+                    ?.getOrNull(1)
+                    ?.let { reconstructedArgs.put("profile_id", it) }
+            }
+
+            if (!reconstructedArgs.has("years_ahead")) {
+                Regex("""years_ahead\s*[:=]?\s*"?(\d+)""", RegexOption.IGNORE_CASE)
+                    .find(jsonStr)
+                    ?.groupValues
+                    ?.getOrNull(1)
+                    ?.toIntOrNull()
+                    ?.let { reconstructedArgs.put("years_ahead", it) }
+            }
+
+            if (!reconstructedArgs.has("dasha_type")) {
+                Regex("""dasha_type\s*[:=]?\s*"?(vimshottari|yogini|chara)""", RegexOption.IGNORE_CASE)
+                    .find(jsonStr)
+                    ?.groupValues
+                    ?.getOrNull(1)
+                    ?.let { reconstructedArgs.put("dasha_type", it.lowercase()) }
+            }
+
+            addToolCallIfNotExists(toolName, reconstructedArgs.toString(), toolCalls, processedIds)
         }
     }
 
@@ -793,7 +873,10 @@ class StormyAgent @Inject constructor(
     private fun String.cleanToolCallBlocks(): String {
         return this
             .replace(Regex("""```tool_call\s*\n?\s*\{[\s\S]*?\}\s*\n?```"""), "")
-            .replace(Regex("""\{\"tool\"\s*:\s*\"[^\"]+\"\s*,\s*\"arguments\"\s*:\s*\{[^}]*\}\s*\}"""), "")
+            .replace(Regex("""```json\s*\n?\s*\{[\s\S]*?"tool"[\s\S]*?\}\s*\n?```""", RegexOption.MULTILINE), "")
+            .replace(Regex("""\{\"tool\"\s*:\s*\"[^\"]+\"\s*,\s*\"arguments\"\s*:\s*\{[\s\S]*?\}\s*\}"""), "")
+            .replace(Regex("""(?m)^\s*tool_call\s*$"""), "")
+            .replace(Regex("""(?m)^\s*`{3}\s*$"""), "")
             .trim()
     }
 }

@@ -131,6 +131,12 @@ object ContentCleaner {
         Regex("""(?i)\bnever use italics in your responses\.?""")
     )
 
+    private val leakedToolFragmentPatterns = listOf(
+        Regex("""(?m)^\s*tool_call\s*$"""),
+        Regex("""(?m)^\s*`{3}_?[a-zA-Z0-9_]*\s*$"""),
+        Regex("""(?m)^\s*(profile_id|partner_profile_id|dasha_type|years_ahead)\b.*$""", RegexOption.IGNORE_CASE)
+    )
+
     // Lightweight patterns for streaming updates (hot path).
     // Keep this cheap and avoid expensive deduplication while text is still arriving.
     private val streamingArtifactPatterns = listOf(
@@ -138,6 +144,17 @@ object ContentCleaner {
         Regex("""^data:\s*""", RegexOption.MULTILINE),
         Regex("""^event:\s*\w+\s*$""", RegexOption.MULTILINE),
         Regex("""^id:\s*\S+\s*$""", RegexOption.MULTILINE)
+    )
+
+    // Fast-path removal of tool call scaffolding during live streaming.
+    private val streamingToolCallPatterns = listOf(
+        Regex("""```tool_call[\s\S]*?```""", RegexOption.MULTILINE),
+        Regex("""```json[\s\S]*?"tool"[\s\S]*?```""", RegexOption.MULTILINE),
+        Regex("""(?m)^\s*tool_call\s*$"""),
+        Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[\s\S]*?\}\s*\}"""),
+        Regex("""(?m)^\s*"(tool|arguments|parameters|function)"\s*:\s*.*$"""),
+        Regex("""(?m)^\s*(profile_id|partner_profile_id|dasha_type|years_ahead|for_now|activity)\b.*$""", RegexOption.IGNORE_CASE),
+        Regex("""(?m)^\s*`{3}\s*$""")
     )
 
     /**
@@ -178,6 +195,10 @@ object ContentCleaner {
             cleaned = pattern.replace(cleaned, "")
         }
 
+        for (pattern in leakedToolFragmentPatterns) {
+            cleaned = pattern.replace(cleaned, "")
+        }
+
         // Detect and remove content duplication (common after tool calls)
         cleaned = removeDuplicatedContent(cleaned)
 
@@ -203,12 +224,29 @@ object ContentCleaner {
             cleaned = pattern.replace(cleaned, "")
         }
 
+        for (pattern in streamingToolCallPatterns) {
+            cleaned = pattern.replace(cleaned, "")
+        }
+
+        // Only run structural removal when tool-call markers are present.
+        if (cleaned.contains("tool_call", ignoreCase = true) ||
+            (cleaned.contains("\"tool\"") && cleaned.contains("\"arguments\""))
+        ) {
+            cleaned = removeToolCallJsonObjects(cleaned)
+        }
+
         for (pattern in leakedInstructionPatterns) {
             cleaned = pattern.replace(cleaned, "")
         }
 
+        for (pattern in leakedToolFragmentPatterns) {
+            cleaned = pattern.replace(cleaned, "")
+        }
+
         return cleaned
+            .replace(Regex("\n{4,}"), "\n\n\n")
             .replace(Regex("[ \t]+\n"), "\n")
+            .replace(Regex("\n[ \t]+\n"), "\n\n")
             .trim()
     }
 
@@ -518,6 +556,10 @@ object ContentCleaner {
             cleaned = pattern.replace(cleaned, "")
         }
 
+        for (pattern in leakedToolFragmentPatterns) {
+            cleaned = pattern.replace(cleaned, "")
+        }
+
         // Clean up whitespace
         cleaned = cleaned
             .replace(Regex("\n{4,}"), "\n\n\n")
@@ -542,6 +584,8 @@ object ContentCleaner {
             .replace(Regex("""(?<![a-zA-Z])undefined(?![a-zA-Z])"""), "")
             .replace(Regex("""(?i)\bi\s+(?:should\s+)?not use italics in (?:my\s+)?responses?(?:\s+as per the guidelines)?\.?"""), "")
             .replace(Regex("""(?i)\bnever use italics in your responses\.?"""), "")
+            .replace(Regex("""(?m)^\s*tool_call\s*$"""), "")
+            .replace(Regex("""(?m)^\s*(profile_id|partner_profile_id|dasha_type|years_ahead)\b.*$""", RegexOption.IGNORE_CASE), "")
             .replace(Regex("[ \t]+\n"), "\n")
             .trim()
     }

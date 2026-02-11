@@ -1,0 +1,92 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="288dp"
+    android:height="288dp"
+    android:viewportWidth="288"
+    android:viewportHeight="288">
+  <group
+      android:scaleX="1.2"
+      android:scaleY="1.2"
+      android:translateX="28.8"
+      android:translateY="28.8">
+    
+    <!-- Outer zodiac ring -->
+    <path
+        android:pathData="M144,40C201.4,40 248,86.6 248,144C248,201.4 201.4,248 144,248C86.6,248 40,201.4 40,144C40,86.6 86.6,40 144,40ZM144,56C95.4,56 56,95.4 56,144C56,192.6 95.4,232 144,232C192.6,232 232,192.6 232,144C232,95.4 192.6,56 144,56Z"
+        android:fillColor="#6366F1"/>
+    
+    <!-- Inner decorative ring -->
+    <path
+        android:pathData="M144,80C179.3,80 208,108.7 208,144C208,179.3 179.3,208 144,208C108.7,208 80,179.3 80,144C80,108.7 108.7,80 144,80ZM144,96C117.5,96 96,117.5 96,144C96,170.5 117.5,192 144,192C170.5,192 192,170.5 192,144C192,117.5 170.5,96 144,96Z"
+        android:fillColor="#8B5CF6"/>
+    
+    <!-- Central sun -->
+    <path
+        android:pathData="M144,112C161.7,112 176,126.3 176,144C176,161.7 161.7,176 144,176C126.3,176 112,161.7 112,144C112,126.3 126.3,112 144,112ZM144,124C132.9,124 124,132.9 124,144C124,155.1 132.9,164 144,164C155.1,164 164,155.1 164,144C164,132.9 155.1,124 144,124Z"
+        android:fillColor="#F59E0B"/>
+    
+    <!-- Sun center glow -->
+    <path
+        android:pathData="M144,132C150.6,132 156,137.4 156,144C156,150.6 150.6,156 144,156C137.4,156 132,150.6 132,144C132,137.4 137.4,132 144,132Z"
+        android:fillColor="#FBBF24"/>
+    
+    <!-- 12 zodiac dots -->
+    <path
+        android:pathData="M144,64m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"
+        android:fillColor="#EC4899"/>
+    <path
+        android:pathData="M180,76m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#8B5CF6"/>
+    <path
+        android:pathData="M208,104m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#6366F1"/>
+    <path
+        android:pathData="M220,140m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"
+        android:fillColor="#3B82F6"/>
+    <path
+        android:pathData="M212,180m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#06B6D4"/>
+    <path
+        android:pathData="M184,212m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#10B981"/>
+    <path
+        android:pathData="M144,224m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"
+        android:fillColor="#84CC16"/>
+    <path
+        android:pathData="M104,212m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#EAB308"/>
+    <path
+        android:pathData="M76,184m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#F97316"/>
+    <path
+        android:pathData="M68,144m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"
+        android:fillColor="#EF4444"/>
+    <path
+        android:pathData="M76,104m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#EC4899"/>
+    <path
+        android:pathData="M104,76m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#D946EF"/>
+    
+    <!-- Orbit line -->
+    <path
+        android:pathData="M144,144m-48,0a48,48 0,1 1,96 0a48,48 0,1 1,-96 0"
+        android:strokeColor="#6366F1"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"/>
+    
+    <!-- Sparkles -->
+    <path
+        android:pathData="M80,80l2,4l4,2l-4,2l-2,4l-2,-4l-4,-2l4,-2z"
+        android:fillColor="#FFFFFF"/>
+    <path
+        android:pathData="M208,72l2,4l4,2l-4,2l-2,4l-2,-4l-4,-2l4,-2z"
+        android:fillColor="#FFFFFF"/>
+    <path
+        android:pathData="M216,200l2,4l4,2l-4,2l-2,4l-2,-4l-4,-2l4,-2z"
+        android:fillColor="#FFFFFF"/>
+    <path
+        android:pathData="M72,208l2,4l4,2l-4,2l-2,4l-2,-4l-4,-2l4,-2z"
+        android:fillColor="#FFFFFF"/>
+    
+  </group>
+</vector>

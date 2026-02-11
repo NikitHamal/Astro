@@ -91,6 +91,35 @@ fun getProfileName(
     }
 }
 
+/**
+ * Read profile ID from tool arguments with tolerance for malformed/alternate keys.
+ */
+fun getProfileIdArg(arguments: JSONObject): String {
+    val candidateKeys = listOf("profile_id", "profileId", "profile", "id", "chart_id", "chartId")
+
+    for (key in candidateKeys) {
+        if (arguments.has(key) && !arguments.isNull(key)) {
+            val raw = arguments.opt(key)?.toString()
+            val normalized = normalizeProfileId(raw)
+            if (normalized.isNotEmpty()) return normalized
+        }
+    }
+
+    return "current"
+}
+
+private fun normalizeProfileId(raw: String?): String {
+    if (raw.isNullOrBlank()) return "current"
+    val trimmed = raw.trim().trim('"', '\'')
+    if (trimmed.equals("current", ignoreCase = true)) return "current"
+
+    // Recover IDs from malformed forms like "profile_id12"
+    val digits = Regex("""\d+""").find(trimmed)?.value
+    if (!digits.isNullOrEmpty()) return digits
+
+    return trimmed.replace(Regex("""[^a-zA-Z0-9_-]"""), "").ifEmpty { "current" }
+}
+
 // ============================================
 // PROFILE & CHART ACCESS TOOLS
 // ============================================
@@ -202,7 +231,7 @@ class GetPlanetPositionsTool : AstrologyTool {
     )
 
     override suspend fun execute(arguments: JSONObject, context: ToolContext): ToolExecutionResult {
-        val profileId = arguments.optString("profile_id", "current")
+        val profileId = getProfileIdArg(arguments)
         val (chart, error) = getChartForProfile(profileId, context)
 
         if (chart == null) {
@@ -290,7 +319,7 @@ class GetHousePositionsTool : AstrologyTool {
     )
 
     override suspend fun execute(arguments: JSONObject, context: ToolContext): ToolExecutionResult {
-        val profileId = arguments.optString("profile_id", "current")
+        val profileId = getProfileIdArg(arguments)
         val (chart, error) = getChartForProfile(profileId, context)
 
         if (chart == null) {
@@ -383,7 +412,7 @@ class GetNakshatraInfoTool : AstrologyTool {
     )
 
     override suspend fun execute(arguments: JSONObject, context: ToolContext): ToolExecutionResult {
-        val profileId = arguments.optString("profile_id", "current")
+        val profileId = getProfileIdArg(arguments)
         val (chart, error) = getChartForProfile(profileId, context)
 
         if (chart == null) {
@@ -688,7 +717,7 @@ class GetDashaInfoTool : AstrologyTool {
     )
 
     override suspend fun execute(arguments: JSONObject, context: ToolContext): ToolExecutionResult {
-        val profileId = arguments.optString("profile_id", "current")
+        val profileId = getProfileIdArg(arguments)
         val (chart, error) = getChartForProfile(profileId, context)
 
         if (chart == null) {
@@ -701,11 +730,19 @@ class GetDashaInfoTool : AstrologyTool {
         }
 
         val dashaType = arguments.optString("dasha_type", "vimshottari")
-        val yearsAhead = arguments.optInt("years_ahead", 10)
+        val yearsAhead = arguments.optInt("years_ahead", 10).coerceIn(1, 120)
 
         try {
             val dashaCalculator = VimshottariDashaCalculator()
             val dashas = dashaCalculator.calculateDashas(chart, yearsAhead)
+            if (dashas.isEmpty()) {
+                return ToolExecutionResult(
+                    success = false,
+                    data = null,
+                    error = "Unable to calculate dasha timeline for this profile",
+                    summary = "Dasha calculation failed"
+                )
+            }
 
             val data = JSONObject().apply {
                 put("dashaType", dashaType)
@@ -734,13 +771,22 @@ class GetDashaInfoTool : AstrologyTool {
                 })
             }
 
+            val currentInfo = runCatching { dashaCalculator.getCurrentDasha(chart) }.getOrNull()
             val currentDasha = dashas.find { it.isCurrent }
             val currentAntar = currentDasha?.antarDashas?.find { it.isCurrent }
+
+            val summaryMaha = currentInfo?.mahaDasha?.displayName ?: currentDasha?.planet?.displayName
+            val summaryAntar = currentInfo?.antarDasha?.displayName ?: currentAntar?.planet?.displayName
+            val summary = if (summaryMaha != null && summaryAntar != null) {
+                "Current: $summaryMaha Mahadasha, $summaryAntar Antardasha"
+            } else {
+                "Dasha timeline calculated"
+            }
 
             return ToolExecutionResult(
                 success = true,
                 data = data,
-                summary = "Current: ${currentDasha?.planet?.displayName ?: "N/A"} Mahadasha, ${currentAntar?.planet?.displayName ?: "N/A"} Antardasha"
+                summary = summary
             )
         } catch (e: Exception) {
             return ToolExecutionResult(
@@ -770,7 +816,7 @@ class GetCurrentDashaTool : AstrologyTool {
     )
 
     override suspend fun execute(arguments: JSONObject, context: ToolContext): ToolExecutionResult {
-        val profileId = arguments.optString("profile_id", "current")
+        val profileId = getProfileIdArg(arguments)
         val (chart, error) = getChartForProfile(profileId, context)
 
         if (chart == null) {
@@ -784,7 +830,25 @@ class GetCurrentDashaTool : AstrologyTool {
 
         try {
             val dashaCalculator = VimshottariDashaCalculator()
-            val currentDasha = dashaCalculator.getCurrentDasha(chart)
+            val currentDasha = runCatching { dashaCalculator.getCurrentDasha(chart) }.getOrNull()
+                ?: run {
+                    // Fallback for edge timelines where current markers are missing.
+                    val now = Date()
+                    val allDashas = dashaCalculator.calculateDashas(chart, 120)
+                    val activeMaha = allDashas.find { !now.before(it.startDate) && !now.after(it.endDate) }
+                    val activeAntar = activeMaha?.antarDashas?.find { !now.before(it.startDate) && !now.after(it.endDate) }
+                    if (activeMaha != null && activeAntar != null) {
+                        VimshottariDashaCalculator.CurrentDashaInfo(
+                            mahaDasha = activeMaha.planet,
+                            mahaDashaStart = activeMaha.startDate,
+                            mahaDashaEnd = activeMaha.endDate,
+                            antarDasha = activeAntar.planet,
+                            antarDashaStart = activeAntar.startDate,
+                            antarDashaEnd = activeAntar.endDate,
+                            pratyantarDasha = null
+                        )
+                    } else null
+                }
 
             if (currentDasha == null) {
                 return ToolExecutionResult(

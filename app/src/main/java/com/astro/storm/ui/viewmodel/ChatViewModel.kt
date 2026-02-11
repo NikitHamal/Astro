@@ -610,7 +610,7 @@ class ChatViewModel @Inject constructor(
                             }
                             is AgentResponse.ReasoningChunk -> {
                                 // Accumulate raw reasoning
-                                appendToAccumulator(rawReasoningAccumulator, response.text)
+                                appendReasoningChunk(response.text)
 
                                 // Track reasoning section start time
                                 if (reasoningStartTime == 0L) {
@@ -949,6 +949,22 @@ class ChatViewModel @Inject constructor(
             }
         }
         builder.append(text)
+    }
+
+    /**
+     * Append reasoning chunks with separator protection.
+     * Prevents words from merging when adjacent chunks have no whitespace boundary.
+     */
+    private fun appendReasoningChunk(text: String) {
+        if (text.isEmpty()) return
+        if (rawReasoningAccumulator.isNotEmpty()) {
+            val prev = rawReasoningAccumulator.last()
+            val next = text.first()
+            if (!prev.isWhitespace() && !next.isWhitespace()) {
+                appendToAccumulator(rawReasoningAccumulator, "\n")
+            }
+        }
+        appendToAccumulator(rawReasoningAccumulator, text)
     }
 
     /**
@@ -1727,7 +1743,7 @@ class ChatViewModel @Inject constructor(
                                 }
                             }
                             is AgentResponse.ReasoningChunk -> {
-                                appendToAccumulator(rawReasoningAccumulator, response.text)
+                                appendReasoningChunk(response.text)
 
                                 if (reasoningStartTime == 0L) {
                                     reasoningStartTime = System.currentTimeMillis()

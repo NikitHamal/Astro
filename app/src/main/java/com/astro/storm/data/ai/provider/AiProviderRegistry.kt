@@ -41,7 +41,10 @@ class AiProviderRegistry @Inject constructor(
 
         fun getInstance(context: Context): AiProviderRegistry =
             instance ?: synchronized(this) {
-                instance ?: AiProviderRegistry(context.applicationContext).also {
+                instance ?: AiProviderRegistry(
+                    context.applicationContext,
+                    ProviderApiKeyStore(context.applicationContext)
+                ).also {
                     instance = it
                 }
             }
