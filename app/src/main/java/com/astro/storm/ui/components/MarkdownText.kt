@@ -125,6 +125,12 @@ object ContentCleaner {
         Regex("""^id:\s*\S+\s*$""", RegexOption.MULTILINE)
     )
 
+    // Strip leaked prompt/meta-instruction fragments if a model exposes internal text.
+    private val leakedInstructionPatterns = listOf(
+        Regex("""(?i)\bi\s+(?:should\s+)?not use italics in (?:my\s+)?responses?(?:\s+as per the guidelines)?\.?"""),
+        Regex("""(?i)\bnever use italics in your responses\.?""")
+    )
+
     // Lightweight patterns for streaming updates (hot path).
     // Keep this cheap and avoid expensive deduplication while text is still arriving.
     private val streamingArtifactPatterns = listOf(
@@ -167,6 +173,11 @@ object ContentCleaner {
             cleaned = pattern.replace(cleaned, "")
         }
 
+        // Remove leaked instruction fragments from user-facing text
+        for (pattern in leakedInstructionPatterns) {
+            cleaned = pattern.replace(cleaned, "")
+        }
+
         // Detect and remove content duplication (common after tool calls)
         cleaned = removeDuplicatedContent(cleaned)
 
@@ -189,6 +200,10 @@ object ContentCleaner {
 
         var cleaned = content
         for (pattern in streamingArtifactPatterns) {
+            cleaned = pattern.replace(cleaned, "")
+        }
+
+        for (pattern in leakedInstructionPatterns) {
             cleaned = pattern.replace(cleaned, "")
         }
 
@@ -499,6 +514,10 @@ object ContentCleaner {
         // Apply deduplication to reasoning as well
         cleaned = removeReasoningDuplication(cleaned)
 
+        for (pattern in leakedInstructionPatterns) {
+            cleaned = pattern.replace(cleaned, "")
+        }
+
         // Clean up whitespace
         cleaned = cleaned
             .replace(Regex("\n{4,}"), "\n\n\n")
@@ -521,6 +540,8 @@ object ContentCleaner {
             .replace(Regex("""</?reflection>"""), "")
             .replace(Regex("""(?<![a-zA-Z])null(?![a-zA-Z])"""), "")
             .replace(Regex("""(?<![a-zA-Z])undefined(?![a-zA-Z])"""), "")
+            .replace(Regex("""(?i)\bi\s+(?:should\s+)?not use italics in (?:my\s+)?responses?(?:\s+as per the guidelines)?\.?"""), "")
+            .replace(Regex("""(?i)\bnever use italics in your responses\.?"""), "")
             .replace(Regex("[ \t]+\n"), "\n")
             .trim()
     }

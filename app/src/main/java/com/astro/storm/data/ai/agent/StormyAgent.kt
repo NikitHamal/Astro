@@ -222,6 +222,8 @@ class StormyAgent @Inject constructor(
             val pendingToolCalls = mutableListOf<ToolCallRequest>()
             val processedToolIdsInIteration = mutableSetOf<String>()
             var hasError = false
+            var lastContentSnapshot = ""
+            var lastReasoningSnapshot = ""
 
             // Channel for collecting responses from the flow
             val responseChannel = Channel<ChatResponse>(Channel.UNLIMITED)
@@ -231,8 +233,11 @@ class StormyAgent @Inject constructor(
                 for (response in responseChannel) {
                     when (response) {
                         is ChatResponse.Content -> {
-                            val newContent = response.text
+                            val rawChunk = response.text
+                            val newContent = normalizeStreamingDelta(rawChunk, lastContentSnapshot)
+                            if (newContent.isEmpty()) continue
                             iterationContentBuilder.append(newContent)
+                            lastContentSnapshot = rawChunk
 
                             if (newContent.isNotEmpty()) {
                                 // Thread-safe deduplication check
@@ -247,8 +252,11 @@ class StormyAgent @Inject constructor(
 
                         is ChatResponse.Reasoning -> {
                             if (response.text.isNotEmpty()) {
-                                val newReasoning = response.text
+                                val rawChunk = response.text
+                                val newReasoning = normalizeStreamingDelta(rawChunk, lastReasoningSnapshot)
+                                if (newReasoning.isEmpty()) continue
                                 iterationReasoningBuilder.append(newReasoning)
+                                lastReasoningSnapshot = rawChunk
 
                                 // Thread-safe deduplication check
                                 if (!reasoningDeduplicator.isDuplicate(newReasoning)) {
@@ -553,6 +561,21 @@ class StormyAgent @Inject constructor(
                 "Maximum iterations reached (${iteration} total, ${toolIterations} tool calls). The analysis may be incomplete.",
                 isRetryable = false
             ))
+        }
+    }
+
+    /**
+     * Some providers emit cumulative streaming chunks (full text-so-far) while others emit deltas.
+     * Normalize both into a delta to prevent duplicated message content.
+     */
+    private fun normalizeStreamingDelta(rawChunk: String, previousSnapshot: String): String {
+        if (rawChunk.isEmpty()) return ""
+        if (previousSnapshot.isEmpty()) return rawChunk
+
+        return when {
+            rawChunk.startsWith(previousSnapshot) -> rawChunk.substring(previousSnapshot.length)
+            previousSnapshot.startsWith(rawChunk) -> ""
+            else -> rawChunk
         }
     }
 
