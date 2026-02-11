@@ -78,6 +78,7 @@ class LocalizationManager @Inject constructor(
         return when (language) {
             Language.ENGLISH -> DateSystem.AD
             Language.NEPALI -> DateSystem.BS
+            Language.HINDI -> DateSystem.BS
         }
     }
 
@@ -109,10 +110,14 @@ class LocalizationManager @Inject constructor(
     fun isNepali(): Boolean = _language.value == Language.NEPALI
 
     /**
-     * Check if current date system is BS
-     * Now equivalent to checking if language is Nepali
+     * Check if current language is Hindi
      */
-    fun isBSDateSystem(): Boolean = _language.value == Language.NEPALI
+    fun isHindi(): Boolean = _language.value == Language.HINDI
+
+    /**
+     * Check if current date system is BS
+     */
+    fun isBSDateSystem(): Boolean = _language.value == Language.NEPALI || _language.value == Language.HINDI
 
     /**
      * Get current date system based on language

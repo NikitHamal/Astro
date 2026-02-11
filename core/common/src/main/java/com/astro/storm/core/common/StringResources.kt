@@ -25,6 +25,7 @@ object StringResources {
         return when (language) {
             Language.ENGLISH -> key.en
             Language.NEPALI -> key.ne
+            Language.HINDI -> key.hi
         }
     }
 

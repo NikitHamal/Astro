@@ -6,4 +6,5 @@ package com.astro.storm.core.common
 interface StringKeyInterface {
     val en: String
     val ne: String
+    val hi: String
 }

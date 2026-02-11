@@ -1,6 +1,6 @@
 package com.astro.storm.core.common
 
-enum class StringKeyDashaInterpretations(override val en: String, override val ne: String) : StringKeyInterface {
+enum class StringKeyDashaInterpretations(override val en: String, override val ne: String, override val hi: String) : StringKeyInterface {
 
     // ============================================
     // MAHADASHA INTERPRETATIONS

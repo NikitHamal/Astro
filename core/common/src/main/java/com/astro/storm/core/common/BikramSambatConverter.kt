@@ -7,23 +7,24 @@ import kotlin.math.abs
 
 object BikramSambatConverter {
 
-    enum class BSMonth(val index: Int, val englishName: String, val nepaliName: String) {
-        BAISHAKH(1, "Baishakh", "बैशाख"),
-        JESTHA(2, "Jestha", "जेठ"),
-        ASHADH(3, "Ashadh", "असार"),
-        SHRAWAN(4, "Shrawan", "साउन"),
-        BHADRA(5, "Bhadra", "भदौ"),
-        ASHWIN(6, "Ashwin", "असोज"),
-        KARTIK(7, "Kartik", "कार्तिक"),
-        MANGSIR(8, "Mangsir", "मंसिर"),
-        POUSH(9, "Poush", "पुष"),
-        MAGH(10, "Magh", "माघ"),
-        FALGUN(11, "Falgun", "फाल्गुन"),
-        CHAITRA(12, "Chaitra", "चैत्र");
+    enum class BSMonth(val index: Int, val englishName: String, val nepaliName: String, val hindiName: String) {
+        BAISHAKH(1, "Baishakh", "बैशाख", "बैसाख"),
+        JESTHA(2, "Jestha", "जेठ", "ज्येष्ठ"),
+        ASHADH(3, "Ashadh", "असार", "आषाढ़"),
+        SHRAWAN(4, "Shrawan", "साउन", "श्रावण"),
+        BHADRA(5, "Bhadra", "भदौ", "भाद्रपद"),
+        ASHWIN(6, "Ashwin", "असोज", "आश्विन"),
+        KARTIK(7, "Kartik", "कार्तिक", "कार्तिक"),
+        MANGSIR(8, "Mangsir", "मंसिर", "मार्गशीर्ष"),
+        POUSH(9, "Poush", "पुष", "पौष"),
+        MAGH(10, "Magh", "माघ", "माघ"),
+        FALGUN(11, "Falgun", "फाल्गुन", "फाल्गुन"),
+        CHAITRA(12, "Chaitra", "चैत्र", "चैत्र");
 
         fun getName(language: Language): String = when (language) {
             Language.ENGLISH -> englishName
             Language.NEPALI -> nepaliName
+            Language.HINDI -> hindiName
         }
 
         companion object {
@@ -35,21 +36,24 @@ object BikramSambatConverter {
     enum class BSWeekday(
         val englishName: String,
         val nepaliName: String,
+        val hindiName: String,
         val shortEnglish: String,
         val shortNepali: String,
+        val shortHindi: String,
         val dayIndex: Int
     ) {
-        SUNDAY("Sunday", "आइतबार", "Sun", "आइत", 0),
-        MONDAY("Monday", "सोमबार", "Mon", "सोम", 1),
-        TUESDAY("Tuesday", "मङ्गलबार", "Tue", "मङ्गल", 2),
-        WEDNESDAY("Wednesday", "बुधबार", "Wed", "बुध", 3),
-        THURSDAY("Thursday", "बिहीबार", "Thu", "बिही", 4),
-        FRIDAY("Friday", "शुक्रबार", "Fri", "शुक्र", 5),
-        SATURDAY("Saturday", "शनिबार", "Sat", "शनि", 6);
+        SUNDAY("Sunday", "आइतबार", "रविवार", "Sun", "आइत", "रवि", 0),
+        MONDAY("Monday", "सोमबार", "सोमवार", "Mon", "सोम", "सोम", 1),
+        TUESDAY("Tuesday", "मङ्गलबार", "मंगलवार", "Tue", "मङ्गल", "मंगल", 2),
+        WEDNESDAY("Wednesday", "बुधबार", "बुधवार", "Wed", "बुध", "बुध", 3),
+        THURSDAY("Thursday", "बिहीबार", "गुरुवार", "Thu", "बिही", "गुरु", 4),
+        FRIDAY("Friday", "शुक्रबार", "शुक्रवार", "Fri", "शुक्र", "शुक्र", 5),
+        SATURDAY("Saturday", "शनिबार", "शनिवार", "Sat", "शनि", "शनि", 6);
 
         fun getName(language: Language, short: Boolean = false): String = when (language) {
             Language.ENGLISH -> if (short) shortEnglish else englishName
             Language.NEPALI -> if (short) shortNepali else nepaliName
+            Language.HINDI -> if (short) shortHindi else hindiName
         }
 
         companion object {
@@ -83,6 +87,7 @@ object BikramSambatConverter {
         fun format(language: Language): String = when (language) {
             Language.ENGLISH -> "$day ${bsMonth.englishName}, $year"
             Language.NEPALI -> "${toNepaliNumerals(day)} ${bsMonth.nepaliName}, ${toNepaliNumerals(year)}"
+            Language.HINDI -> "${toNepaliNumerals(day)} ${bsMonth.hindiName}, ${toNepaliNumerals(year)}"
         }
 
         fun formatWithWeekday(language: Language): String {
@@ -90,6 +95,7 @@ object BikramSambatConverter {
             return when (language) {
                 Language.ENGLISH -> "$weekdayName, $day ${bsMonth.englishName}, $year"
                 Language.NEPALI -> "$weekdayName, ${toNepaliNumerals(day)} ${bsMonth.nepaliName}, ${toNepaliNumerals(year)}"
+                Language.HINDI -> "$weekdayName, ${toNepaliNumerals(day)} ${bsMonth.hindiName}, ${toNepaliNumerals(year)}"
             }
         }
 
@@ -99,12 +105,14 @@ object BikramSambatConverter {
             return when (language) {
                 Language.ENGLISH -> "$year-$monthStr-$dayStr"
                 Language.NEPALI -> "${toNepaliNumerals(year)}-${toNepaliNumerals(month).padStart(2, '०')}-${toNepaliNumerals(day).padStart(2, '०')}"
+                Language.HINDI -> "${toNepaliNumerals(year)}-${toNepaliNumerals(month).padStart(2, '०')}-${toNepaliNumerals(day).padStart(2, '०')}"
             }
         }
 
         fun formatMonthYear(language: Language): String = when (language) {
             Language.ENGLISH -> "${bsMonth.englishName} $year"
             Language.NEPALI -> "${bsMonth.nepaliName} ${toNepaliNumerals(year)}"
+            Language.HINDI -> "${bsMonth.hindiName} ${toNepaliNumerals(year)}"
         }
 
         fun formatISO(): String = "$year-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}"

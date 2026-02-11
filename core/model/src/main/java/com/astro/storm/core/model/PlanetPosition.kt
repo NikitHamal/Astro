@@ -43,8 +43,8 @@ data class PlanetPosition(
         val min = ((degreeInSign - deg) * 60).toInt()
         val sec = ((((degreeInSign - deg) * 60) - min) * 60).toInt()
         
-        val isNepali = language == Language.NEPALI
-        fun formatNum(n: Int) = if (isNepali) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
+        val isDevanagari = language == Language.NEPALI || language == Language.HINDI
+        fun formatNum(n: Int) = if (isDevanagari) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
         
         val retrograde = if (isRetrograde) {
             " " + StringResources.get(com.astro.storm.core.common.StringKey.PLANET_RETROGRADE_SHORT, language)
@@ -64,8 +64,8 @@ data class PlanetPosition(
         val min = ((degreeInSign - deg) * 60).toInt()
         val sec = ((((degreeInSign - deg) * 60) - min) * 60).toInt()
         
-        val isNepali = language == Language.NEPALI
-        fun formatNum(n: Int) = if (isNepali) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
+        val isDevanagari = language == Language.NEPALI || language == Language.HINDI
+        fun formatNum(n: Int) = if (isDevanagari) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(n) else n.toString()
         
         val degSign = StringResources.get(StringKeyUIExtra.DEGREE, language)
         val minSign = StringResources.get(StringKeyUIExtra.ARC_MINUTE, language)

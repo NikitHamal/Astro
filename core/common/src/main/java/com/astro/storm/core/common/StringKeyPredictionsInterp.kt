@@ -3,7 +3,7 @@ package com.astro.storm.core.common
 /**
  * Prediction and Dasha Interpretation Templates
  */
-enum class StringKeyPredictionsInterp(override val en: String, override val ne: String) : StringKeyInterface {
+enum class StringKeyPredictionsInterp(override val en: String, override val ne: String, override val hi: String) : StringKeyInterface {
     // Dasha Theme Templates
     DASHA_THEME_DEFAULT(
         "This period brings unique and unconventional developments related to %s's energy. Expect the unexpected and stay open to new perspectives.",
@@ -55,6 +55,6 @@ enum class StringKeyPredictionsInterp(override val en: String, override val ne: 
     ),
 
     // Prediction Error
-    PREDICTION_FAILED("Prediction failed", "भविष्यवाणी असफल भयो"),
-    ANALYSIS_FAILED("Analysis failed", "विश्लेषण असफल भयो"),
+    PREDICTION_FAILED("Prediction failed", "भविष्यवाणी असफल भयो", "भविष्यवाणी असफल भयो"),
+    ANALYSIS_FAILED("Analysis failed", "विश्लेषण असफल भयो", "विश्लेषण असफल भयो"),
 }
