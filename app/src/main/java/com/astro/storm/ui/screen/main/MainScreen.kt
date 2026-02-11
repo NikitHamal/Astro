@@ -110,6 +110,7 @@ fun MainScreen(
     onNavigateToJaiminiKaraka: () -> Unit = {},
     onNavigateToDrigDasha: () -> Unit = {},
     onNavigateToSaptamsa: () -> Unit = {},
+    onNavigateToTriplePillar: () -> Unit = {},
     onNavigateToAiModels: () -> Unit = {},
     onNavigateToChat: (Long?) -> Unit = {}, // null for new chat, Long for existing
     onExportChart: (ExportFormat) -> Unit
@@ -281,6 +282,7 @@ fun MainScreen(
                                         InsightFeature.JAIMINI_KARAKA -> if (currentChart != null) onNavigateToJaiminiKaraka()
                                         InsightFeature.DRIG_DASHA -> if (currentChart != null) onNavigateToDrigDasha()
                                         InsightFeature.SAPTAMSA -> if (currentChart != null) onNavigateToSaptamsa()
+                                        InsightFeature.TRIPLE_PILLAR -> if (currentChart != null) onNavigateToTriplePillar()
                                         // Fallback to chart analysis for any remaining features
                                         else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
                                     }

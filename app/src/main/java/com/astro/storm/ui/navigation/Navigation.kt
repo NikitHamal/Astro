@@ -68,6 +68,7 @@ import com.astro.storm.ui.screen.DeepNativeAnalysisScreen
 import com.astro.storm.ui.screen.JaiminiKarakaScreen
 import com.astro.storm.ui.screen.DrigDashaScreen
 import com.astro.storm.ui.screen.SaptamsaScreen
+import com.astro.storm.ui.screen.TriplePillarScreen
 import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
@@ -303,6 +304,11 @@ sealed class Screen(val route: String) {
         fun createRoute(chartId: Long) = "saptamsa/$chartId"
     }
 
+    // Triple-Pillar Predictive Engine (Dasha + Gochara + Ashtakavarga Synthesis) screen
+    object TriplePillar : Screen("triple_pillar/{chartId}") {
+        fun createRoute(chartId: Long) = "triple_pillar/$chartId"
+    }
+
     // AI Models configuration screen
     object AiModels : Screen("ai_models")
 
@@ -439,6 +445,7 @@ fun AstroStormNavigation(
                 onNavigateToJaiminiKaraka = { navigateWithId(Screen.JaiminiKaraka) },
                 onNavigateToDrigDasha = { navigateWithId(Screen.DrigDasha) },
                 onNavigateToSaptamsa = { navigateWithId(Screen.Saptamsa) },
+                onNavigateToTriplePillar = { navigateWithId(Screen.TriplePillar) },
                 onNavigateToAiModels = { navigateToFeature(Screen.AiModels.route) },
                 onNavigateToChat = { conversationId ->
                     if (conversationId != null) {
@@ -1481,6 +1488,16 @@ fun AstroStormNavigation(
             val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
             LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
             SaptamsaScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // Triple-Pillar Predictive Engine screen
+        composable(
+            route = Screen.TriplePillar.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            TriplePillarScreen(chart = currentChart, onNavigateBack = { navController.popBackStack() })
         }
 
         // AI Models configuration screen

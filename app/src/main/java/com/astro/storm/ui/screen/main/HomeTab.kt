@@ -1517,6 +1517,13 @@ enum class InsightFeature(
         icon = Icons.Outlined.ChildCare,
         color = DarkAppThemeColors.LifeAreaLove,
         isImplemented = true
+    ),
+    TRIPLE_PILLAR(
+        titleKey = StringKey.FEATURE_TRIPLE_PILLAR,
+        descriptionKey = StringKey.FEATURE_TRIPLE_PILLAR_DESC,
+        icon = Icons.Outlined.Analytics,
+        color = DarkAppThemeColors.AccentPrimary,
+        isImplemented = true
     );
 
     /**

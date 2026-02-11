@@ -203,6 +203,9 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     FEATURE_SAPTAMSA("Saptamsa (D7)", "सप्तांश (D7)"),
     FEATURE_SAPTAMSA_DESC("Progeny & Fertility Analysis", "सन्तान र प्रजनन विश्लेषण"),
 
+    FEATURE_TRIPLE_PILLAR("Triple-Pillar Engine", "त्रि-स्तम्भ इन्जिन"),
+    FEATURE_TRIPLE_PILLAR_DESC("Dasha + Gochara + Ashtakavarga Synthesis", "दशा + गोचर + अष्टकवर्ग संश्लेषण"),
+
     // Predictions Screen - Tabs
     PREDICTIONS_TAB_OVERVIEW("Overview", "सारांश"),
     PREDICTIONS_TAB_LIFE_AREAS("Life Areas", "जीवन क्षेत्रहरू"),
