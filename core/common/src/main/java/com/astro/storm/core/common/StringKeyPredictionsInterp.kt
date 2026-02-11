@@ -55,6 +55,8 @@ enum class StringKeyPredictionsInterp(override val en: String, override val ne: 
     ),
 
     // Prediction Error
-    PREDICTION_FAILED("Prediction failed", "भविष्यवाणी असफल भयो", "भविष्यवाणी असफल भयो"),
-    ANALYSIS_FAILED("Analysis failed", "विश्लेषण असफल भयो", "विश्लेषण असफल भयो"),
+    PREDICTION_FAILED("Prediction failed", "भविष्यवाणी असफल भयो", "भविष्यवाणी असफल भयह"),
+    ,
+    ANALYSIS_FAILED("Analysis failed", "विश्लेषण असफल भयो", "विश्लेषण असफल भयह"),
+,
 }

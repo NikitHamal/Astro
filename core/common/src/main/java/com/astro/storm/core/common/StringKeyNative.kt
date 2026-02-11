@@ -11,263 +11,475 @@ enum class StringKeyNative(override val en: String, override val ne: String, ove
     // ═══════════════════════════════════════════════════════════════════════════
 
     NATIVE_ANALYSIS_TITLE("Native Analysis", "जातक विश्लेषण", "जातक विश्लेषण"),
+    ,
     NATIVE_ANALYSIS_SUBTITLE("Comprehensive Life Profile", "व्यापक जीवन प्रोफाइल", "व्यापक जीवन प्रोफाइल"),
 
+    ,
+
     SECTION_CHARACTER("Character & Personality", "चरित्र र व्यक्तित्व", "चरित्र और व्यक्तित्व"),
+    ,
     SECTION_CAREER("Career & Profession", "पेशा र व्यवसाय", "पेशा और व्यवसाय"),
+    ,
     SECTION_MARRIAGE("Marriage & Relationships", "विवाह र सम्बन्ध", "विवाह और संबंध"),
+    ,
     SECTION_HEALTH("Health & Longevity", "स्वास्थ्य र आयु", "स्वास्थ्य और आयु"),
+    ,
     SECTION_WEALTH("Wealth & Finance", "धन र वित्त", "धन और वित्त"),
+    ,
     SECTION_EDUCATION("Education & Knowledge", "शिक्षा र ज्ञान", "शिक्षा और ज्ञान"),
+    ,
     SECTION_SPIRITUAL("Spiritual Path", "आध्यात्मिक मार्ग", "आध्यात्मिक मार्ग"),
 
+    ,
+
     LABEL_OVERVIEW("Overview", "सारांश", "अवलोकन"),
-    LABEL_STRENGTHS("Key Strengths", "मुख्य शक्तिहरू", "मुख्य शक्तिहरू"),
-    LABEL_CHALLENGES("Challenges", "चुनौतीहरू", "चुनौतियां"),
+    ,
+    LABEL_STRENGTHS("Key Strengths", "मुख्य शक्तिहरू", "मुख्य शक्ति"),
+    ,
+    LABEL_CHALLENGES("Challenges", "चुनौतीहरू", "चुनौती"),
+    ,
     LABEL_FAVORABLE_PERIODS("Favorable Periods", "अनुकूल समय", "अनुकूल समय"),
+    ,
     LABEL_REMEDIES("Remedial Measures", "उपाय", "उपाय"),
+    ,
     LABEL_PLANETARY_INFLUENCE("Planetary Influence", "ग्रह प्रभाव", "ग्रह प्रभाव"),
+    ,
     LABEL_HOUSE_ANALYSIS("House Analysis", "भाव विश्लेषण", "भाव विश्लेषण"),
+    ,
     LABEL_PREDICTIONS("Predictions", "भविष्यवाणी", "भविष्यवाणी"),
 
+    ,
+
     // Native Analysis UI Specific Titles
-    TITLE_ASCENDANT_TRAITS("Ascendant Traits", "लग्नका विशेषताहरू", "लग्नका विशेषताहरू"),
-    TITLE_MOON_SIGN_INFLUENCE("Moon Sign Influence", "चन्द्र राशिको प्रभाव", "चन्द्र राशिको प्रभाव"),
-    TITLE_NAKSHATRA_INFLUENCE("Nakshatra Influence", "नक्षत्रको प्रभाव", "नक्षत्रको प्रभाव"),
-    LABEL_PERSONALITY_FOUNDATION("Personality Foundation", "व्यक्तित्वको आधार", "व्यक्तित्वको आधार"),
-    TITLE_CAREER_STRENGTH("Career Strength", "क्यारियरको बल", "क्यारियरको बल"),
-    LABEL_FAVORABLE_CAREER_FIELDS("Favorable Career Fields", "अनुकूल क्यारियर क्षेत्रहरू", "अनुकूल क्यारियर क्षेत्रहरू"),
-    LABEL_CAREER_INDICATORS("Career Indicators", "क्यारियरका सूचकहरू", "क्यारियरका सूचकहरू"),
-    TITLE_RELATIONSHIP_STRENGTH("Relationship Strength", "सम्बन्धको बल", "संबंधको बल"),
-    LABEL_MARRIAGE_TIMING("Marriage Timing", "विवाहको समय", "विवाहको समय"),
-    LABEL_VENUS_STRENGTH("Venus Strength", "शुक्रको बल", "शुक्रको बल"),
-    LABEL_SPOUSE_NATURE("Spouse Nature", "जीवनसाथीको स्वभाव", "जीवनमित्रको स्वभाव"),
+    TITLE_ASCENDANT_TRAITS("Ascendant Traits", "लग्नका विशेषताहरू", "लग्न के विशेषता"),
+    ,
+    TITLE_MOON_SIGN_INFLUENCE("Moon Sign Influence", "चन्द्र राशिको प्रभाव", "चन्द्र राशि के प्रभाव"),
+    ,
+    TITLE_NAKSHATRA_INFLUENCE("Nakshatra Influence", "नक्षत्रको प्रभाव", "नक्षत्र के प्रभाव"),
+    ,
+    LABEL_PERSONALITY_FOUNDATION("Personality Foundation", "व्यक्तित्वको आधार", "व्यक्तित्व के आधार"),
+    ,
+    TITLE_CAREER_STRENGTH("Career Strength", "क्यारियरको बल", "क्यारियर के बल"),
+    ,
+    LABEL_FAVORABLE_CAREER_FIELDS("Favorable Career Fields", "अनुकूल क्यारियर क्षेत्रहरू", "अनुकूल क्यारियर क्षेत्र"),
+    ,
+    LABEL_CAREER_INDICATORS("Career Indicators", "क्यारियरका सूचकहरू", "क्यारियर के सूचक"),
+    ,
+    TITLE_RELATIONSHIP_STRENGTH("Relationship Strength", "सम्बन्धको बल", "संबंध के बल"),
+    ,
+    LABEL_MARRIAGE_TIMING("Marriage Timing", "विवाहको समय", "विवाह के समय"),
+    ,
+    LABEL_VENUS_STRENGTH("Venus Strength", "शुक्रको बल", "शुक्र के बल"),
+    ,
+    LABEL_SPOUSE_NATURE("Spouse Nature", "जीवनसाथीको स्वभाव", "जीवनमित्र के स्वभाव"),
+    ,
     LABEL_LONGEVITY_INDICATOR("Longevity Indicator", "दीर्घायु सूचक", "दीर्घायु सूचक"),
-    LABEL_VULNERABLE_AREAS("Vulnerable Areas", "कमजोर क्षेत्रहरू", "कमजोर क्षेत्रहरू"),
-    LABEL_HEALTH_CONCERNS("Health Concerns", "स्वास्थ्य चिन्ताहरू", "स्वास्थ्य चिन्ताहरू"),
-    TITLE_WEALTH_POTENTIAL("Wealth Potential", "धनको सम्भावना", "धनको सम्भावना"),
-    LABEL_DHANA_YOGA_PRESENT("Dhana Yoga Present", "धन योग उपस्थित", "धन योग उपस्थित"),
-    LABEL_WEALTH_LORDS("Wealth Lords", "धनका स्वामीहरू", "धनका स्वामीहरू"),
-    LABEL_PRIMARY_WEALTH_SOURCES("Primary Wealth Sources", "मुख्य धन स्रोतहरू", "मुख्य धन स्रोतहरू"),
+    ,
+    LABEL_VULNERABLE_AREAS("Vulnerable Areas", "कमजोर क्षेत्रहरू", "कमजोर क्षेत्र"),
+    ,
+    LABEL_HEALTH_CONCERNS("Health Concerns", "स्वास्थ्य चिन्ताहरू", "स्वास्थ्य चिन्ता"),
+    ,
+    TITLE_WEALTH_POTENTIAL("Wealth Potential", "धनको सम्भावना", "धन के सम्भावना"),
+    ,
+    LABEL_DHANA_YOGA_PRESENT("Dhana Yoga Present", "धन योग उपस्थित", "धन यहग उपस्थित"),
+    ,
+    LABEL_WEALTH_LORDS("Wealth Lords", "धनका स्वामीहरू", "धन के स्वामी"),
+    ,
+    LABEL_PRIMARY_WEALTH_SOURCES("Primary Wealth Sources", "मुख्य धन स्रोतहरू", "मुख्य धन स्रोत"),
+    ,
     TITLE_ACADEMIC_POTENTIAL("Academic Potential", "शैक्षिक सम्भावना", "शैक्षिक सम्भावना"),
-    LABEL_MERCURY_STRENGTH("Mercury Strength", "बुधको बल", "बुधको बल"),
-    LABEL_JUPITER_BLESSING("Jupiter's Blessing", "बृहस्पतिको आशीर्वाद", "बृहस्पतिको आशीर्वाद"),
-    LABEL_FAVORABLE_SUBJECTS("Favorable Subjects", "अनुकूल विषयहरू", "अनुकूल विषयहरू"),
+    ,
+    LABEL_MERCURY_STRENGTH("Mercury Strength", "बुधको बल", "बुध के बल"),
+    ,
+    LABEL_JUPITER_BLESSING("Jupiter's Blessing", "बृहस्पतिको आशीर्वाद", "बृहस्पति के आशीर्वाद"),
+    ,
+    LABEL_FAVORABLE_SUBJECTS("Favorable Subjects", "अनुकूल विषयहरू", "अनुकूल विषय"),
+    ,
     TITLE_SPIRITUAL_INCLINATION("Spiritual Inclination", "आध्यात्मिक झुकाव", "आध्यात्मिक झुकाव"),
-    LABEL_SPIRITUAL_INDICATORS("Spiritual Indicators", "आध्यात्मिक सूचकहरू", "आध्यात्मिक सूचकहरू"),
-    LABEL_RECOMMENDED_PRACTICES("Recommended Practices", "सिफारिस गरिएका अभ्यासहरू", "सिफारिस गरिएका अभ्यासहरू"),
-    LABEL_IN_HOUSE("In House", "भावमा", "भावमा"),
-    LABEL_PLANETS_IN_HOUSE("Planets in %dth House", "%dऔं भावमा ग्रहहरू", "%dऔं भावमा ग्रह"),
+    ,
+    LABEL_SPIRITUAL_INDICATORS("Spiritual Indicators", "आध्यात्मिक सूचकहरू", "आध्यात्मिक सूचक"),
+    ,
+    LABEL_RECOMMENDED_PRACTICES("Recommended Practices", "सिफारिस गरिएका अभ्यासहरू", "सिफारिस गरिए के अभ्यास"),
+    ,
+    LABEL_IN_HOUSE("In House", "भावमा", "भाव में"),
+    ,
+    LABEL_PLANETS_IN_HOUSE("Planets in %dth House", "%dऔं भावमा ग्रहहरू", "%dऔं भाव में ग्रह"),
+    ,
     LABEL_ANALYZING_CHART("Analyzing chart...", "कुण्डली विश्लेषण गर्दै...", "कुंडली विश्लेषण गर्दै..."),
+    ,
     LABEL_ANALYSIS_ERROR("Analysis Error", "विश्लेषण त्रुटि", "विश्लेषण त्रुटि"),
-    LABEL_NO_CHART_SELECTED("No Chart Selected", "कुनै कुण्डली छानिएको छैन", "कुनै कुंडली छानिएको छैन"),
+    ,
+    LABEL_NO_CHART_SELECTED("No Chart Selected", "कुनै कुण्डली छानिएको छैन", "कुनै कुंडली हैानिए के हैैन"),
+    ,
     LABEL_SELECT_CHART_DESC("Please select a birth chart to view native analysis", "जातक विश्लेषण हेर्न कृपया जन्म कुण्डली छान्नुहोस्", "जातक विश्लेषण हेर्न कृपया जन्म कुंडली चुनें"),
-    LABEL_COMPREHENSIVE_DESC("This comprehensive analysis examines your birth chart to provide insights into various life areas including personality, career, relationships, health, wealth, education, and spiritual path.", "यो व्यापक विश्लेषणले व्यक्तित्व, क्यारियर, सम्बन्ध, स्वास्थ्य, धन, शिक्षा, र आध्यात्मिक मार्ग सहित विभिन्न जीवन क्षेत्रहरूमा अन्तर्दृष्टि प्रदान गर्न तपाईंको जन्म कुण्डलीको परीक्षण गर्दछ।", "यो व्यापक विश्लेषणले व्यक्तित्व, क्यारियर, संबंध, स्वास्थ्य, धन, शिक्षा, और आध्यात्मिक मार्ग सहित विभिन्न जीवन क्षेत्रहरूमा अंतर्दृष्टि प्रदान गर्न आपका जन्म कुंडलीको परीक्षण गर्दछ।"),
+    ,
+    LABEL_COMPREHENSIVE_DESC("This comprehensive analysis examines your birth chart to provide insights into various life areas including personality, career, relationships, health, wealth, education, and spiritual path.", "यो व्यापक विश्लेषणले व्यक्तित्व, क्यारियर, सम्बन्ध, स्वास्थ्य, धन, शिक्षा, र आध्यात्मिक मार्ग सहित विभिन्न जीवन क्षेत्रहरूमा अन्तर्दृष्टि प्रदान गर्न तपाईंको जन्म कुण्डलीको परीक्षण गर्दछ।", "यह व्यापक विश्लेषणले व्यक्तित्व, क्यारियर, संबंध, स्वास्थ्य, धन, शिक्षा, और आध्यात्मिक मार्ग सहित विभिन्न जीवन क्षेत्र में अंतर्दृष्टि प्रदान करने आप के जन्म कुंडली के परीक्षण करता है।"),
+
+    ,
 
     STRENGTH_EXCELLENT("Excellent", "उत्कृष्ट", "उत्कृष्ट"),
-    STRENGTH_STRONG("Strong", "बलियो", "बलियो"),
+    ,
+    STRENGTH_STRONG("Strong", "बलियो", "बलियह"),
+    ,
     STRENGTH_MODERATE("Moderate", "मध्यम", "मध्यम"),
+    ,
     STRENGTH_WEAK("Weak", "कमजोर", "कमजोर"),
+    ,
     STRENGTH_AFFLICTED("Afflicted", "पीडित", "पीडित"),
+
+    ,
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: CHARACTER & PERSONALITY TRAITS
     // ═══════════════════════════════════════════════════════════════════════════
 
     // Ascendant-based character traits
-    CHAR_ARIES_ASC("You are a natural leader with pioneering spirit, courage, and dynamic energy. Your assertive nature drives you to take initiative in all matters.", "तपाईं प्राकृतिक नेता हुनुहुन्छ अग्रगामी भावना, साहस र गतिशील ऊर्जाको साथ। तपाईंको दृढ स्वभावले तपाईंलाई सबै कुरामा पहल गर्न प्रेरित गर्छ।", "तपाईं प्राकृतिक नेता हुनुहुन्छ अग्रगामी भावना, साहस और गतिशील ऊर्जाको साथ। आपका दृढ स्वभावले तपाईं को सबै कुरामा पहल गर्न प्रेरित गर्छ।"),
-    CHAR_TAURUS_ASC("You possess a stable, practical nature with strong aesthetic sensibilities. Your patience and determination bring steady progress in life.", "तपाईंसँग स्थिर, व्यावहारिक स्वभाव छ बलियो सौन्दर्य बोधको साथ। तपाईंको धैर्य र दृढताले जीवनमा स्थिर प्रगति ल्याउँछ।", "तपाईंसँग स्थिर, व्यावहारिक स्वभाव छ बलियो सौन्दर्य बोधको साथ। आपका धैर्य और दृढताले जीवनमा स्थिर प्रगति ल्याउँछ।"),
-    CHAR_GEMINI_ASC("You are intellectually curious, adaptable, and communicative. Your versatile mind excels in learning and social interactions.", "तपाईं बौद्धिक रूपमा जिज्ञासु, अनुकूलनशील र संवादशील हुनुहुन्छ। तपाईंको बहुमुखी मनले सिक्ने र सामाजिक अन्तरक्रियामा उत्कृष्ट प्रदर्शन गर्छ।", "तपाईं बौद्धिक रूपमा जिज्ञासु, अनुकूलनशील और संवादशील हुनुहुन्छ। आपका बहुमुखी मनले सिक्ने और सामाजिक अन्तरक्रियामा उत्कृष्ट प्रदर्शन गर्छ।"),
-    CHAR_CANCER_ASC("You are emotionally intuitive, nurturing, and protective. Your strong connection to family and home brings you deep fulfillment.", "तपाईं भावनात्मक रूपमा अन्तर्ज्ञानी, पालनपोषण गर्ने र सुरक्षात्मक हुनुहुन्छ। परिवार र घरसँगको तपाईंको बलियो सम्बन्धले तपाईंलाई गहिरो सन्तुष्टि दिन्छ।", "तपाईं भावनात्मक रूपमा अन्तर्ज्ञानी, पालनपोषण गर्ने और सुरक्षात्मक हुनुहुन्छ। परिवार और घरसँगको आपका बलियो संबंधले तपाईं को गहिरो सन्तुष्टि दिन्छ।"),
-    CHAR_LEO_ASC("You possess natural charisma, creativity, and leadership qualities. Your generous heart and confident demeanor inspire those around you.", "तपाईंसँग प्राकृतिक करिश्मा, रचनात्मकता र नेतृत्व गुणहरू छन्। तपाईंको उदार हृदय र आत्मविश्वासपूर्ण व्यवहारले वरिपरिका मानिसहरूलाई प्रेरित गर्छ।", "तपाईंसँग प्राकृतिक करिश्मा, रचनात्मकता और नेतृत्व गुणहरू छन्। आपका उदार हृदय और आत्मविश्वासपूर्ण व्यवहारले वरिपरिका मानिसहरू को प्रेरित गर्छ।"),
-    CHAR_VIRGO_ASC("You are analytical, detail-oriented, and service-minded. Your practical approach and perfectionist tendencies ensure quality in all endeavors.", "तपाईं विश्लेषणात्मक, विस्तार-उन्मुख र सेवा-भावित हुनुहुन्छ। तपाईंको व्यावहारिक दृष्टिकोण र पूर्णतावादी प्रवृत्तिले सबै प्रयासहरूमा गुणस्तर सुनिश्चित गर्छ।", "तपाईं विश्लेषणात्मक, विस्तार-उन्मुख और सेवा-भावित हुनुहुन्छ। आपका व्यावहारिक दृष्टिकोण और पूर्णतावादी प्रवृत्तिले सबै प्रयासहरूमा गुणस्तर सुनिश्चित गर्छ।"),
-    CHAR_LIBRA_ASC("You value harmony, balance, and beauty in all aspects of life. Your diplomatic nature and sense of justice make you an excellent mediator.", "तपाईं जीवनका सबै पक्षहरूमा सामंजस्य, सन्तुलन र सौन्दर्यलाई मूल्यवान मान्नुहुन्छ। तपाईंको कूटनीतिक स्वभाव र न्यायको भावनाले तपाईंलाई उत्कृष्ट मध्यस्थकर्ता बनाउँछ।", "तपाईं जीवनका सबै पक्षहरूमा सामंजस्य, सन्तुलन और सौन्दर्य को मूल्यवान मान्नुहुन्छ। आपका कूटनीतिक स्वभाव और न्यायको भावनाले तपाईं को उत्कृष्ट मध्यस्थकर्ता बनाउँछ।"),
-    CHAR_SCORPIO_ASC("You possess intense emotional depth, transformative power, and strong intuition. Your determination and resilience help you overcome any obstacle.", "तपाईंसँग तीव्र भावनात्मक गहिराइ, परिवर्तनकारी शक्ति र बलियो अन्तर्ज्ञान छ। तपाईंको दृढता र लचिलोपनले तपाईंलाई कुनै पनि बाधा पार गर्न मद्दत गर्छ।", "तपाईंसँग तीव्र भावनात्मक गहिराइ, परिवर्तनकारी शक्ति और बलियो अन्तर्ज्ञान छ। आपका दृढता और लचिलोपनले तपाईं को कुनै पनि बाधा पार गर्न सहायता गर्छ।"),
-    CHAR_SAGITTARIUS_ASC("You are philosophical, adventurous, and optimistic. Your love for knowledge and exploration expands your horizons continually.", "तपाईं दार्शनिक, साहसिक र आशावादी हुनुहुन्छ। ज्ञान र अन्वेषणको तपाईंको प्रेमले तपाईंको क्षितिजलाई निरन्तर विस्तार गर्छ।", "तपाईं दार्शनिक, साहसिक और आशावादी हुनुहुन्छ। ज्ञान और अन्वेषणको आपका प्रेमले आपका क्षितिज को निरन्तर विस्तार गर्छ।"),
-    CHAR_CAPRICORN_ASC("You are ambitious, disciplined, and practical. Your patient approach and strong work ethic lead to lasting achievements.", "तपाईं महत्वाकांक्षी, अनुशासित र व्यावहारिक हुनुहुन्छ। तपाईंको धैर्यपूर्ण दृष्टिकोण र बलियो कार्य नैतिकताले स्थायी उपलब्धिहरूमा पुर्‍याउँछ।", "तपाईं महत्वाकांक्षी, अनुशासित और व्यावहारिक हुनुहुन्छ। आपका धैर्यपूर्ण दृष्टिकोण और बलियो कार्य नैतिकताले स्थायी उपलब्धिहरूमा पुर्‍याउँछ।"),
-    CHAR_AQUARIUS_ASC("You are innovative, humanitarian, and independent-minded. Your original thinking and progressive ideas benefit society at large.", "तपाईं नवीन, मानवतावादी र स्वतन्त्र सोचाइ भएको हुनुहुन्छ। तपाईंको मौलिक सोच र प्रगतिशील विचारहरूले समाजलाई फाइदा पुर्‍याउँछ।", "तपाईं नवीन, मानवतावादी और स्वतन्त्र सोचाइ भएको हुनुहुन्छ। आपका मौलिक सोच और प्रगतिशील विचारहरूले समाज को फाइदा पुर्‍याउँछ।"),
-    CHAR_PISCES_ASC("You are compassionate, intuitive, and spiritually inclined. Your artistic sensibility and empathetic nature connect you deeply with others.", "तपाईं करुणामय, अन्तर्ज्ञानी र आध्यात्मिक प्रवृत्तिका हुनुहुन्छ। तपाईंको कलात्मक संवेदनशीलता र सहानुभूतिपूर्ण स्वभावले तपाईंलाई अरूसँग गहिरो रूपमा जोड्छ।", "तपाईं करुणामय, अन्तर्ज्ञानी और आध्यात्मिक प्रवृत्तिका हुनुहुन्छ। आपका कलात्मक संवेदनशीलता और सहानुभूतिपूर्ण स्वभावले तपाईं को अरूसँग गहिरो रूपमा जोड्छ।"),
+    CHAR_ARIES_ASC("You are a natural leader with pioneering spirit, courage, and dynamic energy. Your assertive nature drives you to take initiative in all matters.", "तपाईं प्राकृतिक नेता हुनुहुन्छ अग्रगामी भावना, साहस र गतिशील ऊर्जाको साथ। तपाईंको दृढ स्वभावले तपाईंलाई सबै कुरामा पहल गर्न प्रेरित गर्छ।", "आप प्राकृतिक नेता हैं अग्रगामी भावना, साहस और गतिशील ऊर्जा के साथ। आप के दृढ स्वभावले आप  के सभी कुरा में पहल करने प्रेरित करता है।"),
+    ,
+    CHAR_TAURUS_ASC("You possess a stable, practical nature with strong aesthetic sensibilities. Your patience and determination bring steady progress in life.", "तपाईंसँग स्थिर, व्यावहारिक स्वभाव छ बलियो सौन्दर्य बोधको साथ। तपाईंको धैर्य र दृढताले जीवनमा स्थिर प्रगति ल्याउँछ।", "आपसँग स्थिर, व्यावहारिक स्वभाव है बलियह सौन्दर्य बोध के साथ। आप के धैर्य और दृढताले जीवन में स्थिर प्रगति लाता है।"),
+    ,
+    CHAR_GEMINI_ASC("You are intellectually curious, adaptable, and communicative. Your versatile mind excels in learning and social interactions.", "तपाईं बौद्धिक रूपमा जिज्ञासु, अनुकूलनशील र संवादशील हुनुहुन्छ। तपाईंको बहुमुखी मनले सिक्ने र सामाजिक अन्तरक्रियामा उत्कृष्ट प्रदर्शन गर्छ।", "आप बौद्धिक रूप में जिज्ञासु, अनुकूलनशील और संवादशील हैं। आप के बहुमुखी मनले सिक्ने और सामाजिक अन्तरक्रिया में उत्कृष्ट प्रदर्शन करता है।"),
+    ,
+    CHAR_CANCER_ASC("You are emotionally intuitive, nurturing, and protective. Your strong connection to family and home brings you deep fulfillment.", "तपाईं भावनात्मक रूपमा अन्तर्ज्ञानी, पालनपोषण गर्ने र सुरक्षात्मक हुनुहुन्छ। परिवार र घरसँगको तपाईंको बलियो सम्बन्धले तपाईंलाई गहिरो सन्तुष्टि दिन्छ।", "आप भावनात्मक रूप में अन्तर्ज्ञानी, पालनपोषण करनेे और सुरक्षात्मक हैं। परिवार और घरसँग के आप के बलियह संबंधले आप  के गहिरो सन्तुष्टि देता है।"),
+    ,
+    CHAR_LEO_ASC("You possess natural charisma, creativity, and leadership qualities. Your generous heart and confident demeanor inspire those around you.", "तपाईंसँग प्राकृतिक करिश्मा, रचनात्मकता र नेतृत्व गुणहरू छन्। तपाईंको उदार हृदय र आत्मविश्वासपूर्ण व्यवहारले वरिपरिका मानिसहरूलाई प्रेरित गर्छ।", "आपसँग प्राकृतिक करिश् में, रचनात्मकता और नेतृत्व गुण हैं। आप के उदार हृदय और आत्मविश्वासपूर्ण व्यवहारले वरिपरि के मानिस  के प्रेरित करता है।"),
+    ,
+    CHAR_VIRGO_ASC("You are analytical, detail-oriented, and service-minded. Your practical approach and perfectionist tendencies ensure quality in all endeavors.", "तपाईं विश्लेषणात्मक, विस्तार-उन्मुख र सेवा-भावित हुनुहुन्छ। तपाईंको व्यावहारिक दृष्टिकोण र पूर्णतावादी प्रवृत्तिले सबै प्रयासहरूमा गुणस्तर सुनिश्चित गर्छ।", "आप विश्लेषणात्मक, विस्तार-उन्मुख और सेवा-भावित हैं। आप के व्यावहारिक दृष्टिकोण और पूर्णतावादी प्रवृत्तिले सभी प्रयास में गुणस्तर सुनिश्चित करता है।"),
+    ,
+    CHAR_LIBRA_ASC("You value harmony, balance, and beauty in all aspects of life. Your diplomatic nature and sense of justice make you an excellent mediator.", "तपाईं जीवनका सबै पक्षहरूमा सामंजस्य, सन्तुलन र सौन्दर्यलाई मूल्यवान मान्नुहुन्छ। तपाईंको कूटनीतिक स्वभाव र न्यायको भावनाले तपाईंलाई उत्कृष्ट मध्यस्थकर्ता बनाउँछ।", "आप जीवन के सभी पक्ष में सामंजस्य, सन्तुलन और सौन्दर्य  के मूल्यवान मान्नुहोता है। आप के कूटनीतिक स्वभाव और न्याय के भावनाले आप  के उत्कृष्ट मध्इस्थकर्ता बनाउँहै।"),
+    ,
+    CHAR_SCORPIO_ASC("You possess intense emotional depth, transformative power, and strong intuition. Your determination and resilience help you overcome any obstacle.", "तपाईंसँग तीव्र भावनात्मक गहिराइ, परिवर्तनकारी शक्ति र बलियो अन्तर्ज्ञान छ। तपाईंको दृढता र लचिलोपनले तपाईंलाई कुनै पनि बाधा पार गर्न मद्दत गर्छ।", "आपसँग तीव्र भावनात्मक गहिराइ, परिवर्तनकारी शक्ति और बलियह अन्तर्ज्ञान है। आप के दृढता और लचिलोपनले आप  के कुनै पनि बाधा पार करने सहायता करता है।"),
+    ,
+    CHAR_SAGITTARIUS_ASC("You are philosophical, adventurous, and optimistic. Your love for knowledge and exploration expands your horizons continually.", "तपाईं दार्शनिक, साहसिक र आशावादी हुनुहुन्छ। ज्ञान र अन्वेषणको तपाईंको प्रेमले तपाईंको क्षितिजलाई निरन्तर विस्तार गर्छ।", "आप दार्शनिक, साहसिक और आशावादी हैं। ज्ञान और अन्वेषण के आप के प्रेमले आप के क्षितिज  के निरन्तर विस्तार करता है।"),
+    ,
+    CHAR_CAPRICORN_ASC("You are ambitious, disciplined, and practical. Your patient approach and strong work ethic lead to lasting achievements.", "तपाईं महत्वाकांक्षी, अनुशासित र व्यावहारिक हुनुहुन्छ। तपाईंको धैर्यपूर्ण दृष्टिकोण र बलियो कार्य नैतिकताले स्थायी उपलब्धिहरूमा पुर्‍याउँछ।", "आप महत्वाकांक्षी, अनुशासित और व्यावहारिक हैं। आप के धैर्यपूर्ण दृष्टिकोण और बलियह कार्य नैतिकताले स्थायी उपलब्धि में पुर्‍याउँहै।"),
+    ,
+    CHAR_AQUARIUS_ASC("You are innovative, humanitarian, and independent-minded. Your original thinking and progressive ideas benefit society at large.", "तपाईं नवीन, मानवतावादी र स्वतन्त्र सोचाइ भएको हुनुहुन्छ। तपाईंको मौलिक सोच र प्रगतिशील विचारहरूले समाजलाई फाइदा पुर्‍याउँछ।", "आप नवीन, मानवतावादी और स्वतन्त्र सोचाइ हुआ हैं। आप के मौलिक सोच और प्रगतिशील विचारले समाज  के फाइदा पुर्‍याउँहै।"),
+    ,
+    CHAR_PISCES_ASC("You are compassionate, intuitive, and spiritually inclined. Your artistic sensibility and empathetic nature connect you deeply with others.", "तपाईं करुणामय, अन्तर्ज्ञानी र आध्यात्मिक प्रवृत्तिका हुनुहुन्छ। तपाईंको कलात्मक संवेदनशीलता र सहानुभूतिपूर्ण स्वभावले तपाईंलाई अरूसँग गहिरो रूपमा जोड्छ।", "आप करुणामय, अन्तर्ज्ञानी और आध्यात्मिक प्रवृत्ति के हैं। आप के कलात्मक संवेदनशीलता और सहानुभूतिपूर्ण स्वभावले आप  के अरूसँग गहिरो रूप में जोड्है।"),
+
+    ,
 
     // Moon sign personality traits
-    MOON_ARIES("Your emotional nature is fiery and spontaneous. You react quickly to situations and need independence in emotional expression.", "तपाईंको भावनात्मक स्वभाव अग्निमय र स्वत:स्फूर्त छ। तपाईं परिस्थितिहरूमा छिटो प्रतिक्रिया दिनुहुन्छ र भावनात्मक अभिव्यक्तिमा स्वतन्त्रता चाहिन्छ।", "आपका भावनात्मक स्वभाव अग्निमय और स्वत:स्फूर्त छ। तपाईं परिस्थितिहरूमा छिटो प्रतिक्रिया दिनुहुन्छ और भावनात्मक अभिव्यक्तिमा स्वतन्त्रता चाहिन्छ।"),
-    MOON_TAURUS("Your emotional nature is stable and sensual. You seek comfort and security, and are deeply loyal in relationships.", "तपाईंको भावनात्मक स्वभाव स्थिर र संवेदनशील छ। तपाईं आराम र सुरक्षा खोज्नुहुन्छ, र सम्बन्धहरूमा गहिरो वफादार हुनुहुन्छ।", "आपका भावनात्मक स्वभाव स्थिर और संवेदनशील छ। तपाईं आराम और सुरक्षा खोज्नुहुन्छ, और संबंधहरूमा गहिरो वफादार हुनुहुन्छ।"),
-    MOON_GEMINI("Your emotional nature is curious and changeable. You process feelings intellectually and need mental stimulation.", "तपाईंको भावनात्मक स्वभाव जिज्ञासु र परिवर्तनशील छ। तपाईं भावनाहरूलाई बौद्धिक रूपमा प्रशोधन गर्नुहुन्छ र मानसिक उत्तेजना चाहिन्छ।", "आपका भावनात्मक स्वभाव जिज्ञासु और परिवर्तनशील छ। तपाईं भावनाहरू को बौद्धिक रूपमा प्रशोधन गर्नुहुन्छ और मानसिक उत्तेजना चाहिन्छ।"),
-    MOON_CANCER("Your emotional nature is deeply sensitive and nurturing. You have strong intuition and need emotional security above all.", "तपाईंको भावनात्मक स्वभाव गहिरो संवेदनशील र पालनपोषण गर्ने छ। तपाईंसँग बलियो अन्तर्ज्ञान छ र सबैभन्दा माथि भावनात्मक सुरक्षा चाहिन्छ।", "आपका भावनात्मक स्वभाव गहिरो संवेदनशील और पालनपोषण गर्ने छ। तपाईंसँग बलियो अन्तर्ज्ञान छ और सबैभन्दा माथि भावनात्मक सुरक्षा चाहिन्छ।"),
-    MOON_LEO("Your emotional nature is warm, generous, and dramatic. You need recognition and express feelings openly and passionately.", "तपाईंको भावनात्मक स्वभाव न्यानो, उदार र नाटकीय छ। तपाईंलाई मान्यता चाहिन्छ र भावनाहरू खुलेर र जोशपूर्ण रूपमा व्यक्त गर्नुहुन्छ।", "आपका भावनात्मक स्वभाव न्यानो, उदार और नाटकीय छ। तपाईं को मान्यता चाहिन्छ और भावनाहरू खुलेर और जोशपूर्ण रूपमा व्यक्त गर्नुहुन्छ।"),
-    MOON_VIRGO("Your emotional nature is practical and analytical. You express care through service and may overthink feelings.", "तपाईंको भावनात्मक स्वभाव व्यावहारिक र विश्लेषणात्मक छ। तपाईं सेवा मार्फत हेरचाह व्यक्त गर्नुहुन्छ र भावनाहरूको बारेमा बढी सोच्न सक्नुहुन्छ।", "आपका भावनात्मक स्वभाव व्यावहारिक और विश्लेषणात्मक छ। तपाईं सेवा मार्फत हेरचाह व्यक्त गर्नुहुन्छ और भावनाहरूको बारेमा बढी सोच्न सक्नुहुन्छ।"),
-    MOON_LIBRA("Your emotional nature seeks harmony and partnership. You need balanced relationships and avoid emotional extremes.", "तपाईंको भावनात्मक स्वभावले सामंजस्य र साझेदारी खोज्छ। तपाईंलाई सन्तुलित सम्बन्धहरू चाहिन्छ र भावनात्मक चरमहरूबाट बच्नुहुन्छ।", "आपका भावनात्मक स्वभावले सामंजस्य और साझेदारी खोज्छ। तपाईं को सन्तुलित संबंधहरू चाहिन्छ और भावनात्मक चरमहरूबाट बच्नुहुन्छ।"),
-    MOON_SCORPIO("Your emotional nature is intense and transformative. You feel deeply and may hide vulnerabilities behind a strong exterior.", "तपाईंको भावनात्मक स्वभाव तीव्र र परिवर्तनकारी छ। तपाईं गहिरो रूपमा महसुस गर्नुहुन्छ र बलियो बाहिरी आवरण पछाडि कमजोरीहरू लुकाउन सक्नुहुन्छ।", "आपका भावनात्मक स्वभाव तीव्र और परिवर्तनकारी छ। तपाईं गहिरो रूपमा महसुस गर्नुहुन्छ और बलियो बाहिरी आवरण पीछे कमजोरीहरू लुकाउन सक्नुहुन्छ।"),
-    MOON_SAGITTARIUS("Your emotional nature is optimistic and freedom-loving. You need space to explore and grow emotionally.", "तपाईंको भावनात्मक स्वभाव आशावादी र स्वतन्त्रता-प्रेमी छ। तपाईंलाई भावनात्मक रूपमा अन्वेषण र बढ्न ठाउँ चाहिन्छ।", "आपका भावनात्मक स्वभाव आशावादी और स्वतन्त्रता-प्रेमी छ। तपाईं को भावनात्मक रूपमा अन्वेषण और बढ्न ठाउँ चाहिन्छ।"),
-    MOON_CAPRICORN("Your emotional nature is controlled and responsible. You may suppress feelings for duty but are deeply loyal.", "तपाईंको भावनात्मक स्वभाव नियन्त्रित र जिम्मेवार छ। तपाईंले कर्तव्यको लागि भावनाहरू दबाउन सक्नुहुन्छ तर गहिरो वफादार हुनुहुन्छ।", "आपका भावनात्मक स्वभाव नियन्त्रित और जिम्मेवार छ। तपाईंले कर्तव्यको लिए भावनाहरू दबाउन सक्नुहुन्छ तर गहिरो वफादार हुनुहुन्छ।"),
-    MOON_AQUARIUS("Your emotional nature is detached and humanitarian. You process feelings intellectually and value emotional freedom.", "तपाईंको भावनात्मक स्वभाव अलग र मानवतावादी छ। तपाईं भावनाहरूलाई बौद्धिक रूपमा प्रशोधन गर्नुहुन्छ र भावनात्मक स्वतन्त्रतालाई मूल्य दिनुहुन्छ।", "आपका भावनात्मक स्वभाव अलग और मानवतावादी छ। तपाईं भावनाहरू को बौद्धिक रूपमा प्रशोधन गर्नुहुन्छ और भावनात्मक स्वतन्त्रता को मूल्य दिनुहुन्छ।"),
-    MOON_PISCES("Your emotional nature is deeply empathetic and intuitive. You absorb others' feelings and need spiritual outlets.", "तपाईंको भावनात्मक स्वभाव गहिरो सहानुभूतिपूर्ण र अन्तर्ज्ञानी छ। तपाईं अरूको भावनाहरू सोस्नुहुन्छ र आध्यात्मिक आउटलेटहरू चाहिन्छ।", "आपका भावनात्मक स्वभाव गहिरो सहानुभूतिपूर्ण और अन्तर्ज्ञानी छ। तपाईं अरूको भावनाहरू सोस्नुहुन्छ और आध्यात्मिक आउटलेटहरू चाहिन्छ।"),
+    MOON_ARIES("Your emotional nature is fiery and spontaneous. You react quickly to situations and need independence in emotional expression.", "तपाईंको भावनात्मक स्वभाव अग्निमय र स्वत:स्फूर्त छ। तपाईं परिस्थितिहरूमा छिटो प्रतिक्रिया दिनुहुन्छ र भावनात्मक अभिव्यक्तिमा स्वतन्त्रता चाहिन्छ।", "आप के भावनात्मक स्वभाव अग्निमय और स्वत:स्फूर्त है। आप परिस्थिति में हैिटो प्रतिक्रिया दिनुहोता है और भावनात्मक अभिव्यक्ति में स्वतन्त्रता चाहिन्है।"),
+    ,
+    MOON_TAURUS("Your emotional nature is stable and sensual. You seek comfort and security, and are deeply loyal in relationships.", "तपाईंको भावनात्मक स्वभाव स्थिर र संवेदनशील छ। तपाईं आराम र सुरक्षा खोज्नुहुन्छ, र सम्बन्धहरूमा गहिरो वफादार हुनुहुन्छ।", "आप के भावनात्मक स्वभाव स्थिर और संवेदनशील है। आप आराम और सुरक्षा खोज्नुहोता है, और संबंध में गहिरो वफादार हैं।"),
+    ,
+    MOON_GEMINI("Your emotional nature is curious and changeable. You process feelings intellectually and need mental stimulation.", "तपाईंको भावनात्मक स्वभाव जिज्ञासु र परिवर्तनशील छ। तपाईं भावनाहरूलाई बौद्धिक रूपमा प्रशोधन गर्नुहुन्छ र मानसिक उत्तेजना चाहिन्छ।", "आप के भावनात्मक स्वभाव जिज्ञासु और परिवर्तनशील है। आप भावना  के बौद्धिक रूप में प्रशोधन करनेुहोता है और मानसिक उत्तेजना चाहिन्है।"),
+    ,
+    MOON_CANCER("Your emotional nature is deeply sensitive and nurturing. You have strong intuition and need emotional security above all.", "तपाईंको भावनात्मक स्वभाव गहिरो संवेदनशील र पालनपोषण गर्ने छ। तपाईंसँग बलियो अन्तर्ज्ञान छ र सबैभन्दा माथि भावनात्मक सुरक्षा चाहिन्छ।", "आप के भावनात्मक स्वभाव गहिरो संवेदनशील और पालनपोषण करनेे है। आपसँग बलियह अन्तर्ज्ञान है और सभीभन्दा माथि भावनात्मक सुरक्षा चाहिन्है।"),
+    ,
+    MOON_LEO("Your emotional nature is warm, generous, and dramatic. You need recognition and express feelings openly and passionately.", "तपाईंको भावनात्मक स्वभाव न्यानो, उदार र नाटकीय छ। तपाईंलाई मान्यता चाहिन्छ र भावनाहरू खुलेर र जोशपूर्ण रूपमा व्यक्त गर्नुहुन्छ।", "आप के भावनात्मक स्वभाव न्यानो, उदार और नाटकीय है। आप  के मान्यता चाहिन्है और भावना खुलेर और जोशपूर्ण रूप में व्यक्त करनेुहोता है।"),
+    ,
+    MOON_VIRGO("Your emotional nature is practical and analytical. You express care through service and may overthink feelings.", "तपाईंको भावनात्मक स्वभाव व्यावहारिक र विश्लेषणात्मक छ। तपाईं सेवा मार्फत हेरचाह व्यक्त गर्नुहुन्छ र भावनाहरूको बारेमा बढी सोच्न सक्नुहुन्छ।", "आप के भावनात्मक स्वभाव व्यावहारिक और विश्लेषणात्मक है। आप सेवा मार्फत हेरचाह व्यक्त करनेुहोता है और भावना के बारे में बढी सोच्न सक्नुहोता है।"),
+    ,
+    MOON_LIBRA("Your emotional nature seeks harmony and partnership. You need balanced relationships and avoid emotional extremes.", "तपाईंको भावनात्मक स्वभावले सामंजस्य र साझेदारी खोज्छ। तपाईंलाई सन्तुलित सम्बन्धहरू चाहिन्छ र भावनात्मक चरमहरूबाट बच्नुहुन्छ।", "आप के भावनात्मक स्वभावले सामंजस्य और साझेदारी खोज्है। आप  के सन्तुलित संबंध चाहिन्है और भावनात्मक चरमबाट बच्नुहोता है।"),
+    ,
+    MOON_SCORPIO("Your emotional nature is intense and transformative. You feel deeply and may hide vulnerabilities behind a strong exterior.", "तपाईंको भावनात्मक स्वभाव तीव्र र परिवर्तनकारी छ। तपाईं गहिरो रूपमा महसुस गर्नुहुन्छ र बलियो बाहिरी आवरण पछाडि कमजोरीहरू लुकाउन सक्नुहुन्छ।", "आप के भावनात्मक स्वभाव तीव्र और परिवर्तनकारी है। आप गहिरो रूप में महसुस करनेुहोता है और बलियह बाहिरी आवरण पीहैे कमजोरी लुकाउन सक्नुहोता है।"),
+    ,
+    MOON_SAGITTARIUS("Your emotional nature is optimistic and freedom-loving. You need space to explore and grow emotionally.", "तपाईंको भावनात्मक स्वभाव आशावादी र स्वतन्त्रता-प्रेमी छ। तपाईंलाई भावनात्मक रूपमा अन्वेषण र बढ्न ठाउँ चाहिन्छ।", "आप के भावनात्मक स्वभाव आशावादी और स्वतन्त्रता-प्रेमी है। आप  के भावनात्मक रूप में अन्वेषण और बढ्न ठाउँ चाहिन्है।"),
+    ,
+    MOON_CAPRICORN("Your emotional nature is controlled and responsible. You may suppress feelings for duty but are deeply loyal.", "तपाईंको भावनात्मक स्वभाव नियन्त्रित र जिम्मेवार छ। तपाईंले कर्तव्यको लागि भावनाहरू दबाउन सक्नुहुन्छ तर गहिरो वफादार हुनुहुन्छ।", "आप के भावनात्मक स्वभाव नियन्त्रित और जिम्मेवार है। आपले कर्तव्य के लिए भावना दबाउन सक्नुहोता है तर गहिरो वफादार हैं।"),
+    ,
+    MOON_AQUARIUS("Your emotional nature is detached and humanitarian. You process feelings intellectually and value emotional freedom.", "तपाईंको भावनात्मक स्वभाव अलग र मानवतावादी छ। तपाईं भावनाहरूलाई बौद्धिक रूपमा प्रशोधन गर्नुहुन्छ र भावनात्मक स्वतन्त्रतालाई मूल्य दिनुहुन्छ।", "आप के भावनात्मक स्वभाव अलग और मानवतावादी है। आप भावना  के बौद्धिक रूप में प्रशोधन करनेुहोता है और भावनात्मक स्वतन्त्रता  के मूल्य दिनुहोता है।"),
+    ,
+    MOON_PISCES("Your emotional nature is deeply empathetic and intuitive. You absorb others' feelings and need spiritual outlets.", "तपाईंको भावनात्मक स्वभाव गहिरो सहानुभूतिपूर्ण र अन्तर्ज्ञानी छ। तपाईं अरूको भावनाहरू सोस्नुहुन्छ र आध्यात्मिक आउटलेटहरू चाहिन्छ।", "आप के भावनात्मक स्वभाव गहिरो सहानुभूतिपूर्ण और अन्तर्ज्ञानी है। आप अरू के भावना सोस्नुहोता है और आध्यात्मिक आउटलेट चाहिन्है।"),
+
+    ,
 
     // Nakshatra personality influences
-    NAKSHATRA_INFLUENCE_STRONG("The nakshatra placement strongly influences your personality, adding unique characteristics to your basic nature.", "नक्षत्र स्थितिले तपाईंको व्यक्तित्वलाई बलियो रूपमा प्रभाव पार्छ, तपाईंको आधारभूत स्वभावमा अद्वितीय विशेषताहरू थप्दै।", "नक्षत्र स्थितिले आपका व्यक्तित्व को बलियो रूपमा प्रभाव पार्छ, आपका आधारभूत स्वभावमा अद्वितीय विशेषताहरू थप्दै।"),
-    NAKSHATRA_BIRTH_STAR("Your birth star reveals your inner essence, karmic path, and subtle personality traits that emerge over time.", "तपाईंको जन्म तारा तपाईंको आन्तरिक सार, कार्मिक मार्ग, र सूक्ष्म व्यक्तित्व विशेषताहरू प्रकट गर्दछ जुन समयसँगै देखिन्छ।", "आपका जन्म तारा आपका आन्तरिक सार, कार्मिक मार्ग, और सूक्ष्म व्यक्तित्व विशेषताहरू प्रकट गर्दछ जुन समयसँगै देखिन्छ।"),
+    NAKSHATRA_INFLUENCE_STRONG("The nakshatra placement strongly influences your personality, adding unique characteristics to your basic nature.", "नक्षत्र स्थितिले तपाईंको व्यक्तित्वलाई बलियो रूपमा प्रभाव पार्छ, तपाईंको आधारभूत स्वभावमा अद्वितीय विशेषताहरू थप्दै।", "नक्षत्र स्थितिले आप के व्यक्तित्व  के बलियह रूप में प्रभाव पार्है, आप के आधारभूत स्वभाव में अद्वितीय विशेषता थप्दै।"),
+    ,
+    NAKSHATRA_BIRTH_STAR("Your birth star reveals your inner essence, karmic path, and subtle personality traits that emerge over time.", "तपाईंको जन्म तारा तपाईंको आन्तरिक सार, कार्मिक मार्ग, र सूक्ष्म व्यक्तित्व विशेषताहरू प्रकट गर्दछ जुन समयसँगै देखिन्छ।", "आप के जन्म तारा आप के आन्तरिक सार, कार्मिक मार्ग, और सूक्ष्म व्यक्तित्व विशेषता प्रकट करता है जो समइसँगै देखिन्है।"),
+
+    ,
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: CAREER & PROFESSION
     // ═══════════════════════════════════════════════════════════════════════════
 
-    CAREER_OVERVIEW_TEMPLATE("Based on your 10th house lord %s in %s, and the position of Sun and Saturn, your career path shows strong potential in %s.", "तपाईंको १०औं भावको स्वामी %s %s मा, र सूर्य र शनिको स्थितिको आधारमा, तपाईंको पेशागत मार्गले %s मा बलियो क्षमता देखाउँछ।", "आपका १०औं भावको स्वामी %s %s मा, और सूर्य और शनिको स्थितिको आधारमा, आपका पेशागत मार्गले %s मा बलियो क्षमता देखाउँछ।"),
+    CAREER_OVERVIEW_TEMPLATE("Based on your 10th house lord %s in %s, and the position of Sun and Saturn, your career path shows strong potential in %s.", "तपाईंको १०औं भावको स्वामी %s %s मा, र सूर्य र शनिको स्थितिको आधारमा, तपाईंको पेशागत मार्गले %s मा बलियो क्षमता देखाउँछ।", "आप के १०औं भाव के स्वामी %s %s में, और सूर्य और शनि के स्थिति के आधार में, आप के पेशागत मार्गले %s में बलियह क्षमता देखाउँहै।"),
 
-    CAREER_SUN_STRONG("Strong Sun indicates success in government, administration, politics, or leadership positions. You naturally command respect.", "बलियो सूर्यले सरकार, प्रशासन, राजनीति, वा नेतृत्व पदहरूमा सफलता संकेत गर्छ। तपाईंले स्वाभाविक रूपमा सम्मान आदेश गर्नुहुन्छ।", "बलियो सूर्यले सरकार, प्रशासन, राजनीति, या नेतृत्व पदहरूमा सफलता संकेत गर्छ। तपाईंले स्वाभाविक रूपमा सम्मान आदेश गर्नुहुन्छ।"),
-    CAREER_MOON_STRONG("Strong Moon favors careers in hospitality, nursing, public relations, marine activities, or creative arts.", "बलियो चन्द्रमाले होटल व्यवसाय, नर्सिङ, जनसम्पर्क, समुद्री गतिविधिहरू, वा रचनात्मक कलाहरूमा क्यारियरलाई अनुकूल बनाउँछ।", "बलियो चन्द्रमाले होटल व्यवसाय, नर्सिङ, जनसम्पर्क, समुद्री गतिविधिहरू, या रचनात्मक कलाहरूमा क्यारियर को अनुकूल बनाउँछ।"),
-    CAREER_MARS_STRONG("Strong Mars excels in military, police, sports, surgery, engineering, or entrepreneurship requiring courage and action.", "बलियो मंगलले सेना, प्रहरी, खेलकुद, शल्यचिकित्सा, इन्जिनियरिङ, वा साहस र कार्य आवश्यक पर्ने उद्यमशीलतामा उत्कृष्ट प्रदर्शन गर्छ।", "बलियो मंगलले सेना, प्रहरी, खेलकुद, शल्यचिकित्सा, इन्जिनियरिङ, या साहस और कार्य आवश्यक पर्ने उद्यमशीलतामा उत्कृष्ट प्रदर्शन गर्छ।"),
-    CAREER_MERCURY_STRONG("Strong Mercury indicates success in communication, writing, commerce, accounting, technology, or intellectual pursuits.", "बलियो बुधले सञ्चार, लेखन, वाणिज्य, लेखा, प्रविधि, वा बौद्धिक कार्यहरूमा सफलता संकेत गर्छ।", "बलियो बुधले सञ्चार, लेखन, वाणिज्य, लेखा, प्रविधि, या बौद्धिक कार्यहरूमा सफलता संकेत गर्छ।"),
-    CAREER_JUPITER_STRONG("Strong Jupiter favors teaching, law, spirituality, finance, advisory roles, or positions of wisdom and guidance.", "बलियो बृहस्पतिले शिक्षण, कानून, आध्यात्मिकता, वित्त, सल्लाहकार भूमिकाहरू, वा ज्ञान र मार्गदर्शनको पदहरूलाई अनुकूल बनाउँछ।", "बलियो बृहस्पतिले शिक्षण, कानून, आध्यात्मिकता, वित्त, सल्लाहकार भूमिकाहरू, या ज्ञान और मार्गदर्शनको पदहरू को अनुकूल बनाउँछ।"),
-    CAREER_VENUS_STRONG("Strong Venus excels in arts, entertainment, luxury goods, beauty industry, hospitality, or diplomatic services.", "बलियो शुक्रले कला, मनोरञ्जन, विलासी सामान, सौन्दर्य उद्योग, आतिथ्य, वा कूटनीतिक सेवाहरूमा उत्कृष्ट प्रदर्शन गर्छ।", "बलियो शुक्रले कला, मनोरञ्जन, विलासी सामान, सौन्दर्य उद्योग, आतिथ्य, या कूटनीतिक सेवाहरूमा उत्कृष्ट प्रदर्शन गर्छ।"),
-    CAREER_SATURN_STRONG("Strong Saturn indicates success through hard work in construction, agriculture, mining, research, or administrative roles.", "बलियो शनिले निर्माण, कृषि, खनन, अनुसन्धान, वा प्रशासनिक भूमिकाहरूमा कडा परिश्रमबाट सफलता संकेत गर्छ।", "बलियो शनिले निर्माण, कृषि, खनन, अनुसन्धान, या प्रशासनिक भूमिकाहरूमा कडा परिश्रमबाट सफलता संकेत गर्छ।"),
-    CAREER_RAHU_INFLUENCE("Rahu influence suggests unconventional careers, foreign connections, technology, or media-related professions.", "राहुको प्रभावले अपरम्परागत क्यारियर, विदेशी सम्बन्धहरू, प्रविधि, वा मिडिया-सम्बन्धित पेशाहरू सुझाव गर्छ।", "राहुको प्रभावले अपरम्परागत क्यारियर, विदेशी संबंधहरू, प्रविधि, या मिडिया-संबंधित पेशाहरू सुझाव गर्छ।"),
-    CAREER_KETU_INFLUENCE("Ketu influence indicates spiritual pursuits, research, investigation, or work requiring intuition and detachment.", "केतुको प्रभावले आध्यात्मिक खोज, अनुसन्धान, अनुसन्धान, वा अन्तर्ज्ञान र विरक्ति आवश्यक पर्ने कार्य संकेत गर्छ।", "केतुको प्रभावले आध्यात्मिक खोज, अनुसन्धान, अनुसन्धान, या अन्तर्ज्ञान और विरक्ति आवश्यक पर्ने कार्य संकेत गर्छ।"),
+    ,
 
-    CAREER_10TH_LORD_STATUS("Your 10th house lord is %s in the %s house, which %s for career growth.", "तपाईंको १०औं भावको स्वामी %s %s भावमा छ, जुन क्यारियर वृद्धिको लागि %s।", "आपका १०औं भावको स्वामी %s %s भावमा छ, जुन क्यारियर वृद्धिको लिए %s।"),
-    CAREER_10TH_STATUS_EXCELLENT("is excellently placed", "उत्कृष्ट रूपमा राखिएको छ", "उत्कृष्ट रूपमा राखिएको है"),
-    CAREER_10TH_STATUS_GOOD("is well placed", "राम्रो राखिएको छ", "राम्रो राखिएको है"),
-    CAREER_10TH_STATUS_CHALLENGING("faces some challenges", "केही चुनौतीहरूको सामना गर्छ", "केही चुनौतियांको सामना गर्छ"),
+    CAREER_SUN_STRONG("Strong Sun indicates success in government, administration, politics, or leadership positions. You naturally command respect.", "बलियो सूर्यले सरकार, प्रशासन, राजनीति, वा नेतृत्व पदहरूमा सफलता संकेत गर्छ। तपाईंले स्वाभाविक रूपमा सम्मान आदेश गर्नुहुन्छ।", "बलियह सूर्यले सरकार, प्रशासन, राजनीति, या नेतृत्व पद में सफलता संकेत करता है। आपले स्वाभाविक रूप में सम्मान आदेश करनेुहोता है।"),
+    ,
+    CAREER_MOON_STRONG("Strong Moon favors careers in hospitality, nursing, public relations, marine activities, or creative arts.", "बलियो चन्द्रमाले होटल व्यवसाय, नर्सिङ, जनसम्पर्क, समुद्री गतिविधिहरू, वा रचनात्मक कलाहरूमा क्यारियरलाई अनुकूल बनाउँछ।", "बलियह चन्द्रमाले हैटल व्यवसाय, नर्सिङ, जनसम्पर्क, समुद्री गतिविधि, या रचनात्मक कला में क्यारियर  के अनुकूल बनाउँहै।"),
+    ,
+    CAREER_MARS_STRONG("Strong Mars excels in military, police, sports, surgery, engineering, or entrepreneurship requiring courage and action.", "बलियो मंगलले सेना, प्रहरी, खेलकुद, शल्यचिकित्सा, इन्जिनियरिङ, वा साहस र कार्य आवश्यक पर्ने उद्यमशीलतामा उत्कृष्ट प्रदर्शन गर्छ।", "बलियह मंगलले सेना, प्रहरी, खेलकुद, शल्यचिकित्सा, इन्जिनियरिङ, या साहस और कार्य आवश्यक पर्ने उद्यमशीलता में उत्कृष्ट प्रदर्शन करता है।"),
+    ,
+    CAREER_MERCURY_STRONG("Strong Mercury indicates success in communication, writing, commerce, accounting, technology, or intellectual pursuits.", "बलियो बुधले सञ्चार, लेखन, वाणिज्य, लेखा, प्रविधि, वा बौद्धिक कार्यहरूमा सफलता संकेत गर्छ।", "बलियह बुधले सञ्चार, लेखन, वाणिज्य, लेखा, प्रविधि, या बौद्धिक कार्य में सफलता संकेत करता है।"),
+    ,
+    CAREER_JUPITER_STRONG("Strong Jupiter favors teaching, law, spirituality, finance, advisory roles, or positions of wisdom and guidance.", "बलियो बृहस्पतिले शिक्षण, कानून, आध्यात्मिकता, वित्त, सल्लाहकार भूमिकाहरू, वा ज्ञान र मार्गदर्शनको पदहरूलाई अनुकूल बनाउँछ।", "बलियह बृहस्पतिले शिक्षण, कानून, आध्यात्मिकता, वित्त, सल्लाहकार भूमिका, या ज्ञान और मार्गदर्शन के पद  के अनुकूल बनाउँहै।"),
+    ,
+    CAREER_VENUS_STRONG("Strong Venus excels in arts, entertainment, luxury goods, beauty industry, hospitality, or diplomatic services.", "बलियो शुक्रले कला, मनोरञ्जन, विलासी सामान, सौन्दर्य उद्योग, आतिथ्य, वा कूटनीतिक सेवाहरूमा उत्कृष्ट प्रदर्शन गर्छ।", "बलियह शुक्रले कला, मनोरञ्जन, विलासी सामान, सौन्दर्य उद्यहग, आतिथ्य, या कूटनीतिक सेवा में उत्कृष्ट प्रदर्शन करता है।"),
+    ,
+    CAREER_SATURN_STRONG("Strong Saturn indicates success through hard work in construction, agriculture, mining, research, or administrative roles.", "बलियो शनिले निर्माण, कृषि, खनन, अनुसन्धान, वा प्रशासनिक भूमिकाहरूमा कडा परिश्रमबाट सफलता संकेत गर्छ।", "बलियह शनिले निर्माण, कृषि, खनन, अनुसन्धान, या प्रशासनिक भूमिका में कडा परिश्रमबाट सफलता संकेत करता है।"),
+    ,
+    CAREER_RAHU_INFLUENCE("Rahu influence suggests unconventional careers, foreign connections, technology, or media-related professions.", "राहुको प्रभावले अपरम्परागत क्यारियर, विदेशी सम्बन्धहरू, प्रविधि, वा मिडिया-सम्बन्धित पेशाहरू सुझाव गर्छ।", "राहु के प्रभावले अपरम्परागत क्यारियर, विदेशी संबंध, प्रविधि, या मिडिया-संबंधित पेशा सुझाव करता है।"),
+    ,
+    CAREER_KETU_INFLUENCE("Ketu influence indicates spiritual pursuits, research, investigation, or work requiring intuition and detachment.", "केतुको प्रभावले आध्यात्मिक खोज, अनुसन्धान, अनुसन्धान, वा अन्तर्ज्ञान र विरक्ति आवश्यक पर्ने कार्य संकेत गर्छ।", "केतु के प्रभावले आध्यात्मिक खोज, अनुसन्धान, अनुसन्धान, या अन्तर्ज्ञान और विरक्ति आवश्यक पर्ने कार्य संकेत करता है।"),
+
+    ,
+
+    CAREER_10TH_LORD_STATUS("Your 10th house lord is %s in the %s house, which %s for career growth.", "तपाईंको १०औं भावको स्वामी %s %s भावमा छ, जुन क्यारियर वृद्धिको लागि %s।", "आप के १०औं भाव के स्वामी %s %s भाव में है, जो क्यारियर वृद्धि के लिए %s।"),
+    ,
+    CAREER_10TH_STATUS_EXCELLENT("is excellently placed", "उत्कृष्ट रूपमा राखिएको छ", "उत्कृष्ट रूप में राखिए के है"),
+    ,
+    CAREER_10TH_STATUS_GOOD("is well placed", "राम्रो राखिएको छ", "राम्रो राखिए के है"),
+    ,
+    CAREER_10TH_STATUS_CHALLENGING("faces some challenges", "केही चुनौतीहरूको सामना गर्छ", "केही चुनौती के सामना करता है"),
+
+    ,
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: MARRIAGE & RELATIONSHIPS
     // ═══════════════════════════════════════════════════════════════════════════
 
-    MARRIAGE_OVERVIEW("Your marriage and relationship prospects are analyzed through the 7th house, Venus, Jupiter, and their aspects.", "तपाईंको विवाह र सम्बन्ध सम्भावनाहरू ७औं भाव, शुक्र, बृहस्पति, र तिनीहरूको दृष्टि मार्फत विश्लेषण गरिएको छ।", "आपका विवाह और संबंध सम्भावनाहरू ७औं भाव, शुक्र, बृहस्पति, और तिनीहरूको दृष्टि मार्फत विश्लेषण गरिएको है।"),
+    MARRIAGE_OVERVIEW("Your marriage and relationship prospects are analyzed through the 7th house, Venus, Jupiter, and their aspects.", "तपाईंको विवाह र सम्बन्ध सम्भावनाहरू ७औं भाव, शुक्र, बृहस्पति, र तिनीहरूको दृष्टि मार्फत विश्लेषण गरिएको छ।", "आप के विवाह और संबंध सम्भावना ७औं भाव, शुक्र, बृहस्पति, और तिनी के दृष्टि मार्फत विश्लेषण गरिए के है।"),
 
-    MARRIAGE_7TH_BENEFIC("The presence of benefics in your 7th house indicates a harmonious and supportive marriage partnership.", "तपाईंको ७औं भावमा शुभ ग्रहहरूको उपस्थितिले सामंजस्यपूर्ण र सहयोगी विवाह साझेदारी संकेत गर्छ।", "आपका ७औं भावमा शुभ ग्रहको उपस्थितिले सामंजस्यपूर्ण और सहयोगी विवाह साझेदारी संकेत गर्छ।"),
-    MARRIAGE_7TH_MALEFIC("Malefic influences on the 7th house suggest the need for patience and understanding in relationships.", "७औं भावमा पापी प्रभावहरूले सम्बन्धहरूमा धैर्य र समझको आवश्यकता सुझाव गर्छ।", "७औं भावमा पापी प्रभावले संबंधहरूमा धैर्य और समझको आवश्यकता सुझाव गर्छ।"),
-    MARRIAGE_VENUS_STRONG("Strong Venus blesses you with charm, romantic nature, and the ability to maintain harmonious relationships.", "बलियो शुक्रले तपाईंलाई आकर्षण, रोमान्टिक स्वभाव, र सामंजस्यपूर्ण सम्बन्धहरू कायम राख्ने क्षमताको आशीर्वाद दिन्छ।", "बलियो शुक्रले तपाईं को आकर्षण, रोमान्टिक स्वभाव, और सामंजस्यपूर्ण संबंधहरू कायम राख्ने क्षमताको आशीर्वाद दिन्छ।"),
-    MARRIAGE_VENUS_WEAK("Venus affliction may cause delays or challenges in relationships, requiring conscious effort to maintain harmony.", "शुक्र पीडाले सम्बन्धहरूमा ढिलाइ वा चुनौतीहरू निम्त्याउन सक्छ, सामंजस्य कायम राख्न सचेत प्रयास आवश्यक पर्दछ।", "शुक्र पीडाले संबंधहरूमा ढिलाइ या चुनौतियां निम्त्याउन सक्छ, सामंजस्य कायम राख्न सचेत प्रयास आवश्यक पर्दछ।"),
-    MARRIAGE_JUPITER_ASPECT("Jupiter's aspect on the 7th house brings blessings, wisdom, and spiritual growth through marriage.", "७औं भावमा बृहस्पतिको दृष्टिले विवाह मार्फत आशीर्वाद, ज्ञान र आध्यात्मिक वृद्धि ल्याउँछ।", "७औं भावमा बृहस्पतिको दृष्टिले विवाह मार्फत आशीर्वाद, ज्ञान और आध्यात्मिक वृद्धि ल्याउँछ।"),
+    ,
 
-    MARRIAGE_TIMING_EARLY("Your chart indicates the possibility of early marriage, typically before age 25-27.", "तपाईंको कुण्डलीले प्रारम्भिक विवाहको सम्भावना संकेत गर्छ, सामान्यतया २५-२७ वर्ष अघि।", "आपका कुंडलीले प्रारम्भिक विवाहको सम्भावना संकेत गर्छ, सामान्यतया २५-२७ वर्ष अघि।"),
-    MARRIAGE_TIMING_NORMAL("Your chart indicates marriage timing around the typical age of 27-32.", "तपाईंको कुण्डलीले सामान्य उमेर २७-३२ को आसपास विवाह समय संकेत गर्छ।", "आपका कुंडलीले सामान्य उमेर २७-३२ को आसपास विवाह समय संकेत गर्छ।"),
-    MARRIAGE_TIMING_DELAYED("Your chart suggests delayed marriage, possibly after age 30-32, but with greater maturity.", "तपाईंको कुण्डलीले ढिलो विवाह सुझाव गर्छ, सम्भवतः ३०-३२ वर्षपछि, तर बढी परिपक्वताको साथ।", "आपका कुंडलीले ढिलो विवाह सुझाव गर्छ, सम्भवतः ३०-३२ वर्षपछि, तर बढी परिपक्वताको साथ।"),
+    MARRIAGE_7TH_BENEFIC("The presence of benefics in your 7th house indicates a harmonious and supportive marriage partnership.", "तपाईंको ७औं भावमा शुभ ग्रहहरूको उपस्थितिले सामंजस्यपूर्ण र सहयोगी विवाह साझेदारी संकेत गर्छ।", "आप के ७औं भाव में शुभ ग्रह के उपस्थितिले सामंजस्यपूर्ण और सहयहगी विवाह साझेदारी संकेत करता है।"),
+    ,
+    MARRIAGE_7TH_MALEFIC("Malefic influences on the 7th house suggest the need for patience and understanding in relationships.", "७औं भावमा पापी प्रभावहरूले सम्बन्धहरूमा धैर्य र समझको आवश्यकता सुझाव गर्छ।", "७औं भाव में पापी प्रभावले संबंध में धैर्य और समझ के आवश्यकता सुझाव करता है।"),
+    ,
+    MARRIAGE_VENUS_STRONG("Strong Venus blesses you with charm, romantic nature, and the ability to maintain harmonious relationships.", "बलियो शुक्रले तपाईंलाई आकर्षण, रोमान्टिक स्वभाव, र सामंजस्यपूर्ण सम्बन्धहरू कायम राख्ने क्षमताको आशीर्वाद दिन्छ।", "बलियह शुक्रले आप  के आकर्षण, रोमान्टिक स्वभाव, और सामंजस्यपूर्ण संबंध कायम राख्ने क्षमता के आशीर्वाद देता है।"),
+    ,
+    MARRIAGE_VENUS_WEAK("Venus affliction may cause delays or challenges in relationships, requiring conscious effort to maintain harmony.", "शुक्र पीडाले सम्बन्धहरूमा ढिलाइ वा चुनौतीहरू निम्त्याउन सक्छ, सामंजस्य कायम राख्न सचेत प्रयास आवश्यक पर्दछ।", "शुक्र पीडाले संबंध में ढिलाइ या चुनौती निम्त्याउन सक्है, सामंजस्य कायम राख्न सचेत प्रयास आवश्यक पर्दहै।"),
+    ,
+    MARRIAGE_JUPITER_ASPECT("Jupiter's aspect on the 7th house brings blessings, wisdom, and spiritual growth through marriage.", "७औं भावमा बृहस्पतिको दृष्टिले विवाह मार्फत आशीर्वाद, ज्ञान र आध्यात्मिक वृद्धि ल्याउँछ।", "७औं भाव में बृहस्पति के दृष्टिले विवाह मार्फत आशीर्वाद, ज्ञान और आध्यात्मिक वृद्धि लाता है।"),
 
-    SPOUSE_NATURE_TEMPLATE("Your spouse is likely to be %s, with qualities influenced by %s in your 7th house.", "तपाईंको जीवनसाथी %s हुने सम्भावना छ, तपाईंको ७औं भावमा %s द्वारा प्रभावित गुणहरूको साथ।", "आपका जीवनमित्र %s हुने सम्भावना छ, आपका ७औं भावमा %s द्वारा प्रभावित गुणहरूको साथ।"),
+    ,
+
+    MARRIAGE_TIMING_EARLY("Your chart indicates the possibility of early marriage, typically before age 25-27.", "तपाईंको कुण्डलीले प्रारम्भिक विवाहको सम्भावना संकेत गर्छ, सामान्यतया २५-२७ वर्ष अघि।", "आप के कुंडलीले प्रारम्भिक विवाह के सम्भावना संकेत करता है, सामान्यतया २५-२७ वर्ष अघि।"),
+    ,
+    MARRIAGE_TIMING_NORMAL("Your chart indicates marriage timing around the typical age of 27-32.", "तपाईंको कुण्डलीले सामान्य उमेर २७-३२ को आसपास विवाह समय संकेत गर्छ।", "आप के कुंडलीले सामान्य उमेर २७-३२  के आसपास विवाह समय संकेत करता है।"),
+    ,
+    MARRIAGE_TIMING_DELAYED("Your chart suggests delayed marriage, possibly after age 30-32, but with greater maturity.", "तपाईंको कुण्डलीले ढिलो विवाह सुझाव गर्छ, सम्भवतः ३०-३२ वर्षपछि, तर बढी परिपक्वताको साथ।", "आप के कुंडलीले ढिलो विवाह सुझाव करता है, सम्भवतः ३०-३२ वर्षपहैि, तर बढी परिपक्वता के साथ।"),
+
+    ,
+
+    SPOUSE_NATURE_TEMPLATE("Your spouse is likely to be %s, with qualities influenced by %s in your 7th house.", "तपाईंको जीवनसाथी %s हुने सम्भावना छ, तपाईंको ७औं भावमा %s द्वारा प्रभावित गुणहरूको साथ।", "आप के जीवनमित्र %s हुने सम्भावना है, आप के ७औं भाव में %s द्वारा प्रभावित गुण के साथ।"),
+
+    ,
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: HEALTH & LONGEVITY
     // ═══════════════════════════════════════════════════════════════════════════
 
-    HEALTH_OVERVIEW("Health analysis is based on your Ascendant, 6th house (diseases), 8th house (longevity), and planetary afflictions.", "स्वास्थ्य विश्लेषण तपाईंको लग्न, ६औं भाव (रोग), ८औं भाव (आयु), र ग्रह पीडाहरूमा आधारित छ।", "स्वास्थ्य विश्लेषण आपका लग्न, ६औं भाव (रोग), ८औं भाव (आयु), और ग्रह पीडाहरूमा आधारित है।"),
+    HEALTH_OVERVIEW("Health analysis is based on your Ascendant, 6th house (diseases), 8th house (longevity), and planetary afflictions.", "स्वास्थ्य विश्लेषण तपाईंको लग्न, ६औं भाव (रोग), ८औं भाव (आयु), र ग्रह पीडाहरूमा आधारित छ।", "स्वास्थ्य विश्लेषण आप के लग्न, ६औं भाव (रोग), ८औं भाव (आयु), और ग्रह पीडा में आधारित है।"),
 
-    HEALTH_CONSTITUTION_STRONG("You possess a strong constitution with good vitality and natural resistance to illness.", "तपाईंसँग राम्रो जीवनी शक्ति र रोगको लागि प्राकृतिक प्रतिरोधको साथ बलियो संरचना छ।", "तपाईंसँग राम्रो जीवनी शक्ति और रोगको लिए प्राकृतिक प्रतिरोधको साथ बलियो संरचना है।"),
-    HEALTH_CONSTITUTION_MODERATE("Your constitution is moderate, requiring regular attention to diet and lifestyle for optimal health.", "तपाईंको संरचना मध्यम छ, इष्टतम स्वास्थ्यको लागि आहार र जीवनशैलीमा नियमित ध्यान आवश्यक छ।", "आपका संरचना मध्यम छ, इष्टतम स्वास्थ्यको लिए आहार और जीवनशैलीमा नियमित ध्यान आवश्यक है।"),
-    HEALTH_CONSTITUTION_SENSITIVE("Your constitution is sensitive, benefiting from preventive care and balanced routines.", "तपाईंको संरचना संवेदनशील छ, निवारक हेरचाह र सन्तुलित दिनचर्याबाट लाभ हुन्छ।", "आपका संरचना संवेदनशील छ, निवारक हेरचाह और सन्तुलित दिनचर्याबाट लाभ हुन्छ।"),
+    ,
 
-    HEALTH_ARIES_AREAS("Areas requiring attention: Head, brain, face, eyes. Tendency toward headaches, fevers, and inflammations.", "ध्यान आवश्यक क्षेत्रहरू: टाउको, मस्तिष्क, अनुहार, आँखा। टाउको दुखाइ, ज्वरो, र सूजनको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: टाउको, मस्तिष्क, अनुहार, आँखा। टाउको दुखाइ, ज्वरो, और सूजनको प्रवृत्ति।"),
-    HEALTH_TAURUS_AREAS("Areas requiring attention: Throat, neck, thyroid, tonsils. Tendency toward throat ailments and metabolic issues.", "ध्यान आवश्यक क्षेत्रहरू: घाँटी, गर्दन, थाइरोइड, टन्सिल। घाँटी रोग र चयापचय समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: घाँटी, गर्दन, थाइरोइड, टन्सिल। घाँटी रोग और चयापचय समस्याहरूको प्रवृत्ति।"),
-    HEALTH_GEMINI_AREAS("Areas requiring attention: Lungs, arms, hands, nervous system. Tendency toward respiratory and nervous disorders.", "ध्यान आवश्यक क्षेत्रहरू: फोक्सो, हात, हातहरू, स्नायु प्रणाली। श्वासप्रश्वास र स्नायु विकारहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: फोक्सो, हात, हातहरू, स्नायु प्रणाली। श्वासप्रश्वास और स्नायु विकारहरूको प्रवृत्ति।"),
-    HEALTH_CANCER_AREAS("Areas requiring attention: Chest, stomach, breasts, digestion. Tendency toward digestive and emotional health issues.", "ध्यान आवश्यक क्षेत्रहरू: छाती, पेट, स्तन, पाचन। पाचन र भावनात्मक स्वास्थ्य समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: छाती, पेट, स्तन, पाचन। पाचन और भावनात्मक स्वास्थ्य समस्याहरूको प्रवृत्ति।"),
-    HEALTH_LEO_AREAS("Areas requiring attention: Heart, spine, back. Tendency toward cardiac and spinal issues.", "ध्यान आवश्यक क्षेत्रहरू: मुटु, मेरुदण्ड, पिठ्यूँ। हृदय र मेरुदण्ड समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: मुटु, मेरुदण्ड, पिठ्यूँ। हृदय और मेरुदण्ड समस्याहरूको प्रवृत्ति।"),
-    HEALTH_VIRGO_AREAS("Areas requiring attention: Intestines, digestive system, nervous system. Tendency toward digestive and anxiety issues.", "ध्यान आवश्यक क्षेत्रहरू: आन्द्रा, पाचन प्रणाली, स्नायु प्रणाली। पाचन र चिन्ता समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: आन्द्रा, पाचन प्रणाली, स्नायु प्रणाली। पाचन और चिन्ता समस्याहरूको प्रवृत्ति।"),
-    HEALTH_LIBRA_AREAS("Areas requiring attention: Kidneys, lower back, skin. Tendency toward kidney and skin conditions.", "ध्यान आवश्यक क्षेत्रहरू: मिर्गौला, तल्लो ढाड, छाला। मिर्गौला र छाला अवस्थाहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: मिर्गौला, तल्लो ढाड, छाला। मिर्गौला और छाला अवस्थाहरूको प्रवृत्ति।"),
-    HEALTH_SCORPIO_AREAS("Areas requiring attention: Reproductive organs, bladder, elimination. Tendency toward urogenital issues.", "ध्यान आवश्यक क्षेत्रहरू: प्रजनन अंगहरू, मूत्राशय, उत्सर्जन। मूत्रजननांगी समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: प्रजनन अंगहरू, मूत्राशय, उत्सर्जन। मूत्रजननांगी समस्याहरूको प्रवृत्ति।"),
-    HEALTH_SAGITTARIUS_AREAS("Areas requiring attention: Hips, thighs, liver, sciatic nerve. Tendency toward liver and hip issues.", "ध्यान आवश्यक क्षेत्रहरू: कमर, जाँघ, कलेजो, साइटिक नसा। कलेजो र कमर समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: कमर, जाँघ, कलेजो, साइटिक नसा। कलेजो और कमर समस्याहरूको प्रवृत्ति।"),
-    HEALTH_CAPRICORN_AREAS("Areas requiring attention: Knees, bones, joints, skin. Tendency toward joint and bone conditions.", "ध्यान आवश्यक क्षेत्रहरू: घुँडा, हड्डी, जोर्नी, छाला। जोर्नी र हड्डी अवस्थाहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: घुँडा, हड्डी, जोर्नी, छाला। जोर्नी और हड्डी अवस्थाहरूको प्रवृत्ति।"),
-    HEALTH_AQUARIUS_AREAS("Areas requiring attention: Ankles, circulation, calves. Tendency toward circulatory and nervous issues.", "ध्यान आवश्यक क्षेत्रहरू: गोली, रक्त संचार, पिण्डली। रक्त संचार र स्नायु समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: गोली, रक्त संचार, पिण्डली। रक्त संचार और स्नायु समस्याहरूको प्रवृत्ति।"),
-    HEALTH_PISCES_AREAS("Areas requiring attention: Feet, lymphatic system, immune system. Tendency toward foot problems and immune issues.", "ध्यान आवश्यक क्षेत्रहरू: खुट्टा, लिम्फेटिक प्रणाली, प्रतिरक्षा प्रणाली। खुट्टा समस्या र प्रतिरक्षा समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्रहरू: खुट्टा, लिम्फेटिक प्रणाली, प्रतिरक्षा प्रणाली। खुट्टा समस्या और प्रतिरक्षा समस्याहरूको प्रवृत्ति।"),
+    HEALTH_CONSTITUTION_STRONG("You possess a strong constitution with good vitality and natural resistance to illness.", "तपाईंसँग राम्रो जीवनी शक्ति र रोगको लागि प्राकृतिक प्रतिरोधको साथ बलियो संरचना छ।", "आपसँग राम्रो जीवनी शक्ति और रोग के लिए प्राकृतिक प्रतिरोध के साथ बलियह संरचना है।"),
+    ,
+    HEALTH_CONSTITUTION_MODERATE("Your constitution is moderate, requiring regular attention to diet and lifestyle for optimal health.", "तपाईंको संरचना मध्यम छ, इष्टतम स्वास्थ्यको लागि आहार र जीवनशैलीमा नियमित ध्यान आवश्यक छ।", "आप के संरचना मध्यम है, इष्टतम स्वास्थ्य के लिए आहार और जीवनशैली में नियमित ध्यान आवश्यक है।"),
+    ,
+    HEALTH_CONSTITUTION_SENSITIVE("Your constitution is sensitive, benefiting from preventive care and balanced routines.", "तपाईंको संरचना संवेदनशील छ, निवारक हेरचाह र सन्तुलित दिनचर्याबाट लाभ हुन्छ।", "आप के संरचना संवेदनशील है, निवारक हेरचाह और सन्तुलित दिनचर्याबाट लाभ हैता है।"),
 
-    LONGEVITY_LONG("Your chart indicates potential for long life with proper care and balanced lifestyle.", "तपाईंको कुण्डलीले उचित हेरचाह र सन्तुलित जीवनशैलीको साथ दीर्घ जीवनको सम्भावना संकेत गर्छ।", "आपका कुंडलीले उचित हेरचाह और सन्तुलित जीवनशैलीको साथ दीर्घ जीवनको सम्भावना संकेत गर्छ।"),
-    LONGEVITY_MEDIUM("Your chart indicates average longevity, enhanced through healthy habits and positive thinking.", "तपाईंको कुण्डलीले औसत आयु संकेत गर्छ, स्वस्थ बानीहरू र सकारात्मक सोचाइबाट बढाइएको।", "आपका कुंडलीले औसत आयु संकेत गर्छ, स्वस्थ बानीहरू और सकारात्मक सोचाइबाट बढाइएको।"),
-    LONGEVITY_REQUIRES_CARE("Your chart suggests the need for extra health consciousness and preventive measures.", "तपाईंको कुण्डलीले अतिरिक्त स्वास्थ्य चेतना र निवारक उपायहरूको आवश्यकता सुझाव गर्छ।", "आपका कुंडलीले अतिरिक्त स्वास्थ्य चेतना और निवारक उपायको आवश्यकता सुझाव गर्छ।"),
+    ,
+
+    HEALTH_ARIES_AREAS("Areas requiring attention: Head, brain, face, eyes. Tendency toward headaches, fevers, and inflammations.", "ध्यान आवश्यक क्षेत्रहरू: टाउको, मस्तिष्क, अनुहार, आँखा। टाउको दुखाइ, ज्वरो, र सूजनको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: टाउ के, मस्तिष्क, अनुहार, आँखा। टाउ के दुखाइ, ज्वरो, और सूजन के प्रवृत्ति।"),
+    ,
+    HEALTH_TAURUS_AREAS("Areas requiring attention: Throat, neck, thyroid, tonsils. Tendency toward throat ailments and metabolic issues.", "ध्यान आवश्यक क्षेत्रहरू: घाँटी, गर्दन, थाइरोइड, टन्सिल। घाँटी रोग र चयापचय समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: घाँटी, गर्दन, थाइरोइड, टन्सिल। घाँटी रोग और चयापचय समस्या के प्रवृत्ति।"),
+    ,
+    HEALTH_GEMINI_AREAS("Areas requiring attention: Lungs, arms, hands, nervous system. Tendency toward respiratory and nervous disorders.", "ध्यान आवश्यक क्षेत्रहरू: फोक्सो, हात, हातहरू, स्नायु प्रणाली। श्वासप्रश्वास र स्नायु विकारहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: फोक्सो, हात, हात, स्नायु प्रणाली। श्वासप्रश्वास और स्नायु विकार के प्रवृत्ति।"),
+    ,
+    HEALTH_CANCER_AREAS("Areas requiring attention: Chest, stomach, breasts, digestion. Tendency toward digestive and emotional health issues.", "ध्यान आवश्यक क्षेत्रहरू: छाती, पेट, स्तन, पाचन। पाचन र भावनात्मक स्वास्थ्य समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: हैाती, पेट, स्तन, पाचन। पाचन और भावनात्मक स्वास्थ्य समस्या के प्रवृत्ति।"),
+    ,
+    HEALTH_LEO_AREAS("Areas requiring attention: Heart, spine, back. Tendency toward cardiac and spinal issues.", "ध्यान आवश्यक क्षेत्रहरू: मुटु, मेरुदण्ड, पिठ्यूँ। हृदय र मेरुदण्ड समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: मुटु, मेरुदण्ड, पिठ्यूँ। हृदय और मेरुदण्ड समस्या के प्रवृत्ति।"),
+    ,
+    HEALTH_VIRGO_AREAS("Areas requiring attention: Intestines, digestive system, nervous system. Tendency toward digestive and anxiety issues.", "ध्यान आवश्यक क्षेत्रहरू: आन्द्रा, पाचन प्रणाली, स्नायु प्रणाली। पाचन र चिन्ता समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: आन्द्रा, पाचन प्रणाली, स्नायु प्रणाली। पाचन और चिन्ता समस्या के प्रवृत्ति।"),
+    ,
+    HEALTH_LIBRA_AREAS("Areas requiring attention: Kidneys, lower back, skin. Tendency toward kidney and skin conditions.", "ध्यान आवश्यक क्षेत्रहरू: मिर्गौला, तल्लो ढाड, छाला। मिर्गौला र छाला अवस्थाहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: मिर्गौला, तल्लो ढाड, हैाला। मिर्गौला और हैाला अवस्था के प्रवृत्ति।"),
+    ,
+    HEALTH_SCORPIO_AREAS("Areas requiring attention: Reproductive organs, bladder, elimination. Tendency toward urogenital issues.", "ध्यान आवश्यक क्षेत्रहरू: प्रजनन अंगहरू, मूत्राशय, उत्सर्जन। मूत्रजननांगी समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: प्रजनन अंग, मूत्राशय, उत्सर्जन। मूत्रजननांगी समस्या के प्रवृत्ति।"),
+    ,
+    HEALTH_SAGITTARIUS_AREAS("Areas requiring attention: Hips, thighs, liver, sciatic nerve. Tendency toward liver and hip issues.", "ध्यान आवश्यक क्षेत्रहरू: कमर, जाँघ, कलेजो, साइटिक नसा। कलेजो र कमर समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: कमर, जाँघ, कलेजो, साइटिक नसा। कलेजो और कमर समस्या के प्रवृत्ति।"),
+    ,
+    HEALTH_CAPRICORN_AREAS("Areas requiring attention: Knees, bones, joints, skin. Tendency toward joint and bone conditions.", "ध्यान आवश्यक क्षेत्रहरू: घुँडा, हड्डी, जोर्नी, छाला। जोर्नी र हड्डी अवस्थाहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: घुँडा, हड्डी, जोर्नी, हैाला। जोर्नी और हड्डी अवस्था के प्रवृत्ति।"),
+    ,
+    HEALTH_AQUARIUS_AREAS("Areas requiring attention: Ankles, circulation, calves. Tendency toward circulatory and nervous issues.", "ध्यान आवश्यक क्षेत्रहरू: गोली, रक्त संचार, पिण्डली। रक्त संचार र स्नायु समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: गोली, रक्त संचार, पिण्डली। रक्त संचार और स्नायु समस्या के प्रवृत्ति।"),
+    ,
+    HEALTH_PISCES_AREAS("Areas requiring attention: Feet, lymphatic system, immune system. Tendency toward foot problems and immune issues.", "ध्यान आवश्यक क्षेत्रहरू: खुट्टा, लिम्फेटिक प्रणाली, प्रतिरक्षा प्रणाली। खुट्टा समस्या र प्रतिरक्षा समस्याहरूको प्रवृत्ति।", "ध्यान आवश्यक क्षेत्र: खुट्टा, लिम्फेटिक प्रणाली, प्रतिरक्षा प्रणाली। खुट्टा समस्या और प्रतिरक्षा समस्या के प्रवृत्ति।"),
+
+    ,
+
+    LONGEVITY_LONG("Your chart indicates potential for long life with proper care and balanced lifestyle.", "तपाईंको कुण्डलीले उचित हेरचाह र सन्तुलित जीवनशैलीको साथ दीर्घ जीवनको सम्भावना संकेत गर्छ।", "आप के कुंडलीले उचित हेरचाह और सन्तुलित जीवनशैली के साथ दीर्घ जीवन के सम्भावना संकेत करता है।"),
+    ,
+    LONGEVITY_MEDIUM("Your chart indicates average longevity, enhanced through healthy habits and positive thinking.", "तपाईंको कुण्डलीले औसत आयु संकेत गर्छ, स्वस्थ बानीहरू र सकारात्मक सोचाइबाट बढाइएको।", "आप के कुंडलीले औसत आयु संकेत करता है, स्वस्थ बानी और सकारात्मक सोचाइबाट बढाइए के।"),
+    ,
+    LONGEVITY_REQUIRES_CARE("Your chart suggests the need for extra health consciousness and preventive measures.", "तपाईंको कुण्डलीले अतिरिक्त स्वास्थ्य चेतना र निवारक उपायहरूको आवश्यकता सुझाव गर्छ।", "आप के कुंडलीले अतिरिक्त स्वास्थ्य चेतना और निवारक उपाय के आवश्यकता सुझाव करता है।"),
+
+    ,
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: WEALTH & FINANCE
     // ═══════════════════════════════════════════════════════════════════════════
 
-    WEALTH_OVERVIEW("Financial prospects are analyzed through the 2nd house (savings), 11th house (gains), and their lords' positions.", "वित्तीय सम्भावनाहरू २औं भाव (बचत), ११औं भाव (लाभ), र तिनीहरूका स्वामीहरूको स्थिति मार्फत विश्लेषण गरिएको छ।", "वित्तीय सम्भावनाहरू २औं भाव (बचत), ११औं भाव (लाभ), और तिनीहरूका स्वामीहरूको स्थिति मार्फत विश्लेषण गरिएको है।"),
+    WEALTH_OVERVIEW("Financial prospects are analyzed through the 2nd house (savings), 11th house (gains), and their lords' positions.", "वित्तीय सम्भावनाहरू २औं भाव (बचत), ११औं भाव (लाभ), र तिनीहरूका स्वामीहरूको स्थिति मार्फत विश्लेषण गरिएको छ।", "वित्तीय सम्भावना २औं भाव (बचत), ११औं भाव (लाभ), और तिनी के स्वामी के स्थिति मार्फत विश्लेषण गरिए के है।"),
 
-    WEALTH_DHANA_YOGA("Dhana Yogas in your chart indicate wealth accumulation potential. Financial success through proper effort is indicated.", "तपाईंको कुण्डलीमा धन योगहरूले धन संचय क्षमता संकेत गर्दछ। उचित प्रयासबाट आर्थिक सफलता संकेत गरिएको छ।", "आपका कुंडलीमा धन योगले धन संचय क्षमता संकेत गर्दछ। उचित प्रयासबाट आर्थिक सफलता संकेत गरिएको है।"),
-    WEALTH_JUPITER_STRONG("Strong Jupiter blesses you with wisdom in financial matters and opportunities for wealth growth.", "बलियो बृहस्पतिले तपाईंलाई वित्तीय मामिलाहरूमा ज्ञान र धन वृद्धिको लागि अवसरहरूको आशीर्वाद दिन्छ।", "बलियो बृहस्पतिले तपाईं को वित्तीय मामिलाहरूमा ज्ञान और धन वृद्धिको लिए अवसरको आशीर्वाद दिन्छ।"),
-    WEALTH_2ND_LORD_STRONG("Your 2nd house lord is well-placed, indicating steady income and good savings potential.", "तपाईंको २औं भावको स्वामी राम्रोसँग राखिएको छ, स्थिर आय र राम्रो बचत क्षमता संकेत गर्दै।", "आपका २औं भावको स्वामी राम्रोसँग राखिएको छ, स्थिर आय और राम्रो बचत क्षमता संकेत गर्दै।"),
-    WEALTH_11TH_LORD_STRONG("Your 11th house lord is favorable, indicating gains through various sources and fulfillment of desires.", "तपाईंको ११औं भावको स्वामी अनुकूल छ, विभिन्न स्रोतहरूबाट लाभ र इच्छाहरूको पूर्ति संकेत गर्दै।", "आपका ११औं भावको स्वामी अनुकूल छ, विभिन्न स्रोतहरूबाट लाभ और इच्छाहरूको पूर्ति संकेत गर्दै।"),
+    ,
 
-    WEALTH_SOURCE_TEMPLATE("Primary wealth sources indicated: %s. Secondary sources: %s.", "संकेतित प्राथमिक धन स्रोतहरू: %s। माध्यमिक स्रोतहरू: %s।", "संकेतित प्राथमिक धन स्रोतहरू: %s। माध्यमिक स्रोतहरू: %s।"),
+    WEALTH_DHANA_YOGA("Dhana Yogas in your chart indicate wealth accumulation potential. Financial success through proper effort is indicated.", "तपाईंको कुण्डलीमा धन योगहरूले धन संचय क्षमता संकेत गर्दछ। उचित प्रयासबाट आर्थिक सफलता संकेत गरिएको छ।", "आप के कुंडली में धन यहगले धन संचय क्षमता संकेत करता है। उचित प्रयासबाट आर्थिक सफलता संकेत गरिए के है।"),
+    ,
+    WEALTH_JUPITER_STRONG("Strong Jupiter blesses you with wisdom in financial matters and opportunities for wealth growth.", "बलियो बृहस्पतिले तपाईंलाई वित्तीय मामिलाहरूमा ज्ञान र धन वृद्धिको लागि अवसरहरूको आशीर्वाद दिन्छ।", "बलियह बृहस्पतिले आप  के वित्तीय मामिला में ज्ञान और धन वृद्धि के लिए अवसर के आशीर्वाद देता है।"),
+    ,
+    WEALTH_2ND_LORD_STRONG("Your 2nd house lord is well-placed, indicating steady income and good savings potential.", "तपाईंको २औं भावको स्वामी राम्रोसँग राखिएको छ, स्थिर आय र राम्रो बचत क्षमता संकेत गर्दै।", "आप के २औं भाव के स्वामी राम्रोसँग राखिए के है, स्थिर आय और राम्रो बचत क्षमता संकेत गर्दै।"),
+    ,
+    WEALTH_11TH_LORD_STRONG("Your 11th house lord is favorable, indicating gains through various sources and fulfillment of desires.", "तपाईंको ११औं भावको स्वामी अनुकूल छ, विभिन्न स्रोतहरूबाट लाभ र इच्छाहरूको पूर्ति संकेत गर्दै।", "आप के ११औं भाव के स्वामी अनुकूल है, विभिन्न स्रोतबाट लाभ और इच्हैा के पूर्ति संकेत गर्दै।"),
 
-    WEALTH_CAUTION_RAHU("Rahu's influence suggests caution with speculative investments and get-rich-quick schemes.", "राहुको प्रभावले सट्टेबाजी लगानी र छिटो धनी बन्ने योजनाहरूमा सावधानी सुझाव गर्छ।", "राहुको प्रभावले सट्टेबाजी लगानी और छिटो धनी बन्ने योजनाहरूमा सावधानी सुझाव गर्छ।"),
-    WEALTH_CAUTION_SATURN("Saturn's influence indicates wealth through steady effort rather than quick gains.", "शनिको प्रभावले छिटो लाभभन्दा स्थिर प्रयास मार्फत धन संकेत गर्छ।", "शनिको प्रभावले छिटो लाभभन्दा स्थिर प्रयास मार्फत धन संकेत गर्छ।"),
+    ,
+
+    WEALTH_SOURCE_TEMPLATE("Primary wealth sources indicated: %s. Secondary sources: %s.", "संकेतित प्राथमिक धन स्रोतहरू: %s। माध्यमिक स्रोतहरू: %s।", "संकेतित प्राथमिक धन स्रोत: %s। माध्यमिक स्रोत: %s।"),
+
+    ,
+
+    WEALTH_CAUTION_RAHU("Rahu's influence suggests caution with speculative investments and get-rich-quick schemes.", "राहुको प्रभावले सट्टेबाजी लगानी र छिटो धनी बन्ने योजनाहरूमा सावधानी सुझाव गर्छ।", "राहु के प्रभावले सट्टेबाजी लगानी और हैिटो धनी बन्ने यहजना में सावधानी सुझाव करता है।"),
+    ,
+    WEALTH_CAUTION_SATURN("Saturn's influence indicates wealth through steady effort rather than quick gains.", "शनिको प्रभावले छिटो लाभभन्दा स्थिर प्रयास मार्फत धन संकेत गर्छ।", "शनि के प्रभावले हैिटो लाभभन्दा स्थिर प्रयास मार्फत धन संकेत करता है।"),
+
+    ,
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: EDUCATION & KNOWLEDGE
     // ═══════════════════════════════════════════════════════════════════════════
 
-    EDUCATION_OVERVIEW("Educational prospects are analyzed through the 4th house (basic education), 5th house (higher learning), and Mercury's placement.", "शैक्षिक सम्भावनाहरू ४औं भाव (आधारभूत शिक्षा), ५औं भाव (उच्च शिक्षा), र बुधको स्थान मार्फत विश्लेषण गरिएको छ।", "शैक्षिक सम्भावनाहरू ४औं भाव (आधारभूत शिक्षा), ५औं भाव (उच्च शिक्षा), और बुधको स्थान मार्फत विश्लेषण गरिएको है।"),
+    EDUCATION_OVERVIEW("Educational prospects are analyzed through the 4th house (basic education), 5th house (higher learning), and Mercury's placement.", "शैक्षिक सम्भावनाहरू ४औं भाव (आधारभूत शिक्षा), ५औं भाव (उच्च शिक्षा), र बुधको स्थान मार्फत विश्लेषण गरिएको छ।", "शैक्षिक सम्भावना ४औं भाव (आधारभूत शिक्षा), ५औं भाव (उच्च शिक्षा), और बुध के स्थान मार्फत विश्लेषण गरिए के है।"),
 
-    EDUCATION_MERCURY_STRONG("Strong Mercury blesses you with excellent learning abilities, communication skills, and analytical thinking.", "बलियो बुधले तपाईंलाई उत्कृष्ट सिक्ने क्षमता, सञ्चार कौशल, र विश्लेषणात्मक सोचको आशीर्वाद दिन्छ।", "बलियो बुधले तपाईं को उत्कृष्ट सिक्ने क्षमता, सञ्चार कौशल, और विश्लेषणात्मक सोचको आशीर्वाद दिन्छ।"),
-    EDUCATION_JUPITER_ASPECT("Jupiter's influence on education houses indicates success in higher studies and wisdom acquisition.", "शिक्षा भावहरूमा बृहस्पतिको प्रभावले उच्च अध्ययन र ज्ञान प्राप्तिमा सफलता संकेत गर्छ।", "शिक्षा भावमा बृहस्पतिको प्रभावले उच्च अध्ययन और ज्ञान प्राप्तिमा सफलता संकेत गर्छ।"),
-    EDUCATION_5TH_STRONG("Strong 5th house indicates academic excellence, creative intelligence, and success in competitive exams.", "बलियो ५औं भावले शैक्षिक उत्कृष्टता, रचनात्मक बुद्धिमत्ता, र प्रतिस्पर्धात्मक परीक्षाहरूमा सफलता संकेत गर्छ।", "बलियो ५औं भावले शैक्षिक उत्कृष्टता, रचनात्मक बुद्धिमत्ता, और प्रतिस्पर्धात्मक परीक्षाहरूमा सफलता संकेत गर्छ।"),
+    ,
 
-    EDUCATION_FIELDS_TEMPLATE("Favorable fields of study: %s. These align with your natural intellectual strengths.", "अनुकूल अध्ययन क्षेत्रहरू: %s। यी तपाईंको प्राकृतिक बौद्धिक शक्तिहरूसँग मिल्दछन्।", "अनुकूल अध्ययन क्षेत्रहरू: %s। यी आपका प्राकृतिक बौद्धिक शक्तिहरूसँग मिल्दछन्।"),
+    EDUCATION_MERCURY_STRONG("Strong Mercury blesses you with excellent learning abilities, communication skills, and analytical thinking.", "बलियो बुधले तपाईंलाई उत्कृष्ट सिक्ने क्षमता, सञ्चार कौशल, र विश्लेषणात्मक सोचको आशीर्वाद दिन्छ।", "बलियह बुधले आप  के उत्कृष्ट सिक्ने क्षमता, सञ्चार कौशल, और विश्लेषणात्मक सोच के आशीर्वाद देता है।"),
+    ,
+    EDUCATION_JUPITER_ASPECT("Jupiter's influence on education houses indicates success in higher studies and wisdom acquisition.", "शिक्षा भावहरूमा बृहस्पतिको प्रभावले उच्च अध्ययन र ज्ञान प्राप्तिमा सफलता संकेत गर्छ।", "शिक्षा भाव में बृहस्पति के प्रभावले उच्च अध्ययन और ज्ञान प्राप्ति में सफलता संकेत करता है।"),
+    ,
+    EDUCATION_5TH_STRONG("Strong 5th house indicates academic excellence, creative intelligence, and success in competitive exams.", "बलियो ५औं भावले शैक्षिक उत्कृष्टता, रचनात्मक बुद्धिमत्ता, र प्रतिस्पर्धात्मक परीक्षाहरूमा सफलता संकेत गर्छ।", "बलियह ५औं भावले शैक्षिक उत्कृष्टता, रचनात्मक बुद्धिमत्ता, और प्रतिस्पर्धात्मक परीक्षा में सफलता संकेत करता है।"),
+
+    ,
+
+    EDUCATION_FIELDS_TEMPLATE("Favorable fields of study: %s. These align with your natural intellectual strengths.", "अनुकूल अध्ययन क्षेत्रहरू: %s। यी तपाईंको प्राकृतिक बौद्धिक शक्तिहरूसँग मिल्दछन्।", "अनुकूल अध्ययन क्षेत्र: %s। यी आप के प्राकृतिक बौद्धिक शक्तिसँग मिल्दहैं।"),
+
+    ,
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: SPIRITUAL PATH
     // ═══════════════════════════════════════════════════════════════════════════
 
-    SPIRITUAL_OVERVIEW("Your spiritual inclinations are analyzed through the 9th house (dharma), 12th house (moksha), and Ketu's placement.", "तपाईंको आध्यात्मिक झुकावहरू ९औं भाव (धर्म), १२औं भाव (मोक्ष), र केतुको स्थान मार्फत विश्लेषण गरिएको छ।", "आपका आध्यात्मिक झुकावहरू ९औं भाव (धर्म), १२औं भाव (मोक्ष), और केतुको स्थान मार्फत विश्लेषण गरिएको है।"),
+    SPIRITUAL_OVERVIEW("Your spiritual inclinations are analyzed through the 9th house (dharma), 12th house (moksha), and Ketu's placement.", "तपाईंको आध्यात्मिक झुकावहरू ९औं भाव (धर्म), १२औं भाव (मोक्ष), र केतुको स्थान मार्फत विश्लेषण गरिएको छ।", "आप के आध्यात्मिक झुकाव ९औं भाव (धर्म), १२औं भाव (मोक्ष), और केतु के स्थान मार्फत विश्लेषण गरिए के है।"),
 
-    SPIRITUAL_JUPITER_STRONG("Strong Jupiter indicates a natural inclination toward spirituality, philosophy, and righteous living.", "बलियो बृहस्पतिले आध्यात्मिकता, दर्शन, र धार्मिक जीवनतर्फ प्राकृतिक झुकाव संकेत गर्छ।", "बलियो बृहस्पतिले आध्यात्मिकता, दर्शन, और धार्मिक जीवनतर्फ प्राकृतिक झुकाव संकेत गर्छ।"),
-    SPIRITUAL_KETU_INFLUENCE("Ketu's placement shows your past life spiritual attainments and current path toward liberation.", "केतुको स्थानले तपाईंको विगत जीवनको आध्यात्मिक उपलब्धिहरू र मुक्तितर्फको वर्तमान मार्ग देखाउँछ।", "केतुको स्थानले आपका विगत जीवनको आध्यात्मिक उपलब्धिहरू और मुक्तितर्फको वर्तमान मार्ग देखाउँछ।"),
-    SPIRITUAL_12TH_ACTIVE("Active 12th house indicates potential for spiritual practices, meditation, and inner growth.", "सक्रिय १२औं भावले आध्यात्मिक अभ्यासहरू, ध्यान, र आन्तरिक वृद्धिको सम्भावना संकेत गर्छ।", "सक्रिय १२औं भावले आध्यात्मिक अभ्यासहरू, ध्यान, और आन्तरिक वृद्धिको सम्भावना संकेत गर्छ।"),
-    SPIRITUAL_9TH_STRONG("Strong 9th house blesses you with faith, higher wisdom, and guidance from teachers.", "बलियो ९औं भावले तपाईंलाई विश्वास, उच्च ज्ञान, र गुरुहरूबाट मार्गदर्शनको आशीर्वाद दिन्छ।", "बलियो ९औं भावले तपाईं को विश्वास, उच्च ज्ञान, और गुरुहरूबाट मार्गदर्शनको आशीर्वाद दिन्छ।"),
+    ,
 
-    SPIRITUAL_PATH_TEMPLATE("Your spiritual path aligns with %s. Practices like %s would be particularly beneficial.", "तपाईंको आध्यात्मिक मार्ग %s सँग मिल्दछ। %s जस्ता अभ्यासहरू विशेष रूपमा लाभदायक हुनेछन्।", "आपका आध्यात्मिक मार्ग %s सँग मिल्दछ। %s जस्ता अभ्यासहरू विशेष रूपमा लाभदायक हुनेछन्।"),
+    SPIRITUAL_JUPITER_STRONG("Strong Jupiter indicates a natural inclination toward spirituality, philosophy, and righteous living.", "बलियो बृहस्पतिले आध्यात्मिकता, दर्शन, र धार्मिक जीवनतर्फ प्राकृतिक झुकाव संकेत गर्छ।", "बलियह बृहस्पतिले आध्यात्मिकता, दर्शन, और धार्मिक जीवनतर्फ प्राकृतिक झुकाव संकेत करता है।"),
+    ,
+    SPIRITUAL_KETU_INFLUENCE("Ketu's placement shows your past life spiritual attainments and current path toward liberation.", "केतुको स्थानले तपाईंको विगत जीवनको आध्यात्मिक उपलब्धिहरू र मुक्तितर्फको वर्तमान मार्ग देखाउँछ।", "केतु के स्थानले आप के विगत जीवन के आध्यात्मिक उपलब्धि और मुक्तितर्फ के वर्तमान मार्ग देखाउँहै।"),
+    ,
+    SPIRITUAL_12TH_ACTIVE("Active 12th house indicates potential for spiritual practices, meditation, and inner growth.", "सक्रिय १२औं भावले आध्यात्मिक अभ्यासहरू, ध्यान, र आन्तरिक वृद्धिको सम्भावना संकेत गर्छ।", "सक्रिय १२औं भावले आध्यात्मिक अभ्यास, ध्यान, और आन्तरिक वृद्धि के सम्भावना संकेत करता है।"),
+    ,
+    SPIRITUAL_9TH_STRONG("Strong 9th house blesses you with faith, higher wisdom, and guidance from teachers.", "बलियो ९औं भावले तपाईंलाई विश्वास, उच्च ज्ञान, र गुरुहरूबाट मार्गदर्शनको आशीर्वाद दिन्छ।", "बलियह ९औं भावले आप  के विश्वास, उच्च ज्ञान, और गुरुबाट मार्गदर्शन के आशीर्वाद देता है।"),
+
+    ,
+
+    SPIRITUAL_PATH_TEMPLATE("Your spiritual path aligns with %s. Practices like %s would be particularly beneficial.", "तपाईंको आध्यात्मिक मार्ग %s सँग मिल्दछ। %s जस्ता अभ्यासहरू विशेष रूपमा लाभदायक हुनेछन्।", "आप के आध्यात्मिक मार्ग %s सँग मिल्दहै। %s जस्ता अभ्यास विशेष रूप में लाभदायक हैगान्।"),
+
+    ,
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: GENERAL PREDICTIONS & TEMPLATES
     // ═══════════════════════════════════════════════════════════════════════════
 
-    PREDICTION_TEMPLATE_POSITIVE("The planetary configuration indicates %s, bringing %s in the coming period.", "ग्रह विन्यासले %s संकेत गर्छ, आउने अवधिमा %s ल्याउँदै।", "ग्रह विन्यासले %s संकेत गर्छ, आउने अवधिमा %s ल्याउँदै।"),
-    PREDICTION_TEMPLATE_CAUTION("Planetary influences suggest caution regarding %s. Remedial measures can help mitigate challenges.", "ग्रह प्रभावहरूले %s सम्बन्धमा सावधानी सुझाव गर्दछ। उपचारात्मक उपायहरूले चुनौतीहरू कम गर्न मद्दत गर्न सक्छ।", "ग्रह प्रभावले %s संबंधमा सावधानी सुझाव गर्दछ। उपचारात्मक उपायले चुनौतियां कम गर्न सहायता गर्न सक्छ।"),
+    PREDICTION_TEMPLATE_POSITIVE("The planetary configuration indicates %s, bringing %s in the coming period.", "ग्रह विन्यासले %s संकेत गर्छ, आउने अवधिमा %s ल्याउँदै।", "ग्रह विन्यासले %s संकेत करता है, आउने अवधि में %s ल्याउँदै।"),
+    ,
+    PREDICTION_TEMPLATE_CAUTION("Planetary influences suggest caution regarding %s. Remedial measures can help mitigate challenges.", "ग्रह प्रभावहरूले %s सम्बन्धमा सावधानी सुझाव गर्दछ। उपचारात्मक उपायहरूले चुनौतीहरू कम गर्न मद्दत गर्न सक्छ।", "ग्रह प्रभावले %s संबंध में सावधानी सुझाव करता है। उपचारात्मक उपायले चुनौती कम करने सहायता करने सक्है।"),
 
-    DASHA_EFFECT_TEMPLATE("Currently running %s Mahadasha with %s Antardasha. This period emphasizes %s.", "हाल %s महादशा %s अन्तर्दशाको साथ चलिरहेको छ। यो अवधिले %s मा जोड दिन्छ।", "हाल %s महादशा %s अन्तर्दशाको साथ चलिरहेको छ। यो अवधिले %s मा जोड दिन्छ।"),
+    ,
 
-    TRANSIT_EFFECT_TEMPLATE("%s is transiting your %s house, influencing %s matters.", "%s तपाईंको %s भावमा गोचर गर्दैछ, %s मामिलाहरूलाई प्रभावित गर्दै।", "%s आपका %s भावमा गोचर गर्दैछ, %s मामिलाहरू को प्रभावित गर्दै।"),
+    DASHA_EFFECT_TEMPLATE("Currently running %s Mahadasha with %s Antardasha. This period emphasizes %s.", "हाल %s महादशा %s अन्तर्दशाको साथ चलिरहेको छ। यो अवधिले %s मा जोड दिन्छ।", "हाल %s महादशा %s अन्तर्दशा के साथ चलिरहे के है। यह अवधिले %s में जोड देता है।"),
+
+    ,
+
+    TRANSIT_EFFECT_TEMPLATE("%s is transiting your %s house, influencing %s matters.", "%s तपाईंको %s भावमा गोचर गर्दैछ, %s मामिलाहरूलाई प्रभावित गर्दै।", "%s आप के %s भाव में गोचर गर्दैहै, %s मामिला  के प्रभावित गर्दै।"),
+
+    ,
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: STRENGTHS & WEAKNESSES LABELS
     // ═══════════════════════════════════════════════════════════════════════════
 
     TRAIT_LEADERSHIP("Leadership ability", "नेतृत्व क्षमता", "नेतृत्व क्षमता"),
+    ,
     TRAIT_COMMUNICATION("Communication skills", "सञ्चार कौशल", "सञ्चार कौशल"),
+    ,
     TRAIT_CREATIVITY("Creative expression", "रचनात्मक अभिव्यक्ति", "रचनात्मक अभिव्यक्ति"),
+    ,
     TRAIT_ANALYTICAL("Analytical thinking", "विश्लेषणात्मक सोच", "विश्लेषणात्मक सोच"),
-    TRAIT_INTUITION("Strong intuition", "बलियो अन्तर्ज्ञान", "बलियो अन्तर्ज्ञान"),
+    ,
+    TRAIT_INTUITION("Strong intuition", "बलियो अन्तर्ज्ञान", "बलियह अन्तर्ज्ञान"),
+    ,
     TRAIT_DETERMINATION("Determination", "दृढता", "दृढता"),
+    ,
     TRAIT_COMPASSION("Compassion", "करुणा", "करुणा"),
+    ,
     TRAIT_PRACTICALITY("Practical approach", "व्यावहारिक दृष्टिकोण", "व्यावहारिक दृष्टिकोण"),
+    ,
     TRAIT_ADAPTABILITY("Adaptability", "अनुकूलनशीलता", "अनुकूलनशीलता"),
+    ,
     TRAIT_PATIENCE("Patience", "धैर्य", "धैर्य"),
+    ,
     TRAIT_DIPLOMACY("Diplomatic skills", "कूटनीतिक कौशल", "कूटनीतिक कौशल"),
+    ,
     TRAIT_INDEPENDENCE("Independence", "स्वतन्त्रता", "स्वतन्त्रता"),
 
+    ,
+
     CHALLENGE_IMPULSIVENESS("Impulsiveness", "आवेग", "आवेग"),
+    ,
     CHALLENGE_STUBBORNNESS("Stubbornness", "हठ", "हठ"),
+    ,
     CHALLENGE_INDECISION("Indecisiveness", "अनिर्णय", "अनिर्णय"),
+    ,
     CHALLENGE_OVERSENSITIVITY("Over-sensitivity", "अति-संवेदनशीलता", "अति-संवेदनशीलता"),
+    ,
     CHALLENGE_PRIDE("Excessive pride", "अत्यधिक गर्व", "अत्यधिक गर्व"),
+    ,
     CHALLENGE_CRITICISM("Over-critical nature", "अति-आलोचनात्मक स्वभाव", "अति-आलोचनात्मक स्वभाव"),
+    ,
     CHALLENGE_DETACHMENT("Emotional detachment", "भावनात्मक अलगाव", "भावनात्मक अलगाव"),
+    ,
     CHALLENGE_INTENSITY("Emotional intensity", "भावनात्मक तीव्रता", "भावनात्मक तीव्रता"),
+    ,
     CHALLENGE_RESTLESSNESS("Restlessness", "बेचैनी", "बेचैनी"),
+    ,
     CHALLENGE_RIGIDITY("Rigidity", "कठोरता", "कठोरता"),
-    CHALLENGE_ESCAPISM("Tendency to escapism", "पलायनवादको प्रवृत्ति", "पलायनवादको प्रवृत्ति"),
-    CHALLENGE_ANXIETY("Anxiety tendencies", "चिन्ता प्रवृत्तिहरू", "चिन्ता प्रवृत्तिहरू"),
+    ,
+    CHALLENGE_ESCAPISM("Tendency to escapism", "पलायनवादको प्रवृत्ति", "पलायनवाद के प्रवृत्ति"),
+    ,
+    CHALLENGE_ANXIETY("Anxiety tendencies", "चिन्ता प्रवृत्तिहरू", "चिन्ता प्रवृत्ति"),
+
+    ,
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SECTION: REMEDIES
     // ═══════════════════════════════════════════════════════════════════════════
 
-    REMEDY_GEMSTONE_TEMPLATE("Wearing %s gemstone can strengthen %s and bring positive results.", "%s रत्न लगाउँदा %s लाई बलियो बनाउन र सकारात्मक परिणामहरू ल्याउन सक्छ।", "%s रत्न लगाउँदा %s को बलियो बनाउन और सकारात्मक परिणामहरू ल्याउन सक्छ।"),
-    REMEDY_MANTRA_TEMPLATE("Chanting %s mantra regularly can appease %s and bring blessings.", "%s मन्त्र नियमित जप गर्दा %s लाई शान्त पार्न र आशीर्वाद ल्याउन सक्छ।", "%s मन्त्र नियमित जप गर्दा %s को शान्त पार्न और आशीर्वाद ल्याउन सक्छ।"),
-    REMEDY_CHARITY_TEMPLATE("Donating %s on %s can help mitigate challenging planetary influences.", "%s मा %s दान गर्दा चुनौतीपूर्ण ग्रह प्रभावहरू कम गर्न मद्दत गर्न सक्छ।", "%s मा %s दान गर्दा चुनौतीपूर्ण ग्रह प्रभाव कम गर्न सहायता गर्न सक्छ।"),
-    REMEDY_FASTING_TEMPLATE("Fasting on %s can strengthen beneficial planetary energies.", "%s मा उपवास गर्दा लाभदायक ग्रह ऊर्जाहरू बलियो बनाउन सक्छ।", "%s मा उपवास गर्दा लाभदायक ग्रह ऊर्जाहरू बलियो बनाउन सक्छ।"),
-    REMEDY_WORSHIP_TEMPLATE("Worshipping %s deity can bring blessings for %s.", "%s देवताको पूजा गर्दा %s को लागि आशीर्वाद ल्याउन सक्छ।", "%s देवताको पूजा गर्दा %s को लिए आशीर्वाद ल्याउन सक्छ।"),
+    REMEDY_GEMSTONE_TEMPLATE("Wearing %s gemstone can strengthen %s and bring positive results.", "%s रत्न लगाउँदा %s लाई बलियो बनाउन र सकारात्मक परिणामहरू ल्याउन सक्छ।", "%s रत्न लगाउँदा %s  के बलियह बनाउन और सकारात्मक परिणाम ल्याउन सक्है।"),
+    ,
+    REMEDY_MANTRA_TEMPLATE("Chanting %s mantra regularly can appease %s and bring blessings.", "%s मन्त्र नियमित जप गर्दा %s लाई शान्त पार्न र आशीर्वाद ल्याउन सक्छ।", "%s मन्त्र नियमित जप गर्दा %s  के शान्त पार्न और आशीर्वाद ल्याउन सक्है।"),
+    ,
+    REMEDY_CHARITY_TEMPLATE("Donating %s on %s can help mitigate challenging planetary influences.", "%s मा %s दान गर्दा चुनौतीपूर्ण ग्रह प्रभावहरू कम गर्न मद्दत गर्न सक्छ।", "%s में %s दान गर्दा चुनौतीपूर्ण ग्रह प्रभाव कम करने सहायता करने सक्है।"),
+    ,
+    REMEDY_FASTING_TEMPLATE("Fasting on %s can strengthen beneficial planetary energies.", "%s मा उपवास गर्दा लाभदायक ग्रह ऊर्जाहरू बलियो बनाउन सक्छ।", "%s में उपवास गर्दा लाभदायक ग्रह ऊर्जा बलियह बनाउन सक्है।"),
+    ,
+    REMEDY_WORSHIP_TEMPLATE("Worshipping %s deity can bring blessings for %s.", "%s देवताको पूजा गर्दा %s को लागि आशीर्वाद ल्याउन सक्छ।", "%s देवता के पूजा गर्दा %s  के लिए आशीर्वाद ल्याउन सक्है।"),
+
+    ,
 
     // Report generation labels
     REPORT_GENERATED("Report generated", "प्रतिवेदन उत्पन्न", "प्रतिवेदन उत्पन्न"),
-    REPORT_BASED_ON("Based on Vedic astrology principles", "वैदिक ज्योतिष सिद्धान्तहरूमा आधारित", "वैदिक ज्योतिष सिद्धान्तहरूमा आधारित"),
-    REPORT_DISCLAIMER("This analysis is for guidance purposes. Individual effort and free will play important roles in shaping destiny.", "यो विश्लेषण मार्गदर्शन उद्देश्यका लागि हो। व्यक्तिगत प्रयास र स्वतन्त्र इच्छाले भाग्य आकार दिनमा महत्त्वपूर्ण भूमिका खेल्छ।", "यो विश्लेषण मार्गदर्शन उद्देश्यका लिए हो। व्यक्तिगत प्रयास और स्वतन्त्र इच्छाले भाग्य आकार दिनमा महत्त्वपूर्ण भूमिका खेल्छ।");
+    ,
+    REPORT_BASED_ON("Based on Vedic astrology principles", "वैदिक ज्योतिष सिद्धान्तहरूमा आधारित", "वैदिक ज्यहतिष सिद्धान्त में आधारित"),
+    ,
+    REPORT_DISCLAIMER("This analysis is for guidance purposes. Individual effort and free will play important roles in shaping destiny.", "यो विश्लेषण मार्गदर्शन उद्देश्यका लागि हो। व्यक्तिगत प्रयास र स्वतन्त्र इच्छाले भाग्य आकार दिनमा महत्त्वपूर्ण भूमिका खेल्छ।", "यो विश्लेषण मार्गदर्शन उद्देश्यका लिए है। व्यक्तिगत प्रयास और स्वतन्त्र इच्छाले भाग्य आकार दिनमा महत्त्वपूर्ण भूमिका खेल्छ।");
 
     companion object {
         fun getByKey(key: String): StringKeyNative? = entries.find { it.name == key }

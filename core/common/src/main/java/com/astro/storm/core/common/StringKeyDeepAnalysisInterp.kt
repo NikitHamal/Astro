@@ -16,17 +16,29 @@ enum class StringKeyDeepAnalysisInterp(override val en: String, override val ne:
 
     // Strength Descriptors (EN)
     STRENGTH_EXCEPTIONAL_EN("exceptional %s", "असाधारण %s", "असाधारण %s"),
-    STRENGTH_STRONG_EN("strong %s", "बलियो %s", "बलियो %s"),
+    ,
+    STRENGTH_STRONG_EN("strong %s", "बलियो %s", "बलियह %s"),
+    ,
     STRENGTH_MODERATE_EN("moderate %s", "मध्यम %s", "मध्यम %s"),
+    ,
     STRENGTH_DEVELOPING_EN("developing %s", "विकासशील %s", "विकासशील %s"),
-    STRENGTH_POTENTIAL_EN("potential for %s", "%s को सम्भावना", "%s को सम्भावना"),
+    ,
+    STRENGTH_POTENTIAL_EN("potential for %s", "%s को सम्भावना", "%s  के सम्भावना"),
+
+    ,
 
     // Strength Descriptors (NE)
     STRENGTH_EXCEPTIONAL_NE("असाधारण %s", "असाधारण %s", "असाधारण %s"),
-    STRENGTH_STRONG_NE("बलियो %s", "बलियो %s", "बलियो %s"),
+    ,
+    STRENGTH_STRONG_NE("बलियो %s", "बलियो %s", "बलियह %s"),
+    ,
     STRENGTH_MODERATE_NE("मध्यम %s", "मध्यम %s", "मध्यम %s"),
+    ,
     STRENGTH_DEVELOPING_NE("विकासशील %s", "विकासशील %s", "विकासशील %s"),
-    STRENGTH_POTENTIAL_NE("%s को सम्भावना", "%s को सम्भावना", "%s को सम्भावना"),
+    ,
+    STRENGTH_POTENTIAL_NE("%s को सम्भावना", "%s को सम्भावना", "%s  के सम्भावना"),
+
+    ,
 
     // Ascendant Interpretations
     ASC_EARLY_DEGREES(
@@ -49,17 +61,28 @@ enum class StringKeyDeepAnalysisInterp(override val en: String, override val ne:
     ),
 
     // Career Templates
-    PLANET_IN_10TH_TEMPLATE("%1\$s in 10th house shapes your public role and career expression in a unique way.", "दशौं भावमा %1\$sले तपाईंको सार्वजनिक भूमिका र क्यारियर अभिव्यक्तिलाई अद्वितीय तरिकाले आकार दिन्छ।", "दशौं भावमा %1\$sले आपका सार्वजनिक भूमिका और क्यारियर अभिव्यक्ति को अद्वितीय तरिकाले आकार दिन्छ।"),
-    PUBLIC_IMAGE_TEMPLATE("The public perceives you as a %1\$s. Your professional image is %2\$s, creating %3\$s.", "सार्वजनिकले तपाईंलाई एक %1\$s को रूपमा बुझ्छ। तपाईंको व्यावसायिक छवि %2\$s छ, जसले %3\$s सिर्जना गर्छ।", "सार्वजनिकले तपाईं को एक %1\$s को रूपमा बुझ्छ। आपका व्यावसायिक छवि %2\$s छ, जसले %3\$s सिर्जना गर्छ।"),
-    CAREER_ENVIRONMENT_TEMPLATE("Your ideal work environment reflects %s's qualities, supporting your natural professional style.", "तपाईंको आदर्श कार्य वातावरणले %sका गुणहरू प्रतिबिम्बित गर्छ।", "आपका आदर्श कार्य वातावरणले %sका गुणहरू प्रतिबिम्बित गर्छ।"),
-    TENTH_LORD_IN_HOUSE_TEMPLATE("10th lord %1\$s in %2\$s house shapes your career through that house's significations.", "दशौं स्वामी %1\$s %2\$sऔं भावमा त्यो भावको संकेतहरू मार्फत तपाईंको क्यारियर आकार दिन्छ।", "दशौं स्वामी %1\$s %2\$sऔं भावमा त्यो भावको संकेतहरू मार्फत आपका क्यारियर आकार दिन्छ।"),
+    PLANET_IN_10TH_TEMPLATE("%1\$s in 10th house shapes your public role and career expression in a unique way.", "दशौं भावमा %1\$sले तपाईंको सार्वजनिक भूमिका र क्यारियर अभिव्यक्तिलाई अद्वितीय तरिकाले आकार दिन्छ।", "दशौं भाव में %1\$sले आप के सार्वजनिक भूमि के और क्यारियर अभिव्यक्ति  के अद्वितीय तरिकाले आकार देता है।"),
+    ,
+    PUBLIC_IMAGE_TEMPLATE("The public perceives you as a %1\$s. Your professional image is %2\$s, creating %3\$s.", "सार्वजनिकले तपाईंलाई एक %1\$s को रूपमा बुझ्छ। तपाईंको व्यावसायिक छवि %2\$s छ, जसले %3\$s सिर्जना गर्छ।", "सार्वजनिकले आप  के एक %1\$s  के रूप में बुझ्है। आप के व्यावसायिक हैवि %2\$s है, जसले %3\$s सिर्जना करता है।"),
+    ,
+    CAREER_ENVIRONMENT_TEMPLATE("Your ideal work environment reflects %s's qualities, supporting your natural professional style.", "तपाईंको आदर्श कार्य वातावरणले %sका गुणहरू प्रतिबिम्बित गर्छ।", "आप के आदर्श कार्य वातावरणले %s के गुण प्रतिबिम्बित करता है।"),
+    ,
+    TENTH_LORD_IN_HOUSE_TEMPLATE("10th lord %1\$s in %2\$s house shapes your career through that house's significations.", "दशौं स्वामी %1\$s %2\$sऔं भावमा त्यो भावको संकेतहरू मार्फत तपाईंको क्यारियर आकार दिन्छ।", "दशौं स्वामी %1\$s %2\$sऔं भाव में त्यह भाव के संकेत मार्फत आप के क्यारियर आकार देता है।"),
+
+    ,
 
     // Career Success Indicators
-    SUCCESS_STRONG_POTENTIAL("strong professional potential", "बलियो व्यावसायिक क्षमता", "बलियो व्यावसायिक क्षमता"),
+    SUCCESS_STRONG_POTENTIAL("strong professional potential", "बलियो व्यावसायिक क्षमता", "बलियह व्यावसायिक क्षमता"),
+    ,
     SUCCESS_DEVELOPING_PATH("developing career path", "विकासशील क्यारियर मार्ग", "विकासशील क्यारियर मार्ग"),
-    OPPORTUNITIES_STRONG("strong opportunities", "बलियो अवसरहरू", "बलियो अवसर"),
-    OPPORTUNITIES_GROWTH("room for growth", "वृद्धिको लागि ठाउँ", "वृद्धिको लिए ठाउँ"),
+    ,
+    OPPORTUNITIES_STRONG("strong opportunities", "बलियो अवसरहरू", "बलियह अवसर"),
+    ,
+    OPPORTUNITIES_GROWTH("room for growth", "वृद्धिको लागि ठाउँ", "वृद्धि के लिए ठाउँ"),
+
+    ,
 
     // Loading & Errors
-    ANALYZING_DEEPLY("Analyzing your chart deeply...", "तपाईंको कुण्डलीको गहन विश्लेषण गर्दै...", "आपका कुंडलीको गहन विश्लेषण गर्दै..."),
+    ANALYZING_DEEPLY("Analyzing your chart deeply...", "तपाईंको कुण्डलीको गहन विश्लेषण गर्दै...", "आप के कुंडली के गहन विश्लेषण गर्दै..."),
+,
 }
