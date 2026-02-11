@@ -1,5 +1,6 @@
 package com.astro.storm.ui.components.agentic
 
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringResources
 import org.json.JSONArray
@@ -127,7 +128,7 @@ sealed class AgentSection {
             get() = if (totalCount > 0) completedCount.toFloat() / totalCount else 0f
 
         fun getLocalizedProgressText(language: com.astro.storm.core.common.Language): String {
-            val completedKey = StringResources.get(com.astro.storm.core.common.StringKeyUICommon.COMPLETED, language)
+            val completedKey = StringResources.get(StringKeyUICommon.COMPLETED, language)
             val slash = StringResources.get(StringKeyUIExtra.SLASH, language)
             return "$completedCount$slash$totalCount $completedKey"
         }

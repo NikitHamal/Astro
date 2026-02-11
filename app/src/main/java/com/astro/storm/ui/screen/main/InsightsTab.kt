@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
@@ -806,11 +807,7 @@ private fun EnergyCard(overallEnergy: Int) {
     val energyColor = getEnergyColor(overallEnergy)
     val energyDescription = remember(overallEnergy, language) { getEnergyDescription(overallEnergy, language) }
     
-    val localizedScore = remember(overallEnergy, language) {
-        val score = "$overallEnergy/10"
-        if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(score)
-        else score
-    }
+    val localizedScore = stringResource(StringKeyUIExtra.ENERGY_SCORE_FMT, overallEnergy)
 
     Card(
         modifier = Modifier

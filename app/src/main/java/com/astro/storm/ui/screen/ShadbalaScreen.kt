@@ -499,8 +499,9 @@ private fun StrongestWeakestCard(
             )
 
             strength?.let {
+                val rupasSuffix = stringResource(StringKeyUIExtra.RUPAS_SUFFIX)
                 Text(
-                    String.format("%.2f R", it.totalRupas),
+                    String.format("%.2f", it.totalRupas) + rupasSuffix,
                     style = MaterialTheme.typography.bodySmall,
                     color = accentColor
                 )
@@ -552,7 +553,7 @@ private fun PlanetStrengthRow(
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    String.format("%.1f%%", shadbala.percentageOfRequired),
+                    String.format("%.1f", shadbala.percentageOfRequired) + stringResource(StringKeyUIExtra.PERCENT_SIGN),
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.SemiBold,
                     color = getStrengthColor(shadbala.percentageOfRequired)
@@ -1192,8 +1193,9 @@ private fun ComparisonBarRow(
         Spacer(modifier = Modifier.width(10.dp))
 
         // Value
+        val rupasSuffix = stringResource(StringKeyUIExtra.RUPAS_SUFFIX)
         Text(
-            String.format("%.2f R", shadbala.totalRupas),
+            String.format("%.2f", shadbala.totalRupas) + rupasSuffix,
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.SemiBold,
             color = if (shadbala.isStrong) AppTheme.SuccessColor else AppTheme.WarningColor,

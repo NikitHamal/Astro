@@ -71,6 +71,9 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKeyShadbala
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
@@ -147,7 +150,7 @@ fun DrigBalaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKeyUICommon.BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -156,7 +159,7 @@ fun DrigBalaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKeyUICommon.INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -293,7 +296,7 @@ private fun OverallScoreCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
                 color = scoreColor
             )
             Text(
-                text = "/100",
+                text = stringResource(StringKeyUIExtra.SLASH) + "100",
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -434,7 +437,7 @@ private fun DrigBalaInsightsCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) 
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "•",
+                        text = stringResource(StringKeyUICommon.BULLET),
                         color = AppTheme.AccentGold,
                         fontWeight = FontWeight.Bold
                     )
@@ -460,7 +463,7 @@ private fun DrigBalaRecommendationsCard(analysis: DrigBalaCalculator.DrigBalaAna
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Recommendations",
+                text = stringResource(StringKeyUICommon.REMEDIES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentPrimary
@@ -472,7 +475,7 @@ private fun DrigBalaRecommendationsCard(analysis: DrigBalaCalculator.DrigBalaAna
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "→",
+                        text = stringResource(StringKeyUIExtra.ARROW),
                         color = AppTheme.AccentPrimary,
                         fontWeight = FontWeight.Bold
                     )
@@ -514,6 +517,7 @@ private fun DrigBalaAspectsSection(analysis: DrigBalaCalculator.DrigBalaAnalysis
 
 @Composable
 private fun AspectGroupCard(planet: Planet, aspects: List<DrigBalaCalculator.AspectInfo>) {
+    val language = LocalLanguage.current
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -555,8 +559,9 @@ private fun AspectGroupCard(planet: Planet, aspects: List<DrigBalaCalculator.Asp
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
+                        val aspectsCount = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(aspects.size) else aspects.size.toString()
                         Text(
-                            text = "${aspects.size} aspects cast",
+                            text = stringResource(StringKeyAnalysis.TRANSIT_ASPECTS_TO_NATAL) + " " + stringResource(StringKeyUIExtra.PAREN_START) + aspectsCount + stringResource(StringKeyUIExtra.PAREN_END),
                             style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
@@ -833,6 +838,7 @@ private fun DrigBalaHousesSection(analysis: DrigBalaCalculator.DrigBalaAnalysis)
 
 @Composable
 private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
+    val language = LocalLanguage.current
     val netColor = when (houseAspect.netEffect) {
         DrigBalaCalculator.AspectEffect.BENEFIC -> AppTheme.SuccessColor
         DrigBalaCalculator.AspectEffect.MALEFIC -> AppTheme.ErrorColor
@@ -855,6 +861,7 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                val houseNum = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(houseAspect.houseNumber) else houseAspect.houseNumber.toString()
                 Box(
                     modifier = Modifier
                         .size(40.dp)
@@ -863,7 +870,7 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "${houseAspect.houseNumber}",
+                        text = houseNum,
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
                         color = netColor
@@ -871,7 +878,7 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
                 }
                 Column {
                     Text(
-                        text = "House ${houseAspect.houseNumber}",
+                        text = stringResource(StringKeyAnalysis.TRANSIT_HOUSE_LABEL) + " $houseNum",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary

@@ -42,6 +42,7 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAdvanced
 import com.astro.storm.core.common.StringKeyInterface
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringKeyShadbala
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
@@ -766,7 +767,7 @@ private fun FeatureCategoryCard(
                 
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (isExpanded) stringResource(StringKeyUICommon.COLLAPSE) else stringResource(StringKeyUICommon.EXPAND),
                     tint = colors.TextMuted,
                     modifier = Modifier.graphicsLayer { rotationZ = rotation }
                 )

@@ -66,6 +66,9 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringKeyShadbala
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -139,7 +142,7 @@ fun SthanaBalaScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(StringKeyUICommon.BACK),
                             tint = AppTheme.TextPrimary
                         )
                     }
@@ -148,7 +151,7 @@ fun SthanaBalaScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(StringKeyUICommon.INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }
@@ -253,6 +256,7 @@ private fun SthanaBalaOverviewSection(analysis: SthanaBalaCalculator.SthanaBalaA
 
 @Composable
 private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
+    val language = LocalLanguage.current
     val scoreColor = when {
         analysis.overallScore >= 70 -> AppTheme.SuccessColor
         analysis.overallScore >= 50 -> AppTheme.AccentGold
@@ -277,14 +281,15 @@ private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysi
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(8.dp))
+            val scoreText = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(analysis.overallScore.toInt()) else String.format("%.0f", analysis.overallScore)
             Text(
-                text = String.format("%.0f", analysis.overallScore),
+                text = scoreText,
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
             )
             Text(
-                text = "/100",
+                text = stringResource(StringKeyUIExtra.SLASH) + "100",
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
@@ -305,6 +310,7 @@ private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysi
 
 @Composable
 private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
+    val language = LocalLanguage.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -340,8 +346,9 @@ private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaB
                 )
                 val strongestBala = analysis.planetarySthanaBala[analysis.strongestPlanet]
                 strongestBala?.let {
+                    val perc = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it.percentageOfRequired.toInt()) else String.format("%.0f", it.percentageOfRequired)
                     Text(
-                        text = "${String.format("%.0f", it.percentageOfRequired)}%",
+                        text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.SuccessColor
                     )
@@ -380,8 +387,9 @@ private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaB
                 )
                 val weakestBala = analysis.planetarySthanaBala[analysis.weakestPlanet]
                 weakestBala?.let {
+                    val perc = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(it.percentageOfRequired.toInt()) else String.format("%.0f", it.percentageOfRequired)
                     Text(
-                        text = "${String.format("%.0f", it.percentageOfRequired)}%",
+                        text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.ErrorColor
                     )
@@ -424,7 +432,7 @@ private fun SthanaBalaInsightsCard(analysis: SthanaBalaCalculator.SthanaBalaAnal
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(text = "•", color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(StringKeyUICommon.BULLET), color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
                     Text(
                         text = insight,
                         style = MaterialTheme.typography.bodySmall,
@@ -447,7 +455,7 @@ private fun SthanaBalaRecommendationsCard(analysis: SthanaBalaCalculator.SthanaB
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Recommendations",
+                text = stringResource(StringKeyUICommon.REMEDIES),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentPrimary
@@ -458,7 +466,7 @@ private fun SthanaBalaRecommendationsCard(analysis: SthanaBalaCalculator.SthanaB
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(text = "→", color = AppTheme.AccentPrimary, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(StringKeyUIExtra.ARROW), color = AppTheme.AccentPrimary, fontWeight = FontWeight.Bold)
                     Text(
                         text = rec,
                         style = MaterialTheme.typography.bodySmall,
@@ -628,15 +636,18 @@ private fun PlanetSthanaBalaCard(planetBala: SthanaBalaCalculator.PlanetSthanaBa
                     }
                 }
 
+                val language = LocalLanguage.current
                 Column(horizontalAlignment = Alignment.End) {
+                    val perc = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(planetBala.percentageOfRequired.toInt()) else String.format("%.0f", planetBala.percentageOfRequired)
                     Text(
-                        text = "${String.format("%.0f", planetBala.percentageOfRequired)}%",
+                        text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = scoreColor
                     )
+                    val rupas = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(String.format("%.1f", planetBala.totalRupas)) else String.format("%.1f", planetBala.totalRupas)
                     Text(
-                        text = "${String.format("%.1f", planetBala.totalRupas)} ${stringResource(StringKeyShadbala.COMMON_RUPAS)}",
+                        text = "$rupas ${stringResource(StringKeyShadbala.COMMON_RUPAS)}",
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )

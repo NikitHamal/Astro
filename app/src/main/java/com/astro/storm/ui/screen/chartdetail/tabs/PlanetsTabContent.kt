@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.localized
 import com.astro.storm.data.localization.localizedAbbr
@@ -300,10 +301,11 @@ private fun ConditionStatBadge(
     label: String,
     color: Color
 ) {
+    val planetsCountA11y = stringResource(StringKeyUIExtra.PLANETS_COUNT_A11Y, count, label)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.semantics(mergeDescendants = true) {
-            contentDescription = "$count planets $label"
+            contentDescription = planetsCountA11y
         }
     ) {
         Box(

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AppTheme
 
@@ -67,7 +68,7 @@ fun ScreenTopBar(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(StringKey.BTN_BACK),
+                    contentDescription = stringResource(StringKeyUICommon.BACK),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -332,7 +333,7 @@ fun InfoButton(
     IconButton(onClick = onClick, modifier = modifier) {
         Icon(
             imageVector = Icons.Outlined.Info,
-            contentDescription = stringResource(StringKey.MISC_INFO),
+            contentDescription = stringResource(StringKeyUICommon.INFO),
             tint = tint
         )
     }
