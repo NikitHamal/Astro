@@ -65,7 +65,7 @@ suspend fun getChartForProfile(
 
             val chart = context.currentChart ?: chartEntity?.toVedicChart()
             if (chart == null) {
-                return@when if (activeProfile == null) {
+                if (activeProfile == null) {
                     null to "No active profile selected"
                 } else {
                     null to "Chart data not found for active profile: ${activeProfile.name}"
