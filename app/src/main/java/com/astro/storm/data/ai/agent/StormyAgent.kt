@@ -591,15 +591,42 @@ class StormyAgent @Inject constructor(
             if (alreadyEmitted.startsWith(rawChunk) || alreadyEmitted.contains(rawChunk)) {
                 return ""
             }
+            val embeddedIndex = rawChunk.lastIndexOf(alreadyEmitted)
+            if (embeddedIndex >= 0) {
+                return rawChunk.substring(embeddedIndex + alreadyEmitted.length)
+            }
         }
 
         if (previousSnapshot.isEmpty()) return rawChunk
 
         return when {
             rawChunk.startsWith(previousSnapshot) -> rawChunk.substring(previousSnapshot.length)
-            previousSnapshot.startsWith(rawChunk) -> ""
-            else -> rawChunk
+            previousSnapshot.startsWith(rawChunk) || previousSnapshot.contains(rawChunk) -> ""
+            else -> {
+                val overlap = findOverlapSuffixPrefix(previousSnapshot, rawChunk)
+                if (overlap > 0) return rawChunk.substring(overlap)
+
+                val emittedOverlap = findOverlapSuffixPrefix(alreadyEmitted, rawChunk)
+                if (emittedOverlap > 0) return rawChunk.substring(emittedOverlap)
+
+                rawChunk
+            }
         }
+    }
+
+    /**
+     * Find the longest overlap where the suffix of `existing` matches the prefix of `incoming`.
+     * This helps turn cumulative or partially-overlapping streams into clean deltas.
+     */
+    private fun findOverlapSuffixPrefix(existing: String, incoming: String): Int {
+        if (existing.isEmpty() || incoming.isEmpty()) return 0
+        val maxOverlap = minOf(existing.length, incoming.length, 2000)
+        for (len in maxOverlap downTo 1) {
+            if (existing.regionMatches(existing.length - len, incoming, 0, len, ignoreCase = false)) {
+                return len
+            }
+        }
+        return 0
     }
 
     /**

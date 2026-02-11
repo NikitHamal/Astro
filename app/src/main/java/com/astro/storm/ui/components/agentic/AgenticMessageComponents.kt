@@ -702,15 +702,24 @@ fun ContentPanel(
     ) {
         // Main content area
         if (content.isNotEmpty()) {
-            // Render content with Markdown support
-            MarkdownText(
-                markdown = content,
-                modifier = Modifier.fillMaxWidth(),
-                textColor = colors.TextPrimary,
-                linkColor = colors.AccentPrimary,
-                textSize = 15f,
-                cleanContent = false // Already cleaned above
-            )
+            if (isProcessing) {
+                Text(
+                    text = content,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = colors.TextPrimary,
+                    lineHeight = 22.sp
+                )
+            } else {
+                // Render content with Markdown support
+                MarkdownText(
+                    markdown = content,
+                    modifier = Modifier.fillMaxWidth(),
+                    textColor = colors.TextPrimary,
+                    linkColor = colors.AccentPrimary,
+                    textSize = 15f,
+                    cleanContent = false // Already cleaned above
+                )
+            }
 
             // Typing indicator at end when actively typing
             if (isTyping) {

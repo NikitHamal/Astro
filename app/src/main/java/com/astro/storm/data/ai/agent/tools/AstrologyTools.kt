@@ -60,21 +60,19 @@ suspend fun getChartForProfile(
 ): Pair<VedicChart?, String?> {
     return when {
         profileId.isEmpty() || profileId == "current" -> {
-            if (context.currentChart != null) {
-                context.currentChart to null
-            } else {
-                val activeProfile = context.currentProfile
-                if (activeProfile != null) {
-                    val chartEntity = context.database.chartDao().getChartById(activeProfile.id)
-                    if (chartEntity != null) {
-                        chartEntity.toVedicChart() to null
-                    } else {
-                        null to "Chart data not found for active profile: ${activeProfile.name}"
-                    }
-                } else {
+            val activeProfile = context.currentProfile
+            val chartEntity = activeProfile?.let { context.database.chartDao().getChartById(it.id) }
+
+            val chart = context.currentChart ?: chartEntity?.toVedicChart()
+            if (chart == null) {
+                return@when if (activeProfile == null) {
                     null to "No active profile selected"
+                } else {
+                    null to "Chart data not found for active profile: ${activeProfile.name}"
                 }
             }
+
+            ensureChartHasMoon(chart, chartEntity, context)
         }
         else -> {
             val profile = context.allProfiles.find { it.id.toString() == profileId }
@@ -83,7 +81,7 @@ suspend fun getChartForProfile(
             val chartEntity = context.database.chartDao().getChartById(profile.id)
                 ?: return null to "Chart data not found for profile: ${profile.name}"
 
-            chartEntity.toVedicChart() to null
+            ensureChartHasMoon(chartEntity.toVedicChart(), chartEntity, context)
         }
     }
 }
@@ -126,12 +124,50 @@ private fun normalizeProfileId(raw: String?): String {
     if (raw.isNullOrBlank()) return "current"
     val trimmed = raw.trim().trim('"', '\'')
     if (trimmed.equals("current", ignoreCase = true)) return "current"
+    if (trimmed.contains("current", ignoreCase = true)) return "current"
 
     // Recover IDs from malformed forms like "profile_id12"
     val digits = Regex("""\d+""").find(trimmed)?.value
     if (!digits.isNullOrEmpty()) return digits
 
     return trimmed.replace(Regex("""[^a-zA-Z0-9_-]"""), "").ifEmpty { "current" }
+}
+
+private fun VedicChart.hasMoonPosition(): Boolean {
+    return planetPositions.any { it.planet == Planet.MOON }
+}
+
+private suspend fun ensureChartHasMoon(
+    chart: VedicChart,
+    chartEntity: ChartEntity?,
+    context: ToolContext
+): Pair<VedicChart?, String?> {
+    if (chart.hasMoonPosition()) return chart to null
+
+    val recalculated = runCatching {
+        context.ephemerisEngine.calculateVedicChart(chart.birthData, chart.houseSystem)
+    }.getOrNull()
+
+    if (recalculated == null || !recalculated.hasMoonPosition()) {
+        return null to "Chart data incomplete (missing Moon position). Please verify birth data and recalculate the chart."
+    }
+
+    // Persist the recalculated chart if we have the entity
+    chartEntity?.let { entity ->
+        val updated = entity.copy(
+            julianDay = recalculated.julianDay,
+            ayanamsa = recalculated.ayanamsa,
+            ayanamsaName = recalculated.ayanamsaName,
+            ascendant = recalculated.ascendant,
+            midheaven = recalculated.midheaven,
+            planetPositions = recalculated.planetPositions,
+            houseCusps = recalculated.houseCusps,
+            houseSystem = recalculated.houseSystem.name
+        )
+        context.database.chartDao().updateChart(updated)
+    }
+
+    return recalculated to null
 }
 
 // ============================================

@@ -414,7 +414,9 @@ object ContentCleaner {
             .map { it.trim() }
             .filter { it.isNotEmpty() }
 
-        if (paragraphs.size < 4) return content // Not enough paragraphs to detect duplication
+        if (paragraphs.size < 4) {
+            return removeLineDuplications(content)
+        }
 
         // Look for repeating sequences
         for (windowSize in (paragraphs.size / 2) downTo 2) {
@@ -448,6 +450,34 @@ object ContentCleaner {
             if (secondHalf.startsWith(firstHalf.take(100)) ||
                 calculateSimilarity(firstHalf, secondHalf) > 0.85) {
                 return firstHalf
+            }
+        }
+
+        return content
+    }
+
+    /**
+     * Line-based duplication detection for content without paragraph breaks.
+     */
+    private fun removeLineDuplications(content: String): String {
+        val lines = content.split(Regex("\n+"))
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+
+        if (lines.size < 6) return content
+
+        for (windowSize in (lines.size / 2) downTo 2) {
+            val firstHalf = lines.take(windowSize)
+            val secondHalf = lines.drop(windowSize).take(windowSize)
+
+            if (firstHalf.size == secondHalf.size) {
+                val matchCount = firstHalf.zip(secondHalf).count { (a, b) ->
+                    a == b || calculateSimilarity(a, b) > 0.9
+                }
+                if (matchCount.toFloat() / firstHalf.size > 0.8) {
+                    val uniqueContent = lines.take(windowSize) + lines.drop(windowSize * 2)
+                    return uniqueContent.joinToString("\n")
+                }
             }
         }
 

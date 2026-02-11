@@ -807,14 +807,23 @@ fun ContentSection(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         if (safeText.isNotEmpty()) {
-            MarkdownText(
-                markdown = safeText,
-                modifier = Modifier.fillMaxWidth(),
-                textColor = colors.TextPrimary,
-                linkColor = colors.AccentPrimary,
-                textSize = 15f,
-                cleanContent = false
-            )
+            if (section.isComplete) {
+                MarkdownText(
+                    markdown = safeText,
+                    modifier = Modifier.fillMaxWidth(),
+                    textColor = colors.TextPrimary,
+                    linkColor = colors.AccentPrimary,
+                    textSize = 15f,
+                    cleanContent = false
+                )
+            } else {
+                Text(
+                    text = safeText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = colors.TextPrimary,
+                    lineHeight = 22.sp
+                )
+            }
 
             // Typing indicator
             if (section.isTyping && !section.isComplete) {

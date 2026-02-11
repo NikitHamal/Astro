@@ -957,6 +957,13 @@ class ChatViewModel @Inject constructor(
      */
     private fun appendReasoningChunk(text: String) {
         if (text.isEmpty()) return
+        if (rawReasoningAccumulator.isNotEmpty()) {
+            val lastChar = rawReasoningAccumulator.last()
+            val firstChar = text.first()
+            if (lastChar.isLetterOrDigit() && firstChar.isLetterOrDigit()) {
+                rawReasoningAccumulator.append(' ')
+            }
+        }
         appendToAccumulator(rawReasoningAccumulator, text)
     }
 
@@ -1584,6 +1591,8 @@ class ChatViewModel @Inject constructor(
             }
         }
 
+        dedupeContentSections()
+
         // Clear current section references
         currentReasoningSection = null
         currentContentSection = null
@@ -1596,6 +1605,40 @@ class ChatViewModel @Inject constructor(
                 sections = currentSections.toList(),
                 isComplete = true
             )
+        }
+    }
+
+    /**
+     * Remove duplicated content sections before persisting.
+     */
+    private fun dedupeContentSections() {
+        var lastContent: String? = null
+        val deduped = mutableListOf<AgentSection>()
+
+        currentSections.forEach { section ->
+            if (section is AgentSection.Content) {
+                val cleaned = ContentCleaner.cleanForDisplay(section.text)
+                if (cleaned.isBlank()) {
+                    return@forEach
+                }
+                val shouldSkip = lastContent != null &&
+                    (cleaned == lastContent ||
+                        cleaned.contains(lastContent!!) ||
+                        lastContent!!.contains(cleaned))
+
+                if (!shouldSkip) {
+                    lastContent = cleaned
+                    deduped.add(section.copy(text = cleaned))
+                }
+            } else {
+                deduped.add(section)
+            }
+        }
+
+        if (deduped.size != currentSections.size) {
+            currentSections.clear()
+            currentSections.addAll(deduped)
+            rebuildSectionIndexMap()
         }
     }
 
