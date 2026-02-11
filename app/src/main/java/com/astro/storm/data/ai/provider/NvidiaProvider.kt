@@ -83,7 +83,9 @@ class NvidiaProvider(
         } catch (e: Exception) {
             // fall back
         }
-        return models.ifEmpty { getDefaultModels() }
+        return models
+            .ifEmpty { getDefaultModels() }
+            .distinctBy { it.id }
     }
 
     override fun getDefaultModels(): List<AiModel> = listOf(
@@ -136,7 +138,7 @@ class NvidiaProvider(
             supportsReasoning = true,
             supportsTools = true
         )
-    )
+    ).distinctBy { it.id }
 
     override fun formatModelDisplayName(modelId: String): String {
         return modelId
@@ -149,4 +151,3 @@ class NvidiaProvider(
             .joinToString(" ") { token -> token.replaceFirstChar { it.uppercase() } }
     }
 }
-

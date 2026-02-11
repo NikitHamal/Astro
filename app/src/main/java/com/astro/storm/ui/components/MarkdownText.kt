@@ -72,7 +72,9 @@ object ContentCleaner {
         // Code block with nested arguments (multi-line) - more aggressive
         Regex("""```(?:json|tool_call)?\s*\n\s*\{[^`]*"tool"[^`]*\}\s*\n?```""", RegexOption.MULTILINE),
         // Catch any code block that contains tool JSON with nested objects
-        Regex("""```[^`]*\n\s*\{\s*\n?\s*"tool"\s*:[^`]*\}\s*\n?```""", RegexOption.MULTILINE)
+        Regex("""```[^`]*\n\s*\{\s*\n?\s*"tool"\s*:[^`]*\}\s*\n?```""", RegexOption.MULTILINE),
+        // Protocol-style leaked tool section
+        Regex("""<\|tool_calls_section_begin\|>[\s\S]*?<\|tool_calls_section_end\|>""", RegexOption.IGNORE_CASE)
     )
 
     // Pattern to match inline tool call JSON (various formats including multi-line)
@@ -134,7 +136,11 @@ object ContentCleaner {
     private val leakedToolFragmentPatterns = listOf(
         Regex("""(?m)^\s*tool_call\s*$"""),
         Regex("""(?m)^\s*`{3}_?[a-zA-Z0-9_]*\s*$"""),
-        Regex("""(?m)^\s*(profile_id|partner_profile_id|dasha_type|years_ahead)\b.*$""", RegexOption.IGNORE_CASE)
+        Regex("""(?m)^\s*(profile_id|partner_profile_id|dasha_type|years_ahead)\b.*$""", RegexOption.IGNORE_CASE),
+        Regex("""(?m)^\s*<\|tool_[^|]+?\|>\s*$""", RegexOption.IGNORE_CASE),
+        Regex("""(?m)^\s*(?:functions\.)?[a-zA-Z0-9_]+\s*:\s*\d+\s*$""", RegexOption.IGNORE_CASE),
+        Regex("""(?m)^\s*"?\s*(tool|arguments|parameters|function)\s*"?\s*:\s*.*$""", RegexOption.IGNORE_CASE),
+        Regex("""(?m)^\s*[\{\}]\s*$""")
     )
 
     // Lightweight patterns for streaming updates (hot path).
@@ -150,11 +156,21 @@ object ContentCleaner {
     private val streamingToolCallPatterns = listOf(
         Regex("""```tool_call[\s\S]*?```""", RegexOption.MULTILINE),
         Regex("""```json[\s\S]*?"tool"[\s\S]*?```""", RegexOption.MULTILINE),
+        Regex("""<\|tool_calls_section_begin\|>[\s\S]*?<\|tool_calls_section_end\|>""", RegexOption.IGNORE_CASE),
+        Regex("""<\|tool_calls_section_begin\|>[\s\S]*$""", RegexOption.IGNORE_CASE),
         Regex("""(?m)^\s*tool_call\s*$"""),
+        Regex("""(?m)^\s*<\|tool_[^|]+?\|>\s*$""", RegexOption.IGNORE_CASE),
+        Regex("""(?m)^\s*(?:functions\.)?[a-zA-Z0-9_]+\s*:\s*\d+\s*$""", RegexOption.IGNORE_CASE),
         Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[\s\S]*?\}\s*\}"""),
-        Regex("""(?m)^\s*"(tool|arguments|parameters|function)"\s*:\s*.*$"""),
+        Regex("""(?m)^\s*"?\s*(tool|arguments|parameters|function)\s*"?\s*:\s*.*$""", RegexOption.IGNORE_CASE),
         Regex("""(?m)^\s*(profile_id|partner_profile_id|dasha_type|years_ahead|for_now|activity)\b.*$""", RegexOption.IGNORE_CASE),
         Regex("""(?m)^\s*`{3}\s*$""")
+    )
+
+    private val toolProtocolStartMarkers = listOf(
+        "<|tool_calls_section_begin|>",
+        "<|tool_call_begin|>",
+        "<|tool_call_argument_begin|>"
     )
 
     /**
@@ -164,7 +180,7 @@ object ContentCleaner {
     fun cleanForDisplay(content: String): String {
         if (content.isBlank()) return ""
 
-        var cleaned = content
+        var cleaned = truncateAtToolProtocol(content)
 
         // Remove tool call blocks (all patterns)
         for (pattern in toolCallBlockPatterns) {
@@ -202,6 +218,9 @@ object ContentCleaner {
         // Detect and remove content duplication (common after tool calls)
         cleaned = removeDuplicatedContent(cleaned)
 
+        // Final guard against late protocol marker leakage
+        cleaned = truncateAtToolProtocol(cleaned)
+
         // Clean up excessive whitespace while preserving markdown formatting
         cleaned = cleaned
             .replace(Regex("\n{4,}"), "\n\n\n") // Max 3 newlines
@@ -219,7 +238,7 @@ object ContentCleaner {
     fun cleanForStreaming(content: String): String {
         if (content.isBlank()) return ""
 
-        var cleaned = content
+        var cleaned = truncateAtToolProtocol(content)
         for (pattern in streamingArtifactPatterns) {
             cleaned = pattern.replace(cleaned, "")
         }
@@ -230,6 +249,8 @@ object ContentCleaner {
 
         // Only run structural removal when tool-call markers are present.
         if (cleaned.contains("tool_call", ignoreCase = true) ||
+            cleaned.contains("<|tool_", ignoreCase = true) ||
+            cleaned.contains("functions.", ignoreCase = true) ||
             (cleaned.contains("\"tool\"") && cleaned.contains("\"arguments\""))
         ) {
             cleaned = removeToolCallJsonObjects(cleaned)
@@ -248,6 +269,22 @@ object ContentCleaner {
             .replace(Regex("[ \t]+\n"), "\n")
             .replace(Regex("\n[ \t]+\n"), "\n\n")
             .trim()
+    }
+
+    /**
+     * Truncate from the first protocol-style tool marker onward.
+     * This prevents model-internal tool protocol from leaking to user-visible text.
+     */
+    private fun truncateAtToolProtocol(content: String): String {
+        val lowered = content.lowercase()
+        var cutIndex = -1
+        toolProtocolStartMarkers.forEach { marker ->
+            val idx = lowered.indexOf(marker.lowercase())
+            if (idx >= 0 && (cutIndex == -1 || idx < cutIndex)) {
+                cutIndex = idx
+            }
+        }
+        return if (cutIndex >= 0) content.substring(0, cutIndex) else content
     }
 
     /**
@@ -530,7 +567,7 @@ object ContentCleaner {
     fun cleanReasoning(content: String): String {
         if (content.isBlank()) return ""
 
-        var cleaned = content
+        var cleaned = truncateAtToolProtocol(content)
 
         // Remove null/undefined artifacts
         cleaned = cleaned
@@ -547,7 +584,10 @@ object ContentCleaner {
             .replace(Regex("""</?think(?:ing)?>"""), "")
             .replace(Regex("""</?reasoning>"""), "")
 
-        cleaned = cleaned.replace(Regex("""</?reflection>"""), "")
+        cleaned = cleaned
+            .replace(Regex("""</?reflection>"""), "")
+            .replace(Regex("""(?m)^\s*<\|tool_[^|]+?\|>\s*$""", RegexOption.IGNORE_CASE), "")
+            .replace(Regex("""(?m)^\s*(?:functions\.)?[a-zA-Z0-9_]+\s*:\s*\d+\s*$""", RegexOption.IGNORE_CASE), "")
 
         // Apply deduplication to reasoning as well
         cleaned = removeReasoningDuplication(cleaned)
@@ -574,7 +614,7 @@ object ContentCleaner {
     fun cleanReasoningForStreaming(content: String): String {
         if (content.isBlank()) return ""
 
-        return content
+        return truncateAtToolProtocol(content)
             .replace(Regex("""^data:\s*""", RegexOption.MULTILINE), "")
             .replace(Regex("""^event:\s*\w+\s*$""", RegexOption.MULTILINE), "")
             .replace(Regex("""</?think(?:ing)?>"""), "")
@@ -585,6 +625,8 @@ object ContentCleaner {
             .replace(Regex("""(?i)\bi\s+(?:should\s+)?not use italics in (?:my\s+)?responses?(?:\s+as per the guidelines)?\.?"""), "")
             .replace(Regex("""(?i)\bnever use italics in your responses\.?"""), "")
             .replace(Regex("""(?m)^\s*tool_call\s*$"""), "")
+            .replace(Regex("""(?m)^\s*<\|tool_[^|]+?\|>\s*$""", RegexOption.IGNORE_CASE), "")
+            .replace(Regex("""(?m)^\s*(?:functions\.)?[a-zA-Z0-9_]+\s*:\s*\d+\s*$""", RegexOption.IGNORE_CASE), "")
             .replace(Regex("""(?m)^\s*(profile_id|partner_profile_id|dasha_type|years_ahead)\b.*$""", RegexOption.IGNORE_CASE), "")
             .replace(Regex("[ \t]+\n"), "\n")
             .trim()

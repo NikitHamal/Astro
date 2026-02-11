@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.ui.components.ContentCleaner
 import com.astro.storm.ui.components.MarkdownText
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.core.common.StringKeyDosha
@@ -793,14 +794,21 @@ fun ContentSection(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
+    val safeText = remember(section.text, section.isComplete) {
+        if (section.isComplete) {
+            ContentCleaner.cleanForDisplay(section.text)
+        } else {
+            ContentCleaner.cleanForStreaming(section.text)
+        }
+    }
 
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        if (section.text.isNotEmpty()) {
+        if (safeText.isNotEmpty()) {
             MarkdownText(
-                markdown = section.text,
+                markdown = safeText,
                 modifier = Modifier.fillMaxWidth(),
                 textColor = colors.TextPrimary,
                 linkColor = colors.AccentPrimary,

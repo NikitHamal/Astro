@@ -93,7 +93,12 @@ $languageInstruction
 $profileContext
 
 ## Available Tools
-You can call the following tools to get information from the app. To call a tool, respond with a JSON block in this exact format:
+You can call the following tools to get information from the app.
+CRITICAL:
+- Never expose tool-call payloads in user-facing prose.
+- Do not output protocol tags like <|tool_call_begin|> in normal responses.
+- When calling a tool, output ONLY the tool-call payload and nothing else.
+Use this exact JSON format for tool calls:
 
 ```tool_call
 {

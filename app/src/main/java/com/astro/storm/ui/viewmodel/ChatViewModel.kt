@@ -953,17 +953,10 @@ class ChatViewModel @Inject constructor(
 
     /**
      * Append reasoning chunks with separator protection.
-     * Prevents words from merging when adjacent chunks have no whitespace boundary.
+     * Keep chunks raw to avoid corrupting words for providers that stream partial tokens.
      */
     private fun appendReasoningChunk(text: String) {
         if (text.isEmpty()) return
-        if (rawReasoningAccumulator.isNotEmpty()) {
-            val prev = rawReasoningAccumulator.last()
-            val next = text.first()
-            if (!prev.isWhitespace() && !next.isWhitespace()) {
-                appendToAccumulator(rawReasoningAccumulator, "\n")
-            }
-        }
         appendToAccumulator(rawReasoningAccumulator, text)
     }
 
@@ -1065,6 +1058,14 @@ class ChatViewModel @Inject constructor(
      * Uses chronological appending - creates new section if last section is different type.
      */
     private fun updateReasoningSection(content: String, isComplete: Boolean) {
+        // If reasoning starts after content/tool phases, finalize those sections first.
+        if (currentContentSection != null && !currentContentSection!!.isComplete) {
+            finalizeCurrentContentSection()
+        }
+        if (currentToolGroup != null && !currentToolGroup!!.isComplete) {
+            finalizeCurrentToolGroup()
+        }
+
         val durationMs = if (reasoningStartTime > 0) {
             System.currentTimeMillis() - reasoningStartTime
         } else 0L
@@ -1132,6 +1133,9 @@ class ChatViewModel @Inject constructor(
             }
             // Reset reasoning tracking for next reasoning section
             reasoningStartTime = 0L
+            // Reset streaming accumulator so next reasoning section doesn't include old text.
+            rawReasoningAccumulator.clear()
+            _streamingReasoning.value = ""
         }
     }
 
@@ -1185,6 +1189,9 @@ class ChatViewModel @Inject constructor(
                 )
                 currentSections[index] = currentContentSection!!
             }
+            // Reset streaming accumulator so next content section starts clean after tools/reasoning transitions.
+            rawContentAccumulator.clear()
+            _streamingContent.value = ""
         }
     }
 

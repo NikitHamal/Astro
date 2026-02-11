@@ -60,7 +60,21 @@ suspend fun getChartForProfile(
 ): Pair<VedicChart?, String?> {
     return when {
         profileId.isEmpty() || profileId == "current" -> {
-            context.currentChart to null
+            if (context.currentChart != null) {
+                context.currentChart to null
+            } else {
+                val activeProfile = context.currentProfile
+                if (activeProfile != null) {
+                    val chartEntity = context.database.chartDao().getChartById(activeProfile.id)
+                    if (chartEntity != null) {
+                        chartEntity.toVedicChart() to null
+                    } else {
+                        null to "Chart data not found for active profile: ${activeProfile.name}"
+                    }
+                } else {
+                    null to "No active profile selected"
+                }
+            }
         }
         else -> {
             val profile = context.allProfiles.find { it.id.toString() == profileId }

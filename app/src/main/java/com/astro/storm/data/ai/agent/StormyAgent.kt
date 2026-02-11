@@ -514,10 +514,12 @@ class StormyAgent @Inject constructor(
                     }
                 }
 
-                val contentToEmit = if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
-                    finalReasoning
-                } else {
-                    finalContent
+                val contentToEmit = finalContent.ifEmpty {
+                    if (toolsUsed.isNotEmpty()) {
+                        "I could not complete a final user-facing response from the tool outputs. Please retry once."
+                    } else {
+                        "I could not generate a complete response. Please retry your request."
+                    }
                 }
 
                 val reasoningToEmit = if (finalContent.isNotEmpty() && finalReasoning.isNotEmpty()) {
@@ -546,10 +548,8 @@ class StormyAgent @Inject constructor(
             val finalReasoning = currentState.allReasoning.trim()
 
             if (finalContent.isNotEmpty() || finalReasoning.isNotEmpty()) {
-                val contentToEmit = if (finalContent.isEmpty() && finalReasoning.isNotEmpty()) {
-                    finalReasoning
-                } else {
-                    finalContent.ifEmpty { "I apologize, but I wasn't able to complete my analysis within the allowed iterations. Here's what I was able to determine..." }
+                val contentToEmit = finalContent.ifEmpty {
+                    "I could not complete the analysis within the allowed iterations. Please retry."
                 }
 
                 val reasoningToEmit = if (finalContent.isNotEmpty() && finalReasoning.isNotEmpty()) {
@@ -608,6 +608,28 @@ class StormyAgent @Inject constructor(
     private fun parseEmbeddedToolCalls(content: String): List<ToolCallRequest> {
         val toolCalls = mutableListOf<ToolCallRequest>()
         val processedToolIds = mutableSetOf<String>()
+
+        // Pattern 0: Protocol-style tool tags from some models
+        // Example:
+        // <|tool_call_begin|>
+        // functions.get_dasha_info:0
+        // <|tool_call_argument_begin|>{"profile_id":"current"}
+        // <|tool_call_end|>
+        val protocolPattern = Regex(
+            """<\|tool_call_begin\|>[\s\S]*?(?:functions\.)?([a-zA-Z0-9_]+)(?::\d+)?[\s\S]*?<\|tool_call_argument_begin\|>\s*([\s\S]*?)(?:<\|tool_call_end\|>|<\|tool_calls_section_end\|>|$)""",
+            RegexOption.IGNORE_CASE
+        )
+        protocolPattern.findAll(content).forEach { match ->
+            val toolName = match.groupValues[1]
+            val rawArgs = match.groupValues[2].trim()
+            val arguments = extractFirstJsonObject(rawArgs) ?: rawArgs
+            addToolCallIfNotExists(
+                toolName = toolName,
+                arguments = if (arguments.isBlank()) "{}" else arguments,
+                toolCalls = toolCalls,
+                processedIds = processedToolIds
+            )
+        }
 
         // Pattern 1: Standard tool_call code block
         val toolCallBlockPattern = Regex(
@@ -784,6 +806,39 @@ class StormyAgent @Inject constructor(
     }
 
     /**
+     * Extract the first balanced JSON object from text.
+     */
+    private fun extractFirstJsonObject(text: String): String? {
+        val start = text.indexOf('{')
+        if (start == -1) return null
+
+        var depth = 0
+        var inString = false
+        var escaped = false
+
+        for (i in start until text.length) {
+            val c = text[i]
+            if (escaped) {
+                escaped = false
+                continue
+            }
+            when {
+                c == '\\' -> escaped = true
+                c == '"' -> inString = !inString
+                !inString && c == '{' -> depth++
+                !inString && c == '}' -> {
+                    depth--
+                    if (depth == 0) {
+                        return text.substring(start, i + 1)
+                    }
+                }
+            }
+        }
+
+        return null
+    }
+
+    /**
      * Add tool call if not already processed (deduplication)
      */
     private fun addToolCallIfNotExists(
@@ -847,7 +902,25 @@ class StormyAgent @Inject constructor(
             val arguments = try {
                 JSONObject(toolCall.arguments)
             } catch (e: Exception) {
-                JSONObject()
+                val extracted = extractFirstJsonObject(toolCall.arguments)
+                if (extracted != null) {
+                    try {
+                        JSONObject(extracted)
+                    } catch (_: Exception) {
+                        JSONObject()
+                    }
+                } else {
+                    val wrapped = toolCall.arguments.trim().trim(',').trim()
+                    if (wrapped.contains(":")) {
+                        try {
+                            JSONObject("{${wrapped.removePrefix("{").removeSuffix("}")}}")
+                        } catch (_: Exception) {
+                            JSONObject()
+                        }
+                    } else {
+                        JSONObject()
+                    }
+                }
             }
 
             toolRegistry.executeTool(
@@ -875,8 +948,13 @@ class StormyAgent @Inject constructor(
             .replace(Regex("""```tool_call\s*\n?\s*\{[\s\S]*?\}\s*\n?```"""), "")
             .replace(Regex("""```json\s*\n?\s*\{[\s\S]*?"tool"[\s\S]*?\}\s*\n?```""", RegexOption.MULTILINE), "")
             .replace(Regex("""\{\"tool\"\s*:\s*\"[^\"]+\"\s*,\s*\"arguments\"\s*:\s*\{[\s\S]*?\}\s*\}"""), "")
+            .replace(Regex("""<\|tool_calls_section_begin\|>[\s\S]*?<\|tool_calls_section_end\|>""", RegexOption.IGNORE_CASE), "")
+            .replace(Regex("""<\|tool_calls_section_begin\|>[\s\S]*$""", RegexOption.IGNORE_CASE), "")
+            .replace(Regex("""(?m)^\s*<\|tool_[^|]+?\|>\s*$""", RegexOption.IGNORE_CASE), "")
+            .replace(Regex("""(?m)^\s*(?:functions\.)?[a-zA-Z0-9_]+\s*:\s*\d+\s*$""", RegexOption.IGNORE_CASE), "")
             .replace(Regex("""(?m)^\s*tool_call\s*$"""), "")
             .replace(Regex("""(?m)^\s*`{3}\s*$"""), "")
+            .replace(Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,[\s\S]*$"""), "")
             .trim()
     }
 }

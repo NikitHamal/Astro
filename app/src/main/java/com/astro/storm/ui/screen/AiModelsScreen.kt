@@ -62,8 +62,15 @@ fun AiModelsScreen(
     var nvidiaApiKeyInput by remember { mutableStateOf(providerRegistry.getProviderApiKey("nvidia").orEmpty()) }
     var isSavingNvidiaKey by remember { mutableStateOf(false) }
 
-    // Group models by provider
-    val modelsByProvider = allModels.groupBy { it.providerId }
+    val enabledModelKeys = remember(enabledModels) {
+        enabledModels.asSequence()
+            .map { "${it.providerId}::${it.id}" }
+            .toSet()
+    }
+    // Group models by provider once per model list update.
+    val modelsByProvider = remember(allModels) {
+        allModels.groupBy { it.providerId }
+    }
 
     Scaffold(
         containerColor = colors.ScreenBackground,
@@ -179,7 +186,7 @@ fun AiModelsScreen(
                     ProviderSection(
                         providerId = providerId,
                         models = models,
-                        enabledModels = enabledModels,
+                        enabledModelKeys = enabledModelKeys,
                         isExpanded = selectedProvider == providerId,
                         onToggleExpanded = {
                             selectedProvider = if (selectedProvider == providerId) null else providerId
@@ -420,7 +427,10 @@ private fun DefaultModelSection(
             title = { Text(stringResource(StringKeyDosha.AI_MODELS_SELECT_DEFAULT)) },
             text = {
                 LazyColumn {
-                    items(enabledModels) { model ->
+                    items(
+                        items = enabledModels,
+                        key = { model -> "${model.providerId}::${model.id}" }
+                    ) { model ->
                         val isSelected = model.id == defaultModel?.id &&
                                 model.providerId == defaultModel?.providerId
 
@@ -478,7 +488,7 @@ private fun DefaultModelSection(
 private fun ProviderSection(
     providerId: String,
     models: List<AiModel>,
-    enabledModels: List<AiModel>,
+    enabledModelKeys: Set<String>,
     isExpanded: Boolean,
     onToggleExpanded: () -> Unit,
     onToggleModel: (AiModel, Boolean) -> Unit,
@@ -487,7 +497,7 @@ private fun ProviderSection(
 ) {
     val colors = AppTheme.current
     val enabledCount = models.count { model ->
-        enabledModels.any { it.id == model.id && it.providerId == model.providerId }
+        enabledModelKeys.contains("${model.providerId}::${model.id}")
     }
     val allEnabled = enabledCount == models.size
     val noneEnabled = enabledCount == 0
@@ -619,9 +629,7 @@ private fun ProviderSection(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     models.forEach { model ->
-                        val isEnabled = enabledModels.any {
-                            it.id == model.id && it.providerId == model.providerId
-                        }
+                        val isEnabled = enabledModelKeys.contains("${model.providerId}::${model.id}")
 
                         ModelItem(
                             model = model,

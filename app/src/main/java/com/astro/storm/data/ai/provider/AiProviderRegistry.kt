@@ -160,8 +160,11 @@ class AiProviderRegistry @Inject constructor(
                 // Add custom models
                 allModelsFromProviders.addAll(customModels)
 
+                // Defensive dedupe: provider APIs can return duplicate model IDs.
+                val uniqueModels = dedupeModels(allModelsFromProviders)
+
                 // Apply configurations
-                val configuredModels = allModelsFromProviders.map { model ->
+                val configuredModels = uniqueModels.map { model ->
                     val config = findConfigForModel(model.providerId, model.id)
                     if (config != null) {
                         model.copy(
@@ -404,8 +407,10 @@ class AiProviderRegistry @Inject constructor(
         // Add custom models
         allModelsFromProviders.addAll(customModels)
 
+        val uniqueModels = dedupeModels(allModelsFromProviders)
+
         // Apply configurations
-        val configuredModels = allModelsFromProviders.map { model ->
+        val configuredModels = uniqueModels.map { model ->
             val config = findConfigForModel(model.providerId, model.id)
             if (config != null) {
                 model.copy(
@@ -522,6 +527,10 @@ class AiProviderRegistry @Inject constructor(
     private fun findConfigForModel(providerId: String, modelId: String): ModelConfig? {
         return modelConfigs[configKey(providerId, modelId)]
             ?: modelConfigs[modelId] // legacy fallback
+    }
+
+    private fun dedupeModels(models: List<AiModel>): List<AiModel> {
+        return models.distinctBy { model -> configKey(model.providerId, model.id) }
     }
 }
 
