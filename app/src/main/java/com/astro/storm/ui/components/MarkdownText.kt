@@ -125,6 +125,15 @@ object ContentCleaner {
         Regex("""^id:\s*\S+\s*$""", RegexOption.MULTILINE)
     )
 
+    // Lightweight patterns for streaming updates (hot path).
+    // Keep this cheap and avoid expensive deduplication while text is still arriving.
+    private val streamingArtifactPatterns = listOf(
+        Regex("""\[DONE\]"""),
+        Regex("""^data:\s*""", RegexOption.MULTILINE),
+        Regex("""^event:\s*\w+\s*$""", RegexOption.MULTILINE),
+        Regex("""^id:\s*\S+\s*$""", RegexOption.MULTILINE)
+    )
+
     /**
      * Clean content for display by removing tool calls, artifacts, and formatting issues.
      * This should be called before displaying any AI response content.
@@ -169,6 +178,23 @@ object ContentCleaner {
             .trim()
 
         return cleaned
+    }
+
+    /**
+     * Fast cleaner for live streaming updates.
+     * Avoids heavy regex and duplication detection that can stall token rendering.
+     */
+    fun cleanForStreaming(content: String): String {
+        if (content.isBlank()) return ""
+
+        var cleaned = content
+        for (pattern in streamingArtifactPatterns) {
+            cleaned = pattern.replace(cleaned, "")
+        }
+
+        return cleaned
+            .replace(Regex("[ \t]+\n"), "\n")
+            .trim()
     }
 
     /**
@@ -479,6 +505,24 @@ object ContentCleaner {
             .trim()
 
         return cleaned
+    }
+
+    /**
+     * Fast cleaner for streaming reasoning text.
+     */
+    fun cleanReasoningForStreaming(content: String): String {
+        if (content.isBlank()) return ""
+
+        return content
+            .replace(Regex("""^data:\s*""", RegexOption.MULTILINE), "")
+            .replace(Regex("""^event:\s*\w+\s*$""", RegexOption.MULTILINE), "")
+            .replace(Regex("""</?think(?:ing)?>"""), "")
+            .replace(Regex("""</?reasoning>"""), "")
+            .replace(Regex("""</?reflection>"""), "")
+            .replace(Regex("""(?<![a-zA-Z])null(?![a-zA-Z])"""), "")
+            .replace(Regex("""(?<![a-zA-Z])undefined(?![a-zA-Z])"""), "")
+            .replace(Regex("[ \t]+\n"), "\n")
+            .trim()
     }
 
     /**

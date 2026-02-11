@@ -206,7 +206,7 @@ class ChatViewModel @Inject constructor(
 
     // Throttle intervals (in milliseconds)
     private companion object {
-        const val UI_UPDATE_THROTTLE_MS = 100L // ~10 FPS, smoother for heavy text
+        const val UI_UPDATE_THROTTLE_MS = 33L // ~30 FPS for responsive streaming
         const val DB_UPDATE_THROTTLE_MS = 500L // Reduced DB writes
         const val MIN_CONTENT_CHANGE_LENGTH = 5 // Min chars to trigger update
         
@@ -569,7 +569,7 @@ class ChatViewModel @Inject constructor(
                                     lastUiUpdateTime = currentTime
 
                                     // Clean and update display content
-                                    val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
+                                    val cleanedContent = ContentCleaner.cleanForStreaming(rawContentAccumulator.toString())
                                     _streamingContent.value = cleanedContent
 
                                     // Update AI status
@@ -592,9 +592,9 @@ class ChatViewModel @Inject constructor(
                                 if (currentTime - lastDbUpdateTime >= DB_UPDATE_THROTTLE_MS) {
                                     lastDbUpdateTime = currentTime
                                     currentMessageId?.let { msgId ->
-                                        val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
+                                        val cleanedContent = ContentCleaner.cleanForStreaming(rawContentAccumulator.toString())
                                         val cleanedReasoning = if (rawReasoningAccumulator.isNotEmpty()) {
-                                            ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                                            ContentCleaner.cleanReasoningForStreaming(rawReasoningAccumulator.toString())
                                         } else null
 
                                         withContext(Dispatchers.IO) {
@@ -622,7 +622,7 @@ class ChatViewModel @Inject constructor(
                                 if (currentTime - lastUiUpdateTime >= UI_UPDATE_THROTTLE_MS) {
                                     lastUiUpdateTime = currentTime
 
-                                    val cleanedReasoning = ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                                    val cleanedReasoning = ContentCleaner.cleanReasoningForStreaming(rawReasoningAccumulator.toString())
                                     if (cleanedReasoning.isNotEmpty()) {
                                         _streamingReasoning.value = cleanedReasoning
 
@@ -644,8 +644,8 @@ class ChatViewModel @Inject constructor(
                                 if (currentTime - lastDbUpdateTime >= DB_UPDATE_THROTTLE_MS) {
                                     lastDbUpdateTime = currentTime
                                     currentMessageId?.let { msgId ->
-                                        val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
-                                        val cleanedReasoning = ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                                        val cleanedContent = ContentCleaner.cleanForStreaming(rawContentAccumulator.toString())
+                                        val cleanedReasoning = ContentCleaner.cleanReasoningForStreaming(rawReasoningAccumulator.toString())
                                         withContext(Dispatchers.IO) {
                                             chatRepository.updateAssistantMessageContent(
                                                 messageId = msgId,
@@ -958,9 +958,9 @@ class ChatViewModel @Inject constructor(
         currentMessageId?.let { msgId ->
             _streamingMessageState.value = StreamingMessageState(
                 messageId = msgId,
-                content = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString()),
+                content = ContentCleaner.cleanForStreaming(rawContentAccumulator.toString()),
                 reasoning = if (rawReasoningAccumulator.isNotEmpty()) {
-                    ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                    ContentCleaner.cleanReasoningForStreaming(rawReasoningAccumulator.toString())
                 } else "",
                 toolSteps = currentToolSteps.toList(),
                 isComplete = false
@@ -1694,7 +1694,7 @@ class ChatViewModel @Inject constructor(
                                 if (currentTime - lastUiUpdateTime >= UI_UPDATE_THROTTLE_MS) {
                                     lastUiUpdateTime = currentTime
 
-                                    val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
+                                    val cleanedContent = ContentCleaner.cleanForStreaming(rawContentAccumulator.toString())
                                     _streamingContent.value = cleanedContent
 
                                     if (!hasReceivedContent && cleanedContent.isNotEmpty()) {
@@ -1710,9 +1710,9 @@ class ChatViewModel @Inject constructor(
                                 if (currentTime - lastDbUpdateTime >= DB_UPDATE_THROTTLE_MS) {
                                     lastDbUpdateTime = currentTime
                                     currentMessageId?.let { msgId ->
-                                        val cleanedContent = ContentCleaner.cleanForDisplay(rawContentAccumulator.toString())
+                                        val cleanedContent = ContentCleaner.cleanForStreaming(rawContentAccumulator.toString())
                                         val cleanedReasoning = if (rawReasoningAccumulator.isNotEmpty()) {
-                                            ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                                            ContentCleaner.cleanReasoningForStreaming(rawReasoningAccumulator.toString())
                                         } else null
 
                                         withContext(Dispatchers.IO) {
@@ -1737,7 +1737,7 @@ class ChatViewModel @Inject constructor(
                                 if (currentTime - lastUiUpdateTime >= UI_UPDATE_THROTTLE_MS) {
                                     lastUiUpdateTime = currentTime
 
-                                    val cleanedReasoning = ContentCleaner.cleanReasoning(rawReasoningAccumulator.toString())
+                                    val cleanedReasoning = ContentCleaner.cleanReasoningForStreaming(rawReasoningAccumulator.toString())
                                     if (cleanedReasoning.isNotEmpty()) {
                                         _streamingReasoning.value = cleanedReasoning
 

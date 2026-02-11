@@ -81,12 +81,12 @@ fun AgenticMessageCard(
     val reasoning = streamingState?.reasoning?.ifEmpty { streamingReasoning } ?: streamingReasoning
     val toolSteps = streamingState?.toolSteps ?: emptyList()
 
-    // Clean content from tool call artifacts
+    // Use fast cleaners for live streaming to avoid UI stalls.
     val cleanedContent = remember(content) {
-        if (content.isNotEmpty()) ContentCleaner.cleanForDisplay(content) else ""
+        if (content.isNotEmpty()) ContentCleaner.cleanForStreaming(content) else ""
     }
     val cleanedReasoning = remember(reasoning) {
-        if (reasoning.isNotBlank()) ContentCleaner.cleanReasoning(reasoning) else ""
+        if (reasoning.isNotBlank()) ContentCleaner.cleanReasoningForStreaming(reasoning) else ""
     }
 
     // State for collapsible sections - reasoning collapsed by default to focus on response
