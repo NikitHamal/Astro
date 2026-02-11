@@ -27,7 +27,8 @@ import javax.inject.Singleton
  */
 @Singleton
 class AiProviderRegistry @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val apiKeyStore: ProviderApiKeyStore
 ) {
 
     companion object {
@@ -83,6 +84,9 @@ class AiProviderRegistry @Inject constructor(
         registerProvider(YqcloudProvider())
         registerProvider(WeWordleProvider())
 
+        // Bring-your-own-key provider: NVIDIA NIM/OpenAI-compatible API
+        registerProvider(NvidiaProvider(apiKeyStore))
+
         // Load saved configurations
         loadConfigurations()
     }
@@ -98,6 +102,25 @@ class AiProviderRegistry @Inject constructor(
      * Get a provider by ID
      */
     fun getProvider(providerId: String): AiProvider? = providers[providerId]
+
+    /**
+     * Get saved API key for a provider, if any.
+     */
+    fun getProviderApiKey(providerId: String): String? = apiKeyStore.getApiKey(providerId)
+
+    /**
+     * Save or clear API key for a provider and refresh available models.
+     */
+    suspend fun setProviderApiKey(providerId: String, apiKey: String?) {
+        withContext(Dispatchers.IO) {
+            if (apiKey.isNullOrBlank()) {
+                apiKeyStore.clearApiKey(providerId)
+            } else {
+                apiKeyStore.setApiKey(providerId, apiKey.trim())
+            }
+        }
+        initialize()
+    }
 
     /**
      * Get all registered providers
@@ -136,7 +159,7 @@ class AiProviderRegistry @Inject constructor(
 
                 // Apply configurations
                 val configuredModels = allModelsFromProviders.map { model ->
-                    val config = modelConfigs[model.id]
+                    val config = findConfigForModel(model.providerId, model.id)
                     if (config != null) {
                         model.copy(
                             enabled = config.enabled,
@@ -184,10 +207,11 @@ class AiProviderRegistry @Inject constructor(
     /**
      * Enable or disable a model
      */
-    suspend fun setModelEnabled(modelId: String, enabled: Boolean) {
+    suspend fun setModelEnabled(providerId: String, modelId: String, enabled: Boolean) {
         mutex.withLock {
-            val config = modelConfigs.getOrPut(modelId) { ModelConfig(modelId) }
-            modelConfigs[modelId] = config.copy(enabled = enabled)
+            val key = configKey(providerId, modelId)
+            val config = modelConfigs.getOrPut(key) { ModelConfig(modelId = modelId, providerId = providerId) }
+            modelConfigs[key] = config.copy(enabled = enabled)
             saveConfigurations()
             updateModelStates()
         }
@@ -198,8 +222,22 @@ class AiProviderRegistry @Inject constructor(
      */
     suspend fun setModelAlias(modelId: String, aliasName: String?) {
         mutex.withLock {
-            val config = modelConfigs.getOrPut(modelId) { ModelConfig(modelId) }
-            modelConfigs[modelId] = config.copy(aliasName = aliasName)
+            // Alias updates are applied to all matching model IDs across providers for now.
+            // UI currently does not expose per-provider alias editing.
+            val targetModels = _allModels.value.filter { it.id == modelId }
+            if (targetModels.isEmpty()) {
+                val key = configKey("*", modelId)
+                val config = modelConfigs.getOrPut(key) { ModelConfig(modelId = modelId, providerId = "*") }
+                modelConfigs[key] = config.copy(aliasName = aliasName)
+            } else {
+                targetModels.forEach { model ->
+                    val key = configKey(model.providerId, model.id)
+                    val config = modelConfigs.getOrPut(key) {
+                        ModelConfig(modelId = model.id, providerId = model.providerId)
+                    }
+                    modelConfigs[key] = config.copy(aliasName = aliasName)
+                }
+            }
             saveConfigurations()
             updateModelStates()
         }
@@ -220,7 +258,11 @@ class AiProviderRegistry @Inject constructor(
             }
 
             customModels.add(finalModel)
-            modelConfigs[finalModel.id] = ModelConfig(finalModel.id, enabled = true)
+            modelConfigs[configKey(finalModel.providerId, finalModel.id)] = ModelConfig(
+                modelId = finalModel.id,
+                providerId = finalModel.providerId,
+                enabled = true
+            )
             saveConfigurations()
             updateModelStates()
         }
@@ -232,7 +274,10 @@ class AiProviderRegistry @Inject constructor(
     suspend fun removeCustomModel(modelId: String) {
         mutex.withLock {
             customModels.removeAll { it.id == modelId }
-            modelConfigs.remove(modelId)
+            modelConfigs.keys
+                .filter { key -> key.endsWith("::$modelId") || key == modelId }
+                .toList()
+                .forEach { key -> modelConfigs.remove(key) }
             saveConfigurations()
             updateModelStates()
         }
@@ -279,8 +324,11 @@ class AiProviderRegistry @Inject constructor(
             }
 
             modelsToEnable.forEach { model ->
-                val config = modelConfigs.getOrPut(model.id) { ModelConfig(model.id) }
-                modelConfigs[model.id] = config.copy(enabled = true)
+                val key = configKey(model.providerId, model.id)
+                val config = modelConfigs.getOrPut(key) {
+                    ModelConfig(modelId = model.id, providerId = model.providerId)
+                }
+                modelConfigs[key] = config.copy(enabled = true)
             }
 
             saveConfigurations()
@@ -301,8 +349,11 @@ class AiProviderRegistry @Inject constructor(
             }
 
             modelsToDisable.forEach { model ->
-                val config = modelConfigs.getOrPut(model.id) { ModelConfig(model.id) }
-                modelConfigs[model.id] = config.copy(enabled = false)
+                val key = configKey(model.providerId, model.id)
+                val config = modelConfigs.getOrPut(key) {
+                    ModelConfig(modelId = model.id, providerId = model.providerId)
+                }
+                modelConfigs[key] = config.copy(enabled = false)
             }
 
             saveConfigurations()
@@ -352,7 +403,7 @@ class AiProviderRegistry @Inject constructor(
 
         // Apply configurations
         val configuredModels = allModelsFromProviders.map { model ->
-            val config = modelConfigs[model.id]
+            val config = findConfigForModel(model.providerId, model.id)
             if (config != null) {
                 model.copy(
                     enabled = config.enabled,
@@ -375,12 +426,21 @@ class AiProviderRegistry @Inject constructor(
                 val jsonArray = JSONArray(configsJson)
                 for (i in 0 until jsonArray.length()) {
                     val obj = jsonArray.getJSONObject(i)
+                    val modelId = obj.getString("modelId")
+                    val providerId = obj.optString("providerId", "")
                     val config = ModelConfig(
-                        modelId = obj.getString("modelId"),
+                        modelId = modelId,
+                        providerId = providerId,
                         enabled = obj.optBoolean("enabled", true),
                         aliasName = obj.optString("aliasName", null).takeIf { it.isNotEmpty() }
                     )
-                    modelConfigs[config.modelId] = config
+                    val key = if (providerId.isNotBlank()) {
+                        configKey(providerId, modelId)
+                    } else {
+                        // Backward compatibility for older saved config format
+                        modelId
+                    }
+                    modelConfigs[key] = config
                 }
             }
 
@@ -420,6 +480,9 @@ class AiProviderRegistry @Inject constructor(
             for ((_, config) in modelConfigs) {
                 configsArray.put(JSONObject().apply {
                     put("modelId", config.modelId)
+                    if (config.providerId.isNotBlank()) {
+                        put("providerId", config.providerId)
+                    }
                     put("enabled", config.enabled)
                     config.aliasName?.let { put("aliasName", it) }
                 })
@@ -448,6 +511,15 @@ class AiProviderRegistry @Inject constructor(
             // Log error
         }
     }
+
+    private fun configKey(providerId: String, modelId: String): String {
+        return "$providerId::$modelId"
+    }
+
+    private fun findConfigForModel(providerId: String, modelId: String): ModelConfig? {
+        return modelConfigs[configKey(providerId, modelId)]
+            ?: modelConfigs[modelId] // legacy fallback
+    }
 }
 
 /**
@@ -455,6 +527,7 @@ class AiProviderRegistry @Inject constructor(
  */
 data class ModelConfig(
     val modelId: String,
+    val providerId: String = "",
     val enabled: Boolean = true,
     val aliasName: String? = null
 )

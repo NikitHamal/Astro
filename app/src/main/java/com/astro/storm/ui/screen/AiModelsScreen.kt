@@ -59,6 +59,8 @@ fun AiModelsScreen(
 
     var isRefreshing by remember { mutableStateOf(false) }
     var selectedProvider by remember { mutableStateOf<String?>(null) }
+    var nvidiaApiKeyInput by remember { mutableStateOf(providerRegistry.getProviderApiKey("nvidia").orEmpty()) }
+    var isSavingNvidiaKey by remember { mutableStateOf(false) }
 
     // Group models by provider
     val modelsByProvider = allModels.groupBy { it.providerId }
@@ -135,6 +137,31 @@ fun AiModelsScreen(
                 InfoCard()
             }
 
+            // NVIDIA API key settings
+            item {
+                ProviderApiKeySection(
+                    providerName = "NVIDIA NIM",
+                    apiKey = nvidiaApiKeyInput,
+                    onApiKeyChange = { nvidiaApiKeyInput = it },
+                    isSaving = isSavingNvidiaKey,
+                    onSave = {
+                        scope.launch {
+                            isSavingNvidiaKey = true
+                            providerRegistry.setProviderApiKey("nvidia", nvidiaApiKeyInput)
+                            isSavingNvidiaKey = false
+                        }
+                    },
+                    onClear = {
+                        scope.launch {
+                            isSavingNvidiaKey = true
+                            nvidiaApiKeyInput = ""
+                            providerRegistry.setProviderApiKey("nvidia", null)
+                            isSavingNvidiaKey = false
+                        }
+                    }
+                )
+            }
+
             // Default model selector
             if (enabledModels.isNotEmpty()) {
                 item {
@@ -159,7 +186,7 @@ fun AiModelsScreen(
                         },
                         onToggleModel = { model, enabled ->
                             scope.launch {
-                                providerRegistry.setModelEnabled(model.id, enabled)
+                                providerRegistry.setModelEnabled(model.providerId, model.id, enabled)
                             }
                         },
                         onEnableAll = {
@@ -188,6 +215,99 @@ fun AiModelsScreen(
                             }
                         }
                     )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ProviderApiKeySection(
+    providerName: String,
+    apiKey: String,
+    onApiKeyChange: (String) -> Unit,
+    isSaving: Boolean,
+    onSave: () -> Unit,
+    onClear: () -> Unit
+) {
+    val colors = AppTheme.current
+    var showKey by remember { mutableStateOf(false) }
+
+    Surface(
+        color = colors.CardBackground,
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Lock,
+                    contentDescription = null,
+                    tint = colors.AccentPrimary
+                )
+                Text(
+                    text = "$providerName API Key",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.TextPrimary
+                )
+            }
+
+            Text(
+                text = "Paste your NVIDIA key from build.nvidia.com to enable NVIDIA-hosted free models.",
+                style = MaterialTheme.typography.bodySmall,
+                color = colors.TextMuted
+            )
+
+            OutlinedTextField(
+                value = apiKey,
+                onValueChange = onApiKeyChange,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("nvapi-...") },
+                label = { Text("NVIDIA API Key") },
+                visualTransformation = if (showKey) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { showKey = !showKey }) {
+                        Icon(
+                            imageVector = if (showKey) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
+                            contentDescription = if (showKey) "Hide key" else "Show key"
+                        )
+                    }
+                }
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(
+                    onClick = onSave,
+                    enabled = !isSaving,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    if (isSaving) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(14.dp),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text("Save Key")
+                    }
+                }
+                OutlinedButton(
+                    onClick = onClear,
+                    enabled = !isSaving,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Clear Key")
                 }
             }
         }
@@ -657,6 +777,11 @@ private fun getProviderInfo(providerId: String): ProviderInfo {
             displayName = stringResource(StringKeyDosha.AI_PROVIDER_DEEPINFRA),
             icon = Icons.Outlined.Speed,
             color = androidx.compose.ui.graphics.Color(0xFF7C3AED)
+        )
+        "nvidia" -> ProviderInfo(
+            displayName = "NVIDIA NIM",
+            icon = Icons.Outlined.Speed,
+            color = androidx.compose.ui.graphics.Color(0xFF76B900)
         )
         "qwen" -> ProviderInfo(
             displayName = stringResource(StringKeyDosha.AI_PROVIDER_QWEN),
