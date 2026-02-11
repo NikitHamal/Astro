@@ -20,7 +20,8 @@ data class DeepPredictions(
     val opportunityWindows: List<OpportunityWindow>,
     val remedialMeasures: RemedialProfile,
     val overallPredictionSummary: LocalizedParagraph,
-    val predictionScore: Double
+    val predictionScore: Double,
+    val triplePillarAnalysis: TriplePillarAnalysis? = null
 )
 
 data class DashaDeepAnalysis(

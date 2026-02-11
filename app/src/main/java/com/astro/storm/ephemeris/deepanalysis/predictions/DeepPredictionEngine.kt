@@ -16,7 +16,8 @@ import javax.inject.Singleton
  */
 @Singleton
 class DeepPredictionEngine @Inject constructor(
-    private val templateSelector: TemplateSelector
+    private val templateSelector: TemplateSelector,
+    private val triplePillarSynthesisEngine: TriplePillarSynthesisEngine
 ) {
     
     fun generatePredictions(chart: VedicChart, context: AnalysisContext): DeepPredictions {
@@ -33,7 +34,8 @@ class DeepPredictionEngine @Inject constructor(
             opportunityWindows = identifyOpportunityWindows(context),
             remedialMeasures = generateRemedialMeasures(context),
             overallPredictionSummary = generateOverallSummary(context),
-            predictionScore = calculatePredictionScore(context)
+            predictionScore = calculatePredictionScore(context),
+            triplePillarAnalysis = triplePillarSynthesisEngine.calculateSynthesis(context, LocalDateTime.now())
         )
     }
     
