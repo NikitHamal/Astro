@@ -39,10 +39,10 @@ import com.astro.storm.ui.theme.LocalAppThemeColors
  * Onboarding pages enumeration
  */
 private enum class OnboardingPage {
-    WELCOME,
-    FEATURES,
     LANGUAGE,
     THEME,
+    WELCOME,
+    FEATURES,
     READY
 }
 
@@ -75,7 +75,7 @@ fun OnboardingScreen(
     // Determine if we're on a small screen
     val isSmallScreen = screenHeight < 700.dp
 
-    var currentPage by remember { mutableStateOf(OnboardingPage.WELCOME) }
+    var currentPage by remember { mutableStateOf(OnboardingPage.LANGUAGE) }
 
     // Current selections
     val currentThemeMode by themeManager.themeMode.collectAsState()
