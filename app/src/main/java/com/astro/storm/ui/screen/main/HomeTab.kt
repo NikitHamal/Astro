@@ -597,7 +597,9 @@ private fun TodaySnapshotSection(
         )
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min),
             horizontalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
         ) {
             // Panchanga Card
@@ -605,7 +607,9 @@ private fun TodaySnapshotSection(
                 title = stringResource(StringKey.FEATURE_PANCHANGA),
                 icon = Icons.Outlined.CalendarMonth,
                 accentColor = colors.AccentGold,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
                 onClick = onPanchangaClick
             ) {
                 Text(
@@ -630,7 +634,9 @@ private fun TodaySnapshotSection(
                 title = stringResource(StringKey.FEATURE_TRANSITS),
                 icon = Icons.Outlined.Sync,
                 accentColor = colors.AccentTeal,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
                 onClick = onTransitsClick
             ) {
                 Text(
