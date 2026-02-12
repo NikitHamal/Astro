@@ -57,7 +57,7 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.CinzelDecorativeFamily
-import com.astro.storm.ui.theme.CormorantGaramondFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
 import com.astro.storm.ui.theme.DarkAppThemeColors
 import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.theme.VedicGold
@@ -445,7 +445,7 @@ private fun HeroDashaCard(
                 } else {
                     Text(
                         text = stringResource(StringKey.TAP_TO_VIEW_DASHAS),
-                        fontFamily = CormorantGaramondFamily,
+                        fontFamily = PoppinsFontFamily,
                         fontWeight = FontWeight.Normal,
                         fontSize = 16.sp,
                         color = colors.TextMuted
@@ -617,7 +617,7 @@ private fun TodaySnapshotSection(
             ) {
                 Text(
                     text = today.format(DateTimeFormatter.ofPattern("EEEE", Locale.ENGLISH)),
-                    fontFamily = CormorantGaramondFamily,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp,
                     color = colors.TextPrimary
@@ -642,7 +642,7 @@ private fun TodaySnapshotSection(
             ) {
                 Text(
                     text = stringResource(StringKey.VIEW_CURRENT_TRANSITS),
-                    fontFamily = CormorantGaramondFamily,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
                     color = colors.TextSecondary
@@ -931,7 +931,7 @@ private fun SectionHeader(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = subtitle,
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,
                 color = colors.TextSubtle
@@ -997,7 +997,7 @@ private fun EmptyHomeState(
 
             Text(
                 text = stringResource(StringKey.NO_PROFILE_MESSAGE),
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
                 color = colors.TextMuted,

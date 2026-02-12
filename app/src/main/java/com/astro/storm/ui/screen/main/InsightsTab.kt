@@ -54,7 +54,7 @@ import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ephemeris.HoroscopeCalculator
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.CinzelDecorativeFamily
-import com.astro.storm.ui.theme.CormorantGaramondFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
 import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.viewmodel.InsightsUiState
 import com.astro.storm.ui.viewmodel.InsightsViewModel
@@ -365,7 +365,7 @@ private fun PartialErrorBanner(
                 Text(
                     text = stringResource(StringKey.ERROR_CALCULATIONS_FAILED, localizedCount),
                     style = MaterialTheme.typography.bodySmall,
-                    fontFamily = CormorantGaramondFamily,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextMuted
                 )
             }
@@ -426,7 +426,7 @@ private fun HoroscopeUnavailableCard(
             Text(
                 text = stringResource(StringKey.ERROR_HOROSCOPE_UNAVAILABLE, displayPeriod),
                 style = MaterialTheme.typography.titleSmall,
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary,
                 textAlign = TextAlign.Center
@@ -437,7 +437,7 @@ private fun HoroscopeUnavailableCard(
             Text(
                 text = stringResource(StringKey.ERROR_EPHEMERIS_DATA),
                 style = MaterialTheme.typography.bodySmall,
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
                 lineHeight = 18.sp
@@ -511,7 +511,7 @@ private fun InsightsErrorState(
             Text(
                 text = stringResource(messageKey),
                 style = MaterialTheme.typography.bodyMedium,
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
                 lineHeight = 22.sp
@@ -814,7 +814,7 @@ private fun DailyHoroscopeHeader(
                         }
                         withStyle(
                             SpanStyle(
-                                fontFamily = CormorantGaramondFamily,
+                                fontFamily = PoppinsFontFamily,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Normal,
                                 color = AppTheme.TextSecondary
@@ -954,7 +954,7 @@ private fun EnergyCard(overallEnergy: Int) {
             Text(
                 text = energyDescription,
                 style = MaterialTheme.typography.bodySmall,
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted
             )
         }
@@ -1082,7 +1082,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = localizedAreaName,
-                        fontFamily = CormorantGaramondFamily,
+                        fontFamily = PoppinsFontFamily,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1101,7 +1101,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                 Column(modifier = Modifier.padding(top = 12.dp)) {
                     Text(
                         text = prediction.prediction,
-                        fontFamily = CormorantGaramondFamily,
+                        fontFamily = PoppinsFontFamily,
                         fontSize = 16.sp,
                         color = AppTheme.TextSecondary,
                         lineHeight = 24.sp
@@ -1131,7 +1131,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = prediction.advice,
-                            fontFamily = CormorantGaramondFamily,
+                            fontFamily = PoppinsFontFamily,
                             fontSize = 14.sp,
                             color = AppTheme.TextSecondary,
                             lineHeight = 20.sp
@@ -1270,7 +1270,7 @@ private fun LuckyElement(icon: ImageVector, label: String, value: String) {
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = value,
-            fontFamily = CormorantGaramondFamily,
+            fontFamily = PoppinsFontFamily,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
@@ -1361,7 +1361,7 @@ private fun BulletItem(
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = stringResource(textKey),
-            fontFamily = CormorantGaramondFamily,
+            fontFamily = PoppinsFontFamily,
             fontSize = 16.sp,
             color = AppTheme.TextSecondary,
             lineHeight = 24.sp
@@ -1407,7 +1407,7 @@ private fun AffirmationCard(affirmationKey: StringKey) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(affirmationKey),
-                    fontFamily = CormorantGaramondFamily,
+                    fontFamily = PoppinsFontFamily,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
                     fontStyle = FontStyle.Italic,
@@ -1470,7 +1470,7 @@ private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = weekly.weeklyOverview,
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 fontSize = 16.sp,
                 color = AppTheme.TextSecondary,
                 lineHeight = 24.sp
@@ -1630,14 +1630,14 @@ private fun KeyDateCard(keyDate: HoroscopeCalculator.KeyDate) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = keyDate.event,
-                    fontFamily = CormorantGaramondFamily,
+                    fontFamily = PoppinsFontFamily,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = keyDate.significance,
-                    fontFamily = CormorantGaramondFamily,
+                    fontFamily = PoppinsFontFamily,
                     fontSize = 14.sp,
                     color = AppTheme.TextMuted,
                     lineHeight = 18.sp
@@ -1734,7 +1734,7 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
 
                 Text(
                     text = localizedAreaName,
-                    fontFamily = CormorantGaramondFamily,
+                    fontFamily = PoppinsFontFamily,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
@@ -1751,7 +1751,7 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
             ) {
                 Text(
                     text = prediction,
-                    fontFamily = CormorantGaramondFamily,
+                    fontFamily = PoppinsFontFamily,
                     fontSize = 16.sp,
                     color = AppTheme.TextSecondary,
                     lineHeight = 24.sp,
@@ -1806,7 +1806,7 @@ private fun WeeklyAdviceCard(advice: String) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = advice,
-                    fontFamily = CormorantGaramondFamily,
+                    fontFamily = PoppinsFontFamily,
                     fontSize = 16.sp,
                     color = AppTheme.TextPrimary,
                     lineHeight = 24.sp
@@ -1965,7 +1965,7 @@ private fun PratyantardashaRow(pratyantardasha: DashaCalculator.Pratyantardasha)
         Spacer(modifier = Modifier.width(6.dp))
         Text(
             text = pratyantardasha.planet.getLocalizedName(language),
-            fontFamily = CormorantGaramondFamily,
+            fontFamily = PoppinsFontFamily,
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
             color = planetColor
@@ -2027,7 +2027,7 @@ private fun DashaPeriodRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = stringResource(StringKey.DASHA_PERIOD_NAME, label, planet.getLocalizedName(language)),
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 fontSize = if (isPrimary) 16.sp else 15.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -2150,7 +2150,7 @@ private fun DashaTimelinePreview(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKey.DASHA_LAST_IN_MAHADASHA),
-                        fontFamily = CormorantGaramondFamily,
+                        fontFamily = PoppinsFontFamily,
                         fontSize = 14.sp,
                         color = AppTheme.TextMuted
                     )
@@ -2234,7 +2234,7 @@ private fun UpcomingPeriodItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = stringResource(StringKey.DASHA_COMBINED_NAME, mahadashaPlanet.getLocalizedName(language), planet.getLocalizedName(language)),
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -2337,7 +2337,7 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
 
             Text(
                 text = influence.planet.getLocalizedName(language),
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
@@ -2347,7 +2347,7 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
 
             Text(
                 text = influence.influence,
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 fontSize = 14.sp,
                 color = AppTheme.TextMuted,
                 maxLines = 2,
@@ -2433,7 +2433,7 @@ private fun EmptyInsightsState(
 
             Text(
                 text = stringResource(StringKey.SETTINGS_TAP_TO_SELECT),
-                fontFamily = CormorantGaramondFamily,
+                fontFamily = PoppinsFontFamily,
                 fontSize = 16.sp,
                 color = colors.TextMuted,
                 textAlign = TextAlign.Center,

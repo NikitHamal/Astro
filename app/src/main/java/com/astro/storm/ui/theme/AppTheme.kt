@@ -186,8 +186,8 @@ val DarkAppThemeColors = AppThemeColors(
 val LightAppThemeColors = AppThemeColors(
     // Primary Background Colors
     ScreenBackground = Vellum,
-    CardBackground = PressedPaper,
-    CardBackgroundElevated = Color(0xFFEDE9E0),
+    CardBackground = Color(0xFFF6F3EC),
+    CardBackgroundElevated = Color(0xFFFAF8F3),
     SurfaceColor = Vellum,
 
     // Accent Colors
@@ -199,16 +199,16 @@ val LightAppThemeColors = AppThemeColors(
     // Text Colors
     TextPrimary = CosmicIndigo,
     TextSecondary = CosmicIndigoLight,
-    TextMuted = SlateMuted,
-    TextSubtle = SlateLight,
+    TextMuted = SlateDark,
+    TextSubtle = SlateMuted,
 
     // Border and Divider Colors
-    BorderColor = BorderSubtle,
-    DividerColor = PaperDark,
+    BorderColor = BorderStrong,
+    DividerColor = BorderSubtle,
 
     // Interactive Element Colors
-    ChipBackground = PaperHover,
-    ChipBackgroundSelected = PaperDark,
+    ChipBackground = Color(0xFFEDEAE2),
+    ChipBackgroundSelected = Color(0xFFD7DEEE),
     ButtonBackground = CosmicIndigo,
     ButtonText = Vellum,
 
@@ -236,8 +236,8 @@ val LightAppThemeColors = AppThemeColors(
     // Navigation Colors
     NavBarBackground = Vellum,
     NavItemSelected = CosmicIndigo,
-    NavItemUnselected = SlateMuted,
-    NavIndicator = VedicGoldSubtle,
+    NavItemUnselected = SlateDark,
+    NavIndicator = Color(0x33384A74),
 
     // Bottom Sheet Colors
     BottomSheetBackground = Vellum,

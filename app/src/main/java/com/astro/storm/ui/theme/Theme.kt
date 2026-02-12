@@ -72,19 +72,19 @@ private val LightColorScheme = lightColorScheme(
     // Primary colors - Cosmic Indigo as ink on parchment
     primary = CosmicIndigo,
     onPrimary = Vellum,
-    primaryContainer = PressedPaper,
+    primaryContainer = Color(0xFFE6EAF3),
     onPrimaryContainer = CosmicIndigo,
 
     // Secondary colors - Mars Red for accents/alerts
     secondary = MarsRed,
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFF5E0E0),
+    secondaryContainer = Color(0xFFF3DEDE),
     onSecondaryContainer = MarsRedDark,
 
     // Tertiary colors - Vedic Gold
     tertiary = VedicGold,
     onTertiary = Color.White,
-    tertiaryContainer = Color(0xFFFFF3DC),
+    tertiaryContainer = Color(0xFFF6EACF),
     onTertiaryContainer = VedicGoldDark,
 
     // Background & Surface - Vellum parchment
@@ -93,11 +93,11 @@ private val LightColorScheme = lightColorScheme(
     surface = Vellum,
     onSurface = CosmicIndigo,
     surfaceVariant = PressedPaper,
-    onSurfaceVariant = CosmicIndigoLight,
+    onSurfaceVariant = CosmicIndigo,
 
     // Outline - Subtle borders
-    outline = BorderSubtle,
-    outlineVariant = PaperDark,
+    outline = BorderStrong,
+    outlineVariant = BorderSubtle,
 
     // Inverse
     inverseSurface = CosmicIndigo,

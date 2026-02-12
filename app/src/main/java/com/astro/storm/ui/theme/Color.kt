@@ -31,13 +31,13 @@ val MarsRedDark = Color(0xFF943E3E)
 val MarsRedSubtle = Color(0x0DB85C5C) // 5% opacity
 
 // Muted Text - Slate
-val SlateMuted = Color(0xFF8C8F96)
-val SlateLight = Color(0xFFA8ABB2)
-val SlateDark = Color(0xFF6E7178)
+val SlateMuted = Color(0xFF747985)
+val SlateLight = Color(0xFF8E94A0)
+val SlateDark = Color(0xFF5A6070)
 
 // Border Color
-val BorderSubtle = Color(0xFFD4D0C5)
-val BorderStrong = Color(0xFFB8B4A9)
+val BorderSubtle = Color(0xFFC8C4BA)
+val BorderStrong = Color(0xFFA9A598)
 
 // ============================================================================
 // DARK MODE PALETTE - Deep Cosmic Night
