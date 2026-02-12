@@ -101,25 +101,25 @@ data class AppThemeColors(
  */
 val DarkAppThemeColors = AppThemeColors(
     // Primary Background Colors
-    ScreenBackground = Color(0xFF1C1410),
-    CardBackground = Color(0xFF2A201A),
-    CardBackgroundElevated = Color(0xFF352A22),
-    SurfaceColor = Color(0xFF241C16),
+    ScreenBackground = Color(0xFF121828),
+    CardBackground = Color(0xFF1A233A),
+    CardBackgroundElevated = Color(0xFF222D47),
+    SurfaceColor = Color(0xFF1A233A),
 
     // Accent Colors
-    AccentPrimary = Color(0xFFB8A99A),
-    AccentSecondary = Color(0xFF8B7355),
-    AccentGold = Color(0xFFD4AF37),
+    AccentPrimary = Color(0xFFF2EFE9),
+    AccentSecondary = Color(0xFF8C8F96),
+    AccentGold = Color(0xFFC5A059),
     AccentTeal = Color(0xFF4DB6AC),
 
     // Text Colors (WCAG AA compliant on ScreenBackground #1C1410)
-    TextPrimary = Color(0xFFE8DFD6),
+    TextPrimary = Color(0xFFF2EFE9),
     TextSecondary = Color(0xFFB8A99A),
     TextMuted = Color(0xFF9A8A7A),      // Improved from 0xFF8A7A6A for better contrast (4.5:1+)
     TextSubtle = Color(0xFF8A7A6A),     // Improved from 0xFF6A5A4A for better contrast (3:1+)
 
     // Border and Divider Colors
-    BorderColor = Color(0xFF5A4F48),    // Improved from 0xFF4A3F38 for better visibility
+    BorderColor = Color(0xFF3A465F),
     DividerColor = Color(0xFF4A403A),   // Improved from 0xFF3A302A for better visibility
 
     // Interactive Element Colors
@@ -186,26 +186,26 @@ val DarkAppThemeColors = AppThemeColors(
  */
 val LightAppThemeColors = AppThemeColors(
     // Primary Background Colors
-    ScreenBackground = Color(0xFFF5F2ED),
-    CardBackground = Color(0xFFFFFFFF),
-    CardBackgroundElevated = Color(0xFFFAF8F5),
-    SurfaceColor = Color(0xFFFEFCF9),
+    ScreenBackground = Color(0xFFF2EFE9),
+    CardBackground = Color(0xFFEBE7DE),
+    CardBackgroundElevated = Color(0xFFEBE7DE),
+    SurfaceColor = Color(0xFFF2EFE9),
 
     // Accent Colors
-    AccentPrimary = Color(0xFF6B5D4D),
-    AccentSecondary = Color(0xFF8B7355),
-    AccentGold = Color(0xFFB8860B),
+    AccentPrimary = Color(0xFF1A233A),
+    AccentSecondary = Color(0xFF8C8F96),
+    AccentGold = Color(0xFFC5A059),
     AccentTeal = Color(0xFF008B8B),
 
     // Text Colors
-    TextPrimary = Color(0xFF2C2418),
-    TextSecondary = Color(0xFF5A4D3D),
-    TextMuted = Color(0xFF7A6D5D),
-    TextSubtle = Color(0xFFA99D8D),
+    TextPrimary = Color(0xFF1A233A),
+    TextSecondary = Color(0xFF2A344B),
+    TextMuted = Color(0xFF8C8F96),
+    TextSubtle = Color(0xFF9CA1AA),
 
     // Border and Divider Colors
-    BorderColor = Color(0xFFD4C8B8),
-    DividerColor = Color(0xFFE8DFD6),
+    BorderColor = Color(0xFFD4D0C5),
+    DividerColor = Color(0xFFDCD7CB),
 
     // Interactive Element Colors
     ChipBackground = Color(0xFFEDE7DF),
@@ -235,10 +235,10 @@ val LightAppThemeColors = AppThemeColors(
     PlanetKetu = Color(0xFF8B0000),
 
     // Navigation Colors
-    NavBarBackground = Color(0xFFFFFFFF),
-    NavItemSelected = Color(0xFF6B5D4D),
-    NavItemUnselected = Color(0xFFA99D8D),
-    NavIndicator = Color(0xFFEDE7DF),
+    NavBarBackground = Color(0xFFF2EFE9),
+    NavItemSelected = Color(0xFF1A233A),
+    NavItemUnselected = Color(0xFF8C8F96),
+    NavIndicator = Color(0xFFEBE7DE),
 
     // Bottom Sheet Colors
     BottomSheetBackground = Color(0xFFFFFFFF),

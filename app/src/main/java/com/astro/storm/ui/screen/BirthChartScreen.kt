@@ -83,7 +83,7 @@ fun BirthChartScreen(
 ) {
     if (chart == null) {
         EmptyChartScreen(
-            title = stringResource(StringKey.FEATURE_BIRTH_CHART),
+            title = "NATAL ARTIFACT",
             message = stringResource(StringKey.NO_PROFILE_MESSAGE_LONG),
             onBack = onBack
         )
@@ -183,7 +183,7 @@ private fun BirthChartTopBar(
     onBack: () -> Unit
 ) {
     ScreenTopBar(
-                title = stringResource(StringKey.FEATURE_BIRTH_CHART),
+                title = "NATAL ARTIFACT",
                 subtitle = chartName,
                 onBack = onBack
             )

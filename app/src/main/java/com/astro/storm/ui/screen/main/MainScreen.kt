@@ -217,7 +217,7 @@ fun MainScreen(
             ) { tab ->
                 when (tab) {
                     MainTab.HOME -> {
-                        HomeTab(
+                        NeoVedicHomeTab(
                             chart = currentChart,
                             onAddNewChart = onAddNewChart,
                             onFeatureClick = { feature ->
@@ -287,7 +287,7 @@ fun MainScreen(
                         )
                     }
                     MainTab.INSIGHTS -> {
-                        InsightsTab(
+                        NeoVedicInsightsTab(
                             chart = currentChart,
                             onCreateChart = onAddNewChart
                         )

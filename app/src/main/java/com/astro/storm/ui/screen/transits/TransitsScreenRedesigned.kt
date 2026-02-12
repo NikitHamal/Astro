@@ -238,8 +238,8 @@ private fun TransitsTopBar(
         shadowElevation = 2.dp
     ) {
         ScreenTopBar(
-                title = stringResource(StringKey.FEATURE_TRANSITS),
-                subtitle = stringResource(StringKey.TRANSIT_CURRENT_MOVEMENTS, chartName),
+                title = "Ephemeris",
+                subtitle = "Live celestial movements",
                 onBack = onBack
             )
     }
