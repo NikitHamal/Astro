@@ -30,8 +30,8 @@ if [[ -n "$SHAPE_MATCHES" ]]; then
 fi
 
 TOTAL_SCREENS=$(find "$SCREEN_DIR" -type f -name "*.kt" | wc -l | tr -d ' ')
-TOKEN_SCREENS=$(grep -RIl --include="*.kt" "NeoVedicTokens" "$SCREEN_DIR" | wc -l | tr -d ' ')
-SHARED_PRIMITIVE_SCREENS=$(grep -RIlE --include="*.kt" "ModernCard|ExpandableCard|NeoVedicCard|NeoVedicSectionHeader|NeoVedicListItem|NeoVedicStatusChip|NeoVedicMetricRow|NeoVedicExpandableCard|com\.astro\.storm\.ui\.components\.SectionHeader" "$SCREEN_DIR" | wc -l | tr -d ' ')
+TOKEN_SCREENS=$( (grep -RIl --include="*.kt" "NeoVedicTokens" "$SCREEN_DIR" || true) | wc -l | tr -d ' ')
+SHARED_PRIMITIVE_SCREENS=$( (grep -RIlE --include="*.kt" "ModernCard|ExpandableCard|NeoVedicCard|NeoVedicSectionHeader|NeoVedicListItem|NeoVedicStatusChip|NeoVedicMetricRow|NeoVedicExpandableCard|com\.astro\.storm\.ui\.components\.SectionHeader" "$SCREEN_DIR" || true) | wc -l | tr -d ' ')
 
 echo "UI consistency report:"
 echo "  total_screens=$TOTAL_SCREENS"
@@ -40,4 +40,3 @@ echo "  screens_using_shared_primitives=$SHARED_PRIMITIVE_SCREENS"
 echo "  screens_with_hardcoded_hex_colors=0"
 echo "  runtime_dark_palette_usages=0"
 echo "  non-token-shape-warnings=0"
-
