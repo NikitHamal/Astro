@@ -56,8 +56,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.ScreenTopBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -242,46 +242,15 @@ private fun CharaDashaTopBar(
         color = AppTheme.ScreenBackground,
         shadowElevation = 2.dp
     ) {
-        TopAppBar(
-            title = {
-                Column(modifier = Modifier.fillMaxWidth(0.85f)) {
-                    Text(
-                        text = stringResource(StringKeyDosha.CHARA_DASHA_TITLE),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = if (currentSign != null) {
+        ScreenTopBar(
+                title = stringResource(StringKeyDosha.CHARA_DASHA_TITLE),
+                subtitle = if (currentSign != null) {
                             "${currentSign.getLocalizedName(language)} • $chartName"
                         } else {
                             chartName
                         },
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextMuted,
-                        fontSize = 12.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKey.BTN_BACK),
-                        tint = AppTheme.TextPrimary
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = AppTheme.ScreenBackground,
-                scrolledContainerColor = AppTheme.ScreenBackground
+                onBack = onBack
             )
-        )
     }
 }
 

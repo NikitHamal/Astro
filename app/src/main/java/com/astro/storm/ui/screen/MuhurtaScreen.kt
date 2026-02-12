@@ -88,8 +88,8 @@ import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.ScreenTopBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -222,33 +222,12 @@ fun MuhurtaScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(StringKeyMatch.MUHURTA_TITLE),
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
+            ScreenTopBar(
+                title = stringResource(StringKeyMatch.MUHURTA_TITLE),
+                onBack = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             onBack()
                         }
-                    ) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = stringResource(StringKeyMatch.NAV_BACK),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground
-                )
             )
         },
         containerColor = AppTheme.ScreenBackground

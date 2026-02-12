@@ -13,6 +13,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,35 +76,10 @@ fun AiModelsScreen(
     Scaffold(
         containerColor = colors.ScreenBackground,
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = stringResource(StringKeyDosha.AI_MODELS_TITLE),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = colors.TextPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            text = stringResource(StringKeyDosha.AI_MODELS_ENABLED_COUNT, enabledModels.size),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = colors.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyDosha.AI_MODELS_BACK),
-                            tint = colors.TextPrimary
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(StringKeyDosha.AI_MODELS_TITLE),
+                subtitle = stringResource(StringKeyDosha.AI_MODELS_ENABLED_COUNT, enabledModels.size),
+                onBack = onBack,
                 actions = {
                     IconButton(
                         onClick = {
@@ -129,10 +105,7 @@ fun AiModelsScreen(
                             )
                         }
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = colors.ScreenBackground
-                )
+                }
             )
         }
     ) { paddingValues ->

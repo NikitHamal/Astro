@@ -15,6 +15,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -116,35 +117,10 @@ fun ShodashvargaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            stringResource(StringKeyDosha.SHODASHVARGA_TITLE),
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary,
-                            fontSize = 18.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            chart.birthData.name,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(StringKeyDosha.SHODASHVARGA_TITLE),
+                subtitle = chart.birthData.name,
+                onBack = onBack,
                 actions = {
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
@@ -153,10 +129,7 @@ fun ShodashvargaScreen(
                             tint = AppTheme.TextPrimary
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground
-                )
+                }
             )
         }
     ) { paddingValues ->

@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -107,33 +108,10 @@ fun DivisionalChartsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            stringResource(StringKeyDosha.DIVISIONAL_CHARTS_TITLE),
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            vargaTypes[selectedTab].getLocalizedDisplayName(language),
-                            fontSize = 12.sp,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(StringKeyDosha.DIVISIONAL_CHARTS_TITLE),
+                subtitle = vargaTypes[selectedTab].getLocalizedDisplayName(language),
+                onBack = onBack,
                 actions = {
                     IconButton(onClick = { showFullScreenChart = true }) {
                         Icon(
@@ -149,11 +127,7 @@ fun DivisionalChartsScreen(
                             tint = AppTheme.TextSecondary
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground,
-                    titleContentColor = AppTheme.TextPrimary
-                )
+                }
             )
         },
         containerColor = AppTheme.ScreenBackground

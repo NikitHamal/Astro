@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -74,35 +75,10 @@ fun KakshaTransitScreen(
     Scaffold(
         containerColor = colors.ScreenBackground,
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = stringResource(StringKeyAdvanced.KAKSHYA_TITLE),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = colors.TextPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            text = stringResource(StringKeyAdvanced.KAKSHYA_SUBTITLE),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = colors.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUICommon.BACK),
-                            tint = colors.TextPrimary
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(StringKeyAdvanced.KAKSHYA_TITLE),
+                subtitle = stringResource(StringKeyAdvanced.KAKSHYA_SUBTITLE),
+                onBack = onBack,
                 actions = {
                     IconButton(onClick = { chart?.let { viewModel.calculateKakshaTransits(it, language, true) } }) {
                         Icon(
@@ -111,10 +87,7 @@ fun KakshaTransitScreen(
                             tint = colors.TextPrimary
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = colors.ScreenBackground
-                )
+                }
             )
         }
     ) { paddingValues ->

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -100,28 +101,9 @@ fun PredictionsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        StringResources.get(StringKey.FEATURE_PREDICTIONS, language),
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = StringResources.get(StringKey.BTN_BACK, language),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground
-                )
+            ScreenTopBar(
+                title = StringResources.get(StringKey.FEATURE_PREDICTIONS, language),
+                onBack = onBack
             )
         },
         containerColor = AppTheme.ScreenBackground

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -156,44 +157,13 @@ fun MatchmakingScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            stringResource(StringKeyMatch.MATCH_TITLE),
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary,
-                            fontSize = 18.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        AnimatedVisibility(visible = matchingResult != null) {
-                            Text(
-                                stringResource(StringKeyMatch.MATCH_ASHTAKOOTA),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.TextMuted,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
+            ScreenTopBar(
+                title = stringResource(StringKeyMatch.MATCH_TITLE),
+                subtitle = stringResource(StringKeyMatch.MATCH_ASHTAKOOTA),
+                onBack = {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onBack()
-                    }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
-                            tint = AppTheme.TextPrimary
-                        )
                     }
-                },
-                actions = {},
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground
-                )
             )
         },
         snackbarHost = {

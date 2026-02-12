@@ -58,8 +58,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.ScreenTopBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -246,38 +246,10 @@ private fun KalachakraDashaTopBar(
         color = AppTheme.ScreenBackground,
         shadowElevation = 2.dp
     ) {
-        TopAppBar(
-            title = {
-                Column(modifier = Modifier.fillMaxWidth(0.85f)) {
-                    Text(
-                        text = stringResource(StringKeyDosha.KALACHAKRA_DASHA_TITLE),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    TopBarSubtitleContent(
-                        chartName = chartName,
-                        periodInfo = currentPeriodInfo
-                    )
-                }
-            },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKey.BTN_BACK),
-                        tint = AppTheme.TextPrimary
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = AppTheme.ScreenBackground,
-                scrolledContainerColor = AppTheme.ScreenBackground
+        ScreenTopBar(
+                title = stringResource(StringKeyDosha.KALACHAKRA_DASHA_TITLE),
+                onBack = onBack
             )
-        )
     }
 }
 
