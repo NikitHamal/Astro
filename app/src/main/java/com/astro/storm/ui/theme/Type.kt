@@ -4,11 +4,44 @@ import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.astro.storm.R
 
-// Poppins Font Family
+// ============================================================================
+// NEO-VEDIC TYPOGRAPHY SYSTEM
+// Three-tier hierarchy: Display / Serif / Tech
+// ============================================================================
+
+// Cinzel Decorative - Display/Headings Font
+// Used for: Screen titles, card headers, the "ASTROSTORM" logotype
+val CinzelDecorativeFamily = FontFamily(
+    Font(R.font.cinzel_decorative_regular, FontWeight.Normal),
+    Font(R.font.cinzel_decorative_bold, FontWeight.Bold)
+)
+
+// Cormorant Garamond - Serif Body Font
+// Used for: Body text, reading content, planet names, insight articles
+val CormorantGaramondFamily = FontFamily(
+    Font(R.font.cormorant_garamond_regular, FontWeight.Normal),
+    Font(R.font.cormorant_garamond_medium, FontWeight.Medium),
+    Font(R.font.cormorant_garamond_semibold, FontWeight.SemiBold),
+    Font(R.font.cormorant_garamond_bold, FontWeight.Bold),
+    Font(R.font.cormorant_garamond_italic, FontWeight.Normal, FontStyle.Italic)
+)
+
+// Space Grotesk - Tech/Data Font
+// Used for: Degrees, nakshatras, technical labels, navigation, timestamps
+val SpaceGroteskFamily = FontFamily(
+    Font(R.font.space_grotesk_light, FontWeight.Light),
+    Font(R.font.space_grotesk_regular, FontWeight.Normal),
+    Font(R.font.space_grotesk_medium, FontWeight.Medium),
+    Font(R.font.space_grotesk_semibold, FontWeight.SemiBold),
+    Font(R.font.space_grotesk_bold, FontWeight.Bold)
+)
+
+// Keep Poppins for backward compatibility in screens not yet fully revamped
 val PoppinsFontFamily = FontFamily(
     Font(R.font.poppins_light, FontWeight.Light),
     Font(R.font.poppins_regular, FontWeight.Normal),
@@ -17,120 +50,125 @@ val PoppinsFontFamily = FontFamily(
     Font(R.font.poppins_bold, FontWeight.Bold)
 )
 
-// Material 3 Typography with Poppins
+// ============================================================================
+// MATERIAL 3 TYPOGRAPHY - Neo-Vedic Configuration
+// Display/Headline: Cinzel Decorative (scripture-like headers)
+// Title/Body: Cormorant Garamond (elegant reading text)
+// Label: Space Grotesk (precision data/UI labels)
+// ============================================================================
 val Typography = Typography(
-    // Display styles - Large headers
+    // Display styles - Cinzel Decorative for dramatic headers
     displayLarge = TextStyle(
-        fontFamily = PoppinsFontFamily,
+        fontFamily = CinzelDecorativeFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 57.sp,
-        lineHeight = 64.sp,
-        letterSpacing = (-0.25).sp
+        fontSize = 40.sp,
+        lineHeight = 48.sp,
+        letterSpacing = (-0.5).sp
     ),
     displayMedium = TextStyle(
-        fontFamily = PoppinsFontFamily,
+        fontFamily = CinzelDecorativeFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 45.sp,
-        lineHeight = 52.sp,
-        letterSpacing = 0.sp
-    ),
-    displaySmall = TextStyle(
-        fontFamily = PoppinsFontFamily,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 36.sp,
-        lineHeight = 44.sp,
-        letterSpacing = 0.sp
-    ),
-
-    // Headline styles - Section headers
-    headlineLarge = TextStyle(
-        fontFamily = PoppinsFontFamily,
-        fontWeight = FontWeight.SemiBold,
         fontSize = 32.sp,
         lineHeight = 40.sp,
-        letterSpacing = 0.sp
+        letterSpacing = (-0.25).sp
     ),
-    headlineMedium = TextStyle(
-        fontFamily = PoppinsFontFamily,
-        fontWeight = FontWeight.SemiBold,
+    displaySmall = TextStyle(
+        fontFamily = CinzelDecorativeFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 28.sp,
         lineHeight = 36.sp,
         letterSpacing = 0.sp
     ),
-    headlineSmall = TextStyle(
-        fontFamily = PoppinsFontFamily,
-        fontWeight = FontWeight.SemiBold,
+
+    // Headline styles - Cinzel Decorative for section headers
+    headlineLarge = TextStyle(
+        fontFamily = CinzelDecorativeFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
         lineHeight = 32.sp,
         letterSpacing = 0.sp
     ),
+    headlineMedium = TextStyle(
+        fontFamily = CinzelDecorativeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = CinzelDecorativeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
+        lineHeight = 26.sp,
+        letterSpacing = 0.sp
+    ),
 
-    // Title styles - Card titles, list item titles
+    // Title styles - Cormorant Garamond for card/section titles
     titleLarge = TextStyle(
-        fontFamily = PoppinsFontFamily,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = CormorantGaramondFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
     titleMedium = TextStyle(
-        fontFamily = PoppinsFontFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
+        fontFamily = CormorantGaramondFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.15.sp
     ),
     titleSmall = TextStyle(
-        fontFamily = PoppinsFontFamily,
+        fontFamily = CormorantGaramondFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
+        fontSize = 16.sp,
+        lineHeight = 22.sp,
         letterSpacing = 0.1.sp
     ),
 
-    // Body styles - Main content text
+    // Body styles - Cormorant Garamond for reading text
     bodyLarge = TextStyle(
-        fontFamily = PoppinsFontFamily,
+        fontFamily = CormorantGaramondFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.15.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = CormorantGaramondFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = PoppinsFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
         letterSpacing = 0.25.sp
     ),
     bodySmall = TextStyle(
-        fontFamily = PoppinsFontFamily,
+        fontFamily = CormorantGaramondFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
         letterSpacing = 0.4.sp
     ),
 
-    // Label styles - Buttons, chips, navigation
+    // Label styles - Space Grotesk for technical data, nav, buttons
     labelLarge = TextStyle(
-        fontFamily = PoppinsFontFamily,
+        fontFamily = SpaceGroteskFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.1.sp
+        letterSpacing = 0.5.sp
     ),
     labelMedium = TextStyle(
-        fontFamily = PoppinsFontFamily,
+        fontFamily = SpaceGroteskFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 1.0.sp
     ),
     labelSmall = TextStyle(
-        fontFamily = PoppinsFontFamily,
+        fontFamily = SpaceGroteskFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 10.sp,
+        lineHeight = 14.sp,
+        letterSpacing = 1.5.sp
     )
 )

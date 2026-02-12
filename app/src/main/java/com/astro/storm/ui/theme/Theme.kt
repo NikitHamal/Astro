@@ -16,97 +16,102 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+// ============================================================================
+// NEO-VEDIC MATERIAL 3 COLOR SCHEMES
+// "Ethereal Vedic Grid" Design Language
+// ============================================================================
+
 private val DarkColorScheme = darkColorScheme(
-    // Primary colors
-    primary = PrimaryDark,
-    onPrimary = Color(0xFF1A1D35),
-    primaryContainer = PrimaryContainer,
-    onPrimaryContainer = OnPrimaryContainer,
+    // Primary colors - Cosmic Indigo inverted for dark
+    primary = Color(0xFFB8C4E0),
+    onPrimary = CosmicIndigoDark,
+    primaryContainer = CosmicIndigoLight,
+    onPrimaryContainer = Color(0xFFDDE3F0),
 
-    // Secondary colors
-    secondary = SecondaryDark,
-    onSecondary = Color(0xFF442926),
-    secondaryContainer = SecondaryContainer,
-    onSecondaryContainer = OnSecondaryContainer,
+    // Secondary colors - Mars Red for malefic/alert
+    secondary = MarsRedLight,
+    onSecondary = Color(0xFF3A1F1F),
+    secondaryContainer = Color(0xFF5C2E2E),
+    onSecondaryContainer = Color(0xFFFFDAD6),
 
-    // Tertiary colors
-    tertiary = TertiaryDark,
+    // Tertiary colors - Vedic Gold accent
+    tertiary = VedicGoldLight,
     onTertiary = Color(0xFF3D3515),
-    tertiaryContainer = TertiaryContainer,
-    onTertiaryContainer = OnTertiaryContainer,
+    tertiaryContainer = Color(0xFF4A4225),
+    onTertiaryContainer = Color(0xFFFFF0C7),
 
-    // Background & Surface
-    background = BackgroundDark,
-    onBackground = OnBackgroundDark,
-    surface = SurfaceDark,
-    onSurface = OnSurfaceDark,
-    surfaceVariant = SurfaceVariant,
-    onSurfaceVariant = OnSurfaceVariant,
+    // Background & Surface - Deep Cosmic Night
+    background = DarkVellum,
+    onBackground = Color(0xFFE4E6ED),
+    surface = DarkPaper,
+    onSurface = Color(0xFFE4E6ED),
+    surfaceVariant = DarkPaperHover,
+    onSurfaceVariant = Color(0xFFAEB4C2),
 
     // Outline
-    outline = OutlineDark,
-    outlineVariant = OutlineVariant,
+    outline = DarkBorderSubtle,
+    outlineVariant = Color(0xFF2A3040),
 
     // Inverse
-    inverseSurface = Color(0xFFE4E6ED),
-    inverseOnSurface = Color(0xFF2E3138),
-    inversePrimary = Color(0xFF4A5ABA),
+    inverseSurface = Vellum,
+    inverseOnSurface = CosmicIndigo,
+    inversePrimary = CosmicIndigo,
 
     // Error
-    error = ErrorDark,
+    error = MarsRedLight,
     onError = Color(0xFF690005),
-    errorContainer = ErrorContainer,
+    errorContainer = Color(0xFF93000A),
     onErrorContainer = Color(0xFFFFDAD6),
 
     // Surface tints
-    surfaceTint = PrimaryDark,
+    surfaceTint = Color(0xFFB8C4E0),
     scrim = Color(0xFF000000)
 )
 
 private val LightColorScheme = lightColorScheme(
-    // Primary colors - warm brown tones for Vedic astrology aesthetic
-    primary = Color(0xFF6B5D4D),
-    onPrimary = Color.White,
-    primaryContainer = Color(0xFFEDE7DF),
-    onPrimaryContainer = Color(0xFF2C2418),
+    // Primary colors - Cosmic Indigo as ink on parchment
+    primary = CosmicIndigo,
+    onPrimary = Vellum,
+    primaryContainer = PressedPaper,
+    onPrimaryContainer = CosmicIndigo,
 
-    // Secondary colors
-    secondary = Color(0xFF8B7355),
+    // Secondary colors - Mars Red for accents/alerts
+    secondary = MarsRed,
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFF5EDE5),
-    onSecondaryContainer = Color(0xFF3D322B),
+    secondaryContainer = Color(0xFFF5E0E0),
+    onSecondaryContainer = MarsRedDark,
 
-    // Tertiary colors - gold accents
-    tertiary = Color(0xFFB8860B),
+    // Tertiary colors - Vedic Gold
+    tertiary = VedicGold,
     onTertiary = Color.White,
-    tertiaryContainer = Color(0xFFFFF8E1),
-    onTertiaryContainer = Color(0xFF3D3215),
+    tertiaryContainer = Color(0xFFFFF3DC),
+    onTertiaryContainer = VedicGoldDark,
 
-    // Background & Surface - cream/warm white
-    background = Color(0xFFF5F2ED),
-    onBackground = Color(0xFF2C2418),
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF2C2418),
-    surfaceVariant = Color(0xFFEDE7DF),
-    onSurfaceVariant = Color(0xFF5A4D3D),
+    // Background & Surface - Vellum parchment
+    background = Vellum,
+    onBackground = CosmicIndigo,
+    surface = Vellum,
+    onSurface = CosmicIndigo,
+    surfaceVariant = PressedPaper,
+    onSurfaceVariant = CosmicIndigoLight,
 
-    // Outline
-    outline = Color(0xFFD4C8B8),
-    outlineVariant = Color(0xFFE8DFD6),
+    // Outline - Subtle borders
+    outline = BorderSubtle,
+    outlineVariant = PaperDark,
 
     // Inverse
-    inverseSurface = Color(0xFF2C2418),
-    inverseOnSurface = Color(0xFFF5F2ED),
-    inversePrimary = Color(0xFFB8A99A),
+    inverseSurface = CosmicIndigo,
+    inverseOnSurface = Vellum,
+    inversePrimary = Color(0xFFB8C4E0),
 
     // Error
-    error = Color(0xFFD32F2F),
+    error = MarsRed,
     onError = Color.White,
-    errorContainer = Color(0xFFFFEBEE),
-    onErrorContainer = Color(0xFF690005),
+    errorContainer = Color(0xFFFCE4E4),
+    onErrorContainer = MarsRedDark,
 
     // Surface tints
-    surfaceTint = Color(0xFF6B5D4D),
+    surfaceTint = CosmicIndigo,
     scrim = Color(0x40000000)
 )
 
