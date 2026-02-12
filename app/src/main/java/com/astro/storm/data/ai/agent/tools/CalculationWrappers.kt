@@ -206,104 +206,99 @@ class PanchangaCalculatorWrapper(private val context: android.content.Context) {
 
     fun calculate(chart: VedicChart): PanchangaResult {
         return try {
-            val calculator = PanchangaCalculator(context)
-            val panchanga = calculator.calculatePanchanga(
-                chart.birthData.dateTime,
-                chart.birthData.latitude,
-                chart.birthData.longitude,
-                chart.birthData.timezone
-            )
-
-            PanchangaResult(
-                tithi = TithiInfo(
-                    name = panchanga.tithi.tithi.displayName,
-                    number = panchanga.tithi.number,
-                    paksha = panchanga.paksha.displayName,
-                    deity = panchanga.tithi.lord.displayName
-                ),
-                nakshatra = NakshatraInfo(
-                    name = panchanga.nakshatra.nakshatra.displayName,
-                    ruler = panchanga.nakshatra.lord.displayName,
-                    pada = panchanga.nakshatra.pada
-                ),
-                yoga = YogaInfo(
-                    name = panchanga.yoga.yoga.displayName,
-                    nature = panchanga.yoga.yoga.nature.name
-                ),
-                karana = KaranaInfo(
-                    name = panchanga.karana.karana.displayName,
-                    nature = "Movable"
-                ),
-                vara = VaraInfo(
-                    name = panchanga.vara.displayName,
-                    lord = panchanga.vara.lord.displayName
-                ),
-                rahuKala = "Calculate separately",
-                yamaGanda = "Calculate separately",
-                gulikaKala = "Calculate separately",
-                abhijitMuhurta = "12:00 - 12:48"
-            )
+            PanchangaCalculator(context).use { calculator ->
+                val panchanga = calculator.calculatePanchanga(
+                    chart.birthData.dateTime,
+                    chart.birthData.latitude,
+                    chart.birthData.longitude,
+                    chart.birthData.timezone
+                )
+                buildResultFromPanchanga(panchanga)
+            }
         } catch (e: Exception) {
-            // Return default values on error
-            getDefaultPanchangaResult()
+            getUnavailablePanchangaResult()
         }
     }
 
     fun calculateForNow(latitude: Double, longitude: Double): PanchangaResult {
         return try {
-            val calculator = PanchangaCalculator(context)
-            val now = java.time.LocalDateTime.now()
-            val panchanga = calculator.calculatePanchanga(
-                now,
-                latitude,
-                longitude,
-                java.util.TimeZone.getDefault().id
-            )
-
-            PanchangaResult(
-                tithi = TithiInfo(
-                    name = panchanga.tithi.tithi.displayName,
-                    number = panchanga.tithi.number,
-                    paksha = panchanga.paksha.displayName,
-                    deity = panchanga.tithi.lord.displayName
-                ),
-                nakshatra = NakshatraInfo(
-                    name = panchanga.nakshatra.nakshatra.displayName,
-                    ruler = panchanga.nakshatra.lord.displayName,
-                    pada = panchanga.nakshatra.pada
-                ),
-                yoga = YogaInfo(
-                    name = panchanga.yoga.yoga.displayName,
-                    nature = panchanga.yoga.yoga.nature.name
-                ),
-                karana = KaranaInfo(
-                    name = panchanga.karana.karana.displayName,
-                    nature = "Movable"
-                ),
-                vara = VaraInfo(
-                    name = panchanga.vara.displayName,
-                    lord = panchanga.vara.lord.displayName
-                ),
-                rahuKala = "Calculate separately",
-                yamaGanda = "Calculate separately",
-                gulikaKala = "Calculate separately",
-                abhijitMuhurta = "12:00 - 12:48"
-            )
+            PanchangaCalculator(context).use { calculator ->
+                val now = java.time.LocalDateTime.now()
+                val panchanga = calculator.calculatePanchanga(
+                    now,
+                    latitude,
+                    longitude,
+                    java.util.TimeZone.getDefault().id
+                )
+                buildResultFromPanchanga(panchanga)
+            }
         } catch (e: Exception) {
-            getDefaultPanchangaResult()
+            getUnavailablePanchangaResult()
         }
     }
 
-    private fun getDefaultPanchangaResult() = PanchangaResult(
-        tithi = TithiInfo("Purnima", 15, "Shukla", "Moon"),
-        nakshatra = NakshatraInfo("Ashwini", "Ketu", 1),
-        yoga = YogaInfo("Siddha", "Auspicious"),
-        karana = KaranaInfo("Bava", "Movable"),
-        vara = VaraInfo("Sunday", "Sun"),
-        rahuKala = "07:30-09:00",
-        yamaGanda = "10:30-12:00",
-        gulikaKala = "15:00-16:30",
-        abhijitMuhurta = "11:45-12:30"
+    private fun buildResultFromPanchanga(panchanga: com.astro.storm.ephemeris.panchanga.PanchangaData): PanchangaResult {
+        val inauspicious = com.astro.storm.ephemeris.muhurta.MuhurtaTimeSegmentCalculator.calculateInauspiciousPeriods(
+            vara = panchanga.vara.toMuhurtaVara(),
+            sunrise = panchanga.sunriseTime,
+            sunset = panchanga.sunsetTime
+        )
+        val abhijit = com.astro.storm.ephemeris.muhurta.MuhurtaTimeSegmentCalculator.calculateAbhijitMuhurta(
+            sunrise = panchanga.sunriseTime,
+            sunset = panchanga.sunsetTime,
+            currentTime = panchanga.sunriseTime
+        )
+        return PanchangaResult(
+            tithi = TithiInfo(
+                name = panchanga.tithi.tithi.displayName,
+                number = panchanga.tithi.number,
+                paksha = panchanga.paksha.displayName,
+                deity = panchanga.tithi.lord.displayName
+            ),
+            nakshatra = NakshatraInfo(
+                name = panchanga.nakshatra.nakshatra.displayName,
+                ruler = panchanga.nakshatra.lord.displayName,
+                pada = panchanga.nakshatra.pada
+            ),
+            yoga = YogaInfo(
+                name = panchanga.yoga.yoga.displayName,
+                nature = panchanga.yoga.yoga.nature.name
+            ),
+            karana = KaranaInfo(
+                name = panchanga.karana.karana.displayName,
+                nature = panchanga.karana.karana.type.displayName
+            ),
+            vara = VaraInfo(
+                name = panchanga.vara.displayName,
+                lord = panchanga.vara.lord.displayName
+            ),
+            rahuKala = "${inauspicious.rahukala.startTime} - ${inauspicious.rahukala.endTime}",
+            yamaGanda = "${inauspicious.yamaghanta.startTime} - ${inauspicious.yamaghanta.endTime}",
+            gulikaKala = "${inauspicious.gulikaKala.startTime} - ${inauspicious.gulikaKala.endTime}",
+            abhijitMuhurta = "${abhijit.startTime} - ${abhijit.endTime}"
+        )
+    }
+
+    private fun com.astro.storm.ephemeris.panchanga.Vara.toMuhurtaVara(): com.astro.storm.ephemeris.muhurta.Vara = when (this) {
+        com.astro.storm.ephemeris.panchanga.Vara.SUNDAY -> com.astro.storm.ephemeris.muhurta.Vara.SUNDAY
+        com.astro.storm.ephemeris.panchanga.Vara.MONDAY -> com.astro.storm.ephemeris.muhurta.Vara.MONDAY
+        com.astro.storm.ephemeris.panchanga.Vara.TUESDAY -> com.astro.storm.ephemeris.muhurta.Vara.TUESDAY
+        com.astro.storm.ephemeris.panchanga.Vara.WEDNESDAY -> com.astro.storm.ephemeris.muhurta.Vara.WEDNESDAY
+        com.astro.storm.ephemeris.panchanga.Vara.THURSDAY -> com.astro.storm.ephemeris.muhurta.Vara.THURSDAY
+        com.astro.storm.ephemeris.panchanga.Vara.FRIDAY -> com.astro.storm.ephemeris.muhurta.Vara.FRIDAY
+        com.astro.storm.ephemeris.panchanga.Vara.SATURDAY -> com.astro.storm.ephemeris.muhurta.Vara.SATURDAY
+    }
+
+    private fun getUnavailablePanchangaResult() = PanchangaResult(
+        tithi = TithiInfo("Unavailable", 0, "Unavailable", "Unavailable"),
+        nakshatra = NakshatraInfo("Unavailable", "Unavailable", 0),
+        yoga = YogaInfo("Unavailable", "Unavailable"),
+        karana = KaranaInfo("Unavailable", "Unavailable"),
+        vara = VaraInfo("Unavailable", "Unavailable"),
+        rahuKala = "Unavailable",
+        yamaGanda = "Unavailable",
+        gulikaKala = "Unavailable",
+        abhijitMuhurta = "Unavailable"
     )
 }
 

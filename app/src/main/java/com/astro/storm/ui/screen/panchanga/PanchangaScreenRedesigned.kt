@@ -80,11 +80,14 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.PanchangaCalculator
 import com.astro.storm.ephemeris.panchanga.*
+import com.astro.storm.ephemeris.muhurta.MuhurtaTimeSegmentCalculator
+import com.astro.storm.ephemeris.muhurta.Vara as MuhurtaVara
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 /**
@@ -116,6 +119,9 @@ fun PanchangaScreenRedesigned(
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
+    val zoneId = remember(chart) { runCatching { ZoneId.of(chart?.birthData?.timezone ?: ZoneId.systemDefault().id) }.getOrElse { ZoneId.systemDefault() } }
+    val todayInZone = remember(zoneId) { LocalDate.now(zoneId) }
+
     // Calculate Panchanga for today
     val todayPanchanga = remember(chart) {
         chart?.let {
@@ -123,7 +129,7 @@ fun PanchangaScreenRedesigned(
                 val calculator = PanchangaCalculator(context)
                 calculator.use { calc ->
                     calc.calculatePanchanga(
-                        dateTime = LocalDateTime.now(),
+                        dateTime = LocalDateTime.now(zoneId),
                         latitude = it.birthData.latitude,
                         longitude = it.birthData.longitude,
                         timezone = it.birthData.timezone
@@ -210,7 +216,10 @@ fun PanchangaScreenRedesigned(
             ) { tabIndex ->
                 when (PanchangaViewType.entries[tabIndex]) {
                     PanchangaViewType.TODAY -> {
-                        TodayPanchangaContent(panchanga = todayPanchanga)
+                        TodayPanchangaContent(
+                            panchanga = todayPanchanga,
+                            todayDate = todayInZone
+                        )
                     }
                     PanchangaViewType.BIRTH -> {
                         BirthPanchangaContent(
@@ -289,7 +298,8 @@ private fun PanchangaTopBar(
 
 @Composable
 private fun TodayPanchangaContent(
-    panchanga: PanchangaData?
+    panchanga: PanchangaData?,
+    todayDate: LocalDate
 ) {
     if (panchanga == null) {
         EmptyPanchangaContent()
@@ -303,7 +313,7 @@ private fun TodayPanchangaContent(
     ) {
         // Summary card
         item(key = "today_summary") {
-            TodaySummaryCard(panchanga = panchanga)
+            TodaySummaryCard(panchanga = panchanga, todayDate = todayDate)
         }
 
         // Five elements
@@ -327,10 +337,10 @@ private fun TodayPanchangaContent(
 
 @Composable
 private fun TodaySummaryCard(
-    panchanga: PanchangaData
+    panchanga: PanchangaData,
+    todayDate: LocalDate
 ) {
-    val today = LocalDate.now()
-    val dayOfWeek = today.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
+    val dayOfWeek = todayDate.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
 
     Surface(
         modifier = Modifier
@@ -353,7 +363,7 @@ private fun TodaySummaryCard(
             ) {
                 Column {
                     Text(
-                        text = today.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")),
+                        text = todayDate.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -636,6 +646,21 @@ private fun PanchangaLimbRow(
 private fun AuspiciousTimingCard(
     panchanga: PanchangaData
 ) {
+    val inauspicious = remember(panchanga.vara, panchanga.sunriseTime, panchanga.sunsetTime) {
+        MuhurtaTimeSegmentCalculator.calculateInauspiciousPeriods(
+            vara = panchanga.vara.toMuhurtaVara(),
+            sunrise = panchanga.sunriseTime,
+            sunset = panchanga.sunsetTime
+        )
+    }
+    val abhijit = remember(panchanga.sunriseTime, panchanga.sunsetTime) {
+        MuhurtaTimeSegmentCalculator.calculateAbhijitMuhurta(
+            sunrise = panchanga.sunriseTime,
+            sunset = panchanga.sunsetTime,
+            currentTime = panchanga.sunriseTime
+        )
+    }
+
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
@@ -653,7 +678,7 @@ private fun AuspiciousTimingCard(
             // Rahu Kaal - calculated from sunrise/sunset
             TimingRow(
                 label = stringResource(StringKeyDosha.PANCHANGA_RAHU),
-                value = stringResource(StringKeyDosha.PANCHANGA_CALCULATE_DAY),
+                value = "${inauspicious.rahukala.startTime.format(DateTimeFormatter.ofPattern("h:mm a"))} - ${inauspicious.rahukala.endTime.format(DateTimeFormatter.ofPattern("h:mm a"))}",
                 isInauspicious = true
             )
 
@@ -662,7 +687,7 @@ private fun AuspiciousTimingCard(
             // Yamagandam
             TimingRow(
                 label = stringResource(StringKeyDosha.PANCHANGA_YAMAGANDAM),
-                value = stringResource(StringKeyDosha.PANCHANGA_CALCULATE_DAY),
+                value = "${inauspicious.yamaghanta.startTime.format(DateTimeFormatter.ofPattern("h:mm a"))} - ${inauspicious.yamaghanta.endTime.format(DateTimeFormatter.ofPattern("h:mm a"))}",
                 isInauspicious = true
             )
 
@@ -671,7 +696,7 @@ private fun AuspiciousTimingCard(
             // Gulika Kaal
             TimingRow(
                 label = stringResource(StringKeyDosha.PANCHANGA_GULIKA),
-                value = stringResource(StringKeyDosha.PANCHANGA_CALCULATE_DAY),
+                value = "${inauspicious.gulikaKala.startTime.format(DateTimeFormatter.ofPattern("h:mm a"))} - ${inauspicious.gulikaKala.endTime.format(DateTimeFormatter.ofPattern("h:mm a"))}",
                 isInauspicious = true
             )
 
@@ -680,7 +705,7 @@ private fun AuspiciousTimingCard(
             // Abhijit Muhurta
             TimingRow(
                 label = stringResource(StringKeyDosha.PANCHANGA_ABHIJIT),
-                value = stringResource(StringKeyDosha.PANCHANGA_MIDDAY_HOUR),
+                value = "${abhijit.startTime.format(DateTimeFormatter.ofPattern("h:mm a"))} - ${abhijit.endTime.format(DateTimeFormatter.ofPattern("h:mm a"))}",
                 isInauspicious = false
             )
         }
@@ -1029,7 +1054,8 @@ private fun BirthDayInterpretationCard(
             Spacer(modifier = Modifier.height(14.dp))
 
             Text(
-                                        text = getBirthDayInterpretation(panchanga, language),                fontSize = 13.sp,
+                text = getBirthDayInterpretation(panchanga, language),
+                fontSize = 13.sp,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
             )
@@ -1415,10 +1441,10 @@ private fun getBirthDayInterpretation(panchanga: PanchangaData, language: Langua
             panchanga.yoga.yoga.getLocalizedName(language)
         ))
         
-        when (panchanga.yoga.yoga.displayName.lowercase()) {
-            "vishkumbh", "atiganda", "shool", "vyaghata", "vajra", "paridh" ->
+        when (panchanga.yoga.yoga) {
+            Yoga.VISHKUMBHA, Yoga.ATIGANDA, Yoga.SHULA, Yoga.GANDA, Yoga.VYAGHATA, Yoga.VAJRA, Yoga.VYATIPATA, Yoga.PARIGHA, Yoga.VAIDHRITI ->
                 append(StringResources.get(StringKeyAnalysis.PANCHANGA_BIRTH_INTERP_YOGA_CHALLENGE, language))
-            "siddha", "shubha", "amrita", "sukarma" ->
+            Yoga.SIDDHI, Yoga.SIDDHA, Yoga.SHUBHA, Yoga.SUKARMA, Yoga.SHIVA, Yoga.BRAHMA, Yoga.INDRA ->
                 append(StringResources.get(StringKeyAnalysis.PANCHANGA_BIRTH_INTERP_YOGA_AUSPICIOUS, language))
             else ->
                 append(StringResources.get(StringKeyAnalysis.PANCHANGA_BIRTH_INTERP_YOGA_MODERATE, language))
@@ -1430,6 +1456,16 @@ private fun getBirthDayInterpretation(panchanga: PanchangaData, language: Langua
             panchanga.karana.karana.getLocalizedName(language)
         ))
     }
+}
+
+private fun Vara.toMuhurtaVara(): MuhurtaVara = when (this) {
+    Vara.SUNDAY -> MuhurtaVara.SUNDAY
+    Vara.MONDAY -> MuhurtaVara.MONDAY
+    Vara.TUESDAY -> MuhurtaVara.TUESDAY
+    Vara.WEDNESDAY -> MuhurtaVara.WEDNESDAY
+    Vara.THURSDAY -> MuhurtaVara.THURSDAY
+    Vara.FRIDAY -> MuhurtaVara.FRIDAY
+    Vara.SATURDAY -> MuhurtaVara.SATURDAY
 }
 
 
