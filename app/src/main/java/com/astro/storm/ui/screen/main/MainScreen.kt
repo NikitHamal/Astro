@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -51,7 +52,14 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.components.ProfileSwitcherBottomSheet
-import com.astro.storm.ui.theme.*
+import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.BorderSubtle
+import com.astro.storm.ui.theme.CinzelDecorativeFontFamily
+import com.astro.storm.ui.theme.CosmicIndigo
+import com.astro.storm.ui.theme.Paper
+import com.astro.storm.ui.theme.SpaceGroteskFontFamily
+import com.astro.storm.ui.theme.Vellum
+import com.astro.storm.ui.theme.VedicGold
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import kotlinx.coroutines.launch
 
@@ -245,21 +253,24 @@ private fun MainTopBar(
             )
         },
         actions = {
-            Box(
+            Surface(
                 modifier = Modifier
                     .padding(end = 16.dp)
                     .size(32.dp)
-                    .border(BorderStroke(1.dp, VedicGold), CircleShape)
-                    .background(Paper, CircleShape),
-                contentAlignment = Alignment.Center
+                    .clickable { onProfileClick() },
+                shape = CircleShape,
+                color = Paper,
+                border = BorderStroke(1.dp, VedicGold)
             ) {
-                Text(
-                    text = currentChart?.name?.take(2)?.uppercase() ?: "NH",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = CosmicIndigo,
-                    fontFamily = SpaceGroteskFontFamily,
-                    fontSize = 10.sp
-                )
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        text = currentChart?.name?.take(2)?.uppercase() ?: "NH",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = CosmicIndigo,
+                        fontFamily = SpaceGroteskFontFamily,
+                        fontSize = 10.sp
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -321,5 +332,3 @@ enum class MainTab(
     TRANSITS(Icons.Filled.Update, Icons.Outlined.Update),
     ORACLE(Icons.Filled.MenuBook, Icons.Outlined.MenuBook);
 }
-
-enum class ExportFormat { PDF, IMAGE }

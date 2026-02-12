@@ -1,41 +1,13 @@
 package com.astro.storm.ui.screen.main
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.EaseInOutSine
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -43,67 +15,45 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.outlined.AllInclusive
-import androidx.compose.material.icons.outlined.Apps
-import androidx.compose.material.icons.outlined.ArrowForward
-import androidx.compose.material.icons.outlined.BarChart
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.GridOn
-import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Timeline
-import androidx.compose.material.icons.outlined.Update
-import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.Button
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.DashaCalculator
-import com.astro.storm.ui.theme.AppTheme
-import com.astro.storm.ui.theme.CinzelDecorativeFontFamily
-import com.astro.storm.ui.theme.CormorantGaramondFontFamily
-import com.astro.storm.ui.theme.CosmicIndigo
-import com.astro.storm.ui.theme.Paper
-import com.astro.storm.ui.theme.SpaceGroteskFontFamily
-import com.astro.storm.ui.theme.VedicGold
-import com.astro.storm.ui.theme.MarsRed
+import com.astro.storm.ui.theme.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 import kotlin.random.Random
+import androidx.compose.foundation.BorderStroke
 
 // ============================================================================
 // DESIGN TOKENS
@@ -390,7 +340,7 @@ private fun QuickActionsSection(onFeatureClick: (InsightFeature) -> Unit, langua
             )
             QuickActionButton(
                 title = "Yogas",
-                icon = Icons.Outlined.AllInclusive,
+                icon = Icons.Outlined.LightMode,
                 color = VedicGold,
                 onClick = { onFeatureClick(InsightFeature.YOGAS) },
                 modifier = Modifier.weight(1f)
@@ -440,7 +390,7 @@ private fun QuickActionButton(
                     .size(40.dp)
                     .align(Alignment.End)
                     .background(color.copy(alpha = 0.05f), CircleShape)
-                    .border(1.dp, color.copy(alpha = 0.1f), CircleShape),
+                    .border(BorderStroke(1.dp, color.copy(alpha = 0.1f)), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(imageVector = icon, contentDescription = null, tint = CosmicIndigo, modifier = Modifier.size(20.dp))
@@ -660,14 +610,14 @@ enum class InsightFeature(
 ) {
     FULL_CHART(StringKey.FEATURE_BIRTH_CHART, StringKey.FEATURE_BIRTH_CHART_DESC, Icons.Outlined.GridView, VedicGold, true),
     PLANETS(StringKey.FEATURE_PLANETS, StringKey.FEATURE_PLANETS_DESC, Icons.Outlined.Public, VedicGold, true),
-    YOGAS(StringKey.FEATURE_YOGAS, StringKey.FEATURE_YOGAS_DESC, Icons.Outlined.AutoAwesome, VedicGold, true),
+    YOGAS(StringKey.FEATURE_YOGAS, StringKey.FEATURE_YOGAS_DESC, Icons.Outlined.LightMode, VedicGold, true),
     DASHAS(StringKey.FEATURE_DASHAS, StringKey.FEATURE_DASHAS_DESC, Icons.Outlined.Timeline, CosmicIndigo, true),
     TRANSITS(StringKey.FEATURE_TRANSITS, StringKey.FEATURE_TRANSITS_DESC, Icons.Outlined.Sync, CosmicIndigo, true),
     ASHTAKAVARGA(StringKey.FEATURE_ASHTAKAVARGA, StringKey.FEATURE_ASHTAKAVARGA_DESC, Icons.Outlined.BarChart, VedicGold, true),
     PANCHANGA(StringKey.FEATURE_PANCHANGA, StringKey.FEATURE_PANCHANGA_DESC, Icons.Outlined.CalendarMonth, VedicGold, true),
     MATCHMAKING(StringKey.FEATURE_MATCHMAKING, StringKey.FEATURE_MATCHMAKING_DESC, Icons.Outlined.Favorite, MarsRed, true),
-    PREDICTIONS(StringKey.FEATURE_PREDICTIONS, StringKey.FEATURE_PREDICTIONS_DESC, Icons.Outlined.AutoAwesome, CosmicIndigo, true),
-    NAKSHATRA_ANALYSIS(StringKey.FEATURE_NAKSHATRAS, StringKey.FEATURE_NAKSHATRAS_DESC, Icons.Outlined.Stars, VedicGold, true),
+    PREDICTIONS(StringKey.FEATURE_PREDICTIONS, StringKey.FEATURE_PREDICTIONS_DESC, Icons.Outlined.LightMode, CosmicIndigo, true),
+    NAKSHATRA_ANALYSIS(StringKey.FEATURE_NAKSHATRAS, StringKey.FEATURE_NAKSHATRAS_DESC, Icons.Outlined.Star, VedicGold, true),
     SHODASHVARGA(StringKey.FEATURE_SHODASHVARGA, StringKey.FEATURE_SHODASHVARGA_DESC, Icons.Outlined.GridView, VedicGold, true),
     DIVISIONAL_CHARTS(StringKey.FEATURE_DIVISIONAL_CHARTS, StringKey.FEATURE_DIVISIONAL_CHARTS_DESC, Icons.Outlined.GridView, CosmicIndigo, true),
     NATIVE_ANALYSIS(StringKey.FEATURE_NATIVE_ANALYSIS, StringKey.FEATURE_NATIVE_ANALYSIS_DESC, Icons.Outlined.Person, CosmicIndigo, true);
