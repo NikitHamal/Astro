@@ -446,7 +446,7 @@ private fun DateSelectorBar(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -470,7 +470,7 @@ private fun DateSelectorBar(
 
             Row(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .clickable(
     interactionSource = interactionSource,
     indication = LocalIndication.current
@@ -647,7 +647,7 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaDetails) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Box(
@@ -693,7 +693,7 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaDetails) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                Surface(color = choghadiyaColor.copy(alpha = 0.15f), shape = RoundedCornerShape(8.dp)) {
+                Surface(color = choghadiyaColor.copy(alpha = 0.15f), shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
                     Text(
                         stringResource(StringKeyMatch.MUHURTA_CHOGHADIYA_SUFFIX, muhurta.choghadiya.choghadiya.getLocalizedName(currentLanguage())),
                         style = MaterialTheme.typography.bodyMedium,
@@ -722,7 +722,7 @@ private fun PanchangaCard(muhurta: MuhurtaDetails) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -793,7 +793,7 @@ private fun PanchangaItem(
     isPositive: Boolean? = null,
     modifier: Modifier = Modifier
 ) {
-    Surface(modifier = modifier, color = AppTheme.CardBackgroundElevated, shape = RoundedCornerShape(8.dp)) {
+    Surface(modifier = modifier, color = AppTheme.CardBackgroundElevated, shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(label, style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
             Spacer(modifier = Modifier.height(4.dp))
@@ -832,7 +832,7 @@ private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -897,7 +897,7 @@ private fun InauspiciousPeriodsCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.ErrorColor.copy(alpha = 0.05f)),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -970,9 +970,9 @@ private fun InauspiciousPeriodRow(
 ) {
     val severityColor = remember(severity) {
         when (severity) {
-            InauspiciousSeverity.HIGH -> Color(0xFFE53935)
-            InauspiciousSeverity.MEDIUM -> Color(0xFFFF9800)
-            InauspiciousSeverity.LOW -> Color(0xFFFFC107)
+            InauspiciousSeverity.HIGH -> com.astro.storm.ui.theme.MarsRed
+            InauspiciousSeverity.MEDIUM -> com.astro.storm.ui.theme.WarningDark
+            InauspiciousSeverity.LOW -> com.astro.storm.ui.theme.WarningDark
         }
     }
 
@@ -986,11 +986,11 @@ private fun InauspiciousPeriodRow(
 
     Surface(
         color = if (isActive) severityColor.copy(alpha = 0.1f) else Color.Transparent,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         modifier = Modifier
             .fillMaxWidth()
             .then(
-                if (isActive) Modifier.border(1.dp, severityColor.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
+                if (isActive) Modifier.border(1.dp, severityColor.copy(alpha = 0.3f), RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 else Modifier
             )
     ) {
@@ -1021,7 +1021,7 @@ private fun InauspiciousPeriodRow(
                             Spacer(modifier = Modifier.width(8.dp))
                             Surface(
                                 color = severityColor,
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             ) {
                                 Text(
                                     stringResource(StringKeyMatch.MUHURTA_ACTIVE),
@@ -1043,7 +1043,7 @@ private fun InauspiciousPeriodRow(
 
             Surface(
                 color = AppTheme.CardBackgroundElevated,
-                shape = RoundedCornerShape(6.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
@@ -1079,7 +1079,7 @@ private fun ChoghadiyaCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1160,11 +1160,11 @@ private fun ChoghadiyaRow(
                 if (isCurrent) Modifier.border(
                     width = 1.5.dp,
                     color = choghadiyaColor.copy(alpha = 0.5f),
-                    shape = RoundedCornerShape(10.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) else Modifier
             ),
         color = if (isCurrent) choghadiyaColor.copy(alpha = 0.12f) else AppTheme.CardBackgroundElevated,
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -1201,7 +1201,7 @@ private fun ChoghadiyaRow(
                             Spacer(modifier = Modifier.width(8.dp))
                             Surface(
                                 color = choghadiyaColor,
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             ) {
                                 Text(
                                     stringResource(StringKeyMatch.MUHURTA_NOW),
@@ -1250,7 +1250,7 @@ private fun ActivitiesCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1297,7 +1297,7 @@ private fun ActivityChip(
     val contentColor = if (isPositive) AppTheme.SuccessColor else AppTheme.ErrorColor
     val icon = remember(activity) { getActivityIcon(activity) }
 
-    Surface(color = chipColor, shape = RoundedCornerShape(20.dp)) {
+    Surface(color = chipColor, shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -1326,7 +1326,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.InfoColor.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1470,7 +1470,7 @@ private fun ActivitySelectorCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1542,7 +1542,7 @@ private fun ActivityInfoCard(selectedActivity: ActivityType) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackgroundElevated),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1605,7 +1605,7 @@ private fun DateRangeCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1683,10 +1683,10 @@ private fun DatePickerButton(
 ) {
     Surface(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(onClick = onClick),
         color = AppTheme.CardBackgroundElevated,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
@@ -1717,7 +1717,7 @@ private fun SearchButton(
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .height(52.dp),
         colors = ButtonDefaults.buttonColors(containerColor = AppTheme.AccentPrimary),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         enabled = !isSearching
     ) {
         AnimatedContent(
@@ -1900,7 +1900,7 @@ private fun ResultsHeader(count: Int) {
         )
         Surface(
             color = AppTheme.SuccessColor.copy(alpha = 0.15f),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Text(
                 stringResource(StringKeyMatch.MUHURTA_RESULTS_COUNT, count),
@@ -1922,7 +1922,7 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1958,7 +1958,7 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
 
                 Surface(
                     color = scoreColor.copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(10.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Column(
                         modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
@@ -2065,7 +2065,7 @@ private fun ResultDetailChip(
     Surface(
         modifier = modifier,
         color = AppTheme.CardBackgroundElevated,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
@@ -2091,22 +2091,22 @@ private fun ResultDetailChip(
 
 private fun getScoreColor(score: Int): Color {
     return when {
-        score >= 85 -> Color(0xFF2E7D32)
-        score >= 70 -> Color(0xFF4CAF50)
-        score >= 55 -> Color(0xFF8BC34A)
-        score >= 40 -> Color(0xFFFFC107)
-        score >= 25 -> Color(0xFFFF9800)
-        else -> Color(0xFFFF5722)
+        score >= 85 -> com.astro.storm.ui.theme.SuccessDark
+        score >= 70 -> com.astro.storm.ui.theme.SuccessDark
+        score >= 55 -> com.astro.storm.ui.theme.SuccessDark
+        score >= 40 -> com.astro.storm.ui.theme.WarningDark
+        score >= 25 -> com.astro.storm.ui.theme.WarningDark
+        else -> com.astro.storm.ui.theme.MarsRed
     }
 }
 
 private fun getChoghadiyaColor(choghadiya: Choghadiya): Color {
     return when (choghadiya.nature) {
-        ChoghadiyaNature.EXCELLENT -> Color(0xFF2E7D32)
-        ChoghadiyaNature.VERY_GOOD -> Color(0xFF4CAF50)
-        ChoghadiyaNature.GOOD -> Color(0xFF8BC34A)
-        ChoghadiyaNature.NEUTRAL -> Color(0xFF9E9E9E)
-        ChoghadiyaNature.INAUSPICIOUS -> Color(0xFFE53935)
+        ChoghadiyaNature.EXCELLENT -> com.astro.storm.ui.theme.SuccessDark
+        ChoghadiyaNature.VERY_GOOD -> com.astro.storm.ui.theme.SuccessDark
+        ChoghadiyaNature.GOOD -> com.astro.storm.ui.theme.SuccessDark
+        ChoghadiyaNature.NEUTRAL -> com.astro.storm.ui.theme.SlateMuted
+        ChoghadiyaNature.INAUSPICIOUS -> com.astro.storm.ui.theme.MarsRed
     }
 }
 
@@ -2125,4 +2125,6 @@ private fun getActivityIcon(activity: ActivityType): ImageVector {
         ActivityType.NAMING_CEREMONY -> Icons.Outlined.ChildCare
     }
 }
+
+
 

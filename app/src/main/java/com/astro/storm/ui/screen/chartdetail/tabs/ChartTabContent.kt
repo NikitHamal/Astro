@@ -348,7 +348,7 @@ private fun MainChartCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onChartClick(chartInfo.first, currentChartData) },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -381,7 +381,7 @@ private fun MainChartCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = ChartDetailColors.AccentGold.copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -401,7 +401,7 @@ private fun MainChartCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             ) {
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     if (selectedChartType == "D1") {
@@ -448,7 +448,7 @@ private fun MainChartCard(
 private fun ChartLegend() {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.ChartBackground
     ) {
         Column(
@@ -536,7 +536,7 @@ private fun BirthDetailsCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -659,7 +659,7 @@ private fun ArrowLegendItem(
     isExalted: Boolean,
     label: String
 ) {
-    val color = if (isExalted) Color(0xFF1E8449) else Color(0xFFC0392B)
+    val color = if (isExalted) com.astro.storm.ui.theme.SuccessDark else com.astro.storm.ui.theme.MarsRed
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -705,7 +705,7 @@ private fun ShapeLegendItem(
     isOwnSign: Boolean,
     label: String
 ) {
-    val color = if (isOwnSign) Color(0xFF2874A6) else Color(0xFF6C3483)
+    val color = if (isOwnSign) com.astro.storm.ui.theme.PlanetSaturn else com.astro.storm.ui.theme.PlanetVenus
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -757,7 +757,7 @@ private fun ChartDetailsCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -814,7 +814,7 @@ private fun AscendantRow(chart: VedicChart) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.AccentGold.copy(alpha = 0.1f)
     ) {
         Row(
@@ -860,7 +860,7 @@ private fun ClickablePlanetPositionRow(
             .fillMaxWidth()
             .padding(vertical = 2.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(6.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = Color.Transparent
     ) {
         Row(
@@ -889,7 +889,7 @@ private fun ClickablePlanetPositionRow(
                 )
                 if (position.isRetrograde) {
                     Surface(
-                        shape = RoundedCornerShape(4.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = ChartDetailColors.WarningColor.copy(alpha = 0.2f),
                         modifier = Modifier.padding(start = 4.dp)
                     ) {
@@ -952,7 +952,7 @@ private fun HouseCuspsCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1033,7 +1033,7 @@ private fun HouseCuspItem(
 
     Surface(
         modifier = modifier.clickable { onClick() },
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackgroundElevated
     ) {
         Row(
@@ -1076,7 +1076,7 @@ private fun AstronomicalDataCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1147,4 +1147,6 @@ private fun InfoRow(label: String, value: String) {
         )
     }
 }
+
+
 

@@ -181,7 +181,7 @@ fun UpachayaTransitScreen(
                         colors = CardDefaults.cardColors(
                             containerColor = AppTheme.InfoColor.copy(alpha = 0.1f)
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(
@@ -208,7 +208,7 @@ fun UpachayaTransitScreen(
                 }
             },
             containerColor = AppTheme.CardBackground,
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         )
     }
 }
@@ -388,7 +388,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -449,7 +449,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp)),
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                 color = iconColor,
                 trackColor = AppTheme.ChipBackground
             )
@@ -467,7 +467,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
 
             Surface(
                 color = AppTheme.ChipBackground,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Row(
                     modifier = Modifier.padding(12.dp),
@@ -496,7 +496,7 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -618,7 +618,7 @@ private fun AlertCard(alert: UpachayaAlert, language: Language) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -642,7 +642,7 @@ private fun AlertCard(alert: UpachayaAlert, language: Language) {
             if (alert.priority == AlertPriority.HIGH) {
                 Surface(
                     color = iconColor.copy(alpha = 0.2f),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         stringResource(com.astro.storm.core.common.StringKeySaham.ACTIVATED),
@@ -669,7 +669,7 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -705,7 +705,7 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
                     )
                     Surface(
                         color = qualityColor.copy(alpha = 0.2f),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
                             transit.transitQuality.getLocalizedName(language),
@@ -737,7 +737,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -791,7 +791,7 @@ private fun HouseAnalysisTab(analysis: UpachayaTransitAnalysis, language: Langua
                 colors = CardDefaults.cardColors(
                     containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
                 ),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -843,7 +843,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                 strengthColor.copy(alpha = 0.05f)
             else AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -883,7 +883,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
 
                 Surface(
                     color = strengthColor.copy(alpha = 0.2f),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         analysis.strength.getLocalizedName(language),
@@ -909,7 +909,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                     items(analysis.transitingPlanets) { planet ->
                         Surface(
                             color = AppTheme.getPlanetColor(planet).copy(alpha = 0.2f),
-                            shape = RoundedCornerShape(16.dp)
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                         ) {
                             Text(
                                 planet.getLocalizedName(language),
@@ -1020,7 +1020,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
             .fillMaxWidth()
             .clickable { expanded = !expanded },
         colors = CardDefaults.cardColors(containerColor = cardColor),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1213,7 +1213,7 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1251,7 +1251,7 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
                 Spacer(modifier = Modifier.height(4.dp))
                 Surface(
                     color = AppTheme.SuccessColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         transit.recommendation,
@@ -1284,4 +1284,6 @@ private fun getHouseName(house: Int, language: Language): String {
     }
     return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: "House $house"
 }
+
+
 

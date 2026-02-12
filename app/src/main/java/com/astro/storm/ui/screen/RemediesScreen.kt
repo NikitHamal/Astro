@@ -278,7 +278,7 @@ private fun SearchTextField(
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { keyboardController?.hide() }),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
@@ -334,7 +334,7 @@ private fun SummaryCard(result: RemediesResult) {
             .fillMaxWidth()
             .padding(16.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
@@ -408,7 +408,7 @@ private fun OverallChartHealthIndicator(result: RemediesResult) {
 
     Surface(
         color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -489,7 +489,7 @@ private fun WeakPlanetsCard(weakPlanets: List<Planet>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -528,7 +528,7 @@ private fun PlanetChip(planet: Planet) {
     val attentionDesc = stringResource(StringKeyUIExtra.REMEDIES_REQUIRES_ATTENTION, planet.displayName)
     Surface(
         color = planetColor.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         modifier = Modifier.semantics {
             contentDescription = attentionDesc
         }
@@ -577,7 +577,7 @@ private fun EssentialRemediesPreview(result: RemediesResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -677,7 +677,7 @@ private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -732,7 +732,7 @@ private fun WeekDayChip(
 
     Surface(
         color = if (remedyCount > 0) planetColor.copy(alpha = 0.15f) else AppTheme.CardBackground.copy(alpha = 0.5f),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -776,7 +776,7 @@ private fun LifeAreaFocusCard(lifeAreaFocus: Map<LifeArea, List<Remedy>>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -825,7 +825,7 @@ private fun LifeAreaRow(area: LifeArea, remedyCount: Int, language: Language) {
         }
         Surface(
             color = areaColor.copy(alpha = 0.15f),
-            shape = RoundedCornerShape(4.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Text(
                 "$remedyCount",
@@ -845,7 +845,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.InfoColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1069,7 +1069,7 @@ private fun RemedyCard(
                 onClick = onExpand
             ),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1084,7 +1084,7 @@ private fun RemedyCard(
                     Box(
                         modifier = Modifier
                             .size(40.dp)
-                            .clip(RoundedCornerShape(10.dp))
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                             .background(getCategoryColor(remedy.category).copy(alpha = 0.15f)),
                         contentAlignment = Alignment.Center
                     ) {
@@ -1129,7 +1129,7 @@ private fun RemedyCard(
 
                 Surface(
                     color = getPriorityColor(remedy.priority).copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
@@ -1242,7 +1242,7 @@ private fun MantraSection(
 ) {
     Surface(
         color = AppTheme.AccentGold.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
@@ -1300,7 +1300,7 @@ private fun BenefitsList(benefits: List<String>) {
 private fun CautionsList(cautions: List<String>) {
     Surface(
         color = AppTheme.WarningColor.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
@@ -1400,7 +1400,7 @@ private fun PlanetAnalysisCard(analysis: PlanetaryAnalysis) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1484,7 +1484,7 @@ private fun PlanetAnalysisCard(analysis: PlanetaryAnalysis) {
                 if (analysis.isRetrograde) add(retrogradeLabel to AppTheme.WarningColor)
                 if (analysis.isCombust) add(combustLabel to AppTheme.ErrorColor)
                 if (analysis.isOwnSign) add(ownSignLabel to AppTheme.SuccessColor)
-                if (analysis.isFriendlySign) add(friendlyLabel to Color(0xFF8BC34A))
+                if (analysis.isFriendlySign) add(friendlyLabel to com.astro.storm.ui.theme.SuccessDark)
                 if (analysis.isEnemySign) add(enemySignLabel to AppTheme.ErrorColor)
             }
 
@@ -1529,7 +1529,7 @@ private fun StrengthIndicator(
 
     Surface(
         color = strengthColor.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -1616,7 +1616,7 @@ private fun RemedyRecommendationBanner(planet: Planet) {
 
     Surface(
         color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -1651,7 +1651,7 @@ private fun RemedyRecommendationBanner(planet: Planet) {
 private fun StatusChip(text: String, color: Color) {
     Surface(
         color = color.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(4.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Text(
             text,
@@ -1770,16 +1770,16 @@ private fun ErrorState(
 
 private fun getPlanetColor(planet: Planet): Color {
     return when (planet) {
-        Planet.SUN -> Color(0xFFFF9800)
-        Planet.MOON -> Color(0xFFE0E0E0)
-        Planet.MARS -> Color(0xFFF44336)
-        Planet.MERCURY -> Color(0xFF4CAF50)
-        Planet.JUPITER -> Color(0xFFFFEB3B)
-        Planet.VENUS -> Color(0xFFE91E63)
-        Planet.SATURN -> Color(0xFF607D8B)
-        Planet.RAHU -> Color(0xFF9C27B0)
-        Planet.KETU -> Color(0xFF795548)
-        else -> Color(0xFF2196F3)
+        Planet.SUN -> com.astro.storm.ui.theme.WarningDark
+        Planet.MOON -> com.astro.storm.ui.theme.SlateLight
+        Planet.MARS -> com.astro.storm.ui.theme.MarsRed
+        Planet.MERCURY -> com.astro.storm.ui.theme.SuccessDark
+        Planet.JUPITER -> com.astro.storm.ui.theme.VedicGold
+        Planet.VENUS -> com.astro.storm.ui.theme.MarsRed
+        Planet.SATURN -> com.astro.storm.ui.theme.SlateDark
+        Planet.RAHU -> com.astro.storm.ui.theme.PlanetVenus
+        Planet.KETU -> com.astro.storm.ui.theme.PlanetKetu
+        else -> com.astro.storm.ui.theme.PlanetSaturn
     }
 }
 
@@ -1800,25 +1800,25 @@ private fun getCategoryIcon(category: RemedyCategory): ImageVector {
 
 private fun getCategoryColor(category: RemedyCategory): Color {
     return when (category) {
-        RemedyCategory.GEMSTONE -> Color(0xFF9C27B0)
-        RemedyCategory.MANTRA -> Color(0xFFFF9800)
-        RemedyCategory.YANTRA -> Color(0xFF2196F3)
-        RemedyCategory.CHARITY -> Color(0xFF4CAF50)
-        RemedyCategory.FASTING -> Color(0xFFE91E63)
-        RemedyCategory.COLOR -> Color(0xFF00BCD4)
-        RemedyCategory.METAL -> Color(0xFF607D8B)
-        RemedyCategory.RUDRAKSHA -> Color(0xFF795548)
-        RemedyCategory.DEITY -> Color(0xFFFF5722)
-        RemedyCategory.LIFESTYLE -> Color(0xFF8BC34A)
+        RemedyCategory.GEMSTONE -> com.astro.storm.ui.theme.PlanetVenus
+        RemedyCategory.MANTRA -> com.astro.storm.ui.theme.WarningDark
+        RemedyCategory.YANTRA -> com.astro.storm.ui.theme.PlanetSaturn
+        RemedyCategory.CHARITY -> com.astro.storm.ui.theme.SuccessDark
+        RemedyCategory.FASTING -> com.astro.storm.ui.theme.MarsRed
+        RemedyCategory.COLOR -> com.astro.storm.ui.theme.PlanetMercury
+        RemedyCategory.METAL -> com.astro.storm.ui.theme.SlateDark
+        RemedyCategory.RUDRAKSHA -> com.astro.storm.ui.theme.PlanetKetu
+        RemedyCategory.DEITY -> com.astro.storm.ui.theme.MarsRed
+        RemedyCategory.LIFESTYLE -> com.astro.storm.ui.theme.SuccessDark
     }
 }
 
 private fun getPriorityColor(priority: RemedyPriority): Color {
     return when (priority) {
-        RemedyPriority.ESSENTIAL -> Color(0xFFF44336)
-        RemedyPriority.HIGHLY_RECOMMENDED -> Color(0xFFFF9800)
-        RemedyPriority.RECOMMENDED -> Color(0xFF4CAF50)
-        RemedyPriority.OPTIONAL -> Color(0xFF9E9E9E)
+        RemedyPriority.ESSENTIAL -> com.astro.storm.ui.theme.MarsRed
+        RemedyPriority.HIGHLY_RECOMMENDED -> com.astro.storm.ui.theme.WarningDark
+        RemedyPriority.RECOMMENDED -> com.astro.storm.ui.theme.SuccessDark
+        RemedyPriority.OPTIONAL -> com.astro.storm.ui.theme.SlateMuted
     }
 }
 
@@ -1833,12 +1833,12 @@ private fun getPriorityIcon(priority: RemedyPriority): ImageVector {
 
 private fun getStrengthColor(strength: PlanetaryStrength): Color {
     return when (strength) {
-        PlanetaryStrength.VERY_STRONG -> Color(0xFF4CAF50)
-        PlanetaryStrength.STRONG -> Color(0xFF8BC34A)
-        PlanetaryStrength.MODERATE -> Color(0xFFFFC107)
-        PlanetaryStrength.WEAK -> Color(0xFFFF9800)
-        PlanetaryStrength.VERY_WEAK -> Color(0xFFF44336)
-        PlanetaryStrength.AFFLICTED -> Color(0xFF9C27B0)
+        PlanetaryStrength.VERY_STRONG -> com.astro.storm.ui.theme.SuccessDark
+        PlanetaryStrength.STRONG -> com.astro.storm.ui.theme.SuccessDark
+        PlanetaryStrength.MODERATE -> com.astro.storm.ui.theme.WarningDark
+        PlanetaryStrength.WEAK -> com.astro.storm.ui.theme.WarningDark
+        PlanetaryStrength.VERY_WEAK -> com.astro.storm.ui.theme.MarsRed
+        PlanetaryStrength.AFFLICTED -> com.astro.storm.ui.theme.PlanetVenus
     }
 }
 
@@ -1865,4 +1865,6 @@ private fun getWeekdayForPlanet(planet: Planet): String {
         else -> ""
     }
 }
+
+
 

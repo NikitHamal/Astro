@@ -28,6 +28,7 @@ import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AstroStormTheme
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
 
 class DebugActivity : ComponentActivity() {
 
@@ -76,7 +77,7 @@ fun DebugScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
+                .padding(NeoVedicTokens.SpaceMD),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -85,13 +86,13 @@ fun DebugScreen(
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceMD))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .background(AppTheme.CardBackgroundElevated, shape = MaterialTheme.shapes.medium)
-                    .padding(8.dp)
+                    .padding(NeoVedicTokens.SpaceXS)
             ) {
                 Text(
                     text = stackTrace,
@@ -103,10 +104,10 @@ fun DebugScreen(
                         .verticalScroll(rememberScrollState())
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceMD))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceMD)
             ) {
                 OutlinedButton(
                     onClick = { clipboardManager.setText(AnnotatedString(stackTrace)) },
@@ -133,4 +134,6 @@ fun DebugScreen(
         }
     }
 }
+
+
 

@@ -349,7 +349,7 @@ private fun OverallScoreCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -393,7 +393,7 @@ private fun OverallScoreCard(
 
             // Quality Badge
             Surface(
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = qualityColor.copy(alpha = 0.15f)
             ) {
                 Text(
@@ -446,7 +446,7 @@ private fun SummaryStatisticsCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -513,7 +513,7 @@ private fun SummaryStatisticsCard(
 
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = colors.ChipBackground
                 ) {
                     Row(
@@ -580,7 +580,7 @@ private fun LifeAreaChipSS(area: LifeArea, language: Language) {
     val colors = AppTheme.current
 
     Surface(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = colors.AccentPrimary.copy(alpha = 0.15f)
     ) {
         Text(
@@ -602,7 +602,7 @@ private fun InterpretationCardSS(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -647,7 +647,7 @@ private fun RecommendationsCardSS(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -789,7 +789,7 @@ private fun CurrentTransitCard(
             .fillMaxWidth()
             .clickable { isExpanded = !isExpanded },
         colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -874,7 +874,7 @@ private fun CurrentTransitCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(6.dp)
-                        .clip(RoundedCornerShape(3.dp)),
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                     color = qualityColor,
                     trackColor = qualityColor.copy(alpha = 0.2f)
                 )
@@ -889,7 +889,7 @@ private fun CurrentTransitCard(
                 Column(modifier = Modifier.padding(top = 16.dp)) {
                     // Quality Badge
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = qualityColor.copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -966,7 +966,7 @@ private fun ScoreBadgeSS(label: String, value: Int, maxValue: Int) {
     }
 
     Surface(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.15f)
     ) {
         Column(
@@ -1085,7 +1085,7 @@ private fun UpcomingTransitCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -1103,7 +1103,7 @@ private fun UpcomingTransitCard(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .background(colors.ChipBackground)
                         .padding(8.dp)
                 ) {
@@ -1160,7 +1160,7 @@ private fun UpcomingTransitCard(
             // Right: Quality and Scores
             Column(horizontalAlignment = Alignment.End) {
                 Surface(
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = qualityColor.copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -1258,7 +1258,7 @@ private fun PlanetDetailCardSS(
             .fillMaxWidth()
             .clickable { isExpanded = !isExpanded },
         colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -1290,7 +1290,7 @@ private fun PlanetDetailCardSS(
 
                 details.currentTransit?.let { transit ->
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = getQualityColorSS(transit.quality, colors).copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -1507,7 +1507,7 @@ private fun AnalysisTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -1581,7 +1581,7 @@ private fun AnalysisTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -1614,7 +1614,7 @@ private fun AnalysisTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -1801,7 +1801,7 @@ private fun ErrorStateSS(
             Spacer(modifier = Modifier.height(16.dp))
             Surface(
                 onClick = onRetry,
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = colors.AccentPrimary
             ) {
                 Text(
@@ -1828,3 +1828,5 @@ private fun getQualityColorSS(quality: TransitQuality, colors: com.astro.storm.u
 }
 
 private data class TabInfo(val title: String, val icon: ImageVector)
+
+

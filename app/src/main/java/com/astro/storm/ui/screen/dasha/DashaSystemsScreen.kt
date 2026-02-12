@@ -441,7 +441,7 @@ private fun NavigationPromptContent(
             Surface(
                 onClick = onNavigate,
                 color = AppTheme.AccentPrimary,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     text = stringResource(StringKeyDosha.DASHA_VIEW_SYSTEM, systemName),
@@ -501,7 +501,7 @@ private fun ErrorContent(message: String, onRetry: () -> Unit) {
             Surface(
                 onClick = onRetry,
                 color = AppTheme.AccentPrimary,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     text = stringResource(StringKey.BTN_RETRY),
@@ -573,9 +573,11 @@ private fun DashaSystemInfoDialog(
             }
         },
         containerColor = AppTheme.CardBackground,
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     )
 }
+
+
 
 
 

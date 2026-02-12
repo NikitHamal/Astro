@@ -362,12 +362,12 @@ private fun CareerSection(
                         .fillMaxWidth()
                         .shadow(
                             elevation = 2.dp,
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             ambientColor = strengthColor.copy(alpha = 0.08f),
                             spotColor = strengthColor.copy(alpha = 0.08f)
                         ),
                     color = AppTheme.CardBackground,
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier
@@ -382,7 +382,7 @@ private fun CareerSection(
                                 .height(32.dp)
                                 .background(
                                     strengthColor,
-                                    RoundedCornerShape(2.dp)
+                                    RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                                 )
                         )
                         
@@ -711,12 +711,12 @@ private fun EducationSection(
                         .fillMaxWidth()
                         .shadow(
                             elevation = 2.dp,
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             ambientColor = strengthColor.copy(alpha = 0.08f),
                             spotColor = strengthColor.copy(alpha = 0.08f)
                         ),
                     color = AppTheme.CardBackground,
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier
@@ -731,7 +731,7 @@ private fun EducationSection(
                                 .height(32.dp)
                                 .background(
                                     strengthColor,
-                                    RoundedCornerShape(2.dp)
+                                    RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                                 )
                         )
                         
@@ -896,3 +896,5 @@ private fun LocalizedTraitText(
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
 }
+
+

@@ -394,11 +394,11 @@ private fun CurrentPeriodCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.AccentGold.copy(alpha = 0.1f),
                 spotColor = AppTheme.AccentGold.copy(alpha = 0.1f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -567,7 +567,7 @@ private fun SignPeriodRow(
                     ) {
                         if (isDeha) {
                             Surface(
-                                shape = RoundedCornerShape(4.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                             ) {
                                 Text(
@@ -581,7 +581,7 @@ private fun SignPeriodRow(
                         }
                         if (isJeeva) {
                             Surface(
-                                shape = RoundedCornerShape(4.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = AppTheme.InfoColor.copy(alpha = 0.15f)
                             ) {
                                 Text(
@@ -649,7 +649,7 @@ private fun CurrentEffectsSection(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -691,7 +691,7 @@ private fun NakshatraGroupCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = groupColor.copy(alpha = 0.08f)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -768,7 +768,7 @@ private fun NakshatraGroupCard(
                     color = AppTheme.TextMuted
                 )
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = getApplicabilityColor(result.applicabilityScore).copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -795,7 +795,7 @@ private fun HealthIndicatorCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -842,7 +842,7 @@ private fun HealthIndicatorCard(
             if (currentMahadasha.isParamaAyushSign) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.SuccessColor.copy(alpha = 0.12f)
                 ) {
                     Row(
@@ -884,12 +884,12 @@ private fun InterpretationCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple()
             ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -988,12 +988,12 @@ private fun AboutKalachakraCard() {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple()
             ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -1110,11 +1110,11 @@ private fun DehaJeevaOverviewCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.AccentPrimary.copy(alpha = 0.1f),
                 spotColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -1242,7 +1242,7 @@ private fun DehaAnalysisCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.SuccessColor.copy(alpha = 0.08f)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -1301,7 +1301,7 @@ private fun JeevaAnalysisCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.InfoColor.copy(alpha = 0.08f)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -1361,7 +1361,7 @@ private fun RelationshipCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -1417,7 +1417,7 @@ private fun RecommendationsCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -1503,7 +1503,7 @@ private fun TimelineHeaderCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -1563,12 +1563,12 @@ private fun MahadashaCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = signColor.copy(alpha = 0.3f))
             ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = if (isCurrent) {
             signColor.copy(alpha = 0.08f)
         } else {
@@ -1620,7 +1620,7 @@ private fun MahadashaCard(
                             if (isCurrent) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Surface(
-                                    shape = RoundedCornerShape(5.dp),
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                     color = signColor.copy(alpha = 0.2f)
                                 ) {
                                     Text(
@@ -1654,7 +1654,7 @@ private fun MahadashaCard(
                         // Health indicator badge
                         Spacer(modifier = Modifier.height(4.dp))
                         Surface(
-                            shape = RoundedCornerShape(4.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = healthColor.copy(alpha = 0.15f)
                         ) {
                             Text(
@@ -1708,7 +1708,7 @@ private fun MahadashaCard(
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Surface(
-                            shape = RoundedCornerShape(5.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.CardBackgroundElevated
                         ) {
                             Text(
@@ -1756,7 +1756,7 @@ private fun AntardashaRow(
             .fillMaxWidth()
             .background(
                 color = if (isCurrent) signColor.copy(alpha = 0.12f) else Color.Transparent,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .padding(horizontal = 10.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -1814,7 +1814,7 @@ private fun AntardashaRow(
                     ) {
                         if (antardasha.isDehaSign) {
                             Surface(
-                                shape = RoundedCornerShape(3.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = AppTheme.SuccessColor.copy(alpha = 0.2f)
                             ) {
                                 Text(
@@ -1828,7 +1828,7 @@ private fun AntardashaRow(
                         }
                         if (antardasha.isJeevaSign) {
                             Surface(
-                                shape = RoundedCornerShape(3.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = AppTheme.InfoColor.copy(alpha = 0.2f)
                             ) {
                                 Text(
@@ -1888,7 +1888,7 @@ private fun InfoItem(label: String, value: String, color: Color) {
 private fun EmptyPeriodState() {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(
@@ -1925,7 +1925,7 @@ private fun LoadingContent() {
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(
                         Brush.radialGradient(
                             colors = listOf(
@@ -1978,7 +1978,7 @@ private fun ErrorContent(
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)),
                 contentAlignment = Alignment.Center
             ) {
@@ -2010,7 +2010,7 @@ private fun ErrorContent(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = AppTheme.AccentPrimary
                 ),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     text = stringResource(StringKey.BTN_TRY_AGAIN),
@@ -2036,7 +2036,7 @@ private fun EmptyContent(onBack: () -> Unit) {
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(AppTheme.CardBackground),
                 contentAlignment = Alignment.Center
             ) {
@@ -2065,7 +2065,7 @@ private fun EmptyContent(onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
             OutlinedButton(
                 onClick = onBack,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     text = stringResource(StringKey.BTN_GO_BACK),
@@ -2087,7 +2087,7 @@ private fun EmptyContent(onBack: () -> Unit) {
 private fun getHealthColor(health: KalachakraDashaCalculator.HealthIndicator): Color {
     return when (health) {
         KalachakraDashaCalculator.HealthIndicator.EXCELLENT -> AppTheme.SuccessColor
-        KalachakraDashaCalculator.HealthIndicator.GOOD -> Color(0xFF81C784)
+        KalachakraDashaCalculator.HealthIndicator.GOOD -> com.astro.storm.ui.theme.SuccessDark
         KalachakraDashaCalculator.HealthIndicator.MODERATE -> AppTheme.InfoColor
         KalachakraDashaCalculator.HealthIndicator.CHALLENGING -> AppTheme.WarningColor
         KalachakraDashaCalculator.HealthIndicator.CRITICAL -> AppTheme.ErrorColor
@@ -2098,7 +2098,7 @@ private fun getHealthColor(health: KalachakraDashaCalculator.HealthIndicator): C
 private fun getRelationshipColor(relationship: KalachakraDashaCalculator.DehaJeevaRelationship): Color {
     return when (relationship) {
         KalachakraDashaCalculator.DehaJeevaRelationship.HARMONIOUS -> AppTheme.SuccessColor
-        KalachakraDashaCalculator.DehaJeevaRelationship.SUPPORTIVE -> Color(0xFF81C784)
+        KalachakraDashaCalculator.DehaJeevaRelationship.SUPPORTIVE -> com.astro.storm.ui.theme.SuccessDark
         KalachakraDashaCalculator.DehaJeevaRelationship.NEUTRAL -> AppTheme.InfoColor
         KalachakraDashaCalculator.DehaJeevaRelationship.CHALLENGING -> AppTheme.WarningColor
         KalachakraDashaCalculator.DehaJeevaRelationship.TRANSFORMATIVE -> AppTheme.AccentPrimary
@@ -2198,4 +2198,6 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
+
+
 

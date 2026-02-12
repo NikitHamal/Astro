@@ -259,7 +259,7 @@ private fun OverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
@@ -374,7 +374,7 @@ private fun OverviewTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -421,7 +421,7 @@ private fun OverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -494,7 +494,7 @@ private fun StrongestWeakestCard(
         colors = CardDefaults.cardColors(
             containerColor = accentColor.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -599,7 +599,7 @@ private fun PlanetStrengthRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp)),
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                 color = getStrengthColorFromBala(strength.shodashvargaBala),
                 trackColor = AppTheme.ChipBackground
             )
@@ -698,7 +698,7 @@ private fun PlanetDetailCard(
             colors = CardDefaults.cardColors(
                 containerColor = accentColor.copy(alpha = 0.08f)
             ),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),
@@ -776,7 +776,7 @@ private fun PlanetDetailCard(
                 // Strength grade chip
                 Surface(
                     color = getStrengthGradeColor(strength.strengthGrade).copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(20.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -802,7 +802,7 @@ private fun PlanetDetailCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     Surface(
                         color = AppTheme.AccentGold.copy(alpha = 0.15f),
-                        shape = RoundedCornerShape(20.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -832,7 +832,7 @@ private fun PlanetDetailCard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -864,7 +864,7 @@ private fun PlanetDetailCard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -937,7 +937,7 @@ private fun VargaPositionRow(
             .background(
                 if (position.isVargottama) AppTheme.AccentGold.copy(alpha = 0.05f)
                 else Color.Transparent,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -966,7 +966,7 @@ private fun VargaPositionRow(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(
                 color = getDignityColor(position.dignity).copy(alpha = 0.15f),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     getLocalizedDignity(position.dignity, language),
@@ -1003,7 +1003,7 @@ private fun VimsopakaTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1058,7 +1058,7 @@ private fun VimsopakaCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1091,7 +1091,7 @@ private fun VimsopakaCard(
 
                 Surface(
                     color = getStrengthGradeColor(strength.strengthGrade).copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         getLocalizedStrengthGrade(strength.strengthGrade, language),
@@ -1166,7 +1166,7 @@ private fun VimsopakaSchemeColumn(
             modifier = Modifier
                 .width(60.dp)
                 .height(4.dp)
-                .clip(RoundedCornerShape(2.dp)),
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
             color = if (isPrimary) AppTheme.AccentPrimary else AppTheme.TextSecondary,
             trackColor = AppTheme.ChipBackground
         )
@@ -1187,7 +1187,7 @@ private fun VargottamaTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1223,7 +1223,7 @@ private fun VargottamaTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Box(
                     modifier = Modifier
@@ -1271,7 +1271,7 @@ private fun VargottamaPlanetCard(
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1323,7 +1323,7 @@ private fun VargottamaPlanetCard(
             vargottamas.forEach { vargottama ->
                 Surface(
                     color = AppTheme.CardBackground,
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(
@@ -1437,7 +1437,7 @@ private fun ShodashvargaInfoDialog(onDismiss: () -> Unit) {
 private fun getStrengthColorFromBala(bala: Double): Color {
     return when {
         bala >= 15.0 -> AppTheme.SuccessColor
-        bala >= 12.0 -> Color(0xFF8BC34A)
+        bala >= 12.0 -> com.astro.storm.ui.theme.SuccessDark
         bala >= 9.0 -> AppTheme.AccentPrimary
         bala >= 6.0 -> AppTheme.WarningColor
         else -> AppTheme.ErrorColor
@@ -1448,7 +1448,7 @@ private fun getStrengthColorFromBala(bala: Double): Color {
 private fun getStrengthGradeColor(grade: StrengthGrade): Color {
     return when (grade) {
         StrengthGrade.EXCELLENT -> AppTheme.SuccessColor
-        StrengthGrade.GOOD -> Color(0xFF8BC34A)
+        StrengthGrade.GOOD -> com.astro.storm.ui.theme.SuccessDark
         StrengthGrade.AVERAGE -> AppTheme.AccentPrimary
         StrengthGrade.WEAK -> AppTheme.WarningColor
         StrengthGrade.VERY_WEAK -> AppTheme.ErrorColor
@@ -1469,13 +1469,13 @@ private fun getStrengthIcon(grade: StrengthGrade): ImageVector {
 private fun getDignityColor(dignity: VargaDignity): Color {
     return when (dignity) {
         VargaDignity.EXALTED -> AppTheme.SuccessColor
-        VargaDignity.MOOLATRIKONA -> Color(0xFF8BC34A)
+        VargaDignity.MOOLATRIKONA -> com.astro.storm.ui.theme.SuccessDark
         VargaDignity.OWN_SIGN -> AppTheme.AccentPrimary
-        VargaDignity.GREAT_FRIEND -> Color(0xFF4CAF50)
-        VargaDignity.FRIEND -> Color(0xFF81C784)
+        VargaDignity.GREAT_FRIEND -> com.astro.storm.ui.theme.SuccessDark
+        VargaDignity.FRIEND -> com.astro.storm.ui.theme.SuccessDark
         VargaDignity.NEUTRAL -> AppTheme.TextMuted
         VargaDignity.ENEMY -> AppTheme.WarningColor
-        VargaDignity.GREAT_ENEMY -> Color(0xFFFF7043)
+        VargaDignity.GREAT_ENEMY -> com.astro.storm.ui.theme.WarningDark
         VargaDignity.DEBILITATED -> AppTheme.ErrorColor
     }
 }
@@ -1503,5 +1503,7 @@ private fun getLocalizedDignity(dignity: VargaDignity, language: Language): Stri
         VargaDignity.DEBILITATED -> StringResources.get(StringKeyDosha.DIGNITY_DEBILITATED, language)
     }
 }
+
+
 
 

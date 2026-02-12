@@ -443,11 +443,11 @@ private fun CurrentYoginiPeriodCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.AccentGold.copy(alpha = 0.1f),
                 spotColor = AppTheme.AccentGold.copy(alpha = 0.1f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -653,7 +653,7 @@ private fun CurrentYoginiEffects(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -703,7 +703,7 @@ private fun BirthBalanceCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -776,7 +776,7 @@ private fun ApplicabilityCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = if (applicability.isRecommended) {
             AppTheme.SuccessColor.copy(alpha = 0.08f)
         } else {
@@ -853,7 +853,7 @@ private fun YoginiSequenceCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -891,7 +891,7 @@ private fun RowScope.YoginiSequenceItem(
 ) {
     Surface(
         modifier = Modifier.weight(1f).padding(horizontal = 4.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Row(
@@ -937,7 +937,7 @@ private fun TimelineHeaderCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -994,12 +994,12 @@ private fun YoginiMahadashaCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = yoginiColor.copy(alpha = 0.3f))
             ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = if (isCurrent) {
             yoginiColor.copy(alpha = 0.08f)
         } else {
@@ -1052,7 +1052,7 @@ private fun YoginiMahadashaCard(
                             if (isCurrent) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Surface(
-                                    shape = RoundedCornerShape(5.dp),
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                     color = yoginiColor.copy(alpha = 0.2f)
                                 ) {
                                     Text(
@@ -1115,7 +1115,7 @@ private fun YoginiMahadashaCard(
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Surface(
-                            shape = RoundedCornerShape(5.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.CardBackgroundElevated
                         ) {
                             Text(
@@ -1159,7 +1159,7 @@ private fun YoginiAntardashaRow(
             .fillMaxWidth()
             .background(
                 color = if (isCurrent) yoginiColor.copy(alpha = 0.12f) else Color.Transparent,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .padding(horizontal = 10.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -1257,12 +1257,12 @@ private fun YoginiDetailCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = yoginiColor.copy(alpha = 0.3f))
             ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -1318,7 +1318,7 @@ private fun YoginiDetailCard(
                         }
                         Spacer(modifier = Modifier.height(4.dp))
                         Surface(
-                            shape = RoundedCornerShape(6.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = natureColor.copy(alpha = 0.15f)
                         ) {
                             Text(
@@ -1455,12 +1455,12 @@ private fun AboutYoginiDashaCard() {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple()
             ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -1546,7 +1546,7 @@ private fun InfoItem(label: String, value: String, color: Color) {
 private fun EmptyYoginiState() {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(
@@ -1583,7 +1583,7 @@ private fun YoginiDashaLoadingContent() {
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(
                         Brush.radialGradient(
                             colors = listOf(
@@ -1636,7 +1636,7 @@ private fun YoginiDashaErrorContent(
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)),
                 contentAlignment = Alignment.Center
             ) {
@@ -1668,7 +1668,7 @@ private fun YoginiDashaErrorContent(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = AppTheme.AccentPrimary
                 ),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     text = stringResource(StringKey.BTN_TRY_AGAIN),
@@ -1694,7 +1694,7 @@ private fun YoginiDashaEmptyContent(onBack: () -> Unit) {
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(AppTheme.CardBackground),
                 contentAlignment = Alignment.Center
             ) {
@@ -1723,7 +1723,7 @@ private fun YoginiDashaEmptyContent(onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
             OutlinedButton(
                 onClick = onBack,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     text = stringResource(StringKey.BTN_GO_BACK),
@@ -1744,7 +1744,7 @@ private fun getYoginiColor(yogini: YoginiDashaCalculator.Yogini): Color {
 private fun getNatureColor(nature: YoginiDashaCalculator.YoginiNature): Color {
     return when (nature) {
         YoginiDashaCalculator.YoginiNature.HIGHLY_AUSPICIOUS -> AppTheme.SuccessColor
-        YoginiDashaCalculator.YoginiNature.AUSPICIOUS -> Color(0xFF81C784)
+        YoginiDashaCalculator.YoginiNature.AUSPICIOUS -> com.astro.storm.ui.theme.SuccessDark
         YoginiDashaCalculator.YoginiNature.MIXED -> AppTheme.InfoColor
         YoginiDashaCalculator.YoginiNature.CHALLENGING -> AppTheme.WarningColor
         YoginiDashaCalculator.YoginiNature.DIFFICULT -> AppTheme.ErrorColor
@@ -1813,4 +1813,6 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
+
+
 

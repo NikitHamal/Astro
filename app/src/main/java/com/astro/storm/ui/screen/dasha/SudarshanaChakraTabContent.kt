@@ -188,11 +188,11 @@ private fun SudarshanaCurrentYearCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.AccentTeal.copy(alpha = 0.1f),
                 spotColor = AppTheme.AccentTeal.copy(alpha = 0.1f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -272,7 +272,7 @@ private fun SudarshanaCurrentYearCard(
                 // Year score
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(14.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.CardBackgroundElevated
                 ) {
                     Row(
@@ -293,7 +293,7 @@ private fun SudarshanaCurrentYearCard(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(8.dp)
-                                    .clip(RoundedCornerShape(4.dp)),
+                                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                                 color = getStrengthColor(currentYearData.combinedStrength),
                                 trackColor = AppTheme.DividerColor
                             )
@@ -324,7 +324,7 @@ private fun SudarshanaCurrentYearCard(
                 if (currentYearData.combinedEffects.isNotEmpty()) {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(14.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = AppTheme.CardBackgroundElevated
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -404,7 +404,7 @@ private fun ReferencePointCard(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.1f)
     ) {
         Column(
@@ -446,7 +446,7 @@ private fun SudarshanaTripleReferenceCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -520,7 +520,7 @@ private fun BirthReferenceItem(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(
@@ -575,12 +575,12 @@ private fun SudarshanaInfoCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple()
             ) { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -641,7 +641,7 @@ private fun SudarshanaInfoCard(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Surface(
-                        shape = RoundedCornerShape(14.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = AppTheme.CardBackgroundElevated
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -737,12 +737,12 @@ private fun SudarshanaYearCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = strengthColor.copy(alpha = 0.3f))
             ) { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = if (isCurrent) strengthColor.copy(alpha = 0.08f) else AppTheme.CardBackground
     ) {
         Column(
@@ -761,7 +761,7 @@ private fun SudarshanaYearCard(
                 ) {
                     // Year badge
                     Surface(
-                        shape = RoundedCornerShape(10.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = if (isCurrent) strengthColor else AppTheme.CardBackgroundElevated
                     ) {
                         Text(
@@ -786,7 +786,7 @@ private fun SudarshanaYearCard(
                             if (isCurrent) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Surface(
-                                    shape = RoundedCornerShape(4.dp),
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                     color = strengthColor.copy(alpha = 0.2f)
                                 ) {
                                     Text(
@@ -907,7 +907,7 @@ private fun YearSignDetail(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(
@@ -958,5 +958,7 @@ private fun getStrengthLabel(strength: Double, language: com.astro.storm.core.co
     }
     return StringResources.get(key, language)
 }
+
+
 
 

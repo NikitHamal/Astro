@@ -33,6 +33,7 @@ import com.astro.storm.ui.components.ProfileHeaderRow
 import com.astro.storm.ui.components.ProfileSwitcherBottomSheet
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.NeoVedicTokens
 import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.viewmodel.ChartUiState
 import com.astro.storm.ui.viewmodel.ChartViewModel
@@ -355,8 +356,8 @@ private fun NeoVedicTopBar(
 
     Surface(
         color = colors.ScreenBackground,
-        tonalElevation = 0.dp,
-        shadowElevation = 0.dp,
+        tonalElevation = NeoVedicTokens.SurfaceElevation,
+        shadowElevation = NeoVedicTokens.SurfaceElevation,
         modifier = Modifier
             .fillMaxWidth()
             .drawBehind {
@@ -365,7 +366,7 @@ private fun NeoVedicTopBar(
                     color = borderColor,
                     start = Offset(0f, size.height),
                     end = Offset(size.width, size.height),
-                    strokeWidth = 1.dp.toPx()
+                    strokeWidth = NeoVedicTokens.BorderWidth.toPx()
                 )
             }
     ) {
@@ -373,7 +374,7 @@ private fun NeoVedicTopBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .statusBarsPadding()
-                .padding(horizontal = 20.dp, vertical = 14.dp),
+                .padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceSM + NeoVedicTokens.SpaceXXS / 2),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -414,7 +415,7 @@ private fun NeoVedicBottomNavigation(
     NavigationBar(
         containerColor = colors.NavBarBackground,
         contentColor = colors.TextPrimary,
-        tonalElevation = 0.dp,
+        tonalElevation = NeoVedicTokens.SurfaceElevation,
         modifier = Modifier
             .drawBehind {
                 // Hairline top border
@@ -422,7 +423,7 @@ private fun NeoVedicBottomNavigation(
                     color = borderColor,
                     start = Offset(0f, 0f),
                     end = Offset(size.width, 0f),
-                    strokeWidth = 1.dp.toPx()
+                    strokeWidth = NeoVedicTokens.BorderWidth.toPx()
                 )
             }
     ) {
@@ -437,7 +438,7 @@ private fun NeoVedicBottomNavigation(
                     Icon(
                         imageVector = if (isSelected) tab.selectedIcon else tab.unselectedIcon,
                         contentDescription = localizedTitle,
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(NeoVedicTokens.SpaceLG - NeoVedicTokens.SpaceXXS / 2)
                     )
                 },
                 label = {
@@ -489,3 +490,5 @@ enum class MainTab(
         return StringResources.get(titleKey, language)
     }
 }
+
+

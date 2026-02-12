@@ -126,7 +126,7 @@ fun AshtakavargaTabContent(chart: VedicChart) {
 private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -259,7 +259,7 @@ private fun SarvashtakavargaCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -355,7 +355,7 @@ private fun SAVSignBox(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .background(backgroundColor, RoundedCornerShape(8.dp))
+            .background(backgroundColor, RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
         Text(
@@ -429,7 +429,7 @@ private fun BhinnashtakavargaCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -649,7 +649,7 @@ private fun InterpretationGuideCard(isExpanded: Boolean, onToggleExpand: (Boolea
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -766,4 +766,6 @@ private fun GuideSection(
         }
     }
 }
+
+
 

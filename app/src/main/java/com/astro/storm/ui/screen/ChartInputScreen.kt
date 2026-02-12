@@ -375,7 +375,7 @@ fun ChartInputScreen(
                 }
             },
             containerColor = colors.CardBackground,
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         )
     }
 }
@@ -639,7 +639,7 @@ private fun DateSystemToggle(
 
     Surface(
         onClick = onToggle,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = colors.ChipBackground,
         border = BorderStroke(1.dp, colors.BorderColor)
     ) {
@@ -649,7 +649,7 @@ private fun DateSystemToggle(
         ) {
             // AD option
             Surface(
-                shape = RoundedCornerShape(14.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = if (!useBSPicker) colors.AccentPrimary else Color.Transparent,
                 modifier = Modifier.padding(1.dp)
             ) {
@@ -664,7 +664,7 @@ private fun DateSystemToggle(
 
             // BS option
             Surface(
-                shape = RoundedCornerShape(14.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = if (useBSPicker) colors.AccentPrimary else Color.Transparent,
                 modifier = Modifier.padding(1.dp)
             ) {
@@ -748,7 +748,7 @@ private fun GenerateButton(
             .fillMaxWidth()
             .height(56.dp)
             .semantics { contentDescription = buttonContentDesc },
-        shape = RoundedCornerShape(28.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = ButtonDefaults.buttonColors(
             containerColor = colors.ButtonBackground,
             contentColor = colors.ButtonText,
@@ -854,7 +854,7 @@ private fun ChartTimePickerDialog(
 
     androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
         Surface(
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
             color = colors.CardBackground,
             tonalElevation = 6.dp
         ) {
@@ -940,7 +940,7 @@ private fun ChartOutlinedTextField(
         label = { Text(label, color = colors.TextSecondary, fontSize = 14.sp) },
         modifier = modifier.fillMaxWidth(),
         singleLine = true,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = chartTextFieldColors(),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
@@ -981,7 +981,7 @@ private fun DateTimeChip(
                     Modifier.semantics { this.contentDescription = contentDescription }
                 } else Modifier
             ),
-        shape = RoundedCornerShape(26.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = colors.ChipBackground,
         border = BorderStroke(1.dp, colors.BorderColor)
     ) {
@@ -1010,7 +1010,7 @@ private fun GenderChip(
     Surface(
         onClick = onClick,
         modifier = modifier.height(40.dp),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = if (isSelected) colors.AccentPrimary else colors.ChipBackground,
         border = BorderStroke(1.dp, if (isSelected) colors.AccentPrimary else colors.BorderColor)
     ) {
@@ -1029,4 +1029,6 @@ private fun GenderChip(
         }
     }
 }
+
+
 

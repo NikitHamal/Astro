@@ -266,7 +266,7 @@ private fun LongevityStatusCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = statusColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -326,7 +326,7 @@ private fun TriMurtiCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -442,7 +442,7 @@ private fun TriMurtiRow(
                     modifier = Modifier
                         .width(60.dp)
                         .height(4.dp)
-                        .clip(RoundedCornerShape(2.dp)),
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                     color = color,
                     trackColor = color.copy(alpha = 0.2f),
                     strokeCap = StrokeCap.Round
@@ -470,7 +470,7 @@ private fun CurrentPeriodCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = natureColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -493,7 +493,7 @@ private fun CurrentPeriodCard(
                     )
                 }
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = natureColor.copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -515,7 +515,7 @@ private fun CurrentPeriodCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(8.dp)
-                        .clip(RoundedCornerShape(4.dp)),
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                     color = natureColor,
                     trackColor = natureColor.copy(alpha = 0.2f),
                     strokeCap = StrokeCap.Round
@@ -619,7 +619,7 @@ private fun ShoolaStatCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -699,7 +699,7 @@ private fun ShoolaPeriodCard(
             containerColor = if (period.isCurrent)
                 natureColor.copy(alpha = 0.08f) else AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -746,7 +746,7 @@ private fun ShoolaPeriodCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = if (period.isCurrent) natureColor.copy(alpha = 0.2f)
                         else AppTheme.ChipBackground
                     ) {
@@ -787,7 +787,7 @@ private fun ShoolaPeriodCard(
                                 color = AppTheme.TextMuted
                             )
                             Surface(
-                                shape = RoundedCornerShape(6.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = natureColor.copy(alpha = 0.15f),
                                 modifier = Modifier.padding(top = 4.dp)
                             ) {
@@ -807,7 +807,7 @@ private fun ShoolaPeriodCard(
                                 color = AppTheme.TextMuted
                             )
                             Surface(
-                                shape = RoundedCornerShape(6.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = getSeverityColor(period.healthSeverity).copy(alpha = 0.15f),
                                 modifier = Modifier.padding(top = 4.dp)
                             ) {
@@ -847,7 +847,7 @@ private fun ShoolaPeriodCard(
                         ) {
                             items(period.significantPlanets) { planet ->
                                 Surface(
-                                    shape = RoundedCornerShape(4.dp),
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                     color = AppTheme.ChipBackground
                                 ) {
                                     Text(
@@ -899,7 +899,7 @@ private fun ShoolaHealthSection(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -938,7 +938,7 @@ private fun HealthConcernsCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1014,7 +1014,7 @@ private fun VulnerabilityCard(
         colors = CardDefaults.cardColors(
             containerColor = getSeverityColor(vulnerability.severity).copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -1036,7 +1036,7 @@ private fun VulnerabilityCard(
                     )
                 }
                 Surface(
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = getSeverityColor(vulnerability.severity).copy(alpha = 0.2f)
                 ) {
                     Row(
@@ -1084,7 +1084,7 @@ private fun LongevityFactorsCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -1158,7 +1158,7 @@ private fun ShoolaRemediesSection(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -1207,7 +1207,7 @@ private fun ShoolaRemedyCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1215,7 +1215,7 @@ private fun ShoolaRemedyCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Surface(
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = typeColor.copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -1434,4 +1434,6 @@ private fun getSeverityColor(severity: HealthSeverity): Color {
         HealthSeverity.NONE -> AppTheme.TextMuted
     }
 }
+
+
 

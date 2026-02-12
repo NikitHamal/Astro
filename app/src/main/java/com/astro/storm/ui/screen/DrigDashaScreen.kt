@@ -47,7 +47,6 @@ import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaPeriod
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigAntardasha
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.SthiraKarakaInfo
 import com.astro.storm.ui.theme.AppTheme
-import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.DateTimeException
@@ -216,7 +215,7 @@ private fun OverviewTab(
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
             ) {
                 Column(
@@ -266,15 +265,15 @@ private fun LongevityCard(
     longevitySpan: AyurSpan
 ) {
     val spanColor = when (longevitySpan) {
-        AyurSpan.BALA_ARISHTA -> DarkAppThemeColors.ErrorColor
-        AyurSpan.ALPAYU -> DarkAppThemeColors.WarningColor
-        AyurSpan.MADHYAYU -> DarkAppThemeColors.AccentGold
-        AyurSpan.PURNAYU -> DarkAppThemeColors.SuccessColor
+        AyurSpan.BALA_ARISHTA -> AppTheme.ErrorColor
+        AyurSpan.ALPAYU -> AppTheme.WarningColor
+        AyurSpan.MADHYAYU -> AppTheme.AccentGold
+        AyurSpan.PURNAYU -> AppTheme.SuccessColor
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(
             containerColor = spanColor.copy(alpha = 0.1f)
         )
@@ -361,7 +360,7 @@ private fun CurrentPeriodCard(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -380,7 +379,7 @@ private fun CurrentPeriodCard(
                     Box(
                         modifier = Modifier
                             .size(48.dp)
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                             .background(signColor.copy(alpha = 0.15f)),
                         contentAlignment = Alignment.Center
                     ) {
@@ -411,11 +410,11 @@ private fun CurrentPeriodCard(
 
                 // Period Badge
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = if (period.isMarakaPeriod)
-                        DarkAppThemeColors.WarningColor.copy(alpha = 0.15f)
+                        AppTheme.WarningColor.copy(alpha = 0.15f)
                     else
-                        DarkAppThemeColors.SuccessColor.copy(alpha = 0.15f)
+                        AppTheme.SuccessColor.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = if (period.isMarakaPeriod)
@@ -425,9 +424,9 @@ private fun CurrentPeriodCard(
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = if (period.isMarakaPeriod)
-                            DarkAppThemeColors.WarningColor
+                            AppTheme.WarningColor
                         else
-                            DarkAppThemeColors.SuccessColor,
+                            AppTheme.SuccessColor,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                     )
                 }
@@ -466,7 +465,7 @@ private fun CurrentPeriodCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp)),
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                 color = signColor,
                 trackColor = AppTheme.DividerColor
             )
@@ -518,7 +517,7 @@ private fun KeySignsCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -544,7 +543,7 @@ private fun KeySignsCard(
                     sign = brahmaSign,
                     language = language,
                     icon = Icons.Outlined.AutoAwesome,
-                    color = DarkAppThemeColors.AccentGold,
+                    color = AppTheme.AccentGold,
                     description = stringResource(StringKeyDosha.DRIG_BRAHMA_DESC)
                 )
                 TrimurtiSignItem(
@@ -552,7 +551,7 @@ private fun KeySignsCard(
                     sign = rudraSign,
                     language = language,
                     icon = Icons.Outlined.Warning,
-                    color = DarkAppThemeColors.WarningColor,
+                    color = AppTheme.WarningColor,
                     description = stringResource(StringKeyDosha.DRIG_RUDRA_DESC)
                 )
                 TrimurtiSignItem(
@@ -560,7 +559,7 @@ private fun KeySignsCard(
                     sign = maheshwaraSign,
                     language = language,
                     icon = Icons.Outlined.SelfImprovement,
-                    color = DarkAppThemeColors.LifeAreaSpiritual,
+                    color = AppTheme.LifeAreaSpiritual,
                     description = stringResource(StringKeyDosha.DRIG_MAHESHWARA_DESC)
                 )
             }
@@ -680,10 +679,10 @@ private fun DashaPeriodCard(
             .border(
                 width = if (isCurrentPeriod) 2.dp else 0.dp,
                 color = borderColor,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .clickable { onExpandClick() },
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(
             containerColor = if (isCurrentPeriod)
                 AppTheme.AccentPrimary.copy(alpha = 0.05f)
@@ -703,7 +702,7 @@ private fun DashaPeriodCard(
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .background(signColor.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -731,7 +730,7 @@ private fun DashaPeriodCard(
                         if (isCurrentPeriod) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Surface(
-                                shape = RoundedCornerShape(4.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = AppTheme.AccentPrimary.copy(alpha = 0.2f)
                             ) {
                                 Text(
@@ -757,13 +756,13 @@ private fun DashaPeriodCard(
                 ) {
                     if (period.isMarakaPeriod) {
                         Surface(
-                            shape = RoundedCornerShape(4.dp),
-                            color = DarkAppThemeColors.WarningColor.copy(alpha = 0.15f)
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            color = AppTheme.WarningColor.copy(alpha = 0.15f)
                         ) {
                             Text(
                                 text = stringResource(StringKeyDosha.DRIG_MARAKA),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DarkAppThemeColors.WarningColor,
+                                color = AppTheme.WarningColor,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                             )
                         }
@@ -881,9 +880,9 @@ private fun MarakaAnalysisTab(
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(
-                    containerColor = DarkAppThemeColors.WarningColor.copy(alpha = 0.1f)
+                    containerColor = AppTheme.WarningColor.copy(alpha = 0.1f)
                 )
             ) {
                 Row(
@@ -895,7 +894,7 @@ private fun MarakaAnalysisTab(
                     Icon(
                         imageVector = Icons.Outlined.Warning,
                         contentDescription = null,
-                        tint = DarkAppThemeColors.WarningColor,
+                        tint = AppTheme.WarningColor,
                         modifier = Modifier.size(28.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
@@ -922,7 +921,7 @@ private fun MarakaAnalysisTab(
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
                 ) {
                     Column(
@@ -934,7 +933,7 @@ private fun MarakaAnalysisTab(
                         Icon(
                             imageVector = Icons.Outlined.CheckCircle,
                             contentDescription = null,
-                            tint = DarkAppThemeColors.SuccessColor,
+                            tint = AppTheme.SuccessColor,
                             modifier = Modifier.size(48.dp)
                         )
                         Spacer(modifier = Modifier.height(12.dp))
@@ -957,7 +956,7 @@ private fun MarakaAnalysisTab(
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
             ) {
                 Column(
@@ -971,7 +970,7 @@ private fun MarakaAnalysisTab(
                         Icon(
                             imageVector = Icons.Outlined.HealthAndSafety,
                             contentDescription = null,
-                            tint = DarkAppThemeColors.WarningColor,
+                            tint = AppTheme.WarningColor,
                             modifier = Modifier.size(24.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
@@ -1009,7 +1008,7 @@ private fun MarakaPeriodCard(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Row(
@@ -1021,14 +1020,14 @@ private fun MarakaPeriodCard(
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(DarkAppThemeColors.WarningColor.copy(alpha = 0.15f)),
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                    .background(AppTheme.WarningColor.copy(alpha = 0.15f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Warning,
                     contentDescription = null,
-                    tint = DarkAppThemeColors.WarningColor,
+                    tint = AppTheme.WarningColor,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -1053,7 +1052,7 @@ private fun MarakaPeriodCard(
                 text = "${period.durationYears} years",
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = DarkAppThemeColors.WarningColor
+                color = AppTheme.WarningColor
             )
         }
     }
@@ -1072,7 +1071,7 @@ private fun SthiraKarakasTab(
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(
                     containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
                 )
@@ -1122,7 +1121,7 @@ private fun SthiraKarakaCard(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Row(
@@ -1134,7 +1133,7 @@ private fun SthiraKarakaCard(
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(signColor.copy(alpha = 0.15f)),
                 contentAlignment = Alignment.Center
             ) {
@@ -1218,10 +1217,13 @@ private fun ErrorStateDD(message: String, modifier: Modifier = Modifier) {
 
 private fun getSignColor(sign: ZodiacSign): Color {
     return when (sign.element) {
-        "Fire" -> DarkAppThemeColors.PlanetMars
-        "Earth" -> DarkAppThemeColors.PlanetMercury
-        "Air" -> DarkAppThemeColors.PlanetVenus
-        "Water" -> DarkAppThemeColors.PlanetMoon
-        else -> DarkAppThemeColors.PlanetMars
+        "Fire" -> AppTheme.PlanetMars
+        "Earth" -> AppTheme.PlanetMercury
+        "Air" -> AppTheme.PlanetVenus
+        "Water" -> AppTheme.PlanetMoon
+        else -> AppTheme.PlanetMars
     }
 }
+
+
+

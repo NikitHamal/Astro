@@ -215,7 +215,7 @@ private fun KakshaSummaryCard(summary: com.astro.storm.ui.viewmodel.KakshaSummar
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -314,7 +314,7 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -355,7 +355,7 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
                 }
                 
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = qualityColor.copy(alpha = 0.1f)
                 ) {
                     Text(
@@ -422,7 +422,7 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
             
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = colors.ScreenBackground.copy(alpha = 0.5f)
             ) {
                 Text(
@@ -538,7 +538,7 @@ private fun FavorablePeriodItem(period: KakshaTransitCalculator.FavorableKakshaP
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = colors.SuccessColor.copy(alpha = 0.05f))
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
@@ -563,7 +563,7 @@ private fun FavorablePeriodItem(period: KakshaTransitCalculator.FavorableKakshaP
                     )
                 }
                 Surface(
-                    shape = RoundedCornerShape(4.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = colors.SuccessColor.copy(alpha = 0.1f)
                 ) {
                     Text(
@@ -611,7 +611,7 @@ private fun KakshaChangeItem(change: KakshaTransitCalculator.KakshaChange, langu
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
     ) {
         Row(
@@ -647,7 +647,7 @@ private fun KakshaChangeItem(change: KakshaTransitCalculator.KakshaChange, langu
             
             Column(horizontalAlignment = Alignment.End) {
                 Surface(
-                    shape = RoundedCornerShape(4.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = if (change.willHaveBindu) colors.SuccessColor.copy(alpha = 0.1f) else colors.ErrorColor.copy(alpha = 0.1f)
                 ) {
                     Text(
@@ -694,7 +694,7 @@ private fun TimelineKakshaTab(
         items(result.upcomingChanges) { change ->
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
             ) {
                 Row(
@@ -761,7 +761,7 @@ private fun FavorableKakshaTab(
         items(result.favorablePeriods) { period ->
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -834,10 +834,12 @@ private fun KakshaErrorContent(message: String, modifier: Modifier = Modifier, o
 
 private fun getQualityColor(quality: KakshaQuality): Color {
     return when (quality) {
-        KakshaQuality.EXCELLENT -> Color(0xFF4CAF50)
-        KakshaQuality.GOOD -> Color(0xFF2196F3)
-        KakshaQuality.MODERATE -> Color(0xFFFFA000)
-        KakshaQuality.POOR -> Color(0xFFF44336)
+        KakshaQuality.EXCELLENT -> com.astro.storm.ui.theme.SuccessDark
+        KakshaQuality.GOOD -> com.astro.storm.ui.theme.PlanetSaturn
+        KakshaQuality.MODERATE -> com.astro.storm.ui.theme.WarningDark
+        KakshaQuality.POOR -> com.astro.storm.ui.theme.MarsRed
     }
 }
+
+
 

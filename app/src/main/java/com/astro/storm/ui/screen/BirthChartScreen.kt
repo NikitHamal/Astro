@@ -225,7 +225,7 @@ fun EmptyChartScreen(
                 Box(
                     modifier = Modifier
                         .size(80.dp)
-                        .clip(RoundedCornerShape(20.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .background(AppTheme.CardBackground),
                     contentAlignment = Alignment.Center
                 ) {
@@ -260,4 +260,6 @@ fun EmptyChartScreen(
         }
     }
 }
+
+
 

@@ -153,11 +153,11 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                         .padding(vertical = 4.dp)
                         .shadow(
                             elevation = 4.dp,
-                            shape = RoundedCornerShape(16.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             ambientColor = AppTheme.AccentPrimary.copy(alpha = 0.08f),
                             spotColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
                         ),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.CardBackground
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -251,7 +251,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                                     Surface(
                                         modifier = Modifier.fillMaxWidth(),
                                         color = AppTheme.CardBackgroundElevated,
-                                        shape = RoundedCornerShape(10.dp)
+                                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                                     ) {
                                         Row(
                                             modifier = Modifier
@@ -999,3 +999,5 @@ private fun RemediesTab(remedies: RemedialProfile) {
 }
 
 private val dateFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
+
+

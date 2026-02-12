@@ -159,3 +159,5 @@ object ChartDetailUtils {
     fun angularDistance(degree1: Double, degree2: Double): Double =
         VedicAstrologyUtils.angularDistance(degree1, degree2)
 }
+
+

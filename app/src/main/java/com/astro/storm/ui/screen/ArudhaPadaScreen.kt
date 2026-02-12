@@ -232,7 +232,7 @@ private fun SummaryCard(analysis: ArudhaPadaAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -271,7 +271,7 @@ private fun KeyArudhasCard(analysis: ArudhaPadaAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -323,7 +323,7 @@ private fun KeyArudhaChip(
 ) {
     val strengthColor = when (detail.arudha.strength) {
         ArudhaStrength.VERY_STRONG -> AppTheme.SuccessColor
-        ArudhaStrength.STRONG -> Color(0xFF4CAF50)
+        ArudhaStrength.STRONG -> com.astro.storm.ui.theme.SuccessDark
         ArudhaStrength.MODERATE -> AppTheme.AccentGold
         ArudhaStrength.WEAK -> AppTheme.WarningColor
         ArudhaStrength.VERY_WEAK -> AppTheme.ErrorColor
@@ -332,7 +332,7 @@ private fun KeyArudhaChip(
     Surface(
         modifier = modifier,
         color = AppTheme.ChipBackground,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
@@ -376,7 +376,7 @@ private fun AssessmentCard(assessment: ArudhaPadaCalculator.ArudhaOverallAssessm
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -476,7 +476,7 @@ private fun StrengthBar(
             modifier = Modifier
                 .weight(1f)
                 .height(8.dp)
-                .clip(RoundedCornerShape(4.dp)),
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
             color = color,
             trackColor = AppTheme.ChipBackground
         )
@@ -494,7 +494,7 @@ private fun KeyYogasPreview(yogas: List<ArudhaYoga>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -537,7 +537,7 @@ private fun YogaPreviewItem(yoga: ArudhaYoga) {
 
     Surface(
         color = AppTheme.ChipBackground,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -576,7 +576,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -657,7 +657,7 @@ private fun ArudhaPadaCard(
 ) {
     val strengthColor = when (arudha.strength) {
         ArudhaStrength.VERY_STRONG -> AppTheme.SuccessColor
-        ArudhaStrength.STRONG -> Color(0xFF4CAF50)
+        ArudhaStrength.STRONG -> com.astro.storm.ui.theme.SuccessDark
         ArudhaStrength.MODERATE -> AppTheme.AccentGold
         ArudhaStrength.WEAK -> AppTheme.WarningColor
         ArudhaStrength.VERY_WEAK -> AppTheme.ErrorColor
@@ -667,7 +667,7 @@ private fun ArudhaPadaCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -750,7 +750,7 @@ private fun ArudhaPadaCard(
                 )
                 Surface(
                     color = strengthColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         text = arudha.strength.name.replace("_", " "),
@@ -911,7 +911,7 @@ private fun YogaCard(yoga: ArudhaYoga) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -958,7 +958,7 @@ private fun YogaCard(yoga: ArudhaYoga) {
 
                 Surface(
                     color = strengthColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         text = yoga.strength.name,
@@ -977,7 +977,7 @@ private fun YogaCard(yoga: ArudhaYoga) {
                 yoga.involvedArudhas.forEach { arudha ->
                     Surface(
                         color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(6.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
                             text = arudha,
@@ -1074,7 +1074,7 @@ private fun RelationshipCard(relationship: ArudhaRelationship) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -1262,4 +1262,6 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
+
 

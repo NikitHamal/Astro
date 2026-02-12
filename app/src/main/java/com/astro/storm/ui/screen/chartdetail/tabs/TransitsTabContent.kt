@@ -158,7 +158,7 @@ private fun TransitOverviewCard(analysis: TransitAnalyzer.TransitAnalysis) {
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -271,7 +271,7 @@ private fun OverallTransitAssessment(analysis: TransitAnalyzer.TransitAnalysis) 
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .clip(RoundedCornerShape(4.dp)),
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
             color = scoreColor,
             trackColor = ChartDetailColors.DividerColor
         )
@@ -290,7 +290,7 @@ private fun OverallTransitAssessment(analysis: TransitAnalyzer.TransitAnalysis) 
 private fun CurrentTransitsCard(analysis: TransitAnalyzer.TransitAnalysis) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -343,7 +343,7 @@ private fun CurrentTransitsCard(analysis: TransitAnalyzer.TransitAnalysis) {
 
                     if (position.isRetrograde) {
                         Surface(
-                            shape = RoundedCornerShape(4.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = ChartDetailColors.WarningColor.copy(alpha = 0.15f)
                         ) {
                             Text(
@@ -376,7 +376,7 @@ private fun GocharaResultsCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -519,7 +519,7 @@ private fun TransitAspectsCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -636,7 +636,7 @@ private fun TransitAspectRow(aspect: TransitAnalyzer.TransitAspect) {
 private fun SignificantPeriodsCard(analysis: TransitAnalyzer.TransitAnalysis) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -693,7 +693,7 @@ private fun SignificantPeriodRow(period: TransitAnalyzer.SignificantPeriod) {
                 modifier = Modifier.weight(1f)
             )
             Surface(
-                shape = RoundedCornerShape(4.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = intensityColor.copy(alpha = 0.15f)
             ) {
                 Text(
@@ -726,4 +726,6 @@ private fun SignificantPeriodRow(period: TransitAnalyzer.SignificantPeriod) {
         }
     }
 }
+
+
 

@@ -57,6 +57,7 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.NeoVedicTokens
 import com.astro.storm.ui.theme.PoppinsFontFamily
 import com.astro.storm.ui.theme.SpaceGroteskFamily
 import java.time.DateTimeException
@@ -74,15 +75,16 @@ import kotlin.math.roundToInt
 // "Ethereal Vedic Grid" - Sharp, parchment-flat, scripture-like
 // ============================================================================
 private object HomeDesignTokens {
-    val ScreenPadding = 20.dp
-    val SectionSpacing = 28.dp
-    val CardSpacing = 12.dp
-    val CardCornerRadius = 2.dp          // Sharp cut-paper feel
+    val ScreenPadding = NeoVedicTokens.ScreenPadding
+    val SectionSpacing = NeoVedicTokens.SectionSpacing
+    val CardSpacing = NeoVedicTokens.CardSpacing
+    val CardCornerRadius = NeoVedicTokens.CardCornerRadius
     val QuickActionSize = 72.dp
     val QuickActionIconSize = 26.dp
     val HeroCardMinHeight = 160.dp
+    val SnapshotCardMinHeight = 148.dp
     val CornerMarkerLength = 12.dp       // L-shaped corner markers
-    val BorderWidth = 1.dp               // Hairline borders
+    val BorderWidth = NeoVedicTokens.BorderWidth
 }
 
 // ============================================================================
@@ -599,7 +601,7 @@ private fun TodaySnapshotSection(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min),
+                .height(IntrinsicSize.Max),
             horizontalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
         ) {
             // Panchanga Card
@@ -663,15 +665,15 @@ private fun SnapshotCard(
     val colors = AppTheme.current
 
     Surface(
-        modifier = modifier,
+        modifier = modifier.heightIn(min = HomeDesignTokens.SnapshotCardMinHeight),
         shape = RoundedCornerShape(HomeDesignTokens.CardCornerRadius),
         color = colors.CardBackground,
         border = androidx.compose.foundation.BorderStroke(
             HomeDesignTokens.BorderWidth,
             colors.BorderColor
         ),
-        tonalElevation = 0.dp,
-        shadowElevation = 0.dp,
+        tonalElevation = NeoVedicTokens.CardElevation,
+        shadowElevation = NeoVedicTokens.CardElevation,
         onClick = onClick
     ) {
         Column(
@@ -1013,7 +1015,7 @@ private fun EmptyHomeState(
                 modifier = Modifier
                     .height(48.dp)
                     .widthIn(min = 200.dp),
-                shape = RoundedCornerShape(2.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 border = androidx.compose.foundation.BorderStroke(
                     1.dp,
                     colors.AccentGold
@@ -1604,4 +1606,6 @@ private fun resolveZoneId(timezone: String): ZoneId {
         }
     }
 }
+
+
 

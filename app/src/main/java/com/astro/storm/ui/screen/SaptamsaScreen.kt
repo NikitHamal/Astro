@@ -44,7 +44,6 @@ import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.D7LagnaAnalysis
 import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.FifthHouseAnalysis
 import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.JupiterAnalysis
 import com.astro.storm.ui.theme.AppTheme
-import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.astro.storm.core.common.StringKey
@@ -188,7 +187,7 @@ private fun OverviewTabSS(
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
             ) {
                 Column(
@@ -236,14 +235,14 @@ private fun ChildCountSummaryCard(
 ) {
     val displayCount = estimate.estimatedRange.last
     val countColor = when {
-        displayCount >= 3 -> DarkAppThemeColors.SuccessColor
-        displayCount >= 1 -> DarkAppThemeColors.AccentGold
-        else -> DarkAppThemeColors.WarningColor
+        displayCount >= 3 -> AppTheme.SuccessColor
+        displayCount >= 1 -> AppTheme.AccentGold
+        else -> AppTheme.WarningColor
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(
             containerColor = countColor.copy(alpha = 0.1f)
         )
@@ -326,12 +325,12 @@ private fun ChildCountSummaryCard(
                 StrengthIndicator(
                     label = StringResources.get(StringKeySaptamsa.FIFTH_HOUSE, language),
                     strength = estimate.fifthLordStrength,
-                    color = DarkAppThemeColors.AccentGold
+                    color = AppTheme.AccentGold
                 )
                 StrengthIndicator(
                     label = StringResources.get(StringKeySaptamsa.JUPITER, language),
                     strength = estimate.jupiterStrength,
-                    color = DarkAppThemeColors.PlanetJupiter
+                    color = AppTheme.PlanetJupiter
                 )
             }
         }
@@ -384,7 +383,7 @@ private fun D7LagnaCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -398,7 +397,7 @@ private fun D7LagnaCard(
                 Box(
                     modifier = Modifier
                         .size(48.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .background(AppTheme.AccentPrimary.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -475,7 +474,7 @@ private fun FifthHouseCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -489,7 +488,7 @@ private fun FifthHouseCard(
                 Icon(
                     imageVector = Icons.Outlined.Home,
                     contentDescription = null,
-                    tint = DarkAppThemeColors.AccentGold,
+                    tint = AppTheme.AccentGold,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
@@ -511,7 +510,7 @@ private fun FifthHouseCard(
                 InfoItem(
                     label = StringResources.get(StringKeySaptamsa.SIGN, language),
                     value = analysis.fifthHouseAnalysis.fifthSign.getLocalizedName(language),
-                    color = DarkAppThemeColors.AccentGold
+                    color = AppTheme.AccentGold
                 )
                 InfoItem(
                     label = StringResources.get(StringKeySaptamsa.LORD, language),
@@ -573,7 +572,7 @@ private fun PlanetChip(
     val planetColor = getPlanetColorSS(planet)
 
     Surface(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = planetColor.copy(alpha = 0.15f)
     ) {
         Text(
@@ -627,14 +626,14 @@ private fun ChildIndicationCard(
     language: Language
 ) {
     val genderColor = when (indication.gender) {
-        SaptamsaAnalyzer.ChildGender.MALE -> DarkAppThemeColors.AccentPrimary
-        SaptamsaAnalyzer.ChildGender.FEMALE -> DarkAppThemeColors.LifeAreaLove
-        else -> DarkAppThemeColors.AccentTeal
+        SaptamsaAnalyzer.ChildGender.MALE -> AppTheme.AccentPrimary
+        SaptamsaAnalyzer.ChildGender.FEMALE -> AppTheme.LifeAreaLove
+        else -> AppTheme.AccentTeal
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -684,7 +683,7 @@ private fun ChildIndicationCard(
 
                 // Strength Badge
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = getStrengthColor(indication.genderConfidence).copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -760,7 +759,7 @@ private fun ChildIndicationCard(
                 ) {
                     items(indication.characteristics) { trait ->
                         Surface(
-                            shape = RoundedCornerShape(6.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.ChipBackground
                         ) {
                             Text(
@@ -885,14 +884,14 @@ private fun FertilityOverviewCard(
     language: Language
 ) {
     val overallColor = when {
-        fertility.overallScore >= 0.7 -> DarkAppThemeColors.SuccessColor
-        fertility.overallScore >= 0.4 -> DarkAppThemeColors.AccentGold
-        else -> DarkAppThemeColors.WarningColor
+        fertility.overallScore >= 0.7 -> AppTheme.SuccessColor
+        fertility.overallScore >= 0.4 -> AppTheme.AccentGold
+        else -> AppTheme.WarningColor
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(
             containerColor = overallColor.copy(alpha = 0.1f)
         )
@@ -975,9 +974,9 @@ private fun FertilityFactorItem(
     icon: ImageVector
 ) {
     val scoreColor = when {
-        score >= 0.7 -> DarkAppThemeColors.SuccessColor
-        score >= 0.4 -> DarkAppThemeColors.AccentGold
-        else -> DarkAppThemeColors.WarningColor
+        score >= 0.7 -> AppTheme.SuccessColor
+        score >= 0.4 -> AppTheme.AccentGold
+        else -> AppTheme.WarningColor
     }
 
     Column(
@@ -1010,7 +1009,7 @@ private fun FavorablePeriodCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Row(
@@ -1022,7 +1021,7 @@ private fun FavorablePeriodCard(
             Icon(
                 imageVector = Icons.Outlined.CalendarMonth,
                 contentDescription = null,
-                tint = DarkAppThemeColors.SuccessColor,
+                tint = AppTheme.SuccessColor,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
@@ -1042,7 +1041,7 @@ private fun RecommendationsCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -1056,7 +1055,7 @@ private fun RecommendationsCard(
                 Icon(
                     imageVector = Icons.Outlined.Lightbulb,
                     contentDescription = null,
-                    tint = DarkAppThemeColors.AccentGold,
+                    tint = AppTheme.AccentGold,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
@@ -1080,7 +1079,7 @@ private fun RecommendationsCard(
                             .padding(top = 6.dp)
                             .size(6.dp)
                             .clip(CircleShape)
-                            .background(DarkAppThemeColors.AccentGold)
+                            .background(AppTheme.AccentGold)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
@@ -1159,13 +1158,13 @@ private fun SanthanaYogaCard(
     language: Language
 ) {
     val yogaColor = if (isPositive)
-        DarkAppThemeColors.SuccessColor
+        AppTheme.SuccessColor
     else
-        DarkAppThemeColors.WarningColor
+        AppTheme.WarningColor
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -1184,7 +1183,7 @@ private fun SanthanaYogaCard(
                     Box(
                         modifier = Modifier
                             .size(40.dp)
-                            .clip(RoundedCornerShape(10.dp))
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                             .background(yogaColor.copy(alpha = 0.15f)),
                         contentAlignment = Alignment.Center
                     ) {
@@ -1217,7 +1216,7 @@ private fun SanthanaYogaCard(
                 }
 
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = yogaColor.copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -1250,7 +1249,7 @@ private fun SectionHeaderSS(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
         )
@@ -1289,7 +1288,7 @@ private fun SectionHeaderSS(
 private fun EmptyStateSS(message: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -1363,23 +1362,26 @@ private fun ErrorStateSS(message: String, modifier: Modifier = Modifier) {
 
 private fun getPlanetColorSS(planet: Planet): Color {
     return when (planet) {
-        Planet.SUN -> DarkAppThemeColors.PlanetSun
-        Planet.MOON -> DarkAppThemeColors.PlanetMoon
-        Planet.MARS -> DarkAppThemeColors.PlanetMars
-        Planet.MERCURY -> DarkAppThemeColors.PlanetMercury
-        Planet.JUPITER -> DarkAppThemeColors.PlanetJupiter
-        Planet.VENUS -> DarkAppThemeColors.PlanetVenus
-        Planet.SATURN -> DarkAppThemeColors.PlanetSaturn
-        Planet.RAHU -> DarkAppThemeColors.PlanetRahu
-        Planet.KETU -> DarkAppThemeColors.PlanetKetu
-        else -> DarkAppThemeColors.AccentPrimary
+        Planet.SUN -> AppTheme.PlanetSun
+        Planet.MOON -> AppTheme.PlanetMoon
+        Planet.MARS -> AppTheme.PlanetMars
+        Planet.MERCURY -> AppTheme.PlanetMercury
+        Planet.JUPITER -> AppTheme.PlanetJupiter
+        Planet.VENUS -> AppTheme.PlanetVenus
+        Planet.SATURN -> AppTheme.PlanetSaturn
+        Planet.RAHU -> AppTheme.PlanetRahu
+        Planet.KETU -> AppTheme.PlanetKetu
+        else -> AppTheme.AccentPrimary
     }
 }
 
 private fun getStrengthColor(strength: Double): Color {
     return when {
-        strength >= 0.7 -> DarkAppThemeColors.SuccessColor
-        strength >= 0.4 -> DarkAppThemeColors.AccentGold
-        else -> DarkAppThemeColors.WarningColor
+        strength >= 0.7 -> AppTheme.SuccessColor
+        strength >= 0.4 -> AppTheme.AccentGold
+        else -> AppTheme.WarningColor
     }
 }
+
+
+

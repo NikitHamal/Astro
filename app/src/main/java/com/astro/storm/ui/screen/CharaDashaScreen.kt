@@ -391,11 +391,11 @@ private fun CurrentCharaDashaPeriodCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.AccentGold.copy(alpha = 0.1f),
                 spotColor = AppTheme.AccentGold.copy(alpha = 0.1f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -563,7 +563,7 @@ private fun CharaDashaSystemInfoCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -644,7 +644,7 @@ private fun CharaDashaInterpretationCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -781,7 +781,7 @@ private fun KarakamshaCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -841,7 +841,7 @@ private fun KarakamshaCard(
 private fun AboutKarakasCard(language: Language) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -889,7 +889,7 @@ private fun KarakaCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -960,7 +960,7 @@ private fun KarakaCard(
                     .fillMaxWidth()
                     .background(
                         AppTheme.CardBackgroundElevated,
-                        RoundedCornerShape(8.dp)
+                        RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     )
                     .padding(10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -988,7 +988,7 @@ private fun CharaDashaTimelineOverviewCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1035,7 +1035,7 @@ private fun CharaMahadashaCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = if (isCurrent) {
             AppTheme.AccentGold.copy(alpha = 0.08f)
         } else {
@@ -1093,7 +1093,7 @@ private fun CharaMahadashaCard(
                                     modifier = Modifier
                                         .background(
                                             AppTheme.AccentGold,
-                                            RoundedCornerShape(4.dp)
+                                            RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                                         )
                                         .padding(horizontal = 6.dp, vertical = 2.dp)
                                 ) {
@@ -1205,7 +1205,7 @@ private fun AntardashaRow(
             .fillMaxWidth()
             .background(
                 AppTheme.CardBackgroundElevated,
-                RoundedCornerShape(8.dp)
+                RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .padding(10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -1272,7 +1272,7 @@ private fun CharaDashaLoadingContent() {
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(
                         Brush.radialGradient(
                             colors = listOf(
@@ -1325,7 +1325,7 @@ private fun CharaDashaErrorContent(
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)),
                 contentAlignment = Alignment.Center
             ) {
@@ -1357,7 +1357,7 @@ private fun CharaDashaErrorContent(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = AppTheme.AccentPrimary
                 ),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     text = stringResource(StringKey.BTN_TRY_AGAIN),
@@ -1383,7 +1383,7 @@ private fun CharaDashaEmptyContent(onBack: () -> Unit) {
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(AppTheme.CardBackground),
                 contentAlignment = Alignment.Center
             ) {
@@ -1412,7 +1412,7 @@ private fun CharaDashaEmptyContent(onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
             OutlinedButton(
                 onClick = onBack,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     text = stringResource(StringKey.BTN_GO_BACK),
@@ -1423,4 +1423,6 @@ private fun CharaDashaEmptyContent(onBack: () -> Unit) {
         }
     }
 }
+
+
 

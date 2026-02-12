@@ -217,7 +217,7 @@ private fun PlanetaryConditionsSummary(
         modifier = Modifier.fillMaxWidth(),
         onClick = onClick ?: {},
         enabled = onClick != null,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -368,7 +368,7 @@ private fun PlanetDetailCard(
                     if (state.dignityStatus.isSignificant) append(", $dignityDisplayName")
                 }
             },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -490,7 +490,7 @@ private fun NakshatraChip(
 ) {
     Surface(
         onClick = onClick,
-        shape = RoundedCornerShape(4.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackgroundElevated
     ) {
         Row(
@@ -555,7 +555,7 @@ private fun ShadbalaProgressSection(shadbala: PlanetaryShadbala) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(4.dp)
-                .clip(RoundedCornerShape(2.dp)),
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
             color = strengthColor,
             trackColor = ChartDetailColors.DividerColor
         )
@@ -649,4 +649,6 @@ private fun TapForDetailsHint() {
         )
     }
 }
+
+
 

@@ -246,7 +246,7 @@ private fun BhriguBinduOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
@@ -297,7 +297,7 @@ private fun BhriguBinduOverviewTab(
                 // Calculation formula
                 Surface(
                     color = AppTheme.AccentTeal.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Column(
                         modifier = Modifier.padding(12.dp),
@@ -349,7 +349,7 @@ private fun BhriguBinduOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -385,7 +385,7 @@ private fun BhriguBinduOverviewTab(
             colors = CardDefaults.cardColors(
                 containerColor = getStrengthBackgroundColor(analysis.strengthAssessment.overallStrength)
             ),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(
@@ -444,7 +444,7 @@ private fun BhriguBinduOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -475,7 +475,7 @@ private fun BhriguBinduOverviewTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -520,7 +520,7 @@ private fun BhriguBinduAnalysisTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -556,7 +556,7 @@ private fun BhriguBinduAnalysisTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -645,7 +645,7 @@ private fun BhriguBinduTransitsTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -709,7 +709,7 @@ private fun BhriguBinduTransitsTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.AccentTeal.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -781,7 +781,7 @@ private fun BhriguBinduRemediesTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -926,7 +926,7 @@ private fun PlanetLordRow(label: String, planet: Planet, language: Language) {
 private fun ConjunctPlanetChip(planet: Planet, language: Language) {
     Surface(
         color = AppTheme.getPlanetColor(planet).copy(alpha = 0.1f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -996,7 +996,7 @@ private fun StrengthFactorCard(
                 onClick = onToggle
             ),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1070,7 +1070,7 @@ private fun LifeAreaCard(
                 onClick = onToggle
             ),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1114,7 +1114,7 @@ private fun LifeAreaCard(
 
                     Surface(
                         color = getAreaInfluenceColor(lifeAreaInfluence.influence).copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
                             getAreaInfluenceName(lifeAreaInfluence.influence),
@@ -1147,7 +1147,7 @@ private fun AspectingPlanetCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1215,7 +1215,7 @@ private fun TransitCard(
             else
                 AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1256,7 +1256,7 @@ private fun TransitCard(
                 if (transit.isConjunct) {
                     Surface(
                         color = AppTheme.AccentGold.copy(alpha = 0.2f),
-                        shape = RoundedCornerShape(6.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
                             stringResource(StringKeyDosha.CONJUNCT),
@@ -1290,7 +1290,7 @@ private fun UpcomingTransitCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1334,7 +1334,7 @@ private fun RecommendationCard(recommendation: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.AccentTeal.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1370,7 +1370,7 @@ private fun RemedyCard(
                 RemedyPriority.OPTIONAL -> AppTheme.CardBackground
             }
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1439,7 +1439,7 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Surface(
                     color = AppTheme.AccentTeal.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(
@@ -1484,7 +1484,7 @@ private fun getStrengthText(strength: OverallStrength): String = when (strength)
 @Composable
 private fun getStrengthColor(strength: OverallStrength): Color = when (strength) {
     OverallStrength.EXCELLENT -> AppTheme.SuccessColor
-    OverallStrength.GOOD -> Color(0xFF4CAF50)
+    OverallStrength.GOOD -> com.astro.storm.ui.theme.SuccessDark
     OverallStrength.MODERATE -> AppTheme.AccentTeal
     OverallStrength.CHALLENGING -> AppTheme.WarningColor
     OverallStrength.DIFFICULT -> AppTheme.ErrorColor
@@ -1493,7 +1493,7 @@ private fun getStrengthColor(strength: OverallStrength): Color = when (strength)
 @Composable
 private fun getStrengthBackgroundColor(strength: OverallStrength): Color = when (strength) {
     OverallStrength.EXCELLENT -> AppTheme.SuccessColor.copy(alpha = 0.08f)
-    OverallStrength.GOOD -> Color(0xFF4CAF50).copy(alpha = 0.08f)
+    OverallStrength.GOOD -> com.astro.storm.ui.theme.SuccessDark.copy(alpha = 0.08f)
     OverallStrength.MODERATE -> AppTheme.CardBackground
     OverallStrength.CHALLENGING -> AppTheme.WarningColor.copy(alpha = 0.08f)
     OverallStrength.DIFFICULT -> AppTheme.ErrorColor.copy(alpha = 0.08f)
@@ -1510,17 +1510,17 @@ private fun getStrengthIcon(strength: OverallStrength): ImageVector = when (stre
 @Composable
 private fun getInfluenceColor(influence: FactorInfluence): Color = when (influence) {
     FactorInfluence.HIGHLY_POSITIVE -> AppTheme.SuccessColor
-    FactorInfluence.POSITIVE -> Color(0xFF4CAF50)
+    FactorInfluence.POSITIVE -> com.astro.storm.ui.theme.SuccessDark
     FactorInfluence.NEUTRAL -> AppTheme.TextMuted
     FactorInfluence.CHALLENGING -> AppTheme.WarningColor
-    FactorInfluence.NEGATIVE -> Color(0xFFFF9800)
+    FactorInfluence.NEGATIVE -> com.astro.storm.ui.theme.WarningDark
     FactorInfluence.HIGHLY_NEGATIVE -> AppTheme.ErrorColor
 }
 
 @Composable
 private fun getAreaInfluenceColor(influence: AreaInfluence): Color = when (influence) {
     AreaInfluence.VERY_FAVORABLE -> AppTheme.SuccessColor
-    AreaInfluence.FAVORABLE -> Color(0xFF4CAF50)
+    AreaInfluence.FAVORABLE -> com.astro.storm.ui.theme.SuccessDark
     AreaInfluence.NEUTRAL -> AppTheme.AccentTeal
     AreaInfluence.CHALLENGING -> AppTheme.WarningColor
     AreaInfluence.NEEDS_ATTENTION -> AppTheme.ErrorColor
@@ -1635,4 +1635,6 @@ private fun getRemedyPriorityColor(priority: RemedyPriority): Color = when (prio
     RemedyPriority.RECOMMENDED -> AppTheme.AccentGold
     RemedyPriority.OPTIONAL -> AppTheme.AccentTeal
 }
+
+
 

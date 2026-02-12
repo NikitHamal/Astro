@@ -267,7 +267,7 @@ private fun WarStatusCard(analysis: GrahaYuddhaAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -316,7 +316,7 @@ private fun SummaryCard(summary: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -355,7 +355,7 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
     val impactLevel = analysis.interpretation.overallWarImpact
     val impactColor = when (impactLevel) {
         WarImpactLevel.NONE -> AppTheme.SuccessColor
-        WarImpactLevel.MILD -> Color(0xFF4CAF50)
+        WarImpactLevel.MILD -> com.astro.storm.ui.theme.SuccessDark
         WarImpactLevel.MODERATE -> AppTheme.AccentGold
         WarImpactLevel.SIGNIFICANT -> AppTheme.WarningColor
         WarImpactLevel.SEVERE -> AppTheme.ErrorColor
@@ -364,7 +364,7 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -393,13 +393,13 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
                     modifier = Modifier
                         .weight(1f)
                         .height(10.dp)
-                        .clip(RoundedCornerShape(5.dp)),
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                     color = impactColor,
                     trackColor = AppTheme.ChipBackground
                 )
                 Surface(
                     color = impactColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(6.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         text = impactLevel.displayName,
@@ -462,7 +462,7 @@ private fun PlanetChip(planet: com.astro.storm.core.model.Planet, isWinner: Bool
 
     Surface(
         color = color.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(6.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Text(
             text = planet.symbol,
@@ -478,7 +478,7 @@ private fun KeyInsightsCard(insights: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -529,7 +529,7 @@ private fun AffectedAreasCard(areas: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -566,7 +566,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -673,7 +673,7 @@ private fun WarCard(war: GrahaYuddhaResult) {
         onClick = { isExpanded = !isExpanded },
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -744,7 +744,7 @@ private fun WarCard(war: GrahaYuddhaResult) {
                 // Intensity badge
                 Surface(
                     color = intensityColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         text = war.intensityLevel.displayName,
@@ -868,7 +868,7 @@ private fun WarCard(war: GrahaYuddhaResult) {
 private fun DetailChip(label: String, value: String) {
     Surface(
         color = AppTheme.ChipBackground,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -893,7 +893,7 @@ private fun DetailChip(label: String, value: String) {
 private fun EffectsSection(title: String, color: Color, content: String) {
     Surface(
         color = color.copy(alpha = 0.05f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -965,7 +965,7 @@ private fun DashaEffectCard(effect: DashaWarEffect) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -1149,7 +1149,7 @@ private fun RemedyCard(remedy: WarRemedy) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -1191,7 +1191,7 @@ private fun RemedyCard(remedy: WarRemedy) {
                 remedy.mantra?.let { mantra ->
                     Surface(
                         color = AppTheme.ChipBackground,
-                        shape = RoundedCornerShape(6.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
                             text = mantra,
@@ -1266,4 +1266,6 @@ private fun GrahaYuddhaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
+
 

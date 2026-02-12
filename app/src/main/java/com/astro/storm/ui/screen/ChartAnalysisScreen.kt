@@ -52,6 +52,7 @@ import com.astro.storm.ui.screen.DeepNativeAnalysisBody
 import com.astro.storm.ui.screen.DeepPredictionsBody
 import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
 import com.astro.storm.ui.viewmodel.ChartViewModel
 
 /**
@@ -226,8 +227,8 @@ private fun AnalysisTabBar(
             .fillMaxWidth()
             .horizontalScroll(scrollState)
             .background(AppTheme.ScreenBackground)
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(horizontal = NeoVedicTokens.SpaceSM, vertical = NeoVedicTokens.SpaceXS),
+        horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXS)
     ) {
         AnalysisTab.entries.forEach { tab ->
             val isSelected = tab == selectedTab
@@ -246,7 +247,7 @@ private fun AnalysisTabBar(
                     Icon(
                         imageVector = tab.icon,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(NeoVedicTokens.SpaceMD + NeoVedicTokens.SpaceXXS)
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
@@ -442,4 +443,6 @@ private fun DeepPredictionsTabContentWrapper(chart: VedicChart) {
         )
     }
 }
+
+
 

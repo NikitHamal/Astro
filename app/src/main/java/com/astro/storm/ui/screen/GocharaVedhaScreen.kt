@@ -283,7 +283,7 @@ private fun TransitScoreCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -394,7 +394,7 @@ private fun MoonSignCard(moonSign: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -467,7 +467,7 @@ private fun VedhaStatCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -500,7 +500,7 @@ private fun KeyInsightsCard(insights: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -548,7 +548,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -627,7 +627,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
             .fillMaxWidth()
             .animateContentSize(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -676,7 +676,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                 ) {
                     // Effectiveness badge
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = getEffectivenessColor(transit.effectiveStrength).copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -715,7 +715,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                 if (transit.hasVedha) {
                     Text(text = "•", color = AppTheme.TextMuted)
                     Surface(
-                        shape = RoundedCornerShape(4.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = AppTheme.ErrorColor.copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -761,7 +761,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.ErrorColor.copy(alpha = 0.08f)
                         ) {
                             Column(modifier = Modifier.padding(12.dp)) {
@@ -810,7 +810,7 @@ private fun ActiveVedhasSection(analysis: GocharaVedhaCalculator.CompleteVedhaAn
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -865,7 +865,7 @@ private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction)
         colors = CardDefaults.cardColors(
             containerColor = getVedhaSeverityColor(vedha.severity).copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -888,7 +888,7 @@ private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction)
                     )
                 }
                 Surface(
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = getVedhaSeverityColor(vedha.severity).copy(alpha = 0.2f)
                 ) {
                     Text(
@@ -918,7 +918,7 @@ private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction)
                     modifier = Modifier
                         .weight(1f)
                         .height(6.dp)
-                        .clip(RoundedCornerShape(3.dp)),
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                     color = getVedhaSeverityColor(vedha.severity),
                     trackColor = AppTheme.DividerColor
                 )
@@ -955,7 +955,7 @@ private fun ForecastSection(analysis: GocharaVedhaCalculator.CompleteVedhaAnalys
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(
                 modifier = Modifier
@@ -1048,7 +1048,7 @@ private fun PlanetTransitSummaryCard(transit: GocharaVedhaCalculator.PlanetTrans
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -1212,7 +1212,7 @@ private fun getTransitScoreLabel(score: Int): String {
 private fun getVedhaSeverityColor(severity: GocharaVedhaCalculator.VedhaSeverity): Color {
     return when (severity) {
         GocharaVedhaCalculator.VedhaSeverity.COMPLETE -> AppTheme.ErrorColor
-        GocharaVedhaCalculator.VedhaSeverity.STRONG -> Color(0xFFFF9800)
+        GocharaVedhaCalculator.VedhaSeverity.STRONG -> com.astro.storm.ui.theme.WarningDark
         GocharaVedhaCalculator.VedhaSeverity.MODERATE -> AppTheme.WarningColor
         GocharaVedhaCalculator.VedhaSeverity.PARTIAL -> AppTheme.AccentGold
         GocharaVedhaCalculator.VedhaSeverity.NONE -> AppTheme.SuccessColor
@@ -1230,4 +1230,6 @@ private fun getEffectivenessColor(effectiveness: GocharaVedhaCalculator.TransitE
         GocharaVedhaCalculator.TransitEffectiveness.UNFAVORABLE -> AppTheme.ErrorColor
     }
 }
+
+
 

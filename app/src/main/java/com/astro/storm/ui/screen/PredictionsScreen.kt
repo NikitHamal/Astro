@@ -406,7 +406,7 @@ private fun LifePathCard(overview: LifeOverview) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -479,7 +479,7 @@ private fun LifePathCard(overview: LifeOverview) {
 
             Surface(
                 color = AppTheme.LifeAreaSpiritual.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Row(
                     modifier = Modifier.padding(12.dp),
@@ -521,7 +521,7 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -548,7 +548,7 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
                 // Energy Indicator
                 Surface(
                     color = getEnergyColor(period.overallEnergy).copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -622,7 +622,7 @@ private fun TransitHighlightChip(transit: TransitHighlight) {
 
     Surface(
         color = planetColor.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         modifier = Modifier.width(140.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
@@ -672,7 +672,7 @@ private fun ActiveYogasSummaryCard(yogas: List<ActiveYoga>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -705,7 +705,7 @@ private fun ActiveYogasSummaryCard(yogas: List<ActiveYoga>) {
 private fun YogaItem(yoga: ActiveYoga) {
     Surface(
         color = AppTheme.AccentGold.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -766,7 +766,7 @@ private fun ChallengesOpportunitiesCard(data: ChallengesOpportunities) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             // Opportunities
@@ -834,7 +834,7 @@ private fun ChallengesOpportunitiesCard(data: ChallengesOpportunities) {
 private fun OpportunityItem(opportunity: Opportunity) {
     Surface(
         color = AppTheme.SuccessColor.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -870,7 +870,7 @@ private fun OpportunityItem(opportunity: Opportunity) {
 private fun ChallengeItem(challenge: Challenge) {
     Surface(
         color = AppTheme.WarningColor.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -911,7 +911,7 @@ private fun QuickLifeAreasSummary(areas: List<LifeAreaPrediction>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
@@ -983,7 +983,7 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
             )
             .clickable { expanded = !expanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -993,7 +993,7 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .background(areaColor.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -1085,7 +1085,7 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
 
                     Surface(
                         color = areaColor.copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Row(
                             modifier = Modifier.padding(12.dp),
@@ -1149,7 +1149,7 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1173,7 +1173,7 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
             periods.forEach { period ->
                 Surface(
                     color = AppTheme.SuccessColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(
@@ -1224,7 +1224,7 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1248,7 +1248,7 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
             periods.forEach { period ->
                 Surface(
                     color = AppTheme.WarningColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text(
@@ -1299,7 +1299,7 @@ private fun KeyDatesCard(dates: List<KeyDate>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1382,7 +1382,7 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1414,7 +1414,7 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
             remedies.forEachIndexed { index, remedy ->
                 Surface(
                     color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier.padding(12.dp),
@@ -2028,5 +2028,7 @@ private fun getEnergyColor(energy: Int): Color = when {
 
 @Composable
 private fun getPlanetColor(planet: Planet): Color = AppTheme.getPlanetColor(planet)
+
+
 
 

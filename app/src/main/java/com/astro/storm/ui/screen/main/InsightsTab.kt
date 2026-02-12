@@ -336,7 +336,7 @@ private fun PartialErrorBanner(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.WarningColor.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.WarningColor.copy(alpha = 0.3f)),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -395,7 +395,7 @@ private fun HoroscopeUnavailableCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -409,7 +409,7 @@ private fun HoroscopeUnavailableCard(
             Box(
                 modifier = Modifier
                     .size(56.dp)
-                    .clip(RoundedCornerShape(2.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(AppTheme.ChipBackground),
                 contentAlignment = Alignment.Center
             ) {
@@ -447,7 +447,7 @@ private fun HoroscopeUnavailableCard(
 
             OutlinedButton(
                 onClick = onRetry,
-                shape = RoundedCornerShape(2.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = AppTheme.AccentPrimary
                 ),
@@ -484,7 +484,7 @@ private fun InsightsErrorState(
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(2.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(AppTheme.ErrorColor.copy(alpha = 0.15f)),
                 contentAlignment = Alignment.Center
             ) {
@@ -521,7 +521,7 @@ private fun InsightsErrorState(
 
             OutlinedButton(
                 onClick = onRetry,
-                shape = RoundedCornerShape(2.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = AppTheme.AccentPrimary
                 ),
@@ -595,7 +595,7 @@ private fun ShimmerCard(brush: Brush, height: Dp) {
         modifier = Modifier
             .fillMaxWidth()
             .height(height)
-            .clip(RoundedCornerShape(2.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .background(brush)
     )
 }
@@ -679,11 +679,11 @@ private fun PeriodSelectorItem(
 
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(2.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .border(
                 width = 1.dp,
                 color = borderColor,
-                shape = RoundedCornerShape(2.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .background(backgroundColor)
             .clickable(
@@ -734,7 +734,7 @@ private fun DailyHoroscopeHeader(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -760,11 +760,11 @@ private fun DailyHoroscopeHeader(
                 if (isTomorrow) {
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(2.dp))
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                             .border(
                                 width = 1.dp,
                                 color = AppTheme.AccentPrimary.copy(alpha = 0.4f),
-                                shape = RoundedCornerShape(2.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             )
                             .background(AppTheme.AccentPrimary.copy(alpha = 0.08f))
                             .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -856,11 +856,11 @@ private fun InfoChip(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(2.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .border(
                 width = 1.dp,
                 color = AppTheme.BorderColor,
-                shape = RoundedCornerShape(2.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .background(AppTheme.ChipBackground)
             .padding(horizontal = 12.dp, vertical = 8.dp),
@@ -905,7 +905,7 @@ private fun EnergyCard(overallEnergy: Int) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -981,7 +981,7 @@ private fun EnergyDot(index: Int, isActive: Boolean) {
     Box(
         modifier = Modifier
             .size(20.dp)
-            .clip(RoundedCornerShape(2.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .background(dotColor)
     )
 }
@@ -1052,7 +1052,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                 indication = null
             ) { expanded = !expanded },
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -1065,7 +1065,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(2.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .background(areaConfig.color.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -1112,11 +1112,11 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(2.dp))
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                             .border(
                                 width = 1.dp,
                                 color = areaConfig.color.copy(alpha = 0.2f),
-                                shape = RoundedCornerShape(2.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             )
                             .background(areaConfig.color.copy(alpha = 0.06f))
                             .padding(12.dp),
@@ -1200,7 +1200,7 @@ private fun LuckyElementsCard(lucky: HoroscopeCalculator.LuckyElements) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -1242,11 +1242,11 @@ private fun LuckyElementsCard(lucky: HoroscopeCalculator.LuckyElements) {
 private fun LuckyElement(icon: ImageVector, label: String, value: String) {
     Column(
         modifier = Modifier
-            .clip(RoundedCornerShape(2.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .border(
                 width = 1.dp,
                 color = AppTheme.BorderColor,
-                shape = RoundedCornerShape(2.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .background(AppTheme.ChipBackground)
             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -1288,7 +1288,7 @@ private fun RecommendationsCard(recommendations: List<StringKey>, cautions: List
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -1377,7 +1377,7 @@ private fun AffirmationCard(affirmationKey: StringKey) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -1444,7 +1444,7 @@ private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -1486,7 +1486,7 @@ private fun WeeklyEnergyChart(dailyHighlights: List<HoroscopeCalculator.DailyHig
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -1537,7 +1537,7 @@ private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
             modifier = Modifier
                 .width(32.dp)
                 .height(80.dp)
-                .clip(RoundedCornerShape(2.dp))
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 .background(AppTheme.ChipBackground),
             contentAlignment = Alignment.BottomCenter
         ) {
@@ -1545,7 +1545,7 @@ private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(animatedHeight)
-                    .clip(RoundedCornerShape(2.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(barColor)
             )
         }
@@ -1600,7 +1600,7 @@ private fun KeyDateCard(keyDate: HoroscopeCalculator.KeyDate) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -1612,7 +1612,7 @@ private fun KeyDateCard(keyDate: HoroscopeCalculator.KeyDate) {
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .clip(RoundedCornerShape(2.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(indicatorColor.copy(alpha = 0.15f)),
                 contentAlignment = Alignment.Center
             ) {
@@ -1705,7 +1705,7 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
                 indication = null
             ) { expanded = !expanded },
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -1718,7 +1718,7 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
                 Box(
                     modifier = Modifier
                         .size(32.dp)
-                        .clip(RoundedCornerShape(2.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .background(areaConfig.color.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -1770,7 +1770,7 @@ private fun WeeklyAdviceCard(advice: String) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -1834,7 +1834,7 @@ private fun CurrentDashaCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -1856,11 +1856,11 @@ private fun CurrentDashaCard(
 
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(2.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .border(
                             width = 1.dp,
                             color = AppTheme.SuccessColor.copy(alpha = 0.4f),
-                            shape = RoundedCornerShape(2.dp)
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                         )
                         .background(AppTheme.SuccessColor.copy(alpha = 0.08f))
                         .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -1950,7 +1950,7 @@ private fun PratyantardashaRow(pratyantardasha: DashaCalculator.Pratyantardasha)
         Box(
             modifier = Modifier
                 .size(20.dp)
-                .clip(RoundedCornerShape(2.dp))
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 .background(planetColor.copy(alpha = 0.15f)),
             contentAlignment = Alignment.Center
         ) {
@@ -2008,9 +2008,9 @@ private fun DashaPeriodRow(
         Box(
             modifier = Modifier
                 .size(if (isPrimary) 44.dp else 36.dp)
-                .clip(RoundedCornerShape(2.dp))
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 .background(planetColor.copy(alpha = 0.15f))
-                .border(width = 1.dp, color = planetColor, shape = RoundedCornerShape(2.dp)),
+                .border(width = 1.dp, color = planetColor, shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -2079,14 +2079,14 @@ private fun DashaProgressBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(height.dp)
-            .clip(RoundedCornerShape(1.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .background(AppTheme.ChipBackground)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth(animatedProgress)
                 .fillMaxHeight()
-                .clip(RoundedCornerShape(1.dp))
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 .background(color)
         )
     }
@@ -2110,7 +2110,7 @@ private fun DashaTimelinePreview(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -2131,11 +2131,11 @@ private fun DashaTimelinePreview(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(2.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .border(
                             width = 1.dp,
                             color = AppTheme.BorderColor,
-                            shape = RoundedCornerShape(2.dp)
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                         )
                         .background(AppTheme.ChipBackground)
                         .padding(12.dp),
@@ -2199,13 +2199,13 @@ private fun UpcomingPeriodItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(2.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .then(
                 if (isFirst) Modifier
                     .border(
                         width = 1.dp,
                         color = AppTheme.BorderColor,
-                        shape = RoundedCornerShape(2.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     )
                     .background(AppTheme.ChipBackground)
                 else Modifier
@@ -2216,7 +2216,7 @@ private fun UpcomingPeriodItem(
         Box(
             modifier = Modifier
                 .size(32.dp)
-                .clip(RoundedCornerShape(2.dp))
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 .background(planetColor.copy(alpha = 0.15f)),
             contentAlignment = Alignment.Center
         ) {
@@ -2297,7 +2297,7 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
     Surface(
         modifier = Modifier.width(160.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(2.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(1.dp, AppTheme.BorderColor),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -2311,7 +2311,7 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
                 Box(
                     modifier = Modifier
                         .size(36.dp)
-                        .clip(RoundedCornerShape(2.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .background(planetColor.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -2363,7 +2363,7 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
                     Box(
                         modifier = Modifier
                             .size(6.dp)
-                            .clip(RoundedCornerShape(1.dp))
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                             .background(
                                 if (index < strengthDots) trendColor else AppTheme.ChipBackground
                             )
@@ -2401,11 +2401,11 @@ private fun EmptyInsightsState(
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(2.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .border(
                         width = 1.dp,
                         color = colors.BorderColor,
-                        shape = RoundedCornerShape(2.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     )
                     .background(colors.ChipBackground),
                 contentAlignment = Alignment.Center
@@ -2448,7 +2448,7 @@ private fun EmptyInsightsState(
                 modifier = Modifier
                     .height(52.dp)
                     .widthIn(min = 200.dp),
-                shape = RoundedCornerShape(2.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 border = BorderStroke(1.dp, colors.AccentGold),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = colors.AccentGold
@@ -2558,3 +2558,5 @@ private fun getPlanetColor(planet: Planet): Color {
         else -> AppTheme.AccentPrimary
     }
 }
+
+

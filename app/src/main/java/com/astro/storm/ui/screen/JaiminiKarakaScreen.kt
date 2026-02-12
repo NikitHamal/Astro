@@ -47,7 +47,6 @@ import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.KarakamshaAnaly
 import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.SwamshaAnalysis
 import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.KarakenshiYoga
 import com.astro.storm.ui.theme.AppTheme
-import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -207,7 +206,7 @@ private fun KarakaCard(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Row(
@@ -341,7 +340,7 @@ private fun KarakamshaDetailCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -356,7 +355,7 @@ private fun KarakamshaDetailCard(
                 Box(
                     modifier = Modifier
                         .size(48.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .background(AppTheme.AccentPrimary.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -405,7 +404,7 @@ private fun KarakamshaDetailCard(
                     title = StringResources.get(StringKeyJaimini.INDICATOR_CAREER, language),
                     indicators = karakamsha.careerIndicators,
                     icon = Icons.Outlined.Work,
-                    color = DarkAppThemeColors.LifeAreaCareer
+                    color = AppTheme.LifeAreaCareer
                 )
             }
 
@@ -415,7 +414,7 @@ private fun KarakamshaDetailCard(
                     title = StringResources.get(StringKeyJaimini.INDICATOR_SPIRITUAL, language),
                     indicators = karakamsha.spiritualIndicators,
                     icon = Icons.Outlined.SelfImprovement,
-                    color = DarkAppThemeColors.LifeAreaSpiritual
+                    color = AppTheme.LifeAreaSpiritual
                 )
             }
 
@@ -425,7 +424,7 @@ private fun KarakamshaDetailCard(
                     title = StringResources.get(StringKeyJaimini.INDICATOR_RELATIONSHIPS, language),
                     indicators = karakamsha.relationshipIndicators,
                     icon = Icons.Outlined.Favorite,
-                    color = DarkAppThemeColors.LifeAreaLove
+                    color = AppTheme.LifeAreaLove
                 )
             }
         }
@@ -439,7 +438,7 @@ private fun SwamshaDetailCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -453,15 +452,15 @@ private fun SwamshaDetailCard(
                 Box(
                     modifier = Modifier
                         .size(48.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(DarkAppThemeColors.LifeAreaSpiritual.copy(alpha = 0.15f)),
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                        .background(AppTheme.LifeAreaSpiritual.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = swamsha.swamshaSign.getLocalizedName(language).take(2),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = DarkAppThemeColors.LifeAreaSpiritual
+                        color = AppTheme.LifeAreaSpiritual
                     )
                 }
 
@@ -568,7 +567,7 @@ private fun YogasTab(
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
                 ) {
                     Column(
@@ -607,13 +606,13 @@ private fun KarakenshiYogaCard(
     language: Language
 ) {
     val yogaColor = when {
-        yoga.isAuspicious -> DarkAppThemeColors.SuccessColor
-        else -> DarkAppThemeColors.WarningColor
+        yoga.isAuspicious -> AppTheme.SuccessColor
+        else -> AppTheme.WarningColor
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -630,7 +629,7 @@ private fun KarakenshiYogaCard(
                     Box(
                         modifier = Modifier
                             .size(40.dp)
-                            .clip(RoundedCornerShape(10.dp))
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                             .background(yogaColor.copy(alpha = 0.15f)),
                         contentAlignment = Alignment.Center
                     ) {
@@ -661,7 +660,7 @@ private fun KarakenshiYogaCard(
 
                 // Benefic/Malefic Badge
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = yogaColor.copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -743,7 +742,7 @@ private fun InterpretationTab(
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
             ) {
                 Column(
@@ -786,7 +785,7 @@ private fun AtmakarakaAnalysisCard(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -864,7 +863,7 @@ private fun GemstoneRecommendationsCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
     ) {
         Column(
@@ -878,7 +877,7 @@ private fun GemstoneRecommendationsCard(
                 Icon(
                     imageVector = Icons.Outlined.Diamond,
                     contentDescription = null,
-                    tint = DarkAppThemeColors.AccentGold,
+                    tint = AppTheme.AccentGold,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
@@ -902,7 +901,7 @@ private fun GemstoneRecommendationsCard(
                             .padding(top = 6.dp)
                             .size(6.dp)
                             .clip(CircleShape)
-                            .background(DarkAppThemeColors.AccentGold)
+                            .background(AppTheme.AccentGold)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
@@ -924,7 +923,7 @@ private fun HeaderCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
         )
@@ -967,7 +966,7 @@ private fun InfoCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.ChipBackground)
     ) {
         Row(
@@ -1047,15 +1046,18 @@ private fun ErrorStateSS(message: String, modifier: Modifier = Modifier) {
 
 private fun getPlanetColorSS(planet: Planet): Color {
     return when (planet) {
-        Planet.SUN -> DarkAppThemeColors.PlanetSun
-        Planet.MOON -> DarkAppThemeColors.PlanetMoon
-        Planet.MARS -> DarkAppThemeColors.PlanetMars
-        Planet.MERCURY -> DarkAppThemeColors.PlanetMercury
-        Planet.JUPITER -> DarkAppThemeColors.PlanetJupiter
-        Planet.VENUS -> DarkAppThemeColors.PlanetVenus
-        Planet.SATURN -> DarkAppThemeColors.PlanetSaturn
-        Planet.RAHU -> DarkAppThemeColors.PlanetRahu
-        Planet.KETU -> DarkAppThemeColors.PlanetKetu
-        else -> DarkAppThemeColors.AccentPrimary
+        Planet.SUN -> AppTheme.PlanetSun
+        Planet.MOON -> AppTheme.PlanetMoon
+        Planet.MARS -> AppTheme.PlanetMars
+        Planet.MERCURY -> AppTheme.PlanetMercury
+        Planet.JUPITER -> AppTheme.PlanetJupiter
+        Planet.VENUS -> AppTheme.PlanetVenus
+        Planet.SATURN -> AppTheme.PlanetSaturn
+        Planet.RAHU -> AppTheme.PlanetRahu
+        Planet.KETU -> AppTheme.PlanetKetu
+        else -> AppTheme.AccentPrimary
     }
 }
+
+
+

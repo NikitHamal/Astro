@@ -217,7 +217,7 @@ private fun YearRatingBadge(rating: Float) {
 
     Surface(
         color = color.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         modifier = Modifier.padding(end = 8.dp)
     ) {
         Row(
@@ -264,7 +264,7 @@ private fun YearSelector(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column {
             Row(
@@ -500,7 +500,7 @@ private fun SolarReturnCard(result: VarshaphalaResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -615,7 +615,7 @@ private fun InfoChip(
     Surface(
         modifier = modifier,
         color = AppTheme.ChipBackground,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
@@ -647,7 +647,7 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             // Year Lord Section
@@ -799,7 +799,7 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                         items(result.muntha.themes) { theme ->
                             Surface(
                                 color = AppTheme.AccentGold.copy(alpha = 0.15f),
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             ) {
                                 Text(
                                     theme,
@@ -829,7 +829,7 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
 private fun StrengthBadge(strength: String, language: com.astro.storm.core.common.Language) {
     Surface(
         color = getStrengthColor(strength, language).copy(alpha = 0.15f),
-        shape = RoundedCornerShape(6.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Text(
             strength,
@@ -851,7 +851,7 @@ private fun AnnualChartVisualization(result: VarshaphalaResult) {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -1114,7 +1114,7 @@ private fun PanchaVargiyaBalaCard(result: VarshaphalaResult) {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -1192,7 +1192,7 @@ private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
             modifier = Modifier
                 .weight(1f)
                 .height(8.dp)
-                .clip(RoundedCornerShape(4.dp)),
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
             color = getStrengthColor(bala.category, currentLanguage()),
             trackColor = AppTheme.DividerColor
         )
@@ -1209,7 +1209,7 @@ private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
 
         Surface(
             color = getStrengthColor(bala.category, currentLanguage()).copy(alpha = 0.15f),
-            shape = RoundedCornerShape(4.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Text(
                 bala.category.take(3),
@@ -1232,7 +1232,7 @@ private fun TriPatakiChakraCard(result: VarshaphalaResult) {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -1274,7 +1274,7 @@ private fun TriPatakiChakraCard(result: VarshaphalaResult) {
 
             Surface(
                 color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     chakra.dominantInfluence,
@@ -1311,7 +1311,7 @@ private fun TriPatakiSectorRow(sector: TriPatakiSector) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(AppTheme.ChipBackground, RoundedCornerShape(8.dp))
+            .background(AppTheme.ChipBackground, RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .padding(12.dp)
     ) {
         Text(
@@ -1357,7 +1357,7 @@ private fun MajorThemesCard(result: VarshaphalaResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1419,7 +1419,7 @@ private fun MonthsCard(result: VarshaphalaResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1452,7 +1452,7 @@ private fun MonthsCard(result: VarshaphalaResult) {
                         items(result.favorableMonths) { month ->
                             Surface(
                                 color = AppTheme.SuccessColor.copy(alpha = 0.15f),
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             ) {
                                 Text(
                                     getMonthName(month),
@@ -1478,7 +1478,7 @@ private fun MonthsCard(result: VarshaphalaResult) {
                         items(result.challengingMonths) { month ->
                             Surface(
                                 color = AppTheme.WarningColor.copy(alpha = 0.15f),
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             ) {
                                 Text(
                                     getMonthName(month),
@@ -1507,7 +1507,7 @@ private fun KeyDatesCard(result: VarshaphalaResult) {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -1603,7 +1603,7 @@ private fun OverallPredictionCard(result: VarshaphalaResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1667,7 +1667,7 @@ private fun TajikaAspectsHeader(aspects: List<TajikaAspectResult>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
@@ -1745,7 +1745,7 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1776,7 +1776,7 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
 
                     Surface(
                         color = color.copy(alpha = 0.15f),
-                        shape = RoundedCornerShape(4.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
                             aspect.type.getDisplayName(language),
@@ -1852,7 +1852,7 @@ private fun SahamsHeader() {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1893,7 +1893,7 @@ private fun SahamCard(saham: SahamResult) {
         colors = CardDefaults.cardColors(
             containerColor = if (isActive) AppTheme.CardBackground else AppTheme.CardBackground.copy(alpha = 0.7f)
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1918,7 +1918,7 @@ private fun SahamCard(saham: SahamResult) {
                 if (isActive) {
                     Surface(
                         color = AppTheme.SuccessColor.copy(alpha = 0.15f),
-                        shape = RoundedCornerShape(4.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
                             stringResource(StringKeyAnalysis.VARSHAPHALA_ACTIVE),
@@ -1991,7 +1991,7 @@ private fun DashaHeader() {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -2036,7 +2036,7 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                 AppTheme.AccentPrimary.copy(alpha = 0.1f)
             else AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = if (period.isCurrent) androidx.compose.foundation.BorderStroke(
             1.dp, AppTheme.AccentPrimary.copy(alpha = 0.5f)
         ) else null
@@ -2076,7 +2076,7 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Surface(
                                 color = AppTheme.AccentPrimary,
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             ) {
                                 Text(
                                     stringResource(StringKeyAnalysis.VARSHAPHALA_CURRENT),
@@ -2113,7 +2113,7 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(4.dp)
-                        .clip(RoundedCornerShape(2.dp)),
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                     color = AppTheme.AccentPrimary,
                     trackColor = AppTheme.DividerColor
                 )
@@ -2129,7 +2129,7 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                         items(period.keywords) { keyword ->
                             Surface(
                                 color = getPlanetColor(period.planet).copy(alpha = 0.15f),
-                                shape = RoundedCornerShape(6.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             ) {
                                 Text(
                                     keyword,
@@ -2190,7 +2190,7 @@ private fun HousePredictionCard(prediction: HousePrediction) {
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .clickable { isExpanded = !isExpanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -2274,7 +2274,7 @@ private fun HousePredictionCard(prediction: HousePrediction) {
                         items(prediction.keywords) { keyword ->
                             Surface(
                                 color = AppTheme.ChipBackground,
-                                shape = RoundedCornerShape(6.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             ) {
                                 Text(
                                     keyword,
@@ -2431,7 +2431,7 @@ private fun TajikaYogasCard(analysis: TajikaYogaCalculator.TajikaYogaAnalysis) {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -2526,7 +2526,7 @@ private fun TajikaYogaItem(yoga: TajikaYogaCalculator.TajikaYoga) {
             )
             Surface(
                 color = AppTheme.SurfaceColor,
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                  Text(
                      "${stringResource(StringKeyAnalysis.VARSHAPHALA_STRENGTH_SHORT)} ${String.format("%.1f", yoga.strength)}",
@@ -2551,6 +2551,8 @@ private fun TajikaYogaItem(yoga: TajikaYogaCalculator.TajikaYoga) {
         )
     }
 }
+
+
 
 
 

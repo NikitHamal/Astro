@@ -295,11 +295,11 @@ private fun AshtakavargaSummaryCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.SuccessColor.copy(alpha = 0.1f),
                 spotColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -378,7 +378,7 @@ private fun AshtakavargaSummaryCard(
             // Overall strength bar
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = AppTheme.CardBackgroundElevated
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
@@ -406,7 +406,7 @@ private fun AshtakavargaSummaryCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(8.dp)
-                            .clip(RoundedCornerShape(4.dp)),
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                         color = getBinduStrengthColor(strengthPercent),
                         trackColor = AppTheme.DividerColor
                     )
@@ -425,7 +425,7 @@ private fun AshtakavargaStatItem(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.1f)
     ) {
         Column(
@@ -455,7 +455,7 @@ private fun HouseStrengthDistribution(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -508,7 +508,7 @@ private fun HouseStrengthDistribution(
                             modifier = Modifier
                                 .width(28.dp)
                                 .height(80.dp)
-                                .clip(RoundedCornerShape(4.dp))
+                                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                                 .background(AppTheme.DividerColor)
                         ) {
                             Box(
@@ -523,7 +523,7 @@ private fun HouseStrengthDistribution(
                                                 getBinduColor(bindus).copy(alpha = 0.7f)
                                             )
                                         ),
-                                        shape = RoundedCornerShape(4.dp)
+                                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                                     )
                             )
                         }
@@ -593,7 +593,7 @@ private fun AshtakavargaInsightsCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -672,7 +672,7 @@ private fun InsightHouseChip(
 
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.1f)
     ) {
         Column(
@@ -708,7 +708,7 @@ private fun PlanetQuickView(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -825,7 +825,7 @@ private fun SarvashtakavargaHouseCard(
 
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -867,7 +867,7 @@ private fun SarvashtakavargaHouseCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp)),
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                 color = color,
                 trackColor = AppTheme.DividerColor
             )
@@ -941,12 +941,12 @@ private fun PlanetAshtakavargaCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = planetColor.copy(alpha = 0.3f))
             ) { onToggleExpand() },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -996,7 +996,7 @@ private fun PlanetAshtakavargaCard(
 
                 // Strength indicator
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = getBinduColor(totalBindus / 12).copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -1051,7 +1051,7 @@ private fun PlanetAshtakavargaCard(
                                         .size(32.dp)
                                         .background(
                                             getBinduColor(bindus).copy(alpha = 0.15f),
-                                            RoundedCornerShape(6.dp)
+                                            RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                                         ),
                                     contentAlignment = Alignment.Center
                                 ) {
@@ -1121,7 +1121,7 @@ private fun HouseDetailCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1132,7 +1132,7 @@ private fun HouseDetailCard(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Surface(
-                        shape = RoundedCornerShape(10.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = getBinduColor(totalBindus).copy(alpha = 0.15f)
                     ) {
                         Row(
@@ -1305,7 +1305,7 @@ private fun AshtakavargaInfoDialog(onDismiss: () -> Unit) {
             }
         },
         containerColor = AppTheme.CardBackground,
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     )
 }
 
@@ -1369,5 +1369,7 @@ private fun getHouseSignification(house: Int, language: Language): String {
     }
     return key?.let { StringResources.get(it, language) } ?: ""
 }
+
+
 
 

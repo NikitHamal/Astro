@@ -169,7 +169,7 @@ private fun PanchangaSummaryCard(panchanga: PanchangaData) {
         modifier = Modifier
             .fillMaxWidth()
             .semantics { contentDescription = "Panchanga summary for birth time" },
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground,
         tonalElevation = 2.dp
     ) {
@@ -391,7 +391,7 @@ private fun PanchangaElement(
         )
         Spacer(modifier = Modifier.height(6.dp))
         Surface(
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
             color = color.copy(alpha = 0.12f)
         ) {
             Text(
@@ -624,7 +624,7 @@ private fun ExpandableDetailCard(
             .fillMaxWidth()
             .clickable { onToggleExpand(!isExpanded) }
             .semantics { contentDescription = "$title: $value. Tap to ${if (isExpanded) "collapse" else "expand"}" },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground,
         tonalElevation = 1.dp
     ) {
@@ -672,7 +672,7 @@ private fun ExpandableDetailCard(
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = iconColor.copy(alpha = 0.12f)
                     ) {
                         Text(
@@ -723,7 +723,7 @@ private fun QualityBadge(quality: Quality) {
     }
 
     Surface(
-        shape = RoundedCornerShape(4.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.15f)
     ) {
         Text(
@@ -789,14 +789,14 @@ private fun ProgressRow(
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    shape = RoundedCornerShape(2.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = color.copy(alpha = 0.2f)
                 ) {}
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth((progress / 100).toFloat().coerceIn(0f, 1f))
                         .height(4.dp),
-                    shape = RoundedCornerShape(2.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = color
                 ) {}
             }
@@ -893,7 +893,7 @@ private fun PanchangaInfoCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground,
         tonalElevation = 1.dp
     ) {
@@ -1004,7 +1004,7 @@ private fun PanchangaInfoCard(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = ChartDetailColors.AccentGold.copy(alpha = 0.1f)
                     ) {
                         Text(
@@ -1045,4 +1045,6 @@ private fun getGanaColor(gana: String): Color {
         else -> ChartDetailColors.TextSecondary
     }
 }
+
+
 

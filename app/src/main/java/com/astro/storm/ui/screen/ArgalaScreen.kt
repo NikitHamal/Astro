@@ -257,7 +257,7 @@ private fun ArgalaOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -308,7 +308,7 @@ private fun ArgalaOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -429,7 +429,7 @@ private fun OverallArgalaCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
@@ -571,7 +571,7 @@ private fun KarmaPatternCard(analysis: ArgalaAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -624,7 +624,7 @@ private fun SignificantArgalasCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -657,7 +657,7 @@ private fun SignificantArgalaItem(
 
     Surface(
         color = natureColor.copy(alpha = 0.08f),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -709,7 +709,7 @@ private fun ArgalaStrengthBadge(strength: ArgalaStrength, color: Color) {
 
     Surface(
         color = bgColor.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Text(
             label,
@@ -727,7 +727,7 @@ private fun ArgalaStrengthBadge(strength: ArgalaStrength, color: Color) {
 private fun PlanetChip(planet: Planet, language: Language) {
     Surface(
         color = AppTheme.getPlanetColor(planet).copy(alpha = 0.15f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -817,7 +817,7 @@ private fun HouseGridSelector(
                     Surface(
                         onClick = { onSelectHouse(house) },
                         modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = backgroundColor
                     ) {
                         Box(
@@ -857,7 +857,7 @@ private fun HouseArgalaDetailCard(
                     ArgalaNature.MIXED -> AppTheme.InfoColor.copy(alpha = 0.08f)
                 }
             ),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(
@@ -907,7 +907,7 @@ private fun HouseArgalaDetailCard(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -943,7 +943,7 @@ private fun HouseArgalaDetailCard(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -993,7 +993,7 @@ private fun NetEffectIndicator(
 
     Surface(
         color = color.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -1029,7 +1029,7 @@ private fun ArgalaInfluenceItem(
 
     Surface(
         color = natureColor.copy(alpha = 0.08f),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -1048,7 +1048,7 @@ private fun ArgalaInfluenceItem(
                 )
                 Surface(
                     color = natureColor.copy(alpha = 0.2f),
-                    shape = RoundedCornerShape(6.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         when (argala.nature) {
@@ -1117,7 +1117,7 @@ private fun VirodhaArgalaItem(
             AppTheme.WarningColor.copy(alpha = 0.08f)
         else
             AppTheme.ChipBackground,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -1137,7 +1137,7 @@ private fun VirodhaArgalaItem(
                 if (virodha.isEffective) {
                     Surface(
                         color = AppTheme.WarningColor.copy(alpha = 0.2f),
-                        shape = RoundedCornerShape(6.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
                             stringResource(StringKeyUIExtra.ARGALA_EFFECTIVE),
@@ -1200,7 +1200,7 @@ private fun NetEffectCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1402,7 +1402,7 @@ private fun PlanetArgalaDetailCard(
             colors = CardDefaults.cardColors(
                 containerColor = planetColor.copy(alpha = 0.08f)
             ),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(
@@ -1459,7 +1459,7 @@ private fun PlanetArgalaDetailCard(
                         AppTheme.SuccessColor.copy(alpha = 0.15f)
                     else
                         AppTheme.WarningColor.copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -1490,7 +1490,7 @@ private fun PlanetArgalaDetailCard(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
@@ -1517,7 +1517,7 @@ private fun PlanetArgalaDetailCard(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
@@ -1634,4 +1634,6 @@ private fun getHouseName(house: Int, language: Language): String {
     }
     return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: ""
 }
+
+
 

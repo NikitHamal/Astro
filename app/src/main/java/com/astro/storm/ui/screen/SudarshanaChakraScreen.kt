@@ -233,7 +233,7 @@ private fun AgeSelector(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -392,7 +392,7 @@ private fun TripleViewContent(result: SudarshanaChakraResult) {
                 chakra = result.lagnaChakra,
                 title = stringResource(StringKeyDosha.SUDARSHANA_LAGNA_CHAKRA),
                 subtitle = stringResource(StringKeyDosha.SUDARSHANA_LAGNA_INFLUENCE),
-                color = Color(0xFF6366F1)
+                color = com.astro.storm.ui.theme.PlanetRahu
             )
         }
 
@@ -402,7 +402,7 @@ private fun TripleViewContent(result: SudarshanaChakraResult) {
                 chakra = result.chandraChakra,
                 title = stringResource(StringKeyDosha.SUDARSHANA_CHANDRA_CHAKRA),
                 subtitle = stringResource(StringKeyDosha.SUDARSHANA_CHANDRA_INFLUENCE),
-                color = Color(0xFF4ECDC4)
+                color = com.astro.storm.ui.theme.PlanetMercury
             )
         }
 
@@ -412,7 +412,7 @@ private fun TripleViewContent(result: SudarshanaChakraResult) {
                 chakra = result.suryaChakra,
                 title = stringResource(StringKeyDosha.SUDARSHANA_SURYA_CHAKRA),
                 subtitle = stringResource(StringKeyDosha.SUDARSHANA_SURYA_INFLUENCE),
-                color = Color(0xFFFF6B35)
+                color = com.astro.storm.ui.theme.PlanetSun
             )
         }
 
@@ -432,7 +432,7 @@ private fun CurrentSignsCard(result: SudarshanaChakraResult) {
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
@@ -465,19 +465,19 @@ private fun CurrentSignsCard(result: SudarshanaChakraResult) {
                     label = stringResource(StringKeyDosha.LAGNA_LABEL),
                     sign = result.lagnaChakra.activeSign,
                     house = result.lagnaChakra.activeHouse,
-                    color = Color(0xFF6366F1)
+                    color = com.astro.storm.ui.theme.PlanetRahu
                 )
                 SignIndicator(
                     label = stringResource(StringKeyDosha.MOON_LABEL),
                     sign = result.chandraChakra.activeSign,
                     house = result.chandraChakra.activeHouse,
-                    color = Color(0xFF4ECDC4)
+                    color = com.astro.storm.ui.theme.PlanetMercury
                 )
                 SignIndicator(
                     label = stringResource(StringKeyDosha.SUN_LABEL),
                     sign = result.suryaChakra.activeSign,
                     house = result.suryaChakra.activeHouse,
-                    color = Color(0xFFFF6B35)
+                    color = com.astro.storm.ui.theme.PlanetSun
                 )
             }
         }
@@ -544,7 +544,7 @@ private fun ChakraCard(
             .fillMaxWidth()
             .clickable { isExpanded = !isExpanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
@@ -626,7 +626,7 @@ private fun ChakraCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp)),
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                 color = color,
                 trackColor = color.copy(alpha = 0.2f)
             )
@@ -777,7 +777,7 @@ private fun StrengthBadge(level: StrengthLevel, color: Color) {
 
     Surface(
         color = badgeColor.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(6.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Text(
             text,
@@ -795,7 +795,7 @@ private fun PlanetChip(planet: Planet) {
 
     Surface(
         color = getPlanetColor(planet).copy(alpha = 0.15f),
-        shape = RoundedCornerShape(6.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Text(
             planet.getLocalizedName(language),
@@ -825,7 +825,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
             else
                 AppTheme.WarningColor.copy(alpha = 0.1f)
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
@@ -955,7 +955,7 @@ private fun TimelineYearCard(
                 else
                     AppTheme.CardBackground
             ),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Row(
                 modifier = Modifier
@@ -997,9 +997,9 @@ private fun TimelineYearCard(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        SignSmall("L", chakraResult.lagnaChakra.activeSign, Color(0xFF6366F1))
-                        SignSmall("M", chakraResult.chandraChakra.activeSign, Color(0xFF4ECDC4))
-                        SignSmall("S", chakraResult.suryaChakra.activeSign, Color(0xFFFF6B35))
+                        SignSmall("L", chakraResult.lagnaChakra.activeSign, com.astro.storm.ui.theme.PlanetRahu)
+                        SignSmall("M", chakraResult.chandraChakra.activeSign, com.astro.storm.ui.theme.PlanetMercury)
+                        SignSmall("S", chakraResult.suryaChakra.activeSign, com.astro.storm.ui.theme.PlanetSun)
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     // Strength bar
@@ -1008,7 +1008,7 @@ private fun TimelineYearCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(4.dp)
-                            .clip(RoundedCornerShape(2.dp)),
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                         color = getStrengthColor(chakraResult.synthesis.combinedStrengthScore),
                         trackColor = AppTheme.DividerColor
                     )
@@ -1060,7 +1060,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -1085,7 +1085,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -1097,19 +1097,19 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     ContributionRow(
-                        color = Color(0xFF6366F1),
+                        color = com.astro.storm.ui.theme.PlanetRahu,
                         label = stringResource(StringKeyDosha.SUDARSHANA_LAGNA_CHAKRA),
                         contribution = synthesis.lagnaContribution
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     ContributionRow(
-                        color = Color(0xFF4ECDC4),
+                        color = com.astro.storm.ui.theme.PlanetMercury,
                         label = stringResource(StringKeyDosha.SUDARSHANA_CHANDRA_CHAKRA),
                         contribution = synthesis.chandraContribution
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     ContributionRow(
-                        color = Color(0xFFFF6B35),
+                        color = com.astro.storm.ui.theme.PlanetSun,
                         label = stringResource(StringKeyDosha.SUDARSHANA_SURYA_CHAKRA),
                         contribution = synthesis.suryaContribution
                     )
@@ -1124,7 +1124,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                 colors = CardDefaults.cardColors(
                     containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
                 ),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -1176,7 +1176,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     colors = CardDefaults.cardColors(
                         containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
                     ),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1220,7 +1220,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -1311,7 +1311,7 @@ private fun ProgressionRow(
             .fillMaxWidth()
             .background(
                 if (isCurrent) AppTheme.AccentPrimary.copy(alpha = 0.1f) else Color.Transparent,
-                RoundedCornerShape(8.dp)
+                RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .padding(8.dp),
         verticalAlignment = Alignment.Top
@@ -1370,24 +1370,24 @@ private fun SudarshanaInfoDialog(onDismiss: () -> Unit) {
 // Helper functions
 private fun getPlanetColor(planet: Planet): Color {
     return when (planet) {
-        Planet.SUN -> Color(0xFFFF6B35)
-        Planet.MOON -> Color(0xFF4ECDC4)
-        Planet.MARS -> Color(0xFFE63946)
-        Planet.MERCURY -> Color(0xFF45B7D1)
-        Planet.JUPITER -> Color(0xFFF9C74F)
-        Planet.VENUS -> Color(0xFFFF69B4)
-        Planet.SATURN -> Color(0xFF6C757D)
-        Planet.RAHU -> Color(0xFF6366F1)
-        Planet.KETU -> Color(0xFF8B5CF6)
-        else -> Color(0xFF6B7280)
+        Planet.SUN -> com.astro.storm.ui.theme.PlanetSun
+        Planet.MOON -> com.astro.storm.ui.theme.PlanetMercury
+        Planet.MARS -> com.astro.storm.ui.theme.MarsRed
+        Planet.MERCURY -> com.astro.storm.ui.theme.PlanetMercury
+        Planet.JUPITER -> com.astro.storm.ui.theme.VedicGold
+        Planet.VENUS -> com.astro.storm.ui.theme.PlanetVenus
+        Planet.SATURN -> com.astro.storm.ui.theme.SlateDark
+        Planet.RAHU -> com.astro.storm.ui.theme.PlanetRahu
+        Planet.KETU -> com.astro.storm.ui.theme.PlanetVenus
+        else -> com.astro.storm.ui.theme.SlateMuted
     }
 }
 
 private fun getStrengthColor(score: Double): Color {
     return when {
-        score >= 70 -> Color(0xFF4ECDC4)
-        score >= 50 -> Color(0xFFF9C74F)
-        else -> Color(0xFFE63946)
+        score >= 70 -> com.astro.storm.ui.theme.PlanetMercury
+        score >= 50 -> com.astro.storm.ui.theme.VedicGold
+        else -> com.astro.storm.ui.theme.MarsRed
     }
 }
 
@@ -1405,4 +1405,6 @@ private fun resolveZoneId(timezone: String): ZoneId {
         }
     }
 }
+
+
 

@@ -320,11 +320,11 @@ private fun TodaySummaryCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.AccentPrimary.copy(alpha = 0.1f),
                 spotColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -431,7 +431,7 @@ private fun PanchangaQuickItem(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.1f)
     ) {
         Row(
@@ -472,7 +472,7 @@ private fun FiveLimbsCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -584,7 +584,7 @@ private fun PanchangaLimbRow(
         }
 
         Surface(
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
             color = color.copy(alpha = 0.1f)
         ) {
             Text(
@@ -621,7 +621,7 @@ private fun AuspiciousTimingCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -706,7 +706,7 @@ private fun TimingRow(
         }
 
         Surface(
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
             color = color.copy(alpha = 0.1f)
         ) {
             Text(
@@ -726,7 +726,7 @@ private fun SunMoonCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -745,7 +745,7 @@ private fun SunMoonCard(
                 // Sun times
                 Surface(
                     modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.PlanetSun.copy(alpha = 0.1f)
                 ) {
                     Column(
@@ -775,7 +775,7 @@ private fun SunMoonCard(
                 // Moon times
                 Surface(
                     modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.LifeAreaLove.copy(alpha = 0.1f)
                 ) {
                     Column(
@@ -876,11 +876,11 @@ private fun BirthSummaryCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.AccentGold.copy(alpha = 0.1f),
                 spotColor = AppTheme.AccentGold.copy(alpha = 0.1f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -932,7 +932,7 @@ private fun BirthSummaryCard(
             // Birth date info
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = AppTheme.CardBackgroundElevated
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
@@ -995,7 +995,7 @@ private fun BirthDayInterpretationCard(
     val language = LocalLanguage.current
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -1040,7 +1040,7 @@ private fun PanchangaElementsContent(
         item(key = "elements_intro") {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = AppTheme.CardBackground
             ) {
                 Text(
@@ -1128,7 +1128,7 @@ private fun ElementDetailCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1174,7 +1174,7 @@ private fun ElementDetailCard(
             // Significance
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = color.copy(alpha = 0.08f)
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
@@ -1205,7 +1205,7 @@ private fun ElementDetailCard(
                     currentValue?.let {
                         Surface(
                             modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.CardBackgroundElevated
                         ) {
                             Column(
@@ -1235,7 +1235,7 @@ private fun ElementDetailCard(
                     birthValue?.let {
                         Surface(
                             modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.CardBackgroundElevated
                         ) {
                             Column(
@@ -1373,7 +1373,7 @@ private fun PanchangaInfoDialog(onDismiss: () -> Unit) {
             }
         },
         containerColor = AppTheme.CardBackground,
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     )
 }
 
@@ -1430,6 +1430,8 @@ private fun rememberCurrentDateTime(zoneId: ZoneId) = produceState(
         delay(60_000)
     }
 }
+
+
 
 
 

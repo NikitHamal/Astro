@@ -74,11 +74,11 @@ import kotlinx.coroutines.delay
  */
 fun getRatingColor(rating: CompatibilityRating): Color {
     return when (rating) {
-        CompatibilityRating.EXCELLENT -> Color(0xFF2E7D32)
-        CompatibilityRating.GOOD -> Color(0xFF558B2F)
-        CompatibilityRating.AVERAGE -> Color(0xFFF9A825)
-        CompatibilityRating.BELOW_AVERAGE -> Color(0xFFEF6C00)
-        CompatibilityRating.POOR -> Color(0xFFC62828)
+        CompatibilityRating.EXCELLENT -> com.astro.storm.ui.theme.SuccessDark
+        CompatibilityRating.GOOD -> com.astro.storm.ui.theme.SuccessDark
+        CompatibilityRating.AVERAGE -> com.astro.storm.ui.theme.WarningDark
+        CompatibilityRating.BELOW_AVERAGE -> com.astro.storm.ui.theme.WarningDark
+        CompatibilityRating.POOR -> com.astro.storm.ui.theme.MarsRed
     }
 }
 
@@ -132,7 +132,7 @@ fun getManglikSeverityColor(dosha: ManglikDosha): Color {
         ManglikDosha.NONE -> AppTheme.SuccessColor
         ManglikDosha.PARTIAL -> AppTheme.WarningColor
         ManglikDosha.FULL -> AppTheme.ErrorColor
-        ManglikDosha.DOUBLE -> Color(0xFF8B0000) // Dark red for severe
+        ManglikDosha.DOUBLE -> com.astro.storm.ui.theme.MarsRedDark // Dark red for severe
     }
 }
 
@@ -169,7 +169,7 @@ fun ProfileCard(
         colors = CardDefaults.cardColors(
             containerColor = if (chart != null) color.copy(alpha = 0.08f) else AppTheme.ChipBackground
         ),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = if (chart != null) null else androidx.compose.foundation.BorderStroke(
             1.dp, AppTheme.BorderColor.copy(alpha = 0.5f)
         )
@@ -292,7 +292,7 @@ fun CompatibilityScoreCard(
             .fillMaxWidth()
             .padding(16.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Box(
@@ -351,7 +351,7 @@ fun CompatibilityScoreCard(
                 // Rating badge
                 Surface(
                     color = getRatingColor(result.rating).copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
@@ -420,7 +420,7 @@ fun QuickInsightChip(
 ) {
     Surface(
         color = color.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
@@ -483,7 +483,7 @@ fun GunaScoreBar(guna: GunaAnalysis) {
             Surface(
                 color = if (guna.isPositive) AppTheme.SuccessColor.copy(alpha = 0.1f)
                 else AppTheme.WarningColor.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     "${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()}",
@@ -499,14 +499,14 @@ fun GunaScoreBar(guna: GunaAnalysis) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 .background(AppTheme.ChipBackground)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(animatedProgress)
                     .fillMaxHeight()
-                    .clip(RoundedCornerShape(4.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(
                         Brush.horizontalGradient(
                             colors = if (guna.isPositive)
@@ -549,7 +549,7 @@ fun ComparisonRow(
         )
         Surface(
             color = AppTheme.ChipBackground,
-            shape = RoundedCornerShape(4.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Text(
                 label,
@@ -597,7 +597,7 @@ fun NakshatraComparisonRow(
         }
         Surface(
             color = AppTheme.ChipBackground,
-            shape = RoundedCornerShape(6.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Text(
                 label,
@@ -693,7 +693,7 @@ fun ErrorCard(
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.ErrorColor.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -744,7 +744,7 @@ fun ManglikPersonCard(
             .fillMaxWidth()
             .padding(vertical = 6.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -787,7 +787,7 @@ fun ManglikPersonCard(
 
                 Surface(
                     color = getManglikSeverityColor(analysis.effectiveDosha).copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     val language = LocalLanguage.current
                     Text(
@@ -805,7 +805,7 @@ fun ManglikPersonCard(
                 Spacer(modifier = Modifier.height(14.dp))
                 Surface(
                     color = AppTheme.WarningColor.copy(alpha = 0.08f),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
@@ -832,7 +832,7 @@ fun ManglikPersonCard(
                 Spacer(modifier = Modifier.height(10.dp))
                 Surface(
                     color = AppTheme.SuccessColor.copy(alpha = 0.08f),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
@@ -901,4 +901,6 @@ fun RemedyItem(number: Int, remedy: String) {
         )
     }
 }
+
+
 

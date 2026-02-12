@@ -171,3 +171,5 @@ object ChartDetailColors {
         if (isFavorable) LocalAppThemeColors.current.SuccessColor
         else LocalAppThemeColors.current.WarningColor
 }
+
+

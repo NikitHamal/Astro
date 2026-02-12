@@ -283,7 +283,7 @@ private fun CompactFeatureGrid(
                 Box(
                     modifier = Modifier
                         .size(if (isSmallScreen) 44.dp else 52.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                         .background(colors.ChipBackground),
                     contentAlignment = Alignment.Center
                 ) {
@@ -387,7 +387,7 @@ private fun FeatureCategory(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = colors.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, colors.BorderColor.copy(alpha = 0.5f))
     ) {
@@ -400,7 +400,7 @@ private fun FeatureCategory(
             Box(
                 modifier = Modifier
                     .size(if (isSmallScreen) 36.dp else 40.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(colors.AccentGold.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center
             ) {
@@ -515,7 +515,7 @@ private fun LanguageOptionCardCompact(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .semantics { contentDescription = language.englishName },
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = if (isSelected) colors.AccentGold.copy(alpha = 0.15f) else colors.CardBackground,
         border = if (isSelected) {
             androidx.compose.foundation.BorderStroke(2.dp, colors.AccentGold)
@@ -677,7 +677,7 @@ private fun ThemeOptionCardCompact(
         modifier = modifier
             .clickable(onClick = onClick)
             .semantics { contentDescription = displayName },
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = if (isSelected) colors.AccentGold.copy(alpha = 0.15f) else colors.CardBackground,
         border = if (isSelected) {
             androidx.compose.foundation.BorderStroke(2.dp, colors.AccentGold)
@@ -694,7 +694,7 @@ private fun ThemeOptionCardCompact(
             Box(
                 modifier = Modifier
                     .size(if (isSmallScreen) 36.dp else 44.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(if (isSelected) colors.AccentGold.copy(alpha = 0.2f) else colors.ChipBackground),
                 contentAlignment = Alignment.Center
             ) {
@@ -783,7 +783,7 @@ private fun ReadyPage(
         // Quick start info
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
             color = colors.CardBackground,
             border = androidx.compose.foundation.BorderStroke(1.dp, colors.BorderColor.copy(alpha = 0.5f))
         ) {
@@ -926,4 +926,6 @@ private fun NavigationButtons(
         }
     }
 }
+
+
 

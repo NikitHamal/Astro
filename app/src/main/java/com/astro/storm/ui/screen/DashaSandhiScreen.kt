@@ -301,7 +301,7 @@ private fun VolatilityScoreCard(score: Int) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -405,7 +405,7 @@ private fun StatCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -434,7 +434,7 @@ private fun GuidanceCard(guidance: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -476,7 +476,7 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
         colors = CardDefaults.cardColors(
             containerColor = getSandhiIntensityColor(sandhi.intensity).copy(alpha = 0.1f)
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -549,7 +549,7 @@ private fun CurrentSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAna
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -597,7 +597,7 @@ private fun SandhiDetailCard(
             .fillMaxWidth()
             .animateContentSize(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Header
@@ -638,7 +638,7 @@ private fun SandhiDetailCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = getSandhiIntensityColor(sandhi.intensity).copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -774,7 +774,7 @@ private fun KeyDateItem(keyDate: DashaSandhiAnalyzer.KeyDatePrediction) {
 @Composable
 private fun LifeAreaChip(impact: DashaSandhiAnalyzer.LifeAreaImpact) {
     Surface(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = getImpactColor(impact.impactLevel).copy(alpha = 0.15f)
     ) {
         Row(
@@ -802,7 +802,7 @@ private fun LifeAreaChip(impact: DashaSandhiAnalyzer.LifeAreaImpact) {
 private fun RemedyItem(remedy: DashaSandhiAnalyzer.SandhiRemedy) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
@@ -840,7 +840,7 @@ private fun UpcomingSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAn
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -876,7 +876,7 @@ private fun CalendarSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -929,7 +929,7 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
         colors = CardDefaults.cardColors(
             containerColor = getSandhiIntensityColor(entry.intensity).copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -941,7 +941,7 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
             // Date badge
             val language = LocalLanguage.current
             Surface(
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = AppTheme.CardBackground
             ) {
                 Column(
@@ -982,7 +982,7 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
 
             // Intensity badge
             Surface(
-                shape = RoundedCornerShape(6.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = getSandhiIntensityColor(entry.intensity).copy(alpha = 0.2f)
             ) {
                 Text(
@@ -1111,7 +1111,7 @@ private fun getVolatilityLabel(score: Int): String {
 private fun getSandhiIntensityColor(intensity: DashaSandhiAnalyzer.SandhiIntensity): Color {
     return when (intensity) {
         DashaSandhiAnalyzer.SandhiIntensity.CRITICAL -> AppTheme.ErrorColor
-        DashaSandhiAnalyzer.SandhiIntensity.HIGH -> Color(0xFFFF9800)
+        DashaSandhiAnalyzer.SandhiIntensity.HIGH -> com.astro.storm.ui.theme.WarningDark
         DashaSandhiAnalyzer.SandhiIntensity.MODERATE -> AppTheme.WarningColor
         DashaSandhiAnalyzer.SandhiIntensity.MILD -> AppTheme.SuccessColor
         DashaSandhiAnalyzer.SandhiIntensity.MINIMAL -> AppTheme.AccentTeal
@@ -1127,4 +1127,6 @@ private fun getImpactColor(level: Int): Color {
         else -> AppTheme.SuccessColor
     }
 }
+
+
 

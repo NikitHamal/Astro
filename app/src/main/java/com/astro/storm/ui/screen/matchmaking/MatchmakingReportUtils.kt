@@ -246,3 +246,5 @@ fun MatchmakingResult.getManglikQuickStatus(language: Language = Language.ENGLIS
 }
 
 
+
+

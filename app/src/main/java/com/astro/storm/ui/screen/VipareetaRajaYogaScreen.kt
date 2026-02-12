@@ -254,7 +254,7 @@ private fun VipareetaStatusCard(analysis: VipareetaRajaYogaCalculator.VipareetaR
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = statusColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -325,7 +325,7 @@ private fun VipareetaStatusCard(analysis: VipareetaRajaYogaCalculator.VipareetaR
 @Composable
 private fun YogaBadge(name: String, color: Color) {
     Surface(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.15f)
     ) {
         Text(
@@ -384,7 +384,7 @@ private fun VipareetaStatCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -414,7 +414,7 @@ private fun VipareetaSummaryCard(analysis: VipareetaRajaYogaCalculator.Vipareeta
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -486,7 +486,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
         colors = CardDefaults.cardColors(
             containerColor = if (yoga.isFormed) AppTheme.CardBackground else AppTheme.CardBackground.copy(alpha = 0.6f)
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -544,7 +544,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                 ) {
                     if (yoga.isFormed) {
                         Surface(
-                            shape = RoundedCornerShape(6.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = yogaColor.copy(alpha = 0.15f)
                         ) {
                             Text(
@@ -579,7 +579,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Surface(
-                                shape = RoundedCornerShape(6.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = AppTheme.ChipBackground
                             ) {
                                 Text(
@@ -590,7 +590,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                                 )
                             }
                             Surface(
-                                shape = RoundedCornerShape(6.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = AppTheme.ChipBackground
                             ) {
                                 Text(
@@ -601,7 +601,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                                 )
                             }
                             Surface(
-                                shape = RoundedCornerShape(6.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = when {
                                     yoga.isExalted -> AppTheme.SuccessColor.copy(alpha = 0.15f)
                                     yoga.isDebilitated -> AppTheme.ErrorColor.copy(alpha = 0.15f)
@@ -662,7 +662,7 @@ private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaE
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -675,7 +675,7 @@ private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaE
                     color = AppTheme.AccentGold
                 )
                 Surface(
-                    shape = RoundedCornerShape(4.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.AccentGold.copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -709,7 +709,7 @@ private fun BenefitsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaY
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -736,7 +736,7 @@ private fun BenefitsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaY
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
@@ -763,7 +763,7 @@ private fun BenefitsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaY
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.SuccessColor.copy(alpha = 0.08f)
                         ) {
                             Row(
@@ -803,7 +803,7 @@ private fun VipareetaTimingSection(analysis: VipareetaRajaYogaCalculator.Viparee
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -830,7 +830,7 @@ private fun VipareetaTimingSection(analysis: VipareetaRajaYogaCalculator.Viparee
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
@@ -870,7 +870,7 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(
@@ -901,7 +901,7 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
                 }
                 period.yogaType?.let { type ->
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = yogaColor.copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -926,7 +926,7 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
                 ) {
                     period.expectedEffects.take(2).forEach { effect ->
                         Surface(
-                            shape = RoundedCornerShape(4.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.ChipBackground
                         ) {
                             Text(
@@ -956,7 +956,7 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.08f)),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
@@ -988,7 +988,7 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.WarningColor.copy(alpha = 0.08f)),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
@@ -1020,7 +1020,7 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -1121,4 +1121,6 @@ private fun VipareetaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
+
 

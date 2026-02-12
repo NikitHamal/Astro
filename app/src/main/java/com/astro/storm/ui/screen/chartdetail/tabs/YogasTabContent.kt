@@ -174,7 +174,7 @@ private fun YogaSummaryCard(analysis: YogaAnalysis) {
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -267,7 +267,7 @@ private fun OverallStrengthBar(strength: Double, language: Language) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .clip(RoundedCornerShape(4.dp)),
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
             color = color,
             trackColor = ChartDetailColors.DividerColor
         )
@@ -392,7 +392,7 @@ private fun YogaCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -488,7 +488,7 @@ private fun YogaCard(
                     ) {
                         yoga.planets.forEach { planet ->
                             Surface(
-                                shape = RoundedCornerShape(6.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = ChartDetailColors.getPlanetColor(planet).copy(alpha = 0.15f)
                             ) {
                                 Text(
@@ -502,7 +502,7 @@ private fun YogaCard(
 
                         yoga.houses.forEach { house ->
                             Surface(
-                                shape = RoundedCornerShape(6.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = ChartDetailColors.AccentPurple.copy(alpha = 0.15f)
                             ) {
                                 Text(
@@ -517,7 +517,7 @@ private fun YogaCard(
 
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = if (yoga.isAuspicious) {
                             ChartDetailColors.SuccessColor.copy(alpha = 0.1f)
                         } else {
@@ -591,7 +591,7 @@ private fun YogaStrengthBadge(strength: Double, language: Language) {
     }
 
     Surface(
-        shape = RoundedCornerShape(6.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.15f)
     ) {
         Text(
@@ -610,7 +610,7 @@ private fun EmptyYogasMessage(category: YogaCategory?) {
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -719,7 +719,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackgroundElevated,
         border = androidx.compose.foundation.BorderStroke(1.dp, theme.AccentGold.copy(alpha = 0.15f))
     ) {
@@ -810,4 +810,6 @@ private fun getLocalizedStrength(strength: YogaStrength, language: Language): St
     }
     return stringResource(key)
 }
+
+
 

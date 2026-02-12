@@ -270,7 +270,7 @@ private fun KemadrumaStatusCard(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
         colors = CardDefaults.cardColors(
             containerColor = statusColor.copy(alpha = 0.1f)
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -319,7 +319,7 @@ private fun KemadrumaStatusCard(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
             if (analysis.isKemadrumaFormed && analysis.cancellations.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                 ) {
                     Row(
@@ -383,7 +383,7 @@ private fun KemadrumaStatCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -412,7 +412,7 @@ private fun InterpretationCard(interpretation: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -462,7 +462,7 @@ private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFor
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.WarningColor.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -518,7 +518,7 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(
@@ -580,7 +580,7 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                         modifier = Modifier
                             .weight(1f)
                             .height(6.dp)
-                            .clip(RoundedCornerShape(3.dp)),
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                         color = getMoonBrightnessColor(moonAnalysis.brightness),
                         trackColor = AppTheme.DividerColor
                     )
@@ -633,7 +633,7 @@ private fun SurroundingHousesCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -675,7 +675,7 @@ private fun SurroundingHousesCard(
                 Spacer(modifier = Modifier.height(12.dp))
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.WarningColor.copy(alpha = 0.1f)
                 ) {
                     Text(
@@ -704,7 +704,7 @@ private fun HouseStatusBox(
         Box(
             modifier = Modifier
                 .size(56.dp)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 .background(
                     if (isKendra) AppTheme.PlanetMoon.copy(alpha = 0.15f)
                     else if (hasplanets) AppTheme.WarningColor.copy(alpha = 0.1f)
@@ -743,7 +743,7 @@ private fun CancellationsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnal
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -802,7 +802,7 @@ private fun TotalCancellationCard(score: Int) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -864,7 +864,7 @@ private fun BhangaCard(bhanga: KemadrumaYogaCalculator.KemadrumaBhanga) {
             .fillMaxWidth()
             .animateContentSize(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -913,7 +913,7 @@ private fun BhangaCard(bhanga: KemadrumaYogaCalculator.KemadrumaBhanga) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -1019,7 +1019,7 @@ private fun ImpactCard(
             .fillMaxWidth()
             .animateContentSize(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1066,7 +1066,7 @@ private fun ImpactCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = getImpactLevelColor(level).copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -1131,7 +1131,7 @@ private fun ActivationPeriodsCard(periods: List<KemadrumaYogaCalculator.Activati
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1158,7 +1158,7 @@ private fun ActivationPeriodsCard(periods: List<KemadrumaYogaCalculator.Activati
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.CardBackgroundElevated
                 ) {
                     Row(
@@ -1182,7 +1182,7 @@ private fun ActivationPeriodsCard(periods: List<KemadrumaYogaCalculator.Activati
                             )
                         }
                         Surface(
-                            shape = RoundedCornerShape(6.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = getIntensityColorFromInt(period.intensity).copy(alpha = 0.15f)
                         ) {
                             Text(
@@ -1212,7 +1212,7 @@ private fun RemediesSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis)
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -1273,7 +1273,7 @@ private fun RemedyCategoryCard(
             .fillMaxWidth()
             .animateContentSize(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1300,7 +1300,7 @@ private fun RemedyCategoryCard(
                         color = AppTheme.TextPrimary
                     )
                     Surface(
-                        shape = RoundedCornerShape(4.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = AppTheme.ChipBackground
                     ) {
                         Text(
@@ -1339,7 +1339,7 @@ private fun RemedyItem(remedy: KemadrumaYogaCalculator.KemadrumaRemedy) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
@@ -1355,7 +1355,7 @@ private fun RemedyItem(remedy: KemadrumaYogaCalculator.KemadrumaRemedy) {
                     modifier = Modifier.weight(1f)
                 )
                 Surface(
-                    shape = RoundedCornerShape(4.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = getPriorityColorFromInt(remedy.priority).copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -1470,7 +1470,7 @@ private fun getStatusColor(status: KemadrumaYogaCalculator.KemadrumaStatus): Col
         KemadrumaYogaCalculator.KemadrumaStatus.MOSTLY_CANCELLED -> AppTheme.AccentTeal
         KemadrumaYogaCalculator.KemadrumaStatus.PARTIALLY_CANCELLED -> AppTheme.AccentGold
         KemadrumaYogaCalculator.KemadrumaStatus.WEAKLY_CANCELLED -> AppTheme.WarningColor
-        KemadrumaYogaCalculator.KemadrumaStatus.ACTIVE_MODERATE -> Color(0xFFFF9800)
+        KemadrumaYogaCalculator.KemadrumaStatus.ACTIVE_MODERATE -> com.astro.storm.ui.theme.WarningDark
         KemadrumaYogaCalculator.KemadrumaStatus.ACTIVE_SEVERE -> AppTheme.ErrorColor
     }
 }
@@ -1531,7 +1531,7 @@ private fun getEffectivenessColor(effectiveness: String): Color {
 private fun getIntensityColorFromInt(intensity: Int): Color {
     return when (intensity) {
         5 -> AppTheme.ErrorColor
-        4 -> Color(0xFFFF9800)
+        4 -> com.astro.storm.ui.theme.WarningDark
         3 -> AppTheme.WarningColor
         2 -> AppTheme.AccentGold
         1 -> AppTheme.AccentTeal
@@ -1570,4 +1570,6 @@ private fun getPriorityColorFromInt(priority: Int): Color {
         else -> AppTheme.TextMuted
     }
 }
+
+
 

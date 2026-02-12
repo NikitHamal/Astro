@@ -318,11 +318,11 @@ private fun TransitSummaryCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.AccentPrimary.copy(alpha = 0.1f),
                 spotColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -400,7 +400,7 @@ private fun TransitSummaryCard(
                 Spacer(modifier = Modifier.height(16.dp))
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.CardBackgroundElevated
                 ) {
                     Column(modifier = Modifier.padding(14.dp)) {
@@ -442,7 +442,7 @@ private fun TransitStatItem(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.1f)
     ) {
         Column(
@@ -485,12 +485,12 @@ private fun TransitPlanetCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = planetColor.copy(alpha = 0.3f))
             ) { onToggleExpand() },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -540,7 +540,7 @@ private fun TransitPlanetCard(
                             if (transitPosition.isRetrograde) {
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Surface(
-                                    shape = RoundedCornerShape(4.dp),
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                     color = AppTheme.WarningColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
@@ -571,7 +571,7 @@ private fun TransitPlanetCard(
 
                 // House badge
                 Surface(
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.CardBackgroundElevated
                 ) {
                     Column(
@@ -620,7 +620,7 @@ private fun TransitPlanetCard(
                         // Transit position
                         Surface(
                             modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(10.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.CardBackgroundElevated
                         ) {
                             Column(modifier = Modifier.padding(12.dp)) {
@@ -650,7 +650,7 @@ private fun TransitPlanetCard(
                         if (natalPosition != null) {
                             Surface(
                                 modifier = Modifier.weight(1f),
-                                shape = RoundedCornerShape(10.dp),
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                 color = AppTheme.CardBackgroundElevated
                             ) {
                                 Column(modifier = Modifier.padding(12.dp)) {
@@ -726,7 +726,7 @@ private fun HouseTransitCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = if (hasTransits) AppTheme.CardBackground else AppTheme.CardBackground.copy(alpha = 0.6f)
     ) {
         Row(
@@ -740,7 +740,7 @@ private fun HouseTransitCard(
                     .background(
                         color = if (hasTransits) AppTheme.AccentTeal.copy(alpha = 0.15f)
                         else AppTheme.DividerColor,
-                        shape = RoundedCornerShape(10.dp)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -865,7 +865,7 @@ private fun UpcomingTransitCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Row(
@@ -985,7 +985,7 @@ private fun TransitAspectCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1012,7 +1012,7 @@ private fun TransitAspectCard(
 
                 // Aspect badge
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = if (isHarmonious) AppTheme.SuccessColor.copy(alpha = 0.15f)
                     else AppTheme.WarningColor.copy(alpha = 0.15f)
                 ) {
@@ -1046,7 +1046,7 @@ private fun TransitAspectCard(
 
                 // Orb
                 Surface(
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.CardBackgroundElevated
                 ) {
                     Text(
@@ -1172,4 +1172,6 @@ private fun rememberCurrentDateTime(zoneId: ZoneId) = produceState(
         delay(60_000)
     }
 }
+
+
 

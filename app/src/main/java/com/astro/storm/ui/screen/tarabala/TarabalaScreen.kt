@@ -272,11 +272,11 @@ private fun DailyStrengthScoreCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = scoreColor.copy(alpha = 0.15f),
                 spotColor = scoreColor.copy(alpha = 0.15f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -320,7 +320,7 @@ private fun DailyStrengthScoreCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             Surface(
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = scoreColor.copy(alpha = 0.15f)
             ) {
                 Text(
@@ -360,7 +360,7 @@ private fun TarabalaDetailCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -400,7 +400,7 @@ private fun TarabalaDetailCard(
                 }
 
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = taraColor.copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -437,7 +437,7 @@ private fun TarabalaDetailCard(
 
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = AppTheme.CardBackgroundElevated
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
@@ -537,7 +537,7 @@ private fun ChandrabalaDetailCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -577,7 +577,7 @@ private fun ChandrabalaDetailCard(
                 }
 
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = strengthColor.copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -616,7 +616,7 @@ private fun ChandrabalaDetailCard(
             // House significations
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 color = AppTheme.CardBackgroundElevated
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
@@ -668,7 +668,7 @@ private fun ActivityRecommendationsCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -730,7 +730,7 @@ private fun ActivityItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.08f)
     ) {
         Row(
@@ -816,7 +816,7 @@ private fun WeeklySummaryCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -873,7 +873,7 @@ private fun DayHighlightChip(
     color: Color
 ) {
     Surface(
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.12f)
     ) {
         Column(
@@ -931,7 +931,7 @@ private fun DailyStrengthCard(
                 onClick = onToggle
             ),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             Row(
@@ -948,7 +948,7 @@ private fun DailyStrengthCard(
                                 color = if (isBestDay) AppTheme.SuccessColor.copy(alpha = 0.15f)
                                 else if (isWorstDay) AppTheme.WarningColor.copy(alpha = 0.15f)
                                 else AppTheme.CardBackgroundElevated,
-                                shape = RoundedCornerShape(10.dp)
+                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                             ),
                         contentAlignment = Alignment.Center
                     ) {
@@ -982,7 +982,7 @@ private fun DailyStrengthCard(
                             if (isBestDay) {
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Surface(
-                                    shape = RoundedCornerShape(4.dp),
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                     color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
@@ -1005,7 +1005,7 @@ private fun DailyStrengthCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     // Score badge
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = scoreColor.copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -1092,7 +1092,7 @@ private fun TaraGroupCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             Row(
@@ -1149,7 +1149,7 @@ private fun TaraGroupCard(
             LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 items(nakshatras) { nak ->
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = AppTheme.CardBackgroundElevated
                     ) {
                         Text(
@@ -1207,4 +1207,6 @@ private fun TarabalaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
+
 

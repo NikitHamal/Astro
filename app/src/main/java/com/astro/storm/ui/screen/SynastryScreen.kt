@@ -744,7 +744,7 @@ private fun ChartSelectionSection(
             .fillMaxWidth()
             .padding(16.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -839,7 +839,7 @@ private fun ChartSelectionSection(
                 Spacer(modifier = Modifier.height(16.dp))
                 Surface(
                     color = AppTheme.InfoColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
@@ -891,7 +891,7 @@ private fun SynastryChartCard(
         colors = CardDefaults.cardColors(
             containerColor = if (chart != null) color.copy(alpha = 0.08f) else AppTheme.ChipBackground
         ),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = if (chart != null)
             androidx.compose.foundation.BorderStroke(1.5.dp, color.copy(alpha = 0.3f))
         else null
@@ -1001,7 +1001,7 @@ private fun SynastryOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
@@ -1101,7 +1101,7 @@ private fun SynastryOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 result.compatibilityCategories.forEach { category ->
@@ -1122,7 +1122,7 @@ private fun SynastryOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -1159,7 +1159,7 @@ private fun SynastryOverviewTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     result.keyFindings.forEach { finding ->
@@ -1222,7 +1222,7 @@ private fun CompatibilityCategoryRow(category: CompatibilityCategory) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp)
-                    .clip(RoundedCornerShape(2.dp)),
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                 color = getCompatibilityColor(category.score * 10),
                 trackColor = AppTheme.ChipBackground
             )
@@ -1243,7 +1243,7 @@ private fun CompatibilityCategoryRow(category: CompatibilityCategory) {
 private fun AspectCountChip(label: String, count: Int, color: Color) {
     Surface(
         color = color.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
@@ -1303,7 +1303,7 @@ private fun AspectCard(aspect: SynastryAspect, language: Language) {
                 else -> AppTheme.CardBackground
             }
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -1414,7 +1414,7 @@ private fun HouseOverlayCard(overlay: HouseOverlay, chartName: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -1472,7 +1472,7 @@ private fun CompatibilityDetailCard(category: CompatibilityCategory) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1505,7 +1505,7 @@ private fun CompatibilityDetailCard(category: CompatibilityCategory) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp)),
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                 color = getCompatibilityColor(category.score * 10),
                 trackColor = AppTheme.ChipBackground
             )
@@ -1554,7 +1554,7 @@ private fun SynastryErrorCard(error: String, onRetry: () -> Unit) {
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.ErrorColor.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1660,7 +1660,7 @@ private fun ChartSelectorBottomSheet(
                         Surface(
                             onClick = { onSelect(chart.id) },
                             color = if (isSelected) accentColor.copy(alpha = 0.1f) else Color.Transparent,
-                            shape = RoundedCornerShape(14.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             border = if (isSelected)
                                 androidx.compose.foundation.BorderStroke(1.5.dp, accentColor)
                             else
@@ -1752,11 +1752,13 @@ private fun SynastryInfoDialog(onDismiss: () -> Unit) {
 private fun getCompatibilityColor(score: Double): Color {
     return when {
         score >= 80 -> AppTheme.SuccessColor
-        score >= 60 -> Color(0xFF8BC34A)
+        score >= 60 -> com.astro.storm.ui.theme.SuccessDark
         score >= 40 -> AppTheme.WarningColor
         else -> AppTheme.ErrorColor
     }
 }
+
+
 
 
 

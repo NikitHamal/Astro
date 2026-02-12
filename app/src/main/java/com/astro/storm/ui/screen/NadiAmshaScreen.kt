@@ -178,7 +178,7 @@ private fun NadiLagnaCard(nadi: NadiAmshaCalculator.NadiPosition) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -225,7 +225,7 @@ private fun NadiSummaryCard(result: NadiAmshaResult) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -254,7 +254,7 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -263,7 +263,7 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(AppTheme.getPlanetColor(position.planet!!).copy(alpha = 0.2f), RoundedCornerShape(8.dp)),
+                    .background(AppTheme.getPlanetColor(position.planet!!).copy(alpha = 0.2f), RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -322,7 +322,7 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
     Card(
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -350,7 +350,7 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
             }
             Surface(
                 color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     "${candidate.confidence}%",
@@ -363,4 +363,6 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
         }
     }
 }
+
+
 

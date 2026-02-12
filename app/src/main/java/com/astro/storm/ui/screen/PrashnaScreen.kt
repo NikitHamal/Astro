@@ -344,7 +344,7 @@ private fun PrashnaHeaderCard() {
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentTeal.copy(alpha = 0.1f)
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(24.dp),
@@ -412,7 +412,7 @@ private fun QuestionInputCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -461,7 +461,7 @@ private fun QuestionInputCard(
                     focusedContainerColor = AppTheme.CardBackgroundElevated,
                     unfocusedContainerColor = AppTheme.CardBackgroundElevated
                 ),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -488,7 +488,7 @@ private fun CategorySelectorCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -553,7 +553,7 @@ private fun CategorySelectorCard(
 
             Surface(
                 color = AppTheme.CardBackgroundElevated,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Row(
                     modifier = Modifier
@@ -594,7 +594,7 @@ private fun LocationInfoCard(locationName: String) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackgroundElevated),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -632,7 +632,7 @@ private fun LocationInfoCard(locationName: String) {
             }
             Surface(
                 color = AppTheme.InfoColor.copy(alpha = 0.15f),
-                shape = RoundedCornerShape(6.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
@@ -672,7 +672,7 @@ private fun AnalyzeButton(
             containerColor = AppTheme.AccentTeal,
             disabledContainerColor = AppTheme.AccentTeal.copy(alpha = 0.3f)
         ),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         enabled = enabled
     ) {
         Icon(
@@ -706,7 +706,7 @@ private fun PrashnaInstructionsCard() {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -932,7 +932,7 @@ private fun VerdictCard(result: PrashnaResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Box(
@@ -1015,7 +1015,7 @@ private fun ConfidenceBadge(confidence: Int) {
 
     Surface(
         color = color.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(6.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Text(
             stringResource(StringKeyAnalysis.PRASHNA_CONFIDENCE, confidence.localized()),
@@ -1031,7 +1031,7 @@ private fun ConfidenceBadge(confidence: Int) {
 private fun CertaintyBadge(certainty: CertaintyLevel) {
     Surface(
         color = AppTheme.InfoColor.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(6.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Text(
             certainty.getLocalizedName(currentLanguage()),
@@ -1048,9 +1048,9 @@ private fun ScoreIndicator(score: Int) {
     val normalizedScore = ((score + 100) / 2f) / 100f // Convert -100 to +100 to 0 to 1
     val scoreColor = when {
         score >= 50 -> AppTheme.SuccessColor
-        score >= 20 -> Color(0xFF8BC34A)
+        score >= 20 -> com.astro.storm.ui.theme.SuccessDark
         score >= -20 -> AppTheme.WarningColor
-        score >= -50 -> Color(0xFFFF9800)
+        score >= -50 -> com.astro.storm.ui.theme.WarningDark
         else -> AppTheme.ErrorColor
     }
 
@@ -1061,14 +1061,14 @@ private fun ScoreIndicator(score: Int) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 .background(AppTheme.ChipBackground)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(normalizedScore.coerceIn(0.05f, 1f))
                     .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp))
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(
@@ -1111,7 +1111,7 @@ private fun QuestionSummaryCard(result: PrashnaResult) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1134,7 +1134,7 @@ private fun QuestionSummaryCard(result: PrashnaResult) {
 
             Surface(
                 color = AppTheme.CardBackgroundElevated,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(
@@ -1176,7 +1176,7 @@ private fun InfoChip(
     Surface(
         modifier = modifier,
         color = AppTheme.ChipBackground,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
@@ -1210,7 +1210,7 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1230,7 +1230,7 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
                 Spacer(modifier = Modifier.weight(1f))
                 Surface(
                     color = strengthColor.copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(6.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         moonAnalysis.moonStrength.getLocalizedName(currentLanguage()),
@@ -1309,7 +1309,7 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Surface(
                     color = AppTheme.WarningColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
@@ -1352,7 +1352,7 @@ private fun MoonDetailItem(
     Surface(
         modifier = modifier,
         color = AppTheme.CardBackgroundElevated,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
             Text(
@@ -1389,7 +1389,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1448,7 +1448,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Surface(
                     color = AppTheme.InfoColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
@@ -1493,7 +1493,7 @@ private fun TimingPredictionCard(timing: TimingPrediction) {
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentTeal.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1516,7 +1516,7 @@ private fun TimingPredictionCard(timing: TimingPrediction) {
 
             Surface(
                 color = AppTheme.AccentTeal.copy(alpha = 0.15f),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
@@ -1574,7 +1574,7 @@ private fun SpecialYogasCard(yogas: List<PrashnaYoga>) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1611,7 +1611,7 @@ private fun YogaItem(yoga: PrashnaYoga) {
 
     Surface(
         color = color.copy(alpha = 0.08f),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -1669,7 +1669,7 @@ private fun FactorsCard(judgment: PrashnaJudgment) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Supporting Factors
@@ -1773,7 +1773,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.InfoColor.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1851,14 +1851,14 @@ private fun getCategoryIcon(category: PrashnaCategory): ImageVector {
 
 private fun getVerdictColor(verdict: PrashnaVerdict): Color {
     return when (verdict) {
-        PrashnaVerdict.STRONGLY_YES -> Color(0xFF2E7D32)
-        PrashnaVerdict.YES -> Color(0xFF4CAF50)
-        PrashnaVerdict.LIKELY_YES -> Color(0xFF8BC34A)
-        PrashnaVerdict.UNCERTAIN -> Color(0xFFFFC107)
-        PrashnaVerdict.TIMING_DEPENDENT -> Color(0xFFFF9800)
-        PrashnaVerdict.LIKELY_NO -> Color(0xFFFF9800)
-        PrashnaVerdict.NO -> Color(0xFFFF5722)
-        PrashnaVerdict.STRONGLY_NO -> Color(0xFFE53935)
+        PrashnaVerdict.STRONGLY_YES -> com.astro.storm.ui.theme.SuccessDark
+        PrashnaVerdict.YES -> com.astro.storm.ui.theme.SuccessDark
+        PrashnaVerdict.LIKELY_YES -> com.astro.storm.ui.theme.SuccessDark
+        PrashnaVerdict.UNCERTAIN -> com.astro.storm.ui.theme.WarningDark
+        PrashnaVerdict.TIMING_DEPENDENT -> com.astro.storm.ui.theme.WarningDark
+        PrashnaVerdict.LIKELY_NO -> com.astro.storm.ui.theme.WarningDark
+        PrashnaVerdict.NO -> com.astro.storm.ui.theme.MarsRed
+        PrashnaVerdict.STRONGLY_NO -> com.astro.storm.ui.theme.MarsRed
     }
 }
 
@@ -1879,12 +1879,14 @@ private fun getVerdictIcon(verdict: PrashnaVerdict): ImageVector {
 
 private fun getMoonStrengthColor(strength: MoonStrength): Color {
     return when (strength) {
-        MoonStrength.EXCELLENT -> Color(0xFF2E7D32)
-        MoonStrength.GOOD -> Color(0xFF4CAF50)
-        MoonStrength.AVERAGE -> Color(0xFFFFC107)
-        MoonStrength.WEAK -> Color(0xFFFF9800)
-        MoonStrength.VERY_WEAK -> Color(0xFFFF5722)
-        MoonStrength.AFFLICTED -> Color(0xFFE53935)
+        MoonStrength.EXCELLENT -> com.astro.storm.ui.theme.SuccessDark
+        MoonStrength.GOOD -> com.astro.storm.ui.theme.SuccessDark
+        MoonStrength.AVERAGE -> com.astro.storm.ui.theme.WarningDark
+        MoonStrength.WEAK -> com.astro.storm.ui.theme.WarningDark
+        MoonStrength.VERY_WEAK -> com.astro.storm.ui.theme.MarsRed
+        MoonStrength.AFFLICTED -> com.astro.storm.ui.theme.MarsRed
     }
 }
+
+
 

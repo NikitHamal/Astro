@@ -246,7 +246,7 @@ private fun BirthNakshatraCard(analysis: SarvatobhadraChakraCalculator.Sarvatobh
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -303,7 +303,7 @@ private fun TransitScoreCard(analysis: SarvatobhadraChakraCalculator.Sarvatobhad
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -334,7 +334,7 @@ private fun TransitScoreCard(analysis: SarvatobhadraChakraCalculator.Sarvatobhad
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp)),
+                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                 color = scoreColor,
                 trackColor = scoreColor.copy(alpha = 0.2f),
                 strokeCap = StrokeCap.Round
@@ -380,7 +380,7 @@ private fun QuickStatCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -411,7 +411,7 @@ private fun KeyInsightsCard(analysis: SarvatobhadraChakraCalculator.Sarvatobhadr
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -464,7 +464,7 @@ private fun SarvatobhadraChakraGridSection(analysis: SarvatobhadraChakraCalculat
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -534,9 +534,9 @@ private fun ChakraGridCell(
     Box(
         modifier = Modifier
             .size(36.dp)
-            .clip(RoundedCornerShape(4.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .background(bgColor)
-            .border(0.5.dp, AppTheme.BorderColor, RoundedCornerShape(4.dp)),
+            .border(0.5.dp, AppTheme.BorderColor, RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -555,7 +555,7 @@ private fun ChakraLegendCard() {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -579,9 +579,9 @@ private fun LegendItem(label: String, color: Color) {
         Box(
             modifier = Modifier
                 .size(12.dp)
-                .clip(RoundedCornerShape(2.dp))
+                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 .background(color)
-                .border(0.5.dp, AppTheme.BorderColor, RoundedCornerShape(2.dp))
+                .border(0.5.dp, AppTheme.BorderColor, RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
         )
         Text(
             text = label,
@@ -605,7 +605,7 @@ private fun SarvatobhadraDailySection(analysis: SarvatobhadraChakraCalculator.Sa
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -688,7 +688,7 @@ private fun ActivitiesCard(title: String, activities: List<String>, color: Color
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
@@ -704,7 +704,7 @@ private fun ActivitiesCard(title: String, activities: List<String>, color: Color
             ) {
                 activities.take(3).forEach { activity ->
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = color.copy(alpha = 0.1f)
                     ) {
                         Text(
@@ -732,7 +732,7 @@ private fun SarvatobhadraVedhaSection(analysis: SarvatobhadraChakraCalculator.Sa
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     text = stringResource(StringKeyShadbala.SARVATOBHADRA_NO_VEDHA),
@@ -765,7 +765,7 @@ private fun VedhaCard(vedha: SarvatobhadraChakraCalculator.NakshatraVedha) {
             .fillMaxWidth()
             .animateContentSize(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -846,7 +846,7 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -907,7 +907,7 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     if (na.associatedSwara != null) {
@@ -1043,4 +1043,6 @@ private fun SarvatobhadraInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
+
 

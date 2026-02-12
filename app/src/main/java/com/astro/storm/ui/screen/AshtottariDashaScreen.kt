@@ -292,7 +292,7 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
             else
                 AppTheme.WarningColor.copy(alpha = 0.1f)
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
@@ -344,7 +344,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
@@ -436,7 +436,7 @@ private fun CurrentPeriodCard(
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
@@ -467,7 +467,7 @@ private fun CurrentPeriodCard(
                     .fillMaxWidth()
                     .background(
                         AppTheme.AccentPrimary.copy(alpha = 0.1f),
-                        RoundedCornerShape(12.dp)
+                        RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     )
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -509,7 +509,7 @@ private fun CurrentPeriodCard(
                         .fillMaxWidth()
                         .background(
                             AppTheme.AccentSecondary.copy(alpha = 0.1f),
-                            RoundedCornerShape(12.dp)
+                            RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                         )
                         .padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -559,7 +559,7 @@ private fun CurrentPeriodCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(6.dp)
-                        .clip(RoundedCornerShape(3.dp)),
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                     color = AppTheme.AccentPrimary,
                     trackColor = AppTheme.AccentPrimary.copy(alpha = 0.2f)
                 )
@@ -580,7 +580,7 @@ private fun RelationshipChip(relationship: PlanetRelationship) {
 
     Surface(
         color = color.copy(alpha = 0.2f),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Text(
             text,
@@ -599,7 +599,7 @@ private fun SystemInfoCard() {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
@@ -721,7 +721,7 @@ private fun MahadashaTimelineCard(
             else
                 AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -764,7 +764,7 @@ private fun MahadashaTimelineCard(
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Surface(
                                     color = AppTheme.SuccessColor.copy(alpha = 0.2f),
-                                    shape = RoundedCornerShape(4.dp)
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                                 ) {
                                     Text(
                                         stringResource(StringKeyDosha.CURRENT_LABEL),
@@ -815,7 +815,7 @@ private fun MahadashaTimelineCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(4.dp)
-                        .clip(RoundedCornerShape(2.dp)),
+                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
                     color = AppTheme.AccentPrimary,
                     trackColor = AppTheme.AccentPrimary.copy(alpha = 0.2f)
                 )
@@ -865,7 +865,7 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
                     AppTheme.AccentPrimary.copy(alpha = 0.1f)
                 else
                     Color.Transparent,
-                RoundedCornerShape(6.dp)
+                RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .padding(horizontal = 8.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -911,7 +911,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Text(
@@ -927,7 +927,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
                             items(interpretation.keyThemes) { theme ->
                                 Surface(
                                     color = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                                    shape = RoundedCornerShape(8.dp)
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                                 ) {
                                     Text(
                                         theme,
@@ -949,7 +949,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -1009,7 +1009,7 @@ private fun EffectsCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1054,7 +1054,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1140,15 +1140,15 @@ private fun calculateMahadashaProgress(mahadasha: AshtottariMahadasha, asOf: Loc
 @Composable
 private fun getPlanetColor(planet: Planet): Color {
     return when (planet) {
-        Planet.SUN -> Color(0xFFFF6B35)
-        Planet.MOON -> Color(0xFF4ECDC4)
-        Planet.MARS -> Color(0xFFE63946)
-        Planet.MERCURY -> Color(0xFF45B7D1)
-        Planet.JUPITER -> Color(0xFFF9C74F)
-        Planet.VENUS -> Color(0xFFFF69B4)
-        Planet.SATURN -> Color(0xFF6C757D)
-        Planet.RAHU -> Color(0xFF6366F1)
-        Planet.KETU -> Color(0xFF8B5CF6)
+        Planet.SUN -> com.astro.storm.ui.theme.PlanetSun
+        Planet.MOON -> com.astro.storm.ui.theme.PlanetMercury
+        Planet.MARS -> com.astro.storm.ui.theme.MarsRed
+        Planet.MERCURY -> com.astro.storm.ui.theme.PlanetMercury
+        Planet.JUPITER -> com.astro.storm.ui.theme.VedicGold
+        Planet.VENUS -> com.astro.storm.ui.theme.PlanetVenus
+        Planet.SATURN -> com.astro.storm.ui.theme.SlateDark
+        Planet.RAHU -> com.astro.storm.ui.theme.PlanetRahu
+        Planet.KETU -> com.astro.storm.ui.theme.PlanetVenus
         else -> AppTheme.AccentPrimary
     }
 }
@@ -1169,4 +1169,6 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
+
+
 

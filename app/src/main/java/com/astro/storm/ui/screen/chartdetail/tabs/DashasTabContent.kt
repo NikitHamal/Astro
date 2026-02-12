@@ -249,11 +249,11 @@ private fun CurrentPeriodCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = ChartDetailColors.AccentGold.copy(alpha = 0.1f),
                 spotColor = ChartDetailColors.AccentGold.copy(alpha = 0.1f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -401,7 +401,7 @@ private fun BirthNakshatraInfo(timeline: DashaCalculator.DashaTimeline) {
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackgroundElevated
     ) {
         Row(
@@ -484,12 +484,12 @@ private fun SandhiAlertsCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = ChartDetailColors.AccentOrange)
             ) { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.AccentOrange.copy(alpha = 0.08f)
     ) {
         Column(
@@ -594,7 +594,7 @@ private fun SandhiAlertRow(
 
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = when {
             isWithinSandhi -> ChartDetailColors.AccentOrange.copy(alpha = 0.15f)
             isImminent -> ChartDetailColors.AccentOrange.copy(alpha = 0.1f)
@@ -693,7 +693,7 @@ private fun SandhiAlertRow(
 private fun EmptyDashaState() {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackgroundElevated
     ) {
         Column(
@@ -926,7 +926,7 @@ private fun CurrentPeriodSummary(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackgroundElevated
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -969,10 +969,10 @@ private fun DashaTimelineCard(
             .fillMaxWidth()
             .shadow(
                 elevation = 2.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = ChartDetailColors.AccentTeal.copy(alpha = 0.05f)
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -1098,7 +1098,7 @@ private fun DashaTimelineCard(
                         )
 
                         Surface(
-                            shape = RoundedCornerShape(6.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = if (isCurrent) planetColor.copy(alpha = 0.15f) else Color.Transparent
                         ) {
                             Text(
@@ -1136,12 +1136,12 @@ private fun MahadashaCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = planetColor.copy(alpha = 0.3f))
             ) { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = if (isCurrentMahadasha) {
             planetColor.copy(alpha = 0.08f)
         } else {
@@ -1199,7 +1199,7 @@ private fun MahadashaCard(
                             if (isCurrentMahadasha) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Surface(
-                                    shape = RoundedCornerShape(5.dp),
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                                     color = planetColor.copy(alpha = 0.2f)
                                 ) {
                                     Text(
@@ -1268,7 +1268,7 @@ private fun MahadashaCard(
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Surface(
-                            shape = RoundedCornerShape(5.dp),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                             color = ChartDetailColors.CardBackgroundElevated
                         ) {
                             Text(
@@ -1318,7 +1318,7 @@ private fun AntardashaRow(
                     isCurrent -> planetColor.copy(alpha = 0.12f)
                     else -> Color.Transparent
                 },
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             )
             .padding(horizontal = 10.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -1415,12 +1415,12 @@ private fun DashaInfoCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple()
             ) { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -1485,7 +1485,7 @@ private fun DashaInfoCard(
                     Spacer(modifier = Modifier.height(18.dp))
 
                     Surface(
-                        shape = RoundedCornerShape(14.dp),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = ChartDetailColors.CardBackgroundElevated
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -1562,7 +1562,7 @@ private fun DashaLevelsInfo() {
     val language = LocalLanguage.current
 
     Surface(
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = ChartDetailColors.CardBackgroundElevated
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
@@ -1930,5 +1930,7 @@ private fun formatDehadashaDurationLocalized(durationMinutes: Long, language: La
         }
     }
 }
+
+
 
 
