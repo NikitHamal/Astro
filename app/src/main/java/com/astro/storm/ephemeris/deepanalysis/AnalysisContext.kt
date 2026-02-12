@@ -8,6 +8,12 @@ import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.*
 import com.astro.storm.ephemeris.yoga.*
 import com.astro.storm.core.common.Language
+import java.time.DateTimeException
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import kotlin.math.roundToInt
 
 /**
  * Analysis Context - Centralized calculator integration for deep analysis
@@ -25,6 +31,13 @@ class AnalysisContext(
     val chart: VedicChart,
     private val androidContext: Context
 ) {
+    val analysisDateTime: LocalDateTime by lazy {
+        LocalDateTime.now(resolveZoneId(chart.birthData.timezone))
+    }
+
+    val analysisDate: LocalDate by lazy {
+        analysisDateTime.toLocalDate()
+    }
     
     // ═══════════════════════════════════════════════════════════════════════════════
     // CACHED CALCULATIONS
@@ -63,11 +76,11 @@ class AnalysisContext(
     
     // Current Dasha
     val currentMahadasha: DashaCalculator.Mahadasha? by lazy {
-        dashaTimeline.mahadashas.find { it.isActiveOn(java.time.LocalDateTime.now()) }
+        dashaTimeline.mahadashas.find { it.isActiveOn(analysisDateTime) }
     }
     
     val currentAntardasha: DashaCalculator.Antardasha? by lazy {
-        currentMahadasha?.getActiveAntardasha()
+        currentMahadasha?.getAntardashaOn(analysisDateTime)
     }
     
     // Ashtakavarga Analysis
@@ -176,6 +189,21 @@ class AnalysisContext(
      */
     fun getPlanetHouse(planet: Planet): Int {
         return chart.planetPositions.find { it.planet == planet }?.house ?: 1
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val trimmed = timezone.trim()
+            val numericHours = trimmed.toDoubleOrNull()
+            if (numericHours != null) {
+                val totalSeconds = (numericHours * 3600.0).roundToInt()
+                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
     }
     
     /**
@@ -317,8 +345,9 @@ class AnalysisContext(
         val eligiblePlanets = chart.planetPositions.filter { 
             it.planet != Planet.RAHU && it.planet != Planet.KETU 
         }
-        
-        return eligiblePlanets.maxByOrNull { it.longitude % 30 }?.planet ?: Planet.SUN
+
+        require(eligiblePlanets.isNotEmpty()) { "Atmakaraka calculation requires classical graha positions excluding nodes." }
+        return eligiblePlanets.maxBy { it.longitude % 30 }.planet
     }
     
     /**

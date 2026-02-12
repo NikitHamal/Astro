@@ -54,9 +54,13 @@ import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import kotlin.math.roundToInt
 
 enum class PredictionsTab(val stringKey: StringKey) {
     OVERVIEW(StringKey.PREDICTIONS_TAB_OVERVIEW),
@@ -1770,7 +1774,7 @@ private fun calculateChallengesOpportunities(chart: VedicChart, dashaTimeline: D
 }
 
 private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): TimingAnalysis {
-    val today = LocalDate.now()
+    val today = LocalDate.now(resolveZoneId(chart.birthData.timezone))
 
     val favorablePeriods = listOf(
         FavorablePeriod(
@@ -1812,6 +1816,21 @@ private fun calculateTiming(chart: VedicChart, dashaTimeline: DashaCalculator.Da
         unfavorablePeriods = unfavorablePeriods,
         keyDates = keyDates
     )
+}
+
+private fun resolveZoneId(timezone: String): ZoneId {
+    return try {
+        ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val trimmed = timezone.trim()
+        val numericHours = trimmed.toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        } else {
+            ZoneId.systemDefault()
+        }
+    }
 }
 
 private fun calculateRemedies(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): List<String> {

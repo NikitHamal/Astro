@@ -91,7 +91,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
@@ -130,7 +129,7 @@ fun GocharaVedhaScreen(
         delay(300)
         try {
             vedhaAnalysis = withContext(Dispatchers.Default) {
-                vedhaCalculator.calculateCurrentVedha(chart, LocalDateTime.now())
+                vedhaCalculator.calculateCurrentVedha(chart, null)
             }
         } catch (e: Exception) {
             // Handle calculation error

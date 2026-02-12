@@ -4,7 +4,6 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.deepanalysis.*
-import java.time.LocalDate
 
 /**
  * Relationship Deep Analyzer - Marriage and partnership analysis
@@ -196,7 +195,7 @@ object RelationshipDeepAnalyzer {
                 MarriageTimingCategory.DELAYED -> "30-35"
                 else -> "Variable"
             },
-            favorablePeriods = listOf(TimingPeriod(LocalDate.now(), LocalDate.now().plusYears(2),
+            favorablePeriods = listOf(TimingPeriod(context.analysisDate, context.analysisDate.plusYears(2),
                 LocalizedParagraph("Current period shows marriage potential.", "वर्तमान अवधिले विवाह सम्भावना देखाउँछ।"),
                 StrengthLevel.MODERATE)),
             challengingPeriods = emptyList(),
@@ -251,3 +250,4 @@ object RelationshipDeepAnalyzer {
         return ((venusScore + seventhScore + jupiterBonus) / 1.5).coerceIn(0.0, 100.0)
     }
 }
+

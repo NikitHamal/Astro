@@ -54,10 +54,14 @@ import com.astro.storm.ui.viewmodel.InsightsData
 import com.astro.storm.ui.viewmodel.InsightError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
+import kotlin.math.roundToInt
 
 enum class HoroscopePeriod(val titleKey: StringKey) {
     TODAY(StringKey.PERIOD_TODAY),
@@ -118,6 +122,7 @@ fun InsightsTab(
     onCreateChart: () -> Unit = {},
     viewModel: InsightsViewModel = hiltViewModel()
 ) {
+    val todayDate = remember(chart) { LocalDate.now(resolveZoneId(chart?.birthData?.timezone)) }
     val chartIdentity = remember(chart) { ChartIdentity.from(chart) }
 
     LaunchedEffect(chartIdentity) {
@@ -140,6 +145,7 @@ fun InsightsTab(
             var selectedPeriod by remember { mutableStateOf(HoroscopePeriod.TODAY) }
             InsightsContent(
                 data = state.data,
+                todayDate = todayDate,
                 selectedPeriod = selectedPeriod,
                 onPeriodSelected = { selectedPeriod = it },
                 onRetryFailed = onRetry
@@ -152,6 +158,7 @@ fun InsightsTab(
 @Composable
 private fun InsightsContent(
     data: InsightsData,
+    todayDate: LocalDate,
     selectedPeriod: HoroscopePeriod,
     onPeriodSelected: (HoroscopePeriod) -> Unit,
     onRetryFailed: () -> Unit
@@ -202,11 +209,11 @@ private fun InsightsContent(
 
         data.dashaTimeline?.let { timeline ->
             item(key = "dasha_current") {
-                CurrentDashaCard(timeline)
+                CurrentDashaCard(timeline, todayDate)
             }
 
             item(key = "dasha_timeline") {
-                DashaTimelinePreview(timeline)
+                DashaTimelinePreview(timeline, todayDate)
             }
         }
 
@@ -1615,13 +1622,16 @@ private fun WeeklyAdviceCard(advice: String) {
 }
 
 @Composable
-private fun CurrentDashaCard(timeline: DashaCalculator.DashaTimeline) {
+private fun CurrentDashaCard(
+    timeline: DashaCalculator.DashaTimeline,
+    todayDate: LocalDate
+) {
     val language = LocalLanguage.current
     val currentMahadasha = timeline.currentMahadasha ?: return
     val currentAntardasha = timeline.currentAntardasha
 
-    val mahadashaProgress = remember(currentMahadasha) {
-        calculateProgress(currentMahadasha.startDate.toLocalDate(), currentMahadasha.endDate.toLocalDate())
+    val mahadashaProgress = remember(currentMahadasha, todayDate) {
+        calculateProgress(currentMahadasha.startDate.toLocalDate(), currentMahadasha.endDate.toLocalDate(), todayDate)
     }
 
     Card(
@@ -1665,6 +1675,7 @@ private fun CurrentDashaCard(timeline: DashaCalculator.DashaTimeline) {
                 planet = currentMahadasha.planet,
                 startDate = currentMahadasha.startDate.toLocalDate(),
                 endDate = currentMahadasha.endDate.toLocalDate(),
+                todayDate = todayDate,
                 isPrimary = true
             )
 
@@ -1676,8 +1687,8 @@ private fun CurrentDashaCard(timeline: DashaCalculator.DashaTimeline) {
             )
 
             currentAntardasha?.let { antardasha ->
-                val antardashaProgress = remember(antardasha) {
-                    calculateProgress(antardasha.startDate.toLocalDate(), antardasha.endDate.toLocalDate())
+                val antardashaProgress = remember(antardasha, todayDate) {
+                    calculateProgress(antardasha.startDate.toLocalDate(), antardasha.endDate.toLocalDate(), todayDate)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -1689,6 +1700,7 @@ private fun CurrentDashaCard(timeline: DashaCalculator.DashaTimeline) {
                     planet = antardasha.planet,
                     startDate = antardasha.startDate.toLocalDate(),
                     endDate = antardasha.endDate.toLocalDate(),
+                    todayDate = todayDate,
                     isPrimary = false
                 )
 
@@ -1755,6 +1767,7 @@ private fun DashaPeriodRow(
     planet: Planet,
     startDate: LocalDate,
     endDate: LocalDate,
+    todayDate: LocalDate,
     isPrimary: Boolean
 ) {
     val language = LocalLanguage.current
@@ -1768,8 +1781,8 @@ private fun DashaPeriodRow(
         else range
     }
 
-    val daysRemaining = remember(endDate) {
-        ChronoUnit.DAYS.between(LocalDate.now(), endDate)
+    val daysRemaining = remember(endDate, todayDate) {
+        ChronoUnit.DAYS.between(todayDate, endDate)
     }
 
     val formattedDuration = remember(daysRemaining, language) {
@@ -1862,7 +1875,10 @@ private fun DashaProgressBar(
 }
 
 @Composable
-private fun DashaTimelinePreview(timeline: DashaCalculator.DashaTimeline) {
+private fun DashaTimelinePreview(
+    timeline: DashaCalculator.DashaTimeline,
+    todayDate: LocalDate
+) {
     val currentMahadasha = timeline.currentMahadasha ?: return
     val currentAntardasha = timeline.currentAntardasha ?: return
 
@@ -1917,6 +1933,7 @@ private fun DashaTimelinePreview(timeline: DashaCalculator.DashaTimeline) {
                             planet = antardasha.planet,
                             mahadashaPlanet = currentMahadasha.planet,
                             startDate = antardasha.startDate.toLocalDate(),
+                            todayDate = todayDate,
                             isFirst = index == 0
                         )
                         if (index < upcomingAntardashas.lastIndex) {
@@ -1934,6 +1951,7 @@ private fun UpcomingPeriodItem(
     planet: Planet,
     mahadashaPlanet: Planet,
     startDate: LocalDate,
+    todayDate: LocalDate,
     isFirst: Boolean
 ) {
     val language = LocalLanguage.current
@@ -1943,8 +1961,8 @@ private fun UpcomingPeriodItem(
         startDate.format(InsightsFormatters.getDayMonth(language))
     }
 
-    val daysUntil = remember(startDate) {
-        ChronoUnit.DAYS.between(LocalDate.now(), startDate)
+    val daysUntil = remember(startDate, todayDate) {
+        ChronoUnit.DAYS.between(todayDate, startDate)
     }
 
     val durationText = formatDuration(daysUntil, language)
@@ -2197,15 +2215,14 @@ private fun EmptyInsightsState(
     }
 }
 
-private fun calculateProgress(startDate: LocalDate, endDate: LocalDate): Float {
-    val today = LocalDate.now()
-    if (today.isBefore(startDate)) return 0f
-    if (today.isAfter(endDate)) return 1f
+private fun calculateProgress(startDate: LocalDate, endDate: LocalDate, todayDate: LocalDate): Float {
+    if (todayDate.isBefore(startDate)) return 0f
+    if (todayDate.isAfter(endDate)) return 1f
 
     val totalDays = ChronoUnit.DAYS.between(startDate, endDate).toFloat()
     if (totalDays <= 0) return 1f
 
-    val elapsedDays = ChronoUnit.DAYS.between(startDate, today).toFloat()
+    val elapsedDays = ChronoUnit.DAYS.between(startDate, todayDate).toFloat()
     return (elapsedDays / totalDays).coerceIn(0f, 1f)
 }
 
@@ -2244,6 +2261,21 @@ private fun formatDuration(days: Long, language: Language): String {
             val remainingDays = days % 365
             val months = remainingDays / 30
             if (months == 0L) "${num(years)}$y" else "${num(years)}$y ${num(months)}$m"
+        }
+    }
+}
+
+private fun resolveZoneId(timezone: String?): ZoneId {
+    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+    return try {
+        ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val numericHours = timezone.trim().toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        } else {
+            ZoneId.systemDefault()
         }
     }
 }

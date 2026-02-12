@@ -13,8 +13,12 @@ import com.astro.storm.ephemeris.remedy.*
 import com.astro.storm.ephemeris.remedy.RemedyCategory
 import com.astro.storm.ephemeris.yoga.*
 import com.astro.storm.data.preferences.AstrologySettingsManager
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.Date
+import kotlin.math.roundToInt
 
 /**
  * Wrapper classes for integrating existing calculators with the AI tool system.
@@ -54,7 +58,7 @@ class VimshottariDashaCalculator {
 
     fun calculateDashas(chart: VedicChart, yearsAhead: Int): List<DashaPeriod> {
         val dashas = mutableListOf<DashaPeriod>()
-        val today = LocalDate.now()
+        val today = LocalDate.now(resolveZoneId(chart.birthData.timezone))
 
         try {
             val timeline = DashaCalculator.calculateDashaTimeline(chart)
@@ -223,12 +227,13 @@ class PanchangaCalculatorWrapper(private val context: android.content.Context) {
     fun calculateForNow(latitude: Double, longitude: Double): PanchangaResult {
         return try {
             PanchangaCalculator(context).use { calculator ->
-                val now = java.time.LocalDateTime.now()
+                val timezone = java.util.TimeZone.getDefault().id
+                val now = java.time.LocalDateTime.now(resolveZoneId(timezone))
                 val panchanga = calculator.calculatePanchanga(
                     now,
                     latitude,
                     longitude,
-                    java.util.TimeZone.getDefault().id
+                    timezone
                 )
                 buildResultFromPanchanga(panchanga)
             }
@@ -652,9 +657,9 @@ class MuhurtaCalculatorWrapper(private val context: android.content.Context) {
         return try {
             val parsedActivity = runCatching { ActivityType.valueOf(activity.trim().uppercase()) }
                 .getOrDefault(ActivityType.GENERAL)
-            val today = java.time.LocalDate.now()
-            val endDate = today.plusDays(daysAhead.coerceIn(1, 90).toLong())
             val tz = java.util.TimeZone.getDefault().id
+            val today = java.time.LocalDate.now(resolveZoneId(tz))
+            val endDate = today.plusDays(daysAhead.coerceIn(1, 90).toLong())
             val results = calculator.findAuspiciousMuhurtas(
                 activity = parsedActivity,
                 startDate = today,
@@ -687,6 +692,21 @@ class MuhurtaCalculatorWrapper(private val context: android.content.Context) {
             emptyList()
         } finally {
             calculator.close()
+        }
+    }
+}
+
+private fun resolveZoneId(timezone: String): ZoneId {
+    return try {
+        ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val trimmed = timezone.trim()
+        val numericHours = trimmed.toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        } else {
+            ZoneId.systemDefault()
         }
     }
 }

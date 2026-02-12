@@ -177,27 +177,27 @@ object YoginiDashaCalculator {
         }
 
         val isActive: Boolean
-            get() = isActiveOn(LocalDate.now())
+            get() = isActiveOn(LocalDate.now(ZoneOffset.UTC))
 
-        fun getActiveAntardasha(): YoginiAntardasha? = getAntardashaOn(LocalDate.now())
+        fun getActiveAntardasha(): YoginiAntardasha? = getAntardashaOn(LocalDate.now(ZoneOffset.UTC))
 
         fun getAntardashaOn(date: LocalDate): YoginiAntardasha? {
             return antardashas.find { it.isActiveOn(date) }
         }
 
-        fun getElapsedDays(asOf: LocalDate = LocalDate.now()): Long {
+        fun getElapsedDays(asOf: LocalDate = LocalDate.now(ZoneOffset.UTC)): Long {
             if (asOf.isBefore(startDate)) return 0
             if (!asOf.isBefore(endDate)) return durationDays
             return ChronoUnit.DAYS.between(startDate, asOf)
         }
 
-        fun getRemainingDays(asOf: LocalDate = LocalDate.now()): Long {
+        fun getRemainingDays(asOf: LocalDate = LocalDate.now(ZoneOffset.UTC)): Long {
             if (asOf.isAfter(endDate)) return 0
             if (asOf.isBefore(startDate)) return durationDays
             return ChronoUnit.DAYS.between(asOf, endDate).plus(1).coerceAtLeast(0)
         }
 
-        fun getProgressPercent(asOf: LocalDate = LocalDate.now()): Double {
+        fun getProgressPercent(asOf: LocalDate = LocalDate.now(ZoneOffset.UTC)): Double {
             if (durationDays <= 0) return 0.0
             if (asOf.isBefore(startDate)) return 0.0
             if (!asOf.isBefore(endDate)) return 100.0
@@ -226,21 +226,21 @@ object YoginiDashaCalculator {
         }
 
         val isActive: Boolean
-            get() = isActiveOn(LocalDate.now())
+            get() = isActiveOn(LocalDate.now(ZoneOffset.UTC))
 
-        fun getElapsedDays(asOf: LocalDate = LocalDate.now()): Long {
+        fun getElapsedDays(asOf: LocalDate = LocalDate.now(ZoneOffset.UTC)): Long {
             if (asOf.isBefore(startDate)) return 0
             if (!asOf.isBefore(endDate)) return durationDays
             return ChronoUnit.DAYS.between(startDate, asOf)
         }
 
-        fun getRemainingDays(asOf: LocalDate = LocalDate.now()): Long {
+        fun getRemainingDays(asOf: LocalDate = LocalDate.now(ZoneOffset.UTC)): Long {
             if (asOf.isAfter(endDate)) return 0
             if (asOf.isBefore(startDate)) return durationDays
             return ChronoUnit.DAYS.between(asOf, endDate).plus(1).coerceAtLeast(0)
         }
 
-        fun getProgressPercent(asOf: LocalDate = LocalDate.now()): Double {
+        fun getProgressPercent(asOf: LocalDate = LocalDate.now(ZoneOffset.UTC)): Double {
             if (durationDays <= 0) return 0.0
             if (asOf.isBefore(startDate)) return 0.0
             if (!asOf.isBefore(endDate)) return 100.0
@@ -359,7 +359,7 @@ object YoginiDashaCalculator {
         // Find current periods
         val today = chart?.birthData?.timezone?.let { tz ->
             LocalDate.now(resolveZoneId(tz))
-        } ?: LocalDate.now()
+        } ?: LocalDate.now(ZoneOffset.UTC)
         val currentMahadasha = mahadashas.find { it.isActiveOn(today) }
         val currentAntardasha = currentMahadasha?.getAntardashaOn(today)
 
@@ -387,7 +387,7 @@ object YoginiDashaCalculator {
             if (numericHours != null) {
                 ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
             } else {
-                throw IllegalArgumentException("Invalid timezone: $timezone")
+                ZoneId.systemDefault()
             }
         }
     }
@@ -893,6 +893,7 @@ object YoginiDashaCalculator {
         return sequence
     }
 }
+
 
 
 

@@ -4,7 +4,10 @@ import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 /**
@@ -282,7 +285,7 @@ object BhriguBinduCalculator {
      */
     fun analyzeBhriguBindu(
         chart: VedicChart,
-        currentDate: LocalDate = LocalDate.now()
+        currentDate: LocalDate = LocalDate.now(resolveZoneId(chart.birthData.timezone))
     ): BhriguBinduAnalysis {
         val rahuPosition = chart.planetPositions.find { it.planet == Planet.RAHU }
             ?: throw IllegalArgumentException("Rahu position not found in chart")
@@ -330,6 +333,23 @@ object BhriguBinduCalculator {
             transitAnalysis = transitAnalysis,
             interpretation = interpretation
         )
+    }
+
+    private fun resolveZoneId(timezone: String?): ZoneId {
+        if (timezone.isNullOrBlank()) return ZoneOffset.UTC
+        return try {
+            ZoneId.of(timezone.trim())
+        } catch (_: DateTimeException) {
+            val normalized = timezone.trim()
+                .replace("UTC", "", ignoreCase = true)
+                .replace("GMT", "", ignoreCase = true)
+                .trim()
+            if (normalized.isNotEmpty()) {
+                runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneOffset.UTC }
+            } else {
+                ZoneOffset.UTC
+            }
+        }
     }
 
     /**

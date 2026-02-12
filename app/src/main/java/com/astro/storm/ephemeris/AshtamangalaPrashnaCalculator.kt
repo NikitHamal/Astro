@@ -4,9 +4,11 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import java.time.DateTimeException
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -282,7 +284,8 @@ object AshtamangalaPrashnaCalculator {
         chart: VedicChart? = null,
         seedValue: Long? = null
     ): AshtamangalaReading {
-        val queryTime = LocalDateTime.now()
+        val queryZone = resolveZoneId(chart?.birthData?.timezone)
+        val queryTime = LocalDateTime.now(queryZone)
 
         // Generate cowrie throw
         val cowrieThrow = simulateCowrieThrow(seedValue)
@@ -335,6 +338,23 @@ object AshtamangalaPrashnaCalculator {
             interpretation = interpretation,
             specialReadings = specialReadings
         )
+    }
+
+    private fun resolveZoneId(timezone: String?): ZoneId {
+        if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+        return try {
+            ZoneId.of(timezone.trim())
+        } catch (_: DateTimeException) {
+            val normalized = timezone.trim()
+                .replace("UTC", "", ignoreCase = true)
+                .replace("GMT", "", ignoreCase = true)
+                .trim()
+            if (normalized.isNotEmpty()) {
+                runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
     }
 
     /**

@@ -83,26 +83,26 @@ object DashaCalculator {
         }
 
         val isActive: Boolean
-            get() = isActiveOn(LocalDateTime.now())
+            get() = isActiveOn(LocalDateTime.now(ZoneOffset.UTC))
 
-        fun getActiveAntardasha(): Antardasha? = getAntardashaOn(LocalDateTime.now())
+        fun getActiveAntardasha(): Antardasha? = getAntardashaOn(LocalDateTime.now(ZoneOffset.UTC))
 
         fun getAntardashaOn(date: LocalDateTime): Antardasha? {
             return antardashas.find { it.isActiveOn(date) }
         }
 
-        fun getElapsedYears(asOf: LocalDateTime = LocalDateTime.now()): Double {
+        fun getElapsedYears(asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)): Double {
             if (asOf.isBefore(startDate)) return 0.0
             if (!asOf.isBefore(endDate)) return durationYears
             val elapsedSeconds = ChronoUnit.SECONDS.between(startDate, asOf)
             return elapsedSeconds / (DashaUtils.DAYS_PER_YEAR.toDouble() * 24 * 3600)
         }
 
-        fun getRemainingYears(asOf: LocalDateTime = LocalDateTime.now()): Double {
+        fun getRemainingYears(asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)): Double {
             return (durationYears - getElapsedYears(asOf)).coerceAtLeast(0.0)
         }
 
-        fun getProgressPercent(asOf: LocalDateTime = LocalDateTime.now()): Double {
+        fun getProgressPercent(asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)): Double {
             if (durationYears <= 0) return 0.0
             return ((getElapsedYears(asOf) / durationYears) * 100).coerceIn(0.0, 100.0)
         }
@@ -124,25 +124,25 @@ object DashaCalculator {
         }
 
         val isActive: Boolean
-            get() = isActiveOn(LocalDateTime.now())
+            get() = isActiveOn(LocalDateTime.now(ZoneOffset.UTC))
 
-        fun getActivePratyantardasha(): Pratyantardasha? = getPratyantardashaOn(LocalDateTime.now())
+        fun getActivePratyantardasha(): Pratyantardasha? = getPratyantardashaOn(LocalDateTime.now(ZoneOffset.UTC))
 
         fun getPratyantardashaOn(date: LocalDateTime): Pratyantardasha? {
             return pratyantardashas.find { it.isActiveOn(date) }
         }
 
-        fun getElapsedSeconds(asOf: LocalDateTime = LocalDateTime.now()): Long {
+        fun getElapsedSeconds(asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)): Long {
             if (asOf.isBefore(startDate)) return 0
             if (!asOf.isBefore(endDate)) return durationSeconds
             return ChronoUnit.SECONDS.between(startDate, asOf)
         }
 
-        fun getRemainingSeconds(asOf: LocalDateTime = LocalDateTime.now()): Long {
+        fun getRemainingSeconds(asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)): Long {
             return (durationSeconds - getElapsedSeconds(asOf)).coerceAtLeast(0)
         }
 
-        fun getProgressPercent(asOf: LocalDateTime = LocalDateTime.now()): Double {
+        fun getProgressPercent(asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)): Double {
             if (durationSeconds <= 0L) return 0.0
             return ((getElapsedSeconds(asOf).toDouble() / durationSeconds) * 100).coerceIn(0.0, 100.0)
         }
@@ -162,9 +162,9 @@ object DashaCalculator {
         }
 
         val isActive: Boolean
-            get() = isActiveOn(LocalDateTime.now())
+            get() = isActiveOn(LocalDateTime.now(ZoneOffset.UTC))
 
-        fun getActiveSookshmadasha(): Sookshmadasha? = getSookshmadashaOn(LocalDateTime.now())
+        fun getActiveSookshmadasha(): Sookshmadasha? = getSookshmadashaOn(LocalDateTime.now(ZoneOffset.UTC))
 
         fun getSookshmadashaOn(date: LocalDateTime): Sookshmadasha? {
             return sookshmadashas.find { it.isActiveOn(date) }
@@ -186,9 +186,9 @@ object DashaCalculator {
         }
 
         val isActive: Boolean
-            get() = isActiveOn(LocalDateTime.now())
+            get() = isActiveOn(LocalDateTime.now(ZoneOffset.UTC))
 
-        fun getActivePranadasha(): Pranadasha? = getPranadashaOn(LocalDateTime.now())
+        fun getActivePranadasha(): Pranadasha? = getPranadashaOn(LocalDateTime.now(ZoneOffset.UTC))
 
         fun getPranadashaOn(date: LocalDateTime): Pranadasha? {
             return pranadashas.find { it.isActiveOn(date) }
@@ -211,9 +211,9 @@ object DashaCalculator {
         }
 
         val isActive: Boolean
-            get() = isActiveOn(LocalDateTime.now())
+            get() = isActiveOn(LocalDateTime.now(ZoneOffset.UTC))
 
-        fun getActiveDehadasha(): Dehadasha? = getDehadashaOn(LocalDateTime.now())
+        fun getActiveDehadasha(): Dehadasha? = getDehadashaOn(LocalDateTime.now(ZoneOffset.UTC))
 
         fun getDehadashaOn(date: LocalDateTime): Dehadasha? {
             return dehadashas.find { it.isActiveOn(date) }
@@ -269,7 +269,7 @@ object DashaCalculator {
         }
 
         val isActive: Boolean
-            get() = isActiveOn(LocalDateTime.now())
+            get() = isActiveOn(LocalDateTime.now(ZoneOffset.UTC))
 
         fun getDurationString(): String {
             val totalMins = durationSeconds / 60
@@ -472,7 +472,7 @@ object DashaCalculator {
             )
         }
 
-        private fun nowInTimelineZone(): LocalDateTime {
+        fun nowInTimelineZone(): LocalDateTime {
             val zone = try {
                 ZoneId.of(timezone)
             } catch (_: DateTimeException) {
@@ -492,14 +492,15 @@ object DashaCalculator {
             }
         }
 
-        fun getActiveDashaLords(): List<Pair<DashaLevel, Planet>> {
+        fun getActiveDashaLords(asOf: LocalDateTime = nowInTimelineZone()): List<Pair<DashaLevel, Planet>> {
+            val periodInfo = getDashaAtDate(asOf)
             val lords = mutableListOf<Pair<DashaLevel, Planet>>()
-            currentMahadasha?.let { lords.add(DashaLevel.MAHADASHA to it.planet) }
-            currentAntardasha?.let { lords.add(DashaLevel.ANTARDASHA to it.planet) }
-            currentPratyantardasha?.let { lords.add(DashaLevel.PRATYANTARDASHA to it.planet) }
-            currentSookshmadasha?.let { lords.add(DashaLevel.SOOKSHMADASHA to it.planet) }
-            currentPranadasha?.let { lords.add(DashaLevel.PRANADASHA to it.planet) }
-            currentDehadasha?.let { lords.add(DashaLevel.DEHADASHA to it.planet) }
+            periodInfo.mahadasha?.let { lords.add(DashaLevel.MAHADASHA to it.planet) }
+            periodInfo.antardasha?.let { lords.add(DashaLevel.ANTARDASHA to it.planet) }
+            periodInfo.pratyantardasha?.let { lords.add(DashaLevel.PRATYANTARDASHA to it.planet) }
+            periodInfo.sookshmadasha?.let { lords.add(DashaLevel.SOOKSHMADASHA to it.planet) }
+            periodInfo.pranadasha?.let { lords.add(DashaLevel.PRANADASHA to it.planet) }
+            periodInfo.dehadasha?.let { lords.add(DashaLevel.DEHADASHA to it.planet) }
             return lords
         }
     }
@@ -626,7 +627,7 @@ object DashaCalculator {
             if (numericHours != null) {
                 ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
             } else {
-                throw IllegalArgumentException("Invalid timezone: $timezone")
+                ZoneId.systemDefault()
             }
         }
     }
@@ -1081,20 +1082,27 @@ object DashaCalculator {
         return timeline.getDashaAtDate(date)
     }
 
-    fun formatDashaPeriod(mahadasha: Mahadasha): String {
+    fun formatDashaPeriod(
+        mahadasha: Mahadasha,
+        asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)
+    ): String {
         return buildString {
             appendLine("${mahadasha.planet.displayName} Mahadasha")
             appendLine("Duration: ${String.format("%.2f", mahadasha.durationYears)} years")
             appendLine("Period: ${mahadasha.startDate} to ${mahadasha.endDate}")
-            if (mahadasha.isActive) {
+            if (mahadasha.isActiveOn(asOf)) {
                 appendLine("Status: CURRENTLY ACTIVE")
-                appendLine("Progress: ${String.format("%.1f", mahadasha.getProgressPercent())}%")
-                appendLine("Remaining: ${String.format("%.2f", mahadasha.getRemainingYears())} years")
+                appendLine("Progress: ${String.format("%.1f", mahadasha.getProgressPercent(asOf))}%")
+                appendLine("Remaining: ${String.format("%.2f", mahadasha.getRemainingYears(asOf))} years")
             }
         }
     }
 
-    fun formatLocalizedDashaPeriod(mahadasha: Mahadasha, language: Language): String {
+    fun formatLocalizedDashaPeriod(
+        mahadasha: Mahadasha,
+        language: Language,
+        asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)
+    ): String {
         val mahadashaLabel = DashaLevel.MAHADASHA.getLocalizedName(language)
         val durationLabel = StringResources.get(StringKey.DASHA_DURATION, language)
         val periodLabel = StringResources.get(StringKey.DASHA_PERIOD, language)
@@ -1109,41 +1117,45 @@ object DashaCalculator {
             appendLine("${mahadasha.planet.getLocalizedName(language)} $mahadashaLabel")
             appendLine("$durationLabel: ${String.format("%.2f", mahadasha.durationYears)} $yearsLabel")
             appendLine("$periodLabel: ${mahadasha.startDate} $toLabel ${mahadasha.endDate}")
-            if (mahadasha.isActive) {
+            if (mahadasha.isActiveOn(asOf)) {
                 appendLine("$statusLabel: $activeLabel")
-                appendLine("$progressLabel: ${String.format("%.1f", mahadasha.getProgressPercent())}%")
-                appendLine("$remainingLabel: ${String.format("%.2f", mahadasha.getRemainingYears())} $yearsLabel")
+                appendLine("$progressLabel: ${String.format("%.1f", mahadasha.getProgressPercent(asOf))}%")
+                appendLine("$remainingLabel: ${String.format("%.2f", mahadasha.getRemainingYears(asOf))} $yearsLabel")
             }
         }
     }
 
-    fun formatCurrentPeriod(timeline: DashaTimeline): String {
+    fun formatCurrentPeriod(
+        timeline: DashaTimeline,
+        asOf: LocalDateTime = timeline.nowInTimelineZone()
+    ): String {
+        val periodInfo = timeline.getDashaAtDate(asOf)
         return buildString {
-            timeline.currentMahadasha?.let { md ->
+            periodInfo.mahadasha?.let { md ->
                 appendLine("Mahadasha: ${md.planet.displayName}")
-                appendLine("  Progress: ${String.format("%.1f", md.getProgressPercent())}%")
-                appendLine("  Remaining: ${String.format("%.1f", md.getRemainingYears())} years")
+                appendLine("  Progress: ${String.format("%.1f", md.getProgressPercent(asOf))}%")
+                appendLine("  Remaining: ${String.format("%.1f", md.getRemainingYears(asOf))} years")
 
-                timeline.currentAntardasha?.let { ad ->
+                periodInfo.antardasha?.let { ad ->
                     appendLine("\nAntardasha: ${ad.planet.displayName}")
-                    appendLine("  Progress: ${String.format("%.1f", ad.getProgressPercent())}%")
-                    appendLine("  Remaining: ${ad.getRemainingSeconds() / (24 * 3600)} days")
+                    appendLine("  Progress: ${String.format("%.1f", ad.getProgressPercent(asOf))}%")
+                    appendLine("  Remaining: ${ad.getRemainingSeconds(asOf) / (24 * 3600)} days")
 
-                    timeline.currentPratyantardasha?.let { pd ->
+                    periodInfo.pratyantardasha?.let { pd ->
                         appendLine("\nPratyantardasha: ${pd.planet.displayName}")
                         appendLine("  Period: ${pd.startDate} to ${pd.endDate}")
 
-                        timeline.currentSookshmadasha?.let { sd ->
+                        periodInfo.sookshmadasha?.let { sd ->
                             appendLine("\nSookshmadasha: ${sd.planet.displayName}")
                             appendLine("  Period: ${sd.startDate} to ${sd.endDate}")
                             appendLine("  Duration: ${sd.durationSeconds / (24 * 3600)} days")
 
-                            timeline.currentPranadasha?.let { prd ->
+                            periodInfo.pranadasha?.let { prd ->
                                 appendLine("\nPranadasha: ${prd.planet.displayName}")
                                 appendLine("  Period: ${prd.startDate} to ${prd.endDate}")
                                 appendLine("  Duration: ${prd.getDurationString()}")
 
-                                timeline.currentDehadasha?.let { dd ->
+                                periodInfo.dehadasha?.let { dd ->
                                     appendLine("\nDehadasha: ${dd.planet.displayName}")
                                     appendLine("  Period: ${dd.startDate} to ${dd.endDate}")
                                     appendLine("  Duration: ${dd.getDurationString()}")
@@ -1156,7 +1168,11 @@ object DashaCalculator {
         }
     }
 
-    fun formatLocalizedCurrentPeriod(timeline: DashaTimeline, language: Language): String {
+    fun formatLocalizedCurrentPeriod(
+        timeline: DashaTimeline,
+        language: Language,
+        asOf: LocalDateTime = timeline.nowInTimelineZone()
+    ): String {
         val progressLabel = StringResources.get(StringKey.DASHA_PROGRESS, language)
         val remainingLabel = StringResources.get(StringKey.DASHA_REMAINING, language)
         val periodLabel = StringResources.get(StringKey.DASHA_PERIOD, language)
@@ -1164,33 +1180,34 @@ object DashaCalculator {
         val yearsLabel = StringResources.get(StringKey.YEARS, language)
         val daysLabel = StringResources.get(StringKey.DAYS, language)
         val toLabel = StringResources.get(StringKey.TO, language)
+        val periodInfo = timeline.getDashaAtDate(asOf)
 
         return buildString {
-            timeline.currentMahadasha?.let { md ->
+            periodInfo.mahadasha?.let { md ->
                 appendLine("${DashaLevel.MAHADASHA.getLocalizedName(language)}: ${md.planet.getLocalizedName(language)}")
-                appendLine("  $progressLabel: ${String.format("%.1f", md.getProgressPercent())}%")
-                appendLine("  $remainingLabel: ${String.format("%.1f", md.getRemainingYears())} $yearsLabel")
+                appendLine("  $progressLabel: ${String.format("%.1f", md.getProgressPercent(asOf))}%")
+                appendLine("  $remainingLabel: ${String.format("%.1f", md.getRemainingYears(asOf))} $yearsLabel")
 
-                timeline.currentAntardasha?.let { ad ->
+                periodInfo.antardasha?.let { ad ->
                     appendLine("\n${DashaLevel.ANTARDASHA.getLocalizedName(language)}: ${ad.planet.getLocalizedName(language)}")
-                    appendLine("  $progressLabel: ${String.format("%.1f", ad.getProgressPercent())}%")
-                    appendLine("  $remainingLabel: ${ad.getRemainingSeconds() / (24 * 3600)} $daysLabel")
+                    appendLine("  $progressLabel: ${String.format("%.1f", ad.getProgressPercent(asOf))}%")
+                    appendLine("  $remainingLabel: ${ad.getRemainingSeconds(asOf) / (24 * 3600)} $daysLabel")
 
-                    timeline.currentPratyantardasha?.let { pd ->
+                    periodInfo.pratyantardasha?.let { pd ->
                         appendLine("\n${DashaLevel.PRATYANTARDASHA.getLocalizedName(language)}: ${pd.planet.getLocalizedName(language)}")
                         appendLine("  $periodLabel: ${pd.startDate} $toLabel ${pd.endDate}")
 
-                        timeline.currentSookshmadasha?.let { sd ->
+                        periodInfo.sookshmadasha?.let { sd ->
                             appendLine("\n${DashaLevel.SOOKSHMADASHA.getLocalizedName(language)}: ${sd.planet.getLocalizedName(language)}")
                             appendLine("  $periodLabel: ${sd.startDate} $toLabel ${sd.endDate}")
                             appendLine("  $durationLabel: ${sd.durationSeconds / (24 * 3600)} $daysLabel")
 
-                            timeline.currentPranadasha?.let { prd ->
+                            periodInfo.pranadasha?.let { prd ->
                                 appendLine("\n${DashaLevel.PRANADASHA.getLocalizedName(language)}: ${prd.planet.getLocalizedName(language)}")
                                 appendLine("  $periodLabel: ${prd.startDate} $toLabel ${prd.endDate}")
                                 appendLine("  $durationLabel: ${prd.getLocalizedDurationString(language)}")
 
-                                timeline.currentDehadasha?.let { dd ->
+                                periodInfo.dehadasha?.let { dd ->
                                     appendLine("\n${DashaLevel.DEHADASHA.getLocalizedName(language)}: ${dd.planet.getLocalizedName(language)}")
                                     appendLine("  $periodLabel: ${dd.startDate} $toLabel ${dd.endDate}")
                                     appendLine("  $durationLabel: ${dd.getLocalizedDurationString(language)}")
@@ -1217,7 +1234,7 @@ object ConditionalDashaCalculator {
         }
 
         val isActive: Boolean
-            get() = isActiveOn(LocalDate.now())
+            get() = isActiveOn(LocalDate.now(ZoneOffset.UTC))
     }
 
     enum class Yogini(
@@ -1335,7 +1352,7 @@ object ConditionalDashaCalculator {
 
     fun getCurrentYoginiDasha(
         yoginiDashas: List<YoginiDasha>,
-        asOf: LocalDate = LocalDate.now()
+        asOf: LocalDate = LocalDate.now(ZoneOffset.UTC)
     ): YoginiDasha? {
         return yoginiDashas.find { it.isActiveOn(asOf) }
     }
@@ -1351,7 +1368,7 @@ object ConditionalDashaCalculator {
         }
 
         val isActive: Boolean
-            get() = isActiveOn(LocalDate.now())
+            get() = isActiveOn(LocalDate.now(ZoneOffset.UTC))
     }
 
     private val ASHTOTTARI_YEARS: Map<Planet, Int> = mapOf(
@@ -1418,7 +1435,7 @@ object ConditionalDashaCalculator {
         val (nakshatra, _) = Nakshatra.fromLongitude(moonLongitude)
 
         val nakshatraGroup = ((nakshatra.number - 6 + 27) % 27) / 3
-        val startingLord = ASHTOTTARI_NAKSHATRA_LORDS[nakshatraGroup % 8 + 1] ?: Planet.SUN
+        val startingLord = ASHTOTTARI_NAKSHATRA_LORDS[nakshatraGroup % 8 + 1] ?: return null
 
         // Use BigDecimal for precise nakshatra progress calculation
         val moonLongitudeBd = BigDecimal(moonLongitude.toString())
@@ -1470,5 +1487,6 @@ object ConditionalDashaCalculator {
         return dashas
     }
 }
+
 
 

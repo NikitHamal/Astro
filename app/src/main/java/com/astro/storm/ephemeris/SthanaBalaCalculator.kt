@@ -245,8 +245,9 @@ object SthanaBalaCalculator {
 
         // Find strongest and weakest
         val sortedByStrength = planetarySthanaBala.values.sortedByDescending { it.totalVirupas }
-        val strongestPlanet = sortedByStrength.firstOrNull()?.planet ?: Planet.JUPITER
-        val weakestPlanet = sortedByStrength.lastOrNull()?.planet ?: Planet.SATURN
+        require(sortedByStrength.isNotEmpty()) { "Sthana Bala calculation requires at least one valid planetary position." }
+        val strongestPlanet = sortedByStrength.first().planet
+        val weakestPlanet = sortedByStrength.last().planet
 
         // Calculate overall score
         val overallScore = calculateOverallScore(planetarySthanaBala)

@@ -12,7 +12,10 @@ import com.astro.storm.ephemeris.varshaphala.VarshaphalaConstants.STANDARD_ZODIA
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.evaluatePlanetStrengthDescription
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.getHouseSignificance
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.getStandardZodiacIndex
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 object MuddaDashaCalculator {
@@ -21,8 +24,10 @@ object MuddaDashaCalculator {
         chart: SolarReturnChart,
         startDate: LocalDate,
         language: Language,
-        asOf: LocalDate = LocalDate.now()
+        asOf: LocalDate? = null,
+        timezone: String? = null
     ): List<MuddaDashaPeriod> {
+        val effectiveAsOf = asOf ?: LocalDate.now(resolveZoneId(timezone))
         val moonLong = chart.planetPositions[Planet.MOON]?.longitude ?: 0.0
         val (nakshatra, _) = Nakshatra.fromLongitude(moonLong)
         val startingLord = nakshatra.ruler
@@ -34,7 +39,7 @@ object MuddaDashaCalculator {
             val planet = MUDDA_DASHA_PLANETS[(startIndex + i) % MUDDA_DASHA_PLANETS.size]
             val days = (MUDDA_DASHA_DAYS[planet] ?: 30).coerceAtLeast(1)
             val endDate = currentDate.plusDays(days.toLong() - 1)
-            val isCurrent = !asOf.isBefore(currentDate) && !asOf.isAfter(endDate)
+            val isCurrent = !effectiveAsOf.isBefore(currentDate) && !effectiveAsOf.isAfter(endDate)
             val strength = evaluatePlanetStrengthDescription(planet, chart, language)
             periods.add(MuddaDashaPeriod(
                 planet = planet, startDate = currentDate, endDate = endDate, days = days,
@@ -42,11 +47,28 @@ object MuddaDashaCalculator {
                 planetStrength = strength, houseRuled = getHousesRuledBy(planet, chart),
                 prediction = generateDashaPrediction(planet, chart, strength, language),
                 keywords = getDashaKeywords(planet, chart, language), isCurrent = isCurrent,
-                progressPercent = if (isCurrent) (ChronoUnit.DAYS.between(currentDate, asOf).toFloat() / days).coerceIn(0f, 1f) else if (asOf.isAfter(endDate)) 1f else 0f
+                progressPercent = if (isCurrent) (ChronoUnit.DAYS.between(currentDate, effectiveAsOf).toFloat() / days).coerceIn(0f, 1f) else if (effectiveAsOf.isAfter(endDate)) 1f else 0f
             ))
             currentDate = endDate.plusDays(1)
         }
         return periods
+    }
+
+    private fun resolveZoneId(timezone: String?): ZoneId {
+        if (timezone.isNullOrBlank()) return ZoneOffset.UTC
+        return try {
+            ZoneId.of(timezone.trim())
+        } catch (_: DateTimeException) {
+            val normalized = timezone.trim()
+                .replace("UTC", "", ignoreCase = true)
+                .replace("GMT", "", ignoreCase = true)
+                .trim()
+            if (normalized.isNotEmpty()) {
+                runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneOffset.UTC }
+            } else {
+                ZoneOffset.UTC
+            }
+        }
     }
 
     private fun calculateMuddaAntardasha(mainPlanet: Planet, startDate: LocalDate, endDate: LocalDate, language: Language): List<MuddaAntardasha> {

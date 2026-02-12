@@ -8,7 +8,11 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
+import java.time.DateTimeException
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import kotlin.math.roundToInt
 
 /**
  * Upachaya House Transit Tracker
@@ -37,6 +41,7 @@ object UpachayaTransitTracker {
         transitPositions: List<PlanetPosition>,
         language: Language
     ): UpachayaTransitAnalysis {
+        val analysisDateTime = LocalDateTime.now(resolveZoneId(natalChart.birthData.timezone))
         val moonSign = natalChart.planetPositions.find { it.planet == Planet.MOON }?.sign
             ?: throw IllegalArgumentException("Moon position required")
 
@@ -61,7 +66,7 @@ object UpachayaTransitTracker {
         val alerts = generateAlerts(activeUpachayaTransits, language)
 
         return UpachayaTransitAnalysis(
-            analysisDateTime = LocalDateTime.now(),
+            analysisDateTime = analysisDateTime,
             moonSign = moonSign,
             lagnaSign = lagnaSign,
             transitsFromMoon = upachayaTransitsFromMoon,
@@ -73,6 +78,21 @@ object UpachayaTransitTracker {
             recommendations = recommendations,
             alerts = alerts
         )
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val trimmed = timezone.trim()
+            val numericHours = trimmed.toDoubleOrNull()
+            if (numericHours != null) {
+                val totalSeconds = (numericHours * 3600.0).roundToInt()
+                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
     }
 
     /**

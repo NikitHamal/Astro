@@ -4,8 +4,11 @@ import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
+import java.time.DateTimeException
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import kotlin.math.abs
 
 /**
@@ -347,7 +350,7 @@ object SarvatobhadraChakraCalculator {
     fun analyzeSarvatobhadra(
         chart: VedicChart,
         transitPositions: List<PlanetPosition>? = null,
-        currentDate: LocalDate = LocalDate.now()
+        currentDate: LocalDate = LocalDate.now(resolveZoneId(chart.birthData.timezone))
     ): SarvatobhadraAnalysis? {
         val moonPos = chart.planetPositions.find { it.planet == Planet.MOON } ?: return null
         val (birthNakshatra, birthPada) = Nakshatra.fromLongitude(moonPos.longitude)
@@ -387,6 +390,23 @@ object SarvatobhadraChakraCalculator {
             keyInsights = insights,
             recommendations = recommendations
         )
+    }
+
+    private fun resolveZoneId(timezone: String?): ZoneId {
+        if (timezone.isNullOrBlank()) return ZoneOffset.UTC
+        return try {
+            ZoneId.of(timezone.trim())
+        } catch (_: DateTimeException) {
+            val normalized = timezone.trim()
+                .replace("UTC", "", ignoreCase = true)
+                .replace("GMT", "", ignoreCase = true)
+                .trim()
+            if (normalized.isNotEmpty()) {
+                runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneOffset.UTC }
+            } else {
+                ZoneOffset.UTC
+            }
+        }
     }
 
     /**

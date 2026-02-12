@@ -105,7 +105,9 @@ import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.KalachakraDashaUiState
 import com.astro.storm.ui.viewmodel.KalachakraDashaViewModel
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
 
 /**
  * Kalachakra Dasha Screen - Production-grade UI
@@ -125,6 +127,7 @@ fun KalachakraDashaScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val language = LocalLanguage.current
+    val asOfDate = remember(chart) { LocalDate.now(resolveZoneId(chart?.birthData?.timezone)) }
 
     val chartKey = remember(chart, language) {
         chart?.let {
@@ -186,9 +189,9 @@ fun KalachakraDashaScreen(
                                 onTabSelected = { selectedTab = it }
                             )
                             when (selectedTab) {
-                                0 -> CurrentPeriodTab(result = state.result)
+                                0 -> CurrentPeriodTab(result = state.result, asOfDate = asOfDate)
                                 1 -> DehaJeevaTab(result = state.result)
-                                2 -> TimelineTab(result = state.result)
+                                2 -> TimelineTab(result = state.result, asOfDate = asOfDate)
                             }
                         }
                     }
@@ -367,7 +370,10 @@ private fun KalachakraTabRow(
 // ============================================
 
 @Composable
-private fun CurrentPeriodTab(result: KalachakraDashaCalculator.KalachakraDashaResult) {
+private fun CurrentPeriodTab(
+    result: KalachakraDashaCalculator.KalachakraDashaResult,
+    asOfDate: LocalDate
+) {
     val language = LocalLanguage.current
     val listState = rememberLazyListState()
 
@@ -378,7 +384,7 @@ private fun CurrentPeriodTab(result: KalachakraDashaCalculator.KalachakraDashaRe
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item(key = "current_period") {
-            CurrentPeriodCard(result = result, language = language)
+            CurrentPeriodCard(result = result, language = language, asOfDate = asOfDate)
         }
 
         item(key = "nakshatra_info") {
@@ -406,7 +412,8 @@ private fun CurrentPeriodTab(result: KalachakraDashaCalculator.KalachakraDashaRe
 @Composable
 private fun CurrentPeriodCard(
     result: KalachakraDashaCalculator.KalachakraDashaResult,
-    language: Language
+    language: Language,
+    asOfDate: LocalDate
 ) {
     val currentMahadasha = result.currentMahadasha
     val currentAntardasha = result.currentAntardasha
@@ -473,9 +480,9 @@ private fun CurrentPeriodCard(
                     sign = currentMahadasha.sign,
                     startDate = currentMahadasha.startDate,
                     endDate = currentMahadasha.endDate,
-                    progress = currentMahadasha.getProgressPercent().toFloat() / 100f,
+                    progress = currentMahadasha.getProgressPercent(asOfDate).toFloat() / 100f,
                     remainingText = formatRemainingYearsLocalized(
-                        currentMahadasha.getRemainingDays() / 365.25,
+                        currentMahadasha.getRemainingDays(asOfDate) / 365.25,
                         language
                     ),
                     isLarge = true,
@@ -489,9 +496,9 @@ private fun CurrentPeriodCard(
                         sign = ad.sign,
                         startDate = ad.startDate,
                         endDate = ad.endDate,
-                        progress = ad.getProgressPercent().toFloat() / 100f,
+                        progress = ad.getProgressPercent(asOfDate).toFloat() / 100f,
                         remainingText = formatRemainingDaysLocalized(
-                            java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), ad.endDate).coerceAtLeast(0),
+                            java.time.temporal.ChronoUnit.DAYS.between(asOfDate, ad.endDate).coerceAtLeast(0),
                             language
                         ),
                         isLarge = false,
@@ -1480,7 +1487,10 @@ private fun RecommendationsCard(
 // ============================================
 
 @Composable
-private fun TimelineTab(result: KalachakraDashaCalculator.KalachakraDashaResult) {
+private fun TimelineTab(
+    result: KalachakraDashaCalculator.KalachakraDashaResult,
+    asOfDate: LocalDate
+) {
     val language = LocalLanguage.current
     val listState = rememberLazyListState()
 
@@ -1504,7 +1514,8 @@ private fun TimelineTab(result: KalachakraDashaCalculator.KalachakraDashaResult)
                 currentAntardasha = if (mahadasha == result.currentMahadasha) result.currentAntardasha else null,
                 dehaRashi = result.dehaRashi,
                 jeevaRashi = result.jeevaRashi,
-                language = language
+                language = language,
+                asOfDate = asOfDate
             )
         }
 
@@ -1565,7 +1576,8 @@ private fun MahadashaCard(
     currentAntardasha: KalachakraDashaCalculator.KalachakraAntardasha?,
     dehaRashi: ZodiacSign,
     jeevaRashi: ZodiacSign,
-    language: Language
+    language: Language,
+    asOfDate: LocalDate
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(isCurrent) }
     val rotation by animateFloatAsState(
@@ -1661,7 +1673,7 @@ private fun MahadashaCard(
                         if (isCurrent) {
                             Spacer(modifier = Modifier.height(3.dp))
                             Text(
-                                text = "${String.format("%.1f", mahadasha.getProgressPercent())}% • ${formatRemainingYearsLocalized(mahadasha.getRemainingDays() / 365.25, language)}",
+                                text = "${String.format("%.1f", mahadasha.getProgressPercent(asOfDate))}% • ${formatRemainingYearsLocalized(mahadasha.getRemainingDays(asOfDate) / 365.25, language)}",
                                 fontSize = 10.sp,
                                 color = AppTheme.AccentTeal,
                                 fontWeight = FontWeight.Medium
@@ -1744,7 +1756,8 @@ private fun MahadashaCard(
                             isCurrent = antardasha == currentAntardasha,
                             dehaRashi = dehaRashi,
                             jeevaRashi = jeevaRashi,
-                            language = language
+                            language = language,
+                            asOfDate = asOfDate
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                     }
@@ -1760,10 +1773,11 @@ private fun AntardashaRow(
     isCurrent: Boolean,
     dehaRashi: ZodiacSign,
     jeevaRashi: ZodiacSign,
-    language: Language
+    language: Language,
+    asOfDate: LocalDate
 ) {
     val signColor = AppTheme.getSignColor(antardasha.sign)
-    val today = LocalDate.now()
+    val today = asOfDate
     val isPast = antardasha.endDate.isBefore(today)
 
     Row(
@@ -1813,7 +1827,7 @@ private fun AntardashaRow(
                     if (isCurrent) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "${antardasha.getProgressPercent().toInt().localized()}%",
+                            text = "${antardasha.getProgressPercent(asOfDate).toInt().localized()}%",
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = signColor.copy(alpha = 0.9f)
@@ -2197,4 +2211,20 @@ private fun formatRemainingDaysLocalized(days: Long, language: Language): String
     }
 }
 
+private fun resolveZoneId(timezone: String?): ZoneId {
+    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+    return try {
+        ZoneId.of(timezone.trim())
+    } catch (_: DateTimeException) {
+        val normalized = timezone.trim()
+            .replace("UTC", "", ignoreCase = true)
+            .replace("GMT", "", ignoreCase = true)
+            .trim()
+        if (normalized.isNotEmpty()) {
+            runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
+        } else {
+            ZoneId.systemDefault()
+        }
+    }
+}
 

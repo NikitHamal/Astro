@@ -1082,7 +1082,11 @@ private fun UpcomingTransitsTab(
 
         // Upcoming Transit Cards
         items(filteredTransits.take(20)) { transit ->
-            UpcomingTransitCard(transit = transit, language = language)
+            UpcomingTransitCard(
+                transit = transit,
+                language = language,
+                asOfDate = result.analysisDate.toLocalDate()
+            )
         }
     }
 }
@@ -1090,11 +1094,12 @@ private fun UpcomingTransitsTab(
 @Composable
 private fun UpcomingTransitCard(
     transit: UpcomingTransit,
-    language: Language
+    language: Language,
+    asOfDate: java.time.LocalDate
 ) {
     val colors = AppTheme.current
     val qualityColor = getQualityColorSS(transit.quality, colors)
-    val daysUntil = ChronoUnit.DAYS.between(java.time.LocalDate.now(), transit.transitDate).toInt()
+    val daysUntil = ChronoUnit.DAYS.between(asOfDate, transit.transitDate).toInt()
 
     Card(
         modifier = Modifier.fillMaxWidth(),

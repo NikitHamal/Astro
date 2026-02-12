@@ -247,8 +247,9 @@ object KalaBalaCalculator {
         val componentSummary = calculateComponentSummary(planetaryKalaBala)
 
         val sortedByStrength = planetaryKalaBala.values.sortedByDescending { it.totalVirupas }
-        val strongestPlanet = sortedByStrength.firstOrNull()?.planet ?: Planet.JUPITER
-        val weakestPlanet = sortedByStrength.lastOrNull()?.planet ?: Planet.SATURN
+        require(sortedByStrength.isNotEmpty()) { "Kala Bala calculation requires at least one valid planetary position." }
+        val strongestPlanet = sortedByStrength.first().planet
+        val weakestPlanet = sortedByStrength.last().planet
 
         val overallScore = calculateOverallScore(planetaryKalaBala)
         val insights = generateInsights(planetaryKalaBala, birthContext)

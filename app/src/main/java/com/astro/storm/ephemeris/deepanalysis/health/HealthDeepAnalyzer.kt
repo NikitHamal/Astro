@@ -251,9 +251,10 @@ object HealthDeepAnalyzer {
     
     private fun analyzeCurrentHealthPhase(context: AnalysisContext): CurrentHealthPhase {
         val dasha = context.currentMahadasha
+        val vitalityPlanet = dasha?.planet ?: context.ascendantLord
         return CurrentHealthPhase(
-            currentDasha = "${dasha?.planet?.displayName ?: "Current"} Mahadasha",
-            overallVitality = context.getPlanetStrengthLevel(dasha?.planet ?: Planet.SUN),
+            currentDasha = "${vitalityPlanet.displayName} Mahadasha",
+            overallVitality = context.getPlanetStrengthLevel(vitalityPlanet),
             currentFocus = LocalizedParagraph("Current period health recommendations.",
                 "वर्तमान अवधि स्वास्थ्य सिफारिसहरू।"),
             watchAreas = emptyList(),

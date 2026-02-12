@@ -166,8 +166,9 @@ object DrigBalaCalculator {
 
         // Find strongest and weakest
         val sortedByStrength = planetaryDrigBala.values.sortedByDescending { it.netDrigBala }
-        val strongestPlanet = sortedByStrength.firstOrNull()?.planet ?: Planet.JUPITER
-        val weakestPlanet = sortedByStrength.lastOrNull()?.planet ?: Planet.SATURN
+        require(sortedByStrength.isNotEmpty()) { "Drig Bala calculation requires at least one valid planetary position." }
+        val strongestPlanet = sortedByStrength.first().planet
+        val weakestPlanet = sortedByStrength.last().planet
 
         // Calculate overall score
         val overallScore = calculateOverallScore(planetaryDrigBala)

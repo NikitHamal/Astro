@@ -53,11 +53,15 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
+import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
+import kotlin.math.roundToInt
 
 // ============================================================================
 // DESIGN TOKENS
@@ -241,6 +245,7 @@ private fun HeroDashaCard(
     onClick: () -> Unit
 ) {
     val colors = AppTheme.current
+    val today = remember(chart) { LocalDate.now(resolveZoneId(chart.birthData.timezone)) }
     val infiniteTransition = rememberInfiniteTransition(label = "hero_glow")
     
     val glowAlpha by infiniteTransition.animateFloat(
@@ -358,7 +363,7 @@ private fun HeroDashaCard(
                             Spacer(modifier = Modifier.height(4.dp))
                             
                             // Duration
-                            val remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), currentDasha.endDate.toLocalDate())
+                            val remainingDays = ChronoUnit.DAYS.between(today, currentDasha.endDate.toLocalDate())
                             val years = remainingDays / 365
                             val months = (remainingDays % 365) / 30
                             
@@ -378,7 +383,7 @@ private fun HeroDashaCard(
 
                     // Progress Bar
                     val totalDays = ChronoUnit.DAYS.between(currentDasha.startDate.toLocalDate(), currentDasha.endDate.toLocalDate()).toFloat()
-                    val elapsedDays = ChronoUnit.DAYS.between(currentDasha.startDate.toLocalDate(), LocalDate.now()).toFloat()
+                    val elapsedDays = ChronoUnit.DAYS.between(currentDasha.startDate.toLocalDate(), today).toFloat()
                     val progress = (elapsedDays / totalDays).coerceIn(0f, 1f)
                     
                     Column {
@@ -549,7 +554,7 @@ private fun TodaySnapshotSection(
     onTransitsClick: () -> Unit
 ) {
     val colors = AppTheme.current
-    val today = LocalDate.now()
+    val today = remember(chart) { LocalDate.now(resolveZoneId(chart.birthData.timezone)) }
     
     Column(
         modifier = Modifier.padding(horizontal = HomeDesignTokens.ScreenPadding)
@@ -1540,6 +1545,21 @@ enum class InsightFeature(
 
         val comingSoonFeatures: List<InsightFeature> by lazy(LazyThreadSafetyMode.PUBLICATION) {
             entries.filter { !it.isImplemented }
+        }
+    }
+}
+
+private fun resolveZoneId(timezone: String): ZoneId {
+    return try {
+        ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val trimmed = timezone.trim()
+        val numericHours = trimmed.toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        } else {
+            ZoneId.systemDefault()
         }
     }
 }

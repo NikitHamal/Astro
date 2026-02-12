@@ -98,6 +98,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -128,6 +129,7 @@ import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
@@ -193,16 +195,19 @@ fun MuhurtaScreen(
     val scope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
 
-    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
+    val latitude = remember(chart) { chart?.birthData?.latitude ?: 28.6139 }
+    val longitude = remember(chart) { chart?.birthData?.longitude ?: 77.2090 }
+    val timezone = remember(chart) { chart?.birthData?.timezone ?: "Asia/Kolkata" }
+    val zoneId = remember(timezone) { resolveZoneIdStrict(timezone) }
+    val nowInZone by rememberCurrentDateTime(zoneId)
+    val todayInZone = nowInZone.toLocalDate()
+
+    var selectedDate by remember(zoneId) { mutableStateOf(todayInZone) }
     var selectedActivity by remember { mutableStateOf(ActivityType.GENERAL) }
     var uiState by remember { mutableStateOf<MuhurtaUiState>(MuhurtaUiState.Loading) }
     var searchState by remember { mutableStateOf<SearchUiState>(SearchUiState.Idle) }
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
-
-    val latitude = remember(chart) { chart?.birthData?.latitude ?: 28.6139 }
-    val longitude = remember(chart) { chart?.birthData?.longitude ?: 77.2090 }
-    val timezone = remember(chart) { chart?.birthData?.timezone ?: "Asia/Kolkata" }
 
     val calculator = remember(context) { MuhurtaCalculator(context) }
 
@@ -241,7 +246,15 @@ fun MuhurtaScreen(
         }
     }
 
-    LaunchedEffect(selectedDate) {
+    val refreshToken = remember(selectedDate, todayInZone, nowInZone) {
+        if (selectedDate == todayInZone) {
+            nowInZone.withSecond(0).withNano(0)
+        } else {
+            selectedDate.atStartOfDay()
+        }
+    }
+
+    LaunchedEffect(selectedDate, refreshToken) {
         loadMuhurtaData(selectedDate)
     }
 
@@ -295,6 +308,7 @@ fun MuhurtaScreen(
             ) {
                 DateSelectorBar(
                     selectedDate = selectedDate,
+                    todayDate = todayInZone,
                     onDateChange = { newDate ->
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         selectedDate = newDate
@@ -327,6 +341,7 @@ fun MuhurtaScreen(
                         }
                     )
                     1 -> FindMuhurtaTabContent(
+                        todayDate = todayInZone,
                         selectedActivity = selectedActivity,
                         onActivityChange = { activity ->
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -441,10 +456,11 @@ private fun MuhurtaTabs(
 @Composable
 private fun DateSelectorBar(
     selectedDate: LocalDate,
+    todayDate: LocalDate,
     onDateChange: (LocalDate) -> Unit,
     onShowDatePicker: () -> Unit
 ) {
-    val isToday = selectedDate == LocalDate.now()
+    val isToday = selectedDate == todayDate
     val interactionSource = remember { MutableInteractionSource() }
 
     Card(
@@ -955,6 +971,17 @@ private fun InauspiciousPeriodsCard(
 }
 
 @Composable
+private fun rememberCurrentDateTime(zoneId: ZoneId) = produceState(
+    initialValue = LocalDateTime.now(zoneId),
+    key1 = zoneId
+) {
+    while (true) {
+        value = LocalDateTime.now(zoneId)
+        delay(60_000)
+    }
+}
+
+@Composable
 private fun InauspiciousPeriodRow(
     name: String,
     description: String,
@@ -1379,14 +1406,15 @@ private fun RecommendationsCard(recommendations: List<String>) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun FindMuhurtaTabContent(
+    todayDate: LocalDate,
     selectedActivity: ActivityType,
     onActivityChange: (ActivityType) -> Unit,
     searchState: SearchUiState,
     onSearch: (LocalDate, LocalDate, ActivityType) -> Unit
 ) {
     val haptic = LocalHapticFeedback.current
-    var startDate by remember { mutableStateOf(LocalDate.now()) }
-    var endDate by remember { mutableStateOf(LocalDate.now().plusDays(30)) }
+    var startDate by remember(todayDate) { mutableStateOf(todayDate) }
+    var endDate by remember(todayDate) { mutableStateOf(todayDate.plusDays(30)) }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),

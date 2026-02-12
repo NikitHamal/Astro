@@ -5,7 +5,6 @@ import com.astro.storm.data.templates.TemplateSelector
 import com.astro.storm.ephemeris.deepanalysis.*
 import com.astro.storm.ephemeris.DashaCalculator
 import java.time.LocalDate
-import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,7 +19,7 @@ class DeepPredictionEngine @Inject constructor(
 ) {
     
     fun generatePredictions(chart: VedicChart, context: AnalysisContext): DeepPredictions {
-        val currentDate = LocalDate.now()
+        val currentDate = context.analysisDate
         
         return DeepPredictions(
             dashaAnalysis = analyzeDashaSystem(context),
@@ -173,7 +172,7 @@ class DeepPredictionEngine @Inject constructor(
     }
     
     private fun getUpcomingDashas(context: AnalysisContext): List<UpcomingDashaPeriod> {
-        val now = LocalDateTime.now()
+        val now = context.analysisDateTime
         return context.dashaTimeline.mahadashas
             .filter { it.endDate.isAfter(now) }
             .take(3)
@@ -228,8 +227,8 @@ class DeepPredictionEngine @Inject constructor(
         return SadeSatiAnalysis(
             isActive = isActive,
             phase = phase,
-            startDate = if (isActive) LocalDate.now().minusYears(1) else null,
-            endDate = if (isActive) LocalDate.now().plusYears(2) else null,
+            startDate = if (isActive) context.analysisDate.minusYears(1) else null,
+            endDate = if (isActive) context.analysisDate.plusYears(2) else null,
             effects = if (isActive) PredictionTextGenerator.getSadeSatiEffects(phase) else LocalizedParagraph("", ""),
             remedies = if (isActive) PredictionTextGenerator.getSadeSatiRemedies() else LocalizedParagraph("", "")
         )
@@ -299,20 +298,21 @@ class DeepPredictionEngine @Inject constructor(
     private fun generateYearlyPrediction(context: AnalysisContext, currentDate: LocalDate): YearlyPrediction {
         val year = currentDate.year
         val dasha = context.currentMahadasha
+        val dominantPlanet = dasha?.planet ?: context.ascendantLord
         
         return YearlyPrediction(
             year = year,
             overallTheme = LocalizedParagraph(
-                "Year $year brings ${dasha?.planet?.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH) ?: "planetary"} energy themes to the forefront.",
-                "वर्ष $year ले ${dasha?.planet?.getLocalizedName(com.astro.storm.core.common.Language.NEPALI) ?: "ग्रहीय"} ऊर्जा विषयहरूलाई अगाडि ल्याउँछ।"
+                "Year $year brings ${dominantPlanet.getLocalizedName(com.astro.storm.core.common.Language.ENGLISH)} energy themes to the forefront.",
+                "वर्ष $year ले ${dominantPlanet.getLocalizedName(com.astro.storm.core.common.Language.NEPALI)} ऊर्जा विषयहरूलाई अगाडि ल्याउँछ।"
             ),
-            overallRating = context.getPlanetStrengthLevel(dasha?.planet ?: Planet.JUPITER),
+            overallRating = context.getPlanetStrengthLevel(dominantPlanet),
             careerOutlook = generateAreaOutlook(LifeArea.CAREER, context),
             relationshipOutlook = generateAreaOutlook(LifeArea.RELATIONSHIPS, context),
             healthOutlook = generateAreaOutlook(LifeArea.HEALTH, context),
             wealthOutlook = generateAreaOutlook(LifeArea.FINANCE, context),
             keyMonths = emptyList(),
-            yearlyAdvice = PredictionTextGenerator.getYearlyAdvice(dasha?.planet ?: Planet.JUPITER, context)
+            yearlyAdvice = PredictionTextGenerator.getYearlyAdvice(dominantPlanet, context)
         )
     }
     
@@ -384,3 +384,4 @@ class DeepPredictionEngine @Inject constructor(
         com.astro.storm.ephemeris.yoga.YogaStrength.VERY_WEAK -> StrengthLevel.AFFLICTED
     }
 }
+

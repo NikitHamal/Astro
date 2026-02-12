@@ -961,7 +961,9 @@ object TajikaYogaCalculator {
             ZodiacSign.PISCES -> listOf(12 to Planet.VENUS, 16 to Planet.JUPITER, 19 to Planet.MERCURY, 28 to Planet.MARS, 30 to Planet.SATURN)
         }
 
-        return termBoundaries.find { degree <= it.first }?.second ?: Planet.SATURN
+        val normalizedDegree = degree.coerceIn(0.0, 30.0)
+        return termBoundaries.firstOrNull { normalizedDegree <= it.first }?.second
+            ?: termBoundaries.last().second
     }
 
     private fun findAspectChain(positions: List<PlanetPosition>): List<PlanetPosition> {
@@ -986,7 +988,8 @@ object TajikaYogaCalculator {
     private fun calculateYearLord(chart: VedicChart): Planet {
         // Year lord is determined by the lord of the weekday of the solar return
         val sunPos = chart.planetPositions.find { it.planet == Planet.SUN }
-        return sunPos?.sign?.ruler ?: Planet.SUN
+        requireNotNull(sunPos) { "Year lord calculation requires Sun position in the varshaphala chart." }
+        return sunPos.sign.ruler
     }
 
     private fun calculateMuntha(varshaphalaChart: VedicChart, rasiChart: VedicChart): ZodiacSign {

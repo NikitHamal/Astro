@@ -72,8 +72,12 @@ import com.astro.storm.ephemeris.SudarshanaTimeline
 import com.astro.storm.ephemeris.YearlyAnalysis
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.theme.AppTheme
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import kotlin.math.roundToInt
 
 /**
  * Sudarshana Chakra Dasha Tab Content
@@ -90,6 +94,9 @@ fun SudarshanaChakraTabContent(
 ) {
     var showInfoExpanded by rememberSaveable { mutableStateOf(false) }
     var expandedYears by rememberSaveable { mutableStateOf(setOf<Int>()) }
+    val currentYear = remember(timeline) {
+        LocalDate.now(resolveZoneId(timeline.natalChart.birthData.timezone)).year
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -98,7 +105,10 @@ fun SudarshanaChakraTabContent(
     ) {
         // Current Year Card
         item(key = "current_year") {
-            SudarshanaCurrentYearCard(timeline = timeline)
+            SudarshanaCurrentYearCard(
+                timeline = timeline,
+                currentYear = currentYear
+            )
         }
 
         // Triple Reference Overview
@@ -144,7 +154,7 @@ fun SudarshanaChakraTabContent(
             key = { "sudarshana_year_${it.year}" }
         ) { yearData ->
             val isExpanded = yearData.year in expandedYears
-            val isCurrent = yearData.year == LocalDate.now().year
+            val isCurrent = yearData.year == currentYear
 
             SudarshanaYearCard(
                 yearData = yearData,
@@ -167,9 +177,9 @@ fun SudarshanaChakraTabContent(
 
 @Composable
 private fun SudarshanaCurrentYearCard(
-    timeline: SudarshanaTimeline
+    timeline: SudarshanaTimeline,
+    currentYear: Int
 ) {
-    val currentYear = LocalDate.now().year
     val currentYearData = timeline.yearlyAnalysis.find { it.year == currentYear }
     val language = LocalLanguage.current
 
@@ -366,6 +376,21 @@ private fun SudarshanaCurrentYearCard(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
+        }
+    }
+}
+
+private fun resolveZoneId(timezone: String): ZoneId {
+    return try {
+        ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val trimmed = timezone.trim()
+        val numericHours = trimmed.toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        } else {
+            ZoneId.systemDefault()
         }
     }
 }

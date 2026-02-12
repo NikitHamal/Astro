@@ -49,8 +49,12 @@ import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.Period
+import java.time.ZoneId
+import java.time.ZoneOffset
+import kotlin.math.roundToInt
 
 /**
  * Sudarshana Chakra Dasha Screen
@@ -84,10 +88,11 @@ fun SudarshanaChakraScreen(
     var isCalculating by remember { mutableStateOf(true) }
     var chakraResult by remember { mutableStateOf<SudarshanaChakraResult?>(null) }
     var selectedAge by remember { mutableIntStateOf(0) }
+    val zoneId = remember(chart) { resolveZoneId(chart.birthData.timezone) }
 
     // Calculate current age
-    val currentAge = remember(chart) {
-        Period.between(chart.birthData.dateTime.toLocalDate(), LocalDate.now()).years
+    val currentAge = remember(chart, zoneId) {
+        Period.between(chart.birthData.dateTime.toLocalDate(), LocalDate.now(zoneId)).years
     }
 
     // Initialize selectedAge with current year of life (age + 1)
@@ -1410,6 +1415,21 @@ private fun getStrengthColor(score: Double): Color {
         score >= 70 -> Color(0xFF4ECDC4)
         score >= 50 -> Color(0xFFF9C74F)
         else -> Color(0xFFE63946)
+    }
+}
+
+private fun resolveZoneId(timezone: String): ZoneId {
+    return try {
+        ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val trimmed = timezone.trim()
+        val numericHours = trimmed.toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        } else {
+            ZoneId.systemDefault()
+        }
     }
 }
 

@@ -50,7 +50,11 @@ import com.astro.storm.ephemeris.BhriguBinduCalculator.OverallStrength
 import com.astro.storm.ephemeris.BhriguBinduCalculator.RemedyCategory
 import com.astro.storm.ephemeris.BhriguBinduCalculator.RemedyPriority
 import com.astro.storm.ui.theme.AppTheme
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
+import kotlin.math.roundToInt
 
 /**
  * Bhrigu Bindu Analysis Screen
@@ -89,6 +93,7 @@ fun BhriguBinduScreen(
     var selectedTab by remember { mutableIntStateOf(0) }
     var expandedFactor by remember { mutableStateOf<Int?>(null) }
     var expandedLifeArea by remember { mutableStateOf<LifeArea?>(null) }
+    val analysisDate = remember(chart) { LocalDate.now(resolveZoneId(chart.birthData.timezone)) }
 
     val tabs = listOf(
         stringResource(StringKeyMatch.TAB_OVERVIEW),
@@ -98,9 +103,9 @@ fun BhriguBinduScreen(
     )
 
     // Calculate Bhrigu Bindu analysis
-    val bbAnalysis = remember(chart) {
+    val bbAnalysis = remember(chart, analysisDate) {
         try {
-            BhriguBinduCalculator.analyzeBhriguBindu(chart, LocalDate.now())
+            BhriguBinduCalculator.analyzeBhriguBindu(chart, analysisDate)
         } catch (e: Exception) {
             null
         }
@@ -1624,6 +1629,21 @@ private fun getRemedyCategoryIcon(category: RemedyCategory): ImageVector = when 
     RemedyCategory.FASTING -> Icons.Filled.Restaurant
     RemedyCategory.PILGRIMAGE -> Icons.Filled.Place
     RemedyCategory.LIFESTYLE -> Icons.Filled.Spa
+}
+
+private fun resolveZoneId(timezone: String): ZoneId {
+    return try {
+        ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val trimmed = timezone.trim()
+        val numericHours = trimmed.toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        } else {
+            ZoneId.systemDefault()
+        }
+    }
 }
 
 @Composable

@@ -59,12 +59,16 @@ import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ephemeris.varshaphala.TajikaYogaCalculator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
+import kotlin.math.roundToInt
 
 /**
  * VarshaphalaScreen - Annual Horoscope (Tajika System)
@@ -87,8 +91,9 @@ fun VarshaphalaScreen(
 ) {
     val context = LocalContext.current
     val calculator = remember { VarshaphalaCalculator(context) }
+    val zoneId = remember(chart) { resolveZoneId(chart?.birthData?.timezone) }
 
-    val currentYear = LocalDate.now().year
+    val currentYear = LocalDate.now(zoneId).year
     val birthYear = chart?.birthData?.dateTime?.year ?: currentYear
     var selectedYear by remember { mutableIntStateOf(currentYear) }
     var varshaphalaResult by remember { mutableStateOf<VarshaphalaResult?>(null) }
@@ -177,6 +182,7 @@ fun VarshaphalaScreen(
             YearSelector(
                 currentYear = selectedYear,
                 birthYear = birthYear,
+                referenceYear = currentYear,
                 onYearChange = { selectedYear = it }
             )
 
@@ -267,9 +273,10 @@ private fun YearRatingBadge(rating: Float) {
 private fun YearSelector(
     currentYear: Int,
     birthYear: Int,
+    referenceYear: Int,
     onYearChange: (Int) -> Unit
 ) {
-    val maxYear = LocalDate.now().year + 10
+    val maxYear = referenceYear + 10
     val years = (birthYear..maxYear).toList()
     val scrollState = rememberScrollState()
     val currentYearIndex = years.indexOf(currentYear)
@@ -340,7 +347,7 @@ private fun YearSelector(
             ) {
                 years.forEach { year ->
                     val isSelected = year == currentYear
-                    val isFuture = year > LocalDate.now().year
+                    val isFuture = year > referenceYear
 
                     FilterChip(
                         selected = isSelected,
@@ -398,6 +405,21 @@ private fun EmptyState() {
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
+        }
+    }
+}
+
+private fun resolveZoneId(timezone: String?): ZoneId {
+    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+    return try {
+        ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val numericHours = timezone.trim().toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        } else {
+            ZoneId.systemDefault()
         }
     }
 }

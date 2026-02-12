@@ -10,6 +10,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -250,8 +251,9 @@ class GocharaVedhaCalculator @Inject constructor(
     fun calculateVedhaAnalysis(
         chart: VedicChart,
         transitPositions: List<PlanetPosition>,
-        analysisDate: LocalDate = LocalDate.now()
+        analysisDate: LocalDate? = null
     ): CompleteVedhaAnalysis? {
+        val effectiveAnalysisDate = analysisDate ?: LocalDate.now(resolveZoneId(chart.birthData.timezone))
         // Get natal Moon sign
         val natalMoon = chart.planetPositions.find { it.planet == Planet.MOON }
             ?: return null
@@ -307,7 +309,7 @@ class GocharaVedhaCalculator @Inject constructor(
 
         return CompleteVedhaAnalysis(
             natalMoonSign = natalMoonSign,
-            analysisDate = analysisDate,
+            analysisDate = effectiveAnalysisDate,
             planetTransits = planetTransits,
             activeVedhas = activeVedhas,
             overallTransitScore = overallScore,
@@ -845,8 +847,9 @@ class GocharaVedhaCalculator @Inject constructor(
      */
     fun calculateCurrentVedha(
         chart: VedicChart,
-        dateTime: LocalDateTime = LocalDateTime.now()
+        dateTime: LocalDateTime? = null
     ): CompleteVedhaAnalysis? {
+        val effectiveDateTime = dateTime ?: LocalDateTime.now(resolveZoneId(chart.birthData.timezone))
         val transitPositions = mutableListOf<PlanetPosition>()
         val gocharaPlanets = listOf(
             Planet.SUN, Planet.MOON, Planet.MARS, Planet.MERCURY,
@@ -856,7 +859,7 @@ class GocharaVedhaCalculator @Inject constructor(
         for (planet in gocharaPlanets) {
             try {
                 val planetPos = ephemerisEngine.calculatePlanetPosition(
-                    planet, dateTime, chart.birthData.timezone,
+                    planet, effectiveDateTime, chart.birthData.timezone,
                     chart.birthData.latitude, chart.birthData.longitude
                 )
                 transitPositions.add(planetPos)
@@ -865,7 +868,7 @@ class GocharaVedhaCalculator @Inject constructor(
             }
         }
 
-        return calculateVedhaAnalysis(chart, transitPositions, dateTime.toLocalDate())
+        return calculateVedhaAnalysis(chart, transitPositions, effectiveDateTime.toLocalDate())
     }
 
     /**
@@ -933,6 +936,9 @@ class GocharaVedhaCalculator @Inject constructor(
             }
         }
     }
+    private fun resolveZoneId(timezone: String?): ZoneId {
+        if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+        return runCatching { ZoneId.of(timezone.trim()) }.getOrElse { ZoneId.systemDefault() }
+    }
 }
-
 

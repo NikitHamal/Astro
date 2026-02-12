@@ -56,6 +56,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -85,9 +86,14 @@ import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.theme.AppTheme
+import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.delay
+import kotlin.math.roundToInt
 
 /**
  * Redesigned Transits Screen
@@ -118,20 +124,19 @@ fun TransitsScreenRedesigned(
     val language = LocalLanguage.current
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     var expandedPlanets by rememberSaveable { mutableStateOf(setOf<String>()) }
+    val zoneId = remember(chart) { resolveZoneId(chart?.birthData?.timezone) }
+    val nowInZone by rememberCurrentDateTime(zoneId)
+    val asOf = remember(nowInZone) { nowInZone.withSecond(0).withNano(0) }
 
     // Calculate transit data
-    val transitAnalysis = remember(chart) {
+    val transitAnalysis = remember(chart, asOf) {
         chart?.let {
             try {
-                transitAnalyzer.analyzeTransits(it, LocalDateTime.now())
+                transitAnalyzer.analyzeTransits(it, asOf)
             } catch (e: Exception) {
                 null
             }
         }
-    }
-
-    val currentPositions = remember(transitAnalysis) {
-        transitAnalysis?.transitPositions ?: emptyList()
     }
 
     // Read colors outside remember
@@ -193,6 +198,7 @@ fun TransitsScreenRedesigned(
                         TransitViewType.CURRENT -> {
                             CurrentTransitsContent(
                                 analysis = transitAnalysis,
+                                todayDate = asOf.toLocalDate(),
                                 expandedPlanets = expandedPlanets,
                                 onTogglePlanet = { planet ->
                                     expandedPlanets = if (planet in expandedPlanets) {
@@ -207,7 +213,10 @@ fun TransitsScreenRedesigned(
                             TransitsByHouseContent(analysis = transitAnalysis)
                         }
                         TransitViewType.UPCOMING -> {
-                            UpcomingTransitsContent(analysis = transitAnalysis)
+                            UpcomingTransitsContent(
+                                analysis = transitAnalysis,
+                                asOf = asOf
+                            )
                         }
                         TransitViewType.ASPECTS -> {
                             TransitAspectsContent(analysis = transitAnalysis)
@@ -271,6 +280,7 @@ private fun TransitsTopBar(
 @Composable
 private fun CurrentTransitsContent(
     analysis: TransitAnalyzer.TransitAnalysis,
+    todayDate: LocalDate,
     expandedPlanets: Set<String>,
     onTogglePlanet: (String) -> Unit
 ) {
@@ -302,7 +312,7 @@ private fun CurrentTransitsContent(
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = LocalDate.now().format(DateTimeFormatter.ofPattern("MMM dd, yyyy")),
+                    text = todayDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy")),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
@@ -819,10 +829,9 @@ private fun HouseTransitCard(
 
 @Composable
 private fun UpcomingTransitsContent(
-    analysis: TransitAnalyzer.TransitAnalysis
+    analysis: TransitAnalyzer.TransitAnalysis,
+    asOf: LocalDateTime
 ) {
-    val language = LocalLanguage.current
-
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
@@ -840,7 +849,7 @@ private fun UpcomingTransitsContent(
 
         // Filter to upcoming and significant
         val upcomingTransits = analysis.significantPeriods
-            .filter { it.startDate.isAfter(LocalDateTime.now()) }
+            .filter { it.startDate.isAfter(asOf) }
             .sortedBy { it.startDate }
             .take(15)
 
@@ -865,7 +874,10 @@ private fun UpcomingTransitsContent(
                 items = upcomingTransits,
                 key = { period -> "upcoming_${period.planets.joinToString("_") { it.symbol }}_${period.startDate}" }
             ) { period ->
-                UpcomingTransitCard(period = period)
+                UpcomingTransitCard(
+                    period = period,
+                    asOfDate = asOf.toLocalDate()
+                )
             }
         }
 
@@ -875,12 +887,13 @@ private fun UpcomingTransitsContent(
 
 @Composable
 private fun UpcomingTransitCard(
-    period: TransitAnalyzer.SignificantPeriod
+    period: TransitAnalyzer.SignificantPeriod,
+    asOfDate: LocalDate
 ) {
     val language = LocalLanguage.current
-    val primaryPlanet = period.planets.firstOrNull() ?: Planet.SUN
+    val primaryPlanet = period.planets.firstOrNull() ?: return
     val planetColor = ChartDetailColors.getPlanetColor(primaryPlanet)
-    val daysUntil = java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), period.startDate.toLocalDate()).toInt()
+    val daysUntil = java.time.temporal.ChronoUnit.DAYS.between(asOfDate, period.startDate.toLocalDate()).toInt()
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -1163,6 +1176,32 @@ private fun getStrengthColor(strength: Double): Color {
         strength >= 50 -> AppTheme.AccentTeal
         strength >= 30 -> AppTheme.WarningColor
         else -> AppTheme.ErrorColor
+    }
+}
+
+private fun resolveZoneId(timezone: String?): ZoneId {
+    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+    return try {
+        ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val numericHours = timezone.trim().toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        } else {
+            ZoneId.systemDefault()
+        }
+    }
+}
+
+@Composable
+private fun rememberCurrentDateTime(zoneId: ZoneId) = produceState(
+    initialValue = LocalDateTime.now(zoneId),
+    key1 = zoneId
+) {
+    while (true) {
+        value = LocalDateTime.now(zoneId)
+        delay(60_000)
     }
 }
 

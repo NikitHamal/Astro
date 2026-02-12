@@ -32,7 +32,13 @@ object NavamsaMarriageAnalyzer {
         return ZodiacSign.entries[(asc.ordinal + (2 + (lordPos - 2 + 12) % 12 - 1 + 12) % 12) % 12]
     }
 
-    private fun calculateDarakaraka(chart: VedicChart): Planet = chart.planetPositions.filter { it.planet !in listOf(Planet.RAHU, Planet.KETU, Planet.URANUS, Planet.NEPTUNE, Planet.PLUTO) }.minByOrNull { it.longitude % 30.0 }?.planet ?: Planet.VENUS
+    private fun calculateDarakaraka(chart: VedicChart): Planet {
+        val eligible = chart.planetPositions.filter {
+            it.planet !in listOf(Planet.RAHU, Planet.KETU, Planet.URANUS, Planet.NEPTUNE, Planet.PLUTO)
+        }
+        require(eligible.isNotEmpty()) { "Darakaraka calculation requires classical graha positions excluding nodes and outer planets." }
+        return eligible.minBy { it.longitude % 30.0 }.planet
+    }
 
     private fun analyzeMarriageTimingFactors(v: PlanetPosition?, j: PlanetPosition?, s: PlanetPosition?, d: PlanetPosition?, lang: Language): MarriageTimingFactors {
         val p = mutableListOf<Planet>(); v?.let { if (it.house in listOf(1, 5, 7, 9, 11)) p.add(Planet.VENUS) }; j?.let { if (it.house in listOf(1, 5, 7, 9, 11)) p.add(Planet.JUPITER) }; s?.let { p.add(it.planet) }
@@ -42,12 +48,14 @@ object NavamsaMarriageAnalyzer {
     private fun analyzeSpouseCharacteristics(s: PlanetPosition?, v: PlanetPosition?, d: PlanetPosition?, u: PlanetPosition?, d9: com.astro.storm.ephemeris.DivisionalChartData, lang: Language): SpouseCharacteristics = SpouseCharacteristics(determineSpouseNature(s, v, lang), determineSpouseAppearance(d, v, lang), estimateSpouseProfession(s, lang), determineSpouseFamilyBackground(u, lang))
 
     private fun determineSpouseNature(s: PlanetPosition?, v: PlanetPosition?, lang: Language): String {
-        val p = s?.planet ?: v?.planet ?: Planet.VENUS
+        val p = s?.planet ?: v?.planet
+            ?: return StringResources.get(StringKeyDivisional.NAVAMSA_NATURE_MIXED, lang)
         return StringResources.get(when (p) { Planet.SUN -> StringKeyDivisional.NAVAMSA_NATURE_SUN; Planet.MOON -> StringKeyDivisional.NAVAMSA_NATURE_MOON; Planet.MARS -> StringKeyDivisional.NAVAMSA_NATURE_MARS; Planet.MERCURY -> StringKeyDivisional.NAVAMSA_NATURE_MERCURY; Planet.JUPITER -> StringKeyDivisional.NAVAMSA_NATURE_JUPITER; Planet.VENUS -> StringKeyDivisional.NAVAMSA_NATURE_VENUS; Planet.SATURN -> StringKeyDivisional.NAVAMSA_NATURE_SATURN; Planet.RAHU -> StringKeyDivisional.NAVAMSA_NATURE_RAHU; Planet.KETU -> StringKeyDivisional.NAVAMSA_NATURE_KETU; else -> StringKeyDivisional.NAVAMSA_NATURE_MIXED }, lang)
     }
 
     private fun determineSpouseAppearance(d: PlanetPosition?, v: PlanetPosition?, lang: Language): String {
-        val p = d?.planet ?: v?.planet ?: Planet.VENUS
+        val p = d?.planet ?: v?.planet
+            ?: return StringResources.get(StringKeyDivisional.NAVAMSA_APPEAR_VARIES, lang)
         return StringResources.get(when (p) { Planet.SUN -> StringKeyDivisional.NAVAMSA_APPEAR_SUN; Planet.MOON -> StringKeyDivisional.NAVAMSA_APPEAR_MOON; Planet.MARS -> StringKeyDivisional.NAVAMSA_APPEAR_MARS; Planet.MERCURY -> StringKeyDivisional.NAVAMSA_APPEAR_MERCURY; Planet.JUPITER -> StringKeyDivisional.NAVAMSA_APPEAR_JUPITER; Planet.VENUS -> StringKeyDivisional.NAVAMSA_APPEAR_VENUS; Planet.SATURN -> StringKeyDivisional.NAVAMSA_APPEAR_SATURN; else -> StringKeyDivisional.NAVAMSA_APPEAR_VARIES }, lang)
     }
 

@@ -13,9 +13,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import java.time.DateTimeException
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 /**
  * ViewModel for Kakshya Transit Analysis Screen
@@ -53,9 +57,12 @@ class KakshaTransitViewModel @Inject constructor() : ViewModel() {
         language: Language = Language.ENGLISH,
         forceRecalculate: Boolean = false
     ) {
+        val chartZoneId = resolveZoneId(chart.birthData.timezone)
+        val chartDate = LocalDate.now(chartZoneId)
+
         // Check cache first
         val cached = cachedResult.get()
-        if (!forceRecalculate && cached != null && cached.chartId == chart.id) {
+        if (!forceRecalculate && cached != null && cached.chartId == chart.id && cached.analysisDate == chartDate) {
             _uiState.value = KakshaTransitUiState.Success(cached.result)
             return
         }
@@ -66,13 +73,13 @@ class KakshaTransitViewModel @Inject constructor() : ViewModel() {
             try {
                 val result = KakshaTransitCalculator.calculateKakshaTransits(
                     chart = chart,
-                    analysisTime = LocalDateTime.now(),
+                    analysisTime = null,
                     language = language
                 )
 
                 if (result != null) {
                     // Cache the result
-                    cachedResult.set(CachedKakshaResult(chart.id, result))
+                    cachedResult.set(CachedKakshaResult(chart.id, chartDate, result))
                     _uiState.value = KakshaTransitUiState.Success(result)
                 } else {
                     _uiState.value = KakshaTransitUiState.Error("Failed to calculate Kakshya transits")
@@ -197,6 +204,21 @@ class KakshaTransitViewModel @Inject constructor() : ViewModel() {
         _selectedPlanet.value = null
         _qualityFilter.value = null
     }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val trimmed = timezone.trim()
+            val numericHours = trimmed.toDoubleOrNull()
+            if (numericHours != null) {
+                val totalSeconds = (numericHours * 3600.0).roundToInt()
+                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
+    }
 }
 
 /**
@@ -241,5 +263,6 @@ data class KakshaSummary(
  */
 private data class CachedKakshaResult(
     val chartId: Long,
+    val analysisDate: LocalDate,
     val result: KakshaTransitCalculator.KakshaTransitResult
 )

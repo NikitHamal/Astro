@@ -428,12 +428,15 @@ class TransitAnalyzer @Inject constructor(
      */
     fun analyzeTransits(
         natalChart: VedicChart,
-        transitDateTime: LocalDateTime = LocalDateTime.now(),
+        transitDateTime: LocalDateTime? = null,
         language: Language = Language.ENGLISH
     ): TransitAnalysis {
+        val effectiveTransitDateTime = transitDateTime
+            ?: LocalDateTime.now(resolveZoneId(natalChart.birthData.timezone))
+
         // Get transit positions
         val transitPositions = getTransitPositionsForDateTime(
-            transitDateTime,
+            effectiveTransitDateTime,
             natalChart.birthData.timezone
         )
 
@@ -463,11 +466,11 @@ class TransitAnalyzer @Inject constructor(
         val overallAssessment = calculateOverallAssessment(gocharaResults, transitAspects, ashtakavargaScores, language)
 
         // Find significant periods
-        val significantPeriods = findSignificantPeriods(natalChart, transitDateTime, language)
+        val significantPeriods = findSignificantPeriods(natalChart, effectiveTransitDateTime, language)
 
         return TransitAnalysis(
             natalChart = natalChart,
-            transitDateTime = transitDateTime,
+            transitDateTime = effectiveTransitDateTime,
             transitPositions = transitPositions,
             gocharaResults = gocharaResults,
             transitAspects = transitAspects,

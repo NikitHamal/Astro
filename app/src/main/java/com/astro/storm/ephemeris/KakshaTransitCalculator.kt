@@ -7,7 +7,9 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import java.time.DateTimeException
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 /**
@@ -162,31 +164,32 @@ object KakshaTransitCalculator {
     fun calculateKakshaTransits(
         chart: VedicChart,
         transitPositions: List<PlanetPosition> = chart.planetPositions,
-        analysisTime: LocalDateTime = LocalDateTime.now(),
+        analysisTime: LocalDateTime? = null,
         language: Language = Language.ENGLISH
     ): KakshaTransitResult? {
         return try {
+            val effectiveAnalysisTime = analysisTime ?: LocalDateTime.now(resolveZoneId(chart.birthData.timezone))
             // Get pre-calculated Ashtakavarga for efficiency
             val ashtakavargaAnalysis = AshtakavargaCalculator.calculateAshtakavarga(chart)
 
             // Calculate current Kakshya positions for all planets
             val currentPositions = calculateCurrentKakshaPositions(
-                chart, transitPositions, ashtakavargaAnalysis, analysisTime, language
+                chart, transitPositions, ashtakavargaAnalysis, effectiveAnalysisTime, language
             )
 
             // Calculate upcoming Kakshya changes (next 7 days)
             val upcomingChanges = calculateUpcomingChanges(
-                chart, transitPositions, ashtakavargaAnalysis, analysisTime, language
+                chart, transitPositions, ashtakavargaAnalysis, effectiveAnalysisTime, language
             )
 
             // Identify favorable periods (next 30 days)
             val favorablePeriods = identifyFavorablePeriods(
-                chart, transitPositions, ashtakavargaAnalysis, analysisTime, language
+                chart, transitPositions, ashtakavargaAnalysis, effectiveAnalysisTime, language
             )
 
             // Identify critical transits
             val criticalTransits = identifyCriticalTransits(
-                chart, transitPositions, ashtakavargaAnalysis, analysisTime, language
+                chart, transitPositions, ashtakavargaAnalysis, effectiveAnalysisTime, language
             )
 
             // Calculate overall score
@@ -200,7 +203,7 @@ object KakshaTransitCalculator {
 
             KakshaTransitResult(
                 chart = chart,
-                analysisTime = analysisTime,
+                analysisTime = effectiveAnalysisTime,
                 currentPositions = currentPositions,
                 upcomingChanges = upcomingChanges,
                 favorablePeriods = favorablePeriods,
@@ -641,6 +644,21 @@ object KakshaTransitCalculator {
             else -> "general activities" to "सामान्य गतिविधिहरू"
         }
     }
+    private fun resolveZoneId(timezone: String?): ZoneId {
+        if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+        return try {
+            ZoneId.of(timezone.trim())
+        } catch (_: DateTimeException) {
+            val normalized = timezone.trim()
+                .replace("UTC", "", ignoreCase = true)
+                .replace("GMT", "", ignoreCase = true)
+                .trim()
+            if (normalized.isNotEmpty()) {
+                runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
+    }
 }
-
 

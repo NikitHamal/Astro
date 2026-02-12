@@ -21,9 +21,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.concurrent.ConcurrentLinkedQueue
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 data class InsightsData(
     val chart: VedicChart,
@@ -92,7 +96,7 @@ class InsightsViewModel @Inject constructor(
             return
         }
 
-        val today = LocalDate.now()
+        val today = LocalDate.now(resolveZoneId(chart.birthData.timezone))
         val chartId = getChartId(chart)
         val language = localizationManager.currentLanguage
 
@@ -218,6 +222,21 @@ class InsightsViewModel @Inject constructor(
     fun refreshInsights(chart: VedicChart?) {
         clearCache()
         loadInsights(chart)
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val trimmed = timezone.trim()
+            val numericHours = trimmed.toDoubleOrNull()
+            if (numericHours != null) {
+                val totalSeconds = (numericHours * 3600.0).roundToInt()
+                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
     }
 
     fun clearCache() {

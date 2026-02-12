@@ -219,7 +219,7 @@ object AshtottariDashaCalculator {
      */
     fun calculateAntardashas(
         mahadasha: AshtottariMahadasha,
-        asOf: LocalDateTime = LocalDateTime.now()
+        asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)
     ): List<AshtottariAntardasha> {
         val antardashas = mutableListOf<AshtottariAntardasha>()
         val mahadashaPlanetIndex = ASHTOTTARI_SEQUENCE.indexOf(mahadasha.planet)
@@ -307,7 +307,7 @@ object AshtottariDashaCalculator {
             if (numericHours != null) {
                 ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
             } else {
-                throw IllegalArgumentException("Invalid timezone: $timezone")
+                ZoneId.systemDefault()
             }
         }
     }
@@ -633,7 +633,7 @@ data class AshtottariAntardasha(
     val planet: Planet get() = antardashaLord
 
     /** Calculate the progress percentage through this antardasha */
-    fun getProgressPercent(asOf: LocalDateTime = LocalDateTime.now()): Double {
+    fun getProgressPercent(asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)): Double {
         if (asOf.isBefore(startDate)) return 0.0
         if (!asOf.isBefore(endDate)) return 100.0
 

@@ -119,7 +119,7 @@ object CareerDeepAnalyzer {
         
         return DashamshaAnalysis(
             d10AscendantSign = d10Asc,
-            d10AscendantLord = context.getPlanetPosition(tenthLord)?.planet ?: Planet.SUN,
+            d10AscendantLord = tenthLord,
             planetsInD10Houses = emptyList(), // Not fully implemented in core yet
             statusAndAuthority = CareerTextGenerator.getD10CareerRefinement(d10Asc),
             professionalSuccess = CareerTextGenerator.getD10GrowthPattern(d10Asc, ZodiacSign.entries[(d10Asc.ordinal + 9) % 12]),
@@ -372,7 +372,7 @@ object CareerDeepAnalyzer {
     
     private fun analyzeCurrentCareerPhase(context: AnalysisContext): CurrentCareerPhase {
         val currentDasha = context.currentMahadasha
-        val planet = currentDasha?.planet ?: Planet.SUN
+        val planet = currentDasha?.planet ?: context.getHouseLord(10)
         
         return CurrentCareerPhase(
             currentDasha = "${planet.displayName} Mahadasha",

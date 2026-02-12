@@ -53,6 +53,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -89,6 +90,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.delay
 
 /**
  * Redesigned Panchanga Screen
@@ -120,16 +122,17 @@ fun PanchangaScreenRedesigned(
     var showInfoDialog by remember { mutableStateOf(false) }
 
     val zoneId = remember(chart) { runCatching { ZoneId.of(chart?.birthData?.timezone ?: ZoneId.systemDefault().id) }.getOrElse { ZoneId.systemDefault() } }
-    val todayInZone = remember(zoneId) { LocalDate.now(zoneId) }
+    val nowInZone by rememberCurrentDateTime(zoneId)
+    val todayInZone = nowInZone.toLocalDate()
 
     // Calculate Panchanga for today
-    val todayPanchanga = remember(chart) {
+    val todayPanchanga = remember(chart, nowInZone) {
         chart?.let {
             try {
                 val calculator = PanchangaCalculator(context)
                 calculator.use { calc ->
                     calc.calculatePanchanga(
-                        dateTime = LocalDateTime.now(zoneId),
+                        dateTime = nowInZone,
                         latitude = it.birthData.latitude,
                         longitude = it.birthData.longitude,
                         timezone = it.birthData.timezone
@@ -1466,6 +1469,17 @@ private fun Vara.toMuhurtaVara(): MuhurtaVara = when (this) {
     Vara.THURSDAY -> MuhurtaVara.THURSDAY
     Vara.FRIDAY -> MuhurtaVara.FRIDAY
     Vara.SATURDAY -> MuhurtaVara.SATURDAY
+}
+
+@Composable
+private fun rememberCurrentDateTime(zoneId: ZoneId) = produceState(
+    initialValue = LocalDateTime.now(zoneId),
+    key1 = zoneId
+) {
+    while (true) {
+        value = LocalDateTime.now(zoneId)
+        delay(60_000)
+    }
 }
 
 

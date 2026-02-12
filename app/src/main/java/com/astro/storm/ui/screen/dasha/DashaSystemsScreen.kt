@@ -50,7 +50,10 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
+import java.time.DateTimeException
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import com.astro.storm.ephemeris.AshtottariDashaCalculator
@@ -63,6 +66,7 @@ import com.astro.storm.ui.screen.chartdetail.tabs.DashasTabContent
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.DashaUiState
 import com.astro.storm.ui.viewmodel.DashaViewModel
+import kotlin.math.roundToInt
 
 /**
  * Unified Dasha Systems Screen
@@ -152,13 +156,14 @@ fun DashaSystemsScreen(
                 val nakshatraResult = Nakshatra.fromLongitude(moonLongitude)
                 val birthNakshatra = nakshatraResult.first
                 val birthNakshatraPada = nakshatraResult.second
+                val asOf = LocalDateTime.now(resolveZoneId(it.birthData.timezone))
                 AshtottariTimeline(
                     mahadashas = result.mahadashas,
                     currentMahadasha = result.currentMahadasha,
                     currentAntardasha = result.currentAntardasha,
                     natalChart = it,
-                    startDate = LocalDateTime.now().minusYears(50),
-                    endDate = LocalDateTime.now().plusYears(50),
+                    startDate = asOf.minusYears(50),
+                    endDate = asOf.plusYears(50),
                     applicability = result.applicability,
                     interpretation = result.interpretation,
                     birthNakshatra = birthNakshatra,
@@ -287,6 +292,21 @@ fun DashaSystemsScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+private fun resolveZoneId(timezone: String): ZoneId {
+    return try {
+        ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val trimmed = timezone.trim()
+        val numericHours = trimmed.toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        } else {
+            ZoneId.systemDefault()
         }
     }
 }

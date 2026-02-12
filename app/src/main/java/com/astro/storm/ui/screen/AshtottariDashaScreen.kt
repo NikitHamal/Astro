@@ -48,7 +48,9 @@ import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.time.DateTimeException
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
@@ -99,6 +101,7 @@ fun AshtottariDashaScreen(
     }
 
     val language = currentLanguage()
+    val asOf = remember(chart) { LocalDateTime.now(resolveZoneId(chart.birthData.timezone)) }
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var isCalculating by remember { mutableStateOf(true) }
@@ -194,11 +197,12 @@ fun AshtottariDashaScreen(
 
                 // Content based on selected tab
                 when (selectedTab) {
-                    0 -> ApplicabilityContent(dashaResult!!, chart)
+                    0 -> ApplicabilityContent(dashaResult!!, chart, asOf)
                     1 -> TimelineContent(
                         result = dashaResult!!,
                         expandedIndex = expandedMahadashaIndex,
-                        onExpandChange = { expandedMahadashaIndex = if (expandedMahadashaIndex == it) -1 else it }
+                        onExpandChange = { expandedMahadashaIndex = if (expandedMahadashaIndex == it) -1 else it },
+                        asOf = asOf
                     )
                     2 -> InterpretationContent(dashaResult!!)
                 }
@@ -266,7 +270,11 @@ private fun TabSelector(
 }
 
 @Composable
-private fun ApplicabilityContent(result: AshtottariDashaResult, chart: VedicChart) {
+private fun ApplicabilityContent(
+    result: AshtottariDashaResult,
+    chart: VedicChart,
+    asOf: LocalDateTime
+) {
     val language = currentLanguage()
 
     LazyColumn(
@@ -287,7 +295,7 @@ private fun ApplicabilityContent(result: AshtottariDashaResult, chart: VedicChar
         // Current Period Card if applicable
         if (result.currentMahadasha != null) {
             item {
-                CurrentPeriodCard(result)
+                CurrentPeriodCard(result, asOf)
             }
         }
 
@@ -440,7 +448,10 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
 }
 
 @Composable
-private fun CurrentPeriodCard(result: AshtottariDashaResult) {
+private fun CurrentPeriodCard(
+    result: AshtottariDashaResult,
+    asOf: LocalDateTime
+) {
     val language = currentLanguage()
     val mahadasha = result.currentMahadasha ?: return
     val antardasha = result.currentAntardasha
@@ -551,7 +562,7 @@ private fun CurrentPeriodCard(result: AshtottariDashaResult) {
             // Progress Bar
             Spacer(modifier = Modifier.height(16.dp))
 
-            val progress = calculateMahadashaProgress(mahadasha)
+            val progress = calculateMahadashaProgress(mahadasha, asOf)
             Column {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -690,7 +701,8 @@ private fun SystemInfoCard() {
 private fun TimelineContent(
     result: AshtottariDashaResult,
     expandedIndex: Int,
-    onExpandChange: (Int) -> Unit
+    onExpandChange: (Int) -> Unit,
+    asOf: LocalDateTime
 ) {
     val language = currentLanguage()
 
@@ -704,7 +716,8 @@ private fun TimelineContent(
                 mahadasha = mahadasha,
                 isExpanded = expandedIndex == index,
                 onExpandChange = { onExpandChange(index) },
-                isCurrent = mahadasha.isCurrentlyRunning
+                isCurrent = mahadasha.isCurrentlyRunning,
+                asOf = asOf
             )
         }
     }
@@ -715,13 +728,14 @@ private fun MahadashaTimelineCard(
     mahadasha: AshtottariMahadasha,
     isExpanded: Boolean,
     onExpandChange: () -> Unit,
-    isCurrent: Boolean
+    isCurrent: Boolean,
+    asOf: LocalDateTime
 ) {
     val language = currentLanguage()
     val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
     val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", locale)
-    val antardashas = remember(mahadasha) {
-        AshtottariDashaCalculator.calculateAntardashas(mahadasha)
+    val antardashas = remember(mahadasha, asOf) {
+        AshtottariDashaCalculator.calculateAntardashas(mahadasha, asOf)
     }
 
     Card(
@@ -822,7 +836,7 @@ private fun MahadashaTimelineCard(
             // Progress if current
             if (isCurrent) {
                 Spacer(modifier = Modifier.height(8.dp))
-                val progress = calculateMahadashaProgress(mahadasha)
+                val progress = calculateMahadashaProgress(mahadasha, asOf)
                 LinearProgressIndicator(
                     progress = { progress.toFloat() },
                     modifier = Modifier
@@ -1140,8 +1154,8 @@ private fun AshtottariInfoDialog(onDismiss: () -> Unit) {
 }
 
 // Helper functions
-private fun calculateMahadashaProgress(mahadasha: AshtottariMahadasha): Double {
-    val now = LocalDateTime.now()
+private fun calculateMahadashaProgress(mahadasha: AshtottariMahadasha, asOf: LocalDateTime): Double {
+    val now = asOf
     if (now.isBefore(mahadasha.startDate)) return 0.0
     if (now.isAfter(mahadasha.endDate)) return 1.0
 
@@ -1163,6 +1177,23 @@ private fun getPlanetColor(planet: Planet): Color {
         Planet.RAHU -> Color(0xFF6366F1)
         Planet.KETU -> Color(0xFF8B5CF6)
         else -> AppTheme.AccentPrimary
+    }
+}
+
+private fun resolveZoneId(timezone: String?): ZoneId {
+    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+    return try {
+        ZoneId.of(timezone.trim())
+    } catch (_: DateTimeException) {
+        val normalized = timezone.trim()
+            .replace("UTC", "", ignoreCase = true)
+            .replace("GMT", "", ignoreCase = true)
+            .trim()
+        if (normalized.isNotEmpty()) {
+            runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
+        } else {
+            ZoneId.systemDefault()
+        }
     }
 }
 

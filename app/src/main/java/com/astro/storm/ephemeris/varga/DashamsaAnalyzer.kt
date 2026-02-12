@@ -70,7 +70,8 @@ object DashamsaAnalyzer {
         var b = 0; var s = 0; val m = d10.planetPositions.find { it.planet == Planet.MERCURY }; val sat = d10.planetPositions.find { it.planet == Planet.SATURN }; val r = d10.planetPositions.find { it.planet == Planet.RAHU }
         m?.let { if (it.house in listOf(1, 7, 10)) b += 2 }; r?.let { if (it.house in listOf(1, 7, 10)) b += 2 }; sat?.let { if (it.house in listOf(1, 6, 10)) s += 2 }
         if (d10.planetPositions.filter { it.house == 10 }.any { it.planet in listOf(Planet.MERCURY, Planet.VENUS, Planet.RAHU) }) b++; if (d10.planetPositions.filter { it.house == 10 }.any { it.planet in listOf(Planet.SUN, Planet.SATURN, Planet.MOON) }) s++
-        return BusinessVsServiceAnalysis((b * 10).coerceAtMost(100), (s * 10).coerceAtMost(100), StringResources.get(when { b > s + 1 -> StringKeyDivisional.DASHAMSA_BIZ_APTITUDE; s > b + 1 -> StringKeyDivisional.DASHAMSA_SERVICE_APTITUDE; else -> StringKeyDivisional.DASHAMSA_BOTH_APTITUDE }, lang), if (b > s) getIndustriesForPlanet(m?.planet ?: Planet.MERCURY, lang) else emptyList())
+        val businessSignificator = m?.planet ?: d10.ascendantSign.ruler
+        return BusinessVsServiceAnalysis((b * 10).coerceAtMost(100), (s * 10).coerceAtMost(100), StringResources.get(when { b > s + 1 -> StringKeyDivisional.DASHAMSA_BIZ_APTITUDE; s > b + 1 -> StringKeyDivisional.DASHAMSA_SERVICE_APTITUDE; else -> StringKeyDivisional.DASHAMSA_BOTH_APTITUDE }, lang), if (b > s) getIndustriesForPlanet(businessSignificator, lang) else emptyList())
     }
 
     private fun calculateCareerPeakTiming(chart: VedicChart, d10: com.astro.storm.ephemeris.DivisionalChartData, lang: Language): List<CareerPeakPeriod> {

@@ -253,9 +253,10 @@ object EducationDeepAnalyzer {
     
     private fun analyzeCurrentPhase(context: AnalysisContext): CurrentEducationPhase {
         val dasha = context.currentMahadasha
+        val learningPlanet = dasha?.planet ?: context.getHouseLord(5)
         return CurrentEducationPhase(
-            currentDasha = "${dasha?.planet?.displayName ?: "Current"} Mahadasha",
-            learningFavorability = context.getPlanetStrengthLevel(dasha?.planet ?: Planet.MERCURY),
+            currentDasha = "${learningPlanet.displayName} Mahadasha",
+            learningFavorability = context.getPlanetStrengthLevel(learningPlanet),
             currentFocus = LocalizedParagraph("Current period educational recommendations.",
                 "वर्तमान अवधि शैक्षिक सिफारिसहरू।"),
             studyAdvice = LocalizedParagraph("Study approach for current period.",
@@ -290,3 +291,5 @@ object EducationDeepAnalyzer {
         return ((mercuryScore + jupiterScore + fifthScore) / 1.5).coerceIn(0.0, 100.0)
     }
 }
+
+

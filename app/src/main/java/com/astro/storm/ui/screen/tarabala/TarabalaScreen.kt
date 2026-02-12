@@ -40,7 +40,6 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.TarabalaCalculator
 import com.astro.storm.ui.screen.EmptyChartScreen
 import com.astro.storm.ui.theme.AppTheme
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import androidx.compose.ui.text.style.TextOverflow
 
@@ -84,7 +83,7 @@ fun TarabalaScreen(
 
     // Calculate Tarabala analysis
     val tarabalaAnalysis = remember(chart) {
-        tarabalaCalculator.calculateAnalysis(chart, LocalDateTime.now())
+        tarabalaCalculator.calculateAnalysis(chart, null)
     }
 
     if (showInfoDialog) {

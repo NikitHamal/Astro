@@ -21,10 +21,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.DateTimeException
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 /**
  * ViewModel for Ashtavarga Transit Predictions Screen
@@ -153,7 +156,8 @@ class AshtavargaTransitViewModel @Inject constructor() : ViewModel() {
             return
         }
 
-        val currentDate = LocalDate.now()
+        val chartZoneId = resolveZoneId(chart.birthData.timezone)
+        val currentDate = LocalDate.now(chartZoneId)
         val cacheKey = CacheKey(chart.hashCode().toLong(), currentDate)
 
         // Check cache first
@@ -174,7 +178,7 @@ class AshtavargaTransitViewModel @Inject constructor() : ViewModel() {
                 val result = AshtavargaTransitCalculator.calculateAshtavargaTransits(
                     chart = chart,
                     transitPositions = chart.planetPositions, // Use natal positions as current transits for demo
-                    analysisDate = LocalDateTime.now(),
+                    analysisDate = null,
                     language = language
                 )
 
@@ -427,7 +431,7 @@ class AshtavargaTransitViewModel @Inject constructor() : ViewModel() {
         val currentState = _uiState.value
         if (currentState !is AshtavargaTransitUiState.Success) return emptyList()
 
-        val targetMonth = LocalDate.now().plusMonths(monthOffset.toLong())
+        val targetMonth = currentState.result.analysisDate.toLocalDate().plusMonths(monthOffset.toLong())
         val monthStart = targetMonth.withDayOfMonth(1)
         val monthEnd = targetMonth.withDayOfMonth(targetMonth.lengthOfMonth())
 
@@ -501,5 +505,20 @@ class AshtavargaTransitViewModel @Inject constructor() : ViewModel() {
      */
     fun refresh(chart: VedicChart?, language: Language = Language.ENGLISH) {
         calculateTransits(chart, language, forceRefresh = true)
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val trimmed = timezone.trim()
+            val numericHours = trimmed.toDoubleOrNull()
+            if (numericHours != null) {
+                val totalSeconds = (numericHours * 3600.0).roundToInt()
+                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
     }
 }

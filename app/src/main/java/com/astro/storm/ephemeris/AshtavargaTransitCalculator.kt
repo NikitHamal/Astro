@@ -5,8 +5,10 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 /**
@@ -227,10 +229,11 @@ object AshtavargaTransitCalculator {
     fun calculateAshtavargaTransits(
         chart: VedicChart,
         transitPositions: List<PlanetPosition> = chart.planetPositions,
-        analysisDate: LocalDateTime = LocalDateTime.now(),
+        analysisDate: LocalDateTime? = null,
         language: Language = Language.ENGLISH
     ): AshtavargaTransitResult? {
         return try {
+            val effectiveAnalysisDate = analysisDate ?: LocalDateTime.now(resolveZoneId(chart.birthData.timezone))
             // Calculate base Ashtakavarga
             val ashtakavarga = AshtakavargaCalculator.calculateAshtakavarga(chart)
 
@@ -248,14 +251,14 @@ object AshtavargaTransitCalculator {
                 ashtakavarga = ashtakavarga,
                 moonSign = moonSign,
                 ascSign = ascSign,
-                analysisDate = analysisDate.toLocalDate()
+                analysisDate = effectiveAnalysisDate.toLocalDate()
             )
 
             // Calculate upcoming transits (next 12 months)
             val upcomingTransits = calculateUpcomingTransits(
                 transitPositions = transitPositions,
                 ashtakavarga = ashtakavarga,
-                analysisDate = analysisDate.toLocalDate()
+                analysisDate = effectiveAnalysisDate.toLocalDate()
             )
 
             // Calculate favorable and unfavorable signs for each planet
@@ -280,7 +283,7 @@ object AshtavargaTransitCalculator {
 
             AshtavargaTransitResult(
                 chart = chart,
-                analysisDate = analysisDate,
+                analysisDate = effectiveAnalysisDate,
                 currentTransits = currentTransits,
                 upcomingTransits = upcomingTransits,
                 favorableSigns = favorableSigns,
@@ -898,4 +901,21 @@ object AshtavargaTransitCalculator {
         val ne = "कम बिन्दु स्कोर (BAV: $bavScore, SAV: $savScore) संकेत गर्छ कि ${planet.displayName} ले ${sign.displayName} मा बाधाहरू सामना गर्न सक्छ। विशेष सावधानी सल्लाह दिइएको छ।"
         return Pair(en, ne)
     }
+    private fun resolveZoneId(timezone: String?): ZoneId {
+        if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+        return try {
+            ZoneId.of(timezone.trim())
+        } catch (_: DateTimeException) {
+            val normalized = timezone.trim()
+                .replace("UTC", "", ignoreCase = true)
+                .replace("GMT", "", ignoreCase = true)
+                .trim()
+            if (normalized.isNotEmpty()) {
+                runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
+    }
 }
+

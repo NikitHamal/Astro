@@ -8,6 +8,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.DateTimeException
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -189,16 +192,17 @@ class HoroscopeCalculator @Inject constructor(
         ).also { natalDataCache[chartId] = it }
     }
 
-    fun calculateDailyHoroscope(chart: VedicChart, date: LocalDate = LocalDate.now(), language: Language = Language.ENGLISH): DailyHoroscope {
+    fun calculateDailyHoroscope(chart: VedicChart, date: LocalDate? = null, language: Language = Language.ENGLISH): DailyHoroscope {
         ensureNotClosed()
+        val effectiveDate = date ?: LocalDate.now(resolveZoneId(chart.birthData.timezone))
 
         val chartId = getChartId(chart)
-        val cacheKey = DailyHoroscopeCacheKey(chartId, date, language)
+        val cacheKey = DailyHoroscopeCacheKey(chartId, effectiveDate, language)
         dailyHoroscopeCache[cacheKey]?.let { return it }
 
         val natalData = getOrComputeNatalData(chart)
-        val dashaAtDate = natalData.dashaTimeline.getDashaAtDate(date.atTime(LocalTime.NOON))
-        val transitChart = getOrCalculateTransitChart(chart.birthData, date)
+        val dashaAtDate = natalData.dashaTimeline.getDashaAtDate(effectiveDate.atTime(LocalTime.NOON))
+        val transitChart = getOrCalculateTransitChart(chart.birthData, effectiveDate)
         val transitPlanetMap = transitChart.planetPositions.associateBy { it.planet }
 
         val transitMoon = transitPlanetMap[Planet.MOON]
@@ -215,20 +219,20 @@ class HoroscopeCalculator @Inject constructor(
             natalData = natalData,
             transitPlanetMap = transitPlanetMap,
             dashaAtDate = dashaAtDate,
-            date = date,
+            date = effectiveDate,
             language = language
         )
 
         val overallEnergy = calculateOverallEnergy(planetaryInfluences, lifeAreaPredictions, dashaAtDate.mahadasha?.planet)
         val (themeKey, themeDescriptionKey) = calculateDailyTheme(transitPlanetMap, dashaAtDate.mahadasha?.planet)
-        val luckyElements = calculateLuckyElements(natalData, transitPlanetMap, date, language)
+        val luckyElements = calculateLuckyElements(natalData, transitPlanetMap, effectiveDate, language)
         val activeDasha = formatActiveDasha(dashaAtDate, language)
         val recommendations = generateRecommendations(dashaAtDate, lifeAreaPredictions, transitPlanetMap)
         val cautions = generateCautions(transitPlanetMap, planetaryInfluences)
         val affirmationKey = generateAffirmationKey(dashaAtDate.mahadasha?.planet)
 
         return DailyHoroscope(
-            date = date,
+            date = effectiveDate,
             theme = StringResources.get(themeKey, language),
             themeKey = themeKey,
             themeDescription = StringResources.get(themeDescriptionKey, language),
@@ -247,27 +251,29 @@ class HoroscopeCalculator @Inject constructor(
         ).also { dailyHoroscopeCache[cacheKey] = it }
     }
 
-    fun calculateDailyHoroscopeSafe(chart: VedicChart, date: LocalDate = LocalDate.now(), language: Language = Language.ENGLISH): HoroscopeResult<DailyHoroscope> {
+    fun calculateDailyHoroscopeSafe(chart: VedicChart, date: LocalDate? = null, language: Language = Language.ENGLISH): HoroscopeResult<DailyHoroscope> {
+        val effectiveDate = date ?: LocalDate.now(resolveZoneId(chart.birthData.timezone))
         return try {
-            HoroscopeResult.Success(calculateDailyHoroscope(chart, date, language))
+            HoroscopeResult.Success(calculateDailyHoroscope(chart, effectiveDate, language))
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to calculate daily horoscope for $date", e)
-            HoroscopeResult.Error("Unable to calculate horoscope for $date: ${e.message}", e)
+            Log.e(TAG, "Failed to calculate daily horoscope for $effectiveDate", e)
+            HoroscopeResult.Error("Unable to calculate horoscope for $effectiveDate: ${e.message}", e)
         }
     }
 
-    fun calculateWeeklyHoroscope(chart: VedicChart, startDate: LocalDate = LocalDate.now(), language: Language = Language.ENGLISH): WeeklyHoroscope {
+    fun calculateWeeklyHoroscope(chart: VedicChart, startDate: LocalDate? = null, language: Language = Language.ENGLISH): WeeklyHoroscope {
         ensureNotClosed()
+        val effectiveStartDate = startDate ?: LocalDate.now(resolveZoneId(chart.birthData.timezone))
 
-        val endDate = startDate.plusDays(6)
+        val endDate = effectiveStartDate.plusDays(6)
         val natalData = getOrComputeNatalData(chart)
-        val startDasha = natalData.dashaTimeline.getDashaAtDate(startDate.atTime(LocalTime.NOON))
+        val startDasha = natalData.dashaTimeline.getDashaAtDate(effectiveStartDate.atTime(LocalTime.NOON))
         val endDasha = natalData.dashaTimeline.getDashaAtDate(endDate.atTime(LocalTime.NOON))
         val hasDashaShift = startDasha.mahadasha?.planet != endDasha.mahadasha?.planet ||
                 startDasha.antardasha?.planet != endDasha.antardasha?.planet
 
         val dailyHoroscopes = (0 until 7).mapNotNull { dayOffset ->
-            val date = startDate.plusDays(dayOffset.toLong())
+            val date = effectiveStartDate.plusDays(dayOffset.toLong())
             try {
                 calculateDailyHoroscope(chart, date, language)
             } catch (e: Exception) {
@@ -301,7 +307,7 @@ class HoroscopeCalculator @Inject constructor(
             }
         }
 
-        val keyDates = calculateKeyDates(startDate, endDate, language)
+        val keyDates = calculateKeyDates(effectiveStartDate, endDate, language)
         val weeklyPredictions = calculateWeeklyPredictions(dailyHoroscopes, natalData.dashaTimeline, language)
         val (weeklyThemeKey, weeklyOverview) = calculateWeeklyTheme(
             dashaTimeline = natalData.dashaTimeline,
@@ -312,7 +318,7 @@ class HoroscopeCalculator @Inject constructor(
         val weeklyAdvice = generateWeeklyAdvice(natalData.dashaTimeline, keyDates, language)
 
         return WeeklyHoroscope(
-            startDate = startDate,
+            startDate = effectiveStartDate,
             endDate = endDate,
             weeklyTheme = StringResources.get(weeklyThemeKey, language),
             weeklyThemeKey = weeklyThemeKey,
@@ -324,12 +330,30 @@ class HoroscopeCalculator @Inject constructor(
         )
     }
 
-    fun calculateWeeklyHoroscopeSafe(chart: VedicChart, startDate: LocalDate = LocalDate.now(), language: Language = Language.ENGLISH): HoroscopeResult<WeeklyHoroscope> {
+    fun calculateWeeklyHoroscopeSafe(chart: VedicChart, startDate: LocalDate? = null, language: Language = Language.ENGLISH): HoroscopeResult<WeeklyHoroscope> {
+        val effectiveStartDate = startDate ?: LocalDate.now(resolveZoneId(chart.birthData.timezone))
         return try {
-            HoroscopeResult.Success(calculateWeeklyHoroscope(chart, startDate, language))
+            HoroscopeResult.Success(calculateWeeklyHoroscope(chart, effectiveStartDate, language))
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to calculate weekly horoscope starting $startDate", e)
+            Log.e(TAG, "Failed to calculate weekly horoscope starting $effectiveStartDate", e)
             HoroscopeResult.Error("Unable to calculate weekly horoscope: ${e.message}", e)
+        }
+    }
+
+    private fun resolveZoneId(timezone: String?): ZoneId {
+        if (timezone.isNullOrBlank()) return ZoneOffset.UTC
+        return try {
+            ZoneId.of(timezone.trim())
+        } catch (_: DateTimeException) {
+            val normalized = timezone.trim()
+                .replace("UTC", "", ignoreCase = true)
+                .replace("GMT", "", ignoreCase = true)
+                .trim()
+            if (normalized.isNotEmpty()) {
+                runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneOffset.UTC }
+            } else {
+                ZoneOffset.UTC
+            }
         }
     }
 
@@ -770,16 +794,25 @@ class HoroscopeCalculator @Inject constructor(
         mahadashaPlanet: Planet?
     ): Pair<StringKey, StringKey> {
         val moonSign = transitPlanetMap[Planet.MOON]?.sign ?: ZodiacSign.ARIES
-        val currentDashaLord = mahadashaPlanet ?: Planet.SUN
 
-        val themeKey = determineTheme(moonSign, currentDashaLord)
+        val themeKey = determineTheme(moonSign, mahadashaPlanet)
         val descriptionKey = THEME_DESCRIPTIONS_KEYS[themeKey] ?: StringKey.THEME_DESC_BALANCE_EQUILIBRIUM
 
         return Pair(themeKey, descriptionKey)
     }
 
-    private fun determineTheme(moonSign: ZodiacSign, dashaLord: Planet): StringKey {
+    private fun determineTheme(moonSign: ZodiacSign, dashaLord: Planet?): StringKey {
         val moonElement = moonSign.element
+
+        if (dashaLord == null) {
+            return when (moonElement) {
+                "Fire" -> StringKey.THEME_DYNAMIC_ACTION
+                "Earth" -> StringKey.THEME_PRACTICAL_PROGRESS
+                "Air" -> StringKey.THEME_SOCIAL_CONNECTIONS
+                "Water" -> StringKey.THEME_EMOTIONAL_INSIGHT
+                else -> StringKey.THEME_BALANCE_EQUILIBRIUM
+            }
+        }
 
         return when {
             moonElement == "Fire" && dashaLord in FIRE_PLANETS -> StringKey.THEME_DYNAMIC_ACTION
@@ -921,7 +954,8 @@ class HoroscopeCalculator @Inject constructor(
         dashaTimeline: DashaCalculator.DashaTimeline,
         language: Language
     ): Map<LifeArea, String> {
-        val currentDashaLord = dashaTimeline.currentMahadasha?.planet?.getLocalizedName(language) ?: "current"
+        val currentDashaLord = dashaTimeline.currentMahadasha?.planet?.getLocalizedName(language)
+            ?: StringResources.get(StringKey.DASHA_PERIOD, language)
 
         return LifeArea.entries.associateWith { area ->
             val weeklyRatings = dailyHoroscopes.mapNotNull { horoscope ->
@@ -963,7 +997,7 @@ class HoroscopeCalculator @Inject constructor(
         } else 0
         val energyVolatility = calculateVolatility(dailyHighlights.map { it.energy })
 
-        val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
+        val currentDashaLord = dashaTimeline.currentMahadasha?.planet
 
         val themeKey = when {
             hasDashaShift && avgEnergy < 7.2 -> StringKey.THEME_WEEK_MINDFUL_NAVIGATION
@@ -1012,14 +1046,16 @@ class HoroscopeCalculator @Inject constructor(
     }
 
     private fun buildWeeklyOverview(
-        dashaLord: Planet,
+        dashaLord: Planet?,
         avgEnergy: Double,
         dailyHighlights: List<DailyHighlight>,
         language: Language
     ): String {
         val builder = StringBuilder()
-        
-        builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_PREFIX, language, dashaLord.getLocalizedName(language)))
+
+        val dashaLabel = dashaLord?.getLocalizedName(language)
+            ?: StringResources.get(StringKey.DASHA_PERIOD, language)
+        builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_PREFIX, language, dashaLabel))
 
         when {
             avgEnergy >= 7 -> builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_HIGH, language))
@@ -1043,12 +1079,14 @@ class HoroscopeCalculator @Inject constructor(
         keyDates: List<KeyDate>,
         language: Language
     ): String {
-        val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
+        val currentDashaLord = dashaTimeline.currentMahadasha?.planet
         val builder = StringBuilder()
-        
-        builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_ADVICE_PREFIX, language, currentDashaLord.getLocalizedName(language)))
-        
-        val adviceKey = DASHA_WEEKLY_ADVICE_KEYS[currentDashaLord] ?: StringKey.ADVICE_GENERAL
+
+        val dashaLabel = currentDashaLord?.getLocalizedName(language)
+            ?: StringResources.get(StringKey.DASHA_PERIOD, language)
+        builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_ADVICE_PREFIX, language, dashaLabel))
+
+        val adviceKey = currentDashaLord?.let { DASHA_WEEKLY_ADVICE_KEYS[it] } ?: StringKey.ADVICE_GENERAL
         builder.append(StringResources.get(adviceKey, language))
 
         keyDates.firstOrNull { it.isPositive }?.let {

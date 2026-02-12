@@ -13,11 +13,13 @@ import com.astro.storm.ephemeris.varshaphala.VarshaphalaEvaluator.calculateTriPa
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaEvaluator.determineYearLord
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.evaluatePlanetStrengthDescription
 import swisseph.SwissEph
+import java.time.LocalDate
 import java.time.LocalDateTime
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.HouseSystem
 import com.astro.storm.ephemeris.varshaphala.TajikaYogaCalculator
+import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.resolveZoneId
 
 class VarshaphalaCalculator(context: Context) {
 
@@ -48,7 +50,14 @@ class VarshaphalaCalculator(context: Context) {
         val tajikaAspects = TajikaAspectAnalyzer.calculateTajikaAspects(solarReturnChart, language)
         val solarReturnVedicChart = createVedicChartFromSolarReturn(solarReturnChart, natalChart)
         val tajikaYogas = TajikaYogaCalculator.calculateTajikaYogas(solarReturnVedicChart, natalChart)
-        val muddaDasha = MuddaDashaCalculator.calculateMuddaDasha(solarReturnChart, solarReturnTime.toLocalDate(), language)
+        val todayInChartZone = LocalDate.now(resolveZoneId(natalChart.birthData.timezone))
+        val muddaDasha = MuddaDashaCalculator.calculateMuddaDasha(
+            chart = solarReturnChart,
+            startDate = solarReturnTime.toLocalDate(),
+            language = language,
+            asOf = todayInChartZone,
+            timezone = natalChart.birthData.timezone
+        )
         val housePredictions = VarshaphalaInterpretationGenerator.generateHousePredictions(solarReturnChart, muntha, yearLord, language)
         val majorThemes = VarshaphalaInterpretationGenerator.identifyMajorThemes(solarReturnChart, muntha, yearLord, housePredictions, triPatakiChakra, tajikaAspects, language)
         val (favorableMonths, challengingMonths) = calculateMonthlyInfluences(solarReturnChart, solarReturnTime)

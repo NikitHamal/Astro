@@ -87,7 +87,6 @@ import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 /**
@@ -129,7 +128,7 @@ fun DashaSandhiScreen(
                 DashaSandhiAnalyzer.analyzeCompleteSandhis(
                     chart = chart,
                     dashaTimeline = dashaTimeline,
-                    analysisDate = LocalDate.now(),
+                    analysisDate = null,
                     lookAheadMonths = 24
                 )
             }

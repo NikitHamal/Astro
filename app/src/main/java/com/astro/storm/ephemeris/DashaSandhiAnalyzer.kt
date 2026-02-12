@@ -6,9 +6,13 @@ import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 /**
  * Comprehensive Dasha Sandhi (Period Junction) Analyzer
@@ -230,28 +234,32 @@ object DashaSandhiAnalyzer {
     fun analyzeCompleteSandhis(
         chart: VedicChart,
         dashaTimeline: DashaCalculator.DashaTimeline,
-        analysisDate: LocalDate = LocalDate.now(),
+        analysisDate: LocalDate? = null,
         lookAheadMonths: Int = 6
     ): CompleteSandhiAnalysis {
+        val effectiveAnalysisDate = analysisDate ?: LocalDate.now(resolveZoneId(dashaTimeline.timezone))
         val lookAheadDays = lookAheadMonths * 30
 
         // Get upcoming Sandhis from Dasha timeline
-        val upcomingRawSandhis = dashaTimeline.getUpcomingSandhisWithin(lookAheadDays)
+        val upcomingRawSandhis = dashaTimeline.getUpcomingSandhisWithin(
+            days = lookAheadDays,
+            asOf = effectiveAnalysisDate.atStartOfDay()
+        )
 
         // Analyze each Sandhi
         val upcomingSandhis = upcomingRawSandhis.map { sandhi ->
-            analyzeSandhi(sandhi, chart, analysisDate)
+            analyzeSandhi(sandhi, chart, effectiveAnalysisDate)
         }.sortedBy { it.daysUntilTransition }
 
         // Find current Sandhi (if any)
         val currentSandhi = upcomingSandhis.find { it.isCurrentlyInSandhi }
 
         // Get recent past Sandhis (last 30 days)
-        val recentPastSandhis = findRecentPastSandhis(dashaTimeline, analysisDate, 30)
-            .map { analyzeSandhi(it, chart, analysisDate) }
+        val recentPastSandhis = findRecentPastSandhis(dashaTimeline, effectiveAnalysisDate, 30)
+            .map { analyzeSandhi(it, chart, effectiveAnalysisDate) }
 
         // Build Sandhi calendar
-        val sandhiCalendar = buildSandhiCalendar(upcomingSandhis, analysisDate, lookAheadDays)
+        val sandhiCalendar = buildSandhiCalendar(upcomingSandhis, effectiveAnalysisDate, lookAheadDays)
 
         // Calculate overall volatility
         val volatilityScore = calculateVolatilityScore(currentSandhi, upcomingSandhis, lookAheadDays)
@@ -268,6 +276,19 @@ object DashaSandhiAnalyzer {
             overallVolatilityScore = volatilityScore,
             generalGuidance = generalGuidance
         )
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val numericHours = timezone.trim().toDoubleOrNull()
+            if (numericHours != null) {
+                ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                ZoneOffset.UTC
+            }
+        }
     }
 
     /**

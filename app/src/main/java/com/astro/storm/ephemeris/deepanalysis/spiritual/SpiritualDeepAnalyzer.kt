@@ -222,9 +222,10 @@ object SpiritualDeepAnalyzer {
     
     private fun analyzeCurrentPhase(context: AnalysisContext): CurrentSpiritualPhase {
         val dasha = context.currentMahadasha
+        val growthPlanet = dasha?.planet ?: context.getHouseLord(9)
         return CurrentSpiritualPhase(
-            currentDasha = "${dasha?.planet?.displayName ?: "Current"} Mahadasha",
-            spiritualGrowthPotential = context.getPlanetStrengthLevel(dasha?.planet ?: Planet.JUPITER),
+            currentDasha = "${growthPlanet.displayName} Mahadasha",
+            spiritualGrowthPotential = context.getPlanetStrengthLevel(growthPlanet),
             currentFocus = LocalizedParagraph("Current period spiritual guidance.",
                 "वर्तमान अवधि आध्यात्मिक मार्गदर्शन।"),
             practiceAdvice = LocalizedParagraph("Spiritual practices for current period.",
@@ -262,3 +263,5 @@ object SpiritualDeepAnalyzer {
         return ((jupiterScore + ninthScore + twelfthScore) / 1.5).coerceIn(0.0, 100.0)
     }
 }
+
+

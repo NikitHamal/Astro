@@ -190,9 +190,10 @@ object WealthDeepAnalyzer {
     
     private fun analyzeCurrentWealthPhase(context: AnalysisContext): CurrentWealthPhase {
         val dasha = context.currentMahadasha
+        val outlookPlanet = dasha?.planet ?: context.getHouseLord(2)
         return CurrentWealthPhase(
-            currentDasha = "${dasha?.planet?.displayName ?: "Current"} Mahadasha",
-            overallFinancialOutlook = context.getPlanetStrengthLevel(dasha?.planet ?: Planet.JUPITER),
+            currentDasha = "${outlookPlanet.displayName} Mahadasha",
+            overallFinancialOutlook = context.getPlanetStrengthLevel(outlookPlanet),
             currentOpportunities = emptyList(),
             currentCautions = emptyList(),
             financialAdvice = LocalizedParagraph("Align financial decisions with current period energy.",

@@ -286,22 +286,23 @@ class TarabalaCalculator @Inject constructor(
      */
     fun calculateAnalysis(
         chart: VedicChart,
-        dateTime: LocalDateTime = LocalDateTime.now(),
+        dateTime: LocalDateTime? = null,
         language: Language = Language.ENGLISH
     ): TarabalaChandrabalaAnalysis? {
+        val effectiveDateTime = dateTime ?: LocalDateTime.now(resolveZoneId(chart.birthData.timezone))
         val moonPosition = chart.planetPositions.find { it.planet == Planet.MOON } ?: return null
         val birthNakshatra = moonPosition.nakshatra
         val natalMoonSign = moonPosition.sign
 
         // Calculate transit positions
-        val transitMoonSign = calculateTransitMoonSign(dateTime, chart) ?: natalMoonSign
-        val transitNakshatra = calculateTransitNakshatra(dateTime, chart) ?: birthNakshatra
+        val transitMoonSign = calculateTransitMoonSign(effectiveDateTime, chart) ?: natalMoonSign
+        val transitNakshatra = calculateTransitNakshatra(effectiveDateTime, chart) ?: birthNakshatra
 
         val currentTarabala = calculateTarabala(birthNakshatra, transitNakshatra, language)
         val currentChandrabala = calculateChandrabala(natalMoonSign, transitMoonSign, language)
-        val todayStrength = calculateDailyStrength(dateTime.toLocalDate(), currentTarabala, currentChandrabala, language)
+        val todayStrength = calculateDailyStrength(effectiveDateTime.toLocalDate(), currentTarabala, currentChandrabala, language)
 
-        val weeklyForecast = calculateWeeklyForecast(chart, dateTime.toLocalDate(), language)
+        val weeklyForecast = calculateWeeklyForecast(chart, effectiveDateTime.toLocalDate(), language)
 
         // Calculate all 27 nakshatras for the "All Nakshatras" tab
         val allTaras = Nakshatra.entries.map { nak ->
@@ -311,13 +312,18 @@ class TarabalaCalculator @Inject constructor(
         return TarabalaChandrabalaAnalysis(
             birthNakshatra = birthNakshatra,
             natalMoonSign = natalMoonSign,
-            currentDate = dateTime.toLocalDate(),
+            currentDate = effectiveDateTime.toLocalDate(),
             currentTarabala = currentTarabala,
             currentChandrabala = currentChandrabala,
             todayStrength = todayStrength,
             weeklyForecast = weeklyForecast,
             allTaras = allTaras
         )
+    }
+
+    private fun resolveZoneId(timezone: String?): ZoneId {
+        if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+        return runCatching { ZoneId.of(timezone.trim()) }.getOrElse { ZoneId.systemDefault() }
     }
 
     /**

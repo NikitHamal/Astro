@@ -49,7 +49,9 @@ import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.DateTimeException
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import androidx.compose.ui.text.style.TextOverflow
@@ -67,6 +69,7 @@ fun DrigDashaScreen(
     onBack: () -> Unit
 ) {
     val language = LocalLanguage.current
+    val asOf = remember(chart) { LocalDateTime.now(resolveZoneId(chart?.birthData?.timezone)) }
     var analysis by remember { mutableStateOf<DrigDashaAnalysis?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -135,6 +138,7 @@ fun DrigDashaScreen(
             analysis != null -> DrigDashaContent(
                 analysis = analysis!!,
                 language = language,
+                asOf = asOf,
                 modifier = Modifier.padding(padding)
             )
         }
@@ -145,6 +149,7 @@ fun DrigDashaScreen(
 private fun DrigDashaContent(
     analysis: DrigDashaAnalysis,
     language: Language,
+    asOf: LocalDateTime,
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(0) }
@@ -185,7 +190,7 @@ private fun DrigDashaContent(
 
         // Tab Content
         when (selectedTab) {
-            0 -> OverviewTab(analysis, language)
+            0 -> OverviewTab(analysis, language, asOf)
             1 -> DashaPeriodTab(analysis, language)
             2 -> MarakaAnalysisTab(analysis, language)
             3 -> SthiraKarakasTab(analysis, language)
@@ -196,7 +201,8 @@ private fun DrigDashaContent(
 @Composable
 private fun OverviewTab(
     analysis: DrigDashaAnalysis,
-    language: Language
+    language: Language,
+    asOf: LocalDateTime
 ) {
     val dateFormatter = remember { DateTimeFormatter.ofPattern("MMM dd, yyyy") }
 
@@ -216,7 +222,8 @@ private fun OverviewTab(
                 CurrentPeriodCard(
                     period = currentDasha,
                     language = language,
-                    dateFormatter = dateFormatter
+                    dateFormatter = dateFormatter,
+                    asOf = asOf
                 )
             }
         }
@@ -368,9 +375,10 @@ private fun LongevityCard(
 private fun CurrentPeriodCard(
     period: DrigDashaPeriod,
     language: Language,
-    dateFormatter: DateTimeFormatter
+    dateFormatter: DateTimeFormatter,
+    asOf: LocalDateTime
 ) {
-    val now = LocalDateTime.now()
+    val now = asOf
     val totalDays = ChronoUnit.DAYS.between(period.startDate, period.endDate).toFloat()
     val elapsedDays = ChronoUnit.DAYS.between(period.startDate, now).toFloat()
     val progress = (elapsedDays / totalDays).coerceIn(0f, 1f)
@@ -506,6 +514,23 @@ private fun CurrentPeriodCard(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+        }
+    }
+}
+
+private fun resolveZoneId(timezone: String?): ZoneId {
+    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+    return try {
+        ZoneId.of(timezone.trim())
+    } catch (_: DateTimeException) {
+        val normalized = timezone.trim()
+            .replace("UTC", "", ignoreCase = true)
+            .replace("GMT", "", ignoreCase = true)
+            .trim()
+        if (normalized.isNotEmpty()) {
+            runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
+        } else {
+            ZoneId.systemDefault()
         }
     }
 }

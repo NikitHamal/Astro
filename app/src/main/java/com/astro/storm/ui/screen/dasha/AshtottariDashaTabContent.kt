@@ -72,10 +72,10 @@ import com.astro.storm.ephemeris.AshtottariMahadasha
 import com.astro.storm.ephemeris.AshtottariTimeline
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.theme.AppTheme
-import java.time.LocalDate
+import java.time.DateTimeException
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 
 /**
  * Ashtottari Dasha Tab Content
@@ -91,6 +91,9 @@ fun AshtottariDashaTabContent(
     timeline: AshtottariTimeline
 ) {
     val language = LocalLanguage.current
+    val asOf = remember(timeline) {
+        LocalDateTime.now(resolveZoneId(timeline.natalChart.birthData.timezone))
+    }
     var expandedMahadashaKeys by rememberSaveable { mutableStateOf(setOf<String>()) }
     var showInfoExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -105,7 +108,7 @@ fun AshtottariDashaTabContent(
     ) {
         // Current Period Card
         item(key = "current_period") {
-            AshtottariCurrentPeriodCard(timeline = timeline)
+            AshtottariCurrentPeriodCard(timeline = timeline, asOf = asOf)
         }
 
         // System Info Card
@@ -118,7 +121,7 @@ fun AshtottariDashaTabContent(
 
         // Timeline Overview
         item(key = "timeline_overview") {
-            AshtottariTimelineCard(timeline = timeline)
+            AshtottariTimelineCard(timeline = timeline, asOf = asOf)
         }
 
         // Mahadasha List
@@ -135,6 +138,7 @@ fun AshtottariDashaTabContent(
                 currentAntardasha = if (isCurrent) timeline.currentAntardasha else null,
                 isCurrent = isCurrent,
                 isExpanded = isExpanded,
+                asOf = asOf,
                 onToggleExpand = { expanded ->
                     expandedMahadashaKeys = if (expanded) {
                         expandedMahadashaKeys + mdKey
@@ -152,7 +156,8 @@ fun AshtottariDashaTabContent(
 
 @Composable
 private fun AshtottariCurrentPeriodCard(
-    timeline: AshtottariTimeline
+    timeline: AshtottariTimeline,
+    asOf: LocalDateTime
 ) {
     val language = LocalLanguage.current
     val currentMD = timeline.currentMahadasha
@@ -283,9 +288,8 @@ private fun AshtottariCurrentPeriodCard(
             // Current periods
             if (currentMD != null) {
                 Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                    val now = LocalDateTime.now()
                     val mdTotalDuration = java.time.Duration.between(currentMD.startDate, currentMD.endDate).toMillis().toDouble()
-                    val mdElapsedDuration = java.time.Duration.between(currentMD.startDate, now).toMillis().toDouble()
+                    val mdElapsedDuration = java.time.Duration.between(currentMD.startDate, asOf).toMillis().toDouble()
                     val mdProgressPercent = if (mdTotalDuration > 0) (mdElapsedDuration / mdTotalDuration * 100).coerceIn(0.0, 100.0) else 0.0
 
                     AshtottariPeriodRow(
@@ -298,9 +302,8 @@ private fun AshtottariCurrentPeriodCard(
                     )
 
                     currentAD?.let { ad ->
-                        val now = LocalDateTime.now()
                         val totalDuration = java.time.Duration.between(ad.startDate, ad.endDate).toMillis().toDouble()
-                        val elapsedDuration = java.time.Duration.between(ad.startDate, now).toMillis().toDouble()
+                        val elapsedDuration = java.time.Duration.between(ad.startDate, asOf).toMillis().toDouble()
                         val progressPercent = if (totalDuration > 0) (elapsedDuration / totalDuration * 100).coerceIn(0.0, 100.0) else 0.0
 
                         AshtottariPeriodRow(
@@ -611,10 +614,11 @@ private fun PeriodDurationRow(planet: Planet, years: Int) {
 
 @Composable
 private fun AshtottariTimelineCard(
-    timeline: AshtottariTimeline
+    timeline: AshtottariTimeline,
+    asOf: LocalDateTime
 ) {
     val language = LocalLanguage.current
-    val today = LocalDateTime.now()
+    val today = asOf
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -756,6 +760,7 @@ private fun AshtottariMahadashaCard(
     currentAntardasha: AshtottariAntardasha?,
     isCurrent: Boolean,
     isExpanded: Boolean,
+    asOf: LocalDateTime,
     onToggleExpand: (Boolean) -> Unit
 ) {
     val rotation by animateFloatAsState(
@@ -893,6 +898,7 @@ private fun AshtottariMahadashaCard(
                             antardasha = ad,
                             mahadashaPlanet = mahadasha.planet,
                             isCurrent = isCurrentAD,
+                            asOf = asOf,
                             modifier = Modifier.padding(top = if (index == 0) 0.dp else 4.dp)
                         )
                     }
@@ -907,10 +913,11 @@ private fun AshtottariAntardashaRow(
     antardasha: AshtottariAntardasha,
     mahadashaPlanet: Planet,
     isCurrent: Boolean,
+    asOf: LocalDateTime,
     modifier: Modifier = Modifier
 ) {
     val planetColor = ChartDetailColors.getPlanetColor(antardasha.antardashaLord)
-    val today = LocalDateTime.now()
+    val today = asOf
     val isPast = antardasha.endDate.isBefore(today)
     val language = LocalLanguage.current
 
@@ -964,7 +971,7 @@ private fun AshtottariAntardashaRow(
                     if (isCurrent) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "${antardasha.getProgressPercent().toInt()}%",
+                            text = "${antardasha.getProgressPercent(asOf).toInt()}%",
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = planetColor.copy(alpha = 0.9f)
@@ -1010,6 +1017,23 @@ private fun getAshtottariInterpretation(mahadashaPlanet: Planet, antardashaPlane
         "$baseInterpretation $subEffect"
     } else {
         baseInterpretation
+    }
+}
+
+private fun resolveZoneId(timezone: String?): ZoneId {
+    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+    return try {
+        ZoneId.of(timezone.trim())
+    } catch (_: DateTimeException) {
+        val normalized = timezone.trim()
+            .replace("UTC", "", ignoreCase = true)
+            .replace("GMT", "", ignoreCase = true)
+            .trim()
+        if (normalized.isNotEmpty()) {
+            runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
+        } else {
+            ZoneId.systemDefault()
+        }
     }
 }
 

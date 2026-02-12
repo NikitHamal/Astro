@@ -102,7 +102,9 @@ import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.YoginiDashaUiState
 import com.astro.storm.ui.viewmodel.YoginiDashaViewModel
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -113,6 +115,7 @@ fun YoginiDashaScreen(
     viewModel: YoginiDashaViewModel = hiltViewModel()
 ) {
     val language = LocalLanguage.current
+    val asOfDate = remember(chart) { LocalDate.now(resolveZoneId(chart?.birthData?.timezone)) }
 
     val chartKey = remember(chart) {
         chart?.generateUniqueKey()
@@ -166,8 +169,8 @@ fun YoginiDashaScreen(
                                 onTabSelected = { selectedTab = it }
                             )
                             when (selectedTab) {
-                                0 -> CurrentYoginiTab(result = state.result)
-                                1 -> TimelineYoginiTab(result = state.result)
+                                0 -> CurrentYoginiTab(result = state.result, asOfDate = asOfDate)
+                                1 -> TimelineYoginiTab(result = state.result, asOfDate = asOfDate)
                                 2 -> DetailsYoginiTab(result = state.result)
                             }
                         }
@@ -354,7 +357,10 @@ private fun YoginiDashaTabRow(
 }
 
 @Composable
-private fun CurrentYoginiTab(result: YoginiDashaCalculator.YoginiDashaResult) {
+private fun CurrentYoginiTab(
+    result: YoginiDashaCalculator.YoginiDashaResult,
+    asOfDate: LocalDate
+) {
     val language = LocalLanguage.current
     val listState = rememberLazyListState()
 
@@ -365,7 +371,7 @@ private fun CurrentYoginiTab(result: YoginiDashaCalculator.YoginiDashaResult) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item(key = "current_period") {
-            CurrentYoginiPeriodCard(result = result)
+            CurrentYoginiPeriodCard(result = result, asOfDate = asOfDate)
         }
 
         item(key = "birth_balance") {
@@ -391,7 +397,10 @@ private fun CurrentYoginiTab(result: YoginiDashaCalculator.YoginiDashaResult) {
 }
 
 @Composable
-private fun TimelineYoginiTab(result: YoginiDashaCalculator.YoginiDashaResult) {
+private fun TimelineYoginiTab(
+    result: YoginiDashaCalculator.YoginiDashaResult,
+    asOfDate: LocalDate
+) {
     val language = LocalLanguage.current
     val listState = rememberLazyListState()
 
@@ -413,7 +422,8 @@ private fun TimelineYoginiTab(result: YoginiDashaCalculator.YoginiDashaResult) {
                 mahadasha = mahadasha,
                 isCurrent = mahadasha == result.currentMahadasha,
                 currentAntardasha = if (mahadasha == result.currentMahadasha) result.currentAntardasha else null,
-                language = language
+                language = language,
+                asOfDate = asOfDate
             )
         }
 
@@ -448,7 +458,10 @@ private fun DetailsYoginiTab(result: YoginiDashaCalculator.YoginiDashaResult) {
 }
 
 @Composable
-private fun CurrentYoginiPeriodCard(result: YoginiDashaCalculator.YoginiDashaResult) {
+private fun CurrentYoginiPeriodCard(
+    result: YoginiDashaCalculator.YoginiDashaResult,
+    asOfDate: LocalDate
+) {
     val language = LocalLanguage.current
     val currentMahadasha = result.currentMahadasha
     val currentAntardasha = result.currentAntardasha
@@ -515,9 +528,9 @@ private fun CurrentYoginiPeriodCard(result: YoginiDashaCalculator.YoginiDashaRes
                     yogini = currentMahadasha.yogini,
                     startDate = currentMahadasha.startDate,
                     endDate = currentMahadasha.endDate,
-                    progress = currentMahadasha.getProgressPercent().toFloat() / 100f,
+                    progress = currentMahadasha.getProgressPercent(asOfDate).toFloat() / 100f,
                     remainingText = formatRemainingYearsLocalized(
-                        currentMahadasha.getRemainingDays() / 365.25,
+                        currentMahadasha.getRemainingDays(asOfDate) / 365.25,
                         language
                     ),
                     isLarge = true,
@@ -531,8 +544,8 @@ private fun CurrentYoginiPeriodCard(result: YoginiDashaCalculator.YoginiDashaRes
                         yogini = ad.yogini,
                         startDate = ad.startDate,
                         endDate = ad.endDate,
-                        progress = ad.getProgressPercent().toFloat() / 100f,
-                        remainingText = formatRemainingDaysLocalized(ad.getRemainingDays(), language),
+                        progress = ad.getProgressPercent(asOfDate).toFloat() / 100f,
+                        remainingText = formatRemainingDaysLocalized(ad.getRemainingDays(asOfDate), language),
                         isLarge = false,
                         language = language
                     )
@@ -994,7 +1007,8 @@ private fun YoginiMahadashaCard(
     mahadasha: YoginiDashaCalculator.YoginiMahadasha,
     isCurrent: Boolean,
     currentAntardasha: YoginiDashaCalculator.YoginiAntardasha?,
-    language: Language
+    language: Language,
+    asOfDate: LocalDate
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(isCurrent) }
     val rotation by animateFloatAsState(
@@ -1090,7 +1104,7 @@ private fun YoginiMahadashaCard(
                         if (isCurrent) {
                             Spacer(modifier = Modifier.height(3.dp))
                             Text(
-                                text = String.format("%.1f", mahadasha.getProgressPercent()) + stringResource(StringKeyUIExtra.PERCENT) + stringResource(StringKeyUIExtra.BULLET_SPACE) + formatRemainingYearsLocalized(mahadasha.getRemainingDays() / 365.25, language),
+                                text = String.format("%.1f", mahadasha.getProgressPercent(asOfDate)) + stringResource(StringKeyUIExtra.PERCENT) + stringResource(StringKeyUIExtra.BULLET_SPACE) + formatRemainingYearsLocalized(mahadasha.getRemainingDays(asOfDate) / 365.25, language),
                                 fontSize = 10.sp,
                                 color = AppTheme.AccentTeal,
                                 fontWeight = FontWeight.Medium
@@ -1146,7 +1160,8 @@ private fun YoginiMahadashaCard(
                         YoginiAntardashaRow(
                             antardasha = antardasha,
                             isCurrent = antardasha == currentAntardasha,
-                            language = language
+                            language = language,
+                            asOfDate = asOfDate
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                     }
@@ -1160,10 +1175,11 @@ private fun YoginiMahadashaCard(
 private fun YoginiAntardashaRow(
     antardasha: YoginiDashaCalculator.YoginiAntardasha,
     isCurrent: Boolean,
-    language: Language
+    language: Language,
+    asOfDate: LocalDate
 ) {
     val yoginiColor = getYoginiColor(antardasha.yogini)
-    val today = LocalDate.now()
+    val today = asOfDate
     val isPast = antardasha.endDate.isBefore(today)
 
     Row(
@@ -1213,7 +1229,7 @@ private fun YoginiAntardashaRow(
                     if (isCurrent) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = String.format("%.0f", antardasha.getProgressPercent()) + stringResource(StringKeyUIExtra.PERCENT),
+                            text = String.format("%.0f", antardasha.getProgressPercent(asOfDate)) + stringResource(StringKeyUIExtra.PERCENT),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = yoginiColor.copy(alpha = 0.9f)
@@ -1221,7 +1237,7 @@ private fun YoginiAntardashaRow(
                     }
                 }
                 if (isCurrent) {
-                    val remaining = formatRemainingDaysLocalized(antardasha.getRemainingDays(), language)
+                    val remaining = formatRemainingDaysLocalized(antardasha.getRemainingDays(asOfDate), language)
                     if (remaining.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
@@ -1806,6 +1822,23 @@ private fun formatRemainingDaysLocalized(days: Long, language: Language): String
             StringResources.get(StringKey.REMAINING_PERIOD_MONTHS, language, formatNumber(months.toInt(), language))
         else -> 
             StringResources.get(StringKey.REMAINING_PERIOD_DAYS, language, formatNumber(remainingDays.toInt(), language))
+    }
+}
+
+private fun resolveZoneId(timezone: String?): ZoneId {
+    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+    return try {
+        ZoneId.of(timezone.trim())
+    } catch (_: DateTimeException) {
+        val normalized = timezone.trim()
+            .replace("UTC", "", ignoreCase = true)
+            .replace("GMT", "", ignoreCase = true)
+            .trim()
+        if (normalized.isNotEmpty()) {
+            runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
+        } else {
+            ZoneId.systemDefault()
+        }
     }
 }
 
