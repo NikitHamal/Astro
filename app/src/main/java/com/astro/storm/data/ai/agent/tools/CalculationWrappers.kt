@@ -661,38 +661,45 @@ class MuhurtaCalculatorWrapper(private val context: android.content.Context) {
         longitude: Double,
         daysAhead: Int
     ): List<MuhurtaTime> {
+        val calculator = MuhurtaCalculator(context)
         return try {
-            val calculator = MuhurtaCalculator(context)
-            val muhurtaResult = calculator.calculateMuhurta(
-                java.time.LocalDateTime.now(),
-                latitude,
-                longitude,
-                java.util.TimeZone.getDefault().id
+            val parsedActivity = runCatching { ActivityType.valueOf(activity.trim().uppercase()) }
+                .getOrDefault(ActivityType.GENERAL)
+            val today = java.time.LocalDate.now()
+            val endDate = today.plusDays(daysAhead.coerceIn(1, 90).toLong())
+            val tz = java.util.TimeZone.getDefault().id
+            val results = calculator.findAuspiciousMuhurtas(
+                activity = parsedActivity,
+                startDate = today,
+                endDate = endDate,
+                latitude = latitude,
+                longitude = longitude,
+                timezone = tz
             )
 
-            // For now, return current day's assessment
-            val inauspiciousList = mutableListOf<String>()
-            inauspiciousList.add(muhurtaResult.inauspiciousPeriods.rahukala.name)
-            inauspiciousList.add(muhurtaResult.inauspiciousPeriods.yamaghanta.name)
-            inauspiciousList.add(muhurtaResult.inauspiciousPeriods.gulikaKala.name)
-            muhurtaResult.inauspiciousPeriods.durmuhurtas.forEach { inauspiciousList.add(it.name) }
-
-            listOf(
+            results.map { r ->
+                val end = r.dateTime.plusMinutes(30)
                 MuhurtaTime(
-                    date = java.sql.Date(System.currentTimeMillis()),
-                    startTime = muhurtaResult.abhijitMuhurta.startTime.toString(),
-                    endTime = muhurtaResult.abhijitMuhurta.endTime.toString(),
-                    quality = if (muhurtaResult.isAuspicious) "Good" else "Mixed",
-                    score = muhurtaResult.overallScore,
-                    tithi = muhurtaResult.tithi.name,
-                    nakshatra = muhurtaResult.nakshatra.nakshatra.displayName,
-                    yoga = muhurtaResult.yoga.name,
-                    favorableFactors = muhurtaResult.recommendations,
-                    cautions = inauspiciousList.filter { it.isNotEmpty() }
+                    date = java.sql.Date.valueOf(r.dateTime.toLocalDate()),
+                    startTime = r.dateTime.toLocalTime().toString(),
+                    endTime = end.toLocalTime().toString(),
+                    quality = when {
+                        r.score >= 80 -> "Excellent"
+                        r.score >= 60 -> "Good"
+                        else -> "Mixed"
+                    },
+                    score = r.score,
+                    tithi = r.tithi,
+                    nakshatra = r.nakshatra.displayName,
+                    yoga = r.specialYogas.joinToString(", ") { it.name }.ifBlank { "None" },
+                    favorableFactors = r.reasons,
+                    cautions = r.warnings
                 )
-            )
+            }
         } catch (e: Exception) {
             emptyList()
+        } finally {
+            calculator.close()
         }
     }
 }

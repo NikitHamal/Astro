@@ -362,7 +362,7 @@ object PanchakaAnalyzer {
             nakshatraPada = nakshatraPada,
             weekday = weekday,
             tithiNumber = tithiNumber,
-            isPanchakaActive = true,
+            isPanchakaActive = panchakaType != PanchakaType.NO_PANCHAKA,
             panchakaType = panchakaType,
             panchakaNumber = panchakaNumber,
             directionToAvoid = directionToAvoid,
@@ -414,7 +414,7 @@ object PanchakaAnalyzer {
      * 4, 5 -> Raja Panchaka
      * 6 -> Chora Panchaka
      * 7, 8 -> Roga Panchaka
-     * 0, 9 -> No specific Panchaka (general caution)
+     * 0 -> No specific Panchaka
      */
     private fun getPanchakaTypeFromNumber(number: Int): PanchakaType {
         return when (number) {
@@ -423,7 +423,7 @@ object PanchakaAnalyzer {
             4, 5 -> PanchakaType.RAJA_PANCHAKA
             6 -> PanchakaType.CHORA_PANCHAKA
             7, 8 -> PanchakaType.ROGA_PANCHAKA
-            else -> PanchakaType.ROGA_PANCHAKA // 0, 9 - General caution
+            else -> PanchakaType.NO_PANCHAKA // 0 - no specific Panchaka dosha
         }
     }
 

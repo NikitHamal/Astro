@@ -16,14 +16,20 @@ object MuhurtaAstronomicalCalculator {
     fun getPlanetLongitude(planetId: Int, julianDay: Double, swissEph: SwissEph): Double {
         val xx = DoubleArray(6)
         val serr = StringBuffer()
-        swissEph.swe_calc_ut(julianDay, planetId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        val rc = swissEph.swe_calc_ut(julianDay, planetId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        if (rc < 0) {
+            throw IllegalStateException("Swiss Ephemeris swe_calc_ut failed for planetId=$planetId, jd=$julianDay: $serr")
+        }
         return normalizeDegrees(xx[0])
     }
 
     fun getPlanetSpeed(planetId: Int, julianDay: Double, swissEph: SwissEph): Double {
         val xx = DoubleArray(6)
         val serr = StringBuffer()
-        swissEph.swe_calc_ut(julianDay, planetId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        val rc = swissEph.swe_calc_ut(julianDay, planetId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        if (rc < 0) {
+            throw IllegalStateException("Swiss Ephemeris swe_calc_ut failed for speed, planetId=$planetId, jd=$julianDay: $serr")
+        }
         return xx[3]
     }
 
@@ -32,9 +38,21 @@ object MuhurtaAstronomicalCalculator {
         val tret = DblObj()
         val serr = StringBuffer()
         val jdMidnight = floor(julianDay - 0.5) + 0.5
-        swissEph.swe_rise_trans(jdMidnight, SweConst.SE_SUN, null, SweConst.SEFLG_SWIEPH, SweConst.SE_CALC_RISE or SweConst.SE_BIT_DISC_CENTER, geopos, 0.0, 0.0, tret, serr)
+        val riseRc = swissEph.swe_rise_trans(
+            jdMidnight, SweConst.SE_SUN, null, SweConst.SEFLG_SWIEPH,
+            SweConst.SE_CALC_RISE or SweConst.SE_BIT_DISC_CENTER, geopos, 0.0, 0.0, tret, serr
+        )
+        if (riseRc < 0) {
+            throw IllegalStateException("Swiss Ephemeris sunrise calculation failed at lat=$latitude lon=$longitude jd=$jdMidnight: $serr")
+        }
         val sunriseJD = tret.`val`
-        swissEph.swe_rise_trans(jdMidnight, SweConst.SE_SUN, null, SweConst.SEFLG_SWIEPH, SweConst.SE_CALC_SET or SweConst.SE_BIT_DISC_CENTER, geopos, 0.0, 0.0, tret, serr)
+        val setRc = swissEph.swe_rise_trans(
+            jdMidnight, SweConst.SE_SUN, null, SweConst.SEFLG_SWIEPH,
+            SweConst.SE_CALC_SET or SweConst.SE_BIT_DISC_CENTER, geopos, 0.0, 0.0, tret, serr
+        )
+        if (setRc < 0) {
+            throw IllegalStateException("Swiss Ephemeris sunset calculation failed at lat=$latitude lon=$longitude jd=$jdMidnight: $serr")
+        }
         val sunsetJD = tret.`val`
         return Pair(sunriseJD, sunsetJD)
     }

@@ -131,18 +131,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
+import java.time.ZoneOffset
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.DateTimeException
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.math.roundToInt
 
 private sealed interface MuhurtaUiState {
     data object Loading : MuhurtaUiState
     data class Success(
         val muhurta: MuhurtaDetails,
-        val choghadiyaList: List<ChoghadiyaInfo>,
+        val dayChoghadiyaList: List<ChoghadiyaInfo>,
+        val nightChoghadiyaList: List<ChoghadiyaInfo>,
+        val highlightTime: LocalTime?,
         val panchakaAnalysis: PanchakaAnalyzer.PanchakaAnalysis
     ) : MuhurtaUiState
     data class Error(val message: String) : MuhurtaUiState
@@ -163,6 +168,20 @@ private object MuhurtaFormatters {
 }
 
 private enum class InauspiciousSeverity { HIGH, MEDIUM, LOW }
+
+private fun resolveZoneIdStrict(timezone: String): ZoneId {
+    try {
+        return ZoneId.of(timezone)
+    } catch (_: DateTimeException) {
+        val trimmed = timezone.trim()
+        val numericHours = trimmed.toDoubleOrNull()
+        if (numericHours != null) {
+            val totalSeconds = (numericHours * 3600.0).roundToInt()
+            return ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+        }
+        throw IllegalArgumentException("Invalid timezone: $timezone")
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -194,16 +213,27 @@ fun MuhurtaScreen(
     val loadMuhurtaData: suspend (LocalDate) -> Unit = remember(calculator, latitude, longitude, timezone) {
         { date ->
             uiState = MuhurtaUiState.Loading
-                        try {
-                            withContext(Dispatchers.IO) {
-                                val now = LocalDateTime.of(date, LocalTime.now())
-                                val muhurta = calculator.calculateMuhurta(now, latitude, longitude, timezone)
-                                val (dayChoghadiyas, _) = calculator.getDailyChoghadiya(date, latitude, longitude, timezone)
-                                val panchaka = PanchakaAnalyzer.analyzePanchaka(muhurta)
-                                uiState = MuhurtaUiState.Success(muhurta, dayChoghadiyas, panchaka)
-                            }
-                        }
-             catch (e: CancellationException) {
+            try {
+                val data = withContext(Dispatchers.IO) {
+                    val zoneId = resolveZoneIdStrict(timezone)
+                    val nowInZone = LocalDateTime.now(zoneId)
+                    val isTodayInZone = date == nowInZone.toLocalDate()
+                    val referenceTime = if (isTodayInZone) nowInZone.toLocalTime() else LocalTime.NOON
+                    val referenceDateTime = LocalDateTime.of(date, referenceTime)
+
+                    val muhurta = calculator.calculateMuhurta(referenceDateTime, latitude, longitude, timezone)
+                    val (dayChoghadiyas, nightChoghadiyas) = calculator.getDailyChoghadiya(date, latitude, longitude, timezone)
+                    val panchaka = PanchakaAnalyzer.analyzePanchaka(muhurta)
+                    MuhurtaUiState.Success(
+                        muhurta = muhurta,
+                        dayChoghadiyaList = dayChoghadiyas,
+                        nightChoghadiyaList = nightChoghadiyas,
+                        highlightTime = if (isTodayInZone) referenceTime else null,
+                        panchakaAnalysis = panchaka
+                    )
+                }
+                uiState = data
+            } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 uiState = MuhurtaUiState.Error(e.message ?: "Failed to calculate muhurta")
@@ -307,12 +337,13 @@ fun MuhurtaScreen(
                             scope.launch {
                                 searchState = SearchUiState.Searching
                                 try {
-                                    withContext(Dispatchers.IO) {
+                                    val results = withContext(Dispatchers.IO) {
                                         val results = calculator.findAuspiciousMuhurtas(
                                             activity, startDate, endDate, latitude, longitude, timezone
                                         )
-                                        searchState = SearchUiState.Results(results)
+                                        results
                                     }
+                                    searchState = SearchUiState.Results(results)
                                 } catch (e: CancellationException) {
                                     throw e
                                 } catch (e: Exception) {
@@ -502,7 +533,9 @@ private fun TodayTabContent(
         is MuhurtaUiState.Error -> ErrorContent(message = uiState.message, onRetry = onRetry)
         is MuhurtaUiState.Success -> TodayTabList(
             muhurta = uiState.muhurta,
-            choghadiyaList = uiState.choghadiyaList,
+            dayChoghadiyaList = uiState.dayChoghadiyaList,
+            nightChoghadiyaList = uiState.nightChoghadiyaList,
+            highlightTime = uiState.highlightTime,
             panchaka = uiState.panchakaAnalysis
         )
     }
@@ -579,7 +612,9 @@ private fun ErrorContent(
 @Composable
 private fun TodayTabList(
     muhurta: MuhurtaDetails,
-    choghadiyaList: List<ChoghadiyaInfo>,
+    dayChoghadiyaList: List<ChoghadiyaInfo>,
+    nightChoghadiyaList: List<ChoghadiyaInfo>,
+    highlightTime: LocalTime?,
     panchaka: PanchakaAnalyzer.PanchakaAnalysis
 ) {
     LazyColumn(
@@ -590,8 +625,8 @@ private fun TodayTabList(
         item(key = "current_muhurta") { CurrentMuhurtaCard(muhurta) }
         item(key = "panchanga") { PanchangaCard(muhurta) }
         item(key = "panchaka") { PanchakaCard(panchaka) }
-        item(key = "inauspicious") { InauspiciousPeriodsCard(muhurta) }
-        item(key = "choghadiya") { ChoghadiyaCard(choghadiyaList, muhurta.choghadiya) }
+        item(key = "inauspicious") { InauspiciousPeriodsCard(muhurta, highlightTime) }
+        item(key = "choghadiya") { ChoghadiyaCard(dayChoghadiyaList, nightChoghadiyaList, highlightTime) }
         if (muhurta.suitableActivities.isNotEmpty()) {
             item(key = "suitable_activities") {
                 ActivitiesCard(title = stringResource(StringKeyMatch.MUHURTA_SUITABLE_ACTIVITIES), activities = muhurta.suitableActivities, isPositive = true)
@@ -859,7 +894,10 @@ private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
 }
 
 @Composable
-private fun InauspiciousPeriodsCard(muhurta: MuhurtaDetails) {
+private fun InauspiciousPeriodsCard(
+    muhurta: MuhurtaDetails,
+    highlightTime: LocalTime?
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -892,21 +930,24 @@ private fun InauspiciousPeriodsCard(muhurta: MuhurtaDetails) {
                     description = stringResource(StringKeyMatch.MUHURTA_RAHUKALA_DESC),
                     startTime = muhurta.inauspiciousPeriods.rahukala.startTime,
                     endTime = muhurta.inauspiciousPeriods.rahukala.endTime,
-                    severity = InauspiciousSeverity.HIGH
+                    severity = InauspiciousSeverity.HIGH,
+                    highlightTime = highlightTime
                 )
                 InauspiciousPeriodRow(
                     name = stringResource(StringKeyMatch.MUHURTA_YAMAGHANTA),
                     description = stringResource(StringKeyMatch.MUHURTA_YAMAGHANTA_DESC),
                     startTime = muhurta.inauspiciousPeriods.yamaghanta.startTime,
                     endTime = muhurta.inauspiciousPeriods.yamaghanta.endTime,
-                    severity = InauspiciousSeverity.MEDIUM
+                    severity = InauspiciousSeverity.MEDIUM,
+                    highlightTime = highlightTime
                 )
                 InauspiciousPeriodRow(
                     name = stringResource(StringKeyMatch.MUHURTA_GULIKA_KALA),
                     description = stringResource(StringKeyMatch.MUHURTA_GULIKA_KALA_DESC),
                     startTime = muhurta.inauspiciousPeriods.gulikaKala.startTime,
                     endTime = muhurta.inauspiciousPeriods.gulikaKala.endTime,
-                    severity = InauspiciousSeverity.MEDIUM
+                    severity = InauspiciousSeverity.MEDIUM,
+                    highlightTime = highlightTime
                 )
                         }
         }
@@ -919,7 +960,8 @@ private fun InauspiciousPeriodRow(
     description: String,
     startTime: LocalTime,
     endTime: LocalTime,
-    severity: InauspiciousSeverity
+    severity: InauspiciousSeverity,
+    highlightTime: LocalTime?
 ) {
     val severityColor = remember(severity) {
         when (severity) {
@@ -929,8 +971,13 @@ private fun InauspiciousPeriodRow(
         }
     }
 
-    val now = LocalTime.now()
-    val isActive = now.isAfter(startTime) && now.isBefore(endTime)
+    val isActive = highlightTime?.let { time ->
+        if (!endTime.isBefore(startTime)) {
+            time >= startTime && time < endTime
+        } else {
+            time >= startTime || time < endTime
+        }
+    } ?: false
 
     Surface(
         color = if (isActive) severityColor.copy(alpha = 0.1f) else Color.Transparent,
@@ -1018,8 +1065,9 @@ private fun InauspiciousPeriodRow(
 
 @Composable
 private fun ChoghadiyaCard(
-    choghadiyaList: List<ChoghadiyaInfo>,
-    currentChoghadiya: ChoghadiyaInfo
+    dayChoghadiyaList: List<ChoghadiyaInfo>,
+    nightChoghadiyaList: List<ChoghadiyaInfo>,
+    highlightTime: LocalTime?
 ) {
     Card(
         modifier = Modifier
@@ -1038,14 +1086,14 @@ private fun ChoghadiyaCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyMatch.MUHURTA_DAY_CHOGHADIYA),
+                    stringResource(StringKeyMatch.MUHURTA_DAY_CHOGHADIYA) + " / Night",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    stringResource(StringKeyMatch.MUHURTA_PERIODS, choghadiyaList.size),
+                    stringResource(StringKeyMatch.MUHURTA_PERIODS, dayChoghadiyaList.size + nightChoghadiyaList.size),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1053,14 +1101,43 @@ private fun ChoghadiyaCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Text(
+                text = "Day",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextMuted
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                choghadiyaList.forEach { chog ->
-                    val isCurrent = chog.choghadiya == currentChoghadiya.choghadiya &&
-                            chog.startTime == currentChoghadiya.startTime
+                dayChoghadiyaList.forEach { chog ->
+                    val isCurrent = highlightTime?.let { isTimeInPeriod(chog.startTime, chog.endTime, it) } ?: false
+                    ChoghadiyaRow(chog, isCurrent)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
+            Text(
+                text = "Night",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextMuted
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                nightChoghadiyaList.forEach { chog ->
+                    val isCurrent = highlightTime?.let { isTimeInPeriod(chog.startTime, chog.endTime, it) } ?: false
                     ChoghadiyaRow(chog, isCurrent)
                 }
             }
         }
+    }
+}
+
+private fun isTimeInPeriod(start: LocalTime, end: LocalTime, time: LocalTime): Boolean {
+    return if (!end.isBefore(start)) {
+        time >= start && time < end
+    } else {
+        time >= start || time < end
     }
 }
 
