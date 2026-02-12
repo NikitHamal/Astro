@@ -23,9 +23,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
@@ -52,7 +56,11 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.CormorantGaramondFamily
 import com.astro.storm.ui.theme.DarkAppThemeColors
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.VedicGold
 import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -64,21 +72,23 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 // ============================================================================
-// DESIGN TOKENS
+// NEO-VEDIC DESIGN TOKENS
+// "Ethereal Vedic Grid" - Sharp, parchment-flat, scripture-like
 // ============================================================================
 private object HomeDesignTokens {
-    val ScreenPadding = 16.dp
-    val SectionSpacing = 24.dp
+    val ScreenPadding = 20.dp
+    val SectionSpacing = 28.dp
     val CardSpacing = 12.dp
-    val CardCornerRadius = 20.dp
-    val SmallCardCornerRadius = 16.dp
+    val CardCornerRadius = 2.dp          // Sharp cut-paper feel
     val QuickActionSize = 72.dp
-    val QuickActionIconSize = 28.dp
+    val QuickActionIconSize = 26.dp
     val HeroCardMinHeight = 160.dp
+    val CornerMarkerLength = 12.dp       // L-shaped corner markers
+    val BorderWidth = 1.dp               // Hairline borders
 }
 
 // ============================================================================
-// MAIN HOME TAB COMPOSABLE
+// MAIN HOME TAB COMPOSABLE - CELESTIAL DASHBOARD
 // ============================================================================
 @Composable
 fun HomeTab(
@@ -99,7 +109,7 @@ fun HomeTab(
     val listState = rememberLazyListState()
     val colors = AppTheme.current
     val language = LocalLanguage.current
-    
+
     // Pre-calculate dasha data once
     val dashaTimeline = remember(chart) {
         try {
@@ -118,7 +128,7 @@ fun HomeTab(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(HomeDesignTokens.SectionSpacing)
     ) {
-        // Hero Section - Current Dasha Period
+        // Hero Section - Current Maha Dasha
         item(key = "hero_dasha") {
             HeroDashaCard(
                 chart = chart,
@@ -128,7 +138,7 @@ fun HomeTab(
             )
         }
 
-        // Quick Actions - Most used features
+        // Quick Actions - Bento Grid
         item(key = "quick_actions") {
             QuickActionsSection(
                 onFeatureClick = onFeatureClick,
@@ -136,7 +146,7 @@ fun HomeTab(
             )
         }
 
-        // Today's Snapshot
+        // Today's Snapshot - Panchanga Strip
         item(key = "today_snapshot") {
             TodaySnapshotSection(
                 chart = chart,
@@ -146,7 +156,7 @@ fun HomeTab(
             )
         }
 
-        // Chart Analysis Section
+        // Chart Analysis Section Header
         item(key = "chart_analysis_header") {
             SectionHeader(
                 title = stringResource(StringKey.HOME_CHART_ANALYSIS),
@@ -235,7 +245,38 @@ fun HomeTab(
 }
 
 // ============================================================================
-// HERO DASHA CARD
+// VEDIC CORNER MARKERS
+// L-shaped corner accents on cards for that engraved/stamped feel
+// ============================================================================
+private fun Modifier.vedicCornerMarkers(
+    color: Color,
+    cornerLength: Dp = HomeDesignTokens.CornerMarkerLength,
+    strokeWidth: Dp = 1.dp
+) = this.drawWithContent {
+    drawContent()
+    val len = cornerLength.toPx()
+    val sw = strokeWidth.toPx()
+
+    // Top-left
+    drawLine(color, Offset(0f, sw / 2), Offset(len, sw / 2), sw)
+    drawLine(color, Offset(sw / 2, 0f), Offset(sw / 2, len), sw)
+
+    // Top-right
+    drawLine(color, Offset(size.width - len, sw / 2), Offset(size.width, sw / 2), sw)
+    drawLine(color, Offset(size.width - sw / 2, 0f), Offset(size.width - sw / 2, len), sw)
+
+    // Bottom-left
+    drawLine(color, Offset(0f, size.height - sw / 2), Offset(len, size.height - sw / 2), sw)
+    drawLine(color, Offset(sw / 2, size.height - len), Offset(sw / 2, size.height), sw)
+
+    // Bottom-right
+    drawLine(color, Offset(size.width - len, size.height - sw / 2), Offset(size.width, size.height - sw / 2), sw)
+    drawLine(color, Offset(size.width - sw / 2, size.height - len), Offset(size.width - sw / 2, size.height), sw)
+}
+
+// ============================================================================
+// HERO DASHA CARD - Maha Dasha Period Display
+// Neo-Vedic: Sharp corners, hairline border, Cinzel header, Space Grotesk data
 // ============================================================================
 @Composable
 private fun HeroDashaCard(
@@ -246,59 +287,36 @@ private fun HeroDashaCard(
 ) {
     val colors = AppTheme.current
     val today = remember(chart) { LocalDate.now(resolveZoneId(chart.birthData.timezone)) }
-    val infiniteTransition = rememberInfiniteTransition(label = "hero_glow")
-    
-    val glowAlpha by infiniteTransition.animateFloat(
-        initialValue = 0.3f,
-        targetValue = 0.6f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(2000, easing = EaseInOutSine),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "glow_alpha"
-    )
-    
+
     val planetColor = remember(currentDasha) {
-        currentDasha?.planet?.let { getPlanetDisplayColor(it) } ?: DarkAppThemeColors.AccentGold
+        currentDasha?.planet?.let { getPlanetDisplayColor(it) } ?: VedicGold
     }
 
-    Card(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = HomeDesignTokens.ScreenPadding)
-            .padding(top = HomeDesignTokens.ScreenPadding),
-        shape = RoundedCornerShape(HomeDesignTokens.CardCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-        onClick = onClick
+            .padding(top = HomeDesignTokens.ScreenPadding)
     ) {
-        Box(
+        Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = HomeDesignTokens.HeroCardMinHeight)
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            planetColor.copy(alpha = 0.15f),
-                            colors.CardBackground,
-                            colors.CardBackground
-                        ),
-                        start = Offset(0f, 0f),
-                        end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
-                    )
-                )
-                .drawBehind {
-                    // Subtle glow effect
-                    drawCircle(
-                        color = planetColor.copy(alpha = glowAlpha * 0.3f),
-                        radius = size.width * 0.4f,
-                        center = Offset(size.width * 0.9f, size.height * 0.2f)
-                    )
-                }
+                .vedicCornerMarkers(color = planetColor)
+                .clickable(onClick = onClick),
+            shape = RoundedCornerShape(HomeDesignTokens.CardCornerRadius),
+            color = colors.CardBackground,
+            border = androidx.compose.foundation.BorderStroke(
+                HomeDesignTokens.BorderWidth,
+                colors.BorderColor
+            ),
+            tonalElevation = 0.dp,
+            shadowElevation = 0.dp
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp)
+                    .heightIn(min = HomeDesignTokens.HeroCardMinHeight)
+                    .padding(24.dp)
             ) {
                 // Header Row
                 Row(
@@ -306,86 +324,91 @@ private fun HeroDashaCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Label
-                    Surface(
-                        shape = RoundedCornerShape(8.dp),
-                        color = planetColor.copy(alpha = 0.15f)
-                    ) {
-                        Text(
-                            text = stringResource(StringKey.CURRENT_MAHA_DASHA),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = planetColor,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
-                        )
-                    }
-                    
+                    // Label - Space Grotesk uppercase
+                    Text(
+                        text = stringResource(StringKey.CURRENT_MAHA_DASHA).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 10.sp,
+                        letterSpacing = 2.sp,
+                        color = planetColor
+                    )
+
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowRight,
                         contentDescription = stringResource(StringKey.BTN_VIEW_DETAILS),
-                        tint = colors.TextMuted
+                        tint = colors.TextMuted,
+                        modifier = Modifier.size(18.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 if (currentDasha != null) {
-                    // Planet Name
+                    // Planet Name Row
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Planet Icon Container
+                        // Planet glyph circle
                         Box(
                             modifier = Modifier
-                                .size(48.dp)
-                                .clip(CircleShape)
-                                .background(planetColor.copy(alpha = 0.2f)),
+                                .size(44.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = planetColor.copy(alpha = 0.4f),
+                                    shape = CircleShape
+                                ),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = currentDasha.planet.getLocalizedName(language).take(2),
-                                style = MaterialTheme.typography.titleMedium,
+                                fontFamily = CinzelDecorativeFamily,
                                 fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
                                 color = planetColor
                             )
                         }
-                        
+
                         Spacer(modifier = Modifier.width(16.dp))
-                        
+
                         Column {
+                            // Planet name in Cinzel
                             Text(
                                 text = "${currentDasha.planet.getLocalizedName(language)} ${stringResource(StringKey.HOME_DASHA_LABEL)}",
-                                style = MaterialTheme.typography.headlineSmall,
+                                fontFamily = CinzelDecorativeFamily,
                                 fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
                                 color = colors.TextPrimary
                             )
-                            
+
                             Spacer(modifier = Modifier.height(4.dp))
-                            
-                            // Duration
+
+                            // Remaining time in Space Grotesk
                             val remainingDays = ChronoUnit.DAYS.between(today, currentDasha.endDate.toLocalDate())
                             val years = remainingDays / 365
                             val months = (remainingDays % 365) / 30
-                            
+
                             Text(
                                 text = if (years > 0) {
                                     stringResource(StringKey.REMAINING_PERIOD_YEARS, years.toString(), months.toString())
                                 } else {
                                     stringResource(StringKey.REMAINING_PERIOD_MONTHS, months.toString())
                                 },
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontFamily = SpaceGroteskFamily,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 13.sp,
                                 color = colors.TextMuted
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
-                    // Progress Bar
+                    // Progress Bar - thin, elegant
                     val totalDays = ChronoUnit.DAYS.between(currentDasha.startDate.toLocalDate(), currentDasha.endDate.toLocalDate()).toFloat()
                     val elapsedDays = ChronoUnit.DAYS.between(currentDasha.startDate.toLocalDate(), today).toFloat()
                     val progress = (elapsedDays / totalDays).coerceIn(0f, 1f)
-                    
+
                     Column {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -393,33 +416,38 @@ private fun HeroDashaCard(
                         ) {
                             Text(
                                 text = currentDasha.startDate.format(DateTimeFormatter.ofPattern("MMM yyyy")),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = 10.sp,
+                                letterSpacing = 0.5.sp,
                                 color = colors.TextMuted
                             )
                             Text(
                                 text = currentDasha.endDate.format(DateTimeFormatter.ofPattern("MMM yyyy")),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = 10.sp,
+                                letterSpacing = 0.5.sp,
                                 color = colors.TextMuted
                             )
                         }
-                        
-                        Spacer(modifier = Modifier.height(6.dp))
-                        
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Thin progress track
                         LinearProgressIndicator(
                             progress = { progress },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(8.dp)
-                                .clip(RoundedCornerShape(4.dp)),
+                                .height(3.dp),
                             color = planetColor,
                             trackColor = colors.DividerColor
                         )
                     }
                 } else {
-                    // No dasha data available
                     Text(
                         text = stringResource(StringKey.TAP_TO_VIEW_DASHAS),
-                        style = MaterialTheme.typography.bodyLarge,
+                        fontFamily = CormorantGaramondFamily,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
                         color = colors.TextMuted
                     )
                 }
@@ -429,7 +457,8 @@ private fun HeroDashaCard(
 }
 
 // ============================================================================
-// QUICK ACTIONS SECTION
+// QUICK ACTIONS - 2x2 Bento Grid
+// Sharp square cards, hairline borders, Space Grotesk labels
 // ============================================================================
 @Composable
 private fun QuickActionsSection(
@@ -437,7 +466,7 @@ private fun QuickActionsSection(
     language: Language
 ) {
     val colors = AppTheme.current
-    
+
     val quickActions = remember {
         listOf(
             QuickAction(InsightFeature.FULL_CHART, Icons.Outlined.GridView, DarkAppThemeColors.AccentPrimary),
@@ -452,22 +481,42 @@ private fun QuickActionsSection(
     ) {
         SectionHeader(
             title = stringResource(StringKey.QUICK_ACTIONS),
-            modifier = Modifier.padding(bottom = 12.dp)
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        // 2x2 bento grid
+        Column(
+            verticalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
         ) {
-            quickActions.forEach { action ->
-                QuickActionItem(
-                    feature = action.feature,
-                    icon = action.icon,
-                    accentColor = action.color,
-                    language = language,
-                    onClick = { onFeatureClick(action.feature) },
-                    modifier = Modifier.weight(1f)
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
+            ) {
+                quickActions.take(2).forEach { action ->
+                    QuickActionItem(
+                        feature = action.feature,
+                        icon = action.icon,
+                        accentColor = action.color,
+                        language = language,
+                        onClick = { onFeatureClick(action.feature) },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
+            ) {
+                quickActions.drop(2).forEach { action ->
+                    QuickActionItem(
+                        feature = action.feature,
+                        icon = action.icon,
+                        accentColor = action.color,
+                        language = language,
+                        onClick = { onFeatureClick(action.feature) },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
         }
     }
@@ -483,57 +532,46 @@ private fun QuickActionItem(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
-    val interactionSource = remember { MutableInteractionSource() }
-    
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+
+    Surface(
         modifier = modifier
-            .clip(RoundedCornerShape(HomeDesignTokens.SmallCardCornerRadius))
-            .clickable(
-                interactionSource = interactionSource,
-                indication = rememberRipple(color = accentColor),
-                onClick = onClick
-            )
-            .padding(vertical = 8.dp)
+            .aspectRatio(1.3f),
+        shape = RoundedCornerShape(HomeDesignTokens.CardCornerRadius),
+        color = colors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(
+            HomeDesignTokens.BorderWidth,
+            colors.BorderColor
+        ),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+        onClick = onClick
     ) {
-        // Card-like square container with subtle background - responsive width with max cap
-        Box(
+        Column(
             modifier = Modifier
-                .widthIn(max = HomeDesignTokens.QuickActionSize)
-                .fillMaxWidth(0.85f)
-                .aspectRatio(1f)
-                .clip(RoundedCornerShape(20.dp))
-                .background(accentColor.copy(alpha = 0.12f))
-                .border(
-                    width = 1.dp,
-                    color = accentColor.copy(alpha = 0.25f),
-                    shape = RoundedCornerShape(20.dp)
-                ),
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
+            // Icon at top
             Icon(
                 imageVector = icon,
-                contentDescription = feature.getLocalizedTitle(language),
+                contentDescription = null,
                 tint = accentColor,
                 modifier = Modifier.size(HomeDesignTokens.QuickActionIconSize)
             )
+
+            // Label at bottom - Space Grotesk
+            Text(
+                text = feature.getLocalizedTitle(language),
+                fontFamily = SpaceGroteskFamily,
+                fontWeight = FontWeight.Medium,
+                fontSize = 12.sp,
+                letterSpacing = 0.5.sp,
+                color = colors.TextPrimary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
         }
-        
-        Spacer(modifier = Modifier.height(10.dp))
-        
-        Text(
-            text = feature.getLocalizedTitle(language),
-            style = MaterialTheme.typography.labelSmall,
-            color = colors.TextSecondary,
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center,
-            maxLines = 2,
-            minLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 4.dp)
-        )
     }
 }
 
@@ -544,7 +582,8 @@ private data class QuickAction(
 )
 
 // ============================================================================
-// TODAY'S SNAPSHOT SECTION
+// TODAY'S SNAPSHOT - Panchanga Strip
+// Two side-by-side flat cards with hairline borders
 // ============================================================================
 @Composable
 private fun TodaySnapshotSection(
@@ -555,13 +594,13 @@ private fun TodaySnapshotSection(
 ) {
     val colors = AppTheme.current
     val today = remember(chart) { LocalDate.now(resolveZoneId(chart.birthData.timezone)) }
-    
+
     Column(
         modifier = Modifier.padding(horizontal = HomeDesignTokens.ScreenPadding)
     ) {
         SectionHeader(
             title = stringResource(StringKey.TODAYS_SNAPSHOT),
-            modifier = Modifier.padding(bottom = 12.dp)
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
         Row(
@@ -572,21 +611,23 @@ private fun TodaySnapshotSection(
             SnapshotCard(
                 title = stringResource(StringKey.FEATURE_PANCHANGA),
                 icon = Icons.Outlined.CalendarMonth,
-                accentColor = colors.LifeAreaFinance,
+                accentColor = colors.AccentGold,
                 modifier = Modifier.weight(1f),
                 onClick = onPanchangaClick
             ) {
-                // Tithi, Nakshatra info would go here
                 Text(
                     text = today.format(DateTimeFormatter.ofPattern("EEEE", Locale.ENGLISH)),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = CormorantGaramondFamily,
                     fontWeight = FontWeight.SemiBold,
+                    fontSize = 16.sp,
                     color = colors.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = today.format(DateTimeFormatter.ofPattern("MMMM d, yyyy")),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 0.5.sp,
                     color = colors.TextMuted
                 )
             }
@@ -601,8 +642,9 @@ private fun TodaySnapshotSection(
             ) {
                 Text(
                     text = stringResource(StringKey.VIEW_CURRENT_TRANSITS),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = CormorantGaramondFamily,
                     fontWeight = FontWeight.Medium,
+                    fontSize = 15.sp,
                     color = colors.TextSecondary
                 )
             }
@@ -620,11 +662,17 @@ private fun SnapshotCard(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val colors = AppTheme.current
-    
-    Card(
+
+    Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(HomeDesignTokens.SmallCardCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
+        shape = RoundedCornerShape(HomeDesignTokens.CardCornerRadius),
+        color = colors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(
+            HomeDesignTokens.BorderWidth,
+            colors.BorderColor
+        ),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
         onClick = onClick
     ) {
         Column(
@@ -635,33 +683,27 @@ private fun SnapshotCard(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(accentColor.copy(alpha = 0.15f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = accentColor,
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-                
-                Spacer(modifier = Modifier.width(10.dp))
-                
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = accentColor,
+                    modifier = Modifier.size(18.dp)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
                 Text(
-                    text = title,
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = colors.TextPrimary
+                    text = title.uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 10.sp,
+                    letterSpacing = 1.5.sp,
+                    color = colors.TextMuted
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(12.dp))
-            
+
             content()
         }
     }
@@ -669,6 +711,7 @@ private fun SnapshotCard(
 
 // ============================================================================
 // FEATURE CATEGORY CARD
+// Expandable section with hairline border, Cinzel title, grid of features
 // ============================================================================
 @Composable
 private fun FeatureCategoryCard(
@@ -682,8 +725,8 @@ private fun FeatureCategoryCard(
 ) {
     val colors = AppTheme.current
     var isExpanded by remember { mutableStateOf(false) }
-    
-    Card(
+
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = HomeDesignTokens.ScreenPadding)
@@ -694,7 +737,13 @@ private fun FeatureCategoryCard(
                 )
             ),
         shape = RoundedCornerShape(HomeDesignTokens.CardCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
+        color = colors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(
+            HomeDesignTokens.BorderWidth,
+            colors.BorderColor
+        ),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column {
             // Header - Always visible
@@ -706,78 +755,63 @@ private fun FeatureCategoryCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 // Icon
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(14.dp))
-                        .background(
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    accentColor.copy(alpha = 0.2f),
-                                    accentColor.copy(alpha = 0.1f)
-                                )
-                            )
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = accentColor,
-                        modifier = Modifier.size(26.dp)
-                    )
-                }
-                
-                Spacer(modifier = Modifier.width(16.dp))
-                
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = accentColor,
+                    modifier = Modifier.size(22.dp)
+                )
+
+                Spacer(modifier = Modifier.width(14.dp))
+
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
                         color = colors.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = subtitle,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = 11.sp,
                         color = colors.TextMuted,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-                
-                // Feature count badge
-                Surface(
-                    shape = RoundedCornerShape(8.dp),
-                    color = accentColor.copy(alpha = 0.1f)
-                ) {
-                    Text(
-                        text = features.size.toString(),
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = accentColor,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-                    )
-                }
-                
-                Spacer(modifier = Modifier.width(8.dp))
-                
+
+                // Feature count
+                Text(
+                    text = features.size.toString(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp,
+                    letterSpacing = 0.5.sp,
+                    color = accentColor
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
                 // Expand indicator
                 val rotation by animateFloatAsState(
                     targetValue = if (isExpanded) 90f else 0f,
                     animationSpec = tween(300),
                     label = "expand_rotation"
                 )
-                
+
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowRight,
                     contentDescription = if (isExpanded) stringResource(StringKeyUICommon.COLLAPSE) else stringResource(StringKeyUICommon.EXPAND),
                     tint = colors.TextMuted,
-                    modifier = Modifier.graphicsLayer { rotationZ = rotation }
+                    modifier = Modifier
+                        .size(18.dp)
+                        .graphicsLayer { rotationZ = rotation }
                 )
             }
-            
+
             // Expanded Content
             AnimatedVisibility(
                 visible = isExpanded,
@@ -791,19 +825,21 @@ private fun FeatureCategoryCard(
                         bottom = 20.dp
                     )
                 ) {
+                    // Hairline divider
                     HorizontalDivider(
                         color = colors.DividerColor,
+                        thickness = 0.5.dp,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
-                    
-                    // Features Grid
+
+                    // Features Grid - 2 columns
                     val chunkedFeatures = features.chunked(2)
                     chunkedFeatures.forEach { rowFeatures ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = if (rowFeatures != chunkedFeatures.last()) 10.dp else 0.dp),
-                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                .padding(bottom = if (rowFeatures != chunkedFeatures.last()) 8.dp else 0.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             rowFeatures.forEach { feature ->
                                 CompactFeatureCard(
@@ -813,7 +849,6 @@ private fun FeatureCategoryCard(
                                     modifier = Modifier.weight(1f)
                                 )
                             }
-                            // Fill empty space if odd number
                             if (rowFeatures.size == 1) {
                                 Spacer(modifier = Modifier.weight(1f))
                             }
@@ -833,18 +868,16 @@ private fun CompactFeatureCard(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
-    val interactionSource = remember { MutableInteractionSource() }
-    
+
     Surface(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .clickable(
-                interactionSource = interactionSource,
-                indication = rememberRipple(color = feature.color),
-                onClick = onClick
-            ),
-        shape = RoundedCornerShape(12.dp),
-        color = colors.ChipBackground
+        modifier = modifier,
+        shape = RoundedCornerShape(HomeDesignTokens.CardCornerRadius),
+        color = colors.ChipBackground,
+        border = androidx.compose.foundation.BorderStroke(
+            0.5.dp,
+            colors.BorderColor.copy(alpha = 0.5f)
+        ),
+        onClick = onClick
     ) {
         Row(
             modifier = Modifier
@@ -852,27 +885,20 @@ private fun CompactFeatureCard(
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .size(36.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(feature.color.copy(alpha = 0.15f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = feature.icon,
-                    contentDescription = null,
-                    tint = feature.color,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-            
+            Icon(
+                imageVector = feature.icon,
+                contentDescription = null,
+                tint = feature.color,
+                modifier = Modifier.size(18.dp)
+            )
+
             Spacer(modifier = Modifier.width(10.dp))
-            
+
             Text(
                 text = feature.getLocalizedTitle(language),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.Medium,
+                fontSize = 12.sp,
                 color = colors.TextPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -882,7 +908,7 @@ private fun CompactFeatureCard(
 }
 
 // ============================================================================
-// SECTION HEADER
+// SECTION HEADER - Cinzel title, Space Grotesk subtitle
 // ============================================================================
 @Composable
 private fun SectionHeader(
@@ -891,27 +917,31 @@ private fun SectionHeader(
     subtitle: String? = null
 ) {
     val colors = AppTheme.current
-    
+
     Column(modifier = modifier) {
         Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = colors.TextPrimary
+            text = title.uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 11.sp,
+            letterSpacing = 2.sp,
+            color = colors.TextMuted
         )
         if (subtitle != null) {
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
-                color = colors.TextMuted
+                fontFamily = CormorantGaramondFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp,
+                color = colors.TextSubtle
             )
         }
     }
 }
 
 // ============================================================================
-// EMPTY STATE
+// EMPTY STATE - Neo-Vedic styled
 // ============================================================================
 @Composable
 private fun EmptyHomeState(
@@ -919,17 +949,6 @@ private fun EmptyHomeState(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
-    
-    val infiniteTransition = rememberInfiniteTransition(label = "empty_state")
-    val pulseScale by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 1.05f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = EaseInOutSine),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "pulse_scale"
-    )
 
     Box(
         modifier = modifier
@@ -943,47 +962,33 @@ private fun EmptyHomeState(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            // Animated Icon Container
+            // Vedic geometric icon
             Box(
                 modifier = Modifier
-                    .size(120.dp)
-                    .graphicsLayer {
-                        scaleX = pulseScale
-                        scaleY = pulseScale
-                    }
-                    .clip(CircleShape)
-                    .background(
-                        Brush.radialGradient(
-                            colors = listOf(
-                                colors.AccentPrimary.copy(alpha = 0.2f),
-                                colors.AccentPrimary.copy(alpha = 0.05f)
-                            )
-                        )
-                    ),
+                    .size(100.dp)
+                    .border(
+                        width = 1.dp,
+                        color = colors.AccentGold.copy(alpha = 0.4f),
+                        shape = CircleShape
+                    )
+                    .vedicCornerMarkers(color = colors.AccentGold),
                 contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(CircleShape)
-                        .background(colors.CardBackground),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.PersonAddAlt,
-                        contentDescription = null,
-                        tint = colors.AccentPrimary,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Outlined.PersonAddAlt,
+                    contentDescription = null,
+                    tint = colors.AccentGold,
+                    modifier = Modifier.size(40.dp)
+                )
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
                 text = stringResource(StringKey.NO_PROFILE_SELECTED),
-                style = MaterialTheme.typography.headlineSmall,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
                 color = colors.TextPrimary,
                 textAlign = TextAlign.Center
             )
@@ -992,7 +997,9 @@ private fun EmptyHomeState(
 
             Text(
                 text = stringResource(StringKey.NO_PROFILE_MESSAGE),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = CormorantGaramondFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
                 color = colors.TextMuted,
                 textAlign = TextAlign.Center,
                 lineHeight = 24.sp,
@@ -1001,31 +1008,33 @@ private fun EmptyHomeState(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            Button(
+            // CTA button - flat, sharp corners, outlined
+            OutlinedButton(
                 onClick = onCreateProfile,
                 modifier = Modifier
-                    .height(56.dp)
-                    .widthIn(min = 220.dp),
-                shape = RoundedCornerShape(28.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colors.AccentPrimary,
-                    contentColor = colors.ButtonText
+                    .height(48.dp)
+                    .widthIn(min = 200.dp),
+                shape = RoundedCornerShape(2.dp),
+                border = androidx.compose.foundation.BorderStroke(
+                    1.dp,
+                    colors.AccentGold
                 ),
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 4.dp,
-                    pressedElevation = 8.dp
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = colors.AccentGold
                 )
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Add,
                     contentDescription = null,
-                    modifier = Modifier.size(22.dp)
+                    modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = stringResource(StringKey.BTN_CREATE_CHART),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold
+                    text = stringResource(StringKey.BTN_CREATE_CHART).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp,
+                    letterSpacing = 1.5.sp
                 )
             }
         }
@@ -1524,16 +1533,10 @@ enum class InsightFeature(
         isImplemented = true
     );
 
-    /**
-     * Get localized title
-     */
     fun getLocalizedTitle(language: Language): String {
         return StringResources.get(titleKey, language)
     }
 
-    /**
-     * Get localized description
-     */
     fun getLocalizedDescription(language: Language): String {
         return StringResources.get(descriptionKey, language)
     }

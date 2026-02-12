@@ -2,6 +2,7 @@ package com.astro.storm.ui.screen.main
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,9 +29,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,6 +53,9 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ephemeris.HoroscopeCalculator
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.CormorantGaramondFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.viewmodel.InsightsUiState
 import com.astro.storm.ui.viewmodel.InsightsViewModel
 import com.astro.storm.ui.viewmodel.InsightsData
@@ -76,7 +84,7 @@ private object InsightsFormatters {
     val monthDay: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM d", Locale.ENGLISH)
     val monthYear: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM yyyy", Locale.ENGLISH)
     val fullDate: DateTimeFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH)
-    
+
     fun getDayMonth(language: Language): DateTimeFormatter {
         val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
         return DateTimeFormatter.ofPattern("EEEE, MMMM d", locale)
@@ -323,14 +331,15 @@ private fun PartialErrorBanner(
         else errorCount.toString()
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.WarningColor.copy(alpha = 0.15f)
-        ),
-        shape = RoundedCornerShape(12.dp)
+        color = AppTheme.WarningColor.copy(alpha = 0.15f),
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.WarningColor.copy(alpha = 0.3f)),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -349,12 +358,14 @@ private fun PartialErrorBanner(
                 Text(
                     text = stringResource(StringKey.ERROR_PARTIAL),
                     style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.WarningColor
                 )
                 Text(
                     text = stringResource(StringKey.ERROR_CALCULATIONS_FAILED, localizedCount),
                     style = MaterialTheme.typography.bodySmall,
+                    fontFamily = CormorantGaramondFamily,
                     color = AppTheme.TextMuted
                 )
             }
@@ -363,6 +374,7 @@ private fun PartialErrorBanner(
                 Text(
                     text = stringResource(StringKey.BTN_RETRY),
                     color = AppTheme.WarningColor,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold
                 )
             }
@@ -378,12 +390,15 @@ private fun HoroscopeUnavailableCard(
     val language = LocalLanguage.current
     val displayPeriod = remember(periodKey, language) { StringResources.get(periodKey, language) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(
             modifier = Modifier
@@ -394,7 +409,7 @@ private fun HoroscopeUnavailableCard(
             Box(
                 modifier = Modifier
                     .size(56.dp)
-                    .clip(CircleShape)
+                    .clip(RoundedCornerShape(2.dp))
                     .background(AppTheme.ChipBackground),
                 contentAlignment = Alignment.Center
             ) {
@@ -411,6 +426,7 @@ private fun HoroscopeUnavailableCard(
             Text(
                 text = stringResource(StringKey.ERROR_HOROSCOPE_UNAVAILABLE, displayPeriod),
                 style = MaterialTheme.typography.titleSmall,
+                fontFamily = CormorantGaramondFamily,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary,
                 textAlign = TextAlign.Center
@@ -421,6 +437,7 @@ private fun HoroscopeUnavailableCard(
             Text(
                 text = stringResource(StringKey.ERROR_EPHEMERIS_DATA),
                 style = MaterialTheme.typography.bodySmall,
+                fontFamily = CormorantGaramondFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
                 lineHeight = 18.sp
@@ -430,14 +447,11 @@ private fun HoroscopeUnavailableCard(
 
             OutlinedButton(
                 onClick = onRetry,
+                shape = RoundedCornerShape(2.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = AppTheme.AccentPrimary
                 ),
-                border = ButtonDefaults.outlinedButtonBorder.copy(
-                    brush = Brush.linearGradient(
-                        colors = listOf(AppTheme.AccentPrimary, AppTheme.AccentPrimary)
-                    )
-                )
+                border = BorderStroke(1.dp, AppTheme.AccentPrimary)
             ) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
@@ -445,7 +459,10 @@ private fun HoroscopeUnavailableCard(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(StringKey.BTN_TRY_AGAIN))
+                Text(
+                    text = stringResource(StringKey.BTN_TRY_AGAIN),
+                    fontFamily = SpaceGroteskFamily
+                )
             }
         }
     }
@@ -467,7 +484,7 @@ private fun InsightsErrorState(
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(CircleShape)
+                    .clip(RoundedCornerShape(2.dp))
                     .background(AppTheme.ErrorColor.copy(alpha = 0.15f)),
                 contentAlignment = Alignment.Center
             ) {
@@ -484,7 +501,8 @@ private fun InsightsErrorState(
             Text(
                 text = stringResource(StringKey.ERROR_UNABLE_TO_LOAD),
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
 
@@ -493,6 +511,7 @@ private fun InsightsErrorState(
             Text(
                 text = stringResource(messageKey),
                 style = MaterialTheme.typography.bodyMedium,
+                fontFamily = CormorantGaramondFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
                 lineHeight = 22.sp
@@ -500,13 +519,13 @@ private fun InsightsErrorState(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            OutlinedButton(
                 onClick = onRetry,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = AppTheme.AccentPrimary,
-                    contentColor = AppTheme.ButtonText
+                shape = RoundedCornerShape(2.dp),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = AppTheme.AccentPrimary
                 ),
-                shape = RoundedCornerShape(12.dp)
+                border = BorderStroke(1.dp, AppTheme.AccentPrimary)
             ) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
@@ -516,6 +535,7 @@ private fun InsightsErrorState(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKey.BTN_TRY_AGAIN),
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold
                 )
             }
@@ -575,7 +595,7 @@ private fun ShimmerCard(brush: Brush, height: Dp) {
         modifier = Modifier
             .fillMaxWidth()
             .height(height)
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(2.dp))
             .background(brush)
     )
 }
@@ -599,11 +619,8 @@ private fun PeriodSelector(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(AppTheme.CardBackground)
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         HoroscopePeriod.entries.forEach { period ->
             val isAvailable = availability[period] ?: true
@@ -629,10 +646,19 @@ private fun PeriodSelectorItem(
     modifier: Modifier = Modifier
 ) {
     val language = LocalLanguage.current
-    val backgroundColor by animateColorAsState(
+    val borderColor by animateColorAsState(
         targetValue = when {
             isSelected && isAvailable -> AppTheme.AccentPrimary
             isSelected && !isAvailable -> AppTheme.AccentPrimary.copy(alpha = 0.5f)
+            else -> AppTheme.BorderColor
+        },
+        animationSpec = tween(250),
+        label = "period_border_${period.name}"
+    )
+
+    val backgroundColor by animateColorAsState(
+        targetValue = when {
+            isSelected && isAvailable -> AppTheme.AccentPrimary.copy(alpha = 0.1f)
             else -> Color.Transparent
         },
         animationSpec = tween(250),
@@ -641,7 +667,7 @@ private fun PeriodSelectorItem(
 
     val textColor by animateColorAsState(
         targetValue = when {
-            isSelected -> AppTheme.ButtonText
+            isSelected -> AppTheme.AccentPrimary
             !isAvailable -> AppTheme.TextMuted.copy(alpha = 0.5f)
             else -> AppTheme.TextSecondary
         },
@@ -653,7 +679,12 @@ private fun PeriodSelectorItem(
 
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(2.dp))
+            .border(
+                width = 1.dp,
+                color = borderColor,
+                shape = RoundedCornerShape(2.dp)
+            )
             .background(backgroundColor)
             .clickable(
                 interactionSource = interactionSource,
@@ -667,10 +698,12 @@ private fun PeriodSelectorItem(
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = period.getLocalizedTitle(language),
-                style = MaterialTheme.typography.bodyMedium,
+                text = period.getLocalizedTitle(language).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 11.sp,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                color = textColor
+                color = textColor,
+                letterSpacing = 1.5.sp
             )
             if (!isAvailable) {
                 Spacer(modifier = Modifier.width(4.dp))
@@ -694,13 +727,17 @@ private fun DailyHoroscopeHeader(
     val formattedDate = remember(horoscope.date, language) {
         horoscope.date.format(InsightsFormatters.getDayMonth(language))
     }
+    val themeDescription = stringResource(horoscope.themeDescriptionKey)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -713,43 +750,82 @@ private fun DailyHoroscopeHeader(
                     else formattedDate
                 }
                 Text(
-                    text = dateText,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = AppTheme.TextMuted
+                    text = dateText.uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = AppTheme.TextMuted,
+                    letterSpacing = 1.5.sp
                 )
                 if (isTomorrow) {
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(4.dp))
-                            .background(AppTheme.AccentPrimary.copy(alpha = 0.15f))
+                            .clip(RoundedCornerShape(2.dp))
+                            .border(
+                                width = 1.dp,
+                                color = AppTheme.AccentPrimary.copy(alpha = 0.4f),
+                                shape = RoundedCornerShape(2.dp)
+                            )
+                            .background(AppTheme.AccentPrimary.copy(alpha = 0.08f))
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            text = stringResource(StringKey.BTN_PREVIEW),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = AppTheme.AccentPrimary
+                            text = stringResource(StringKey.BTN_PREVIEW).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = AppTheme.AccentPrimary,
+                            letterSpacing = 1.5.sp
                         )
                     }
                 }
             }
 
-            Spacer(Modifier.height(8.dp))
-
-            Text(
-                text = stringResource(horoscope.themeKey),
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
-            )
-
             Spacer(Modifier.height(12.dp))
 
+            // Theme title in Cinzel Decorative
             Text(
-                text = stringResource(horoscope.themeDescriptionKey),
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextSecondary,
-                lineHeight = 22.sp
+                text = stringResource(horoscope.themeKey),
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = AppTheme.TextPrimary,
+                lineHeight = 28.sp
             )
+
+            Spacer(Modifier.height(16.dp))
+
+            // "The Oracle" drop cap effect: first letter large Cinzel, rest Cormorant Garamond
+            if (themeDescription.isNotEmpty()) {
+                val firstLetter = themeDescription.first().toString()
+                val restOfText = themeDescription.drop(1)
+
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            SpanStyle(
+                                fontFamily = CinzelDecorativeFamily,
+                                fontSize = 40.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = AppTheme.AccentGold
+                            )
+                        ) {
+                            append(firstLetter)
+                        }
+                        withStyle(
+                            SpanStyle(
+                                fontFamily = CormorantGaramondFamily,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = AppTheme.TextSecondary
+                            )
+                        ) {
+                            append(restOfText)
+                        }
+                    },
+                    lineHeight = 28.sp
+                )
+            }
 
             Spacer(Modifier.height(16.dp))
 
@@ -780,7 +856,12 @@ private fun InfoChip(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(2.dp))
+            .border(
+                width = 1.dp,
+                color = AppTheme.BorderColor,
+                shape = RoundedCornerShape(2.dp)
+            )
             .background(AppTheme.ChipBackground)
             .padding(horizontal = 12.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -794,10 +875,13 @@ private fun InfoChip(
         Spacer(modifier = Modifier.width(6.dp))
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Medium,
             color = AppTheme.TextSecondary,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            letterSpacing = 0.5.sp
         )
     }
 }
@@ -813,22 +897,27 @@ private fun EnergyCard(overallEnergy: Int) {
 
     val energyColor = getEnergyColor(overallEnergy)
     val energyDescription = remember(overallEnergy, language) { getEnergyDescription(overallEnergy, language) }
-    
+
     val localizedScore = stringResource(StringKeyUIExtra.ENERGY_SCORE_FMT, overallEnergy)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = stringResource(StringKey.INSIGHTS_OVERALL_ENERGY),
-                style = MaterialTheme.typography.titleMedium,
+                text = stringResource(StringKey.INSIGHTS_OVERALL_ENERGY).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 11.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                letterSpacing = 2.sp
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -853,7 +942,8 @@ private fun EnergyCard(overallEnergy: Int) {
 
                 Text(
                     text = localizedScore,
-                    style = MaterialTheme.typography.titleLarge,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = energyColor
                 )
@@ -864,6 +954,7 @@ private fun EnergyCard(overallEnergy: Int) {
             Text(
                 text = energyDescription,
                 style = MaterialTheme.typography.bodySmall,
+                fontFamily = CormorantGaramondFamily,
                 color = AppTheme.TextMuted
             )
         }
@@ -886,10 +977,11 @@ private fun EnergyDot(index: Int, isActive: Boolean) {
         label = "dot_$index"
     )
 
+    // Square indicators for the Neo-Vedic grid feel
     Box(
         modifier = Modifier
             .size(20.dp)
-            .clip(CircleShape)
+            .clip(RoundedCornerShape(2.dp))
             .background(dotColor)
     )
 }
@@ -917,10 +1009,12 @@ private fun getEnergyDescription(energy: Int, language: Language): String = when
 private fun LifeAreasSection(lifeAreas: List<HoroscopeCalculator.LifeAreaPrediction>) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(
-            text = stringResource(StringKey.INSIGHTS_LIFE_AREAS),
-            style = MaterialTheme.typography.titleMedium,
+            text = stringResource(StringKey.INSIGHTS_LIFE_AREAS).uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = 11.sp,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
+            letterSpacing = 2.sp,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -944,7 +1038,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
     // Get localized area name
     val localizedAreaName = stringResource(prediction.area.displayNameKey)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(
@@ -957,8 +1051,11 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                 interactionSource = interactionSource,
                 indication = null
             ) { expanded = !expanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -968,7 +1065,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(RoundedCornerShape(2.dp))
                         .background(areaConfig.color.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -985,8 +1082,9 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = localizedAreaName,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Medium,
+                        fontFamily = CormorantGaramondFamily,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     StarRating(rating = prediction.rating, color = areaConfig.color)
@@ -1003,9 +1101,10 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                 Column(modifier = Modifier.padding(top = 12.dp)) {
                     Text(
                         text = prediction.prediction,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = CormorantGaramondFamily,
+                        fontSize = 16.sp,
                         color = AppTheme.TextSecondary,
-                        lineHeight = 20.sp
+                        lineHeight = 24.sp
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -1013,8 +1112,13 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(areaConfig.color.copy(alpha = 0.1f))
+                            .clip(RoundedCornerShape(2.dp))
+                            .border(
+                                width = 1.dp,
+                                color = areaConfig.color.copy(alpha = 0.2f),
+                                shape = RoundedCornerShape(2.dp)
+                            )
+                            .background(areaConfig.color.copy(alpha = 0.06f))
                             .padding(12.dp),
                         verticalAlignment = Alignment.Top
                     ) {
@@ -1027,9 +1131,10 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = prediction.advice,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = CormorantGaramondFamily,
+                            fontSize = 14.sp,
                             color = AppTheme.TextSecondary,
-                            lineHeight = 18.sp
+                            lineHeight = 20.sp
                         )
                     }
                 }
@@ -1090,19 +1195,24 @@ private fun LuckyElementsCard(lucky: HoroscopeCalculator.LuckyElements) {
     val language = LocalLanguage.current
     val colorValue = remember(lucky.color) { lucky.color.split(",").first().trim() }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = stringResource(StringKey.INSIGHTS_LUCKY_ELEMENTS),
-                style = MaterialTheme.typography.titleMedium,
+                text = stringResource(StringKey.INSIGHTS_LUCKY_ELEMENTS).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 11.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                letterSpacing = 2.sp
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -1132,7 +1242,12 @@ private fun LuckyElementsCard(lucky: HoroscopeCalculator.LuckyElements) {
 private fun LuckyElement(icon: ImageVector, label: String, value: String) {
     Column(
         modifier = Modifier
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(2.dp))
+            .border(
+                width = 1.dp,
+                color = AppTheme.BorderColor,
+                shape = RoundedCornerShape(2.dp)
+            )
             .background(AppTheme.ChipBackground)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -1145,15 +1260,19 @@ private fun LuckyElement(icon: ImageVector, label: String, value: String) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = AppTheme.TextMuted
+            text = label.uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = 9.sp,
+            fontWeight = FontWeight.Medium,
+            color = AppTheme.TextMuted,
+            letterSpacing = 1.5.sp
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium,
+            fontFamily = CormorantGaramondFamily,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             maxLines = 1
         )
@@ -1164,20 +1283,25 @@ private fun LuckyElement(icon: ImageVector, label: String, value: String) {
 private fun RecommendationsCard(recommendations: List<StringKey>, cautions: List<StringKey>) {
     if (recommendations.isEmpty() && cautions.isEmpty()) return
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             if (recommendations.isNotEmpty()) {
                 Text(
-                    text = stringResource(StringKey.INSIGHTS_RECOMMENDATIONS),
-                    style = MaterialTheme.typography.titleMedium,
+                    text = stringResource(StringKey.INSIGHTS_RECOMMENDATIONS).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.SuccessColor
+                    color = AppTheme.SuccessColor,
+                    letterSpacing = 2.sp
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 recommendations.forEach { recKey ->
@@ -1196,10 +1320,12 @@ private fun RecommendationsCard(recommendations: List<StringKey>, cautions: List
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 Text(
-                    text = stringResource(StringKey.INSIGHTS_CAUTIONS),
-                    style = MaterialTheme.typography.titleMedium,
+                    text = stringResource(StringKey.INSIGHTS_CAUTIONS).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.WarningColor
+                    color = AppTheme.WarningColor,
+                    letterSpacing = 2.sp
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 cautions.forEach { cautionKey ->
@@ -1235,49 +1361,70 @@ private fun BulletItem(
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = stringResource(textKey),
-            style = MaterialTheme.typography.bodyMedium,
+            fontFamily = CormorantGaramondFamily,
+            fontSize = 16.sp,
             color = AppTheme.TextSecondary,
-            lineHeight = 20.sp
+            lineHeight = 24.sp
         )
     }
 }
 
 @Composable
 private fun AffirmationCard(affirmationKey: StringKey) {
-    Card(
+    // Pull-quote style: left gold border accent, centered italic Cormorant Garamond
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f)
-        ),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.FormatQuote,
-                contentDescription = null,
-                tint = AppTheme.AccentPrimary,
-                modifier = Modifier.size(28.dp)
+        Row(modifier = Modifier.fillMaxWidth()) {
+            // Left Vedic Gold accent border line
+            Box(
+                modifier = Modifier
+                    .width(3.dp)
+                    .fillMaxHeight()
+                    .defaultMinSize(minHeight = 80.dp)
+                    .background(AppTheme.AccentGold)
             )
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = stringResource(affirmationKey),
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium,
-                color = AppTheme.TextPrimary,
-                textAlign = TextAlign.Center,
-                lineHeight = 24.sp
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(StringKey.INSIGHTS_TODAYS_AFFIRMATION),
-                style = MaterialTheme.typography.labelSmall,
-                color = AppTheme.AccentPrimary
-            )
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.FormatQuote,
+                    contentDescription = null,
+                    tint = AppTheme.AccentGold,
+                    modifier = Modifier.size(28.dp)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = stringResource(affirmationKey),
+                    fontFamily = CormorantGaramondFamily,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontStyle = FontStyle.Italic,
+                    color = AppTheme.TextPrimary,
+                    textAlign = TextAlign.Center,
+                    lineHeight = 28.sp
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(StringKey.INSIGHTS_TODAYS_AFFIRMATION).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 9.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = AppTheme.AccentGold,
+                    letterSpacing = 2.sp
+                )
+            }
         }
     }
 }
@@ -1292,32 +1439,41 @@ private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
         else range
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = dateRange,
-                style = MaterialTheme.typography.labelMedium,
-                color = AppTheme.TextMuted
+                text = dateRange.uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Medium,
+                color = AppTheme.TextMuted,
+                letterSpacing = 1.5.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(weekly.weeklyThemeKey),
-                style = MaterialTheme.typography.headlineSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                lineHeight = 28.sp
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = weekly.weeklyOverview,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = CormorantGaramondFamily,
+                fontSize = 16.sp,
                 color = AppTheme.TextSecondary,
-                lineHeight = 22.sp
+                lineHeight = 24.sp
             )
         }
     }
@@ -1325,19 +1481,24 @@ private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
 
 @Composable
 private fun WeeklyEnergyChart(dailyHighlights: List<HoroscopeCalculator.DailyHighlight>) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = stringResource(StringKey.INSIGHTS_WEEKLY_ENERGY),
-                style = MaterialTheme.typography.titleMedium,
+                text = stringResource(StringKey.INSIGHTS_WEEKLY_ENERGY).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 11.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                letterSpacing = 2.sp
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -1366,7 +1527,7 @@ private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
     )
 
     val barColor = getEnergyColor(highlight.energy)
-    val dayAbbrev = remember(highlight.dayOfWeek, language) { 
+    val dayAbbrev = remember(highlight.dayOfWeek, language) {
         val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
         highlight.date.format(DateTimeFormatter.ofPattern("EEE", locale))
     }
@@ -1376,7 +1537,7 @@ private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
             modifier = Modifier
                 .width(32.dp)
                 .height(80.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(2.dp))
                 .background(AppTheme.ChipBackground),
             contentAlignment = Alignment.BottomCenter
         ) {
@@ -1384,15 +1545,18 @@ private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(animatedHeight)
-                    .clip(RoundedCornerShape(4.dp))
+                    .clip(RoundedCornerShape(2.dp))
                     .background(barColor)
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = dayAbbrev,
-            style = MaterialTheme.typography.labelSmall,
-            color = AppTheme.TextMuted
+            text = dayAbbrev.uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = 9.sp,
+            fontWeight = FontWeight.Medium,
+            color = AppTheme.TextMuted,
+            letterSpacing = 1.sp
         )
     }
 }
@@ -1403,10 +1567,12 @@ private fun KeyDatesSection(keyDates: List<HoroscopeCalculator.KeyDate>) {
 
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(
-            text = stringResource(StringKey.INSIGHTS_KEY_DATES),
-            style = MaterialTheme.typography.titleMedium,
+            text = stringResource(StringKey.INSIGHTS_KEY_DATES).uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = 11.sp,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
+            letterSpacing = 2.sp,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -1425,16 +1591,19 @@ private fun KeyDatesSection(keyDates: List<HoroscopeCalculator.KeyDate>) {
 private fun KeyDateCard(keyDate: HoroscopeCalculator.KeyDate) {
     val language = LocalLanguage.current
     val indicatorColor = if (keyDate.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor
-    val dayOfMonth = remember(keyDate.date, language) { 
+    val dayOfMonth = remember(keyDate.date, language) {
         val day = keyDate.date.dayOfMonth.toString()
         if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(day)
         else day
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1443,13 +1612,14 @@ private fun KeyDateCard(keyDate: HoroscopeCalculator.KeyDate) {
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .clip(CircleShape)
+                    .clip(RoundedCornerShape(2.dp))
                     .background(indicatorColor.copy(alpha = 0.15f)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = dayOfMonth,
-                    style = MaterialTheme.typography.bodyLarge,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = indicatorColor
                 )
@@ -1460,15 +1630,17 @@ private fun KeyDateCard(keyDate: HoroscopeCalculator.KeyDate) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = keyDate.event,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
+                    fontFamily = CormorantGaramondFamily,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = keyDate.significance,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = CormorantGaramondFamily,
+                    fontSize = 14.sp,
                     color = AppTheme.TextMuted,
-                    lineHeight = 16.sp
+                    lineHeight = 18.sp
                 )
             }
 
@@ -1488,15 +1660,17 @@ private fun WeeklyPredictionsSection(predictions: Map<HoroscopeCalculator.LifeAr
 
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(
-            text = stringResource(StringKey.INSIGHTS_WEEKLY_OVERVIEW),
-            style = MaterialTheme.typography.titleMedium,
+            text = stringResource(StringKey.INSIGHTS_WEEKLY_OVERVIEW).uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = 11.sp,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
+            letterSpacing = 2.sp,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
         val entries = remember(predictions) { predictions.entries.toList() }
-        
+
         entries.forEachIndexed { index, (area, prediction) ->
             key(area.name) {
                 WeeklyAreaCard(area, prediction)
@@ -1517,7 +1691,7 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
     // Get localized area name
     val localizedAreaName = stringResource(area.displayNameKey)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(
@@ -1530,8 +1704,11 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
                 interactionSource = interactionSource,
                 indication = null
             ) { expanded = !expanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1541,7 +1718,7 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
                 Box(
                     modifier = Modifier
                         .size(32.dp)
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(2.dp))
                         .background(areaConfig.color.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -1557,8 +1734,9 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
 
                 Text(
                     text = localizedAreaName,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
+                    fontFamily = CormorantGaramondFamily,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
                     modifier = Modifier.weight(1f)
                 )
@@ -1573,9 +1751,10 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
             ) {
                 Text(
                     text = prediction,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = CormorantGaramondFamily,
+                    fontSize = 16.sp,
                     color = AppTheme.TextSecondary,
-                    lineHeight = 20.sp,
+                    lineHeight = 24.sp,
                     modifier = Modifier.padding(top = 12.dp)
                 )
             }
@@ -1585,38 +1764,54 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
 
 @Composable
 private fun WeeklyAdviceCard(advice: String) {
-    Card(
+    // Pull-quote style with left gold border
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f)
-        ),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Outlined.Lightbulb,
-                    contentDescription = null,
-                    tint = AppTheme.AccentPrimary,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
+        Row(modifier = Modifier.fillMaxWidth()) {
+            // Left accent border line
+            Box(
+                modifier = Modifier
+                    .width(3.dp)
+                    .fillMaxHeight()
+                    .defaultMinSize(minHeight = 60.dp)
+                    .background(AppTheme.AccentPrimary)
+            )
+
+            Column(modifier = Modifier.padding(20.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Outlined.Lightbulb,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(StringKey.INSIGHTS_WEEKLY_ADVICE).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.AccentPrimary,
+                        letterSpacing = 2.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = stringResource(StringKey.INSIGHTS_WEEKLY_ADVICE),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.AccentPrimary
+                    text = advice,
+                    fontFamily = CormorantGaramondFamily,
+                    fontSize = 16.sp,
+                    color = AppTheme.TextPrimary,
+                    lineHeight = 24.sp
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = advice,
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextPrimary,
-                lineHeight = 22.sp
-            )
         }
     }
 }
@@ -1634,12 +1829,15 @@ private fun CurrentDashaCard(
         calculateProgress(currentMahadasha.startDate.toLocalDate(), currentMahadasha.endDate.toLocalDate(), todayDate)
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -1648,22 +1846,32 @@ private fun CurrentDashaCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(StringKey.DASHA_CURRENT_PERIOD),
-                    style = MaterialTheme.typography.titleMedium,
+                    text = stringResource(StringKey.DASHA_CURRENT_PERIOD).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    letterSpacing = 2.sp
                 )
 
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(AppTheme.SuccessColor.copy(alpha = 0.15f))
+                        .clip(RoundedCornerShape(2.dp))
+                        .border(
+                            width = 1.dp,
+                            color = AppTheme.SuccessColor.copy(alpha = 0.4f),
+                            shape = RoundedCornerShape(2.dp)
+                        )
+                        .background(AppTheme.SuccessColor.copy(alpha = 0.08f))
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = stringResource(StringKey.DASHA_ACTIVE),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = AppTheme.SuccessColor
+                        text = stringResource(StringKey.DASHA_ACTIVE).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.SuccessColor,
+                        letterSpacing = 1.5.sp
                     )
                 }
             }
@@ -1731,31 +1939,35 @@ private fun PratyantardashaRow(pratyantardasha: DashaCalculator.Pratyantardasha)
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(StringKey.DASHA_PRATYANTARDASHA),
-            style = MaterialTheme.typography.bodySmall,
-            color = AppTheme.TextMuted
+            text = stringResource(StringKey.DASHA_PRATYANTARDASHA).uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = 9.sp,
+            fontWeight = FontWeight.Medium,
+            color = AppTheme.TextMuted,
+            letterSpacing = 1.5.sp
         )
         Spacer(modifier = Modifier.width(8.dp))
         Box(
             modifier = Modifier
                 .size(20.dp)
-                .clip(CircleShape)
+                .clip(RoundedCornerShape(2.dp))
                 .background(planetColor.copy(alpha = 0.15f)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = pratyantardasha.planet.symbol,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 8.sp,
                 fontWeight = FontWeight.Bold,
-                color = planetColor,
-                fontSize = 8.sp
+                color = planetColor
             )
         }
         Spacer(modifier = Modifier.width(6.dp))
         Text(
             text = pratyantardasha.planet.getLocalizedName(language),
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Medium,
+            fontFamily = CormorantGaramondFamily,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.SemiBold,
             color = planetColor
         )
     }
@@ -1796,9 +2008,9 @@ private fun DashaPeriodRow(
         Box(
             modifier = Modifier
                 .size(if (isPrimary) 44.dp else 36.dp)
-                .clip(CircleShape)
+                .clip(RoundedCornerShape(2.dp))
                 .background(planetColor.copy(alpha = 0.15f))
-                .border(width = 2.dp, color = planetColor, shape = CircleShape),
+                .border(width = 1.dp, color = planetColor, shape = RoundedCornerShape(2.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -1815,15 +2027,17 @@ private fun DashaPeriodRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = stringResource(StringKey.DASHA_PERIOD_NAME, label, planet.getLocalizedName(language)),
-                style = if (isPrimary) MaterialTheme.typography.titleSmall
-                else MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+                fontFamily = CormorantGaramondFamily,
+                fontSize = if (isPrimary) 16.sp else 15.sp,
+                fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Text(
                 text = dateRange,
-                style = MaterialTheme.typography.bodySmall,
-                color = AppTheme.TextMuted
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 10.sp,
+                color = AppTheme.TextMuted,
+                letterSpacing = 0.5.sp
             )
         }
 
@@ -1831,14 +2045,18 @@ private fun DashaPeriodRow(
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = formattedDuration,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.AccentPrimary
                 )
                 Text(
-                    text = stringResource(StringKey.DASHA_REMAINING),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AppTheme.TextMuted
+                    text = stringResource(StringKey.DASHA_REMAINING).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 9.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = AppTheme.TextMuted,
+                    letterSpacing = 1.sp
                 )
             }
         }
@@ -1861,14 +2079,14 @@ private fun DashaProgressBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(height.dp)
-            .clip(RoundedCornerShape(height / 2))
+            .clip(RoundedCornerShape(1.dp))
             .background(AppTheme.ChipBackground)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth(animatedProgress)
                 .fillMaxHeight()
-                .clip(RoundedCornerShape(height / 2))
+                .clip(RoundedCornerShape(1.dp))
                 .background(color)
         )
     }
@@ -1887,19 +2105,24 @@ private fun DashaTimelinePreview(
         currentMahadasha.antardashas.drop(currentIndex + 1).take(3)
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(16.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = stringResource(StringKey.DASHA_UPCOMING),
-                style = MaterialTheme.typography.titleMedium,
+                text = stringResource(StringKey.DASHA_UPCOMING).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 11.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                letterSpacing = 2.sp
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -1908,7 +2131,12 @@ private fun DashaTimelinePreview(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(2.dp))
+                        .border(
+                            width = 1.dp,
+                            color = AppTheme.BorderColor,
+                            shape = RoundedCornerShape(2.dp)
+                        )
                         .background(AppTheme.ChipBackground)
                         .padding(12.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -1922,7 +2150,8 @@ private fun DashaTimelinePreview(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKey.DASHA_LAST_IN_MAHADASHA),
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = CormorantGaramondFamily,
+                        fontSize = 14.sp,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1970,21 +2199,31 @@ private fun UpcomingPeriodItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(if (isFirst) AppTheme.ChipBackground else Color.Transparent)
+            .clip(RoundedCornerShape(2.dp))
+            .then(
+                if (isFirst) Modifier
+                    .border(
+                        width = 1.dp,
+                        color = AppTheme.BorderColor,
+                        shape = RoundedCornerShape(2.dp)
+                    )
+                    .background(AppTheme.ChipBackground)
+                else Modifier
+            )
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
                 .size(32.dp)
-                .clip(CircleShape)
+                .clip(RoundedCornerShape(2.dp))
                 .background(planetColor.copy(alpha = 0.15f)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = planet.symbol,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 color = planetColor
             )
@@ -1995,22 +2234,28 @@ private fun UpcomingPeriodItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = stringResource(StringKey.DASHA_COMBINED_NAME, mahadashaPlanet.getLocalizedName(language), planet.getLocalizedName(language)),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+                fontFamily = CormorantGaramondFamily,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Text(
                 text = stringResource(StringKey.DASHA_STARTS, formattedDate),
-                style = MaterialTheme.typography.bodySmall,
-                color = AppTheme.TextMuted
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 10.sp,
+                color = AppTheme.TextMuted,
+                letterSpacing = 0.5.sp
             )
         }
 
         if (daysUntil > 0) {
             Text(
                 text = stringResource(StringKeyMatch.TIME_IN, durationText),
-                style = MaterialTheme.typography.labelSmall,
-                color = if (isFirst) AppTheme.AccentPrimary else AppTheme.TextMuted
+                fontFamily = SpaceGroteskFamily,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Medium,
+                color = if (isFirst) AppTheme.AccentPrimary else AppTheme.TextMuted,
+                letterSpacing = 0.5.sp
             )
         }
     }
@@ -2022,10 +2267,12 @@ private fun PlanetaryTransitsSection(influences: List<HoroscopeCalculator.Planet
 
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(
-            text = stringResource(StringKey.TRANSITS_CURRENT),
-            style = MaterialTheme.typography.titleMedium,
+            text = stringResource(StringKey.TRANSITS_CURRENT).uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = 11.sp,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
+            letterSpacing = 2.sp,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -2047,10 +2294,13 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
     val trendColor = if (influence.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor
     val strengthDots = remember(influence.strength) { (influence.strength / 2).coerceIn(0, 5) }
 
-    Card(
+    Surface(
         modifier = Modifier.width(160.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(2.dp),
+        border = BorderStroke(1.dp, AppTheme.BorderColor),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -2061,13 +2311,14 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
                 Box(
                     modifier = Modifier
                         .size(36.dp)
-                        .clip(CircleShape)
+                        .clip(RoundedCornerShape(2.dp))
                         .background(planetColor.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = influence.planet.symbol,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = planetColor
                     )
@@ -2086,8 +2337,9 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
 
             Text(
                 text = influence.planet.getLocalizedName(language),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+                fontFamily = CormorantGaramondFamily,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
 
@@ -2095,21 +2347,23 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
 
             Text(
                 text = influence.influence,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = CormorantGaramondFamily,
+                fontSize = 14.sp,
                 color = AppTheme.TextMuted,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                lineHeight = 16.sp
+                lineHeight = 18.sp
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Square indicators for the grid feel
             Row(verticalAlignment = Alignment.CenterVertically) {
                 repeat(5) { index ->
                     Box(
                         modifier = Modifier
                             .size(6.dp)
-                            .clip(CircleShape)
+                            .clip(RoundedCornerShape(1.dp))
                             .background(
                                 if (index < strengthDots) trendColor else AppTheme.ChipBackground
                             )
@@ -2123,7 +2377,7 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
 
 /**
  * Minimal Empty State UI for Insights Screen
- * Matches the Home screen empty state style with Create Chart button
+ * Neo-Vedic "The Oracle" design with Cinzel header, Cormorant body, outlined gold button
  */
 @Composable
 private fun EmptyInsightsState(
@@ -2143,11 +2397,16 @@ private fun EmptyInsightsState(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            // Simple circular icon container
+            // Square icon container with border for Neo-Vedic grid feel
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(CircleShape)
+                    .clip(RoundedCornerShape(2.dp))
+                    .border(
+                        width = 1.dp,
+                        color = colors.BorderColor,
+                        shape = RoundedCornerShape(2.dp)
+                    )
                     .background(colors.ChipBackground),
                 contentAlignment = Alignment.Center
             ) {
@@ -2163,8 +2422,9 @@ private fun EmptyInsightsState(
 
             Text(
                 text = stringResource(StringKey.SETTINGS_NO_PROFILE),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
                 color = colors.TextPrimary,
                 textAlign = TextAlign.Center
             )
@@ -2173,24 +2433,25 @@ private fun EmptyInsightsState(
 
             Text(
                 text = stringResource(StringKey.SETTINGS_TAP_TO_SELECT),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = CormorantGaramondFamily,
+                fontSize = 16.sp,
                 color = colors.TextMuted,
                 textAlign = TextAlign.Center,
-                lineHeight = 22.sp
+                lineHeight = 24.sp
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Minimal fully-rounded button with no shadow
-            Button(
+            // Neo-Vedic outlined button with sharp 2dp corners and gold accent
+            OutlinedButton(
                 onClick = onCreateChart,
                 modifier = Modifier
                     .height(52.dp)
                     .widthIn(min = 200.dp),
-                shape = RoundedCornerShape(26.dp), // Fully rounded
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colors.AccentPrimary,
-                    contentColor = colors.ButtonText
+                shape = RoundedCornerShape(2.dp),
+                border = BorderStroke(1.dp, colors.AccentGold),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = colors.AccentGold
                 ),
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 0.dp,
@@ -2206,9 +2467,11 @@ private fun EmptyInsightsState(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(StringKey.BTN_CREATE_CHART),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold
+                    text = stringResource(StringKey.BTN_CREATE_CHART).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = 1.5.sp
                 )
             }
         }
@@ -2295,5 +2558,3 @@ private fun getPlanetColor(planet: Planet): Color {
         else -> AppTheme.AccentPrimary
     }
 }
-
-

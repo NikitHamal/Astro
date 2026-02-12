@@ -2,8 +2,8 @@ package com.astro.storm.ui.screen.main
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
@@ -13,13 +13,16 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringResources
@@ -29,6 +32,8 @@ import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.ui.components.ProfileHeaderRow
 import com.astro.storm.ui.components.ProfileSwitcherBottomSheet
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.viewmodel.ChartUiState
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import kotlinx.coroutines.launch
@@ -36,13 +41,10 @@ import kotlinx.coroutines.launch
 /**
  * Main Screen with Bottom Navigation
  *
- * This is the primary screen of the redesigned AstroStorm app.
- * It contains three tabs:
- * - Home: Daily/Weekly horoscope predictions
- * - Insights: Planetary periods, transits, and chart analysis options
- * - Settings: Profile management and app settings
- *
- * Features a GitHub-style profile switcher in the top bar.
+ * Neo-Vedic "Ethereal Vedic Grid" design:
+ * - Flat parchment top bar with ASTROSTORM logotype in Cinzel Decorative
+ * - Minimal bottom navigation with hairline top border
+ * - Space Grotesk labels, Vedic Gold active indicator
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -113,7 +115,6 @@ fun MainScreen(
     onExportChart: (ExportFormat) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    // Use rememberSaveable to persist tab selection across navigation
     var selectedTab by rememberSaveable { mutableStateOf(MainTab.HOME) }
     var showProfileSwitcher by remember { mutableStateOf(false) }
     val profileSheetState = rememberModalBottomSheetState()
@@ -144,7 +145,6 @@ fun MainScreen(
                     message = state.message,
                     duration = SnackbarDuration.Short
                 )
-                // Reset state after showing the snackbar (delay to avoid race condition)
                 kotlinx.coroutines.delay(100)
                 viewModel.resetState()
             }
@@ -157,9 +157,7 @@ fun MainScreen(
                 )
             }
             else -> {
-                // Dismiss any existing snackbar when state changes to something else
                 snackbarHostState.currentSnackbarData?.dismiss()
-                // Clear last export state when we're back to normal
                 if (uiState is ChartUiState.Success || uiState is ChartUiState.Initial) {
                     lastExportState = null
                 }
@@ -173,7 +171,6 @@ fun MainScreen(
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState) { data ->
-                // Use lastExportState for styling to avoid race conditions with state reset
                 val effectiveState = lastExportState ?: uiState
                 Snackbar(
                     snackbarData = data,
@@ -186,20 +183,19 @@ fun MainScreen(
                         is ChartUiState.Error, is ChartUiState.Exported -> colors.TextPrimary
                         else -> colors.TextSecondary
                     },
-                    actionColor = colors.AccentPrimary
+                    actionColor = colors.AccentGold
                 )
             }
         },
         containerColor = colors.ScreenBackground,
         topBar = {
-            MainTopBar(
-                currentTab = selectedTab,
+            NeoVedicTopBar(
                 currentChart = currentSavedChart,
                 onProfileClick = { showProfileSwitcher = true }
             )
         },
         bottomBar = {
-            MainBottomNavigation(
+            NeoVedicBottomNavigation(
                 selectedTab = selectedTab,
                 onTabSelected = { selectedTab = it }
             )
@@ -210,7 +206,6 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Tab content with crossfade animation
             Crossfade(
                 targetState = selectedTab,
                 label = "tab_crossfade"
@@ -223,14 +218,12 @@ fun MainScreen(
                             onFeatureClick = { feature ->
                                 if (feature.isImplemented) {
                                     when (feature) {
-                                        // Features that don't require a chart
                                         InsightFeature.MATCHMAKING -> onNavigateToMatchmaking()
                                         InsightFeature.MUHURTA -> onNavigateToMuhurta()
-                                        InsightFeature.PRASHNA -> selectedChartId?.let { onNavigateToPrashna(it) } ?: onNavigateToPrashna(0L) // Fail safe or handle null
+                                        InsightFeature.PRASHNA -> selectedChartId?.let { onNavigateToPrashna(it) } ?: onNavigateToPrashna(0L)
                                         InsightFeature.CHART_COMPARISON -> onNavigateToSynastry()
                                         InsightFeature.KAKSHYA_TRANSIT -> selectedChartId?.let { onNavigateToKakshaTransit(it) }
                                         InsightFeature.NADI_AMSHA -> selectedChartId?.let { onNavigateToNadiAmsha(it) }
-                                        // Features that require a chart - navigate to individual screens
                                         InsightFeature.FULL_CHART -> if (currentChart != null) onNavigateToBirthChart()
                                         InsightFeature.PLANETS -> if (currentChart != null) onNavigateToPlanets()
                                         InsightFeature.YOGAS -> if (currentChart != null) onNavigateToYogas()
@@ -279,7 +272,6 @@ fun MainScreen(
                                         InsightFeature.JAIMINI_KARAKA -> if (currentChart != null) onNavigateToJaiminiKaraka()
                                         InsightFeature.DRIG_DASHA -> if (currentChart != null) onNavigateToDrigDasha()
                                         InsightFeature.SAPTAMSA -> if (currentChart != null) onNavigateToSaptamsa()
-                                        // Fallback to chart analysis for any remaining features
                                         else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
                                     }
                                 }
@@ -346,39 +338,93 @@ fun MainScreen(
     }
 }
 
+// ============================================================================
+// NEO-VEDIC TOP BAR
+// Flat parchment surface with ASTROSTORM logotype + profile switcher
+// Hairline bottom border, no elevation shadows
+// ============================================================================
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MainTopBar(
-    currentTab: MainTab,
+private fun NeoVedicTopBar(
     currentChart: SavedChart?,
     onProfileClick: () -> Unit
 ) {
-    val language = LocalLanguage.current
     val colors = AppTheme.current
-    ScreenTopBar(
-        title = currentTab.getLocalizedTitle(language),
-        actions = {
+    val borderColor = colors.BorderColor
+
+    Surface(
+        color = colors.ScreenBackground,
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .drawBehind {
+                // Hairline bottom border
+                drawLine(
+                    color = borderColor,
+                    start = Offset(0f, size.height),
+                    end = Offset(size.width, size.height),
+                    strokeWidth = 1.dp.toPx()
+                )
+            }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(horizontal = 20.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // ASTROSTORM logotype - Cinzel Decorative
+            Text(
+                text = "ASTROSTORM",
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                letterSpacing = 2.sp,
+                color = colors.TextPrimary
+            )
+
+            // Profile switcher
             ProfileHeaderRow(
                 currentChart = currentChart,
                 onProfileClick = onProfileClick
             )
         }
-    )
+    }
 }
 
+// ============================================================================
+// NEO-VEDIC BOTTOM NAVIGATION
+// Flat surface, hairline top border, Space Grotesk labels
+// Vedic Gold active indicator, no rounded corners
+// ============================================================================
+
 @Composable
-private fun MainBottomNavigation(
+private fun NeoVedicBottomNavigation(
     selectedTab: MainTab,
     onTabSelected: (MainTab) -> Unit
 ) {
     val language = LocalLanguage.current
     val colors = AppTheme.current
+    val borderColor = colors.BorderColor
+
     NavigationBar(
         containerColor = colors.NavBarBackground,
         contentColor = colors.TextPrimary,
         tonalElevation = 0.dp,
         modifier = Modifier
-            .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+            .drawBehind {
+                // Hairline top border
+                drawLine(
+                    color = borderColor,
+                    start = Offset(0f, 0f),
+                    end = Offset(size.width, 0f),
+                    strokeWidth = 1.dp.toPx()
+                )
+            }
     ) {
         MainTab.entries.forEach { tab ->
             val isSelected = tab == selectedTab
@@ -391,14 +437,16 @@ private fun MainBottomNavigation(
                     Icon(
                         imageVector = if (isSelected) tab.selectedIcon else tab.unselectedIcon,
                         contentDescription = localizedTitle,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(22.dp)
                     )
                 },
                 label = {
                     Text(
-                        text = localizedTitle,
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+                        text = localizedTitle.uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                        fontSize = 10.sp,
+                        letterSpacing = 1.5.sp
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(
@@ -428,8 +476,8 @@ enum class MainTab(
     ),
     INSIGHTS(
         titleKey = StringKey.TAB_INSIGHTS,
-        selectedIcon = Icons.Filled.Insights,
-        unselectedIcon = Icons.Outlined.Insights
+        selectedIcon = Icons.Filled.AutoAwesome,
+        unselectedIcon = Icons.Outlined.AutoAwesome
     ),
     SETTINGS(
         titleKey = StringKey.TAB_SETTINGS,
@@ -437,12 +485,7 @@ enum class MainTab(
         unselectedIcon = Icons.Outlined.Settings
     );
 
-    /**
-     * Get localized title for the tab
-     */
     fun getLocalizedTitle(language: com.astro.storm.core.common.Language): String {
         return StringResources.get(titleKey, language)
     }
 }
-
-

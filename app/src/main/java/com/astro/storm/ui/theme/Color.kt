@@ -2,67 +2,109 @@ package com.astro.storm.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Modern Professional Dark Theme Color Palette
-// Primary - Deep indigo tones for a sophisticated cosmic feel
-val PrimaryDark = Color(0xFF7C8AFF)
-val PrimaryLight = Color(0xFFB4BBFF)
+// ============================================================================
+// NEO-VEDIC MINIMALIST COLOR SYSTEM
+// "Ethereal Vedic Grid" Design Language
+// ============================================================================
+
+// Primary Palette - Cosmic Indigo (Ink)
+val CosmicIndigo = Color(0xFF1A233A)
+val CosmicIndigoLight = Color(0xFF2D3654)
+val CosmicIndigoDark = Color(0xFF0F1520)
+
+// Background Palette - Vellum (Parchment Paper)
+val Vellum = Color(0xFFF2EFE9)
+val PressedPaper = Color(0xFFEBE7DE)
+val PaperHover = Color(0xFFE0DCCF)
+val PaperDark = Color(0xFFD8D3C8)
+
+// Accent - Vedic Gold
+val VedicGold = Color(0xFFC5A059)
+val VedicGoldLight = Color(0xFFD4B574)
+val VedicGoldDark = Color(0xFFA88840)
+val VedicGoldSubtle = Color(0x1AC5A059) // 10% opacity
+
+// Accent Sub - Mars Red (Malefic indicators)
+val MarsRed = Color(0xFFB85C5C)
+val MarsRedLight = Color(0xFFCF7A7A)
+val MarsRedDark = Color(0xFF943E3E)
+val MarsRedSubtle = Color(0x0DB85C5C) // 5% opacity
+
+// Muted Text - Slate
+val SlateMuted = Color(0xFF8C8F96)
+val SlateLight = Color(0xFFA8ABB2)
+val SlateDark = Color(0xFF6E7178)
+
+// Border Color
+val BorderSubtle = Color(0xFFD4D0C5)
+val BorderStrong = Color(0xFFB8B4A9)
+
+// ============================================================================
+// DARK MODE PALETTE - Deep Cosmic Night
+// ============================================================================
+val DarkVellum = Color(0xFF1A1E2E)
+val DarkPaper = Color(0xFF232840)
+val DarkPaperHover = Color(0xFF2D3352)
+val DarkBorderSubtle = Color(0xFF3A3F55)
+val DarkBorderStrong = Color(0xFF4A5070)
+val DarkSlateMuted = Color(0xFF7A7E8A)
+
+// ============================================================================
+// LEGACY COMPAT - Keep old names mapped to new palette
+// ============================================================================
+val PrimaryDark = CosmicIndigo
+val PrimaryLight = CosmicIndigoLight
 val PrimaryContainer = Color(0xFF2D3160)
 val OnPrimaryContainer = Color(0xFFE0E2FF)
 
-// Secondary - Warm coral accents for highlights
-val SecondaryDark = Color(0xFFFFB4AB)
+val SecondaryDark = MarsRedLight
 val SecondaryLight = Color(0xFFFFDAD6)
 val SecondaryContainer = Color(0xFF5C3F3B)
 val OnSecondaryContainer = Color(0xFFFFDAD6)
 
-// Tertiary - Golden amber for special elements
-val TertiaryDark = Color(0xFFE5C46C)
-val TertiaryLight = Color(0xFFF5DCA0)
+val TertiaryDark = VedicGold
+val TertiaryLight = VedicGoldLight
 val TertiaryContainer = Color(0xFF4A4225)
 val OnTertiaryContainer = Color(0xFFFFF0C7)
 
-// Background & Surface - Deep space blues
-val BackgroundDark = Color(0xFF0F1218)
-val SurfaceDark = Color(0xFF171B24)
-val SurfaceVariant = Color(0xFF1E2330)
+val BackgroundDark = DarkVellum
+val SurfaceDark = DarkPaper
+val SurfaceVariant = DarkPaperHover
 val SurfaceElevated = Color(0xFF252B3B)
 val SurfaceHighest = Color(0xFF2D3446)
 
-// Text & Content
 val OnBackgroundDark = Color(0xFFE4E6ED)
 val OnSurfaceDark = Color(0xFFE4E6ED)
 val OnSurfaceVariant = Color(0xFFAEB4C2)
-val TextMuted = Color(0xFF8A91A0)
-val TextSubtle = Color(0xFF5C6270)
+val TextMuted = SlateMuted
+val TextSubtle = SlateDark
 
-// Outline & Borders
-val OutlineDark = Color(0xFF3D4556)
+val OutlineDark = DarkBorderSubtle
 val OutlineVariant = Color(0xFF2A3040)
 
-// Status & Feedback
-val ErrorDark = Color(0xFFFFB4AB)
+val ErrorDark = MarsRedLight
 val ErrorContainer = Color(0xFF93000A)
 val SuccessDark = Color(0xFF86D997)
 val SuccessContainer = Color(0xFF1E5C2A)
-val WarningDark = Color(0xFFFFD666)
+val WarningDark = VedicGold
 val WarningContainer = Color(0xFF5C4D1F)
 
-// Chart-specific colors - Professional and readable
-val ChartBackground = Color(0xFF131720)
-val ChartBorder = Color(0xFF7C8AFF)
-val ChartHouseLine = Color(0xFF3D4A6A)
-val ChartPlanetText = Color(0xFFE5C46C)
-val ChartAscendant = Color(0xFFFF8A80)
-val ChartHouseNumber = Color(0xFF8A91A0)
-val ChartRetrogradeIndicator = Color(0xFFFFB4AB)
+// Chart-specific colors - Neo-Vedic
+val ChartBackground = PressedPaper
+val ChartBorder = CosmicIndigo
+val ChartHouseLine = CosmicIndigo
+val ChartPlanetText = CosmicIndigo
+val ChartAscendant = VedicGold
+val ChartHouseNumber = SlateMuted
+val ChartRetrogradeIndicator = MarsRed
 
-// Planet-specific colors for enhanced visualization
-val PlanetSun = Color(0xFFFFB74D)
-val PlanetMoon = Color(0xFFE0E0E0)
-val PlanetMars = Color(0xFFFF7043)
-val PlanetMercury = Color(0xFF81C784)
-val PlanetJupiter = Color(0xFFFFD54F)
-val PlanetVenus = Color(0xFFF48FB1)
-val PlanetSaturn = Color(0xFF90A4AE)
-val PlanetRahu = Color(0xFF7986CB)
-val PlanetKetu = Color(0xFFBA68C8)
+// Planet-specific colors - Traditional Vedic associations
+val PlanetSun = Color(0xFFD2691E)     // Warm amber-orange
+val PlanetMoon = Color(0xFF8C8F96)    // Silver-grey
+val PlanetMars = Color(0xFFB85C5C)    // Mars Red
+val PlanetMercury = Color(0xFF4A8B5E) // Forest green
+val PlanetJupiter = Color(0xFFC5A059) // Vedic Gold
+val PlanetVenus = Color(0xFF9370DB)   // Royal purple
+val PlanetSaturn = Color(0xFF4169E1)  // Royal blue
+val PlanetRahu = Color(0xFF5C5C8A)    // Smoky indigo
+val PlanetKetu = Color(0xFF8B6B5C)    // Earthy brown
