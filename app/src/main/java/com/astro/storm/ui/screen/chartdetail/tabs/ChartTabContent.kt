@@ -1,1019 +1,160 @@
 package com.astro.storm.ui.screen.chartdetail.tabs
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.Canvas
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.Fullscreen
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.produceState
-import androidx.compose.runtime.toMutableStateList
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.saveable.listSaver
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
-import com.astro.storm.ephemeris.DivisionalChartCalculator
-import com.astro.storm.ephemeris.DivisionalChartData
-import com.astro.storm.ephemeris.DivisionalChartType
 import com.astro.storm.ui.chart.ChartRenderer
-import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
-import com.astro.storm.ui.screen.chartdetail.ChartDetailUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.astro.storm.ui.theme.*
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-
-// Performance Optimization: Define formatters as top-level constants to avoid
-// recreating them on each recomposition. This reduces object allocation and
-// improves rendering performance, especially in frequently recomposed UIs.
-private val birthDateFormatter: DateTimeFormatter by lazy {
-    DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.getDefault())
-}
-private val birthTimeFormatter: DateTimeFormatter by lazy {
-    DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault())
-}
 
 @Composable
 fun ChartTabContent(
     chart: VedicChart,
     chartRenderer: ChartRenderer,
-    onChartClick: (String, DivisionalChartData?) -> Unit,
+    onChartClick: (String, com.astro.storm.ephemeris.DivisionalChartData?) -> Unit,
     onPlanetClick: (PlanetPosition) -> Unit,
     onHouseClick: (Int) -> Unit
 ) {
     val language = LocalLanguage.current
-    
-    // Performance Optimization: Convert the list of divisional charts to a map for
-    // efficient O(1) lookups.
-    // Use produceState to offload the heavy calculation of 20+ charts to a background thread.
-    // This prevents blocking the main thread during composition.
-    val divisionalChartsMap by produceState<Map<String, DivisionalChartData>>(initialValue = emptyMap(), key1 = chart) {
-        val result = withContext(Dispatchers.Default) {
-            DivisionalChartCalculator.calculateAllDivisionalCharts(chart)
-                .associateBy { it.chartType.shortName }
-        }
-        value = result
-    }
-
-    var selectedChartType by rememberSaveable { mutableStateOf("D1") }
-
-    // Performance Optimization: Use rememberSaveable to preserve the expanded/collapsed
-    // state of UI cards across configuration changes (e.g., screen rotation). This
-    // provides a better user experience by maintaining the UI state.
-    // Note: All sections are expanded by default for better UX
-    val expandedCardTitles = rememberSaveable(
-        saver = listSaver(
-            save = { it.toList() },
-            restore = { it.toMutableStateList() }
-        )
-    ) {
-        mutableStateListOf("HouseCusps", "BirthDetails", "AstronomicalData")
-    }
-
-    val currentChartData = remember(selectedChartType, divisionalChartsMap) {
-        getChartDataForType(selectedChartType, divisionalChartsMap)
-    }
-
-    val chartInfo = getLocalizedChartInfo(selectedChartType)
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        modifier = Modifier.fillMaxSize().background(Vellum),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
+        // Hero Chart Section
         item {
-            ChartTypeSelector(
-                selectedType = selectedChartType,
-                onTypeSelected = { selectedChartType = it }
-            )
-        }
-
-        item {
-            MainChartCard(
-                chart = chart,
-                chartRenderer = chartRenderer,
-                chartInfo = chartInfo,
-                selectedChartType = selectedChartType,
-                currentChartData = currentChartData,
-                onChartClick = onChartClick
-            )
-        }
-
-        item {
-            ChartDetailsCard(
-                chart = chart,
-                currentChartData = currentChartData,
-                selectedChartType = selectedChartType,
-                onPlanetClick = onPlanetClick
-            )
-        }
-
-        item {
-            HouseCuspsCard(
-                chart = chart,
-                onHouseClick = onHouseClick,
-                isExpanded = "HouseCusps" in expandedCardTitles,
-                onToggleExpand = {
-                    if (it) {
-                        expandedCardTitles.add("HouseCusps")
-                    } else {
-                        expandedCardTitles.remove("HouseCusps")
-                    }
-                }
-            )
-        }
-
-        item {
-            BirthDetailsCard(
-                chart = chart,
-                isExpanded = "BirthDetails" in expandedCardTitles,
-                onToggleExpand = {
-                    if (it) {
-                        expandedCardTitles.add("BirthDetails")
-                    } else {
-                        expandedCardTitles.remove("BirthDetails")
-                    }
-                }
-            )
-        }
-
-        item {
-            AstronomicalDataCard(
-                chart = chart,
-                isExpanded = "AstronomicalData" in expandedCardTitles,
-                onToggleExpand = {
-                    if (it) {
-                        expandedCardTitles.add("AstronomicalData")
-                    } else {
-                        expandedCardTitles.remove("AstronomicalData")
-                    }
-                }
-            )
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-    }
-}
-
-private fun getChartDataForType(
-    type: String,
-    divisionalChartsMap: Map<String, DivisionalChartData>
-): DivisionalChartData? {
-    // Performance Optimization: Direct O(1) map lookup is significantly faster
-    // than the previous O(n) linear search (find).
-    return if (type == "D1") null else divisionalChartsMap[type]
-}
-
-/**
- * Get chart info with string keys for localization
- * Returns Triple of (nameKey, descriptionKey, code)
- */
-private fun getChartInfoKeys(type: String): Triple<StringKeyInterface?, StringKeyInterface?, String> {
-    return when (type) {
-        "D1" -> Triple(StringKeyAnalysis.VARGA_D1_NAME, StringKeyDosha.VARGA_D1_DESC, "D1")
-        "D2" -> Triple(StringKeyAnalysis.VARGA_D2_NAME, StringKeyDosha.VARGA_D2_DESC, "D2")
-        "D3" -> Triple(StringKeyAnalysis.VARGA_D3_NAME, StringKeyAnalysis.VARGA_D3_DESC_FULL, "D3")
-        "D4" -> Triple(StringKeyAnalysis.VARGA_D4_NAME, StringKeyDosha.VARGA_D4_DESC, "D4")
-        "D5" -> Triple(StringKeyDosha.VARGA_D5_TITLE, StringKeyDosha.VARGA_D5_DESC, "D5")
-        "D6" -> Triple(StringKeyDosha.VARGA_D6_TITLE, StringKeyDosha.VARGA_D6_DESC, "D6")
-        "D7" -> Triple(StringKeyAnalysis.VARGA_D7_NAME, StringKeyDosha.VARGA_D7_DESC, "D7")
-        "D8" -> Triple(StringKeyDosha.VARGA_D8_TITLE, StringKeyDosha.VARGA_D8_DESC, "D8")
-        "D9" -> Triple(StringKeyAnalysis.VARGA_D9_NAME, StringKeyAnalysis.VARGA_D9_DESC_FULL, "D9")
-        "D10" -> Triple(StringKeyAnalysis.VARGA_D10_NAME, StringKeyAnalysis.VARGA_D10_DESC_FULL, "D10")
-        "D11" -> Triple(StringKeyDosha.VARGA_D11_TITLE, StringKeyDosha.VARGA_D11_DESC, "D11")
-        "D12" -> Triple(StringKeyAnalysis.VARGA_D12_NAME, StringKeyAnalysis.VARGA_D12_DESC_FULL, "D12")
-        "D16" -> Triple(StringKeyAnalysis.VARGA_D16_NAME, StringKeyAnalysis.VARGA_D16_DESC_FULL, "D16")
-        "D20" -> Triple(StringKeyAnalysis.VARGA_D20_NAME, StringKeyAnalysis.VARGA_D20_DESC_FULL, "D20")
-        "D24" -> Triple(StringKeyAnalysis.VARGA_D24_NAME, StringKeyAnalysis.VARGA_D24_DESC_FULL, "D24")
-        "D27" -> Triple(StringKeyAnalysis.VARGA_D27_NAME, StringKeyAnalysis.VARGA_D27_DESC_FULL, "D27")
-        "D30" -> Triple(StringKeyAnalysis.VARGA_D30_NAME, StringKeyAnalysis.VARGA_D30_DESC_FULL, "D30")
-        "D40" -> Triple(StringKeyDosha.VARGA_D40_TITLE, StringKeyDosha.VARGA_D40_DESC, "D40")
-        "D45" -> Triple(StringKeyDosha.VARGA_D45_TITLE, StringKeyDosha.VARGA_D45_DESC, "D45")
-        "D60" -> Triple(StringKeyAnalysis.VARGA_D60_NAME, StringKeyAnalysis.VARGA_D60_DESC_FULL, "D60")
-        "D81" -> Triple(StringKeyDosha.VARGA_D81_TITLE, StringKeyDosha.VARGA_D81_DESC, "D81")
-        "D108" -> Triple(StringKeyDosha.VARGA_D108_TITLE, StringKeyDosha.VARGA_D108_DESC, "D108")
-        "D144" -> Triple(StringKeyDosha.VARGA_D144_TITLE, StringKeyDosha.VARGA_D144_DESC, "D144")
-        else -> Triple(null, null, type)
-    }
-}
-
-/**
- * Composable helper to get localized chart info
- */
-@Composable
-private fun getLocalizedChartInfo(type: String): Triple<String, String, String> {
-    val keys = getChartInfoKeys(type)
-    val name = keys.first?.let { stringResource(it) } ?: "Chart"
-    val desc = keys.second?.let { stringResource(it) } ?: ""
-    return Triple(name, desc, keys.third)
-}
-
-/**
- * Chart type selector chip data with localization support
- */
-private data class ChartTypeChip(
-    val code: String,
-    val stringKey: StringKeyInterface
-)
-
-private val chartTypeChips = listOf(
-    ChartTypeChip("D1", StringKeyAnalysis.VARGA_LAGNA),
-    ChartTypeChip("D2", StringKeyAnalysis.VARGA_HORA),
-    ChartTypeChip("D3", StringKeyAnalysis.VARGA_DREKKANA),
-    ChartTypeChip("D4", StringKeyAnalysis.VARGA_D4_NAME),
-    ChartTypeChip("D5", StringKeyDosha.VARGA_D5_TITLE),
-    ChartTypeChip("D6", StringKeyDosha.VARGA_D6_TITLE),
-    ChartTypeChip("D7", StringKeyAnalysis.VARGA_SAPTAMSA),
-    ChartTypeChip("D8", StringKeyDosha.VARGA_D8_TITLE),
-    ChartTypeChip("D9", StringKeyAnalysis.VARGA_NAVAMSA),
-    ChartTypeChip("D10", StringKeyAnalysis.VARGA_DASAMSA),
-    ChartTypeChip("D11", StringKeyDosha.VARGA_D11_TITLE),
-    ChartTypeChip("D12", StringKeyAnalysis.VARGA_D12_NAME),
-    ChartTypeChip("D16", StringKeyAnalysis.VARGA_D16_NAME),
-    ChartTypeChip("D20", StringKeyAnalysis.VARGA_D20_NAME),
-    ChartTypeChip("D24", StringKeyAnalysis.VARGA_D24_NAME),
-    ChartTypeChip("D27", StringKeyAnalysis.VARGA_BHAMSA),
-    ChartTypeChip("D30", StringKeyAnalysis.VARGA_D30_NAME),
-    ChartTypeChip("D40", StringKeyDosha.VARGA_D40_TITLE),
-    ChartTypeChip("D45", StringKeyDosha.VARGA_D45_TITLE),
-    ChartTypeChip("D60", StringKeyAnalysis.VARGA_D60_NAME),
-    ChartTypeChip("D81", StringKeyDosha.VARGA_D81_TITLE),
-    ChartTypeChip("D108", StringKeyDosha.VARGA_D108_TITLE),
-    ChartTypeChip("D144", StringKeyDosha.VARGA_D144_TITLE)
-)
-
-@Composable
-private fun ChartTypeSelector(
-    selectedType: String,
-    onTypeSelected: (String) -> Unit
-) {
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        items(chartTypeChips) { chip ->
-            FilterChip(
-                selected = selectedType == chip.code,
-                onClick = { onTypeSelected(chip.code) },
-                label = { Text(text = stringResource(chip.stringKey), fontSize = 12.sp) },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = ChartDetailColors.AccentGold.copy(alpha = 0.2f),
-                    selectedLabelColor = ChartDetailColors.AccentGold,
-                    containerColor = ChartDetailColors.CardBackground,
-                    labelColor = ChartDetailColors.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = ChartDetailColors.DividerColor,
-                    selectedBorderColor = ChartDetailColors.AccentGold,
-                    enabled = true,
-                    selected = selectedType == chip.code
-                )
-            )
-        }
-    }
-}
-
-@Composable
-private fun MainChartCard(
-    chart: VedicChart,
-    chartRenderer: ChartRenderer,
-    chartInfo: Triple<String, String, String>,
-    selectedChartType: String,
-    currentChartData: DivisionalChartData?,
-    onChartClick: (String, DivisionalChartData?) -> Unit
-) {
-    val language = LocalLanguage.current
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onChartClick(chartInfo.first, currentChartData) },
-        shape = RoundedCornerShape(16.dp),
-        color = ChartDetailColors.CardBackground
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
                     Text(
-                        text = chartInfo.first,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.AccentGold
+                        "Rasi Chart",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = CosmicIndigo,
+                        fontFamily = CinzelDecorativeFontFamily,
+                        fontWeight = FontWeight.Bold
                     )
-                    if (chartInfo.second.isNotEmpty()) {
-                        Text(
-                            text = chartInfo.second,
-                            fontSize = 12.sp,
-                            color = ChartDetailColors.TextMuted
-                        )
-                    }
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        Icons.Default.Fullscreen,
-                        contentDescription = stringResource(StringKey.ACC_FULLSCREEN),
-                        tint = ChartDetailColors.TextMuted,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
-                        color = ChartDetailColors.AccentGold.copy(alpha = 0.15f)
+                        color = VedicGold.copy(alpha = 0.1f),
+                        border = BorderStroke(1.dp, VedicGold),
+                        shape = RoundedCornerShape(24.dp)
                     ) {
                         Text(
-                            text = chartInfo.third,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = ChartDetailColors.AccentGold,
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                            "SOUTH INDIAN",
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = VedicGold,
+                            fontFamily = SpaceGroteskFontFamily
                         )
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(12.dp))
-            ) {
-                Canvas(modifier = Modifier.fillMaxSize()) {
-                    if (selectedChartType == "D1") {
-                        chartRenderer.drawNorthIndianChart(
-                            drawScope = this,
-                            chart = chart,
-                            size = size.minDimension,
-                            chartTitle = "Lagna",
-                            language = language
-                        )
-                    } else {
-                        currentChartData?.let {
-                            chartRenderer.drawDivisionalChart(
-                                drawScope = this,
-                                planetPositions = it.planetPositions,
-                                ascendantLongitude = it.ascendantLongitude,
-                                size = size.minDimension,
-                                chartTitle = chartInfo.third,
-                                originalChart = chart,
-                                language = language
-                            )
-                        }
+                Surface(
+                    modifier = Modifier.fillMaxWidth().aspectRatio(1f),
+                    color = Vellum,
+                    border = BorderStroke(1.5.dp, CosmicIndigo),
+                    shadowElevation = 2.dp
+                ) {
+                    androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize()) {
+                        chartRenderer.drawSouthIndianChart(this, chart, size.minDimension, language)
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
-            ChartLegend()
-
-            Text(
-                text = stringResource(StringKeyAnalysis.CHART_TAP_FULLSCREEN),
-                fontSize = 11.sp,
-                color = ChartDetailColors.TextMuted,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-            )
-        }
-    }
-}
-
-@Composable
-private fun ChartLegend() {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        color = ChartDetailColors.ChartBackground
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                TextLegendItem(symbol = "*", label = stringResource(StringKeyAnalysis.CHART_LEGEND_RETRO), color = ChartDetailColors.AccentGold)
-                TextLegendItem(symbol = "^", label = stringResource(StringKeyAnalysis.CHART_LEGEND_COMBUST), color = ChartDetailColors.AccentGold)
-                TextLegendItem(symbol = "\u00A4", label = stringResource(StringKeyAnalysis.CHART_LEGEND_VARGOTTAMA), color = ChartDetailColors.AccentGold)
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                ArrowLegendItem(isExalted = true, label = stringResource(StringKeyAnalysis.CHART_LEGEND_EXALTED))
-                ArrowLegendItem(isExalted = false, label = stringResource(StringKeyAnalysis.CHART_LEGEND_DEBILITATED))
-                ShapeLegendItem(isOwnSign = true, label = stringResource(StringKeyAnalysis.CHART_LEGEND_OWN_SIGN))
-                ShapeLegendItem(isOwnSign = false, label = stringResource(StringKeyAnalysis.CHART_LEGEND_MOOL_TRI))
+                Text(
+                    "Tap any house to reveal detailed bhava analysis.",
+                    modifier = Modifier.padding(top = 16.dp),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = SlateMuted,
+                    fontFamily = CormorantGaramondFontFamily,
+                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                )
             }
         }
-    }
-}
 
-@Composable
-private fun TextLegendItem(
-    symbol: String,
-    label: String,
-    color: Color
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text(
-            text = symbol,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Bold,
-            color = color
-        )
-        Text(
-            text = label,
-            fontSize = 10.sp,
-            color = ChartDetailColors.TextMuted
-        )
-    }
-}
-
-@Composable
-private fun BirthDetailsCard(
-    chart: VedicChart,
-    isExpanded: Boolean,
-    onToggleExpand: (Boolean) -> Unit
-) {
-    val rotation by animateFloatAsState(
-        targetValue = if (isExpanded) 180f else 0f,
-        label = "rotation"
-    )
-
-    val birthData = chart.birthData
-
-    // Performance Optimization: Formatting is now done with the top-level
-    // birthDateFormatter and birthTimeFormatter constants.
-    val formattedDate = remember(birthData.dateTime) {
-        try {
-            birthData.dateTime.format(birthDateFormatter)
-        } catch (e: Exception) {
-            "N/A"
-        }
-    }
-    val formattedTime = remember(birthData.dateTime) {
-        try {
-            birthData.dateTime.format(birthTimeFormatter)
-        } catch (e: Exception) {
-            "N/A"
-        }
-    }
-    val formattedLocation = remember(birthData.location, birthData.latitude, birthData.longitude) {
-        birthData.location.takeIf { it.isNotBlank() }
-            ?: "${String.format(Locale.US, "%.3f", birthData.latitude)} / ${String.format(Locale.US, "%.3f", birthData.longitude)}"
-    }
-
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        color = ChartDetailColors.CardBackground
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onToggleExpand(!isExpanded) },
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        Icons.Outlined.Info,
-                        contentDescription = null,
-                        tint = ChartDetailColors.AccentPurple,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
+        // Planetary Positions Table
+        item {
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 16.dp)) {
                     Text(
-                        text = stringResource(StringKeyAnalysis.CHART_BIRTH_DETAILS),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.TextPrimary
+                        "Planetary Positions",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = CosmicIndigo,
+                        fontFamily = CinzelDecorativeFontFamily,
+                        fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Box(modifier = Modifier.weight(1f).height(1.dp).background(BorderSubtle))
                 }
-                Icon(
-                    Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) 
-                        stringResource(StringKey.ACC_COLLAPSE)
-                    else 
-                        stringResource(StringKey.ACC_EXPAND),
-                    tint = ChartDetailColors.TextMuted,
-                    modifier = Modifier.rotate(rotation)
-                )
-            }
 
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = expandVertically() + fadeIn(),
-                exit = shrinkVertically() + fadeOut()
-            ) {
-                Column(modifier = Modifier.padding(top = 16.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier.weight(1f),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            BirthDataItem(
-                                icon = Icons.Outlined.CalendarMonth,
-                                label = stringResource(StringKeyAnalysis.CHART_DATE),
-                                value = formattedDate
-                            )
-                            BirthDataItem(
-                                icon = Icons.Outlined.LocationOn,
-                                label = stringResource(StringKeyAnalysis.LOCATION),
-                                value = formattedLocation
-                            )
-                        }
-                        Column(
-                            modifier = Modifier.weight(1f),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            BirthDataItem(
-                                icon = Icons.Outlined.Schedule,
-                                label = stringResource(StringKeyAnalysis.CHART_TIME),
-                                value = formattedTime
-                            )
-                            BirthDataItem(
-                                icon = Icons.Outlined.Star,
-                                label = stringResource(StringKeyAnalysis.CHART_AYANAMSA),
-                                value = chart.ayanamsaName
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun BirthDataItem(
-    icon: ImageVector,
-    label: String,
-    value: String
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = label,
-            tint = ChartDetailColors.TextMuted,
-            modifier = Modifier.size(20.dp)
-        )
-        Column {
-            Text(
-                text = label,
-                fontSize = 11.sp,
-                color = ChartDetailColors.TextMuted,
-                lineHeight = 12.sp
-            )
-            Text(
-                text = value,
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Medium,
-                color = ChartDetailColors.TextPrimary,
-                lineHeight = 14.sp
-            )
-        }
-    }
-}
-
-@Composable
-private fun ArrowLegendItem(
-    isExalted: Boolean,
-    label: String
-) {
-    val color = if (isExalted) Color(0xFF1E8449) else Color(0xFFC0392B)
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Canvas(modifier = Modifier.size(12.dp)) {
-            val arrowSize = size.minDimension * 0.9f
-            val centerX = size.width / 2
-            val centerY = size.height / 2
-
-            val path = Path().apply {
-                if (isExalted) {
-                    moveTo(centerX, centerY - arrowSize * 0.45f)
-                    lineTo(centerX - arrowSize * 0.35f, centerY + arrowSize * 0.1f)
-                    lineTo(centerX - arrowSize * 0.1f, centerY + arrowSize * 0.1f)
-                    lineTo(centerX - arrowSize * 0.1f, centerY + arrowSize * 0.45f)
-                    lineTo(centerX + arrowSize * 0.1f, centerY + arrowSize * 0.45f)
-                    lineTo(centerX + arrowSize * 0.1f, centerY + arrowSize * 0.1f)
-                    lineTo(centerX + arrowSize * 0.35f, centerY + arrowSize * 0.1f)
-                } else {
-                    moveTo(centerX, centerY + arrowSize * 0.45f)
-                    lineTo(centerX - arrowSize * 0.35f, centerY - arrowSize * 0.1f)
-                    lineTo(centerX - arrowSize * 0.1f, centerY - arrowSize * 0.1f)
-                    lineTo(centerX - arrowSize * 0.1f, centerY - arrowSize * 0.45f)
-                    lineTo(centerX + arrowSize * 0.1f, centerY - arrowSize * 0.45f)
-                    lineTo(centerX + arrowSize * 0.1f, centerY - arrowSize * 0.1f)
-                    lineTo(centerX + arrowSize * 0.35f, centerY - arrowSize * 0.1f)
-                }
-                close()
-            }
-            drawPath(path = path, color = color)
-        }
-        Text(
-            text = label,
-            fontSize = 10.sp,
-            color = ChartDetailColors.TextMuted
-        )
-    }
-}
-
-@Composable
-private fun ShapeLegendItem(
-    isOwnSign: Boolean,
-    label: String
-) {
-    val color = if (isOwnSign) Color(0xFF2874A6) else Color(0xFF6C3483)
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Canvas(modifier = Modifier.size(12.dp)) {
-            val shapeSize = size.minDimension * 0.85f
-            val centerX = size.width / 2
-            val centerY = size.height / 2
-
-            val path = Path().apply {
-                if (isOwnSign) {
-                    moveTo(centerX - shapeSize * 0.4f, centerY + shapeSize * 0.35f)
-                    lineTo(centerX - shapeSize * 0.4f, centerY - shapeSize * 0.15f)
-                    lineTo(centerX - shapeSize * 0.2f, centerY - shapeSize * 0.35f)
-                    lineTo(centerX, centerY - shapeSize * 0.45f)
-                    lineTo(centerX + shapeSize * 0.2f, centerY - shapeSize * 0.35f)
-                    lineTo(centerX + shapeSize * 0.4f, centerY - shapeSize * 0.15f)
-                    lineTo(centerX + shapeSize * 0.4f, centerY + shapeSize * 0.35f)
-                } else {
-                    moveTo(centerX, centerY - shapeSize * 0.4f)
-                    lineTo(centerX + shapeSize * 0.4f, centerY + shapeSize * 0.35f)
-                    lineTo(centerX - shapeSize * 0.4f, centerY + shapeSize * 0.35f)
-                }
-                close()
-            }
-            drawPath(path = path, color = color)
-        }
-        Text(
-            text = label,
-            fontSize = 10.sp,
-            color = ChartDetailColors.TextMuted
-        )
-    }
-}
-
-@Composable
-private fun ChartDetailsCard(
-    chart: VedicChart,
-    currentChartData: DivisionalChartData?,
-    selectedChartType: String,
-    onPlanetClick: (PlanetPosition) -> Unit
-) {
-    val planetPositions = if (selectedChartType == "D1") {
-        chart.planetPositions
-    } else {
-        currentChartData?.planetPositions ?: emptyList()
-    }
-
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        color = ChartDetailColors.CardBackground
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 12.dp)
-            ) {
-                Icon(
-                    Icons.Outlined.Star,
-                    contentDescription = null,
-                    tint = ChartDetailColors.AccentTeal,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(StringKeyAnalysis.CHART_PLANETARY_POSITIONS),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = ChartDetailColors.TextPrimary
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = stringResource(StringKeyAnalysis.CHART_TAP_FOR_DETAILS),
-                    fontSize = 11.sp,
-                    color = ChartDetailColors.TextMuted
-                )
-            }
-
-            if (selectedChartType == "D1") {
-                AscendantRow(chart = chart)
-                HorizontalDivider(
-                    color = ChartDetailColors.DividerColor,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-            }
-
-            planetPositions.forEach { position ->
-                ClickablePlanetPositionRow(
-                    position = position,
-                    onClick = { onPlanetClick(position) }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun AscendantRow(chart: VedicChart) {
-    val language = LocalLanguage.current
-    val ascSign = ZodiacSign.fromLongitude(chart.ascendant)
-    val ascDegree = chart.ascendant % 30.0
-
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(8.dp),
-        color = ChartDetailColors.AccentGold.copy(alpha = 0.1f)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(StringKeyAnalysis.CHART_ASCENDANT_LAGNA),
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Medium,
-                color = ChartDetailColors.AccentGold
-            )
-            Row {
-                Text(
-                    text = ascSign.getLocalizedName(language),
-                    fontSize = 13.sp,
-                    color = ChartDetailColors.AccentTeal
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "${ascDegree.toInt()}°",
-                    fontSize = 13.sp,
-                    color = ChartDetailColors.TextSecondary
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ClickablePlanetPositionRow(
-    position: PlanetPosition,
-    onClick: () -> Unit
-) {
-    val language = LocalLanguage.current
-    val color = ChartDetailColors.getPlanetColor(position.planet)
-
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 2.dp)
-            .clickable { onClick() },
-        shape = RoundedCornerShape(6.dp),
-        color = Color.Transparent
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 6.dp, horizontal = 4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.weight(1f)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .background(color, CircleShape)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = position.planet.getLocalizedName(language),
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = color,
-                    modifier = Modifier.width(70.dp)
-                )
-                if (position.isRetrograde) {
-                    Surface(
-                        shape = RoundedCornerShape(4.dp),
-                        color = ChartDetailColors.WarningColor.copy(alpha = 0.2f),
-                        modifier = Modifier.padding(start = 4.dp)
-                    ) {
-                        Text(
-                            text = "R",
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = ChartDetailColors.WarningColor,
-                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
-                        )
-                    }
-                }
-            }
-
-            Text(
-                text = position.sign.getLocalizedName(language),
-                fontSize = 13.sp,
-                color = ChartDetailColors.AccentTeal,
-                modifier = Modifier.width(80.dp),
-                textAlign = TextAlign.Center
-            )
-
-            Text(
-                text = "${(position.longitude % 30.0).toInt()}°",
-                fontSize = 13.sp,
-                color = ChartDetailColors.TextSecondary,
-                modifier = Modifier.width(40.dp),
-                textAlign = TextAlign.Center
-            )
-
-            Text(
-                text = "H${position.house}",
-                fontSize = 12.sp,
-                color = ChartDetailColors.TextMuted,
-                modifier = Modifier.width(30.dp),
-                textAlign = TextAlign.End
-            )
-
-            Icon(
-                Icons.Default.ChevronRight,
-                contentDescription = stringResource(StringKey.ACC_VIEW_DETAILS),
-                tint = ChartDetailColors.TextMuted,
-                modifier = Modifier.size(16.dp)
-            )
-        }
-    }
-}
-
-@Composable
-private fun HouseCuspsCard(
-    chart: VedicChart,
-    onHouseClick: (Int) -> Unit,
-    isExpanded: Boolean,
-    onToggleExpand: (Boolean) -> Unit
-) {
-    val rotation by animateFloatAsState(
-        targetValue = if (isExpanded) 180f else 0f,
-        label = "rotation"
-    )
-
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        color = ChartDetailColors.CardBackground
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onToggleExpand(!isExpanded) },
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        Icons.Outlined.Home,
-                        contentDescription = null,
-                        tint = ChartDetailColors.AccentPurple,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(StringKeyAnalysis.CHART_HOUSE_CUSPS),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.TextPrimary
-                    )
-                }
-                Icon(
-                    Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKey.ACC_COLLAPSE) else stringResource(StringKey.ACC_EXPAND),
-                    tint = ChartDetailColors.TextMuted,
-                    modifier = Modifier.rotate(rotation)
-                )
-            }
-
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = expandVertically() + fadeIn(),
-                exit = shrinkVertically() + fadeOut()
-            ) {
-                Column(modifier = Modifier.padding(top = 12.dp)) {
-                    for (row in 0..5) {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Paper,
+                    border = BorderStroke(1.dp, BorderSubtle),
+                    shape = RoundedCornerShape(2.dp)
+                ) {
+                    Column {
+                        // Header
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            modifier = Modifier.fillMaxWidth().background(CosmicIndigo.copy(alpha = 0.05f)).padding(12.dp)
                         ) {
-                            val house1 = row + 1
-                            val house2 = row + 7
+                            Text("PLANET", modifier = Modifier.weight(4f), style = MaterialTheme.typography.labelSmall, color = SlateMuted, fontFamily = SpaceGroteskFontFamily, letterSpacing = 1.sp)
+                            Text("DEGREE", modifier = Modifier.weight(3f), textAlign = TextAlign.End, style = MaterialTheme.typography.labelSmall, color = SlateMuted, fontFamily = SpaceGroteskFontFamily, letterSpacing = 1.sp)
+                            Text("NAKSHATRA", modifier = Modifier.weight(5f), textAlign = TextAlign.End, style = MaterialTheme.typography.labelSmall, color = SlateMuted, fontFamily = SpaceGroteskFontFamily, letterSpacing = 1.sp)
+                        }
 
-                            HouseCuspItem(
-                                houseNumber = house1,
-                                cusp = chart.houseCusps.getOrNull(house1 - 1) ?: 0.0,
-                                modifier = Modifier.weight(1f),
-                                onClick = { onHouseClick(house1) }
-                            )
-                            HouseCuspItem(
-                                houseNumber = house2,
-                                cusp = chart.houseCusps.getOrNull(house2 - 1) ?: 0.0,
-                                modifier = Modifier.weight(1f),
-                                onClick = { onHouseClick(house2) }
+                        // Ascendant Row
+                        val ascSign = ZodiacSign.fromLongitude(chart.ascendant)
+                        val ascDegree = chart.ascendant % 30.0
+                        PlanetRow(
+                            name = "Ascendant",
+                            degree = formatDegree(ascDegree),
+                            nakshatra = chart.nakshatra.getLocalizedName(language),
+                            pada = "Pada ${chart.pada}",
+                            accentColor = VedicGold,
+                            isAscendant = true
+                        )
+
+                        // Planet Rows
+                        chart.planetPositions.forEach { position ->
+                            PlanetRow(
+                                name = position.planet.getLocalizedName(language),
+                                degree = formatDegree(position.longitude % 30.0),
+                                nakshatra = position.nakshatra.getLocalizedName(language),
+                                pada = "Pada ${position.pada}",
+                                isRetrograde = position.isRetrograde,
+                                icon = getPlanetIcon(position.planet)
                             )
                         }
-                        if (row < 5) Spacer(modifier = Modifier.height(4.dp))
                     }
                 }
             }
@@ -1022,129 +163,91 @@ private fun HouseCuspsCard(
 }
 
 @Composable
-private fun HouseCuspItem(
-    houseNumber: Int,
-    cusp: Double,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+private fun PlanetRow(
+    name: String,
+    degree: String,
+    nakshatra: String,
+    pada: String,
+    accentColor: Color? = null,
+    isAscendant: Boolean = false,
+    isRetrograde: Boolean = false,
+    icon: ImageVector? = null
 ) {
-    val sign = ZodiacSign.fromLongitude(cusp)
-    val degreeInSign = cusp % 30.0
-
-    Surface(
-        modifier = modifier.clickable { onClick() },
-        shape = RoundedCornerShape(8.dp),
-        color = ChartDetailColors.CardBackgroundElevated
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "H$houseNumber",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                color = ChartDetailColors.AccentGold
-            )
-            Column(horizontalAlignment = Alignment.End) {
-                Text(
-                    text = sign.abbreviation,
-                    fontSize = 12.sp,
-                    color = ChartDetailColors.AccentTeal
-                )
-                Text(
-                    text = "${degreeInSign.toInt()}°",
-                    fontSize = 11.sp,
-                    color = ChartDetailColors.TextMuted
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun AstronomicalDataCard(
-    chart: VedicChart,
-    isExpanded: Boolean,
-    onToggleExpand: (Boolean) -> Unit
-) {
-    val rotation by animateFloatAsState(
-        targetValue = if (isExpanded) 180f else 0f,
-        label = "rotation"
-    )
-
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        color = ChartDetailColors.CardBackground
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onToggleExpand(!isExpanded) },
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        Icons.Outlined.Info,
-                        contentDescription = null,
-                        tint = ChartDetailColors.AccentPurple,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(StringKeyAnalysis.CHART_ASTRONOMICAL_DATA),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.TextPrimary
-                    )
-                }
-                Icon(
-                    Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) stringResource(StringKey.ACC_COLLAPSE) else stringResource(StringKey.ACC_EXPAND),
-                    tint = ChartDetailColors.TextMuted,
-                    modifier = Modifier.rotate(rotation)
-                )
-            }
-
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = expandVertically() + fadeIn(),
-                exit = shrinkVertically() + fadeOut()
-            ) {
-                Column(modifier = Modifier.padding(top = 12.dp)) {
-                    InfoRow(stringResource(StringKeyAnalysis.CHART_JULIAN_DAY), String.format("%.6f", chart.julianDay))
-                    InfoRow(stringResource(StringKeyAnalysis.CHART_AYANAMSA), "${chart.ayanamsaName} (${ChartDetailUtils.formatDegree(chart.ayanamsa)})")
-                    InfoRow(stringResource(StringKeyAnalysis.ASCENDANT), ChartDetailUtils.formatDegree(chart.ascendant))
-                    InfoRow(stringResource(StringKeyAnalysis.CHART_MIDHEAVEN), ChartDetailUtils.formatDegree(chart.midheaven))
-                    InfoRow(stringResource(StringKeyAnalysis.CHART_HOUSE_SYSTEM), chart.houseSystem.displayName)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun InfoRow(label: String, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .border(width = 0.5.dp, color = BorderSubtle.copy(alpha = 0.5f))
+            .padding(vertical = 12.dp, horizontal = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        // Name & Icon
+        Row(modifier = Modifier.weight(4f), verticalAlignment = Alignment.CenterVertically) {
+            if (isAscendant) {
+                Box(modifier = Modifier.width(3.dp).height(24.dp).background(VedicGold, RoundedCornerShape(2.dp)))
+                Spacer(modifier = Modifier.width(8.dp))
+            } else if (icon != null) {
+                Icon(icon, null, tint = accentColor ?: CosmicIndigo, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+            }
+            Text(
+                name,
+                style = MaterialTheme.typography.titleMedium,
+                color = CosmicIndigo,
+                fontFamily = CormorantGaramondFontFamily,
+                fontWeight = FontWeight.Bold
+            )
+            if (isRetrograde) {
+                Spacer(modifier = Modifier.width(4.dp))
+                Surface(color = MarsRed.copy(alpha = 0.1f), shape = RoundedCornerShape(2.dp), border = BorderStroke(0.5.dp, MarsRed.copy(alpha = 0.2f))) {
+                    Text("R", modifier = Modifier.padding(horizontal = 4.dp), style = MaterialTheme.typography.labelSmall, color = MarsRed, fontFamily = SpaceGroteskFontFamily, fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+
+        // Degree
         Text(
-            text = label,
-            fontSize = 13.sp,
-            color = ChartDetailColors.TextMuted
+            degree,
+            modifier = Modifier.weight(3f),
+            textAlign = TextAlign.End,
+            style = MaterialTheme.typography.bodyMedium,
+            color = CosmicIndigo,
+            fontFamily = SpaceGroteskFontFamily
         )
-        Text(
-            text = value,
-            fontSize = 13.sp,
-            color = ChartDetailColors.TextPrimary
-        )
+
+        // Nakshatra
+        Column(modifier = Modifier.weight(5f), horizontalAlignment = Alignment.End) {
+            Text(
+                nakshatra,
+                style = MaterialTheme.typography.bodyMedium,
+                color = CosmicIndigo,
+                fontFamily = SpaceGroteskFontFamily,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                pada,
+                style = MaterialTheme.typography.labelSmall,
+                color = SlateMuted,
+                fontFamily = SpaceGroteskFontFamily,
+                fontSize = 8.sp
+            )
+        }
     }
 }
 
+private fun formatDegree(degree: Double): String {
+    val d = degree.toInt()
+    val m = ((degree - d) * 60).toInt()
+    return String.format(Locale.US, "%02d° %02d'", d, m)
+}
+
+private fun getPlanetIcon(planet: com.astro.storm.core.model.Planet): ImageVector {
+    return when (planet) {
+        com.astro.storm.core.model.Planet.SUN -> Icons.Outlined.Sunny
+        com.astro.storm.core.model.Planet.MOON -> Icons.Outlined.Bedtime
+        com.astro.storm.core.model.Planet.MARS -> Icons.Outlined.RadioButtonChecked
+        com.astro.storm.core.model.Planet.MERCURY -> Icons.Outlined.Circle
+        com.astro.storm.core.model.Planet.JUPITER -> Icons.Outlined.Flare
+        com.astro.storm.core.model.Planet.SATURN -> Icons.Outlined.BlurOn
+        else -> Icons.Outlined.Star
+    }
+}

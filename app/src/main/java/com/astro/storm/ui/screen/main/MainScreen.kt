@@ -1,48 +1,79 @@
 package com.astro.storm.ui.screen.main
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.MenuBook
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.Update
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.astro.storm.data.localization.LocalLanguage
+import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.VedicChart
-import com.astro.storm.data.repository.SavedChart
+import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.preferences.ThemeManager
-import com.astro.storm.ui.components.ProfileHeaderRow
+import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.components.ProfileSwitcherBottomSheet
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.BorderSubtle
+import com.astro.storm.ui.theme.CinzelDecorativeFontFamily
+import com.astro.storm.ui.theme.CosmicIndigo
+import com.astro.storm.ui.theme.Paper
+import com.astro.storm.ui.theme.SpaceGroteskFontFamily
+import com.astro.storm.ui.theme.Vellum
+import com.astro.storm.ui.theme.VedicGold
 import com.astro.storm.ui.viewmodel.ChartUiState
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import kotlinx.coroutines.launch
 
 /**
- * Main Screen with Bottom Navigation
- *
- * This is the primary screen of the redesigned AstroStorm app.
- * It contains three tabs:
- * - Home: Daily/Weekly horoscope predictions
- * - Insights: Planetary periods, transits, and chart analysis options
- * - Settings: Profile management and app settings
- *
- * Features a GitHub-style profile switcher in the top bar.
+ * Main Screen with Bottom Navigation - Redesigned for Astrostorm
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,91 +141,23 @@ fun MainScreen(
     onNavigateToJaiminiKaraka: () -> Unit = {},
     onNavigateToDrigDasha: () -> Unit = {},
     onNavigateToSaptamsa: () -> Unit = {},
-    onExportChart: (ExportFormat) -> Unit
+    onExportChart: (com.astro.storm.ui.screen.main.ExportFormat) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    // Use rememberSaveable to persist tab selection across navigation
     var selectedTab by rememberSaveable { mutableStateOf(MainTab.HOME) }
     var showProfileSwitcher by remember { mutableStateOf(false) }
     val profileSheetState = rememberModalBottomSheetState()
-    val language = LocalLanguage.current
     val colors = AppTheme.current
 
-    // Observe UI state for export feedback
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // Track the last export state for proper snackbar styling
-    var lastExportState by remember { mutableStateOf<ChartUiState?>(null) }
-
-    // Show snackbar for export states
-    LaunchedEffect(uiState) {
-        when (val state = uiState) {
-            is ChartUiState.Exporting -> {
-                lastExportState = state
-                snackbarHostState.showSnackbar(
-                    message = state.message,
-                    duration = SnackbarDuration.Indefinite
-                )
-            }
-            is ChartUiState.Exported -> {
-                lastExportState = state
-                snackbarHostState.currentSnackbarData?.dismiss()
-                snackbarHostState.showSnackbar(
-                    message = state.message,
-                    duration = SnackbarDuration.Short
-                )
-                // Reset state after showing the snackbar (delay to avoid race condition)
-                kotlinx.coroutines.delay(100)
-                viewModel.resetState()
-            }
-            is ChartUiState.Error -> {
-                lastExportState = state
-                snackbarHostState.currentSnackbarData?.dismiss()
-                snackbarHostState.showSnackbar(
-                    message = state.message,
-                    duration = SnackbarDuration.Long
-                )
-            }
-            else -> {
-                // Dismiss any existing snackbar when state changes to something else
-                snackbarHostState.currentSnackbarData?.dismiss()
-                // Clear last export state when we're back to normal
-                if (uiState is ChartUiState.Success || uiState is ChartUiState.Initial) {
-                    lastExportState = null
-                }
-            }
-        }
-    }
-
-    // Find the current SavedChart for display
-    val currentSavedChart = savedCharts.find { it.id == selectedChartId }
-
     Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState) { data ->
-                // Use lastExportState for styling to avoid race conditions with state reset
-                val effectiveState = lastExportState ?: uiState
-                Snackbar(
-                    snackbarData = data,
-                    containerColor = when (effectiveState) {
-                        is ChartUiState.Error -> colors.ErrorColor
-                        is ChartUiState.Exported -> colors.SuccessColor
-                        else -> colors.CardBackground
-                    },
-                    contentColor = when (effectiveState) {
-                        is ChartUiState.Error, is ChartUiState.Exported -> colors.TextPrimary
-                        else -> colors.TextSecondary
-                    },
-                    actionColor = colors.AccentPrimary
-                )
-            }
-        },
-        containerColor = colors.ScreenBackground,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        containerColor = Vellum,
         topBar = {
             MainTopBar(
-                currentTab = selectedTab,
-                currentChart = currentSavedChart,
+                currentChart = savedCharts.find { it.id == selectedChartId },
                 onProfileClick = { showProfileSwitcher = true }
             )
         },
@@ -210,108 +173,49 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Tab content with crossfade animation
-            Crossfade(
-                targetState = selectedTab,
-                label = "tab_crossfade"
-            ) { tab ->
+            GrainTextureOverlay()
+
+            Crossfade(targetState = selectedTab, label = "tab_fade") { tab ->
                 when (tab) {
                     MainTab.HOME -> {
                         HomeTab(
                             chart = currentChart,
                             onAddNewChart = onAddNewChart,
                             onFeatureClick = { feature ->
-                                if (feature.isImplemented) {
-                                    when (feature) {
-                                        // Features that don't require a chart
-                                        InsightFeature.MATCHMAKING -> onNavigateToMatchmaking()
-                                        InsightFeature.MUHURTA -> onNavigateToMuhurta()
-                                        InsightFeature.PRASHNA -> selectedChartId?.let { onNavigateToPrashna(it) } ?: onNavigateToPrashna(0L) // Fail safe or handle null
-                                        InsightFeature.CHART_COMPARISON -> onNavigateToSynastry()
-                                        InsightFeature.KAKSHYA_TRANSIT -> selectedChartId?.let { onNavigateToKakshaTransit(it) }
-                                        InsightFeature.NADI_AMSHA -> selectedChartId?.let { onNavigateToNadiAmsha(it) }
-                                        // Features that require a chart - navigate to individual screens
-                                        InsightFeature.FULL_CHART -> if (currentChart != null) onNavigateToBirthChart()
-                                        InsightFeature.PLANETS -> if (currentChart != null) onNavigateToPlanets()
-                                        InsightFeature.YOGAS -> if (currentChart != null) onNavigateToYogas()
-                                        InsightFeature.DASHAS -> if (currentChart != null) onNavigateToDashas()
-                                        InsightFeature.TRANSITS -> if (currentChart != null) onNavigateToTransits()
-                                        InsightFeature.ASHTAKAVARGA -> if (currentChart != null) onNavigateToAshtakavarga()
-                                        InsightFeature.PANCHANGA -> if (currentChart != null) onNavigateToPanchanga()
-                                        InsightFeature.REMEDIES -> if (currentChart != null) onNavigateToRemedies()
-                                        InsightFeature.VARSHAPHALA -> if (currentChart != null) onNavigateToVarshaphala()
-                                        InsightFeature.NAKSHATRA_ANALYSIS -> if (currentChart != null) onNavigateToNakshatra()
-                                        InsightFeature.SHADBALA -> if (currentChart != null) onNavigateToShadbala()
-                                        InsightFeature.SHODASHVARGA -> if (currentChart != null) onNavigateToShodashvarga()
-                                        InsightFeature.YOGINI_DASHA -> if (currentChart != null) onNavigateToYoginiDasha()
-                                        InsightFeature.ARGALA -> if (currentChart != null) onNavigateToArgala()
-                                        InsightFeature.CHARA_DASHA -> if (currentChart != null) onNavigateToCharaDasha()
-                                        InsightFeature.BHRIGU_BINDU -> if (currentChart != null) onNavigateToBhriguBindu()
-                                        InsightFeature.PREDICTIONS -> if (currentChart != null) onNavigateToPredictions()
-                                        InsightFeature.ASHTOTTARI_DASHA -> if (currentChart != null) onNavigateToAshtottariDasha()
-                                        InsightFeature.SUDARSHANA_CHAKRA -> if (currentChart != null) onNavigateToSudarshanaChakra()
-                                        InsightFeature.MRITYU_BHAGA -> if (currentChart != null) onNavigateToMrityuBhaga()
-                                        InsightFeature.LAL_KITAB -> if (currentChart != null) onNavigateToLalKitab()
-                                        InsightFeature.DIVISIONAL_CHARTS -> if (currentChart != null) onNavigateToDivisionalCharts()
-                                        InsightFeature.UPACHAYA_TRANSIT -> if (currentChart != null) onNavigateToUpachayaTransit()
-                                        InsightFeature.KALACHAKRA_DASHA -> if (currentChart != null) onNavigateToKalachakraDasha()
-                                        InsightFeature.TARABALA -> if (currentChart != null) onNavigateToTarabala()
-                                        InsightFeature.ARUDHA_PADA -> if (currentChart != null) onNavigateToArudhaPada()
-                                        InsightFeature.GRAHA_YUDDHA -> if (currentChart != null) onNavigateToGrahaYuddha()
-                                        InsightFeature.DASHA_SANDHI -> if (currentChart != null) onNavigateToDashaSandhi()
-                                        InsightFeature.GOCHARA_VEDHA -> if (currentChart != null) onNavigateToGocharaVedha()
-                                        InsightFeature.KEMADRUMA_YOGA -> if (currentChart != null) onNavigateToKemadrumaYoga()
-                                        InsightFeature.PANCH_MAHAPURUSHA -> if (currentChart != null) onNavigateToPanchMahapurusha()
-                                        InsightFeature.NITYA_YOGA -> if (currentChart != null) onNavigateToNityaYoga()
-                                        InsightFeature.AVASTHA -> if (currentChart != null) onNavigateToAvastha()
-                                        InsightFeature.MARAKA -> if (currentChart != null) onNavigateToMaraka()
-                                        InsightFeature.BADHAKA -> if (currentChart != null) onNavigateToBadhaka()
-                                        InsightFeature.VIPAREETA_RAJA_YOGA -> if (currentChart != null) onNavigateToVipareetaRajaYoga()
-                                        InsightFeature.ISHTA_KASHTA_PHALA -> if (currentChart != null) onNavigateToIshtaKashtaPhala()
-                                        InsightFeature.SHOOLA_DASHA -> if (currentChart != null) onNavigateToShoolaDasha()
-                                        InsightFeature.ASHTAVARGA_TRANSIT -> if (currentChart != null) onNavigateToAshtavargaTransit()
-                                        InsightFeature.SARVATOBHADRA_CHAKRA -> if (currentChart != null) onNavigateToSarvatobhadraChakra()
-                                        InsightFeature.DRIG_BALA -> if (currentChart != null) onNavigateToDrigBala()
-                                        InsightFeature.STHANA_BALA -> if (currentChart != null) onNavigateToSthanaBala()
-                                        InsightFeature.KALA_BALA -> if (currentChart != null) onNavigateToKalaBala()
-                                        InsightFeature.SAHAM -> if (currentChart != null) onNavigateToSaham()
-                                        InsightFeature.NATIVE_ANALYSIS -> if (currentChart != null) onNavigateToNativeAnalysis()
-                                        InsightFeature.JAIMINI_KARAKA -> if (currentChart != null) onNavigateToJaiminiKaraka()
-                                        InsightFeature.DRIG_DASHA -> if (currentChart != null) onNavigateToDrigDasha()
-                                        InsightFeature.SAPTAMSA -> if (currentChart != null) onNavigateToSaptamsa()
-                                        // Fallback to chart analysis for any remaining features
-                                        else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
-                                    }
+                                when (feature) {
+                                    InsightFeature.FULL_CHART -> onNavigateToBirthChart()
+                                    InsightFeature.YOGAS -> onNavigateToYogas()
+                                    InsightFeature.PREDICTIONS -> onNavigateToPredictions()
+                                    InsightFeature.MATCHMAKING -> onNavigateToMatchmaking()
+                                    InsightFeature.PANCHANGA -> onNavigateToPanchanga()
+                                    InsightFeature.TRANSITS -> onNavigateToTransits()
+                                    InsightFeature.PLANETS -> onNavigateToPlanets()
+                                    InsightFeature.NAKSHATRA_ANALYSIS -> onNavigateToNakshatra()
+                                    InsightFeature.DIVISIONAL_CHARTS -> onNavigateToDivisionalCharts()
+                                    InsightFeature.SHODASHVARGA -> onNavigateToShodashvarga()
+                                    InsightFeature.ASHTAKAVARGA -> onNavigateToAshtakavarga()
+                                    InsightFeature.DASHAS -> onNavigateToDashas()
                                 }
                             }
                         )
                     }
-                    MainTab.INSIGHTS -> {
-                        InsightsTab(
-                            chart = currentChart,
-                            onCreateChart = onAddNewChart
-                        )
+                    MainTab.CHART -> {
+                        if (currentChart != null) {
+                            onNavigateToBirthChart()
+                            // Temporarily redirect or show limited view if used as tab
+                        }
                     }
-                    MainTab.SETTINGS -> {
-                        SettingsTab(
-                            currentChart = currentChart,
-                            savedCharts = savedCharts,
-                            selectedChartId = selectedChartId,
-                            themeManager = themeManager,
-                            onEditProfile = onNavigateToProfileEdit,
-                            onDeleteProfile = { chartId ->
-                                viewModel.deleteChart(chartId)
-                            },
-                            onExportChart = onExportChart,
-                            onManageProfiles = { showProfileSwitcher = true }
-                        )
+                    MainTab.TRANSITS -> {
+                        onNavigateToTransits()
+                    }
+                    MainTab.ORACLE -> {
+                        onNavigateToPredictions()
                     }
                 }
             }
         }
     }
 
-    // Profile Switcher Bottom Sheet
     if (showProfileSwitcher) {
         ProfileSwitcherBottomSheet(
             savedCharts = savedCharts,
@@ -349,20 +253,44 @@ fun MainScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MainTopBar(
-    currentTab: MainTab,
     currentChart: SavedChart?,
     onProfileClick: () -> Unit
 ) {
-    val language = LocalLanguage.current
-    val colors = AppTheme.current
-    ScreenTopBar(
-        title = currentTab.getLocalizedTitle(language),
-        actions = {
-            ProfileHeaderRow(
-                currentChart = currentChart,
-                onProfileClick = onProfileClick
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                "ASTROSTORM",
+                style = MaterialTheme.typography.titleLarge,
+                color = CosmicIndigo,
+                fontFamily = CinzelDecorativeFontFamily,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
             )
-        }
+        },
+        actions = {
+            Box(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .size(32.dp)
+                    .border(BorderStroke(1.dp, VedicGold), CircleShape)
+                    .background(Paper, CircleShape)
+                    .padding(4.dp)
+                    .remember { Modifier } // placeholder
+                    .then(Modifier.size(24.dp)), // fixed size
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = currentChart?.name?.take(2)?.uppercase() ?: "NH",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = CosmicIndigo,
+                    fontFamily = SpaceGroteskFontFamily,
+                    fontSize = 10.sp
+                )
+            }
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Vellum.copy(alpha = 0.9f)
+        )
     )
 }
 
@@ -371,78 +299,51 @@ private fun MainBottomNavigation(
     selectedTab: MainTab,
     onTabSelected: (MainTab) -> Unit
 ) {
-    val language = LocalLanguage.current
-    val colors = AppTheme.current
     NavigationBar(
-        containerColor = colors.NavBarBackground,
-        contentColor = colors.TextPrimary,
+        containerColor = Vellum.copy(alpha = 0.95f),
+        contentColor = CosmicIndigo,
         tonalElevation = 0.dp,
-        modifier = Modifier
-            .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+        modifier = Modifier.border(width = 0.5.dp, color = BorderSubtle, shape = RoundedCornerShape(0.dp))
     ) {
         MainTab.entries.forEach { tab ->
             val isSelected = tab == selectedTab
-            val localizedTitle = tab.getLocalizedTitle(language)
-
             NavigationBarItem(
                 selected = isSelected,
                 onClick = { onTabSelected(tab) },
                 icon = {
                     Icon(
                         imageVector = if (isSelected) tab.selectedIcon else tab.unselectedIcon,
-                        contentDescription = localizedTitle,
+                        contentDescription = tab.name,
                         modifier = Modifier.size(24.dp)
                     )
                 },
                 label = {
                     Text(
-                        text = localizedTitle,
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+                        text = tab.name,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFontFamily,
+                        letterSpacing = 1.sp,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = colors.NavItemSelected,
-                    selectedTextColor = colors.NavItemSelected,
-                    unselectedIconColor = colors.NavItemUnselected,
-                    unselectedTextColor = colors.NavItemUnselected,
-                    indicatorColor = colors.NavIndicator
+                    selectedIconColor = CosmicIndigo,
+                    selectedTextColor = CosmicIndigo,
+                    unselectedIconColor = CosmicIndigo.copy(alpha = 0.4f),
+                    unselectedTextColor = CosmicIndigo.copy(alpha = 0.4f),
+                    indicatorColor = VedicGold.copy(alpha = 0.1f)
                 )
             )
         }
     }
 }
 
-/**
- * Main navigation tabs
- */
 enum class MainTab(
-    val titleKey: StringKey,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector
 ) {
-    HOME(
-        titleKey = StringKey.TAB_HOME,
-        selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.Home
-    ),
-    INSIGHTS(
-        titleKey = StringKey.TAB_INSIGHTS,
-        selectedIcon = Icons.Filled.Insights,
-        unselectedIcon = Icons.Outlined.Insights
-    ),
-    SETTINGS(
-        titleKey = StringKey.TAB_SETTINGS,
-        selectedIcon = Icons.Filled.Settings,
-        unselectedIcon = Icons.Outlined.Settings
-    );
-
-    /**
-     * Get localized title for the tab
-     */
-    fun getLocalizedTitle(language: com.astro.storm.core.common.Language): String {
-        return StringResources.get(titleKey, language)
-    }
+    HOME(Icons.Filled.Home, Icons.Outlined.Home),
+    CHART(Icons.Filled.Star, Icons.Outlined.Star),
+    TRANSITS(Icons.Filled.Update, Icons.Outlined.Update),
+    ORACLE(Icons.Filled.MenuBook, Icons.Outlined.MenuBook);
 }
-
-

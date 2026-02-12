@@ -11,8 +11,11 @@ import com.astro.storm.core.model.ZodiacSign
 /**
  * Unified App Theme Colors with Dark/Light Mode Support
  *
- * These colors provide a cohesive look throughout the app.
- * Dark mode uses a warm brown theme, light mode uses cream/beige tones.
+ * Updated for Astrostorm Design System:
+ * Primary Background: Vellum (#F2EFE9)
+ * Card Background: Paper (#EBE7DE)
+ * Primary Accent: Cosmic Indigo (#1A233A)
+ * Highlights: Vedic Gold (#C5A059)
  */
 data class AppThemeColors(
     // Primary Background Colors
@@ -97,200 +100,148 @@ data class AppThemeColors(
 )
 
 /**
- * Dark Theme Colors - Warm brown tones for nighttime viewing
+ * Dark Theme Colors - Kept as fallback
  */
 val DarkAppThemeColors = AppThemeColors(
-    // Primary Background Colors
-    ScreenBackground = Color(0xFF1C1410),
-    CardBackground = Color(0xFF2A201A),
-    CardBackgroundElevated = Color(0xFF352A22),
-    SurfaceColor = Color(0xFF241C16),
-
-    // Accent Colors
-    AccentPrimary = Color(0xFFB8A99A),
-    AccentSecondary = Color(0xFF8B7355),
-    AccentGold = Color(0xFFD4AF37),
-    AccentTeal = Color(0xFF4DB6AC),
-
-    // Text Colors (WCAG AA compliant on ScreenBackground #1C1410)
-    TextPrimary = Color(0xFFE8DFD6),
-    TextSecondary = Color(0xFFB8A99A),
-    TextMuted = Color(0xFF9A8A7A),      // Improved from 0xFF8A7A6A for better contrast (4.5:1+)
-    TextSubtle = Color(0xFF8A7A6A),     // Improved from 0xFF6A5A4A for better contrast (3:1+)
-
-    // Border and Divider Colors
-    BorderColor = Color(0xFF5A4F48),    // Improved from 0xFF4A3F38 for better visibility
-    DividerColor = Color(0xFF4A403A),   // Improved from 0xFF3A302A for better visibility
-
-    // Interactive Element Colors
-    ChipBackground = Color(0xFF3D322B),
-    ChipBackgroundSelected = Color(0xFF4A3F38),
-    ButtonBackground = Color(0xFFB8A99A),
-    ButtonText = Color(0xFF1C1410),
-
-    // Status Colors
-    SuccessColor = Color(0xFF81C784),
-    WarningColor = Color(0xFFFFB74D),
-    ErrorColor = Color(0xFFCF6679),
+    ScreenBackground = Color(0xFF101522),
+    CardBackground = Color(0xFF1A233A),
+    CardBackgroundElevated = Color(0xFF242F4D),
+    SurfaceColor = Color(0xFF171B24),
+    AccentPrimary = Color(0xFF7C8AFF),
+    AccentSecondary = Color(0xFFFFB4AB),
+    AccentGold = Color(0xFFE5C46C),
+    AccentTeal = Color(0xFF86D997),
+    TextPrimary = Color(0xFFE4E6ED),
+    TextSecondary = Color(0xFFAEB4C2),
+    TextMuted = Color(0xFF8A91A0),
+    TextSubtle = Color(0xFF5C6270),
+    BorderColor = Color(0xFF3D4556),
+    DividerColor = Color(0xFF2A3040),
+    ChipBackground = Color(0xFF2D3160),
+    ChipBackgroundSelected = Color(0xFF3D4556),
+    ButtonBackground = Color(0xFF7C8AFF),
+    ButtonText = Color(0xFF1A233A),
+    SuccessColor = Color(0xFF86D997),
+    WarningColor = Color(0xFFFFD666),
+    ErrorColor = Color(0xFFFFB4AB),
     InfoColor = Color(0xFF64B5F6),
-
-    // Chart-Specific Colors
-    ChartBackground = Color(0xFF1A1512),
-    ChartBorder = Color(0xFFB8A99A),
-
-    // Planet Colors
-    PlanetSun = Color(0xFFD2691E),
-    PlanetMoon = Color(0xFFDC143C),
-    PlanetMars = Color(0xFFDC143C),
-    PlanetMercury = Color(0xFF228B22),
-    PlanetJupiter = Color(0xFFDAA520),
-    PlanetVenus = Color(0xFF9370DB),
-    PlanetSaturn = Color(0xFF4169E1),
-    PlanetRahu = Color(0xFF8B0000),
-    PlanetKetu = Color(0xFF8B0000),
-
-    // Navigation Colors
-    NavBarBackground = Color(0xFF241C16),
-    NavItemSelected = Color(0xFFB8A99A),
-    NavItemUnselected = Color(0xFF6A5A4A),
-    NavIndicator = Color(0xFF3D322B),
-
-    // Bottom Sheet Colors
-    BottomSheetBackground = Color(0xFF2A201A),
-    BottomSheetHandle = Color(0xFF4A3F38),
-
-    // Prediction Card Colors
-    PredictionCardToday = Color(0xFF2D2520),
-    PredictionCardTomorrow = Color(0xFF2A2520),
-    PredictionCardWeekly = Color(0xFF282520),
-
-    // Life Area Colors
+    ChartBackground = Color(0xFF131720),
+    ChartBorder = Color(0xFF7C8AFF),
+    PlanetSun = Color(0xFFFFB74D),
+    PlanetMoon = Color(0xFFE0E0E0),
+    PlanetMars = Color(0xFFFF7043),
+    PlanetMercury = Color(0xFF81C784),
+    PlanetJupiter = Color(0xFFFFD54F),
+    PlanetVenus = Color(0xFFF48FB1),
+    PlanetSaturn = Color(0xFF90A4AE),
+    PlanetRahu = Color(0xFF7986CB),
+    PlanetKetu = Color(0xFFBA68C8),
+    NavBarBackground = Color(0xFF171B24),
+    NavItemSelected = Color(0xFF7C8AFF),
+    NavItemUnselected = Color(0xFF8A91A0),
+    NavIndicator = Color(0xFF2D3160),
+    BottomSheetBackground = Color(0xFF171B24),
+    BottomSheetHandle = Color(0xFF3D4556),
+    PredictionCardToday = Color(0xFF1E2330),
+    PredictionCardTomorrow = Color(0xFF1E2330),
+    PredictionCardWeekly = Color(0xFF1E2330),
     LifeAreaCareer = Color(0xFFFFB74D),
-    LifeAreaLove = Color(0xFFE57373),
-    LifeAreaHealth = Color(0xFF81C784),
+    LifeAreaLove = Color(0xFFFFB4AB),
+    LifeAreaHealth = Color(0xFF86D997),
     LifeAreaGrowth = Color(0xFF64B5F6),
     LifeAreaFinance = Color(0xFFFFD54F),
     LifeAreaSpiritual = Color(0xFFBA68C8),
-
-    // Additional Colors
-    InputBackground = Color(0xFF2A201A),
-    DialogBackground = Color(0xFF2A201A),
+    InputBackground = Color(0xFF1E2330),
+    DialogBackground = Color(0xFF171B24),
     ScrimColor = Color(0x80000000),
-
-    // Is dark theme flag
     isDark = true
 )
 
 /**
- * Light Theme Colors - Cream/beige tones for daytime viewing
+ * Light Theme Colors - NEW ASTROSTORM PALETTE
  */
 val LightAppThemeColors = AppThemeColors(
-    // Primary Background Colors
-    ScreenBackground = Color(0xFFF5F2ED),
-    CardBackground = Color(0xFFFFFFFF),
-    CardBackgroundElevated = Color(0xFFFAF8F5),
-    SurfaceColor = Color(0xFFFEFCF9),
+    ScreenBackground = Vellum,
+    CardBackground = Paper,
+    CardBackgroundElevated = Color.White,
+    SurfaceColor = Vellum,
 
-    // Accent Colors
-    AccentPrimary = Color(0xFF6B5D4D),
-    AccentSecondary = Color(0xFF8B7355),
-    AccentGold = Color(0xFFB8860B),
-    AccentTeal = Color(0xFF008B8B),
+    AccentPrimary = CosmicIndigo,
+    AccentSecondary = MarsRed,
+    AccentGold = VedicGold,
+    AccentTeal = Color(0xFF4A7C7C),
 
-    // Text Colors
-    TextPrimary = Color(0xFF2C2418),
-    TextSecondary = Color(0xFF5A4D3D),
-    TextMuted = Color(0xFF7A6D5D),
-    TextSubtle = Color(0xFFA99D8D),
+    TextPrimary = CosmicIndigo,
+    TextSecondary = SlateMuted,
+    TextMuted = SlateMuted.copy(alpha = 0.7f),
+    TextSubtle = CosmicIndigo.copy(alpha = 0.4f),
 
-    // Border and Divider Colors
-    BorderColor = Color(0xFFD4C8B8),
-    DividerColor = Color(0xFFE8DFD6),
+    BorderColor = BorderSubtle,
+    DividerColor = BorderSubtle.copy(alpha = 0.5f),
 
-    // Interactive Element Colors
-    ChipBackground = Color(0xFFEDE7DF),
-    ChipBackgroundSelected = Color(0xFFD4C8B8),
-    ButtonBackground = Color(0xFF6B5D4D),
-    ButtonText = Color(0xFFFFFFFF),
+    ChipBackground = Paper,
+    ChipBackgroundSelected = VedicGold.copy(alpha = 0.2f),
+    ButtonBackground = CosmicIndigo,
+    ButtonText = Vellum,
 
-    // Status Colors
     SuccessColor = Color(0xFF2E7D32),
     WarningColor = Color(0xFFED6C02),
-    ErrorColor = Color(0xFFD32F2F),
+    ErrorColor = MarsRed,
     InfoColor = Color(0xFF0288D1),
 
-    // Chart-Specific Colors
-    ChartBackground = Color(0xFFFAF8F5),
-    ChartBorder = Color(0xFF6B5D4D),
+    ChartBackground = Vellum,
+    ChartBorder = CosmicIndigo,
 
-    // Planet Colors (slightly adjusted for light mode visibility)
-    PlanetSun = Color(0xFFCD6600),
-    PlanetMoon = Color(0xFFB22222),
-    PlanetMars = Color(0xFFB22222),
-    PlanetMercury = Color(0xFF006400),
-    PlanetJupiter = Color(0xFFB8860B),
-    PlanetVenus = Color(0xFF7B68EE),
-    PlanetSaturn = Color(0xFF3A5FCD),
-    PlanetRahu = Color(0xFF8B0000),
-    PlanetKetu = Color(0xFF8B0000),
+    PlanetSun = VedicGold,
+    PlanetMoon = SlateMuted,
+    PlanetMars = MarsRed,
+    PlanetMercury = CosmicIndigo,
+    PlanetJupiter = VedicGold,
+    PlanetVenus = Color(0xFF9370DB),
+    PlanetSaturn = CosmicIndigo,
+    PlanetRahu = MarsRed,
+    PlanetKetu = MarsRed,
 
-    // Navigation Colors
-    NavBarBackground = Color(0xFFFFFFFF),
-    NavItemSelected = Color(0xFF6B5D4D),
-    NavItemUnselected = Color(0xFFA99D8D),
-    NavIndicator = Color(0xFFEDE7DF),
+    NavBarBackground = Vellum,
+    NavItemSelected = CosmicIndigo,
+    NavItemUnselected = SlateMuted,
+    NavIndicator = VedicGold.copy(alpha = 0.1f),
 
-    // Bottom Sheet Colors
-    BottomSheetBackground = Color(0xFFFFFFFF),
-    BottomSheetHandle = Color(0xFFD4C8B8),
+    BottomSheetBackground = Vellum,
+    BottomSheetHandle = BorderSubtle,
 
-    // Prediction Card Colors
-    PredictionCardToday = Color(0xFFFFFFFF),
-    PredictionCardTomorrow = Color(0xFFFAF8F5),
-    PredictionCardWeekly = Color(0xFFF5F2ED),
+    PredictionCardToday = Paper,
+    PredictionCardTomorrow = Vellum,
+    PredictionCardWeekly = Paper,
 
-    // Life Area Colors (adjusted for light mode)
-    LifeAreaCareer = Color(0xFFED6C02),
-    LifeAreaLove = Color(0xFFC62828),
+    LifeAreaCareer = VedicGold,
+    LifeAreaLove = MarsRed,
     LifeAreaHealth = Color(0xFF2E7D32),
-    LifeAreaGrowth = Color(0xFF0277BD),
-    LifeAreaFinance = Color(0xFFF9A825),
-    LifeAreaSpiritual = Color(0xFF7B1FA2),
+    LifeAreaGrowth = CosmicIndigo,
+    LifeAreaFinance = VedicGold,
+    LifeAreaSpiritual = CosmicIndigo,
 
-    // Additional Colors
-    InputBackground = Color(0xFFFAF8F5),
-    DialogBackground = Color(0xFFFFFFFF),
+    InputBackground = Paper,
+    DialogBackground = Vellum,
     ScrimColor = Color(0x40000000),
 
-    // Is dark theme flag
     isDark = false
 )
 
 /**
  * CompositionLocal for accessing theme colors
  */
-val LocalAppThemeColors = staticCompositionLocalOf { DarkAppThemeColors }
+val LocalAppThemeColors = staticCompositionLocalOf { LightAppThemeColors }
 
 /**
  * App Theme object for accessing current theme colors
- *
- * IMPORTANT: In Composable functions, use LocalAppThemeColors.current for theme-aware colors.
- * The static getters on this object are DEPRECATED and only kept for backward compatibility.
- * They always return dark theme colors regardless of the actual theme setting.
- *
- * For new code, always use:
- *   val colors = LocalAppThemeColors.current
- *   colors.ScreenBackground // etc.
  */
 object AppTheme {
-    // Current theme accessor for Composables - USE THIS FOR THEME-AWARE COLORS
     val current: AppThemeColors
         @Composable
         @ReadOnlyComposable
         get() = LocalAppThemeColors.current
 
-    // COMPOSABLE THEME-AWARE ACCESSORS
-    // These are the preferred way to access colors in Composable functions
     val ScreenBackground: Color
         @Composable
         @ReadOnlyComposable
@@ -557,31 +508,27 @@ object AppTheme {
 
     /**
      * Get color for a specific zodiac sign based on its element
-     * - Fire signs (Aries, Leo, Sagittarius): Orange/Red tones
-     * - Earth signs (Taurus, Virgo, Capricorn): Brown/Green tones
-     * - Air signs (Gemini, Libra, Aquarius): Blue/Cyan tones
-     * - Water signs (Cancer, Scorpio, Pisces): Purple/Blue tones
      */
     fun getSignColor(sign: ZodiacSign): Color = when (sign) {
         // Fire signs - energetic, warm tones
-        ZodiacSign.ARIES -> Color(0xFFE53935)      // Red
-        ZodiacSign.LEO -> Color(0xFFF57C00)        // Orange
-        ZodiacSign.SAGITTARIUS -> Color(0xFFFF7043) // Deep orange
+        ZodiacSign.ARIES -> Color(0xFFE53935)
+        ZodiacSign.LEO -> Color(0xFFF57C00)
+        ZodiacSign.SAGITTARIUS -> Color(0xFFFF7043)
 
         // Earth signs - stable, grounded tones
-        ZodiacSign.TAURUS -> Color(0xFF43A047)     // Green
-        ZodiacSign.VIRGO -> Color(0xFF8BC34A)      // Light green
-        ZodiacSign.CAPRICORN -> Color(0xFF795548)  // Brown
+        ZodiacSign.TAURUS -> Color(0xFF43A047)
+        ZodiacSign.VIRGO -> Color(0xFF8BC34A)
+        ZodiacSign.CAPRICORN -> Color(0xFF795548)
 
         // Air signs - intellectual, light tones
-        ZodiacSign.GEMINI -> Color(0xFF29B6F6)     // Light blue
-        ZodiacSign.LIBRA -> Color(0xFF26C6DA)      // Cyan
-        ZodiacSign.AQUARIUS -> Color(0xFF5C6BC0)   // Indigo
+        ZodiacSign.GEMINI -> Color(0xFF29B6F6)
+        ZodiacSign.LIBRA -> Color(0xFF26C6DA)
+        ZodiacSign.AQUARIUS -> Color(0xFF5C6BC0)
 
         // Water signs - emotional, deep tones
-        ZodiacSign.CANCER -> Color(0xFF9575CD)     // Light purple
-        ZodiacSign.SCORPIO -> Color(0xFF7E57C2)    // Purple
-        ZodiacSign.PISCES -> Color(0xFF42A5F5)     // Blue
+        ZodiacSign.CANCER -> Color(0xFF9575CD)
+        ZodiacSign.SCORPIO -> Color(0xFF7E57C2)
+        ZodiacSign.PISCES -> Color(0xFF42A5F5)
     }
 }
 

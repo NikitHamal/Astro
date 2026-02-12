@@ -2,7 +2,18 @@ package com.astro.storm.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Modern Professional Dark Theme Color Palette
+// ============================================================================
+// NEW ASTROSTORM DESIGN SYSTEM PALETTE
+// ============================================================================
+val CosmicIndigo = Color(0xFF1A233A)
+val Vellum = Color(0xFFF2EFE9)
+val Paper = Color(0xFFEBE7DE)
+val VedicGold = Color(0xFFC5A059)
+val MarsRed = Color(0xFFB85C5C)
+val SlateMuted = Color(0xFF8C8F96)
+val BorderSubtle = Color(0xFFD4D0C5)
+val PressedPaper = Color(0xFFE0DCCF) // Hover state for paper
+
 // Primary - Deep indigo tones for a sophisticated cosmic feel
 val PrimaryDark = Color(0xFF7C8AFF)
 val PrimaryLight = Color(0xFFB4BBFF)
