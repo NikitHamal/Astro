@@ -197,6 +197,7 @@ class HoroscopeCalculator @Inject constructor(
         dailyHoroscopeCache[cacheKey]?.let { return it }
 
         val natalData = getOrComputeNatalData(chart)
+        val dashaAtDate = natalData.dashaTimeline.getDashaAtDate(date.atTime(LocalTime.NOON))
         val transitChart = getOrCalculateTransitChart(chart.birthData, date)
         val transitPlanetMap = transitChart.planetPositions.associateBy { it.planet }
 
@@ -207,26 +208,24 @@ class HoroscopeCalculator @Inject constructor(
         val planetaryInfluences = analyzePlanetaryInfluences(
             natalData = natalData,
             transitPlanetMap = transitPlanetMap,
-            transitChart = transitChart,
             language = language
         )
 
         val lifeAreaPredictions = calculateLifeAreaPredictions(
-            chart = chart,
             natalData = natalData,
-            transitChart = transitChart,
             transitPlanetMap = transitPlanetMap,
+            dashaAtDate = dashaAtDate,
             date = date,
             language = language
         )
 
-        val overallEnergy = calculateOverallEnergy(planetaryInfluences, lifeAreaPredictions, natalData.dashaTimeline)
-        val (themeKey, themeDescriptionKey) = calculateDailyTheme(transitPlanetMap, natalData.dashaTimeline)
+        val overallEnergy = calculateOverallEnergy(planetaryInfluences, lifeAreaPredictions, dashaAtDate.mahadasha?.planet)
+        val (themeKey, themeDescriptionKey) = calculateDailyTheme(transitPlanetMap, dashaAtDate.mahadasha?.planet)
         val luckyElements = calculateLuckyElements(natalData, transitPlanetMap, date, language)
-        val activeDasha = formatActiveDasha(natalData.dashaTimeline, language)
-        val recommendations = generateRecommendations(natalData.dashaTimeline, lifeAreaPredictions, transitPlanetMap)
+        val activeDasha = formatActiveDasha(dashaAtDate, language)
+        val recommendations = generateRecommendations(dashaAtDate, lifeAreaPredictions, transitPlanetMap)
         val cautions = generateCautions(transitPlanetMap, planetaryInfluences)
-        val affirmationKey = generateAffirmationKey(natalData.dashaTimeline.currentMahadasha?.planet)
+        val affirmationKey = generateAffirmationKey(dashaAtDate.mahadasha?.planet)
 
         return DailyHoroscope(
             date = date,
@@ -262,6 +261,10 @@ class HoroscopeCalculator @Inject constructor(
 
         val endDate = startDate.plusDays(6)
         val natalData = getOrComputeNatalData(chart)
+        val startDasha = natalData.dashaTimeline.getDashaAtDate(startDate.atTime(LocalTime.NOON))
+        val endDasha = natalData.dashaTimeline.getDashaAtDate(endDate.atTime(LocalTime.NOON))
+        val hasDashaShift = startDasha.mahadasha?.planet != endDasha.mahadasha?.planet ||
+                startDasha.antardasha?.planet != endDasha.antardasha?.planet
 
         val dailyHoroscopes = (0 until 7).mapNotNull { dayOffset ->
             val date = startDate.plusDays(dayOffset.toLong())
@@ -300,7 +303,12 @@ class HoroscopeCalculator @Inject constructor(
 
         val keyDates = calculateKeyDates(startDate, endDate, language)
         val weeklyPredictions = calculateWeeklyPredictions(dailyHoroscopes, natalData.dashaTimeline, language)
-        val (weeklyThemeKey, weeklyOverview) = calculateWeeklyTheme(natalData.dashaTimeline, dailyHighlights, language)
+        val (weeklyThemeKey, weeklyOverview) = calculateWeeklyTheme(
+            dashaTimeline = natalData.dashaTimeline,
+            dailyHighlights = dailyHighlights,
+            hasDashaShift = hasDashaShift,
+            language = language
+        )
         val weeklyAdvice = generateWeeklyAdvice(natalData.dashaTimeline, keyDates, language)
 
         return WeeklyHoroscope(
@@ -353,9 +361,9 @@ class HoroscopeCalculator @Inject constructor(
         }
     }
 
-    private fun formatActiveDasha(timeline: DashaCalculator.DashaTimeline, language: Language): String {
-        val md = timeline.currentMahadasha ?: return StringResources.get(StringKey.DASHA_CALCULATING, language)
-        val ad = timeline.currentAntardasha
+    private fun formatActiveDasha(periodInfo: DashaCalculator.DashaPeriodInfo, language: Language): String {
+        val md = periodInfo.mahadasha ?: return StringResources.get(StringKey.DASHA_CALCULATING, language)
+        val ad = periodInfo.antardasha
         return if (ad != null) {
             "${md.planet.getLocalizedName(language)}-${ad.planet.getLocalizedName(language)}"
         } else {
@@ -366,7 +374,6 @@ class HoroscopeCalculator @Inject constructor(
     private fun analyzePlanetaryInfluences(
         natalData: NatalChartCachedData,
         transitPlanetMap: Map<Planet, PlanetPosition>,
-        transitChart: VedicChart,
         language: Language
     ): List<PlanetaryInfluence> {
         return Planet.MAIN_PLANETS.mapNotNull { planet ->
@@ -544,18 +551,17 @@ class HoroscopeCalculator @Inject constructor(
     }
 
     private fun calculateLifeAreaPredictions(
-        chart: VedicChart,
         natalData: NatalChartCachedData,
-        transitChart: VedicChart,
         transitPlanetMap: Map<Planet, PlanetPosition>,
+        dashaAtDate: DashaCalculator.DashaPeriodInfo,
         date: LocalDate,
         language: Language
     ): List<LifeAreaPrediction> {
-        val dashaLordName = natalData.dashaTimeline.currentMahadasha?.planet?.getLocalizedName(language) ?: "current"
+        val dashaLordName = dashaAtDate.mahadasha?.planet?.getLocalizedName(language) ?: "current"
         
         return LifeArea.entries.map { area ->
             val dashaInfluence = calculateDashaInfluenceOnArea(
-                timeline = natalData.dashaTimeline,
+                dashaAtDate = dashaAtDate,
                 area = area,
                 planetMap = natalData.planetMap,
                 ascendantSign = natalData.ascendantSign,
@@ -564,6 +570,7 @@ class HoroscopeCalculator @Inject constructor(
             val transitInfluence = calculateTransitInfluenceOnArea(
                 natalMoonSign = natalData.moonSign,
                 natalAscendantSign = natalData.ascendantSign,
+                ashtakavarga = natalData.ashtakavarga,
                 transitPlanetMap = transitPlanetMap,
                 area = area
             )
@@ -595,14 +602,14 @@ class HoroscopeCalculator @Inject constructor(
     }
 
     private fun calculateDashaInfluenceOnArea(
-        timeline: DashaCalculator.DashaTimeline,
+        dashaAtDate: DashaCalculator.DashaPeriodInfo,
         area: LifeArea,
         planetMap: Map<Planet, PlanetPosition>,
         ascendantSign: ZodiacSign,
         moonSign: ZodiacSign
     ): Double {
-        val currentMahadasha = timeline.currentMahadasha ?: return 3.0
-        val currentAntardasha = timeline.currentAntardasha
+        val currentMahadasha = dashaAtDate.mahadasha ?: return 3.0
+        val currentAntardasha = dashaAtDate.antardasha
 
         val mahaScore = scoreDashaPlanetForArea(
             planet = currentMahadasha.planet,
@@ -674,6 +681,7 @@ class HoroscopeCalculator @Inject constructor(
     private fun calculateTransitInfluenceOnArea(
         natalMoonSign: ZodiacSign,
         natalAscendantSign: ZodiacSign,
+        ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis?,
         transitPlanetMap: Map<Planet, PlanetPosition>,
         area: LifeArea
     ): Double {
@@ -709,6 +717,15 @@ class HoroscopeCalculator @Inject constructor(
                 else -> 0.0
             }
 
+            val ashtakavargaScore = getAshtakavargaTransitScore(planet, position.sign, ashtakavarga)
+            contribution += when {
+                ashtakavargaScore == null -> 0.0
+                ashtakavargaScore >= 5 -> 0.2
+                ashtakavargaScore == 4 -> 0.1
+                ashtakavargaScore in 2..3 -> -0.1
+                else -> -0.25
+            }
+
             if (position.isRetrograde) {
                 contribution *= if (planet in NATURAL_BENEFICS) 0.85 else 0.95
             }
@@ -732,7 +749,7 @@ class HoroscopeCalculator @Inject constructor(
     private fun calculateOverallEnergy(
         influences: List<PlanetaryInfluence>,
         lifeAreas: List<LifeAreaPrediction>,
-        dashaTimeline: DashaCalculator.DashaTimeline
+        mahadashaPlanet: Planet?
     ): Int {
         val planetaryAvg = if (influences.isNotEmpty()) {
             influences.sumOf { it.strength }.toDouble() / influences.size
@@ -742,7 +759,7 @@ class HoroscopeCalculator @Inject constructor(
             lifeAreas.sumOf { it.rating * 2 }.toDouble() / lifeAreas.size
         } else 5.0
 
-        val dashaBonus = DASHA_ENERGY_MODIFIERS[dashaTimeline.currentMahadasha?.planet] ?: 0.0
+        val dashaBonus = DASHA_ENERGY_MODIFIERS[mahadashaPlanet] ?: 0.0
         val rawEnergy = (planetaryAvg * 0.4) + (lifeAreaAvg * 0.4) + (5.0 + dashaBonus) * 0.2
 
         return rawEnergy.roundToInt().coerceIn(1, 10)
@@ -750,10 +767,10 @@ class HoroscopeCalculator @Inject constructor(
 
     private fun calculateDailyTheme(
         transitPlanetMap: Map<Planet, PlanetPosition>,
-        dashaTimeline: DashaCalculator.DashaTimeline
+        mahadashaPlanet: Planet?
     ): Pair<StringKey, StringKey> {
         val moonSign = transitPlanetMap[Planet.MOON]?.sign ?: ZodiacSign.ARIES
-        val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
+        val currentDashaLord = mahadashaPlanet ?: Planet.SUN
 
         val themeKey = determineTheme(moonSign, currentDashaLord)
         val descriptionKey = THEME_DESCRIPTIONS_KEYS[themeKey] ?: StringKey.THEME_DESC_BALANCE_EQUILIBRIUM
@@ -827,13 +844,13 @@ class HoroscopeCalculator @Inject constructor(
     }
 
     private fun generateRecommendations(
-        dashaTimeline: DashaCalculator.DashaTimeline,
+        dashaAtDate: DashaCalculator.DashaPeriodInfo,
         lifeAreas: List<LifeAreaPrediction>,
         transitPlanetMap: Map<Planet, PlanetPosition>
     ): List<StringKey> {
         val recommendations = ArrayList<StringKey>(3)
 
-        dashaTimeline.currentMahadasha?.planet?.let { dashaLord ->
+        dashaAtDate.mahadasha?.planet?.let { dashaLord ->
             DASHA_RECOMMENDATIONS_KEYS[dashaLord]?.let { recommendations.add(it) }
         }
 
@@ -935,6 +952,7 @@ class HoroscopeCalculator @Inject constructor(
     private fun calculateWeeklyTheme(
         dashaTimeline: DashaCalculator.DashaTimeline,
         dailyHighlights: List<DailyHighlight>,
+        hasDashaShift: Boolean,
         language: Language
     ): Pair<StringKey, String> {
         val avgEnergy = if (dailyHighlights.isNotEmpty()) {
@@ -948,6 +966,7 @@ class HoroscopeCalculator @Inject constructor(
         val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
 
         val themeKey = when {
+            hasDashaShift && avgEnergy < 7.2 -> StringKey.THEME_WEEK_MINDFUL_NAVIGATION
             avgEnergy >= 6.8 && energyTrend >= 0 -> StringKey.THEME_WEEK_OPPORTUNITIES
             avgEnergy >= 5.0 && energyVolatility <= 2.2 -> StringKey.THEME_WEEK_STEADY_PROGRESS
             avgEnergy <= 4.8 || energyVolatility > 2.2 -> StringKey.THEME_WEEK_MINDFUL_NAVIGATION
