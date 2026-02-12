@@ -64,15 +64,21 @@ class PanchangaCalculator(context: Context) : Closeable {
         val localNoonUtc = ZonedDateTime.of(localDate, LocalTime.NOON, zoneId).withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime()
         val jdNoon = calculateJulianDay(localNoonUtc.year, localNoonUtc.monthValue, localNoonUtc.dayOfMonth, localNoonUtc.hour, localNoonUtc.minute, localNoonUtc.second)
         val (srJd, ssJd) = calculateSunriseSunsetJD(jdNoon, latitude, longitude)
+        val moonriseJd = calculateRiseSetJD(jdNoon, latitude, longitude, SweConst.SE_MOON, isRise = true)
+        val moonsetJd = calculateRiseSetJD(jdNoon, latitude, longitude, SweConst.SE_MOON, isRise = false)
         val srTime = jdToLocalTime(srJd, zoneId)
         val ssTime = jdToLocalTime(ssJd, zoneId)
+        val moonriseTime = moonriseJd?.let { jdToLocalTime(it, zoneId) }
+        val moonsetTime = moonsetJd?.let { jdToLocalTime(it, zoneId) }
         require(ssTime.isAfter(srTime)) {
             "Invalid daylight interval for $localDate at lat=$latitude lon=$longitude (sunrise=$srTime sunset=$ssTime)"
         }
         return PanchangaData(
             tithi, calculateNakshatra(moonSid), calculateYoga(sunSid, moonSid), calculateKarana(sunSid, moonSid),
             calculateVara(localDate), if (tithi.number <= 15) Paksha.SHUKLA else Paksha.KRISHNA,
-            formatLocalTime(srTime), formatLocalTime(ssTime), srTime, ssTime, srJd, ssJd,
+            formatLocalTime(srTime), formatLocalTime(ssTime),
+            moonriseTime?.let { formatLocalTime(it) }, moonsetTime?.let { formatLocalTime(it) },
+            srTime, ssTime, moonriseTime, moonsetTime, srJd, ssJd, moonriseJd, moonsetJd,
             calculateMoonPhase(sunTrop, moonTrop), sunSid, moonSid, swissEph.swe_get_ayanamsa_ut(jd)
         )
     }
@@ -127,16 +133,41 @@ class PanchangaCalculator(context: Context) : Closeable {
     }
 
     private fun calculateSunriseSunsetJD(jd: Double, lat: Double, lon: Double): Pair<Double, Double> {
-        val geo = doubleArrayOf(lon, lat, 0.0); val t = DblObj(); val jdm = floor(jd - 0.5) + 0.5
-        val flags = SweConst.SE_CALC_RISE or SweConst.SE_BIT_DISC_CENTER
-        val serr = StringBuffer()
-        val r1 = swissEph.swe_rise_trans(jdm, SweConst.SE_SUN, null, SweConst.SEFLG_SWIEPH, flags, geo, 0.0, 0.0, t, serr)
-        if (r1 < 0) throw IllegalStateException("Swiss Ephemeris sunrise calculation failed at lat=$lat lon=$lon jd=$jdm: $serr")
-        val sr = t.`val`
-        val r2 = swissEph.swe_rise_trans(jdm, SweConst.SE_SUN, null, SweConst.SEFLG_SWIEPH, SweConst.SE_CALC_SET or SweConst.SE_BIT_DISC_CENTER, geo, 0.0, 0.0, t, serr)
-        if (r2 < 0) throw IllegalStateException("Swiss Ephemeris sunset calculation failed at lat=$lat lon=$lon jd=$jdm: $serr")
-        val ss = t.`val`
+        val sr = calculateRiseSetJD(jd, lat, lon, SweConst.SE_SUN, isRise = true)
+            ?: throw IllegalStateException("Swiss Ephemeris sunrise calculation failed at lat=$lat lon=$lon jd=$jd")
+        val ss = calculateRiseSetJD(jd, lat, lon, SweConst.SE_SUN, isRise = false)
+            ?: throw IllegalStateException("Swiss Ephemeris sunset calculation failed at lat=$lat lon=$lon jd=$jd")
         return sr to ss
+    }
+
+    private fun calculateRiseSetJD(
+        jd: Double,
+        lat: Double,
+        lon: Double,
+        bodyId: Int,
+        isRise: Boolean
+    ): Double? {
+        val geo = doubleArrayOf(lon, lat, 0.0)
+        val event = DblObj()
+        val jdm = floor(jd - 0.5) + 0.5
+        val eventFlag = if (isRise) SweConst.SE_CALC_RISE else SweConst.SE_CALC_SET
+        val serr = StringBuffer()
+
+        // Use visible limb + standard atmosphere for practical real-world rise/set timings.
+        val result = swissEph.swe_rise_trans(
+            jdm,
+            bodyId,
+            null,
+            SweConst.SEFLG_SWIEPH,
+            eventFlag,
+            geo,
+            1013.25,
+            15.0,
+            event,
+            serr
+        )
+
+        return if (result >= 0) event.`val` else null
     }
 
     private fun jdToLocalTime(jd: Double, zoneId: ZoneId): LocalTime {

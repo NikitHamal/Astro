@@ -518,7 +518,6 @@ private fun FiveLimbsCard(
             PanchangaLimbRow(
                 number = 1,
                 name = stringResource(StringKeyDosha.PANCHANGA_TITHI_LABEL),
-                sanskrit = "तिथि",
                 value = panchanga.tithi.tithi.displayName,
                 description = stringResource(StringKeyDosha.PANCHANGA_LUNAR_DAY_FMT, panchanga.paksha.displayName),
                 color = AppTheme.LifeAreaLove
@@ -530,7 +529,6 @@ private fun FiveLimbsCard(
             PanchangaLimbRow(
                 number = 2,
                 name = stringResource(StringKeyDosha.PANCHANGA_VARA_LABEL),
-                sanskrit = "वार",
                 value = panchanga.vara.displayName,
                 description = stringResource(StringKeyDosha.PANCHANGA_VARA_DESC),
                 color = AppTheme.AccentPrimary
@@ -542,7 +540,6 @@ private fun FiveLimbsCard(
             PanchangaLimbRow(
                 number = 3,
                 name = stringResource(StringKeyDosha.PANCHANGA_NAKSHATRA_LABEL),
-                sanskrit = "नक्षत्र",
                 value = panchanga.nakshatra.nakshatra.displayName,
                 description = stringResource(StringKeyDosha.PANCHANGA_NAKSHATRA_DESC_FMT, panchanga.nakshatra.pada),
                 color = AppTheme.AccentGold
@@ -554,7 +551,6 @@ private fun FiveLimbsCard(
             PanchangaLimbRow(
                 number = 4,
                 name = stringResource(StringKeyDosha.PANCHANGA_YOGA_LABEL),
-                sanskrit = "योग",
                 value = panchanga.yoga.yoga.displayName,
                 description = stringResource(StringKeyDosha.PANCHANGA_YOGA_DESC),
                 color = AppTheme.AccentTeal
@@ -566,7 +562,6 @@ private fun FiveLimbsCard(
             PanchangaLimbRow(
                 number = 5,
                 name = stringResource(StringKeyDosha.PANCHANGA_KARANA_LABEL),
-                sanskrit = "करण",
                 value = panchanga.karana.karana.displayName,
                 description = stringResource(StringKeyDosha.PANCHANGA_KARANA_DESC),
                 color = AppTheme.LifeAreaSpiritual
@@ -579,7 +574,6 @@ private fun FiveLimbsCard(
 private fun PanchangaLimbRow(
     number: Int,
     name: String,
-    sanskrit: String,
     value: String,
     description: String,
     color: Color
@@ -606,21 +600,12 @@ private fun PanchangaLimbRow(
         Spacer(modifier = Modifier.width(12.dp))
 
         Column(modifier = Modifier.weight(1f)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = name,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = sanskrit,
-                    fontSize = 12.sp,
-                    color = AppTheme.TextMuted,
-                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
-                )
-            }
+            Text(
+                text = name,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
+            )
             Text(
                 text = description,
                 fontSize = 11.sp,
@@ -841,9 +826,15 @@ private fun SunMoonCard(
                             color = AppTheme.LifeAreaLove
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        SunMoonTimeRow(label = stringResource(StringKeyDosha.PANCHANGA_RISE), time = "N/A")
+                        SunMoonTimeRow(
+                            label = stringResource(StringKeyDosha.PANCHANGA_RISE),
+                            time = panchanga.moonrise ?: "--"
+                        )
                         Spacer(modifier = Modifier.height(4.dp))
-                        SunMoonTimeRow(label = stringResource(StringKeyDosha.PANCHANGA_SET), time = "N/A")
+                        SunMoonTimeRow(
+                            label = stringResource(StringKeyDosha.PANCHANGA_SET),
+                            time = panchanga.moonset ?: "--"
+                        )
                     }
                 }
             }
@@ -1096,7 +1087,6 @@ private fun PanchangaElementsContent(
         item(key = "tithi_element") {
             ElementDetailCard(
                 name = stringResource(StringKeyDosha.PANCHANGA_TITHI_LABEL),
-                sanskrit = "तिथि",
                 description = stringResource(StringKeyDosha.PANCHANGA_TITHI_DESC_LONG),
                 significance = stringResource(StringKeyDosha.PANCHANGA_TITHI_SIG),
                 color = AppTheme.LifeAreaLove,
@@ -1109,7 +1099,6 @@ private fun PanchangaElementsContent(
         item(key = "vara_element") {
             ElementDetailCard(
                 name = stringResource(StringKeyDosha.PANCHANGA_VARA_LABEL),
-                sanskrit = "वार",
                 description = stringResource(StringKeyDosha.PANCHANGA_VARA_DESC_LONG),
                 significance = stringResource(StringKeyDosha.PANCHANGA_VARA_SIG),
                 color = AppTheme.AccentPrimary,
@@ -1122,7 +1111,6 @@ private fun PanchangaElementsContent(
         item(key = "nakshatra_element") {
             ElementDetailCard(
                 name = stringResource(StringKeyDosha.PANCHANGA_NAKSHATRA_LABEL),
-                sanskrit = "नक्षत्र",
                 description = stringResource(StringKeyDosha.PANCHANGA_NAKSHATRA_DESC_LONG),
                 significance = stringResource(StringKeyDosha.PANCHANGA_NAKSHATRA_SIG),
                 color = AppTheme.AccentGold,
@@ -1135,7 +1123,6 @@ private fun PanchangaElementsContent(
         item(key = "yoga_element") {
             ElementDetailCard(
                 name = stringResource(StringKeyDosha.PANCHANGA_YOGA_LABEL),
-                sanskrit = "योग",
                 description = stringResource(StringKeyDosha.PANCHANGA_YOGA_DESC_LONG),
                 significance = stringResource(StringKeyDosha.PANCHANGA_YOGA_SIG),
                 color = AppTheme.AccentTeal,
@@ -1148,7 +1135,6 @@ private fun PanchangaElementsContent(
         item(key = "karana_element") {
             ElementDetailCard(
                 name = stringResource(StringKeyDosha.PANCHANGA_KARANA_LABEL),
-                sanskrit = "करण",
                 description = stringResource(StringKeyDosha.PANCHANGA_KARANA_DESC_LONG),
                 significance = stringResource(StringKeyDosha.PANCHANGA_KARANA_SIG),
                 color = AppTheme.LifeAreaSpiritual,
@@ -1164,7 +1150,6 @@ private fun PanchangaElementsContent(
 @Composable
 private fun ElementDetailCard(
     name: String,
-    sanskrit: String,
     description: String,
     significance: String,
     color: Color,
@@ -1202,12 +1187,6 @@ private fun ElementDetailCard(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
-                    )
-                    Text(
-                        text = sanskrit,
-                        fontSize = 12.sp,
-                        color = AppTheme.TextMuted,
-                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                     )
                 }
             }
@@ -1481,5 +1460,6 @@ private fun rememberCurrentDateTime(zoneId: ZoneId) = produceState(
         delay(60_000)
     }
 }
+
 
 
