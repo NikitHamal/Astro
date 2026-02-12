@@ -1,10 +1,8 @@
 package com.astro.storm.ui.screen.main
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +18,6 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -31,7 +28,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -39,8 +35,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,28 +47,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.model.VedicChart
-import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.components.ProfileSwitcherBottomSheet
-import com.astro.storm.ui.theme.AppTheme
-import com.astro.storm.ui.theme.BorderSubtle
-import com.astro.storm.ui.theme.CinzelDecorativeFontFamily
-import com.astro.storm.ui.theme.CosmicIndigo
-import com.astro.storm.ui.theme.Paper
-import com.astro.storm.ui.theme.SpaceGroteskFontFamily
-import com.astro.storm.ui.theme.Vellum
-import com.astro.storm.ui.theme.VedicGold
-import com.astro.storm.ui.viewmodel.ChartUiState
+import com.astro.storm.ui.theme.*
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import kotlinx.coroutines.launch
 
-/**
- * Main Screen with Bottom Navigation - Redesigned for Astrostorm
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
@@ -141,15 +121,12 @@ fun MainScreen(
     onNavigateToJaiminiKaraka: () -> Unit = {},
     onNavigateToDrigDasha: () -> Unit = {},
     onNavigateToSaptamsa: () -> Unit = {},
-    onExportChart: (com.astro.storm.ui.screen.main.ExportFormat) -> Unit
+    onExportChart: (ExportFormat) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     var selectedTab by rememberSaveable { mutableStateOf(MainTab.HOME) }
     var showProfileSwitcher by remember { mutableStateOf(false) }
     val profileSheetState = rememberModalBottomSheetState()
-    val colors = AppTheme.current
-
-    val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -195,6 +172,7 @@ fun MainScreen(
                                     InsightFeature.SHODASHVARGA -> onNavigateToShodashvarga()
                                     InsightFeature.ASHTAKAVARGA -> onNavigateToAshtakavarga()
                                     InsightFeature.DASHAS -> onNavigateToDashas()
+                                    InsightFeature.NATIVE_ANALYSIS -> onNavigateToNativeAnalysis()
                                 }
                             }
                         )
@@ -202,7 +180,6 @@ fun MainScreen(
                     MainTab.CHART -> {
                         if (currentChart != null) {
                             onNavigateToBirthChart()
-                            // Temporarily redirect or show limited view if used as tab
                         }
                     }
                     MainTab.TRANSITS -> {
@@ -273,10 +250,7 @@ private fun MainTopBar(
                     .padding(end = 16.dp)
                     .size(32.dp)
                     .border(BorderStroke(1.dp, VedicGold), CircleShape)
-                    .background(Paper, CircleShape)
-                    .padding(4.dp)
-                    .remember { Modifier } // placeholder
-                    .then(Modifier.size(24.dp)), // fixed size
+                    .background(Paper, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -347,3 +321,5 @@ enum class MainTab(
     TRANSITS(Icons.Filled.Update, Icons.Outlined.Update),
     ORACLE(Icons.Filled.MenuBook, Icons.Outlined.MenuBook);
 }
+
+enum class ExportFormat { PDF, IMAGE }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,12 +42,6 @@ fun DeepPredictionsScreen(
     onBack: () -> Unit,
     viewModel: DeepPredictionsViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    
-    LaunchedEffect(chart) {
-        viewModel.calculatePredictions(chart)
-    }
-
     Scaffold(
         containerColor = Vellum,
         topBar = {
@@ -76,25 +71,44 @@ fun DeepPredictionsScreen(
             )
         }
     ) { paddingValues ->
-        Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
-            com.astro.storm.ui.screen.main.GrainTextureOverlay()
-            
-            when (val state = uiState) {
-                is DeepPredictionsUiState.Loading -> {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(color = VedicGold)
-                    }
+        DeepPredictionsBody(
+            chart = chart,
+            viewModel = viewModel,
+            modifier = Modifier.padding(paddingValues)
+        )
+    }
+}
+
+@Composable
+fun DeepPredictionsBody(
+    chart: VedicChart,
+    viewModel: DeepPredictionsViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(chart) {
+        viewModel.calculatePredictions(chart)
+    }
+
+    Box(modifier = modifier.fillMaxSize()) {
+        com.astro.storm.ui.screen.main.GrainTextureOverlay()
+
+        when (val state = uiState) {
+            is DeepPredictionsUiState.Loading -> {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = VedicGold)
                 }
-                is DeepPredictionsUiState.Success -> {
-                    OracleContent(state.predictions)
-                }
-                is DeepPredictionsUiState.Error -> {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(state.message, color = MarsRed)
-                    }
-                }
-                else -> {}
             }
+            is DeepPredictionsUiState.Success -> {
+                OracleContent(state.predictions)
+            }
+            is DeepPredictionsUiState.Error -> {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(state.message, color = MarsRed)
+                }
+            }
+            else -> {}
         }
     }
 }
@@ -124,7 +138,7 @@ private fun OracleContent(predictions: com.astro.storm.ephemeris.deepanalysis.pr
 
                 currentMahadasha?.let { dasha ->
                     Text(
-                        text = "The Teacher of Patience", // Ideally this comes from a title mapping in the prediction engine
+                        text = "The Teacher of Patience",
                         style = MaterialTheme.typography.headlineSmall,
                         color = VedicGold,
                         fontFamily = CormorantGaramondFontFamily,
@@ -136,7 +150,7 @@ private fun OracleContent(predictions: com.astro.storm.ephemeris.deepanalysis.pr
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Box(Modifier.width(48.dp).height(1.dp).background(BorderSubtle))
                         Text(
-                            text = "Cycle: ${dasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.YEAR)} — ${dasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.YEAR)}",
+                            text = "Cycle: ${dasha.startDate.formatLocalized(com.astro.storm.data.localization.DateFormat.YEAR_ONLY)} — ${dasha.endDate.formatLocalized(com.astro.storm.data.localization.DateFormat.YEAR_ONLY)}",
                             style = MaterialTheme.typography.labelSmall,
                             color = SlateMuted,
                             fontFamily = SpaceGroteskFontFamily,
@@ -148,15 +162,15 @@ private fun OracleContent(predictions: com.astro.storm.ephemeris.deepanalysis.pr
             }
         }
 
-        // Article Body with Drop Cap (Theme summary)
+        // Article Body with Drop Cap
         item {
             currentMahadasha?.let { dasha ->
-                val themeText = dasha.overallTheme.en // Using English for the mockup feel, but should be localized
+                val themeText = dasha.overallTheme.en
                 DropCapParagraph(themeText)
             }
         }
 
-        // Pull Quote (Advice)
+        // Pull Quote
         item {
             currentMahadasha?.let { dasha ->
                 Box(
@@ -186,7 +200,7 @@ private fun OracleContent(predictions: com.astro.storm.ephemeris.deepanalysis.pr
             }
         }
 
-        // Additional Content (Upcoming highlights)
+        // Additional Content
         item {
             Text(
                 text = predictions.overallPredictionSummary.en,

@@ -29,10 +29,12 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.ui.chart.ChartRenderer
 import com.astro.storm.ui.theme.*
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import androidx.compose.foundation.BorderStroke
 
 @Composable
 fun ChartTabContent(
@@ -133,13 +135,13 @@ fun ChartTabContent(
                         }
 
                         // Ascendant Row
-                        val ascSign = ZodiacSign.fromLongitude(chart.ascendant)
+                        val ascDetails = Nakshatra.fromLongitude(chart.ascendant)
                         val ascDegree = chart.ascendant % 30.0
                         PlanetRow(
                             name = "Ascendant",
                             degree = formatDegree(ascDegree),
-                            nakshatra = chart.nakshatra.getLocalizedName(language),
-                            pada = "Pada ${chart.pada}",
+                            nakshatra = ascDetails.first.getLocalizedName(language),
+                            pada = "Pada ${ascDetails.second}",
                             accentColor = VedicGold,
                             isAscendant = true
                         )
@@ -150,7 +152,7 @@ fun ChartTabContent(
                                 name = position.planet.getLocalizedName(language),
                                 degree = formatDegree(position.longitude % 30.0),
                                 nakshatra = position.nakshatra.getLocalizedName(language),
-                                pada = "Pada ${position.pada}",
+                                pada = "Pada ${position.nakshatraPada}",
                                 isRetrograde = position.isRetrograde,
                                 icon = getPlanetIcon(position.planet)
                             )
@@ -242,7 +244,7 @@ private fun formatDegree(degree: Double): String {
 
 private fun getPlanetIcon(planet: com.astro.storm.core.model.Planet): ImageVector {
     return when (planet) {
-        com.astro.storm.core.model.Planet.SUN -> Icons.Outlined.Sunny
+        com.astro.storm.core.model.Planet.SUN -> Icons.Outlined.LightMode
         com.astro.storm.core.model.Planet.MOON -> Icons.Outlined.Bedtime
         com.astro.storm.core.model.Planet.MARS -> Icons.Outlined.RadioButtonChecked
         com.astro.storm.core.model.Planet.MERCURY -> Icons.Outlined.Circle
