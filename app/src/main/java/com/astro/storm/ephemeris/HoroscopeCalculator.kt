@@ -296,7 +296,7 @@ class HoroscopeCalculator @Inject constructor(
             }
         } else {
             (0 until 7).map { dayOffset ->
-                val date = startDate.plusDays(dayOffset.toLong())
+                val date = effectiveStartDate.plusDays(dayOffset.toLong())
                 DailyHighlight(
                     date = date,
                     dayOfWeek = date.dayOfWeek,
