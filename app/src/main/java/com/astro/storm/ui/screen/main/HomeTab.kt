@@ -110,6 +110,16 @@ fun HomeTab(
     val listState = rememberLazyListState()
     val colors = AppTheme.current
     val language = LocalLanguage.current
+    var selectedCategory by remember { mutableStateOf<FeatureCategory?>(null) }
+
+    if (selectedCategory != null) {
+        FeatureCategoryBottomSheet(
+            category = selectedCategory!!,
+            onFeatureClick = onFeatureClick,
+            onDismiss = { selectedCategory = null },
+            language = language
+        )
+    }
 
     // Pre-calculate dasha data once
     val dashaTimeline = remember(chart) {
@@ -170,7 +180,7 @@ fun HomeTab(
         // Chart Analysis Section
         item(key = "chart_analysis_bento") {
             ChartAnalysisBentoGrid(
-                onFeatureClick = onFeatureClick,
+                onCategoryClick = { selectedCategory = it },
                 language = language
             )
         }
@@ -396,40 +406,10 @@ private fun HeroDashaCard(
 // Sharp square cards, hairline borders, Space Grotesk labels
 // ============================================================================
 @Composable
-private fun QuickActionsSection(
-    onFeatureClick: (InsightFeature) -> Unit,
-    language: Language
-) {
-    val colors = AppTheme.current
-    val quickActions = listOf(
-        QuickAction(InsightFeature.FULL_CHART, Icons.Outlined.GridView, colors.AccentPrimary),
-        QuickAction(InsightFeature.YOGAS, Icons.Outlined.AutoAwesome, colors.AccentGold),
-        QuickAction(InsightFeature.PREDICTIONS, Icons.Outlined.TipsAndUpdates, colors.LifeAreaSpiritual),
-        QuickAction(InsightFeature.MATCHMAKING, Icons.Outlined.Favorite, colors.LifeAreaLove)
-    )
-
-    Column(
-        modifier = Modifier.padding(horizontal = HomeDesignTokens.ScreenPadding)
-    ) {
-        SectionHeader(
-            title = stringResource(StringKey.QUICK_ACTIONS),
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        // 2x2 bento grid
-        Column(
-            verticalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
-            ) {
-                quickActions.take(2).forEach { action ->
-                    QuickActionItem(
-                        feature = action.feature,
-                        icon = action.icon,
-                        accentColor = action.color,
-                        language = language,
+            QuickActionsSection(
+                onFeatureClick = onFeatureClick,
+                language = language
+            )
                         onClick = { onFeatureClick(action.feature) },
                         modifier = Modifier.weight(1f)
                     )
@@ -1276,7 +1256,7 @@ private fun resolveZoneId(timezone: String): ZoneId {
 
 @Composable
 private fun ChartAnalysisBentoGrid(
-    onFeatureClick: (InsightFeature) -> Unit,
+    onCategoryClick: (FeatureCategory) -> Unit,
     language: Language
 ) {
     val colors = AppTheme.current
@@ -1301,7 +1281,7 @@ private fun ChartAnalysisBentoGrid(
                 description = stringResource(StringKey.CATEGORY_CORE_DESC),
                 icon = Icons.Outlined.GridView,
                 accentColor = colors.AccentPrimary,
-                onClick = { onFeatureClick(InsightFeature.FULL_CHART) },
+                onClick = { onCategoryClick(FeatureCategory.CORE) },
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
@@ -1321,7 +1301,7 @@ private fun ChartAnalysisBentoGrid(
                     description = stringResource(StringKey.CATEGORY_TIMING_DESC),
                     icon = Icons.Outlined.Timeline,
                     accentColor = colors.LifeAreaSpiritual,
-                    onClick = { onFeatureClick(InsightFeature.DASHAS) },
+                    onClick = { onCategoryClick(FeatureCategory.TIMING_SYSTEMS) },
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
@@ -1335,7 +1315,7 @@ private fun ChartAnalysisBentoGrid(
                     description = stringResource(StringKey.CATEGORY_PREDICTIONS_DESC),
                     icon = Icons.Outlined.AutoAwesome,
                     accentColor = colors.AccentGold,
-                    onClick = { onFeatureClick(InsightFeature.PREDICTIONS) },
+                    onClick = { onCategoryClick(FeatureCategory.PREDICTIONS) },
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
@@ -1355,7 +1335,7 @@ private fun ChartAnalysisBentoGrid(
                 description = stringResource(StringKey.CATEGORY_STRENGTH_DESC),
                 icon = Icons.Outlined.Speed,
                 accentColor = colors.SuccessColor,
-                onClick = { onFeatureClick(InsightFeature.SHADBALA) },
+                onClick = { onCategoryClick(FeatureCategory.STRENGTH_ANALYSIS) },
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
@@ -1368,7 +1348,7 @@ private fun ChartAnalysisBentoGrid(
                 description = stringResource(StringKey.CATEGORY_ADVANCED_DESC),
                 icon = Icons.Outlined.Psychology,
                 accentColor = colors.AccentTeal,
-                onClick = { onFeatureClick(InsightFeature.NADI_AMSHA) },
+                onClick = { onCategoryClick(FeatureCategory.ADVANCED) },
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
@@ -1381,7 +1361,7 @@ private fun ChartAnalysisBentoGrid(
             description = stringResource(StringKey.CATEGORY_REMEDIAL_DESC),
             icon = Icons.Outlined.Spa,
             accentColor = colors.LifeAreaHealth,
-            onClick = { onFeatureClick(InsightFeature.REMEDIES) },
+            onClick = { onCategoryClick(FeatureCategory.REMEDIAL) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
@@ -1507,6 +1487,193 @@ private fun StrengthGraphic(color: Color) {
                 topLeft = Offset(i * barWidth * 2 + barWidth / 2, h - barHeight),
                 size = Size(barWidth, barHeight)
             )
+        }
+    }
+}
+
+enum class FeatureCategory(val features: List<InsightFeature>) {
+    CORE(
+        listOf(
+            InsightFeature.FULL_CHART,
+            InsightFeature.PLANETS,
+            InsightFeature.NAKSHATRA_ANALYSIS,
+            InsightFeature.DIVISIONAL_CHARTS,
+            InsightFeature.SHODASHVARGA,
+            InsightFeature.ASHTAKAVARGA
+        )
+    ),
+    TIMING_SYSTEMS(
+        listOf(
+            InsightFeature.DASHAS,
+            InsightFeature.YOGINI_DASHA,
+            InsightFeature.CHARA_DASHA,
+            InsightFeature.ASHTOTTARI_DASHA,
+            InsightFeature.KALACHAKRA_DASHA,
+            InsightFeature.SHOOLA_DASHA,
+            InsightFeature.DASHA_SANDHI,
+            InsightFeature.DRIG_DASHA
+        )
+    ),
+    PREDICTIONS(
+        listOf(
+            InsightFeature.PREDICTIONS,
+            InsightFeature.YOGAS,
+            InsightFeature.TRANSITS,
+            InsightFeature.VARSHAPHALA,
+            InsightFeature.PRASHNA,
+            InsightFeature.MUHURTA,
+            InsightFeature.NATIVE_ANALYSIS,
+            InsightFeature.SAPTAMSA
+        )
+    ),
+    STRENGTH_ANALYSIS(
+        listOf(
+            InsightFeature.SHADBALA,
+            InsightFeature.STHANA_BALA,
+            InsightFeature.KALA_BALA,
+            InsightFeature.DRIG_BALA,
+            InsightFeature.ISHTA_KASHTA_PHALA,
+            InsightFeature.AVASTHA
+        )
+    ),
+    ADVANCED(
+        listOf(
+            InsightFeature.ARGALA,
+            InsightFeature.ARUDHA_PADA,
+            InsightFeature.BHRIGU_BINDU,
+            InsightFeature.SUDARSHANA_CHAKRA,
+            InsightFeature.SARVATOBHADRA_CHAKRA,
+            InsightFeature.GRAHA_YUDDHA,
+            InsightFeature.MRITYU_BHAGA,
+            InsightFeature.GOCHARA_VEDHA,
+            InsightFeature.NADI_AMSHA,
+            InsightFeature.NITYA_YOGA,
+            InsightFeature.TARABALA,
+            InsightFeature.UPACHAYA_TRANSIT,
+            InsightFeature.ASHTAVARGA_TRANSIT,
+            InsightFeature.KAKSHYA_TRANSIT,
+            InsightFeature.JAIMINI_KARAKA
+        )
+    ),
+    REMEDIAL(
+        listOf(
+            InsightFeature.REMEDIES,
+            InsightFeature.LAL_KITAB,
+            InsightFeature.SAHAM,
+            InsightFeature.MARAKA,
+            InsightFeature.BADHAKA,
+            InsightFeature.KEMADRUMA_YOGA,
+            InsightFeature.PANCH_MAHAPURUSHA,
+            InsightFeature.VIPAREETA_RAJA_YOGA,
+            InsightFeature.MATCHMAKING,
+            InsightFeature.CHART_COMPARISON,
+            InsightFeature.PANCHANGA
+        )
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun FeatureCategoryBottomSheet(
+    category: FeatureCategory,
+    onFeatureClick: (InsightFeature) -> Unit,
+    onDismiss: () -> Unit,
+    language: Language
+) {
+    val colors = AppTheme.current
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = colors.BottomSheetBackground,
+        dragHandle = { BottomSheetDefaults.DragHandle(color = colors.BottomSheetHandle) }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(bottom = 40.dp)
+        ) {
+            Text(
+                text = when (category) {
+                    FeatureCategory.CORE -> stringResource(StringKey.CATEGORY_CORE_ANALYSIS)
+                    FeatureCategory.TIMING_SYSTEMS -> stringResource(StringKey.CATEGORY_TIMING_SYSTEMS)
+                    FeatureCategory.PREDICTIONS -> stringResource(StringKey.CATEGORY_PREDICTIONS)
+                    FeatureCategory.STRENGTH_ANALYSIS -> stringResource(StringKey.CATEGORY_STRENGTH_ANALYSIS)
+                    FeatureCategory.ADVANCED -> stringResource(StringKey.CATEGORY_ADVANCED)
+                    FeatureCategory.REMEDIAL -> stringResource(StringKey.CATEGORY_REMEDIAL)
+                },
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = colors.TextPrimary,
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
+
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(category.features) { feature ->
+                    FeatureItemRow(
+                        feature = feature,
+                        onClick = {
+                            onFeatureClick(feature)
+                            onDismiss()
+                        },
+                        language = language
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FeatureItemRow(
+    feature: InsightFeature,
+    onClick: () -> Unit,
+    language: Language
+) {
+    val colors = AppTheme.current
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .clickable(onClick = onClick),
+        color = colors.CardBackground,
+        border = BorderStroke(1.dp, colors.BorderColor.copy(alpha = 0.3f))
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = feature.icon,
+                contentDescription = null,
+                tint = colors.AccentGold,
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                Text(
+                    text = feature.getLocalizedTitle(language),
+                    fontFamily = PoppinsFontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp,
+                    color = colors.TextPrimary
+                )
+                Text(
+                    text = feature.getLocalizedDescription(language),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    color = colors.TextMuted,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }
