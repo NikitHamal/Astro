@@ -22,6 +22,8 @@ import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 
 /**
  * Common reusable UI components used across multiple screens.
@@ -128,6 +130,7 @@ fun SectionHeader(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleSmall,
+                fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -150,8 +153,9 @@ fun InfoCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        colors = CardDefaults.cardColors(containerColor = backgroundColor),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -280,7 +284,7 @@ fun Chip(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
         color = backgroundColor
     ) {
         Text(
@@ -314,14 +318,14 @@ fun RatingBar(
         modifier = modifier
             .height(8.dp)
             .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp))
+            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
             .background(backgroundColor)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth(progress)
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                 .background(fillColor)
         )
     }

@@ -39,6 +39,8 @@ import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.data.preferences.ThemeMode
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 
 /**
  * Settings Tab - App Settings & Profile Management
@@ -215,13 +217,19 @@ fun SettingsTab(
     }
 }
 
+private object SettingsDesignTokens {
+    val CardShape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
+    val IconShape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+}
+
 @Composable
 private fun SettingsSectionHeader(titleKey: StringKey) {
     Text(
-        text = stringResource(titleKey),
-        style = MaterialTheme.typography.titleSmall,
+        text = stringResource(titleKey).uppercase(),
+        style = MaterialTheme.typography.labelLarge,
+        fontFamily = SpaceGroteskFamily,
         fontWeight = FontWeight.SemiBold,
-        color = AppTheme.AccentPrimary,
+        color = AppTheme.TextMuted,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
     )
 }
@@ -238,7 +246,8 @@ private fun CurrentProfileCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = SettingsDesignTokens.CardShape,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -364,7 +373,8 @@ private fun EmptyProfileCard(onManageProfiles: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .clickable { onManageProfiles() },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = SettingsDesignTokens.CardShape,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -417,7 +427,8 @@ private fun SettingsItem(
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .clickable { onClick() },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = SettingsDesignTokens.CardShape,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -428,7 +439,7 @@ private fun SettingsItem(
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(SettingsDesignTokens.IconShape)
                     .background(AppTheme.ChipBackground),
                 contentAlignment = Alignment.Center
             ) {
@@ -481,7 +492,8 @@ private fun HouseSystemSetting() {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = SettingsDesignTokens.CardShape,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column {
             Row(
@@ -494,7 +506,7 @@ private fun HouseSystemSetting() {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(SettingsDesignTokens.IconShape)
                         .background(AppTheme.ChipBackground),
                     contentAlignment = Alignment.Center
                 ) {
@@ -580,7 +592,8 @@ private fun LanguageSetting(localizationManager: LocalizationManager?) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = SettingsDesignTokens.CardShape,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column {
             Row(
@@ -593,7 +606,7 @@ private fun LanguageSetting(localizationManager: LocalizationManager?) {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(SettingsDesignTokens.IconShape)
                         .background(AppTheme.ChipBackground),
                     contentAlignment = Alignment.Center
                 ) {
@@ -693,7 +706,8 @@ private fun ThemeSetting(themeManager: ThemeManager) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = SettingsDesignTokens.CardShape,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column {
             Row(
@@ -706,7 +720,7 @@ private fun ThemeSetting(themeManager: ThemeManager) {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(SettingsDesignTokens.IconShape)
                         .background(AppTheme.ChipBackground),
                     contentAlignment = Alignment.Center
                 ) {
@@ -817,7 +831,8 @@ private fun AyanamsaSetting() {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = SettingsDesignTokens.CardShape,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column {
             Row(
@@ -830,7 +845,7 @@ private fun AyanamsaSetting() {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(SettingsDesignTokens.IconShape)
                         .background(AppTheme.ChipBackground),
                     contentAlignment = Alignment.Center
                 ) {
@@ -915,7 +930,8 @@ private fun NodeSetting() {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = SettingsDesignTokens.CardShape,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column {
             Row(
@@ -928,7 +944,7 @@ private fun NodeSetting() {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(SettingsDesignTokens.IconShape)
                         .background(AppTheme.ChipBackground),
                     contentAlignment = Alignment.Center
                 ) {
@@ -1013,7 +1029,8 @@ private fun AboutCard() {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(12.dp)
+        shape = SettingsDesignTokens.CardShape,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1062,7 +1079,7 @@ private fun AboutCard() {
 private fun FeatureBadge(textKey: StringKey) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(4.dp))
+            .clip(SettingsDesignTokens.IconShape)
             .background(AppTheme.ChipBackground)
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {

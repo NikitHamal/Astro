@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
 
 /**
  * Modern elevated card with subtle shadow and rounded corners
@@ -63,8 +64,8 @@ fun ModernCard(
     modifier: Modifier = Modifier,
     backgroundColor: Color = AppTheme.CardBackground,
     accentColor: Color? = null,
-    elevation: Dp = 4.dp,
-    cornerRadius: Dp = 16.dp,
+    elevation: Dp = 0.dp,
+    cornerRadius: Dp = NeoVedicTokens.CardCornerRadius,
     onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
@@ -89,7 +90,8 @@ fun ModernCard(
                 } else Modifier
             ),
         shape = RoundedCornerShape(cornerRadius),
-        color = backgroundColor
+        color = backgroundColor,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         content()
     }
@@ -221,7 +223,8 @@ fun InfoCard(
     Surface(
         modifier = modifier,
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier.padding(14.dp),
@@ -286,7 +289,8 @@ fun ProgressCard(
     Surface(
         modifier = modifier,
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             Row(
@@ -326,7 +330,7 @@ fun ProgressCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                 color = progressColor,
                 trackColor = AppTheme.DividerColor
             )
@@ -358,7 +362,8 @@ fun StatCard(
     Surface(
         modifier = modifier,
         color = AppTheme.CardBackgroundElevated,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor.copy(alpha = 0.5f))
     ) {
         Column(
             modifier = Modifier.padding(14.dp),
@@ -410,11 +415,11 @@ fun HighlightCard(
             .then(
                 if (onClick != null) {
                     Modifier
-                        .clip(RoundedCornerShape(16.dp))
+                        .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
                         .clickable(onClick = onClick)
                 } else Modifier
             ),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
         color = Color.Transparent
     ) {
         Box(
@@ -428,9 +433,9 @@ fun HighlightCard(
                     )
                 )
                 .border(
-                    width = 1.dp,
+                    width = NeoVedicTokens.BorderWidth,
                     color = primaryColor.copy(alpha = 0.2f),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                 )
         ) {
             Row(
@@ -517,7 +522,7 @@ fun SectionHeader(
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.AccentPrimary,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                     .clickable(onClick = onActionClick)
                     .padding(horizontal = 12.dp, vertical = 6.dp)
             )

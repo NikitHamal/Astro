@@ -58,9 +58,7 @@ import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.CinzelDecorativeFamily
 import com.astro.storm.ui.theme.PoppinsFontFamily
-import com.astro.storm.ui.theme.DarkAppThemeColors
 import com.astro.storm.ui.theme.SpaceGroteskFamily
-import com.astro.storm.ui.theme.VedicGold
 import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -288,9 +286,7 @@ private fun HeroDashaCard(
     val colors = AppTheme.current
     val today = remember(chart) { LocalDate.now(resolveZoneId(chart.birthData.timezone)) }
 
-    val planetColor = remember(currentDasha) {
-        currentDasha?.planet?.let { getPlanetDisplayColor(it) } ?: VedicGold
-    }
+    val planetColor = currentDasha?.planet?.let { getPlanetDisplayColor(it) } ?: AppTheme.AccentGold
 
     Box(
         modifier = Modifier
@@ -466,15 +462,12 @@ private fun QuickActionsSection(
     language: Language
 ) {
     val colors = AppTheme.current
-
-    val quickActions = remember {
-        listOf(
-            QuickAction(InsightFeature.FULL_CHART, Icons.Outlined.GridView, DarkAppThemeColors.AccentPrimary),
-            QuickAction(InsightFeature.YOGAS, Icons.Outlined.AutoAwesome, DarkAppThemeColors.AccentGold),
-            QuickAction(InsightFeature.PREDICTIONS, Icons.Outlined.TipsAndUpdates, DarkAppThemeColors.LifeAreaSpiritual),
-            QuickAction(InsightFeature.MATCHMAKING, Icons.Outlined.Favorite, DarkAppThemeColors.LifeAreaLove)
-        )
-    }
+    val quickActions = listOf(
+        QuickAction(InsightFeature.FULL_CHART, Icons.Outlined.GridView, colors.AccentPrimary),
+        QuickAction(InsightFeature.YOGAS, Icons.Outlined.AutoAwesome, colors.AccentGold),
+        QuickAction(InsightFeature.PREDICTIONS, Icons.Outlined.TipsAndUpdates, colors.LifeAreaSpiritual),
+        QuickAction(InsightFeature.MATCHMAKING, Icons.Outlined.Favorite, colors.LifeAreaLove)
+    )
 
     Column(
         modifier = Modifier.padding(horizontal = HomeDesignTokens.ScreenPadding)
@@ -888,7 +881,7 @@ private fun CompactFeatureCard(
             Icon(
                 imageVector = feature.icon,
                 contentDescription = null,
-                tint = feature.color,
+                tint = featureDisplayColor(feature),
                 modifier = Modifier.size(18.dp)
             )
 
@@ -1128,18 +1121,57 @@ enum class FeatureCategory(val features: List<InsightFeature>) {
 // ============================================================================
 // HELPER FUNCTIONS
 // ============================================================================
+@Composable
 private fun getPlanetDisplayColor(planet: Planet): Color {
     return when (planet) {
-        Planet.SUN -> DarkAppThemeColors.PlanetSun
-        Planet.MOON -> DarkAppThemeColors.PlanetMoon
-        Planet.MARS -> DarkAppThemeColors.PlanetMars
-        Planet.MERCURY -> DarkAppThemeColors.PlanetMercury
-        Planet.JUPITER -> DarkAppThemeColors.PlanetJupiter
-        Planet.VENUS -> DarkAppThemeColors.PlanetVenus
-        Planet.SATURN -> DarkAppThemeColors.PlanetSaturn
-        Planet.RAHU -> DarkAppThemeColors.PlanetRahu
-        Planet.KETU -> DarkAppThemeColors.PlanetKetu
-        else -> DarkAppThemeColors.AccentPrimary
+        Planet.SUN -> AppTheme.PlanetSun
+        Planet.MOON -> AppTheme.PlanetMoon
+        Planet.MARS -> AppTheme.PlanetMars
+        Planet.MERCURY -> AppTheme.PlanetMercury
+        Planet.JUPITER -> AppTheme.PlanetJupiter
+        Planet.VENUS -> AppTheme.PlanetVenus
+        Planet.SATURN -> AppTheme.PlanetSaturn
+        Planet.RAHU -> AppTheme.PlanetRahu
+        Planet.KETU -> AppTheme.PlanetKetu
+        else -> AppTheme.AccentPrimary
+    }
+}
+
+@Composable
+private fun featureDisplayColor(feature: InsightFeature): Color {
+    return feature.colorToken.resolve()
+}
+
+enum class FeatureColorToken {
+    AccentPrimary,
+    AccentGold,
+    AccentTeal,
+    SuccessColor,
+    WarningColor,
+    ErrorColor,
+    LifeAreaCareer,
+    LifeAreaLove,
+    LifeAreaHealth,
+    LifeAreaFinance,
+    LifeAreaSpiritual,
+    PlanetMoon
+}
+
+@Composable
+private fun FeatureColorToken.resolve(): Color {
+    return when (this) {
+        FeatureColorToken.AccentPrimary -> AppTheme.AccentPrimary
+        FeatureColorToken.AccentGold -> AppTheme.AccentGold
+        FeatureColorToken.AccentTeal -> AppTheme.AccentTeal
+        FeatureColorToken.SuccessColor -> AppTheme.SuccessColor
+        FeatureColorToken.WarningColor -> AppTheme.WarningColor
+        FeatureColorToken.ErrorColor -> AppTheme.ErrorColor
+        FeatureColorToken.LifeAreaCareer -> AppTheme.LifeAreaCareer
+        FeatureColorToken.LifeAreaLove -> AppTheme.LifeAreaLove
+        FeatureColorToken.LifeAreaHealth -> AppTheme.LifeAreaHealth
+        FeatureColorToken.LifeAreaFinance -> AppTheme.LifeAreaFinance
+        FeatureColorToken.LifeAreaSpiritual -> AppTheme.LifeAreaSpiritual
+        FeatureColorToken.PlanetMoon -> AppTheme.PlanetMoon
     }
 }
 
@@ -1151,385 +1183,385 @@ enum class InsightFeature(
     val titleKey: StringKeyInterface,
     val descriptionKey: StringKeyInterface,
     val icon: ImageVector,
-    val color: Color,
+    val colorToken: FeatureColorToken,
     val isImplemented: Boolean
 ) {
     FULL_CHART(
         titleKey = StringKey.FEATURE_BIRTH_CHART,
         descriptionKey = StringKey.FEATURE_BIRTH_CHART_DESC,
         icon = Icons.Outlined.GridView,
-        color = DarkAppThemeColors.AccentPrimary,
+        colorToken = FeatureColorToken.AccentPrimary,
         isImplemented = true
     ),
     PLANETS(
         titleKey = StringKey.FEATURE_PLANETS,
         descriptionKey = StringKey.FEATURE_PLANETS_DESC,
         icon = Icons.Outlined.Public,
-        color = DarkAppThemeColors.LifeAreaCareer,
+        colorToken = FeatureColorToken.LifeAreaCareer,
         isImplemented = true
     ),
     YOGAS(
         titleKey = StringKey.FEATURE_YOGAS,
         descriptionKey = StringKey.FEATURE_YOGAS_DESC,
         icon = Icons.Outlined.AutoAwesome,
-        color = DarkAppThemeColors.AccentGold,
+        colorToken = FeatureColorToken.AccentGold,
         isImplemented = true
     ),
     DASHAS(
         titleKey = StringKey.FEATURE_DASHAS,
         descriptionKey = StringKey.FEATURE_DASHAS_DESC,
         icon = Icons.Outlined.Timeline,
-        color = DarkAppThemeColors.LifeAreaSpiritual,
+        colorToken = FeatureColorToken.LifeAreaSpiritual,
         isImplemented = true
     ),
     TRANSITS(
         titleKey = StringKey.FEATURE_TRANSITS,
         descriptionKey = StringKey.FEATURE_TRANSITS_DESC,
         icon = Icons.Outlined.Sync,
-        color = DarkAppThemeColors.AccentTeal,
+        colorToken = FeatureColorToken.AccentTeal,
         isImplemented = true
     ),
     ASHTAKAVARGA(
         titleKey = StringKey.FEATURE_ASHTAKAVARGA,
         descriptionKey = StringKey.FEATURE_ASHTAKAVARGA_DESC,
         icon = Icons.Outlined.BarChart,
-        color = DarkAppThemeColors.SuccessColor,
+        colorToken = FeatureColorToken.SuccessColor,
         isImplemented = true
     ),
     PANCHANGA(
         titleKey = StringKey.FEATURE_PANCHANGA,
         descriptionKey = StringKey.FEATURE_PANCHANGA_DESC,
         icon = Icons.Outlined.CalendarMonth,
-        color = DarkAppThemeColors.LifeAreaFinance,
+        colorToken = FeatureColorToken.LifeAreaFinance,
         isImplemented = true
     ),
     MATCHMAKING(
         titleKey = StringKey.FEATURE_MATCHMAKING,
         descriptionKey = StringKey.FEATURE_MATCHMAKING_DESC,
         icon = Icons.Outlined.Favorite,
-        color = DarkAppThemeColors.LifeAreaLove,
+        colorToken = FeatureColorToken.LifeAreaLove,
         isImplemented = true
     ),
     MUHURTA(
         titleKey = StringKey.FEATURE_MUHURTA,
         descriptionKey = StringKey.FEATURE_MUHURTA_DESC,
         icon = Icons.Outlined.AccessTime,
-        color = DarkAppThemeColors.WarningColor,
+        colorToken = FeatureColorToken.WarningColor,
         isImplemented = true
     ),
     REMEDIES(
         titleKey = StringKey.FEATURE_REMEDIES,
         descriptionKey = StringKey.FEATURE_REMEDIES_DESC,
         icon = Icons.Outlined.Spa,
-        color = DarkAppThemeColors.LifeAreaHealth,
+        colorToken = FeatureColorToken.LifeAreaHealth,
         isImplemented = true
     ),
     VARSHAPHALA(
         titleKey = StringKey.FEATURE_VARSHAPHALA,
         descriptionKey = StringKey.FEATURE_VARSHAPHALA_DESC,
         icon = Icons.Outlined.Cake,
-        color = DarkAppThemeColors.LifeAreaCareer,
+        colorToken = FeatureColorToken.LifeAreaCareer,
         isImplemented = true
     ),
     PRASHNA(
         titleKey = StringKey.FEATURE_PRASHNA,
         descriptionKey = StringKey.FEATURE_PRASHNA_DESC,
         icon = Icons.Outlined.HelpOutline,
-        color = DarkAppThemeColors.AccentTeal,
+        colorToken = FeatureColorToken.AccentTeal,
         isImplemented = true
     ),
     CHART_COMPARISON(
         titleKey = StringKey.FEATURE_SYNASTRY,
         descriptionKey = StringKey.FEATURE_SYNASTRY_DESC,
         icon = Icons.Outlined.CompareArrows,
-        color = DarkAppThemeColors.LifeAreaFinance,
+        colorToken = FeatureColorToken.LifeAreaFinance,
         isImplemented = true
     ),
     NAKSHATRA_ANALYSIS(
         titleKey = StringKey.FEATURE_NAKSHATRAS,
         descriptionKey = StringKey.FEATURE_NAKSHATRAS_DESC,
         icon = Icons.Outlined.Stars,
-        color = DarkAppThemeColors.AccentGold,
+        colorToken = FeatureColorToken.AccentGold,
         isImplemented = true
     ),
     SHADBALA(
         titleKey = StringKey.FEATURE_SHADBALA,
         descriptionKey = StringKey.FEATURE_SHADBALA_DESC,
         icon = Icons.Outlined.Speed,
-        color = DarkAppThemeColors.SuccessColor,
+        colorToken = FeatureColorToken.SuccessColor,
         isImplemented = true
     ),
     SHODASHVARGA(
         titleKey = StringKey.FEATURE_SHODASHVARGA,
         descriptionKey = StringKey.FEATURE_SHODASHVARGA_DESC,
         icon = Icons.Outlined.GridView,
-        color = DarkAppThemeColors.AccentGold,
+        colorToken = FeatureColorToken.AccentGold,
         isImplemented = true
     ),
     YOGINI_DASHA(
         titleKey = StringKey.FEATURE_YOGINI_DASHA,
         descriptionKey = StringKey.FEATURE_YOGINI_DASHA_DESC,
         icon = Icons.Outlined.Timeline,
-        color = DarkAppThemeColors.LifeAreaLove,
+        colorToken = FeatureColorToken.LifeAreaLove,
         isImplemented = true
     ),
     ARGALA(
         titleKey = StringKey.FEATURE_ARGALA,
         descriptionKey = StringKey.FEATURE_ARGALA_DESC,
         icon = Icons.Outlined.CompareArrows,
-        color = DarkAppThemeColors.AccentTeal,
+        colorToken = FeatureColorToken.AccentTeal,
         isImplemented = true
     ),
     CHARA_DASHA(
         titleKey = StringKey.FEATURE_CHARA_DASHA,
         descriptionKey = StringKey.FEATURE_CHARA_DASHA_DESC,
         icon = Icons.Outlined.Sync,
-        color = DarkAppThemeColors.LifeAreaSpiritual,
+        colorToken = FeatureColorToken.LifeAreaSpiritual,
         isImplemented = true
     ),
     BHRIGU_BINDU(
         titleKey = StringKey.FEATURE_BHRIGU_BINDU,
         descriptionKey = StringKey.FEATURE_BHRIGU_BINDU_DESC,
         icon = Icons.Outlined.Stars,
-        color = DarkAppThemeColors.WarningColor,
+        colorToken = FeatureColorToken.WarningColor,
         isImplemented = true
     ),
     PREDICTIONS(
         titleKey = StringKey.FEATURE_PREDICTIONS,
         descriptionKey = StringKey.FEATURE_PREDICTIONS_DESC,
         icon = Icons.Outlined.AutoAwesome,
-        color = DarkAppThemeColors.AccentPrimary,
+        colorToken = FeatureColorToken.AccentPrimary,
         isImplemented = true
     ),
     ASHTOTTARI_DASHA(
         titleKey = StringKey.FEATURE_ASHTOTTARI_DASHA,
         descriptionKey = StringKey.FEATURE_ASHTOTTARI_DASHA_DESC,
         icon = Icons.Outlined.Timeline,
-        color = DarkAppThemeColors.AccentGold,
+        colorToken = FeatureColorToken.AccentGold,
         isImplemented = true
     ),
     SUDARSHANA_CHAKRA(
         titleKey = StringKey.FEATURE_SUDARSHANA_CHAKRA,
         descriptionKey = StringKey.FEATURE_SUDARSHANA_CHAKRA_DESC,
         icon = Icons.Outlined.Sync,
-        color = DarkAppThemeColors.LifeAreaSpiritual,
+        colorToken = FeatureColorToken.LifeAreaSpiritual,
         isImplemented = true
     ),
     MRITYU_BHAGA(
         titleKey = StringKey.FEATURE_MRITYU_BHAGA,
         descriptionKey = StringKey.FEATURE_MRITYU_BHAGA_DESC,
         icon = Icons.Outlined.BarChart,
-        color = DarkAppThemeColors.WarningColor,
+        colorToken = FeatureColorToken.WarningColor,
         isImplemented = true
     ),
     LAL_KITAB(
         titleKey = StringKey.FEATURE_LAL_KITAB,
         descriptionKey = StringKey.FEATURE_LAL_KITAB_DESC,
         icon = Icons.Outlined.Spa,
-        color = DarkAppThemeColors.LifeAreaHealth,
+        colorToken = FeatureColorToken.LifeAreaHealth,
         isImplemented = true
     ),
     DIVISIONAL_CHARTS(
         titleKey = StringKey.FEATURE_DIVISIONAL_CHARTS,
         descriptionKey = StringKey.FEATURE_DIVISIONAL_CHARTS_DESC,
         icon = Icons.Outlined.GridView,
-        color = DarkAppThemeColors.AccentTeal,
+        colorToken = FeatureColorToken.AccentTeal,
         isImplemented = true
     ),
     UPACHAYA_TRANSIT(
         titleKey = StringKey.FEATURE_UPACHAYA_TRANSIT,
         descriptionKey = StringKey.FEATURE_UPACHAYA_TRANSIT_DESC,
         icon = Icons.Outlined.Stars,
-        color = DarkAppThemeColors.SuccessColor,
+        colorToken = FeatureColorToken.SuccessColor,
         isImplemented = true
     ),
     KALACHAKRA_DASHA(
         titleKey = StringKey.FEATURE_KALACHAKRA_DASHA,
         descriptionKey = StringKey.FEATURE_KALACHAKRA_DASHA_DESC,
         icon = Icons.Outlined.HealthAndSafety,
-        color = DarkAppThemeColors.LifeAreaSpiritual,
+        colorToken = FeatureColorToken.LifeAreaSpiritual,
         isImplemented = true
     ),
     TARABALA(
         titleKey = StringKey.FEATURE_TARABALA,
         descriptionKey = StringKey.FEATURE_TARABALA_DESC,
         icon = Icons.Outlined.Stars,
-        color = DarkAppThemeColors.PlanetMoon,
+        colorToken = FeatureColorToken.PlanetMoon,
         isImplemented = true
     ),
     ARUDHA_PADA(
         titleKey = StringKey.FEATURE_ARUDHA_PADA,
         descriptionKey = StringKey.FEATURE_ARUDHA_PADA_DESC,
         icon = Icons.Outlined.Spa,
-        color = DarkAppThemeColors.LifeAreaSpiritual,
+        colorToken = FeatureColorToken.LifeAreaSpiritual,
         isImplemented = true
     ),
     GRAHA_YUDDHA(
         titleKey = StringKey.FEATURE_GRAHA_YUDDHA,
         descriptionKey = StringKey.FEATURE_GRAHA_YUDDHA_DESC,
         icon = Icons.Outlined.CompareArrows,
-        color = DarkAppThemeColors.WarningColor,
+        colorToken = FeatureColorToken.WarningColor,
         isImplemented = true
     ),
     DASHA_SANDHI(
         titleKey = StringKey.FEATURE_DASHA_SANDHI,
         descriptionKey = StringKey.FEATURE_DASHA_SANDHI_DESC,
         icon = Icons.Outlined.Timeline,
-        color = DarkAppThemeColors.LifeAreaSpiritual,
+        colorToken = FeatureColorToken.LifeAreaSpiritual,
         isImplemented = true
     ),
     GOCHARA_VEDHA(
         titleKey = StringKey.FEATURE_GOCHARA_VEDHA,
         descriptionKey = StringKey.FEATURE_GOCHARA_VEDHA_DESC,
         icon = Icons.Outlined.Block,
-        color = DarkAppThemeColors.WarningColor,
+        colorToken = FeatureColorToken.WarningColor,
         isImplemented = true
     ),
     KEMADRUMA_YOGA(
         titleKey = StringKey.FEATURE_KEMADRUMA_YOGA,
         descriptionKey = StringKey.FEATURE_KEMADRUMA_YOGA_DESC,
         icon = Icons.Outlined.Brightness2,
-        color = DarkAppThemeColors.PlanetMoon,
+        colorToken = FeatureColorToken.PlanetMoon,
         isImplemented = true
     ),
     PANCH_MAHAPURUSHA(
         titleKey = StringKey.FEATURE_PANCH_MAHAPURUSHA,
         descriptionKey = StringKey.FEATURE_PANCH_MAHAPURUSHA_DESC,
         icon = Icons.Outlined.Stars,
-        color = DarkAppThemeColors.AccentGold,
+        colorToken = FeatureColorToken.AccentGold,
         isImplemented = true
     ),
     NITYA_YOGA(
         titleKey = StringKey.FEATURE_NITYA_YOGA,
         descriptionKey = StringKey.FEATURE_NITYA_YOGA_DESC,
         icon = Icons.Outlined.CalendarMonth,
-        color = DarkAppThemeColors.AccentTeal,
+        colorToken = FeatureColorToken.AccentTeal,
         isImplemented = true
     ),
     AVASTHA(
         titleKey = StringKey.FEATURE_AVASTHA,
         descriptionKey = StringKey.FEATURE_AVASTHA_DESC,
         icon = Icons.Outlined.Psychology,
-        color = DarkAppThemeColors.AccentPrimary,
+        colorToken = FeatureColorToken.AccentPrimary,
         isImplemented = true
     ),
     MARAKA(
         titleKey = StringKey.FEATURE_MARAKA,
         descriptionKey = StringKey.FEATURE_MARAKA_DESC,
         icon = Icons.Outlined.Warning,
-        color = DarkAppThemeColors.ErrorColor,
+        colorToken = FeatureColorToken.ErrorColor,
         isImplemented = true
     ),
     BADHAKA(
         titleKey = StringKey.FEATURE_BADHAKA,
         descriptionKey = StringKey.FEATURE_BADHAKA_DESC,
         icon = Icons.Outlined.Block,
-        color = DarkAppThemeColors.WarningColor,
+        colorToken = FeatureColorToken.WarningColor,
         isImplemented = true
     ),
     VIPAREETA_RAJA_YOGA(
         titleKey = StringKey.FEATURE_VIPAREETA_RAJA_YOGA,
         descriptionKey = StringKey.FEATURE_VIPAREETA_RAJA_YOGA_DESC,
         icon = Icons.Outlined.Stars,
-        color = DarkAppThemeColors.LifeAreaSpiritual,
+        colorToken = FeatureColorToken.LifeAreaSpiritual,
         isImplemented = true
     ),
     ISHTA_KASHTA_PHALA(
         titleKey = StringKey.FEATURE_ISHTA_KASHTA_PHALA,
         descriptionKey = StringKey.FEATURE_ISHTA_KASHTA_PHALA_DESC,
         icon = Icons.Outlined.Balance,
-        color = DarkAppThemeColors.AccentGold,
+        colorToken = FeatureColorToken.AccentGold,
         isImplemented = true
     ),
     SHOOLA_DASHA(
         titleKey = StringKey.FEATURE_SHOOLA_DASHA,
         descriptionKey = StringKey.FEATURE_SHOOLA_DASHA_DESC,
         icon = Icons.Outlined.HealthAndSafety,
-        color = DarkAppThemeColors.WarningColor,
+        colorToken = FeatureColorToken.WarningColor,
         isImplemented = true
     ),
     ASHTAVARGA_TRANSIT(
         titleKey = StringKey.FEATURE_ASHTAVARGA_TRANSIT,
         descriptionKey = StringKey.FEATURE_ASHTAVARGA_TRANSIT_DESC,
         icon = Icons.Outlined.BarChart,
-        color = DarkAppThemeColors.AccentTeal,
+        colorToken = FeatureColorToken.AccentTeal,
         isImplemented = true
     ),
     KAKSHYA_TRANSIT(
         titleKey = StringKey.FEATURE_KAKSHYA_TRANSIT,
         descriptionKey = StringKey.FEATURE_KAKSHYA_TRANSIT_DESC,
         icon = Icons.Outlined.Speed,
-        color = DarkAppThemeColors.AccentPrimary,
+        colorToken = FeatureColorToken.AccentPrimary,
         isImplemented = true
     ),
     NADI_AMSHA(
         titleKey = StringKeyAdvanced.NADI_TITLE,
         descriptionKey = StringKeyAdvanced.NADI_DESC,
         icon = Icons.Outlined.Timer,
-        color = DarkAppThemeColors.AccentGold,
+        colorToken = FeatureColorToken.AccentGold,
         isImplemented = true
     ),
     SARVATOBHADRA_CHAKRA(
         titleKey = StringKeyShadbala.SARVATOBHADRA_TITLE,
         descriptionKey = StringKeyShadbala.SARVATOBHADRA_DESC,
         icon = Icons.Outlined.Grid4x4,
-        color = DarkAppThemeColors.AccentTeal,
+        colorToken = FeatureColorToken.AccentTeal,
         isImplemented = true
     ),
     DRIG_BALA(
         titleKey = StringKeyShadbala.DRIG_TITLE,
         descriptionKey = StringKeyShadbala.DRIG_DESC,
         icon = Icons.Outlined.Visibility,
-        color = DarkAppThemeColors.SuccessColor,
+        colorToken = FeatureColorToken.SuccessColor,
         isImplemented = true
     ),
     STHANA_BALA(
         titleKey = StringKeyShadbala.STHANA_TITLE,
         descriptionKey = StringKeyShadbala.STHANA_DESC,
         icon = Icons.Outlined.Home,
-        color = DarkAppThemeColors.LifeAreaCareer,
+        colorToken = FeatureColorToken.LifeAreaCareer,
         isImplemented = true
     ),
     KALA_BALA(
         titleKey = StringKeyShadbala.KALA_TITLE,
         descriptionKey = StringKeyShadbala.KALA_DESC,
         icon = Icons.Outlined.Timelapse,
-        color = DarkAppThemeColors.LifeAreaSpiritual,
+        colorToken = FeatureColorToken.LifeAreaSpiritual,
         isImplemented = true
     ),
     SAHAM(
         titleKey = StringKeyShadbala.SAHAM_TITLE,
         descriptionKey = StringKeyShadbala.SAHAM_DESC,
         icon = Icons.Outlined.Calculate,
-        color = DarkAppThemeColors.AccentGold,
+        colorToken = FeatureColorToken.AccentGold,
         isImplemented = true
     ),
     NATIVE_ANALYSIS(
         titleKey = StringKey.FEATURE_NATIVE_ANALYSIS,
         descriptionKey = StringKey.FEATURE_NATIVE_ANALYSIS_DESC,
         icon = Icons.Outlined.Person,
-        color = DarkAppThemeColors.AccentPrimary,
+        colorToken = FeatureColorToken.AccentPrimary,
         isImplemented = true
     ),
     JAIMINI_KARAKA(
         titleKey = StringKey.FEATURE_JAIMINI_KARAKA,
         descriptionKey = StringKey.FEATURE_JAIMINI_KARAKA_DESC,
         icon = Icons.Outlined.Stars,
-        color = DarkAppThemeColors.LifeAreaSpiritual,
+        colorToken = FeatureColorToken.LifeAreaSpiritual,
         isImplemented = true
     ),
     DRIG_DASHA(
         titleKey = StringKey.FEATURE_DRIG_DASHA,
         descriptionKey = StringKey.FEATURE_DRIG_DASHA_DESC,
         icon = Icons.Outlined.HealthAndSafety,
-        color = DarkAppThemeColors.WarningColor,
+        colorToken = FeatureColorToken.WarningColor,
         isImplemented = true
     ),
     SAPTAMSA(
         titleKey = StringKey.FEATURE_SAPTAMSA,
         descriptionKey = StringKey.FEATURE_SAPTAMSA_DESC,
         icon = Icons.Outlined.ChildCare,
-        color = DarkAppThemeColors.LifeAreaLove,
+        colorToken = FeatureColorToken.LifeAreaLove,
         isImplemented = true
     );
 
@@ -1566,3 +1598,4 @@ private fun resolveZoneId(timezone: String): ZoneId {
         }
     }
 }
+
