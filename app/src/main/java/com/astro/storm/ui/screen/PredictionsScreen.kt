@@ -105,7 +105,9 @@ fun PredictionsScreen(
                     Text(
                         StringResources.get(StringKey.FEATURE_PREDICTIONS, language),
                         fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {

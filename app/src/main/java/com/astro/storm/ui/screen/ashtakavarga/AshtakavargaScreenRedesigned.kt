@@ -251,7 +251,9 @@ private fun AshtakavargaTopBar(
                         Text(
                             text = StringResources.get(StringKeyDosha.ASHTAKAVARGA_DESC_FMT, language, chartName),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
@@ -1307,7 +1309,9 @@ private fun AshtakavargaInfoDialog(onDismiss: () -> Unit) {
                 text = stringResource(StringKeyDosha.ASHTAKAVARGA_ABOUT_TITLE),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         text = {

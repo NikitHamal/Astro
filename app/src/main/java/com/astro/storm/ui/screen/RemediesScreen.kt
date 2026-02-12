@@ -131,7 +131,9 @@ fun RemediesScreen(
                             Text(
                                 stringResource(StringKeyMatch.REMEDY_TITLE),
                                 fontWeight = FontWeight.SemiBold,
-                                color = AppTheme.TextPrimary
+                                color = AppTheme.TextPrimary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }

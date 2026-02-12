@@ -201,7 +201,13 @@ fun SettingsTab(
             containerColor = AppTheme.CardBackground,
             titleContentColor = AppTheme.TextPrimary,
             textContentColor = AppTheme.TextSecondary,
-            title = { Text(stringResource(StringKey.DIALOG_DELETE_PROFILE)) },
+            title = {
+                Text(
+                    stringResource(StringKey.DIALOG_DELETE_PROFILE),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
             text = {
                 Text(stringResource(StringKey.DIALOG_DELETE_CONFIRM, chartToDelete?.name ?: ""))
             },

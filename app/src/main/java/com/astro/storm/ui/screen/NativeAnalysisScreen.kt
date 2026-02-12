@@ -96,6 +96,7 @@ import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.NativeAnalysisUiState
 import com.astro.storm.ui.viewmodel.NativeAnalysisViewModel
 import com.astro.storm.ui.viewmodel.NativeSection
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * Native Analysis Screen - Comprehensive personality and life profile
@@ -146,12 +147,16 @@ fun NativeAnalysisScreen(
                             text = stringResource(StringKeyNative.NATIVE_ANALYSIS_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             text = stringResource(StringKeyNative.NATIVE_ANALYSIS_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -2126,7 +2131,9 @@ private fun NativeInfoDialog(onDismiss: () -> Unit) {
             Text(
                 text = stringResource(StringKeyNative.NATIVE_ANALYSIS_TITLE),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         text = {

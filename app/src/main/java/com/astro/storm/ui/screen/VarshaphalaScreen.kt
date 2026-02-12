@@ -128,13 +128,17 @@ fun VarshaphalaScreen(
                         Text(
                             stringResource(StringKeyMatch.VARSHAPHALA_TITLE),
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         varshaphalaResult?.let {
                             Text(
                                 stringResource(StringKey.VARSHAPHALA_AGE, it.age),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.TextMuted
+                                color = AppTheme.TextMuted,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }

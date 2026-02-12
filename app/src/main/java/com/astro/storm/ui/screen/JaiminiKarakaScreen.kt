@@ -49,6 +49,7 @@ import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.DarkAppThemeColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * JaiminiKarakaScreen - Comprehensive Chara Karaka Analysis Screen
@@ -96,12 +97,16 @@ fun JaiminiKarakaScreen(
                         Text(
                             text = StringResources.get(StringKeyJaimini.TITLE, language),
                             style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             text = StringResources.get(StringKeyJaimini.SUBTITLE, language),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },

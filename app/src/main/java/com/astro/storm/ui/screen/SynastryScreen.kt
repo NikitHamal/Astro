@@ -154,7 +154,9 @@ fun SynastryScreen(
                             Text(
                                 stringResource(StringKeyDosha.SYNASTRY_SUBTITLE),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.TextMuted
+                                color = AppTheme.TextMuted,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }
@@ -1754,7 +1756,9 @@ private fun SynastryInfoDialog(onDismiss: () -> Unit) {
             Text(
                 stringResource(StringKeyDosha.SYNASTRY_INFO_TITLE),
                 fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         text = {

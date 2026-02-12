@@ -81,12 +81,16 @@ fun KakshaTransitScreen(
                             text = stringResource(StringKeyAdvanced.KAKSHYA_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = colors.TextPrimary
+                            color = colors.TextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             text = stringResource(StringKeyAdvanced.KAKSHYA_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
-                            color = colors.TextMuted
+                            color = colors.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },

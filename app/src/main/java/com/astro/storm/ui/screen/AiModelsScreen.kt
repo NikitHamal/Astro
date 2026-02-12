@@ -89,7 +89,9 @@ fun AiModelsScreen(
                         Text(
                             text = stringResource(StringKeyDosha.AI_MODELS_ENABLED_COUNT, enabledModels.size),
                             style = MaterialTheme.typography.labelSmall,
-                            color = colors.TextMuted
+                            color = colors.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -426,7 +428,13 @@ private fun DefaultModelSection(
     if (showSelector) {
         AlertDialog(
             onDismissRequest = { showSelector = false },
-            title = { Text(stringResource(StringKeyDosha.AI_MODELS_SELECT_DEFAULT)) },
+            title = {
+                Text(
+                    stringResource(StringKeyDosha.AI_MODELS_SELECT_DEFAULT),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
             text = {
                 LazyColumn {
                     items(
@@ -455,12 +463,16 @@ private fun DefaultModelSection(
                                     Text(
                                         text = model.displayName,
                                         style = MaterialTheme.typography.bodyMedium,
-                                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+                                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
                                     )
                                     Text(
                                         text = model.providerId,
                                         style = MaterialTheme.typography.labelSmall,
-                                        color = colors.TextMuted
+                                        color = colors.TextMuted,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
                                     )
                                 }
                                 if (isSelected) {

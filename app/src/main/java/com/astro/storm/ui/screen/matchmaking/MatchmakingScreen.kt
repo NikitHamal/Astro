@@ -171,7 +171,9 @@ fun MatchmakingScreen(
                             Text(
                                 stringResource(StringKeyMatch.MATCH_ASHTAKOOTA),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.TextMuted
+                                color = AppTheme.TextMuted,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }

@@ -52,6 +52,7 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * DrigDashaScreen - Jaimini Drig (Sthira) Dasha System Screen
@@ -99,12 +100,16 @@ fun DrigDashaScreen(
                         Text(
                             text = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_DASHA_TITLE),
                             style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             text = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_LONGEVITY_SYSTEM),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },

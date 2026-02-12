@@ -45,6 +45,7 @@ import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * Argala Analysis Screen
@@ -114,12 +115,16 @@ fun ArgalaScreen(
                             stringResource(StringKeyDosha.ARGALA_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             chart.birthData.name,
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -1524,7 +1529,9 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
             Text(
                 stringResource(StringKeyDosha.ARGALA_ABOUT),
                 fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         text = {

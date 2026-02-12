@@ -250,7 +250,9 @@ private fun YogasTopBar(
                         Text(
                             text = String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_YOGAS_FOUND_FMT), totalYogas, chartName),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }

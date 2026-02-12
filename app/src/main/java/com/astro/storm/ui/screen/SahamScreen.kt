@@ -82,6 +82,7 @@ import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * Saham (Arabic Parts/Lots) Analysis Screen
@@ -138,12 +139,16 @@ fun SahamScreen(
                             text = stringResource(StringKeyShadbala.SAHAM_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             text = stringResource(StringKeyShadbala.SAHAM_SUBTITLE),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },

@@ -50,6 +50,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringKeySaptamsa
 import com.astro.storm.core.common.StringResources
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * SaptamsaScreen - D7 (Saptamsa) Children/Progeny Analysis Screen
@@ -97,12 +98,16 @@ fun SaptamsaScreen(
                         Text(
                             text = StringResources.get(StringKeySaptamsa.TITLE, language),
                             style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             text = StringResources.get(StringKeySaptamsa.SUBTITLE, language),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },

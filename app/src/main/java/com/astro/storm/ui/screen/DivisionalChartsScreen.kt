@@ -45,6 +45,7 @@ import kotlinx.coroutines.withContext
 import com.astro.storm.ephemeris.DivisionalChartType
 import com.astro.storm.ui.chart.ChartRenderer
 import com.astro.storm.ui.components.FullScreenChartDialog
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * Divisional Charts Analysis Screen (All 23 Vargas D-1 to D-144)
@@ -111,12 +112,16 @@ fun DivisionalChartsScreen(
                     Column {
                         Text(
                             stringResource(StringKeyDosha.DIVISIONAL_CHARTS_TITLE),
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             vargaTypes[selectedTab].getLocalizedDisplayName(language),
                             fontSize = 12.sp,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -199,7 +204,9 @@ fun DivisionalChartsScreen(
                 Text(
                     stringResource(StringKeyDosha.DIVISIONAL_CHARTS_ABOUT),
                     fontWeight = FontWeight.Bold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             },
             text = {

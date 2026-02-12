@@ -49,6 +49,7 @@ import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * Shodashvarga Strength Analysis Screen
@@ -122,12 +123,16 @@ fun ShodashvargaScreen(
                             stringResource(StringKeyDosha.SHODASHVARGA_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             chart.birthData.name,
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -1394,7 +1399,9 @@ private fun ShodashvargaInfoDialog(onDismiss: () -> Unit) {
             Text(
                 stringResource(StringKeyDosha.SHODASHVARGA_ABOUT),
                 fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         text = {

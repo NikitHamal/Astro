@@ -48,6 +48,7 @@ import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * Shadbala Analysis Screen
@@ -119,12 +120,16 @@ fun ShadbalaScreen(
                             stringResource(StringKeyDosha.SHADBALA_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             chart.birthData.name,
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -1213,7 +1218,9 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
             Text(
                 stringResource(StringKeyDosha.SHADBALA_INFO_TITLE),
                 fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         text = {

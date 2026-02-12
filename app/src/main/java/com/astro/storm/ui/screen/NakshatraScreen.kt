@@ -101,12 +101,16 @@ fun NakshatraScreen(
                             stringResource(StringKeyDosha.NAKSHATRA_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             chart.birthData.name,
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -1443,7 +1447,9 @@ private fun NakshatraInfoDialog(onDismiss: () -> Unit) {
             Text(
                 stringResource(StringKeyDosha.NAKSHATRA_INFO_TITLE),
                 fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         text = {

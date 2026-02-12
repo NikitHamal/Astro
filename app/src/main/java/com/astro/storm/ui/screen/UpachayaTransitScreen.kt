@@ -50,6 +50,7 @@ import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * Upachaya Transit Screen
@@ -111,12 +112,16 @@ fun UpachayaTransitScreen(
                     Column {
                         Text(
                             stringResource(StringKeyDosha.UPACHAYA_SCREEN_TITLE),
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             stringResource(StringKeyDosha.UPACHAYA_SCREEN_SUBTITLE),
                             fontSize = 12.sp,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -185,7 +190,9 @@ fun UpachayaTransitScreen(
                 Text(
                     stringResource(StringKeyDosha.UPACHAYA_SCREEN_ABOUT),
                     fontWeight = FontWeight.Bold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             },
             text = {

@@ -42,6 +42,7 @@ import com.astro.storm.ui.screen.EmptyChartScreen
 import com.astro.storm.ui.theme.AppTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * Tarabala & Chandrabala Analysis Screen
@@ -100,12 +101,16 @@ fun TarabalaScreen(
                             stringResource(StringKeyAnalysis.TARABALA_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             chart.birthData.name,
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -1200,7 +1205,9 @@ private fun TarabalaInfoDialog(onDismiss: () -> Unit) {
             Text(
                 stringResource(StringKeyAnalysis.TARABALA_WHAT_IS),
                 fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         text = {

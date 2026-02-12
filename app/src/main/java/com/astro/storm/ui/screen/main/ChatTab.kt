@@ -196,7 +196,13 @@ private fun ConversationsListScreen(
     conversationToDelete?.let { conversation ->
         AlertDialog(
             onDismissRequest = { conversationToDelete = null },
-            title = { Text(stringResource(StringKeyDosha.CHAT_DELETE)) },
+            title = {
+                Text(
+                    stringResource(StringKeyDosha.CHAT_DELETE),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
             text = { Text(stringResource(StringKeyDosha.CHAT_DELETE_CONFIRM, conversation.title)) },
             confirmButton = {
                 TextButton(
@@ -544,7 +550,9 @@ fun ChatScreen(
                             Text(
                                 text = it.displayName,
                                 style = MaterialTheme.typography.labelSmall,
-                                color = colors.TextMuted
+                                color = colors.TextMuted,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }
@@ -751,7 +759,13 @@ fun ChatScreen(
     if (showClearConfirm) {
         AlertDialog(
             onDismissRequest = { showClearConfirm = false },
-            title = { Text(stringResource(StringKeyDosha.CHAT_CLEAR)) },
+            title = {
+                Text(
+                    stringResource(StringKeyDosha.CHAT_CLEAR),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
             text = { Text(stringResource(StringKeyDosha.CHAT_CLEAR_CONFIRM)) },
             confirmButton = {
                 TextButton(
@@ -780,7 +794,9 @@ fun ChatScreen(
                 Text(
                     text = stringResource(StringKeyDosha.MODEL_OPTIONS_TITLE),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             },
             text = {

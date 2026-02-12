@@ -138,7 +138,9 @@ fun AshtavargaTransitScreen(
                 title = {
                     Text(
                         text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_TITLE),
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {

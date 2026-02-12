@@ -36,6 +36,7 @@ import com.astro.storm.ui.viewmodel.NadiAmshaUiState
 import com.astro.storm.ui.viewmodel.NadiAmshaViewModel
 import kotlinx.coroutines.delay
 import java.time.format.DateTimeFormatter
+import androidx.compose.ui.text.style.TextOverflow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,12 +70,16 @@ fun NadiAmshaScreen(
                     Column {
                         Text(
                             stringResource(StringKeyAdvanced.NADI_TITLE),
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             stringResource(StringKeyAdvanced.NADI_SUBTITLE),
                             fontSize = 12.sp,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -130,7 +135,13 @@ fun NadiAmshaScreen(
     if (showInfoDialog) {
         AlertDialog(
             onDismissRequest = { showInfoDialog = false },
-            title = { Text(stringResource(StringKeyAdvanced.NADI_INFO_TITLE)) },
+            title = {
+                Text(
+                    stringResource(StringKeyAdvanced.NADI_INFO_TITLE),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
             text = { Text(stringResource(StringKeyAdvanced.NADI_INFO_DESC)) },
             confirmButton = {
                 TextButton(onClick = { showInfoDialog = false }) {
