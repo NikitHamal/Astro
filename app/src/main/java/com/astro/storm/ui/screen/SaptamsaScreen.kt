@@ -1360,6 +1360,7 @@ private fun ErrorStateSS(message: String, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
 private fun getPlanetColorSS(planet: Planet): Color {
     return when (planet) {
         Planet.SUN -> AppTheme.PlanetSun
@@ -1375,6 +1376,7 @@ private fun getPlanetColorSS(planet: Planet): Color {
     }
 }
 
+@Composable
 private fun getStrengthColor(strength: Double): Color {
     return when {
         strength >= 0.7 -> AppTheme.SuccessColor

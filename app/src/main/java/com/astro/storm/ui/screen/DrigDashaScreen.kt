@@ -1215,6 +1215,7 @@ private fun ErrorStateDD(message: String, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
 private fun getSignColor(sign: ZodiacSign): Color {
     return when (sign.element) {
         "Fire" -> AppTheme.PlanetMars
