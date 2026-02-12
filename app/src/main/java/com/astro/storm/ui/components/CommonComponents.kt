@@ -40,7 +40,7 @@ import com.astro.storm.ui.theme.AppTheme
 @Composable
 fun ScreenTopBar(
     title: String,
-    onBack: () -> Unit,
+    onBack: (() -> Unit)? = null,
     subtitle: String? = null,
     actions: @Composable RowScope.() -> Unit = {},
     subtitleContent: @Composable (ColumnScope.() -> Unit)? = null
@@ -70,12 +70,14 @@ fun ScreenTopBar(
             }
         },
         navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(StringKeyUICommon.BACK),
-                    tint = AppTheme.TextPrimary
-                )
+            if (onBack != null) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(StringKeyUICommon.BACK),
+                        tint = AppTheme.TextPrimary
+                    )
+                }
             }
         },
         actions = actions,

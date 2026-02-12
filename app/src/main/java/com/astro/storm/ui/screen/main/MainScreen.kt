@@ -372,15 +372,14 @@ private fun MainTopBar(
     val language = LocalLanguage.current
     val colors = AppTheme.current
     ScreenTopBar(
-                title = currentTab.getLocalizedTitle(language),
-                onBack = onBack,
-                actions = {
-                    ProfileHeaderRow(
+        title = currentTab.getLocalizedTitle(language),
+        actions = {
+            ProfileHeaderRow(
                 currentChart = currentChart,
                 onProfileClick = onProfileClick
             )
-                }
-            )
+        }
+    )
 }
 
 @Composable

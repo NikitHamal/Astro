@@ -68,8 +68,7 @@ fun DebugScreen(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
             ScreenTopBar(
-                title = stringResource(StringKeyAnalysis.DEBUG_UNHANDLED_EXCEPTION),
-                onBack = onBack
+                title = stringResource(StringKeyAnalysis.DEBUG_UNHANDLED_EXCEPTION)
             )
         }
     ) { paddingValues ->
