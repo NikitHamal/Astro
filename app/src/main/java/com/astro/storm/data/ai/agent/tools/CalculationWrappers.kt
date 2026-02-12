@@ -680,7 +680,7 @@ class MuhurtaCalculatorWrapper(private val context: android.content.Context) {
             results.map { r ->
                 val end = r.dateTime.plusMinutes(30)
                 MuhurtaTime(
-                    date = java.sql.Date.valueOf(r.dateTime.toLocalDate()),
+                    date = java.sql.Date.valueOf(r.dateTime.toLocalDate().toString()),
                     startTime = r.dateTime.toLocalTime().toString(),
                     endTime = end.toLocalTime().toString(),
                     quality = when {
