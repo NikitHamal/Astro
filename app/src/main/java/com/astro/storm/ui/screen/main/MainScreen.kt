@@ -31,7 +31,6 @@ import com.astro.storm.ui.components.ProfileSwitcherBottomSheet
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.ChartUiState
 import com.astro.storm.ui.viewmodel.ChartViewModel
-import com.astro.storm.ui.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
 
 /**
@@ -49,7 +48,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(
     viewModel: ChartViewModel,
-    chatViewModel: ChatViewModel,
     themeManager: ThemeManager,
     savedCharts: List<SavedChart>,
     currentChart: VedicChart?,
@@ -112,12 +110,10 @@ fun MainScreen(
     onNavigateToJaiminiKaraka: () -> Unit = {},
     onNavigateToDrigDasha: () -> Unit = {},
     onNavigateToSaptamsa: () -> Unit = {},
-    onNavigateToAiModels: () -> Unit = {},
-    onNavigateToChat: (Long?) -> Unit = {}, // null for new chat, Long for existing
     onExportChart: (ExportFormat) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    // Use rememberSaveable to persist tab selection across navigation (e.g., back from chat)
+    // Use rememberSaveable to persist tab selection across navigation
     var selectedTab by rememberSaveable { mutableStateOf(MainTab.HOME) }
     var showProfileSwitcher by remember { mutableStateOf(false) }
     val profileSheetState = rememberModalBottomSheetState()
@@ -296,17 +292,6 @@ fun MainScreen(
                             onCreateChart = onAddNewChart
                         )
                     }
-                    MainTab.CHAT -> {
-                        // Chat tab shows conversations list
-                        ChatTab(
-                            viewModel = chatViewModel,
-                            currentChart = currentChart,
-                            savedCharts = savedCharts,
-                            selectedChartId = selectedChartId,
-                            onNavigateToModels = onNavigateToAiModels,
-                            onNavigateToChat = onNavigateToChat
-                        )
-                    }
                     MainTab.SETTINGS -> {
                         SettingsTab(
                             currentChart = currentChart,
@@ -318,8 +303,7 @@ fun MainScreen(
                                 viewModel.deleteChart(chartId)
                             },
                             onExportChart = onExportChart,
-                            onManageProfiles = { showProfileSwitcher = true },
-                            onNavigateToAiModels = onNavigateToAiModels
+                            onManageProfiles = { showProfileSwitcher = true }
                         )
                     }
                 }
@@ -446,11 +430,6 @@ enum class MainTab(
         titleKey = StringKey.TAB_INSIGHTS,
         selectedIcon = Icons.Filled.Insights,
         unselectedIcon = Icons.Outlined.Insights
-    ),
-    CHAT(
-        titleKey = StringKey.TAB_CHAT,
-        selectedIcon = Icons.Filled.Chat,
-        unselectedIcon = Icons.Outlined.Chat
     ),
     SETTINGS(
         titleKey = StringKey.TAB_SETTINGS,

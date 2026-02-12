@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.astro.storm.data.local.ChartDao
 import com.astro.storm.data.local.ChartDatabase
-import com.astro.storm.data.local.chat.ChatDao
 import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.data.preferences.AstrologySettingsManager
 import com.astro.storm.data.preferences.OnboardingManager
@@ -40,12 +39,6 @@ object AppModule {
     @Singleton
     fun provideChartDao(database: ChartDatabase): ChartDao {
         return database.chartDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideChatDao(database: ChartDatabase): ChatDao {
-        return database.chatDao()
     }
 
     @Provides

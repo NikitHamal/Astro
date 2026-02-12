@@ -37,18 +37,18 @@ private class SafeSelectableTextView(context: Context) : TextView(context) {
 }
 
 /**
- * Content cleaning utilities for AI responses.
+ * Content cleaning utilities for generated markdown responses.
  *
- * This utility handles the critical task of cleaning AI-generated content
+ * This utility handles the critical task of cleaning generated content
  * before display. It addresses several common issues:
  *
- * 1. Tool Call Artifacts: AI models may include tool call JSON in their
+ * 1. Tool Call Artifacts: Some generators may include tool call JSON in their
  *    responses that should not be displayed to users.
  *
  * 2. Streaming Artifacts: During streaming, various artifacts like "null",
  *    "undefined", "[DONE]" markers, and incomplete code blocks may appear.
  *
- * 3. Content Duplication: AI models (especially after tool calls) may
+ * 3. Content Duplication: Generators (especially after tool calls) may
  *    repeat content. This cleaner detects and removes duplicated sections.
  *
  * 4. Thinking/Reasoning Tags: Content wrapped in thinking tags should be
@@ -105,7 +105,7 @@ object ContentCleaner {
         Regex("""<reflection>[\s\S]*?</reflection>""", RegexOption.MULTILINE)
     )
 
-    // Pattern to match common AI response artifacts
+    // Pattern to match common response artifacts from tool-enabled generators
     private val artifactPatterns = listOf(
         // Remove standalone "null" text artifacts (common in streaming)
         Regex("""(?<![a-zA-Z0-9_])null(?![a-zA-Z0-9_])"""),
@@ -179,7 +179,7 @@ object ContentCleaner {
 
     /**
      * Clean content for display by removing tool calls, artifacts, and formatting issues.
-     * This should be called before displaying any AI response content.
+     * This should be called before displaying generated response content.
      */
     fun cleanForDisplay(content: String): String {
         if (content.isBlank()) return ""
@@ -394,7 +394,7 @@ object ContentCleaner {
     /**
      * Detect and remove duplicated content sections.
      *
-     * AI models sometimes repeat content after tool calls. This function
+     * Generators sometimes repeat content after tool calls. This function
      * detects when a significant portion of the content is duplicated
      * and removes the repetition.
      *

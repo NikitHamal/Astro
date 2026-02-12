@@ -7,26 +7,20 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.astro.storm.data.local.chat.ChatDao
-import com.astro.storm.data.local.chat.ConversationEntity
-import com.astro.storm.data.local.chat.MessageEntity
 
 /**
- * Room database for chart and chat persistence
+ * Room database for chart persistence
  */
 @Database(
     entities = [
-        ChartEntity::class,
-        ConversationEntity::class,
-        MessageEntity::class
+        ChartEntity::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class ChartDatabase : RoomDatabase() {
     abstract fun chartDao(): ChartDao
-    abstract fun chatDao(): ChatDao
 
     companion object {
         @Volatile
@@ -42,62 +36,17 @@ abstract class ChartDatabase : RoomDatabase() {
         }
 
         /**
-         * Migration from version 2 to 3: Add chat tables
+         * Legacy migration placeholder kept for users upgrading from old app versions.
          */
         private val MIGRATION_2_3 = object : Migration(2, 3) {
-            override fun migrate(db: SupportSQLiteDatabase) {
-                // Create conversations table
-                db.execSQL("""
-                    CREATE TABLE IF NOT EXISTS chat_conversations (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                        title TEXT NOT NULL,
-                        modelId TEXT NOT NULL,
-                        providerId TEXT NOT NULL,
-                        profileId INTEGER,
-                        createdAt INTEGER NOT NULL,
-                        updatedAt INTEGER NOT NULL,
-                        isPinned INTEGER NOT NULL DEFAULT 0,
-                        isArchived INTEGER NOT NULL DEFAULT 0,
-                        systemPromptOverride TEXT,
-                        messageCount INTEGER NOT NULL DEFAULT 0
-                    )
-                """.trimIndent())
-
-                // Create messages table
-                db.execSQL("""
-                    CREATE TABLE IF NOT EXISTS chat_messages (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                        conversationId INTEGER NOT NULL,
-                        role TEXT NOT NULL,
-                        content TEXT NOT NULL,
-                        reasoningContent TEXT,
-                        toolCallsJson TEXT,
-                        toolCallId TEXT,
-                        toolsUsedJson TEXT,
-                        modelId TEXT,
-                        createdAt INTEGER NOT NULL,
-                        isStreaming INTEGER NOT NULL DEFAULT 0,
-                        errorMessage TEXT,
-                        promptTokens INTEGER,
-                        completionTokens INTEGER,
-                        totalTokens INTEGER,
-                        FOREIGN KEY (conversationId) REFERENCES chat_conversations(id) ON DELETE CASCADE
-                    )
-                """.trimIndent())
-
-                // Create indices for messages table
-                db.execSQL("CREATE INDEX IF NOT EXISTS index_chat_messages_conversationId ON chat_messages(conversationId)")
-                db.execSQL("CREATE INDEX IF NOT EXISTS index_chat_messages_createdAt ON chat_messages(createdAt)")
-            }
+            override fun migrate(db: SupportSQLiteDatabase) = Unit
         }
 
         /**
-         * Migration from version 3 to 4: Add sectionsJson column for agentic message layout
+         * Legacy migration placeholder kept for users upgrading from old app versions.
          */
         private val MIGRATION_3_4 = object : Migration(3, 4) {
-            override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE chat_messages ADD COLUMN sectionsJson TEXT")
-            }
+            override fun migrate(db: SupportSQLiteDatabase) = Unit
         }
 
         /**
@@ -114,6 +63,18 @@ abstract class ChartDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * Migration from version 5 to 6: Remove legacy assistant tables and indices.
+         */
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("DROP TABLE IF EXISTS chat_messages")
+                db.execSQL("DROP TABLE IF EXISTS chat_conversations")
+                db.execSQL("DROP INDEX IF EXISTS index_chat_messages_conversationId")
+                db.execSQL("DROP INDEX IF EXISTS index_chat_messages_createdAt")
+            }
+        }
+
         fun getInstance(context: Context): ChartDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -121,7 +82,7 @@ abstract class ChartDatabase : RoomDatabase() {
                     ChartDatabase::class.java,
                     "astrostorm_database"
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
                     .build()
                 INSTANCE = instance
                 instance

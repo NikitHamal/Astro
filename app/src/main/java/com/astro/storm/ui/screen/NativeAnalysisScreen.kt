@@ -147,7 +147,7 @@ fun NativeAnalysisScreen(
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKey.TAB_CHAT), // Using TAB_CHAT as info placeholder if general info button missing
+                            contentDescription = stringResource(StringKey.A11Y_SHOW_INFO),
                             tint = AppTheme.TextSecondary
                         )
                     }

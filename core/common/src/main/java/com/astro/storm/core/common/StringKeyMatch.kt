@@ -1,4 +1,4 @@
-﻿package com.astro.storm.core.common
+package com.astro.storm.core.common
 
 
 /**
@@ -59,11 +59,6 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     MATCH_NEEDS_ATTENTION("Needs Attention", "ध्यान आवश्यक"),
     MATCH_GUNA_DISTRIBUTION("Guna Distribution", "गुण वितरण"),
     MATCH_PROFILE_COMPARISON("Profile Comparison", "प्रोफाइल तुलना"),
-    MATCH_AI_INSIGHT("AI Insight", "एआई अन्तर्दृष्टि"),
-    MATCH_AI_INSIGHT_SUBTITLE("Powered by Stormy", "Stormy द्वारा संचालित"),
-    MATCH_AI_INSIGHT_DESC("Get a deeper, personalized interpretation of your compatibility analysis using AI. The AI will analyze the Guna scores and Doshas to provide additional relationship guidance.", "एआई प्रयोग गरेर आफ्नो अनुकूलता विश्लेषणको गहिरो, व्यक्तिगत व्याख्या प्राप्त गर्नुहोस्। एआईले थप सम्बन्ध मार्गदर्शन प्रदान गर्न गुण स्कोर र दोषहरूको विश्लेषण गर्नेछ।"),
-    MATCH_GENERATE_AI_INSIGHT("Generate AI Insight", "एआई अन्तर्दृष्टि उत्पन्न गर्नुहोस्"),
-    MATCH_AI_ANALYZING("Analyzing compatibility...", "अनुकूलता विश्लेषण गर्दै..."),
     MATCH_VS("vs", "विरुद्ध"),
     MATCH_MOON_SIGN("Moon Sign", "चन्द्र राशि"),
     MATCH_NAKSHATRA("Nakshatra", "नक्षत्र"),
@@ -1603,7 +1598,6 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     // Navigation & Tabs
     NAV_HOME("Home", "गृह"),
     NAV_INSIGHTS("Insights", "अन्तर्दृष्टि"),
-    NAV_CHAT("Chat", "कुराकानी"),
     NAV_SETTINGS("Settings", "सेटिङहरू"),
 
     // Home Screen
@@ -1635,9 +1629,6 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     SETTINGS_EXPORT("Export", "निर्यात"),
     SETTINGS_EXPORT_PDF("Export as PDF", "PDF को रूपमा निर्यात गर्नुहोस्"),
     SETTINGS_EXPORT_PDF_DESC("Save chart details as PDF file", "कुण्डली विवरण PDF फाइलको रूपमा बचत गर्नुहोस्"),
-    SETTINGS_AI_CHAT("AI & Chat", "AI र कुराकानी"),
-    SETTINGS_AI_MODELS("AI Models", "AI मोडेलहरू"),
-    SETTINGS_AI_MODELS_DESC("Configure AI model settings", "AI मोडेल सेटिङहरू कन्फिगर गर्नुहोस्"),
     SETTINGS_PREFERENCES("Preferences", "प्राथमिकताहरू"),
     SETTINGS_LANGUAGE("Language", "भाषा"),
     SETTINGS_HOUSE_SYSTEM("House System", "भाव प्रणाली"),

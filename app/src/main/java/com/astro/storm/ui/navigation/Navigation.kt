@@ -1,7 +1,6 @@
 package com.astro.storm.ui.navigation
 
 import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -43,7 +42,6 @@ import com.astro.storm.ui.screen.DivisionalChartsScreen
 import com.astro.storm.ui.screen.UpachayaTransitScreen
 import com.astro.storm.ui.screen.KalachakraDashaScreen
 import com.astro.storm.ui.screen.tarabala.TarabalaScreen
-import com.astro.storm.ui.screen.AiModelsScreen
 import com.astro.storm.ui.screen.ArudhaPadaScreen
 import com.astro.storm.ui.screen.GrahaYuddhaScreen
 import com.astro.storm.ui.screen.DashaSandhiScreen
@@ -68,19 +66,11 @@ import com.astro.storm.ui.screen.DeepNativeAnalysisScreen
 import com.astro.storm.ui.screen.JaiminiKarakaScreen
 import com.astro.storm.ui.screen.DrigDashaScreen
 import com.astro.storm.ui.screen.SaptamsaScreen
-import com.astro.storm.ui.screen.main.ChatScreen
 import com.astro.storm.ui.screen.main.ExportFormat
 import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.screen.main.MainScreen
 import com.astro.storm.ui.theme.AppTheme
-import com.astro.storm.ui.viewmodel.AiStatus
-import dagger.hilt.android.EntryPointAccessors
 import com.astro.storm.ui.viewmodel.ChartViewModel
-import com.astro.storm.ui.viewmodel.ChatViewModel
-import com.astro.storm.ui.viewmodel.StreamingMessageState
-import com.astro.storm.ui.components.agentic.AskUserOption
-import com.astro.storm.ui.components.agentic.SectionedMessageState
-import com.astro.storm.data.ai.provider.AiProviderRegistry
 import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.ephemeris.GocharaVedhaCalculator
 import com.astro.storm.ephemeris.TarabalaCalculator
@@ -303,14 +293,6 @@ sealed class Screen(val route: String) {
         fun createRoute(chartId: Long) = "saptamsa/$chartId"
     }
 
-    // AI Models configuration screen
-    object AiModels : Screen("ai_models")
-
-    // Chat screen (individual conversation)
-    object Chat : Screen("chat/{conversationId}") {
-        fun createRoute(conversationId: Long) = "chat/$conversationId"
-        fun createNewRoute() = "chat/new"
-    }
 }
 
 /**
@@ -328,22 +310,12 @@ fun AstroStormNavigation(
     transitAnalyzer: TransitAnalyzer,
     vedhaCalculator: GocharaVedhaCalculator,
     tarabalaCalculator: TarabalaCalculator,
-    viewModel: ChartViewModel = hiltViewModel(),
-    chatViewModel: ChatViewModel = hiltViewModel()
+    viewModel: ChartViewModel = hiltViewModel()
 ) {
     val savedCharts by viewModel.savedCharts.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
     val density = LocalDensity.current
-    val context = LocalContext.current
     val selectedChartId by viewModel.selectedChartId.collectAsState()
-
-    // Get AI Provider Registry for AI Models screen
-    val providerRegistry = remember(context) {
-        EntryPointAccessors.fromApplication(
-            context.applicationContext,
-            NavigationEntryPoint::class.java
-        ).aiProviderRegistry()
-    }
 
     var currentChart by remember { mutableStateOf<VedicChart?>(null) }
 
@@ -372,7 +344,6 @@ fun AstroStormNavigation(
 
             MainScreen(
                 viewModel = viewModel,
-                chatViewModel = chatViewModel,
                 themeManager = themeManager,
                 savedCharts = savedCharts,
                 currentChart = currentChart,
@@ -439,14 +410,6 @@ fun AstroStormNavigation(
                 onNavigateToJaiminiKaraka = { navigateWithId(Screen.JaiminiKaraka) },
                 onNavigateToDrigDasha = { navigateWithId(Screen.DrigDasha) },
                 onNavigateToSaptamsa = { navigateWithId(Screen.Saptamsa) },
-                onNavigateToAiModels = { navigateToFeature(Screen.AiModels.route) },
-                onNavigateToChat = { conversationId ->
-                    if (conversationId != null) {
-                        navigateToFeature(Screen.Chat.createRoute(conversationId))
-                    } else {
-                        navigateToFeature(Screen.Chat.createNewRoute())
-                    }
-                },
                 onExportChart = { format ->
                     currentChart?.let { chart ->
                         when (format) {
@@ -1483,121 +1446,5 @@ fun AstroStormNavigation(
             SaptamsaScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
-        // AI Models configuration screen
-        composable(Screen.AiModels.route) {
-            AiModelsScreen(
-                providerRegistry = providerRegistry,
-                onBack = { navController.popBackStack() }
-            )
-        }
-
-        // Chat screen (individual conversation)
-        composable(
-            route = Screen.Chat.route,
-            arguments = listOf(
-                navArgument("conversationId") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val conversationIdStr = backStackEntry.arguments?.getString("conversationId") ?: "new"
-            val conversationId = conversationIdStr.toLongOrNull()
-
-            // Collect states from viewmodel
-            val currentMessages by chatViewModel.currentMessages.collectAsState()
-            val availableModels by chatViewModel.availableModels.collectAsState()
-            val selectedModel by chatViewModel.selectedModel.collectAsState()
-            val uiState by chatViewModel.uiState.collectAsState()
-            val isStreaming by chatViewModel.isStreaming.collectAsState()
-            val streamingContent by chatViewModel.streamingContent.collectAsState()
-            val streamingReasoning by chatViewModel.streamingReasoning.collectAsState()
-            val toolsInProgress by chatViewModel.toolsInProgress.collectAsState()
-            val aiStatus by chatViewModel.aiStatus.collectAsState()
-            val thinkingEnabled by chatViewModel.thinkingEnabled.collectAsState()
-            val webSearchEnabled by chatViewModel.webSearchEnabled.collectAsState()
-            val streamingMessageState by chatViewModel.streamingMessageState.collectAsState()
-            val streamingMessageId by chatViewModel.streamingMessageId.collectAsState()
-            val sectionedMessageState by chatViewModel.sectionedMessageState.collectAsState()
-
-            // Initialize/open conversation
-            LaunchedEffect(conversationId) {
-                if (conversationId != null) {
-                    chatViewModel.openConversation(
-                        conversationId = conversationId,
-                        currentChart = currentChart,
-                        savedCharts = savedCharts,
-                        selectedChartId = selectedChartId
-                    )
-                } else {
-                    // Create new conversation
-                    chatViewModel.createConversation(
-                        currentChart = currentChart,
-                        savedCharts = savedCharts,
-                        selectedChartId = selectedChartId
-                    )
-                }
-            }
-
-            // Cleanup conversation when leaving composition (handles deep links, gestures, process death)
-            DisposableEffect(conversationId) {
-                onDispose {
-                    chatViewModel.closeConversation()
-                }
-            }
-
-            ChatScreen(
-                messages = currentMessages,
-                streamingContent = streamingContent,
-                streamingReasoning = streamingReasoning,
-                isStreaming = isStreaming,
-                toolsInProgress = toolsInProgress,
-                aiStatus = aiStatus,
-                uiState = uiState,
-                selectedModel = selectedModel,
-                availableModels = availableModels,
-                thinkingEnabled = thinkingEnabled,
-                webSearchEnabled = webSearchEnabled,
-                streamingMessageState = streamingMessageState,
-                streamingMessageId = streamingMessageId,
-                sectionedMessageState = sectionedMessageState,
-                onSendMessage = { message ->
-                    chatViewModel.sendMessage(message, currentChart, savedCharts, selectedChartId)
-                },
-                onCancelStreaming = { chatViewModel.cancelStreaming() },
-                onRegenerateResponse = {
-                    chatViewModel.regenerateResponse(currentChart, savedCharts, selectedChartId)
-                },
-                onSelectModel = { chatViewModel.selectModel(it) },
-                onSetThinkingEnabled = { chatViewModel.setThinkingEnabled(it) },
-                onSetWebSearchEnabled = { chatViewModel.setWebSearchEnabled(it) },
-                onAskUserResponse = { sectionId, response ->
-                    chatViewModel.handleAskUserResponse(sectionId, response)
-                },
-                onAskUserOptionSelect = { sectionId, option ->
-                    chatViewModel.handleAskUserOptionSelect(sectionId, option)
-                },
-                onToggleSection = { sectionId ->
-                    chatViewModel.toggleSectionExpanded(sectionId)
-                },
-                onBack = {
-                    chatViewModel.closeConversation()
-                    navController.popBackStack()
-                },
-                onClearChat = { chatViewModel.clearConversation() },
-                onNavigateToModels = {
-                    navController.navigate(Screen.AiModels.route)
-                }
-            )
-        }
     }
-}
-
-/**
- * Entry point for getting dependencies in Navigation
- */
-@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
-@dagger.hilt.EntryPoint
-interface NavigationEntryPoint {
-    fun aiProviderRegistry(): AiProviderRegistry
-    fun stormyAgent(): com.astro.storm.data.ai.agent.StormyAgent
 }

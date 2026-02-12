@@ -50,8 +50,8 @@ fun ScreenTopBar(
             Column {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 18.sp),
+                    fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -61,7 +61,7 @@ fun ScreenTopBar(
                 } else if (subtitle != null) {
                     Text(
                         text = subtitle,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp),
                         color = AppTheme.TextMuted,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis

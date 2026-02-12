@@ -504,7 +504,7 @@ private fun ErrorContent(message: String, onRetry: () -> Unit) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = stringResource(StringKeyDosha.AI_MODELS_RETRY),
+                    text = stringResource(StringKey.BTN_RETRY),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.ButtonText,
