@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,16 +67,8 @@ fun DebugScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            TopAppBar(
-                title = { 
-                    Text(
-                        stringResource(StringKeyAnalysis.DEBUG_UNHANDLED_EXCEPTION), 
-                        color = AppTheme.TextPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    ) 
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = AppTheme.CardBackground)
+            ScreenTopBar(
+                title = stringResource(StringKeyAnalysis.DEBUG_UNHANDLED_EXCEPTION)
             )
         }
     ) { paddingValues ->

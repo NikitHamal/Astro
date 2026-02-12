@@ -40,25 +40,28 @@ import com.astro.storm.ui.theme.AppTheme
 @Composable
 fun ScreenTopBar(
     title: String,
+    onBack: (() -> Unit)? = null,
     subtitle: String? = null,
-    onBack: () -> Unit,
-    actions: @Composable RowScope.() -> Unit = {}
+    actions: @Composable RowScope.() -> Unit = {},
+    subtitleContent: @Composable (ColumnScope.() -> Unit)? = null
 ) {
     TopAppBar(
         title = {
             Column {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                if (subtitle != null) {
+                if (subtitleContent != null) {
+                    subtitleContent()
+                } else if (subtitle != null) {
                     Text(
                         text = subtitle,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -67,20 +70,23 @@ fun ScreenTopBar(
             }
         },
         navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(StringKeyUICommon.BACK),
-                    tint = AppTheme.TextPrimary
-                )
+            if (onBack != null) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(StringKeyUICommon.BACK),
+                        tint = AppTheme.TextPrimary
+                    )
+                }
             }
         },
         actions = actions,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = AppTheme.ScreenBackground,
+            scrolledContainerColor = AppTheme.ScreenBackground,
             navigationIconContentColor = AppTheme.TextPrimary,
             titleContentColor = AppTheme.TextPrimary,
-            actionIconContentColor = AppTheme.TextPrimary
+            actionIconContentColor = AppTheme.TextSecondary
         )
     )
 }

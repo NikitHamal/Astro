@@ -16,6 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,35 +96,10 @@ fun AshtamangalaPrashnaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            stringResource(StringKeyAshtamangala.SCREEN_TITLE),
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary,
-                            fontSize = 18.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            stringResource(StringKeyAshtamangala.SCREEN_SUBTITLE),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(StringKeyAshtamangala.SCREEN_TITLE),
+                subtitle = stringResource(StringKeyAshtamangala.SCREEN_SUBTITLE),
+                onBack = onBack,
                 actions = {
                     if (currentReading != null) {
                         IconButton(onClick = {
@@ -146,10 +122,7 @@ fun AshtamangalaPrashnaScreen(
                             tint = AppTheme.TextPrimary
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground
-                )
+                }
             )
         }
     ) { paddingValues ->

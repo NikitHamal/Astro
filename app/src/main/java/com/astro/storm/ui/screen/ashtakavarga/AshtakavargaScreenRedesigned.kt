@@ -50,8 +50,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -230,58 +229,20 @@ private fun AshtakavargaTopBar(
     onBack: () -> Unit,
     onInfoClick: () -> Unit
 ) {
-    Surface(
-        color = AppTheme.ScreenBackground,
-        shadowElevation = 2.dp
-    ) {
-        TopAppBar(
-            title = {
-                Column {
-                    Text(
-                        text = stringResource(StringKey.FEATURE_ASHTAKAVARGA),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    if (chartName.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(2.dp))
-                        val language = LocalLanguage.current
-                        Text(
-                            text = StringResources.get(StringKeyDosha.ASHTAKAVARGA_DESC_FMT, language, chartName),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                }
-            },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKey.BTN_BACK),
-                        tint = AppTheme.TextPrimary
-                    )
-                }
-            },
-            actions = {
-                val language = LocalLanguage.current
-                IconButton(onClick = onInfoClick) {
-                    Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = stringResource(StringKeyDosha.ASHTAKAVARGA_INFO_A11Y),
-                        tint = AppTheme.TextPrimary
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = AppTheme.ScreenBackground
-            )
-        )
-    }
+    ScreenTopBar(
+        title = stringResource(StringKey.FEATURE_ASHTAKAVARGA),
+        subtitle = stringResource(StringKeyDosha.ASHTAKAVARGA_DESC_FMT, chartName),
+        onBack = onBack,
+        actions = {
+            IconButton(onClick = onInfoClick) {
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = stringResource(StringKeyDosha.ASHTAKAVARGA_INFO_A11Y),
+                    tint = AppTheme.TextPrimary
+                )
+            }
+        }
+    )
 }
 
 @Composable

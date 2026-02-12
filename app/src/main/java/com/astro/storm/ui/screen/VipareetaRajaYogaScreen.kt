@@ -49,8 +49,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -136,35 +135,10 @@ fun VipareetaRajaYogaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = stringResource(StringKeyDosha.VIPAREETA_SCREEN_TITLE),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = AppTheme.TextPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            text = stringResource(StringKeyDosha.VIPAREETA_SUBTITLE),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyUICommon.BACK),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(StringKeyDosha.VIPAREETA_SCREEN_TITLE),
+                subtitle = stringResource(StringKeyDosha.VIPAREETA_SUBTITLE),
+                onBack = onBack,
                 actions = {
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
@@ -173,10 +147,7 @@ fun VipareetaRajaYogaScreen(
                             tint = AppTheme.TextSecondary
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground
-                )
+                }
             )
         }
     ) { paddingValues ->

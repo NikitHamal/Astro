@@ -62,8 +62,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -134,23 +133,9 @@ fun AshtavargaTransitScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_TITLE),
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK)
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_TITLE),
+                onBack = onNavigateBack,
                 actions = {
                     IconButton(onClick = { viewModel.refresh(chart, language) }) {
                         Icon(
@@ -158,11 +143,7 @@ fun AshtavargaTransitScreen(
                             contentDescription = stringResource(StringKey.BTN_RETRY)
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = colors.ScreenBackground,
-                    titleContentColor = colors.TextPrimary
-                )
+                }
             )
         },
         containerColor = colors.ScreenBackground

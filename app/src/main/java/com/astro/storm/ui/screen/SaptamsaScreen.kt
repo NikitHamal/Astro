@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -92,37 +93,10 @@ fun SaptamsaScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = StringResources.get(StringKeySaptamsa.TITLE, language),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            text = StringResources.get(StringKeySaptamsa.SUBTITLE, language),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = StringResources.get(StringKey.BTN_BACK, language)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground,
-                    titleContentColor = AppTheme.TextPrimary
-                )
+            ScreenTopBar(
+                title = StringResources.get(StringKeySaptamsa.TITLE, language),
+                subtitle = StringResources.get(StringKeySaptamsa.SUBTITLE, language),
+                onBack = onBack
             )
         },
         containerColor = AppTheme.ScreenBackground

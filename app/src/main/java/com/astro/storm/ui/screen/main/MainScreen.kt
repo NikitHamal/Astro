@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -370,27 +371,14 @@ private fun MainTopBar(
 ) {
     val language = LocalLanguage.current
     val colors = AppTheme.current
-    TopAppBar(
-        title = {
-            Text(
-                text = currentTab.getLocalizedTitle(language),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = colors.TextPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
+    ScreenTopBar(
+        title = currentTab.getLocalizedTitle(language),
         actions = {
             ProfileHeaderRow(
                 currentChart = currentChart,
                 onProfileClick = onProfileClick
             )
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = colors.ScreenBackground,
-            titleContentColor = colors.TextPrimary
-        )
+        }
     )
 }
 

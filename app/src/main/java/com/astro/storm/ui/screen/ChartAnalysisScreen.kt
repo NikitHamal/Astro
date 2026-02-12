@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -206,40 +207,11 @@ private fun ChartAnalysisTopBar(
     chartName: String,
     onBack: () -> Unit
 ) {
-    TopAppBar(
-        title = {
-            Column {
-                Text(
-                    text = stringResource(StringKeyAnalysis.ANALYSIS_CHART_ANALYSIS),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = chartName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        },
-        navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(StringKeyMatch.NAV_BACK),
-                    tint = AppTheme.TextPrimary
-                )
-            }
-        },
-        actions = {},
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppTheme.ScreenBackground
-        )
-    )
+    ScreenTopBar(
+                title = stringResource(StringKeyAnalysis.ANALYSIS_CHART_ANALYSIS),
+                subtitle = chartName,
+                onBack = onBack
+            )
 }
 
 @Composable

@@ -88,8 +88,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -233,30 +232,12 @@ fun PrashnaScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(StringKeyAnalysis.PRASHNA_KUNDALI),
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
+            ScreenTopBar(
+                title = stringResource(StringKeyAnalysis.PRASHNA_KUNDALI),
+                onBack = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             onBack()
-                        }
-                    ) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = stringResource(StringKeyMatch.NAV_BACK),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                },
+                        },
                 actions = {
                     if (uiState is PrashnaUiState.Success) {
                         IconButton(
@@ -273,10 +254,7 @@ fun PrashnaScreen(
                             )
                         }
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground
-                )
+                }
             )
         },
         containerColor = AppTheme.ScreenBackground

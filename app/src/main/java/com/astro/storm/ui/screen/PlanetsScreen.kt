@@ -13,8 +13,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -113,38 +112,10 @@ private fun PlanetsTopBar(
     chartName: String,
     onBack: () -> Unit
 ) {
-    TopAppBar(
-        title = {
-            Column {
-                Text(
-                    text = stringResource(StringKey.FEATURE_PLANETS),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = chartName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        },
-        navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(StringKey.BTN_BACK),
-                    tint = AppTheme.TextPrimary
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppTheme.ScreenBackground
-        )
-    )
+    ScreenTopBar(
+                title = stringResource(StringKey.FEATURE_PLANETS),
+                subtitle = chartName,
+                onBack = onBack
+            )
 }
 

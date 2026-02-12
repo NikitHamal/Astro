@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -97,37 +98,10 @@ fun DrigDashaScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_DASHA_TITLE),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            text = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_LONGEVITY_SYSTEM),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(com.astro.storm.core.common.StringKeyUICommon.NAV_BACK)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground,
-                    titleContentColor = AppTheme.TextPrimary
-                )
+            ScreenTopBar(
+                title = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_DASHA_TITLE),
+                subtitle = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_LONGEVITY_SYSTEM),
+                onBack = onBack
             )
         },
         containerColor = AppTheme.ScreenBackground

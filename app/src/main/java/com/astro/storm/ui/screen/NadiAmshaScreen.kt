@@ -11,6 +11,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,33 +66,10 @@ fun NadiAmshaScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            stringResource(StringKeyAdvanced.NADI_TITLE),
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            stringResource(StringKeyAdvanced.NADI_SUBTITLE),
-                            fontSize = 12.sp,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(StringKeyAdvanced.NADI_TITLE),
+                subtitle = stringResource(StringKeyAdvanced.NADI_SUBTITLE),
+                onBack = onBack,
                 actions = {
                     IconButton(onClick = { showInfoDialog = true }) {
                         Icon(
@@ -100,11 +78,7 @@ fun NadiAmshaScreen(
                             tint = AppTheme.TextSecondary
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground,
-                    titleContentColor = AppTheme.TextPrimary
-                )
+                }
             )
         },
         containerColor = AppTheme.ScreenBackground

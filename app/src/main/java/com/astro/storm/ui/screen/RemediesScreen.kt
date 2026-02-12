@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -108,39 +109,9 @@ fun RemediesScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    AnimatedContent(
-                        targetState = isSearchVisible,
-                        transitionSpec = {
-                            fadeIn(animationSpec = tween(200)) togetherWith
-                                    fadeOut(animationSpec = tween(200))
-                        },
-                        label = "SearchTransition"
-                    ) { showSearch ->
-                        if (showSearch) {
-                            SearchTextField(
-                                query = searchQuery,
-                                onQueryChange = { searchQuery = it },
-                                onClear = {
-                                    searchQuery = ""
-                                    isSearchVisible = false
-                                }
-                            )
-                        } else {
-                            Text(
-                                stringResource(StringKeyMatch.REMEDY_TITLE),
-                                fontWeight = FontWeight.SemiBold,
-                                color = AppTheme.TextPrimary,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                    }
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
+            ScreenTopBar(
+                title = stringResource(StringKeyMatch.REMEDY_TITLE),
+                onBack = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             if (isSearchVisible) {
                                 isSearchVisible = false
@@ -148,15 +119,7 @@ fun RemediesScreen(
                             } else {
                                 onBack()
                             }
-                        }
-                    ) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = stringResource(StringKey.BTN_BACK),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                },
+                        },
                 actions = {
                     if (selectedTab == 1 && !isSearchVisible) {
                         IconButton(
@@ -172,10 +135,7 @@ fun RemediesScreen(
                             )
                         }
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground
-                )
+                }
             )
         },
         containerColor = AppTheme.ScreenBackground

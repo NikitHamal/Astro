@@ -25,6 +25,7 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -535,37 +536,10 @@ fun ChatScreen(
     Scaffold(
         containerColor = colors.ScreenBackground,
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = stringResource(StringKeyDosha.STORMY_TITLE),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = colors.TextPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        selectedModel?.let {
-                            Text(
-                                text = it.displayName,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = colors.TextMuted,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(StringKeyDosha.CHAT_BACK),
-                            tint = colors.TextPrimary
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(StringKeyDosha.STORMY_TITLE),
+                subtitle = selectedModel?.displayName,
+                onBack = onBack,
                 actions = {
                     // Model options button (only for models with thinking/websearch support)
                     if (selectedModel?.supportsThinking == true || selectedModel?.supportsWebSearch == true) {
@@ -591,10 +565,7 @@ fun ChatScreen(
                             tint = colors.TextSecondary
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = colors.ScreenBackground
-                )
+                }
             )
         }
     ) { paddingValues ->

@@ -20,6 +20,7 @@ import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -127,44 +128,15 @@ fun VarshaphalaScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            stringResource(StringKeyMatch.VARSHAPHALA_TITLE),
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        varshaphalaResult?.let {
-                            Text(
-                                stringResource(StringKey.VARSHAPHALA_AGE, it.age),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.TextMuted,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = stringResource(StringKeyMatch.NAV_BACK),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(StringKeyMatch.VARSHAPHALA_TITLE),
+                subtitle = varshaphalaResult?.let { stringResource(StringKey.VARSHAPHALA_AGE, it.age) },
+                onBack = onBack,
                 actions = {
                     varshaphalaResult?.let { result ->
                         YearRatingBadge(result.yearRating)
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppTheme.ScreenBackground
-                )
+                }
             )
         },
         containerColor = AppTheme.ScreenBackground

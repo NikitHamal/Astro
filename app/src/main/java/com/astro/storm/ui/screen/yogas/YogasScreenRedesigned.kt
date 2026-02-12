@@ -64,8 +64,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -234,42 +233,11 @@ private fun YogasTopBar(
         color = AppTheme.ScreenBackground,
         shadowElevation = 2.dp
     ) {
-        TopAppBar(
-            title = {
-                Column {
-                    Text(
-                        text = stringResource(StringKey.FEATURE_YOGAS),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    if (chartName.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_YOGAS_FOUND_FMT), totalYogas, chartName),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                }
-            },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKey.BTN_BACK),
-                        tint = AppTheme.TextPrimary
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = AppTheme.ScreenBackground
+        ScreenTopBar(
+                title = stringResource(StringKey.FEATURE_YOGAS),
+                subtitle = String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_YOGAS_FOUND_FMT), totalYogas, chartName),
+                onBack = onBack
             )
-        )
     }
 }
 

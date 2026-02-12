@@ -47,8 +47,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -253,49 +252,20 @@ private fun PanchangaTopBar(
         color = AppTheme.ScreenBackground,
         shadowElevation = 2.dp
     ) {
-        TopAppBar(
-            title = {
-                Column {
-                    Text(
-                        text = stringResource(StringKey.FEATURE_PANCHANGA),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = stringResource(StringKeyDosha.PANCHANGA_LIMBS_TITLE),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextMuted,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-            },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKey.BTN_BACK),
-                        tint = AppTheme.TextPrimary
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = onInfoClick) {
+        ScreenTopBar(
+                title = stringResource(StringKey.FEATURE_PANCHANGA),
+                subtitle = stringResource(StringKeyDosha.PANCHANGA_LIMBS_TITLE),
+                onBack = onBack,
+                actions = {
+                    IconButton(onClick = onInfoClick) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
                         contentDescription = stringResource(StringKeyAnalysis.PANCHANGA_ABOUT),
                         tint = AppTheme.TextPrimary
                     )
                 }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = AppTheme.ScreenBackground
+                }
             )
-        )
     }
 }
 
