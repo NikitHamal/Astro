@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.roundToInt
+import kotlin.math.sqrt
 
 @Singleton
 class HoroscopeCalculator @Inject constructor(
@@ -46,7 +47,8 @@ class HoroscopeCalculator @Inject constructor(
 
     private data class DailyHoroscopeCacheKey(
         val chartId: String,
-        val date: LocalDate
+        val date: LocalDate,
+        val language: Language
     )
 
     private data class NatalChartCachedData(
@@ -191,10 +193,8 @@ class HoroscopeCalculator @Inject constructor(
         ensureNotClosed()
 
         val chartId = getChartId(chart)
-        val cacheKey = DailyHoroscopeCacheKey(chartId, date)
-        // Cache depends on date and chart, but for different languages we might need separate cache or re-localize
-        // For now, let's keep it simple and re-calculate if language is different or ignore cache if it doesn't store language.
-        // Actually, let's just use the language in calculations.
+        val cacheKey = DailyHoroscopeCacheKey(chartId, date, language)
+        dailyHoroscopeCache[cacheKey]?.let { return it }
 
         val natalData = getOrComputeNatalData(chart)
         val transitChart = getOrCalculateTransitChart(chart.birthData, date)
@@ -245,7 +245,7 @@ class HoroscopeCalculator @Inject constructor(
             cautions = cautions,
             affirmation = StringResources.get(affirmationKey, language),
             affirmationKey = affirmationKey
-        )
+        ).also { dailyHoroscopeCache[cacheKey] = it }
     }
 
     fun calculateDailyHoroscopeSafe(chart: VedicChart, date: LocalDate = LocalDate.now(), language: Language = Language.ENGLISH): HoroscopeResult<DailyHoroscope> {
@@ -554,9 +554,23 @@ class HoroscopeCalculator @Inject constructor(
         val dashaLordName = natalData.dashaTimeline.currentMahadasha?.planet?.getLocalizedName(language) ?: "current"
         
         return LifeArea.entries.map { area ->
-            val dashaInfluence = calculateDashaInfluenceOnArea(natalData.dashaTimeline, area, natalData.planetMap)
-            val transitInfluence = calculateTransitInfluenceOnArea(natalData.moonSign, transitPlanetMap, area)
-            val rating = ((dashaInfluence + transitInfluence) / 2).coerceIn(1, 5)
+            val dashaInfluence = calculateDashaInfluenceOnArea(
+                timeline = natalData.dashaTimeline,
+                area = area,
+                planetMap = natalData.planetMap,
+                ascendantSign = natalData.ascendantSign,
+                moonSign = natalData.moonSign
+            )
+            val transitInfluence = calculateTransitInfluenceOnArea(
+                natalMoonSign = natalData.moonSign,
+                natalAscendantSign = natalData.ascendantSign,
+                transitPlanetMap = transitPlanetMap,
+                area = area
+            )
+            val dailyRhythmBoost = calculateDailyRhythmBoost(date, area)
+            val rating = (dashaInfluence * 0.55 + transitInfluence * 0.45 + dailyRhythmBoost)
+                .roundToInt()
+                .coerceIn(1, 5)
 
             val predictionKeyName = "PRED_${area.name}_$rating"
             val predictionKey = try {
@@ -566,12 +580,6 @@ class HoroscopeCalculator @Inject constructor(
             }
             
             val prediction = StringResources.get(predictionKey, language, dashaLordName)
-            
-            val adviceKey = when {
-                rating >= 4 -> "REC_AREA_${area.name}"
-                rating >= 3 -> "ENERGY_BALANCED" // Placeholder or dynamic lookup
-                else -> "CAUTION_GENERAL" // Placeholder
-            }
             
             // For now, let's use the AREA_REC keys from StringKey.kt
             val areaRecKey = try {
@@ -589,41 +597,130 @@ class HoroscopeCalculator @Inject constructor(
     private fun calculateDashaInfluenceOnArea(
         timeline: DashaCalculator.DashaTimeline,
         area: LifeArea,
-        planetMap: Map<Planet, PlanetPosition>
-    ): Int {
-        val currentMahadasha = timeline.currentMahadasha ?: return 3
-        val mahadashaPlanet = currentMahadasha.planet
-        val planetPosition = planetMap[mahadashaPlanet]
-        val planetHouse = planetPosition?.house ?: return 3
-        val isInAreaHouse = planetHouse in area.houses
-        val isBenefic = mahadashaPlanet in NATURAL_BENEFICS
+        planetMap: Map<Planet, PlanetPosition>,
+        ascendantSign: ZodiacSign,
+        moonSign: ZodiacSign
+    ): Double {
+        val currentMahadasha = timeline.currentMahadasha ?: return 3.0
+        val currentAntardasha = timeline.currentAntardasha
 
-        return when {
-            isInAreaHouse && isBenefic -> 5
-            isInAreaHouse -> 4
-            isBenefic -> 4
-            mahadashaPlanet in NATURAL_MALEFICS -> 3
-            else -> 3
+        val mahaScore = scoreDashaPlanetForArea(
+            planet = currentMahadasha.planet,
+            position = planetMap[currentMahadasha.planet],
+            area = area,
+            ascendantSign = ascendantSign,
+            moonSign = moonSign
+        )
+
+        val antarScore = currentAntardasha?.planet?.let { antarPlanet ->
+            scoreDashaPlanetForArea(
+                planet = antarPlanet,
+                position = planetMap[antarPlanet],
+                area = area,
+                ascendantSign = ascendantSign,
+                moonSign = moonSign
+            )
+        } ?: mahaScore
+
+        var score = (mahaScore * 0.65) + (antarScore * 0.35)
+
+        if (currentMahadasha.planet in getAreaKarakas(area)) score += 0.25
+        if (currentAntardasha?.planet in getAreaKarakas(area)) score += 0.15
+
+        return score.coerceIn(1.0, 5.0)
+    }
+
+    private fun scoreDashaPlanetForArea(
+        planet: Planet,
+        position: PlanetPosition?,
+        area: LifeArea,
+        ascendantSign: ZodiacSign,
+        moonSign: ZodiacSign
+    ): Double {
+        if (position == null) return 3.0
+
+        val houseFromAsc = position.house
+        val houseFromMoon = calculateHouseFromMoon(position.sign, moonSign)
+        val areaHouses = area.houses.toSet()
+
+        var score = 3.0
+        if (houseFromAsc in areaHouses) score += 1.1
+        if (houseFromMoon in areaHouses) score += 0.6
+
+        score += when {
+            planet in NATURAL_BENEFICS -> 0.45
+            planet in NATURAL_MALEFICS -> -0.35
+            else -> 0.0
         }
+
+        score += when {
+            isExalted(planet, position.sign) -> 0.9
+            isInOwnSign(planet, position.sign) -> 0.6
+            isDebilitated(planet, position.sign) -> -0.9
+            else -> 0.0
+        }
+
+        if (houseFromAsc in setOf(6, 8, 12) && houseFromAsc !in areaHouses) score -= 0.35
+        if (position.isRetrograde && planet in NATURAL_BENEFICS) score -= 0.2
+        if (position.isRetrograde && planet in NATURAL_MALEFICS) score += 0.1
+
+        // Ascendant compatibility provides a small stabilizing nudge for the active dasha planet.
+        val planetFromAsc = ((position.sign.ordinal - ascendantSign.ordinal + 12) % 12) + 1
+        if (planetFromAsc in setOf(1, 5, 9, 10, 11)) score += 0.2
+
+        return score.coerceIn(1.0, 5.0)
     }
 
     private fun calculateTransitInfluenceOnArea(
         natalMoonSign: ZodiacSign,
+        natalAscendantSign: ZodiacSign,
         transitPlanetMap: Map<Planet, PlanetPosition>,
         area: LifeArea
-    ): Int {
-        var score = 3
+    ): Double {
+        var weightedScore = 0.0
+        var totalWeight = 0.0
+
         for ((planet, position) in transitPlanetMap) {
+            if (planet !in Planet.MAIN_PLANETS) continue
+
+            val planetWeight = TRANSIT_PLANET_WEIGHTS[planet] ?: 1.0
             val houseFromMoon = calculateHouseFromMoon(position.sign, natalMoonSign)
-            if (houseFromMoon in area.houses) {
-                score += when (planet) {
-                    in NATURAL_BENEFICS -> 1
-                    in NATURAL_MALEFICS -> -1
-                    else -> 0
-                }
+            val houseFromAsc = ((position.sign.ordinal - natalAscendantSign.ordinal + 12) % 12) + 1
+            val areaRelevant = houseFromMoon in area.houses || houseFromAsc in area.houses || planet in getAreaKarakas(area)
+
+            if (!areaRelevant) continue
+
+            val favorableMoonTransit = houseFromMoon in (GOCHARA_FAVORABLE_HOUSES[planet] ?: emptyList())
+
+            var contribution = when {
+                favorableMoonTransit -> 0.75
+                else -> -0.55
             }
+
+            if (houseFromMoon in area.houses) contribution += 0.25
+            if (houseFromAsc in area.houses) {
+                contribution += if (planet in NATURAL_BENEFICS) 0.25 else -0.2
+            }
+
+            contribution += when {
+                isExalted(planet, position.sign) -> 0.35
+                isInOwnSign(planet, position.sign) -> 0.2
+                isDebilitated(planet, position.sign) -> -0.35
+                else -> 0.0
+            }
+
+            if (position.isRetrograde) {
+                contribution *= if (planet in NATURAL_BENEFICS) 0.85 else 0.95
+            }
+
+            weightedScore += contribution * planetWeight
+            totalWeight += planetWeight
         }
-        return score.coerceIn(1, 5)
+
+        if (totalWeight <= 0.0) return 3.0
+
+        val normalizedShift = weightedScore / totalWeight
+        return (3.0 + normalizedShift * 1.8).coerceIn(1.0, 5.0)
     }
 
     private fun getRatingCategory(rating: Int): String = when {
@@ -813,13 +910,14 @@ class HoroscopeCalculator @Inject constructor(
             val weeklyRatings = dailyHoroscopes.mapNotNull { horoscope ->
                 horoscope.lifeAreas.find { it.area == area }?.rating
             }
-            val avgRating = if (weeklyRatings.isNotEmpty()) {
-                weeklyRatings.sum().toDouble() / weeklyRatings.size
-            } else 3.0
+            val avgRating = if (weeklyRatings.isNotEmpty()) weeklyRatings.average() else 3.0
+            val trend = if (weeklyRatings.size >= 2) weeklyRatings.last() - weeklyRatings.first() else 0
+            val volatility = calculateVolatility(weeklyRatings)
+            val weightedRating = avgRating + (trend * 0.35) - (volatility * 0.2)
 
             val ratingCategory = when {
-                avgRating >= 4 -> "EXCELLENT"
-                avgRating >= 3 -> "STEADY"
+                weightedRating >= 4.15 -> "EXCELLENT"
+                weightedRating >= 2.85 -> "STEADY"
                 else -> "CHALLENGING"
             }
 
@@ -842,17 +940,56 @@ class HoroscopeCalculator @Inject constructor(
         val avgEnergy = if (dailyHighlights.isNotEmpty()) {
             dailyHighlights.sumOf { it.energy }.toDouble() / dailyHighlights.size
         } else 5.0
+        val energyTrend = if (dailyHighlights.size >= 2) {
+            dailyHighlights.last().energy - dailyHighlights.first().energy
+        } else 0
+        val energyVolatility = calculateVolatility(dailyHighlights.map { it.energy })
 
         val currentDashaLord = dashaTimeline.currentMahadasha?.planet ?: Planet.SUN
 
         val themeKey = when {
-            avgEnergy >= 7 -> StringKey.THEME_WEEK_OPPORTUNITIES
-            avgEnergy >= 5 -> StringKey.THEME_WEEK_STEADY_PROGRESS
-            else -> StringKey.THEME_WEEK_MINDFUL_NAVIGATION
+            avgEnergy >= 6.8 && energyTrend >= 0 -> StringKey.THEME_WEEK_OPPORTUNITIES
+            avgEnergy >= 5.0 && energyVolatility <= 2.2 -> StringKey.THEME_WEEK_STEADY_PROGRESS
+            avgEnergy <= 4.8 || energyVolatility > 2.2 -> StringKey.THEME_WEEK_MINDFUL_NAVIGATION
+            else -> StringKey.THEME_WEEK_STEADY_PROGRESS
         }
 
         val overview = buildWeeklyOverview(currentDashaLord, avgEnergy, dailyHighlights, language)
         return Pair(themeKey, overview)
+    }
+
+    private fun calculateDailyRhythmBoost(date: LocalDate, area: LifeArea): Double {
+        val dayLord = when (date.dayOfWeek.value) {
+            1 -> Planet.MOON
+            2 -> Planet.MARS
+            3 -> Planet.MERCURY
+            4 -> Planet.JUPITER
+            5 -> Planet.VENUS
+            6 -> Planet.SATURN
+            else -> Planet.SUN
+        }
+
+        return when {
+            area in DAY_LORD_AREA_FAVORABILITY[dayLord].orEmpty() -> 0.35
+            area in DAY_LORD_AREA_CHALLENGES[dayLord].orEmpty() -> -0.2
+            else -> 0.0
+        }
+    }
+
+    private fun getAreaKarakas(area: LifeArea): Set<Planet> = when (area) {
+        LifeArea.CAREER -> setOf(Planet.SUN, Planet.SATURN, Planet.MERCURY, Planet.JUPITER)
+        LifeArea.LOVE -> setOf(Planet.VENUS, Planet.MOON, Planet.JUPITER)
+        LifeArea.HEALTH -> setOf(Planet.SUN, Planet.MARS, Planet.SATURN)
+        LifeArea.FINANCE -> setOf(Planet.JUPITER, Planet.VENUS, Planet.MERCURY)
+        LifeArea.FAMILY -> setOf(Planet.MOON, Planet.VENUS, Planet.JUPITER)
+        LifeArea.SPIRITUALITY -> setOf(Planet.JUPITER, Planet.KETU, Planet.SATURN, Planet.MOON)
+    }
+
+    private fun calculateVolatility(values: List<Int>): Double {
+        if (values.size <= 1) return 0.0
+        val mean = values.average()
+        val variance = values.map { (it - mean) * (it - mean) }.average()
+        return sqrt(variance)
     }
 
     private fun buildWeeklyOverview(
@@ -1010,6 +1147,38 @@ class HoroscopeCalculator @Inject constructor(
             Planet.SATURN to mapOf(3 to 12, 6 to 9, 11 to 5),
             Planet.RAHU to mapOf(3 to 12, 6 to 9, 10 to 4, 11 to 5),
             Planet.KETU to mapOf(3 to 12, 6 to 9, 9 to 10, 11 to 5)
+        )
+
+        private val TRANSIT_PLANET_WEIGHTS = mapOf(
+            Planet.SUN to 1.1,
+            Planet.MOON to 1.4,
+            Planet.MARS to 1.0,
+            Planet.MERCURY to 1.0,
+            Planet.JUPITER to 1.3,
+            Planet.VENUS to 1.1,
+            Planet.SATURN to 1.2,
+            Planet.RAHU to 0.9,
+            Planet.KETU to 0.9
+        )
+
+        private val DAY_LORD_AREA_FAVORABILITY = mapOf(
+            Planet.SUN to setOf(LifeArea.CAREER, LifeArea.HEALTH),
+            Planet.MOON to setOf(LifeArea.FAMILY, LifeArea.LOVE),
+            Planet.MARS to setOf(LifeArea.HEALTH, LifeArea.CAREER),
+            Planet.MERCURY to setOf(LifeArea.CAREER, LifeArea.FINANCE),
+            Planet.JUPITER to setOf(LifeArea.SPIRITUALITY, LifeArea.FINANCE, LifeArea.FAMILY),
+            Planet.VENUS to setOf(LifeArea.LOVE, LifeArea.FINANCE),
+            Planet.SATURN to setOf(LifeArea.CAREER, LifeArea.SPIRITUALITY)
+        )
+
+        private val DAY_LORD_AREA_CHALLENGES = mapOf(
+            Planet.SUN to setOf(LifeArea.LOVE),
+            Planet.MOON to setOf(LifeArea.CAREER),
+            Planet.MARS to setOf(LifeArea.LOVE, LifeArea.FAMILY),
+            Planet.MERCURY to setOf(LifeArea.HEALTH),
+            Planet.JUPITER to setOf(LifeArea.HEALTH),
+            Planet.VENUS to setOf(LifeArea.HEALTH),
+            Planet.SATURN to setOf(LifeArea.LOVE, LifeArea.FAMILY)
         )
 
         private val FAVORABLE_GOCHARA_EFFECTS_DETAILED = mapOf(
