@@ -17,8 +17,10 @@ import swisseph.SwissEph
 import java.io.File
 import java.io.IOException
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import kotlin.math.roundToInt
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -577,7 +579,7 @@ class SwissEphemerisEngine internal constructor(
 
     private fun convertToUtc(dateTime: LocalDateTime, timezone: String): LocalDateTime {
         return try {
-            val zoneId = ZoneId.of(timezone)
+            val zoneId = resolveZoneId(timezone)
             val zonedDateTime = ZonedDateTime.of(dateTime, zoneId)
             zonedDateTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime()
         } catch (e: Exception) {
@@ -602,7 +604,7 @@ class SwissEphemerisEngine internal constructor(
         }
 
         try {
-            ZoneId.of(birthData.timezone)
+            resolveZoneId(birthData.timezone)
         } catch (e: Exception) {
             throw IllegalArgumentException("Invalid timezone identifier: ${birthData.timezone}", e)
         }
@@ -616,6 +618,21 @@ class SwissEphemerisEngine internal constructor(
     private fun ensureOpen() {
         check(!isClosed) {
             "SwissEphemerisEngine has been closed and cannot be used"
+        }
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: Exception) {
+            val trimmed = timezone.trim()
+            val numericHours = trimmed.toDoubleOrNull()
+            if (numericHours != null) {
+                val totalSeconds = (numericHours * 3600.0).roundToInt()
+                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                throw IllegalArgumentException("Invalid timezone: $timezone")
+            }
         }
     }
 

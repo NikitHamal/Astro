@@ -5,9 +5,13 @@ import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.VedicAstrologyUtils
+import java.time.DateTimeException
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 /**
  * DrigDashaCalculator - Jaimini Drig (Sthira) Dasha System for Longevity
@@ -265,9 +269,10 @@ object DrigDashaCalculator {
      */
     fun calculateDrigDasha(
         chart: VedicChart,
-        currentDate: LocalDateTime = LocalDateTime.now()
+        currentDate: LocalDateTime? = null
     ): DrigDashaAnalysis {
         val birthDateTime = chart.birthData.dateTime
+        val effectiveCurrentDate = currentDate ?: LocalDateTime.now(resolveZoneId(chart.birthData.timezone))
         val lagnaSign = VedicAstrologyUtils.getAscendantSign(chart)
 
         // Calculate Brahma, Rudra, Maheshwara signs
@@ -283,8 +288,8 @@ object DrigDashaCalculator {
         val dashSequence = calculateDashaSequence(chart, lagnaSign, birthDateTime)
 
         // Find current and upcoming dashas
-        val currentDasha = dashSequence.find { it.contains(currentDate) }
-        val upcomingDashas = dashSequence.filter { it.startDate.isAfter(currentDate) }.take(3)
+        val currentDasha = dashSequence.find { it.contains(effectiveCurrentDate) }
+        val upcomingDashas = dashSequence.filter { it.startDate.isAfter(effectiveCurrentDate) }.take(3)
 
         // Identify critical periods
         val criticalPeriods = identifyCriticalPeriods(dashSequence, chart, rudra, maheshwara)
@@ -306,6 +311,19 @@ object DrigDashaCalculator {
             criticalPeriods = criticalPeriods,
             longevityAnalysis = longevityAnalysis
         )
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val numericHours = timezone.trim().toDoubleOrNull()
+            if (numericHours != null) {
+                ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                throw IllegalArgumentException("Invalid timezone: $timezone")
+            }
+        }
     }
 
     /**
@@ -713,7 +731,30 @@ object DrigDashaCalculator {
         if (moonPos == null || saturnPos == null) {
             observation = "Moon or Saturn position not available"
             span = AyurSpan.MADHYAYU
-            conclusion = "Default to Madhyayu due to missing data"
+            conclusion = "Insufficient data for Moon-Saturn longevity rule"
+            rules.add(
+                RuleApplication(
+                    ruleName = "Moon-Saturn Mutual Placement",
+                    sutraReference = "Jaimini 2.4.4-6",
+                    condition = "Check Moon-Saturn angular distance: 0 or 3=Alpayu | 4=Purnayu | Others=Madhyayu",
+                    observation = observation,
+                    result = "INSUFFICIENT_DATA",
+                    weight = 0.0
+                )
+            )
+            return LongevityResult(
+                span = span,
+                weight = 0.0,
+                factor = LongevityFactor(
+                    name = "Moon-Saturn Placement",
+                    contribution = 0.0,
+                    description = observation,
+                    ruleSource = "Jaimini Sutras 2.4.4-6",
+                    sutraReference = "Chandramandalarashisthairayuh",
+                    observation = observation,
+                    conclusion = conclusion
+                )
+            )
         } else {
             val moonHouse = moonPos.house
             val saturnHouse = saturnPos.house
@@ -789,7 +830,30 @@ object DrigDashaCalculator {
         if (saturnPos == null) {
             observation = "Saturn position not available"
             span = AyurSpan.MADHYAYU
-            conclusion = "Default to Madhyayu (Saturn missing)"
+            conclusion = "Insufficient data for Saturn longevity rule"
+            rules.add(
+                RuleApplication(
+                    ruleName = "Saturn (Ayushkaraka) Analysis",
+                    sutraReference = "Jaimini 2.4.7-9",
+                    condition = "Saturn's dignity and placement - Kendra/Trikona with good dignity = Purnayu",
+                    observation = observation,
+                    result = "INSUFFICIENT_DATA",
+                    weight = 0.0
+                )
+            )
+            return LongevityResult(
+                span = span,
+                weight = 0.0,
+                factor = LongevityFactor(
+                    name = "Saturn (Ayushkaraka)",
+                    contribution = 0.0,
+                    description = observation,
+                    ruleSource = "Jaimini Sutras 2.4.7-9",
+                    sutraReference = "Mandaleshu kendratrikonayorayuh",
+                    observation = observation,
+                    conclusion = conclusion
+                )
+            )
         } else {
             val saturnHouse = saturnPos.house
             val dignity = VedicAstrologyUtils.getDignity(saturnPos)
@@ -995,6 +1059,19 @@ object DrigDashaCalculator {
             .mapValues { entry -> entry.value.sumOf { it.second } }
 
         val totalWeight = weightedCounts.values.sum()
+        if (totalWeight <= 0.0) {
+            rules.add(
+                RuleApplication(
+                    ruleName = "Final Longevity Determination",
+                    sutraReference = "Jaimini 2.4 - Majority Method",
+                    condition = "Weighted majority of all longevity indicators",
+                    observation = "No weighted rules available; defaulting to MADHYAYU baseline",
+                    result = AyurSpan.MADHYAYU.name,
+                    weight = 0.0
+                )
+            )
+            return AyurSpan.MADHYAYU
+        }
 
         // Find span with highest weight
         val entry = weightedCounts.maxByOrNull { it.value }

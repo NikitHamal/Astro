@@ -10,9 +10,13 @@ import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.DashaUtils.coerceIn
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
+import kotlin.math.roundToInt
 
 private val MATH_CONTEXT = DashaUtils.MATH_CONTEXT
 private val DAYS_PER_YEAR_BD = DashaUtils.DAYS_PER_YEAR
@@ -71,7 +75,7 @@ object DashaCalculator {
         val antardashas: List<Antardasha>
     ) {
         fun isActiveOn(date: LocalDateTime): Boolean {
-            return !date.isBefore(startDate) && !date.isAfter(endDate)
+            return !date.isBefore(startDate) && date.isBefore(endDate)
         }
 
         fun isActiveOnDate(date: LocalDate): Boolean {
@@ -89,7 +93,7 @@ object DashaCalculator {
 
         fun getElapsedYears(asOf: LocalDateTime = LocalDateTime.now()): Double {
             if (asOf.isBefore(startDate)) return 0.0
-            if (asOf.isAfter(endDate)) return durationYears
+            if (!asOf.isBefore(endDate)) return durationYears
             val elapsedSeconds = ChronoUnit.SECONDS.between(startDate, asOf)
             return elapsedSeconds / (DashaUtils.DAYS_PER_YEAR.toDouble() * 24 * 3600)
         }
@@ -116,7 +120,7 @@ object DashaCalculator {
             get() = durationSeconds / (DashaUtils.DAYS_PER_YEAR.toDouble() * 24 * 3600)
 
         fun isActiveOn(date: LocalDateTime): Boolean {
-            return !date.isBefore(startDate) && !date.isAfter(endDate)
+            return !date.isBefore(startDate) && date.isBefore(endDate)
         }
 
         val isActive: Boolean
@@ -130,7 +134,7 @@ object DashaCalculator {
 
         fun getElapsedSeconds(asOf: LocalDateTime = LocalDateTime.now()): Long {
             if (asOf.isBefore(startDate)) return 0
-            if (asOf.isAfter(endDate)) return durationSeconds
+            if (!asOf.isBefore(endDate)) return durationSeconds
             return ChronoUnit.SECONDS.between(startDate, asOf)
         }
 
@@ -154,7 +158,7 @@ object DashaCalculator {
         val sookshmadashas: List<Sookshmadasha> = emptyList()
     ) {
         fun isActiveOn(date: LocalDateTime): Boolean {
-            return !date.isBefore(startDate) && !date.isAfter(endDate)
+            return !date.isBefore(startDate) && date.isBefore(endDate)
         }
 
         val isActive: Boolean
@@ -178,7 +182,7 @@ object DashaCalculator {
         val pranadashas: List<Pranadasha> = emptyList()
     ) {
         fun isActiveOn(date: LocalDateTime): Boolean {
-            return !date.isBefore(startDate) && !date.isAfter(endDate)
+            return !date.isBefore(startDate) && date.isBefore(endDate)
         }
 
         val isActive: Boolean
@@ -203,7 +207,7 @@ object DashaCalculator {
         val dehadashas: List<Dehadasha> = emptyList()
     ) {
         fun isActiveOn(date: LocalDateTime): Boolean {
-            return !date.isBefore(startDate) && !date.isAfter(endDate)
+            return !date.isBefore(startDate) && date.isBefore(endDate)
         }
 
         val isActive: Boolean
@@ -261,7 +265,7 @@ object DashaCalculator {
         val durationSeconds: Long
     ) {
         fun isActiveOn(date: LocalDateTime): Boolean {
-            return !date.isBefore(startDate) && !date.isAfter(endDate)
+            return !date.isBefore(startDate) && date.isBefore(endDate)
         }
 
         val isActive: Boolean
@@ -317,6 +321,7 @@ object DashaCalculator {
 
     data class DashaTimeline(
         val birthDate: LocalDateTime,
+        val timezone: String = "UTC",
         val birthNakshatra: Nakshatra,
         val birthNakshatraPada: Int,
         val birthNakshatraLord: Planet,
@@ -467,16 +472,23 @@ object DashaCalculator {
             )
         }
 
-        fun getNextMahadasha(): Mahadasha? {
-            val now = LocalDateTime.now()
-            return mahadashas.find { it.startDate.isAfter(now) }
+        private fun nowInTimelineZone(): LocalDateTime {
+            val zone = try {
+                ZoneId.of(timezone)
+            } catch (_: DateTimeException) {
+                ZoneOffset.UTC
+            }
+            return LocalDateTime.now(zone)
         }
 
-        fun getUpcomingSandhisWithin(days: Int): List<DashaSandhi> {
-            val now = LocalDateTime.now()
-            val futureDate = now.plusDays(days.toLong())
+        fun getNextMahadasha(asOf: LocalDateTime = nowInTimelineZone()): Mahadasha? {
+            return mahadashas.find { it.startDate.isAfter(asOf) }
+        }
+
+        fun getUpcomingSandhisWithin(days: Int, asOf: LocalDateTime = nowInTimelineZone()): List<DashaSandhi> {
+            val futureDate = asOf.plusDays(days.toLong())
             return upcomingSandhis.filter { sandhi ->
-                !sandhi.transitionDate.isBefore(now) && !sandhi.transitionDate.isAfter(futureDate)
+                !sandhi.transitionDate.isBefore(asOf) && !sandhi.transitionDate.isAfter(futureDate)
             }
         }
 
@@ -548,7 +560,7 @@ object DashaCalculator {
         val balanceOfFirstDashaBd = firstDashaYearsBd.subtract(elapsedInFirstDashaBd, MATH_CONTEXT)
         val balanceOfFirstDasha = balanceOfFirstDashaBd.toDouble().coerceAtLeast(0.0)
 
-        val now = LocalDateTime.now()
+        val now = LocalDateTime.now(resolveZoneId(chart.birthData.timezone))
 
         val mahadashas = calculateAllMahadashasOptimized(
             birthDate = birthDateTime,
@@ -589,6 +601,7 @@ object DashaCalculator {
 
         return DashaTimeline(
             birthDate = birthDateTime,
+            timezone = chart.birthData.timezone,
             birthNakshatra = birthNakshatra,
             birthNakshatraPada = pada,
             birthNakshatraLord = nakshatraLord,
@@ -603,6 +616,19 @@ object DashaCalculator {
             currentDehadasha = currentDehadasha,
             upcomingSandhis = upcomingSandhis
         )
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val numericHours = timezone.trim().toDoubleOrNull()
+            if (numericHours != null) {
+                ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                throw IllegalArgumentException("Invalid timezone: $timezone")
+            }
+        }
     }
 
     private fun calculateAllMahadashasOptimized(
@@ -1274,7 +1300,7 @@ object ConditionalDashaCalculator {
             BigDecimal.ONE.subtract(progressInNakshatraBd, MATH_CONTEXT), MATH_CONTEXT
         )
         val firstDays = yearsToRoundedDays(balanceOfFirstBd)
-        val firstEnd = currentStart.plusDays(firstDays)
+        val firstEnd = currentStart.plusDays((firstDays - 1).coerceAtLeast(0))
 
         yoginis.add(
             YoginiDasha(
@@ -1284,14 +1310,14 @@ object ConditionalDashaCalculator {
                 durationYears = balanceOfFirstBd.toDouble()
             )
         )
-        currentStart = firstEnd
+        currentStart = firstEnd.plusDays(1)
 
         repeat(80) { cycle ->
             val yoginiIdx = (yoginiIndex + 1 + cycle) % Yogini.entries.size
             val yogini = Yogini.entries[yoginiIdx]
             val yearsBd = BigDecimal(yogini.years)
             val days = yearsToRoundedDays(yearsBd)
-            val endDate = currentStart.plusDays(days)
+            val endDate = currentStart.plusDays((days - 1).coerceAtLeast(0))
 
             yoginis.add(
                 YoginiDasha(
@@ -1301,14 +1327,17 @@ object ConditionalDashaCalculator {
                     durationYears = yearsBd.toDouble()
                 )
             )
-            currentStart = endDate
+            currentStart = endDate.plusDays(1)
         }
 
         return yoginis
     }
 
-    fun getCurrentYoginiDasha(yoginiDashas: List<YoginiDasha>): YoginiDasha? {
-        return yoginiDashas.find { it.isActive }
+    fun getCurrentYoginiDasha(
+        yoginiDashas: List<YoginiDasha>,
+        asOf: LocalDate = LocalDate.now()
+    ): YoginiDasha? {
+        return yoginiDashas.find { it.isActiveOn(asOf) }
     }
 
     data class AshtottariDasha(
@@ -1408,7 +1437,7 @@ object ConditionalDashaCalculator {
         )
 
         val firstDays = yearsToRoundedDays(balanceOfFirstBd)
-        val firstEnd = currentStart.plusDays(firstDays)
+        val firstEnd = currentStart.plusDays((firstDays - 1).coerceAtLeast(0))
 
         dashas.add(
             AshtottariDasha(
@@ -1418,14 +1447,14 @@ object ConditionalDashaCalculator {
                 durationYears = balanceOfFirstBd.toDouble()
             )
         )
-        currentStart = firstEnd
+        currentStart = firstEnd.plusDays(1)
 
         repeat(24) { cycle ->
             val planetIndex = (startIndex + 1 + cycle) % ASHTOTTARI_SEQUENCE.size
             val planet = ASHTOTTARI_SEQUENCE[planetIndex]
             val yearsBd = BigDecimal(ASHTOTTARI_YEARS[planet] ?: 0)
             val days = yearsToRoundedDays(yearsBd)
-            val endDate = currentStart.plusDays(days)
+            val endDate = currentStart.plusDays((days - 1).coerceAtLeast(0))
 
             dashas.add(
                 AshtottariDasha(
@@ -1435,7 +1464,7 @@ object ConditionalDashaCalculator {
                     durationYears = yearsBd.toDouble()
                 )
             )
-            currentStart = endDate
+            currentStart = endDate.plusDays(1)
         }
 
         return dashas

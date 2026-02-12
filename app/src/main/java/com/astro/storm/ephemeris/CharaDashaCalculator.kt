@@ -7,8 +7,12 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
+import kotlin.math.roundToInt
 
 /**
  * Chara Dasha Calculator (Jaimini System)
@@ -124,7 +128,7 @@ object CharaDashaCalculator {
         val interpretation: MahadashaInterpretation
     ) {
         val durationDays: Long
-            get() = ChronoUnit.DAYS.between(startDate, endDate)
+            get() = ChronoUnit.DAYS.between(startDate, endDate).plus(1)
 
         fun isActiveOn(date: LocalDate): Boolean {
             return !date.isBefore(startDate) && !date.isAfter(endDate)
@@ -139,14 +143,17 @@ object CharaDashaCalculator {
 
         fun getProgressPercent(asOf: LocalDate = LocalDate.now()): Double {
             if (durationDays <= 0) return 0.0
-            val elapsed = ChronoUnit.DAYS.between(startDate, asOf.coerceIn(startDate, endDate))
-            return ((elapsed.toDouble() / durationDays) * 100).coerceIn(0.0, 100.0)
+            if (asOf.isBefore(startDate)) return 0.0
+            if (!asOf.isBefore(endDate)) return 100.0
+            val total = ChronoUnit.DAYS.between(startDate, endDate).coerceAtLeast(1L)
+            val elapsed = ChronoUnit.DAYS.between(startDate, asOf)
+            return ((elapsed.toDouble() / total.toDouble()) * 100.0).coerceIn(0.0, 100.0)
         }
 
         fun getRemainingDays(asOf: LocalDate = LocalDate.now()): Long {
             if (asOf.isAfter(endDate)) return 0
             if (asOf.isBefore(startDate)) return durationDays
-            return ChronoUnit.DAYS.between(asOf, endDate)
+            return ChronoUnit.DAYS.between(asOf, endDate).plus(1).coerceAtLeast(0)
         }
     }
 
@@ -174,8 +181,11 @@ object CharaDashaCalculator {
 
         fun getProgressPercent(asOf: LocalDate = LocalDate.now()): Double {
             if (durationDays <= 0) return 0.0
-            val elapsed = ChronoUnit.DAYS.between(startDate, asOf.coerceIn(startDate, endDate))
-            return ((elapsed.toDouble() / durationDays) * 100).coerceIn(0.0, 100.0)
+            if (asOf.isBefore(startDate)) return 0.0
+            if (!asOf.isBefore(endDate)) return 100.0
+            val total = ChronoUnit.DAYS.between(startDate, endDate).coerceAtLeast(1L)
+            val elapsed = ChronoUnit.DAYS.between(startDate, asOf)
+            return ((elapsed.toDouble() / total.toDouble()) * 100.0).coerceIn(0.0, 100.0)
         }
     }
 
@@ -256,7 +266,7 @@ object CharaDashaCalculator {
         )
 
         // Find current periods
-        val today = LocalDate.now()
+        val today = LocalDate.now(resolveZoneId(chart.birthData.timezone))
         val currentMahadasha = mahadashas.find { it.isActiveOn(today) }
         val currentAntardasha = currentMahadasha?.getAntardashaOn(today)
 
@@ -277,6 +287,19 @@ object CharaDashaCalculator {
             currentAntardasha = currentAntardasha,
             interpretation = interpretation
         )
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val numericHours = timezone.trim().toDoubleOrNull()
+            if (numericHours != null) {
+                ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                throw IllegalArgumentException("Invalid timezone: $timezone")
+            }
+        }
     }
 
     /**
@@ -320,32 +343,19 @@ object CharaDashaCalculator {
             } else null
         }.filterNotNull()
 
-        // If we have fewer than 8 planets, fill with defaults
-        val filledKarakas = karakaInfoList.toMutableList()
-        while (filledKarakas.size < 8) {
-            val missingType = karakaTypes[filledKarakas.size]
-            filledKarakas.add(
-                KarakaInfo(
-                    karakaType = missingType,
-                    planet = Planet.SUN,
-                    longitude = 0.0,
-                    degreeInSign = 0.0,
-                    sign = ZodiacSign.ARIES,
-                    navamsaSign = ZodiacSign.ARIES,
-                    description = "${missingType.displayName}: Not determined"
-                )
-            )
+        require(karakaInfoList.size >= 8) {
+            "Insufficient planetary data for Chara Karakas: expected 8, found ${karakaInfoList.size}"
         }
 
         return CharaKarakas(
-            atmakaraka = filledKarakas[0],
-            amatyakaraka = filledKarakas[1],
-            bhratrikaraka = filledKarakas[2],
-            matrikaraka = filledKarakas[3],
-            pitrikaraka = filledKarakas[4],
-            putrakaraka = filledKarakas[5],
-            gnatikaraka = filledKarakas[6],
-            darakaraka = filledKarakas[7]
+            atmakaraka = karakaInfoList[0],
+            amatyakaraka = karakaInfoList[1],
+            bhratrikaraka = karakaInfoList[2],
+            matrikaraka = karakaInfoList[3],
+            pitrikaraka = karakaInfoList[4],
+            putrakaraka = karakaInfoList[5],
+            gnatikaraka = karakaInfoList[6],
+            darakaraka = karakaInfoList[7]
         )
     }
 
@@ -385,7 +395,7 @@ object CharaDashaCalculator {
         for (sign in signSequence) {
             val durationYears = calculateSignDashaPeriod(sign, chart)
             val durationDays = yearsToRoundedDays(durationYears.toDouble())
-            val endDate = currentDate.plusDays(durationDays)
+            val endDate = currentDate.plusDays((durationDays - 1).coerceAtLeast(0))
 
             val antardashas = calculateAntardashas(
                 sign, countDirection, currentDate, endDate, chart
@@ -425,7 +435,12 @@ object CharaDashaCalculator {
                 
                 if (marsPos?.sign == ZodiacSign.SCORPIO && ketuPos?.sign != ZodiacSign.SCORPIO) Planet.MARS
                 else if (ketuPos?.sign == ZodiacSign.SCORPIO && marsPos?.sign != ZodiacSign.SCORPIO) Planet.KETU
-                else Planet.MARS // Simplified: default to Mars if both or neither are in Scorpio
+                else selectStrongerCoLord(
+                    primaryPlanet = Planet.MARS,
+                    primaryPos = marsPos,
+                    secondaryPlanet = Planet.KETU,
+                    secondaryPos = ketuPos
+                )
             }
             ZodiacSign.AQUARIUS -> {
                 val saturnPos = chart.planetPositions.find { it.planet == Planet.SATURN }
@@ -433,10 +448,40 @@ object CharaDashaCalculator {
                 
                 if (saturnPos?.sign == ZodiacSign.AQUARIUS && rahuPos?.sign != ZodiacSign.AQUARIUS) Planet.SATURN
                 else if (rahuPos?.sign == ZodiacSign.AQUARIUS && saturnPos?.sign != ZodiacSign.AQUARIUS) Planet.RAHU
-                else Planet.SATURN // Simplified: default to Saturn
+                else selectStrongerCoLord(
+                    primaryPlanet = Planet.SATURN,
+                    primaryPos = saturnPos,
+                    secondaryPlanet = Planet.RAHU,
+                    secondaryPos = rahuPos
+                )
             }
             else -> sign.ruler
         }
+    }
+
+    private fun selectStrongerCoLord(
+        primaryPlanet: Planet,
+        primaryPos: PlanetPosition?,
+        secondaryPlanet: Planet,
+        secondaryPos: PlanetPosition?
+    ): Planet {
+        if (primaryPos == null && secondaryPos == null) {
+            throw IllegalArgumentException("Missing both co-lords: $primaryPlanet and $secondaryPlanet")
+        }
+        if (primaryPos == null) return secondaryPlanet
+        if (secondaryPos == null) return primaryPlanet
+
+        val primaryStrength = coLordStrengthScore(primaryPos)
+        val secondaryStrength = coLordStrengthScore(secondaryPos)
+        return if (primaryStrength >= secondaryStrength) primaryPlanet else secondaryPlanet
+    }
+
+    private fun coLordStrengthScore(position: PlanetPosition): Int {
+        val angularScore = if (position.house in listOf(1, 4, 7, 10)) 2 else 0
+        val trinalScore = if (position.house in listOf(1, 5, 9)) 2 else 0
+        val signScore = if (position.sign.ruler == position.planet) 3 else 0
+        val retroPenalty = if (position.isRetrograde) -1 else 0
+        return angularScore + trinalScore + signScore + retroPenalty
     }
 
     /**
@@ -473,7 +518,7 @@ object CharaDashaCalculator {
     private fun calculateSignDashaPeriod(sign: ZodiacSign, chart: VedicChart): Int {
         val signLord = getStrongerLord(sign, chart)
         val lordPosition = chart.planetPositions.find { it.planet == signLord }
-            ?: return 12 // Default if lord not found
+            ?: throw IllegalArgumentException("Sign lord $signLord not found while calculating Chara Dasha for $sign")
 
         val lordSign = lordPosition.sign
 
@@ -510,7 +555,7 @@ object CharaDashaCalculator {
         chart: VedicChart
     ): List<CharaAntardasha> {
         val antardashas = mutableListOf<CharaAntardasha>()
-        val mahaDurationDays = ChronoUnit.DAYS.between(mahaStart, mahaEnd)
+        val mahaDurationDays = ChronoUnit.DAYS.between(mahaStart, mahaEnd).plus(1)
 
         if (mahaDurationDays <= 0) return antardashas
 
@@ -530,7 +575,7 @@ object CharaDashaCalculator {
             val endDate = if (antardashas.size == 11) {
                 mahaEnd // Last antardasha ends at mahadasha end
             } else {
-                currentDate.plusDays(antarDurationDays).let {
+                currentDate.plusDays((antarDurationDays - 1).coerceAtLeast(0)).let {
                     if (it.isAfter(mahaEnd)) mahaEnd else it
                 }
             }
@@ -545,7 +590,7 @@ object CharaDashaCalculator {
                     mahadashaSign = mahadashaSign,
                     startDate = currentDate,
                     endDate = endDate,
-                    durationDays = ChronoUnit.DAYS.between(currentDate, endDate).coerceAtLeast(1L),
+                    durationDays = ChronoUnit.DAYS.between(currentDate, endDate).plus(1).coerceAtLeast(1L),
                     signLord = getStrongerLord(antarSign, chart),
                     interpretation = interpretation
                 )

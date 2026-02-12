@@ -9,8 +9,12 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import java.math.BigDecimal
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
+import kotlin.math.roundToInt
 
 /**
  * Yogini Dasha Calculator
@@ -166,7 +170,7 @@ object YoginiDashaCalculator {
         val interpretation: YoginiInterpretation
     ) {
         val durationDays: Long
-            get() = ChronoUnit.DAYS.between(startDate, endDate)
+            get() = ChronoUnit.DAYS.between(startDate, endDate).plus(1)
 
         fun isActiveOn(date: LocalDate): Boolean {
             return !date.isBefore(startDate) && !date.isAfter(endDate)
@@ -183,17 +187,23 @@ object YoginiDashaCalculator {
 
         fun getElapsedDays(asOf: LocalDate = LocalDate.now()): Long {
             if (asOf.isBefore(startDate)) return 0
-            if (asOf.isAfter(endDate)) return durationDays
+            if (!asOf.isBefore(endDate)) return durationDays
             return ChronoUnit.DAYS.between(startDate, asOf)
         }
 
         fun getRemainingDays(asOf: LocalDate = LocalDate.now()): Long {
-            return (durationDays - getElapsedDays(asOf)).coerceAtLeast(0)
+            if (asOf.isAfter(endDate)) return 0
+            if (asOf.isBefore(startDate)) return durationDays
+            return ChronoUnit.DAYS.between(asOf, endDate).plus(1).coerceAtLeast(0)
         }
 
         fun getProgressPercent(asOf: LocalDate = LocalDate.now()): Double {
             if (durationDays <= 0) return 0.0
-            return ((getElapsedDays(asOf).toDouble() / durationDays) * 100).coerceIn(0.0, 100.0)
+            if (asOf.isBefore(startDate)) return 0.0
+            if (!asOf.isBefore(endDate)) return 100.0
+            val total = ChronoUnit.DAYS.between(startDate, endDate).coerceAtLeast(1L)
+            val elapsed = ChronoUnit.DAYS.between(startDate, asOf)
+            return ((elapsed.toDouble() / total.toDouble()) * 100.0).coerceIn(0.0, 100.0)
         }
     }
 
@@ -220,17 +230,23 @@ object YoginiDashaCalculator {
 
         fun getElapsedDays(asOf: LocalDate = LocalDate.now()): Long {
             if (asOf.isBefore(startDate)) return 0
-            if (asOf.isAfter(endDate)) return durationDays
+            if (!asOf.isBefore(endDate)) return durationDays
             return ChronoUnit.DAYS.between(startDate, asOf)
         }
 
         fun getRemainingDays(asOf: LocalDate = LocalDate.now()): Long {
-            return (durationDays - getElapsedDays(asOf)).coerceAtLeast(0)
+            if (asOf.isAfter(endDate)) return 0
+            if (asOf.isBefore(startDate)) return durationDays
+            return ChronoUnit.DAYS.between(asOf, endDate).plus(1).coerceAtLeast(0)
         }
 
         fun getProgressPercent(asOf: LocalDate = LocalDate.now()): Double {
             if (durationDays <= 0) return 0.0
-            return ((getElapsedDays(asOf).toDouble() / durationDays) * 100).coerceIn(0.0, 100.0)
+            if (asOf.isBefore(startDate)) return 0.0
+            if (!asOf.isBefore(endDate)) return 100.0
+            val total = ChronoUnit.DAYS.between(startDate, endDate).coerceAtLeast(1L)
+            val elapsed = ChronoUnit.DAYS.between(startDate, asOf)
+            return ((elapsed.toDouble() / total.toDouble()) * 100.0).coerceIn(0.0, 100.0)
         }
     }
 
@@ -341,7 +357,9 @@ object YoginiDashaCalculator {
         )
 
         // Find current periods
-        val today = LocalDate.now()
+        val today = chart?.birthData?.timezone?.let { tz ->
+            LocalDate.now(resolveZoneId(tz))
+        } ?: LocalDate.now()
         val currentMahadasha = mahadashas.find { it.isActiveOn(today) }
         val currentAntardasha = currentMahadasha?.getAntardashaOn(today)
 
@@ -359,6 +377,19 @@ object YoginiDashaCalculator {
             currentAntardasha = currentAntardasha,
             applicability = applicability
         )
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val numericHours = timezone.trim().toDoubleOrNull()
+            if (numericHours != null) {
+                ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                throw IllegalArgumentException("Invalid timezone: $timezone")
+            }
+        }
     }
 
     /**
@@ -415,7 +446,7 @@ object YoginiDashaCalculator {
 
         // First, add the balance of starting Yogini
         if (balanceAtBirth.balanceDays > 0) {
-            val endDate = currentDate.plusDays(balanceAtBirth.balanceDays)
+            val endDate = currentDate.plusDays((balanceAtBirth.balanceDays - 1).coerceAtLeast(0))
             val antardashas = calculateAntardashas(
                 balanceAtBirth.yogini,
                 currentDate,
@@ -445,7 +476,7 @@ object YoginiDashaCalculator {
         while (count < totalMahadashas) {
             val yogini = Yogini.fromIndex(yoginiIndex)
             val durationDays = yearsToRoundedDays(yogini.years.toDouble())
-            val endDate = currentDate.plusDays(durationDays)
+            val endDate = currentDate.plusDays((durationDays - 1).coerceAtLeast(0))
 
             val antardashas = calculateAntardashas(yogini, currentDate, endDate, chart, language)
             val interpretation = generateInterpretation(yogini, chart, language)
@@ -480,7 +511,7 @@ object YoginiDashaCalculator {
         language: Language
     ): List<YoginiAntardasha> {
         val antardashas = mutableListOf<YoginiAntardasha>()
-        val mahaDurationDays = ChronoUnit.DAYS.between(mahadashaStart, mahadashaEnd)
+        val mahaDurationDays = ChronoUnit.DAYS.between(mahadashaStart, mahadashaEnd).plus(1)
 
         if (mahaDurationDays <= 0) return antardashas
 
@@ -502,7 +533,7 @@ object YoginiDashaCalculator {
                 // Last antardasha ends exactly at mahadasha end
                 mahadashaEnd
             } else {
-                currentDate.plusDays(antarDurationDays).let {
+                currentDate.plusDays((antarDurationDays - 1).coerceAtLeast(0)).let {
                     if (it.isAfter(mahadashaEnd)) mahadashaEnd else it
                 }
             }
@@ -520,7 +551,7 @@ object YoginiDashaCalculator {
                     mahadashaYogini = mahadashaYogini,
                     startDate = currentDate,
                     endDate = endDate,
-                    durationDays = ChronoUnit.DAYS.between(currentDate, endDate).coerceAtLeast(1L),
+                    durationDays = ChronoUnit.DAYS.between(currentDate, endDate).plus(1).coerceAtLeast(1L),
                     interpretation = interpretation
                 )
             )
@@ -708,7 +739,7 @@ object YoginiDashaCalculator {
         // Natural friendship/enmity affects interpretation
         val relationship = getPlanetaryRelationship(mahaPlanet, antarPlanet)
 
-        // Map comprehensive relationship to simplified interpretation categories
+        // Map detailed relationship states to interpretation categories
         val isFriendly = relationship == VedicAstrologyUtils.PlanetaryRelationship.FRIEND ||
                          relationship == VedicAstrologyUtils.PlanetaryRelationship.BEST_FRIEND
         val isHostile = relationship == VedicAstrologyUtils.PlanetaryRelationship.ENEMY ||
@@ -782,10 +813,8 @@ object YoginiDashaCalculator {
             }
         }
 
-        // Night birth gives preference to Yogini Dasha (simplified check)
-        // In production, you would check actual sunrise/sunset times
-        val birthHour = chart.birthData.dateTime.hour
-        if (birthHour < 6 || birthHour >= 18) {
+        // Night births traditionally strengthen the use of Yogini timing.
+        if (isNightBirth(chart)) {
             score += 0.1
             reasons.add(StringResources.get(StringKeyDosha.YOGINI_APP_NIGHT_BIRTH, language))
         }
@@ -801,6 +830,17 @@ object YoginiDashaCalculator {
             applicabilityScore = score.coerceIn(0.0, 1.0),
             reasons = reasons
         )
+    }
+
+    private fun isNightBirth(chart: VedicChart): Boolean {
+        val sunPosition = chart.planetPositions.find { it.planet == Planet.SUN }
+        if (sunPosition != null && sunPosition.house in 1..12) {
+            // Sun in houses 1-6: below horizon (night birth), 7-12: day birth.
+            return sunPosition.house in 1..6
+        }
+
+        val birthHour = chart.birthData.dateTime.hour
+        return birthHour < 6 || birthHour >= 18
     }
 
     // ============================================

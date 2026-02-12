@@ -17,12 +17,15 @@ import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.templates.TemplateSelector
+import java.time.DateTimeException
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 /**
  * Comprehensive Transit Analysis System
@@ -382,8 +385,22 @@ class TransitAnalyzer @Inject constructor(
     fun getCurrentTransitPositions(
         timezone: String = "UTC"
     ): List<PlanetPosition> {
-        val now = LocalDateTime.now(ZoneId.of(timezone))
+        val now = LocalDateTime.now(resolveZoneId(timezone))
         return getTransitPositionsForDateTime(now, timezone)
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        try {
+            return ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val trimmed = timezone.trim()
+            val numericHours = trimmed.toDoubleOrNull()
+            if (numericHours != null) {
+                val totalSeconds = (numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600)
+                return ZoneOffset.ofTotalSeconds(totalSeconds)
+            }
+            throw IllegalArgumentException("Invalid timezone: $timezone")
+        }
     }
 
     /**

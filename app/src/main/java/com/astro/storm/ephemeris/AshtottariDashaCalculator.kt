@@ -4,9 +4,13 @@ import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import java.time.DateTimeException
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import com.astro.storm.ephemeris.DashaCalculator.Mahadasha
+import kotlin.math.roundToInt
 
 /**
  * Ashtottari Dasha Calculator
@@ -127,6 +131,7 @@ object AshtottariDashaCalculator {
      */
     fun calculateAshtottariDasha(chart: VedicChart): AshtottariDashaResult {
         val applicability = isApplicable(chart)
+        val now = LocalDateTime.now(resolveZoneId(chart.birthData.timezone))
         val moonPosition = chart.planetPositions.find { it.planet == Planet.MOON }
             ?: throw IllegalArgumentException("Moon position required")
 
@@ -134,21 +139,23 @@ object AshtottariDashaCalculator {
         val moonNakshatra = nakshatraResult.first
         val moonProgressInNakshatra = (moonPosition.longitude % (360.0 / 27.0)) / (360.0 / 27.0)
 
-        val startingLord: Planet = NAKSHATRA_LORD_ASHTOTTARI[moonNakshatra] ?: Planet.SUN
+        val startingLord: Planet = requireNotNull(NAKSHATRA_LORD_ASHTOTTARI[moonNakshatra]) {
+            "No Ashtottari starting lord mapping for nakshatra: $moonNakshatra"
+        }
 
         val startingPeriod = ASHTOTTARI_PERIODS[startingLord] ?: 6.0
         val balanceInFirstDasha = startingPeriod * (1 - moonProgressInNakshatra)
 
         val birthDateTime = chart.birthData.dateTime
         val mahadashas = calculateMahadashas(
-            birthDateTime, startingLord, balanceInFirstDasha
+            birthDateTime, startingLord, balanceInFirstDasha, now
         )
 
-        val currentDasha = findCurrentDasha(mahadashas, LocalDateTime.now())
+        val currentDasha = findCurrentDasha(mahadashas, now)
         val currentAntardasha = currentDasha?.let { md ->
-            calculateAntardashas(md).find { ad ->
-                LocalDateTime.now().isAfter(ad.startDate) &&
-                LocalDateTime.now().isBefore(ad.endDate)
+            calculateAntardashas(md, now).find { ad ->
+                !now.isBefore(ad.startDate) &&
+                now.isBefore(ad.endDate)
             }
         }
 
@@ -170,7 +177,8 @@ object AshtottariDashaCalculator {
     private fun calculateMahadashas(
         birthDateTime: LocalDateTime,
         startingLord: Planet,
-        balanceInFirst: Double
+        balanceInFirst: Double,
+        asOf: LocalDateTime
     ): List<AshtottariMahadasha> {
         val mahadashas = mutableListOf<AshtottariMahadasha>()
         var currentDate = birthDateTime
@@ -192,8 +200,7 @@ object AshtottariDashaCalculator {
                         actualYears = actualPeriod,
                         startDate = currentDate,
                         endDate = endDate,
-                        isCurrentlyRunning = LocalDateTime.now().isAfter(currentDate) &&
-                                            LocalDateTime.now().isBefore(endDate)
+                        isCurrentlyRunning = !asOf.isBefore(currentDate) && asOf.isBefore(endDate)
                     )
                 )
 
@@ -210,7 +217,10 @@ object AshtottariDashaCalculator {
     /**
      * Calculate Antardashas within a Mahadasha
      */
-    fun calculateAntardashas(mahadasha: AshtottariMahadasha): List<AshtottariAntardasha> {
+    fun calculateAntardashas(
+        mahadasha: AshtottariMahadasha,
+        asOf: LocalDateTime = LocalDateTime.now()
+    ): List<AshtottariAntardasha> {
         val antardashas = mutableListOf<AshtottariAntardasha>()
         val mahadashaPlanetIndex = ASHTOTTARI_SEQUENCE.indexOf(mahadasha.planet)
         var currentDate = mahadasha.startDate
@@ -235,8 +245,8 @@ object AshtottariDashaCalculator {
                     startDate = currentDate,
                     endDate = endDate,
                     relationship = relationship,
-                    isCurrentlyRunning = LocalDateTime.now().isAfter(currentDate) &&
-                                        LocalDateTime.now().isBefore(endDate)
+                    isCurrentlyRunning = !asOf.isBefore(currentDate) &&
+                                        asOf.isBefore(endDate)
                 )
             )
 
@@ -285,7 +295,20 @@ object AshtottariDashaCalculator {
         date: LocalDateTime
     ): AshtottariMahadasha? {
         return mahadashas.find {
-            date.isAfter(it.startDate) && date.isBefore(it.endDate)
+            !date.isBefore(it.startDate) && date.isBefore(it.endDate)
+        }
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val numericHours = timezone.trim().toDoubleOrNull()
+            if (numericHours != null) {
+                ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                throw IllegalArgumentException("Invalid timezone: $timezone")
+            }
         }
     }
 
@@ -610,13 +633,12 @@ data class AshtottariAntardasha(
     val planet: Planet get() = antardashaLord
 
     /** Calculate the progress percentage through this antardasha */
-    fun getProgressPercent(): Double {
-        val now = LocalDateTime.now()
-        if (now.isBefore(startDate)) return 0.0
-        if (now.isAfter(endDate)) return 100.0
+    fun getProgressPercent(asOf: LocalDateTime = LocalDateTime.now()): Double {
+        if (asOf.isBefore(startDate)) return 0.0
+        if (!asOf.isBefore(endDate)) return 100.0
 
         val totalDuration = java.time.Duration.between(startDate, endDate).toMillis().toDouble()
-        val elapsedDuration = java.time.Duration.between(startDate, now).toMillis().toDouble()
+        val elapsedDuration = java.time.Duration.between(startDate, asOf).toMillis().toDouble()
         return if (totalDuration > 0) (elapsedDuration / totalDuration * 100).coerceIn(0.0, 100.0) else 0.0
     }
 }

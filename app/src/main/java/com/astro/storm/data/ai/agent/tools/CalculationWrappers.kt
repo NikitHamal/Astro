@@ -162,7 +162,7 @@ class AshtakavargaCalculatorWrapper {
                 analysis.sarvashtakavarga.binduMatrix[sign] ?: 0
             }
         } catch (e: Exception) {
-            List(12) { 25 } // Default average values
+            emptyList()
         }
     }
 
@@ -594,7 +594,7 @@ class VargaCalculatorWrapper {
                 "D40", "KHAVEDAMSA" -> DivisionalChartType.D40_KHAVEDAMSA
                 "D45", "AKSHAVEDAMSA" -> DivisionalChartType.D45_AKSHAVEDAMSA
                 "D60", "SHASHTIAMSA" -> DivisionalChartType.D60_SHASHTIAMSA
-                else -> DivisionalChartType.D9_NAVAMSA // Default to Navamsa
+                else -> throw IllegalArgumentException("Unsupported varga: $varga")
             }
 
             val vargaChart = DivisionalChartCalculator.calculateDivisionalChart(chart, chartType)
@@ -613,19 +613,11 @@ class VargaCalculatorWrapper {
                 }
             )
         } catch (e: Exception) {
-            // Return D1 chart as fallback
             VargaChartResult(
-                name = "Rashi",
+                name = "Unavailable",
                 ascendantSign = ZodiacSign.fromLongitude(chart.ascendant),
                 ascendantDegree = chart.ascendant % 30,
-                planets = chart.planetPositions.map { pos ->
-                    VargaPlanetPosition(
-                        planet = pos.planet,
-                        sign = pos.sign,
-                        degree = pos.degree,
-                        house = pos.house
-                    )
-                }
+                planets = emptyList()
             )
         }
     }
@@ -754,7 +746,6 @@ class BhriguBinduCalculatorWrapper {
                 activationPeriods = activationPeriods
             )
         } catch (e: Exception) {
-            // Return default
             val moonPos = chart.planetPositions.find { it.planet == Planet.MOON }
             BhriguBinduResult(
                 longitude = moonPos?.longitude ?: 0.0,
@@ -763,8 +754,8 @@ class BhriguBinduCalculatorWrapper {
                 nakshatra = moonPos?.nakshatra ?: Nakshatra.ASHWINI,
                 nakshatraPada = moonPos?.nakshatraPada ?: 1,
                 house = moonPos?.house ?: 1,
-                interpretation = "Karmic destiny point requires detailed analysis",
-                karmicThemes = listOf("Spiritual growth", "Material achievement"),
+                interpretation = "Bhrigu Bindu analysis unavailable due to calculation error",
+                karmicThemes = emptyList(),
                 activationPeriods = emptyList()
             )
         }
@@ -893,8 +884,8 @@ class PrashnaCalculatorWrapper(
         longitude: Double,
         timezone: String
     ): PrashnaAnalysisResult {
+        val calculator = PrashnaCalculator(context)
         return try {
-            val calculator = PrashnaCalculator(context)
             val prashnaCategory = when (category.uppercase()) {
                 "YES_NO" -> PrashnaCategory.YES_NO
                 "CAREER" -> PrashnaCategory.CAREER
@@ -1004,7 +995,6 @@ class PrashnaCalculatorWrapper(
                 detailedInterpretation = result.detailedInterpretation
             )
         } catch (e: Exception) {
-            // Return default result on error
             PrashnaAnalysisResult(
                 question = question,
                 category = category,
@@ -1047,6 +1037,8 @@ class PrashnaCalculatorWrapper(
                 recommendations = listOf("Please try again with a valid question"),
                 detailedInterpretation = "Error: ${e.message ?: "Unknown error occurred"}"
             )
+        } finally {
+            calculator.close()
         }
     }
 }
@@ -1160,7 +1152,7 @@ class CompatibilityDeepDiveWrapper {
                 additionalFactors = AdditionalFactorsResult(
                     vedhaPresent = false,
                     vedhaDetails = "Unable to analyze",
-                    rajjuCompatible = true,
+                    rajjuCompatible = false,
                     rajjuDetails = "Unable to analyze",
                     streeDeergha = false,
                     streeDeerghaCount = 0,

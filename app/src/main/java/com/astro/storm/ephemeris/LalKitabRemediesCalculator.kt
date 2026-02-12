@@ -48,7 +48,7 @@ object LalKitabRemediesCalculator {
         val debts = analyzeKarmicDebts(chart, language)
         val houseAnalysis = analyzeHousesLalKitab(chart, language)
         val remedies = generateRemedies(planetaryAfflictions, debts, houseAnalysis, language)
-        val annualCalendar = generateAnnualRemedyCalendar(language)
+        val annualCalendar = generateAnnualRemedyCalendar(chart, language)
 
         return LalKitabAnalysis(
             systemNote = StringResources.get(StringKeyLalKitab.SYSTEM_NOTE, language),
@@ -710,7 +710,7 @@ object LalKitabRemediesCalculator {
     /**
      * Generate annual remedy calendar
      */
-    private fun generateAnnualRemedyCalendar(language: Language): List<AnnualRemedyEntry> {
+    private fun generateAnnualRemedyCalendar(chart: VedicChart, language: Language): List<AnnualRemedyEntry> {
         val weekDays = listOf(
             Planet.SUN to StringResources.get(StringKeyRemedy.WEEKDAY_SUNDAY, language),
             Planet.MOON to StringResources.get(StringKeyRemedy.WEEKDAY_MONDAY, language),
@@ -720,12 +720,16 @@ object LalKitabRemediesCalculator {
             Planet.VENUS to StringResources.get(StringKeyRemedy.WEEKDAY_FRIDAY, language),
             Planet.SATURN to StringResources.get(StringKeyRemedy.WEEKDAY_SATURDAY, language)
         )
+        val planetHouseMap = chart.planetPositions.associate { position ->
+            position.planet to calculateLalKitabHouse(chart, position)
+        }
 
         return weekDays.map { (planet, day) ->
+            val house = planetHouseMap[planet] ?: 1
             AnnualRemedyEntry(
                 day = day,
                 planet = planet,
-                remedies = getPlanetaryRemedies(planet, 1, language).take(3) // house 1 as placeholder for general daily recs
+                remedies = getPlanetaryRemedies(planet, house, language).take(3)
             )
         }
     }

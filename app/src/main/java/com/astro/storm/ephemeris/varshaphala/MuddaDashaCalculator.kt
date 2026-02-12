@@ -17,8 +17,12 @@ import java.time.temporal.ChronoUnit
 
 object MuddaDashaCalculator {
 
-    fun calculateMuddaDasha(chart: SolarReturnChart, startDate: LocalDate, language: Language): List<MuddaDashaPeriod> {
-        val today = LocalDate.now()
+    fun calculateMuddaDasha(
+        chart: SolarReturnChart,
+        startDate: LocalDate,
+        language: Language,
+        asOf: LocalDate = LocalDate.now()
+    ): List<MuddaDashaPeriod> {
         val moonLong = chart.planetPositions[Planet.MOON]?.longitude ?: 0.0
         val (nakshatra, _) = Nakshatra.fromLongitude(moonLong)
         val startingLord = nakshatra.ruler
@@ -30,7 +34,7 @@ object MuddaDashaCalculator {
             val planet = MUDDA_DASHA_PLANETS[(startIndex + i) % MUDDA_DASHA_PLANETS.size]
             val days = (MUDDA_DASHA_DAYS[planet] ?: 30).coerceAtLeast(1)
             val endDate = currentDate.plusDays(days.toLong() - 1)
-            val isCurrent = !today.isBefore(currentDate) && !today.isAfter(endDate)
+            val isCurrent = !asOf.isBefore(currentDate) && !asOf.isAfter(endDate)
             val strength = evaluatePlanetStrengthDescription(planet, chart, language)
             periods.add(MuddaDashaPeriod(
                 planet = planet, startDate = currentDate, endDate = endDate, days = days,
@@ -38,7 +42,7 @@ object MuddaDashaCalculator {
                 planetStrength = strength, houseRuled = getHousesRuledBy(planet, chart),
                 prediction = generateDashaPrediction(planet, chart, strength, language),
                 keywords = getDashaKeywords(planet, chart, language), isCurrent = isCurrent,
-                progressPercent = if (isCurrent) (ChronoUnit.DAYS.between(currentDate, today).toFloat() / days).coerceIn(0f, 1f) else if (today.isAfter(endDate)) 1f else 0f
+                progressPercent = if (isCurrent) (ChronoUnit.DAYS.between(currentDate, asOf).toFloat() / days).coerceIn(0f, 1f) else if (asOf.isAfter(endDate)) 1f else 0f
             ))
             currentDate = endDate.plusDays(1)
         }

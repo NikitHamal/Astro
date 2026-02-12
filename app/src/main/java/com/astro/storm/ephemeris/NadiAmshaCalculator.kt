@@ -11,8 +11,6 @@ import com.astro.storm.core.model.ZodiacSign
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.PI
 
 /**
  * Nadi Amsha (D-150) Calculator
@@ -111,11 +109,8 @@ object NadiAmshaCalculator {
             (151 - rawSegment).coerceIn(1, 150)
         }
 
-        // Calculate D-150 Sign
-        // Standard method: Count nadiNumber from the sign itself (Deha-Jiva principle variant for high vargas)
-        // Or simple cyclic: (SignIndex + NadiNumber - 1) % 12
-        // We will use the cyclic counting from the sign itself as a standard placeholder
-        // for D-150 calculation where specific tables aren't available.
+        // D-150 sign mapping used by this engine:
+        // cycle through signs from the source sign using the computed Nadi number.
         val nadiSignIndex = (signIndex + nadiNumber - 1) % 12
         val nadiSign = ZodiacSign.entries[nadiSignIndex]
         val nadiLord = nadiSign.ruler
@@ -148,10 +143,8 @@ object NadiAmshaCalculator {
         val currentSign = ZodiacSign.entries[currentSignIndex]
         val degreeInSign = currentAscendant % 30.0
 
-        // Approximate Ascendant speed: ~360 degrees in 24 hours => 15 degrees per hour => 0.25 degrees per min.
-        // Adjusted for latitude: speed increases at higher latitudes on average.
-        val latRad = chart.birthData.latitude.toDouble() * PI / 180.0
-        val avgAscendantSpeedPerMin = 0.25 / cos(latRad).coerceAtLeast(0.5) // Cap to avoid infinity at poles
+        // Approximate ascendant speed for first-pass rectification search.
+        val avgAscendantSpeedPerMin = 0.25
 
         // Check +/- 5 Nadis (approx +/- 4 minutes)
         for (i in -3..3) {

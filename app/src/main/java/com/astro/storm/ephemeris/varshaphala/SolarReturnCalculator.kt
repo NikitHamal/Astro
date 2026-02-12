@@ -12,6 +12,7 @@ import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.getZodiacSignFro
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.isDayChart
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.jdToLocalDateTime
 import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.normalizeAngle
+import com.astro.storm.ephemeris.varshaphala.VarshaphalaHelpers.resolveZoneId
 import swisseph.SweConst
 import swisseph.SwissEph
 import java.time.LocalDateTime
@@ -29,7 +30,8 @@ object SolarReturnCalculator {
         timezone: String,
         swissEph: SwissEph
     ): LocalDateTime {
-        val birthZoned = ZonedDateTime.of(birthDateTime, ZoneId.of(timezone))
+        val zoneId = resolveZoneId(timezone)
+        val birthZoned = ZonedDateTime.of(birthDateTime, zoneId)
         val birthUtc = birthZoned.withZoneSameInstant(ZoneId.of("UTC"))
         val birthJd = calculateJulianDay(birthUtc.toLocalDateTime())
         val natalSunLong = getPlanetLongitude(SweConst.SE_SUN, birthJd, swissEph)
@@ -54,14 +56,20 @@ object SolarReturnCalculator {
     private fun getPlanetLongitude(planetId: Int, julianDay: Double, swissEph: SwissEph): Double {
         val xx = DoubleArray(6)
         val serr = StringBuffer()
-        swissEph.swe_calc_ut(julianDay, planetId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        val rc = swissEph.swe_calc_ut(julianDay, planetId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        if (rc < 0) {
+            throw IllegalStateException("Swiss Ephemeris swe_calc_ut failed for planetId=$planetId, jd=$julianDay: $serr")
+        }
         return normalizeAngle(xx[0])
     }
 
     private fun getSunSpeed(julianDay: Double, swissEph: SwissEph): Double {
         val xx = DoubleArray(6)
         val serr = StringBuffer()
-        swissEph.swe_calc_ut(julianDay, SweConst.SE_SUN, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        val rc = swissEph.swe_calc_ut(julianDay, SweConst.SE_SUN, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        if (rc < 0) {
+            throw IllegalStateException("Swiss Ephemeris swe_calc_ut failed for Sun speed, jd=$julianDay: $serr")
+        }
         return if (xx[3] != 0.0) xx[3] else 0.9856
     }
 
@@ -73,7 +81,7 @@ object SolarReturnCalculator {
         year: Int,
         swissEph: SwissEph
     ): SolarReturnChart {
-        val zonedDateTime = ZonedDateTime.of(solarReturnTime, ZoneId.of(timezone))
+        val zonedDateTime = ZonedDateTime.of(solarReturnTime, resolveZoneId(timezone))
         val utcDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC"))
         val julianDay = calculateJulianDay(utcDateTime.toLocalDateTime())
         val ayanamsa = swissEph.swe_get_ayanamsa_ut(julianDay)
@@ -111,9 +119,15 @@ object SolarReturnCalculator {
         val serr = StringBuffer()
         val planetId = if (planet == Planet.KETU) -1 else planet.swissEphId
         if (planetId >= 0) {
-            swissEph.swe_calc_ut(julianDay, planetId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+            val rc = swissEph.swe_calc_ut(julianDay, planetId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+            if (rc < 0) {
+                throw IllegalStateException("Swiss Ephemeris swe_calc_ut failed for ${planet.name}, jd=$julianDay: $serr")
+            }
         } else {
-            swissEph.swe_calc_ut(julianDay, SweConst.SE_MEAN_NODE, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+            val rc = swissEph.swe_calc_ut(julianDay, SweConst.SE_MEAN_NODE, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+            if (rc < 0) {
+                throw IllegalStateException("Swiss Ephemeris swe_calc_ut failed for KETU base node, jd=$julianDay: $serr")
+            }
             xx[0] = normalizeAngle(xx[0] + 180.0)
             xx[3] = -xx[3]
         }

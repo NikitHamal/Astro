@@ -9,7 +9,12 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
+import java.time.DateTimeException
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import kotlin.math.roundToInt
 
 /**
  * Sudarshana Chakra Dasha Calculator
@@ -44,13 +49,14 @@ object SudarshanaChakraDashaCalculator {
         useVedicAge: Boolean = true
     ): SudarshanaChakraResult {
         val birthDateTime = chart.birthData.dateTime
+        val today = LocalDate.now(resolveZoneId(chart.birthData.timezone))
         val ageAtCalculation = if (targetAge <= 0) {
             if (useVedicAge) {
                 // Vedic age based on 360-day Savana years
-                val totalDays = java.time.temporal.ChronoUnit.DAYS.between(birthDateTime.toLocalDate(), java.time.LocalDate.now())
+                val totalDays = java.time.temporal.ChronoUnit.DAYS.between(birthDateTime.toLocalDate(), today)
                 (totalDays / 360).toInt() + 1
             } else {
-                val years = java.time.Period.between(birthDateTime.toLocalDate(), java.time.LocalDate.now()).years
+                val years = java.time.Period.between(birthDateTime.toLocalDate(), today).years
                 years + 1 // 1st year of life is age 1
             }
         } else {
@@ -60,10 +66,12 @@ object SudarshanaChakraDashaCalculator {
         val currentAge = ageAtCalculation.coerceAtLeast(1)
 
         val lagnaSign = ZodiacSign.fromLongitude(chart.ascendant)
-        val moonSign = chart.planetPositions.find { it.planet == Planet.MOON }?.sign
-            ?: lagnaSign // Fallback if moon not found
-        val sunSign = chart.planetPositions.find { it.planet == Planet.SUN }?.sign
-            ?: lagnaSign // Fallback if sun not found
+        val moonSign = requireNotNull(chart.planetPositions.find { it.planet == Planet.MOON }?.sign) {
+            "Moon position not found for Sudarshana Chakra"
+        }
+        val sunSign = requireNotNull(chart.planetPositions.find { it.planet == Planet.SUN }?.sign) {
+            "Sun position not found for Sudarshana Chakra"
+        }
 
         val lagnaChakra = calculateChakraFromReference(
             chart, lagnaSign, currentAge, SudarshanaReference.LAGNA, language
@@ -91,6 +99,20 @@ object SudarshanaChakraDashaCalculator {
             yearlyProgression = yearlyProgression,
             recommendations = generateRecommendations(synthesis, language)
         )
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val numericHours = timezone.trim().toDoubleOrNull()
+            if (numericHours != null) {
+                val totalSeconds = (numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600)
+                ZoneOffset.ofTotalSeconds(totalSeconds)
+            } else {
+                throw IllegalArgumentException("Invalid timezone: $timezone")
+            }
+        }
     }
 
     /**
@@ -457,7 +479,7 @@ object SudarshanaChakraDashaCalculator {
                     StringResources.get(
                         StringKeyDosha.SUDARSHANA_FACTOR_DIGNITY, language,
                         signLord.getLocalizedName(language),
-                        lordPosition?.let { getDignitySummary(signLord, it.sign, language) } ?: "Unknown"
+                        lordPosition?.let { getDignitySummary(signLord, it.sign, language) } ?: "Unavailable"
                     )
                 )
                 if (planetsInSign.isNotEmpty()) {

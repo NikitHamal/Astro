@@ -4,11 +4,15 @@ import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import java.time.DateTimeException
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringResources
+import kotlin.math.roundToInt
 
 /**
  * Kalachakra Dasha Calculator - Production-grade Implementation
@@ -237,7 +241,7 @@ object KalachakraDashaCalculator {
         val interpretation: MahadashaInterpretation
     ) {
         val durationDays: Long
-            get() = ChronoUnit.DAYS.between(startDate, endDate)
+            get() = ChronoUnit.DAYS.between(startDate, endDate).plus(1)
 
         fun isActiveOn(date: LocalDate): Boolean {
             return !date.isBefore(startDate) && !date.isAfter(endDate)
@@ -252,14 +256,17 @@ object KalachakraDashaCalculator {
 
         fun getProgressPercent(asOf: LocalDate = LocalDate.now()): Double {
             if (durationDays <= 0) return 0.0
-            val elapsed = ChronoUnit.DAYS.between(startDate, asOf.coerceIn(startDate, endDate))
-            return ((elapsed.toDouble() / durationDays) * 100).coerceIn(0.0, 100.0)
+            if (asOf.isBefore(startDate)) return 0.0
+            if (!asOf.isBefore(endDate)) return 100.0
+            val total = ChronoUnit.DAYS.between(startDate, endDate).coerceAtLeast(1L)
+            val elapsed = ChronoUnit.DAYS.between(startDate, asOf)
+            return ((elapsed.toDouble() / total.toDouble()) * 100.0).coerceIn(0.0, 100.0)
         }
 
         fun getRemainingDays(asOf: LocalDate = LocalDate.now()): Long {
             if (asOf.isAfter(endDate)) return 0
             if (asOf.isBefore(startDate)) return durationDays
-            return ChronoUnit.DAYS.between(asOf, endDate)
+            return ChronoUnit.DAYS.between(asOf, endDate).plus(1).coerceAtLeast(0)
         }
     }
 
@@ -289,8 +296,11 @@ object KalachakraDashaCalculator {
 
         fun getProgressPercent(asOf: LocalDate = LocalDate.now()): Double {
             if (durationDays <= 0) return 0.0
-            val elapsed = ChronoUnit.DAYS.between(startDate, asOf.coerceIn(startDate, endDate))
-            return ((elapsed.toDouble() / durationDays) * 100).coerceIn(0.0, 100.0)
+            if (asOf.isBefore(startDate)) return 0.0
+            if (!asOf.isBefore(endDate)) return 100.0
+            val total = ChronoUnit.DAYS.between(startDate, endDate).coerceAtLeast(1L)
+            val elapsed = ChronoUnit.DAYS.between(startDate, asOf)
+            return ((elapsed.toDouble() / total.toDouble()) * 100.0).coerceIn(0.0, 100.0)
         }
     }
 
@@ -447,7 +457,7 @@ object KalachakraDashaCalculator {
         )
 
         // Find current periods
-        val today = LocalDate.now()
+        val today = LocalDate.now(resolveZoneId(chart.birthData.timezone))
         val currentMahadasha = mahadashas.find { it.isActiveOn(today) }
         val currentAntardasha = currentMahadasha?.getAntardashaOn(today)
 
@@ -484,6 +494,19 @@ object KalachakraDashaCalculator {
         )
     }
 
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val numericHours = timezone.trim().toDoubleOrNull()
+            if (numericHours != null) {
+                ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                throw IllegalArgumentException("Invalid timezone: $timezone")
+            }
+        }
+    }
+
     /**
      * Determine if nakshatra belongs to Savya or Apsavya group
      */
@@ -500,7 +523,7 @@ object KalachakraDashaCalculator {
         return when {
             nakshatra in SAVYA_NAKSHATRAS -> NakshatraGroup.SAVYA
             nakshatra in APSAVYA_NAKSHATRAS -> NakshatraGroup.APSAVYA
-            else -> NakshatraGroup.SAVYA // Default to Savya for any edge cases
+            else -> throw IllegalArgumentException("Unsupported nakshatra for Kalachakra grouping: $nakshatra")
         }
     }
 
@@ -573,7 +596,9 @@ object KalachakraDashaCalculator {
 
         // Get the period of the starting sign
         val startingSign = ZodiacSign.entries[startingSignIndex]
-        val signPeriod = KALACHAKRA_PERIODS[startingSign] ?: 9
+        val signPeriod = requireNotNull(KALACHAKRA_PERIODS[startingSign]) {
+            "Missing Kalachakra period for sign: $startingSign"
+        }
         val remainingYears = signPeriod * remainingPortion
 
         return DashaBalance(
@@ -611,16 +636,18 @@ object KalachakraDashaCalculator {
         var isFirstDasha = true
 
         for ((index, sign) in signSequence.withIndex()) {
-            var durationYears = KALACHAKRA_PERIODS[sign] ?: 9
+            var durationYears = requireNotNull(KALACHAKRA_PERIODS[sign]) {
+                "Missing Kalachakra period for sign: $sign"
+            }
 
             // For first dasha, use the balance
             if (isFirstDasha) {
-                durationYears = balanceInfo.remainingYears.toInt().coerceAtLeast(1)
+                durationYears = balanceInfo.remainingYears.roundToInt().coerceAtLeast(1)
                 isFirstDasha = false
             }
 
             val durationDays = yearsToRoundedDays(durationYears.toDouble())
-            val endDate = currentDate.plusDays(durationDays)
+            val endDate = currentDate.plusDays((durationDays - 1).coerceAtLeast(0))
 
             val signLord = sign.ruler
             val signDehaJeeva = DEHA_JEEVA_PAIRS[sign] ?: Pair(sign, sign)
@@ -720,7 +747,7 @@ object KalachakraDashaCalculator {
         language: Language
     ): List<KalachakraAntardasha> {
         val antardashas = mutableListOf<KalachakraAntardasha>()
-        val mahaDurationDays = ChronoUnit.DAYS.between(mahaStart, mahaEnd)
+        val mahaDurationDays = ChronoUnit.DAYS.between(mahaStart, mahaEnd).plus(1)
 
         if (mahaDurationDays <= 0) return antardashas
 
@@ -732,19 +759,23 @@ object KalachakraDashaCalculator {
         )
 
         // Calculate total years for proportional division
-        val totalYears = antarSignSequence.sumOf { KALACHAKRA_PERIODS[it] ?: 9 }
+        val totalYears = antarSignSequence.sumOf {
+            requireNotNull(KALACHAKRA_PERIODS[it]) { "Missing Kalachakra period for sign: $it" }
+        }
 
         var currentDate = mahaStart
 
         for ((index, antarSign) in antarSignSequence.withIndex()) {
-            val antarYears = KALACHAKRA_PERIODS[antarSign] ?: 9
+            val antarYears = requireNotNull(KALACHAKRA_PERIODS[antarSign]) {
+                "Missing Kalachakra period for sign: $antarSign"
+            }
             val proportion = antarYears.toDouble() / totalYears
             val antarDurationDays = (mahaDurationDays * proportion).toLong().coerceAtLeast(1L)
 
             val endDate = if (index == antarSignSequence.size - 1) {
                 mahaEnd
             } else {
-                currentDate.plusDays(antarDurationDays).let {
+                currentDate.plusDays((antarDurationDays - 1).coerceAtLeast(0)).let {
                     if (it.isAfter(mahaEnd)) mahaEnd else it
                 }
             }
@@ -766,7 +797,7 @@ object KalachakraDashaCalculator {
                     mahadashaSign = mahadashaSign,
                     startDate = currentDate,
                     endDate = endDate,
-                    durationDays = ChronoUnit.DAYS.between(currentDate, endDate).coerceAtLeast(1L),
+                    durationDays = ChronoUnit.DAYS.between(currentDate, endDate).plus(1).coerceAtLeast(1L),
                     signLord = antarSign.ruler,
                     isDehaSign = isDeha,
                     isJeevaSign = isJeeva,

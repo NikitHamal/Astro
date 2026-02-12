@@ -863,14 +863,20 @@ class RetrogradeEphemerisCalculator(context: Context) : AutoCloseable {
     private fun getSpeed(planet: Planet, jd: Double): Double {
         val xx = DoubleArray(6)
         val serr = StringBuffer()
-        swissEph.swe_calc_ut(jd, planet.swissEphId, SweConst.SEFLG_SIDEREAL or SweConst.SEFLG_SPEED, xx, serr)
+        val rc = swissEph.swe_calc_ut(jd, planet.swissEphId, SweConst.SEFLG_SIDEREAL or SweConst.SEFLG_SPEED, xx, serr)
+        if (rc < 0) {
+            throw IllegalStateException("Swiss Ephemeris swe_calc_ut failed for speed ${planet.name} jd=$jd: $serr")
+        }
         return xx[3]
     }
 
     private fun getLongitude(planet: Planet, jd: Double): Double {
         val xx = DoubleArray(6)
         val serr = StringBuffer()
-        swissEph.swe_calc_ut(jd, planet.swissEphId, SweConst.SEFLG_SIDEREAL, xx, serr)
+        val rc = swissEph.swe_calc_ut(jd, planet.swissEphId, SweConst.SEFLG_SIDEREAL, xx, serr)
+        if (rc < 0) {
+            throw IllegalStateException("Swiss Ephemeris swe_calc_ut failed for longitude ${planet.name} jd=$jd: $serr")
+        }
         return ((xx[0] % 360.0) + 360.0) % 360.0
     }
 

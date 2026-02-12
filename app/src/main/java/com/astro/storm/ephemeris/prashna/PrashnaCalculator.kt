@@ -19,9 +19,12 @@ import com.astro.storm.ephemeris.prashna.PrashnaHelpers.calculateJulianDay
 import com.astro.storm.ephemeris.prashna.PrashnaHelpers.determineHouse
 import com.astro.storm.ephemeris.prashna.PrashnaHelpers.normalizeDegrees
 import swisseph.SwissEph
+import java.time.DateTimeException
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import kotlin.math.roundToInt
 
 /**
  * PrashnaCalculator - Refactored Production-grade Vedic Horary Astrology Engine
@@ -48,7 +51,7 @@ class PrashnaCalculator(context: Context) {
         language: Language = Language.ENGLISH,
         houseSystem: HouseSystem = HouseSystem.PLACIDUS
     ): PrashnaResult {
-        val questionTime = LocalDateTime.now()
+        val questionTime = LocalDateTime.now(resolveZoneId(timezone))
         return analyzePrashna(question, category, questionTime, latitude, longitude, timezone, language, houseSystem)
     }
 
@@ -122,7 +125,7 @@ class PrashnaCalculator(context: Context) {
     }
 
     private fun calculatePrashnaChart(birthData: BirthData, houseSystem: HouseSystem): VedicChart {
-        val zoneId = ZoneId.of(birthData.timezone)
+        val zoneId = resolveZoneId(birthData.timezone)
         val zonedDateTime = ZonedDateTime.of(birthData.dateTime, zoneId)
         val utcDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime()
         val julianDay = calculateJulianDay(utcDateTime)
@@ -169,7 +172,10 @@ class PrashnaCalculator(context: Context) {
         val serr = StringBuffer()
         val sweId = if (planet == Planet.KETU) Planet.RAHU.swissEphId else planet.swissEphId
 
-        swissEph.swe_calc_ut(julianDay, sweId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        val rc = swissEph.swe_calc_ut(julianDay, sweId, SEFLG_SIDEREAL or SEFLG_SPEED, xx, serr)
+        if (rc < 0) {
+            throw IllegalStateException("Swiss Ephemeris swe_calc_ut failed for ${planet.displayName} at jd=$julianDay: $serr")
+        }
 
         var longitude = xx[0]
         var speed = xx[3]
@@ -218,6 +224,21 @@ class PrashnaCalculator(context: Context) {
 
     fun close() {
         swissEph.swe_close()
+    }
+
+    private fun resolveZoneId(timezone: String): ZoneId {
+        return try {
+            ZoneId.of(timezone)
+        } catch (_: DateTimeException) {
+            val trimmed = timezone.trim()
+            val numericHours = trimmed.toDoubleOrNull()
+            if (numericHours != null) {
+                val totalSeconds = (numericHours * 3600.0).roundToInt()
+                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
+            } else {
+                throw IllegalArgumentException("Invalid timezone: $timezone")
+            }
+        }
     }
 }
 
