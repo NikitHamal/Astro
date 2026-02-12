@@ -146,7 +146,9 @@ fun SynastryScreen(
                             stringResource(StringKeyDosha.SYNASTRY_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         AnimatedVisibility(visible = synastryResult != null) {
                             Text(

@@ -82,7 +82,9 @@ fun AiModelsScreen(
                             text = stringResource(StringKeyDosha.AI_MODELS_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = colors.TextPrimary
+                            color = colors.TextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             text = stringResource(StringKeyDosha.AI_MODELS_ENABLED_COUNT, enabledModels.size),

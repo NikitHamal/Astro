@@ -140,6 +140,8 @@ object ContentCleaner {
         Regex("""(?m)^\s*<\|tool_[^|]+?\|>\s*$""", RegexOption.IGNORE_CASE),
         Regex("""(?m)^\s*(?:functions\.)?[a-zA-Z0-9_]+\s*:\s*\d+\s*$""", RegexOption.IGNORE_CASE),
         Regex("""(?m)^\s*"?\s*(tool|arguments|parameters|function)\s*"?\s*:\s*.*$""", RegexOption.IGNORE_CASE),
+        Regex("""(?m)^\s*arguments\s*\{[\s\S]*?\}\s*$""", RegexOption.IGNORE_CASE),
+        Regex("""(?m)^\s*ask_user.*$""", RegexOption.IGNORE_CASE),
         Regex("""(?m)^\s*[\{\}]\s*$""")
     )
 
@@ -164,6 +166,8 @@ object ContentCleaner {
         Regex("""\{\s*"tool"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{[\s\S]*?\}\s*\}"""),
         Regex("""(?m)^\s*"?\s*(tool|arguments|parameters|function)\s*"?\s*:\s*.*$""", RegexOption.IGNORE_CASE),
         Regex("""(?m)^\s*(profile_id|partner_profile_id|dasha_type|years_ahead|for_now|activity)\b.*$""", RegexOption.IGNORE_CASE),
+        Regex("""(?is)\barguments\s*\{[\s\S]*?\}"""),
+        Regex("""(?m)^\s*ask_user.*$""", RegexOption.IGNORE_CASE),
         Regex("""(?m)^\s*`{3}\s*$""")
     )
 

@@ -716,6 +716,19 @@ class StormyAgent @Inject constructor(
             addToolCallIfNotExists(toolName, arguments, toolCalls, processedToolIds)
         }
 
+        // Pattern 7: ask_user emitted as plain text with "arguments { ... }"
+        if (content.contains("ask_user", ignoreCase = true) && content.contains("arguments", ignoreCase = true)) {
+            val askIndex = content.indexOf("ask_user", ignoreCase = true).coerceAtLeast(0)
+            val argsIndex = content.indexOf("arguments", askIndex, ignoreCase = true).coerceAtLeast(0)
+            val braceIndex = content.indexOf('{', if (argsIndex > 0) argsIndex else askIndex)
+            if (braceIndex >= 0) {
+                val extracted = extractFirstJsonObject(content.substring(braceIndex))
+                if (!extracted.isNullOrBlank()) {
+                    addToolCallIfNotExists("ask_user", extracted, toolCalls, processedToolIds)
+                }
+            }
+        }
+
         return toolCalls
     }
 
@@ -975,6 +988,8 @@ class StormyAgent @Inject constructor(
             .replace(Regex("""```tool_call\s*\n?\s*\{[\s\S]*?\}\s*\n?```"""), "")
             .replace(Regex("""```json\s*\n?\s*\{[\s\S]*?"tool"[\s\S]*?\}\s*\n?```""", RegexOption.MULTILINE), "")
             .replace(Regex("""\{\"tool\"\s*:\s*\"[^\"]+\"\s*,\s*\"arguments\"\s*:\s*\{[\s\S]*?\}\s*\}"""), "")
+            .replace(Regex("""(?is)\barguments\s*\{[\s\S]*?\}"""), "")
+            .replace(Regex("""(?m)^\s*ask_user.*$""", RegexOption.IGNORE_CASE), "")
             .replace(Regex("""<\|tool_calls_section_begin\|>[\s\S]*?<\|tool_calls_section_end\|>""", RegexOption.IGNORE_CASE), "")
             .replace(Regex("""<\|tool_calls_section_begin\|>[\s\S]*$""", RegexOption.IGNORE_CASE), "")
             .replace(Regex("""(?m)^\s*<\|tool_[^|]+?\|>\s*$""", RegexOption.IGNORE_CASE), "")

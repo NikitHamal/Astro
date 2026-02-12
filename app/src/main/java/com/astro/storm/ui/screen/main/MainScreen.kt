@@ -375,7 +375,9 @@ private fun MainTopBar(
                 text = currentTab.getLocalizedTitle(language),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
-                color = colors.TextPrimary
+                color = colors.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         },
         actions = {

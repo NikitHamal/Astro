@@ -536,7 +536,9 @@ fun ChatScreen(
                             text = stringResource(StringKeyDosha.STORMY_TITLE),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = colors.TextPrimary
+                            color = colors.TextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         selectedModel?.let {
                             Text(

@@ -241,7 +241,9 @@ private fun YogasTopBar(
                         text = stringResource(StringKey.FEATURE_YOGAS),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     if (chartName.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(2.dp))

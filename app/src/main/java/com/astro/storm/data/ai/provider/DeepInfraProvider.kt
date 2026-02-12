@@ -122,7 +122,7 @@ class DeepInfraProvider : BaseOpenAiCompatibleProvider() {
 
             if (connection.responseCode == HttpURLConnection.HTTP_OK) {
                 val response = connection.inputStream.bufferedReader().readText()
-                parseDeepInfraModels(response)
+                mergeWithDefaults(parseDeepInfraModels(response))
             } else {
                 getDefaultModels()
             }
@@ -133,6 +133,7 @@ class DeepInfraProvider : BaseOpenAiCompatibleProvider() {
 
     private fun parseDeepInfraModels(response: String): List<AiModel> {
         val models = mutableListOf<AiModel>()
+        val seen = mutableSetOf<String>()
         try {
             val jsonArray = org.json.JSONArray(response)
             for (i in 0 until jsonArray.length()) {
@@ -141,7 +142,7 @@ class DeepInfraProvider : BaseOpenAiCompatibleProvider() {
                 val modelType = modelJson.optString("type", "")
 
                 // Only include text-generation models
-                if (modelType == "text-generation" && modelName.isNotEmpty()) {
+                if (modelType == "text-generation" && modelName.isNotEmpty() && seen.add(modelName)) {
                     models.add(
                         AiModel(
                             id = modelName,
@@ -150,6 +151,7 @@ class DeepInfraProvider : BaseOpenAiCompatibleProvider() {
                             displayName = formatModelDisplayName(modelName),
                             supportsVision = modelName in visionModels,
                             supportsReasoning = modelName in reasoningModels,
+                            supportsThinking = modelName in reasoningModels,
                             supportsTools = true
                         )
                     )
@@ -159,6 +161,13 @@ class DeepInfraProvider : BaseOpenAiCompatibleProvider() {
             // Fall back to defaults
         }
         return models.ifEmpty { getDefaultModels() }
+    }
+
+    private fun mergeWithDefaults(primary: List<AiModel>): List<AiModel> {
+        val merged = LinkedHashMap<String, AiModel>()
+        primary.forEach { merged[it.id] = it }
+        getDefaultModels().forEach { merged.putIfAbsent(it.id, it) }
+        return merged.values.toList()
     }
 
     override fun getDefaultModels(): List<AiModel> = listOf(
@@ -283,6 +292,15 @@ class DeepInfraProvider : BaseOpenAiCompatibleProvider() {
             providerId = providerId,
             displayName = "Mistral Small 3.1",
             description = "Mistral's efficient small model",
+            supportsTools = true
+        ),
+        // NVIDIA Nemotron
+        AiModel(
+            id = "nvidia/Nemotron-3-Nano-30B-A3B",
+            name = "Nemotron 3 Nano 30B A3B",
+            providerId = providerId,
+            displayName = "Nemotron 3 Nano 30B A3B",
+            description = "NVIDIA Nemotron Nano model",
             supportsTools = true
         ),
         // Moonshot Kimi K2 - Thinking model

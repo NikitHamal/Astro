@@ -227,7 +227,9 @@ fun MuhurtaScreen(
                     Text(
                         stringResource(StringKeyMatch.MUHURTA_TITLE),
                         fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {

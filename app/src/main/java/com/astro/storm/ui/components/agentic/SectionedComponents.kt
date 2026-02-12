@@ -190,6 +190,13 @@ fun ReasoningSection(
 ) {
     val colors = AppTheme.current
     val isActive = !section.isComplete
+    val displayText = remember(section.content, section.isComplete) {
+        if (!section.isComplete && section.content.length > 4000) {
+            "…" + section.content.takeLast(4000)
+        } else {
+            section.content
+        }
+    }
 
     Surface(
         onClick = onToggleExpand,
@@ -279,7 +286,7 @@ fun ReasoningSection(
                         .padding(top = 10.dp)
                 ) {
                     Text(
-                        text = section.content,
+                        text = displayText,
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.TextSecondary,
                         lineHeight = 20.sp,

@@ -134,7 +134,8 @@ private fun normalizeProfileId(raw: String?): String {
 }
 
 private fun VedicChart.hasMoonPosition(): Boolean {
-    return planetPositions.any { it.planet == Planet.MOON }
+    val moon = planetPositions.find { it.planet == Planet.MOON } ?: return false
+    return moon.longitude.isFinite() && moon.longitude >= 0.0 && moon.longitude < 360.0
 }
 
 private suspend fun ensureChartHasMoon(
@@ -144,12 +145,19 @@ private suspend fun ensureChartHasMoon(
 ): Pair<VedicChart?, String?> {
     if (chart.hasMoonPosition()) return chart to null
 
-    val recalculated = runCatching {
+    val recalculationAttempt = runCatching {
         context.ephemerisEngine.calculateVedicChart(chart.birthData, chart.houseSystem)
-    }.getOrNull()
+    }
+    val recalculated = recalculationAttempt.getOrNull()
 
     if (recalculated == null || !recalculated.hasMoonPosition()) {
-        return null to "Chart data incomplete (missing Moon position). Please verify birth data and recalculate the chart."
+        val reason = recalculationAttempt.exceptionOrNull()?.message
+        val message = if (!reason.isNullOrBlank()) {
+            "Chart recalculation failed: $reason"
+        } else {
+            "Chart data incomplete (missing Moon position). Please verify birth data and recalculate the chart."
+        }
+        return null to message
     }
 
     // Persist the recalculated chart if we have the entity
@@ -168,6 +176,17 @@ private suspend fun ensureChartHasMoon(
     }
 
     return recalculated to null
+}
+
+private fun validateChartForDasha(chart: VedicChart): String? {
+    val moon = chart.planetPositions.find { it.planet == Planet.MOON }
+        ?: return "Chart is missing Moon position. Please recalculate the chart."
+
+    if (!moon.longitude.isFinite() || moon.longitude < 0.0 || moon.longitude >= 360.0) {
+        return "Moon position is invalid. Please verify birth data and recalculate the chart."
+    }
+
+    return null
 }
 
 // ============================================
@@ -779,6 +798,16 @@ class GetDashaInfoTool : AstrologyTool {
             )
         }
 
+        val validationError = validateChartForDasha(chart)
+        if (validationError != null) {
+            return ToolExecutionResult(
+                success = false,
+                data = null,
+                error = validationError,
+                summary = "Dasha calculation failed - ${validationError.lowercase()}"
+            )
+        }
+
         val dashaType = arguments.optString("dasha_type", "vimshottari")
         val yearsAhead = arguments.optInt("years_ahead", 10).coerceIn(1, 120)
 
@@ -875,6 +904,16 @@ class GetCurrentDashaTool : AstrologyTool {
                 data = null,
                 error = error ?: "No chart loaded",
                 summary = error ?: "Please select a profile first"
+            )
+        }
+
+        val validationError = validateChartForDasha(chart)
+        if (validationError != null) {
+            return ToolExecutionResult(
+                success = false,
+                data = null,
+                error = validationError,
+                summary = "Dasha calculation failed - ${validationError.lowercase()}"
             )
         }
 

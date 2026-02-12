@@ -213,6 +213,7 @@ class ChatViewModel @Inject constructor(
         // Accumulator size limits to prevent OOM crashes during long streaming
         const val MAX_ACCUMULATOR_SIZE = 100_000 // Maximum characters in accumulators
         const val TRIM_RATIO = 0.5 // Remove 50% of content when limit reached
+        const val STREAM_REASONING_MAX_CHARS = 4000
     }
 
     // ============================================
@@ -1065,6 +1066,12 @@ class ChatViewModel @Inject constructor(
      * Uses chronological appending - creates new section if last section is different type.
      */
     private fun updateReasoningSection(content: String, isComplete: Boolean) {
+        val displayContent = if (!isComplete && content.length > STREAM_REASONING_MAX_CHARS) {
+            "…" + content.takeLast(STREAM_REASONING_MAX_CHARS)
+        } else {
+            content
+        }
+
         // If reasoning starts after content/tool phases, finalize those sections first.
         if (currentContentSection != null && !currentContentSection!!.isComplete) {
             finalizeCurrentContentSection()
@@ -1088,7 +1095,7 @@ class ChatViewModel @Inject constructor(
             // Append to the existing reasoning section (which is the last section)
             val index = currentSections.size - 1
             currentReasoningSection = currentReasoningSection!!.copy(
-                content = content,
+                content = displayContent,
                 isComplete = isComplete,
                 durationMs = durationMs
             )
@@ -1104,7 +1111,7 @@ class ChatViewModel @Inject constructor(
 
             // Create new reasoning section
             currentReasoningSection = AgentSection.Reasoning(
-                content = content,
+                content = displayContent,
                 isComplete = isComplete,
                 isExpanded = false,
                 durationMs = 0L // Will be calculated when finalized

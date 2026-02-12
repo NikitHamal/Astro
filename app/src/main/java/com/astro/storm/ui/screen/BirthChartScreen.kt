@@ -190,7 +190,9 @@ private fun BirthChartTopBar(
                     text = stringResource(StringKey.FEATURE_BIRTH_CHART),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = chartName,

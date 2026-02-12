@@ -213,7 +213,9 @@ private fun ChartAnalysisTopBar(
                     text = stringResource(StringKeyAnalysis.ANALYSIS_CHART_ANALYSIS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = chartName,

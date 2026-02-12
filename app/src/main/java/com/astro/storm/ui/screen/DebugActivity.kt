@@ -66,7 +66,14 @@ fun DebugScreen(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(StringKeyAnalysis.DEBUG_UNHANDLED_EXCEPTION), color = AppTheme.TextPrimary) },
+                title = { 
+                    Text(
+                        stringResource(StringKeyAnalysis.DEBUG_UNHANDLED_EXCEPTION), 
+                        color = AppTheme.TextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    ) 
+                },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = AppTheme.CardBackground)
             )
         }

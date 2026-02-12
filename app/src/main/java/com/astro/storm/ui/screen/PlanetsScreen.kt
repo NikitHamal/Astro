@@ -120,7 +120,9 @@ private fun PlanetsTopBar(
                     text = stringResource(StringKey.FEATURE_PLANETS),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = chartName,

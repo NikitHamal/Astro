@@ -163,7 +163,9 @@ fun MatchmakingScreen(
                             stringResource(StringKeyMatch.MATCH_TITLE),
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         AnimatedVisibility(visible = matchingResult != null) {
                             Text(

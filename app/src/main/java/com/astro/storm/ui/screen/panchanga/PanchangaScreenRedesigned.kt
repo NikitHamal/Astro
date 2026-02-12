@@ -248,7 +248,9 @@ private fun PanchangaTopBar(
                         text = stringResource(StringKey.FEATURE_PANCHANGA),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
