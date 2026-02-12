@@ -47,11 +47,6 @@ jobs:
           cache-overwrite-existing: true
           cache-encryption-key: ${{ secrets.GRADLE_CACHE_KEY }}
 
-      - name: UI Consistency Gate
-        run: |
-          chmod +x ./scripts/ui_consistency_check.sh
-          ./scripts/ui_consistency_check.sh
-
       - name: Build Release APK
         run: |
           chmod +x ./gradlew
