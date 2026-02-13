@@ -56,7 +56,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -97,6 +96,7 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.YoginiDashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.YoginiDashaUiState
@@ -234,79 +234,22 @@ private fun YoginiDashaTopBar(
     currentPeriodInfo: CurrentYoginiPeriodInfo,
     onBack: () -> Unit
 ) {
-    ScreenTopBar(
-        title = stringResource(StringKeyDosha.YOGINI_DASHA_TITLE),
-        onBack = onBack,
-        subtitleContent = {
-            TopBarSubtitle(
-                chartName = chartName,
-                periodInfo = currentPeriodInfo
-            )
-        }
-    )
-}
-
-@Composable
-private fun TopBarSubtitle(
-    chartName: String,
-    periodInfo: CurrentYoginiPeriodInfo
-) {
     val language = LocalLanguage.current
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        when {
-            periodInfo.isLoading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(12.dp),
-                    strokeWidth = 1.5.dp,
-                    color = AppTheme.AccentPrimary
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = stringResource(StringKey.DASHA_CALCULATING),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted,
-                    fontSize = 12.sp
-                )
-            }
-            periodInfo.hasError -> {
-                Text(
-                    text = stringResource(StringKey.DASHA_ERROR) + stringResource(StringKeyUIExtra.BULLET_SPACE) + chartName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
-                    fontSize = 12.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            periodInfo.mahadasha != null -> {
-                Text(
-                    text = buildString {
-                        append(periodInfo.mahadasha)
-                        periodInfo.antardasha?.let { append(StringResources.get(StringKeyUIExtra.ARROW, language) + it) }
-                        append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language) + chartName)
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted,
-                    fontSize = 12.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            else -> {
-                Text(
-                    text = chartName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted,
-                    fontSize = 12.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+    val subtitle = when {
+        currentPeriodInfo.isLoading -> stringResource(StringKey.DASHA_CALCULATING)
+        currentPeriodInfo.hasError -> "${stringResource(StringKey.DASHA_ERROR)} - $chartName"
+        currentPeriodInfo.mahadasha != null -> buildString {
+            append(currentPeriodInfo.mahadasha)
+            currentPeriodInfo.antardasha?.let { append(StringResources.get(StringKeyUIExtra.ARROW, language) + it) }
+            append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language) + chartName)
         }
+        else -> chartName
     }
+    NeoVedicPageHeader(
+        title = stringResource(StringKeyDosha.YOGINI_DASHA_TITLE),
+        subtitle = subtitle,
+        onBack = onBack,
+    )
 }
 
 @Composable

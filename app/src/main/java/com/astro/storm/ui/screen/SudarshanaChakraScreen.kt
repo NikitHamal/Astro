@@ -17,7 +17,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +45,9 @@ import com.astro.storm.ephemeris.ChakraAnalysis
 import com.astro.storm.ephemeris.SudarshanaReference
 import com.astro.storm.ephemeris.StrengthLevel
 import com.astro.storm.ephemeris.InfluenceNature
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -129,19 +131,12 @@ fun SudarshanaChakraScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.SUDARSHANA_TITLE),
                 subtitle = chart.birthData.name,
                 onBack = onBack,
-                actions = {
-                    IconButton(onClick = { showInfoDialog = true }) {
-                        Icon(
-                            Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDosha.SUDARSHANA_ABOUT),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                }
+                actionIcon = Icons.Outlined.Info,
+                onAction = { showInfoDialog = true }
             )
         }
     ) { paddingValues ->
@@ -342,34 +337,17 @@ private fun TabSelector(
     selectedIndex: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        itemsIndexed(tabs) { index, tab ->
-            val isSelected = index == selectedIndex
-            FilterChip(
-                selected = isSelected,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tab,
-                        fontSize = 13.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                )
+    ModernPillTabRow(
+        tabs = tabs.mapIndexed { index, title ->
+            TabItem(
+                title = title,
+                accentColor = if (selectedIndex == index) AppTheme.AccentPrimary else Color.Unspecified
             )
-        }
-    }
+        },
+        selectedIndex = selectedIndex,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+    )
 }
 
 @Composable

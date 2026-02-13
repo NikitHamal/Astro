@@ -17,7 +17,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +43,7 @@ import com.astro.storm.ephemeris.AshtottariMahadasha
 import com.astro.storm.ephemeris.AshtottariAntardasha
 import com.astro.storm.ephemeris.PlanetRelationship
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
@@ -137,19 +137,12 @@ fun AshtottariDashaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.ASHTOTTARI_TITLE),
                 subtitle = chart.birthData.name,
                 onBack = onBack,
-                actions = {
-                    IconButton(onClick = { showInfoDialog = true }) {
-                        Icon(
-                            Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDosha.ASHTOTTARI_ABOUT),
-                            tint = AppTheme.TextPrimary
-                        )
-                    }
-                }
+                actionIcon = Icons.Outlined.Info,
+                onAction = { showInfoDialog = true }
             )
         }
     ) { paddingValues ->

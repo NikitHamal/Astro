@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -58,7 +58,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -100,6 +99,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.KalachakraDashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.KalachakraDashaUiState
@@ -244,77 +244,21 @@ private fun KalachakraDashaTopBar(
     currentPeriodInfo: CurrentPeriodInfo,
     onBack: () -> Unit
 ) {
-    Surface(
-        color = AppTheme.ScreenBackground,
-        shadowElevation = 2.dp
-    ) {
-        ScreenTopBar(
-                title = stringResource(StringKeyDosha.KALACHAKRA_DASHA_TITLE),
-                onBack = onBack
-            )
-    }
-}
-
-@Composable
-private fun TopBarSubtitleContent(
-    chartName: String,
-    periodInfo: CurrentPeriodInfo
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        when {
-            periodInfo.isLoading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(12.dp),
-                    strokeWidth = 1.5.dp,
-                    color = AppTheme.AccentPrimary
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = stringResource(StringKey.DASHA_CALCULATING),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted,
-                    fontSize = 12.sp
-                )
-            }
-            periodInfo.hasError -> {
-                Text(
-                    text = "${stringResource(StringKey.DASHA_ERROR)} • $chartName",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
-                    fontSize = 12.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            periodInfo.mahadasha != null -> {
-                Text(
-                    text = buildString {
-                        append(periodInfo.mahadasha)
-                        periodInfo.antardasha?.let { append(" → $it") }
-                        append(" • $chartName")
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted,
-                    fontSize = 12.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            else -> {
-                Text(
-                    text = chartName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextMuted,
-                    fontSize = 12.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+    val subtitle = when {
+        currentPeriodInfo.isLoading -> stringResource(StringKey.DASHA_CALCULATING)
+        currentPeriodInfo.hasError -> "${stringResource(StringKey.DASHA_ERROR)} - $chartName"
+        currentPeriodInfo.mahadasha != null -> buildString {
+            append(currentPeriodInfo.mahadasha)
+            currentPeriodInfo.antardasha?.let { append(" -> $it") }
+            append(" - $chartName")
         }
+        else -> chartName
     }
+    NeoVedicPageHeader(
+        title = stringResource(StringKeyDosha.KALACHAKRA_DASHA_TITLE),
+        subtitle = subtitle,
+        onBack = onBack
+    )
 }
 
 @Composable
@@ -598,7 +542,7 @@ private fun SignPeriodRow(
 
                 Spacer(modifier = Modifier.height(3.dp))
                 Text(
-                    text = "$startDateFormatted – $endDateFormatted",
+                    text = "$startDateFormatted â€“ $endDateFormatted",
                     fontSize = (subFontSize.value - 1).sp,
                     color = AppTheme.TextMuted,
                     maxLines = 1,
@@ -961,7 +905,7 @@ private fun InterpretationCard(
 
                     result.interpretation.generalGuidance.forEach { guidance ->
                         Row(modifier = Modifier.padding(vertical = 4.dp)) {
-                            Text("• ", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                            Text("â€¢ ", fontSize = 12.sp, color = AppTheme.TextSecondary)
                             Text(
                                 text = guidance,
                                 fontSize = 12.sp,
@@ -1436,7 +1380,7 @@ private fun RecommendationsCard(
                     verticalAlignment = Alignment.Top
                 ) {
                     Text(
-                        text = "•",
+                        text = "â€¢",
                         fontSize = 13.sp,
                         color = AppTheme.AccentGold,
                         modifier = Modifier.padding(end = 10.dp, top = 2.dp)
@@ -1635,7 +1579,7 @@ private fun MahadashaCard(
                         }
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
-                            text = "${formatYearsLocalized(mahadasha.durationYears, language)} • ${mahadasha.startDate.formatLocalized(DateFormat.YEAR_ONLY)} – ${mahadasha.endDate.formatLocalized(DateFormat.YEAR_ONLY)}",
+                            text = "${formatYearsLocalized(mahadasha.durationYears, language)} â€¢ ${mahadasha.startDate.formatLocalized(DateFormat.YEAR_ONLY)} â€“ ${mahadasha.endDate.formatLocalized(DateFormat.YEAR_ONLY)}",
                             fontSize = 11.sp,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
@@ -1644,7 +1588,7 @@ private fun MahadashaCard(
                         if (isCurrent) {
                             Spacer(modifier = Modifier.height(3.dp))
                             Text(
-                                text = "${String.format("%.1f", mahadasha.getProgressPercent(asOfDate))}% • ${formatRemainingYearsLocalized(mahadasha.getRemainingDays(asOfDate) / 365.25, language)}",
+                                text = "${String.format("%.1f", mahadasha.getProgressPercent(asOfDate))}% â€¢ ${formatRemainingYearsLocalized(mahadasha.getRemainingDays(asOfDate) / 365.25, language)}",
                                 fontSize = 10.sp,
                                 color = AppTheme.AccentTeal,
                                 fontWeight = FontWeight.Medium
@@ -1847,7 +1791,7 @@ private fun AntardashaRow(
 
         Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = "${antardasha.startDate.formatLocalized(DateFormat.MONTH_YEAR)} – ${antardasha.endDate.formatLocalized(DateFormat.MONTH_YEAR)}",
+                text = "${antardasha.startDate.formatLocalized(DateFormat.MONTH_YEAR)} â€“ ${antardasha.endDate.formatLocalized(DateFormat.MONTH_YEAR)}",
                 fontSize = 11.sp,
                 color = AppTheme.TextMuted
             )
@@ -2138,7 +2082,7 @@ private fun formatNumber(number: Int, language: Language): String {
 private fun formatYearsLocalized(years: Int, language: Language): String {
     return when (language) {
         Language.ENGLISH -> if (years == 1) "1 year" else "$years years"
-        Language.NEPALI -> "${BikramSambatConverter.toNepaliNumerals(years)} वर्ष"
+        Language.NEPALI -> "${BikramSambatConverter.toNepaliNumerals(years)} à¤µà¤°à¥à¤·"
     }
 }
 
@@ -2155,9 +2099,9 @@ private fun formatRemainingYearsLocalized(years: Double, language: Language): St
             else -> ""
         }
         Language.NEPALI -> when {
-            wholeYears > 0 && remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} वर्ष ${BikramSambatConverter.toNepaliNumerals(remainingMonths)} महिना बाँकी"
-            wholeYears > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} वर्ष बाँकी"
-            remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(remainingMonths)} महिना बाँकी"
+            wholeYears > 0 && remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} à¤µà¤°à¥à¤· ${BikramSambatConverter.toNepaliNumerals(remainingMonths)} à¤®à¤¹à¤¿à¤¨à¤¾ à¤¬à¤¾à¤à¤•à¥€"
+            wholeYears > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} à¤µà¤°à¥à¤· à¤¬à¤¾à¤à¤•à¥€"
+            remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(remainingMonths)} à¤®à¤¹à¤¿à¤¨à¤¾ à¤¬à¤¾à¤à¤•à¥€"
             else -> ""
         }
     }
@@ -2175,9 +2119,9 @@ private fun formatRemainingDaysLocalized(days: Long, language: Language): String
             else -> "${remainingDays}d remaining"
         }
         Language.NEPALI -> when {
-            months > 0 && remainingDays > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} महिना ${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} दिन बाँकी"
-            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} महिना बाँकी"
-            else -> "${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} दिन बाँकी"
+            months > 0 && remainingDays > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} à¤®à¤¹à¤¿à¤¨à¤¾ ${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} à¤¦à¤¿à¤¨ à¤¬à¤¾à¤à¤•à¥€"
+            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} à¤®à¤¹à¤¿à¤¨à¤¾ à¤¬à¤¾à¤à¤•à¥€"
+            else -> "${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} à¤¦à¤¿à¤¨ à¤¬à¤¾à¤à¤•à¥€"
         }
     }
 }
@@ -2198,6 +2142,7 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
+
 
 
 

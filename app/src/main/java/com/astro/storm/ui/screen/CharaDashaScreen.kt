@@ -56,7 +56,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -99,6 +98,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.CharaDashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import java.time.LocalDate
@@ -237,20 +237,15 @@ private fun CharaDashaTopBar(
     language: Language,
     onBack: () -> Unit
 ) {
-    Surface(
-        color = AppTheme.ScreenBackground,
-        shadowElevation = 2.dp
-    ) {
-        ScreenTopBar(
-                title = stringResource(StringKeyDosha.CHARA_DASHA_TITLE),
-                subtitle = if (currentSign != null) {
-                            "${currentSign.getLocalizedName(language)} • $chartName"
-                        } else {
-                            chartName
-                        },
-                onBack = onBack
-            )
-    }
+    NeoVedicPageHeader(
+        title = stringResource(StringKeyDosha.CHARA_DASHA_TITLE),
+        subtitle = if (currentSign != null) {
+            "${currentSign.getLocalizedName(language)} - $chartName"
+        } else {
+            chartName
+        },
+        onBack = onBack
+    )
 }
 
 // ============================================

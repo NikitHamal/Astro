@@ -16,7 +16,9 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
+import com.astro.storm.ui.components.common.TabItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -97,7 +99,7 @@ fun DrigDashaScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_DASHA_TITLE),
                 subtitle = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_LONGEVITY_SYSTEM),
                 onBack = onBack
@@ -140,26 +142,17 @@ private fun DrigDashaContent(
 
     Column(modifier = modifier.fillMaxSize()) {
         // Tabs
-        ScrollableTabRow(
-            selectedTabIndex = selectedTab,
-            containerColor = AppTheme.CardBackground,
-            contentColor = AppTheme.AccentPrimary,
-            edgePadding = 8.dp
-        ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
-                    selected = selectedTab == index,
-                    onClick = { selectedTab = index },
-                    text = {
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal
-                        )
-                    }
+        ModernPillTabRow(
+            tabs = tabs.mapIndexed { index, title ->
+                TabItem(
+                    title = title,
+                    accentColor = if (selectedTab == index) AppTheme.AccentPrimary else Color.Unspecified
                 )
-            }
-        }
+            },
+            selectedIndex = selectedTab,
+            onTabSelected = { selectedTab = it },
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
 
         // Tab Content
         when (selectedTab) {

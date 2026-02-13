@@ -53,7 +53,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -86,6 +85,9 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.shoola.*
 import com.astro.storm.ephemeris.shoola.ShoolaDashaCalculator
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.ShoolaDashaUiState
 import com.astro.storm.ui.viewmodel.ShoolaDashaViewModel
@@ -126,19 +128,12 @@ fun ShoolaDashaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyAdvanced.SHOOLA_TITLE),
                 subtitle = stringResource(StringKeyAdvanced.SHOOLA_SUBTITLE),
                 onBack = onBack,
-                actions = {
-                    IconButton(onClick = { showInfoDialog = true }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyUICommon.INFO),
-                            tint = AppTheme.TextSecondary
-                        )
-                    }
-                }
+                actionIcon = Icons.Outlined.Info,
+                onAction = { showInfoDialog = true }
             )
         }
     ) { paddingValues ->
@@ -186,38 +181,17 @@ private fun ShoolaTabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            FilterChip(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        text = tabs[index],
-                        fontSize = 13.sp,
-                        fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.WarningColor.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.WarningColor,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = AppTheme.BorderColor,
-                    selectedBorderColor = AppTheme.WarningColor.copy(alpha = 0.3f),
-                    enabled = true,
-                    selected = selectedTab == index
-                )
+    ModernPillTabRow(
+        tabs = tabs.mapIndexed { index, title ->
+            TabItem(
+                title = title,
+                accentColor = if (selectedTab == index) AppTheme.WarningColor else Color.Unspecified
             )
-        }
-    }
+        },
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+    )
 }
 
 @Composable
