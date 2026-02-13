@@ -1,7 +1,6 @@
 package com.astro.storm.data.templates
 
 import com.astro.storm.core.model.*
-import com.astro.storm.ephemeris.deepanalysis.PlanetaryDignityLevel
 import javax.inject.Inject
 import javax.inject.Singleton
 

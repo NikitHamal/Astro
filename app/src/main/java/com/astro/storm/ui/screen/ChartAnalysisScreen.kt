@@ -48,8 +48,6 @@ import com.astro.storm.ui.components.NakshatraDetailDialog
 import com.astro.storm.ui.components.dialogs.PlanetDetailDialog
 import com.astro.storm.ui.components.ShadbalaDialog
 import com.astro.storm.ui.screen.chartdetail.tabs.*
-import com.astro.storm.ui.screen.DeepNativeAnalysisBody
-import com.astro.storm.ui.screen.DeepPredictionsBody
 import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.NeoVedicTokens
@@ -423,9 +421,9 @@ private fun DeepAnalysisTabContentWrapper(chart: VedicChart) {
             .fillMaxSize()
             .background(AppTheme.ScreenBackground)
     ) {
-        DeepNativeAnalysisBody(
+        NativeAnalysisScreen(
             chart = chart,
-             modifier = Modifier.fillMaxSize()
+            onBack = {}
         )
     }
 }
@@ -437,9 +435,9 @@ private fun DeepPredictionsTabContentWrapper(chart: VedicChart) {
             .fillMaxSize()
             .background(AppTheme.ScreenBackground)
     ) {
-        DeepPredictionsBody(
+        PredictionsScreen(
             chart = chart,
-             modifier = Modifier.fillMaxSize()
+            onBack = {}
         )
     }
 }
