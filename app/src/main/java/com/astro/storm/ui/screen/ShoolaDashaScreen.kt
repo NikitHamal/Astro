@@ -205,8 +205,8 @@ private fun ShoolaOverviewSection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         // Longevity Status Card
         LongevityStatusCard(result.longevityAssessment, language)
@@ -248,7 +248,7 @@ private fun LongevityStatusCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp),
+                .padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
@@ -265,7 +265,7 @@ private fun LongevityStatusCard(
                     modifier = Modifier.size(40.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
             Text(
                 text = stringResource(StringKeyAdvanced.SHOOLA_LONGEVITY_CATEGORY),
                 style = MaterialTheme.typography.labelMedium,
@@ -1240,7 +1240,7 @@ private fun ShoolaRemedyCard(
 
             Row(
                 modifier = Modifier.padding(top = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
             ) {
                 remedy.deity?.let { deity ->
                     Column {

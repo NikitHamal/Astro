@@ -177,7 +177,7 @@ private fun OverviewTab(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Longevity Card
@@ -217,7 +217,7 @@ private fun OverviewTab(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(20.dp)
+                        .padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -362,7 +362,7 @@ private fun CurrentPeriodCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp)
+                .padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -626,7 +626,7 @@ private fun DashaPeriodTab(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
@@ -870,7 +870,7 @@ private fun MarakaAnalysisTab(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
@@ -958,7 +958,7 @@ private fun MarakaAnalysisTab(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(20.dp)
+                        .padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -1061,7 +1061,7 @@ private fun SthiraKarakasTab(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {

@@ -254,8 +254,8 @@ private fun OverviewSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         // Volatility Score Card
         VolatilityScoreCard(score = analysis.overallVolatilityScore)
@@ -283,7 +283,7 @@ private fun VolatilityScoreCard(score: Int) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp),
+                .padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -513,8 +513,8 @@ private fun CurrentSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAna
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         if (analysis.currentSandhi != null) {
             SandhiDetailCard(
@@ -531,7 +531,7 @@ private fun CurrentSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAna
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(24.dp),
+                        .padding(com.astro.storm.ui.theme.NeoVedicTokens.SpaceLG),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
