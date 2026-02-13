@@ -141,8 +141,9 @@ object MatchmakingCalculator {
         )
 
         // Stree Deergha
-        val streeDeerghaDiff = (groomNakshatra.number - brideNakshatra.number + 27) % 27
-        val streeDeerghaSatisfied = streeDeerghaDiff >= 13 || streeDeerghaDiff == 0
+        // Inclusive count from bride to groom Nakshatra (1..27).
+        val streeDeerghaCount = ((groomNakshatra.number - brideNakshatra.number + 27) % 27) + 1
+        val streeDeerghaSatisfied = streeDeerghaCount >= 13
 
         // Mahendra
         val mahendraCount = ((groomNakshatra.number - brideNakshatra.number + 27) % 27) + 1
@@ -164,7 +165,7 @@ object MatchmakingCalculator {
             brideArudha = brideArudha,
             groomArudha = groomArudha,
             streeDeerghaSatisfied = streeDeerghaSatisfied,
-            streeDeerghaDiff = streeDeerghaDiff,
+            streeDeerghaDiff = streeDeerghaCount,
             mahendraSatisfied = mahendraSatisfied,
             mahendraDetails = mahendraDetails
         )

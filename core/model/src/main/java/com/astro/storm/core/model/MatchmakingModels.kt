@@ -466,10 +466,10 @@ enum class CompatibilityRating(
     }
 
     companion object {
-        const val EXCELLENT_THRESHOLD = 28.0
-        const val GOOD_THRESHOLD = 21.0
-        const val AVERAGE_THRESHOLD = 18.0
-        const val POOR_THRESHOLD = 14.0
+        const val EXCELLENT_THRESHOLD = MatchmakingConstants.EXCELLENT_THRESHOLD
+        const val GOOD_THRESHOLD = MatchmakingConstants.GOOD_THRESHOLD
+        const val AVERAGE_THRESHOLD = MatchmakingConstants.AVERAGE_THRESHOLD
+        const val POOR_THRESHOLD = MatchmakingConstants.POOR_THRESHOLD
 
         fun fromScore(score: Double, nadiScore: Double = 8.0, bhakootScore: Double = 7.0): CompatibilityRating {
             // Both Nadi and Bhakoot zero is very serious

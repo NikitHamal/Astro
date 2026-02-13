@@ -193,8 +193,9 @@ object GunaMilanCalculator {
     }
 
     private fun calculateTaraNumber(fromNakshatra: Nakshatra, toNakshatra: Nakshatra): Int {
+        // Count is inclusive in Tara Koota (same Nakshatra => Janma = 1).
         val diff = (toNakshatra.number - fromNakshatra.number + 27) % 27
-        return if (diff == 0) 9 else ((diff - 1) % 9) + 1
+        return (diff % 9) + 1
     }
 
     private fun getTaraName(taraNumber: Int, language: Language): String = when (taraNumber) {

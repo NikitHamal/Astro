@@ -121,7 +121,11 @@ fun MatchmakingScreen(
             delay(300)
             try {
                 matchingResult = withContext(Dispatchers.Default) {
-                    MatchmakingCalculator.calculateMatchmaking(brideChart!!, groomChart!!)
+                    MatchmakingCalculator.calculateMatchmaking(
+                        brideChart = brideChart!!,
+                        groomChart = groomChart!!,
+                        language = language
+                    )
                 }
             } catch (e: Exception) {
                 errorMessage = e.message ?: errorCalculationFailedText
@@ -209,7 +213,11 @@ fun MatchmakingScreen(
                                 isCalculating = true
                                 try {
                                     matchingResult = withContext(Dispatchers.Default) {
-                                        MatchmakingCalculator.calculateMatchmaking(brideChart!!, groomChart!!)
+                                        MatchmakingCalculator.calculateMatchmaking(
+                                            brideChart = brideChart!!,
+                                            groomChart = groomChart!!,
+                                            language = language
+                                        )
                                     }
                                 } catch (e: Exception) {
                                     errorMessage = e.message
@@ -252,8 +260,11 @@ fun MatchmakingScreen(
                         item {
                             GunaSummaryHeader(result)
                         }
-                        itemsIndexed(result.gunaAnalyses) { index, guna ->
-                            AnimatedGunaCard(guna, index)
+                        items(
+                            items = result.gunaAnalyses,
+                            key = { guna -> guna.gunaType.name }
+                        ) { guna ->
+                            AnimatedGunaCard(guna, language)
                         }
                     }
                     2 -> {
@@ -1045,158 +1056,150 @@ private fun GunaSummaryHeader(result: MatchmakingResult) {
 @Composable
 private fun AnimatedGunaCard(
     guna: GunaAnalysis,
-    index: Int,
     language: Language = currentLanguage()
 ) {
-    var visible by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        delay(index * 50L)
-        visible = true
+    val gunaDescription = remember(guna.gunaType, language) {
+        MatchmakingCalculator.getGunaDescription(guna.gunaType.displayName, language)
     }
 
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn(tween(300)) + slideInVertically(tween(300)) { it / 3 }
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 6.dp),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-        ) {
-            Column(modifier = Modifier.padding(18.dp)) {
+        Column(modifier = Modifier.padding(18.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.weight(1f)
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                            .background(
+                                if (guna.isPositive) AppTheme.SuccessColor.copy(alpha = 0.12f)
+                                else AppTheme.WarningColor.copy(alpha = 0.12f)
+                            ),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(44.dp)
-                                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
-                                .background(
-                                    if (guna.isPositive) AppTheme.SuccessColor.copy(alpha = 0.12f)
-                                    else AppTheme.WarningColor.copy(alpha = 0.12f)
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                if (guna.isPositive) Icons.Filled.CheckCircle else Icons.Outlined.Warning,
-                                contentDescription = null,
-                                tint = if (guna.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor,
-                                modifier = Modifier.size(22.dp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(14.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                guna.gunaType.getLocalizedName(language),
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.SemiBold,
-                                color = AppTheme.TextPrimary,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            Text(
-                                com.astro.storm.ephemeris.MatchmakingCalculator.getGunaDescription(guna.gunaType.displayName, language),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.TextMuted,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Surface(
-                        color = if (guna.isPositive) AppTheme.SuccessColor.copy(alpha = 0.12f)
-                        else AppTheme.WarningColor.copy(alpha = 0.12f),
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-                    ) {
-                        Text(
-                            "${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()}",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = if (guna.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor,
-                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
+                        Icon(
+                            if (guna.isPositive) Icons.Filled.CheckCircle else Icons.Outlined.Warning,
+                            contentDescription = null,
+                            tint = if (guna.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor,
+                            modifier = Modifier.size(22.dp)
                         )
                     }
-                }
-
-                Spacer(modifier = Modifier.height(14.dp))
-                HorizontalDivider(color = AppTheme.DividerColor)
-                Spacer(modifier = Modifier.height(14.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
+                    Spacer(modifier = Modifier.width(14.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .clip(CircleShape)
-                                    .background(AppTheme.LifeAreaLove)
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                stringResource(StringKeyMatch.MATCH_BRIDE),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.TextMuted
-                            )
-                        }
                         Text(
-                            guna.brideValue,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Medium,
-                            color = AppTheme.LifeAreaLove
+                            guna.gunaType.getLocalizedName(language),
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = AppTheme.TextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
-                    }
-                    Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                stringResource(StringKeyMatch.MATCH_GROOM),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.TextMuted
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .clip(CircleShape)
-                                    .background(AppTheme.AccentTeal)
-                            )
-                        }
                         Text(
-                            guna.groomValue,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Medium,
-                            color = AppTheme.AccentTeal,
-                            textAlign = TextAlign.End
+                            gunaDescription,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = AppTheme.TextMuted,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
-
-                Spacer(modifier = Modifier.height(14.dp))
-
+                Spacer(modifier = Modifier.width(8.dp))
                 Surface(
-                    color = AppTheme.ChipBackground,
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                    modifier = Modifier.fillMaxWidth()
+                    color = if (guna.isPositive) AppTheme.SuccessColor.copy(alpha = 0.12f)
+                    else AppTheme.WarningColor.copy(alpha = 0.12f),
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
-                        guna.analysis,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextSecondary,
-                        lineHeight = 20.sp,
-                        modifier = Modifier.padding(12.dp)
+                        "${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()}",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = if (guna.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor,
+                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
                     )
                 }
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
+            HorizontalDivider(color = AppTheme.DividerColor)
+            Spacer(modifier = Modifier.height(14.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .clip(CircleShape)
+                                .background(AppTheme.LifeAreaLove)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            stringResource(StringKeyMatch.MATCH_BRIDE),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = AppTheme.TextMuted
+                        )
+                    }
+                    Text(
+                        guna.brideValue,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.LifeAreaLove
+                    )
+                }
+                Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            stringResource(StringKeyMatch.MATCH_GROOM),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = AppTheme.TextMuted
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .clip(CircleShape)
+                                .background(AppTheme.AccentTeal)
+                        )
+                    }
+                    Text(
+                        guna.groomValue,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.AccentTeal,
+                        textAlign = TextAlign.End
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            Surface(
+                color = AppTheme.ChipBackground,
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    guna.analysis,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextSecondary,
+                    lineHeight = 20.sp,
+                    modifier = Modifier.padding(12.dp)
+                )
             }
         }
     }
