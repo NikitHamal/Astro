@@ -715,40 +715,20 @@ private fun TabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        itemsIndexed(tabs) { index, title ->
-            val isSelected = selectedTab == index
-            FilterChip(
-                selected = isSelected,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tabs[index],
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.ChipBackground,
-                    labelColor = AppTheme.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    enabled = true,
-                    selected = isSelected,
-                    borderColor = Color.Transparent,
-                    selectedBorderColor = AppTheme.AccentPrimary.copy(alpha = 0.2f)
-                ),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    com.astro.storm.ui.components.common.ModernPillTabRow(
+        tabs = tabs.mapIndexed { index, title ->
+            com.astro.storm.ui.components.common.TabItem(
+                title = title,
+                accentColor = if (selectedTab == index) AppTheme.AccentPrimary else Color.Unspecified
             )
-        }
-    }
+        },
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(
+            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+            vertical = com.astro.storm.ui.theme.NeoVedicTokens.SpaceXS
+        )
+    )
 }
 
 @Composable
@@ -757,7 +737,7 @@ private fun OverviewSection(
     brideChart: VedicChart?,
     groomChart: VedicChart?
 ) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column(modifier = Modifier.padding(horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -765,7 +745,7 @@ private fun OverviewSection(
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
             shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
-            Column(modifier = Modifier.padding(20.dp)) {
+            Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Outlined.BarChart,
@@ -782,7 +762,7 @@ private fun OverviewSection(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
 
                 result.gunaAnalyses.forEachIndexed { index, guna ->
                     EnhancedGunaScoreBar(guna)
@@ -890,7 +870,7 @@ private fun ProfileComparisonCard(
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Outlined.Compare,
@@ -907,7 +887,7 @@ private fun ProfileComparisonCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(
@@ -954,7 +934,7 @@ private fun SpecialConsiderationsCard(considerations: List<String>) {
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Outlined.Lightbulb,
@@ -1006,7 +986,10 @@ private fun GunaSummaryHeader(result: MatchmakingResult) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(
+                horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+                vertical = com.astro.storm.ui.theme.NeoVedicTokens.SpaceXS
+            ),
         colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {

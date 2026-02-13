@@ -101,7 +101,7 @@ fun PanchangaTabContent(chart: VedicChart) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item(key = "summary") {

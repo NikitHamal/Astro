@@ -167,8 +167,11 @@ fun DashasTabContent(
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         state = listState,
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(
+            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+            vertical = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding
+        ),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         item(key = "current_period_header") {
             CurrentPeriodCard(timeline = timeline, asOf = asOf)
