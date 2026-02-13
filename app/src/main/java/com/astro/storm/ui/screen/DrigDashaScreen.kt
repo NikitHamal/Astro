@@ -151,7 +151,10 @@ private fun DrigDashaContent(
             },
             selectedIndex = selectedTab,
             onTabSelected = { selectedTab = it },
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier.padding(
+                horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+                vertical = com.astro.storm.ui.theme.NeoVedicTokens.SpaceXS
+            )
         )
 
         // Tab Content

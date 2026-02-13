@@ -346,7 +346,10 @@ private fun TabSelector(
         },
         selectedIndex = selectedIndex,
         onTabSelected = onTabSelected,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+        modifier = Modifier.padding(
+            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+            vertical = com.astro.storm.ui.theme.NeoVedicTokens.SpaceXXS
+        )
     )
 }
 

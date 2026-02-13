@@ -252,8 +252,8 @@ fun DashaSystemsScreen(
                 selectedIndex = selectedTabIndex,
                 onTabSelected = { selectedTabIndex = it },
                 modifier = Modifier.padding(
-                    horizontal = NeoVedicTokens.SpaceMD,
-                    vertical = NeoVedicTokens.SpaceSM
+                    horizontal = NeoVedicTokens.ScreenPadding,
+                    vertical = NeoVedicTokens.SpaceXS
                 )
             )
 
