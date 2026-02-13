@@ -550,7 +550,7 @@ private fun SignPeriodRow(
 
                 Spacer(modifier = Modifier.height(3.dp))
                 Text(
-                    text = "$startDateFormatted â€" $endDateFormatted",
+                    text = "$startDateFormatted - $endDateFormatted",
                     fontSize = (subFontSize.value - 1).sp,
                     color = AppTheme.TextMuted,
                     maxLines = 1,
@@ -1639,7 +1639,7 @@ private fun MahadashaCard(
                         }
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
-                            text = "${formatYearsLocalized(mahadasha.durationYears, language)} â€¢ ${mahadasha.startDate.formatLocalized(DateFormat.YEAR_ONLY)} â€" ${mahadasha.endDate.formatLocalized(DateFormat.YEAR_ONLY)}",
+                            text = "${formatYearsLocalized(mahadasha.durationYears, language)} â€¢ ${mahadasha.startDate.formatLocalized(DateFormat.YEAR_ONLY)} - ${mahadasha.endDate.formatLocalized(DateFormat.YEAR_ONLY)}",
                             fontSize = 11.sp,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
@@ -1857,7 +1857,7 @@ private fun AntardashaRow(
 
         Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = "${antardasha.startDate.formatLocalized(DateFormat.MONTH_YEAR)} â€" ${antardasha.endDate.formatLocalized(DateFormat.MONTH_YEAR)}",
+                text = "${antardasha.startDate.formatLocalized(DateFormat.MONTH_YEAR)} - ${antardasha.endDate.formatLocalized(DateFormat.MONTH_YEAR)}",
                 fontSize = 11.sp,
                 color = AppTheme.TextMuted,
                 fontFamily = SpaceGroteskFamily
