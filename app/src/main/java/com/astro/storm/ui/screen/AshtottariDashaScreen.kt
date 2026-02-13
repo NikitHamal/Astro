@@ -248,8 +248,8 @@ private fun ApplicabilityContent(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         // Applicability Status Card
         item {
@@ -291,7 +291,7 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -321,7 +321,7 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
 
             Text(
                 result.applicability.reason,
@@ -343,7 +343,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
         ) {
             Text(
                 stringResource(StringKeyDosha.ASHTOTTARI_IDEAL_CONDITION),
@@ -353,7 +353,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 lineHeight = 20.sp
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
 
             // Birth Nakshatra Info
             Row(
@@ -435,7 +435,7 @@ private fun CurrentPeriodCard(
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -598,7 +598,7 @@ private fun SystemInfoCard() {
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
         ) {
             Text(
                 stringResource(StringKeyDosha.ASHTOTTARI_SUBTITLE),
@@ -607,7 +607,7 @@ private fun SystemInfoCard() {
                 color = AppTheme.TextPrimary
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
 
             // Planet periods
             val periods = listOf(
@@ -898,8 +898,8 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         // Key Themes
         if (interpretation.keyThemes.isNotEmpty()) {
@@ -909,7 +909,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
+                    Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
                         Text(
                             stringResource(StringKeyDosha.KEY_THEMES),
                             fontWeight = FontWeight.SemiBold,
@@ -947,7 +947,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
-                Column(modifier = Modifier.padding(20.dp)) {
+                Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
                     Text(
                         stringResource(StringKeyDosha.SUDARSHANA_COMBINED_ANALYSIS),
                         fontWeight = FontWeight.SemiBold,
@@ -1007,7 +1007,7 @@ private fun EffectsCard(
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     icon,
@@ -1052,7 +1052,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
         ),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Filled.Lightbulb,

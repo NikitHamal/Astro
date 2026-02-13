@@ -359,8 +359,8 @@ private fun TripleViewContent(result: SudarshanaChakraResult) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         // Current Signs Overview
         item {
@@ -416,7 +416,7 @@ private fun CurrentSignsCard(result: SudarshanaChakraResult) {
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -436,7 +436,7 @@ private fun CurrentSignsCard(result: SudarshanaChakraResult) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -528,7 +528,7 @@ private fun ChakraCard(
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
         ) {
             // Header
             Row(
@@ -809,7 +809,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -829,7 +829,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
 
             // Convergence status
             Row(
@@ -890,7 +890,7 @@ private fun TimelineContent(chart: VedicChart, currentAge: Int) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // Show a range of years around current age
@@ -941,7 +941,7 @@ private fun TimelineYearCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 // Age indicator
@@ -970,7 +970,7 @@ private fun TimelineYearCard(
                     }
                 }
 
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
 
                 // Signs
                 Column(modifier = Modifier.weight(1f)) {
@@ -1033,8 +1033,8 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         // Overall Assessment
         item {
@@ -1043,7 +1043,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
-                Column(modifier = Modifier.padding(20.dp)) {
+                Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
                     Text(
                         stringResource(StringKeyDosha.SUDARSHANA_COMBINED_ANALYSIS),
                         fontWeight = FontWeight.SemiBold,

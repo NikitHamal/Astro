@@ -266,8 +266,8 @@ private fun CurrentCharaDashaTab(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         // Current Period Card
         item(key = "current_period") {
@@ -309,8 +309,8 @@ private fun CharaKarakasTab(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         // About Karakas Card
         item(key = "about_karakas") {
@@ -337,7 +337,7 @@ private fun CharaDashaTimelineTab(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Timeline Overview
@@ -396,7 +396,7 @@ private fun CurrentCharaDashaPeriodCard(
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             // Header
             Row(
                 verticalAlignment = Alignment.CenterVertically,

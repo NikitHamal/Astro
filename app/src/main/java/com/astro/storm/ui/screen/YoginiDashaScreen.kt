@@ -285,8 +285,11 @@ private fun CurrentYoginiTab(
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(
+            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+            vertical = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding
+        ),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         item(key = "current_period") {
             CurrentYoginiPeriodCard(result = result, asOfDate = asOfDate)
@@ -309,7 +312,7 @@ private fun CurrentYoginiTab(
         }
 
         item(key = "bottom_spacer") {
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceLG))
         }
     }
 }
@@ -325,8 +328,11 @@ private fun TimelineYoginiTab(
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(
+            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+            vertical = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding
+        ),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         item(key = "timeline_header") {
             TimelineHeaderCard(result = result, language = language)
@@ -346,7 +352,7 @@ private fun TimelineYoginiTab(
         }
 
         item(key = "bottom_spacer") {
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceLG))
         }
     }
 }
@@ -359,8 +365,11 @@ private fun DetailsYoginiTab(result: YoginiDashaCalculator.YoginiDashaResult) {
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(
+            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+            vertical = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding
+        ),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         items(
             items = YoginiDashaCalculator.Yogini.entries,
@@ -370,7 +379,7 @@ private fun DetailsYoginiTab(result: YoginiDashaCalculator.YoginiDashaResult) {
         }
 
         item(key = "bottom_spacer") {
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceLG))
         }
     }
 }
@@ -396,7 +405,7 @@ private fun CurrentYoginiPeriodCard(
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(bottom = 16.dp)

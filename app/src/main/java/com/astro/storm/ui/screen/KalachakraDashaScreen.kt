@@ -298,8 +298,11 @@ private fun CurrentPeriodTab(
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(
+            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+            vertical = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding
+        ),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         item(key = "current_period") {
             CurrentPeriodCard(result = result, language = language, asOfDate = asOfDate)
@@ -348,7 +351,7 @@ private fun CurrentPeriodCard(
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -1015,8 +1018,11 @@ private fun DehaJeevaTab(result: KalachakraDashaCalculator.KalachakraDashaResult
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(
+            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+            vertical = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding
+        ),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         item(key = "deha_jeeva_overview") {
             DehaJeevaOverviewCard(result = result, language = language)
@@ -1064,7 +1070,7 @@ private fun DehaJeevaOverviewCard(
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Text(
                 text = stringResource(StringKeyDosha.KALACHAKRA_DEHA_JEEVA_TITLE),
                 fontSize = 17.sp,
@@ -1415,8 +1421,11 @@ private fun TimelineTab(
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(
+            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
+            vertical = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding
+        ),
+        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         item(key = "timeline_header") {
             TimelineHeaderCard(result = result, language = language)
