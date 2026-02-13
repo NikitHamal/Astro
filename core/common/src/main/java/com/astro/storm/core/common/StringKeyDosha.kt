@@ -1820,8 +1820,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     MRITYU_BHAGA_GANDANTA_VISHNU("Vishnu Gandanta", "विष्णु गण्डान्त"),
     MRITYU_BHAGA_GANDANTA_SHIVA("Shiva Gandanta", "शिव गण्डान्त"),
     
-    MRITYU_BHAGA_JUNCTION_DESC("Junction between %1\$2 and %2\$2", "%1\$2 र %2\$2 बीचको सन्धि"),
-    MRITYU_BHAGA_DISTANCE_JUNCTION("Distance from Junction: %1\$2", "सन्धिबाट दूरी: %1\$2"),
+    MRITYU_BHAGA_JUNCTION_DESC("Junction between %1\$s and %2\$s", "%1\$s र %2\$s बीचको सन्धि"),
+    MRITYU_BHAGA_DISTANCE_JUNCTION("Distance from Junction: %1\$s", "सन्धिबाट दूरी: %1\$s"),
     
     // Pushkara
     MRITYU_BHAGA_PUSHKARA_NAVAMSA_TITLE("Pushkara Navamsa", "पुष्कर नवमांश"),
@@ -1864,7 +1864,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     LAL_KITAB_SCREEN_ABOUT_DESC("Lal Kitab offers simple, practical remedies using everyday items like turmeric, milk, honey, and specific actions. These remedies work on karmic debts and planetary afflictions without expensive rituals.", "लाल किताबले बेसार, दूध, मह जस्ता दैनिक वस्तुहरू प्रयोग गरी सरल, व्यावहारिक उपायहरू प्रदान गर्दछ। यी उपायहरूले महँगो विधि बिना कार्मिक ऋण र ग्रह पीडामा काम गर्दछन्।"),
 
     // Kalachakra Dasha Keys
-    KALACHAKRA_GROUP_SAVYA("Savya (Direct)", "सव्य (सीधो)"),
+    KALACHAKRA_GROUP_SAVYA("Savya (Direct)", "सव्य (सुल्टो)"),
     KALACHAKRA_GROUP_APSAVYA("Apsavya (Retrograde)", "अपसव्य (उल्टो)"),
     KALACHAKRA_DESC_SAVYA("Clockwise progression through signs - generally smoother life flow", "राशिहरूको घडीको दिशामा प्रगति - सामान्यतया सहज जीवन प्रवाह"),
     KALACHAKRA_DESC_APSAVYA("Anti-clockwise progression - more karmic intensity and transformation", "राशिहरूको घडीको विपरीत दिशामा प्रगति - अधिक कार्मिक तीव्रता र परिवर्तन"),
@@ -1887,11 +1887,11 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_REL_CHALLENGING("Challenging", "चुनौतीपूर्ण"),
     KALACHAKRA_REL_TRANSFORMATIVE("Transformative", "परिवर्तनकारी"),
 
-    KALACHAKRA_REL_DESC_HARMONIOUS("Body and soul are aligned - good health and spiritual progress", "शरिर र आत्मा एकरुप छन् - राम्रो स्वास्थ्य र आध्यात्मिक प्रगति"),
+    KALACHAKRA_REL_DESC_HARMONIOUS("Body and soul are aligned - good health and spiritual progress", "शरीर र आत्मा एकरुप छन् - राम्रो स्वास्थ्य र आध्यात्मिक प्रगति"),
     KALACHAKRA_REL_DESC_SUPPORTIVE("Jeeva supports Deha - spiritual practices benefit health", "जीवले देहलाई सहयोग गर्छ - आध्यात्मिक अभ्यासले स्वास्थ्यलाई फाइदा पुर्‍याउँछ"),
-    KALACHAKRA_REL_DESC_NEUTRAL("Independent functioning of body and spirit", "शरिर र आत्माको स्वतन्त्र कार्य"),
+    KALACHAKRA_REL_DESC_NEUTRAL("Independent functioning of body and spirit", "शरीर र आत्माको स्वतन्त्र कार्य"),
     KALACHAKRA_REL_DESC_CHALLENGING("Some friction between material and spiritual needs", "भौतिक र आध्यात्मिक आवश्यकताहरू बीच केही घर्षण"),
-    KALACHAKRA_REL_DESC_TRANSFORMATIVE("Deep karmic work needed to align body and soul", "शरिर र आत्मा मिलाउन गहिरो कार्मिक कार्य आवश्यक"),
+    KALACHAKRA_REL_DESC_TRANSFORMATIVE("Deep karmic work needed to align body and soul", "शरीर र आत्मा मिलाउन गहिरो कार्मिक कार्य आवश्यक"),
 
     KALACHAKRA_OVERVIEW_TEXT("Kalachakra Dasha is a sophisticated timing system particularly useful for health predictions and spiritual transformation timing. It operates on the principle that body (Deha) and soul (Jeeva) follow different but related cycles.", "कालचक्र दशा स्वास्थ्य भविष्यवाणी र आध्यात्मिक रूपान्तरण समयको लागि विशेष गरी उपयोगी एक परिष्कृत समय प्रणाली हो। यो शरीर (देह) र आत्मा (जीव) ले फरक तर सम्बन्धित चक्रहरू पछ्याउँछन् भन्ने सिद्धान्तमा काम गर्दछ।"),
     KALACHAKRA_GUIDANCE_1("Monitor transits over Deha Rashi for physical health events", "शारीरिक स्वास्थ्य घटनाहरूको लागि देह राशि माथिको गोचर निगरानी गर्नुहोस्"),
@@ -1957,8 +1957,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     PLANET_STRENGTH_UNKNOWN("Unknown", "अज्ञात"),
 
     // Kalachakra Predictions
-    KALACHAKRA_PRED_INTRO_DEHA("Based on Deha lord's %1\$2 status and %2\$2 Deha-Jeeva relationship: ", "देह स्वामीको %1\$2 अवस्था र %2\$2 देह-जीव सम्बन्धको आधारमा: "),
-    KALACHAKRA_PRED_INTRO_JEEVA("Jeeva lord's %1\$2 condition indicates ", "जीव स्वामीको %1\$2 अवस्थाले संकेत गर्दछ "),
+    KALACHAKRA_PRED_INTRO_DEHA("Based on Deha lord's %1\$s status and %2\$s Deha-Jeeva relationship: ", "देह स्वामीको %1\$s अवस्था र %2\$s देह-जीव सम्बन्धको आधारमा: "),
+    KALACHAKRA_PRED_INTRO_JEEVA("Jeeva lord's %1\$s condition indicates ", "जीव स्वामीको %1\$s अवस्थाले संकेत गर्दछ "),
 
     KALACHAKRA_HEALTH_PRED_HARMONIOUS("Physical health is well-supported by spiritual practices. Body responds well to holistic healing.", "शारीरिक स्वास्थ्यलाई आध्यात्मिक अभ्यासहरूले राम्रो समर्थन गर्दछ। शरीरले समग्र उपचारलाई राम्रो प्रतिक्रिया दिन्छ।"),
     KALACHAKRA_HEALTH_PRED_SUPPORTIVE("Good baseline health with spiritual practices enhancing physical wellbeing.", "राम्रो आधारभूत स्वास्थ्यको साथ आध्यात्मिक अभ्यासहरूले शारीरिक कल्याण बढाउँछ।"),
@@ -1973,8 +1973,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_SPIRITUAL_PRED_TRANSFORMATIVE("profound spiritual transformation through life's challenges.", "जीवनका चुनौतीहरू मार्फत गहिरो आध्यात्मिक रूपान्तरण।"),
 
     // Recommendations
-    KALACHAKRA_REC_DEHA_LORD("Strengthen Deha lord (%1\$2) through appropriate mantras and gemstones", "उपयुक्त मन्त्र र रत्नहरू मार्फत देह स्वामी (%1\$2) लाई बलियो बनाउनुहोस्"),
-    KALACHAKRA_REC_JEEVA_LORD("Honor Jeeva lord (%1\$2) through spiritual practices", "आध्यात्मिक अभ्यासहरू मार्फत जीव स्वामी (%1\$2) लाई सम्मान गर्नुहोस्"),
+    KALACHAKRA_REC_DEHA_LORD("Strengthen Deha lord (%1\$s) through appropriate mantras and gemstones", "उपयुक्त मन्त्र र रत्नहरू मार्फत देह स्वामी (%1\$s) लाई बलियो बनाउनुहोस्"),
+    KALACHAKRA_REC_JEEVA_LORD("Honor Jeeva lord (%1\$s) through spiritual practices", "आध्यात्मिक अभ्यासहरू मार्फत जीव स्वामी (%1\$s) लाई सम्मान गर्नुहोस्"),
     
     KALACHAKRA_REC_HARMONIOUS_1("Continue current spiritual and health practices - they are aligned", "वर्तमान आध्यात्मिक र स्वास्थ्य अभ्यासहरू जारी राख्नुहोस् - तिनीहरू पङ्क्तिबद्ध छन्"),
     KALACHAKRA_REC_HARMONIOUS_2("Use this favorable period for deepening meditation", "यो अनुकूल अवधिलाई ध्यान गहिरो बनाउन प्रयोग गर्नुहोस्"),
@@ -2136,9 +2136,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // ============================================
     // DASHA SYSTEMS
     // ============================================
-    DASHA_VIMSOTTARI("Vimsottari", "तपाईंको"), // Correct translation for Vimsottari? "Vimsottari" is usually kept or transliterated. "विंशोत्तरी".
-    // Wait, "तपाईंको" means "Yours". That's a mistake.
-    // I will use proper transliteration.
+    DASHA_VIMSOTTARI("Vimsottari", "विंशोत्तरी"),
     DASHA_VIMSOTTARI_NAME("Vimsottari", "विंशोत्तरी"),
     DASHA_VIMSOTTARI_DESC("Most widely used Nakshatra-based planetary period system", "सबैभन्दा बढी प्रयोग हुने नक्षत्र-आधारित ग्रह अवधि प्रणाली"),
     DASHA_VIMSOTTARI_DURATION("120 years", "१२० वर्ष"),
@@ -2155,12 +2153,12 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     DASHA_SUDARSHANA_DESC("Chakra Dasha from Lagna, Moon, and Sun simultaneously", "लग्न, चन्द्र र सूर्यबाट एक साथ चक्र दशा"),
     DASHA_SUDARSHANA_DURATION("Triple view", "त्रिपक्षीय दृश्य"),
     
-    DASHA_CHARA("Chara", "कारा"),
+    DASHA_CHARA("Chara", "चर"),
     DASHA_CHARA_DESC("Jaimini sign-based system with Karakamsha analysis", "जैमिनी राशि-आधारित प्रणाली, कारकांश विश्लेषण सहित"),
     DASHA_CHARA_DURATION("Variable", "परिवर्तनशील"),
     
     DASHA_TITLE_YOGINI("Yogini Dasha", "योगिनी दशा"),
-    DASHA_TITLE_CHARA("Chara Dasha", "कारा दशा"),
+    DASHA_TITLE_CHARA("Chara Dasha", "चर दशा"),
     DASHA_VIEW_SYSTEM("View %s", "%s हेर्नुहोस्"),
     DASHA_CYCLE_DURATION("Cycle Duration: %s", "चक्र अवधि: %s"),
     
@@ -2199,7 +2197,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KALACHAKRA_JEEVA_LORD("Jeeva Lord", "जीव स्वामी"),
     KALACHAKRA_STRENGTH("Strength", "बल"),
     KALACHAKRA_RELATIONSHIP("Deha-Jeeva Relationship", "देह-जीव सम्बन्ध"),
-    KALACHAKRA_SAVYA("Savya (Direct)", "सव्य (सीधो)"),
+    KALACHAKRA_SAVYA("Savya (Direct)", "सव्य (सुल्टो)"),
     KALACHAKRA_APSAVYA("Apsavya (Retrograde)", "अपसव्य (उल्टो)"),
     KALACHAKRA_RELATIONSHIP_HARMONIOUS("Harmonious", "सामञ्जस्यपूर्ण"),
     KALACHAKRA_RELATIONSHIP_SUPPORTIVE("Supportive", "सहयोगी"),
@@ -2930,8 +2928,8 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     GRAHA_GENERAL_REMEDIES("General Remedies", "सामान्य उपायहरू"),
     GRAHA_ABOUT_TITLE("About Graha Yuddha", "ग्रह युद्धको बारेमा"),
     GRAHA_ABOUT_DESC("Graha Yuddha (Planetary War) occurs when two planets (excluding Sun and Moon) are within 1 degree of each other.\n\nThe planet with the lower longitude is usually considered the winner, while the one with higher longitude is the loser.\n\nImpacts:\n• The losing planet's significations may suffer\n• If the losing planet rules important houses, those areas may be affected\n• The war is most intense during close conjunctions", "ग्रह युद्ध तब हुन्छ जब दुई ग्रहहरू (सूर्य र चन्द्रमा बाहेक) एक अर्काको १ डिग्री भित्र हुन्छन्।\n\nकम देशान्तर भएको ग्रहलाई सामान्यतया विजेता मानिन्छ, जबकि उच्च देशान्तर भएको ग्रहलाई पराजित मानिन्छ।\n\nप्रभावहरू:\n• पराजित ग्रहका कारकत्वहरूमा असर पर्न सक्छ\n• यदि पराजित ग्रहले महत्त्वपूर्ण भावहरूको स्वामी हो भने, ती क्षेत्रहरू प्रभावित हुन सक्छन्\n• नजिकको युतिमा युद्ध सबैभन्दा तीव्र हुन्छ"),
-    GRAHA_DEFEATS_MSG("%1\$2 defeats %2\$2", "%1\$2 ले %2\$2 लाई जित्छ"),
-    GRAHA_IN_HOUSE_MSG("in %1\$2 (House %2\$2)", "%1\$2 (भाव %2\$2) मा"),
+    GRAHA_DEFEATS_MSG("%1\$s defeats %2\$s", "%1\$s ले %2\$s लाई जित्छ"),
+    GRAHA_IN_HOUSE_MSG("in %1\$s (House %2\$s)", "%1\$s (भाव %2\$s) मा"),
 
     // Kemadruma Yoga
     KEMA_SCREEN_TITLE("Kemadruma Yoga", "केमद्रुम योग"),
@@ -2957,7 +2955,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KEMA_NO_REMEDIES_DESC("Since Kemadruma Yoga is not formed or is fully cancelled, no remedies are required.", "केमद्रुम योग नबनेको वा पूर्ण रूपमा भंग भएकोले, कुनै उपाय आवश्यक छैन।"),
     KEMA_ABOUT_TITLE("About Kemadruma Yoga", "केमद्रुम योगको बारेमा"),
     KEMA_ABOUT_DESC("Kemadruma Yoga forms when the Moon has no planets (except Sun, Rahu, Ketu) in the 2nd and 12th houses from it, and no planets are in Kendra from the Moon or Lagna.\n\nIt is considered an inauspicious yoga indicating loneliness, mental unrest, and financial instability. However, it is often cancelled (Bhanga) by the presence of planets in Kendra houses or if the Moon interacts with other planets.", "केमद्रुम योग तब बन्छ जब चन्द्रमाको दोस्रो र बाह्रौं भावमा कुनै ग्रहहरू (सूर्य, राहु, केतु बाहेक) हुँदैनन्, र चन्द्रमा वा लग्नबाट केन्द्रमा कुनै ग्रहहरू हुँदैनन्।\n\nयसलाई अशुभ योग मानिन्छ जसले एक्लोपन, मानसिक अशान्ति र आर्थिक अस्थिरतालाई संकेत गर्दछ। यद्यपि, केन्द्र भावहरूमा ग्रहहरूको उपस्थिति वा चन्द्रमाले अन्य ग्रहहरूसँग अन्तरक्रिया गरेमा यो अक्सर भंग हुन्छ।"),
-    KEMA_CANCELLATIONS_FOUND("%1\$2 Cancellation(s) Found", "%1\$2 भंग(हरू) फेला पर्यो"),
+    KEMA_CANCELLATIONS_FOUND("%1\$s Cancellation(s) Found", "%1\$s भंग(हरू) फेला पर्यो"),
     KEMA_FORMATION_MAIN("Moon lacks planetary support in adjacent houses.", "चन्द्रमालाई नजिकका भावहरूमा ग्रहहरूको समर्थन छैन।"),
     KEMA_FORMATION_2ND_EMPTY("2nd house from Moon is empty.", "चन्द्रमाबाट दोस्रो भाव खाली छ।"),
     KEMA_FORMATION_12TH_EMPTY("12th house from Moon is empty.", "चन्द्रमाबाट बाह्रौं भाव खाली छ।"),
@@ -2965,7 +2963,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     KEMA_REASON_2ND("No planets in 2nd house from Moon", "चन्द्रमाबाट दोस्रो भावमा कुनै ग्रह छैन"),
     KEMA_REASON_12TH("No planets in 12th house from Moon", "चन्द्रमाबाट बाह्रौं भावमा कुनै ग्रह छैन"),
     KEMA_REASON_CONJUNCT("Moon is not conjunct with any planet", "चन्द्रमा कुनै ग्रहसँग युतिमा छैन"),
-    KEMA_FORMATION_STRENGTH("Formation strength: %1\$2%%", "योग बल: %1\$2%%"),
+    KEMA_FORMATION_STRENGTH("Formation strength: %1\$s%%", "योग बल: %1\$s%%"),
     KEMA_NAKSHATRA("Nakshatra", "नक्षत्र"),
     KEMA_PAKSHA("Paksha", "पक्ष"),
     KEMA_BRIGHTNESS("Brightness", "चमक"),
@@ -3002,9 +3000,9 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     PANCHANGA_SUN_MOON("Sun & Moon", "सूर्य र चन्द्रमा"),
     PANCHANGA_RISE("Rise", "उदय"),
     PANCHANGA_SET("Set", "अस्त"),
-    PANCHANGA_LUNAR_DAY_FMT("Lunar day (%1\$2)", "चन्द्र दिन (%1\$2)"),
+    PANCHANGA_LUNAR_DAY_FMT("Lunar day (%1\$s)", "चन्द्र दिन (%1\$s)"),
     PANCHANGA_VARA_DESC("Weekday, ruled by specific planet", "बार, विशिष्ट ग्रहद्वारा शासित"),
-    PANCHANGA_NAKSHATRA_DESC_FMT("Lunar mansion (Pada %1\$2)", "नक्षत्र (पद %1\$2)"),
+    PANCHANGA_NAKSHATRA_DESC_FMT("Lunar mansion (Pada %1\$s)", "नक्षत्र (पद %1\$s)"),
     PANCHANGA_YOGA_DESC("Auspicious combination", "शुभ संयोग"),
     PANCHANGA_KARANA_DESC("Half of a tithi", "तिथिको आधा भाग"),
     PANCHANGA_AVOID_ACTIVITIES("Avoid important activities", "महत्त्वपूर्ण कार्यहरू नगर्नुहोस्"),

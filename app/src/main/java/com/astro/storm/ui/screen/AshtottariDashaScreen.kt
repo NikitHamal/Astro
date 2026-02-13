@@ -278,7 +278,7 @@ private fun ApplicabilityContent(
     chart: VedicChart,
     asOf: LocalDateTime
 ) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -311,7 +311,7 @@ private fun ApplicabilityContent(
 
 @Composable
 private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
     val isApplicable = result.applicability.isApplicable
 
     Card(
@@ -369,7 +369,7 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
 
 @Composable
 private fun ConditionDetailsCard(result: AshtottariDashaResult) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -455,7 +455,7 @@ private fun CurrentPeriodCard(
     result: AshtottariDashaResult,
     asOf: LocalDateTime
 ) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
     val mahadasha = result.currentMahadasha ?: return
     val antardasha = result.currentAntardasha
     val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
@@ -600,7 +600,7 @@ private fun CurrentPeriodCard(
 
 @Composable
 private fun RelationshipChip(relationship: PlanetRelationship) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
     val (color, text) = when (relationship) {
         PlanetRelationship.FRIEND -> AppTheme.SuccessColor to stringResource(StringKeyDosha.RELATIONSHIP_FRIEND)
         PlanetRelationship.ENEMY -> AppTheme.ErrorColor to stringResource(StringKeyDosha.RELATIONSHIP_ENEMY)
@@ -624,7 +624,7 @@ private fun RelationshipChip(relationship: PlanetRelationship) {
 
 @Composable
 private fun SystemInfoCard() {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -707,7 +707,7 @@ private fun TimelineContent(
     onExpandChange: (Int) -> Unit,
     asOf: LocalDateTime
 ) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -734,7 +734,7 @@ private fun MahadashaTimelineCard(
     isCurrent: Boolean,
     asOf: LocalDateTime
 ) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
     val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
     val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", locale)
     val antardashas = remember(mahadasha, asOf) {
@@ -883,7 +883,7 @@ private fun MahadashaTimelineCard(
 
 @Composable
 private fun AntardashaRow(antardasha: AshtottariAntardasha) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
     val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yy")
 
     Row(
@@ -927,7 +927,7 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
 
 @Composable
 private fun InterpretationContent(result: AshtottariDashaResult) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
     val interpretation = result.interpretation
 
     LazyColumn(
@@ -1077,7 +1077,7 @@ private fun EffectsCard(
 
 @Composable
 private fun RecommendationsCard(recommendations: List<String>) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -1127,7 +1127,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
 
 @Composable
 private fun AshtottariInfoDialog(onDismiss: () -> Unit) {
-    val language = currentLanguage()
+    val language = LocalLanguage.current
 
     AlertDialog(
         onDismissRequest = onDismiss,
