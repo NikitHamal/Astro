@@ -328,3 +328,411 @@ fun NeoVedicEmptyState(
         }
     }
 }
+
+/**
+ * Ephemeris-style date section header with TODAY/TOMORROW badge support.
+ * Matches the reference design for transit screens.
+ */
+@Composable
+fun NeoVedicEphemerisDateHeader(
+    dateLabel: String,
+    badgeText: String? = null,
+    badgeColor: Color = AppTheme.AccentGold,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(AppTheme.CardBackground)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceSM),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = dateLabel,
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.SemiBold,
+            color = AppTheme.TextPrimary
+        )
+        if (!badgeText.isNullOrBlank()) {
+            NeoVedicStatusPill(
+                text = badgeText,
+                textColor = badgeColor,
+                containerColor = badgeColor.copy(alpha = 0.12f)
+            )
+        }
+    }
+}
+
+/**
+ * Enhanced timeline item for Ephemeris/Transit display with aspect glyphs
+ * and planet symbols. Supports retrograde/direct indicators and dignities.
+ */
+@Composable
+fun NeoVedicEphemerisTransitItem(
+    timeLabel: String,
+    planetGlyph: String,
+    aspectGlyph: String? = null,
+    targetPlanetGlyph: String? = null,
+    title: String,
+    positionText: String,
+    statusText: String? = null,
+    statusColor: Color = AppTheme.AccentGold,
+    isHighlighted: Boolean = false,
+    showConnector: Boolean = true,
+    onClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .then(
+                if (onClick != null) Modifier.background(
+                    if (isHighlighted) statusColor.copy(alpha = 0.06f) else Color.Transparent
+                ) else Modifier
+            )
+            .padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS),
+        verticalAlignment = Alignment.Top
+    ) {
+        // Timeline connector
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(top = NeoVedicTokens.SpaceXS)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(8.dp)
+                    .background(
+                        if (isHighlighted) statusColor else AppTheme.BorderColor,
+                        CircleShape
+                    )
+            )
+            if (showConnector) {
+                Spacer(
+                    modifier = Modifier
+                        .height(48.dp)
+                        .width(1.dp)
+                        .background(AppTheme.BorderColor.copy(alpha = 0.4f))
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceSM))
+
+        // Content
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXXS)
+        ) {
+            // Time and aspect glyphs row
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXS),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = timeLabel,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = AppTheme.TextMuted
+                )
+                // Planet and aspect glyphs
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = planetGlyph,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = AppTheme.TextPrimary
+                    )
+                    if (!aspectGlyph.isNullOrBlank()) {
+                        Text(
+                            text = aspectGlyph,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = statusColor
+                        )
+                    }
+                    if (!targetPlanetGlyph.isNullOrBlank()) {
+                        Text(
+                            text = targetPlanetGlyph,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = AppTheme.TextPrimary
+                        )
+                    }
+                }
+            }
+
+            // Title
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
+                color = AppTheme.TextPrimary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            // Position and status row
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXS),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = positionText,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = AppTheme.TextMuted
+                )
+                if (!statusText.isNullOrBlank()) {
+                    NeoVedicStatusPill(
+                        text = statusText,
+                        textColor = statusColor,
+                        containerColor = statusColor.copy(alpha = 0.12f)
+                    )
+                }
+            }
+        }
+
+        // Highlighted indicator bar
+        if (isHighlighted) {
+            Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
+            Box(
+                modifier = Modifier
+                    .width(3.dp)
+                    .height(56.dp)
+                    .background(statusColor, RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
+            )
+        }
+    }
+}
+
+/**
+ * Compact strength indicator with progress bar for Bala screens.
+ */
+@Composable
+fun NeoVedicStrengthIndicator(
+    label: String,
+    value: Float,
+    maxValue: Float = 100f,
+    valueText: String? = null,
+    accentColor: Color = AppTheme.AccentPrimary,
+    modifier: Modifier = Modifier
+) {
+    val progress = (value / maxValue).coerceIn(0f, 1f)
+    val displayColor = when {
+        progress >= 0.7f -> AppTheme.SuccessColor
+        progress >= 0.5f -> AppTheme.AccentGold
+        progress >= 0.3f -> AppTheme.WarningColor
+        else -> AppTheme.ErrorColor
+    }
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXXS)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextMuted
+            )
+            Text(
+                text = valueText ?: String.format("%.0f%%", progress * 100),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = displayColor
+            )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(6.dp)
+                .background(AppTheme.DividerColor, RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(progress)
+                    .height(6.dp)
+                    .background(displayColor, RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
+            )
+        }
+    }
+}
+
+/**
+ * Planet card for strength/analysis screens with glyph, name, and key metrics.
+ */
+@Composable
+fun NeoVedicPlanetCard(
+    planetGlyph: String,
+    planetName: String,
+    primaryValue: String,
+    primaryLabel: String,
+    secondaryValue: String? = null,
+    secondaryLabel: String? = null,
+    accentColor: Color = AppTheme.AccentPrimary,
+    onClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+    content: @Composable (() -> Unit)? = null
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Planet glyph and name
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceSM)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .background(accentColor.copy(alpha = 0.12f), CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = planetGlyph,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = accentColor
+                        )
+                    }
+                    Column {
+                        Text(
+                            text = planetName,
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = AppTheme.TextPrimary
+                        )
+                        if (!secondaryLabel.isNullOrBlank() && !secondaryValue.isNullOrBlank()) {
+                            Text(
+                                text = "$secondaryLabel: $secondaryValue",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = AppTheme.TextMuted
+                            )
+                        }
+                    }
+                }
+
+                // Primary metric
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        text = primaryValue,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = accentColor
+                    )
+                    Text(
+                        text = primaryLabel,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AppTheme.TextMuted
+                    )
+                }
+            }
+
+            // Additional content if provided
+            content?.invoke()
+        }
+    }
+}
+
+/**
+ * Summary stat card for overview sections.
+ */
+@Composable
+fun NeoVedicSummaryStatCard(
+    value: String,
+    label: String,
+    icon: ImageVector? = null,
+    accentColor: Color = AppTheme.AccentPrimary,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        color = accentColor.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.ThinBorderWidth, accentColor.copy(alpha = 0.2f))
+    ) {
+        Column(
+            modifier = Modifier.padding(NeoVedicTokens.SpaceMD),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXXS)
+        ) {
+            if (icon != null) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = accentColor,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
+            }
+            Text(
+                text = value,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = accentColor
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                color = AppTheme.TextMuted
+            )
+        }
+    }
+}
+
+/**
+ * Section divider with optional title.
+ */
+@Composable
+fun NeoVedicSectionDivider(
+    title: String? = null,
+    modifier: Modifier = Modifier
+) {
+    if (title != null) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = NeoVedicTokens.SpaceSM),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXS)
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(1.dp)
+                    .background(AppTheme.DividerColor)
+            )
+            Text(
+                text = title.uppercase(),
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextMuted
+            )
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(1.dp)
+                    .background(AppTheme.DividerColor)
+            )
+        }
+    } else {
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(AppTheme.DividerColor)
+        )
+    }
+}

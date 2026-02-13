@@ -56,7 +56,8 @@ import com.astro.storm.ephemeris.TransitAnalyzer
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import com.astro.storm.ui.components.common.NeoVedicStatusPill
-import com.astro.storm.ui.components.common.NeoVedicTimelineItem
+import com.astro.storm.ui.components.common.NeoVedicEphemerisDateHeader
+import com.astro.storm.ui.components.common.NeoVedicEphemerisTransitItem
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.NeoVedicTokens
@@ -173,6 +174,13 @@ fun TransitsScreenRedesigned(
     }
 }
 
+/**
+ * Timeline mode showing ephemeris events in chronological order.
+ * Enhanced to match reference design with:
+ * - Planet glyphs with aspect arrows
+ * - Status indicators (RETROGRADE, EXALTED, DEBILITATED)
+ * - Position text formatting
+ */
 @Composable
 private fun EphemerisTimelineMode(
     dayBuckets: List<Pair<LocalDate, List<EphemerisEventUi>>>,
@@ -184,16 +192,18 @@ private fun EphemerisTimelineMode(
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = NeoVedicTokens.SpaceSM),
-        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXXS)
+        verticalArrangement = Arrangement.spacedBy(0.dp)
     ) {
+        // Date header with TODAY/TOMORROW badge
         item {
-            EphemerisDayHeader(
-                title = date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy")).uppercase(),
-                trailingLabel = when (selectedDayOffset) {
+            NeoVedicEphemerisDateHeader(
+                dateLabel = date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy")).uppercase(),
+                badgeText = when (selectedDayOffset) {
                     0 -> StringResources.get(StringKey.PERIOD_TODAY, language).uppercase()
                     1 -> StringResources.get(StringKey.PERIOD_TOMORROW, language).uppercase()
-                    else -> "+2D"
-                }
+                    else -> "+${selectedDayOffset}D"
+                },
+                badgeColor = AppTheme.AccentGold
             )
         }
 
@@ -211,18 +221,32 @@ private fun EphemerisTimelineMode(
         } else {
             items(events.size) { index ->
                 val event = events[index]
-                val severityColor = when (event.severity) {
-                    EventSeverity.FAVORABLE -> AppTheme.SuccessColor
-                    EventSeverity.NEUTRAL -> AppTheme.AccentGold
-                    EventSeverity.CHALLENGING -> AppTheme.WarningColor
-                    EventSeverity.ALERT -> AppTheme.ErrorColor
+
+                // Determine severity color based on event type and status
+                val severityColor = when {
+                    event.statusType == TransitStatusType.RETROGRADE -> AppTheme.ErrorColor
+                    event.statusType == TransitStatusType.DEBILITATED -> AppTheme.WarningColor
+                    event.statusType == TransitStatusType.EXALTED -> AppTheme.SuccessColor
+                    event.severity == EventSeverity.FAVORABLE -> AppTheme.SuccessColor
+                    event.severity == EventSeverity.NEUTRAL -> AppTheme.AccentGold
+                    event.severity == EventSeverity.CHALLENGING -> AppTheme.WarningColor
+                    event.severity == EventSeverity.ALERT -> AppTheme.ErrorColor
+                    else -> AppTheme.AccentGold
                 }
-                NeoVedicTimelineItem(
+
+                // Build planet glyph with optional aspect glyph
+                val primaryGlyph = event.primaryGlyphs.firstOrNull()?.text ?: ""
+                val targetGlyph = if (event.primaryGlyphs.size > 1) event.primaryGlyphs[1].text else null
+
+                NeoVedicEphemerisTransitItem(
                     timeLabel = event.timeLabel,
-                    glyphText = event.primaryGlyphs.joinToString("  ") { it.text },
+                    planetGlyph = primaryGlyph,
+                    aspectGlyph = event.aspectGlyph,
+                    targetPlanetGlyph = targetGlyph,
                     title = event.title,
-                    subtitle = event.subtitle,
-                    severityColor = severityColor,
+                    positionText = event.positionText ?: event.subtitle,
+                    statusText = event.statusText,
+                    statusColor = severityColor,
                     isHighlighted = event.isHighlighted,
                     showConnector = index < events.lastIndex
                 )
@@ -301,40 +325,11 @@ private fun EphemerisTopBar(
     }
 }
 
-@Composable
-private fun EphemerisDayHeader(
-    title: String,
-    trailingLabel: String
-) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceSM),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.displaySmall.copy(
-                    fontSize = 16.sp,
-                    letterSpacing = 0.6.sp
-                ),
-                color = AppTheme.TextPrimary
-            )
-            Text(
-                text = trailingLabel,
-                style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 1.sp),
-                color = AppTheme.AccentGold
-            )
-        }
-    }
-}
 
+/**
+ * Positions mode showing current transit positions with planet glyphs.
+ * Enhanced with dignities and motion indicators.
+ */
 @Composable
 private fun TransitPositionsMode(
     positions: List<PlanetPosition>,
@@ -346,33 +341,68 @@ private fun TransitPositionsMode(
         verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceSM)
     ) {
         items(positions.filter { it.planet in Planet.MAIN_PLANETS }) { position ->
+            val planetGlyph = PlanetGlyphs.fromPlanetName(position.planet.getLocalizedName(language))
+            val accentColor = if (position.isRetrograde) AppTheme.ErrorColor else AppTheme.AccentPrimary
+
             Surface(
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                 color = AppTheme.CardBackground,
                 border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
-                Column(modifier = Modifier.padding(NeoVedicTokens.SpaceSM)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(NeoVedicTokens.SpaceMD),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Planet glyph circle
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .background(
+                                accentColor.copy(alpha = 0.12f),
+                                androidx.compose.foundation.shape.CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
                     ) {
+                        Text(
+                            text = planetGlyph,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = accentColor
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.size(NeoVedicTokens.SpaceSM))
+
+                    Column(modifier = Modifier.weight(1f)) {
+                        // Planet name
                         Text(
                             text = position.planet.getLocalizedName(language),
                             style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
-                        NeoVedicStatusPill(
-                            text = if (position.isRetrograde) "R" else "D",
-                            textColor = if (position.isRetrograde) AppTheme.ErrorColor else AppTheme.SuccessColor,
-                            containerColor = if (position.isRetrograde) AppTheme.ErrorColor.copy(alpha = 0.12f) else AppTheme.SuccessColor.copy(alpha = 0.12f)
+                        // Sign and degree
+                        Text(
+                            text = "${position.sign.getLocalizedName(language)} ${formatDegree(position.longitude)}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = AppTheme.TextMuted
                         )
+                        // Nakshatra if available
+                        position.nakshatra?.let { nakshatra ->
+                            Text(
+                                text = "${nakshatra.getLocalizedName(language)} (Pada ${position.nakshatraPada})",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = AppTheme.TextMuted.copy(alpha = 0.7f)
+                            )
+                        }
                     }
-                    Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
-                    Text(
-                        text = "${position.sign.getLocalizedName(language)} ${formatDegree(position.longitude)}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = AppTheme.TextMuted
+
+                    // Motion status pill
+                    NeoVedicStatusPill(
+                        text = if (position.isRetrograde) "RETROGRADE" else "DIRECT",
+                        textColor = if (position.isRetrograde) AppTheme.ErrorColor else AppTheme.SuccessColor,
+                        containerColor = if (position.isRetrograde) AppTheme.ErrorColor.copy(alpha = 0.12f) else AppTheme.SuccessColor.copy(alpha = 0.12f)
                     )
                 }
             }
@@ -380,6 +410,10 @@ private fun TransitPositionsMode(
     }
 }
 
+/**
+ * Aspects mode showing transit aspects with glyphs and strength indicators.
+ * Enhanced with aspect type glyphs (☌, ☍, △, □, ⚹).
+ */
 @Composable
 private fun TransitAspectsMode(analysis: TransitAnalyzer.TransitAnalysis) {
     val language = analysis.language
@@ -404,37 +438,104 @@ private fun TransitAspectsMode(analysis: TransitAnalyzer.TransitAnalysis) {
         } else {
             items(topAspects) { aspect ->
                 val strengthPercent = (aspect.strength * 100).roundToInt()
+                val aspectName = StringResources.get(aspect.aspectKey, language)
+
+                // Determine aspect type and color based on aspect nature
+                val isChallenging = aspectName.contains("square", ignoreCase = true) ||
+                        aspectName.contains("opposition", ignoreCase = true)
+                val isHarmonious = aspectName.contains("trine", ignoreCase = true) ||
+                        aspectName.contains("sextile", ignoreCase = true)
+
                 val aspectColor = when {
+                    isChallenging -> AppTheme.WarningColor
+                    isHarmonious -> AppTheme.SuccessColor
                     strengthPercent >= 75 -> AppTheme.SuccessColor
                     strengthPercent >= 50 -> AppTheme.AccentGold
-                    else -> AppTheme.WarningColor
+                    else -> AppTheme.TextMuted
                 }
 
+                // Get aspect glyph
+                val aspectGlyph = when {
+                    aspectName.contains("conjunction", ignoreCase = true) -> AspectGlyphs.CONJUNCTION
+                    aspectName.contains("opposition", ignoreCase = true) -> AspectGlyphs.OPPOSITION
+                    aspectName.contains("trine", ignoreCase = true) -> AspectGlyphs.TRINE
+                    aspectName.contains("square", ignoreCase = true) -> AspectGlyphs.SQUARE
+                    aspectName.contains("sextile", ignoreCase = true) -> AspectGlyphs.SEXTILE
+                    else -> "→"
+                }
+
+                val transitPlanetGlyph = PlanetGlyphs.fromPlanetName(aspect.transitingPlanet.getLocalizedName(language))
+                val natalPlanetGlyph = PlanetGlyphs.fromPlanetName(aspect.natalPlanet.getLocalizedName(language))
+
                 Surface(
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                     color = AppTheme.CardBackground,
                     border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
-                    Column(modifier = Modifier.padding(NeoVedicTokens.SpaceSM)) {
+                    Column(modifier = Modifier.padding(NeoVedicTokens.SpaceMD)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = "${aspect.transitingPlanet.getLocalizedName(language)} -> ${aspect.natalPlanet.getLocalizedName(language)}",
-                                style = MaterialTheme.typography.titleSmall,
-                                color = AppTheme.TextPrimary,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
+                            // Planet glyphs with aspect glyph
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXS)
+                            ) {
+                                Text(
+                                    text = transitPlanetGlyph,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    color = AppTheme.TextPrimary
+                                )
+                                Text(
+                                    text = aspectGlyph,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = aspectColor
+                                )
+                                Text(
+                                    text = natalPlanetGlyph,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    color = AppTheme.TextPrimary
+                                )
+                            }
+
+                            // Strength indicator
                             NeoVedicStatusPill(
                                 text = "$strengthPercent%",
                                 textColor = aspectColor,
                                 containerColor = aspectColor.copy(alpha = 0.12f)
                             )
                         }
+
+                        Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXS))
+
+                        // Aspect name and planets
+                        Text(
+                            text = "${aspect.transitingPlanet.getLocalizedName(language)} $aspectName ${aspect.natalPlanet.getLocalizedName(language)}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium,
+                            color = AppTheme.TextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
                         Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
+
+                        // Orb and interpretation
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Orb: ${aspect.orb.roundToInt()}°",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = AppTheme.TextMuted
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
+
                         Text(
                             text = aspect.interpretation,
                             style = MaterialTheme.typography.bodySmall,
