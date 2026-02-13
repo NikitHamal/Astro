@@ -244,13 +244,14 @@ private fun KalachakraDashaTopBar(
     currentPeriodInfo: CurrentPeriodInfo,
     onBack: () -> Unit
 ) {
+    val language = LocalLanguage.current
     val subtitle = when {
         currentPeriodInfo.isLoading -> stringResource(StringKey.DASHA_CALCULATING)
         currentPeriodInfo.hasError -> "${stringResource(StringKey.DASHA_ERROR)} - $chartName"
         currentPeriodInfo.mahadasha != null -> buildString {
             append(currentPeriodInfo.mahadasha)
-            currentPeriodInfo.antardasha?.let { append(" -> $it") }
-            append(" - $chartName")
+            currentPeriodInfo.antardasha?.let { append(StringResources.get(StringKeyUIExtra.ARROW, language) + it) }
+            append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language) + chartName)
         }
         else -> chartName
     }

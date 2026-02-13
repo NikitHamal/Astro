@@ -80,6 +80,8 @@ import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringKeyAdvanced
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -128,12 +130,12 @@ fun ShoolaDashaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            NeoVedicPageHeader(
-                title = stringResource(StringKeyAdvanced.SHOOLA_TITLE),
-                subtitle = stringResource(StringKeyAdvanced.SHOOLA_SUBTITLE),
+            ShoolaDashaTopBar(
+                chartName = chart?.birthData?.name ?: stringResource(StringKeyMatch.MISC_UNKNOWN),
+                result = (uiState as? ShoolaDashaUiState.Success)?.result,
+                isCalculating = uiState is ShoolaDashaUiState.Loading,
                 onBack = onBack,
-                actionIcon = Icons.Outlined.Info,
-                onAction = { showInfoDialog = true }
+                onInfoClick = { showInfoDialog = true }
             )
         }
     ) { paddingValues ->
@@ -173,6 +175,35 @@ fun ShoolaDashaScreen(
     if (showInfoDialog) {
         ShoolaInfoDialog(onDismiss = { showInfoDialog = false })
     }
+}
+
+@Composable
+private fun ShoolaDashaTopBar(
+    chartName: String,
+    result: ShoolaDashaResult?,
+    isCalculating: Boolean,
+    onBack: () -> Unit,
+    onInfoClick: () -> Unit
+) {
+    val language = LocalLanguage.current
+    val subtitle = when {
+        isCalculating -> stringResource(StringKey.DASHA_CALCULATING)
+        result != null -> buildString {
+            result.currentMahadasha?.let { md ->
+                append(md.sign.getLocalizedName(language))
+                append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language))
+            }
+            append(chartName)
+        }
+        else -> chartName
+    }
+    NeoVedicPageHeader(
+        title = stringResource(StringKeyAdvanced.SHOOLA_TITLE),
+        subtitle = subtitle,
+        onBack = onBack,
+        actionIcon = Icons.Outlined.Info,
+        onAction = onInfoClick
+    )
 }
 
 @Composable

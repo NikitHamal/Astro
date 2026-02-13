@@ -142,12 +142,11 @@ fun DashaSandhiScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            NeoVedicPageHeader(
-                title = stringResource(StringKeyDosha.SANDHI_SCREEN_TITLE),
-                subtitle = stringResource(StringKeyDosha.SANDHI_SUBTITLE),
+            DashaSandhiTopBar(
+                chartName = chart?.birthData?.name ?: stringResource(StringKeyMatch.MISC_UNKNOWN),
+                isCalculating = isCalculating,
                 onBack = onBack,
-                actionIcon = Icons.Outlined.Info,
-                onAction = { showInfoDialog = true }
+                onInfoClick = { showInfoDialog = true }
             )
         }
     ) { paddingValues ->
@@ -225,6 +224,27 @@ fun DashaSandhiScreen(
             onDismiss = { showInfoDialog = false }
         )
     }
+}
+
+@Composable
+private fun DashaSandhiTopBar(
+    chartName: String,
+    isCalculating: Boolean,
+    onBack: () -> Unit,
+    onInfoClick: () -> Unit
+) {
+    val subtitle = if (isCalculating) {
+        stringResource(StringKey.DASHA_CALCULATING)
+    } else {
+        chartName
+    }
+    NeoVedicPageHeader(
+        title = stringResource(StringKeyDosha.SANDHI_SCREEN_TITLE),
+        subtitle = subtitle,
+        onBack = onBack,
+        actionIcon = Icons.Outlined.Info,
+        onAction = onInfoClick
+    )
 }
 
 @Composable

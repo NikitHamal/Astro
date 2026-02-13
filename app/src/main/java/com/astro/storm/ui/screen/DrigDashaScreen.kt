@@ -99,9 +99,10 @@ fun DrigDashaScreen(
 
     Scaffold(
         topBar = {
-            NeoVedicPageHeader(
-                title = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_DASHA_TITLE),
-                subtitle = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_LONGEVITY_SYSTEM),
+            DrigDashaTopBar(
+                chartName = chart?.birthData?.name ?: stringResource(StringKeyMatch.MISC_UNKNOWN),
+                analysis = analysis,
+                isLoading = isLoading,
                 onBack = onBack
             )
         },
@@ -118,6 +119,32 @@ fun DrigDashaScreen(
             )
         }
     }
+}
+
+@Composable
+private fun DrigDashaTopBar(
+    chartName: String,
+    analysis: DrigDashaAnalysis?,
+    isLoading: Boolean,
+    onBack: () -> Unit
+) {
+    val language = LocalLanguage.current
+    val subtitle = when {
+        isLoading -> stringResource(StringKey.DASHA_CALCULATING)
+        analysis != null -> buildString {
+            analysis.currentDasha?.let { md ->
+                append(md.sign.getLocalizedName(language))
+                append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language))
+            }
+            append(chartName)
+        }
+        else -> chartName
+    }
+    NeoVedicPageHeader(
+        title = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_DASHA_TITLE),
+        subtitle = subtitle,
+        onBack = onBack
+    )
 }
 
 @Composable

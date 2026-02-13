@@ -32,7 +32,8 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.data.localization.currentLanguage
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
@@ -56,6 +57,7 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 import com.astro.storm.core.common.Language
+import com.astro.storm.data.localization.LocalLanguage
 
 // Helper extension for planet abbreviation
 private val Planet.abbreviation: String
@@ -101,7 +103,7 @@ fun AshtottariDashaScreen(
         return
     }
 
-    val language = currentLanguage()
+    val language = LocalLanguage.current
     val asOf = remember(chart) { LocalDateTime.now(resolveZoneId(chart.birthData.timezone)) }
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -137,12 +139,12 @@ fun AshtottariDashaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            NeoVedicPageHeader(
-                title = stringResource(StringKeyDosha.ASHTOTTARI_TITLE),
-                subtitle = chart.birthData.name,
+            AshtottariDashaTopBar(
+                chartName = chart.birthData.name,
+                result = dashaResult,
+                isCalculating = isCalculating,
                 onBack = onBack,
-                actionIcon = Icons.Outlined.Info,
-                onAction = { showInfoDialog = true }
+                onInfoClick = { showInfoDialog = true }
             )
         }
     ) { paddingValues ->
@@ -177,6 +179,38 @@ fun AshtottariDashaScreen(
             ErrorContent(paddingValues, stringResource(StringKeyDosha.SCREEN_ERROR_CALCULATION))
         }
     }
+}
+
+@Composable
+private fun AshtottariDashaTopBar(
+    chartName: String,
+    result: AshtottariDashaResult?,
+    isCalculating: Boolean,
+    onBack: () -> Unit,
+    onInfoClick: () -> Unit
+) {
+    val language = LocalLanguage.current
+    val subtitle = when {
+        isCalculating -> stringResource(StringKey.DASHA_CALCULATING)
+        result != null -> buildString {
+            result.currentMahadasha?.let { md ->
+                append(md.planet.getLocalizedName(language))
+                result.currentAntardasha?.let { ad ->
+                    append(StringResources.get(StringKeyUIExtra.ARROW, language) + ad.antardashaLord.getLocalizedName(language))
+                }
+                append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language))
+            }
+            append(chartName)
+        }
+        else -> chartName
+    }
+    NeoVedicPageHeader(
+        title = stringResource(StringKeyDosha.ASHTOTTARI_TITLE),
+        subtitle = subtitle,
+        onBack = onBack,
+        actionIcon = Icons.Outlined.Info,
+        onAction = onInfoClick
+    )
 }
 
 @Composable

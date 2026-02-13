@@ -93,6 +93,8 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringResources
+import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
@@ -151,8 +153,10 @@ fun CharaDashaScreen(
         topBar = {
             CharaDashaTopBar(
                 chartName = chart?.birthData?.name ?: stringResource(StringKeyMatch.MISC_UNKNOWN),
-                currentSign = charaDashaResult?.currentMahadasha?.sign,
-                language = language,
+                currentMahadasha = charaDashaResult?.currentMahadasha,
+                currentAntardasha = charaDashaResult?.currentAntardasha,
+                isCalculating = isCalculating,
+                hasError = calculationError != null,
                 onBack = onBack
             )
         }
@@ -236,17 +240,26 @@ fun CharaDashaScreen(
 @Composable
 private fun CharaDashaTopBar(
     chartName: String,
-    currentSign: ZodiacSign?,
-    language: Language,
+    currentMahadasha: CharaDashaCalculator.CharaMahadasha?,
+    currentAntardasha: CharaDashaCalculator.CharaAntardasha?,
+    isCalculating: Boolean,
+    hasError: Boolean,
     onBack: () -> Unit
 ) {
+    val language = LocalLanguage.current
+    val subtitle = when {
+        isCalculating -> stringResource(StringKey.DASHA_CALCULATING)
+        hasError -> "${stringResource(StringKey.DASHA_ERROR)} - $chartName"
+        currentMahadasha != null -> buildString {
+            append(currentMahadasha.sign.getLocalizedName(language))
+            currentAntardasha?.let { append(StringResources.get(StringKeyUIExtra.ARROW, language) + it.sign.getLocalizedName(language)) }
+            append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language) + chartName)
+        }
+        else -> chartName
+    }
     NeoVedicPageHeader(
         title = stringResource(StringKeyDosha.CHARA_DASHA_TITLE),
-        subtitle = if (currentSign != null) {
-            "${currentSign.getLocalizedName(language)} - $chartName"
-        } else {
-            chartName
-        },
+        subtitle = subtitle,
         onBack = onBack
     )
 }
