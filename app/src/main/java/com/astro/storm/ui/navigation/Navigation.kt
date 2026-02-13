@@ -25,7 +25,7 @@ import com.astro.storm.ui.screen.panchanga.PanchangaScreenRedesigned
 import com.astro.storm.ui.screen.PlanetsScreen
 import com.astro.storm.ui.screen.NadiAmshaScreen
 import com.astro.storm.ui.screen.PrashnaScreen
-import com.astro.storm.ui.screen.DeepPredictionsScreen
+import com.astro.storm.ui.screen.PredictionsScreen
 import com.astro.storm.ui.screen.RemediesScreen
 import com.astro.storm.ui.screen.ShadbalaScreen
 import com.astro.storm.ui.screen.ShodashvargaScreen
@@ -62,7 +62,7 @@ import com.astro.storm.ui.screen.DrigBalaScreen
 import com.astro.storm.ui.screen.SthanaBalaScreen
 import com.astro.storm.ui.screen.KalaBalaScreen
 import com.astro.storm.ui.screen.SahamScreen
-import com.astro.storm.ui.screen.DeepNativeAnalysisScreen
+import com.astro.storm.ui.screen.NativeAnalysisScreen
 import com.astro.storm.ui.screen.JaiminiKarakaScreen
 import com.astro.storm.ui.screen.DrigDashaScreen
 import com.astro.storm.ui.screen.SaptamsaScreen
@@ -887,9 +887,8 @@ fun AstroStormNavigation(
                 }
             }
 
-            val chart = currentChart ?: return@composable
-            DeepPredictionsScreen(
-                chart = chart,
+            PredictionsScreen(
+                chart = currentChart,
                 onBack = { navController.popBackStack() }
             )
         }
@@ -1412,8 +1411,7 @@ fun AstroStormNavigation(
         ) { backStackEntry ->
             val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
             LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
-            val chart = currentChart ?: return@composable
-            DeepNativeAnalysisScreen(chart = chart, onBack = { navController.popBackStack() })
+            NativeAnalysisScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
         // Jaimini Karaka (Chara Karaka Analysis) screen
