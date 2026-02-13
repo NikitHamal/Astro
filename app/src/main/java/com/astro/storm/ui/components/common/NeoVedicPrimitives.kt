@@ -206,6 +206,7 @@ fun NeoVedicTimelineItem(
     subtitle: String,
     severityColor: Color,
     isHighlighted: Boolean,
+    showConnector: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -220,16 +221,18 @@ fun NeoVedicTimelineItem(
         ) {
             Box(
                 modifier = Modifier
-                    .size(NeoVedicTokens.SpaceSM)
+                    .size(10.dp)
                     .background(AppTheme.ScreenBackground, CircleShape)
                     .border(NeoVedicTokens.BorderWidth, severityColor, CircleShape)
             )
-            Spacer(
-                modifier = Modifier
-                    .height(72.dp)
-                    .width(NeoVedicTokens.ThinBorderWidth)
-                    .background(AppTheme.BorderColor.copy(alpha = 0.55f))
-            )
+            if (showConnector) {
+                Spacer(
+                    modifier = Modifier
+                        .height(56.dp)
+                        .width(NeoVedicTokens.ThinBorderWidth)
+                        .background(AppTheme.BorderColor.copy(alpha = 0.45f))
+                )
+            }
         }
 
         Spacer(modifier = Modifier.size(NeoVedicTokens.SpaceSM))
@@ -237,42 +240,55 @@ fun NeoVedicTimelineItem(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = NeoVedicTokens.SpaceSM),
-            color = if (isHighlighted) severityColor.copy(alpha = 0.09f) else Color.Transparent,
-            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-            border = if (isHighlighted) {
-                androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, severityColor.copy(alpha = 0.45f))
-            } else null
+                .padding(bottom = NeoVedicTokens.SpaceXS),
+            color = if (isHighlighted) severityColor.copy(alpha = 0.08f) else Color.Transparent,
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
         ) {
-            Column(
-                modifier = Modifier.padding(NeoVedicTokens.SpaceSM),
-                verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXXS)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(NeoVedicTokens.SpaceSM),
+                verticalAlignment = Alignment.Top
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceSM),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = timeLabel,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = if (isHighlighted) severityColor else AppTheme.TextMuted
+                if (isHighlighted) {
+                    Box(
+                        modifier = Modifier
+                            .width(2.dp)
+                            .height(56.dp)
+                            .background(severityColor, RoundedCornerShape(NeoVedicTokens.ChipCornerRadius))
                     )
+                    Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
+                }
+                Column(verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXXS)) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceSM),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = timeLabel,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = if (isHighlighted) severityColor else AppTheme.TextMuted
+                        )
+                        Text(
+                            text = glyphText,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = AppTheme.TextPrimary
+                        )
+                    }
                     Text(
-                        text = glyphText,
-                        style = MaterialTheme.typography.titleSmall,
+                        text = title,
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.Medium,
+                            lineHeight = MaterialTheme.typography.headlineSmall.fontSize * 1.35f
+                        ),
                         color = AppTheme.TextPrimary
                     )
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = AppTheme.TextMuted
+                    )
                 }
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = AppTheme.TextPrimary
-                )
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = AppTheme.TextMuted
-                )
             }
         }
     }

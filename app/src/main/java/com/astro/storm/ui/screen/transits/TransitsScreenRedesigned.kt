@@ -1,7 +1,6 @@
 package com.astro.storm.ui.screen.transits
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,13 +12,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Sync
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -35,9 +38,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
@@ -51,10 +55,8 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.TransitAnalyzer
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.NeoVedicEmptyState
-import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.NeoVedicStatusPill
 import com.astro.storm.ui.components.common.NeoVedicTimelineItem
-import com.astro.storm.ui.components.common.NeoVedicTimelineSectionHeader
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.NeoVedicTokens
@@ -67,13 +69,10 @@ import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
-private enum class EphemerisMode(
-    val icon: ImageVector,
-    val titleKey: StringKey
-) {
-    TIMELINE(Icons.Outlined.Schedule, StringKey.PERIOD_TODAY),
-    POSITIONS(Icons.Outlined.Public, StringKey.TAB_CURRENT_POSITIONS),
-    ASPECTS(Icons.Outlined.Sync, StringKey.TAB_ASPECTS)
+private enum class EphemerisMode(val titleKey: StringKey) {
+    TIMELINE(StringKey.PERIOD_TODAY),
+    POSITIONS(StringKey.TAB_CURRENT_POSITIONS),
+    ASPECTS(StringKey.TAB_ASPECTS)
 }
 
 @Composable
@@ -110,19 +109,16 @@ fun TransitsScreenRedesigned(
     }
 
     val modeTabs = listOf(
-        TabItem(StringResources.get(EphemerisMode.TIMELINE.titleKey, language), icon = EphemerisMode.TIMELINE.icon, accentColor = colors.AccentGold),
-        TabItem(StringResources.get(EphemerisMode.POSITIONS.titleKey, language), icon = EphemerisMode.POSITIONS.icon, accentColor = colors.AccentTeal),
-        TabItem(StringResources.get(EphemerisMode.ASPECTS.titleKey, language), icon = EphemerisMode.ASPECTS.icon, accentColor = colors.AccentPrimary)
+        TabItem(StringResources.get(EphemerisMode.TIMELINE.titleKey, language), accentColor = colors.AccentGold),
+        TabItem(StringResources.get(EphemerisMode.POSITIONS.titleKey, language), accentColor = colors.AccentTeal),
+        TabItem(StringResources.get(EphemerisMode.ASPECTS.titleKey, language), accentColor = colors.AccentPrimary)
     )
 
     Scaffold(
         containerColor = colors.ScreenBackground,
         topBar = {
-            NeoVedicPageHeader(
-                title = "EPHEMERIS",
-                subtitle = "LIVE CELESTIAL MOVEMENTS",
+            EphemerisTopBar(
                 onBack = onBack,
-                actionIcon = Icons.Outlined.CalendarMonth,
                 onAction = { selectedDayOffset = (selectedDayOffset + 1) % 3 }
             )
         }
@@ -159,14 +155,13 @@ fun TransitsScreenRedesigned(
                 tabs = modeTabs,
                 selectedIndex = selectedMode,
                 onTabSelected = { selectedMode = it },
-                modifier = Modifier.padding(horizontal = NeoVedicTokens.SpaceMD, vertical = NeoVedicTokens.SpaceSM)
+                modifier = Modifier.padding(horizontal = NeoVedicTokens.SpaceSM, vertical = NeoVedicTokens.SpaceXS)
             )
 
             when (EphemerisMode.entries[selectedMode]) {
                 EphemerisMode.TIMELINE -> EphemerisTimelineMode(
                     dayBuckets = dayBuckets,
                     selectedDayOffset = selectedDayOffset,
-                    onSelectDay = { selectedDayOffset = it },
                     language = language
                 )
 
@@ -182,18 +177,17 @@ fun TransitsScreenRedesigned(
 private fun EphemerisTimelineMode(
     dayBuckets: List<Pair<LocalDate, List<EphemerisEventUi>>>,
     selectedDayOffset: Int,
-    onSelectDay: (Int) -> Unit,
     language: Language
 ) {
     val (date, events) = dayBuckets.getOrElse(selectedDayOffset) { dayBuckets.first() }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = NeoVedicTokens.SpaceLG),
-        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXS)
+        contentPadding = PaddingValues(bottom = NeoVedicTokens.SpaceSM),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXXS)
     ) {
         item {
-            NeoVedicTimelineSectionHeader(
+            EphemerisDayHeader(
                 title = date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy")).uppercase(),
                 trailingLabel = when (selectedDayOffset) {
                     0 -> StringResources.get(StringKey.PERIOD_TODAY, language).uppercase()
@@ -215,7 +209,8 @@ private fun EphemerisTimelineMode(
                 )
             }
         } else {
-            items(events) { event ->
+            items(events.size) { index ->
+                val event = events[index]
                 val severityColor = when (event.severity) {
                     EventSeverity.FAVORABLE -> AppTheme.SuccessColor
                     EventSeverity.NEUTRAL -> AppTheme.AccentGold
@@ -228,33 +223,114 @@ private fun EphemerisTimelineMode(
                     title = event.title,
                     subtitle = event.subtitle,
                     severityColor = severityColor,
-                    isHighlighted = event.isHighlighted
+                    isHighlighted = event.isHighlighted,
+                    showConnector = index < events.lastIndex
                 )
             }
         }
+    }
+}
 
-        item {
-            Row(
+@Composable
+private fun EphemerisTopBar(
+    onBack: () -> Unit,
+    onAction: () -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.ScreenBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = null,
+                    tint = AppTheme.TextPrimary
+                )
+            }
+
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = NeoVedicTokens.SpaceSM),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                    .weight(1f)
+                    .padding(horizontal = NeoVedicTokens.SpaceSM)
             ) {
-                repeat(3) { index ->
-                    val isSelected = index == selectedDayOffset
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = NeoVedicTokens.SpaceXXS)
-                            .size(if (isSelected) 28.dp else 8.dp)
-                            .background(
-                                color = if (isSelected) AppTheme.AccentGold else AppTheme.BorderColor,
-                                shape = androidx.compose.foundation.shape.RoundedCornerShape(NeoVedicTokens.ChipCornerRadius)
-                            )
-                            .clickable { onSelectDay(index) }
+                Text(
+                    text = "EPHEMERIS",
+                    style = MaterialTheme.typography.displaySmall.copy(
+                        fontSize = 26.sp,
+                        letterSpacing = 0.4.sp
+                    ),
+                    color = AppTheme.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = "LIVE CELESTIAL MOVEMENTS",
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = FontWeight.Medium,
+                        letterSpacing = 2.sp
+                    ),
+                    color = AppTheme.AccentGold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+
+            Surface(
+                modifier = Modifier.size(44.dp),
+                shape = androidx.compose.foundation.shape.CircleShape,
+                color = AppTheme.CardBackground,
+                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+            ) {
+                IconButton(onClick = onAction) {
+                    Icon(
+                        imageVector = Icons.Outlined.CalendarMonth,
+                        contentDescription = null,
+                        tint = AppTheme.TextPrimary
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun EphemerisDayHeader(
+    title: String,
+    trailingLabel: String
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceSM),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.displaySmall.copy(
+                    fontSize = 16.sp,
+                    letterSpacing = 0.6.sp
+                ),
+                color = AppTheme.TextPrimary
+            )
+            Text(
+                text = trailingLabel,
+                style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 1.sp),
+                color = AppTheme.AccentGold
+            )
         }
     }
 }
