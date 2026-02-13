@@ -73,10 +73,16 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.SthanaBalaCalculator
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.material3.Surface
 
 /**
  * Sthana Bala Screen
@@ -171,53 +177,44 @@ fun SthanaBalaScreen(
     }
 }
 
+/**
+ * Neo-Vedic styled tab selector using ModernPillTabRow for consistency
+ */
 @Composable
 private fun SthanaBalaTabSelector(
     tabs: List<String>,
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            FilterChip(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        text = tabs[index],
-                        fontSize = 13.sp,
-                        fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = AppTheme.BorderColor,
-                    selectedBorderColor = AppTheme.AccentPrimary.copy(alpha = 0.3f),
-                    enabled = true,
-                    selected = selectedTab == index
-                )
-            )
-        }
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                else -> AppTheme.AccentPrimary
+            }
+        )
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
+    )
 }
 
+/**
+ * Overview section with Neo-Vedic styling
+ */
 @Composable
 private fun SthanaBalaOverviewSection(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SectionSpacing)
     ) {
         // Overall Score Card
         SthanaBalaScoreCard(analysis)
@@ -230,6 +227,9 @@ private fun SthanaBalaOverviewSection(analysis: SthanaBalaCalculator.SthanaBalaA
     }
 }
 
+/**
+ * Score card with Neo-Vedic border styling
+ */
 @Composable
 private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
     val language = LocalLanguage.current
@@ -240,10 +240,11 @@ private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysi
         else -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -284,18 +285,22 @@ private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysi
     }
 }
 
+/**
+ * Strongest/weakest planet row with Neo-Vedic styling
+ */
 @Composable
 private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
     val language = LocalLanguage.current
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         // Strongest Planet
-        Card(
+        Surface(
             modifier = Modifier.weight(1f),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.SuccessColor.copy(alpha = 0.06f),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
         ) {
             Column(
                 modifier = Modifier
@@ -333,10 +338,11 @@ private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaB
         }
 
         // Weakest Planet
-        Card(
+        Surface(
             modifier = Modifier.weight(1f),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.ErrorColor.copy(alpha = 0.1f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.ErrorColor.copy(alpha = 0.06f),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.ErrorColor.copy(alpha = 0.2f))
         ) {
             Column(
                 modifier = Modifier
@@ -375,14 +381,18 @@ private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaB
     }
 }
 
+/**
+ * Key insights card with Neo-Vedic border styling
+ */
 @Composable
 private fun SthanaBalaInsightsCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
     if (analysis.keyInsights.isEmpty()) return
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -420,14 +430,18 @@ private fun SthanaBalaInsightsCard(analysis: SthanaBalaCalculator.SthanaBalaAnal
     }
 }
 
+/**
+ * Recommendations card with Neo-Vedic accent styling
+ */
 @Composable
 private fun SthanaBalaRecommendationsCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
     if (analysis.recommendations.isEmpty()) return
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentPrimary.copy(alpha = 0.06f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -454,13 +468,16 @@ private fun SthanaBalaRecommendationsCard(analysis: SthanaBalaCalculator.SthanaB
     }
 }
 
+/**
+ * Components section with Neo-Vedic styling
+ */
 @Composable
 private fun SthanaBalaComponentsSection(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         Text(
             text = stringResource(StringKeyShadbala.STHANA_TAB_COMPONENTS),
@@ -476,6 +493,9 @@ private fun SthanaBalaComponentsSection(analysis: SthanaBalaCalculator.SthanaBal
     }
 }
 
+/**
+ * Component card with Neo-Vedic border styling
+ */
 @Composable
 private fun ComponentCard(component: SthanaBalaCalculator.ComponentAnalysis) {
     val scoreColor = when {
@@ -485,10 +505,11 @@ private fun ComponentCard(component: SthanaBalaCalculator.ComponentAnalysis) {
         else -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -538,13 +559,16 @@ private fun ComponentCard(component: SthanaBalaCalculator.ComponentAnalysis) {
     }
 }
 
+/**
+ * Planets section with Neo-Vedic styling
+ */
 @Composable
 private fun SthanaBalaaPlanetsSection(analysis: SthanaBalaCalculator.SthanaBalaAnalysis) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         val sortedPlanets = analysis.planetarySthanaBala.values.sortedByDescending { it.totalVirupas }
 
@@ -554,6 +578,9 @@ private fun SthanaBalaaPlanetsSection(analysis: SthanaBalaCalculator.SthanaBalaA
     }
 }
 
+/**
+ * Planet card with expandable details and Neo-Vedic styling
+ */
 @Composable
 private fun PlanetSthanaBalaCard(planetBala: SthanaBalaCalculator.PlanetSthanaBala) {
     var expanded by remember { mutableStateOf(false) }
@@ -565,12 +592,13 @@ private fun PlanetSthanaBalaCard(planetBala: SthanaBalaCalculator.PlanetSthanaBa
         else -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -710,31 +738,17 @@ private fun SthanaBalaLoadingContent(modifier: Modifier = Modifier) {
     }
 }
 
+/**
+ * Empty content using NeoVedicEmptyState component
+ */
 @Composable
 private fun SthanaBalaEmptyContent(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Place,
-                contentDescription = null,
-                tint = AppTheme.TextMuted,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(StringKeyShadbala.STHANA_UNABLE),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
-            )
-        }
-    }
+    NeoVedicEmptyState(
+        title = stringResource(StringKeyShadbala.STHANA_TITLE),
+        subtitle = stringResource(StringKeyShadbala.STHANA_UNABLE),
+        icon = Icons.Outlined.Place,
+        modifier = modifier
+    )
 }
 
 @Composable

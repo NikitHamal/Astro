@@ -46,10 +46,16 @@ import com.astro.storm.ephemeris.ShadbalaAnalysis
 import com.astro.storm.ephemeris.ShadbalaCalculator
 import com.astro.storm.ephemeris.StrengthRating
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
+import com.astro.storm.ui.components.common.NeoVedicStrengthIndicator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Shadbala Analysis Screen
@@ -213,40 +219,38 @@ fun ShadbalaScreen(
 // UI Components
 // ============================================
 
+/**
+ * Neo-Vedic styled tab selector using ModernPillTabRow for consistency
+ */
 @Composable
 private fun ShadbalaTabSelector(
     tabs: List<String>,
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            val isSelected = selectedTab == index
-            FilterChip(
-                selected = isSelected,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tabs[index],
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.ChipBackground,
-                    labelColor = AppTheme.TextSecondary
-                )
-            )
-        }
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                else -> AppTheme.AccentPrimary
+            }
+        )
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
+    )
 }
 
+/**
+ * Overview tab showing overall Shadbala strength with circular gauge
+ * and summary cards for strongest/weakest planets.
+ */
 @Composable
 private fun ShadbalaOverviewTab(
     analysis: ShadbalaAnalysis,
@@ -258,12 +262,13 @@ private fun ShadbalaOverviewTab(
         label = "overall_progress"
     )
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        // Overall Strength Card
-        Card(
+    Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
+        // Overall Strength Card - Neo-Vedic style with border
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
@@ -356,15 +361,16 @@ private fun ShadbalaOverviewTab(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(NeoVedicTokens.SectionSpacing))
 
-        // Quick Summary of all planets
-        Card(
+        // Quick Summary of all planets - Neo-Vedic style
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
                 Text(
                     stringResource(StringKeyDosha.SHADBALA_CHART_ANALYSIS),
                     style = MaterialTheme.typography.titleSmall,
@@ -372,12 +378,12 @@ private fun ShadbalaOverviewTab(
                     color = AppTheme.TextPrimary
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceMD))
 
                 analysis.getPlanetsByStrength().forEach { shadbala ->
                     PlanetStrengthRow(shadbala = shadbala, language = language)
                     if (shadbala != analysis.getPlanetsByStrength().last()) {
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXS))
                     }
                 }
             }
@@ -385,6 +391,9 @@ private fun ShadbalaOverviewTab(
     }
 }
 
+/**
+ * Neo-Vedic styled strength count chip showing planet count with indicator
+ */
 @Composable
 private fun StrengthCountChip(
     label: String,
@@ -392,11 +401,12 @@ private fun StrengthCountChip(
     color: Color
 ) {
     Surface(
-        color = color.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = color.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, color.copy(alpha = 0.2f))
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+            modifier = Modifier.padding(horizontal = NeoVedicTokens.SpaceMD, vertical = NeoVedicTokens.SpaceSM),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -413,16 +423,19 @@ private fun StrengthCountChip(
                     color = Color.White
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
             Text(
                 if (count == 1) stringResource(StringKey.REPORT_PLANET).lowercase() else stringResource(StringKey.FEATURE_PLANETS).lowercase(),
                 style = MaterialTheme.typography.bodySmall,
-                color = color.copy(alpha = 0.8f)
+                color = color
             )
         }
     }
 }
 
+/**
+ * Neo-Vedic styled card for displaying strongest/weakest planet
+ */
 @Composable
 private fun StrongestWeakestCard(
     title: String,
@@ -434,15 +447,14 @@ private fun StrongestWeakestCard(
 ) {
     val accentColor = if (isStrong) AppTheme.SuccessColor else AppTheme.WarningColor
 
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = accentColor.copy(alpha = 0.08f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = accentColor.copy(alpha = 0.06f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, accentColor.copy(alpha = 0.2f))
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(NeoVedicTokens.ScreenPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -451,13 +463,13 @@ private fun StrongestWeakestCard(
                 color = AppTheme.TextMuted
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceSM))
 
             Box(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(CircleShape)
-                    .background(accentColor.copy(alpha = 0.15f)),
+                    .background(accentColor.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -467,7 +479,7 @@ private fun StrongestWeakestCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXS))
 
             Text(
                 planet.getLocalizedName(language),
