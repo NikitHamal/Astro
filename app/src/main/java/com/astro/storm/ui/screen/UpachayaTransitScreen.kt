@@ -14,7 +14,9 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
+import com.astro.storm.ui.components.common.TabItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -108,19 +110,12 @@ fun UpachayaTransitScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.UPACHAYA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.UPACHAYA_SCREEN_SUBTITLE),
                 onBack = onBack,
-                actions = {
-                    IconButton(onClick = { showInfoDialog = true }) {
-                        Icon(
-                            Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKeyDosha.UPACHAYA_SCREEN_ABOUT),
-                            tint = AppTheme.TextSecondary
-                        )
-                    }
-                }
+                actionIcon = Icons.Outlined.Info,
+                onAction = { showInfoDialog = true }
             )
         },
         containerColor = AppTheme.ScreenBackground
@@ -259,32 +254,17 @@ private fun TabSelector(
     selectedIndex: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            FilterChip(
-                selected = selectedIndex == index,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tabs[index],
-                        fontSize = 13.sp,
-                        fontWeight = if (selectedIndex == index) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                )
+    ModernPillTabRow(
+        tabs = tabs.mapIndexed { index, title ->
+            TabItem(
+                title = title,
+                accentColor = if (selectedIndex == index) AppTheme.AccentPrimary else Color.Unspecified
             )
-        }
-    }
+        },
+        selectedIndex = selectedIndex,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }
 
 @Composable

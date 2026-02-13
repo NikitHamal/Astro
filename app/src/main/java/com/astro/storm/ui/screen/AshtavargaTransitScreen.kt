@@ -57,12 +57,10 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
+import com.astro.storm.ui.components.common.TabItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -133,17 +131,12 @@ fun AshtavargaTransitScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_TITLE),
+                subtitle = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_DESC),
                 onBack = onNavigateBack,
-                actions = {
-                    IconButton(onClick = { viewModel.refresh(chart, language) }) {
-                        Icon(
-                            imageVector = Icons.Default.Refresh,
-                            contentDescription = stringResource(StringKey.BTN_RETRY)
-                        )
-                    }
-                }
+                actionIcon = Icons.Default.Refresh,
+                onAction = { viewModel.refresh(chart, language) }
             )
         },
         containerColor = colors.ScreenBackground
@@ -231,41 +224,18 @@ private fun TransitContent(
 
     Column(modifier = modifier) {
         // Tab Row
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            containerColor = colors.CardBackground,
-            contentColor = colors.TextPrimary,
-            indicator = { tabPositions ->
-                TabRowDefaults.SecondaryIndicator(
-                    modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-                    color = colors.AccentPrimary
+        ModernPillTabRow(
+            tabs = tabs.mapIndexed { index, tab ->
+                TabItem(
+                    title = tab.title,
+                    icon = tab.icon,
+                    accentColor = if (selectedTabIndex == index) colors.AccentPrimary else Color.Unspecified
                 )
-            }
-        ) {
-            tabs.forEachIndexed { index, tab ->
-                Tab(
-                    selected = selectedTabIndex == index,
-                    onClick = { selectedTabIndex = index },
-                    text = {
-                        Text(
-                            text = tab.title,
-                            fontSize = 11.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = tab.icon,
-                            contentDescription = tab.title,
-                            modifier = Modifier.size(18.dp)
-                        )
-                    },
-                    selectedContentColor = colors.AccentPrimary,
-                    unselectedContentColor = colors.TextMuted
-                )
-            }
-        }
+            },
+            selectedIndex = selectedTabIndex,
+            onTabSelected = { selectedTabIndex = it },
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
 
         // Tab Content
         when (selectedTabIndex) {

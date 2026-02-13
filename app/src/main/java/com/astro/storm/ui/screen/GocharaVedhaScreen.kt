@@ -54,7 +54,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
+import com.astro.storm.ui.components.common.TabItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -139,19 +141,12 @@ fun GocharaVedhaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.GOCHARA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.GOCHARA_SUBTITLE),
                 onBack = onBack,
-                actions = {
-                    IconButton(onClick = { showInfoDialog = true }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(StringKey.MISC_INFO),
-                            tint = AppTheme.TextSecondary
-                        )
-                    }
-                }
+                actionIcon = Icons.Outlined.Info,
+                onAction = { showInfoDialog = true }
             )
         }
     ) { paddingValues ->
@@ -205,38 +200,17 @@ private fun VedhaTabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            FilterChip(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        text = tabs[index],
-                        fontSize = 13.sp,
-                        fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = AppTheme.BorderColor,
-                    selectedBorderColor = AppTheme.AccentPrimary.copy(alpha = 0.3f),
-                    enabled = true,
-                    selected = selectedTab == index
-                )
+    ModernPillTabRow(
+        tabs = tabs.mapIndexed { index, title ->
+            TabItem(
+                title = title,
+                accentColor = if (selectedTab == index) AppTheme.AccentPrimary else Color.Unspecified
             )
-        }
-    }
+        },
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+    )
 }
 
 @Composable

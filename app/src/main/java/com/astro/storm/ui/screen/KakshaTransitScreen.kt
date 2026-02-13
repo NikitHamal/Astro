@@ -14,8 +14,9 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
+import com.astro.storm.ui.components.common.TabItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,19 +76,12 @@ fun KakshaTransitScreen(
     Scaffold(
         containerColor = colors.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyAdvanced.KAKSHYA_TITLE),
                 subtitle = stringResource(StringKeyAdvanced.KAKSHYA_SUBTITLE),
                 onBack = onBack,
-                actions = {
-                    IconButton(onClick = { chart?.let { viewModel.calculateKakshaTransits(it, language, true) } }) {
-                        Icon(
-                            imageVector = Icons.Default.Refresh,
-                            contentDescription = "Refresh",
-                            tint = colors.TextPrimary
-                        )
-                    }
-                }
+                actionIcon = Icons.Default.Refresh,
+                onAction = { chart?.let { viewModel.calculateKakshaTransits(it, language, true) } }
             )
         }
     ) { paddingValues ->
@@ -131,37 +125,17 @@ private fun KakshaTabSelector(
     language: Language
 ) {
     val colors = AppTheme.current
-    
-    ScrollableTabRow(
-        selectedTabIndex = selectedTab.ordinal,
-        containerColor = colors.ScreenBackground,
-        contentColor = colors.AccentPrimary,
-        edgePadding = 16.dp,
-        divider = {},
-        indicator = { tabPositions ->
-            TabRowDefaults.SecondaryIndicator(
-                Modifier.tabIndicatorOffset(tabPositions[selectedTab.ordinal]),
-                color = colors.AccentPrimary,
-                height = 3.dp
+    ModernPillTabRow(
+        tabs = KakshaTab.entries.map { tab ->
+            TabItem(
+                title = getTabTitle(tab, language),
+                accentColor = if (selectedTab == tab) colors.AccentPrimary else Color.Unspecified
             )
-        }
-    ) {
-        KakshaTab.entries.forEach { tab ->
-            Tab(
-                selected = selectedTab == tab,
-                onClick = { onTabSelected(tab) },
-                text = {
-                    Text(
-                        text = getTabTitle(tab, language),
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = if (selectedTab == tab) FontWeight.Bold else FontWeight.Medium
-                    )
-                },
-                selectedContentColor = colors.AccentPrimary,
-                unselectedContentColor = colors.TextMuted
-            )
-        }
-    }
+        },
+        selectedIndex = selectedTab.ordinal,
+        onTabSelected = { index -> onTabSelected(KakshaTab.entries[index]) },
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }
 
 private fun getTabTitle(tab: KakshaTab, language: Language): String {
