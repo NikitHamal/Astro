@@ -17,7 +17,7 @@ import com.astro.storm.ui.screen.BirthChartScreen
 import com.astro.storm.ui.screen.CharaDashaScreen
 import com.astro.storm.ui.screen.ChartAnalysisScreen
 import com.astro.storm.ui.screen.ChartInputScreen
-import com.astro.storm.ui.screen.DashasScreen
+import com.astro.storm.ui.screen.VimsottariDashaScreen
 import com.astro.storm.ui.screen.matchmaking.MatchmakingScreen
 import com.astro.storm.ui.screen.MuhurtaScreen
 import com.astro.storm.ui.screen.NakshatraScreen
@@ -641,15 +641,9 @@ fun AstroStormNavigation(
                 }
             }
 
-            DashasScreen(
+            VimsottariDashaScreen(
                 chart = currentChart,
-                onBack = { navController.popBackStack() },
-                onNavigateToYoginiDasha = {
-                    chartId?.let { navController.navigate(Screen.YoginiDasha.createRoute(it)) }
-                },
-                onNavigateToCharaDasha = {
-                    chartId?.let { navController.navigate(Screen.CharaDasha.createRoute(it)) }
-                }
+                onBack = { navController.popBackStack() }
             )
         }
 
