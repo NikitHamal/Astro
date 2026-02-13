@@ -53,7 +53,7 @@ import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.MatchmakingCalculator
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import com.astro.storm.ui.theme.AppTheme
-import NeoVedicTokens
+import com.astro.storm.ui.theme.NeoVedicTokens
 import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import kotlinx.coroutines.Dispatchers
