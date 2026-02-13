@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Sync
@@ -89,7 +88,6 @@ fun TransitsScreenRedesigned(
     val asOf = remember(nowInZone) { nowInZone.withSecond(0).withNano(0) }
 
     var selectedMode by rememberSaveable { mutableIntStateOf(0) }
-    var selectedDayOffset by rememberSaveable { mutableIntStateOf(0) }
 
     val analysis = remember(chart, asOf) {
         chart?.let {
@@ -119,8 +117,7 @@ fun TransitsScreenRedesigned(
         containerColor = colors.ScreenBackground,
         topBar = {
             EphemerisTopBar(
-                onBack = onBack,
-                onAction = { selectedDayOffset = (selectedDayOffset + 1) % 3 }
+                onBack = onBack
             )
         }
     ) { padding ->
@@ -162,7 +159,6 @@ fun TransitsScreenRedesigned(
             when (EphemerisMode.entries[selectedMode]) {
                 EphemerisMode.TIMELINE -> EphemerisTimelineMode(
                     dayBuckets = dayBuckets,
-                    selectedDayOffset = selectedDayOffset,
                     language = language
                 )
 
@@ -184,72 +180,74 @@ fun TransitsScreenRedesigned(
 @Composable
 private fun EphemerisTimelineMode(
     dayBuckets: List<Pair<LocalDate, List<EphemerisEventUi>>>,
-    selectedDayOffset: Int,
     language: Language
 ) {
-    val (date, events) = dayBuckets.getOrElse(selectedDayOffset) { dayBuckets.first() }
-
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = NeoVedicTokens.SpaceSM),
         verticalArrangement = Arrangement.spacedBy(0.dp)
     ) {
-        // Date header with TODAY/TOMORROW badge
-        item {
-            NeoVedicEphemerisDateHeader(
-                dateLabel = date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy")).uppercase(),
-                badgeText = when (selectedDayOffset) {
-                    0 -> StringResources.get(StringKey.PERIOD_TODAY, language).uppercase()
-                    1 -> StringResources.get(StringKey.PERIOD_TOMORROW, language).uppercase()
-                    else -> "+${selectedDayOffset}D"
-                },
-                badgeColor = AppTheme.AccentGold
-            )
-        }
-
-        if (events.isEmpty()) {
-            item {
-                NeoVedicEmptyState(
-                    title = StringResources.get(StringKey.FEATURE_TRANSITS, language),
-                    subtitle = StringResources.get(StringKeyMatch.MISC_NO_DATA, language),
-                    icon = Icons.Outlined.Schedule,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(260.dp)
+        dayBuckets.forEachIndexed { dayOffset, (date, events) ->
+            // Date header with TODAY/TOMORROW badge
+            item(key = "header_$date") {
+                NeoVedicEphemerisDateHeader(
+                    dateLabel = date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy")).uppercase(),
+                    badgeText = when (dayOffset) {
+                        0 -> StringResources.get(StringKey.PERIOD_TODAY, language).uppercase()
+                        1 -> StringResources.get(StringKey.PERIOD_TOMORROW, language).uppercase()
+                        else -> "+${dayOffset}D"
+                    },
+                    badgeColor = AppTheme.AccentGold
                 )
             }
-        } else {
-            items(events.size) { index ->
-                val event = events[index]
 
-                // Determine severity color based on event type and status
-                val severityColor = when {
-                    event.statusType == TransitStatusType.RETROGRADE -> AppTheme.ErrorColor
-                    event.statusType == TransitStatusType.DEBILITATED -> AppTheme.WarningColor
-                    event.statusType == TransitStatusType.EXALTED -> AppTheme.SuccessColor
-                    event.severity == EventSeverity.FAVORABLE -> AppTheme.SuccessColor
-                    event.severity == EventSeverity.NEUTRAL -> AppTheme.AccentGold
-                    event.severity == EventSeverity.CHALLENGING -> AppTheme.WarningColor
-                    event.severity == EventSeverity.ALERT -> AppTheme.ErrorColor
-                    else -> AppTheme.AccentGold
+            if (events.isEmpty()) {
+                item(key = "empty_$date") {
+                    NeoVedicEmptyState(
+                        title = StringResources.get(StringKey.FEATURE_TRANSITS, language),
+                        subtitle = StringResources.get(StringKeyMatch.MISC_NO_DATA, language),
+                        icon = Icons.Outlined.Schedule,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                    )
                 }
+            } else {
+                items(
+                    count = events.size,
+                    key = { index -> "event_${date}_${index}_${events[index].title}" }
+                ) { index ->
+                    val event = events[index]
 
-                // Build planet glyph with optional aspect glyph
-                val primaryGlyph = event.primaryGlyphs.firstOrNull()?.text ?: ""
-                val targetGlyph = if (event.primaryGlyphs.size > 1) event.primaryGlyphs[1].text else null
+                    // Determine severity color based on event type and status
+                    val severityColor = when {
+                        event.statusType == TransitStatusType.RETROGRADE -> AppTheme.ErrorColor
+                        event.statusType == TransitStatusType.DEBILITATED -> AppTheme.WarningColor
+                        event.statusType == TransitStatusType.EXALTED -> AppTheme.SuccessColor
+                        event.severity == EventSeverity.FAVORABLE -> AppTheme.SuccessColor
+                        event.severity == EventSeverity.NEUTRAL -> AppTheme.AccentGold
+                        event.severity == EventSeverity.CHALLENGING -> AppTheme.WarningColor
+                        event.severity == EventSeverity.ALERT -> AppTheme.ErrorColor
+                        else -> AppTheme.AccentGold
+                    }
 
-                NeoVedicEphemerisTransitItem(
-                    timeLabel = event.timeLabel,
-                    planetGlyph = primaryGlyph,
-                    aspectGlyph = event.aspectGlyph,
-                    targetPlanetGlyph = targetGlyph,
-                    title = event.title,
-                    positionText = event.positionText ?: event.subtitle,
-                    statusText = event.statusText,
-                    statusColor = severityColor,
-                    isHighlighted = event.isHighlighted,
-                    showConnector = index < events.lastIndex
-                )
+                    // Build planet glyph with optional aspect glyph
+                    val primaryGlyph = event.primaryGlyphs.firstOrNull()?.text ?: ""
+                    val targetGlyph = if (event.primaryGlyphs.size > 1) event.primaryGlyphs[1].text else null
+
+                    NeoVedicEphemerisTransitItem(
+                        timeLabel = event.timeLabel,
+                        planetGlyph = primaryGlyph,
+                        aspectGlyph = event.aspectGlyph,
+                        targetPlanetGlyph = targetGlyph,
+                        title = event.title,
+                        positionText = event.positionText ?: event.subtitle,
+                        statusText = event.statusText,
+                        statusColor = severityColor,
+                        isHighlighted = event.isHighlighted,
+                        showConnector = index < events.lastIndex
+                    )
+                }
             }
         }
     }
@@ -257,8 +255,7 @@ private fun EphemerisTimelineMode(
 
 @Composable
 private fun EphemerisTopBar(
-    onBack: () -> Unit,
-    onAction: () -> Unit
+    onBack: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -305,21 +302,6 @@ private fun EphemerisTopBar(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-            }
-
-            Surface(
-                modifier = Modifier.size(44.dp),
-                shape = androidx.compose.foundation.shape.CircleShape,
-                color = AppTheme.CardBackground,
-                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
-            ) {
-                IconButton(onClick = onAction) {
-                    Icon(
-                        imageVector = Icons.Outlined.CalendarMonth,
-                        contentDescription = null,
-                        tint = AppTheme.TextPrimary
-                    )
-                }
             }
         }
     }
