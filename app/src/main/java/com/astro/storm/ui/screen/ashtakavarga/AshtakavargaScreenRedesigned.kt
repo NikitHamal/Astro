@@ -333,7 +333,7 @@ private fun AshtakavargaSummaryCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.ASHTAKAVARGA_SUMMARY_TITLE),
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
                         letterSpacing = (-0.3).sp
@@ -434,7 +434,7 @@ private fun AshtakavargaStatItem(
         ) {
             Text(
                 text = value,
-                fontSize = 20.sp,
+                fontSize = 19.sp,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -681,7 +681,7 @@ private fun InsightHouseChip(
         ) {
             Text(
                 text = sign.symbol,
-                fontSize = 18.sp,
+                fontSize = 17.sp,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -1177,7 +1177,7 @@ private fun HouseDetailCard(
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = totalBindus.toString(),
-                        fontSize = 20.sp,
+                        fontSize = 19.sp,
                         fontWeight = FontWeight.Bold,
                         color = getBinduColor(totalBindus)
                     )
@@ -1369,6 +1369,7 @@ private fun getHouseSignification(house: Int, language: Language): String {
     }
     return key?.let { StringResources.get(it, language) } ?: ""
 }
+
 
 
 

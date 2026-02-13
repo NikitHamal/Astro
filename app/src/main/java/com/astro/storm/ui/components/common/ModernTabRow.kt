@@ -4,21 +4,16 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -30,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,9 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.astro.storm.ui.theme.AppTheme
-import com.astro.storm.ui.theme.DarkAppThemeColors
+import com.astro.storm.ui.theme.NeoVedicTokens
 
 /**
  * Tab data class for modern tab row
@@ -51,7 +44,7 @@ data class TabItem(
     val title: String,
     val icon: ImageVector? = null,
     val badge: String? = null,
-    val accentColor: Color = DarkAppThemeColors.AccentPrimary
+    val accentColor: Color = Color.Unspecified
 )
 
 /**
@@ -66,7 +59,7 @@ fun ModernPillTabRow(
     onTabSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
     containerColor: Color = Color.Transparent, // Ignored in new style
-    contentPadding: Dp = 0.dp // Ignored in new style
+    contentPadding: Dp = 0.dp // Kept for source compatibility; ignored in new style
 ) {
     val listState = rememberLazyListState()
 
@@ -81,19 +74,26 @@ fun ModernPillTabRow(
 
     LazyRow(
         state = listState,
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 0.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .background(containerColor),
+        horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.PillGap),
+        contentPadding = PaddingValues(horizontal = NeoVedicTokens.PillHorizontalPadding + contentPadding)
     ) {
         itemsIndexed(tabs) { index, tab ->
             val isSelected = index == selectedIndex
+            val accentColor = if (tab.accentColor == Color.Unspecified) {
+                AppTheme.AccentPrimary
+            } else {
+                tab.accentColor
+            }
             FilterChip(
                 selected = isSelected,
                 onClick = { onTabSelected(index) },
                 label = {
                     Text(
                         text = tab.title,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.labelLarge,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -102,13 +102,13 @@ fun ModernPillTabRow(
                         Icon(
                             imageVector = icon,
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(NeoVedicTokens.SpaceMD + NeoVedicTokens.SpaceXXS)
                         )
                     }
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = tab.accentColor.copy(alpha = 0.15f),
-                    selectedLabelColor = tab.accentColor,
+                    selectedContainerColor = accentColor.copy(alpha = 0.15f),
+                    selectedLabelColor = accentColor,
                     containerColor = AppTheme.ChipBackground,
                     labelColor = AppTheme.TextSecondary
                 ),
@@ -116,11 +116,11 @@ fun ModernPillTabRow(
                     enabled = true,
                     selected = isSelected,
                     borderColor = Color.Transparent,
-                    selectedBorderColor = tab.accentColor.copy(alpha = 0.2f),
-                    borderWidth = 1.dp,
-                    selectedBorderWidth = 1.dp
+                    selectedBorderColor = accentColor.copy(alpha = 0.2f),
+                    borderWidth = NeoVedicTokens.BorderWidth,
+                    selectedBorderWidth = NeoVedicTokens.BorderWidth
                 ),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius)
             )
         }
     }
@@ -162,8 +162,8 @@ fun CompactChipTabs(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(horizontal = NeoVedicTokens.SpaceMD),
+        horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.PillGap)
     ) {
         tabs.forEachIndexed { index, title ->
             val isSelected = index == selectedIndex
@@ -182,13 +182,13 @@ fun CompactChipTabs(
             Surface(
                 modifier = Modifier
                     .weight(1f)
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(NeoVedicTokens.ChipCornerRadius))
                     .clickable { onTabSelected(index) },
                 color = backgroundColor,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius)
             ) {
                 Box(
-                    modifier = Modifier.padding(vertical = 10.dp),
+                    modifier = Modifier.padding(vertical = NeoVedicTokens.PillVerticalPadding),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -219,12 +219,12 @@ fun SegmentedControlTabs(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = NeoVedicTokens.SpaceMD),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius)
     ) {
         Row(
-            modifier = Modifier.padding(4.dp)
+            modifier = Modifier.padding(NeoVedicTokens.SpaceXXS)
         ) {
             tabs.forEachIndexed { index, title ->
                 val isSelected = index == selectedIndex
@@ -242,10 +242,10 @@ fun SegmentedControlTabs(
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(NeoVedicTokens.ChipCornerRadius))
                         .background(backgroundColor)
                         .clickable { onTabSelected(index) }
-                        .padding(vertical = 10.dp),
+                        .padding(vertical = NeoVedicTokens.PillVerticalPadding),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(

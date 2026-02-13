@@ -787,7 +787,7 @@ private fun DailyHoroscopeHeader(
             Text(
                 text = stringResource(horoscope.themeKey),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = 20.sp,
+                fontSize = 19.sp,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary,
                 lineHeight = 28.sp
@@ -815,7 +815,7 @@ private fun DailyHoroscopeHeader(
                         withStyle(
                             SpanStyle(
                                 fontFamily = PoppinsFontFamily,
-                                fontSize = 18.sp,
+                                fontSize = 17.sp,
                                 fontWeight = FontWeight.Normal,
                                 color = AppTheme.TextSecondary
                             )
@@ -943,7 +943,7 @@ private fun EnergyCard(overallEnergy: Int) {
                 Text(
                     text = localizedScore,
                     fontFamily = CinzelDecorativeFamily,
-                    fontSize = 22.sp,
+                    fontSize = 21.sp,
                     fontWeight = FontWeight.Bold,
                     color = energyColor
                 )
@@ -1083,7 +1083,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                     Text(
                         text = localizedAreaName,
                         fontFamily = PoppinsFontFamily,
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1408,7 +1408,7 @@ private fun AffirmationCard(affirmationKey: StringKey) {
                 Text(
                     text = stringResource(affirmationKey),
                     fontFamily = PoppinsFontFamily,
-                    fontSize = 20.sp,
+                    fontSize = 19.sp,
                     fontWeight = FontWeight.Medium,
                     fontStyle = FontStyle.Italic,
                     color = AppTheme.TextPrimary,
@@ -1462,7 +1462,7 @@ private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
             Text(
                 text = stringResource(weekly.weeklyThemeKey),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = 20.sp,
+                fontSize = 19.sp,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary,
                 lineHeight = 28.sp
@@ -1735,7 +1735,7 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
                 Text(
                     text = localizedAreaName,
                     fontFamily = PoppinsFontFamily,
-                    fontSize = 18.sp,
+                    fontSize = 17.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
                     modifier = Modifier.weight(1f)
@@ -2423,7 +2423,7 @@ private fun EmptyInsightsState(
             Text(
                 text = stringResource(StringKey.SETTINGS_NO_PROFILE),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = 20.sp,
+                fontSize = 19.sp,
                 fontWeight = FontWeight.Bold,
                 color = colors.TextPrimary,
                 textAlign = TextAlign.Center
@@ -2558,5 +2558,6 @@ private fun getPlanetColor(planet: Planet): Color {
         else -> AppTheme.AccentPrimary
     }
 }
+
 
 

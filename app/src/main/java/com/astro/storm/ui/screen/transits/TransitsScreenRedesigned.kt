@@ -356,7 +356,7 @@ private fun TransitSummaryCard(
                 Column {
                     Text(
                         text = stringResource(StringKey.TRANSIT_OVERVIEW),
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
                         letterSpacing = (-0.3).sp
@@ -451,7 +451,7 @@ private fun TransitStatItem(
         ) {
             Text(
                 text = value,
-                fontSize = 20.sp,
+                fontSize = 19.sp,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -521,7 +521,7 @@ private fun TransitPlanetCard(
                     ) {
                         Text(
                             text = transitPosition.planet.localizedAbbr(),
-                            fontSize = 18.sp,
+                            fontSize = 17.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
@@ -1172,6 +1172,7 @@ private fun rememberCurrentDateTime(zoneId: ZoneId) = produceState(
         delay(60_000)
     }
 }
+
 
 
 

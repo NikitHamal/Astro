@@ -63,6 +63,7 @@ import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.screen.chartdetail.tabs.DashasTabContent
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
 import com.astro.storm.ui.viewmodel.DashaUiState
 import com.astro.storm.ui.viewmodel.DashaViewModel
 import kotlin.math.roundToInt
@@ -250,7 +251,10 @@ fun DashaSystemsScreen(
                 tabs = tabs,
                 selectedIndex = selectedTabIndex,
                 onTabSelected = { selectedTabIndex = it },
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                modifier = Modifier.padding(
+                    horizontal = NeoVedicTokens.SpaceMD,
+                    vertical = NeoVedicTokens.SpaceSM
+                )
             )
 
             // Content
@@ -322,7 +326,7 @@ private fun DashaSystemsTopBar(
 ) {
     Surface(
         color = AppTheme.ScreenBackground,
-        shadowElevation = 2.dp
+        shadowElevation = NeoVedicTokens.SurfaceElevation
     ) {
         ScreenTopBar(
                 title = stringResource(StringKey.FEATURE_DASHAS),
@@ -576,6 +580,7 @@ private fun DashaSystemInfoDialog(
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
     )
 }
+
 
 
 

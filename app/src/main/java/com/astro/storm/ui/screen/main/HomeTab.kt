@@ -375,7 +375,7 @@ private fun HeroDashaCard(
                                 text = "${currentDasha.planet.getLocalizedName(language)} ${stringResource(StringKey.HOME_DASHA_LABEL)}",
                                 fontFamily = CinzelDecorativeFamily,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp,
+                                fontSize = 19.sp,
                                 color = colors.TextPrimary
                             )
 
@@ -989,7 +989,7 @@ private fun EmptyHomeState(
                 text = stringResource(StringKey.NO_PROFILE_SELECTED),
                 fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
+                fontSize = 17.sp,
                 color = colors.TextPrimary,
                 textAlign = TextAlign.Center
             )
@@ -1606,6 +1606,7 @@ private fun resolveZoneId(timezone: String): ZoneId {
         }
     }
 }
+
 
 
 

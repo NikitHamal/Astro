@@ -290,7 +290,7 @@ private fun YogasSummaryCard(
                 Column {
                     Text(
                         text = stringResource(StringKey.YOGA_ANALYSIS_SUMMARY),
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
                         letterSpacing = (-0.3).sp
@@ -417,7 +417,7 @@ private fun YogaStatItem(
         ) {
             Text(
                 text = value,
-                fontSize = 22.sp,
+                fontSize = 21.sp,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -1065,6 +1065,7 @@ private fun getStrengthColor(strength: Double): Color {
         else -> theme.ErrorColor
     }
 }
+
 
 
 

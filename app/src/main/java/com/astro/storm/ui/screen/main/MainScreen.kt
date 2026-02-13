@@ -383,7 +383,7 @@ private fun NeoVedicTopBar(
                 text = "ASTROSTORM",
                 fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
+                fontSize = 17.sp,
                 letterSpacing = 2.sp,
                 color = colors.TextPrimary
             )
@@ -445,8 +445,8 @@ private fun NeoVedicBottomNavigation(
                     Text(
                         text = localizedTitle.uppercase(),
                         fontFamily = SpaceGroteskFamily,
+                        style = MaterialTheme.typography.labelSmall,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                        fontSize = 10.sp,
                         letterSpacing = 1.5.sp
                     )
                 },
@@ -490,5 +490,6 @@ enum class MainTab(
         return StringResources.get(titleKey, language)
     }
 }
+
 
 

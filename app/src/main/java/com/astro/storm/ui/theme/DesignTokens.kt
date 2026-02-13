@@ -15,6 +15,9 @@ object NeoVedicTokens {
     val SpaceLG = 24.dp
     val SectionSpacing = 28.dp
     val CardSpacing = 12.dp
+    val PillGap = 8.dp
+    val PillHorizontalPadding = 4.dp
+    val PillVerticalPadding = 8.dp
 
     val CardCornerRadius = 2.dp
     val ElementCornerRadius = 2.dp

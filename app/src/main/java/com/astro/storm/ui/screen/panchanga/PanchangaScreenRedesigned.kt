@@ -337,7 +337,7 @@ private fun TodaySummaryCard(
                 Column {
                     Text(
                         text = todayDate.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")),
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
@@ -892,7 +892,7 @@ private fun BirthSummaryCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyAnalysis.UI_BIRTH_PANCHANGA),
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
@@ -1145,7 +1145,7 @@ private fun ElementDetailCard(
                 ) {
                     Text(
                         text = name.first().toString(),
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         color = color
                     )
@@ -1430,6 +1430,7 @@ private fun rememberCurrentDateTime(zoneId: ZoneId) = produceState(
         delay(60_000)
     }
 }
+
 
 
 
